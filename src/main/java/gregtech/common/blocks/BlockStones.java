@@ -5,7 +5,7 @@ import net.minecraft.util.IIcon;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class BlockStones extends BlockStonesAbstract {
@@ -23,7 +23,7 @@ public class BlockStones extends BlockStonesAbstract {
                 i < 8 ? Materials2Materials.Marble : Materials2Materials.Basalt,
                 new ItemStack(this, 1, i));
             GTOreDictUnificator.registerOre(
-                MU.internalName(i < 8 ? Materials2Materials.Marble : Materials2Materials.Basalt)
+                MaterialUtils.internalName(i < 8 ? Materials2Materials.Marble : Materials2Materials.Basalt)
                     .toLowerCase(),
                 new ItemStack(this, 1, i));
         }

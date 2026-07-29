@@ -68,7 +68,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
@@ -153,7 +153,7 @@ public class RecipesGeneral {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
             .itemOutputs(GregtechItemList.KLEIN_BOTTLE.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.ChromaticGlass, 16 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.ChromaticGlass, 16 * INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(fluidSolidifierRecipes);
@@ -351,7 +351,7 @@ public class RecipesGeneral {
         generatePipeRecipes(Materials2Materials.Inconel792);
         generatePipeRecipes(Materials2Materials.HastelloyX);
         generatePipeRecipes(Materials2Materials.TriniumNaquadahCarbonite);
-        generatePipeRecipes(null, MU.localName(Materials2Materials.Clay), 15);
+        generatePipeRecipes(null, MaterialUtils.localName(Materials2Materials.Clay), 15);
     }
 
     private static void migratedRecipes() {

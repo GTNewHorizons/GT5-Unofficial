@@ -22,7 +22,7 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -54,7 +54,7 @@ public class RecipeLoaderRocketFuels {
     private static void createKerosene() {
         GTValues.RA.stdBuilder()
             .circuit(23)
-            .fluidInputs(MU.fluid(Materials2Materials.Fuel, 250))
+            .fluidInputs(MaterialUtils.fluid(Materials2Materials.Fuel, 250))
             .fluidOutputs(new FluidStack(GTPPFluids.Kerosene, 150))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV / 2)
@@ -193,7 +193,9 @@ public class RecipeLoaderRocketFuels {
                 new FluidStack(GTPPFluids.Formaldehyde, 2_000),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (4_000)))
-            .fluidOutputs(MU.fluid(Materials2Materials._11Dimethylhydrazine, 2_000), GTUtility.getWater(2_000))
+            .fluidOutputs(
+                MaterialUtils.fluid(Materials2Materials._11Dimethylhydrazine, 2_000),
+                GTUtility.getWater(2_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
@@ -268,7 +270,7 @@ public class RecipeLoaderRocketFuels {
         GTValues.RA.stdBuilder()
             .circuit(4)
             .fluidInputs(
-                MU.fluid(Materials2Materials._11Dimethylhydrazine, 2_000),
+                MaterialUtils.fluid(Materials2Materials._11Dimethylhydrazine, 2_000),
                 new FluidStack(GTPPFluids.NitrogenTetroxide, 2_000))
             .fluidOutputs(new FluidStack(GTPPFluids.H8N4C2O4RocketFuel, 5_000))
             .duration(60 * SECONDS)

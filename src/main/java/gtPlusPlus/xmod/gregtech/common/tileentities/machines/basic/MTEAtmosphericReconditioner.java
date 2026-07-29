@@ -31,7 +31,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.render.TextureFactory;
@@ -402,7 +402,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             if (mInventory[SLOT_ROTOR].getItem() instanceof MetaGeneratedTool01
                 && ((MetaGeneratedTool) mInventory[SLOT_ROTOR].getItem()).getToolStats(mInventory[SLOT_ROTOR])
                     .getSpeedMultiplier() > 0
-                && MU.toolSpeed(MetaGeneratedTool.getPrimaryMaterialML(mInventory[SLOT_ROTOR])) > 0) {
+                && MaterialUtils.toolSpeed(MetaGeneratedTool.getPrimaryMaterialML(mInventory[SLOT_ROTOR])) > 0) {
 
                 long damageValue = (long) Math
                     .floor(Math.abs(MathUtils.randFloat(1, 2) - MathUtils.randFloat(1, 3)) * (1 + 3 - 1) + 1);
@@ -747,7 +747,8 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
         return (int) Math.max(
             Float.MIN_NORMAL,
             ((MetaGeneratedTool) aStackRotor.getItem()).getToolStats(aStackRotor)
-                .getSpeedMultiplier() * MU.toolSpeed(MetaGeneratedTool.getPrimaryMaterialML(aStackRotor)) * 50);
+                .getSpeedMultiplier() * MaterialUtils.toolSpeed(MetaGeneratedTool.getPrimaryMaterialML(aStackRotor))
+                * 50);
     }
 
     @Override

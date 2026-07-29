@@ -29,7 +29,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaBaseItem;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
@@ -167,7 +167,7 @@ public class PipeShapeBlock extends ShapeBlock {
         return switch (family) {
             case WIRE -> 0;
             case CABLE -> 1;
-            default -> GTUtility.clamp(MU.toolQuality(MaterialLibAPI.getMaterialByIndex(meta)), 0, 3);
+            default -> GTUtility.clamp(MaterialUtils.toolQuality(MaterialLibAPI.getMaterialByIndex(meta)), 0, 3);
         };
     }
 

@@ -22,7 +22,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Modules;
@@ -105,8 +105,9 @@ public class ExoticPossibleInputsListPanel {
         IFluidTanksHandler fluidHandler = new FluidTanksHandler(fluidSize, 128000);
 
         List<ItemStack> possibleItems = new ArrayList<>(Godforge.exoticModuleMagmatterItemMap.keySet());
-        List<FluidStack> possibleFluids = ImmutableList
-            .of(MU.molten(Materials2Materials.spatialFluid, 1), MU.molten(Materials2Materials.temporalFluid, 1));
+        List<FluidStack> possibleFluids = ImmutableList.of(
+            MaterialUtils.molten(Materials2Materials.spatialFluid, 1),
+            MaterialUtils.molten(Materials2Materials.temporalFluid, 1));
 
         // Fill handlers
         for (int i = 0; i < itemSize; i++) {

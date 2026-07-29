@@ -18,7 +18,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.util.GTUtility;
@@ -61,7 +61,8 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
         GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         if (stack.isItemEqual(
-            GTUtility.getFluidDisplayStack(MU.fluid(Materials2Materials.PolyaluminiumChloride, 1_000), false))) {
+            GTUtility
+                .getFluidDisplayStack(MaterialUtils.fluid(Materials2Materials.PolyaluminiumChloride, 1_000), false))) {
             currentTip.add(StatCollector.translateToLocal("GT5U.nei.purified_water.grade_3.0"));
             currentTip.add(
                 StatCollector.translateToLocalFormatted(

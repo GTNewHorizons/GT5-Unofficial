@@ -12,7 +12,7 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.StringUtils;
 import gregtech.loaders.oreprocessing.ProcessingDustGeneration;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -42,7 +42,7 @@ public class BaseItemMilledOre extends BaseOreComponent {
                 boolean tIsRich = (GTMod.proxy.mNetherOreYieldMultiplier && tPrefix == OrePrefixes.oreNetherrack)
                     || (GTMod.proxy.mEndOreYieldMultiplier && tPrefix == OrePrefixes.oreEndstone);
                 ItemStack oreStack = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-                    tPrefix.getName() + StringUtils.sanitizeString(MU.internalName(material)),
+                    tPrefix.getName() + StringUtils.sanitizeString(MaterialUtils.internalName(material)),
                     tIsRich ? 8 : 16);
 
                 if (oreStack == null) continue;

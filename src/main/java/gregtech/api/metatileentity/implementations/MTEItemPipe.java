@@ -35,7 +35,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityItemPipe;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.material.PipeStats;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
@@ -79,7 +79,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
 
     @Override
     public byte getTileEntityBaseType() {
-        final int level = GTUtility.clamp(MU.toolQuality(shapeMaterial()), 0, 3);
+        final int level = GTUtility.clamp(MaterialUtils.toolQuality(shapeMaterial()), 0, 3);
 
         HarvestTool tool = switch (level) {
             case 0 -> HarvestTool.WrenchPipeLevel0;
@@ -169,8 +169,8 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
         int aColorIndex, boolean aConnected, boolean redstoneLevel) {
-        final TextureSet textureSet = MU.iconSet(getMaterial());
-        final short[] rgba = MU.rgba(getMaterial());
+        final TextureSet textureSet = MaterialUtils.iconSet(getMaterial());
+        final short[] rgba = MaterialUtils.rgba(getMaterial());
         if (textureSet == null || rgba == null) return Textures.BlockIcons.ERROR_RENDERING;
         if (mIsRestrictive) {
             if (aConnected) {

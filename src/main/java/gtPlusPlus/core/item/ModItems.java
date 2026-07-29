@@ -19,6 +19,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
@@ -75,7 +76,7 @@ public final class ModItems {
         ItemsFoods.load();
 
         // Zirconium Tetrafluoride's fluid is registered directly by name rather than through a material
-        // declaration, so MU#legacyGtppFluidOf falls back to its pinned Forge fluid name for it.
+        // declaration, so MaterialUtils#legacyGtppFluidOf falls back to its pinned Forge fluid name for it.
         FluidUtils.generateFluidNoPrefix(
             "ZirconiumTetrafluoride",
             "Zirconium Tetrafluoride",
@@ -541,12 +542,12 @@ public final class ModItems {
                 "DecayedRadium226",
                 "Decayed Radium-226",
                 "Contains Radon (" + StringUtils.superscript("222Rn") + ")",
-                MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.Radium)))[0]);
+                MathUtils.getRgbAsHex(MaterialUtils.rgba(Materials2Materials.Radium)))[0]);
 
         GregtechItemList.Radium226Dust.set(
             new DustDecayable(
                 "dustRadium226",
-                MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.Radium)),
+                MathUtils.getRgbAsHex(MaterialUtils.rgba(Materials2Materials.Radium)),
                 90000,
                 new String[] { StringUtils.superscript("226Ra"),
                     "Result: Radon (" + StringUtils.superscript("222Rn") + ")" },
@@ -557,7 +558,7 @@ public final class ModItems {
         GregtechItemList.Protactinium233Dust.set(
             new DustDecayable(
                 "dustProtactinium233",
-                MathUtils.getRgbAsHex(MU.rgba(Materials2Materials.Protactinium)),
+                MathUtils.getRgbAsHex(MaterialUtils.rgba(Materials2Materials.Protactinium)),
                 32000,
                 new String[] { StringUtils.superscript("233Pa"),
                     "Result: Uranium 233 (" + StringUtils.superscript("233U") + ")" },

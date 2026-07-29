@@ -11,7 +11,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.Utils;
@@ -47,11 +47,11 @@ public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
         int id = this.getBaseMetaTileEntity()
             .getWorld().provider.dimensionId;
         if (id == DimensionEverglades.DIMID) {
-            return MU.gas(Materials2Materials.ToxicAir, 1)
+            return MaterialUtils.gas(Materials2Materials.ToxicAir, 1)
                 .getFluid();
         }
         if (id == -1) {
-            return MU.fluidOf(Materials2Materials.netherair);
+            return MaterialUtils.fluidOf(Materials2Materials.netherair);
         } else {
             return MaterialLibAPI.getFluidStack(Materials2Materials.Air, Materials2FluidShapes.fluidGas, (int) (1))
                 .getFluid();

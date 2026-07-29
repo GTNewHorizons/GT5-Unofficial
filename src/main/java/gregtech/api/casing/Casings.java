@@ -33,7 +33,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.ISuperChestAcceptor;
@@ -668,7 +668,7 @@ public enum Casings implements ICasing {
     // spotless:off
     // These four materials are ordinary MaterialLib materials, not bartworks-declared ones. The corresponding
     // MaterialLib material carries the casing shape membership directly (added at codegen time), so
-    // #bwCasing resolves through MU#material the same way GTOreAdapter resolves any other GT material.
+    // #bwCasing resolves through MaterialUtils#byLegacyName the same way GTOreAdapter resolves any other GT material.
     // The block/meta constructor args below are unused (both accessors are overridden to resolve dynamically --
     // see #bwCasing's javadoc); they're kept as the legacy werkstoff id purely so the pair stays readable next
     // to the textureId, which keeps its legacy raw-id value.
@@ -1140,11 +1140,11 @@ public enum Casings implements ICasing {
     /// temporary verification hook) confirmed every one lands on the correct blockCasing/
     /// blockCasingAdvanced variant of its material.
     private static ImmutableBlockMeta bwCasing(Material material, boolean advanced) {
-        return BW_CASING_CACHE.computeIfAbsent(MU.internalName(material) + (advanced ? "!adv" : ""), k -> {
+        return BW_CASING_CACHE.computeIfAbsent(MaterialUtils.internalName(material) + (advanced ? "!adv" : ""), k -> {
             Shape shape = advanced ? Materials2BlockShapes.blockCasingAdvanced : Materials2BlockShapes.blockCasing;
             ItemStack stack = Objects.requireNonNull(
                 MaterialLibAPI.getStack(material, shape, 1),
-                () -> "No " + shape + " stack for casing material " + MU.internalName(material));
+                () -> "No " + shape + " stack for casing material " + MaterialUtils.internalName(material));
 
             return new BlockMeta(Block.getBlockFromItem(stack.getItem()), stack.getItemDamage());
         });

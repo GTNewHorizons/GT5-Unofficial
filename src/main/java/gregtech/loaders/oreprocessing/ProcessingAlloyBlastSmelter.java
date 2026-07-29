@@ -24,6 +24,7 @@ import gregtech.api.enums.materials2.Materials2GtppComposites.Component;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
@@ -46,7 +47,7 @@ import gregtech.common.items.ItemIntegratedCircuit;
 /// cannot resolve for a gtPlusPlus-only material: those read a per-state
 /// [gregtech.api.enums.materials2.Materials2FluidNames]
 /// slot or a [com.ruling_0.materiallib.api.Shape], and a gtPlusPlus-only material carries neither.
-/// [#materialFluid] resolves it instead through [MU#legacyGtppFluid]'s name-priority lookup over the same
+/// [#materialFluid] resolves it instead through [MaterialUtils#legacyGtppFluid]'s name-priority lookup over the same
 /// [gregtech.api.enums.materials2.Materials2FluidNames] data, exactly as gtpp's own `Material#getFluidStack` did (a
 /// null result
 /// here reproduces a null there, which is why some [#SINGLE_DUST] members -- carrying `BLAST_REQUIRED` but no
@@ -96,7 +97,7 @@ public class ProcessingAlloyBlastSmelter {
             int totalParts = composites.stream()
                 .mapToInt(Component::parts)
                 .sum();
-            int tier = Math.max(1, MU.tier(material));
+            int tier = Math.max(1, MaterialUtils.tier(material));
             int duration = tier <= 4 ? 20 * tier * 10 : 120 * tier * 10;
             composite(material, composites, totalParts, GTValues.VP[tier], duration);
         }
@@ -137,10 +138,10 @@ public class ProcessingAlloyBlastSmelter {
             if (!Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.BLAST_REQUIRED))) continue;
             ItemStack dust = MU.stack(OrePrefixes.dust, material, 1);
             if (dust == null) continue;
-            FluidStack fluidOutput = MU.legacyGtppFluid(material, 144);
+            FluidStack fluidOutput = MaterialUtils.legacyGtppFluid(material, 144);
             if (fluidOutput == null) continue;
 
-            int tier = Math.max(1, MU.tier(material));
+            int tier = Math.max(1, MaterialUtils.tier(material));
             int duration = tier <= 4 ? 20 * tier * 10 : 120 * tier * 10;
             int totalParts = Materials2GtppComposites.composites(material)
                 .stream()
@@ -172,7 +173,7 @@ public class ProcessingAlloyBlastSmelter {
             if (dust != null) {
                 items[i] = dust;
             } else if (parts > 0 && parts <= 100) {
-                componentFluid = MU.legacyGtppFluid(component.material(), parts * 1000L);
+                componentFluid = MaterialUtils.legacyGtppFluid(component.material(), parts * 1000L);
             }
         }
 
@@ -186,13 +187,13 @@ public class ProcessingAlloyBlastSmelter {
         if (count < 9) builder.circuit(count);
         if (componentFluid != null) builder.fluidInputs(componentFluid);
         boolean ebf = Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.BLAST_REQUIRED));
-        builder.fluidOutputs(MU.legacyGtppFluid(material, 144L * totalParts))
+        builder.fluidOutputs(MaterialUtils.legacyGtppFluid(material, 144L * totalParts))
             .eut(ebf ? voltage : voltage / 2)
             .duration(duration)
             .addTo(alloyBlastSmelterRecipes);
     }
 
-    /// A material's single registered fluid -- see [MU#legacyGtppFluid].
+    /// A material's single registered fluid -- see [MaterialUtils#legacyGtppFluid].
 
     private static Map<String, FluidStack> ingotToFluid;
     private static Map<String, String> hotToCold;

@@ -20,7 +20,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -145,7 +145,7 @@ public class MTELargeTurbineHPSteamLegacy extends MTELargeTurbineLegacy {
         }
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
-        addOutputPartial(MU.gas(Materials2Materials.Steam, totalFlow));
+        addOutputPartial(MaterialUtils.gas(Materials2Materials.Steam, totalFlow));
         if (totalFlow == (GTUtility.safeInt((long) realOptFlow))) {
             tEU = GTUtility
                 .safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));

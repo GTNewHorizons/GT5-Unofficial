@@ -22,6 +22,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -210,7 +211,7 @@ public class FormingPressRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.SixPhasedCopper, 4L),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Eternity, 4L),
                 MaterialLibAPI.getStack(Materials2Materials.BlackDwarfMatter, Materials2Shapes.plate, (int) (1)))
-            .fluidInputs(MU.fluid(Materials2Materials.UUMatter, 4_096_000L))
+            .fluidInputs(MaterialUtils.fluid(Materials2Materials.UUMatter, 4_096_000L))
             .itemOutputs(ItemList.NaniteFramework.get(1))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
@@ -261,7 +262,7 @@ public class FormingPressRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.plate, (int) (8)),
                 MU.stack(OrePrefixes.ring, Materials2Materials.HighDurabilityCompoundSteel, 2),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials2Materials.prismaticnaquadah, 16L))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Indalloy140, 10 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 10 * INGOTS))
             .itemOutputs(ItemList.T2Sawblade.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -273,7 +274,7 @@ public class FormingPressRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.plate, (int) (8)),
                 MU.stack(OrePrefixes.ring, Materials2Materials.Tairitsu, 2),
                 MaterialLibAPI.getStack(Materials2Materials.ElectrumFlux, Materials2Shapes.screw, (int) (16)))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 10 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 10 * INGOTS))
             .itemOutputs(ItemList.T3Sawblade.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -285,7 +286,7 @@ public class FormingPressRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials2Materials.protohalkonite, 8),
                 MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.ring, (int) (2)),
                 MU.stack(OrePrefixes.screw, Materials2Materials.MetastableOganesson, 16))
-            .fluidInputs(MU.fluid(Materials2Materials.dimensionallyshiftedsuperfluid, 10 * INGOTS))
+            .fluidInputs(MaterialUtils.fluid(Materials2Materials.dimensionallyshiftedsuperfluid, 10 * INGOTS))
             .itemOutputs(ItemList.T4Sawblade.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_UIV)

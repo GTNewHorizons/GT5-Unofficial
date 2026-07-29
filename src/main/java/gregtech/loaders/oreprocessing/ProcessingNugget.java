@@ -19,6 +19,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -37,34 +38,34 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
-            && GTOreDictUnificator.get(OrePrefixes.gem, MU.smeltInto(material), 1L) != null) {
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
+            && GTOreDictUnificator.get(OrePrefixes.gem, MaterialUtils.smeltInto(material), 1L) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Mold_Ball.get(0L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, MU.smeltInto(material), 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, MaterialUtils.smeltInto(material), 1L))
                 .duration(10 * SECONDS)
                 .eut(calculateRecipeEU(material, 2))
                 .addTo(alloySmelterRecipes);
         }
 
-        if ((!MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM))
-            && GTOreDictUnificator.get(OrePrefixes.ingot, MU.smeltInto(material), 1L) != null
+        if ((!MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM))
+            && GTOreDictUnificator.get(OrePrefixes.ingot, MaterialUtils.smeltInto(material), 1L) != null
             && material != Materials2Materials.Aluminium) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Mold_Ingot.get(0L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MU.smeltInto(material), 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MaterialUtils.smeltInto(material), 1L))
                 .duration(10 * SECONDS)
                 .eut(calculateRecipeEU(material, 2))
                 .recipeCategory(RecipeCategories.alloySmelterMolding)
                 .addTo(alloySmelterRecipes);
         }
 
-        if (MU.hasMolten(material)) {
+        if (MaterialUtils.hasMolten(material)) {
             if (!(material == Materials2Materials.AnnealedCopper || material == Materials2Materials.CastIron)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nugget, material, 1L))
-                    .fluidInputs(MU.molten(material, 1 * NUGGETS))
+                    .fluidInputs(MaterialUtils.molten(material, 1 * NUGGETS))
                     .duration(16 * TICKS)
                     .eut(calculateRecipeEU(material, 4))
                     .addTo(fluidSolidifierRecipes);
@@ -74,7 +75,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         GTRecipeRegistrator.registerReverseFluidSmelting(stack, material, prefix.getMaterialAmount(), null, true);
         GTRecipeRegistrator
             .registerReverseMacerating(stack, material, prefix.getMaterialAmount(), null, null, null, false, true);
-        if (!MU.hasFlag(material, GTMaterialFlag.NO_SMELTING)
+        if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING)
             && GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(

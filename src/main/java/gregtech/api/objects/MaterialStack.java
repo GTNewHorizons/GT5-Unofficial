@@ -3,7 +3,7 @@ package gregtech.api.objects;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
 public class MaterialStack implements Cloneable {
@@ -45,7 +45,7 @@ public class MaterialStack implements Cloneable {
     }
 
     public String toString(boolean single) {
-        String temp1 = "", temp2 = MU.chemicalTooltip(mMaterial, true), temp3 = "", temp4 = "";
+        String temp1 = "", temp2 = MaterialUtils.chemicalTooltip(mMaterial, true), temp3 = "", temp4 = "";
         if (mAmount > 1) {
             temp4 = GTUtility.toSubscript(mAmount);
         }
@@ -57,7 +57,7 @@ public class MaterialStack implements Cloneable {
     }
 
     private boolean isMaterialListComplex(MaterialStack materialStack) {
-        var list = MU.materialList(materialStack.mMaterial);
+        var list = MaterialUtils.materialList(materialStack.mMaterial);
         if (list.size() > 1) {
             return true;
         }

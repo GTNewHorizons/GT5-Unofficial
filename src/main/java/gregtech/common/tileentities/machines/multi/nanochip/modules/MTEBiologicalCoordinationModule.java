@@ -24,7 +24,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
@@ -170,7 +170,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
                     Integer.MAX_VALUE));
         }
         if (baseMulti.bioT3Active) {
-            fakeFluids.add(MU.fluid(Materials2Materials.BiohMediumSterilized, Integer.MAX_VALUE));
+            fakeFluids.add(MaterialUtils.fluid(Materials2Materials.BiohMediumSterilized, Integer.MAX_VALUE));
         }
         FluidStack[] inputFluids = fakeFluids.toArray(new FluidStack[] {});
         this.fluidInputs = inputFluids;
@@ -195,7 +195,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
                         .getFluid()))
                 fluidInputs[i] = null;
             if (baseMulti.bioT3Active && stack.getFluid()
-                .equals(MU.fluidOf(Materials2Materials.BiohMediumSterilized))) fluidInputs[i] = null;
+                .equals(MaterialUtils.fluidOf(Materials2Materials.BiohMediumSterilized))) fluidInputs[i] = null;
         }
         transformedRecipe.setFluidInputs(ArrayExt.removeNullFluids(fluidInputs));
         return transformedRecipe;

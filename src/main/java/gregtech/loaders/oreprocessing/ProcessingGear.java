@@ -19,6 +19,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -39,20 +40,20 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
         switch (prefix.getName()) {
             case "gearGt" -> {
                 GTModHandler.removeRecipeByOutputDelayed(stack);
-                if (MU.hasMolten(material)) {
+                if (MaterialUtils.hasMolten(material)) {
                     if (!(material == Materials2Materials.AnnealedCopper || material == Materials2Materials.CastIron)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Gear.get(0L))
                             .itemOutputs(GTOreDictUnificator.get(prefix, material, 1L))
-                            .fluidInputs(MU.molten(material, 4 * INGOTS))
+                            .fluidInputs(MaterialUtils.molten(material, 4 * INGOTS))
                             .duration(6 * SECONDS + 8 * TICKS)
                             .eut(calculateRecipeEU(material, 8))
                             .addTo(fluidSolidifierRecipes);
                     }
                 }
                 if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-                    && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
-                    switch (MU.internalName(material)) {
+                    && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
+                    switch (MaterialUtils.internalName(material)) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGt, material, 1L),
                             GTModHandler.RecipeBits.BITS_STD,
@@ -79,20 +80,20 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
             }
             case "gearGtSmall" -> {
-                if (MU.hasMolten(material)) {
+                if (MaterialUtils.hasMolten(material)) {
                     if (!(material == Materials2Materials.AnnealedCopper || material == Materials2Materials.CastIron)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Gear_Small.get(0L))
                             .itemOutputs(GTUtility.copyAmount(1, stack))
-                            .fluidInputs(MU.molten(material, 1 * INGOTS))
+                            .fluidInputs(MaterialUtils.molten(material, 1 * INGOTS))
                             .duration(16 * TICKS)
                             .eut(calculateRecipeEU(material, 8))
                             .addTo(fluidSolidifierRecipes);
                     }
                 }
                 if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-                    && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
-                    switch (MU.internalName(material)) {
+                    && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
+                    switch (MaterialUtils.internalName(material)) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGtSmall, material, 1L),
                             GTModHandler.RecipeBits.BITS_STD,

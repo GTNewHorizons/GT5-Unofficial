@@ -71,7 +71,7 @@ import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
@@ -220,8 +220,8 @@ public class GTStructureUtility {
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                TextureSet textureSet = MU.iconSet(material);
-                short[] rgba = MU.rgba(material);
+                TextureSet textureSet = MaterialUtils.iconSet(material);
+                short[] rgba = MaterialUtils.rgba(material);
                 if (textureSet == null || rgba == null) return false;
                 if (mIcons == null && FMLLaunchHandler.side()
                     .isClient()) {
@@ -330,8 +330,8 @@ public class GTStructureUtility {
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 com.ruling_0.materiallib.api.Material material = materialSupplier.get();
-                TextureSet textureSet = MU.iconSet(material);
-                short[] rgba = MU.rgba(material);
+                TextureSet textureSet = MaterialUtils.iconSet(material);
+                short[] rgba = MaterialUtils.rgba(material);
                 if (textureSet == null || rgba == null) return false;
                 if (mIcons == null && FMLLaunchHandler.side()
                     .isClient()) {

@@ -23,7 +23,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -160,7 +160,7 @@ public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstr
 
     private int maybeDrainSteam(MTEHatchInput tHatch, FluidStack maybeSteam) {
         if (maybeSteam == null) return 0;
-        if (!GTUtility.areFluidsEqual(maybeSteam, MU.gas(Materials2Materials.Steam, 1))) return 0;
+        if (!GTUtility.areFluidsEqual(maybeSteam, MaterialUtils.gas(Materials2Materials.Steam, 1))) return 0;
         FluidStack defoSteam = tHatch.drain(ForgeDirection.UNKNOWN, maybeSteam, true);
         return defoSteam.amount;
     }

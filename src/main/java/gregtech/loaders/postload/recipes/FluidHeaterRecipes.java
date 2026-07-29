@@ -11,7 +11,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
@@ -40,7 +40,7 @@ public class FluidHeaterRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.BioMediumRaw, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
-            .fluidOutputs(MU.fluid(Materials2Materials.BiohMediumSterilized, 1_000))
+            .fluidOutputs(MaterialUtils.fluid(Materials2Materials.BiohMediumSterilized, 1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(fluidHeaterRecipes);
@@ -48,7 +48,7 @@ public class FluidHeaterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .circuit(1)
             .fluidInputs(GTUtility.getWater(6))
-            .fluidOutputs(MU.gas(Materials2Materials.Steam, 960))
+            .fluidOutputs(MaterialUtils.gas(Materials2Materials.Steam, 960))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidHeaterRecipes);
@@ -56,7 +56,7 @@ public class FluidHeaterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .circuit(1)
             .fluidInputs(GTModHandler.getDistilledWater(6))
-            .fluidOutputs(MU.gas(Materials2Materials.Steam, 960))
+            .fluidOutputs(MaterialUtils.gas(Materials2Materials.Steam, 960))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidHeaterRecipes);

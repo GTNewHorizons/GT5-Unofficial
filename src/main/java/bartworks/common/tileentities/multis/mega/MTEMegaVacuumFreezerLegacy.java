@@ -57,7 +57,7 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -103,10 +103,10 @@ public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuum
         }
 
         public FluidStack getStack() {
-            FluidStack stack = MU.fluid(material, amount);
+            FluidStack stack = MaterialUtils.fluid(material, amount);
             // FUCK THIS FUCK THIS FUCK THIS
             if (stack == null) {
-                return MU.molten(material, amount);
+                return MaterialUtils.molten(material, amount);
             }
             return stack;
         }

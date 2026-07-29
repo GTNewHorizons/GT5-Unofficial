@@ -69,6 +69,7 @@ import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -655,8 +656,8 @@ public class RecipeLoader {
          * GT_Values.RA.stdBuilder().itemInputs(MaterialLibAPI.getStack(Materials2Materials.Silicon,
          * Materials2Shapes.foil, 1))
          * .fluidInputs(MaterialLibAPI.getFluidStack(Materials2Materials.SiliconTetrachloride,
-         * Materials2FluidShapes.fluidLiquid, 3_000), MU.fluid(Materials2Materials.Ammonia, 4_000))
-         * .fluidOutputs(MU.fluid(Materials2Materials.HydrochloricAcidGT5U, 12_000))
+         * Materials2FluidShapes.fluidLiquid, 3_000), MaterialUtils.fluid(Materials2Materials.Ammonia, 4_000))
+         * .fluidOutputs(MaterialUtils.fluid(Materials2Materials.HydrochloricAcidGT5U, 12_000))
          * .itemOutputs(MU.stack(OrePrefixes.plate, Materials2Materials.SiliconNitride, 1))
          * .duration(GTRecipeBuilder.SECONDS *
          * 30) .eut(TierEU.RECIPE_EV) .addTo(GTRecipe.GTRecipe_Map.sPlasmaArcFurnaceRecipes);
@@ -1684,7 +1685,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials2Materials.Ammonia, Materials2CellShapes.cell, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, 1_000))
-            .fluidOutputs(MU.gas(Materials2Materials.Steam, 2_000))
+            .fluidOutputs(MaterialUtils.gas(Materials2Materials.Steam, 2_000))
             .duration(15 * SECONDS)
             .eut(450)
             .addTo(UniversalChemical);
@@ -1830,7 +1831,7 @@ public class RecipeLoader {
                     Materials2Materials.MuddyBastnasiteRareEarthSolution,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (1_000)),
-                MU.gas(Materials2Materials.Steam, 1_000))
+                MaterialUtils.gas(Materials2Materials.Steam, 1_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.SteamCrackedBastnasiteMud,

@@ -45,7 +45,7 @@ import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.material.PipeStats;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
@@ -107,8 +107,8 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         int facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        final TextureSet textureSet = MU.iconSet(getMaterial());
-        final short[] rgba = MU.rgba(getMaterial());
+        final TextureSet textureSet = MaterialUtils.iconSet(getMaterial());
+        final short[] rgba = MaterialUtils.rgba(getMaterial());
         if (textureSet == null || rgba == null) {
             if (mInsulated) return new ITexture[] { TextureFactory.of(
                 Textures.BlockIcons.INSULATION_FULL,

@@ -19,6 +19,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Sievert;
 import gregtech.loaders.materials.LegacyNameDomain;
@@ -101,7 +102,7 @@ public class RadioHatchMaterialLoader {
                 continue;
             }
 
-            int level = (int) MU.protons(material);
+            int level = (int) MaterialUtils.protons(material);
             if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.stick)) {
                 radioHatchMaterialAdder(MU.stack(OrePrefixes.stick, material, 1), level, 1);
             }
@@ -111,13 +112,13 @@ public class RadioHatchMaterialLoader {
         }
 
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (!LegacyNameDomain.contains(material) || MU.element(material) == null) continue;
+            if (!LegacyNameDomain.contains(material) || MaterialUtils.element(material) == null) continue;
 
-            boolean validProton = MU.protons(material) >= 83 && material != Materials2Materials.Tritanium // No
-                                                                                                          // Tritanium
+            boolean validProton = MaterialUtils.protons(material) >= 83 && material != Materials2Materials.Tritanium // No
+            // Tritanium
                 && material != Materials2Materials.Naquadah; // Naquadah needs spacial value
             if (validProton) {
-                int level = (int) MU.protons(material);
+                int level = (int) MaterialUtils.protons(material);
                 if (GTOreDictUnificator.get(OrePrefixes.stick, material, 1) != null) {
                     radioHatchMaterialAdder(GTOreDictUnificator.get(OrePrefixes.stick, material, 1), level, 1);
 
@@ -148,39 +149,72 @@ public class RadioHatchMaterialLoader {
             }
         }
 
-        radioHatchMaterialAdder(ItemList.RodThorium.get(1), MU.protons(Materials2Materials.Thorium), 3);
-        radioHatchMaterialAdder(ItemList.RodThorium2.get(1), MU.protons(Materials2Materials.Thorium), 6);
-        radioHatchMaterialAdder(ItemList.RodThorium4.get(1), MU.protons(Materials2Materials.Thorium), 12);
+        radioHatchMaterialAdder(ItemList.RodThorium.get(1), MaterialUtils.protons(Materials2Materials.Thorium), 3);
+        radioHatchMaterialAdder(ItemList.RodThorium2.get(1), MaterialUtils.protons(Materials2Materials.Thorium), 6);
+        radioHatchMaterialAdder(ItemList.RodThorium4.get(1), MaterialUtils.protons(Materials2Materials.Thorium), 12);
         radioHatchMaterialAdder(ItemList.RodNaquadah.get(1), 140, 3);
         radioHatchMaterialAdder(ItemList.RodNaquadah2.get(1), 140, 6);
         radioHatchMaterialAdder(ItemList.RodNaquadah4.get(1), 140, 12);
-        radioHatchMaterialAdder(ItemList.RodMOX.get(1), MU.protons(Materials2Materials.Plutonium), 3);
-        radioHatchMaterialAdder(ItemList.RodMOX2.get(1), MU.protons(Materials2Materials.Plutonium), 6);
-        radioHatchMaterialAdder(ItemList.RodMOX4.get(1), MU.protons(Materials2Materials.Plutonium), 12);
-        radioHatchMaterialAdder(ItemList.RodUranium.get(1), MU.protons(Materials2Materials.Uranium), 3);
-        radioHatchMaterialAdder(ItemList.RodUranium2.get(1), MU.protons(Materials2Materials.Uranium), 6);
-        radioHatchMaterialAdder(ItemList.RodUranium4.get(1), MU.protons(Materials2Materials.Uranium), 12);
-        radioHatchMaterialAdder(ItemList.RodTiberium.get(1), MU.protons(Materials2Materials.Tiberium), 3);
-        radioHatchMaterialAdder(ItemList.RodTiberium2.get(1), MU.protons(Materials2Materials.Tiberium), 6);
-        radioHatchMaterialAdder(ItemList.RodTiberium4.get(1), MU.protons(Materials2Materials.Tiberium), 12);
-        radioHatchMaterialAdder(ItemList.DepletedRodThorium.get(1), MU.protons(Materials2Materials.Thorium) / 10, 3);
-        radioHatchMaterialAdder(ItemList.DepletedRodThorium2.get(1), MU.protons(Materials2Materials.Thorium) / 10, 6);
-        radioHatchMaterialAdder(ItemList.DepletedRodThorium4.get(1), MU.protons(Materials2Materials.Thorium) / 10, 12);
+        radioHatchMaterialAdder(ItemList.RodMOX.get(1), MaterialUtils.protons(Materials2Materials.Plutonium), 3);
+        radioHatchMaterialAdder(ItemList.RodMOX2.get(1), MaterialUtils.protons(Materials2Materials.Plutonium), 6);
+        radioHatchMaterialAdder(ItemList.RodMOX4.get(1), MaterialUtils.protons(Materials2Materials.Plutonium), 12);
+        radioHatchMaterialAdder(ItemList.RodUranium.get(1), MaterialUtils.protons(Materials2Materials.Uranium), 3);
+        radioHatchMaterialAdder(ItemList.RodUranium2.get(1), MaterialUtils.protons(Materials2Materials.Uranium), 6);
+        radioHatchMaterialAdder(ItemList.RodUranium4.get(1), MaterialUtils.protons(Materials2Materials.Uranium), 12);
+        radioHatchMaterialAdder(ItemList.RodTiberium.get(1), MaterialUtils.protons(Materials2Materials.Tiberium), 3);
+        radioHatchMaterialAdder(ItemList.RodTiberium2.get(1), MaterialUtils.protons(Materials2Materials.Tiberium), 6);
+        radioHatchMaterialAdder(ItemList.RodTiberium4.get(1), MaterialUtils.protons(Materials2Materials.Tiberium), 12);
+        radioHatchMaterialAdder(
+            ItemList.DepletedRodThorium.get(1),
+            MaterialUtils.protons(Materials2Materials.Thorium) / 10,
+            3);
+        radioHatchMaterialAdder(
+            ItemList.DepletedRodThorium2.get(1),
+            MaterialUtils.protons(Materials2Materials.Thorium) / 10,
+            6);
+        radioHatchMaterialAdder(
+            ItemList.DepletedRodThorium4.get(1),
+            MaterialUtils.protons(Materials2Materials.Thorium) / 10,
+            12);
         radioHatchMaterialAdder(ItemList.RodNaquadah32.get(1), 140, 96);
         radioHatchMaterialAdder(ItemList.DepletedRodNaquadah.get(1), 14, 3);
         radioHatchMaterialAdder(ItemList.DepletedRodNaquadah2.get(1), 14, 6);
         radioHatchMaterialAdder(ItemList.DepletedRodNaquadah4.get(1), 14, 12);
-        radioHatchMaterialAdder(ItemList.DepletedRodMOX.get(1), MU.protons(Materials2Materials.Plutonium) / 10, 3);
-        radioHatchMaterialAdder(ItemList.DepletedRodMOX2.get(1), MU.protons(Materials2Materials.Plutonium) / 10, 6);
-        radioHatchMaterialAdder(ItemList.DepletedRodMOX4.get(1), MU.protons(Materials2Materials.Plutonium) / 10, 12);
-        radioHatchMaterialAdder(ItemList.DepletedRodUranium.get(1), MU.protons(Materials2Materials.Uranium) / 10, 3);
-        radioHatchMaterialAdder(ItemList.DepletedRodUranium2.get(1), MU.protons(Materials2Materials.Uranium) / 10, 6);
-        radioHatchMaterialAdder(ItemList.DepletedRodUranium4.get(1), MU.protons(Materials2Materials.Uranium) / 10, 12);
-        radioHatchMaterialAdder(ItemList.DepletedRodTiberium.get(1), MU.protons(Materials2Materials.Tiberium) / 10, 3);
-        radioHatchMaterialAdder(ItemList.DepletedRodTiberium2.get(1), MU.protons(Materials2Materials.Tiberium) / 10, 6);
+        radioHatchMaterialAdder(
+            ItemList.DepletedRodMOX.get(1),
+            MaterialUtils.protons(Materials2Materials.Plutonium) / 10,
+            3);
+        radioHatchMaterialAdder(
+            ItemList.DepletedRodMOX2.get(1),
+            MaterialUtils.protons(Materials2Materials.Plutonium) / 10,
+            6);
+        radioHatchMaterialAdder(
+            ItemList.DepletedRodMOX4.get(1),
+            MaterialUtils.protons(Materials2Materials.Plutonium) / 10,
+            12);
+        radioHatchMaterialAdder(
+            ItemList.DepletedRodUranium.get(1),
+            MaterialUtils.protons(Materials2Materials.Uranium) / 10,
+            3);
+        radioHatchMaterialAdder(
+            ItemList.DepletedRodUranium2.get(1),
+            MaterialUtils.protons(Materials2Materials.Uranium) / 10,
+            6);
+        radioHatchMaterialAdder(
+            ItemList.DepletedRodUranium4.get(1),
+            MaterialUtils.protons(Materials2Materials.Uranium) / 10,
+            12);
+        radioHatchMaterialAdder(
+            ItemList.DepletedRodTiberium.get(1),
+            MaterialUtils.protons(Materials2Materials.Tiberium) / 10,
+            3);
+        radioHatchMaterialAdder(
+            ItemList.DepletedRodTiberium2.get(1),
+            MaterialUtils.protons(Materials2Materials.Tiberium) / 10,
+            6);
         radioHatchMaterialAdder(
             ItemList.DepletedRodTiberium4.get(1),
-            MU.protons(Materials2Materials.Tiberium) / 10,
+            MaterialUtils.protons(Materials2Materials.Tiberium) / 10,
             12);
         radioHatchMaterialAdder(ItemList.DepletedRodNaquadah32.get(1), 13, 96);
         radioHatchMaterialAdder(ItemList.RodNaquadria.get(1), 150, 3);

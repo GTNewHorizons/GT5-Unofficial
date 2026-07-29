@@ -20,7 +20,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTUtility;
 
@@ -105,8 +105,8 @@ public class ProcessingRecyclingGtpp {
     }
 
     private static void generate(Material material) {
-        if (MU.hasFlag(material, GTMaterialFlag.NO_RECYCLING)
-            || MU.hasFlag(material, GTMaterialFlag.NO_RECYCLING_RECIPES)) {
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECYCLING)
+            || MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECYCLING_RECIPES)) {
             return;
         }
         String state = ProcessingOreMachine.gtppState(material);
@@ -123,7 +123,7 @@ public class ProcessingRecyclingGtpp {
                 registerArcFurnace(material, input, materialAmount);
             }
 
-            if (isDustInput && MU.blastFurnaceRequired(material)) continue;
+            if (isDustInput && MaterialUtils.blastFurnaceRequired(material)) continue;
             registerFluidExtraction(material, input, materialAmount);
         }
     }
@@ -131,7 +131,7 @@ public class ProcessingRecyclingGtpp {
     private static void registerMaceration(Material material, ItemStack input, long materialAmount) {
         ItemStack dust = recycledDust(material, materialAmount);
         if (dust == null) return;
-        int duration = (int) Math.max(16L, (materialAmount * Math.max(1L, MU.mass(material))) / M);
+        int duration = (int) Math.max(16L, (materialAmount * Math.max(1L, MaterialUtils.mass(material))) / M);
         GTValues.RA.stdBuilder()
             .itemInputs(input)
             .itemOutputs(dust)
@@ -155,7 +155,7 @@ public class ProcessingRecyclingGtpp {
         }
         if (arcOutput == null) return;
 
-        long tAmount = materialAmount * Math.max(1L, MU.mass(material));
+        long tAmount = materialAmount * Math.max(1L, MaterialUtils.mass(material));
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1L, input))
             .itemOutputs(arcOutput)
@@ -168,10 +168,10 @@ public class ProcessingRecyclingGtpp {
     private static void registerFluidExtraction(Material material, ItemStack input, long materialAmount) {
         int fluidAmount = (int) ((materialAmount * INGOTS) / (M * input.stackSize));
         int duration = (int) Math.max(1L, (24 * materialAmount) / M);
-        FluidStack fluidOutput = MU.legacyGtppFluid(material, fluidAmount);
+        FluidStack fluidOutput = MaterialUtils.legacyGtppFluid(material, fluidAmount);
         if (fluidOutput == null) return;
 
-        long powerUsage = Math.max(8L, MU.voltageMultiplier(material));
+        long powerUsage = Math.max(8L, MaterialUtils.voltageMultiplier(material));
         int powerTier = GTUtility.getTier(powerUsage);
         if (powerTier > 0 && powerTier < VP.length && powerUsage > VP[powerTier]) {
             powerUsage = VP[powerTier];

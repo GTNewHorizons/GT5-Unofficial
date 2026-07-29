@@ -49,7 +49,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
@@ -136,10 +136,10 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
 
     private static final Supplier<SuperconductorMaterial[]> SUPERCONDUCTOR_MATERIALS = () -> new SuperconductorMaterial[] {
         new SuperconductorMaterial(
-            MU.molten(Materials2Materials.Longasssuperconductornameforuvwire, SUPERCON_FLUID_AMOUNT),
+            MaterialUtils.molten(Materials2Materials.Longasssuperconductornameforuvwire, SUPERCON_FLUID_AMOUNT),
             1.0f),
         new SuperconductorMaterial(
-            MU.molten(Materials2Materials.Longasssuperconductornameforuhvwire, SUPERCON_FLUID_AMOUNT),
+            MaterialUtils.molten(Materials2Materials.Longasssuperconductornameforuhvwire, SUPERCON_FLUID_AMOUNT),
             1.25f),
         new SuperconductorMaterial(
             MaterialLibAPI.getFluidStack(

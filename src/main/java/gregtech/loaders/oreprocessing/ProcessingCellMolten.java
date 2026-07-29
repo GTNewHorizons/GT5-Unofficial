@@ -18,7 +18,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -42,7 +42,7 @@ public class ProcessingCellMolten implements IOreRecipeRegistrator {
         if (input == null) return;
         GTValues.RA.stdBuilder()
             .itemInputs(input)
-            .fluidOutputs(MU.molten(material, moltenAmount))
+            .fluidOutputs(MaterialUtils.molten(material, moltenAmount))
             .duration(15 * SECONDS)
             .eut(calculateRecipeEU(material, 2))
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -54,7 +54,7 @@ public class ProcessingCellMolten implements IOreRecipeRegistrator {
         ItemStack stack) {
         if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) return;
         // A cellMolten shape without a resolvable molten fluid (an incomplete fold) has nothing to extract into.
-        if (MU.molten(material, INGOTS) == null) return;
+        if (MaterialUtils.molten(material, INGOTS) == null) return;
 
         ItemStack ingot = GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L);
         if (ingot == null) {
@@ -74,7 +74,7 @@ public class ProcessingCellMolten implements IOreRecipeRegistrator {
         }
 
         FluidContainerRegistry.registerFluidContainer(
-            MU.molten(material, INGOTS),
+            MaterialUtils.molten(material, INGOTS),
             GTUtility.copyAmount(1, stack),
             GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1));
     }

@@ -30,6 +30,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -168,7 +169,7 @@ public class AcidRecipes {
                     Materials2Materials.StagnantWasteWater,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (6000)),
-                MU.legacyGtppFluid(Materials2Materials.HydrogenCyanide, 4000))
+                MaterialUtils.legacyGtppFluid(Materials2Materials.HydrogenCyanide, 4000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.ActivatedWasteWater,

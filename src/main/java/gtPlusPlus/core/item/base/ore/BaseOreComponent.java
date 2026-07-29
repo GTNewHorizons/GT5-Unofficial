@@ -21,6 +21,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -41,13 +42,13 @@ public class BaseOreComponent extends Item {
 
     public BaseOreComponent(final Material material, final ComponentTypes componentType) {
         this.componentMaterial = material;
-        this.unlocalName = componentType.COMPONENT_NAME + MU.internalName(material);
-        this.materialName = MU.localName(material);
+        this.unlocalName = componentType.COMPONENT_NAME + MaterialUtils.internalName(material);
+        this.materialName = MaterialUtils.localName(material);
         this.componentType = componentType;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(this.unlocalName);
         this.setMaxStackSize(64);
-        this.componentColour = MathUtils.getRgbAsHex(MU.rgba(material));
+        this.componentColour = MathUtils.getRgbAsHex(MaterialUtils.rgba(material));
         GameRegistry.registerItem(this, this.unlocalName);
         // A material outside the gtpp reconstruction gate (e.g. a base gregtech-declared material that
         // gained this part's shape purely from the gtpp name-merge, such as milled ore for Sphalerite) never
@@ -56,8 +57,9 @@ public class BaseOreComponent extends Item {
         // (legacy saves/oredict-name lookups still work through MaterialLib), just skip the duplicate
         // association.
         if (!MU.isCutOver(componentType.getOrePrefixEnum(), material)) {
-            GTOreDictUnificator
-                .registerOre(componentType.getOrePrefix() + MU.internalName(material), new ItemStack(this, 1));
+            GTOreDictUnificator.registerOre(
+                componentType.getOrePrefix() + MaterialUtils.internalName(material),
+                new ItemStack(this, 1));
         }
     }
 
@@ -68,7 +70,7 @@ public class BaseOreComponent extends Item {
     @Override
     public final void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> tooltip,
         final boolean adv) {
-        MU.addTooltips(componentMaterial, tooltip);
+        MaterialUtils.addTooltips(componentMaterial, tooltip);
         super.addInformation(stack, player, tooltip, adv);
     }
 

@@ -26,7 +26,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.RenderOverlay;
@@ -339,7 +339,7 @@ public class MTEHatchTurbine extends MTEHatch {
                 Material aMat = MetaGeneratedTool.getPrimaryMaterialML(getTurbine());
                 String aSize = MTELargerTurbineBaseLegacy
                     .getTurbineSizeString(MTELargerTurbineBaseLegacy.getTurbineSize(getTurbine()));
-                GTUtility.sendChatToPlayer(aPlayer, "Using: " + MU.localizedName(aMat) + " " + aSize);
+                GTUtility.sendChatToPlayer(aPlayer, "Using: " + MaterialUtils.localizedName(aMat) + " " + aSize);
             }
         } else {
             this.mUsingAnimation = !mUsingAnimation;

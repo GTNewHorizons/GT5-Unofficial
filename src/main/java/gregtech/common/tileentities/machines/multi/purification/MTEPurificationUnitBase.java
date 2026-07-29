@@ -34,7 +34,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
@@ -458,7 +458,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
                     return GTModHandler.getDistilledWater(amount);
                 }
                 Material water = PurifiedWaterHelpers.getPurifiedWaterTier(waterTier - 1);
-                return MU.fluid(water, amount);
+                return MaterialUtils.fluid(water, amount);
             }
             // Bad roll, keep looping and degrade quality even further
         }

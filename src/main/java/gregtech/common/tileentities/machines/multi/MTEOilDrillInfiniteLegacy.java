@@ -11,7 +11,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
@@ -95,7 +95,7 @@ public class MTEOilDrillInfiniteLegacy extends MTEOilDrillBase {
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
             .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base")
             .addOtherStructurePart(
-                MU.internalName(getFrameMaterial()) + " Frame Box",
+                MaterialUtils.internalName(getFrameMaterial()) + " Frame Box",
                 "Each pillar's side and 1x3x1 on top")
             .addEnergyHatch("1x " + VN[getMinTier()] + "+, any base Casing", 1)
             .addMaintenanceHatch("Any base Casing", 1)

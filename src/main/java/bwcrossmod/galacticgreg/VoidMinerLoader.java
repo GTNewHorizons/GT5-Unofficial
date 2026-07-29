@@ -7,7 +7,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.StoneType;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.config.Gregtech;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
@@ -47,7 +47,7 @@ public class VoidMinerLoader {
             VoidMinerUtility.addMaterialToDimensionList(
                 DimensionDef.DimNames.DEEPDARK,
                 mat,
-                weights.getFloat(MU.internalName(mat)));
+                weights.getFloat(MaterialUtils.internalName(mat)));
         }
 
         info.release();
@@ -68,7 +68,7 @@ public class VoidMinerLoader {
             VoidMinerUtility.addMaterialToDimensionList(
                 DimensionDef.DimNames.DEEPDARK,
                 mat,
-                weights.getFloat(MU.internalName(mat)));
+                weights.getFloat(MaterialUtils.internalName(mat)));
         }
 
         info.release();
@@ -89,7 +89,7 @@ public class VoidMinerLoader {
             VoidMinerUtility.addMaterialToDimensionList(
                 DimensionDef.DimNames.DEEPDARK,
                 mat,
-                weights.getFloat(MU.internalName(mat)));
+                weights.getFloat(MaterialUtils.internalName(mat)));
         }
 
         info.release();

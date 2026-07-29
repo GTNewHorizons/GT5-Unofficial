@@ -24,7 +24,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
@@ -111,7 +111,7 @@ public class AssemblyLine implements Runnable {
                     Materials2Materials.CrystallinePinkSlime,
                     Materials2FluidShapes.fluidMolten,
                     (int) (30 * INGOTS)),
-                MU.molten(Materials2Materials.RadoxPoly, 20 * INGOTS))
+                MaterialUtils.molten(Materials2Materials.RadoxPoly, 20 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 8))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
@@ -138,7 +138,7 @@ public class AssemblyLine implements Runnable {
                     Materials2Materials.MelodicAlloy,
                     Materials2FluidShapes.fluidMolten,
                     (int) (40 * INGOTS)),
-                MU.molten(Materials2Materials.RadoxPoly, 24 * INGOTS))
+                MaterialUtils.molten(Materials2Materials.RadoxPoly, 24 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 9))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
@@ -165,7 +165,7 @@ public class AssemblyLine implements Runnable {
                     Materials2Materials.StellarAlloy,
                     Materials2FluidShapes.fluidMolten,
                     (int) (50 * INGOTS)),
-                MU.molten(Materials2Materials.RadoxPoly, 32 * INGOTS))
+                MaterialUtils.molten(Materials2Materials.RadoxPoly, 32 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 10))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
@@ -189,7 +189,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_ResistorASMD.get(8),
                 ItemList.Circuit_Parts_TransistorASMD.get(8),
                 MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.wireFine, (int) (64)))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Indalloy140, 5 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 5 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2))
             .duration(50 * SECONDS)
             .eut(80_000)
@@ -214,7 +214,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_DiodeASMD.get(8),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials2Materials.Naquadah, 32))
             .fluidInputs(
-                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 20 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 20 * INGOTS),
                 GTModHandler.getIC2Coolant(16_000))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -240,7 +240,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_DiodeASMD.get(16),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials2Materials.NaquadahAlloy, 32))
             .fluidInputs(
-                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 20 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 20 * INGOTS),
                 GTModHandler.getIC2Coolant(16_000))
             .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4))
             .eut(200_000)

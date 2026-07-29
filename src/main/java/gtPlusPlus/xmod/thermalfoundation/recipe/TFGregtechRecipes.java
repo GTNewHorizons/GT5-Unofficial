@@ -19,7 +19,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
@@ -55,7 +55,7 @@ public class TFGregtechRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.blaze_rod))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials2Materials.Blizz, 1L))
-            .duration(((int) Math.max((MU.mass(Materials2Materials.Blaze)) * 3L, 1L)) * TICKS)
+            .duration(((int) Math.max((MaterialUtils.mass(Materials2Materials.Blaze)) * 3L, 1L)) * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(vacuumFreezerRecipes);
 

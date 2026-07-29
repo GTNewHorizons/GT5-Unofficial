@@ -24,6 +24,7 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class MetaGeneratedItem99 extends MetaGeneratedItem {
@@ -60,25 +61,25 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
         for (int i = 0; i < 1000; i++) {
             Material material = generatedMaterial(i);
-            int subId = MU.oldSubId(material);
+            int subId = MaterialUtils.oldSubId(material);
             if (material == null || subId < 0 || subId >= 1_000) {
                 continue;
             }
 
-            if (MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_FLUID)
-                && !MU.hasFlag(material, GTMaterialFlag.NO_SMELTING)
-                && !MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)) {
+            if (MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_FLUID)
+                && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING)
+                && !MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)) {
                 if (!cellMolten.mNotGeneratedItems.contains(material)) {
                     registerMolten(material, subId);
                 }
-                Material smeltInto = MU.smeltInto(material);
-                int smeltSubId = MU.oldSubId(smeltInto);
+                Material smeltInto = MaterialUtils.smeltInto(material);
+                int smeltSubId = MaterialUtils.oldSubId(smeltInto);
                 if (smeltInto != material && smeltSubId >= 0 && smeltSubId < 1_000) {
                     registerMolten(smeltInto, smeltSubId);
                 }
             }
 
-            if (MU.canBeCracked(material)) {
+            if (MaterialUtils.canBeCracked(material)) {
                 registerCracked(material, subId);
             }
         }
@@ -94,7 +95,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
                 new MetaGeneratedItemX32.LegacyVariant(
                     "metaitem.99",
                     cellMolten.getName(),
-                    MU.internalName(material),
+                    MaterialUtils.internalName(material),
                     i));
         }
         if (!MetaGeneratedItemX32.DUMP_MODE && MU.isCutOver(cellMolten, material)) return;
@@ -117,7 +118,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
                     new MetaGeneratedItemX32.LegacyVariant(
                         "metaitem.99",
                         prefix.getName(),
-                        MU.internalName(material),
+                        MaterialUtils.internalName(material),
                         offset + i));
             }
             if (MetaGeneratedItemX32.DUMP_MODE || !MU.isCutOver(prefix, material)) {
@@ -152,10 +153,10 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         OrePrefixes prefix = getOrePrefix(aStack.getItemDamage());
         Material material = getMaterial(aStack.getItemDamage());
         if (prefix == cellMolten) {
-            return MU.moltenRgba(material);
+            return MaterialUtils.moltenRgba(material);
         }
-        short[] rgba = MU.rgba(material);
-        return rgba != null ? rgba : MU.rgba(Materials2Materials.NULL);
+        short[] rgba = MaterialUtils.rgba(material);
+        return rgba != null ? rgba : MaterialUtils.rgba(Materials2Materials.NULL);
     }
 
     @Override
@@ -163,7 +164,8 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         final int damage = aStack.getItemDamage();
         final OrePrefixes prefix = getOrePrefix(damage);
         final Material material = getMaterial(damage);
-        if (prefix != null && material != null) return prefix.getLocalizedNameForItem(MU.internalName(material));
+        if (prefix != null && material != null)
+            return prefix.getLocalizedNameForItem(MaterialUtils.internalName(material));
         return super.getItemStackDisplayName(aStack);
     }
 
@@ -198,7 +200,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         Material material = getMaterial(aMetaData);
         OrePrefixes prefix = getOrePrefix(aMetaData);
         if (material != null && prefix != null) {
-            return MU.iconSet(material).mTextures[prefix.getTextureIndex()];
+            return MaterialUtils.iconSet(material).mTextures[prefix.getTextureIndex()];
         }
         return null;
     }
@@ -220,6 +222,6 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         final Material material = getMaterial(damage);
         final OrePrefixes prefix = getOrePrefix(damage);
         if (material == null || prefix == null) return;
-        MU.addTooltips(material, aList);
+        MaterialUtils.addTooltips(material, aList);
     }
 }

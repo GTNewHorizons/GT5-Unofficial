@@ -23,6 +23,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -47,7 +48,7 @@ public class ArtificialMicaLine {
                 MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 4))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Hydrogen, Materials2CellShapes.cell, 4))
-            .fluidInputs(MU.fluid(Materials2Materials.HydrofluoricAcidGT5U, 6_000))
+            .fluidInputs(MaterialUtils.fluid(Materials2Materials.HydrofluoricAcidGT5U, 6_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.HexafluorosilicicAcid,
@@ -77,7 +78,7 @@ public class ArtificialMicaLine {
                     Materials2Materials.HexafluorosilicicAcid,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (1_000)))
-            .fluidOutputs(MU.fluid(Materials2Materials.HydrochloricAcidGT5U, 2_000))
+            .fluidOutputs(MaterialUtils.fluid(Materials2Materials.HydrochloricAcidGT5U, 2_000))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);

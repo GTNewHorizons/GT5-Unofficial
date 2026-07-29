@@ -24,6 +24,7 @@ import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -1213,7 +1214,7 @@ public class CraftingRecipeLoader implements Runnable {
             GTModHandler.getIC2Item("reactorPlatingExplosive", 1L),
             bits_no_remove_buffered,
             new Object[] { GTModHandler.getIC2Item("reactorPlating", 1L), "plateLead" });
-        if (!MU.blastFurnaceRequired(Materials2Materials.Steel)) {
+        if (!MaterialUtils.blastFurnaceRequired(Materials2Materials.Steel)) {
             GTModHandler.addShapelessCraftingRecipe(
                 MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.dust, 1),
                 bits_no_remove_buffered,

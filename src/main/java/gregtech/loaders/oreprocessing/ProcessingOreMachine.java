@@ -33,6 +33,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.material.MaterialRefStack;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
@@ -104,7 +105,7 @@ public class ProcessingOreMachine {
     }
 
     private static void generate(final Material material, final boolean disableOptional) {
-        int tVoltageMultiplier = voltageForTier(MU.tier(material));
+        int tVoltageMultiplier = voltageForTier(MaterialUtils.tier(material));
         final ItemStack dustStone = ProcessingDustGeneration.stackOf(OrePrefixes.dust, mStone, 1);
 
         Material bonusA = null;
@@ -293,7 +294,7 @@ public class ProcessingOreMachine {
             .itemOutputs(matDust, matDustA)
             .outputChances(100_00, 11_11)
             .eut(tVoltageMultiplier / 2)
-            .duration((int) Math.max(1L, MU.mass(material) * 8L))
+            .duration((int) Math.max(1L, MaterialUtils.mass(material) * 8L))
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -301,7 +302,7 @@ public class ProcessingOreMachine {
             .itemOutputs(matDust, matDustB)
             .outputChances(100_00, 11_11)
             .eut(tVoltageMultiplier / 2)
-            .duration((int) Math.max(1L, MU.mass(material) * 8L))
+            .duration((int) Math.max(1L, MaterialUtils.mass(material) * 8L))
             .addTo(centrifugeRecipes);
 
         if (!disableOptional) {
@@ -378,10 +379,10 @@ public class ProcessingOreMachine {
             .outputChances(chances)
             .eut(tVoltageMultiplier);
         if (dehydrator) {
-            recipe.duration((int) Math.max(MU.mass(material) * 4L, 1))
+            recipe.duration((int) Math.max(MaterialUtils.mass(material) * 4L, 1))
                 .addTo(chemicalDehydratorRecipes);
         } else {
-            recipe.duration((int) Math.max(MU.mass(material) * 3L, 1))
+            recipe.duration((int) Math.max(MaterialUtils.mass(material) * 3L, 1))
                 .addTo(electrolyzerRecipes);
         }
     }
@@ -478,9 +479,9 @@ public class ProcessingOreMachine {
     static String gtppState(Material material) {
         String state = material.getProperty(GTMaterialProperties.GTPP_STATE);
         if (state != null) return state;
-        if (MU.molten(material, 1) != null || MU.solid(material, 1) != null) return "SOLID";
-        if (MU.fluid(material, 1) != null) return "LIQUID";
-        if (MU.gas(material, 1) != null) return "GAS";
+        if (MaterialUtils.molten(material, 1) != null || MaterialUtils.solid(material, 1) != null) return "SOLID";
+        if (MaterialUtils.fluid(material, 1) != null) return "LIQUID";
+        if (MaterialUtils.gas(material, 1) != null) return "GAS";
         return "SOLID";
     }
 

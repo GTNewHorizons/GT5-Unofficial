@@ -13,7 +13,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 /// The legacy material name domain: the single by-name resolution seam for every consumer that needs to
 /// resolve a legacy material name to its MaterialLib counterpart and treat a miss as a plain null
 /// (`GTProxy`'s ore-dictionary dispatch, the ore-adapter oredict indexing, the werkstoff and gtPlusPlus name
-/// chains). Resolving here instead of via [MU#byLegacyName] is deliberate: `byLegacyName` also resolves
+/// chains). Resolving here instead of via [MaterialUtils#byLegacyName] is deliberate: `byLegacyName` also resolves
 /// names outside this domain (recognition-marker backings, sanitized MaterialLib registration names), which
 /// would reroute the callers' miss paths -- most critically the recognition-marker fallback in
 /// `GTProxy#registerOre`.

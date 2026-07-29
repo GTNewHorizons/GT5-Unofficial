@@ -21,6 +21,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -72,7 +73,7 @@ public class Assembler implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.AnnealedCopper, Materials2Shapes.wireFine, (int) (64L)))
             .circuit(17)
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[2], 1, 1))
-            .fluidInputs(MU.molten(Materials2Materials.Plastic, 8 * INGOTS))
+            .fluidInputs(MaterialUtils.molten(Materials2Materials.Plastic, 8 * INGOTS))
             .duration(1 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);

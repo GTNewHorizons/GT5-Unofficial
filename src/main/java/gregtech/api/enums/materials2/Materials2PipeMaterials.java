@@ -291,7 +291,7 @@ public class Materials2PipeMaterials {
     // spotless:off
     /// Frame membership: the materials the legacy frame registrations serve, i.e. every generated legacy
     /// material whose dumped [gregtech.api.material.GTMaterialProperties#GENERATION_FLAGS] carry `METAL`
-    /// (the [gregtech.api.material.MU#generates] `METAL` mirror) and whose
+    /// (the [gregtech.api.material.MaterialUtils#generates] `METAL` mirror) and whose
     /// [gregtech.api.material.GTMaterialProperties#OLD_SUB_ID] marks a generated slot. The list is declared
     /// rather than derived because membership must be settled during material registration, before MaterialLib
     /// property reads are available.

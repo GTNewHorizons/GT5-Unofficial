@@ -39,7 +39,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
@@ -233,7 +233,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         if (GTModHandler.isSteam(this.mSteam)) {
             this.mSteam.amount += aAmount;
         } else {
-            this.mSteam = MU.gas(Materials2Materials.Steam, aAmount);
+            this.mSteam = MaterialUtils.gas(Materials2Materials.Steam, aAmount);
         }
     }
 
@@ -524,7 +524,8 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     }
 
     public boolean isValidFluidInputSlotItem(@NotNull ItemStack stack) {
-        return GTUtility.fillFluidContainer(MU.gas(Materials2Materials.Steam, getSteamCapacity()), stack, false, true)
+        return GTUtility
+            .fillFluidContainer(MaterialUtils.gas(Materials2Materials.Steam, getSteamCapacity()), stack, false, true)
             != null || isFluidInputAllowed(GTUtility.getFluidForFilledItem(stack, true));
     }
 

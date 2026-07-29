@@ -25,6 +25,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -227,7 +228,7 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials2Materials.Ardite, Materials2Shapes.dust, (int) (32)),
                 MaterialLibAPI.getStack(Materials2Materials.Cobalt, Materials2Shapes.dust, (int) (32)))
             .fluidInputs(new FluidStack(GTPPFluids.NetherrackFlotationFroth, 3_000))
-            .fluidOutputs(MU.fluid(Materials2Materials.poornetherwaste, 16_000))
+            .fluidOutputs(MaterialUtils.fluid(Materials2Materials.poornetherwaste, 16_000))
             .eut((int) TierEU.RECIPE_LuV)
             .metadata(COIL_HEAT, 7200)
             .duration(1 * MINUTES)
@@ -396,7 +397,7 @@ public class RecipeLoaderMilling {
                 GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Netherrack, 64),
                 GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Netherrack, 64),
                 GTOreDictUnificator.get(OrePrefixes.milled, Materials2Materials.Netherrack, 64))
-            .fluidInputs(MU.fluid(Materials2Materials.nefariousoil, 8_000))
+            .fluidInputs(MaterialUtils.fluid(Materials2Materials.nefariousoil, 8_000))
             .fluidOutputs(new FluidStack(GTPPFluids.NetherrackFlotationFroth, 8_000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
@@ -434,7 +435,7 @@ public class RecipeLoaderMilling {
                 MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dustTiny, (int) (5)),
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 5),
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 5))
-            .fluidInputs(MU.gas(Materials2Materials.Steam, 5_000))
+            .fluidInputs(MaterialUtils.gas(Materials2Materials.Steam, 5_000))
             .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 500))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)

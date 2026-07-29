@@ -33,8 +33,8 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
 import gregtech.api.material.MaterialSubTagView;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.GTArrayList;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
@@ -2743,7 +2743,7 @@ public class OrePrefixes {
 
         sheetmetal.mCondition = new ICondition.And<>(
             obj -> obj instanceof MaterialSubTagView view
-                && MU.generates(view.material, GTMaterialGenerationFlag.METAL),
+                && MaterialUtils.generates(view.material, GTMaterialGenerationFlag.METAL),
             new ICondition.Nor<>(SubTag.STRETCHY, SubTag.SOFT, SubTag.BOUNCY, SubTag.NO_SMASHING));
         // -----
 
@@ -3026,14 +3026,14 @@ public class OrePrefixes {
     }
 
     /// Whether this prefix generates an item for `material`. The sub-ID, parent-mod, and generation-bit-overlap
-    /// clauses are computed from MaterialLib state: [MU#oldSubId] for the block-form metadata index,
+    /// clauses are computed from MaterialLib state: [MaterialUtils#oldSubId] for the block-form metadata index,
     /// [Materials2ParentMods#hasParentMod], and [GTMaterialProperties#GENERATION_FLAGS] membership for each
     /// generation category. The [#mGeneratedItems]/[#mNotGeneratedItems]/[#mDisabledItems] membership checks
     /// read the [Material] directly, as those collections are ML-keyed. [#mCondition] evaluates against a
     /// [MaterialSubTagView] over the [Material], so a prefix's [SubTag] condition reads the material's
     /// MaterialLib FLAGS directly.
     public boolean doGenerateItem(@Nullable Material material) {
-        if (MU.oldSubId(material) == -1) return false;
+        if (MaterialUtils.oldSubId(material) == -1) return false;
         if (!Materials2ParentMods.hasParentMod(material)) return false;
 
         EnumSet<GTMaterialGenerationFlag> flags = material.getProperty(GTMaterialProperties.GENERATION_FLAGS);
@@ -3067,7 +3067,7 @@ public class OrePrefixes {
     /// Whether unification ignores this (prefix, material) pair: an explicitly ignored material
     /// ([#ignoreMaterials]), or one that is not unifiable at all.
     public boolean isIgnored(@Nullable Material material) {
-        if (material != null && !MU.unifiable(material)) return true;
+        if (material != null && !MaterialUtils.unifiable(material)) return true;
         return mIgnoredMaterials.contains(material);
     }
 
@@ -3087,7 +3087,7 @@ public class OrePrefixes {
     public void processRecognitionOre(Material material, String oreDictName, String modName, ItemStack stack) {
 
         if (material == null) return;
-        if (MU.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
         if (!GTUtility.isStackValid(stack)) return;
 
         for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
@@ -3097,7 +3097,7 @@ public class OrePrefixes {
                         + "' with the Prefix '"
                         + name
                         + "' and the Material '"
-                        + MU.internalName(material)
+                        + MaterialUtils.internalName(material)
                         + "' at "
                         + GTUtility.getClassName(tRegistrator));
             }
@@ -3110,7 +3110,7 @@ public class OrePrefixes {
     public void processOre(Material material, String oreDictName, String modName, ItemStack stack) {
 
         if (material == null) return;
-        if (MU.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
         if (material == Materials2Materials.NULL && !isSelfReferencing && isMaterialBased) return;
         if (!GTUtility.isStackValid(stack)) return;
 
@@ -3121,7 +3121,7 @@ public class OrePrefixes {
                         + "' with the Prefix '"
                         + name
                         + "' and the Material '"
-                        + MU.internalName(material)
+                        + MaterialUtils.internalName(material)
                         + "' at "
                         + GTUtility.getClassName(tRegistrator));
             }
@@ -3140,7 +3140,7 @@ public class OrePrefixes {
     /// The ore-dictionary name for this prefix and `material`, carrying no composition. Use when the consumer
     /// only needs the name -- registration, lookup, and logging.
     public String oreDictName(Material material) {
-        return name + MU.internalName(material);
+        return name + MaterialUtils.internalName(material);
     }
 
     /// The ore-dictionary name for this prefix and a material named directly, for the entries whose material
@@ -3149,14 +3149,14 @@ public class OrePrefixes {
         return name + materialName;
     }
 
-    /// Resolves the format by the material's internal name ([MU#internalName]) and substitutes its default
-    /// local name ([MU#localName]).
+    /// Resolves the format by the material's internal name ([MaterialUtils#internalName]) and substitutes its default
+    /// local name ([MaterialUtils#localName]).
     public String getDefaultLocalNameForItem(Material material) {
-        String format = getDefaultLocalNameFormatForItem(MU.internalName(material));
+        String format = getDefaultLocalNameFormatForItem(MaterialUtils.internalName(material));
         return GTUtility.formatStringSafe(
             format.replace("%s", "%temp")
                 .replace("%material", "%s"),
-            MU.localName(material))
+            MaterialUtils.localName(material))
             .replace("%temp", "%s");
     }
 
@@ -3300,7 +3300,7 @@ public class OrePrefixes {
     }
 
     public String getOreprefixKey() {
-        return getOreprefixKeyForMaterial(MU.internalName(Materials2Materials.NULL));
+        return getOreprefixKeyForMaterial(MaterialUtils.internalName(Materials2Materials.NULL));
     }
 
     public String getLocalizedNameForItem(String materialName) {

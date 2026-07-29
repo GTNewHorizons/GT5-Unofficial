@@ -35,6 +35,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
@@ -173,7 +174,7 @@ public class RecipeLoaderNuclear {
                 MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (1_000)),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (1_000)))
-            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.BerylliumHydroxide, 3 * INGOTS))
+            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials2Materials.BerylliumHydroxide, 3 * INGOTS))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -183,8 +184,8 @@ public class RecipeLoaderNuclear {
             .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1))
             .circuit(3)
             .itemOutputs(ItemList.Cell_Empty.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Ammonia, 1_000))
-            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.AmmoniumBifluoride, 4 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Ammonia, 1_000))
+            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials2Materials.AmmoniumBifluoride, 4 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -194,8 +195,8 @@ public class RecipeLoaderNuclear {
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.HydrofluoricAcidGT5U, Materials2CellShapes.cell, 2))
             .circuit(3)
             .itemOutputs(ItemList.Cell_Empty.get(2))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Ammonia, 1_000))
-            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.AmmoniumBifluoride, 4 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Ammonia, 1_000))
+            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials2Materials.AmmoniumBifluoride, 4 * INGOTS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -209,7 +210,7 @@ public class RecipeLoaderNuclear {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Ammonia, Materials2FluidShapes.fluidGas, (int) (1_000)))
-            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.Ammonium, 2_000))
+            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Ammonium, 2_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -356,18 +357,18 @@ public class RecipeLoaderNuclear {
                 MaterialLibAPI.getStack(Materials2Materials.BerylliumHydroxide, Materials2Shapes.dust, 3),
                 ItemList.Cell_Empty.get(2))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Water, 2))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.AmmoniumBifluoride, 8 * INGOTS))
-            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.AmmoniumTetrafluoroberyllate, 1_000))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.AmmoniumBifluoride, 8 * INGOTS))
+            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials2Materials.AmmoniumTetrafluoroberyllate, 1_000))
             .eut(TierEU.RECIPE_MV / 2)
             .duration(6 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.BerylliumHydroxide, Materials2Shapes.dust, 3))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.AmmoniumBifluoride, 8 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.AmmoniumBifluoride, 8 * INGOTS))
             .fluidOutputs(
                 GTUtility.getWater(2_000),
-                MU.legacyGtppFluid(Materials2Materials.AmmoniumTetrafluoroberyllate, 1_000))
+                MaterialUtils.legacyGtppFluid(Materials2Materials.AmmoniumTetrafluoroberyllate, 1_000))
             .eut(TierEU.RECIPE_MV)
             .duration(5 * MINUTES)
             .addTo(multiblockChemicalReactorRecipes);
@@ -384,7 +385,7 @@ public class RecipeLoaderNuclear {
                 MU.cellStack(Materials2Materials.Ammonia, 2),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
                 MaterialLibAPI.getStack(Materials2Materials.BerylliumFluoride, Materials2Shapes.dust, 3))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.AmmoniumTetrafluoroberyllate, 1_000))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.AmmoniumTetrafluoroberyllate, 1_000))
             .eut(TierEU.RECIPE_MV)
             .duration(5 * MINUTES)
             .addTo(chemicalDehydratorRecipes);
@@ -392,9 +393,9 @@ public class RecipeLoaderNuclear {
         GTValues.RA.stdBuilder()
             .circuit(17)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.BerylliumFluoride, Materials2Shapes.dust, 3))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.AmmoniumTetrafluoroberyllate, 1_000))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.AmmoniumTetrafluoroberyllate, 1_000))
             .fluidOutputs(
-                MU.legacyGtppFluid(Materials2Materials.Ammonia, 2_000),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Ammonia, 2_000),
                 new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 1_000))
             .eut(TierEU.RECIPE_MV)
             .duration(5 * MINUTES)
@@ -446,7 +447,8 @@ public class RecipeLoaderNuclear {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.LithiumTetrafluoroberyllateLFTB, Materials2Shapes.dust, 1))
-            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.LithiumTetrafluoroberyllateLFTB, 1 * INGOTS))
+            .fluidOutputs(
+                MaterialUtils.legacyGtppFluid(Materials2Materials.LithiumTetrafluoroberyllateLFTB, 1 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(fluidExtractionRecipes);
@@ -454,7 +456,7 @@ public class RecipeLoaderNuclear {
         // Lithium Fluoride
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.LithiumFluoride, Materials2Shapes.dust, 1))
-            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.LithiumFluoride, 1 * INGOTS))
+            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials2Materials.LithiumFluoride, 1 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(fluidExtractionRecipes);
@@ -462,7 +464,7 @@ public class RecipeLoaderNuclear {
         // Lithium Fluoride
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.BerylliumFluoride, Materials2Shapes.dust, 1))
-            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.BerylliumFluoride, 1 * INGOTS))
+            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials2Materials.BerylliumFluoride, 1 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(fluidExtractionRecipes);
@@ -470,21 +472,21 @@ public class RecipeLoaderNuclear {
         // LFTR Fuel 1
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.LFTRFuel1, Materials2Shapes.dust, 1))
-            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.LFTRFuel1, 1 * INGOTS))
+            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials2Materials.LFTRFuel1, 1 * INGOTS))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(1000)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.LFTRFuel2, Materials2Shapes.dust, 1))
-            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.LFTRFuel2, 1 * INGOTS))
+            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials2Materials.LFTRFuel2, 1 * INGOTS))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(1500)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.LFTRFuel3, Materials2Shapes.dust, 1))
-            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.LFTRFuel3, 1 * INGOTS))
+            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials2Materials.LFTRFuel3, 1 * INGOTS))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(fluidExtractionRecipes);
@@ -492,7 +494,7 @@ public class RecipeLoaderNuclear {
         // ZIRCONIUM_TETRAFLUORIDE
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.ZirconiumTetrafluoride, Materials2Shapes.dust, 1))
-            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.ZirconiumTetrafluoride, 1 * INGOTS))
+            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials2Materials.ZirconiumTetrafluoride, 1 * INGOTS))
             .duration(10 * SECONDS)
             .eut(512 + 256)
             .addTo(fluidExtractionRecipes);
@@ -506,7 +508,7 @@ public class RecipeLoaderNuclear {
                     .getFluidStack(Materials2Materials.Boron, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Calcium, Materials2FluidShapes.fluidPlasma, (int) (1 * NUGGETS)))
-            .fluidOutputs(new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Neon), 1_000))
+            .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Neon), 1_000))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .metadata(FUSION_THRESHOLD, 100_000_000L)
@@ -514,9 +516,9 @@ public class RecipeLoaderNuclear {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Neon), 1 * INGOTS),
-                new FluidStack(MU.legacyGtppFluidOf(Materials2Materials.Arcanite), 2))
-            .fluidOutputs(new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Force), 1_000))
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Neon), 1 * INGOTS),
+                new FluidStack(MaterialUtils.legacyGtppFluidOf(Materials2Materials.Arcanite), 2))
+            .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Force), 1_000))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .metadata(FUSION_THRESHOLD, 100_000_000L)
@@ -529,7 +531,7 @@ public class RecipeLoaderNuclear {
                     .getFluidStack(Materials2Materials.Niobium, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Zinc, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
-            .fluidOutputs(new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Krypton), 1 * INGOTS))
+            .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Krypton), 1 * INGOTS))
             .duration(32 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(FUSION_THRESHOLD, 300_000_000L)
@@ -537,9 +539,9 @@ public class RecipeLoaderNuclear {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Krypton), 1 * INGOTS),
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Force), 1_000))
-            .fluidOutputs(new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.AstralTitanium), 1_000))
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Krypton), 1 * INGOTS),
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Force), 1_000))
+            .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.AstralTitanium), 1_000))
             .duration(32 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(FUSION_THRESHOLD, 300_000_000L)
@@ -547,9 +549,9 @@ public class RecipeLoaderNuclear {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.AstralTitanium), 1 * INGOTS),
-                new FluidStack(MU.legacyGtppFluidOf(Materials2Materials.Titansteel), 2))
-            .fluidOutputs(new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Runite), 1_000))
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.AstralTitanium), 1 * INGOTS),
+                new FluidStack(MaterialUtils.legacyGtppFluidOf(Materials2Materials.Titansteel), 2))
+            .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Runite), 1_000))
             .duration(32 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(FUSION_THRESHOLD, 300_000_000L)
@@ -558,12 +560,12 @@ public class RecipeLoaderNuclear {
         // Mk3
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MU.legacyGtppFluid(Materials2Materials.Curium, 1 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Curium, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Americium,
                     Materials2FluidShapes.fluidPlasma,
                     (int) (1 * INGOTS)))
-            .fluidOutputs(new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Xenon), 1 * INGOTS))
+            .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Xenon), 1 * INGOTS))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .metadata(FUSION_THRESHOLD, 500_000_000L)
@@ -571,9 +573,9 @@ public class RecipeLoaderNuclear {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Xenon), 1 * INGOTS),
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Runite), 1_000))
-            .fluidOutputs(new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.AdvancedNitinol), 1_000))
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Xenon), 1 * INGOTS),
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Runite), 1_000))
+            .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.AdvancedNitinol), 1_000))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .metadata(FUSION_THRESHOLD, 500_000_000L)
@@ -581,10 +583,11 @@ public class RecipeLoaderNuclear {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.AdvancedNitinol), 72),
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.AdvancedNitinol), 72),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Tartarite, Materials2FluidShapes.fluidMolten, (int) (2)))
-            .fluidOutputs(new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.CelestialTungsten), 1_000))
+            .fluidOutputs(
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.CelestialTungsten), 1_000))
             .duration(8 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .metadata(FUSION_THRESHOLD, 500_000_000L)
@@ -610,7 +613,7 @@ public class RecipeLoaderNuclear {
                 MaterialLibAPI.getStack(Materials2Materials.Uranium233, Materials2Shapes.dust, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.dust, (int) (1)))
             .fluidInputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 10_000))
-            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.UraniumTetrafluoride, 25 * INGOTS))
+            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials2Materials.UraniumTetrafluoride, 25 * INGOTS))
             .duration(2 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -728,7 +731,7 @@ public class RecipeLoaderNuclear {
     private static void fluidHeater() {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.SodiumFluoride, Materials2Shapes.dust, 1))
-            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.SodiumFluoride, 1 * INGOTS))
+            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials2Materials.SodiumFluoride, 1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(fluidHeaterRecipes);

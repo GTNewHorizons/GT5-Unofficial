@@ -65,6 +65,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
@@ -657,7 +658,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         if (stats == null || stats.getSpeedMultiplier() <= 0) return false;
 
         Material material = MetaGeneratedTool.getPrimaryMaterialML(aStack);
-        return material != null && MU.toolSpeed(material) > 0;
+        return material != null && MaterialUtils.toolSpeed(material) > 0;
     }
 
     private int getSumRotorLevels() {

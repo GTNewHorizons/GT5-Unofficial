@@ -11,7 +11,7 @@ import gregtech.api.interfaces.ISubTagContainer;
 /// [gregtech.api.enums.OrePrefixes#mCondition] a prefix carries -- evaluate directly against MaterialLib state
 /// without rewriting the conditions themselves. Every [SubTag] a prefix condition tests carries a same-named
 /// [GTMaterialFlag], so membership routes through the material's MaterialLib FLAGS property via
-/// [MU#hasSubTag].
+/// [MaterialUtils#hasSubTag].
 ///
 /// Condition evaluation only ever calls [#contains]: [ICondition.And], [ICondition.Not], [ICondition.Or],
 /// [ICondition.Nor], [ICondition.Nand], [ICondition.Xor], and [ICondition.Equal] each recurse into their
@@ -27,7 +27,7 @@ public final class MaterialSubTagView implements ISubTagContainer {
 
     @Override
     public boolean contains(SubTag aTag) {
-        return MU.hasSubTag(material, aTag);
+        return MaterialUtils.hasSubTag(material, aTag);
     }
 
     @Override

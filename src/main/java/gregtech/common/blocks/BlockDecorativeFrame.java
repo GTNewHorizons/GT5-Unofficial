@@ -28,6 +28,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.render.GTRendererBlock;
@@ -60,7 +61,7 @@ public class BlockDecorativeFrame extends BlockStorage implements IBlockWithText
                 if (!MU.generatesPrefix(material, OrePrefixes.frameGt)) continue;
 
                 OreDictionary.registerOre(
-                    OrePrefixes.frameGt.oreDictName(MU.internalName(material))
+                    OrePrefixes.frameGt.oreDictName(MaterialUtils.internalName(material))
                         .toString(),
                     new ItemStack(this, 1, i));
             }
@@ -75,7 +76,7 @@ public class BlockDecorativeFrame extends BlockStorage implements IBlockWithText
 
         if (material == null) material = Materials2Materials.NULL;
 
-        return OrePrefixes.frameGt.getLocalizedNameForItem(MU.internalName(material));
+        return OrePrefixes.frameGt.getLocalizedNameForItem(MaterialUtils.internalName(material));
     }
 
     @Override
@@ -145,8 +146,8 @@ public class BlockDecorativeFrame extends BlockStorage implements IBlockWithText
 
         if (material != null) {
             texture = TextureFactory.builder()
-                .addIcon(MU.iconSet(material).mTextures[OrePrefixes.frameGt.getTextureIndex()])
-                .setRGBA(MU.rgba(material))
+                .addIcon(MaterialUtils.iconSet(material).mTextures[OrePrefixes.frameGt.getTextureIndex()])
+                .setRGBA(MaterialUtils.rgba(material))
                 .build();
         } else {
             texture = TextureFactory.builder()
@@ -168,7 +169,7 @@ public class BlockDecorativeFrame extends BlockStorage implements IBlockWithText
     public IIcon getIcon(int ordinalSide, int aMeta) {
         Material material = materials.get(aMeta);
         if (material == null) return null;
-        return MU.iconSet(material).mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon();
+        return MaterialUtils.iconSet(material).mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon();
     }
 
     public void registerRecipes() {
@@ -178,7 +179,7 @@ public class BlockDecorativeFrame extends BlockStorage implements IBlockWithText
             if (material == null) continue;
             if (!MU.generatesPrefix(material, OrePrefixes.frameGt)) continue;
             if (!MU.generatesPrefix(material, OrePrefixes.stick)) continue;
-            if (MU.hasSubTag(material, SubTag.NO_RECIPES)) continue;
+            if (MaterialUtils.hasSubTag(material, SubTag.NO_RECIPES)) continue;
 
             GTValues.RA.stdBuilder()
                 .itemInputs(MU.partOf(material, OrePrefixes.stick, 4))

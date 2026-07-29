@@ -12,7 +12,7 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 
 public class SubstituteFluidStack {
 
@@ -63,10 +63,10 @@ public class SubstituteFluidStack {
         List<FluidStack> fluids = new ArrayList<>();
 
         for (Material material : solderingMats) {
-            int multiplier = MU.hasFlag(material, GTMaterialFlag.SOLDERING_MATERIAL_GOOD) ? 1
-                : MU.hasFlag(material, GTMaterialFlag.SOLDERING_MATERIAL_BAD) ? 4 : 2;
+            int multiplier = MaterialUtils.hasFlag(material, GTMaterialFlag.SOLDERING_MATERIAL_GOOD) ? 1
+                : MaterialUtils.hasFlag(material, GTMaterialFlag.SOLDERING_MATERIAL_BAD) ? 4 : 2;
 
-            fluids.add(MU.molten(material, baseAmount * multiplier));
+            fluids.add(MaterialUtils.molten(material, baseAmount * multiplier));
         }
 
         return new SubstituteFluidStack(fluids.toArray(new FluidStack[0]));

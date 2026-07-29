@@ -26,7 +26,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
@@ -383,10 +383,11 @@ public class GTOreDictUnificator {
             }
             sItemStack2DataMap.put(stack, data);
             if (data.hasValidMaterialData()) {
-                long tValidMaterialAmount = MU.hasFlag(data.mMaterial.mMaterial, GTMaterialFlag.NO_RECYCLING) ? 0
+                long tValidMaterialAmount = MaterialUtils.hasFlag(data.mMaterial.mMaterial, GTMaterialFlag.NO_RECYCLING)
+                    ? 0
                     : data.mMaterial.mAmount >= 0 ? data.mMaterial.mAmount : M;
                 for (MaterialStack tMaterial : data.mByProducts)
-                    tValidMaterialAmount += MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.NO_RECYCLING) ? 0
+                    tValidMaterialAmount += MaterialUtils.hasFlag(tMaterial.mMaterial, GTMaterialFlag.NO_RECYCLING) ? 0
                         : tMaterial.mAmount >= 0 ? tMaterial.mAmount : M;
                 if (tValidMaterialAmount < M) GTModHandler.addToRecyclerBlackList(stack);
             }

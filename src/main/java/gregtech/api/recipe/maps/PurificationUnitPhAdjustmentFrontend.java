@@ -17,7 +17,7 @@ import com.gtnewhorizons.modularui.api.math.Size;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.util.GTOreDictUnificator;
@@ -66,12 +66,13 @@ public class PurificationUnitPhAdjustmentFrontend extends PurificationUnitRecipe
                     "GT5U.nei.purified_water.grade_4.0",
                     MTEPurificationUnitPhAdjustment.PH_PER_ALKALINE_DUST * 64));
         } else if (stack.isItemEqual(
-            GTUtility.getFluidDisplayStack(MU.fluid(Materials2Materials.HydrochloricAcidGT5U, 1_000), false))) {
-                currentTip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "GT5U.nei.purified_water.grade_4.1",
-                        MTEPurificationUnitPhAdjustment.PH_PER_10_ACID_LITER * 100));
-            }
+            GTUtility
+                .getFluidDisplayStack(MaterialUtils.fluid(Materials2Materials.HydrochloricAcidGT5U, 1_000), false))) {
+                    currentTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.nei.purified_water.grade_4.1",
+                            MTEPurificationUnitPhAdjustment.PH_PER_10_ACID_LITER * 100));
+                }
         return super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
     }
 }

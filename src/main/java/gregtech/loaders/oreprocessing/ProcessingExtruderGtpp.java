@@ -12,7 +12,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 
 /// Reproduces the retired gtPlusPlus `RecipeGenExtruder` for every material in [#ELIGIBLE]: the block-to-ingot
 /// extruder decompression recipe. The block/plate/ring/gear/small-gear/rod/bolt/rotor extruder recipes
@@ -81,8 +81,8 @@ public class ProcessingExtruderGtpp {
         GTValues.RA.stdBuilder()
             .itemInputs(block, ItemList.Shape_Extruder_Ingot.get(0))
             .itemOutputs(ProcessingDustGeneration.stackOf(OrePrefixes.ingot, material, 9L))
-            .duration((int) Math.max(MU.mass(material) * 2L, 1L))
-            .eut(MU.voltageMultiplier(material))
+            .duration((int) Math.max(MaterialUtils.mass(material) * 2L, 1L))
+            .eut(MaterialUtils.voltageMultiplier(material))
             .addTo(extruderRecipes);
     }
 }

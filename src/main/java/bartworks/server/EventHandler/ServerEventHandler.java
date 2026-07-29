@@ -31,7 +31,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class ServerEventHandler {
@@ -64,7 +64,7 @@ public class ServerEventHandler {
                         if (e.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
                         replace = Boolean.TRUE.equals(e.getProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION));
                         if (replace) {
-                            String internalName = MU.internalName(e);
+                            String internalName = MaterialUtils.internalName(e);
                             if (oreDictName.contains(internalName)) {
                                 String prefix = oreDictName.replace(internalName, "");
                                 OrePrefixes prefixes = OrePrefixes.getPrefix(prefix);

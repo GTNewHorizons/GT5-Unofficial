@@ -54,7 +54,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -481,7 +481,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                         RenderingTileEntityNanoForge tile = getRenderer();
                         ItemData data = GTOreDictUnificator.getAssociation(outputNanite);
                         Material mat = data != null ? data.mMaterial.mMaterial : null;
-                        short[] color = mat == null ? null : MU.rgba(mat);
+                        short[] color = mat == null ? null : MaterialUtils.rgba(mat);
                         if (color != null) {
                             tile.setColor(color[0] / 255.0f, color[1] / 255.0f, color[2] / 255.0f);
                         } else {
@@ -493,7 +493,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                         for (MTEHatchInput hatch : filterValidMTEs(mInputHatches)) {
                             FluidStack drained = hatch.drain(
                                 ForgeDirection.UNKNOWN,
-                                MU.molten(Materials2Materials.Magmatter, Integer.MAX_VALUE),
+                                MaterialUtils.molten(Materials2Materials.Magmatter, Integer.MAX_VALUE),
                                 true);
                             if (drained == null) {
                                 continue;

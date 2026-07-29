@@ -91,6 +91,7 @@ import gregtech.api.items.GTGenericBlock;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMap;
@@ -441,7 +442,7 @@ public class PlatinumSludgeOverHaul {
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.nugget, (int) (2)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .metadata(COIL_HEAT, MU.meltingPoint(Materials2Materials.Platinum))
+            .metadata(COIL_HEAT, MaterialUtils.meltingPoint(Materials2Materials.Platinum))
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
@@ -743,7 +744,7 @@ public class PlatinumSludgeOverHaul {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SaltWater, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
-            .fluidOutputs(MU.gas(Materials2Materials.Steam, 1_000))
+            .fluidOutputs(MaterialUtils.gas(Materials2Materials.Steam, 1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 775)
@@ -1074,7 +1075,7 @@ public class PlatinumSludgeOverHaul {
 
     private static boolean materialsContains(Material one, Material other) {
         if (one == null) return false;
-        for (MaterialStack stack : MU.materialList(one)) if (stack.mMaterial == other) return true;
+        for (MaterialStack stack : MaterialUtils.materialList(one)) if (stack.mMaterial == other) return true;
         return false;
     }
 

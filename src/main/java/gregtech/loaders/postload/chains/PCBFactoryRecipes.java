@@ -26,6 +26,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryUpgradeKey;
@@ -51,7 +52,7 @@ public class PCBFactoryRecipes {
                 new Object[] { Circuits.LuV.getIngredient(), 16 },
                 ItemList.Robot_Arm_ZPM.get(8))
             .fluidInputs(
-                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 36 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 36 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Naquadah,
                     Materials2FluidShapes.fluidMolten,

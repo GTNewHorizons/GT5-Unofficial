@@ -15,7 +15,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.common.misc.GTStructureChannels;
@@ -159,7 +159,7 @@ public class MTEXLTurbineHPSteam extends MTEXLTurbineBase {
                     Materials2FluidShapes.fluidGas,
                     (int) ((long) steamFlowForNextSteam)));
         } else {
-            addOutputPartial(MU.gas(Materials2Materials.Steam, totalFlow));
+            addOutputPartial(MaterialUtils.gas(Materials2Materials.Steam, totalFlow));
         }
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);

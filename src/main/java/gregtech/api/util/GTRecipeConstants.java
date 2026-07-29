@@ -26,7 +26,7 @@ import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IRecipeMap;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
@@ -365,12 +365,12 @@ public class GTRecipeConstants {
 
             // Generate recipe with plasma
             for (Material mat : new Material[] { Materials2Materials.Argon, Materials2Materials.Nitrogen }) {
-                int tPlasmaAmount = (int) Math.max(1L, baseDuration / (MU.mass(mat) * 16L));
+                int tPlasmaAmount = (int) Math.max(1L, baseDuration / (MaterialUtils.mass(mat) * 16L));
                 GTRecipeBuilder plasmaBuilder = builder.copy()
                     .duration(Math.max(1, mat == Materials2Materials.Nitrogen ? baseDuration / 4 : baseDuration / 24))
-                    .fluidInputs(MU.plasma(mat, tPlasmaAmount))
+                    .fluidInputs(MaterialUtils.plasma(mat, tPlasmaAmount))
                     .circuit(11)
-                    .fluidOutputs(MU.gas(mat, tPlasmaAmount));
+                    .fluidOutputs(MaterialUtils.gas(mat, tPlasmaAmount));
                 ret.addAll(RecipeMaps.arcFurnaceRecipes.doAdd(plasmaBuilder));
             }
         }

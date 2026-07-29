@@ -13,7 +13,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -29,28 +29,28 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
         ItemStack stack) {
         if (material == null) return;
 
-        if (MU.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
 
-        if (MU.macerateInto(material) == null) {
+        if (MaterialUtils.macerateInto(material) == null) {
             return;
         }
 
-        if (GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(material), 1) == null) {
+        if (GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1) == null) {
             return;
         }
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(material), 1L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(material), 1L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
@@ -63,7 +63,7 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
     @Override
     public void registerRecognitionOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (MU.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
 

@@ -21,7 +21,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidNames;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.FluidNames;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 
@@ -99,7 +99,7 @@ public class ProcessingPlasmaGtpp {
     private static void generateBromine() {
         Material bromine = Materials2Materials.Bromine;
         ItemStack liquidCell = ProcessingDustGeneration.stackOf(OrePrefixes.cellMolten, bromine, 1L);
-        FluidStack molten = MU.molten(bromine, 1000);
+        FluidStack molten = MaterialUtils.molten(bromine, 1000);
         if (liquidCell == null || molten == null) return;
 
         GTValues.RA.stdBuilder()
@@ -119,7 +119,7 @@ public class ProcessingPlasmaGtpp {
 
         ItemStack plasmaCell = ProcessingDustGeneration.stackOf(OrePrefixes.cellPlasma, bromine, 1L);
         FluidStack plasma = materialPlasma(bromine, 1000);
-        int cooldownDuration = (int) Math.max(MU.mass(bromine) * 2L, 1L);
+        int cooldownDuration = (int) Math.max(MaterialUtils.mass(bromine) * 2L, 1L);
         if (plasmaCell != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(plasmaCell)
@@ -155,7 +155,7 @@ public class ProcessingPlasmaGtpp {
             } else if (material == Materials2Materials.CelestialTungsten) {
                 fuelValue = 720_000;
             } else {
-                fuelValue = (int) Math.max(1024L, 1024L * MU.mass(material));
+                fuelValue = (int) Math.max(1024L, 1024L * MaterialUtils.mass(material));
             }
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1L, plasmaCell))
@@ -171,7 +171,7 @@ public class ProcessingPlasmaGtpp {
             GTValues.RA.stdBuilder()
                 .itemInputs(plasmaCell)
                 .itemOutputs(cell)
-                .duration((int) Math.max(MU.mass(material) * 2L, 1L))
+                .duration((int) Math.max(MaterialUtils.mass(material) * 2L, 1L))
                 .eut(TierEU.RECIPE_MV)
                 .addTo(vacuumFreezerRecipes);
         }

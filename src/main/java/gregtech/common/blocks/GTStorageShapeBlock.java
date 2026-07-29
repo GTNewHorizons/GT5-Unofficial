@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.ShapeBlock;
 
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 
 /// The `block` MaterialLib shape (compressed/storage blocks, e.g. "Block of Iron"), backing every cut-over
 /// material with metadata equal to the material's global index. Ports the behavior overrides legacy
@@ -28,12 +28,13 @@ public class GTStorageShapeBlock extends ShapeBlock {
 
     /// The per-material storage-block art, keyed by the material's legacy name rather than its MaterialLib
     /// one: the art is per-material, not per-texture-set, and the two names can differ (a unified material takes
-    /// its canonical name from whichever legacy material won unification). [MU#internalName] yields that legacy
+    /// its canonical name from whichever legacy material won unification). [MaterialUtils#internalName] yields that
+    /// legacy
     /// name (the legacy `mName`); a material whose converted art file does not exist falls back to this shape's
     /// texture-set candidates.
     @Override
     protected String iconPathFor(Material material) {
-        return "gregtech:materials/blocks/" + MU.internalName(material)
+        return "gregtech:materials/blocks/" + MaterialUtils.internalName(material)
             .toLowerCase(Locale.ROOT);
     }
 

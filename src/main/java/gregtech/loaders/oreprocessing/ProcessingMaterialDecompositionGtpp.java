@@ -21,7 +21,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2GtppComposites;
 import gregtech.api.enums.materials2.Materials2GtppComposites.Component;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 
 /// Reproduces the retired gtPlusPlus `RecipeGenMaterialProcessing` for every material in [#ELIGIBLE] that
 /// carries a [Materials2GtppComposites] entry: a centrifuge (2-6 parts) or chemical-dehydrator (7-9 parts)
@@ -105,7 +105,7 @@ public class ProcessingMaterialDecompositionGtpp {
         if (composites.isEmpty()) composites = COMPOSITION_FALLBACK.getOrDefault(material, List.of());
         if (composites.size() <= 1) return;
 
-        long voltage = MU.voltageMultiplier(material);
+        long voltage = MaterialUtils.voltageMultiplier(material);
         ItemStack[] outputs = new ItemStack[composites.size()];
         int cellCount = 0;
         int totalCount = 0;

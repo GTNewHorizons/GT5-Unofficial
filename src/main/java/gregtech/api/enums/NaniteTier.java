@@ -8,7 +8,7 @@ import net.minecraft.util.StatCollector;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -70,7 +70,7 @@ public enum NaniteTier {
 
     public String describe() {
         String localizedName = StatCollector.translateToLocal(
-            "Material." + MU.internalName(getMaterial())
+            "Material." + MaterialUtils.internalName(getMaterial())
                 .toLowerCase());
         return MessageFormat.format("{0} (Tier {1})", localizedName, tier);
     }

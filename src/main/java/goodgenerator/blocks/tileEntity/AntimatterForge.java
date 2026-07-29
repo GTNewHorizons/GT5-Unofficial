@@ -44,7 +44,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -70,14 +70,15 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     private static final FluidStack[] magneticUpgrades = {
         MaterialLibAPI.getFluidStack(Materials2Materials.TengamPurified, Materials2FluidShapes.fluidMolten, 1),
-        MU.molten(Materials2Materials.temporalFluid, 1L), MU.molten(Materials2Materials.Magmatter, 1L) };
+        MaterialUtils.molten(Materials2Materials.temporalFluid, 1L),
+        MaterialUtils.molten(Materials2Materials.Magmatter, 1L) };
     private static final FluidStack[] gravityUpgrades = {
         MaterialLibAPI.getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, 1),
-        MU.molten(Materials2Materials.spatialFluid, 1L),
+        MaterialUtils.molten(Materials2Materials.spatialFluid, 1L),
         MaterialLibAPI.getFluidStack(Materials2Materials.Eternity, Materials2FluidShapes.fluidMolten, 1) };
     private static final FluidStack[] containmentUpgrades = {
         MaterialLibAPI.getFluidStack(Materials2Materials.Shirabon, Materials2FluidShapes.fluidMolten, (int) (1)),
-        MU.molten(Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1L) };
+        MaterialUtils.molten(Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1L) };
     private static final FluidStack[] activationUpgrades = {
         MaterialLibAPI.getFluidStack(
             Materials2Materials.NaquadahBasedLiquidFuelMkVDepleted,

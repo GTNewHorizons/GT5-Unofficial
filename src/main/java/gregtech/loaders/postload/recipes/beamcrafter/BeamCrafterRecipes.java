@@ -32,7 +32,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.item.ModItems;
@@ -118,7 +118,7 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.AdvancedNitinol, 9216))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.AdvancedNitinol, 9216))
             .itemInputs(ItemList.Superconducting_Magnet_Solenoid_UHV.get(4), ItemList.Field_Generator_UV.get(4))
             .itemOutputs(ItemList.ATLASCasing.get(4))
             .metadata(
@@ -134,7 +134,7 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.AbyssalAlloy, 9216))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.AbyssalAlloy, 9216))
             .itemInputs(ItemList.Superconducting_Magnet_Solenoid_UEV.get(4), ItemList.Field_Generator_UHV.get(4))
             .itemOutputs(ItemList.ALICECasing.get(4))
             .metadata(
@@ -150,7 +150,7 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Quantum, 9216))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Quantum, 9216))
             .itemInputs(ItemList.Superconducting_Magnet_Solenoid_UIV.get(4), ItemList.Field_Generator_UEV.get(4))
             .itemOutputs(ItemList.LHCbCasing.get(4))
             .metadata(

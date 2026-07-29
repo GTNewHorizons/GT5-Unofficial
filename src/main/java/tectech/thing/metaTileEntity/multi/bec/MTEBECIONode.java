@@ -53,7 +53,7 @@ import gregtech.api.interfaces.OCMethod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -799,7 +799,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     }
 
     private static int saveNanite(NaniteTier tier) {
-        return tier == null ? -1 : MU.oldSubId(tier.getMaterial());
+        return tier == null ? -1 : MaterialUtils.oldSubId(tier.getMaterial());
     }
 
     private static NaniteTier loadNanite(int id) {

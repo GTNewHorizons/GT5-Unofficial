@@ -67,7 +67,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -1040,7 +1040,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
                     + GRAY
                     + "L of molten")
             .addInfo(
-                MU.localizedName(Materials2Materials.SpaceTime)
+                MaterialUtils.localizedName(Materials2Materials.SpaceTime)
                     + " instead of fluid/item outputs and output as much EU as a successful recipe")
             .addSeparator(EnumChatFormatting.GOLD, 87)
             .addInfo(
@@ -1069,7 +1069,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
                     + "^(Parallel exponent)")
             .addInfo(
                 "Furthermore, if parallel recipes are run, the recipes consume "
-                    + MU.localizedName(Materials2Materials.RawStarMatter))
+                    + MaterialUtils.localizedName(Materials2Materials.RawStarMatter))
             .addInfo("instead of helium and hydrogen. Overflow penalties still apply")
             .addInfo(
                 "The required amount of fluid to start a recipe is " + GREEN + "12.4 / 10^6 * Helium amount * Parallel")
@@ -1120,11 +1120,11 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 16, 16, 0);
     }
 
-    private static final Fluid HYDROGEN_GAS = MU.gas(Materials2Materials.Hydrogen, 1)
+    private static final Fluid HYDROGEN_GAS = MaterialUtils.gas(Materials2Materials.Hydrogen, 1)
         .getFluid();
-    private static final Fluid HELIUM_GAS = MU.gas(Materials2Materials.Helium, 1)
+    private static final Fluid HELIUM_GAS = MaterialUtils.gas(Materials2Materials.Helium, 1)
         .getFluid();
-    private static final Fluid RAW_STAR_MATTER = MU.fluidOf(Materials2Materials.RawStarMatter);
+    private static final Fluid RAW_STAR_MATTER = MaterialUtils.fluidOf(Materials2Materials.RawStarMatter);
 
     private final Map<Fluid, Long> validFluidMap = new HashMap<>() {
 

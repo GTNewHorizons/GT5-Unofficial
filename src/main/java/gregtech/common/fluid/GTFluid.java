@@ -26,7 +26,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.fluid.IGTFluid;
 import gregtech.api.interfaces.fluid.IGTRegisteredFluid;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
@@ -208,17 +208,17 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     /// molten.concrete).
     private void configureMaterialSlots(Material ml) {
         if (DUMP_MODE && slotAlreadyWired(ml)) return;
-        MU.recordFluidMaterial(registeredFluid, ml);
-        MU.recordSlotFluid(ml, muFluidState(), registeredFluid);
+        MaterialUtils.recordFluidMaterial(registeredFluid, ml);
+        MaterialUtils.recordSlotFluid(ml, muFluidState(), registeredFluid);
     }
 
-    private MU.FluidState muFluidState() {
+    private MaterialUtils.FluidState muFluidState() {
         return switch (fluidState) {
-            case SLURRY -> MU.FluidState.SOLID;
-            case GAS -> MU.FluidState.GAS;
-            case PLASMA -> MU.FluidState.PLASMA;
-            case MOLTEN -> MU.FluidState.MOLTEN;
-            default -> MU.FluidState.LIQUID;
+            case SLURRY -> MaterialUtils.FluidState.SOLID;
+            case GAS -> MaterialUtils.FluidState.GAS;
+            case PLASMA -> MaterialUtils.FluidState.PLASMA;
+            case MOLTEN -> MaterialUtils.FluidState.MOLTEN;
+            default -> MaterialUtils.FluidState.LIQUID;
         };
     }
 
@@ -228,11 +228,11 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     /// recorded one does, and re-wiring would replace it with the generic loop's registration.
     private boolean slotAlreadyWired(Material material) {
         return switch (muFluidState()) {
-            case LIQUID -> MU.fluidOf(material) != null;
-            case GAS -> MU.gasOf(material) != null;
-            case MOLTEN -> MU.moltenOf(material) != null;
-            case PLASMA -> MU.plasmaOf(material) != null;
-            case SOLID -> MU.solid(material, 1) != null;
+            case LIQUID -> MaterialUtils.fluidOf(material) != null;
+            case GAS -> MaterialUtils.gasOf(material) != null;
+            case MOLTEN -> MaterialUtils.moltenOf(material) != null;
+            case PLASMA -> MaterialUtils.plasmaOf(material) != null;
+            case SOLID -> MaterialUtils.solid(material, 1) != null;
         };
     }
 
@@ -253,10 +253,10 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     private boolean addLocalizedNameHasOreprefix(Material material, String oreprefixName) {
         final String oreprefixNameRemovedFormat = oreprefixName.replace("%s", "");
         if (defaultLocalName.contains(oreprefixNameRemovedFormat)) {
-            if (String.format(oreprefixName, MU.localName(material))
+            if (String.format(oreprefixName, MaterialUtils.localName(material))
                 .equals(defaultLocalName)) {
                 localizedName = () -> OrePrefixes
-                    .getLocalizedNameForItem(oreprefixName, "%s", MU.internalName(material));
+                    .getLocalizedNameForItem(oreprefixName, "%s", MaterialUtils.internalName(material));
                 return true;
             }
         }
@@ -285,7 +285,7 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     @Override
     public IGTRegisteredFluid addLocalizedName(Material material) {
         if (material == null) return addLocalizedName();
-        if (!MU.localName(material)
+        if (!MaterialUtils.localName(material)
             .equals(defaultLocalName)) {
             if (addLocalizedNameHasOreprefix(
                 material,
@@ -296,7 +296,7 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
             }
             return addLocalizedName();
         }
-        localizedName = () -> MU.localizedName(material);
+        localizedName = () -> MaterialUtils.localizedName(material);
         return this;
     }
 

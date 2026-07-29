@@ -50,7 +50,7 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTLanguageManager;
@@ -81,7 +81,7 @@ public class BWUtil {
             Material material = GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial;
             // Keeps non-legacy-named associations (werkstoff/gtpp reconstructions) rendering an empty material
             // name.
-            if (LegacyNameDomain.contains(material)) matname = MU.localName(material);
+            if (LegacyNameDomain.contains(material)) matname = MaterialUtils.localName(material);
         }
         return ret.replace("%material", matname);
     }
@@ -167,9 +167,9 @@ public class BWUtil {
         // TODO: Implement this method properly by giving materials actual radiation values
         // TODO: instead of using the material's atomic number.
 
-        return (int) (MU.protons(materials) == 43L ? materials == Materials2Materials.NaquadahEnriched ? 140
+        return (int) (MaterialUtils.protons(materials) == 43L ? materials == Materials2Materials.NaquadahEnriched ? 140
             : materials == Materials2Materials.Naquadria ? 150 : materials == Materials2Materials.Naquadah ? 130 : 43
-            : MU.protons(materials));
+            : MaterialUtils.protons(materials));
     }
 
     public static ItemStack setStackSize(ItemStack stack, int size) {

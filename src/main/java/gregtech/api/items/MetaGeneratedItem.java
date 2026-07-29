@@ -46,7 +46,7 @@ import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTOreDictUnificator;
@@ -356,7 +356,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
 
     @Override
     public short[] getRGBa(ItemStack aStack) {
-        return MU.rgba(Materials2Materials.NULL);
+        return MaterialUtils.rgba(Materials2Materials.NULL);
     }
 
     /**

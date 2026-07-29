@@ -24,6 +24,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 
 public class FuelRecipeLoader {
 
@@ -201,7 +202,7 @@ public class FuelRecipeLoader {
                     Materials2Materials.NaquadahBasedLiquidFuelMkIII,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (2_000)),
-                MU.legacyGtppFluid(Materials2Materials.Hypogen, 240))
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Hypogen, 240))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.NaquadahBasedLiquidFuelMkIV,
@@ -228,8 +229,8 @@ public class FuelRecipeLoader {
                     Materials2Materials.LightNaquadahFuel,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (5_000)),
-                MU.legacyGtppFluid(Materials2Materials.Hypogen, 120),
-                MU.legacyGtppFluid(Materials2Materials.ChromaticGlass, 45 * INGOTS))
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Hypogen, 120),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.ChromaticGlass, 45 * INGOTS))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.NaquadahBasedLiquidFuelMkIV,
@@ -250,7 +251,7 @@ public class FuelRecipeLoader {
                     Materials2Materials.NaquadahBasedLiquidFuelMkIV,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (2_000)),
-                MU.fluid(Materials2Materials.HeavyRadox, 250))
+                MaterialUtils.fluid(Materials2Materials.HeavyRadox, 250))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.NaquadahBasedLiquidFuelMkV,
@@ -271,7 +272,7 @@ public class FuelRecipeLoader {
                     Materials2Materials.NaquadahBasedLiquidFuelMkIV,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (2_000)),
-                MU.fluid(Materials2Materials.HeavyRadox, 250),
+                MaterialUtils.fluid(Materials2Materials.HeavyRadox, 250),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Mellion, Materials2FluidShapes.fluidMolten, 2 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Creon, Materials2FluidShapes.fluidMolten, 2 * INGOTS))

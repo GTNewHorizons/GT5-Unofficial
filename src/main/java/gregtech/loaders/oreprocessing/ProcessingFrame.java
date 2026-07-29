@@ -15,6 +15,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -33,14 +34,14 @@ public class ProcessingFrame implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (MU.processingMaterialTierEU(material) < TierEU.IV) {
+        if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
             GTModHandler.addCraftingRecipe(
                 GTUtility.copyAmount(2, stack),
                 GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "SSS", "SwS", "SSS", 'S', MU.craftIngredient(OrePrefixes.stick, material) });
         }
 
-        if (!MU.hasFlag(material, GTMaterialFlag.NO_RECIPES)
+        if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)
             && GTOreDictUnificator.get(OrePrefixes.stick, material, 1) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, material, 4))

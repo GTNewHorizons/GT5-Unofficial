@@ -45,6 +45,7 @@ import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -87,7 +88,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.gearGt, 4),
                 ItemList.Sensor_UHV.get(3), ItemList.Field_Generator_UHV.get(3),
                 MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.screw, 12) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 9 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 9 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.fluidMolten, 4 * INGOTS) },
             ItemList.InfiniteFluidDrillingRig.get(1),
@@ -216,7 +217,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                             ItemList.Reactor_Coolant_Sp_2.get(1L) },
                         ItemList.Electric_Pump_UHV.get(1L) },
                     new FluidStack[] { GTModHandler.getIC2Coolant(16_000),
-                        MU.legacyGtppFluid(Materials2Materials.Indalloy140, 40 * INGOTS) },
+                        MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 40 * INGOTS) },
                     ItemList.Hatch_Energy_UHV.get(1L),
                     1000,
                     (int) TierEU.RECIPE_UHV);
@@ -233,8 +234,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ItemList.UEV_Coil.get(2L), ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Electric_Pump_UEV.get(1L) },
                     new FluidStack[] { GTModHandler.getIC2Coolant(32_000),
-                        MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 20 * INGOTS),
-                        MU.fluid(Materials2Materials.UUMatter, 8_000) },
+                        MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 20 * INGOTS),
+                        MaterialUtils.fluid(Materials2Materials.UUMatter, 8_000) },
                     ItemList.Hatch_Energy_UEV.get(1L),
                     1000,
                     (int) TierEU.RECIPE_UEV);
@@ -254,8 +255,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                     new FluidStack[] {
                         MaterialLibAPI
                             .getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, 16_000),
-                        MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 20 * INGOTS),
-                        MU.fluid(Materials2Materials.UUMatter, 16_000) },
+                        MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 20 * INGOTS),
+                        MaterialUtils.fluid(Materials2Materials.UUMatter, 16_000) },
                     ItemList.Hatch_Energy_UIV.get(1L),
                     1000,
                     (int) TierEU.RECIPE_UIV);
@@ -276,8 +277,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                     new FluidStack[] {
                         MaterialLibAPI
                             .getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, 32_000),
-                        MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 40 * INGOTS),
-                        MU.fluid(Materials2Materials.UUMatter, 32_000) },
+                        MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 40 * INGOTS),
+                        MaterialUtils.fluid(Materials2Materials.UUMatter, 32_000) },
                     ItemList.Hatch_Energy_UMV.get(1L),
                     1000,
                     (int) TierEU.RECIPE_UMV);
@@ -299,8 +300,9 @@ public class ResearchStationAssemblyLine implements Runnable {
                     new FluidStack[] {
                         MaterialLibAPI
                             .getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, 64_000),
-                        MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 1 * STACKS + 16 * INGOTS),
-                        MU.fluid(Materials2Materials.UUMatter, 64_000) },
+                        MaterialUtils
+                            .legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 1 * STACKS + 16 * INGOTS),
+                        MaterialUtils.fluid(Materials2Materials.UUMatter, 64_000) },
                     ItemList.Hatch_Energy_UXV.get(1L),
                     1000,
                     (int) TierEU.RECIPE_UXV);
@@ -337,7 +339,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                             ItemList.Reactor_Coolant_Sp_2.get(1L) },
                         ItemList.Electric_Pump_UHV.get(1L) },
                     new FluidStack[] { GTModHandler.getIC2Coolant(16_000),
-                        MU.legacyGtppFluid(Materials2Materials.Indalloy140, 40 * INGOTS) },
+                        MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 40 * INGOTS) },
                     ItemList.Hatch_Dynamo_UHV.get(1L),
                     1000,
                     (int) TierEU.RECIPE_UHV);
@@ -355,8 +357,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                         ItemList.UEV_Coil.get(2L), ItemList.Reactor_Coolant_Sp_6.get(1L),
                         ItemList.Reactor_Coolant_Sp_6.get(1L), ItemList.Electric_Pump_UEV.get(1L) },
                     new FluidStack[] { GTModHandler.getIC2Coolant(32_000),
-                        MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 20 * INGOTS),
-                        MU.fluid(Materials2Materials.UUMatter, 8_000) },
+                        MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 20 * INGOTS),
+                        MaterialUtils.fluid(Materials2Materials.UUMatter, 8_000) },
                     ItemList.Hatch_Dynamo_UEV.get(1L),
                     1000,
                     (int) TierEU.RECIPE_UEV);
@@ -377,8 +379,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                     new FluidStack[] {
                         MaterialLibAPI
                             .getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, 16_000),
-                        MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 20 * INGOTS),
-                        MU.fluid(Materials2Materials.UUMatter, 16_000L) },
+                        MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 20 * INGOTS),
+                        MaterialUtils.fluid(Materials2Materials.UUMatter, 16_000L) },
                     ItemList.Hatch_Dynamo_UIV.get(1L),
                     1000,
                     (int) TierEU.RECIPE_UIV);
@@ -400,8 +402,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                     new FluidStack[] {
                         MaterialLibAPI
                             .getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, 32_000),
-                        MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 40 * INGOTS),
-                        MU.fluid(Materials2Materials.UUMatter, 32_000) },
+                        MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 40 * INGOTS),
+                        MaterialUtils.fluid(Materials2Materials.UUMatter, 32_000) },
                     ItemList.Hatch_Dynamo_UMV.get(1L),
                     1000,
                     (int) TierEU.RECIPE_UMV);
@@ -424,8 +426,9 @@ public class ResearchStationAssemblyLine implements Runnable {
                     new FluidStack[] {
                         MaterialLibAPI
                             .getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, 64_000),
-                        MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 1 * STACKS + 16 * INGOTS),
-                        MU.fluid(Materials2Materials.UUMatter, 64_000) },
+                        MaterialUtils
+                            .legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 1 * STACKS + 16 * INGOTS),
+                        MaterialUtils.fluid(Materials2Materials.UUMatter, 64_000) },
                     ItemList.Hatch_Dynamo_UXV.get(1L),
                     1000,
                     (int) TierEU.RECIPE_UXV);
@@ -458,7 +461,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get("wireGt01SuperconductorUIV", 4L),
                     GTOreDictUnificator.get("wireGt01SuperconductorUMV", 2L) },
                 new Object[] { OrePrefixes.foil.ingredient(Materials2Markers.AnySyntheticRubber), 64L }, },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.Indalloy140, 20 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 20 * INGOTS),
                 GTModHandler.getIC2Coolant(10_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.fluidGas, 2_500), },
             ItemList.Circuit_Wetwaremainframe.get(1L),
@@ -483,7 +486,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Circuit_Chip_NOR.get(32L), ItemList.Circuit_Chip_Ram.get(64L),
                 MaterialLibAPI.getStack(Materials2Materials.NiobiumTitanium, Materials2Shapes.wireFine, 32),
                 new Object[] { OrePrefixes.foil.ingredient(Materials2Markers.AnySyntheticRubber), 64L }, },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 10 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 10 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.BiohMediumSterilized,
                     Materials2FluidShapes.fluidLiquid,
@@ -519,7 +522,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get("wireGt01SuperconductorUMV", 8L) },
                 new Object[] { OrePrefixes.foil.ingredient(Materials2Markers.AnySyntheticRubber), 64L },
                 MaterialLibAPI.getStack(Materials2Materials.Polybenzimidazole, Materials2Shapes.foil, 64) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 20 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 20 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.BiohMediumSterilized,
                     Materials2FluidShapes.fluidLiquid,
@@ -544,7 +547,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 // Lumiium
                 // Wire
                 new Object[] { OrePrefixes.foil.ingredient(Materials2Markers.AnySyntheticRubber), 64L }, },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 10 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 10 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.fluidPlasma, 10 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, 10_000),
@@ -569,7 +572,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 // Wire
                 new Object[] { OrePrefixes.foil.ingredient(Materials2Markers.AnySyntheticRubber), 64L },
                 MaterialLibAPI.getStack(Materials2Materials.Polybenzimidazole, Materials2Shapes.foil, 64), },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 20 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 20 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.fluidPlasma, 20 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, 20_000),
@@ -596,7 +599,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new Object[] { OrePrefixes.foil.ingredient(Materials2Markers.AnySyntheticRubber), 64L },
                 MaterialLibAPI.getStack(Materials2Materials.Polybenzimidazole, Materials2Shapes.foil, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Polybenzimidazole, Materials2Shapes.foil, 64) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 40 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 40 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.fluidPlasma, 40 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, 40_000),
@@ -672,7 +675,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     ItemList.Electric_Pump_UEV.get(4), ItemList.ZPM3.get(1),
                     getModItem(IndustrialCraft2.ID, "blockMachine2", 1, 0) },
                 new FluidStack[] { new FluidStack(FluidRegistry.getFluid("oganesson"), 128_000),
-                    MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 8 * STACKS),
+                    MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 8 * STACKS),
                     new FluidStack(FluidRegistry.getFluid("molten.californium"), 4 * STACKS),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.NaquadahEnriched,
@@ -694,7 +697,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get("wireGt01Superconductor", 6), ItemList.Circuit_Wafer_FPIC.get(4),
                     ItemList.Field_Generator_UHV.get(1L) },
                 new FluidStack[] { new FluidStack(FluidRegistry.getFluid("oganesson"), 8_000),
-                    MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 1 * STACKS),
+                    MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 1 * STACKS),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.NaquadahEnriched,
                         Materials2FluidShapes.fluidMolten,
@@ -719,7 +722,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get("wireGt01Superconductor", 2), ItemList.Super_Chest_IV.get(1),
                     ItemList.Super_Tank_IV.get(1), ItemList.Circuit_Wafer_FPIC.get(2) },
                 new FluidStack[] { new FluidStack(FluidRegistry.getFluid("oganesson"), 1_000),
-                    MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 4 * INGOTS),
+                    MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 4 * INGOTS),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.NaquadahEnriched,
                         Materials2FluidShapes.fluidMolten,
@@ -739,7 +742,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.Laurenium, Materials2Shapes.screw, 12),
                     ItemList.Reactor_Coolant_Sp_6.get(1L), GTOreDictUnificator.get("wireGt01Superconductor", 1), },
                 new FluidStack[] { new FluidStack(FluidRegistry.getFluid("oganesson"), 500),
-                    MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 2 * INGOTS),
+                    MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 2 * INGOTS),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.NaquadahEnriched,
                         Materials2FluidShapes.fluidMolten,
@@ -783,7 +786,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     ItemList.Field_Generator_UV.get(2), ItemList.Circuit_Wafer_HPIC.get(64),
                     ItemList.Circuit_Wafer_HPIC.get(64), ItemList.Circuit_Parts_DiodeASMD.get(32),
                     GTOreDictUnificator.get("wireGt01Superconductor", 32), },
-                new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.Indalloy140, 20 * INGOTS),
+                new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 20 * INGOTS),
                     GTModHandler.getIC2Coolant(16_000) },
                 ItemList.ZPM2.get(1),
                 3000,
@@ -802,7 +805,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     ItemList.Field_Generator_UHV.get(4), ItemList.Circuit_Wafer_UHPIC.get(64),
                     ItemList.Circuit_Wafer_UHPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(32),
                     ItemList.Circuit_Parts_DiodeASMD.get(64), GTOreDictUnificator.get("wireGt02Superconductor", 64), },
-                new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 32 * INGOTS),
+                new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 32 * INGOTS),
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, 1 * STACKS),
                     GTModHandler.getIC2Coolant(32_000) },
@@ -824,7 +827,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     ItemList.Circuit_Wafer_PPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(64),
                     ItemList.Circuit_Parts_DiodeXSMD.get(64),
                     GTOreDictUnificator.get("wireGt04SuperconductorUEV", 64), },
-                new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 1 * STACKS),
+                new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 1 * STACKS),
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.Quantium, Materials2FluidShapes.fluidMolten, 2 * STACKS),
                     MaterialLibAPI
@@ -848,8 +851,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                     ItemList.Circuit_Wafer_QPIC.get(64), ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(64),
                     ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(32),
                     GTOreDictUnificator.get("wireGt08SuperconductorUIV", 64) },
-                new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 2 * STACKS),
-                    MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 2 * STACKS),
+                new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 2 * STACKS),
+                    MaterialUtils.legacyGtppFluid(Materials2Materials.CelestialTungsten, 2 * STACKS),
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.Quantium, Materials2FluidShapes.fluidMolten, 2 * STACKS),
                     MaterialLibAPI
@@ -872,9 +875,9 @@ public class ResearchStationAssemblyLine implements Runnable {
                     ItemList.Circuit_Wafer_FPIC.get(64), ItemList.Circuit_Parts_Chip_Bioware.get(64),
                     ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(64),
                     GTOreDictUnificator.get("wireGt16SuperconductorUMV", 64) },
-                new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 4 * STACKS),
-                    MU.legacyGtppFluid(Materials2Materials.AstralTitanium, 4 * STACKS),
-                    MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 4 * STACKS),
+                new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 4 * STACKS),
+                    MaterialUtils.legacyGtppFluid(Materials2Materials.AstralTitanium, 4 * STACKS),
+                    MaterialUtils.legacyGtppFluid(Materials2Materials.CelestialTungsten, 4 * STACKS),
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, 256_000) },
                 ItemList.ZPM6.get(1),
@@ -895,10 +898,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.plateSuperdense, 1),
                 ItemList.Field_Generator_UHV.get(2), ItemList.Circuit_Wafer_FPIC.get(64),
                 GTOreDictUnificator.get("wireGt04Superconductor", 32) },
-            new FluidStack[] { MU.fluid(Materials2Materials.UUMatter, 50_000),
-                MU.legacyGtppFluid(Materials2Materials.CinobiteA243, 1 * STACKS),
-                MU.legacyGtppFluid(Materials2Materials.Octiron, 1 * STACKS),
-                MU.legacyGtppFluid(Materials2Materials.AstralTitanium, 1 * STACKS), },
+            new FluidStack[] { MaterialUtils.fluid(Materials2Materials.UUMatter, 50_000),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.CinobiteA243, 1 * STACKS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Octiron, 1 * STACKS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.AstralTitanium, 1 * STACKS), },
             GregtechItemList.FusionComputer_UV2.get(1),
             6000,
             (int) TierEU.RECIPE_UHV);
@@ -914,10 +917,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new Object[] { Circuits.UV.getIngredient(), 8L },
                 MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.plate, 8),
                 ItemList.Emitter_UHV.get(1), ItemList.Sensor_UHV.get(1), ItemList.Casing_Fusion_Coil.get(1L), },
-            new FluidStack[] { MU.fluid(Materials2Materials.UUMatter, 8_000),
-                MU.legacyGtppFluid(Materials2Materials.CinobiteA243, 16 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.Octiron, 16 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.AstralTitanium, 16 * INGOTS), },
+            new FluidStack[] { MaterialUtils.fluid(Materials2Materials.UUMatter, 8_000),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.CinobiteA243, 16 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Octiron, 16 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.AstralTitanium, 16 * INGOTS), },
             GregtechItemList.Casing_Fusion_Internal.get(1),
             1200,
             (int) TierEU.RECIPE_UHV);
@@ -936,10 +939,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.plate, 8),
                     ItemList.Electric_Motor_UHV.get(2), ItemList.Electric_Piston_UHV.get(1),
                     ItemList.Casing_Fusion2.get(1L), },
-                new FluidStack[] { MU.fluid(Materials2Materials.UUMatter, 1_000),
-                    MU.legacyGtppFluid(Materials2Materials.CinobiteA243, 4 * INGOTS),
-                    MU.legacyGtppFluid(Materials2Materials.Octiron, 4 * INGOTS),
-                    MU.legacyGtppFluid(Materials2Materials.AstralTitanium, 4 * INGOTS), },
+                new FluidStack[] { MaterialUtils.fluid(Materials2Materials.UUMatter, 1_000),
+                    MaterialUtils.legacyGtppFluid(Materials2Materials.CinobiteA243, 4 * INGOTS),
+                    MaterialUtils.legacyGtppFluid(Materials2Materials.Octiron, 4 * INGOTS),
+                    MaterialUtils.legacyGtppFluid(Materials2Materials.AstralTitanium, 4 * INGOTS), },
                 GregtechItemList.Casing_Fusion_External.get(1),
                 300,
                 (int) TierEU.RECIPE_UHV);
@@ -957,10 +960,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new Object[] { Circuits.UIV.getIngredient(), 1L }, new Object[] { Circuits.UIV.getIngredient(), 1L },
                 GTOreDictUnificator.get("plateDenseMetastableOganesson", 4), ItemList.Field_Generator_UEV.get(2),
                 ItemList.Circuit_Wafer_APIC.get(64), GTOreDictUnificator.get("wireGt04SuperconductorUEV", 32) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.Curium, 1 * STACKS),
-                MU.legacyGtppFluid(Materials2Materials.ChromaticGlass, 1 * STACKS),
-                MU.legacyGtppFluid(Materials2Materials.AbyssalAlloy, 1 * STACKS),
-                MU.legacyGtppFluid(Materials2Materials.Dragonblood, 1 * STACKS) },
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.Curium, 1 * STACKS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.ChromaticGlass, 1 * STACKS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.AbyssalAlloy, 1 * STACKS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Dragonblood, 1 * STACKS) },
             GregtechItemList.FusionComputer_UV3.get(1),
             6000,
             (int) TierEU.RECIPE_UEV);
@@ -976,10 +979,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new Object[] { Circuits.UHV.getIngredient(), 8L },
                 MaterialLibAPI.getStack(Materials2Materials.Rhugnor, Materials2Shapes.plate, 8),
                 ItemList.Emitter_UEV.get(1), ItemList.Sensor_UEV.get(1), new ItemStack(compactFusionCoil, 1, 2) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.Neptunium, 16 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.ChromaticGlass, 16 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.AbyssalAlloy, 16 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.Dragonblood, 16 * INGOTS) },
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.Neptunium, 16 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.ChromaticGlass, 16 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.AbyssalAlloy, 16 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Dragonblood, 16 * INGOTS) },
             GregtechItemList.Casing_Fusion_Internal2.get(1),
             1200,
             (int) TierEU.RECIPE_UEV);
@@ -998,10 +1001,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.ChromaticGlass, Materials2Shapes.plate, 8),
                     ItemList.Electric_Motor_UEV.get(2), ItemList.Electric_Piston_UEV.get(1),
                     GregtechItemList.Casing_Fusion_External.get(1L) },
-                new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.Fermium, 8 * INGOTS),
-                    MU.legacyGtppFluid(Materials2Materials.ChromaticGlass, 8 * INGOTS),
-                    MU.legacyGtppFluid(Materials2Materials.AbyssalAlloy, 8 * INGOTS),
-                    MU.legacyGtppFluid(Materials2Materials.Dragonblood, 8 * INGOTS) },
+                new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.Fermium, 8 * INGOTS),
+                    MaterialUtils.legacyGtppFluid(Materials2Materials.ChromaticGlass, 8 * INGOTS),
+                    MaterialUtils.legacyGtppFluid(Materials2Materials.AbyssalAlloy, 8 * INGOTS),
+                    MaterialUtils.legacyGtppFluid(Materials2Materials.Dragonblood, 8 * INGOTS) },
                 GregtechItemList.Casing_Fusion_External2.get(1),
                 300,
                 (int) TierEU.RECIPE_UEV);
@@ -1023,7 +1026,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     getModItem(BloodMagic.ID, "bloodMagicBaseItems", 8, 29),
                     getModItem(BloodMagic.ID, "bloodMagicBaseItems", 8, 28),
                     MaterialLibAPI.getStack(Materials2Materials.Void, Materials2Shapes.plateSuperdense, 1) },
-                new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.Indalloy140, 20 * INGOTS),
+                new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 20 * INGOTS),
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.Void, Materials2FluidShapes.fluidMolten, 20 * INGOTS),
                     MaterialLibAPI.getFluidStack(
@@ -1133,7 +1136,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Americium, Materials2Shapes.wireFine, 64), },
             new FluidStack[] {
                 MaterialLibAPI.getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 256_000),
-                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 9 * INGOTS), },
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 9 * INGOTS), },
             CustomItemList.hatch_CreativeMaintenance.get(1),
             6000,
             (int) TierEU.RECIPE_UV);
@@ -1154,9 +1157,9 @@ public class ResearchStationAssemblyLine implements Runnable {
                     Materials2Materials.Iridium,
                     Materials2FluidShapes.fluidMolten,
                     1 * STACKS + 36 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 18 * INGOTS),
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Neptunium), 20_000),
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Fermium), 20_000) },
+                MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 18 * INGOTS),
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Neptunium), 20_000),
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Fermium), 20_000) },
             CustomItemList.hatch_CreativeUncertainty.get(1),
             200 * 20,
             (int) TierEU.RECIPE_UIV);
@@ -1176,7 +1179,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] {
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.spatialFluid, Materials2FluidShapes.fluidMolten, 1 * STACKS),
-                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 1 * STACKS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 1 * STACKS),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter,
                     Materials2FluidShapes.fluidMolten,
@@ -1199,8 +1202,9 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.SuperconductorUMVBase, Materials2Shapes.wireFine, 64),
                 MU.stack(OrePrefixes.wireFine, Materials2Materials.Shirabon, 64),
                 GTOreDictUnificator.get("plateSuperdenseFlerovium_GT5U", 16L), },
-            new FluidStack[] { new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.ChromaticGlass), 1 * STACKS),
-                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 1 * STACKS),
+            new FluidStack[] {
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.ChromaticGlass), 1 * STACKS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 1 * STACKS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Eternity, Materials2FluidShapes.fluidMolten, 1 * STACKS) },
             ItemList.PrecisionFieldSyncCasing.get(8),
@@ -1221,7 +1225,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         FluidStack fluid_0 = MaterialLibAPI
             .getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, 18 * INGOTS);
-        FluidStack fluid_1 = MU.legacyGtppFluid(Materials2Materials.Indalloy140, 18 * INGOTS);
+        FluidStack fluid_1 = MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 18 * INGOTS);
         FluidStack fluid_2 = MaterialLibAPI
             .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 4_000);
 
@@ -1430,7 +1434,7 @@ public class ResearchStationAssemblyLine implements Runnable {
 
         FluidStack fluid_0 = MaterialLibAPI
             .getFluidStack(Materials2Materials.Quantium, Materials2FluidShapes.fluidMolten, 18 * INGOTS);
-        FluidStack fluid_1 = MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 18 * INGOTS);
+        FluidStack fluid_1 = MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 18 * INGOTS);
         FluidStack fluid_2 = MaterialLibAPI
             .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 4_000);
 
@@ -1637,8 +1641,8 @@ public class ResearchStationAssemblyLine implements Runnable {
         int research_eu_per_tick = (int) TierEU.RECIPE_UEV;
         int research_amperage = 1;
 
-        FluidStack fluid_0 = MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 4 * INGOTS);
-        FluidStack fluid_1 = MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 18 * INGOTS);
+        FluidStack fluid_0 = MaterialUtils.legacyGtppFluid(Materials2Materials.CelestialTungsten, 4 * INGOTS);
+        FluidStack fluid_1 = MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 18 * INGOTS);
         FluidStack fluid_2 = MaterialLibAPI.getFluidStack(
             Materials2Materials.dimensionallyshiftedsuperfluid,
             Materials2FluidShapes.fluidLiquid,
@@ -1854,9 +1858,9 @@ public class ResearchStationAssemblyLine implements Runnable {
         int research_eu_per_tick = (int) TierEU.RECIPE_UIV;
         int research_amperage = 1;
 
-        FluidStack fluid_0 = MU.legacyGtppFluid(Materials2Materials.Hypogen, 4 * INGOTS);
-        FluidStack fluid_1 = MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 4 * INGOTS);
-        FluidStack fluid_2 = MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 18 * INGOTS);
+        FluidStack fluid_0 = MaterialUtils.legacyGtppFluid(Materials2Materials.Hypogen, 4 * INGOTS);
+        FluidStack fluid_1 = MaterialUtils.legacyGtppFluid(Materials2Materials.CelestialTungsten, 4 * INGOTS);
+        FluidStack fluid_2 = MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 18 * INGOTS);
         FluidStack fluid_3 = MaterialLibAPI.getFluidStack(
             Materials2Materials.dimensionallyshiftedsuperfluid,
             Materials2FluidShapes.fluidLiquid,
@@ -2077,7 +2081,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             Materials2Materials.dimensionallyshiftedsuperfluid,
             Materials2FluidShapes.fluidLiquid,
             8_000);
-        FluidStack solderingAlloy_14_400 = MU
+        FluidStack solderingAlloy_14_400 = MaterialUtils
             .legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 1 * STACKS + 36 * INGOTS);
 
         int totalComputation = 384_000;
@@ -2344,7 +2348,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             4,
             new Object[] { LanthItemList.LUV_BEAMLINE_OUTPUT_HATCH, ItemList.Sensor_UV.get(4),
                 ItemList.Emitter_UV.get(4), ItemList.ActivatedCarbonFilterMesh.get(32), },
-            new FluidStack[] { MU.fluid(Materials2Materials.UUMatter, 1000) },
+            new FluidStack[] { MaterialUtils.fluid(Materials2Materials.UUMatter, 1000) },
             ItemList.AdvancedBeamlineOutputHatch.get(1),
             60 * SECONDS,
             (int) TierEU.RECIPE_UV);
@@ -2358,7 +2362,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             4,
             new Object[] { LanthItemList.TARGET_CHAMBER, ItemList.Field_Generator_ZPM.get(4),
                 new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_CASING, 32), ItemList.LargeMolecularAssembler.get(2) },
-            new FluidStack[] { MU.fluid(Materials2Materials.UUMatter, 8000) },
+            new FluidStack[] { MaterialUtils.fluid(Materials2Materials.UUMatter, 8000) },
             ItemList.BeamCrafter.get(1),
             60 * SECONDS,
             (int) TierEU.RECIPE_UV);
@@ -2400,11 +2404,11 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MU.stack(OrePrefixes.ring, Materials2Materials.Tairitsu, 12),
                 MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2Shapes.screw, 24),
                 ItemList.EnergisedTesseract.get(2), ItemList.Field_Generator_UEV.get(1) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.ChromaticGlass, 384 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.ChromaticGlass, 384 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.fluidMolten, 48 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 48 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 32 * STACKS) },
+                MaterialUtils.legacyGtppFluid(Materials2Materials.CelestialTungsten, 48 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 32 * STACKS) },
             ItemList.ElectromagneticallyIsolatedCasing.get(4),
             30 * SECONDS,
             (int) TierEU.RECIPE_UIV);
@@ -2428,11 +2432,11 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2Shapes.rotor, 1),
                 MaterialLibAPI.getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.stickLong, 6),
                 ItemList.Electric_Pump_UIV.get(2) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.ChromaticGlass, 384 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.ChromaticGlass, 384 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.fluidMolten, 48 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 48 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * INGOTS) },
+                MaterialUtils.legacyGtppFluid(Materials2Materials.CelestialTungsten, 48 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * INGOTS) },
             ItemList.SuperconductivePlasmaEnergyConduit.get(4),
             60 * SECONDS,
             (int) TierEU.RECIPE_UIV);
@@ -2457,11 +2461,11 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.gearGtSmall, 6),
                 MaterialLibAPI.getStack(Materials2Materials.Shijima, Materials2Shapes.screw, 48),
                 ItemList.Sensor_UIV.get(2), ItemList.Emitter_UIV.get(2) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.ChromaticGlass, 384 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.ChromaticGlass, 384 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.fluidMolten, 48 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 48 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * INGOTS) },
+                MaterialUtils.legacyGtppFluid(Materials2Materials.CelestialTungsten, 48 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * INGOTS) },
             ItemList.FineStructureConstantManipulator.get(4),
             30 * SECONDS,
             (int) TierEU.RECIPE_UIV);
@@ -2482,11 +2486,11 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get("frameGtChuritsu", 2),
                 MU.stack(OrePrefixes.screw, Materials2Materials.Tairitsu, 32),
                 MaterialLibAPI.getStack(Materials2Materials.Shijima, Materials2Shapes.bolt, 32) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.ChromaticGlass, 96 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.ChromaticGlass, 96 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.fluidMolten, 12 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 12 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 4 * INGOTS) },
+                MaterialUtils.legacyGtppFluid(Materials2Materials.CelestialTungsten, 12 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 4 * INGOTS) },
             ItemList.CondensateGuidanceCoil.get(1),
             15 * SECONDS,
             (int) TierEU.RECIPE_UIV);
@@ -2506,11 +2510,11 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Field_Generator_UHV.get(3), MU.stack(OrePrefixes.stickLong, Materials2Materials.Tairitsu, 6),
                 MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.ring, 3),
                 MaterialLibAPI.getStack(Materials2Materials.Shijima, Materials2Shapes.plateDouble, 6) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.ChromaticGlass, 96 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.ChromaticGlass, 96 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.fluidMolten, 12 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 12 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 4 * INGOTS) },
+                MaterialUtils.legacyGtppFluid(Materials2Materials.CelestialTungsten, 12 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 4 * INGOTS) },
             ItemList.CondensateTransformativeCoil.get(1),
             30 * SECONDS,
             (int) TierEU.RECIPE_UIV);
@@ -2529,10 +2533,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Shijima, Materials2Shapes.screw, 24),
                 MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.itemCasing, 6),
                 ItemList.Field_Generator_UEV.get(2) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.ChromaticGlass, 768 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.ChromaticGlass, 768 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.fluidMolten, 192 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 192 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.CelestialTungsten, 192 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, 24 * INGOTS) },
             ItemList.ElectromagneticWaveguide.get(4),
@@ -2559,7 +2563,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get("wireGt16SuperconductorUIV", 16), ItemList.Sensor_UIV.get(32),
                     new Object[] { Circuits.UIV.getIngredient(), 64L }, CustomItemList.eM_energyTunnel7_UIV.get(1),
                     ItemRegistry.energyDistributor[11] },
-                new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 32 * STACKS),
+                new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 32 * STACKS),
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, 8_192_000),
                     MaterialLibAPI
@@ -2588,7 +2592,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.SixPhasedCopper, Materials2Shapes.screw, 8),
                 ItemList.SuperconductorComposite.get(1), ItemList.Emitter_UIV.get(2),
                 ItemList.Electromagnet_Tengam.get(1) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Plutonium241, Materials2FluidShapes.fluidPlasma, 16 * INGOTS) },
             CustomItemList.Godforge_MagneticConfinementCasing.get(8),
@@ -2611,7 +2615,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     ItemList.StableBosonContainmentUnit.get(1), ItemList.Field_Generator_UEV.get(2),
                     // Artificial Gravity Generator
                     getModItem(GalacticraftAmunRa.ID, "tile.machines3", 4L, 1) },
-                new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * INGOTS),
+                new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * INGOTS),
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.Lead, Materials2FluidShapes.fluidPlasma, 2 * INGOTS) },
                 CustomItemList.Godforge_BoundlessStructureCasing.get(1),
@@ -2632,7 +2636,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Creon, Materials2Shapes.plate, 6),
                 MaterialLibAPI.getStack(Materials2Materials.Creon, Materials2Shapes.gearGt, 8),
                 MaterialLibAPI.getStack(Materials2Materials.Mellion, Materials2Shapes.gearGtSmall, 8) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Thorium, Materials2FluidShapes.fluidPlasma, 2 * INGOTS) },
             CustomItemList.Godforge_GuidanceCasing.get(1),
@@ -2654,7 +2658,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Generator_Plasma_UV.get(64),
                 MaterialLibAPI.getStack(Materials2Materials.Creon, Materials2Shapes.plateDense, 6),
                 MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2Shapes.plate, 6) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.SuperconductorUIVBase,
                     Materials2FluidShapes.fluidMolten,
@@ -2681,9 +2685,9 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Creon, Materials2Shapes.stickLong, 6),
                 MaterialLibAPI.getStack(Materials2Materials.Mellion, Materials2Shapes.stickLong, 6),
                 MaterialLibAPI.getStack(Materials2Materials.SixPhasedCopper, Materials2Shapes.stickLong, 6) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.Rhugnor, 16 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.Rhugnor, 16 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Creon, Materials2FluidShapes.fluidMolten, 16 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.AdvancedNitinol, 16 * STACKS) },
+                MaterialUtils.legacyGtppFluid(Materials2Materials.AdvancedNitinol, 16 * STACKS) },
             new ItemStack(BlockGodforgeGlass.INSTANCE, 1),
             10 * SECONDS,
             (int) TierEU.RECIPE_UIV);
@@ -2702,7 +2706,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GregtechItemList.Battery_Gem_4.get(2), GregtechItemList.Laser_Lens_Special.get(4),
                 ItemList.Emitter_UIV.get(4), new Object[] { Circuits.UEV.getIngredient(), 16L },
                 GTOreDictUnificator.get("naniteSilver", 2) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 32 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.SuperconductorUIVBase,
                     Materials2FluidShapes.fluidMolten,
@@ -2726,7 +2730,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Relativistic_Heat_Capacitor.get(4), ItemList.Thermal_Superconductor.get(6),
                 ItemList.Field_Generator_UEV.get(4),
                 MaterialLibAPI.getStack(Materials2Materials.SixPhasedCopper, Materials2Shapes.bolt, 24) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 1 * STACKS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 1 * STACKS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.PhononMedium, Materials2FluidShapes.fluidLiquid, 1_000),
                 MaterialLibAPI
@@ -2751,7 +2755,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Creon, Materials2Shapes.plateDense, 8),
                 MaterialLibAPI.getStack(Materials2Materials.Mellion, Materials2Shapes.plateDense, 8),
                 new Object[] { Circuits.UIV.getIngredient(), 32L } },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * STACKS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * STACKS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, 2_048_000),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Lead, Materials2FluidShapes.fluidPlasma, 4 * STACKS),
@@ -2779,7 +2783,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Creon, Materials2Shapes.plateDense, 8),
                 MaterialLibAPI.getStack(Materials2Materials.Mellion, Materials2Shapes.plateDense, 8),
                 new Object[] { Circuits.UIV.getIngredient(), 32L } },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * STACKS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * STACKS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, 2_048_000),
                 MaterialLibAPI
@@ -2808,7 +2812,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Creon, Materials2Shapes.plateSuperdense, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Mellion, Materials2Shapes.plateSuperdense, 1),
                 new Object[] { Circuits.UIV.getIngredient(), 32L } },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * STACKS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * STACKS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, 2_048_000),
                 MaterialLibAPI
@@ -2837,7 +2841,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Creon, Materials2Shapes.plateSuperdense, 2),
                 MaterialLibAPI.getStack(Materials2Materials.Mellion, Materials2Shapes.plateSuperdense, 2),
                 new Object[] { Circuits.UIV.getIngredient(), 64L } },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * STACKS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 16 * STACKS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, 2_048_000),
                 MaterialLibAPI
@@ -2953,7 +2957,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     CustomItemList.eM_Power.get(2), GTOreDictUnificator.get("wireGt01SpaceTime", 2),
                     MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.plateDense, 1),
                     circuitsTierPlusOne[i], ItemList.EnergisedTesseract.get(1) },
-                new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 9 * INGOTS),
+                new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 9 * INGOTS),
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, 500) },
                 wirelessHatches[i],
@@ -2977,7 +2981,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get("plateTripleShirabon", 4L),
                     GTOreDictUnificator.get("plateDenseFlerovium_GT5U", 4), circuitsTierPlusOne[i + 4],
                     ItemList.EnergisedTesseract.get(1) },
-                new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 36 * INGOTS),
+                new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 36 * INGOTS),
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, 2_000) },
                 wirelessHatches_4A[i],
@@ -3002,7 +3006,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.plateDense, 4),
                     circuitsTierPlusOne[i + 4], ItemList.EnergisedTesseract.get(1) },
                 new FluidStack[] {
-                    MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 2 * STACKS + 16 * INGOTS),
+                    MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 2 * STACKS + 16 * INGOTS),
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, 8_000) },
                 wirelessHatches_16A[i],
@@ -3026,7 +3030,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get("plateTripleShirabon", 64L),
                     GTOreDictUnificator.get("plateDenseMetastableOganesson", 4), circuitsTierPlusOne[i + 4],
                     ItemList.EnergisedTesseract.get(1) },
-                new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 9 * STACKS),
+                new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 9 * STACKS),
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, 32_000) },
                 wirelessHatches_64A[i],
@@ -3051,7 +3055,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.Eternity, Materials2Shapes.plateDense, 32),
                     GTOreDictUnificator.get("plateDenseMagnetohydrodynamicallyConstrainedStarMatter", 16),
                     new Object[] { Circuits.MAX.getIngredient(), 8L }, ItemList.EnergisedTesseract.get(1) },
-                new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 36 * STACKS),
+                new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 36 * STACKS),
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.ExcitedDTSC, Materials2FluidShapes.fluidLiquid, 32_000) },
                 wirelessLasers[i],
@@ -3073,7 +3077,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.lens, 64),
                 ItemList.Sensor_UMV.get(64), ItemList.Sensor_UMV.get(64), ItemList.Electric_Pump_UMV.get(64),
                 ItemList.Electric_Pump_UMV.get(64), GTOreDictUnificator.get("wireGt16Quantium", 32) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 36 * STACKS) },
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 36 * STACKS) },
             CustomItemList.eM_energyTunnel8_UMV.get(1),
             100 * SECONDS,
             (int) TierEU.RECIPE_UMV);
@@ -3090,7 +3094,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.lens, 64),
                 ItemList.Sensor_UXV.get(64), ItemList.Sensor_UXV.get(64), ItemList.Electric_Pump_UXV.get(64),
                 ItemList.Electric_Pump_UXV.get(64), GTOreDictUnificator.get("wireGt16BlackPlutonium", 32) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 36 * STACKS) },
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 36 * STACKS) },
             CustomItemList.eM_energyTunnel8_UXV.get(1),
             100 * SECONDS,
             (int) TierEU.RECIPE_UXV);
@@ -3111,7 +3115,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Sensor_UXV.get(64), ItemList.Electric_Pump_UXV.get(64), ItemList.Electric_Pump_UXV.get(64),
                 ItemList.Electric_Pump_UXV.get(64), ItemList.Electric_Pump_UXV.get(64),
                 GTOreDictUnificator.get("wireGt16BlackPlutonium", 64) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 72 * STACKS) },
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 72 * STACKS) },
             CustomItemList.eM_energyTunnel9_UXV.get(1),
             110 * SECONDS,
             (int) TierEU.RECIPE_UXV);
@@ -3128,7 +3132,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.lens, 64),
                 ItemList.Emitter_UMV.get(64), ItemList.Emitter_UMV.get(64), ItemList.Electric_Pump_UMV.get(64),
                 ItemList.Electric_Pump_UMV.get(64), GTOreDictUnificator.get("wireGt16Quantium", 32) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 36 * STACKS) },
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 36 * STACKS) },
             CustomItemList.eM_dynamoTunnel8_UMV.get(1),
             100 * SECONDS,
             (int) TierEU.RECIPE_UMV);
@@ -3145,7 +3149,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.lens, 64),
                 ItemList.Emitter_UXV.get(64), ItemList.Emitter_UXV.get(64), ItemList.Electric_Pump_UXV.get(64),
                 ItemList.Electric_Pump_UXV.get(64), GTOreDictUnificator.get("wireGt16BlackPlutonium", 32) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 36 * STACKS) },
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 36 * STACKS) },
             CustomItemList.eM_dynamoTunnel8_UXV.get(1),
             100 * SECONDS,
             (int) TierEU.RECIPE_UXV);
@@ -3166,7 +3170,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Emitter_UXV.get(64), ItemList.Electric_Pump_UXV.get(64), ItemList.Electric_Pump_UXV.get(64),
                 ItemList.Electric_Pump_UXV.get(64), ItemList.Electric_Pump_UXV.get(64),
                 GTOreDictUnificator.get("wireGt16BlackPlutonium", 64) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 72 * STACKS) },
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 72 * STACKS) },
             CustomItemList.eM_dynamoTunnel9_UXV.get(1),
             110 * SECONDS,
             (int) TierEU.RECIPE_UXV);
@@ -3183,7 +3187,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { eM_dynamoTunnel5_UMV.get(1), ItemList.ZPM3.get(1),
                 new Object[] { Circuits.UMV.getIngredient(), 4L }, ItemList.Field_Generator_UMV.get(1),
                 GTOreDictUnificator.get("wireGt04SpaceTime", 16), CustomItemList.Machine_Multi_Transformer.get(1) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 20 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 20 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.ExcitedDTSC, Materials2FluidShapes.fluidLiquid, 8000),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Shirabon,
@@ -3220,10 +3224,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GTOreDictUnificator.get("plateprotohalkonite", 16),
                     MaterialLibAPI.getStack(Materials2Materials.CosmicNeutronium, Materials2Shapes.plateSuperdense, 2),
                     MU.stack(OrePrefixes.frameGt, Materials2Materials.AbyssalAlloy, 4) },
-                new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 2 * STACKS),
+                new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 2 * STACKS),
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.Bedrockium, Materials2FluidShapes.fluidMolten, 256 * STACKS),
-                    MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 32 * STACKS),
+                    MaterialUtils.legacyGtppFluid(Materials2Materials.CelestialTungsten, 32 * STACKS),
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Neutronium,
                         Materials2FluidShapes.fluidMolten,

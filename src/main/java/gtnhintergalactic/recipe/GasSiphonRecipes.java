@@ -9,7 +9,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 
 /**
  * Available fluids for the Gas Siphon are defined here
@@ -87,7 +87,7 @@ public class GasSiphonRecipes {
                 1,
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Tritium, Materials2FluidShapes.fluidGas, (int) (3_000)))
-            .addFluid(2, MU.gas(Materials2Materials.Helium3, 500))
+            .addFluid(2, MaterialUtils.gas(Materials2Materials.Helium3, 500))
             .addFluid(
                 3,
                 MaterialLibAPI.getFluidStack(Materials2Materials.Ammonia, Materials2FluidShapes.fluidGas, (int) (400)))

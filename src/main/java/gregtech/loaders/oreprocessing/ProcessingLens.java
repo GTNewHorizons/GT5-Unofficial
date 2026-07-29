@@ -16,7 +16,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
@@ -42,7 +42,7 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
             .blockingModeIgnoreItem()
             .register(stack);
 
-        switch (MU.internalName(material)) {
+        switch (MaterialUtils.internalName(material)) {
             case "Diamond", "Glass" -> {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L))
@@ -100,7 +100,7 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                         .addTo(latheRecipes);
                 }
                 final ITexture lensCoverTexture = TextureFactory
-                    .of(Textures.BlockIcons.OVERLAY_LENS, MU.rgba(material));
+                    .of(Textures.BlockIcons.OVERLAY_LENS, MaterialUtils.rgba(material));
                 CoverRegistry.registerDecorativeCover(
                     stack,
                     TextureFactory.of(Textures.BlockIcons.MACHINE_CASINGS[2][0], lensCoverTexture));

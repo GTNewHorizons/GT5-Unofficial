@@ -44,7 +44,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -82,7 +82,7 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
     private static List<Pair<FluidStack, Integer>> getExcitedLiquid() {
         if (excitedLiquid == null) {
             excitedLiquid = Arrays.asList(
-                Pair.of(MU.molten(Materials2Materials.spatialFluid, 20L), ExcitedLiquidCoe[0]),
+                Pair.of(MaterialUtils.molten(Materials2Materials.spatialFluid, 20L), ExcitedLiquidCoe[0]),
                 Pair.of(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.AtomicSeparationCatalyst,
@@ -108,7 +108,7 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
     private static List<Pair<FluidStack, Integer>> getCoolant() {
         if (coolant == null) {
             coolant = Arrays.asList(
-                Pair.of(MU.molten(Materials2Materials.temporalFluid, 20L), CoolantEfficiency[0]),
+                Pair.of(MaterialUtils.molten(Materials2Materials.temporalFluid, 20L), CoolantEfficiency[0]),
                 Pair.of(new FluidStack(TFFluids.fluidCryotheum, 1_000), CoolantEfficiency[1]),
                 Pair.of(
                     MaterialLibAPI.getFluidStack(

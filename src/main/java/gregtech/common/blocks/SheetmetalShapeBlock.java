@@ -19,7 +19,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.render.GTRendererBlock;
 
@@ -73,7 +73,7 @@ public class SheetmetalShapeBlock extends ShapeBlock implements IBlockWithTextur
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        TextureSet textureSet = MU.iconSet(MaterialLibAPI.getMaterialByIndex(meta));
+        TextureSet textureSet = MaterialUtils.iconSet(MaterialLibAPI.getMaterialByIndex(meta));
         if (textureSet == null) return super.getIcon(side, meta);
         return textureSet.mTextures[OrePrefixes.sheetmetal.getTextureIndex()].getIcon();
     }
@@ -82,8 +82,8 @@ public class SheetmetalShapeBlock extends ShapeBlock implements IBlockWithTextur
     public ITexture[][] getTextures(int meta) {
         return texturesByIndex.computeIfAbsent(meta, index -> {
             Material material = MaterialLibAPI.getMaterialByIndex(index);
-            TextureSet textureSet = MU.iconSet(material);
-            short[] rgba = MU.rgba(material);
+            TextureSet textureSet = MaterialUtils.iconSet(material);
+            short[] rgba = MaterialUtils.rgba(material);
             if (textureSet == null || rgba == null) return null;
             ITexture[] texture = { TextureFactory
                 .of(textureSet.mTextures[OrePrefixes.sheetmetal.getTextureIndex()], Dyes.getModulation(-1, rgba)) };

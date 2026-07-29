@@ -48,9 +48,9 @@ import gregtech.api.material.FluidRef;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
 import gregtech.api.material.MaterialRef;
 import gregtech.api.material.MaterialRefStack;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTLog;
@@ -117,7 +117,7 @@ public final class MaterialDataDump {
     private static Map<String, Object> dumpMaterialStack(MaterialStack stack) {
         if (stack == null || stack.mMaterial == null) return null;
         Map<String, Object> json = new LinkedHashMap<>();
-        json.put("material", MU.internalName(stack.mMaterial));
+        json.put("material", MaterialUtils.internalName(stack.mMaterial));
         json.put("amount", stack.mAmount);
         return json;
     }
@@ -182,22 +182,22 @@ public final class MaterialDataDump {
     /// `durabilityModifier` and `enchantmentLevel` have no surviving property and are dropped.
     private static Map<String, Object> dumpWerkstoff(com.ruling_0.materiallib.api.Material material) {
         int id = Materials2WerkstoffIndex.idOf(material);
-        short[] rgba = MU.rgba(material);
-        TextureSet texSet = MU.iconSet(material);
+        short[] rgba = MaterialUtils.rgba(material);
+        TextureSet texSet = MaterialUtils.iconSet(material);
 
         Map<String, Object> json = new LinkedHashMap<>();
         json.put("id", id);
         json.put("name", raw(material, GTMaterialProperties.LOCAL_NAME));
-        json.put("varName", MU.internalName(material));
+        json.put("varName", MaterialUtils.internalName(material));
         json.put("rgb", rgba != null ? new int[] { rgba[0], rgba[1], rgba[2] } : null);
         json.put("texSet", texSet != null ? texSet.mSetName : null);
         json.put("type", raw(material, GTMaterialProperties.WERKSTOFF_TYPE));
         json.put("pool", werkstoffPool(id));
         json.put("meltingPoint", raw(material, GTMaterialProperties.MELTING_POINT));
         json.put("boilingPoint", raw(material, GTMaterialProperties.BOILING_POINT));
-        json.put("protons", MU.protons(material));
-        json.put("neutrons", MU.neutrons(material));
-        json.put("mass", MU.mass(material));
+        json.put("protons", MaterialUtils.protons(material));
+        json.put("neutrons", MaterialUtils.neutrons(material));
+        json.put("mass", MaterialUtils.mass(material));
         json.put("meltingVoltage", raw(material, GTMaterialProperties.MELTING_VOLTAGE));
         json.put("durability", raw(material, GTMaterialProperties.DURABILITY));
         json.put("speed", raw(material, GTMaterialProperties.TOOL_SPEED));
@@ -584,7 +584,7 @@ public final class MaterialDataDump {
             Map<String, Object> json = new LinkedHashMap<>();
             json.put("blockField", blockField);
             json.put("meta", meta);
-            json.put("material", MU.internalName(metal.mMats[meta]));
+            json.put("material", MaterialUtils.internalName(metal.mMats[meta]));
             json.put(
                 "iconName",
                 metal.mBlockIcons[meta] instanceof GTBlockIconContainer gtIcon ? gtIcon.getIconName() : null);

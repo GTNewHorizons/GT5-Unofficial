@@ -43,7 +43,7 @@ public interface IGTRegisteredFluid {
     IGTRegisteredFluid registerPContainers(final ItemStack fullContainer, final ItemStack emptyContainer);
 
     /// Configures a MaterialLib [Material]'s fluids from this fluid's state. Records the fluid into `MU`'s
-    /// slot store (so `MU.fluid`/`gas`/`molten`/`solid`/`plasma` resolve it post-loader) and the
+    /// slot store (so `MaterialUtils.fluid`/`gas`/`molten`/`solid`/`plasma` resolve it post-loader) and the
     /// `Fluid`->`Material` twin map.
     @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
     IGTRegisteredFluid configureMaterials(final Material material);

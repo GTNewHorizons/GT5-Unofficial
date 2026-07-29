@@ -32,6 +32,7 @@ import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -278,7 +279,7 @@ public class RecipesMachinesCustom {
                 Circuits.IV.get(8))
             .circuit(17)
             .itemOutputs(GregtechItemList.Industrial_Solar_Tower.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.TantalumCarbide, 16 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.TantalumCarbide, 16 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -291,7 +292,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials2Materials.MaragingSteel350, Materials2Shapes.screw, 8))
             .circuit(17)
             .itemOutputs(GregtechItemList.Casing_SolarTower_Structural.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.TantalumCarbide, 4 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.TantalumCarbide, 4 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -305,7 +306,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.screw, (int) (8)))
             .circuit(17)
             .itemOutputs(GregtechItemList.Casing_SolarTower_SaltContainment.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.TantalumCarbide, 4 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.TantalumCarbide, 4 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -318,7 +319,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials2Materials.MaragingSteel250, Materials2Shapes.screw, 8))
             .circuit(17)
             .itemOutputs(GregtechItemList.Casing_SolarTower_HeatContainment.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.TantalumCarbide, 4 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.TantalumCarbide, 4 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -386,7 +387,7 @@ public class RecipesMachinesCustom {
                 MU.stack(OrePrefixes.frameGt, Materials2Materials.BlackMetal, 4))
             .circuit(19)
             .itemOutputs(GregtechItemList.ChemicalPlant_Controller.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.BlackSteel, 8 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.BlackSteel, 8 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -420,7 +421,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.dust, (int) (32)))
             .circuit(21)
             .itemOutputs(ItemList.AlgaeFarm.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Potin, 8 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Potin, 8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -484,7 +485,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials2Materials.Laurenium, Materials2Shapes.plateDouble, 2),
                 CustomItemList.eM_Coil.get(1))
             .itemOutputs(GregtechItemList.Casing_Coil_QuantumForceTransformer.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Quantum, 4 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Quantum, 4 * INGOTS))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -500,8 +501,8 @@ public class RecipesMachinesCustom {
                 GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1),
                 new Object[] { Circuits.UEV.getIngredient(), 8 }, ItemList.Electric_Pump_UEV.get(4),
                 ItemList.Field_Generator_UEV.get(4), GregtechItemList.Laser_Lens_Special.get(1) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 10 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.Pikyonium64B, 32 * INGOTS) },
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 10 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Pikyonium64B, 32 * INGOTS) },
             GregtechItemList.QuantumForceTransformer.get(1),
             3 * MINUTES,
             (int) TierEU.RECIPE_UIV);
@@ -688,7 +689,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials2Materials.EglinSteel, Materials2Shapes.stickLong, 4),
                 ItemList.Electric_Piston_HV.get(2))
             .itemOutputs(GregtechItemList.Casing_Cyclotron_External.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.ZirconiumCarbide, 8 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.ZirconiumCarbide, 8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -703,7 +704,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials2Materials.Incoloy020, Materials2Shapes.screw, 32),
                 ItemList.Field_Generator_EV.get(1))
             .itemOutputs(GregtechItemList.Casing_Cyclotron_Coil.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.HG1223, 5 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.HG1223, 5 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -863,9 +864,9 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials2Materials.Zeron100, Materials2Shapes.plateDouble, 16),
                 MaterialLibAPI.getStack(Materials2Materials.Zeron100, Materials2Shapes.screw, 64))
             .fluidInputs(
-                MU.legacyGtppFluid(Materials2Materials.Zeron100, 16 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.LafiumCompound, 32 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.TriniumNaquadahCarbonite, 32 * INGOTS))
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Zeron100, 16 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.LafiumCompound, 32 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.TriniumNaquadahCarbonite, 32 * INGOTS))
             .itemOutputs(GregtechItemList.Controller_IsaMill.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(10 * MINUTES)
@@ -937,9 +938,9 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials2Materials.HastelloyN, Materials2Shapes.plateDouble, 16),
                 MaterialLibAPI.getStack(Materials2Materials.HastelloyN, Materials2Shapes.screw, 64))
             .fluidInputs(
-                MU.legacyGtppFluid(Materials2Materials.Inconel625, 16 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.Inconel792, 32 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.HastelloyN, 32 * INGOTS))
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Inconel625, 16 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Inconel792, 32 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.HastelloyN, 32 * INGOTS))
             .itemOutputs(ItemList.FlotationCell.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(60 * SECONDS)
@@ -1018,8 +1019,8 @@ public class RecipesMachinesCustom {
                     .getStack(Materials2Materials.YttriumBariumCuprate, Materials2Shapes.wireFine, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.foil, (int) (64)))
             .fluidInputs(
-                MU.legacyGtppFluid(Materials2Materials.IncoloyDS, 16 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.TantalumCarbide, 32 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.IncoloyDS, 16 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.TantalumCarbide, 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Titanium,
                     Materials2FluidShapes.fluidMolten,
@@ -1062,7 +1063,7 @@ public class RecipesMachinesCustom {
             .itemOutputs(
                 ItemDummyResearch
                     .getResearchStack(ItemDummyResearch.ASSEMBLY_LINE_RESEARCH.RESEARCH_11_MOLECULAR_TRANSFORMER, 1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Inconel625, 16 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Inconel625, 16 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -1090,9 +1091,9 @@ public class RecipesMachinesCustom {
                 new Object[] { "circuitMaster", 16 },
                 GregtechItemList.Laser_Lens_WoodsGlass.get(1))
             .fluidInputs(
-                MU.legacyGtppFluid(Materials2Materials.Nitinol60, 18 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.IncoloyMA956, 72 * INGOTS),
-                MU.legacyGtppFluid(Materials2Materials.Kanthal, 4 * INGOTS))
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Nitinol60, 18 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.IncoloyMA956, 72 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Kanthal, 4 * INGOTS))
             .itemOutputs(ItemList.MolecularTransformer.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(2 * MINUTES)
@@ -1108,7 +1109,7 @@ public class RecipesMachinesCustom {
                 Circuits.IV.get(4))
             .circuit(16)
             .itemOutputs(GregtechItemList.Casing_Molecular_Transformer_1.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Inconel625, 4 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Inconel625, 4 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -1123,7 +1124,7 @@ public class RecipesMachinesCustom {
                 Circuits.EV.get(8))
             .circuit(16)
             .itemOutputs(GregtechItemList.Casing_Molecular_Transformer_2.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Inconel625, 4 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Inconel625, 4 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -1138,7 +1139,7 @@ public class RecipesMachinesCustom {
                 Circuits.EV.get(8))
             .circuit(16)
             .itemOutputs(GregtechItemList.Casing_Molecular_Transformer_3.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Inconel625, 4 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Inconel625, 4 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -1172,7 +1173,7 @@ public class RecipesMachinesCustom {
                 getModItem(Mods.IndustrialCraft2.ID, "itemPartCarbonMesh", 64, 0))
             .circuit(18)
             .itemOutputs(GregtechItemList.LavaFilter.get(16))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.TantalumCarbide, 1 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.TantalumCarbide, 1 * INGOTS))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(assemblerRecipes);

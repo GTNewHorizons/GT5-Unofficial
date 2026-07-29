@@ -34,8 +34,8 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
-import gregtech.api.material.MUOre;
 import gregtech.api.material.MaterialRefStack;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.loaders.materials.LegacyNameDomain;
@@ -197,7 +197,8 @@ public class EyeOfHarmonyRecipe {
         // If DeepDark then it should output all plasmas involved in making exotic catalyst.
         if (rocketTier == 9) {
             for (com.ruling_0.materiallib.api.Material material : VALID_PLASMAS) {
-                fluidStackLongArrayList.add(new FluidStackLong(MU.plasma(material, plasmaAmount), plasmaAmount));
+                fluidStackLongArrayList
+                    .add(new FluidStackLong(MaterialUtils.plasma(material, plasmaAmount), plasmaAmount));
             }
         } else {
             // --- Output and process fluids of the recipe.
@@ -392,44 +393,50 @@ public class EyeOfHarmonyRecipe {
         }
     }
 
-    /// Reads every legacy field through [MU]/[MUOre] property accessors, each resolving independently against
+    /// Reads every legacy field through [MaterialUtils] property accessors, each resolving independently against
     /// the live facade rather than a single upfront snapshot. Neither the bartworks nor gtpp bridge loader ever
     /// writes `mOreMultiplier`/`mByProductMultiplier`/`mSmeltingMultiplier` independently of
     /// [GTMaterialProperties], so this reads the same single source of truth those legacy fields do.
     public static void processHelper(HashMapHelper outputMap, com.ruling_0.materiallib.api.Material material,
         double mainMultiplier, double probability) {
         if (material == null) return;
-        outputMap.add(MU.directSmelting(material), (MUOre.oreMultiplier(material) * 2) * mainMultiplier * probability);
+        outputMap.add(
+            MaterialUtils.directSmelting(material),
+            (MaterialUtils.oreMultiplier(material) * 2) * mainMultiplier * probability);
 
-        if (MU.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_GOLD))
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_GOLD))
             outputMap.add(Materials2Materials.Gold, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
-        if (MU.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_IRON))
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_IRON))
             outputMap.add(Materials2Materials.Iron, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
-        if (MU.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)) outputMap
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)) outputMap
             .add(Materials2Materials.Neodymium, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
 
-        List<com.ruling_0.materiallib.api.Material> byProducts = MU.oreByProducts(material);
+        List<com.ruling_0.materiallib.api.Material> byProducts = MaterialUtils.oreByProducts(material);
 
         if (byProducts.isEmpty()) {
-            if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY_99_PERCENT)) outputMap
-                .add(MU.directSmelting(material), mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
-            else if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY))
-                outputMap.add(MU.directSmelting(material), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-            else if (MU.hasFlag(material, GTMaterialFlag.WASHING_SODIUMPERSULFATE))
-                outputMap.add(MU.directSmelting(material), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            if (MaterialUtils.hasFlag(material, GTMaterialFlag.WASHING_MERCURY_99_PERCENT)) outputMap.add(
+                MaterialUtils.directSmelting(material),
+                mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
+            else if (MaterialUtils.hasFlag(material, GTMaterialFlag.WASHING_MERCURY)) outputMap.add(
+                MaterialUtils.directSmelting(material),
+                mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            else if (MaterialUtils.hasFlag(material, GTMaterialFlag.WASHING_SODIUMPERSULFATE)) outputMap.add(
+                MaterialUtils.directSmelting(material),
+                mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
         }
 
-        if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY_99_PERCENT))
-            outputMap.add(MU.directSmelting(material), mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
-        else if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY))
-            outputMap.add(MU.directSmelting(material), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-        else if (MU.hasFlag(material, GTMaterialFlag.WASHING_SODIUMPERSULFATE))
-            outputMap.add(MU.directSmelting(material), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.WASHING_MERCURY_99_PERCENT)) outputMap
+            .add(MaterialUtils.directSmelting(material), mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
+        else if (MaterialUtils.hasFlag(material, GTMaterialFlag.WASHING_MERCURY)) outputMap
+            .add(MaterialUtils.directSmelting(material), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+        else if (MaterialUtils.hasFlag(material, GTMaterialFlag.WASHING_SODIUMPERSULFATE)) outputMap
+            .add(MaterialUtils.directSmelting(material), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
 
         int index = 0;
         for (com.ruling_0.materiallib.api.Material byProductMaterial : byProducts) {
-            if (index < 3) outputMap
-                .add(MU.directSmelting(byProductMaterial), mainMultiplier * (ORE_MULTIPLIER[index] * 2) * probability);
+            if (index < 3) outputMap.add(
+                MaterialUtils.directSmelting(byProductMaterial),
+                mainMultiplier * (ORE_MULTIPLIER[index] * 2) * probability);
             // For Materials that index is > 3, normally they will not be used (unless using Chem bath).
 
             // MaterialLib hands out one canonical instance per material, so reference identity is the
@@ -437,15 +444,18 @@ public class EyeOfHarmonyRecipe {
             if (byProductMaterial == material) continue;
 
             // Will never duplicate since mOreByProducts does not support duplicate.
-            if (MU.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_MERCURY_99_PERCENT)) outputMap.add(
-                MU.directSmelting(byProductMaterial),
+            if (MaterialUtils.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_MERCURY_99_PERCENT)) outputMap.add(
+                MaterialUtils.directSmelting(byProductMaterial),
                 mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
-            else if (MU.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_MERCURY)) outputMap
-                .add(MU.directSmelting(byProductMaterial), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-            else if (MU.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_SODIUMPERSULFATE)) outputMap
-                .add(MU.directSmelting(byProductMaterial), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-            else if (index >= 3) outputMap
-                .add(MU.directSmelting(byProductMaterial), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            else if (MaterialUtils.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_MERCURY)) outputMap.add(
+                MaterialUtils.directSmelting(byProductMaterial),
+                mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            else if (MaterialUtils.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_SODIUMPERSULFATE)) outputMap.add(
+                MaterialUtils.directSmelting(byProductMaterial),
+                mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            else if (index >= 3) outputMap.add(
+                MaterialUtils.directSmelting(byProductMaterial),
+                mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
             // EOH is better than other ore processing so it can get products that normally cannot get.
 
             index++;
@@ -453,8 +463,10 @@ public class EyeOfHarmonyRecipe {
 
         for (int i = index; i < 3; i++) {
             com.ruling_0.materiallib.api.Material byProductMaterial = GTUtility
-                .selectItemInList(i, MU.macerateInto(material), byProducts);
-            outputMap.add(MU.directSmelting(byProductMaterial), mainMultiplier * (ORE_MULTIPLIER[i] * 2) * probability);
+                .selectItemInList(i, MaterialUtils.macerateInto(material), byProducts);
+            outputMap.add(
+                MaterialUtils.directSmelting(byProductMaterial),
+                mainMultiplier * (ORE_MULTIPLIER[i] * 2) * probability);
             // Since it's duplicate, do not check if it can Mercury/chem bath.
         }
     }
@@ -554,7 +566,7 @@ public class EyeOfHarmonyRecipe {
             bonusB = amJ.get(1);
         }
 
-        int materialTier = MU.tier(material);
+        int materialTier = MaterialUtils.tier(material);
 
         // Default out if it's made of fluids or some stuff.
         if (bonusA == null && materialTier >= 2) {
@@ -623,7 +635,7 @@ public class EyeOfHarmonyRecipe {
         for (Pair<Object, Long> pair : planetList) {
             if (!(pair.getLeft() instanceof com.ruling_0.materiallib.api.Material left)) continue;
             if (VALID_PLASMAS.contains(left)) {
-                plasmaList.add(MU.plasma(left, 1));
+                plasmaList.add(MaterialUtils.plasma(left, 1));
             }
         }
 
@@ -695,10 +707,10 @@ public class EyeOfHarmonyRecipe {
         {
             VALID_PLASMAS.forEach(
                 (material -> put(
-                    MU.plasma(material, 1)
+                    MaterialUtils.plasma(material, 1)
                         .getFluid()
                         .getUnlocalizedName(),
-                    (long) (getPlasmaFuelValueInEUPerLiterFromFluid(MU.plasma(material, 1))
+                    (long) (getPlasmaFuelValueInEUPerLiterFromFluid(MaterialUtils.plasma(material, 1))
                         * getMaxPlasmaTurbineEfficiency()))));
         }
     };

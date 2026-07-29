@@ -24,7 +24,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.fluid.GTFluidFactory;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeConstants;
@@ -142,8 +142,8 @@ public class FuelLoader implements Runnable {
             .addTo(GTRecipeConstants.Fuel);
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.beacon, 1))
-            .metadata(FUEL_VALUE, MU.fuelPower(Materials2Materials.NetherStar) * 2)
-            .metadata(FUEL_TYPE, MU.fuelType(Materials2Materials.NetherStar))
+            .metadata(FUEL_VALUE, MaterialUtils.fuelPower(Materials2Materials.NetherStar) * 2)
+            .metadata(FUEL_TYPE, MaterialUtils.fuelType(Materials2Materials.NetherStar))
             .addTo(GTRecipeConstants.Fuel);
         if (Mods.EnderIO.isModLoaded()) {
             GTValues.RA.stdBuilder()

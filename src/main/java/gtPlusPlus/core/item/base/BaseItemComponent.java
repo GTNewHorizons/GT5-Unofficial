@@ -24,7 +24,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gregtech.common.config.Client;
@@ -87,7 +87,7 @@ public class BaseItemComponent extends Item {
     public String getItemStackDisplayName(ItemStack stack) {
         if (componentMaterial != null) {
             return componentType.getGtOrePrefix()
-                .getLocalizedNameForItem(MU.internalName(componentMaterial));
+                .getLocalizedNameForItem(MaterialUtils.internalName(componentMaterial));
         }
         return OrePrefixes.getLocalizedNameForItemForKey(componentType.getName(), "@", materialKey);
     }
@@ -100,7 +100,7 @@ public class BaseItemComponent extends Item {
         try {
             if (this.materialName != null && !this.materialName.isEmpty() && (this.componentMaterial != null)) {
 
-                MU.addTooltips(this.componentMaterial, list);
+                MaterialUtils.addTooltips(this.componentMaterial, list);
 
                 if (Client.tooltip.showHotIngotText) {
                     if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {
@@ -114,7 +114,7 @@ public class BaseItemComponent extends Item {
                 if (Client.tooltip.showCtrlText) {
                     // Hidden Tooltip
                     if (GuiScreen.isCtrlKeyDown()) {
-                        String type = MU.iconSet(this.componentMaterial).mSetName;
+                        String type = MaterialUtils.iconSet(this.componentMaterial).mSetName;
                         String output = type.substring(0, 1)
                             .toUpperCase() + type.substring(1);
                         list.add(
@@ -180,7 +180,7 @@ public class BaseItemComponent extends Item {
                 return this.componentColour;
             }
 
-            if (MU.rgba(this.componentMaterial)[3] <= 1) {
+            if (MaterialUtils.rgba(this.componentMaterial)[3] <= 1) {
                 return this.componentColour;
             } else {
                 // Animated materials ship baked animated textures; render them untinted.
@@ -205,7 +205,7 @@ public class BaseItemComponent extends Item {
     public void registerIcons(final IIconRegister i) {
         String metType = null;
         if (this.componentMaterial != null) {
-            TextureSet u = MU.iconSet(this.componentMaterial);
+            TextureSet u = MaterialUtils.iconSet(this.componentMaterial);
             if (u != null) {
                 metType = u.mSetName;
             }

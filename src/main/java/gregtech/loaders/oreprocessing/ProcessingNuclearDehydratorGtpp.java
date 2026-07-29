@@ -17,7 +17,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 
 /// Reproduces the retired gtPlusPlus `MaterialGenerator#generateNuclearDusts`'s chemical-dehydrator recipe (a
 /// material's own fluid dehydrating back into its dust) for every material in [#ELIGIBLE], plus the one
@@ -55,10 +55,10 @@ public class ProcessingNuclearDehydratorGtpp {
     private static void generate(Material material) {
         ItemStack dust = ProcessingDustGeneration.stackOf(OrePrefixes.dust, material, 1L);
         if (dust == null) return;
-        FluidStack fluid = MU.legacyGtppFluid(material, INGOTS);
+        FluidStack fluid = MaterialUtils.legacyGtppFluid(material, INGOTS);
         if (fluid == null) return;
 
-        long voltage = MU.voltageMultiplier(material);
+        long voltage = MaterialUtils.voltageMultiplier(material);
         GTValues.RA.stdBuilder()
             .circuit(20)
             .itemOutputs(dust)
@@ -85,7 +85,7 @@ public class ProcessingNuclearDehydratorGtpp {
             .outputChances(10000, 1000, 1000, 3000, 2000)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, 8000))
-            .fluidOutputs(MU.fluid(Materials2Materials.HydrofluoricAcidGT5U, 16000))
+            .fluidOutputs(MaterialUtils.fluid(Materials2Materials.HydrofluoricAcidGT5U, 16000))
             .eut(RECIPE_HV / 2)
             .duration(10 * MINUTES)
             .addTo(chemicalDehydratorRecipes);

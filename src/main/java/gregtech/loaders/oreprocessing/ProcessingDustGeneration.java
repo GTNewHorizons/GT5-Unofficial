@@ -16,6 +16,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -165,7 +166,7 @@ public class ProcessingDustGeneration {
     }
 
     private static void addFurnaceRecipe(Material material, ItemStack dust, ItemStack ingot) {
-        if (MU.blastFurnaceRequired(material)) {
+        if (MaterialUtils.blastFurnaceRequired(material)) {
             ItemStack hotIngot = stackOf(OrePrefixes.ingotHot, material, 1L);
             if (hotIngot != null) {
                 addBlastFurnaceRecipe(material, dust, hotIngot);
@@ -176,15 +177,15 @@ public class ProcessingDustGeneration {
     }
 
     private static void addBlastFurnaceRecipe(Material material, ItemStack input, ItemStack output) {
-        int tier = MU.tier(material);
+        int tier = MaterialUtils.tier(material);
         int timeTaken = tier <= 4 ? 25 * tier * 10 : 125 * tier * 10;
 
         GTValues.RA.stdBuilder()
             .itemInputs(input)
             .itemOutputs(output)
             .duration(timeTaken)
-            .eut(MU.voltageMultiplier(material))
-            .metadata(COIL_HEAT, MU.meltingPoint(material))
+            .eut(MaterialUtils.voltageMultiplier(material))
+            .metadata(COIL_HEAT, MaterialUtils.meltingPoint(material))
             .addTo(blastFurnaceRecipes);
     }
 

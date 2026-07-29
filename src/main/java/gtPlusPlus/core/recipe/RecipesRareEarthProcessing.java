@@ -23,6 +23,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
@@ -37,7 +38,7 @@ public class RecipesRareEarthProcessing {
         // avoiding two competing registrations under the same name.
         FluidStack mBrine = FluidRegistry.getFluidStack("brine", 1_000);
         if (mBrine == null) {
-            mBrine = MU.legacyGtppFluid(Materials2Materials.Brine, 1_000);
+            mBrine = MaterialUtils.legacyGtppFluid(Materials2Materials.Brine, 1_000);
         }
 
         // Add Process for creating Brine
@@ -77,7 +78,7 @@ public class RecipesRareEarthProcessing {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.Laser_Lens_WoodsGlass.get(0))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.HydrogenChlorideMix, 4_000))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.HydrogenChlorideMix, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride, 4_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -117,7 +118,7 @@ public class RecipesRareEarthProcessing {
                 MaterialLibAPI.getStack(Materials2Materials.RareEarthII, Materials2Shapes.crushed, 2),
                 MaterialLibAPI.getStack(Materials2Materials.RareEarthII, Materials2Shapes.crushed, 2))
             .outputChances(9000, 8000, 7000)
-            .fluidInputs(MU.fluid(Materials2Materials.HydrochloricAcidGT5U, 2_000))
+            .fluidInputs(MaterialUtils.fluid(Materials2Materials.HydrochloricAcidGT5U, 2_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalBathRecipes);
@@ -142,7 +143,7 @@ public class RecipesRareEarthProcessing {
                 MaterialLibAPI.getStack(Materials2Materials.RareEarthIII, Materials2Shapes.crushed, 2),
                 MaterialLibAPI.getStack(Materials2Materials.RareEarthIII, Materials2Shapes.crushed, 2))
             .outputChances(9000, 8000, 7000)
-            .fluidInputs(MU.fluid(Materials2Materials.HydrofluoricAcidGT5U, 2_000))
+            .fluidInputs(MaterialUtils.fluid(Materials2Materials.HydrofluoricAcidGT5U, 2_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(chemicalBathRecipes);

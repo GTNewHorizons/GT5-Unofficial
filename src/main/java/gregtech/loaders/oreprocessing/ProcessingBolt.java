@@ -9,6 +9,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
@@ -33,7 +34,7 @@ public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistr
             return;
         }
 
-        if (MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
             return;
         }
 

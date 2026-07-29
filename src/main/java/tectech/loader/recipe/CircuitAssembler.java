@@ -11,7 +11,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import tectech.thing.CustomItemList;
 
 public class CircuitAssembler implements Runnable {
@@ -22,7 +22,7 @@ public class CircuitAssembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Circuits.LV.get(2), MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.foil, 4))
             .itemOutputs(CustomItemList.parametrizerMemory.get(1))
-            .fluidInputs(MU.molten(Materials2Materials.Plastic, 1 * HALF_INGOTS))
+            .fluidInputs(MaterialUtils.molten(Materials2Materials.Plastic, 1 * HALF_INGOTS))
             .requiresCleanRoom()
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)

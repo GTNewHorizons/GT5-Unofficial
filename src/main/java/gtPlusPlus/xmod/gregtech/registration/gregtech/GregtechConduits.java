@@ -19,6 +19,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
@@ -27,12 +28,13 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 public class GregtechConduits {
 
     private static FluidStack fluidStackOf(Material material, long amount) {
-        return MU.hasMolten(material) ? MU.molten(material, amount) : MU.fluid(material, amount);
+        return MaterialUtils.hasMolten(material) ? MaterialUtils.molten(material, amount)
+            : MaterialUtils.fluid(material, amount);
     }
 
     public static void generatePipeRecipes(final Material material) {
         // generatePipeRecipes multiplies the voltage multiplier by 8 because ??! reasons.
-        generatePipeRecipes(material, MU.localName(material), MU.voltageMultiplier(material) / 8);
+        generatePipeRecipes(material, MaterialUtils.localName(material), MaterialUtils.voltageMultiplier(material) / 8);
     }
 
     public static void generatePipeRecipes(final Material material, final String materialName, final long vMulti) {
@@ -56,7 +58,7 @@ public class GregtechConduits {
 
         int eut = (int) (8 * vMulti);
 
-        if (material != null && MU.voltageMultiplier(material) <= TierEU.RECIPE_IV) {
+        if (material != null && MaterialUtils.voltageMultiplier(material) <= TierEU.RECIPE_IV) {
             // Add the Four Shaped Recipes First
             GTModHandler.addCraftingRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Tiny" + output, 8),
@@ -199,7 +201,7 @@ public class GregtechConduits {
 
         // Adds manual crafting recipe
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlate, aWire01 })
-            && MU.voltageMultiplier(aMaterial) < 7680) {
+            && MaterialUtils.voltageMultiplier(aMaterial) < 7680) {
             GTModHandler.addCraftingRecipe(
                 aWire01,
                 GTModHandler.RecipeBits.BUFFERED,

@@ -18,7 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import gregtech.api.enums.GTValues;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPDropType;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
 
@@ -103,13 +103,13 @@ public class GTPPDrop extends Item {
         ItemStack tDrop;
         for (GTPPDropType aDrop : GTPP_Bees.sDropMappings.values()) {
             tDrop = aDrop.getStackForType(1);
-            int tier = MU.tier(aDrop.mMaterial);
-            FluidStack aOutput = new FluidStack(MU.legacyGtppFluidOf(aDrop.mMaterial), sFluidOutputs[tier]);
+            int tier = MaterialUtils.tier(aDrop.mMaterial);
+            FluidStack aOutput = new FluidStack(MaterialUtils.legacyGtppFluidOf(aDrop.mMaterial), sFluidOutputs[tier]);
             GTValues.RA.stdBuilder()
                 .itemInputs(tDrop)
                 .fluidOutputs(aOutput)
                 .duration(tier * 30 * SECONDS)
-                .eut(MU.voltageMultiplier(aDrop.mMaterial))
+                .eut(MaterialUtils.voltageMultiplier(aDrop.mMaterial))
                 .addTo(fluidExtractionRecipes);
 
         }

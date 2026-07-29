@@ -62,7 +62,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.material.PipeStats;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
@@ -144,7 +144,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
 
     @Override
     public byte getTileEntityBaseType() {
-        final int level = GTUtility.clamp(MU.toolQuality(shapeMaterial()), 0, 3);
+        final int level = GTUtility.clamp(MaterialUtils.toolQuality(shapeMaterial()), 0, 3);
 
         HarvestTool tool = switch (level) {
             case 0 -> HarvestTool.WrenchPipeLevel0;
@@ -183,8 +183,8 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     }
 
     protected ITexture getBaseTexture(boolean connected, int colorIndex) {
-        TextureSet textureSet = MU.iconSet(getMaterial());
-        short[] rgba = MU.rgba(getMaterial());
+        TextureSet textureSet = MaterialUtils.iconSet(getMaterial());
+        short[] rgba = MaterialUtils.rgba(getMaterial());
         if (textureSet == null || rgba == null) return Textures.BlockIcons.ERROR_RENDERING[0];
         return getBaseTexture(mThickNess, mPipeAmount, textureSet, rgba, connected, colorIndex);
     }

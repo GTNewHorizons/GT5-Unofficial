@@ -14,6 +14,7 @@ import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -83,7 +84,8 @@ public class LoaderMaterialLibCutover implements Runnable {
                     if (prefix.isUnifiable()) {
                         GTOreDictUnificator.set(prefix, material, stack);
                     } else {
-                        GTOreDictUnificator.registerOre(prefix.oreDictName(MU.internalName(material)), stack);
+                        GTOreDictUnificator
+                            .registerOre(prefix.oreDictName(MaterialUtils.internalName(material)), stack);
                     }
                 }
             }

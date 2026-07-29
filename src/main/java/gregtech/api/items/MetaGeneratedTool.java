@@ -59,7 +59,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -113,9 +113,9 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     /* ---------- FOR ADDING CUSTOM ITEMS INTO THE REMAINING 766 RANGE ---------- */
 
-    /// The MaterialLib material a tool's `PrimaryMaterial` NBT string resolves to, via [MU#byLegacyName] --
+    /// The MaterialLib material a tool's `PrimaryMaterial` NBT string resolves to, via [MaterialUtils#byLegacyName] --
     /// which covers both what [#getToolWithStats(int, int, com.ruling_0.materiallib.api.Material,
-    /// com.ruling_0.materiallib.api.Material, long[])] writes ([MU#internalName] strings) and the legacy
+    /// com.ruling_0.materiallib.api.Material, long[])] writes ([MaterialUtils#internalName] strings) and the legacy
     /// internal name strings older saves contain (byte-identical for every ported material). Falls back to
     /// [Materials2Materials#NULL] on a missing/unresolvable name.
     public static com.ruling_0.materiallib.api.Material getPrimaryMaterialML(ItemStack aStack) {
@@ -132,7 +132,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
             if (aNBT != null) {
-                com.ruling_0.materiallib.api.Material material = MU.byLegacyName(aNBT.getString(aKey));
+                com.ruling_0.materiallib.api.Material material = MaterialUtils.byLegacyName(aNBT.getString(aKey));
                 if (material != null) return material;
             }
         }
@@ -140,10 +140,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     }
 
     /// The `"Material." + internalName` lang key for a MaterialLib material, resolved directly off
-    /// [MU#internalName].
+    /// [MaterialUtils#internalName].
     private static String getMaterialLocalizedName(com.ruling_0.materiallib.api.Material aMaterial) {
         return translateToLocal(
-            "Material." + MU.internalName(aMaterial)
+            "Material." + MaterialUtils.internalName(aMaterial)
                 .toLowerCase());
     }
 
@@ -300,7 +300,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
      * This Function gets an ItemStack Version of this Tool
      * <p/>
      * The tool NBT (material name strings, durability) is written directly off the MaterialLib materials'
-     * [MU#internalName] and [GTMaterialProperties#DURABILITY].
+     * [MaterialUtils#internalName] and [GTMaterialProperties#DURABILITY].
      *
      * @param aToolID            the ID of the Tool Class
      * @param aAmount            Amount of Items (well normally you only need 1)
@@ -317,13 +317,13 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             NBTTagCompound tMainNBT = new NBTTagCompound(), tToolNBT = new NBTTagCompound();
             tToolNBT.setByte("Mode", (byte) 0);
             if (aPrimaryMaterial != null) {
-                tToolNBT.setString("PrimaryMaterial", MU.internalName(aPrimaryMaterial));
+                tToolNBT.setString("PrimaryMaterial", MaterialUtils.internalName(aPrimaryMaterial));
                 tToolNBT.setLong(
                     "MaxDamage",
                     100L * (long) (getToolDurability(aPrimaryMaterial) * tToolStats.getMaxDurabilityMultiplier()));
             }
             if (aSecondaryMaterial != null)
-                tToolNBT.setString("SecondaryMaterial", MU.internalName(aSecondaryMaterial));
+                tToolNBT.setString("SecondaryMaterial", MaterialUtils.internalName(aSecondaryMaterial));
 
             if (aElectricArray != null) {
                 tToolNBT.setBoolean("Electric", true);

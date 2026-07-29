@@ -26,6 +26,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
@@ -48,12 +49,12 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        long materialMass = MU.mass(material);
-        boolean noSmashing = MU.hasFlag(material, GTMaterialFlag.NO_SMASHING);
-        boolean noWorking = MU.hasFlag(material, GTMaterialFlag.NO_WORKING);
-        boolean noSmelting = MU.hasFlag(material, GTMaterialFlag.NO_SMELTING);
-        boolean specialRecipeReq = MU.hasFlag(material, GTMaterialFlag.MORTAR_GRINDABLE);
-        boolean fuelPower = MU.fuelPower(material) > 0;
+        long materialMass = MaterialUtils.mass(material);
+        boolean noSmashing = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING);
+        boolean noWorking = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING);
+        boolean noSmelting = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING);
+        boolean specialRecipeReq = MaterialUtils.hasFlag(material, GTMaterialFlag.MORTAR_GRINDABLE);
+        boolean fuelPower = MaterialUtils.fuelPower(material) > 0;
         boolean unifiable = !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE));
 
         // Nether quartz is skipped due to its 4:1 ratio.
@@ -65,8 +66,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (fuelPower) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
-                        .metadata(FUEL_VALUE, MU.fuelPower(material) * 2)
-                        .metadata(FUEL_TYPE, MU.fuelType(material))
+                        .metadata(FUEL_VALUE, MaterialUtils.fuelPower(material) * 2)
+                        .metadata(FUEL_TYPE, MaterialUtils.fuelType(material))
                         .addTo(GTRecipeConstants.Fuel);
                 }
 
@@ -88,7 +89,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (!noSmelting) {
                     GTModHandler.addSmeltingRecipe(
                         GTUtility.copyAmount(1, stack),
-                        GTOreDictUnificator.get(OrePrefixes.ingot, MU.smeltInto(material), 1L));
+                        GTOreDictUnificator.get(OrePrefixes.ingot, MaterialUtils.smeltInto(material), 1L));
                 }
 
                 if (noSmashing) {
@@ -224,7 +225,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 GTModHandler.RecipeBits.BITS_STD,
                                 new Object[] { "h", "X", 'X', MU.craftIngredient(OrePrefixes.gemFlawless, material) });
 
-                            if (MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)) {
+                            if (MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)) {
                                 GTModHandler.addCraftingRecipe(
                                     GTUtility.copyAmount(1, stack),
                                     GTModHandler.RecipeBits.BITS_STD,
@@ -242,7 +243,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     }
                 }
 
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + MU.dye(material).mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary
+                    .getOres("craftingLens" + MaterialUtils.dye(material).mName.replace(" ", ""))) { // Engraver
                     // Laser engraver recipes
                     {
 
@@ -265,8 +267,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (fuelPower) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
-                        .metadata(FUEL_VALUE, MU.fuelPower(material) / 2)
-                        .metadata(FUEL_TYPE, MU.fuelType(material))
+                        .metadata(FUEL_VALUE, MaterialUtils.fuelPower(material) / 2)
+                        .metadata(FUEL_TYPE, MaterialUtils.fuelType(material))
                         .addTo(GTRecipeConstants.Fuel);
                 }
 
@@ -326,7 +328,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         }
                     }
                 }
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + MU.dye(material).mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary
+                    .getOres("craftingLens" + MaterialUtils.dye(material).mName.replace(" ", ""))) { // Engraver
                     is.stackSize = 0;
 
                     GTValues.RA.stdBuilder()
@@ -343,8 +346,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (fuelPower) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
-                        .metadata(FUEL_VALUE, MU.fuelPower(material) * 8)
-                        .metadata(FUEL_TYPE, MU.fuelType(material))
+                        .metadata(FUEL_VALUE, MaterialUtils.fuelPower(material) * 8)
+                        .metadata(FUEL_TYPE, MaterialUtils.fuelType(material))
                         .addTo(GTRecipeConstants.Fuel);
                 }
 
@@ -378,8 +381,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (fuelPower) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
-                        .metadata(FUEL_VALUE, MU.fuelPower(material))
-                        .metadata(FUEL_TYPE, MU.fuelType(material))
+                        .metadata(FUEL_VALUE, MaterialUtils.fuelPower(material))
+                        .metadata(FUEL_TYPE, MaterialUtils.fuelType(material))
                         .addTo(GTRecipeConstants.Fuel);
                 }
 
@@ -436,7 +439,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(hammerRecipes);
 
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + MU.dye(material).mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary
+                    .getOres("craftingLens" + MaterialUtils.dye(material).mName.replace(" ", ""))) { // Engraver
 
                     is.stackSize = 0;
 
@@ -455,8 +459,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (fuelPower) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
-                        .metadata(FUEL_VALUE, MU.fuelPower(material) * 4)
-                        .metadata(FUEL_TYPE, MU.fuelType(material))
+                        .metadata(FUEL_VALUE, MaterialUtils.fuelPower(material) * 4)
+                        .metadata(FUEL_TYPE, MaterialUtils.fuelType(material))
                         .addTo(GTRecipeConstants.Fuel);
                 }
 
@@ -515,7 +519,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(hammerRecipes);
 
-                for (ItemStack is : OreDictionary.getOres("craftingLens" + MU.dye(material).mName.replace(" ", ""))) { // Engraver
+                for (ItemStack is : OreDictionary
+                    .getOres("craftingLens" + MaterialUtils.dye(material).mName.replace(" ", ""))) { // Engraver
 
                     is.stackSize = 0;
                     GTValues.RA.stdBuilder()

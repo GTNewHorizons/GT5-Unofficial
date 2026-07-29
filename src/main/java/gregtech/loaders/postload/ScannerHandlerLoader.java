@@ -28,7 +28,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
@@ -102,7 +102,8 @@ public class ScannerHandlerLoader {
     public static @Nullable GTScannerResult scanForestryIndividual(@Nonnull MetaTileEntity aScanner,
         @Nonnull ItemStack aInput, @Nullable ItemStack aSpecialSlot, @Nullable FluidStack aFluid) {
         // must have at enough honey to start
-        if (aFluid == null || !aFluid.containsFluid(MU.fluid(Materials2Materials.Honey, FORESTRY_SCAN_HONEY_USAGE)))
+        if (aFluid == null
+            || !aFluid.containsFluid(MaterialUtils.fluid(Materials2Materials.Honey, FORESTRY_SCAN_HONEY_USAGE)))
             return null;
         try {
             IIndividual tIndividual = AlleleManager.alleleRegistry.getIndividual(aInput);
@@ -171,7 +172,7 @@ public class ScannerHandlerLoader {
     /// carries a real element but is excluded from scanning.
     public static @Nullable GTScannerResult getElementScanResult(Material material) {
         if (material == Materials2Materials.Magic) return null;
-        Element element = MU.element(material);
+        Element element = MaterialUtils.element(material);
         if (element == null || element == Element._NULL) return null;
         if (element.mIsIsotope) return null;
         if (element.getMass() <= 0L) return null;

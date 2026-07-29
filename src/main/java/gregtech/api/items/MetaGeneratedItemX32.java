@@ -24,6 +24,8 @@ import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialRenderers;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -84,8 +86,8 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
             if (!DUMP_MODE && MU.isCutOver(tPrefix, tMaterial)) continue;
             if (doesMaterialAllowGeneration(tPrefix, tMaterial)) {
                 if (DUMP_MODE) {
-                    DUMP_VARIANTS
-                        .add(new LegacyVariant(aUnlocalized, tPrefix.getName(), MU.internalName(tMaterial), i));
+                    DUMP_VARIANTS.add(
+                        new LegacyVariant(aUnlocalized, tPrefix.getName(), MaterialUtils.internalName(tMaterial), i));
                 }
                 ItemStack tStack = new ItemStack(this, 1, i);
                 if (tPrefix.isUnifiable()) {
@@ -111,11 +113,11 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     @Override
     public short[] getRGBa(ItemStack aStack) {
         if (!isMaterialItem(getDamage(aStack))) {
-            return MU.rgba(Materials2Materials.NULL);
+            return MaterialUtils.rgba(Materials2Materials.NULL);
         }
         Material tMaterial = Materials2IDIndex.get(getDamage(aStack) % 1000);
-        short[] rgba = MU.rgba(tMaterial);
-        return rgba != null ? rgba : MU.rgba(Materials2Materials.NULL);
+        short[] rgba = MaterialUtils.rgba(tMaterial);
+        return rgba != null ? rgba : MaterialUtils.rgba(Materials2Materials.NULL);
     }
 
     /**
@@ -139,7 +141,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     public final IIconContainer getIconContainer(int aMetaData, Material aMaterial) {
         final OrePrefixes prefixes = getOrePrefix(aMetaData);
         return prefixes != null && prefixes.getTextureIndex() >= 0
-            ? MU.iconSet(aMaterial).mTextures[prefixes.getTextureIndex()]
+            ? MaterialUtils.iconSet(aMaterial).mTextures[prefixes.getTextureIndex()]
             : null;
     }
 
@@ -161,7 +163,8 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
         final int damage = aStack.getItemDamage();
         final OrePrefixes prefix = getOrePrefix(damage);
         final Material material = getMaterial(damage);
-        if (prefix != null && material != null) return prefix.getLocalizedNameForItem(MU.internalName(material));
+        if (prefix != null && material != null)
+            return prefix.getLocalizedNameForItem(MaterialUtils.internalName(material));
         return super.getItemStackDisplayName(aStack);
     }
 
@@ -189,7 +192,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     public GeneratedMaterialRenderer getMaterialRenderer(int aMetaData) {
         if (!isMaterialItem(aMetaData)) return null;
         final Material material = getMaterial(aMetaData);
-        return material == null ? null : MU.rendererOf(material);
+        return material == null ? null : MaterialRenderers.rendererOf(material);
     }
 
     @Override
@@ -242,7 +245,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
         final Material material = getMaterial(damage);
         final OrePrefixes prefix = getOrePrefix(damage);
         if (material == null || prefix == null) return;
-        MU.addTooltips(material, aList);
+        MaterialUtils.addTooltips(material, aList);
     }
 
     public @Nullable OrePrefixes getOrePrefix(int damage) {

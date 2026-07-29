@@ -44,7 +44,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -240,8 +240,9 @@ public class MTEExoticModule extends MTEBaseModule {
         numberOfFluids = 2;
         int timeAmount = GodforgeMath.getRandomIntInRange(1, 50);
         int spaceAmount = GodforgeMath.getRandomIntInRange(51, 100);
-        randomizedFluidInput = new FluidStack[] { MU.molten(Materials2Materials.temporalFluid, timeAmount * 1000L),
-            MU.molten(Materials2Materials.spatialFluid, spaceAmount * 1000L) };
+        randomizedFluidInput = new FluidStack[] {
+            MaterialUtils.molten(Materials2Materials.temporalFluid, timeAmount * 1000L),
+            MaterialUtils.molten(Materials2Materials.spatialFluid, spaceAmount * 1000L) };
 
         return new GTRecipe(
             null,
@@ -253,9 +254,9 @@ public class MTEExoticModule extends MTEBaseModule {
             null,
             ArrayUtils.addAll(
                 convertItemToPlasma(randomizedItemInput, spaceAmount - timeAmount),
-                MU.molten(Materials2Materials.temporalFluid, timeAmount),
-                MU.molten(Materials2Materials.spatialFluid, spaceAmount)),
-            new FluidStack[] { MU.molten(Materials2Materials.Magmatter, 576 * actualParallel) },
+                MaterialUtils.molten(Materials2Materials.temporalFluid, timeAmount),
+                MaterialUtils.molten(Materials2Materials.spatialFluid, spaceAmount)),
+            new FluidStack[] { MaterialUtils.molten(Materials2Materials.Magmatter, 576 * actualParallel) },
             10 * SECONDS,
             (int) TierEU.RECIPE_MAX,
             0);
@@ -359,7 +360,7 @@ public class MTEExoticModule extends MTEBaseModule {
                 GTLog.err.println("MTEExoticModule.convertItemToPlasma: no unification data for " + itemStack);
                 continue;
             }
-            plasmas.add(MU.plasma(material, (int) (INGOTS * multiplier * itemStack.stackSize)));
+            plasmas.add(MaterialUtils.plasma(material, (int) (INGOTS * multiplier * itemStack.stackSize)));
         }
 
         return plasmas.toArray(new FluidStack[0]);
@@ -442,7 +443,7 @@ public class MTEExoticModule extends MTEBaseModule {
 
             FluidStack outputFluid;
             if (magmatterMode) {
-                outputFluid = MU.molten(Materials2Materials.Magmatter, actualParallel * 4 * INGOTS);
+                outputFluid = MaterialUtils.molten(Materials2Materials.Magmatter, actualParallel * 4 * INGOTS);
             } else {
                 outputFluid = MaterialLibAPI.getFluidStack(
                     Materials2Materials.QuarkGluonPlasma,

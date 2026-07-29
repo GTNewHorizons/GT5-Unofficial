@@ -44,7 +44,7 @@ import gregtech.api.interfaces.ITextureBuilder;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -129,7 +129,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
             for (StoneType stoneType : stoneTypes) {
                 if (stoneType == null) continue;
 
-                if (MU.hasFlag(info.material, GTMaterialFlag.ICE_ORE)) {
+                if (MaterialUtils.hasFlag(info.material, GTMaterialFlag.ICE_ORE)) {
                     // if this material only has ice ore, we only want to show the ice variants
                     if (stoneType.getCategory() != StoneCategory.Ice) continue;
                     if (stoneType.isExtraneous()) continue;
@@ -160,7 +160,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
             for (StoneType stoneType : stoneTypes) {
                 if (stoneType == null) continue;
 
-                if (MU.hasFlag(info.material, GTMaterialFlag.ICE_ORE)) {
+                if (MaterialUtils.hasFlag(info.material, GTMaterialFlag.ICE_ORE)) {
                     // if this material only has ice ore, we only want to show the ice variants
                     if (stoneType.getCategory() != StoneCategory.Ice) continue;
 
@@ -215,9 +215,9 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
         if (mat != null) {
             fgBuilder = TextureFactory.builder()
                 .addIcon(
-                    MU.iconSet(mat).mTextures[small ? OrePrefixes.oreSmall.getTextureIndex()
+                    MaterialUtils.iconSet(mat).mTextures[small ? OrePrefixes.oreSmall.getTextureIndex()
                         : OrePrefixes.ore.getTextureIndex()])
-                .setRGBA(MU.rgba(mat))
+                .setRGBA(MaterialUtils.rgba(mat))
                 .glow(Boolean.TRUE.equals(mat.getProperty(GTMaterialProperties.HAS_GLOWING_ORE)));
         } else {
             fgBuilder = TextureFactory.builder()
@@ -311,8 +311,9 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
             int smallOreBonus = info.isSmall ? -1 : 0;
 
-            int harvestLevel = GTMod.proxy.mChangeHarvestLevels ? GTMod.proxy.mHarvestLevel[MU.oldSubId(info.material)]
-                : MU.toolQuality(info.material);
+            int harvestLevel = GTMod.proxy.mChangeHarvestLevels
+                ? GTMod.proxy.mHarvestLevel[MaterialUtils.oldSubId(info.material)]
+                : MaterialUtils.toolQuality(info.material);
 
             return GTUtility.clamp(harvestLevel + smallOreBonus, 0, GTMod.proxy.mMaxHarvestLevel);
         }

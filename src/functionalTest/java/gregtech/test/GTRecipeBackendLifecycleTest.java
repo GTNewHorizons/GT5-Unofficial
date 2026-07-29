@@ -359,7 +359,7 @@ class GTRecipeBackendLifecycleTest {
         BehaviourDataOrb.setDataTitle(orb, "Elemental-Scan");
         BehaviourDataOrb.setDataName(
             orb,
-            gregtech.api.material.MU.element(material)
+            gregtech.api.material.MaterialUtils.element(material)
                 .name());
         return orb;
     }

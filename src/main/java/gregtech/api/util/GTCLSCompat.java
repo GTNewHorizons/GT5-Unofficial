@@ -15,7 +15,7 @@ import alexiil.mods.load.MinecraftDisplayer;
 import alexiil.mods.load.ProgressDisplayer;
 import cpw.mods.fml.common.ProgressManager;
 import gregtech.GTMod;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.OreDictEventContainer;
 import gregtech.loaders.postload.GTPostLoad;
 
@@ -93,7 +93,7 @@ public class GTCLSCompat {
             mEvents,
             progressBar,
             m -> StatCollector.translateToLocal(
-                "Material." + MU.internalName(m.mMaterial)
+                "Material." + MaterialUtils.internalName(m.mMaterial)
                     .toLowerCase()),
             OreDictEventContainer::registerRecipes);
         ProgressManager.pop(progressBar);
@@ -107,7 +107,7 @@ public class GTCLSCompat {
             "Vanilla materials",
             replacedVanillaItemsSet,
             progressBar,
-            MU::localizedName,
+            MaterialUtils::localizedName,
             GTPostLoad::doActualRegistration);
     }
 

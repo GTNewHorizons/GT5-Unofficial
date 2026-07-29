@@ -37,7 +37,7 @@ import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -195,7 +195,9 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
                     + " / "
                     + tMaxDamage
                     + EnumChatFormatting.GRAY);
-            aList.add(tOffset + 1, EnumChatFormatting.WHITE + MU.localizedName(tMaterial) + EnumChatFormatting.GRAY);
+            aList.add(
+                tOffset + 1,
+                EnumChatFormatting.WHITE + MaterialUtils.localizedName(tMaterial) + EnumChatFormatting.GRAY);
             aList.add(
                 tOffset + 2,
                 EnumChatFormatting.WHITE + StatCollector
@@ -234,7 +236,9 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
                 + " / "
                 + tMaxDamage
                 + EnumChatFormatting.GRAY);
-        aList.add(tOffset + 1, EnumChatFormatting.WHITE + MU.localizedName(tMaterial) + EnumChatFormatting.GRAY);
+        aList.add(
+            tOffset + 1,
+            EnumChatFormatting.WHITE + MaterialUtils.localizedName(tMaterial) + EnumChatFormatting.GRAY);
         aList.add(
             tOffset + 2,
             EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.range")

@@ -59,7 +59,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchBulkCatalystHousing;
 import gregtech.api.objects.ItemData;
@@ -92,8 +92,8 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     protected int mMaxParallel = 0;
     private boolean mFluidMode = false, doFermium = false, doNeptunium = false;
     private boolean renderDisabled = false;
-    private static final Fluid mNeptunium = MU.legacyGtppPlasmaOf(Materials2Materials.Neptunium);
-    private static final Fluid mFermium = MU.legacyGtppPlasmaOf(Materials2Materials.Fermium);
+    private static final Fluid mNeptunium = MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Neptunium);
+    private static final Fluid mFermium = MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Fermium);
     private static final String MAIN_PIECE = "main";
     private final ArrayList<MTEHatchBulkCatalystHousing> catalystHousings = new ArrayList<>();
     // spotless:off
@@ -418,10 +418,10 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                         ItemData data = getAssociation(item);
                         Material mat = data != null ? data.mMaterial.mMaterial : null;
                         if (mat != null && LegacyNameDomain.contains(mat)) {
-                            if (MU.moltenOf(mat) != null) {
-                                fluidModeItems[i] = MU.molten(mat, 1 * INGOTS);
-                            } else if (MU.fluidOf(mat) != null) {
-                                fluidModeItems[i] = MU.fluid(mat, 1_000);
+                            if (MaterialUtils.moltenOf(mat) != null) {
+                                fluidModeItems[i] = MaterialUtils.molten(mat, 1 * INGOTS);
+                            } else if (MaterialUtils.fluidOf(mat) != null) {
+                                fluidModeItems[i] = MaterialUtils.fluid(mat, 1_000);
                             }
                         }
                     }
