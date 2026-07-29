@@ -130,7 +130,7 @@ public class GTPreLoad {
             .filter(LegacyNameDomain::contains)
             .forEach(
                 material -> GTLanguageManager
-                    .addStringLocalization(MU.localizedNameKeyOf(material), MU.localName(material)));
+                    .addStringLocalization(MU.localizedNameKey(material), MU.localName(material)));
 
         for (Material superconductor : Materials2Markers.getSuperconductorMarkers()) {
             GTLanguageManager.addStringLocalization(

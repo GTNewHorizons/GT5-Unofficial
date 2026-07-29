@@ -1040,7 +1040,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
                     + GRAY
                     + "L of molten")
             .addInfo(
-                MU.localizedNameOf(Materials2Materials.SpaceTime)
+                MU.localizedName(Materials2Materials.SpaceTime)
                     + " instead of fluid/item outputs and output as much EU as a successful recipe")
             .addSeparator(EnumChatFormatting.GOLD, 87)
             .addInfo(
@@ -1069,7 +1069,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
                     + "^(Parallel exponent)")
             .addInfo(
                 "Furthermore, if parallel recipes are run, the recipes consume "
-                    + MU.localizedNameOf(Materials2Materials.RawStarMatter))
+                    + MU.localizedName(Materials2Materials.RawStarMatter))
             .addInfo("instead of helium and hydrogen. Overflow penalties still apply")
             .addInfo(
                 "The required amount of fluid to start a recipe is " + GREEN + "12.4 / 10^6 * Helium amount * Parallel")

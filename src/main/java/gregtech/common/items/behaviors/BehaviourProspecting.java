@@ -60,9 +60,9 @@ public class BehaviourProspecting extends BehaviourNone {
 
         int aMeta = aWorld.getBlockMetadata(aX, aY, aZ);
 
-        Object mat = OreManager.getMaterial(aBlock, aMeta);
+        com.ruling_0.materiallib.api.Material mat = OreManager.getMaterial(aBlock, aMeta);
         if (mat != null) {
-            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.ore", MU.localizedNameOf(mat));
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.ore", MU.localizedName(mat));
             GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, hitX, hitY, hitZ);
             return true;
         }
@@ -70,7 +70,7 @@ public class BehaviourProspecting extends BehaviourNone {
         com.ruling_0.materiallib.api.Material oreMat = getOreMaterial(aBlock, aMeta);
 
         if (oreMat != null) {
-            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.ore", MU.localizedNameOf(oreMat));
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.ore", MU.localizedName(oreMat));
             GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, hitX, hitY, hitZ);
             return true;
         }
@@ -119,17 +119,15 @@ public class BehaviourProspecting extends BehaviourNone {
                 mat = OreManager.getMaterial(tBlock, tMeta);
                 if (mat != null) {
                     GTUtility
-                        .sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.traces_of", MU.localizedNameOf(mat));
+                        .sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.traces_of", MU.localizedName(mat));
                     return true;
                 }
 
                 oreMat = getOreMaterial(tBlock, tMeta);
 
                 if (oreMat != null) {
-                    GTUtility.sendChatTrans(
-                        aPlayer,
-                        "GT5U.chat.behaviour.prospecting.traces_of",
-                        MU.localizedNameOf(oreMat));
+                    GTUtility
+                        .sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.traces_of", MU.localizedName(oreMat));
                     return true;
                 }
             }

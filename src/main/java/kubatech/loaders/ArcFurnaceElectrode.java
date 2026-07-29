@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -121,7 +122,7 @@ public enum ArcFurnaceElectrode {
     private static final String INFINITY_TARGET_PARALLEL_KEY = "infinityTargetParallel";
 
     public final int id;
-    public final Object associatedMaterial;
+    public final Material associatedMaterial;
     public final double speedModifier;
     public final int parallelLimit;
     public final double OCSpeedFactor;
@@ -133,7 +134,7 @@ public enum ArcFurnaceElectrode {
 
     private ItemStack electrodeItem;
 
-    ArcFurnaceElectrode(int id, Object associatedMaterial, double speedModifier, int parallelLimit,
+    ArcFurnaceElectrode(int id, Material associatedMaterial, double speedModifier, int parallelLimit,
         double OCSpeedFactor, double OCPowerFactor, int durability, double amperagePerParallel, double startupSurge) {
         this(
             id,
@@ -148,7 +149,7 @@ public enum ArcFurnaceElectrode {
             null);
     }
 
-    ArcFurnaceElectrode(int id, Object associatedMaterial, double speedModifier, int parallelLimit,
+    ArcFurnaceElectrode(int id, Material associatedMaterial, double speedModifier, int parallelLimit,
         double OCSpeedFactor, double OCPowerFactor, int durability, double amperagePerParallel, double startupSurge,
         Consumer<ArcFurnaceProcessingEvent> specialEffect) {
         this.id = id;

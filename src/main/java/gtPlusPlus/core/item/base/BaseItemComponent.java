@@ -100,7 +100,7 @@ public class BaseItemComponent extends Item {
         try {
             if (this.materialName != null && !this.materialName.isEmpty() && (this.componentMaterial != null)) {
 
-                MU.addTooltipsOf(this.componentMaterial, list);
+                MU.addTooltips(this.componentMaterial, list);
 
                 if (Client.tooltip.showHotIngotText) {
                     if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {

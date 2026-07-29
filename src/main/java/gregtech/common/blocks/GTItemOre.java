@@ -63,9 +63,9 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
         com.ruling_0.materiallib.api.Material mat = blockOre.getMaterial(stack.getItemDamage());
 
         if (mat == null) {
-            MU.addTooltipsOf(Materials2Materials.NULL, desc);
+            MU.addTooltips(Materials2Materials.NULL, desc);
         } else {
-            MU.addTooltipsOf(mat, desc);
+            MU.addTooltips(mat, desc);
         }
     }
 

@@ -379,7 +379,8 @@ public class GTWorldgenerator implements IWorldGenerator {
 
                     // Resolve the exact placement seed using the first processed chunk, then cache it so every chunk
                     // in this vein regenerates the same geometry.
-                    long placementSeed = Fnv1a64.hashStep(seed, MU.idOf(oreLayer.mPrimary));
+                    long placementSeed = Fnv1a64
+                        .hashStep(seed, oreLayer.mPrimary == null ? 0 : MU.oldSubId(oreLayer.mPrimary));
 
                     try {
                         veinRNG.setSeed(placementSeed);

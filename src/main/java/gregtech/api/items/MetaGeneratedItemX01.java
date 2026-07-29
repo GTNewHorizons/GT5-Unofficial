@@ -138,7 +138,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
                 return GTUtility.formatStringSafe(
                     aName.replace("%s", "%temp")
                         .replace("%material", "%s"),
-                    MU.localizedNameOf(aMaterial))
+                    MU.localizedName(aMaterial))
                     .replace("%temp", "%s");
             }
         }

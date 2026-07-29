@@ -5,7 +5,6 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.List;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,6 +13,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.Nullable;
+
+import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -42,24 +43,24 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
  */
 public class BlockDecorativeFrame extends BlockStorage implements IBlockWithTextures {
 
-    final Int2ObjectFunction<Object> materials;
+    final Int2ObjectFunction<Material> materials;
     private final int maxMeta;
 
-    public BlockDecorativeFrame(String aName, Int2ObjectFunction<Object> materials, int maxMeta) {
-        super(ItemStorage.class, aName, Material.iron);
+    public BlockDecorativeFrame(String aName, Int2ObjectFunction<Material> materials, int maxMeta) {
+        super(ItemStorage.class, aName, net.minecraft.block.material.Material.iron);
         this.materials = materials;
         this.maxMeta = maxMeta;
 
         GregTechAPI.sAfterGTLoad.add(() -> {
 
             for (int i = 0; i < maxMeta; i++) {
-                Object material = materials.get(i);
+                Material material = materials.get(i);
 
                 if (material == null) continue;
                 if (!MU.generatesPrefix(material, OrePrefixes.frameGt)) continue;
 
                 OreDictionary.registerOre(
-                    OrePrefixes.frameGt.oreDictName(MU.internalNameOf(material))
+                    OrePrefixes.frameGt.oreDictName(MU.internalName(material))
                         .toString(),
                     new ItemStack(this, 1, i));
             }
@@ -70,18 +71,18 @@ public class BlockDecorativeFrame extends BlockStorage implements IBlockWithText
 
     @Override
     public String getLocalizedName(int meta) {
-        Object material = materials.get(meta);
+        Material material = materials.get(meta);
 
         if (material == null) material = Materials2Materials.NULL;
 
-        return OrePrefixes.frameGt.getLocalizedNameForItem(MU.internalNameOf(material));
+        return OrePrefixes.frameGt.getLocalizedNameForItem(MU.internalName(material));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item self, CreativeTabs tab, List<ItemStack> stacks) {
         for (int i = 0; i < maxMeta; i++) {
-            Object material = materials.get(i);
+            Material material = materials.get(i);
 
             if (material == null) continue;
             if (!MU.generatesPrefix(material, OrePrefixes.frameGt)) continue;
@@ -138,14 +139,14 @@ public class BlockDecorativeFrame extends BlockStorage implements IBlockWithText
 
         if (cached != null) return cached;
 
-        Object material = materials.get(meta);
+        Material material = materials.get(meta);
 
         ITexture texture;
 
         if (material != null) {
             texture = TextureFactory.builder()
-                .addIcon(MU.textureSetOf(material).mTextures[OrePrefixes.frameGt.getTextureIndex()])
-                .setRGBA(MU.rgbaOf(material))
+                .addIcon(MU.iconSet(material).mTextures[OrePrefixes.frameGt.getTextureIndex()])
+                .setRGBA(MU.rgba(material))
                 .build();
         } else {
             texture = TextureFactory.builder()
@@ -165,14 +166,14 @@ public class BlockDecorativeFrame extends BlockStorage implements IBlockWithText
     @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIcon(int ordinalSide, int aMeta) {
-        Object material = materials.get(aMeta);
+        Material material = materials.get(aMeta);
         if (material == null) return null;
-        return MU.textureSetOf(material).mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon();
+        return MU.iconSet(material).mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon();
     }
 
     public void registerRecipes() {
         for (int i = 0; i < maxMeta; i++) {
-            Object material = materials.get(i);
+            Material material = materials.get(i);
 
             if (material == null) continue;
             if (!MU.generatesPrefix(material, OrePrefixes.frameGt)) continue;

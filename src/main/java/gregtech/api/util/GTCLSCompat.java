@@ -107,7 +107,7 @@ public class GTCLSCompat {
             "Vanilla materials",
             replacedVanillaItemsSet,
             progressBar,
-            MU::localizedNameOf,
+            MU::localizedName,
             GTPostLoad::doActualRegistration);
     }
 

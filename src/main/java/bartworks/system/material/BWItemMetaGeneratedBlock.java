@@ -60,7 +60,7 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
         }
         Material material = Materials2WerkstoffIndex.get(aStack.getItemDamage());
         if (material != null) {
-            MU.addTooltipsOf(material, aList);
+            MU.addTooltips(material, aList);
         }
     }
 

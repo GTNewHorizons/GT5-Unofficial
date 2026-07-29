@@ -299,7 +299,7 @@ public final class GTOreAdapter implements IOreAdapter {
         Material mlMat = gtFamilyOf(info.material);
         if (mlMat == null) return false;
 
-        IStoneType stoneType = info.stoneType == null ? MU.validStonesOf(mlMat)
+        IStoneType stoneType = info.stoneType == null ? MU.validStones(mlMat)
             .get(0) : info.stoneType;
 
         if (!(stoneType instanceof StoneType stoneType2)) return false;

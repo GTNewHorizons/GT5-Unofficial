@@ -51,7 +51,7 @@ public interface IGTRegisteredFluid {
     IGTRegisteredFluid addLocalizedName();
 
     /// `material` is a MaterialLib material, dispatched through `MU`'s union helpers.
-    IGTRegisteredFluid addLocalizedName(final Object material);
+    IGTRegisteredFluid addLocalizedName(final Material material);
 
     /**
      * @return this {@link IGTRegisteredFluid} cast to {@link Fluid}
