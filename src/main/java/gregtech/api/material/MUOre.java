@@ -12,22 +12,16 @@ public class MUOre {
 
     /// The crushed-ore yield multiplier for a material, or `1` if unset -- see [GTMaterialProperties#ORE_MULTIPLIER].
     public static int oreMultiplier(@Nullable Material material) {
-        if (material == null) return 1;
-        Integer value = material.getProperty(GTMaterialProperties.ORE_MULTIPLIER);
-        return value == null ? 1 : value;
+        return material == null ? 1 : material.getProperty(GTMaterialProperties.ORE_MULTIPLIER);
     }
 
     /// [#oreMultiplier], for [GTMaterialProperties#SMELTING_MULTIPLIER].
     public static int smeltingMultiplier(@Nullable Material material) {
-        if (material == null) return 1;
-        Integer value = material.getProperty(GTMaterialProperties.SMELTING_MULTIPLIER);
-        return value == null ? 1 : value;
+        return material == null ? 1 : material.getProperty(GTMaterialProperties.SMELTING_MULTIPLIER);
     }
 
     /// [#oreMultiplier], for [GTMaterialProperties#BYPRODUCT_MULTIPLIER].
     public static int byProductMultiplier(@Nullable Material material) {
-        if (material == null) return 1;
-        Integer value = material.getProperty(GTMaterialProperties.BYPRODUCT_MULTIPLIER);
-        return value == null ? 1 : value;
+        return material == null ? 1 : material.getProperty(GTMaterialProperties.BYPRODUCT_MULTIPLIER);
     }
 }

@@ -25,19 +25,19 @@ public class GTMaterialProperties {
     public static final Property<Integer> ARGB = Property.of("gregtech", "argb");
     public static final Property<List<AspectRefStack>> ASPECTS = Property.of("gregtech", "aspects");
     public static final Property<Boolean> AUTO_BLAST_FURNACE_RECIPES = Property
-        .of("gregtech", "autoBlastFurnaceRecipes");
-    public static final Property<Boolean> AUTO_RECYCLE_RECIPES = Property.of("gregtech", "autoRecycleRecipes");
+        .of("gregtech", "autoBlastFurnaceRecipes", true);
+    public static final Property<Boolean> AUTO_RECYCLE_RECIPES = Property.of("gregtech", "autoRecycleRecipes", true);
     public static final Property<Boolean> AUTO_VACUUM_FREEZER_RECIPES = Property
-        .of("gregtech", "autoVacuumFreezerRecipes");
-    public static final Property<Boolean> BLAST_REQUIRED = Property.of("gregtech", "blastRequired");
-    public static final Property<Integer> BLAST_TEMP = Property.of("gregtech", "blastTemp");
+        .of("gregtech", "autoVacuumFreezerRecipes", true);
+    public static final Property<Boolean> BLAST_REQUIRED = Property.of("gregtech", "blastRequired", false);
+    public static final Property<Integer> BLAST_TEMP = Property.of("gregtech", "blastTemp", 0);
     /// The Kelvin boiling point, present only for materials sourced from `gtpp-materials.json` (gtPlusPlus's
     /// `Material.boilingPointC`, converted with the same formula `Material`'s own `MathUtils#celsiusToKelvin`
     /// used). GregTech's own dump never carried a boiling point, so unlike [#MELTING_POINT] this has no
     /// gt-materials.json-sourced counterpart.
     public static final Property<Integer> BOILING_POINT = Property.of("gregtech", "boilingPoint");
-    public static final Property<Integer> BYPRODUCT_MULTIPLIER = Property.of("gregtech", "byProductMultiplier");
-    public static final Property<Boolean> CAN_BE_CRACKED = Property.of("gregtech", "canBeCracked");
+    public static final Property<Integer> BYPRODUCT_MULTIPLIER = Property.of("gregtech", "byProductMultiplier", 1);
+    public static final Property<Boolean> CAN_BE_CRACKED = Property.of("gregtech", "canBeCracked", false);
     public static final Property<List<MaterialRefStack>> COMPOSITION = Property.of("gregtech", "composition");
     /// The blast-furnace gas recipe's consumed-amount multiplier, as `BlastFurnaceGasStat`'s recipe-time
     /// counterpart to [#EBF_GAS_TIME_MULTIPLIER].
@@ -48,14 +48,14 @@ public class GTMaterialProperties {
     public static final Property<Integer> DENSITY_DIVIDER = Property.of("gregtech", "densityDivider");
     public static final Property<Integer> DENSITY_MULTIPLIER = Property.of("gregtech", "densityMultiplier");
     public static final Property<MaterialRef> DIRECT_SMELTING = Property.of("gregtech", "directSmelting");
-    public static final Property<Integer> DURABILITY = Property.of("gregtech", "durability");
+    public static final Property<Integer> DURABILITY = Property.of("gregtech", "durability", 0);
     public static final Property<String> DYE = Property.of("gregtech", "dye");
     public static final Property<String> ELEMENT = Property.of("gregtech", "element");
     public static final Property<EnumSet<GTMaterialFlag>> FLAGS = Property.of("gregtech", "flags");
     public static final Property<Float> GAS_MULTIPLIER = Property.of("gregtech", "gasMultiplier");
     public static final Property<Integer> GAS_TEMP = Property.of("gregtech", "gasTemp");
-    public static final Property<Integer> FUEL_POWER = Property.of("gregtech", "fuelPower");
-    public static final Property<Integer> FUEL_TYPE = Property.of("gregtech", "fuelType");
+    public static final Property<Integer> FUEL_POWER = Property.of("gregtech", "fuelPower", 0);
+    public static final Property<Integer> FUEL_TYPE = Property.of("gregtech", "fuelType", 0);
     /// The single chemical-formula display string [MaterialFormulas] resolves, whichever origin it came from:
     /// a werkstoff-backed material carries its own bartworks formula-tooltip string (it beat any same-name
     /// gtpp value), a gregtech-dumped material the value declared in
@@ -73,10 +73,12 @@ public class GTMaterialProperties {
     /// facade's `GenerationFeatures#hasChemicalRecipes` marker). Read by
     /// `gregtech.loaders.materialrecipes.LoaderChemicalRecipes`.
     public static final Property<Boolean> HAS_CHEMICAL_RECIPE = Property.of("gregtech", "hasChemicalRecipe");
-    public static final Property<Boolean> HAS_CENTRIFUGE_RECIPE = Property.of("gregtech", "hasCentrifugeRecipe");
-    public static final Property<Boolean> HAS_CORRESPONDING_FLUID = Property.of("gregtech", "hasCorrespondingFluid");
-    public static final Property<Boolean> HAS_CORRESPONDING_GAS = Property.of("gregtech", "hasCorrespondingGas");
-    public static final Property<Boolean> HAS_ELECTROLYZER_RECIPE = Property.of("gregtech", "hasElectrolyzerRecipe");
+    public static final Property<Boolean> HAS_CENTRIFUGE_RECIPE = Property.of("gregtech", "hasCentrifugeRecipe", false);
+    public static final Property<Boolean> HAS_CORRESPONDING_FLUID = Property
+        .of("gregtech", "hasCorrespondingFluid", false);
+    public static final Property<Boolean> HAS_CORRESPONDING_GAS = Property.of("gregtech", "hasCorrespondingGas", false);
+    public static final Property<Boolean> HAS_ELECTROLYZER_RECIPE = Property
+        .of("gregtech", "hasElectrolyzerRecipe", false);
     /// Whether this material registers a gas-state fluid (the bartworks material's own gas-state flag), read
     /// by the werkstoff facade's fluid-registration-temperature formula and composition-decomposition
     /// item-vs-fluid split. Distinct from [#HAS_CORRESPONDING_GAS], which every cell-bearing werkstoff
@@ -91,7 +93,7 @@ public class GTMaterialProperties {
     /// facade's `GenerationFeatures#hasSifterRecipes` marker). Read by
     /// `gregtech.loaders.materialrecipes.LoaderSifterRecipes`.
     public static final Property<Boolean> HAS_SIFTER_RECIPE = Property.of("gregtech", "hasSifterRecipe");
-    public static final Property<Float> HEAT_DAMAGE = Property.of("gregtech", "heatDamage");
+    public static final Property<Float> HEAT_DAMAGE = Property.of("gregtech", "heatDamage", 0f);
     /// Whether the material is radioactive, unifying the legacy bartworks material's own radioactivity flag and
     /// `Material.isRadioactive`.
     public static final Property<Boolean> IS_RADIOACTIVE = Property.of("gregtech", "isRadioactive");
@@ -110,7 +112,7 @@ public class GTMaterialProperties {
     /// whitespace, e.g. `"Computation Base"`) and MaterialLib's own registration name is therefore a sanitized
     /// variant. Absent when the two already match.
     public static final Property<String> LEGACY_NAME = Property.of("gregtech", "legacyName");
-    public static final Property<Integer> MELTING_POINT = Property.of("gregtech", "meltingPoint");
+    public static final Property<Integer> MELTING_POINT = Property.of("gregtech", "meltingPoint", 0);
     /// The EU/t voltage tier the auto-generated blast furnace recipe should require, elided when unset.
     public static final Property<Integer> MELTING_VOLTAGE = Property.of("gregtech", "meltingVoltage");
     /// The exact ARGB color declared for a material's molten-state tint; see [#ARGB]. Absent when it would
@@ -118,18 +120,18 @@ public class GTMaterialProperties {
     public static final Property<Integer> MOLTEN_ARGB = Property.of("gregtech", "moltenArgb");
     public static final Property<Integer> MOLTEN_TINT = Property.of("gregtech", "moltenTint");
     public static final Property<Integer> OLD_SUB_ID = Property.of("gregtech", "oldSubId");
-    public static final Property<Integer> ORE_MULTIPLIER = Property.of("gregtech", "oreMultiplier");
+    public static final Property<Integer> ORE_MULTIPLIER = Property.of("gregtech", "oreMultiplier", 1);
     public static final Property<List<MaterialRefStack>> ORE_BYPRODUCTS = Property.of("gregtech", "oreByProducts");
     public static final Property<Float> PLASMA_MULTIPLIER = Property.of("gregtech", "plasmaMultiplier");
     public static final Property<Integer> PROCESSING_MATERIAL_TIER_EU = Property
-        .of("gregtech", "processingMaterialTierEU");
+        .of("gregtech", "processingMaterialTierEU", 0);
     /// The radiation level a radioactive material's carried items/blocks inflict, unifying the legacy
     /// `Material.vRadiationLevel` with bartworks' equivalent (which carried no scalar level of its own -- see
     /// [#IS_RADIOACTIVE]). Elided when `0`.
     public static final Property<Integer> RADIATION_LEVEL = Property.of("gregtech", "radiationLevel");
     public static final Property<List<String>> REMOVED_PREFIXES = Property.of("gregtech", "removedPrefixes");
     public static final Property<MaterialRef> SMELT_INTO = Property.of("gregtech", "smeltInto");
-    public static final Property<Integer> SMELTING_MULTIPLIER = Property.of("gregtech", "smeltingMultiplier");
+    public static final Property<Integer> SMELTING_MULTIPLIER = Property.of("gregtech", "smeltingMultiplier", 1);
     public static final Property<Float> STEAM_MULTIPLIER = Property.of("gregtech", "steamMultiplier");
     /// The explicitly-added `SubTag` names (contents-derived tags stay dynamic), elided when empty. From the
     /// legacy bartworks material's own `SUBTAGS`, consulted broadly by recipe-gen/tooltip logic gating on a
@@ -137,15 +139,15 @@ public class GTMaterialProperties {
     public static final Property<List<String>> SUB_TAGS = Property.of("gregtech", "subTags");
     /// The legacy `Material.vTier`; no gregtech equivalent. Elided when `0`. Read by the Forestry bee-drop
     /// classes (`GTPPComb`/`GTPPDrop`/`GTPPPropolis`) to set recipe EU cost/tier.
-    public static final Property<Integer> TIER = Property.of("gregtech", "tier");
+    public static final Property<Integer> TIER = Property.of("gregtech", "tier", 0);
     public static final Property<String> TOOL_ENCHANTMENT = Property.of("gregtech", "toolEnchantment");
     public static final Property<Integer> TOOL_ENCHANTMENT_LEVEL = Property.of("gregtech", "toolEnchantmentLevel");
-    public static final Property<Integer> TOOL_QUALITY = Property.of("gregtech", "toolQuality");
-    public static final Property<Float> TOOL_SPEED = Property.of("gregtech", "toolSpeed");
+    public static final Property<Integer> TOOL_QUALITY = Property.of("gregtech", "toolQuality", 0);
+    public static final Property<Float> TOOL_SPEED = Property.of("gregtech", "toolSpeed", 1.0f);
     /// Whether the material poisons the carrier of an item/block made from it, from the legacy bartworks
     /// material's own toxicity flag.
     public static final Property<Boolean> TOXIC = Property.of("gregtech", "toxic");
-    public static final Property<Boolean> UNIFIABLE = Property.of("gregtech", "unifiable");
+    public static final Property<Boolean> UNIFIABLE = Property.of("gregtech", "unifiable", true);
     /// Whether item resolution should skip [gregtech.api.util.GTOreDictUnificator]'s existing association and
     /// forcibly re-`set` it to this material's own item for every prefix it carries (the werkstoff facade's
     /// `GenerationFeatures#enforceUnification` marker, read by
@@ -157,7 +159,7 @@ public class GTMaterialProperties {
         .of("gregtech", "enforceOreDictUnification");
     /// The legacy `Material.vVoltageMultiplier`; no gregtech equivalent. Elided when `16` (the value every
     /// tier-0 material carries).
-    public static final Property<Long> VOLTAGE_MULTIPLIER = Property.of("gregtech", "voltageMultiplier");
+    public static final Property<Long> VOLTAGE_MULTIPLIER = Property.of("gregtech", "voltageMultiplier", 16L);
     /// The bartworks-side data of a material that originated as (or merged with) a legacy bartworks material,
     /// decomposed into individual keys rather than kept in one composite property so a reader needing a single
     /// value does not depend on the whole record shape.
