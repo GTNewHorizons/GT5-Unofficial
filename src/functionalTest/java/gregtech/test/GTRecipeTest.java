@@ -4,7 +4,6 @@ import static gregtech.api.GregTechAPI.sBlockOres1;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.enums.ItemList.Circuit_Parts_Crystal_Chip_Master;
 import static gregtech.api.enums.ItemList.IC2_LapotronCrystal;
-import static gregtech.api.enums.OrePrefixes.circuit;
 import static gregtech.api.enums.OrePrefixes.lens;
 import static gregtech.api.util.GTOreDictUnificator.get;
 import static gregtech.api.util.GTUtility.copyAmount;
@@ -41,6 +40,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.objects.OreDictItemStack;
@@ -70,8 +70,13 @@ class GTRecipeTest {
             .eut(0)
             .addTo(recipeMap);
 
+        // GTRecipeBuilder silently drops a null item input, so an unresolved circuit would degrade the
+        // two-input recipes here and in findWithExactSameInputs/findWithNBT to one input without failing
+        // any assertion.
+        assertNotNull(Circuits.HV.get(1), "the HV circuit ore-dictionary entry must resolve");
+
         RA.stdBuilder()
-            .itemInputs(new ItemStack(lapis_block, 1), get(circuit, Materials2Materials.Iron, 1))
+            .itemInputs(new ItemStack(lapis_block, 1), Circuits.HV.get(1))
             .itemOutputs(IC2_LapotronCrystal.get(1))
             .duration(0)
             .eut(0)
@@ -146,7 +151,7 @@ class GTRecipeTest {
     @Test
     void findWithExactSameInputs() {
         GTRecipe recipe = recipeMap.findRecipeQuery()
-            .items(new ItemStack(lapis_block, 1), get(circuit, Materials2Materials.Iron, 1))
+            .items(new ItemStack(lapis_block, 1), Circuits.HV.get(1))
             .find();
         assertNotNull(recipe);
 
@@ -186,7 +191,7 @@ class GTRecipeTest {
         tag.setFloat("charge", 123456);
         lapisBlock.stackTagCompound = tag;
         GTRecipe recipe = recipeMap.findRecipeQuery()
-            .items(lapisBlock, get(circuit, Materials2Materials.Iron, 1))
+            .items(lapisBlock, Circuits.HV.get(1))
             .find();
         assertNotNull(recipe);
 
