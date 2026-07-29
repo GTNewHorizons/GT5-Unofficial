@@ -45,6 +45,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
+import gregtech.loaders.materials.LegacyNameDomain;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
@@ -76,7 +77,7 @@ public class Godforge implements Runnable {
             ItemData association = GTOreDictUnificator.getAssociation(itemStack);
             Material material = association == null || association.mMaterial == null
                 || association.mMaterial.mMaterial == null ? null : association.mMaterial.mMaterial;
-            if (material == null || !MU.isLegacyNamed(material)) {
+            if (material == null || !LegacyNameDomain.contains(material)) {
                 GTLog.err.println("Godforge.convertToFluid: no unification data for " + itemStack + ", skipping");
                 continue;
             }
@@ -1152,7 +1153,7 @@ public class Godforge implements Runnable {
         // if this is null it has to be a gt++ material
         ItemData data = GTOreDictUnificator.getAssociation(stack);
         Material mat = data != null ? data.mMaterial.mMaterial : null;
-        if (mat != null && MU.isLegacyNamed(mat)) {
+        if (mat != null && LegacyNameDomain.contains(mat)) {
             if (MU.hasMolten(mat)) {
                 return MU.molten(mat, INGOTS * data.mMaterial.mAmount / GTValues.M);
             } else if (MU.fluidOf(mat) != null) {

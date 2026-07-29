@@ -47,6 +47,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2ArcSmelting;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.material.GTMaterialFlag;
@@ -56,6 +57,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeCategory;
+import gregtech.loaders.materials.LegacyNameDomain;
 import gregtech.mixin.interfaces.accessors.ShapedOreRecipeAccessor;
 import ic2.api.reactor.IReactorComponent;
 
@@ -270,13 +272,13 @@ public class GTRecipeRegistrator {
                 byProduct03));
     }
 
-    /// The gas-conditional arc-smelting recipe is consulted through [MU#arcSmeltIntoWithGas]'s declared table
-    /// ([gregtech.api.enums.materials2.Materials2ArcSmelting]).
+    /// The gas-conditional arc-smelting recipe is consulted through [Materials2ArcSmelting#withGas]'s declared
+    /// table.
     public static boolean hasReverseArcSmeltingRecipe(Material material) {
         if (material == null) return false;
         Material arcSmeltingMaterial = MU.arcSmeltInto(MU.smeltInto(material));
         if (arcSmeltingMaterial != material) return true;
-        return !MU.arcSmeltIntoWithGas(arcSmeltingMaterial)
+        return !Materials2ArcSmelting.withGas(arcSmeltingMaterial)
             .isEmpty();
     }
 
@@ -305,13 +307,13 @@ public class GTRecipeRegistrator {
         if (!data.hasValidMaterialData()) return;
 
         Material primary = data.mMaterial.mMaterial;
-        if ((MU.isLegacyNamed(primary) || !primary.getShapes()
+        if ((LegacyNameDomain.contains(primary) || !primary.getShapes()
             .isEmpty()) && MU.hasFlag(primary, GTMaterialFlag.NO_RECYCLING_RECIPES)) return;
 
         boolean isRecycle = true;
 
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
-            if (!MU.isLegacyNamed(tMaterial.mMaterial) && tMaterial.mMaterial.getShapes()
+            if (!LegacyNameDomain.contains(tMaterial.mMaterial) && tMaterial.mMaterial.getShapes()
                 .isEmpty()) {
                 // An unbacked recognition marker's shapeless wildcard backing never defaults to smelting into
                 // itself: unlike a shaped material, it only has an arc-smelting target when one was explicitly
@@ -383,7 +385,7 @@ public class GTRecipeRegistrator {
 
         long tAmount = 0;
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
-            boolean shapeless = !MU.isLegacyNamed(tMaterial.mMaterial) && tMaterial.mMaterial.getShapes()
+            boolean shapeless = !LegacyNameDomain.contains(tMaterial.mMaterial) && tMaterial.mMaterial.getShapes()
                 .isEmpty();
             tAmount += tMaterial.mAmount * (shapeless ? 0 : MU.mass(tMaterial.mMaterial));
         }
@@ -437,7 +439,7 @@ public class GTRecipeRegistrator {
         for (ItemStack output : outputs) {
             ItemData outputData = GTOreDictUnificator.getAssociation(output);
             if (outputData != null) gases.addAll(
-                MU.arcSmeltIntoWithGas(outputData.mMaterial.mMaterial)
+                Materials2ArcSmelting.withGas(outputData.mMaterial.mMaterial)
                     .keySet());
         }
         return gases;
@@ -450,7 +452,7 @@ public class GTRecipeRegistrator {
             ItemStack output = outputs.get(i);
             ItemData outputData = GTOreDictUnificator.getAssociation(output);
             Material gasSmeltingMaterial = outputData == null ? null
-                : MU.arcSmeltIntoWithGas(outputData.mMaterial.mMaterial)
+                : Materials2ArcSmelting.withGas(outputData.mMaterial.mMaterial)
                     .get(gas);
             if (gasSmeltingMaterial != null) {
                 long materialAmount = outputData.mMaterial.mAmount * output.stackSize;
@@ -487,8 +489,8 @@ public class GTRecipeRegistrator {
 
         if (!data.hasValidMaterialData()) return;
 
-        for (MaterialStack tMaterial : data.getAllMaterialStacks())
-            if (MU.isLegacyNamed(tMaterial.mMaterial)) tMaterial.mMaterial = MU.macerateInto(tMaterial.mMaterial);
+        for (MaterialStack tMaterial : data.getAllMaterialStacks()) if (LegacyNameDomain.contains(tMaterial.mMaterial))
+            tMaterial.mMaterial = MU.macerateInto(tMaterial.mMaterial);
 
         data = new ItemData(data);
 
@@ -496,7 +498,8 @@ public class GTRecipeRegistrator {
 
         long tAmount = 0;
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
-            if (MU.isLegacyNamed(tMaterial.mMaterial)) tAmount += tMaterial.mAmount * MU.mass(tMaterial.mMaterial);
+            if (LegacyNameDomain.contains(tMaterial.mMaterial))
+                tAmount += tMaterial.mAmount * MU.mass(tMaterial.mMaterial);
         }
 
         {
@@ -528,7 +531,8 @@ public class GTRecipeRegistrator {
         }
 
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
-            if (MU.isLegacyNamed(tMaterial.mMaterial) && MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.CRYSTAL)
+            if (LegacyNameDomain.contains(tMaterial.mMaterial)
+                && MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.CRYSTAL)
                 && !MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.METAL)
                 && tMaterial.mMaterial != Materials2Materials.Glass
                 && GTOreDictUnificator.getDust(data.mMaterial) != null) {

@@ -38,6 +38,7 @@ import gregtech.api.material.MUOre;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.loaders.materials.LegacyNameDomain;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.util.GT5OreLayerHelper;
 import gtneioreplugin.util.GT5OreSmallHelper;
@@ -578,7 +579,7 @@ public class EyeOfHarmonyRecipe {
     public static void processHelperIfPossible(HashMapHelper outputMap,
         @Nullable com.ruling_0.materiallib.api.Material material, double mainMultiplier, double probability) {
         if (material == null) return;
-        if (MU.isLegacyNamed(material) || material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) {
+        if (LegacyNameDomain.contains(material) || material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) {
             processHelper(outputMap, material, mainMultiplier, probability);
         }
     }

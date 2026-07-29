@@ -58,6 +58,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEExoticModuleGui;
+import gregtech.loaders.materials.LegacyNameDomain;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath;
 
@@ -354,7 +355,7 @@ public class MTEExoticModule extends MTEBaseModule {
             ItemData association = GTOreDictUnificator.getAssociation(itemStack);
             Material material = association == null || association.mMaterial == null
                 || association.mMaterial.mMaterial == null ? null : association.mMaterial.mMaterial;
-            if (material == null || !MU.isLegacyNamed(material)) {
+            if (material == null || !LegacyNameDomain.contains(material)) {
                 GTLog.err.println("MTEExoticModule.convertItemToPlasma: no unification data for " + itemStack);
                 continue;
             }

@@ -77,6 +77,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.loaders.materials.LegacyNameDomain;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -416,7 +417,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                         if (item == null) continue;
                         ItemData data = getAssociation(item);
                         Material mat = data != null ? data.mMaterial.mMaterial : null;
-                        if (mat != null && MU.isLegacyNamed(mat)) {
+                        if (mat != null && LegacyNameDomain.contains(mat)) {
                             if (MU.moltenOf(mat) != null) {
                                 fluidModeItems[i] = MU.molten(mat, 1 * INGOTS);
                             } else if (MU.fluidOf(mat) != null) {

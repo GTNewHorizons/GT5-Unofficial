@@ -19,6 +19,7 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.loaders.materials.LegacyNameDomain;
 
 public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -29,7 +30,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (!MU.isLegacyNamed(material)) return;
+        if (!LegacyNameDomain.contains(material)) return;
 
         short meta = (short) stack.getItemDamage();
 

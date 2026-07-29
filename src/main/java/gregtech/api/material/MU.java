@@ -32,12 +32,10 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.materials2.Materials2ArcSmelting;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidNames;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
@@ -49,7 +47,6 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.config.Client;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
-import gregtech.loaders.materials.LegacyNameDomain;
 
 /// Bridges legacy [OrePrefixes] to their cutover MaterialLib [Shape]/[Material] equivalents, and provides
 /// [Material]-side accessors for a material's data.
@@ -107,12 +104,6 @@ public class MU {
     }
 
     private static Map<String, Material> legacyNameToMaterial;
-
-    /// The material occupying a legacy generated-material id slot ([Materials2IDIndex]). Null for an empty slot
-    /// or an out-of-range id.
-    public static @Nullable Material byId(int id) {
-        return Materials2IDIndex.get(id);
-    }
 
     /// The cutover MaterialLib stack for a (prefix, material) pair, or null when either side has no cutover
     /// mapping. When a prefix maps to more than one candidate shape (`cellPlasma`), the first one `material`
@@ -230,30 +221,12 @@ public class MU {
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
     }
 
-    /// Whether a material generates a plasma item/fluid set -- [GTMaterialProperties#GENERATION_FLAGS]
-    /// carries [GTMaterialGenerationFlag#PLASMA]. False when absent or when `material` is null.
-    public static boolean hasPlasma(@Nullable Material material) {
+    /// Whether a material's [GTMaterialProperties#GENERATION_FLAGS] carry `flag`, i.e. whether it generates
+    /// that item set. False when the property is absent or when `material` is null.
+    public static boolean generates(@Nullable Material material, GTMaterialGenerationFlag flag) {
         if (material == null) return false;
         EnumSet<GTMaterialGenerationFlag> flags = material.getProperty(GTMaterialProperties.GENERATION_FLAGS);
-        return flags != null && flags.contains(GTMaterialGenerationFlag.PLASMA);
-    }
-
-    /// Whether a material generates the metal item set -- [GTMaterialProperties#GENERATION_FLAGS] carries
-    /// [GTMaterialGenerationFlag#METAL]. False when absent or when `material` is null. Backs
-    /// [gregtech.api.enums.OrePrefixes#sheetmetal]'s `mCondition`, which evaluates against a
-    /// [MaterialSubTagView] and so cannot read this flag any other way.
-    public static boolean hasMetalItems(@Nullable Material material) {
-        if (material == null) return false;
-        EnumSet<GTMaterialGenerationFlag> flags = material.getProperty(GTMaterialProperties.GENERATION_FLAGS);
-        return flags != null && flags.contains(GTMaterialGenerationFlag.METAL);
-    }
-
-    /// Whether a material generates the gem item set -- [GTMaterialProperties#GENERATION_FLAGS] carries
-    /// [GTMaterialGenerationFlag#GEM]. False when absent or when `material` is null.
-    public static boolean hasGemItems(@Nullable Material material) {
-        if (material == null) return false;
-        EnumSet<GTMaterialGenerationFlag> flags = material.getProperty(GTMaterialProperties.GENERATION_FLAGS);
-        return flags != null && flags.contains(GTMaterialGenerationFlag.GEM);
+        return flags != null && flags.contains(flag);
     }
 
     /// [#fluid], for a material's `solid()` slot.
@@ -366,14 +339,6 @@ public class MU {
         return fluids == null ? null : fluids.get(state);
     }
 
-    /// Whether a fluid has been recorded into a material's slot store via [#recordSlotFluid] for `state` --
-    /// the raw twin presence, without the [gregtech.api.enums.materials2.Materials2FluidNames] fallback the public slot
-    /// getters apply. Backs [gregtech.common.fluid.GTFluid]'s dump-mode already-wired guard, which must ask
-    /// whether a slot was already stamped rather than whether one can be resolved.
-    public static boolean hasStoredSlotFluid(@Nullable Material material, FluidState state) {
-        return storedFluid(material, state) != null;
-    }
-
     /// The shapes that can back each fluid state, in resolution order. A state usually maps to its own shape,
     /// but a material declaring both a liquid and a gas registers only one MaterialLib fluid when the two
     /// share a Forge fluid name, so each of those two states falls back to the other's shape.
@@ -388,7 +353,7 @@ public class MU {
             FluidState.PLASMA,
             new Shape[] { Materials2FluidShapes.fluidPlasma },
             FluidState.SOLID,
-            new Shape[] { Materials2FluidShapes.fluidSolid }));
+            new Shape[] {}));
 
     /// A [#recordSlotFluid]-stored fluid wins; otherwise the material must declare the
     /// [gregtech.api.enums.materials2.Materials2FluidNames] slot, and the fluid is the one MaterialLib registered for
@@ -470,15 +435,6 @@ public class MU {
         return stack == null ? null : stack.getFluid();
     }
 
-    /// Whether `material` belongs to the legacy name domain -- the [Material]-side existence predicate
-    /// control-flow gates use when they only need that membership, not a counterpart object (the
-    /// reverse-recipe, element-scan, and plasma/molten conversion loops that must skip reconstructed
-    /// werkstoff/gtpp materials). Backed by [gregtech.loaders.materials.LegacyNameDomain]'s frozen
-    /// membership set.
-    public static boolean isLegacyNamed(@Nullable Material material) {
-        return LegacyNameDomain.contains(material);
-    }
-
     /// The crafting-table ingredient for `prefix` and `material`, built directly from the MaterialLib
     /// [Material]. Returns the [ItemData] that [gregtech.api.util.GTModHandler#addCraftingRecipe] resolves
     /// to an ore-dictionary name (through [ItemData#toString]) so the ingredient still accepts any matching
@@ -548,15 +504,10 @@ public class MU {
         return material != null && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.BLAST_REQUIRED));
     }
 
-    /// The density value for a material: `(M * densityMultiplier) / densityDivider`, from
-    /// [GTMaterialProperties#DENSITY_MULTIPLIER]/[#DENSITY_DIVIDER] (each `1` when absent), using integer
-    /// division with no rounding. `M` (`GTValues.M`) is returned directly for a null `material`, equivalent
-    /// to the 1/1 default.
+    /// A material's density -- [MaterialAtomics#density]. `GTValues.M` is returned for a null `material`,
+    /// equivalent to the 1/1 default.
     public static long density(@Nullable Material material) {
-        if (material == null) return GTValues.M;
-        Integer multiplier = material.getProperty(GTMaterialProperties.DENSITY_MULTIPLIER);
-        Integer divider = material.getProperty(GTMaterialProperties.DENSITY_DIVIDER);
-        return (GTValues.M * (multiplier == null ? 1 : multiplier)) / (divider == null ? 1 : divider);
+        return material == null ? GTValues.M : MaterialAtomics.density(material);
     }
 
     /// A material's mass -- [MaterialAtomics#mass]: the linked [Element] mass when
@@ -825,12 +776,6 @@ public class MU {
         return chaseRef(material, GTMaterialProperties.ARC_SMELT_INTO);
     }
 
-    /// The gas-conditional arc-smelting mapping for a material (gas -> result), from
-    /// [Materials2ArcSmelting]'s declared table; empty when the material has none.
-    public static Map<Material, Material> arcSmeltIntoWithGas(@Nullable Material material) {
-        return Materials2ArcSmelting.withGas(material);
-    }
-
     /// [#smeltInto(Material)], for [GTMaterialProperties#DIRECT_SMELTING].
     public static @Nullable Material directSmelting(@Nullable Material material) {
         return chaseRef(material, GTMaterialProperties.DIRECT_SMELTING);
@@ -932,17 +877,10 @@ public class MU {
         return elementName == null ? null : Element.get(elementName);
     }
 
-    /// The chemical formula of a MaterialLib material ([GTMaterialProperties#FORMULA], localized through the
-    /// material's lang key when [GTMaterialProperties#FORMULA_LOCALIZED] is set), or the empty string when it
-    /// carries none.
+    /// [MaterialFormulas#forSearch], with a missing formula reported as the empty string rather than null.
     public static String chemicalFormula(@Nullable Material material) {
-        if (material == null) return "";
-        String formula = material.getProperty(GTMaterialProperties.FORMULA);
-        if (formula == null) return "";
-        if (Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.FORMULA_LOCALIZED))) {
-            return StatCollector.translateToLocal(localizedNameKey(material) + ".ChemicalFormula");
-        }
-        return formula;
+        String formula = MaterialFormulas.forSearch(material);
+        return formula == null ? "" : formula;
     }
 
     /// The lang key a material's display name and its derivatives are translated from. Stated once here

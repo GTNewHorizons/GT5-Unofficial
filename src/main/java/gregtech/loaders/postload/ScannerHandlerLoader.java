@@ -39,6 +39,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTScannerResult;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
+import gregtech.loaders.materials.LegacyNameDomain;
 
 public class ScannerHandlerLoader {
 
@@ -158,7 +159,7 @@ public class ScannerHandlerLoader {
         if (tData.mPrefix != OrePrefixes.dust && tData.mPrefix != OrePrefixes.cell) return null;
         // must be a scannable element
         Material material = tData.mMaterial.mMaterial;
-        if (MU.isLegacyNamed(material)) return getElementScanResult(material);
+        if (LegacyNameDomain.contains(material)) return getElementScanResult(material);
         // A reconstructed werkstoff element has no legacy counterpart left; the cell-bearing ones are exactly
         // the population whose retired facades carried mElement (CellLoader's element branch).
         List<String> werkstoffPrefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);

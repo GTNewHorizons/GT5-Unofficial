@@ -30,9 +30,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.items.GTGenericBlock;
-import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.loaders.materials.LegacyNameDomain;
 
 public class BlockStonesAbstract extends GTGenericBlock implements IOreRecipeRegistrator {
 
@@ -162,7 +162,7 @@ public class BlockStonesAbstract extends GTGenericBlock implements IOreRecipeReg
     @Override
     public void registerOre(OrePrefixes aPrefix, com.ruling_0.materiallib.api.Material aMaterial, String aOreDictName,
         String aModName, ItemStack aStack) {
-        if (!MU.isLegacyNamed(aMaterial)) return;
+        if (!LegacyNameDomain.contains(aMaterial)) return;
 
         if (aOreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
 

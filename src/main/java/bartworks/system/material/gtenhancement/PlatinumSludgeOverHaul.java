@@ -101,6 +101,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.FrameShapeBlock;
 import gregtech.common.blocks.GTBlockOre;
+import gregtech.loaders.materials.LegacyNameDomain;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import kubatech.loaders.item.htgritem.HTGRItem;
 
@@ -372,7 +373,7 @@ public class PlatinumSludgeOverHaul {
         }
 
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (!MU.isLegacyNamed(material)) continue;
+            if (!LegacyNameDomain.contains(material)) continue;
             if (materialsContains(material, Materials2Materials.Sulfur)
                 && (materialsContains(material, Materials2Materials.Copper)
                     || materialsContains(material, Materials2Materials.Nickel))) {

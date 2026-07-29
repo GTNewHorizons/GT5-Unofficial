@@ -60,6 +60,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GlassTier;
+import gregtech.loaders.materials.LegacyNameDomain;
 
 public class BWUtil {
 
@@ -80,7 +81,7 @@ public class BWUtil {
             Material material = GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial;
             // Keeps non-legacy-named associations (werkstoff/gtpp reconstructions) rendering an empty material
             // name.
-            if (MU.isLegacyNamed(material)) matname = MU.localName(material);
+            if (LegacyNameDomain.contains(material)) matname = MU.localName(material);
         }
         return ret.replace("%material", matname);
     }

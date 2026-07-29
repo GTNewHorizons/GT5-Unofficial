@@ -78,7 +78,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
@@ -94,6 +93,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.loaders.materials.LegacyNameDomain;
 
 public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     implements ISurvivalConstructable, IGetTitleColor {
@@ -303,7 +303,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         final OrePrefixes prefix = association == null ? null : association.mPrefix;
         final Material material = prefix == null || association.mMaterial == null
             || association.mMaterial.mMaterial == null ? null : association.mMaterial.mMaterial;
-        if (material == null || !MU.isLegacyNamed(material)
+        if (material == null || !LegacyNameDomain.contains(material)
             || GTOreDictUnificator.get(OrePrefixes.dust, material, 1) == null) {
             return new float[] { 1f, 1f };
         }

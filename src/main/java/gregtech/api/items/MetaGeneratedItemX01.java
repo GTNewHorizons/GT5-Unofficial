@@ -15,6 +15,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.material.MU;
@@ -146,7 +147,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
 
     @Override
     public ItemStack getContainerItem(ItemStack aStack) {
-        Material aMaterial = MU.byId(aStack.getItemDamage());
+        Material aMaterial = Materials2IDIndex.get(aStack.getItemDamage());
         if (aMaterial != null && aMaterial != Materials2Materials.Empty && aMaterial != Materials2Materials.NULL) {
             return GTUtility.copyAmount(1, mPrefix.mContainerItem);
         }
@@ -155,7 +156,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
 
     @Override
     public short[] getRGBa(ItemStack aStack) {
-        Material aMaterial = MU.byId(getDamage(aStack));
+        Material aMaterial = Materials2IDIndex.get(getDamage(aStack));
         short[] rgba = MU.rgba(aMaterial);
         return rgba != null ? rgba : MU.rgba(Materials2Materials.NULL);
     }

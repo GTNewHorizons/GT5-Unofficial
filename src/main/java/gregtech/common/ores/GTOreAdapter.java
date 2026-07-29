@@ -32,6 +32,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
+import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialFlag;
@@ -43,6 +44,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.GTProxy.OreDropSystem;
 import gregtech.common.blocks.GTBlockOre;
+import gregtech.loaders.materials.LegacyNameDomain;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 
 /// The GT-family [IOreAdapter]: worldgen, mining, prospecting, and the void miner place and read
@@ -169,7 +171,7 @@ public final class GTOreAdapter implements IOreAdapter {
     private ImmutableBlockMeta resolveLegacyMeta(int meta, boolean natural) {
         try (OreInfo info = OreInfo.getNewInfo()) {
             info.stoneType = GTUtility.getIndexSafe(LEGACY_STONES, (meta % 16000) / 1000);
-            info.material = MU.byId(meta % 1000);
+            info.material = Materials2IDIndex.get(meta % 1000);
             info.isSmall = meta >= 16000;
             info.isNatural = true;
 
@@ -310,12 +312,12 @@ public final class GTOreAdapter implements IOreAdapter {
 
     /// The MaterialLib [Material] backing an [OreInfo] this adapter is handed, or null when `material` is not a
     /// GT material. [OreInfo#material] is `Object`-typed since the worldgen dispatch is shared across ore
-    /// families. The gate is [MU#isLegacyNamed] (in the legacy name
+    /// families. The gate is [LegacyNameDomain#contains] (in the legacy name
     /// domain), broader than [#isGtFamily] because a merged declaration (a material carrying both
     /// [GTMaterialProperties#WERKSTOFF_IDS] and a live legacy id, such as Salt) is a GT ore here even though
     /// [#getOreInfo]'s build path defers it to [BWOreAdapter].
     private static @Nullable Material gtFamilyOf(@Nullable Material material) {
-        return MU.isLegacyNamed(material) ? material : null;
+        return LegacyNameDomain.contains(material) ? material : null;
     }
 
     /// Whether a MaterialLib material belongs to GT's own ore family -- the exact discrimination [#getOreInfo]
@@ -340,7 +342,7 @@ public final class GTOreAdapter implements IOreAdapter {
         if (blockInfo == null || !isOreShape(blockInfo.shape()) || blockInfo.material() == null) return null;
 
         Material material = blockInfo.material();
-        // A werkstoff-origin material is still in the legacy name domain (MU#isLegacyNamed), so that gate
+        // A werkstoff-origin material is still in the legacy name domain (LegacyNameDomain#contains), so that gate
         // alone would not exclude it here; defer explicitly to BWOreAdapter, which owns werkstoff ore
         // behavior (see Materials2OreShapes#isWerkstoff).
         if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) return null;

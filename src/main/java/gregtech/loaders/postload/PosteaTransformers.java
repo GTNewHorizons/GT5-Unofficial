@@ -25,6 +25,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2PipeMaterials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
@@ -373,7 +374,7 @@ public class PosteaTransformers implements Runnable {
             "gregtech:bw.sheetmetal",
             OrePrefixes.sheetmetal,
             PosteaTransformers::werkstoffMaterialAt);
-        registerPartCutoverTransformer("gregtech:gt.sheetmetal", OrePrefixes.sheetmetal, MU::byId);
+        registerPartCutoverTransformer("gregtech:gt.sheetmetal", OrePrefixes.sheetmetal, Materials2IDIndex::get);
     }
 
     /// The MaterialLib material a legacy bartworks werkstoff id resolves to, or null when the id is unknown
@@ -459,7 +460,7 @@ public class PosteaTransformers implements Runnable {
             int id = tag.getInteger("mID");
             // Legacy per-material framebox IDs start at 4096; the offset is the index in the material list
             int indexInMaterialList = id - 4096;
-            Material material = MU.byId(indexInMaterialList);
+            Material material = Materials2IDIndex.get(indexInMaterialList);
             if (material == null) {
                 // Do not modify this TE, so return null
                 return null;
@@ -488,7 +489,7 @@ public class PosteaTransformers implements Runnable {
             if (!LegacyMetalItemsTable.contains(indexInMaterialList)) {
                 return false;
             }
-            Material material = MU.byId(indexInMaterialList);
+            Material material = Materials2IDIndex.get(indexInMaterialList);
             if (material == null) {
                 return false;
             }

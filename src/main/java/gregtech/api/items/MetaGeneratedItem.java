@@ -38,6 +38,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
+import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.interfaces.IFoodStat;
@@ -130,7 +131,7 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     /// generates items, so item-facing readers treat its slot as vacant even though
     /// [gregtech.api.enums.materials2.Materials2IDIndex] lists the material.
     public static @Nullable Material generatedMaterial(int id) {
-        Material material = MU.byId(id);
+        Material material = Materials2IDIndex.get(id);
         return material != null && Materials2ParentMods.hasParentMod(material) ? material : null;
     }
 

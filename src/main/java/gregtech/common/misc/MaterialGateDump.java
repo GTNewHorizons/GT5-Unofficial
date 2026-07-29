@@ -19,6 +19,7 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.material.MU;
+import gregtech.loaders.materials.LegacyNameDomain;
 
 /// Per-material snapshot of the fluid slots and generation gates that recipe autogeneration reads, keyed by
 /// material name. Written alongside the recipe census so a shift in which materials generate fluids or items can
@@ -35,7 +36,7 @@ public final class MaterialGateDump {
         Map<String, Object> out = new TreeMap<>();
         for (Material material : MaterialLibAPI.getMaterials()) {
             Map<String, Object> row = new LinkedHashMap<>();
-            row.put("legacyNamed", MU.isLegacyNamed(material));
+            row.put("legacyNamed", LegacyNameDomain.contains(material));
             row.put("oldSubId", MU.oldSubId(material));
             row.put("hasMolten", MU.hasMolten(material));
             row.put("solid", name(MU.solid(material, 1)));
