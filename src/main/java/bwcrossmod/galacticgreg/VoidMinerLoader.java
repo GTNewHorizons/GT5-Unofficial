@@ -11,7 +11,6 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.common.config.Gregtech;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
-import gregtech.common.ores.GTPPOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.loaders.materials.LegacyNameDomain;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
@@ -84,7 +83,7 @@ public class VoidMinerLoader {
         for (com.ruling_0.materiallib.api.Material mat : MaterialLibAPI.getMaterials()) {
             info.material = mat;
 
-            if (!GTPPOreAdapter.INSTANCE.supports(info)) continue;
+            if (!GTOreAdapter.INSTANCE.supportsGtpp(info)) continue;
 
             VoidMinerUtility.addMaterialToDimensionList(
                 DimensionDef.DimNames.DEEPDARK,

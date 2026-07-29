@@ -11,11 +11,8 @@ import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.StoneType;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MaterialUtils;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
-import gregtech.common.ores.GTPPOreAdapter;
-import gregtech.loaders.materials.LegacyNameDomain;
 
 /// Hand-maintained block [Shape] declarations for GT's ores. Unlike `block`, `ore` and `oreSmall` carry a real
 /// generation bit (`ORE`), so membership follows the capability-bit pipeline rather than a curated list.
@@ -126,14 +123,12 @@ public class Materials2OreShapes {
             .drops((material, variant, fortune, isSilkTouch) -> {
                 if (isWerkstoff(material))
                     return BWOreAdapter.INSTANCE.shapeDrops(material, variant, fortune, isSilkTouch, false);
-                if (isGtpp(material)) return GTPPOreAdapter.INSTANCE.shapeDrops(material, fortune, isSilkTouch);
                 return GTOreAdapter.INSTANCE.shapeDrops(material, variant, fortune, isSilkTouch, false);
             })
             .hardness((material, variant) -> stoneBlock(variant).blockHardness)
             .resistance((material, variant) -> stoneBlock(variant).getExplosionResistance(null))
             .harvestLevel((material, variant) -> {
                 if (isWerkstoff(material)) return BWOreAdapter.INSTANCE.harvestLevel(material, 0);
-                if (isGtpp(material)) return GTPPOreAdapter.INSTANCE.harvestLevel(material);
                 return GTOreAdapter.INSTANCE.harvestLevel(material, 0);
             });
         for (var entry : KNOWN_VARIANT_BASES.entrySet()) {
@@ -176,16 +171,6 @@ public class Materials2OreShapes {
     /// flat harvest level and no per-material `isValidForStone` gate, unlike GT's).
     private static boolean isWerkstoff(Material material) {
         return material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null;
-    }
-
-    /// Whether `material` is a *pure* gtpp material with no live, id-backed legacy counterpart --
-    /// [GTOreAdapter] already owns drop/harvest-level behavior for a gtpp name-merge material (its own dump
-    /// captured real per-material formulas that predate gtpp entirely), so this excludes any material with a
-    /// real legacy id. A bridge material is also legacy-named but carries no real id ([MaterialUtils#oldSubId] stays
-    /// `-1`), so it still counts as gtpp here, mirroring [GTPPOreAdapter]'s own `isGtpp` discriminator.
-    private static boolean isGtpp(Material material) {
-        if (material.getProperty(GTMaterialProperties.GTPP_STATE) == null) return false;
-        return !LegacyNameDomain.contains(material) || MaterialUtils.oldSubId(material) < 0;
     }
 
     private static Block stoneBlock(String variant) {

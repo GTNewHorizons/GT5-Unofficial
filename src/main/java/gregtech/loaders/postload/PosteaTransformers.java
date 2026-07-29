@@ -125,7 +125,7 @@ public class PosteaTransformers implements Runnable {
     /// Migrates saved legacy `BlockBaseOre` placed/inventory stacks into the equivalent MaterialLib
     /// [gregtech.api.enums.materials2.Materials2OreShapes#ore] stack, resolved through
     /// [GtppOreCutoverTable]'s (unlocalized name, registry name) rows the same way
-    /// [gregtech.common.ores.GTPPOreAdapter#getBlock] resolves it live. Unlike every gtpp part/block row
+    /// [gregtech.common.ores.GTOreAdapter#getBlock] resolves it live. Unlike every gtpp part/block row
     /// (one distinct registered instance per material, no meta multiplexing), so a single item + block
     /// transformer pair per row is enough, mirroring [#registerGtppItemCutoverTransformers]' `block`-row
     /// handling. A material that never gained `ore` membership resolves null and is left on its legacy

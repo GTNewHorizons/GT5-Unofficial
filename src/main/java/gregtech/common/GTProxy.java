@@ -2074,7 +2074,7 @@ public class GTProxy implements IFuelHandler {
     /// (`LoaderWerkstoffRegistrations` only records materials carrying [GTMaterialProperties#WERKSTOFF_IDS]),
     /// so it falls to the plain registry-and-shapes check [#resolveCensusMaterial] also uses, gated on
     /// [GTMaterialProperties#GTPP_STATE] specifically (the same discriminator
-    /// `gregtech.common.ores.GTPPOreAdapter`'s `isGtpp` uses): an ordinary bartworks werkstoff not yet
+    /// `gregtech.common.ores.GTOreAdapter#isGtppFamily` uses): an ordinary bartworks werkstoff not yet
     /// [MaterialUtils#hasBridgeRegistration]-recorded has its own working resolution path elsewhere and must keep
     /// resolving to `_NULL` here, not be newly rescued by the GTPP_STATE fallback.
     private static @Nullable Material reconstructedMaterial(@Nullable String tName) {

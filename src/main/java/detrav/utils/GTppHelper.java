@@ -7,8 +7,9 @@ import net.minecraft.block.Block;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.common.ores.GTPPOreAdapter;
+import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.OreInfo;
+import gregtech.common.ores.OreManager;
 
 public class GTppHelper {
 
@@ -84,13 +85,17 @@ public class GTppHelper {
     }
 
     public static boolean isGTppBlock(Block block) {
-        return GTPPOreAdapter.INSTANCE.supports(block, 0);
+        return materialOf(block) != null;
     }
 
-    /// The gtpp material a world-placed ore block resolves to via [GTPPOreAdapter].
+    /// The gtpp-family material a world-placed ore block holds, or null when the block is not gtpp ore.
+    /// [GTOreAdapter#supports(Block,int)] cannot answer this -- it recognises any GT ore block, whatever family
+    /// the material belongs to -- so the family test is applied to the resolved material instead.
     private static Material materialOf(Block block) {
-        try (OreInfo info = GTPPOreAdapter.INSTANCE.getOreInfo(block, 0)) {
-            return info != null ? info.material : null;
+        try (OreInfo info = OreManager.getOreInfo(block, 0)) {
+            if (info == null || !GTOreAdapter.isGtppFamily(info.material)) return null;
+
+            return info.material;
         }
     }
 

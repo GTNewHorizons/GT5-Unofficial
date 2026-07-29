@@ -28,7 +28,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.BWOreAdapter;
-import gregtech.common.ores.GTPPOreAdapter;
+import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.plugin.block.ModBlocks;
@@ -183,10 +183,10 @@ public class EyeOfHarmonyRecipeStorage {
             infoGTPP.material = mat;
 
             infoGTPP.isSmall = false;
-            if (GTPPOreAdapter.INSTANCE.supports(infoGTPP)) validGTPPMaterialSet.add(mat);
+            if (GTOreAdapter.INSTANCE.supportsGtpp(infoGTPP)) validGTPPMaterialSet.add(mat);
 
             infoGTPP.isSmall = true;
-            if (GTPPOreAdapter.INSTANCE.supports(infoGTPP)) validGTPPMaterialSet.add(mat);
+            if (GTOreAdapter.INSTANCE.supportsGtpp(infoGTPP)) validGTPPMaterialSet.add(mat);
         }
         infoGTPP.release();
 
