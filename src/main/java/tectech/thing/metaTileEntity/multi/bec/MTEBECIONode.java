@@ -1058,6 +1058,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                     hatch.updateCraftingIcon(self.getMachineCraftingIcon());
                     hatch.setOwner(self);
 
+                    self.addIfSmartInput(hatch);
                     self.losHatch = hatch;
 
                     return true;

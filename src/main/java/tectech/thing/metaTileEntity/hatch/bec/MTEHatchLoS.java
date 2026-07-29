@@ -34,10 +34,11 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import gregtech.common.render.IMTERenderer;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import tectech.thing.metaTileEntity.hatch.MTEBaseFactoryHatch;
 
 /// Line of sight connector hatch for observation arrays + teleportation nodes
-public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer {
+public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, ISmartInputHatch {
 
     private static final int SCAN_DIST = 128;
     private static final ResourceLocation BEAM_TEXTURE = new ResourceLocation("textures/entity/beacon_beam.png");
@@ -112,6 +113,7 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer {
             .setActive(true);
         this.getBaseMetaTileEntity()
             .issueTileUpdate();
+        notifyWatchers();
     }
 
     public boolean hasOwner() {

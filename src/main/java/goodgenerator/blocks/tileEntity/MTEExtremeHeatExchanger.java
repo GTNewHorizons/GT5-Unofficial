@@ -138,6 +138,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchInput) {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             mHotFluidHatch = (MTEHatchInput) aMetaTileEntity;
             return true;
@@ -150,6 +151,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchOutput) {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             mCooledFluidHatch = (MTEHatchOutput) aMetaTileEntity;
             return true;
