@@ -28,8 +28,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
@@ -810,7 +810,7 @@ public class RecipeLoaderChemicalSkips {
             32,
             new ItemStack[] { GregtechItemList.ForceFieldGlass.get(1),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Carbon, 4), ItemList.Emitter_UV.get(4),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Markers.SuperconductorUHV, 8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Backings.SuperconductorUHV, 8),
                 GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 2) },
             new FluidStack[] {
                 MaterialLibAPI
@@ -831,7 +831,7 @@ public class RecipeLoaderChemicalSkips {
             32,
             new ItemStack[] { GregtechItemList.ForceFieldGlass.get(2),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Carbon, 8), ItemList.Emitter_UEV.get(4),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Markers.SuperconductorUEV, 8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Backings.SuperconductorUEV, 8),
                 GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 4),
                 ItemList.StableAdhesive.get(4) },
             new FluidStack[] {
@@ -854,7 +854,7 @@ public class RecipeLoaderChemicalSkips {
             new ItemStack[] { GregtechItemList.ForceFieldGlass.get(4),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Carbon, 16),
                 ItemList.Emitter_UIV.get(4),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Markers.SuperconductorUIV, 8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Backings.SuperconductorUIV, 8),
                 GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 8),
                 ItemList.SuperconductorComposite.get(4) },
             new FluidStack[] {
@@ -876,7 +876,7 @@ public class RecipeLoaderChemicalSkips {
             new ItemStack[] { GregtechItemList.ForceFieldGlass.get(8),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Carbon, 32),
                 ItemList.Emitter_UMV.get(4),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Markers.SuperconductorUMV, 8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Backings.SuperconductorUMV, 8),
                 GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 16),
                 ItemList.NaquadriaSupersolid.get(4) },
             new FluidStack[] {

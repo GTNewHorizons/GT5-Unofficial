@@ -18,7 +18,7 @@ import gregtech.api.enums.TierEU;
 /// formula, so they carry per-size capacity constants here instead of a [Materials2PipeProperties#BASE_PIPE_FLOW]
 /// value.
 ///
-/// Rows reference [Materials2Materials] and [Materials2Markers] fields, so [#init] must run after those are
+/// Rows reference [Materials2Materials] and [Materials2Backings] fields, so [#init] must run after those are
 /// assigned; [gregtech.api.enums.Materials2#init] orders it so.
 public class Materials2PipeMaterials {
 
@@ -112,17 +112,17 @@ public class Materials2PipeMaterials {
         };
 
         WireOnly[] superconductorMarkers = {
-            new WireOnly(Materials2Markers.SuperconductorMV, 0, 4, TierEU.MV, false),
-            new WireOnly(Materials2Markers.SuperconductorHV, 0, 6, TierEU.HV, false),
-            new WireOnly(Materials2Markers.SuperconductorEV, 0, 8, TierEU.EV, false),
-            new WireOnly(Materials2Markers.SuperconductorIV, 0, 12, TierEU.IV, false),
-            new WireOnly(Materials2Markers.SuperconductorLuV, 0, 16, TierEU.LuV, false),
-            new WireOnly(Materials2Markers.SuperconductorZPM, 0, 24, TierEU.ZPM, false),
-            new WireOnly(Materials2Markers.SuperconductorUV, 0, 32, TierEU.UV, false),
-            new WireOnly(Materials2Markers.SuperconductorUHV, 0, 48, TierEU.UHV, false),
-            new WireOnly(Materials2Markers.SuperconductorUEV, 0, 64, TierEU.UEV, false),
-            new WireOnly(Materials2Markers.SuperconductorUIV, 0, 64, TierEU.UIV, false),
-            new WireOnly(Materials2Markers.SuperconductorUMV, 0, 64, TierEU.UMV, false),
+            new WireOnly(Materials2Backings.SuperconductorMV, 0, 4, TierEU.MV, false),
+            new WireOnly(Materials2Backings.SuperconductorHV, 0, 6, TierEU.HV, false),
+            new WireOnly(Materials2Backings.SuperconductorEV, 0, 8, TierEU.EV, false),
+            new WireOnly(Materials2Backings.SuperconductorIV, 0, 12, TierEU.IV, false),
+            new WireOnly(Materials2Backings.SuperconductorLuV, 0, 16, TierEU.LuV, false),
+            new WireOnly(Materials2Backings.SuperconductorZPM, 0, 24, TierEU.ZPM, false),
+            new WireOnly(Materials2Backings.SuperconductorUV, 0, 32, TierEU.UV, false),
+            new WireOnly(Materials2Backings.SuperconductorUHV, 0, 48, TierEU.UHV, false),
+            new WireOnly(Materials2Backings.SuperconductorUEV, 0, 64, TierEU.UEV, false),
+            new WireOnly(Materials2Backings.SuperconductorUIV, 0, 64, TierEU.UIV, false),
+            new WireOnly(Materials2Backings.SuperconductorUMV, 0, 64, TierEU.UMV, false),
         };
         // spotless:on
 
