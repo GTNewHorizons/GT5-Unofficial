@@ -5,7 +5,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipe;
 
 public class PurifiedWaterHelpers {
@@ -26,14 +26,14 @@ public class PurifiedWaterHelpers {
 
     public static int getWaterTier(FluidStack fluid) {
         if (fluid == null) return 0;
-        else if (fluid.isFluidEqual(MU.fluid(Materials2Materials.Grade1PurifiedWater, 1_000))) return 1;
-        else if (fluid.isFluidEqual(MU.fluid(Materials2Materials.Grade2PurifiedWater, 1_000))) return 2;
-        else if (fluid.isFluidEqual(MU.fluid(Materials2Materials.Grade3PurifiedWater, 1_000))) return 3;
-        else if (fluid.isFluidEqual(MU.fluid(Materials2Materials.Grade4PurifiedWater, 1_000))) return 4;
-        else if (fluid.isFluidEqual(MU.fluid(Materials2Materials.Grade5PurifiedWater, 1_000))) return 5;
-        else if (fluid.isFluidEqual(MU.fluid(Materials2Materials.Grade6PurifiedWater, 1_000))) return 6;
-        else if (fluid.isFluidEqual(MU.fluid(Materials2Materials.Grade7PurifiedWater, 1_000))) return 7;
-        else if (fluid.isFluidEqual(MU.fluid(Materials2Materials.Grade8PurifiedWater, 1_000))) return 8;
+        else if (fluid.isFluidEqual(MaterialUtils.fluid(Materials2Materials.Grade1PurifiedWater, 1_000))) return 1;
+        else if (fluid.isFluidEqual(MaterialUtils.fluid(Materials2Materials.Grade2PurifiedWater, 1_000))) return 2;
+        else if (fluid.isFluidEqual(MaterialUtils.fluid(Materials2Materials.Grade3PurifiedWater, 1_000))) return 3;
+        else if (fluid.isFluidEqual(MaterialUtils.fluid(Materials2Materials.Grade4PurifiedWater, 1_000))) return 4;
+        else if (fluid.isFluidEqual(MaterialUtils.fluid(Materials2Materials.Grade5PurifiedWater, 1_000))) return 5;
+        else if (fluid.isFluidEqual(MaterialUtils.fluid(Materials2Materials.Grade6PurifiedWater, 1_000))) return 6;
+        else if (fluid.isFluidEqual(MaterialUtils.fluid(Materials2Materials.Grade7PurifiedWater, 1_000))) return 7;
+        else if (fluid.isFluidEqual(MaterialUtils.fluid(Materials2Materials.Grade8PurifiedWater, 1_000))) return 8;
         else return 0;
     }
 

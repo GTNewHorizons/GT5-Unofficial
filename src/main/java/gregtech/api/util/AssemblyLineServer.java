@@ -16,7 +16,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2ParentMods;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 
 public class AssemblyLineServer {
 
@@ -26,12 +26,12 @@ public class AssemblyLineServer {
     /// when the id slot never yielded items -- empty, or its material's parent mod absent
     /// (`Materials2ParentMods#hasParentMod`), which left the slot without items or names. These tokens feed
     /// assembly-line data packets, so they must be byte-identical to the legacy internal name;
-    /// [MU#internalName] resolves exactly that string, including the LEGACY_NAME divergents.
+    /// [MaterialUtils#internalName] resolves exactly that string, including the LEGACY_NAME divergents.
     private static @Nullable String generatedMaterialName(int id) {
         Material material = Materials2IDIndex.get(id);
         if (material == null) return null;
         if (!Materials2ParentMods.hasParentMod(material)) return null;
-        return MU.internalName(material);
+        return MaterialUtils.internalName(material);
     }
 
     public static void fillMap(FMLPreInitializationEvent aEvent) {
@@ -295,7 +295,7 @@ public class AssemblyLineServer {
                                 entry.getKey()
                                     .length() - ".name".length());
                         i = Integer.parseInt(t);
-                        lServerNames.put(entry.getKey(), "Block of " + MU.internalName(mMats[i]));
+                        lServerNames.put(entry.getKey(), "Block of " + MaterialUtils.internalName(mMats[i]));
                     } else if (entry.getKey()
                         .contains("blockgem")) {
                             Material[] mMats = null;
@@ -333,7 +333,7 @@ public class AssemblyLineServer {
                                     entry.getKey()
                                         .length() - ".name".length());
                             i = Integer.parseInt(t);
-                            lServerNames.put(entry.getKey(), "Block of " + MU.internalName(mMats[i]));
+                            lServerNames.put(entry.getKey(), "Block of " + MaterialUtils.internalName(mMats[i]));
                         }
             } catch (Exception ignored) {}
         }

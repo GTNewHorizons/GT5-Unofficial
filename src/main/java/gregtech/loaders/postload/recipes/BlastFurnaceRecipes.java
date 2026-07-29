@@ -25,6 +25,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -927,7 +928,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Tungsten, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
-            .fluidOutputs(MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 1 * HALF_INGOTS))
+            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials2Materials.CelestialTungsten, 1 * HALF_INGOTS))
             .duration(3 * MINUTES)
             .eut(TierEU.RECIPE_UIV)
             .metadata(COIL_HEAT, 11701)

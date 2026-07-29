@@ -68,7 +68,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
@@ -266,11 +266,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     private final ArrayList<FluidStack> validFuelList = new ArrayList<>() {
 
         {
-            add(MU.fluid(Materials2Materials.DimensionallyTranscendentResidue, 1));
+            add(MaterialUtils.fluid(Materials2Materials.DimensionallyTranscendentResidue, 1));
             add(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.RawStarMatter, Materials2FluidShapes.fluidLiquid, (int) (1)));
-            add(MU.molten(Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1));
+            add(MaterialUtils.molten(Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1));
         }
     };
 

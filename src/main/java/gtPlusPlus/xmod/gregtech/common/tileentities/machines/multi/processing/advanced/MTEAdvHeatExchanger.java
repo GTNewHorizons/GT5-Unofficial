@@ -36,7 +36,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
@@ -298,7 +298,8 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                         // superheated
                         // steam
                     } else {
-                        addOutputPartial(MU.gas(Materials2Materials.Steam, tGeneratedEU)); // Generate regular steam
+                        addOutputPartial(MaterialUtils.gas(Materials2Materials.Steam, tGeneratedEU)); // Generate
+                                                                                                      // regular steam
                     }
                 } else {
                     GTLog.writeExplosionLog(this, "had no more Distilled water!");

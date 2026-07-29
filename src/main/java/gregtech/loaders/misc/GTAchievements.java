@@ -31,7 +31,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTLog;
@@ -717,7 +717,7 @@ public class GTAchievements {
                     for (int i = 0; i < data_getAllMaterialStacks_sS; i++) {
                         issueAchievement(
                             player,
-                            MU.internalName(
+                            MaterialUtils.internalName(
                                 data.getAllMaterialStacks()
                                     .get(i).mMaterial));
                         if (data.getAllMaterialStacks()

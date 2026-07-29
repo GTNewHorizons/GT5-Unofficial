@@ -15,7 +15,7 @@ import com.ruling_0.materiallib.api.Material;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.interfaces.IStoneCategory;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.StringUtils;
 import it.unimi.dsi.fastutil.shorts.ShortShortPair;
 
@@ -88,7 +88,7 @@ public class OreMixBuilder {
         this.primary = primary;
         if (representative == null || materialKeys.isEmpty()) {
             representative = primary;
-            materialKeys.add(MU.localizedNameKey(primary));
+            materialKeys.add(MaterialUtils.localizedNameKey(primary));
         }
         return this;
     }
@@ -129,7 +129,7 @@ public class OreMixBuilder {
     public OreMixBuilder setLocalizedName(Material... materials) {
         if (materials.length == 1) this.representative = materials[0];
         for (Material m : materials) {
-            materialKeys.add(MU.localizedNameKey(m));
+            materialKeys.add(MaterialUtils.localizedNameKey(m));
         }
         return this;
     }

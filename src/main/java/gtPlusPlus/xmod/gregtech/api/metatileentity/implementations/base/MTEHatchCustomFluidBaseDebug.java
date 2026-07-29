@@ -15,7 +15,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 
@@ -108,7 +108,7 @@ public class MTEHatchCustomFluidBaseDebug extends MTEHatchCustomFluidBase {
             aFluidTemp = mLockedFluid.getTemperature();
             mTempMod = mLockedFluid.getName();
         }
-        if (mLockedStack.isFluidEqual(MU.gas(Materials2Materials.Steam, 1))) {
+        if (mLockedStack.isFluidEqual(MaterialUtils.gas(Materials2Materials.Steam, 1))) {
             isSteam = true;
         }
 

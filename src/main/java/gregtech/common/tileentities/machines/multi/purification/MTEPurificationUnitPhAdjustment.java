@@ -48,7 +48,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -185,7 +185,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     .cacheHint(
                         () -> StatCollector.translateToLocalFormatted(
                             "GT5U.MBTT.InputBus.WithFormat",
-                            MU.localizedName(ALKALINE_MATERIAL)))
+                            MaterialUtils.localizedName(ALKALINE_MATERIAL)))
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -199,7 +199,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     .cacheHint(
                         () -> StatCollector.translateToLocalFormatted(
                             "GT5U.MBTT.InputHatch.WithFormat",
-                            MU.localizedName(ACIDIC_MATERIAL)))
+                            MaterialUtils.localizedName(ACIDIC_MATERIAL)))
                     .casingIndex(CASING_INDEX_TOWER)
                     .allowOnly(ForgeDirection.UP)
                     .build()))
@@ -348,11 +348,11 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + " ticks, consumes ALL "
                     + EnumChatFormatting.WHITE
-                    + addFormattedString(MU.localizedName(ALKALINE_MATERIAL))
+                    + addFormattedString(MaterialUtils.localizedName(ALKALINE_MATERIAL))
                     + EnumChatFormatting.GRAY
                     + " and "
                     + EnumChatFormatting.WHITE
-                    + addFormattedString(MU.localizedName(ACIDIC_MATERIAL))
+                    + addFormattedString(MaterialUtils.localizedName(ACIDIC_MATERIAL))
                     + EnumChatFormatting.GRAY
                     + " in the special hatches")
             .addInfo(
@@ -381,7 +381,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + "of "
                     + EnumChatFormatting.WHITE
-                    + MU.fluid(ACIDIC_MATERIAL, 1L)
+                    + MaterialUtils.fluid(ACIDIC_MATERIAL, 1L)
                         .getLocalizedName())
             .addSeparator()
             .addInfo(
@@ -454,7 +454,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             // Now do fluid, this is simpler since we only need to bother with one slot
             FluidStack stack = acidInputHatch.getDrainableStack();
             int numMultiples = 0;
-            if (stack != null && stack.isFluidEqual(MU.fluid(ACIDIC_MATERIAL, 1))) {
+            if (stack != null && stack.isFluidEqual(MaterialUtils.fluid(ACIDIC_MATERIAL, 1))) {
                 int acidAvailable = stack.amount;
                 // We only care about multiples of 10, but we still drain all.
                 numMultiples = Math.floorDiv(acidAvailable, 10);

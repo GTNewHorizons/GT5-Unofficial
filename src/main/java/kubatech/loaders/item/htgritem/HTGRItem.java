@@ -17,7 +17,7 @@ import org.apache.commons.lang3.tuple.Triple;
 import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import kubatech.api.utils.ModUtils;
 import kubatech.client.renderer.HTGRItemRenderer;
 
@@ -71,8 +71,9 @@ public abstract class HTGRItem extends Item {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         Material material = getItemMaterial(stack);
-        return StatCollector
-            .translateToLocalFormatted(getNameKey(), (material == null ? "NULL" : MU.localizedName(material)));
+        return StatCollector.translateToLocalFormatted(
+            getNameKey(),
+            (material == null ? "NULL" : MaterialUtils.localizedName(material)));
     }
 
     @Override
@@ -92,7 +93,7 @@ public abstract class HTGRItem extends Item {
         tooltipList.add(StatCollector.translateToLocal("kubatech.tooltip.htgr_material"));
         Material material = getItemMaterial(stack);
         if (material != null) {
-            tooltipList.add(" - " + MU.localizedName(material));
+            tooltipList.add(" - " + MaterialUtils.localizedName(material));
             Triple<Double, Double, Double> properties = fuelProperties.getOrDefault(material, DEFAULT_FUEL_PROPERTIES);
             tooltipList.add(
                 StatCollector.translateToLocalFormatted(

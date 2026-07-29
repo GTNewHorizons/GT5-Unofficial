@@ -25,7 +25,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -56,7 +56,8 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(CustomItemList.eM_Containment.get(1), ItemList.ReinforcedGlass.get(1L))
             .itemOutputs(new ItemStack(BlockQuantumGlass.INSTANCE, 1))
-            .fluidInputs(MU.molten(BaseRecipeLoader.getOrDefault("Trinium", Materials2Materials.Osmium), 4 * INGOTS))
+            .fluidInputs(
+                MaterialUtils.molten(BaseRecipeLoader.getOrDefault("Trinium", Materials2Materials.Osmium), 4 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
@@ -286,7 +287,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Materials.Tungsten, 2),
                         MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.plate, 2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_IV.get(1))
-                    .fluidInputs(MU.molten(Materials2Materials.TPVAlloy, 1 * INGOTS))
+                    .fluidInputs(MaterialUtils.molten(Materials2Materials.TPVAlloy, 1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
                     .addTo(assemblerRecipes);
@@ -388,7 +389,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Materials.Quantium, 2),
                         MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.plate, 2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UMV.get(1))
-                    .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Hypogen, 1 * INGOTS))
+                    .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Hypogen, 1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -438,7 +439,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Materials.Tungsten, 2),
                         MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.plate, 4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_IV.get(1))
-                    .fluidInputs(MU.molten(Materials2Materials.TPVAlloy, 4 * INGOTS))
+                    .fluidInputs(MaterialUtils.molten(Materials2Materials.TPVAlloy, 4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
                     .addTo(assemblerRecipes);
@@ -547,7 +548,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Materials.Quantium, 2),
                         MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.plate, 4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UMV.get(1))
-                    .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Hypogen, 4 * INGOTS))
+                    .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Hypogen, 4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -600,7 +601,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials2Materials.Tungsten, 2),
                         MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.plate, 6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_IV.get(1))
-                    .fluidInputs(MU.molten(Materials2Materials.TPVAlloy, 16 * INGOTS))
+                    .fluidInputs(MaterialUtils.molten(Materials2Materials.TPVAlloy, 16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
                     .addTo(assemblerRecipes);
@@ -713,7 +714,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials2Materials.Quantium, 2),
                         MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.plate, 6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UMV.get(1))
-                    .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Hypogen, 16 * INGOTS))
+                    .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Hypogen, 16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -814,7 +815,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Materials.Quantium, 2),
                         MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.plate, 8))
                     .itemOutputs(CustomItemList.eM_dynamoMulti256_UMV.get(1))
-                    .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Hypogen, 64 * INGOTS))
+                    .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Hypogen, 64 * INGOTS))
                     .duration(40 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -866,7 +867,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Materials.Tungsten, 2),
                         MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.plate, 2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_IV.get(1))
-                    .fluidInputs(MU.molten(Materials2Materials.TPVAlloy, 1 * INGOTS))
+                    .fluidInputs(MaterialUtils.molten(Materials2Materials.TPVAlloy, 1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
                     .addTo(assemblerRecipes);
@@ -968,7 +969,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Materials.Quantium, 2),
                         MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.plate, 2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_UMV.get(1))
-                    .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Hypogen, 1 * INGOTS))
+                    .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Hypogen, 1 * INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -1018,7 +1019,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Materials.Tungsten, 2),
                         MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.plate, 4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_IV.get(1))
-                    .fluidInputs(MU.molten(Materials2Materials.TPVAlloy, 4 * INGOTS))
+                    .fluidInputs(MaterialUtils.molten(Materials2Materials.TPVAlloy, 4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
                     .addTo(assemblerRecipes);
@@ -1127,7 +1128,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Materials.Quantium, 2),
                         MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.plate, 4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_UMV.get(1))
-                    .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Hypogen, 4 * INGOTS))
+                    .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Hypogen, 4 * INGOTS))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -1180,7 +1181,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials2Materials.Tungsten, 2),
                         MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.plate, 6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_IV.get(1))
-                    .fluidInputs(MU.molten(Materials2Materials.TPVAlloy, 16 * INGOTS))
+                    .fluidInputs(MaterialUtils.molten(Materials2Materials.TPVAlloy, 16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
                     .addTo(assemblerRecipes);
@@ -1293,7 +1294,7 @@ public class Assembler implements Runnable {
                         GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials2Materials.Quantium, 2),
                         MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.plate, 6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_UMV.get(1))
-                    .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Hypogen, 16 * INGOTS))
+                    .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Hypogen, 16 * INGOTS))
                     .duration(20 * SECONDS)
                     .eut(TierEU.RECIPE_UIV)
                     .addTo(assemblerRecipes);
@@ -1416,7 +1417,8 @@ public class Assembler implements Runnable {
                 new ItemStack(bw_realglas, 2, 7))
             .itemOutputs(CustomItemList.Machine_BuckConverter_UEV.get(1))
             .fluidInputs(
-                MU.molten(BaseRecipeLoader.getOrDefault("Bedrockium", Materials2Materials.Neutronium), 2 * INGOTS))
+                MaterialUtils
+                    .molten(BaseRecipeLoader.getOrDefault("Bedrockium", Materials2Materials.Neutronium), 2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
@@ -1434,7 +1436,9 @@ public class Assembler implements Runnable {
                 new ItemStack(bw_realglas, 2, 8))
             .itemOutputs(CustomItemList.Machine_BuckConverter_UIV.get(1))
             .fluidInputs(
-                MU.molten(BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials2Materials.Neutronium), 2 * INGOTS))
+                MaterialUtils.molten(
+                    BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials2Materials.Neutronium),
+                    2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
@@ -2661,7 +2665,7 @@ public class Assembler implements Runnable {
                 ItemList.Electric_Pump_LuV.get(1))
             .itemOutputs(CustomItemList.enderLinkFluidCover.getWithDamage(1, 0))
             .fluidInputs(
-                MU.molten(
+                MaterialUtils.molten(
                     BaseRecipeLoader.getOrDefault("Rhodium-PlatedPalladium", Materials2Materials.Chrome),
                     2 * INGOTS))
             .duration(16 * SECONDS)

@@ -53,7 +53,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -307,7 +307,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                         : formatNumber(baseCycleTime / 20.0) + " seconds"))
             .beginStructureBlock(3, 3, 7, false)
             .addController("Front bottom center")
-            .addCasing("15", MU.internalName(getFrameMaterial()) + " Frame Box", false)
+            .addCasing("15", MaterialUtils.internalName(getFrameMaterial()) + " Frame Box", false)
             .addCasing("7-8", casings, false)
             .addEnergyHatch("1", "Any bottom casing (" + VN[getMinTier()] + "+)", 1)
             .addMaintenanceHatch("1", "Any bottom casing", 1)

@@ -21,7 +21,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -57,8 +57,10 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                         GTUtility.getWater(
                             Math.max(
                                 4,
-                                Math.min(1000, ((int) Math.max(MU.mass(material) * 10L, 1L)) * TICKS * 30 / 320))))
-                    .duration(2 * ((int) Math.max(MU.mass(material) * 10L, 1L)) * TICKS)
+                                Math.min(
+                                    1000,
+                                    ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS * 30 / 320))))
+                    .duration(2 * ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(cutterRecipes);
 
@@ -70,8 +72,10 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                         GTModHandler.getDistilledWater(
                             Math.max(
                                 3,
-                                Math.min(750, ((int) Math.max(MU.mass(material) * 10L, 1L)) * TICKS * 30 / 426))))
-                    .duration(2 * ((int) Math.max(MU.mass(material) * 10L, 1L)) * TICKS)
+                                Math.min(
+                                    750,
+                                    ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS * 30 / 426))))
+                    .duration(2 * ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS)
                     .eut(calculateRecipeEU(material, 16))
                     .addTo(cutterRecipes);
 
@@ -85,8 +89,10 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                             Materials2FluidShapes.fluidLiquid,
                             (int) (Math.max(
                                 1,
-                                Math.min(250, ((int) Math.max(MU.mass(material) * 10, 1)) * TICKS * 30 / 1280)))))
-                    .duration(((int) Math.max(MU.mass(material) * 10L, 1L)) * TICKS)
+                                Math.min(
+                                    250,
+                                    ((int) Math.max(MaterialUtils.mass(material) * 10, 1)) * TICKS * 30 / 1280)))))
+                    .duration(((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS)
                     .eut(calculateRecipeEU(material, 16))
                     .addTo(cutterRecipes);
 
@@ -95,12 +101,14 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 9L))
                     .fluidInputs(
-                        MU.fluid(
+                        MaterialUtils.fluid(
                             Materials2Materials.dimensionallyshiftedsuperfluid,
                             Math.max(
                                 1,
-                                Math.min(10, ((int) Math.max(MU.mass(material) * 10L, 1L)) * TICKS * 30 / 4000))))
-                    .duration(((int) Math.max(MU.mass(material) * 10L / 2.5, 1L)) * TICKS)
+                                Math.min(
+                                    10,
+                                    ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS * 30 / 4000))))
+                    .duration(((int) Math.max(MaterialUtils.mass(material) * 10L / 2.5, 1L)) * TICKS)
                     .eut(calculateRecipeEU(material, 16))
                     .addTo(cutterRecipes);
 
@@ -116,8 +124,10 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                             GTUtility.getWater(
                                 Math.max(
                                     4,
-                                    Math.min(1000, ((int) Math.max(MU.mass(material) * 10L, 1L)) * TICKS * 30 / 320))))
-                        .duration(2 * ((int) Math.max(MU.mass(material) * 10L, 1L)) * TICKS)
+                                    Math.min(
+                                        1000,
+                                        ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS * 30 / 320))))
+                        .duration(2 * ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS)
                         .eut(TierEU.RECIPE_LV)
                         .addTo(cutterRecipes);
 
@@ -128,8 +138,10 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                             GTModHandler.getDistilledWater(
                                 Math.max(
                                     3,
-                                    Math.min(750, ((int) Math.max(MU.mass(material) * 10L, 1L)) * TICKS * 30 / 426))))
-                        .duration(2 * ((int) Math.max(MU.mass(material) * 10L, 1L)) * TICKS)
+                                    Math.min(
+                                        750,
+                                        ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS * 30 / 426))))
+                        .duration(2 * ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS)
                         .eut(calculateRecipeEU(material, 16))
                         .addTo(cutterRecipes);
 
@@ -142,8 +154,10 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                                 Materials2FluidShapes.fluidLiquid,
                                 (int) (Math.max(
                                     1,
-                                    Math.min(250, ((int) Math.max(MU.mass(material) * 10, 1)) * TICKS * 30 / 1280)))))
-                        .duration(((int) Math.max(MU.mass(material) * 10L, 1L)) * TICKS)
+                                    Math.min(
+                                        250,
+                                        ((int) Math.max(MaterialUtils.mass(material) * 10, 1)) * TICKS * 30 / 1280)))))
+                        .duration(((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS)
                         .eut(calculateRecipeEU(material, 16))
                         .addTo(cutterRecipes);
 
@@ -151,12 +165,14 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 9L))
                         .fluidInputs(
-                            MU.fluid(
+                            MaterialUtils.fluid(
                                 Materials2Materials.dimensionallyshiftedsuperfluid,
                                 Math.max(
                                     1,
-                                    Math.min(10, ((int) Math.max(MU.mass(material) * 10L, 1L)) * TICKS * 30 / 4000))))
-                        .duration(((int) Math.max(MU.mass(material) * 10L / 2.5, 1L)) * TICKS)
+                                    Math.min(
+                                        10,
+                                        ((int) Math.max(MaterialUtils.mass(material) * 10L, 1L)) * TICKS * 30 / 4000))))
+                        .duration(((int) Math.max(MaterialUtils.mass(material) * 10L / 2.5, 1L)) * TICKS)
                         .eut(calculateRecipeEU(material, 16))
                         .addTo(cutterRecipes);
                 }
@@ -178,7 +194,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             GTModHandler.removeRecipeDelayed(dust, dust, dust, dust, dust, dust, dust, dust, dust);
         }
 
-        if (MU.hasMolten(material)) {
+        if (MaterialUtils.hasMolten(material)) {
             if (!(material == Materials2Materials.AnnealedCopper || material == Materials2Materials.CastIron
                 || material == Materials2Materials.Obsidian)) {
                 if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
@@ -186,8 +202,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     GTValues.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Block.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, material, 1L))
-                        .fluidInputs(MU.molten(material, 9 * INGOTS))
-                        .duration(MU.mass(material) * 9 * TICKS)
+                        .fluidInputs(MaterialUtils.molten(material, 9 * INGOTS))
+                        .duration(MaterialUtils.mass(material) * 9 * TICKS)
                         .eut(calculateRecipeEU(material, 8))
                         .addTo(fluidSolidifierRecipes);
                 }
@@ -212,12 +228,12 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, material, 9L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, material, 1L))
-                .duration(MU.mass(material) * 2 * TICKS)
+                .duration(MaterialUtils.mass(material) * 2 * TICKS)
                 .eut(calculateRecipeEU(material, 2))
                 .addTo(compressorRecipes);
         }
 
-        if (MU.internalName(material)
+        if (MaterialUtils.internalName(material)
             .equals("Mercury")) {
             System.err.println(
                 "'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block? On Pluto Greg :)");

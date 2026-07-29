@@ -20,7 +20,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -43,17 +43,18 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
         ItemStack stack) {
         if (material == null) return;
 
-        if (MU.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) return;
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) return;
 
         GTModHandler.removeFurnaceSmelting(stack);
 
-        if (MU.hasFlag(material, GTMaterialFlag.NO_SMELTING)) return;
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING)) return;
 
         // Blast furnace is required for processing this ore.
-        if (MU.blastFurnaceRequired(material) || MU.blastFurnaceRequired(MU.directSmelting(material))) {
-            if (MU.blastFurnaceTemp(material) >= 1000) return;
-            if (MU.blastFurnaceTemp(MU.directSmelting(material)) >= 1000) return;
-            if (!MU.autoGenerateBlastFurnaceRecipes(material)) return;
+        if (MaterialUtils.blastFurnaceRequired(material)
+            || MaterialUtils.blastFurnaceRequired(MaterialUtils.directSmelting(material))) {
+            if (MaterialUtils.blastFurnaceTemp(material) >= 1000) return;
+            if (MaterialUtils.blastFurnaceTemp(MaterialUtils.directSmelting(material)) >= 1000) return;
+            if (!MaterialUtils.autoGenerateBlastFurnaceRecipes(material)) return;
 
             final ItemStack output = GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L);
 
@@ -63,9 +64,10 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .circuit(1)
                 .itemOutputs(output)
-                .duration(Math.max(MU.mass(material) / 4L, 1L) * MU.blastFurnaceTemp(material) * TICKS)
+                .duration(
+                    Math.max(MaterialUtils.mass(material) / 4L, 1L) * MaterialUtils.blastFurnaceTemp(material) * TICKS)
                 .eut(TierEU.RECIPE_MV)
-                .metadata(COIL_HEAT, MU.blastFurnaceTemp(material))
+                .metadata(COIL_HEAT, MaterialUtils.blastFurnaceTemp(material))
                 .addTo(blastFurnaceRecipes);
 
             return;
@@ -74,7 +76,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
         // Blast furnace is *not* required for processing this ore.
         switch (prefix.getName()) {
             case "crushed", "crushedPurified", "crushedCentrifuged" -> {
-                if (MU.directSmelting(material) == material) {
+                if (MaterialUtils.directSmelting(material) == material) {
                     addSmeltingRecipe(material, stack, OrePrefixes.nugget, 10);
                 } else if (GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
                     addSmeltingRecipe(material, stack, OrePrefixes.nugget, 6);
@@ -83,7 +85,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                 }
             }
             case "dust" -> {
-                if (MU.directSmelting(material) == material) {
+                if (MaterialUtils.directSmelting(material) == material) {
                     addSmeltingRecipe(material, stack, OrePrefixes.ingot, 1);
                 } else if (GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
                     addSmeltingRecipe(material, stack, OrePrefixes.nugget, 6);
@@ -91,16 +93,17 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                     addSmeltingRecipe(material, stack, OrePrefixes.ingot, 1);
                 }
 
-                if (MU.directSmelting(material) == material) return;
+                if (MaterialUtils.directSmelting(material) == material) return;
 
                 final int outputAmount = GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre ? 2 : 3;
 
-                if (!MU.hasFlag(material, GTMaterialFlag.DONT_ADD_DEFAULT_BBF_RECIPE)
-                    && GTOreDictUnificator.get(OrePrefixes.ingot, MU.directSmelting(material), 1L) != null) {
+                if (!MaterialUtils.hasFlag(material, GTMaterialFlag.DONT_ADD_DEFAULT_BBF_RECIPE)
+                    && GTOreDictUnificator.get(OrePrefixes.ingot, MaterialUtils.directSmelting(material), 1L) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(2, stack))
                         .itemOutputs(
-                            GTOreDictUnificator.get(OrePrefixes.ingot, MU.directSmelting(material), outputAmount))
+                            GTOreDictUnificator
+                                .get(OrePrefixes.ingot, MaterialUtils.directSmelting(material), outputAmount))
                         .duration(2 * MINUTES)
                         .metadata(ADDITIVE_AMOUNT, 2)
                         .addTo(primitiveBlastRecipes);
@@ -110,7 +113,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
 
             }
             case "dustImpure", "dustPure", "dustRefined" -> {
-                if (MU.directSmelting(material) == material) {
+                if (MaterialUtils.directSmelting(material) == material) {
                     addSmeltingRecipe(material, stack, OrePrefixes.ingot, 1);
                 } else if (GTMod.proxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
                     addSmeltingRecipe(material, stack, OrePrefixes.nugget, 6);
@@ -127,7 +130,8 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, material, 2L), new ItemStack(Blocks.sand, 2))
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.ingot, MU.directSmelting(material), (long) outputAmount),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.ingot, MaterialUtils.directSmelting(material), (long) outputAmount),
                     MaterialLibAPI.getStack(
                         Materials2Materials.Ferrosilite,
                         Materials2Shapes.dustSmall,
@@ -141,7 +145,8 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                     GTOreDictUnificator.get(OrePrefixes.dust, material, 2L),
                     MaterialLibAPI.getStack(Materials2Materials.Glass, Materials2Shapes.dust, (int) (2)))
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.ingot, MU.directSmelting(material), (long) outputAmount),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.ingot, MaterialUtils.directSmelting(material), (long) outputAmount),
                     MaterialLibAPI.getStack(
                         Materials2Materials.Ferrosilite,
                         Materials2Shapes.dustSmall,
@@ -155,7 +160,8 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                     GTOreDictUnificator.get(OrePrefixes.dust, material, 2L),
                     MaterialLibAPI.getStack(Materials2Materials.SiliconDioxide, Materials2Shapes.dust, (int) (2)))
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.ingot, MU.directSmelting(material), (long) outputAmount),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.ingot, MaterialUtils.directSmelting(material), (long) outputAmount),
                     MaterialLibAPI
                         .getStack(Materials2Materials.Ferrosilite, Materials2Shapes.dustSmall, (int) (outputAmount)))
                 .duration(2 * MINUTES)
@@ -167,7 +173,8 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                     GTOreDictUnificator.get(OrePrefixes.dust, material, 2L),
                     MaterialLibAPI.getStack(Materials2Materials.NetherQuartz, Materials2Shapes.dust, (int) (2)))
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.ingot, MU.directSmelting(material), (long) outputAmount),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.ingot, MaterialUtils.directSmelting(material), (long) outputAmount),
                     MaterialLibAPI
                         .getStack(Materials2Materials.Ferrosilite, Materials2Shapes.dustSmall, (int) (outputAmount)))
                 .duration(2 * MINUTES)
@@ -179,7 +186,8 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                     GTOreDictUnificator.get(OrePrefixes.dust, material, 2L),
                     MaterialLibAPI.getStack(Materials2Materials.CertusQuartz, Materials2Shapes.dust, (int) (2)))
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.ingot, MU.directSmelting(material), (long) outputAmount),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.ingot, MaterialUtils.directSmelting(material), (long) outputAmount),
                     MaterialLibAPI
                         .getStack(Materials2Materials.Ferrosilite, Materials2Shapes.dustSmall, (int) (outputAmount)))
                 .duration(2 * MINUTES)
@@ -189,7 +197,8 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, material, 2L))
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.ingot, MU.directSmelting(material), (long) outputAmount),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.ingot, MaterialUtils.directSmelting(material), (long) outputAmount),
                     MaterialLibAPI
                         .getStack(Materials2Materials.Antimony, Materials2Shapes.nugget, (int) (3 * outputAmount)))
                 .duration(2 * MINUTES)
@@ -199,7 +208,8 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, material, 2L))
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.ingot, MU.directSmelting(material), (long) outputAmount),
+                    GTOreDictUnificator
+                        .get(OrePrefixes.ingot, MaterialUtils.directSmelting(material), (long) outputAmount),
                     MaterialLibAPI
                         .getStack(Materials2Materials.Silver, Materials2Shapes.nugget, (int) (3 * outputAmount)))
                 .duration(2 * MINUTES)
@@ -209,12 +219,12 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
     }
 
     private static void addSmeltingRecipe(Material material, ItemStack stack, OrePrefixes prefix, int size) {
-        ItemStack smeltingOutput = GTOreDictUnificator.get(prefix, MU.directSmelting(material), size);
+        ItemStack smeltingOutput = GTOreDictUnificator.get(prefix, MaterialUtils.directSmelting(material), size);
 
         if (smeltingOutput == null) {
-            smeltingOutput = MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
-                ? GTOreDictUnificator.get(OrePrefixes.gem, MU.directSmelting(material), 1L)
-                : GTOreDictUnificator.get(OrePrefixes.ingot, MU.directSmelting(material), 1L);
+            smeltingOutput = MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
+                ? GTOreDictUnificator.get(OrePrefixes.gem, MaterialUtils.directSmelting(material), 1L)
+                : GTOreDictUnificator.get(OrePrefixes.ingot, MaterialUtils.directSmelting(material), 1L);
         }
 
         if (smeltingOutput != null) GTModHandler.addSmeltingRecipe(stack, smeltingOutput);

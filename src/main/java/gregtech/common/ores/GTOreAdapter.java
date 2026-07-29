@@ -37,8 +37,7 @@ import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
-import gregtech.api.material.MUOre;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
@@ -299,7 +298,7 @@ public final class GTOreAdapter implements IOreAdapter {
         Material mlMat = gtFamilyOf(info.material);
         if (mlMat == null) return false;
 
-        IStoneType stoneType = info.stoneType == null ? MU.validStones(mlMat)
+        IStoneType stoneType = info.stoneType == null ? MaterialUtils.validStones(mlMat)
             .get(0) : info.stoneType;
 
         if (!(stoneType instanceof StoneType stoneType2)) return false;
@@ -322,17 +321,18 @@ public final class GTOreAdapter implements IOreAdapter {
 
     /// Whether a MaterialLib material belongs to GT's own ore family -- the exact discrimination [#getOreInfo]
     /// applies. A werkstoff-bridged material ([GTMaterialProperties#WERKSTOFF_IDS]) defers to [BWOreAdapter],
-    /// and a material with no live legacy id ([MU#oldSubId] `< 0`, covering both the id-less gtpp bridge
+    /// and a material with no live legacy id ([MaterialUtils#oldSubId] `< 0`, covering both the id-less gtpp bridge
     /// materials that defer to [GTPPOreAdapter] and any material with no legacy counterpart at all) is not GT's.
     private static boolean isGtFamily(@Nullable Material material) {
         return material != null && material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null
-            && MU.oldSubId(material) >= 0;
+            && MaterialUtils.oldSubId(material) >= 0;
     }
 
     /// Whether a material may generate ore on `stoneType`: an ice-ore material only on ice-category stone,
     /// every other material only on stone-category stone.
     private static boolean isValidForStone(Material material, StoneType stoneType) {
-        StoneCategory required = MU.hasFlag(material, GTMaterialFlag.ICE_ORE) ? StoneCategory.Ice : StoneCategory.Stone;
+        StoneCategory required = MaterialUtils.hasFlag(material, GTMaterialFlag.ICE_ORE) ? StoneCategory.Ice
+            : StoneCategory.Stone;
         return stoneType.getCategory() == required;
     }
 
@@ -389,11 +389,11 @@ public final class GTOreAdapter implements IOreAdapter {
     /// The harvest level for a MaterialLib ore/small-ore material, porting legacy `GTBlockOre#getHarvestLevel`'s
     /// formula. `bonus` is the small-ore harvest-level discount (`-1`, matching legacy) or `0` for big ore.
     public int harvestLevel(Material mlMaterial, int bonus) {
-        int subId = MU.oldSubId(mlMaterial);
+        int subId = MaterialUtils.oldSubId(mlMaterial);
         if (subId < 0) return 0;
 
         int harvestLevel = GTMod.proxy.mChangeHarvestLevels ? GTMod.proxy.mHarvestLevel[subId]
-            : MU.toolQuality(mlMaterial);
+            : MaterialUtils.toolQuality(mlMaterial);
 
         return GTUtility.clamp(harvestLevel + bonus, 0, GTMod.proxy.mMaxHarvestLevel);
     }
@@ -471,7 +471,7 @@ public final class GTOreAdapter implements IOreAdapter {
         ArrayList<ItemStack> drops = new ArrayList<>();
 
         if (!possibleDrops.isEmpty()) {
-            int oreMultiplier = MUOre.oreMultiplier(info.material);
+            int oreMultiplier = MaterialUtils.oreMultiplier(info.material);
             int dropCount = Math
                 .max(1, oreMultiplier + (fortune > 0 ? random.nextInt(1 + fortune * oreMultiplier) : 0) / 2);
 

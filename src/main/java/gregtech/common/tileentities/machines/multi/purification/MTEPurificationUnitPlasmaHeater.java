@@ -49,7 +49,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
@@ -294,7 +294,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + MAX_PLASMA_PER_SEC
                     + "L/s "
                     + EnumChatFormatting.WHITE
-                    + MU.plasma(plasmaMaterial, 1)
+                    + MaterialUtils.plasma(plasmaMaterial, 1)
                         .getLocalizedName()
                     + EnumChatFormatting.GRAY
                     + " and up to "
@@ -302,7 +302,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + MAX_COOLANT_PER_SEC
                     + "L/s "
                     + EnumChatFormatting.WHITE
-                    + MU.fluid(coolantMaterial, 1)
+                    + MaterialUtils.fluid(coolantMaterial, 1)
                         .getLocalizedName())
             .addInfo(
                 EnumChatFormatting.RED + "Raises "
@@ -394,7 +394,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             FluidStack insertedWater = currentRecipe.mFluidInputs[0];
             // Multiply by 60 since that's the water:steam ratio in GTNH
             long steamAmount = insertedWater.amount * 60L;
-            addOutputPartial(MU.gas(Materials2Materials.Steam, steamAmount));
+            addOutputPartial(MaterialUtils.gas(Materials2Materials.Steam, steamAmount));
         }
     }
 
@@ -403,10 +403,13 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
         super.runMachine(aBaseMetaTileEntity, aTick);
         if (mMaxProgresstime > 0 && aTick % CONSUME_INTERVAL == 0) {
             // Drain plasma and coolant up to limited amount per second
-            long plasmaDrained = drainFluidLimited(plasmaInputHatch, MU.plasma(plasmaMaterial, 1L), MAX_PLASMA_PER_SEC);
+            long plasmaDrained = drainFluidLimited(
+                plasmaInputHatch,
+                MaterialUtils.plasma(plasmaMaterial, 1L),
+                MAX_PLASMA_PER_SEC);
             long coolantDrained = drainFluidLimited(
                 coolantInputHatch,
-                MU.fluid(coolantMaterial, 1L),
+                MaterialUtils.fluid(coolantMaterial, 1L),
                 MAX_COOLANT_PER_SEC);
             // Calculate temperature change
             long tempChance = plasmaDrained * PLASMA_TEMP_PER_LITER + coolantDrained * COOLANT_TEMP_PER_LITER;

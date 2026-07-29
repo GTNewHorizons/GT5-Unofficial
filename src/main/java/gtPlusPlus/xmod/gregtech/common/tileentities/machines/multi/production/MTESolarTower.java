@@ -40,7 +40,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -90,8 +90,8 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             .addInfo("Surround with rings of Solar Reflectors")
             .addInfo("The Reflectors increase the internal heat value of the Tower (see below for formula)")
             .addInfo("Each Reflector ring increases tier, the first ring is required for the Tower to work")
-            .addInfo("Input: " + MU.localName(Materials2Materials.SolarSaltCold))
-            .addInfo("Output: " + MU.localName(Materials2Materials.SolarSaltHot))
+            .addInfo("Input: " + MaterialUtils.localName(Materials2Materials.SolarSaltCold))
+            .addInfo("Output: " + MaterialUtils.localName(Materials2Materials.SolarSaltHot))
             .addInfo("Every cycle (10 seconds), heat increases and all the Cold Solar Salt is heated")
             .addInfo("Converting Cold to Hot Solar Salt reduces heat, equal to the amount converted")
             .addInfo("This conversion only happens if heat >= 30000 and controller efficiency = 100%")
@@ -540,10 +540,10 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
 
         if (this.mEfficiency == this.getMaxEfficiency(null) && this.mHeatLevel >= 30000) {
             if (mColdSalt == null) {
-                mColdSalt = MU.legacyGtppFluidOf(Materials2Materials.SolarSaltCold);
+                mColdSalt = MaterialUtils.legacyGtppFluidOf(Materials2Materials.SolarSaltCold);
             }
             if (mHotSalt == null) {
-                mHotSalt = MU.legacyGtppFluidOf(Materials2Materials.SolarSaltHot);
+                mHotSalt = MaterialUtils.legacyGtppFluidOf(Materials2Materials.SolarSaltHot);
             }
             ArrayList<FluidStack> aFluids = this.getStoredFluids();
             for (FluidStack aFluid : aFluids) {

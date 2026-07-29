@@ -98,11 +98,13 @@ public class Materials2Markers {
         new Backing(m -> SuperconductorUMV = m, "SuperconductorUMV", "Superconductor UMV", 0x00b526cd), };
     // spotless:on
 
-    /// Registers a shapeless MaterialLib [Material] backing each superconductor marker, which `MU#material`
+    /// Registers a shapeless MaterialLib [Material] backing each superconductor marker, which
+    /// `MaterialUtils#byLegacyName`
     /// resolves by registry name, and assigns the superconductor fields from the same builders --
     /// `SuperconductorUHV`'s backing name is `Superconductor`, so binding by name lookup would be wrong. A
     /// backing whose internal name already names a MaterialLib material is not re-registered; the field binds
-    /// that existing material, matching `MU#material`'s registry fallback. Runs during material registration,
+    /// that existing material, matching `MaterialUtils#byLegacyName`'s registry fallback. Runs during material
+    /// registration,
     /// after [Materials2Materials#init], so the skip check sees every real material.
     public static void registerBackingMaterials() {
         for (Backing sc : SUPERCONDUCTOR_BACKINGS) {
@@ -163,7 +165,7 @@ public class Materials2Markers {
     }
 
     /// Registers a shapeless MaterialLib backing for a wildcard marker material (`AnyCopper`, `AnyIron`, ...),
-    /// which `MU#material` resolves by [GTMaterialProperties#LEGACY_NAME]. Ports the smelt/macerate/arc
+    /// which `MaterialUtils#byLegacyName` resolves by [GTMaterialProperties#LEGACY_NAME]. Ports the smelt/macerate/arc
     /// targets, the metal flag, and `setUnifiable(false)` that every wildcard marker carries; a name that
     /// already names a real MaterialLib material is returned as-is instead of re-registered.
     private static Material registerWildcard(String name, String localName, TextureSet texture, GTMaterialFlag flag,

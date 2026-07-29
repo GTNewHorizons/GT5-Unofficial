@@ -73,6 +73,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
@@ -539,7 +540,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         for (int i = 0; i < fuels; i++) {
             String name = aNBT.getString("fuels" + i);
             double amount = aNBT.getDouble("fuelsamount" + i);
-            Material m = MU.byLegacyName(name);
+            Material m = MaterialUtils.byLegacyName(name);
             if (m != null) {
                 this.mStoredFuels.put(m, amount);
             }
@@ -547,7 +548,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         for (int i = 0; i < burnedfuels; i++) {
             String name = aNBT.getString("burnedfuels" + i);
             double amount = aNBT.getDouble("burnedfuelsamount" + i);
-            Material m = MU.byLegacyName(name);
+            Material m = MaterialUtils.byLegacyName(name);
             if (m != null) {
                 this.mStoredBurnedFuels.put(m, amount);
             }
@@ -566,13 +567,13 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         aNBT.setInteger("burnedfuels", this.mStoredBurnedFuels.size());
         int i = 0;
         for (Map.Entry<Material, Double> entry : this.mStoredFuels.entrySet()) {
-            aNBT.setString("fuels" + i, MU.internalName(entry.getKey()));
+            aNBT.setString("fuels" + i, MaterialUtils.internalName(entry.getKey()));
             aNBT.setDouble("fuelsamount" + i, entry.getValue());
             i++;
         }
         i = 0;
         for (Map.Entry<Material, Double> entry : this.mStoredBurnedFuels.entrySet()) {
-            aNBT.setString("burnedfuels" + i, MU.internalName(entry.getKey()));
+            aNBT.setString("burnedfuels" + i, MaterialUtils.internalName(entry.getKey()));
             aNBT.setDouble("burnedfuelsamount" + i, entry.getValue());
             i++;
         }
@@ -802,7 +803,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             }
 
             if (drainedamount > 0) {
-                addOutputToHatch(steamOutputHatch, MU.gas(Materials2Materials.Steam, drainedamount * 160L));
+                addOutputToHatch(steamOutputHatch, MaterialUtils.gas(Materials2Materials.Steam, drainedamount * 160L));
 
                 double eff = drainedamount / ((double) this.watertaking);
                 double addedTime = (int) (this.mMaxProgresstime * WATER_SPEEDUP
@@ -833,7 +834,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             sb.append(
                 IGregTechDeviceInformation.encode(
                     "kubatech.infodata.htgr.stored_fuel_entry",
-                    MU.localizedName(entry.getKey()),
+                    MaterialUtils.localizedName(entry.getKey()),
                     formatNumber(entry.getValue()),
                     formatNumber(prop.getLeft()),
                     formatNumber(prop.getMiddle()),
@@ -859,7 +860,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             sb.append(
                 IGregTechDeviceInformation.encode(
                     "kubatech.infodata.htgr.burned_fuel_entry",
-                    MU.localizedName(entry.getKey()),
+                    MaterialUtils.localizedName(entry.getKey()),
                     formatNumber(entry.getValue() * 100d)))
                 .append("\n");
         }

@@ -37,7 +37,7 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -192,7 +192,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
 
     public ArrayList<FluidStack> getAllSteamStacks() {
         ArrayList<FluidStack> aFluids = new ArrayList<>();
-        FluidStack aSteam = MU.gas(Materials2Materials.Steam, 1);
+        FluidStack aSteam = MaterialUtils.gas(Materials2Materials.Steam, 1);
         for (FluidStack aFluid : this.getStoredFluids()) {
             if (aFluid.isFluidEqual(aSteam)) {
                 aFluids.add(aFluid);
@@ -221,7 +221,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
         if (getTotalSteamStored() <= 0) {
             return false;
         } else {
-            return this.depleteInput(MU.gas(Materials2Materials.Steam, aAmount));
+            return this.depleteInput(MaterialUtils.gas(Materials2Materials.Steam, aAmount));
         }
     }
 
@@ -326,7 +326,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
         if (aMetaTileEntity == null) return false;
 
         if (aMetaTileEntity instanceof MTEHatchCustomFluidBase fluidHatch && fluidHatch.mLockedFluid.equals(
-            MU.gas(Materials2Materials.Steam, 1)
+            MaterialUtils.gas(Materials2Materials.Steam, 1)
                 .getFluid())
             && mSteamInputFluids.isEmpty()) {
             return addToMachineListInternal(mSteamInputFluids, fluidHatch, aBaseCasingIndex);

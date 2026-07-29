@@ -14,6 +14,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -30,12 +31,12 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (!MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
+        if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
             if (GTOreDictUnificator.get(OrePrefixes.nugget, material, 1L) != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTOreDictUnificator.get(OrePrefixes.nugget, material, 1L))
                     .itemOutputs(GTUtility.copyAmount(1, stack))
-                    .duration(((int) Math.max(MU.mass(material) / 4L, 1L)) * TICKS)
+                    .duration(((int) Math.max(MaterialUtils.mass(material) / 4L, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_ULV)
                     .addTo(latheRecipes);
             }
@@ -53,6 +54,6 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
         }
         Api.INSTANCE.registries()
             .matterCannon()
-            .registerAmmo(GTOreDictUnificator.get(OrePrefixes.round, material, 1L), MU.mass(material));
+            .registerAmmo(GTOreDictUnificator.get(OrePrefixes.round, material, 1L), MaterialUtils.mass(material));
     }
 }

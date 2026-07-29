@@ -36,6 +36,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -258,10 +259,10 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
     protected static final HashSet<Fluid> LEGAL_FLUIDS = new HashSet<>(
         Arrays.asList(
-            MU.fluidOf(Materials2Materials.IronIIIChloride),
-            MU.fluidOf(Materials2Materials.GrowthMediumSterilized),
-            MU.fluidOf(Materials2Materials.BiohMediumSterilized),
-            MU.fluidOf(Materials2Materials.prismaticacid)));
+            MaterialUtils.fluidOf(Materials2Materials.IronIIIChloride),
+            MaterialUtils.fluidOf(Materials2Materials.GrowthMediumSterilized),
+            MaterialUtils.fluidOf(Materials2Materials.BiohMediumSterilized),
+            MaterialUtils.fluidOf(Materials2Materials.prismaticacid)));
 
     @NotNull
     @Override
@@ -418,7 +419,8 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             impurityFluidAmount = fluidAmount;
             FluidStack toFlush = new FluidStack(
                 impurityFluidStack.getFluid(),
-                impurityFluidStack.getFluid() == MU.fluidOf(Materials2Materials.prismaticgas) ? impurityFluidAmount / 4
+                impurityFluidStack.getFluid() == MaterialUtils.fluidOf(Materials2Materials.prismaticgas)
+                    ? impurityFluidAmount / 4
                     : impurityFluidAmount);
             addOutputPartial(toFlush);
             storedFluidStack = null;

@@ -17,6 +17,7 @@ import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.material.MaterialAtomics;
 import gregtech.api.material.MaterialRefStack;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 
@@ -24,8 +25,8 @@ import gregtech.api.util.GTUtility;
 /// [GTMaterialProperties#HAS_MIXER_RECIPE].
 ///
 /// Each carrier's [GTMaterialProperties#COMPOSITION] entries resolve to a dust input per entry
-/// ([MU#compositionDust]), except a single gas-only entry (e.g. Hydrogen, Oxygen), which resolves to a fluid
-/// input instead ([MU#compositionGas]) rather than an item; [#CARRIERS] never declares more than one such
+/// ([MaterialUtils#compositionDust]), except a single gas-only entry (e.g. Hydrogen, Oxygen), which resolves to a fluid
+/// input instead ([MaterialUtils#compositionGas]) rather than an item; [#CARRIERS] never declares more than one such
 /// entry, so this carries no cell-item byproduct accounting. [GTMaterialProperties#MIX_CIRCUIT] adds an
 /// integrated-circuit input when set to 1 or higher. Duration and EU scale off the carrier's own
 /// [MaterialAtomics#mass] and [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU], divided/multiplied by its
@@ -70,12 +71,12 @@ public final class LoaderMixerRecipes {
         List<ItemStack> itemInputs = new ArrayList<>();
         FluidStack fluidInput = null;
         for (MaterialRefStack entry : composition) {
-            ItemStack dustInput = MU.compositionDust(entry);
+            ItemStack dustInput = MaterialUtils.compositionDust(entry);
             if (dustInput != null) {
                 itemInputs.add(dustInput);
                 continue;
             }
-            FluidStack gasInput = MU.compositionGas(entry);
+            FluidStack gasInput = MaterialUtils.compositionGas(entry);
             if (gasInput == null || fluidInput != null) {
                 GTLog.err.println(
                     "LoaderMixerRecipes: " + material.getName()

@@ -23,6 +23,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class StaticRecipeChangeLoaders {
@@ -39,7 +40,7 @@ public class StaticRecipeChangeLoaders {
     }
 
     private static void runUnficationDeleter(Material material) {
-        String internalName = MU.internalName(material);
+        String internalName = MaterialUtils.internalName(material);
         for (OrePrefixes prefixes : OrePrefixes.VALUES)
             if (Materials2WerkstoffIndex.generatesPrefix(material, prefixes)) {
                 GTOreDictUnificator.set(prefixes, material, MU.stack(prefixes, material, 1), true, true);
@@ -51,7 +52,7 @@ public class StaticRecipeChangeLoaders {
     }
 
     private static void runMaterialLinker(Material material) {
-        String internalName = MU.internalName(material);
+        String internalName = MaterialUtils.internalName(material);
         for (OrePrefixes prefixes : OrePrefixes.VALUES)
             if (Materials2WerkstoffIndex.generatesPrefix(material, prefixes)) {
                 GTOreDictUnificator.set(prefixes, material, MU.stack(prefixes, material, 1), true, true);

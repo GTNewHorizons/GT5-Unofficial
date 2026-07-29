@@ -12,7 +12,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -30,13 +30,13 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (MU.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustPure, MU.macerateInto(material), 1L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustPure, MaterialUtils.macerateInto(material), 1L))
             .duration(10)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
@@ -46,12 +46,15 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
             .itemOutputs(
                 GTOreDictUnificator.get(
                     OrePrefixes.dustPure,
-                    MU.macerateInto(material),
-                    GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(material), 1L),
+                    MaterialUtils.macerateInto(material),
+                    GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L),
                     1L),
                 GTOreDictUnificator.get(
                     OrePrefixes.dust,
-                    GTUtility.selectItemInList(1, MU.macerateInto(material), MU.oreByProducts(material)),
+                    GTUtility.selectItemInList(
+                        1,
+                        MaterialUtils.macerateInto(material),
+                        MaterialUtils.oreByProducts(material)),
                     1L))
             .outputChances(10000, 1000)
             .duration(20 * SECONDS)

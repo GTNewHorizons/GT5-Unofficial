@@ -5,7 +5,7 @@ import java.util.List;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 
 /**
  * Interface to provide localization for meta pipe entity with a united format.
@@ -43,7 +43,8 @@ public interface ILocalizedMetaPipeEntity {
         if (prefixKey != null && material != null) {
             final String materialKeyOverride = getMaterialKeyOverride();
             if (materialKeyOverride == null) {
-                return OrePrefixes.getLocalizedNameForItemWithInflection(prefixKey, MU.internalName(material));
+                return OrePrefixes
+                    .getLocalizedNameForItemWithInflection(prefixKey, MaterialUtils.internalName(material));
             }
             return OrePrefixes.getLocalizedNameForItemWithInflectionForKey(prefixKey, materialKeyOverride);
         }
@@ -64,6 +65,6 @@ public interface ILocalizedMetaPipeEntity {
      */
     default void addMaterialTooltip(List<String> desc) {
         if (shouldSkipMaterialTooltip()) return;
-        MU.addTooltips(getMaterial(), desc);
+        MaterialUtils.addTooltips(getMaterial(), desc);
     }
 }

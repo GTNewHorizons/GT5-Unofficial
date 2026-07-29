@@ -145,6 +145,7 @@ import gregtech.api.material.AspectRefStack;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
@@ -1156,46 +1157,46 @@ public class GTProxy implements IFuelHandler {
         GTLog.out.println("GTMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
         for (Material material : MaterialLibAPI.getMaterials()) {
             if (!LegacyNameDomain.contains(material)) continue;
-            if (MU.unifiable(material)) {
-                if (!MU.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
+            if (MaterialUtils.unifiable(material)) {
+                if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(material), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crushedCentrifuged.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(material), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crystalline.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(material), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crystal.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustPure, MU.macerateInto(material), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dustPure, MaterialUtils.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crushedPurified.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustPure, MU.macerateInto(material), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dustPure, MaterialUtils.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.cleanGravel.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustPure, MU.macerateInto(material), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dustPure, MaterialUtils.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.reduced.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustImpure, MU.macerateInto(material), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dustImpure, MaterialUtils.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.clump.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustImpure, MU.macerateInto(material), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dustImpure, MaterialUtils.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.shard.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustImpure, MU.macerateInto(material), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dustImpure, MaterialUtils.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.crushed.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dustImpure, MU.macerateInto(material), 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dustImpure, MaterialUtils.macerateInto(material), 1L),
                         GTModHandler.RecipeBits.BITS_STD,
                         new Object[] { "h", "X", 'X', OrePrefixes.dirtyGravel.ingredient(material) });
                 }
@@ -1739,7 +1740,7 @@ public class GTProxy implements IFuelHandler {
                                         for (TC_AspectStack tAspect : aPrefix.mAspects)
                                             tAspect.addToAspectList(tAspects);
                                         if (aPrefix.getMaterialAmount() >= 3628800 || aPrefix.getMaterialAmount() < 0)
-                                            for (AspectRefStack tAspect : MU.aspects(aMaterial))
+                                            for (AspectRefStack tAspect : MaterialUtils.aspects(aMaterial))
                                                 new TC_AspectStack(TCAspects.valueOf(tAspect.name()), tAspect.amount())
                                                     .addToAspectList(tAspects);
                                         GregTechAPI.sThaumcraftCompat.registerThaumcraftAspectsToItem(
@@ -1768,7 +1769,7 @@ public class GTProxy implements IFuelHandler {
                                                 || aMaterial == Materials2Materials.InfusedOrder
                                                 || aMaterial == Materials2Materials.InfusedEntropy) {
                                                     GTOreDictUnificator.registerOre(
-                                                        MU.internalName(aMaterial)
+                                                        MaterialUtils.internalName(aMaterial)
                                                             .replaceFirst("Infused", "shard"),
                                                         aEvent.Ore);
                                                 } else if (aMaterial == Materials2Materials.Chocolate) {
@@ -1805,10 +1806,10 @@ public class GTProxy implements IFuelHandler {
                                             }
                                         }
                                         case "lens" -> {
-                                            if ((MU.hasFlag(aMaterial, GTMaterialFlag.TRANSPARENT))
-                                                && (MU.dye(aMaterial) != Dyes._NULL)) {
+                                            if ((MaterialUtils.hasFlag(aMaterial, GTMaterialFlag.TRANSPARENT))
+                                                && (MaterialUtils.dye(aMaterial) != Dyes._NULL)) {
                                                 GTOreDictUnificator.registerOre(
-                                                    "craftingLens" + MU.dye(aMaterial)
+                                                    "craftingLens" + MaterialUtils.dye(aMaterial)
                                                         .toString()
                                                         .replaceFirst("dye", ""),
                                                     aEvent.Ore);
@@ -1912,7 +1913,7 @@ public class GTProxy implements IFuelHandler {
                                         }
                                         default -> {}
                                     }
-                                    if (aPrefix.isUnifiable() && !MU.unifiable(aMaterial)) {
+                                    if (aPrefix.isUnifiable() && !MaterialUtils.unifiable(aMaterial)) {
                                         return;
                                     }
                                 } else if (reconstructedMaterial(tName) != null) {
@@ -2032,8 +2033,8 @@ public class GTProxy implements IFuelHandler {
     /// and the [OreDictEventContainer] construction in [#registerOre], which both need to agree on when a
     /// registration's census is marker-driven.
     private static boolean isCensusMarker(Material recognitionMarker) {
-        return recognitionMarker != null && MU.unifiable(recognitionMarker)
-            && MU.hasFlag(recognitionMarker, GTMaterialFlag.CRYSTALLISABLE);
+        return recognitionMarker != null && MaterialUtils.unifiable(recognitionMarker)
+            && MaterialUtils.hasFlag(recognitionMarker, GTMaterialFlag.CRYSTALLISABLE);
     }
 
     /// The MaterialLib material an ore-dictionary registration's event pipeline carries downstream (the
@@ -2064,23 +2065,23 @@ public class GTProxy implements IFuelHandler {
     }
 
     /// The reconstructed (werkstoff- or gtpp-owned) MaterialLib material registered under `tName`, or null when
-    /// the name must keep being dropped as unknown. Dispatches on [MU#hasBridgeRegistration], which
+    /// the name must keep being dropped as unknown. Dispatches on [MaterialUtils#hasBridgeRegistration], which
     /// `LoaderWerkstoffRegistrations` sets only once its own pass (bartworks' init) reaches a werkstoff-origin
     /// material -- so an event processed before that pass runs, notably the entire
     /// [#catchUpPreExistingOreDictEntries] preInit replay, is dropped here too.
     ///
-    /// A gtPlusPlus-originated material never gets a [MU#hasBridgeRegistration] record
+    /// A gtPlusPlus-originated material never gets a [MaterialUtils#hasBridgeRegistration] record
     /// (`LoaderWerkstoffRegistrations` only records materials carrying [GTMaterialProperties#WERKSTOFF_IDS]),
     /// so it falls to the plain registry-and-shapes check [#resolveCensusMaterial] also uses, gated on
     /// [GTMaterialProperties#GTPP_STATE] specifically (the same discriminator
     /// `gregtech.common.ores.GTPPOreAdapter`'s `isGtpp` uses): an ordinary bartworks werkstoff not yet
-    /// [MU#hasBridgeRegistration]-recorded has its own working resolution path elsewhere and must keep
+    /// [MaterialUtils#hasBridgeRegistration]-recorded has its own working resolution path elsewhere and must keep
     /// resolving to `_NULL` here, not be newly rescued by the GTPP_STATE fallback.
     private static @Nullable Material reconstructedMaterial(@Nullable String tName) {
         if (tName == null || hasDeclaredMaterialsField(tName)) return null;
         Material ml = MaterialLibAPI.getMaterial("gregtech", tName);
         if (ml == null) return null;
-        if (MU.hasBridgeRegistration(ml)) return ml;
+        if (MaterialUtils.hasBridgeRegistration(ml)) return ml;
         if (ml.getProperty(GTMaterialProperties.GTPP_STATE) == null) return null;
         return ml.getShapes()
             .isEmpty() ? null : ml;
@@ -2098,14 +2099,14 @@ public class GTProxy implements IFuelHandler {
     /// unconditional gear cross-registration for a `gearGt` entry, and -- for `Fluix` and `Quartz` specifically
     /// -- the `crystal`/`gem`/`craftingQuartz` cross-registrations their names steer.
     private void registerRecognitionOre(OrePrefixes aPrefix, Material aMarker, OreDictionary.OreRegisterEvent aEvent) {
-        if (MU.unifiable(aMarker)) {
+        if (MaterialUtils.unifiable(aMarker)) {
             aPrefix.add(GTUtility.copyAmount(1, aEvent.Ore));
         }
         if (aPrefix.getName()
             .equals("gearGt")) {
             GTOreDictUnificator.registerOre(OrePrefixes.gear, aMarker, aEvent.Ore);
         }
-        String tName = MU.internalName(aMarker);
+        String tName = MaterialUtils.internalName(aMarker);
         if (tName.equals("Fluix") && aPrefix == OrePrefixes.crystal) {
             GTOreDictUnificator.registerOre(OrePrefixes.gem, aMarker, aEvent.Ore);
         }
@@ -2324,15 +2325,15 @@ public class GTProxy implements IFuelHandler {
     // ------------------------ Adds all fluids corresponding to materials ------------------------
 
     /// The color for the autogenerated fluid, falling back to `{255, 255, 255, 0}` when the material carries no
-    /// [gregtech.api.material.GTMaterialProperties#ARGB] (`MU#rgba` returns null there, but `withColorRGBA`
+    /// [gregtech.api.material.GTMaterialProperties#ARGB] (`MaterialUtils#rgba` returns null there, but `withColorRGBA`
     /// must not).
     private static short[] rgba(Material material) {
-        short[] rgba = MU.rgba(material);
+        short[] rgba = MaterialUtils.rgba(material);
         return rgba != null ? rgba : new short[] { 255, 255, 255, 0 };
     }
 
     public Fluid addAutoGeneratedCorrespondingFluid(Material aMaterial) {
-        Fluid fluid = MU.fluidOf(aMaterial);
+        Fluid fluid = MaterialUtils.fluidOf(aMaterial);
         if (!GTFluid.DUMP_MODE && fluid != null) {
             // MaterialLib already registered and wired this material's fluid.
             registerCellContainer(OrePrefixes.cell, aMaterial, fluid, 1000);
@@ -2342,16 +2343,18 @@ public class GTProxy implements IFuelHandler {
         // If the fluid is registered as custom inside the Material's constructor then to add custom fluid
         // textures go to blocks/fluids and place the .png. File should be called fluid.fluid.{unlocalised_name}.png.
         // All lower case.
-        final String fluidTexture = MU.iconSet(aMaterial).is_custom ? "fluid." + MU.internalName(aMaterial)
-            .toLowerCase() : "autogenerated";
+        final String fluidTexture = MaterialUtils.iconSet(aMaterial).is_custom
+            ? "fluid." + MaterialUtils.internalName(aMaterial)
+                .toLowerCase()
+            : "autogenerated";
 
         return GTFluidFactory.builder(
-            MU.internalName(aMaterial)
+            MaterialUtils.internalName(aMaterial)
                 .toLowerCase(Locale.ENGLISH))
-            .withDefaultLocalName(MU.localName(aMaterial))
+            .withDefaultLocalName(MaterialUtils.localName(aMaterial))
             .withTextureName(fluidTexture)
             .withColorRGBA(rgba(aMaterial))
-            .withStateAndTemperature(LIQUID, MU.liquidTemperature(aMaterial))
+            .withStateAndTemperature(LIQUID, MaterialUtils.liquidTemperature(aMaterial))
             .buildAndRegister()
             .configureMaterials(aMaterial)
             .addLocalizedName(aMaterial)
@@ -2360,7 +2363,7 @@ public class GTProxy implements IFuelHandler {
     }
 
     public Fluid addAutoGeneratedCorrespondingGas(Material aMaterial) {
-        Fluid gas = MU.gasOf(aMaterial);
+        Fluid gas = MaterialUtils.gasOf(aMaterial);
         if (!GTFluid.DUMP_MODE && gas != null) {
             registerCellContainer(OrePrefixes.cell, aMaterial, gas, 1000);
             return gas;
@@ -2369,16 +2372,18 @@ public class GTProxy implements IFuelHandler {
         // If the fluid is registered as custom inside the Material's constructor then to add custom fluid
         // textures go to blocks/fluids and place the .png. File should be called fluid.gas.{unlocalised_name}.png. All
         // lower case.
-        final String fluidTexture = MU.iconSet(aMaterial).is_custom ? ("gas." + MU.internalName(aMaterial)
-            .toLowerCase()) : "autogenerated";
+        final String fluidTexture = MaterialUtils.iconSet(aMaterial).is_custom
+            ? ("gas." + MaterialUtils.internalName(aMaterial)
+                .toLowerCase())
+            : "autogenerated";
 
         return GTFluidFactory.builder(
-            MU.internalName(aMaterial)
+            MaterialUtils.internalName(aMaterial)
                 .toLowerCase(Locale.ENGLISH))
-            .withDefaultLocalName(MU.localName(aMaterial))
+            .withDefaultLocalName(MaterialUtils.localName(aMaterial))
             .withTextureName(fluidTexture)
             .withColorRGBA(rgba(aMaterial))
-            .withStateAndTemperature(GAS, MU.gasTemperature(aMaterial))
+            .withStateAndTemperature(GAS, MaterialUtils.gasTemperature(aMaterial))
             .buildAndRegister()
             .configureMaterials(aMaterial)
             .addLocalizedName(aMaterial)
@@ -2387,9 +2392,9 @@ public class GTProxy implements IFuelHandler {
     }
 
     public Fluid addAutogeneratedPlasmaFluid(Material aMaterial) {
-        Fluid plasma = MU.plasmaOf(aMaterial);
+        Fluid plasma = MaterialUtils.plasmaOf(aMaterial);
         if (!GTFluid.DUMP_MODE && plasma != null) {
-            int amount = MU.hasMolten(aMaterial) ? 1 * INGOTS : 1_000;
+            int amount = MaterialUtils.hasMolten(aMaterial) ? 1 * INGOTS : 1_000;
             registerCellContainer(OrePrefixes.cellPlasma, aMaterial, plasma, amount);
             return plasma;
         }
@@ -2397,16 +2402,16 @@ public class GTProxy implements IFuelHandler {
         // If the fluid is registered as custom inside the Material's constructor then to add custom fluid
         // textures go to blocks/fluids and place the .png. File should be called fluid.plasma.{texture_set_name}.png.
         // All lower case.
-        final String fluidTexture = MU.iconSet(aMaterial).is_custom
-            ? ("plasma." + MU.iconSet(aMaterial).aTextCustomAutogenerated.toLowerCase())
+        final String fluidTexture = MaterialUtils.iconSet(aMaterial).is_custom
+            ? ("plasma." + MaterialUtils.iconSet(aMaterial).aTextCustomAutogenerated.toLowerCase())
             : "plasma.autogenerated";
 
         return GTFluidFactory.builder(
-            "plasma." + MU.internalName(aMaterial)
+            "plasma." + MaterialUtils.internalName(aMaterial)
                 .toLowerCase(Locale.ENGLISH))
-            .withDefaultLocalName(MU.localName(aMaterial) + " Plasma")
+            .withDefaultLocalName(MaterialUtils.localName(aMaterial) + " Plasma")
             .withTextureName(fluidTexture)
-            .withColorRGBA(MU.moltenRgba(aMaterial))
+            .withColorRGBA(MaterialUtils.moltenRgba(aMaterial))
             .withStateAndTemperature(PLASMA, 10000)
             .buildAndRegister()
             .configureMaterials(aMaterial)
@@ -2414,12 +2419,12 @@ public class GTProxy implements IFuelHandler {
             .registerContainers(
                 GTOreDictUnificator.get(OrePrefixes.cellPlasma, aMaterial, 1L),
                 ItemList.Cell_Empty.get(1L),
-                MU.hasMolten(aMaterial) ? 1 * INGOTS : 1_000)
+                MaterialUtils.hasMolten(aMaterial) ? 1 * INGOTS : 1_000)
             .asFluid();
     }
 
     public Fluid addAutogeneratedMoltenFluid(Material aMaterial) {
-        Fluid molten = MU.moltenOf(aMaterial);
+        Fluid molten = MaterialUtils.moltenOf(aMaterial);
         if (!GTFluid.DUMP_MODE && molten != null) {
             registerCellContainer(OrePrefixes.cellMolten, aMaterial, molten, 1 * INGOTS);
             return molten;
@@ -2428,17 +2433,19 @@ public class GTProxy implements IFuelHandler {
         // If the fluid is registered as custom inside the Material's constructor then to add custom fluid
         // textures go to blocks/fluids and place the .png. File should be called fluid.molten.{texture_set_name}.png.
         // All lower case.
-        final String fluidTexture = MU.iconSet(aMaterial).is_custom
-            ? ("molten." + MU.iconSet(aMaterial).aTextCustomAutogenerated.toLowerCase())
+        final String fluidTexture = MaterialUtils.iconSet(aMaterial).is_custom
+            ? ("molten." + MaterialUtils.iconSet(aMaterial).aTextCustomAutogenerated.toLowerCase())
             : "molten.autogenerated";
 
         return GTFluidFactory.builder(
-            "molten." + MU.internalName(aMaterial)
+            "molten." + MaterialUtils.internalName(aMaterial)
                 .toLowerCase(Locale.ENGLISH))
-            .withDefaultLocalName("Molten " + MU.localName(aMaterial))
+            .withDefaultLocalName("Molten " + MaterialUtils.localName(aMaterial))
             .withTextureName(fluidTexture)
-            .withColorRGBA(MU.moltenRgba(aMaterial))
-            .withStateAndTemperature(MOLTEN, MU.meltingPoint(aMaterial) < 0 ? 1000 : MU.meltingPoint(aMaterial))
+            .withColorRGBA(MaterialUtils.moltenRgba(aMaterial))
+            .withStateAndTemperature(
+                MOLTEN,
+                MaterialUtils.meltingPoint(aMaterial) < 0 ? 1000 : MaterialUtils.meltingPoint(aMaterial))
             .buildAndRegister()
             .configureMaterials(aMaterial)
             .addLocalizedName(aMaterial)
@@ -2476,27 +2483,27 @@ public class GTProxy implements IFuelHandler {
 
     public void addAutoGeneratedHydroCrackedFluids(Material aMaterial) {
         // MaterialLib already registered and wired these fluids when all three severities are present.
-        boolean owned = MU.crackedFluid(aMaterial, MU.CrackType.HYDRO, 0) != null;
+        boolean owned = MaterialUtils.crackedFluid(aMaterial, MaterialUtils.CrackType.HYDRO, 0) != null;
         Fluid[] crackedFluids = new Fluid[3];
         String[] namePrefixes = { "lightlyhydrocracked.", "moderatelyhydrocracked.", "severelyhydrocracked." };
         OrePrefixes[] orePrefixes = { OrePrefixes.cellHydroCracked1, OrePrefixes.cellHydroCracked2,
             OrePrefixes.cellHydroCracked3 };
         final Fluid uncrackedFluid;
-        if (MU.fluidOf(aMaterial) != null) {
-            uncrackedFluid = MU.fluidOf(aMaterial);
-        } else if (MU.gasOf(aMaterial) != null) {
-            uncrackedFluid = MU.gasOf(aMaterial);
+        if (MaterialUtils.fluidOf(aMaterial) != null) {
+            uncrackedFluid = MaterialUtils.fluidOf(aMaterial);
+        } else if (MaterialUtils.gasOf(aMaterial) != null) {
+            uncrackedFluid = MaterialUtils.gasOf(aMaterial);
         } else return;
         for (int i = 0; i < 3; i++) {
             if (owned && !GTFluid.DUMP_MODE) {
-                crackedFluids[i] = MU.crackedFluid(aMaterial, MU.CrackType.HYDRO, i);
+                crackedFluids[i] = MaterialUtils.crackedFluid(aMaterial, MaterialUtils.CrackType.HYDRO, i);
                 registerCellContainer(orePrefixes[i], aMaterial, crackedFluids[i], 1000);
             } else {
                 crackedFluids[i] = GTFluidFactory.builder(
-                    namePrefixes[i] + MU.internalName(aMaterial)
+                    namePrefixes[i] + MaterialUtils.internalName(aMaterial)
                         .toLowerCase(Locale.ENGLISH))
                     .withIconsFrom(uncrackedFluid)
-                    .withDefaultLocalName(orePrefixes[i].getMaterialPrefix() + MU.localName(aMaterial))
+                    .withDefaultLocalName(orePrefixes[i].getMaterialPrefix() + MaterialUtils.localName(aMaterial))
                     .withColorRGBA(rgba(aMaterial))
                     .withStateAndTemperature(GAS, 775)
                     .buildAndRegister()
@@ -2505,7 +2512,7 @@ public class GTProxy implements IFuelHandler {
                         GTOreDictUnificator.get(orePrefixes[i], aMaterial, 1L),
                         ItemList.Cell_Empty.get(1L))
                     .asFluid();
-                MU.recordCrackedFluid(aMaterial, MU.CrackType.HYDRO, i, crackedFluids[i]);
+                MaterialUtils.recordCrackedFluid(aMaterial, MaterialUtils.CrackType.HYDRO, i, crackedFluids[i]);
             }
 
             int hydrogenAmount = 2 * i + 2;
@@ -2564,27 +2571,27 @@ public class GTProxy implements IFuelHandler {
     }
 
     public void addAutoGeneratedSteamCrackedFluids(Material aMaterial) {
-        boolean owned = MU.crackedFluid(aMaterial, MU.CrackType.STEAM, 0) != null;
+        boolean owned = MaterialUtils.crackedFluid(aMaterial, MaterialUtils.CrackType.STEAM, 0) != null;
         Fluid[] crackedFluids = new Fluid[3];
         String[] namePrefixes = { "lightlysteamcracked.", "moderatelysteamcracked.", "severelysteamcracked." };
         OrePrefixes[] orePrefixes = { OrePrefixes.cellSteamCracked1, OrePrefixes.cellSteamCracked2,
             OrePrefixes.cellSteamCracked3 };
         final Fluid uncrackedFluid;
-        if (MU.fluidOf(aMaterial) != null) {
-            uncrackedFluid = MU.fluidOf(aMaterial);
-        } else if (MU.gasOf(aMaterial) != null) {
-            uncrackedFluid = MU.gasOf(aMaterial);
+        if (MaterialUtils.fluidOf(aMaterial) != null) {
+            uncrackedFluid = MaterialUtils.fluidOf(aMaterial);
+        } else if (MaterialUtils.gasOf(aMaterial) != null) {
+            uncrackedFluid = MaterialUtils.gasOf(aMaterial);
         } else return;
         for (int i = 0; i < 3; i++) {
             if (owned && !GTFluid.DUMP_MODE) {
-                crackedFluids[i] = MU.crackedFluid(aMaterial, MU.CrackType.STEAM, i);
+                crackedFluids[i] = MaterialUtils.crackedFluid(aMaterial, MaterialUtils.CrackType.STEAM, i);
                 registerCellContainer(orePrefixes[i], aMaterial, crackedFluids[i], 1000);
             } else {
                 crackedFluids[i] = GTFluidFactory.builder(
-                    namePrefixes[i] + MU.internalName(aMaterial)
+                    namePrefixes[i] + MaterialUtils.internalName(aMaterial)
                         .toLowerCase(Locale.ENGLISH))
                     .withIconsFrom(uncrackedFluid)
-                    .withDefaultLocalName(orePrefixes[i].getMaterialPrefix() + MU.localName(aMaterial))
+                    .withDefaultLocalName(orePrefixes[i].getMaterialPrefix() + MaterialUtils.localName(aMaterial))
                     .withColorRGBA(rgba(aMaterial))
                     .withStateAndTemperature(GAS, 775)
                     .buildAndRegister()
@@ -2593,12 +2600,12 @@ public class GTProxy implements IFuelHandler {
                         GTOreDictUnificator.get(orePrefixes[i], aMaterial, 1L),
                         ItemList.Cell_Empty.get(1L))
                     .asFluid();
-                MU.recordCrackedFluid(aMaterial, MU.CrackType.STEAM, i, crackedFluids[i]);
+                MaterialUtils.recordCrackedFluid(aMaterial, MaterialUtils.CrackType.STEAM, i, crackedFluids[i]);
             }
 
             GTValues.RA.stdBuilder()
                 .circuit(i + 1)
-                .fluidInputs(new FluidStack(uncrackedFluid, 1_000), MU.gas(Materials2Materials.Steam, 1_000))
+                .fluidInputs(new FluidStack(uncrackedFluid, 1_000), MaterialUtils.gas(Materials2Materials.Steam, 1_000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 1_200))
                 .duration((1 + i) * SECONDS)
                 .eut(TierEU.RECIPE_HV / 2)
@@ -2618,7 +2625,7 @@ public class GTProxy implements IFuelHandler {
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L))
                 .circuit(i + 1)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
-                .fluidInputs(MU.gas(Materials2Materials.Steam, 1_000))
+                .fluidInputs(MaterialUtils.gas(Materials2Materials.Steam, 1_000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -2636,7 +2643,7 @@ public class GTProxy implements IFuelHandler {
 
             GTValues.RA.stdBuilder()
                 .circuit(i + 1)
-                .fluidInputs(new FluidStack(uncrackedFluid, 1_000), MU.gas(Materials2Materials.Steam, 1_000))
+                .fluidInputs(new FluidStack(uncrackedFluid, 1_000), MaterialUtils.gas(Materials2Materials.Steam, 1_000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((4 + 2 * i) * SECONDS)
                 .eut(TierEU.RECIPE_HV)
@@ -2696,7 +2703,7 @@ public class GTProxy implements IFuelHandler {
                 size += 5;
             }
             if (progressBar != null) {
-                progressBar.step(event.mMaterial == null ? "" : MU.internalName(event.mMaterial));
+                progressBar.step(event.mMaterial == null ? "" : MaterialUtils.internalName(event.mMaterial));
             }
         }
         if (progressBar != null) {

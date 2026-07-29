@@ -68,7 +68,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
@@ -727,7 +727,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                             .equals(" Ore")) {
                         ItemData outputData = GTOreDictUnificator.getItemData(smeltedOutput);
                         if (outputData != null) {
-                            FluidStack output = MU.molten(outputData.mMaterial.mMaterial, 1);
+                            FluidStack output = MaterialUtils.molten(outputData.mMaterial.mMaterial, 1);
                             long amount = outputData.mPrefix.getMaterialAmount() / (GTValues.M / 144L)
                                 * smeltedOutput.stackSize;
                             if (output != null) {

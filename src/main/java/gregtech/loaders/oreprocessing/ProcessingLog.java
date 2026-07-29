@@ -16,7 +16,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.loaders.materials.LegacyNameDomain;
@@ -60,7 +60,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .itemOutputs(
                                 GTUtility.copyOrNull(tPlanks),
                                 MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (1)))
-                            .fluidInputs(MU.fluid(Materials2Materials.dimensionallyshiftedsuperfluid, 1L))
+                            .fluidInputs(MaterialUtils.fluid(Materials2Materials.dimensionallyshiftedsuperfluid, 1L))
                             .duration(4 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(cutterRecipes);
@@ -129,7 +129,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .itemOutputs(
                             GTUtility.copyOrNull(tPlanks),
                             MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (1)))
-                        .fluidInputs(MU.fluid(Materials2Materials.dimensionallyshiftedsuperfluid, 1L))
+                        .fluidInputs(MaterialUtils.fluid(Materials2Materials.dimensionallyshiftedsuperfluid, 1L))
                         .duration(4 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
                         .addTo(cutterRecipes);

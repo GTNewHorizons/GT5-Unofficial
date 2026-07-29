@@ -33,6 +33,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -116,7 +117,8 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                     Materials2Materials.RawStarMatter,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (1 * STACKS)))
-            .fluidOutputs(MU.molten(Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, 16 * INGOTS))
+            .fluidOutputs(
+                MaterialUtils.molten(Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, 16 * INGOTS))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(electricImplosionCompressorRecipes);
@@ -140,7 +142,8 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                     Materials2Materials.RawStarMatter,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (2 * STACKS)))
-            .fluidOutputs(MU.molten(Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, 36 * INGOTS))
+            .fluidOutputs(
+                MaterialUtils.molten(Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, 36 * INGOTS))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(electricImplosionCompressorRecipes);
@@ -207,7 +210,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 GTOreDictUnificator
                     .get(part, Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, multiplier))
             .fluidInputs(
-                MU.molten(
+                MaterialUtils.molten(
                     Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter,
                     (long) partFraction * multiplier))
             .duration((int) (multiplier * (20 * partFraction / (float) INGOTS)))

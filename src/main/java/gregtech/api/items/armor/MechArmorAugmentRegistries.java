@@ -51,7 +51,7 @@ import gregtech.api.items.armor.behaviors.SwimSpeedBehavior;
 import gregtech.api.items.armor.behaviors.TerrasteelBehavior;
 import gregtech.api.items.armor.behaviors.VisDiscountBehavior;
 import gregtech.api.items.armor.behaviors.WaterBreathingBehavior;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 
 public class MechArmorAugmentRegistries {
 
@@ -172,7 +172,7 @@ public class MechArmorAugmentRegistries {
             .setId("Infinity")
             .setItemId("armorframeinfinity")
             .setSlotCounts(5, 5, 5, 5)
-            .setColor(MU.rgba(Materials2Materials.Infinity))
+            .setColor(MaterialUtils.rgba(Materials2Materials.Infinity))
             .setRarity(EnumRarity.epic)
             .setProtection(1)
         );

@@ -11,7 +11,7 @@ import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTToolHarvestHelper;
 import gregtech.common.items.behaviors.BehaviourWireCutter;
 
@@ -44,7 +44,7 @@ public class ToolWireCutter extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MU.iconSet(
+        return aIsToolHead ? MaterialUtils.iconSet(
             MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[MaterialIconRegistry.IconType.TOOL_WIRE_CUTTER
                 .ordinal()]
             : null;
@@ -52,8 +52,8 @@ public class ToolWireCutter extends GTTool {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MU.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
-            : MU.rgba(MetaGeneratedTool.getSecondaryMaterialML(aStack));
+        return aIsToolHead ? MaterialUtils.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : MaterialUtils.rgba(MetaGeneratedTool.getSecondaryMaterialML(aStack));
     }
 
     @Override

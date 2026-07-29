@@ -25,6 +25,7 @@ import bartworks.util.log.DebugLog;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 
 public class RadioHatchCompat {
 
@@ -40,7 +41,7 @@ public class RadioHatchCompat {
         for (Material mats : MaterialLibAPI.getMaterials()) {
             if (!Boolean.TRUE.equals(mats.getProperty(GTMaterialProperties.IS_RADIOACTIVE))) continue;
 
-            String name = MU.internalName(mats);
+            String name = MaterialUtils.internalName(mats);
 
             if (OreDictionary.getOres("stick" + name)
                 .isEmpty()) {

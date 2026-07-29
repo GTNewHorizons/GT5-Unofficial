@@ -26,7 +26,7 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -290,7 +290,7 @@ public class RecipeLoaderCoalTar {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Lithium, Materials2Shapes.dust, (int) (5)))
             .fluidInputs(new FluidStack(GTPPFluids.Naphthalene, 2_000))
-            .fluidOutputs(MU.fluid(Materials2Materials.phtalicacid, 2_500))
+            .fluidOutputs(MaterialUtils.fluid(Materials2Materials.phtalicacid, 2_500))
             .eut(TierEU.RECIPE_LV)
             .duration(16 * SECONDS)
             .addTo(UniversalChemical);
@@ -299,7 +299,7 @@ public class RecipeLoaderCoalTar {
     private static void recipePhthalicAcidToPhthalicAnhydride() {
         GTValues.RA.stdBuilder()
             .itemOutputs(GregtechItemList.PhthalicAnhydrideDust.get(15))
-            .fluidInputs(MU.fluid(Materials2Materials.phtalicacid, 1_000))
+            .fluidInputs(MaterialUtils.fluid(Materials2Materials.phtalicacid, 1_000))
             .eut(TierEU.RECIPE_MV)
             .duration(60 * SECONDS)
             .addTo(chemicalDehydratorRecipes);

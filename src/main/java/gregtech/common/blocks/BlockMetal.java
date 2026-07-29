@@ -15,6 +15,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -42,7 +43,7 @@ public class BlockMetal extends BlockStorage {
         mHideBlocks = mNEIisLoaded;
 
         for (int i = 0; i < aMats.length; i++) {
-            if (MU.oldSubId(aMats[i]) > 0 && Materials2ParentMods.hasParentMod(aMats[i])) {
+            if (MaterialUtils.oldSubId(aMats[i]) > 0 && Materials2ParentMods.hasParentMod(aMats[i])) {
                 Material material = aMats[i];
                 boolean cutOver = MU.isCutOver(aPrefix, material);
                 ItemStack canonicalStack = cutOver ? MU.stack(aPrefix, material, 1) : new ItemStack(this, 1, i);
@@ -67,7 +68,7 @@ public class BlockMetal extends BlockStorage {
 
         if (material == null) material = Materials2Materials.NULL;
 
-        return OrePrefixes.block.getLocalizedNameForItem(MU.internalName(material));
+        return OrePrefixes.block.getLocalizedNameForItem(MaterialUtils.internalName(material));
     }
 
     @Override

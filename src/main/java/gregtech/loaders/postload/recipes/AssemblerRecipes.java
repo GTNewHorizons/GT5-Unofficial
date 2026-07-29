@@ -49,7 +49,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
@@ -3172,7 +3172,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.plate, 12),
                 MaterialLibAPI.getStack(Materials2Materials.prismaticnaquadah, Materials2Shapes.screw, 4))
             .itemOutputs(ItemList.RadiantNaquadahAlloyCasing.get(4))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Indalloy140, 9 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 9 * INGOTS))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
@@ -5029,7 +5029,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(CustomItemList.LASERpipe.get(1), ItemList.Naquarite_Universal_Insulator_Foil.get(4))
             .itemOutputs(CustomItemList.Pipe_BEC.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.ChromaticGlass, INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.ChromaticGlass, INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);

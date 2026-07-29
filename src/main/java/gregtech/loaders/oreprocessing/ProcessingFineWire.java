@@ -8,6 +8,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
@@ -24,11 +25,11 @@ public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeReg
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (!MU.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
+        if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
             GTRecipeRegistrator.registerWiremillRecipes(material, 100, 4);
         }
         if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-            && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
+            && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
             GTModHandler.addCraftingRecipe(
                 GTUtility.copyAmount(1, stack),
                 GTModHandler.RecipeBits.BITS_STD,

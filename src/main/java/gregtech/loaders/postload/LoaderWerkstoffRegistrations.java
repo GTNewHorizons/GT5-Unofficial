@@ -16,6 +16,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.ores.BWOreAdapter;
@@ -39,7 +40,7 @@ public class LoaderWerkstoffRegistrations {
             registerAssociations(material);
             registerLegacyCasings(material, Materials2WerkstoffIndex.idOf(material));
             registerAdditionalOreDict(material);
-            MU.recordBridgeRegistration(material);
+            MaterialUtils.recordBridgeRegistration(material);
         }
         GTOreDictUnificator.registerOre(
             "craftingIndustrialDiamond",
@@ -54,7 +55,7 @@ public class LoaderWerkstoffRegistrations {
     private static void registerAdditionalOreDict(Material material) {
         if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)) {
             ItemStack lens = MU.stack(OrePrefixes.lens, material, 1);
-            short[] rgba = MU.rgba(material);
+            short[] rgba = MaterialUtils.rgba(material);
             if (lens != null && rgba != null) {
                 OreDictionary
                     .registerOre("craftingLens" + BWColorUtil.getDyeFromColor(rgba).mName.replace(" ", ""), lens);
@@ -63,15 +64,16 @@ public class LoaderWerkstoffRegistrations {
         if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
             || Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.ingot)) {
             ItemStack block = MU.stack(OrePrefixes.block, material, 1);
-            if (block != null) GTOreDictUnificator.registerOre(OrePrefixes.block + MU.internalName(material), block);
+            if (block != null)
+                GTOreDictUnificator.registerOre(OrePrefixes.block + MaterialUtils.internalName(material), block);
         }
     }
 
     private static void registerLocalization(Material material) {
-        String key = "Material." + MU.internalName(material)
+        String key = "Material." + MaterialUtils.internalName(material)
             .toLowerCase(java.util.Locale.ENGLISH);
         if (!StatCollector.canTranslate(key)) {
-            GTLanguageManager.addStringLocalization(key, MU.localName(material));
+            GTLanguageManager.addStringLocalization(key, MaterialUtils.localName(material));
         }
     }
 
@@ -80,16 +82,16 @@ public class LoaderWerkstoffRegistrations {
     /// domain is skipped: gregtech's own declaration owns its handle, which the mass-based tiering behind
     /// [GTMaterialProperties#HANDLE_MATERIAL] supplies instead.
     private static void registerHandleMaterial(Material material) {
-        if (LegacyNameDomain.lookup(MU.internalName(material)) == material) return;
+        if (LegacyNameDomain.lookup(MaterialUtils.internalName(material)) == material) return;
         Material handle;
-        if (MU.hasSubTag(material, SubTag.BURNING.mName)) handle = Materials2Materials.Blaze;
-        else if (MU.hasSubTag(material, SubTag.MAGICAL.mName)) handle = Materials2Materials.Thaumium;
+        if (MaterialUtils.hasSubTag(material, SubTag.BURNING.mName)) handle = Materials2Materials.Blaze;
+        else if (MaterialUtils.hasSubTag(material, SubTag.MAGICAL.mName)) handle = Materials2Materials.Thaumium;
         else {
-            int durability = MU.durability(material);
+            int durability = MaterialUtils.durability(material);
             handle = durability > 5120 ? Materials2Materials.TungstenSteel
                 : durability > 1280 ? Materials2Materials.Steel : Materials2Materials.Wood;
         }
-        MU.recordHandleMaterial(material, handle);
+        MaterialUtils.recordHandleMaterial(material, handle);
     }
 
     /// Registers the canonical stack for every part the werkstoff set names. This reads

@@ -25,6 +25,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTOreDictUnificator;
@@ -741,7 +742,7 @@ public class Pulverizer implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(BiomesOPlenty.ID, "gemOre", 1, 5))
                 .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Olivine, Materials2Shapes.dust, (int) (9)))
-                .duration(MU.mass(Materials2Materials.Olivine) * 9 * TICKS)
+                .duration(MaterialUtils.mass(Materials2Materials.Olivine) * 9 * TICKS)
                 .eut(4)
                 .addTo(maceratorRecipes);
         }
@@ -750,7 +751,7 @@ public class Pulverizer implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(ProjectRedExploration.ID, "projectred.exploration.stone", 1, 7))
                 .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Olivine, Materials2Shapes.dust, (int) (9)))
-                .duration(MU.mass(Materials2Materials.Olivine) * 9 * TICKS)
+                .duration(MaterialUtils.mass(Materials2Materials.Olivine) * 9 * TICKS)
                 .eut(4)
                 .addTo(maceratorRecipes);
         }

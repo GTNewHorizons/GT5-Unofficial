@@ -12,7 +12,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -49,7 +49,7 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
                 break;
         }
 
-        if (MU.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
 
@@ -64,16 +64,18 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
             .itemInputs(GTUtility.copyAmount(1, stack))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, material, 2 * multiplier),
-                GTOreDictUnificator
-                    .get(OrePrefixes.dustTiny, GTUtility.selectItemInList(0, material, MU.oreByProducts(material)), 1L),
+                GTOreDictUnificator.get(
+                    OrePrefixes.dustTiny,
+                    GTUtility.selectItemInList(0, material, MaterialUtils.oreByProducts(material)),
+                    1L),
                 GTOreDictUnificator.getDust(prefix.mSecondaryMaterial))
             .outputChances(10000, 100 * 5 * multiplier, 10000)
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
 
-        if (MU.hasFlag(material, GTMaterialFlag.NO_SMELTING)) GTModHandler.addSmeltingRecipe(
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING)) GTModHandler.addSmeltingRecipe(
             GTUtility.copyAmount(1, stack),
-            GTOreDictUnificator.get(OrePrefixes.nugget, MU.directSmelting(material), multiplier));
+            GTOreDictUnificator.get(OrePrefixes.nugget, MaterialUtils.directSmelting(material), multiplier));
     }
 }

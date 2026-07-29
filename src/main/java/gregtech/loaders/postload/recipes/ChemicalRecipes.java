@@ -38,6 +38,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -4882,7 +4883,7 @@ public class ChemicalRecipes implements Runnable {
                 .itemInputs(GTBees.combs.getStackForType(CombType.AMERICIUM, 4))
                 .itemOutputs(
                     MaterialLibAPI.getStack(Materials2Materials.Americium, Materials2Shapes.crushedPurified, 8))
-                .fluidInputs(new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Bromine), 29))
+                .fluidInputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Bromine), 29))
                 .duration(3 * SECONDS + 15 * TICKS)
                 .eut(TierEU.RECIPE_UEV)
                 .addTo(UniversalChemical);
@@ -4929,7 +4930,7 @@ public class ChemicalRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTBees.combs.getStackForType(CombType.EUROPIUM, 4))
                 .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2Shapes.crushedPurified, 8))
-                .fluidInputs(new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Bromine), 6))
+                .fluidInputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Bromine), 6))
                 .duration(1 * SECONDS + 17 * TICKS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(UniversalChemical);
@@ -5016,30 +5017,30 @@ public class ChemicalRecipes implements Runnable {
 
     public void polymerizationRecipes() {
         addDefaultPolymerizationRecipes(
-            MU.fluidOf(Materials2Materials.VinylAcetate),
-            MU.fluidOf(Materials2Materials.PolyvinylAcetate));
+            MaterialUtils.fluidOf(Materials2Materials.VinylAcetate),
+            MaterialUtils.fluidOf(Materials2Materials.PolyvinylAcetate));
 
         addDefaultPolymerizationRecipes(
-            MU.gas(Materials2Materials.Ethylene, 1)
+            MaterialUtils.gas(Materials2Materials.Ethylene, 1)
                 .getFluid(),
-            MU.molten(Materials2Materials.Plastic, 1)
+            MaterialUtils.molten(Materials2Materials.Plastic, 1)
                 .getFluid());
 
         addDefaultPolymerizationRecipes(
-            MU.gas(Materials2Materials.Tetrafluoroethylene, 1)
+            MaterialUtils.gas(Materials2Materials.Tetrafluoroethylene, 1)
                 .getFluid(),
-            MU.molten(Materials2Materials.Polytetrafluoroethylene, 1)
+            MaterialUtils.molten(Materials2Materials.Polytetrafluoroethylene, 1)
                 .getFluid());
 
         addDefaultPolymerizationRecipes(
-            MU.gas(Materials2Materials.VinylChloride, 1)
+            MaterialUtils.gas(Materials2Materials.VinylChloride, 1)
                 .getFluid(),
-            MU.molten(Materials2Materials.PolyvinylChloride, 1)
+            MaterialUtils.molten(Materials2Materials.PolyvinylChloride, 1)
                 .getFluid());
 
         addDefaultPolymerizationRecipes(
-            MU.fluidOf(Materials2Materials.Styrene),
-            MU.molten(Materials2Materials.Polystyrene, 1)
+            MaterialUtils.fluidOf(Materials2Materials.Styrene),
+            MaterialUtils.molten(Materials2Materials.Polystyrene, 1)
                 .getFluid());
     }
 

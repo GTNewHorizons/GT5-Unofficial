@@ -19,6 +19,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
 
@@ -40,7 +41,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_LuV.get(9L),
                 MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2Shapes.screw, (int) (36L)))
             .fluidInputs(
-                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 10 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 10 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Neon, Materials2FluidShapes.fluidLiquid, (int) (20_000)))
             .itemOutputs(ItemRegistry.voidminer[0].copy())
@@ -60,7 +61,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Emitter_LuV.get(1L),
                 ItemList.Sensor_LuV.get(1L),
                 MU.stack(OrePrefixes.plate, Materials2Materials.RhodiumPlatedPalladium, 8))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Indalloy140, 10 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 10 * INGOTS))
             .itemOutputs(ItemRegistry.cal.copy())
             .eut(TierEU.RECIPE_ZPM)
             .duration(60 * SECONDS)
@@ -79,7 +80,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Sensor_UV.get(4L),
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.wireFine, (int) (32)))
             .fluidInputs(
-                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 32 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 32 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, (int) (8000)))
             .itemOutputs(ItemList.PCBCoolingTower.get(1L))
@@ -100,7 +101,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Sensor_ZPM.get(4L),
                 MaterialLibAPI.getStack(Materials2Materials.Holmium, Materials2Shapes.wireFine, (int) (32)))
             .fluidInputs(
-                MU.legacyGtppFluid(Materials2Materials.Indalloy140, 32 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.GrowthMediumSterilized,
                     Materials2FluidShapes.fluidLiquid,

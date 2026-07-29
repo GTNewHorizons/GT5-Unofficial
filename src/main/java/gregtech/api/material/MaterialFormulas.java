@@ -42,6 +42,6 @@ public final class MaterialFormulas {
     /// the MaterialLib registration name. A bartworks-origin material's own internal name (lowercased) resolves
     /// to the same key format, so one scheme serves every localized-formula material regardless of origin.
     private static String formulaKey(Material ml) {
-        return MU.localizedNameKey(ml) + ".ChemicalFormula";
+        return MaterialUtils.localizedNameKey(ml) + ".ChemicalFormula";
     }
 }

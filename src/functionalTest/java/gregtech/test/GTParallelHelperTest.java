@@ -13,6 +13,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ParallelHelper;
@@ -39,7 +40,7 @@ public class GTParallelHelperTest {
             null,
             null,
             null,
-            new FluidStack[] { MU.molten(Materials2Materials.Rubber, 1_000) },
+            new FluidStack[] { MaterialUtils.molten(Materials2Materials.Rubber, 1_000) },
             1,
             1,
             0);

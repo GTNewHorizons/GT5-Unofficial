@@ -18,8 +18,8 @@ import com.ruling_0.materiallib.api.ShapeItem;
 
 import codechicken.nei.ItemStackMap;
 import codechicken.nei.api.ItemFilter;
-import gregtech.api.material.MU;
 import gregtech.api.material.MaterialFormulas;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -30,7 +30,7 @@ public class ChemicalFormulaFilter implements ItemFilter {
     private static final ItemStackMap<String> formulaCache = new ItemStackMap<>();
     private static final FutureTask<Void> loadMaterialFormulas = new FutureTask<>(() -> {
         for (Material material : MaterialLibAPI.getMaterials()) {
-            String chemicalFormula = MU.chemicalFormula(material);
+            String chemicalFormula = MaterialUtils.chemicalFormula(material);
             String sanitizedFormula = isValidFormula(chemicalFormula) ? sanitizeFormula(chemicalFormula) : "";
             for (Shape shape : material.getShapes()) {
                 if (shape instanceof ShapeFluid) continue;
@@ -131,7 +131,7 @@ public class ChemicalFormulaFilter implements ItemFilter {
 
         ItemData data = GTOreDictUnificator.getAssociation(itemstack);
         if (data != null) {
-            return MU.chemicalFormula(data.mMaterial.mMaterial);
+            return MaterialUtils.chemicalFormula(data.mMaterial.mMaterial);
         }
 
         return "";

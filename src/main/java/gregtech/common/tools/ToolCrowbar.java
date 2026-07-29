@@ -14,7 +14,7 @@ import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.items.behaviors.BehaviourCrowbar;
 
@@ -69,7 +69,7 @@ public class ToolCrowbar extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MU.iconSet(
+        return aIsToolHead ? MaterialUtils.iconSet(
             MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[MaterialIconRegistry.IconType.TOOL_CROWBAR
                 .ordinal()]
             : null;
@@ -77,7 +77,7 @@ public class ToolCrowbar extends GTTool {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MU.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack)) : null;
+        return aIsToolHead ? MaterialUtils.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack)) : null;
     }
 
     @Override

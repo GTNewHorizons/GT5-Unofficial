@@ -6,7 +6,7 @@ import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.items.behaviors.BehaviourSwitchMetadata;
 import gregtech.common.tools.ToolWireCutter;
 
@@ -25,7 +25,7 @@ public class ToolPocketWireCutter extends ToolWireCutter {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MU.iconSet(
+        return aIsToolHead ? MaterialUtils.iconSet(
             MetaGeneratedTool
                 .getPrimaryMaterialML(aStack)).mTextures[MaterialIconRegistry.IconType.POCKET_MULTI_TOOL_WIRE_CUTTER
                     .ordinal()]
@@ -34,7 +34,7 @@ public class ToolPocketWireCutter extends ToolWireCutter {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return MU.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack));
+        return MaterialUtils.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack));
     }
 
     @Override

@@ -19,7 +19,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.OreMixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IStoneType;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.OreMixBuilder;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
@@ -123,7 +123,7 @@ public class GT5OreLayerHelper {
 
         public List<ItemStack> getVeinLayerOre(int veinLayer, Set<StoneType> stoneTypes) {
             List<ItemStack> stackList = new ArrayList<>();
-            List<IStoneType> validStones = MU.validStones(ores[veinLayer]);
+            List<IStoneType> validStones = MaterialUtils.validStones(ores[veinLayer]);
             for (IStoneType stoneType : validStones) {
                 if (stoneType instanceof StoneType && stoneTypes.contains(stoneType)) {
                     stackList.add(getLayerOre(veinLayer, stoneType));

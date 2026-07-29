@@ -19,6 +19,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -44,7 +45,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     new Object[] { " s ", "fSx", " S ", 'S', MU.craftIngredient(OrePrefixes.stickLong, material) });
             }
         }
-        if (!MU.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
+        if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
 
             if (GTOreDictUnificator.get(OrePrefixes.stick, material, 1L) != null) {
 
@@ -57,8 +58,9 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                                 4,
                                 Math.min(
                                     1000,
-                                    ((int) Math.max(MU.mass(material), 1L)) * calculateRecipeEU(material, 4) / 320))))
-                    .duration(2 * ((int) Math.max(MU.mass(material), 1L)) * TICKS)
+                                    ((int) Math.max(MaterialUtils.mass(material), 1L)) * calculateRecipeEU(material, 4)
+                                        / 320))))
+                    .duration(2 * ((int) Math.max(MaterialUtils.mass(material), 1L)) * TICKS)
                     .eut(calculateRecipeEU(material, 4))
                     .addTo(cutterRecipes);
 
@@ -71,8 +73,9 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                                 3,
                                 Math.min(
                                     750,
-                                    ((int) Math.max(MU.mass(material), 1L)) * calculateRecipeEU(material, 4) / 426))))
-                    .duration(2 * ((int) Math.max(MU.mass(material), 1L)) * TICKS)
+                                    ((int) Math.max(MaterialUtils.mass(material), 1L)) * calculateRecipeEU(material, 4)
+                                        / 426))))
+                    .duration(2 * ((int) Math.max(MaterialUtils.mass(material), 1L)) * TICKS)
                     .eut(calculateRecipeEU(material, 4))
                     .addTo(cutterRecipes);
 
@@ -87,8 +90,9 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                                 1,
                                 Math.min(
                                     250,
-                                    ((int) Math.max(MU.mass(material), 1)) * calculateRecipeEU(material, 4) / 1280)))))
-                    .duration(((int) Math.max(MU.mass(material), 1L)) * TICKS)
+                                    ((int) Math.max(MaterialUtils.mass(material), 1)) * calculateRecipeEU(material, 4)
+                                        / 1280)))))
+                    .duration(((int) Math.max(MaterialUtils.mass(material), 1L)) * TICKS)
                     .eut(calculateRecipeEU(material, 4))
                     .addTo(cutterRecipes);
 
@@ -96,14 +100,15 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, material, 2L))
                     .fluidInputs(
-                        MU.fluid(
+                        MaterialUtils.fluid(
                             Materials2Materials.dimensionallyshiftedsuperfluid,
                             Math.max(
                                 1,
                                 Math.min(
                                     10,
-                                    ((int) Math.max(MU.mass(material), 1L)) * calculateRecipeEU(material, 4) / 4000))))
-                    .duration((int) ((Math.max(MU.mass(material) / 2.5, 1L)) * TICKS))
+                                    ((int) Math.max(MaterialUtils.mass(material), 1L)) * calculateRecipeEU(material, 4)
+                                        / 4000))))
+                    .duration((int) ((Math.max(MaterialUtils.mass(material) / 2.5, 1L)) * TICKS))
                     .eut(calculateRecipeEU(material, 4))
                     .addTo(cutterRecipes);
             }
@@ -122,7 +127,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                 }
             }
         }
-        if (!MU.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
+        if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
             // Bender recipes
             {
                 if (GTOreDictUnificator.get(OrePrefixes.spring, material, 1L) != null) {

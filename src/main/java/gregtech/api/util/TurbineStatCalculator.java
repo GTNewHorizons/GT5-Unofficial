@@ -7,7 +7,7 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 
 public class TurbineStatCalculator {
 
@@ -72,7 +72,7 @@ public class TurbineStatCalculator {
     // Base optimal flows
 
     public float getOptimalFlow() {
-        return tStats.getSpeedMultiplier() * MU.toolSpeed(tMaterial) * 50F;
+        return tStats.getSpeedMultiplier() * MaterialUtils.toolSpeed(tMaterial) * 50F;
     }
 
     // All values are in EU/t before efficiency
@@ -137,7 +137,7 @@ public class TurbineStatCalculator {
     }
 
     public int getOverflowEfficiency() {
-        return (int) (1 + Math.min(2.0, MU.toolQuality(tMaterial) / 3));
+        return (int) (1 + Math.min(2.0, MaterialUtils.toolQuality(tMaterial) / 3));
     }
 
 }

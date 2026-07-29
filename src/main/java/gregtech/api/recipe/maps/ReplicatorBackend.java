@@ -19,7 +19,7 @@ import gregtech.api.enums.Element;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GTRecipe;
@@ -74,7 +74,7 @@ public class ReplicatorBackend extends RecipeMapBackend {
     private void addRecipeToElementIndex(GTRecipe recipe) {
         Material material = recipe.getMetadata(GTRecipeConstants.MATERIAL);
         assert material != null; // checked by replicatorRecipeEmitter
-        Element element = MU.element(material);
+        Element element = MaterialUtils.element(material);
         if (element != null) {
             recipesByElement.put(element, recipe);
         }
@@ -113,11 +113,11 @@ public class ReplicatorBackend extends RecipeMapBackend {
             throw new IllegalStateException("GTRecipeConstants.MATERIAL must be set for replicator recipe");
         }
         return Optional.of(material)
-            .map(MU::element)
+            .map(MaterialUtils::element)
             .map(Element::getMass)
             .map(ReplicatorBackend::getUUMAmountFromMass)
             .flatMap(
-                uum -> builder.fluidInputs(MU.fluid(Materials2Materials.UUMatter, uum))
+                uum -> builder.fluidInputs(MaterialUtils.fluid(Materials2Materials.UUMatter, uum))
                     .duration(GTUtility.safeInt(uum * 512L, 1))
                     .eut(TierEU.RECIPE_LV)
                     .ignoreCollision()

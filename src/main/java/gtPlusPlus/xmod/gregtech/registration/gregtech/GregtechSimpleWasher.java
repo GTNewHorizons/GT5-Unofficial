@@ -25,6 +25,7 @@ import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
@@ -119,7 +120,7 @@ public class GregtechSimpleWasher {
             if (!LegacyNameDomain.contains(ml)) {
                 continue;
             }
-            if (MU.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) {
+            if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) {
                 continue;
             }
             if (ml == Materials2Materials.Platinum || ml == Materials2Materials.Osmium
@@ -180,7 +181,7 @@ public class GregtechSimpleWasher {
             if (!LegacyNameDomain.contains(ml)) {
                 continue;
             }
-            if (MU.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) {
+            if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) {
                 continue;
             }
             crushedClean = GTOreDictUnificator.get(OrePrefixes.crushedPurified, ml, 1L);

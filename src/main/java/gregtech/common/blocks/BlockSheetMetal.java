@@ -25,6 +25,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
@@ -51,7 +52,7 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
                 if (!MU.generatesPrefix(material, OrePrefixes.sheetmetal)) continue;
 
                 OreDictionary.registerOre(
-                    OrePrefixes.sheetmetal.oreDictName(MU.internalName(material))
+                    OrePrefixes.sheetmetal.oreDictName(MaterialUtils.internalName(material))
                         .toString(),
                     new ItemStack(this, 1, i));
             }
@@ -66,7 +67,7 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
 
         if (material == null) material = Materials2Materials.NULL;
 
-        return OrePrefixes.sheetmetal.getLocalizedNameForItem(MU.internalName(material));
+        return OrePrefixes.sheetmetal.getLocalizedNameForItem(MaterialUtils.internalName(material));
     }
 
     @Override
@@ -116,8 +117,8 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
 
         if (material != null) {
             texture = TextureFactory.builder()
-                .addIcon(MU.iconSet(material).mTextures[OrePrefixes.sheetmetal.getTextureIndex()])
-                .setRGBA(MU.rgba(material))
+                .addIcon(MaterialUtils.iconSet(material).mTextures[OrePrefixes.sheetmetal.getTextureIndex()])
+                .setRGBA(MaterialUtils.rgba(material))
                 .build();
         } else {
             texture = TextureFactory.builder()
@@ -139,7 +140,7 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
     public IIcon getIcon(int ordinalSide, int aMeta) {
         Material material = materials.get(aMeta);
         if (material == null) return null;
-        return MU.iconSet(material).mTextures[OrePrefixes.sheetmetal.getTextureIndex()].getIcon();
+        return MaterialUtils.iconSet(material).mTextures[OrePrefixes.sheetmetal.getTextureIndex()].getIcon();
     }
 
     public void registerRecipes() {
@@ -148,7 +149,7 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
 
             if (material == null) continue;
             if (!MU.generatesPrefix(material, OrePrefixes.sheetmetal)) continue;
-            if (MU.hasSubTag(material, SubTag.NO_RECIPES)) continue;
+            if (MaterialUtils.hasSubTag(material, SubTag.NO_RECIPES)) continue;
 
             GTValues.RA.stdBuilder()
                 .itemInputs(MU.partOf(material, OrePrefixes.plate, 2), GTUtility.getIntegratedCircuit(11))

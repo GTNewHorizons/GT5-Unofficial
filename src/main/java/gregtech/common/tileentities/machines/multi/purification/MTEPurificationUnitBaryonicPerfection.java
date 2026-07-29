@@ -45,7 +45,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -478,7 +478,7 @@ public class MTEPurificationUnitBaryonicPerfection
             correctStartIndex = checkSequence();
             // If we found something, immediately output stable baryonic matter
             if (correctStartIndex != -1)
-                addOutputPartial(MU.fluid(Materials2Materials.stablebaryonicmatter, BARYONIC_MATTER_OUTPUT));
+                addOutputPartial(MaterialUtils.fluid(Materials2Materials.stablebaryonicmatter, BARYONIC_MATTER_OUTPUT));
         }
     }
 

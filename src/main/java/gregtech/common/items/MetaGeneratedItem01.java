@@ -512,7 +512,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.GTMaterialGenerationFlag;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMaps;
@@ -4097,9 +4097,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
     public boolean isPlasmaCellUsed(OrePrefixes aPrefix, Material aMaterial) {
         // Requires the material to carry a registered plasma fluid
-        FluidStack plasma = MU.plasma(aMaterial, 1L);
+        FluidStack plasma = MaterialUtils.plasma(aMaterial, 1L);
         if (aPrefix == OrePrefixes.cellPlasma && plasma != null) {
-            if (MU.generates(aMaterial, GTMaterialGenerationFlag.PLASMA)) return true;
+            if (MaterialUtils.generates(aMaterial, GTMaterialGenerationFlag.PLASMA)) return true;
             // Loop through fusion recipes
             for (GTRecipe recipe : RecipeMaps.fusionRecipes.getAllRecipes()) {
                 // Make sure fluid output can't be null (not sure if possible)
@@ -4115,7 +4115,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
     @Override
     public boolean doesShowInCreative(OrePrefixes aPrefix, Material aMaterial, boolean aDoShowAllItems) {
-        return (aDoShowAllItems) || (((aPrefix != OrePrefixes.gem) || (!MU.internalName(aMaterial)
+        return (aDoShowAllItems) || (((aPrefix != OrePrefixes.gem) || (!MaterialUtils.internalName(aMaterial)
             .startsWith("Infused"))) && (aPrefix != OrePrefixes.dustTiny)
             && (aPrefix != OrePrefixes.dustSmall)
             && (aPrefix != OrePrefixes.dustImpure)
@@ -4143,7 +4143,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     private void setBurnValues() {
-        setBurnValue(17000 + MU.oldSubId(Materials2Materials.Wood), 1600);
+        setBurnValue(17000 + MaterialUtils.oldSubId(Materials2Materials.Wood), 1600);
     }
 
     private void setAllFluidContainerStats() {
@@ -4164,7 +4164,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     private void oredictBlacklistEntries() {
-        GTOreDictUnificator.addToBlacklist(new ItemStack(this, 1, 17000 + MU.oldSubId(Materials2Materials.Wood)));
+        GTOreDictUnificator
+            .addToBlacklist(new ItemStack(this, 1, 17000 + MaterialUtils.oldSubId(Materials2Materials.Wood)));
     }
 
     private void registerCovers() {
@@ -4189,7 +4190,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 .build());
 
         CoverRegistry.registerDecorativeCover(
-            new ItemStack(this, 1, 17000 + MU.oldSubId(Materials2Materials.Wood)),
+            new ItemStack(this, 1, 17000 + MaterialUtils.oldSubId(Materials2Materials.Wood)),
             TextureFactory.of(COVER_WOOD_PLATE));
 
         CoverRegistry.registerCover(
@@ -4627,7 +4628,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     private void craftingShapedRecipes() {
-        ItemStack tStack = new ItemStack(this, 1, 17000 + MU.oldSubId(Materials2Materials.Wood));
+        ItemStack tStack = new ItemStack(this, 1, 17000 + MaterialUtils.oldSubId(Materials2Materials.Wood));
         tStack.setStackDisplayName(GTUtility.translate("gt.item.sengir_planks.name"));
         GTUtility.ItemNBT.addEnchantment(tStack, Enchantment.smite, 10);
         GTModHandler.addCraftingRecipe(

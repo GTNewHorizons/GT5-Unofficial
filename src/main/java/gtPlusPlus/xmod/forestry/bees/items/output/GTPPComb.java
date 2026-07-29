@@ -20,7 +20,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import gregtech.api.enums.GTValues;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPDropType;
@@ -118,8 +118,8 @@ public class GTPPComb extends Item {
 
     public static void addChemicalRecipe(GTPPCombType aInputStack, ItemStack[] aOutputs, int[] aChances) {
         Material aMat = aInputStack.mMaterial;
-        long aEU = MU.voltageMultiplier(aMat);
-        int aTier = Math.max(MU.tier(aMat) / 2, 1);
+        long aEU = MaterialUtils.voltageMultiplier(aMat);
+        int aTier = Math.max(MaterialUtils.tier(aMat) / 2, 1);
         GTValues.RA.stdBuilder()
             .itemInputs(aInputStack.getStackForType(aTier))
             .itemOutputs(aOutputs)

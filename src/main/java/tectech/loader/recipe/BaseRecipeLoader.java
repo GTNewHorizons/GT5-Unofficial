@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.loaders.postload.FoundryFakeModuleCostLoader;
 import tectech.TecTech;
 
@@ -52,7 +52,7 @@ public class BaseRecipeLoader {
     }
 
     public static Material getOrDefault(String name, Material def) {
-        Material mat = MU.byLegacyName(name);
+        Material mat = MaterialUtils.byLegacyName(name);
         return mat == null ? def : mat;
     }
 

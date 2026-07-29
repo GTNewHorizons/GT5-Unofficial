@@ -13,7 +13,7 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.SubstituteFluidStack;
 
 /// Reproduces the retired gtPlusPlus `RecipeGenAssembler` for every material in [#ELIGIBLE]: the rod-to-frame
@@ -65,7 +65,7 @@ public class ProcessingAssemblerGtpp {
     }
 
     private static void generate(Material material) {
-        long voltage = MU.voltageMultiplier(material);
+        long voltage = MaterialUtils.voltageMultiplier(material);
 
         ItemStack rod = ProcessingDustGeneration.stackOf(OrePrefixes.stick, material, 1L);
         ItemStack frameBox = ProcessingDustGeneration.stackOf(OrePrefixes.frameGt, material, 1L);

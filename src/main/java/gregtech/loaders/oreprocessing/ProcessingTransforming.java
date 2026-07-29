@@ -16,7 +16,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -38,7 +38,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             prefix = OrePrefixes.plate;
         }
 
-        switch (MU.internalName(material)) {
+        switch (MaterialUtils.internalName(material)) {
             case "Wood" ->
             // Chemical bath recipes
             {
@@ -47,7 +47,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .itemOutputs(GTOreDictUnificator.get(prefix, Materials2Materials.WoodSealed, 1L))
                         .fluidInputs(
-                            MU.fluid(
+                            MaterialUtils.fluid(
                                 Materials2Materials.SeedOil,
                                 GTUtility.translateMaterialToAmount(prefix.getMaterialAmount(), 120L, true)))
                         .duration(5 * SECONDS)

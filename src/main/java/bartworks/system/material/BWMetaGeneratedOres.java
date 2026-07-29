@@ -39,7 +39,7 @@ import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -177,7 +177,8 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
         ITexture oreTexture;
 
         if (material != null) {
-            oreTexture = TextureFactory.of(MU.iconSet(material).mTextures[prefix.getTextureIndex()], MU.rgba(material));
+            oreTexture = TextureFactory
+                .of(MaterialUtils.iconSet(material).mTextures[prefix.getTextureIndex()], MaterialUtils.rgba(material));
         } else {
             oreTexture = TextureFactory.of(gregtech.api.enums.TextureSet.SET_NONE.mTextures[prefix.getTextureIndex()]);
         }

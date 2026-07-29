@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 
 public class ItemData {
 
@@ -140,6 +140,6 @@ public class ItemData {
     public String toString() {
         if (oreDictName != null) return oreDictName;
         if (mPrefix == null || mMaterial == null || mMaterial.mMaterial == null) return "";
-        return mPrefix.getName() + MU.internalName(mMaterial.mMaterial);
+        return mPrefix.getName() + MaterialUtils.internalName(mMaterial.mMaterial);
     }
 }

@@ -21,7 +21,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -59,7 +59,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.EglinSteel, Materials2Shapes.plate, 4),
                 Circuits.MV.get(2))
             .itemOutputs(GregtechItemList.Charger_LV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.SiliconCarbide, 4 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.SiliconCarbide, 4 * INGOTS))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -73,7 +73,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.TantalumCarbide, Materials2Shapes.plate, 4),
                 Circuits.HV.get(2))
             .itemOutputs(GregtechItemList.Charger_MV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.BloodSteel, 6 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.BloodSteel, 6 * INGOTS))
             .duration(67 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -87,7 +87,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.IncoloyDS, Materials2Shapes.plate, 4),
                 Circuits.EV.get(2))
             .itemOutputs(GregtechItemList.Charger_HV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.TantalumCarbide, 8 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.TantalumCarbide, 8 * INGOTS))
             .duration(90 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -101,7 +101,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Inconel625, Materials2Shapes.plate, 4),
                 Circuits.IV.get(2))
             .itemOutputs(GregtechItemList.Charger_EV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Inconel792, 10 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Inconel792, 10 * INGOTS))
             .duration(112 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -115,7 +115,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Zeron100, Materials2Shapes.plate, 4),
                 Circuits.LuV.get(2))
             .itemOutputs(GregtechItemList.Charger_IV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Arcanite, 12 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Arcanite, 12 * INGOTS))
             .duration(135 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -129,7 +129,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Pikyonium64B, Materials2Shapes.plate, 4),
                 Circuits.ZPM.get(2))
             .itemOutputs(GregtechItemList.Charger_LuV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.LafiumCompound, 14 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.LafiumCompound, 14 * INGOTS))
             .duration(157 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -143,7 +143,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.AdvancedNitinol, Materials2Shapes.plate, 4),
                 Circuits.UV.get(2))
             .itemOutputs(GregtechItemList.Charger_ZPM.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.CinobiteA243, 16 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.CinobiteA243, 16 * INGOTS))
             .duration(180 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -157,7 +157,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.AbyssalAlloy, Materials2Shapes.plate, 4),
                 Circuits.UHV.get(2))
             .itemOutputs(GregtechItemList.Charger_UV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Titansteel, 18 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Titansteel, 18 * INGOTS))
             .duration(202 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
@@ -171,7 +171,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Quantum, Materials2Shapes.plate, 4),
                 Circuits.UEV.get(2))
             .itemOutputs(GregtechItemList.Charger_UHV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Octiron, 20 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Octiron, 20 * INGOTS))
             .duration(225 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
@@ -188,7 +188,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Tumbaga, Materials2Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.bolt, (int) (12)))
             .itemOutputs(GregtechItemList.Energy_Core_ULV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Potin, 4 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Potin, 4 * INGOTS))
             .duration(22 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -203,7 +203,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.EglinSteel, Materials2Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.bolt, (int) (12)))
             .itemOutputs(GregtechItemList.Energy_Core_LV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Tumbaga, 8 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Tumbaga, 8 * INGOTS))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -218,7 +218,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.TantalumCarbide, Materials2Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials2Materials.BlackMetal, Materials2Shapes.bolt, 12))
             .itemOutputs(GregtechItemList.Energy_Core_MV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.EglinSteel, 12 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.EglinSteel, 12 * INGOTS))
             .duration(67 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -233,7 +233,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.IncoloyDS, Materials2Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.bolt, (int) (12)))
             .itemOutputs(GregtechItemList.Energy_Core_HV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.TantalumCarbide, 16 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.TantalumCarbide, 16 * INGOTS))
             .duration(90 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -248,7 +248,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Inconel625, Materials2Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials2Materials.HastelloyN, Materials2Shapes.bolt, 12))
             .itemOutputs(GregtechItemList.Energy_Core_EV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.IncoloyDS, 20 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.IncoloyDS, 20 * INGOTS))
             .duration(112 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -263,7 +263,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Zeron100, Materials2Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials2Materials.EnergyCrystal, Materials2Shapes.bolt, 12))
             .itemOutputs(GregtechItemList.Energy_Core_IV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Inconel625, 24 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Inconel625, 24 * INGOTS))
             .duration(135 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -278,7 +278,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Pikyonium64B, Materials2Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials2Materials.TriniumNaquadahCarbonite, Materials2Shapes.bolt, 12))
             .itemOutputs(GregtechItemList.Energy_Core_LuV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Zeron100, 28 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Zeron100, 28 * INGOTS))
             .duration(157 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -293,7 +293,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Titansteel, Materials2Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials2Materials.ArceusAlloy2B, Materials2Shapes.bolt, 12))
             .itemOutputs(GregtechItemList.Energy_Core_ZPM.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Pikyonium64B, 32 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Pikyonium64B, 32 * INGOTS))
             .duration(180 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -308,7 +308,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.AbyssalAlloy, Materials2Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials2Materials.Titansteel, Materials2Shapes.bolt, 12))
             .itemOutputs(GregtechItemList.Energy_Core_UV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.AdvancedNitinol, 36 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.AdvancedNitinol, 36 * INGOTS))
             .duration(202 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
@@ -323,7 +323,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Quantum, Materials2Shapes.screw, 6),
                 MaterialLibAPI.getStack(Materials2Materials.AstralTitanium, Materials2Shapes.bolt, 12))
             .itemOutputs(GregtechItemList.Energy_Core_UHV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.AbyssalAlloy, 40 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.AbyssalAlloy, 40 * INGOTS))
             .duration(225 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
@@ -340,7 +340,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.SiliconCarbide, Materials2Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Potin, Materials2Shapes.gearGt, 5))
             .itemOutputs(GregtechItemList.Energy_Buffer_1by1_ULV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Tumbaga, 16 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Tumbaga, 16 * INGOTS))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -355,7 +355,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.BloodSteel, Materials2Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Tumbaga, Materials2Shapes.gearGt, 5))
             .itemOutputs(GregtechItemList.Energy_Buffer_1by1_LV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.EglinSteel, 32 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.EglinSteel, 32 * INGOTS))
             .duration(90 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -370,7 +370,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.TantalumCarbide, Materials2Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials2Materials.EglinSteel, Materials2Shapes.gearGt, 5))
             .itemOutputs(GregtechItemList.Energy_Buffer_1by1_MV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.TantalumCarbide, 48 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.TantalumCarbide, 48 * INGOTS))
             .duration(135 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -385,7 +385,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Inconel792, Materials2Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials2Materials.TantalumCarbide, Materials2Shapes.gearGt, 5))
             .itemOutputs(GregtechItemList.Energy_Buffer_1by1_HV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.IncoloyDS, 64 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.IncoloyDS, 64 * INGOTS))
             .duration(180 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -400,7 +400,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Arcanite, Materials2Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials2Materials.IncoloyDS, Materials2Shapes.gearGt, 5))
             .itemOutputs(GregtechItemList.Energy_Buffer_1by1_EV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Inconel625, 80 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Inconel625, 80 * INGOTS))
             .duration(225 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -415,7 +415,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.LafiumCompound, Materials2Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Inconel625, Materials2Shapes.gearGt, 5))
             .itemOutputs(GregtechItemList.Energy_Buffer_1by1_IV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Zeron100, 96 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Zeron100, 96 * INGOTS))
             .duration(270 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -430,7 +430,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.CinobiteA243, Materials2Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Zeron100, Materials2Shapes.gearGt, 5))
             .itemOutputs(GregtechItemList.Energy_Buffer_1by1_LuV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Pikyonium64B, 112 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Pikyonium64B, 112 * INGOTS))
             .duration(315 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -445,7 +445,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Titansteel, Materials2Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Pikyonium64B, Materials2Shapes.gearGt, 5))
             .itemOutputs(GregtechItemList.Energy_Buffer_1by1_ZPM.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.AdvancedNitinol, 128 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.AdvancedNitinol, 128 * INGOTS))
             .duration(360 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -460,7 +460,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Octiron, Materials2Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Titansteel, Materials2Shapes.gearGt, 5))
             .itemOutputs(GregtechItemList.Energy_Buffer_1by1_UV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.AbyssalAlloy, 144 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.AbyssalAlloy, 144 * INGOTS))
             .duration(405 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
@@ -475,7 +475,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.CelestialTungsten, Materials2Shapes.stickLong, 4),
                 MaterialLibAPI.getStack(Materials2Materials.AbyssalAlloy, Materials2Shapes.gearGt, 5))
             .itemOutputs(GregtechItemList.Energy_Buffer_1by1_MAX.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Quantum, 160 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Quantum, 160 * INGOTS))
             .duration(450 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
@@ -509,7 +509,7 @@ public class RecipesMachinesTiered {
                 Circuits.LV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_LV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.SiliconCarbide, 4 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.SiliconCarbide, 4 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -524,7 +524,7 @@ public class RecipesMachinesTiered {
                 Circuits.MV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_MV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.BloodSteel, 6 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.BloodSteel, 6 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -539,7 +539,7 @@ public class RecipesMachinesTiered {
                 Circuits.HV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_HV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.TantalumCarbide, 8 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.TantalumCarbide, 8 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -554,7 +554,7 @@ public class RecipesMachinesTiered {
                 Circuits.EV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_EV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Inconel792, 10 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Inconel792, 10 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -569,7 +569,7 @@ public class RecipesMachinesTiered {
                 Circuits.IV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_IV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Arcanite, 12 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Arcanite, 12 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -584,7 +584,7 @@ public class RecipesMachinesTiered {
                 Circuits.LuV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_LuV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.LafiumCompound, 14 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.LafiumCompound, 14 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -599,7 +599,7 @@ public class RecipesMachinesTiered {
                 Circuits.ZPM.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_ZPM.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.CinobiteA243, 16 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.CinobiteA243, 16 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -614,7 +614,7 @@ public class RecipesMachinesTiered {
                 Circuits.UV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_UV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Titansteel, 18 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Titansteel, 18 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
@@ -629,7 +629,7 @@ public class RecipesMachinesTiered {
                 Circuits.UHV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_UHV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Octiron, 20 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Octiron, 20 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
@@ -867,7 +867,7 @@ public class RecipesMachinesTiered {
                 new ItemStack(Blocks.chest))
             .circuit(17)
             .itemOutputs(GregtechItemList.Hatch_Solidifier_I.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Inconel625, 2 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Inconel625, 2 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -882,7 +882,7 @@ public class RecipesMachinesTiered {
                 new ItemStack(Blocks.chest))
             .circuit(17)
             .itemOutputs(GregtechItemList.Hatch_Solidifier_II.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Zeron100, 2 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Zeron100, 2 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -897,7 +897,7 @@ public class RecipesMachinesTiered {
                 new ItemStack(Blocks.chest))
             .circuit(17)
             .itemOutputs(GregtechItemList.Hatch_Solidifier_III.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Pikyonium64B, 2 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Pikyonium64B, 2 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -912,7 +912,7 @@ public class RecipesMachinesTiered {
                 new ItemStack(Blocks.chest))
             .circuit(17)
             .itemOutputs(GregtechItemList.Hatch_Solidifier_IV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.AdvancedNitinol, 2 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.AdvancedNitinol, 2 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
@@ -928,7 +928,7 @@ public class RecipesMachinesTiered {
                 ItemList.Shape_Empty.get(24))
             .circuit(17)
             .itemOutputs(GregtechItemList.Hatch_Extrusion_I.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Inconel625, 2 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Inconel625, 2 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -942,7 +942,7 @@ public class RecipesMachinesTiered {
                 ItemList.Shape_Empty.get(24))
             .circuit(17)
             .itemOutputs(GregtechItemList.Hatch_Extrusion_II.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Zeron100, 2 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Zeron100, 2 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -956,7 +956,7 @@ public class RecipesMachinesTiered {
                 ItemList.Shape_Empty.get(24))
             .circuit(17)
             .itemOutputs(GregtechItemList.Hatch_Extrusion_III.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Pikyonium64B, 2 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Pikyonium64B, 2 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -970,7 +970,7 @@ public class RecipesMachinesTiered {
                 ItemList.Shape_Empty.get(24))
             .circuit(17)
             .itemOutputs(GregtechItemList.Hatch_Extrusion_IV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.AdvancedNitinol, 2 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.AdvancedNitinol, 2 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
@@ -987,7 +987,7 @@ public class RecipesMachinesTiered {
                 new ItemStack(Blocks.chest))
             .circuit(17)
             .itemOutputs(GregtechItemList.ChiselBus_LV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.SiliconCarbide, 2 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.SiliconCarbide, 2 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -1002,7 +1002,7 @@ public class RecipesMachinesTiered {
                 new ItemStack(Blocks.chest))
             .circuit(17)
             .itemOutputs(GregtechItemList.ChiselBus_MV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.BloodSteel, 2 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.BloodSteel, 2 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -1017,7 +1017,7 @@ public class RecipesMachinesTiered {
                 new ItemStack(Blocks.chest))
             .circuit(17)
             .itemOutputs(GregtechItemList.ChiselBus_HV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.TantalumCarbide, 2 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.TantalumCarbide, 2 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -1046,7 +1046,7 @@ public class RecipesMachinesTiered {
                 ItemList.Robot_Arm_LV.get(1))
             .circuit(11)
             .itemOutputs(GregtechItemList.GT_Chisel_LV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Tumbaga, 4 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Tumbaga, 4 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -1061,7 +1061,7 @@ public class RecipesMachinesTiered {
                 ItemList.Robot_Arm_MV.get(1))
             .circuit(12)
             .itemOutputs(GregtechItemList.GT_Chisel_MV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.EglinSteel, 4 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.EglinSteel, 4 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -1076,7 +1076,7 @@ public class RecipesMachinesTiered {
                 ItemList.Robot_Arm_HV.get(1))
             .circuit(13)
             .itemOutputs(GregtechItemList.GT_Chisel_HV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.TantalumCarbide, 4 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.TantalumCarbide, 4 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -1226,7 +1226,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Tumbaga, Materials2Shapes.stick, 1),
                 Circuits.LV.get(1))
             .itemOutputs(GregtechItemList.SimpleDustWasher_LV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Tumbaga, 1 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Tumbaga, 1 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -1240,7 +1240,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.EglinSteel, Materials2Shapes.stick, 2),
                 Circuits.MV.get(1))
             .itemOutputs(GregtechItemList.SimpleDustWasher_MV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.EglinSteel, 2 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.EglinSteel, 2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -1254,7 +1254,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.TantalumCarbide, Materials2Shapes.stick, 3),
                 Circuits.HV.get(1))
             .itemOutputs(GregtechItemList.SimpleDustWasher_HV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.TantalumCarbide, 3 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.TantalumCarbide, 3 * INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -1268,7 +1268,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.IncoloyDS, Materials2Shapes.stick, 4),
                 Circuits.EV.get(1))
             .itemOutputs(GregtechItemList.SimpleDustWasher_EV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.IncoloyDS, 4 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.IncoloyDS, 4 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -1282,7 +1282,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Inconel625, Materials2Shapes.stick, 5),
                 Circuits.IV.get(1))
             .itemOutputs(GregtechItemList.SimpleDustWasher_IV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Inconel625, 5 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Inconel625, 5 * INGOTS))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -1296,7 +1296,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Zeron100, Materials2Shapes.stick, 6),
                 Circuits.LuV.get(1))
             .itemOutputs(GregtechItemList.SimpleDustWasher_LuV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Zeron100, 6 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Zeron100, 6 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -1310,7 +1310,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Pikyonium64B, Materials2Shapes.stick, 7),
                 Circuits.ZPM.get(1))
             .itemOutputs(GregtechItemList.SimpleDustWasher_ZPM.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Pikyonium64B, 7 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Pikyonium64B, 7 * INGOTS))
             .duration(35 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -1324,7 +1324,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials2Materials.Titansteel, Materials2Shapes.stick, 8),
                 Circuits.UV.get(1))
             .itemOutputs(GregtechItemList.SimpleDustWasher_UV.get(1))
-            .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Titansteel, 8 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Titansteel, 8 * INGOTS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);

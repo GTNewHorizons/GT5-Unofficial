@@ -28,7 +28,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import tectech.recipe.TTRecipeAdder;
 
@@ -46,7 +46,7 @@ public class TecTechResearchLoader {
                 MaterialLibAPI.getStack(Materials2Materials.BlackPlutonium, Materials2Shapes.plate, (int) (3)),
                 ItemList.Electric_Motor_ZPM.get(9L), ItemList.Sensor_ZPM.get(9L), ItemList.Field_Generator_ZPM.get(9L),
                 MaterialLibAPI.getStack(Materials2Materials.BlackPlutonium, Materials2Shapes.screw, (int) (36)) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.Indalloy140, 10 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 10 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (20_000)) },
             ItemRegistry.voidminer[1].copy(),
@@ -65,7 +65,7 @@ public class TecTechResearchLoader {
                 MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.plate, (int) (3)),
                 ItemList.Electric_Motor_UV.get(9L), ItemList.Sensor_UV.get(9L), ItemList.Field_Generator_UV.get(9L),
                 MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.screw, (int) (36)) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.Indalloy140, 10 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 10 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Oganesson, Materials2FluidShapes.fluidLiquid, (int) (20_000)) },
             ItemRegistry.voidminer[2].copy(),
@@ -85,7 +85,7 @@ public class TecTechResearchLoader {
                 MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.ring, (int) (64)),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Markers.SuperconductorUHV, 64),
                 ItemList.Electric_Piston_UV.get(64), },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.Indalloy140, 10 * INGOTS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 10 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Osmium, Materials2FluidShapes.fluidMolten, (int) (10 * INGOTS)),
                 MaterialLibAPI.getFluidStack(

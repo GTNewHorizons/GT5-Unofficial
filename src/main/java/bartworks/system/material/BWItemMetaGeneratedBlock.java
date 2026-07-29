@@ -27,7 +27,7 @@ import bartworks.common.items.BWItemBlocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
@@ -43,7 +43,7 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
         if (block instanceof BWMetaGeneratedBlocks metaBlock) {
             int aMetaData = aStack.getItemDamage();
             Material material = Materials2WerkstoffIndex.get(aMetaData);
-            String internalName = material != null ? MU.internalName(material) : "_NULL";
+            String internalName = material != null ? MaterialUtils.internalName(material) : "_NULL";
             return metaBlock.prefix.getLocalizedNameForItem(internalName);
         }
         return GTLanguageManager.getTranslation(this.getUnlocalizedName(aStack) + ".name");
@@ -60,7 +60,7 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
         }
         Material material = Materials2WerkstoffIndex.get(aStack.getItemDamage());
         if (material != null) {
-            MU.addTooltips(material, aList);
+            MaterialUtils.addTooltips(material, aList);
         }
     }
 

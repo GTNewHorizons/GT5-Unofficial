@@ -56,7 +56,7 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.objects.XSTR;
@@ -257,7 +257,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
         if (stats == null || stats.getSpeedMultiplier() <= 0) return false;
 
         Material material = MetaGeneratedTool.getPrimaryMaterialML(aStack);
-        return material != null && MU.toolSpeed(material) > 0;
+        return material != null && MaterialUtils.toolSpeed(material) > 0;
     }
 
     private float getTurbineDamage(ItemStack aStack) {

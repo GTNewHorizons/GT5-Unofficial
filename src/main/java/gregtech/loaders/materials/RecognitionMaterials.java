@@ -105,7 +105,8 @@ public class RecognitionMaterials {
     /// silently-merged marker would otherwise steal that material's identity unnoticed -- `Ammonium` is the one
     /// name this always applies to. Carries [GTMaterialProperties#UNIFIABLE] and, for a marker with [SubTag]s, a
     /// [GTMaterialProperties#FLAGS] set of the identically-named [GTMaterialFlag] each [SubTag] maps to, which
-    /// `MU#hasFlag` reads. Also populates the by-name lookup [#getRecognitionMarker] serves, and the 8 declared
+    /// `MaterialUtils#hasFlag` reads. Also populates the by-name lookup [#getRecognitionMarker] serves, and the 8
+    /// declared
     /// fields, from the same registered-or-found material. Runs during material registration, after
     /// [gregtech.api.enums.materials2.Materials2Materials#init], so the skip check sees every real material.
     public static void registerBackingMaterials() {

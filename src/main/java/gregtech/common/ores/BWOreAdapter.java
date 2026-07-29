@@ -37,7 +37,7 @@ import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
-import gregtech.api.material.MUOre;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.GTProxy.OreDropSystem;
@@ -395,7 +395,7 @@ public final class BWOreAdapter implements IOreAdapter {
         ArrayList<ItemStack> drops = new ArrayList<>();
 
         if (!possibleDrops.isEmpty()) {
-            int oreMultiplier = MUOre.oreMultiplier(info.material);
+            int oreMultiplier = MaterialUtils.oreMultiplier(info.material);
             int dropCount = Math
                 .max(1, oreMultiplier + (fortune > 0 ? random.nextInt(1 + fortune * oreMultiplier) : 0) / 2);
 

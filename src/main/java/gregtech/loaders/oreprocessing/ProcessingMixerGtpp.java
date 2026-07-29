@@ -16,6 +16,7 @@ import gregtech.api.enums.materials2.Materials2GtppComposites.Component;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeBuilder;
 
 /// Reproduces gtPlusPlus's `RecipeGenDustGeneration` mixer-recipe generation (ratio of component dusts ->
@@ -74,8 +75,8 @@ public class ProcessingMixerGtpp implements IOreRecipeRegistrator {
             .itemInputs(inputs)
             .itemOutputs(output);
         if (circuit > 0) builder.circuit(circuit);
-        builder.duration((int) Math.max(MU.mass(material) * 2L, 1))
-            .eut(MU.voltageMultiplier(material))
+        builder.duration((int) Math.max(MaterialUtils.mass(material) * 2L, 1))
+            .eut(MaterialUtils.voltageMultiplier(material))
             .addTo(mixerRecipes);
     }
 

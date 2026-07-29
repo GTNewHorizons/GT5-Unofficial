@@ -11,7 +11,7 @@ import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
 @Optional.Interface(
@@ -50,12 +50,12 @@ public class ItemStorage extends ItemBlock implements IItemFirestoneBurning {
         int aDamage = aStack.getItemDamage();
         if (this.field_150939_a instanceof BlockMetal blockMetal) {
             if (aDamage >= 0 && aDamage < blockMetal.mMats.length) {
-                MU.addTooltips(blockMetal.mMats[aDamage], aList);
+                MaterialUtils.addTooltips(blockMetal.mMats[aDamage], aList);
             }
         } else if (this.field_150939_a instanceof BlockSheetMetal sheetMetal) {
-            MU.addTooltips(sheetMetal.materials.get(aDamage), aList);
+            MaterialUtils.addTooltips(sheetMetal.materials.get(aDamage), aList);
         } else if (this.field_150939_a instanceof BlockDecorativeFrame frame) {
-            MU.addTooltips(frame.materials.get(aDamage), aList);
+            MaterialUtils.addTooltips(frame.materials.get(aDamage), aList);
         }
         super.addInformation(aStack, aPlayer, aList, aF3_H);
     }

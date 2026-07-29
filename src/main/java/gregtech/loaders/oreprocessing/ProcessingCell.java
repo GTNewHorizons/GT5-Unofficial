@@ -22,7 +22,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -58,20 +58,20 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             .addTo(extractorRecipes);
                     }
                 } else {
-                    if (MU.fuelPower(material) > 0) {
+                    if (MaterialUtils.fuelPower(material) > 0) {
                         GTRecipeBuilder recipeBuilder = RA.stdBuilder();
                         recipeBuilder.itemInputs(GTUtility.copyAmount(1, stack));
                         if (GTUtility.getFluidForFilledItem(stack, true) == null
                             && GTUtility.getContainerItem(stack, true) != null) {
                             recipeBuilder.itemOutputs(GTUtility.getContainerItem(stack, true));
                         }
-                        recipeBuilder.metadata(FUEL_VALUE, MU.fuelPower(material))
-                            .metadata(FUEL_TYPE, MU.fuelType(material))
+                        recipeBuilder.metadata(FUEL_VALUE, MaterialUtils.fuelPower(material))
+                            .metadata(FUEL_TYPE, MaterialUtils.fuelType(material))
                             .addTo(GTRecipeConstants.Fuel);
                     }
-                    List<MaterialStack> tMaterialList = MU.materialList(material);
-                    if (!((!tMaterialList.isEmpty())
-                        && (MU.hasElectrolyzerRecipe(material) || MU.hasCentrifugeRecipe(material)))) {
+                    List<MaterialStack> tMaterialList = MaterialUtils.materialList(material);
+                    if (!((!tMaterialList.isEmpty()) && (MaterialUtils.hasElectrolyzerRecipe(material)
+                        || MaterialUtils.hasCentrifugeRecipe(material)))) {
                         break;
                     }
 
@@ -82,7 +82,9 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                     long tItemAmount = 0L;
                     long tCapsuleCount = (long) GTModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(stack)
                         * -tAllAmount;
-                    long tDensityMultiplier = MU.density(material) > 3628800L ? MU.density(material) / 3628800L : 1L;
+                    long tDensityMultiplier = MaterialUtils.density(material) > 3628800L
+                        ? MaterialUtils.density(material) / 3628800L
+                        : 1L;
                     ArrayList<ItemStack> tList = new ArrayList<>();
                     for (MaterialStack tMat : tMaterialList) {
                         if (tMat.mAmount <= 0) {
@@ -98,7 +100,8 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                 tStack = GTOreDictUnificator.get(OrePrefixes.cell, tMat.mMaterial, tMat.mAmount);
                             }
                         }
-                        if (tItemAmount + tMat.mAmount * 3628800L > stack.getMaxStackSize() * MU.density(material)) {
+                        if (tItemAmount + tMat.mAmount * 3628800L
+                            > stack.getMaxStackSize() * MaterialUtils.density(material)) {
                             continue;
                         }
 
@@ -128,13 +131,13 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         }
                     }
 
-                    tItemAmount = GTUtility.ceilDiv(tItemAmount * tDensityMultiplier, MU.density(material));
+                    tItemAmount = GTUtility.ceilDiv(tItemAmount * tDensityMultiplier, MaterialUtils.density(material));
 
                     if (tList.size() == 0) {
                         break;
                     }
 
-                    if (MU.hasElectrolyzerRecipe(material)) {
+                    if (MaterialUtils.hasElectrolyzerRecipe(material)) {
 
                         // Electrolyzer recipe
                         if (GTUtility.getFluidForFilledItem(stack, true) == null) {
@@ -152,7 +155,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             }
                             ItemStack[] outputsArray = tList.toArray(new ItemStack[Math.min(tList.size(), 6)]);
                             recipeBuilder.itemOutputs(outputsArray)
-                                .duration(Math.max(1L, Math.abs(MU.protons(material) * 2L * tItemAmount)))
+                                .duration(Math.max(1L, Math.abs(MaterialUtils.protons(material) * 2L * tItemAmount)))
                                 .eut(Math.min(4, tList.size()) * 30)
                                 .addTo(electrolyzerRecipes);
                         } else {
@@ -168,12 +171,12 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             }
                             ItemStack[] outputsArray = tList.toArray(new ItemStack[Math.min(tList.size(), 6)]);
                             recipeBuilder.itemOutputs(outputsArray)
-                                .duration(Math.max(1L, Math.abs(MU.protons(material) * 8L * tItemAmount)))
+                                .duration(Math.max(1L, Math.abs(MaterialUtils.protons(material) * 8L * tItemAmount)))
                                 .eut(Math.min(4, tList.size()) * 30)
                                 .addTo(electrolyzerRecipes);
                         }
                     }
-                    if (MU.hasCentrifugeRecipe(material)) {
+                    if (MaterialUtils.hasCentrifugeRecipe(material)) {
                         GTRecipeBuilder recipeBuilder = RA.stdBuilder();
                         if (tCapsuleCount > 0L) {
                             recipeBuilder.itemInputs(
@@ -187,7 +190,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         }
                         ItemStack[] outputsArray = tList.toArray(new ItemStack[Math.min(tList.size(), 6)]);
                         recipeBuilder.itemOutputs(outputsArray)
-                            .duration(Math.max(1L, Math.abs(MU.mass(material) * 2L * tItemAmount)))
+                            .duration(Math.max(1L, Math.abs(MaterialUtils.mass(material) * 2L * tItemAmount)))
                             .eut(5)
                             .addTo(centrifugeRecipes);
                     }
@@ -205,7 +208,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                     }
                     // Switch case to set manual values for specific plasmas and escape the formula based on mass
                     // when it doesn't make sense for powergen balance.
-                    switch (MU.internalName(material)) {
+                    switch (MaterialUtils.internalName(material)) {
                         case "Aluminium" -> recipeBuilder.metadata(FUEL_VALUE, 159_744)
                             .metadata(FUEL_TYPE, 4)
                             .addTo(GTRecipeConstants.Fuel);
@@ -438,7 +441,8 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         case "Zinc" -> recipeBuilder.metadata(FUEL_VALUE, 226_304)
                             .metadata(FUEL_TYPE, 4)
                             .addTo(GTRecipeConstants.Fuel);
-                        default -> recipeBuilder.metadata(FUEL_VALUE, (int) Math.max(1024L, 1024L * MU.mass(material)))
+                        default -> recipeBuilder
+                            .metadata(FUEL_VALUE, (int) Math.max(1024L, 1024L * MaterialUtils.mass(material)))
                             .metadata(FUEL_TYPE, 4)
                             .addTo(GTRecipeConstants.Fuel);
                     }
@@ -446,7 +450,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, material, 1L))
-                            .duration(((int) Math.max(MU.mass(material) * 2L, 1L)) * TICKS)
+                            .duration(((int) Math.max(MaterialUtils.mass(material) * 2L, 1L)) * TICKS)
                             .eut(TierEU.RECIPE_MV)
                             .addTo(vacuumFreezerRecipes);
                     }

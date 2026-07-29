@@ -18,7 +18,8 @@ import appeng.util.ReadableNumberConverter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.CondensateType;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialRenderers;
+import gregtech.api.material.MaterialUtils;
 import gregtech.client.handler.CondensateAnimationTickHandler;
 import gregtech.common.items.ItemFluidDisplay;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
@@ -47,8 +48,9 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
         Fluid fluid = FluidRegistry.getFluid(item.getItemDamage());
-        Material associatedFluidMaterial = MU.byLegacyName(item.stackTagCompound.getString("mFluidMaterialName"));
-        GeneratedMaterialRenderer fluidRenderer = MU.rendererOf(associatedFluidMaterial);
+        Material associatedFluidMaterial = MaterialUtils
+            .byLegacyName(item.stackTagCompound.getString("mFluidMaterialName"));
+        GeneratedMaterialRenderer fluidRenderer = MaterialRenderers.rendererOf(associatedFluidMaterial);
         if (fluidRenderer == null || !fluidRenderer.renderFluidDisplayItem(type, item, data)) {
             IIcon icon = item.getItem()
                 .getIconFromDamage(item.getItemDamage());

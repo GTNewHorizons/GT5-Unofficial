@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 import com.ruling_0.materiallib.api.Material;
 
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import kubatech.loaders.item.htgritem.HTGRItem;
 
 public class HTGRItemRenderer implements IItemRenderer {
@@ -34,7 +34,7 @@ public class HTGRItemRenderer implements IItemRenderer {
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
         IIcon icon = item.getIconIndex();
 
-        int color = MU.dye(material).rgb;
+        int color = MaterialUtils.dye(material).rgb;
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor3ub((byte) (color >>> 16), (byte) (color >>> 8), (byte) color);
         ItemRenderUtil.renderItem(type, icon);

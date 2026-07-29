@@ -9,7 +9,7 @@ import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 
 /// Adapts a MaterialLib [ShapeItem] to the [IGT_ItemWithMaterialRenderer] surface the
 /// [GeneratedMaterialRenderer] family reads from, so a material's special renderer (assigned through
-/// [gregtech.api.material.MU#recordRenderer]) works on shape-backed items. See
+/// [gregtech.api.material.MaterialRenderers#recordRenderer]) works on shape-backed items. See
 /// [IGT_ItemWithMaterialRenderer#resolve] for construction.
 ///
 /// A shape item has no per-pass icon list -- only a base icon and an optional overlay -- so this always reports

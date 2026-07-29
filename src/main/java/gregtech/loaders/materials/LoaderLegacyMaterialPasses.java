@@ -12,7 +12,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.config.Gregtech;
 
 /// gregtech-owned material passes that have no MaterialLib equivalent: disabling the hot-ingot variant for
@@ -58,8 +58,8 @@ public final class LoaderLegacyMaterialPasses {
         Set<Material> mlHotIngots = MaterialLibAPI.getMaterials()
             .stream()
             .filter(
-                m -> OrePrefixes.ingotHot.doGenerateItem(m) && MU.blastFurnaceTemp(m) < 1750
-                    && MU.autoGenerateBlastFurnaceRecipes(m))
+                m -> OrePrefixes.ingotHot.doGenerateItem(m) && MaterialUtils.blastFurnaceTemp(m) < 1750
+                    && MaterialUtils.autoGenerateBlastFurnaceRecipes(m))
             .collect(Collectors.toSet());
 
         OrePrefixes.ingotHot.mDisabledItems.addAll(mlHotIngots);
@@ -99,7 +99,7 @@ public final class LoaderLegacyMaterialPasses {
         for (int id = 0; id < GTMod.proxy.mHarvestLevel.length; id++) {
             Material material = Materials2IDIndex.get(id);
             if (material == null) continue;
-            int toolQuality = MU.toolQuality(material);
+            int toolQuality = MaterialUtils.toolQuality(material);
             if (toolQuality > 0) GTMod.proxy.mHarvestLevel[id] = toolQuality;
         }
     }

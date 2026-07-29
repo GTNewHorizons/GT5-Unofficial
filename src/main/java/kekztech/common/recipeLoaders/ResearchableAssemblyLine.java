@@ -17,7 +17,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import kekztech.common.Blocks;
@@ -42,8 +42,11 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_UHPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(32),
                 ItemList.Circuit_Parts_DiodeASMD.get(64),
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials2Markers.SuperconductorUHV, 64) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 32 * INGOTS), MaterialLibAPI
-                .getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, (int) (1 * STACKS)),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 32 * INGOTS),
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Naquadria,
+                    Materials2FluidShapes.fluidMolten,
+                    (int) (1 * STACKS)),
                 GTModHandler.getIC2Coolant(32_000) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
             4000,
@@ -64,7 +67,7 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_PPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Markers.SuperconductorUEV, 64) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 1 * STACKS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 1 * STACKS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Quantium, Materials2FluidShapes.fluidMolten, (int) (2 * STACKS)),
                 MaterialLibAPI.getFluidStack(
@@ -94,8 +97,8 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_QPIC.get(64), ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(32),
                 GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Markers.SuperconductorUIV, 64) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 2 * STACKS),
-                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 2 * STACKS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 2 * STACKS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.CelestialTungsten, 2 * STACKS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Quantium, Materials2FluidShapes.fluidMolten, (int) (2 * STACKS)),
                 MaterialLibAPI.getFluidStack(
@@ -121,9 +124,9 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Circuit_Wafer_FPIC.get(64), ItemList.Circuit_Parts_Chip_Bioware.get(64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(64),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Markers.SuperconductorUMV, 64) },
-            new FluidStack[] { MU.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 4 * STACKS),
+            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 4 * STACKS),
                 new FluidStack(FluidRegistry.getFluid("molten.astraltitanium"), 4 * STACKS),
-                MU.legacyGtppFluid(Materials2Materials.CelestialTungsten, 4 * STACKS),
+                MaterialUtils.legacyGtppFluid(Materials2Materials.CelestialTungsten, 4 * STACKS),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.SuperCoolant,
                     Materials2FluidShapes.fluidLiquid,

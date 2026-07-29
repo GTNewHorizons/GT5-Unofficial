@@ -41,7 +41,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -181,7 +181,7 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
                         super.mMaxProgresstime = 20;
                         super.mEfficiencyIncrease = 40;
                         if (super.mEfficiency == getMaxEfficiency(null)) {
-                            super.addOutputPartial(MU.gas(Materials2Materials.Steam, STEAM_PER_SEC));
+                            super.addOutputPartial(MaterialUtils.gas(Materials2Materials.Steam, STEAM_PER_SEC));
                         }
                         return CheckRecipeResultRegistry.GENERATING;
                     }

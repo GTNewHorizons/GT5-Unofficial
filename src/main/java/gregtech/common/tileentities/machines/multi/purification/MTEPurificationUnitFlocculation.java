@@ -49,7 +49,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
@@ -278,18 +278,18 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             .addSeparator()
             .addInfo(
                 "Supply with " + EnumChatFormatting.WHITE
-                    + addFormattedString(MU.localizedName(INPUT_CHEMICAL))
+                    + addFormattedString(MaterialUtils.localizedName(INPUT_CHEMICAL))
                     + EnumChatFormatting.GRAY
                     + " to operate")
             .addInfo(
                 "Outputs " + EnumChatFormatting.WHITE
-                    + addFormattedString(MU.localizedName(OUTPUT_WASTE))
+                    + addFormattedString(MaterialUtils.localizedName(OUTPUT_WASTE))
                     + EnumChatFormatting.GRAY
                     + " that can be recycled")
             .addSeparator()
             .addInfo(
                 "During operation, will consume ALL " + EnumChatFormatting.WHITE
-                    + addFormattedString(MU.localizedName(INPUT_CHEMICAL))
+                    + addFormattedString(MaterialUtils.localizedName(INPUT_CHEMICAL))
                     + EnumChatFormatting.GRAY
                     + " in the input hatch")
             .addInfo(
@@ -299,7 +299,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + "of "
                     + EnumChatFormatting.WHITE
-                    + addFormattedString(MU.localizedName(INPUT_CHEMICAL))
+                    + addFormattedString(MaterialUtils.localizedName(INPUT_CHEMICAL))
                     + EnumChatFormatting.GRAY
                     + " consumed")
             .addInfo(
@@ -361,7 +361,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         // NOTE: If this process ever PRODUCES excess chlorine, there is a recipe bug.
         int levels = calculateBoostLevels();
         long amount = levels * WASTE_WATER_PER_LEVEL;
-        this.addFluidOutputs(new FluidStack[] { MU.fluid(OUTPUT_WASTE, amount) });
+        this.addFluidOutputs(new FluidStack[] { MaterialUtils.fluid(OUTPUT_WASTE, amount) });
         // Make sure to reset consumed fluid (again)
         this.inputFluidConsumed = 0;
     }
@@ -377,7 +377,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             for (FluidStack fluid : fluids) {
                 // If this FluidStack is the input chemical, consume it all
                 if (fluid.getFluid()
-                    .equals(MU.fluidOf(INPUT_CHEMICAL))) {
+                    .equals(MaterialUtils.fluidOf(INPUT_CHEMICAL))) {
                     this.inputFluidConsumed += fluid.amount;
                     if (!this.depleteInput(fluid)) {
                         stopMachine(ShutDownReasonRegistry.outOfFluid(fluid));
@@ -433,7 +433,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         infoData.add(
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.purification_unit_flocculation.consumed",
-                MU.localizedName(INPUT_CHEMICAL),
+                MaterialUtils.localizedName(INPUT_CHEMICAL),
                 "" + EnumChatFormatting.RED + inputFluidConsumed));
         return infoData.toArray(new String[] {});
     }

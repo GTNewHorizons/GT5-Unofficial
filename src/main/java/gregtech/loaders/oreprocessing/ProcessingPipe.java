@@ -19,6 +19,7 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -64,9 +65,9 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             material == Materials2Materials.Wood ? MU.craftIngredient(OrePrefixes.plank, material)
                                 : MU.craftIngredient(OrePrefixes.plate, material),
                             'H',
-                            MU.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSoftMallet
+                            MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSoftMallet
                                 : ToolDictNames.craftingToolHardHammer,
-                            'W', MU.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSaw
+                            'W', MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSaw
                                 : ToolDictNames.craftingToolWrench });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeMedium, material, 2L),
@@ -75,9 +76,9 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             material == Materials2Materials.Wood ? MU.craftIngredient(OrePrefixes.plank, material)
                                 : MU.craftIngredient(OrePrefixes.plate, material),
                             'H',
-                            MU.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSoftMallet
+                            MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSoftMallet
                                 : ToolDictNames.craftingToolHardHammer,
-                            'W', MU.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSaw
+                            'W', MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSaw
                                 : ToolDictNames.craftingToolWrench });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeLarge, material, 1L),
@@ -86,9 +87,9 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             material == Materials2Materials.Wood ? MU.craftIngredient(OrePrefixes.plank, material)
                                 : MU.craftIngredient(OrePrefixes.plate, material),
                             'H',
-                            MU.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSoftMallet
+                            MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSoftMallet
                                 : ToolDictNames.craftingToolHardHammer,
-                            'W', MU.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSaw
+                            'W', MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSaw
                                 : ToolDictNames.craftingToolWrench });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeHuge, material, 1L),

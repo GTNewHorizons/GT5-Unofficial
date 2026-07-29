@@ -24,6 +24,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
@@ -43,31 +44,31 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        boolean noSmashing = MU.hasFlag(material, GTMaterialFlag.NO_SMASHING);
-        boolean stretchy = MU.hasFlag(material, GTMaterialFlag.STRETCHY);
-        boolean noSmelting = MU.hasFlag(material, GTMaterialFlag.NO_SMELTING);
-        long materialMass = MU.mass(material);
+        boolean noSmashing = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING);
+        boolean stretchy = MaterialUtils.hasFlag(material, GTMaterialFlag.STRETCHY);
+        boolean noSmelting = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING);
+        long materialMass = MaterialUtils.mass(material);
         boolean specialRecipeReq = !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-            && !MU.hasFlag(material, GTMaterialFlag.NO_SMASHING);
+            && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING);
 
         switch (prefix.getName()) {
             case "ingot" -> {
                 // Fuel recipe
-                if (MU.fuelPower(material) > 0) {
+                if (MaterialUtils.fuelPower(material) > 0) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
-                        .metadata(FUEL_VALUE, MU.fuelPower(material))
-                        .metadata(FUEL_TYPE, MU.fuelType(material))
+                        .metadata(FUEL_VALUE, MaterialUtils.fuelPower(material))
+                        .metadata(FUEL_TYPE, MaterialUtils.fuelType(material))
                         .addTo(GTRecipeConstants.Fuel);
                 }
-                if (MU.hasMolten(material)
+                if (MaterialUtils.hasMolten(material)
                     && !(material == Materials2Materials.AnnealedCopper || material == Materials2Materials.CastIron)) {
                     // Fluid solidifier recipes
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Ingot.get(0L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L))
-                        .fluidInputs(MU.molten(material, 1 * INGOTS))
+                        .fluidInputs(MaterialUtils.molten(material, 1 * INGOTS))
                         .duration(1 * SECONDS + 12 * TICKS)
                         .eut(calculateRecipeEU(material, 8))
                         .addTo(fluidSolidifierRecipes);
@@ -95,14 +96,14 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             null);
                     }
                 }
-                ItemStack tStack = GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(material), 1L);
-                if ((tStack != null) && ((MU.blastFurnaceRequired(material)) || noSmelting)) {
+                ItemStack tStack = GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L);
+                if ((tStack != null) && ((MaterialUtils.blastFurnaceRequired(material)) || noSmelting)) {
                     GTModHandler.removeFurnaceSmelting(tStack);
                 }
                 if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-                    && !MU.hasFlag(material, GTMaterialFlag.NO_WORKING)
-                    && !MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
-                    && MU.hasFlag(material, GTMaterialFlag.MORTAR_GRINDABLE)) {
+                    && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)
+                    && !MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
+                    && MaterialUtils.hasFlag(material, GTMaterialFlag.MORTAR_GRINDABLE)) {
                     GTModHandler.addShapelessCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
@@ -199,7 +200,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 }
             }
             case "ingotHot" -> {
-                if (MU.autoGenerateVacuumFreezerRecipes(material)
+                if (MaterialUtils.autoGenerateVacuumFreezerRecipes(material)
                     && GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L) != null) {
                     // Vacuum freezer recipes
                     GTValues.RA.stdBuilder()

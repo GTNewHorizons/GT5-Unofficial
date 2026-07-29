@@ -21,7 +21,7 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -441,7 +441,8 @@ public class VacuumFreezerRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(prefix, Materials2Materials.hotprotohalkonite, multiplier))
             .itemOutputs(GTOreDictUnificator.get(prefix, Materials2Materials.protohalkonite, multiplier))
             .fluidInputs(
-                MU.fluid(Materials2Materials.dimensionallyshiftedsuperfluid, (long) partFraction * multiplier / 4),
+                MaterialUtils
+                    .fluid(Materials2Materials.dimensionallyshiftedsuperfluid, (long) partFraction * multiplier / 4),
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.SuperCoolant,
                     Materials2FluidShapes.fluidLiquid,

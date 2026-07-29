@@ -173,7 +173,7 @@ import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.ItemEnergyArmor;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.net.GTPacketSound;
 import gregtech.api.objects.CollectorUtils;
@@ -1231,9 +1231,9 @@ public class GTUtility {
             aFluid.getFluid()
                 .isGaseous(aFluid));
         tNBT.setBoolean("mHideStackSize", aHideStackSize);
-        Material fluidMaterial = MU.materialOfFluid(aFluid.getFluid());
+        Material fluidMaterial = MaterialUtils.materialOfFluid(aFluid.getFluid());
         if (fluidMaterial != null) {
-            tNBT.setString("mFluidMaterialName", MU.internalName(fluidMaterial));
+            tNBT.setString("mFluidMaterialName", MaterialUtils.internalName(fluidMaterial));
         }
         rStack.setTagCompound(tNBT);
         return rStack;
@@ -1963,17 +1963,17 @@ public class GTUtility {
         ItemData tData = GTOreDictUnificator.getItemData(aStack);
         return tData == null ? 0
             : (tData.mPrefix == null ? 0 : tData.mPrefix.mHeatDamage)
-                + (tData.hasValidMaterialData() ? MU.heatDamage(tData.mMaterial.mMaterial) : 0);
+                + (tData.hasValidMaterialData() ? MaterialUtils.heatDamage(tData.mMaterial.mMaterial) : 0);
     }
 
     public static int getRadioactivityLevel(ItemStack aStack) {
         ItemData tData = GTOreDictUnificator.getItemData(aStack);
         if (tData != null && tData.hasValidMaterialData()) {
             Material material = tData.mMaterial.mMaterial;
-            if (MU.getArmorEnchantment(material) instanceof EnchantmentRadioactivity)
-                return MU.getArmorEnchantmentLevel(material);
-            if (MU.getToolEnchantment(material) instanceof EnchantmentRadioactivity)
-                return MU.getToolEnchantmentLevel(material);
+            if (MaterialUtils.getArmorEnchantment(material) instanceof EnchantmentRadioactivity)
+                return MaterialUtils.getArmorEnchantmentLevel(material);
+            if (MaterialUtils.getToolEnchantment(material) instanceof EnchantmentRadioactivity)
+                return MaterialUtils.getToolEnchantmentLevel(material);
         }
         return EnchantmentHelper.getEnchantmentLevel(EnchantmentRadioactivity.INSTANCE.effectId, aStack);
     }
@@ -4136,7 +4136,7 @@ public class GTUtility {
     }
 
     public static int getPlasmaFuelValueInEUPerLiterFromMaterial(Material material) {
-        return getPlasmaFuelValueInEUPerLiterFromFluid(MU.plasma(material, 1));
+        return getPlasmaFuelValueInEUPerLiterFromFluid(MaterialUtils.plasma(material, 1));
     }
 
     public static int getPlasmaFuelValueInEUPerLiterFromFluid(FluidStack aLiquid) {

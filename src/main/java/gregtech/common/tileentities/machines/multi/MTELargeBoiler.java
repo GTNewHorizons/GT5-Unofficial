@@ -45,7 +45,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -401,7 +401,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 } else {
                     if (depleteInput(GTUtility.getWater(amount))
                         || depleteInput(GTModHandler.getDistilledWater(amount))) {
-                        addOutputPartial(MU.gas(Materials2Materials.Steam, tGeneratedEU));
+                        addOutputPartial(MaterialUtils.gas(Materials2Materials.Steam, tGeneratedEU));
                     } else {
                         GTLog.writeExplosionLog(this, "Boiler had no water");
                         explodeMultiblock();

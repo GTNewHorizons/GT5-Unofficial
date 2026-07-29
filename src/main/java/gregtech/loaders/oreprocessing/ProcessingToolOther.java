@@ -12,6 +12,7 @@ import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -45,8 +46,9 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
             }
         }
 
-        if ((!MU.hasFlag(material, GTMaterialFlag.WOOD)) && (!MU.hasFlag(material, GTMaterialFlag.BOUNCY))
-            && (!MU.hasFlag(material, GTMaterialFlag.NO_SMASHING))) {
+        if ((!MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD))
+            && (!MaterialUtils.hasFlag(material, GTMaterialFlag.BOUNCY))
+            && (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING))) {
             // Crafting recipes
             {
                 GTModHandler.addCraftingRecipe(
@@ -59,11 +61,15 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                     new Object[] { "hDS", "DSD", "SDf", 'S', MU.craftIngredient(OrePrefixes.stick, material), 'D',
                         Dyes.dyeBlue });
                 GTModHandler.addCraftingRecipe(
-                    MetaGeneratedTool01.INSTANCE
-                        .getToolWithStats(IDMetaTool01.SCREWDRIVER.ID, 1, material, MU.handleMaterial(material), null),
+                    MetaGeneratedTool01.INSTANCE.getToolWithStats(
+                        IDMetaTool01.SCREWDRIVER.ID,
+                        1,
+                        material,
+                        MaterialUtils.handleMaterial(material),
+                        null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
                     new Object[] { " fS", " Sh", "W  ", 'S', MU.craftIngredient(OrePrefixes.stick, material), 'W',
-                        OrePrefixes.stick.ingredient(MU.handleMaterial(material)) });
+                        OrePrefixes.stick.ingredient(MaterialUtils.handleMaterial(material)) });
                 GTModHandler.addCraftingRecipe(
                     MetaGeneratedTool01.INSTANCE
                         .getToolWithStats(IDMetaTool01.WIRECUTTER.ID, 1, material, material, null),
@@ -215,11 +221,16 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                         MU.craftIngredient(OrePrefixes.spring, material), 'G', Dyes.dyeBlue });
 
                 GTModHandler.addCraftingRecipe(
-                    MetaGeneratedTool01.INSTANCE
-                        .getToolWithStats(IDMetaTool01.TROWEL.ID, 1, material, MU.handleMaterial(material), null),
+                    MetaGeneratedTool01.INSTANCE.getToolWithStats(
+                        IDMetaTool01.TROWEL.ID,
+                        1,
+                        material,
+                        MaterialUtils.handleMaterial(material),
+                        null),
                     GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "  d", "SSC", "fPP", 'S', OrePrefixes.stick.ingredient(MU.handleMaterial(material)),
-                        'C', MU.craftIngredient(OrePrefixes.screw, material), 'P',
+                    new Object[] { "  d", "SSC", "fPP", 'S',
+                        OrePrefixes.stick.ingredient(MaterialUtils.handleMaterial(material)), 'C',
+                        MU.craftIngredient(OrePrefixes.screw, material), 'P',
                         MU.craftIngredient(OrePrefixes.plate, material) });
 
             }

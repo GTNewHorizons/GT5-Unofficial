@@ -61,7 +61,8 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialRenderers;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
@@ -155,7 +156,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
 
     @Override
     public GeneratedMaterialRenderer getMaterialRenderer(int aMetaData) {
-        return MU.rendererOf(CombType.valueOf(aMetaData).material);
+        return MaterialRenderers.rendererOf(CombType.valueOf(aMetaData).material);
     }
 
     @Override
@@ -175,7 +176,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
 
     @Override
     public short[] getRGBa(ItemStack aStack) {
-        return MU.rgba(CombType.valueOf(aStack.getItemDamage()).material);
+        return MaterialUtils.rgba(CombType.valueOf(aStack.getItemDamage()).material);
     }
 
     public void initCombsRecipes() {
@@ -1262,12 +1263,12 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         /** @return FluidStack needed for chemical process related to the Tier **/
         public FluidStack getComplexChemical() {
             if (this.compareTo(Voltage.MV) < 0) {
-                return MU
+                return MaterialUtils
                     .fluid(Materials2Materials.HydrofluoricAcidGT5U, (this.compareTo(Voltage.ULV) > 0) ? 1000 : 500);
             } else if (this.compareTo(Voltage.HV) < 0) {
                 return GTModHandler.getDistilledWater(1_000);
             } else if (this.compareTo(Voltage.LuV) < 0) {
-                return MU.fluid(
+                return MaterialUtils.fluid(
                     Materials2Materials.HydrofluoricAcidGT5U,
                     (long) (GTUtility.powInt(2, this.compareTo(Voltage.HV)) * INGOTS));
             } else if (this.compareTo(Voltage.UHV) < 0) {
@@ -1296,14 +1297,14 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                         (int) (fluidAmount));
                 case 2 ->
                     /* MV */
-                    MU.fluid(Materials2Materials.HydrochloricAcidGT5U, fluidAmount);
+                    MaterialUtils.fluid(Materials2Materials.HydrochloricAcidGT5U, fluidAmount);
                 case 3 ->
                     /* HV */
-                    MU.fluid(Materials2Materials.PhosphoricAcidGT5U, fluidAmount);
+                    MaterialUtils.fluid(Materials2Materials.PhosphoricAcidGT5U, fluidAmount);
                 case 4 ->
                     /* EV */
-                    MU.fluid(Materials2Materials.HydrofluoricAcidGT5U, this.getFluidAmount());
-                default -> MU.fluid(Materials2Materials.phtalicacid, fluidAmount);
+                    MaterialUtils.fluid(Materials2Materials.HydrofluoricAcidGT5U, this.getFluidAmount());
+                default -> MaterialUtils.fluid(Materials2Materials.phtalicacid, fluidAmount);
             };
         }
 
@@ -1487,7 +1488,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                 new ItemStack(ModItems.manaCookie, 1))
             .outputChances(35 * 100, 15 * 100, 15 * 100, 15 * 100, 15 * 100, 5 * 100, 2 * 100, 1 * 10)
             .duration(20 * SECONDS)
-            .fluidInputs(MU.fluid(Materials2Materials.HydrofluoricAcidGT5U, 250L))
+            .fluidInputs(MaterialUtils.fluid(Materials2Materials.HydrofluoricAcidGT5U, 250L))
             .eut(TierEU.RECIPE_EV)
             .addTo(sifterRecipes);
     }

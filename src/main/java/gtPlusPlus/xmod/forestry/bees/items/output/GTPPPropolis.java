@@ -19,6 +19,7 @@ import forestry.api.core.Tabs;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPPropolisType;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
 
@@ -82,13 +83,13 @@ public class GTPPPropolis extends Item {
             if (aOutput == null) {
                 continue;
             }
-            int tier = MU.tier(aProp.mMaterial);
+            int tier = MaterialUtils.tier(aProp.mMaterial);
             GTValues.RA.stdBuilder()
                 .itemInputs(tDrop)
                 .itemOutputs(aOutput)
                 .outputChances(Math.min(Math.max(10000 - (tier * 625), 100), 10000))
                 .duration(tier * 15 * SECONDS)
-                .eut(MU.voltageMultiplier(aProp.mMaterial))
+                .eut(MaterialUtils.voltageMultiplier(aProp.mMaterial))
                 .addTo(extractorRecipes);
 
         }

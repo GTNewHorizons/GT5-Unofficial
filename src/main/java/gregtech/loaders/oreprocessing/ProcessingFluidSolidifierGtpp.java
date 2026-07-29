@@ -14,7 +14,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 
 /// Reproduces the retired gtPlusPlus `RecipeGenFluids` for every material in [#ELIGIBLE]: the mold-plus-fluid
 /// solidifier recipes for every shape the material carries (ingot, plate, nugget, gear, small gear, block, rod,
@@ -79,7 +79,7 @@ public class ProcessingFluidSolidifierGtpp {
     }
 
     private static void generate(Material material) {
-        if (MU.legacyGtppFluid(material, 1) == null) return;
+        if (MaterialUtils.legacyGtppFluid(material, 1) == null) return;
 
         solidify(material, OrePrefixes.ingot, ItemList.Shape_Mold_Ingot, 1, 144, 3 * SECONDS);
         solidify(material, OrePrefixes.plate, ItemList.Shape_Mold_Plate, 1, 144, 3 * SECONDS);
@@ -99,7 +99,7 @@ public class ProcessingFluidSolidifierGtpp {
         int fluidAmount, int duration) {
         ItemStack output = ProcessingDustGeneration.stackOf(shapePrefix, material, shapeAmount);
         if (output == null) return;
-        FluidStack fluid = MU.legacyGtppFluid(material, fluidAmount);
+        FluidStack fluid = MaterialUtils.legacyGtppFluid(material, fluidAmount);
         if (fluid == null) return;
 
         GTValues.RA.stdBuilder()
@@ -107,7 +107,7 @@ public class ProcessingFluidSolidifierGtpp {
             .itemOutputs(output)
             .fluidInputs(fluid)
             .duration(duration)
-            .eut(MU.voltageMultiplier(material))
+            .eut(MaterialUtils.voltageMultiplier(material))
             .addTo(fluidSolidifierRecipes);
     }
 

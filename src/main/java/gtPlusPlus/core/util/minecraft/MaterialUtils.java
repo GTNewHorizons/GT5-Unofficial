@@ -6,7 +6,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.loaders.materials.LegacyNameDomain;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -60,9 +59,9 @@ public class MaterialUtils {
     }
 
     public static String getMaterialName(Material mat) {
-        String mName = MU.localName(mat);
+        String mName = gregtech.api.material.MaterialUtils.localName(mat);
         if (mName == null || mName.isEmpty()) {
-            mName = MU.internalName(mat);
+            mName = gregtech.api.material.MaterialUtils.internalName(mat);
         }
         return mName;
     }

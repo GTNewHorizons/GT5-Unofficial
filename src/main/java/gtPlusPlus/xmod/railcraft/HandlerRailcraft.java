@@ -22,7 +22,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.item.base.BaseItemBurnable;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -78,7 +78,7 @@ public class HandlerRailcraft {
         // Taken from the Railcraft code
         if (Railcraft.isModLoaded()) {
             int bioheat = (int) (16000 * RailcraftConfig.boilerBiofuelMultiplier());
-            FuelManager.addBoilerFuel(MU.fluidOf(BioDiesel), bioheat);
+            FuelManager.addBoilerFuel(MaterialUtils.fluidOf(BioDiesel), bioheat);
         }
     }
 
@@ -138,7 +138,7 @@ public class HandlerRailcraft {
             .itemInputs(coke)
             .circuit(5)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dustSmall, (int) (1)))
-            .fluidInputs(MU.gas(Materials2Materials.Steam, 100))
+            .fluidInputs(MaterialUtils.gas(Materials2Materials.Steam, 100))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.WoodTar, Materials2FluidShapes.fluidLiquid, (int) (200)))
@@ -150,7 +150,7 @@ public class HandlerRailcraft {
             .itemInputs(coke)
             .circuit(6)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dustSmall, (int) (1)))
-            .fluidInputs(MU.gas(Materials2Materials.Steam, 100))
+            .fluidInputs(MaterialUtils.gas(Materials2Materials.Steam, 100))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.WoodGas, Materials2FluidShapes.fluidGas, (int) (300)))
             .eut(TierEU.RECIPE_HV / 2)

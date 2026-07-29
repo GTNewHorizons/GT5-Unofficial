@@ -30,7 +30,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.items.GTGenericItem;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
 
@@ -130,14 +130,14 @@ public class ItemFluidDisplay extends GTGenericItem {
 
     @SideOnly(Side.CLIENT)
     public static Material getMaterial(Fluid fluid) {
-        return MU.materialOfFluid(fluid);
+        return MaterialUtils.materialOfFluid(fluid);
     }
 
     @SideOnly(Side.CLIENT)
     public static void addTooltipForFluid(Fluid fluid, List<String> list) {
         Material material = getMaterial(fluid);
         if (material != null) {
-            MU.addTooltips(material, list);
+            MaterialUtils.addTooltips(material, list);
         }
     }
 
@@ -167,7 +167,7 @@ public class ItemFluidDisplay extends GTGenericItem {
         for (int tOreDict : OreDictionary.getOreIDs(tItemStack)) {
             String tOreDictName = OreDictionary.getOreName(tOreDict);
             if (tOreDictName.startsWith("cell")) {
-                return MU.byLegacyName(
+                return MaterialUtils.byLegacyName(
                     tOreDictName.replace("cell", "")
                         .replace("Molten", "")
                         .replace("Plasma", ""));

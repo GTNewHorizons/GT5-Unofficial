@@ -79,7 +79,8 @@ import gregtech.api.interfaces.IUpdatePlayerMovement;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialRenderers;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.net.GTPacketClientPreference;
@@ -227,13 +228,13 @@ public class GTClient extends GTProxy {
         registerMaterialItemRenderer(Materials2Materials.hotexohalkonite, new InfinityRenderer());
         registerMaterialItemRenderer(
             Materials2Materials.prismaticnaquadah,
-            new RainbowOverlayRenderer(MU.rgba(Materials2Materials.prismaticnaquadah)));
+            new RainbowOverlayRenderer(MaterialUtils.rgba(Materials2Materials.prismaticnaquadah)));
         registerMaterialItemRenderer(Materials2Materials.Amalgatite, new InfinityRenderer());
     }
 
     private static void registerMaterialItemRenderer(Material material, GeneratedMaterialRenderer renderer) {
         MaterialLibClient.setItemRenderer(material, renderer);
-        MU.recordRenderer(material, renderer);
+        MaterialRenderers.recordRenderer(material, renderer);
     }
 
     @Override

@@ -29,7 +29,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -214,7 +214,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
             if (firstWater != null && secondWater != null) break;
 
             final List<BoostingWater> fluid = WATER_LIST.stream()
-                .filter(candidate -> drain(hatch, MU.fluid(candidate.water, candidate.amount), false))
+                .filter(candidate -> drain(hatch, MaterialUtils.fluid(candidate.water, candidate.amount), false))
                 .collect(Collectors.toList());
 
             if (fluid.size() >= 2) {
@@ -276,7 +276,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
         }
 
         public FluidStack getStack(float waterDiscount) {
-            return MU.fluid(this.water, (long) (waterDiscount * this.amount));
+            return MaterialUtils.fluid(this.water, (long) (waterDiscount * this.amount));
         }
     }
 }

@@ -24,7 +24,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
@@ -588,7 +588,7 @@ public class CuttingRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(inputs)
             .itemOutputs(outputs)
-            .fluidInputs(MU.fluid(lowTierWater, 100L))
+            .fluidInputs(MaterialUtils.fluid(lowTierWater, 100L))
             .duration(duration)
             .eut(eut)
             .addTo(cutterRecipes);
@@ -596,7 +596,7 @@ public class CuttingRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(inputs)
             .itemOutputs(outputs)
-            .fluidInputs(MU.fluid(highTierWater, 100L))
+            .fluidInputs(MaterialUtils.fluid(highTierWater, 100L))
             .duration(boostedDuration)
             .eut(eut)
             .addTo(cutterRecipes);

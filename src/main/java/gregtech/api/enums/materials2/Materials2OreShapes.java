@@ -11,7 +11,7 @@ import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.StoneType;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.GTPPOreAdapter;
@@ -181,11 +181,11 @@ public class Materials2OreShapes {
     /// Whether `material` is a *pure* gtpp material with no live, id-backed legacy counterpart --
     /// [GTOreAdapter] already owns drop/harvest-level behavior for a gtpp name-merge material (its own dump
     /// captured real per-material formulas that predate gtpp entirely), so this excludes any material with a
-    /// real legacy id. A bridge material is also legacy-named but carries no real id ([MU#oldSubId] stays
+    /// real legacy id. A bridge material is also legacy-named but carries no real id ([MaterialUtils#oldSubId] stays
     /// `-1`), so it still counts as gtpp here, mirroring [GTPPOreAdapter]'s own `isGtpp` discriminator.
     private static boolean isGtpp(Material material) {
         if (material.getProperty(GTMaterialProperties.GTPP_STATE) == null) return false;
-        return !LegacyNameDomain.contains(material) || MU.oldSubId(material) < 0;
+        return !LegacyNameDomain.contains(material) || MaterialUtils.oldSubId(material) < 0;
     }
 
     private static Block stoneBlock(String variant) {

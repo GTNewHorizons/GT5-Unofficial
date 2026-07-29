@@ -19,7 +19,7 @@ import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -69,7 +69,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
                     this.getDefaultLocalization(tPrefix, tMaterial, i));
                 GTLanguageManager.addStringLocalization(
                     this.getUnlocalizedName(tStack) + ".tooltip",
-                    MU.chemicalTooltip(tMaterial, tPrefix.getMaterialAmount() / GTValues.M, false));
+                    MaterialUtils.chemicalTooltip(tMaterial, tPrefix.getMaterialAmount() / GTValues.M, false));
                 if (tPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {
@@ -118,7 +118,8 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
     public final IIconContainer getIconContainer(final int aMetaData, final Material aMaterial) {
         return (this.mGeneratedPrefixList[aMetaData / 1000] != null)
             && (this.mGeneratedPrefixList[aMetaData / 1000].getTextureIndex() >= 0)
-                ? MU.iconSet(aMaterial).mTextures[this.mGeneratedPrefixList[aMetaData / 1000].getTextureIndex()]
+                ? MaterialUtils.iconSet(aMaterial).mTextures[this.mGeneratedPrefixList[aMetaData / 1000]
+                    .getTextureIndex()]
                 : null;
     }
 

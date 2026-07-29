@@ -18,7 +18,7 @@ import com.google.gson.GsonBuilder;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.loaders.materials.LegacyNameDomain;
 
 /// Per-material snapshot of the fluid slots and generation gates that recipe autogeneration reads, keyed by
@@ -37,21 +37,21 @@ public final class MaterialGateDump {
         for (Material material : MaterialLibAPI.getMaterials()) {
             Map<String, Object> row = new LinkedHashMap<>();
             row.put("legacyNamed", LegacyNameDomain.contains(material));
-            row.put("oldSubId", MU.oldSubId(material));
-            row.put("hasMolten", MU.hasMolten(material));
-            row.put("solid", name(MU.solid(material, 1)));
-            row.put("liquid", name(MU.fluidOf(material)));
-            row.put("gas", name(MU.gasOf(material)));
-            row.put("molten", name(MU.moltenOf(material)));
-            row.put("plasma", name(MU.plasmaOf(material)));
-            row.put("legacyGtppFluid", name(MU.legacyGtppFluidOf(material)));
-            row.put("legacyGtppPlasma", name(MU.legacyGtppPlasmaOf(material)));
-            for (MU.CrackType type : MU.CrackType.values()) {
+            row.put("oldSubId", MaterialUtils.oldSubId(material));
+            row.put("hasMolten", MaterialUtils.hasMolten(material));
+            row.put("solid", name(MaterialUtils.solid(material, 1)));
+            row.put("liquid", name(MaterialUtils.fluidOf(material)));
+            row.put("gas", name(MaterialUtils.gasOf(material)));
+            row.put("molten", name(MaterialUtils.moltenOf(material)));
+            row.put("plasma", name(MaterialUtils.plasmaOf(material)));
+            row.put("legacyGtppFluid", name(MaterialUtils.legacyGtppFluidOf(material)));
+            row.put("legacyGtppPlasma", name(MaterialUtils.legacyGtppPlasmaOf(material)));
+            for (MaterialUtils.CrackType type : MaterialUtils.CrackType.values()) {
                 for (int severity = 0; severity < 3; severity++) {
-                    row.put(crackedKey(type, severity), name(MU.crackedFluid(material, type, severity)));
+                    row.put(crackedKey(type, severity), name(MaterialUtils.crackedFluid(material, type, severity)));
                 }
             }
-            out.put(MU.internalName(material), row);
+            out.put(MaterialUtils.internalName(material), row);
         }
         File file = new File(directory, "material-gates.json");
         try (Writer writer = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8)) {
@@ -67,8 +67,8 @@ public final class MaterialGateDump {
         write(directory);
     }
 
-    private static String crackedKey(MU.CrackType type, int severity) {
-        return (type == MU.CrackType.HYDRO ? "hydroCracked" : "steamCracked") + (severity + 1);
+    private static String crackedKey(MaterialUtils.CrackType type, int severity) {
+        return (type == MaterialUtils.CrackType.HYDRO ? "hydroCracked" : "steamCracked") + (severity + 1);
     }
 
     private static String name(Fluid fluid) {

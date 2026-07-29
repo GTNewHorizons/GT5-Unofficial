@@ -30,7 +30,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.client.renderer.BillboardRenderHelper;
 import gregtech.client.renderer.BillboardRenderHelper.Plane;
 import gregtech.common.config.Client;
@@ -76,7 +76,7 @@ public class DetravOreMarkerRenderer {
         if (materialName == null || materialName.isEmpty()) return null;
         Material mat = LegacyNameDomain.lookup(materialName);
         if (mat == null) return null;
-        TextureSet ts = MU.iconSet(mat);
+        TextureSet ts = MaterialUtils.iconSet(mat);
         if (ts == null) return null;
         int idx = OrePrefixes.ore.getTextureIndex();
         if (idx < 0 || idx >= ts.mTextures.length) return null;

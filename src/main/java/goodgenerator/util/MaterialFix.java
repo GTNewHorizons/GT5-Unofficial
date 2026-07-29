@@ -23,6 +23,7 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 
 public class MaterialFix {
@@ -169,7 +170,7 @@ public class MaterialFix {
                     .itemInputs(MU.stack(OrePrefixes.plate, ml, 2))
                     .circuit(2)
                     .itemOutputs(MU.stack(OrePrefixes.plateDouble, ml, 1))
-                    .duration(Math.max(MU.mass(ml) * 2, 1L) * TICKS)
+                    .duration(Math.max(MaterialUtils.mass(ml) * 2, 1L) * TICKS)
                     .eut(BWUtil.calculateRecipeEU(ml, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
                 GTModHandler.addCraftingRecipe(
@@ -182,14 +183,14 @@ public class MaterialFix {
                     .itemInputs(MU.stack(OrePrefixes.plate, ml, 3))
                     .circuit(3)
                     .itemOutputs(MU.stack(OrePrefixes.plateTriple, ml, 1))
-                    .duration(Math.max(MU.mass(ml) * 3, 1L) * TICKS)
+                    .duration(Math.max(MaterialUtils.mass(ml) * 3, 1L) * TICKS)
                     .eut(BWUtil.calculateRecipeEU(ml, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(MU.stack(OrePrefixes.ingot, ml, 3))
                     .circuit(3)
                     .itemOutputs(MU.stack(OrePrefixes.plateTriple, ml, 1))
-                    .duration(Math.max(MU.mass(ml) * 3, 1L) * TICKS)
+                    .duration(Math.max(MaterialUtils.mass(ml) * 3, 1L) * TICKS)
                     .eut(BWUtil.calculateRecipeEU(ml, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
                 GTModHandler.addCraftingRecipe(
@@ -203,14 +204,14 @@ public class MaterialFix {
                     .itemInputs(MU.stack(OrePrefixes.plate, ml, 9))
                     .circuit(9)
                     .itemOutputs(MU.stack(OrePrefixes.plateDense, ml, 1))
-                    .duration(Math.max(MU.mass(ml) * 9, 1L) * TICKS)
+                    .duration(Math.max(MaterialUtils.mass(ml) * 9, 1L) * TICKS)
                     .eut(BWUtil.calculateRecipeEU(ml, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(MU.stack(OrePrefixes.ingot, ml, 9))
                     .circuit(9)
                     .itemOutputs(MU.stack(OrePrefixes.plateDense, ml, 1))
-                    .duration(Math.max(MU.mass(ml) * 9, 1L) * TICKS)
+                    .duration(Math.max(MaterialUtils.mass(ml) * 9, 1L) * TICKS)
                     .eut(BWUtil.calculateRecipeEU(ml, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
 
@@ -219,7 +220,7 @@ public class MaterialFix {
                         .itemInputs(MU.stack(OrePrefixes.plateTriple, ml, 3))
                         .circuit(3)
                         .itemOutputs(MU.stack(OrePrefixes.plateDense, ml, 1))
-                        .duration(Math.max(MU.mass(ml) * 3, 1L) * TICKS)
+                        .duration(Math.max(MaterialUtils.mass(ml) * 3, 1L) * TICKS)
                         .eut(BWUtil.calculateRecipeEU(ml, (int) (TierEU.RECIPE_MV / 2)))
                         .addTo(benderRecipes);
                 }
@@ -241,7 +242,7 @@ public class MaterialFix {
                     .itemInputs(MU.stack(OrePrefixes.stickLong, ml, 1))
                     .circuit(1)
                     .itemOutputs(MU.stack(OrePrefixes.spring, ml, 1))
-                    .duration(Math.max(MU.mass(ml) * 2, 1L) * TICKS)
+                    .duration(Math.max(MaterialUtils.mass(ml) * 2, 1L) * TICKS)
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(benderRecipes);
             }
@@ -254,7 +255,7 @@ public class MaterialFix {
                     .itemInputs(MU.stack(OrePrefixes.stick, ml, 1))
                     .circuit(1)
                     .itemOutputs(MU.stack(OrePrefixes.springSmall, ml, 1))
-                    .duration(Math.max(MU.mass(ml), 1L) * TICKS)
+                    .duration(Math.max(MaterialUtils.mass(ml), 1L) * TICKS)
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(benderRecipes);
             }

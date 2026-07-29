@@ -13,8 +13,8 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
-import gregtech.api.material.MU;
 import gregtech.api.material.MaterialFormulas;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
 
@@ -53,11 +53,11 @@ public class BWItemMetaGeneratedOre extends ItemBlock {
 
         if (material == null) {
             return blockOre.getPrefix()
-                .getLocalizedNameForItem(MU.internalName(Materials2Materials.NULL));
+                .getLocalizedNameForItem(MaterialUtils.internalName(Materials2Materials.NULL));
         }
 
         return blockOre.getPrefix()
-            .getLocalizedNameForItem(MU.internalName(material));
+            .getLocalizedNameForItem(MaterialUtils.internalName(material));
     }
 
     @Override

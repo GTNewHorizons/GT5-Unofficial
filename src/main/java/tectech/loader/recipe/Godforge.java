@@ -38,6 +38,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTLog;
@@ -81,7 +82,7 @@ public class Godforge implements Runnable {
                 GTLog.err.println("Godforge.convertToFluid: no unification data for " + itemStack + ", skipping");
                 continue;
             }
-            molten.add(MU.molten(material, 1 * INGOTS));
+            molten.add(MaterialUtils.molten(material, 1 * INGOTS));
         }
 
         return molten.toArray(new FluidStack[0]);
@@ -292,16 +293,16 @@ public class Godforge implements Runnable {
                         .getFluidStack(Materials2Materials.Yttrium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.Chrome, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
-                    new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Zirconium), 1 * INGOTS),
-                    new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Thorium232), 1 * INGOTS),
-                    new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Germanium), 1 * INGOTS),
-                    new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Thallium), 1 * INGOTS),
-                    new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Ruthenium), 1 * INGOTS),
-                    new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Rhenium), 1 * INGOTS),
-                    new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Rhodium), 1 * INGOTS),
-                    new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Iodine), 1 * INGOTS),
-                    new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Hafnium), 1 * INGOTS),
-                    new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Curium), 1 * INGOTS) };
+                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Zirconium), 1 * INGOTS),
+                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Thorium232), 1 * INGOTS),
+                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Germanium), 1 * INGOTS),
+                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Thallium), 1 * INGOTS),
+                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Ruthenium), 1 * INGOTS),
+                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Rhenium), 1 * INGOTS),
+                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Rhodium), 1 * INGOTS),
+                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Iodine), 1 * INGOTS),
+                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Hafnium), 1 * INGOTS),
+                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Curium), 1 * INGOTS) };
 
                 for (int i = 0; i < solids_t0_1step.length; i++) {
                     GTValues.RA.stdBuilder()
@@ -345,14 +346,14 @@ public class Godforge implements Runnable {
             FluidStack[] molten_t0_xstep = convertToFluid(solids_t0_xstep);
 
             FluidStack[] solid_plasmas_t0_xstep = {
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Force), 1 * INGOTS),
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Force), 1 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Bismuth, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.AdvancedNitinol), 1 * INGOTS),
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.AdvancedNitinol), 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials2Materials.Boron, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.AstralTitanium), 1 * INGOTS),
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Runite), 1 * INGOTS),
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.CelestialTungsten), 1 * INGOTS),
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.AstralTitanium), 1 * INGOTS),
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Runite), 1 * INGOTS),
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.CelestialTungsten), 1 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Iridium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI
@@ -362,7 +363,7 @@ public class Godforge implements Runnable {
                     .getFluidStack(Materials2Materials.Platinum, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Plutonium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Californium), 1 * INGOTS) };
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Californium), 1 * INGOTS) };
 
             for (int i = 0; i < solids_t0_xstep.length; i++) {
                 GTValues.RA.stdBuilder()
@@ -444,8 +445,8 @@ public class Godforge implements Runnable {
             FluidStack[] molten_t1_xstep = convertToFluid(solids_t1_xstep);
 
             FluidStack[] solid_plasmas_t1_xstep = {
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Neptunium), 1 * INGOTS),
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Fermium), 1 * INGOTS) };
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Neptunium), 1 * INGOTS),
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Fermium), 1 * INGOTS) };
 
             for (int i = 0; i < solids_t1_xstep.length; i++) {
                 GTValues.RA.stdBuilder()
@@ -485,9 +486,9 @@ public class Godforge implements Runnable {
             FluidStack[] molten_t2_1step = convertToFluid(solids_t2_1step);
 
             FluidStack[] solid_plasmas_t2_1step = {
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Rhugnor), 1 * INGOTS),
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Dragonblood), 1 * INGOTS),
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.ChromaticGlass), 1 * INGOTS),
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Rhugnor), 1 * INGOTS),
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Dragonblood), 1 * INGOTS),
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.ChromaticGlass), 1 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Bedrockium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI
@@ -535,7 +536,7 @@ public class Godforge implements Runnable {
             FluidStack[] molten_t2_xstep = convertToFluid(solids_t2_xstep);
 
             FluidStack[] solid_plasmas_t2_xstep = {
-                new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Hypogen), 144),
+                new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Hypogen), 144),
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Tritanium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI
@@ -613,15 +614,15 @@ public class Godforge implements Runnable {
                 }
 
                 // Multi-step
-                FluidStack[] fluids_t0_xstep = { MU.legacyGtppFluid(Materials2Materials.Neon, 500),
+                FluidStack[] fluids_t0_xstep = { MaterialUtils.legacyGtppFluid(Materials2Materials.Neon, 500),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, 500),
-                    MU.legacyGtppFluid(Materials2Materials.Krypton, 500),
-                    MU.legacyGtppFluid(Materials2Materials.Xenon, 500) };
+                    MaterialUtils.legacyGtppFluid(Materials2Materials.Krypton, 500),
+                    MaterialUtils.legacyGtppFluid(Materials2Materials.Xenon, 500) };
                 FluidStack[] fluid_plasmas_t0_xstep = {
-                    new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Neon), 500),
+                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Neon), 500),
                     MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidPlasma, 500),
-                    new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Krypton), 500),
-                    new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Xenon), 500) };
+                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Krypton), 500),
+                    new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Xenon), 500) };
 
                 for (int i = 0; i < fluids_t0_xstep.length; i++) {
                     GTValues.RA.stdBuilder()
@@ -638,8 +639,8 @@ public class Godforge implements Runnable {
             {
                 // Single step
                 GTValues.RA.stdBuilder()
-                    .fluidInputs(MU.legacyGtppFluid(Materials2Materials.Bromine, 500))
-                    .fluidOutputs(new FluidStack(MU.legacyGtppPlasmaOf(Materials2Materials.Bromine), 500))
+                    .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Bromine, 500))
+                    .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Bromine), 500))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_MAX)
                     .metadata(FOG_PLASMA_MULTISTEP, false)
@@ -866,7 +867,8 @@ public class Godforge implements Runnable {
                 exoticModulePlasmaItemMap
                     .put(MU.stack(OrePrefixes.dust, plasmaGTMaterialList.get(i), 1), plasmaGTWeightList.get(i));
             } else {
-                exoticModulePlasmaFluidMap.put(MU.gas(plasmaGTMaterialList.get(i), 1), plasmaGTWeightList.get(i));
+                exoticModulePlasmaFluidMap
+                    .put(MaterialUtils.gas(plasmaGTMaterialList.get(i), 1), plasmaGTWeightList.get(i));
             }
         }
 
@@ -915,11 +917,11 @@ public class Godforge implements Runnable {
         for (int i = 0; i < 21; i++) {
             magmatterTimeFluidItemsForNEI.add(
                 GTUtility.getFluidDisplayStack(
-                    MU.molten(Materials2Materials.temporalFluid, getRandomIntInRange(1, 50)),
+                    MaterialUtils.molten(Materials2Materials.temporalFluid, getRandomIntInRange(1, 50)),
                     true));
             magmatterSpaceFluidItemsForNEI.add(
                 GTUtility.getFluidDisplayStack(
-                    MU.molten(Materials2Materials.spatialFluid, getRandomIntInRange(51, 100)),
+                    MaterialUtils.molten(Materials2Materials.spatialFluid, getRandomIntInRange(51, 100)),
                     true));
         }
         magmatterItemsForNEI.addAll(exoticModuleMagmatterItemMap.keySet());
@@ -1154,10 +1156,10 @@ public class Godforge implements Runnable {
         ItemData data = GTOreDictUnificator.getAssociation(stack);
         Material mat = data != null ? data.mMaterial.mMaterial : null;
         if (mat != null && LegacyNameDomain.contains(mat)) {
-            if (MU.hasMolten(mat)) {
-                return MU.molten(mat, INGOTS * data.mMaterial.mAmount / GTValues.M);
-            } else if (MU.fluidOf(mat) != null) {
-                return MU.fluid(mat, 1_000);
+            if (MaterialUtils.hasMolten(mat)) {
+                return MaterialUtils.molten(mat, INGOTS * data.mMaterial.mAmount / GTValues.M);
+            } else if (MaterialUtils.fluidOf(mat) != null) {
+                return MaterialUtils.fluid(mat, 1_000);
             }
         }
         int[] oreIDs = OreDictionary.getOreIDs(stack);

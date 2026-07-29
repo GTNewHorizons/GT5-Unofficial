@@ -18,7 +18,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -70,7 +70,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
                         : getDefaultLocalization(tPrefix, tMaterial, i));
                 GTLanguageManager.addStringLocalization(
                     getUnlocalizedName(tStack) + ".tooltip",
-                    MU.chemicalTooltip(tMaterial, tPrefix.getMaterialAmount() / M, false));
+                    MaterialUtils.chemicalTooltip(tMaterial, tPrefix.getMaterialAmount() / M, false));
                 String tOreName = getOreDictString(tPrefix, tMaterial);
                 tPrefix = OrePrefixes.getOrePrefix(tOreName);
                 if (tPrefix != null && tPrefix.isUnifiable()) {
@@ -101,7 +101,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
      * @return the Localized Name Format when default LangFiles are used.
      */
     public String getDefaultLocalizationFormat(OrePrefixes aPrefix, Material aMaterial, int aMetaData) {
-        return aPrefix.getDefaultLocalNameFormatForItem(MU.internalName(aMaterial));
+        return aPrefix.getDefaultLocalNameFormatForItem(MaterialUtils.internalName(aMaterial));
     }
 
     /**
@@ -123,7 +123,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
     }
 
     public IIconContainer getIconContainer(int aMetaData, Material aMaterial) {
-        return MU.iconSet(aMaterial).mTextures[mIconSetIndex];
+        return MaterialUtils.iconSet(aMaterial).mTextures[mIconSetIndex];
     }
 
     /* ---------- INTERNAL OVERRIDES ---------- */
@@ -138,7 +138,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
                 return GTUtility.formatStringSafe(
                     aName.replace("%s", "%temp")
                         .replace("%material", "%s"),
-                    MU.localizedName(aMaterial))
+                    MaterialUtils.localizedName(aMaterial))
                     .replace("%temp", "%s");
             }
         }
@@ -157,8 +157,8 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
     @Override
     public short[] getRGBa(ItemStack aStack) {
         Material aMaterial = Materials2IDIndex.get(getDamage(aStack));
-        short[] rgba = MU.rgba(aMaterial);
-        return rgba != null ? rgba : MU.rgba(Materials2Materials.NULL);
+        short[] rgba = MaterialUtils.rgba(aMaterial);
+        return rgba != null ? rgba : MaterialUtils.rgba(Materials2Materials.NULL);
     }
 
     @Override

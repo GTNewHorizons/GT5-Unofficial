@@ -45,7 +45,7 @@ import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -310,7 +310,7 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
         }
 
         Material material = MetaGeneratedTool.getPrimaryMaterialML(aTurbine);
-        return material != null && MU.toolSpeed(material) > 0;
+        return material != null && MaterialUtils.toolSpeed(material) > 0;
     }
 
     private static boolean isSameTurbineType(ItemStack firstTurbine, ItemStack secondTurbine) {

@@ -11,7 +11,7 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -37,13 +37,14 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
             .itemInputs(GTUtility.copyAmount(1, GTOreDictUnificator.get(OrePrefixes.plate, material, 4L)))
             .circuit(1)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.foil, material, 4L))
-            .duration((int) Math.max(MU.mass(material), 1L))
+            .duration((int) Math.max(MaterialUtils.mass(material), 1L))
             .eut(calculateRecipeEU(material, 24))
             .addTo(benderRecipes);
     }
 
     private void registerCover(ItemStack stack, Material material) {
-        CoverRegistry
-            .registerDecorativeCover(stack, TextureFactory.of(MU.iconSet(material).mTextures[70], MU.rgba(material)));
+        CoverRegistry.registerDecorativeCover(
+            stack,
+            TextureFactory.of(MaterialUtils.iconSet(material).mTextures[70], MaterialUtils.rgba(material)));
     }
 }

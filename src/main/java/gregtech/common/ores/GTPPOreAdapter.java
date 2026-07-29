@@ -23,6 +23,7 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.GTProxy.OreDropSystem;
 
 /// The gtPlusPlus-material [IOreAdapter], reimplemented over MaterialLib the same way [BWOreAdapter]
@@ -34,7 +35,7 @@ import gregtech.common.GTProxy.OreDropSystem;
 /// variant, both [#supports(OreInfo)] and [#getBlock] enforce this, and no gtpp material ever claims
 /// `Materials2OreShapes#oreSmall`.
 ///
-/// [#isGtpp] only ever matches a *pure* gtpp material (no live legacy id -- see [MU#oldSubId]): a name-merge
+/// [#isGtpp] only ever matches a *pure* gtpp material (no live legacy id -- see [MaterialUtils#oldSubId]): a name-merge
 /// material's ore is already owned by [GTOreAdapter], tried first in [OreManager]'s adapter list, and this
 /// adapter's own [Materials2OreShapes] drop/harvest-level dispatch (see that class) gates on the same
 /// discriminator so a merge material's ore keeps GT's per-material formulas instead of gtpp's flat ones.
@@ -106,16 +107,17 @@ public final class GTPPOreAdapter implements IOreAdapter {
     /// `Math.min(Math.max(material.vTier, 1), 6)` for every material via its `BasicBlock` mining-level
     /// constructor argument, a flat per-material formula unlike GT's/BW's own.
     public int harvestLevel(Material material) {
-        return Math.min(Math.max(MU.tier(material), 1), 6);
+        return Math.min(Math.max(MaterialUtils.tier(material), 1), 6);
     }
 
     /// Whether a MaterialLib material belongs to the gtPlusPlus ore family -- carries
-    /// [GTMaterialProperties#GTPP_STATE] and has no live id-backed legacy counterpart ([MU#oldSubId] stays at
+    /// [GTMaterialProperties#GTPP_STATE] and has no live id-backed legacy counterpart ([MaterialUtils#oldSubId] stays
+    /// at
     /// its `-1` default) -- ore-block concerns still belong to this adapter for those, so only a positive-id
     /// resolution excludes.
     private static boolean isGtpp(@Nullable Material material) {
         if (material == null || material.getProperty(GTMaterialProperties.GTPP_STATE) == null) return false;
-        return MU.oldSubId(material) < 0;
+        return MaterialUtils.oldSubId(material) < 0;
     }
 
     @Override

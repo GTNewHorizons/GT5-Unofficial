@@ -3,9 +3,9 @@ package gregtech.loaders.postload;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 
-/// The materials whose legacy meta-item generation included the metal item set (`MU#generates` `METAL`),
+/// The materials whose legacy meta-item generation included the metal item set (`MaterialUtils#generates` `METAL`),
 /// keyed by their legacy 1000-slot generated-material id, for [PosteaTransformers]' framebox item migration:
 /// the legacy per-material framebox items existed exactly for this set, and foreign item ids sharing the
 /// framebox damage range (e.g. DEFC overlapping the Bastnasite slot) must not be migrated.
@@ -122,7 +122,7 @@ public final class LegacyMetalItemsTable {
             if (material == null) {
                 throw new IllegalStateException("Unresolved legacy metal-items row at index " + i);
             }
-            int id = MU.oldSubId(material);
+            int id = MaterialUtils.oldSubId(material);
             if (id < 0 || id >= ids.length) {
                 throw new IllegalStateException("Legacy metal-items row " + material.getName() + " has no legacy id");
             }

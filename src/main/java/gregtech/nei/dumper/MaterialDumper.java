@@ -7,7 +7,7 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2ParentMods;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 
 public class MaterialDumper extends GregTechIDDumper {
 
@@ -31,7 +31,7 @@ public class MaterialDumper extends GregTechIDDumper {
             if (mode == Mode.FREE && !used) {
                 dump.add(new String[] { String.valueOf(i), "", });
             } else if (mode == Mode.USED && used) {
-                dump.add(new String[] { String.valueOf(i), MU.internalName(material), });
+                dump.add(new String[] { String.valueOf(i), MaterialUtils.internalName(material), });
             }
         }
         return dump;

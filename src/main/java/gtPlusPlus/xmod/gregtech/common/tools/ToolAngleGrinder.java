@@ -21,7 +21,7 @@ import gregtech.api.enums.Textures.ItemIcons;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.items.behaviors.BehaviourNone;
 import gregtech.common.tools.GTTool;
 
@@ -92,7 +92,7 @@ public class ToolAngleGrinder extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MU.iconSet(
+        return aIsToolHead ? MaterialUtils.iconSet(
             MetaGeneratedTool
                 .getPrimaryMaterialML(aStack)).mTextures[MaterialIconRegistry.IconType.TOOL_HEAD_ANGLE_GRINDER
                     .ordinal()]
@@ -101,8 +101,8 @@ public class ToolAngleGrinder extends GTTool {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MU.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
-            : MU.rgba(Materials2Materials.TungstenSteel);
+        return aIsToolHead ? MaterialUtils.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : MaterialUtils.rgba(Materials2Materials.TungstenSteel);
     }
 
     @Override

@@ -48,7 +48,7 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTCLSCompat;
 import gregtech.api.util.GTForestryCompat;
@@ -276,7 +276,7 @@ public class GTPostLoad {
         if (!MTEMassfabricator.sRequiresUUA) {
 
             MTEMassfabricator.nonUUARecipe = GTValues.RA.stdBuilder()
-                .fluidOutputs(MU.fluid(Materials2Materials.UUMatter, 1L))
+                .fluidOutputs(MaterialUtils.fluid(Materials2Materials.UUMatter, 1L))
                 .duration(MTEMassfabricator.sDurationMultiplier)
                 .eut(MTEMassfabricator.BASE_EUT)
                 .ignoreCollision()
@@ -295,7 +295,7 @@ public class GTPostLoad {
                     Materials2Materials.UUAmplifier,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (MTEMassfabricator.sUUAperUUM)))
-            .fluidOutputs(MU.fluid(Materials2Materials.UUMatter, 1L))
+            .fluidOutputs(MaterialUtils.fluid(Materials2Materials.UUMatter, 1L))
             .duration(MTEMassfabricator.sDurationMultiplier / MTEMassfabricator.sUUASpeedBonus)
             .eut(MTEMassfabricator.BASE_EUT)
             .ignoreCollision()
@@ -432,7 +432,7 @@ public class GTPostLoad {
             GTCLSCompat.pushToDisplayProgress();
         } else {
             replaceVanillaItemsSet.forEach(m -> {
-                progressBar.step(MU.localName(m));
+                progressBar.step(MaterialUtils.localName(m));
                 doActualRegistration(m);
             });
         }
@@ -444,10 +444,10 @@ public class GTPostLoad {
     public static void doActualRegistration(Material ml) {
         String plateName = OrePrefixes.plate.oreDictName(ml)
             .toString();
-        boolean noSmash = !MU.hasFlag(ml, GTMaterialFlag.NO_SMASHING);
-        if (MU.generates(ml, GTMaterialGenerationFlag.METAL)) GTRecipeRegistrator
+        boolean noSmash = !MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_SMASHING);
+        if (MaterialUtils.generates(ml, GTMaterialGenerationFlag.METAL)) GTRecipeRegistrator
             .registerUsagesForMaterials(plateName, noSmash, GTOreDictUnificator.get(OrePrefixes.ingot, ml, 1));
-        if (MU.generates(ml, GTMaterialGenerationFlag.GEM)) GTRecipeRegistrator
+        if (MaterialUtils.generates(ml, GTMaterialGenerationFlag.GEM)) GTRecipeRegistrator
             .registerUsagesForMaterials(plateName, noSmash, GTOreDictUnificator.get(OrePrefixes.gem, ml, 1));
         ItemStack blocks = GTOreDictUnificator.get(OrePrefixes.block, ml, 1);
         if (blocks != null) GTRecipeRegistrator.registerUsagesForMaterials(null, noSmash, blocks);

@@ -52,7 +52,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeCategories;
@@ -166,7 +166,7 @@ public class GTRecipeRegistrator {
             || GTUtility.areStacksEqual(new ItemStack(Blocks.obsidian), stack)
             || data == null
             || !data.hasValidMaterialData()
-            || !MU.autoGenerateRecycleRecipes(data.mMaterial.mMaterial)
+            || !MaterialUtils.autoGenerateRecycleRecipes(data.mMaterial.mMaterial)
             || data.mMaterial.mAmount <= 0
             || GTUtility.getFluidForFilledItem(stack, false) != null) return;
         registerReverseMacerating(GTUtility.copyAmount(1, stack), data, data.mPrefix == null, true);
@@ -195,27 +195,28 @@ public class GTRecipeRegistrator {
     public static void registerReverseFluidSmelting(ItemStack stack, Material material, long materialAmount,
         MaterialStack byproduct, boolean isRecycling) {
         if (stack == null || material == null) return;
-        Material smeltTarget = MU.smeltInto(material);
-        if (!MU.hasMolten(smeltTarget) || !MU.hasFlag(material, GTMaterialFlag.SMELTING_TO_FLUID)
+        Material smeltTarget = MaterialUtils.smeltInto(material);
+        if (!MaterialUtils.hasMolten(smeltTarget) || !MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_FLUID)
             || (materialAmount * INGOTS) / (M * stack.stackSize) <= 0) return;
 
         Material byproductMaterial = byproduct == null ? null : byproduct.mMaterial;
         ItemStack recipeOutput = byproductMaterial == null ? null
-            : MU.hasFlag(byproductMaterial, GTMaterialFlag.NO_SMELTING)
-                || !MU.hasFlag(byproductMaterial, GTMaterialFlag.METAL)
-                    ? MU.hasFlag(byproductMaterial, GTMaterialFlag.FLAMMABLE)
+            : MaterialUtils.hasFlag(byproductMaterial, GTMaterialFlag.NO_SMELTING)
+                || !MaterialUtils.hasFlag(byproductMaterial, GTMaterialFlag.METAL)
+                    ? MaterialUtils.hasFlag(byproductMaterial, GTMaterialFlag.FLAMMABLE)
                         ? GTOreDictUnificator.getDust(Materials2Materials.Ash, byproduct.mAmount / 2)
-                        : MU.hasFlag(byproductMaterial, GTMaterialFlag.UNBURNABLE)
-                            ? GTOreDictUnificator.getDustOrIngot(MU.smeltInto(byproductMaterial), byproduct.mAmount)
+                        : MaterialUtils.hasFlag(byproductMaterial, GTMaterialFlag.UNBURNABLE)
+                            ? GTOreDictUnificator
+                                .getDustOrIngot(MaterialUtils.smeltInto(byproductMaterial), byproduct.mAmount)
                             : null
-                    : GTOreDictUnificator.getIngotOrDust(MU.smeltInto(byproductMaterial), byproduct.mAmount);
+                    : GTOreDictUnificator.getIngotOrDust(MaterialUtils.smeltInto(byproductMaterial), byproduct.mAmount);
 
         GTRecipeBuilder builder = RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack));
         if (recipeOutput != null) {
             builder.itemOutputs(recipeOutput);
         }
-        FluidStack moltenFluid = MU.molten(smeltTarget, (materialAmount * INGOTS) / (M * stack.stackSize));
+        FluidStack moltenFluid = MaterialUtils.molten(smeltTarget, (materialAmount * INGOTS) / (M * stack.stackSize));
         long powerUsage = Math.max(
             8,
             (long) Math.sqrt(
@@ -243,20 +244,20 @@ public class GTRecipeRegistrator {
         boolean allowAlloySmelter) {
         if (stack == null || material == null
             || materialAmount <= 0
-            || MU.hasFlag(material, GTMaterialFlag.NO_SMELTING)
-            || (materialAmount > M && MU.hasFlag(material, GTMaterialFlag.METAL))
-            || (MU.processingMaterialTierEU(material) > TierEU.IV)) return;
+            || MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING)
+            || (materialAmount > M && MaterialUtils.hasFlag(material, GTMaterialFlag.METAL))
+            || (MaterialUtils.processingMaterialTierEU(material) > TierEU.IV)) return;
         if (material == Materials2Materials.Naquadah || material == Materials2Materials.NaquadahEnriched) return;
 
         materialAmount /= stack.stackSize;
 
         if (allowAlloySmelter) GTModHandler.addSmeltingAndAlloySmeltingRecipe(
             GTUtility.copyAmount(1, stack),
-            GTOreDictUnificator.getIngot(MU.smeltInto(material), materialAmount),
+            GTOreDictUnificator.getIngot(MaterialUtils.smeltInto(material), materialAmount),
             false);
         else GTModHandler.addSmeltingRecipe(
             GTUtility.copyAmount(1, stack),
-            GTOreDictUnificator.getIngot(MU.smeltInto(material), materialAmount));
+            GTOreDictUnificator.getIngot(MaterialUtils.smeltInto(material), materialAmount));
     }
 
     /// Builds the [ItemData] straight from `material`, which already carries every read the [ItemStack, ItemData]
@@ -276,7 +277,7 @@ public class GTRecipeRegistrator {
     /// table.
     public static boolean hasReverseArcSmeltingRecipe(Material material) {
         if (material == null) return false;
-        Material arcSmeltingMaterial = MU.arcSmeltInto(MU.smeltInto(material));
+        Material arcSmeltingMaterial = MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(material));
         if (arcSmeltingMaterial != material) return true;
         return !Materials2ArcSmelting.withGas(arcSmeltingMaterial)
             .isEmpty();
@@ -296,7 +297,7 @@ public class GTRecipeRegistrator {
 
     static void registerReverseArcSmelting(ItemStack stack, ItemData data, IRecipeMap universalArcFurnace,
         IRecipeMap arcFurnaceRecipes) {
-        registerReverseArcSmelting(stack, data, universalArcFurnace, arcFurnaceRecipes, MU::gas);
+        registerReverseArcSmelting(stack, data, universalArcFurnace, arcFurnaceRecipes, MaterialUtils::gas);
     }
 
     static void registerReverseArcSmelting(ItemStack stack, ItemData data, IRecipeMap universalArcFurnace,
@@ -308,7 +309,7 @@ public class GTRecipeRegistrator {
 
         Material primary = data.mMaterial.mMaterial;
         if ((LegacyNameDomain.contains(primary) || !primary.getShapes()
-            .isEmpty()) && MU.hasFlag(primary, GTMaterialFlag.NO_RECYCLING_RECIPES)) return;
+            .isEmpty()) && MaterialUtils.hasFlag(primary, GTMaterialFlag.NO_RECYCLING_RECIPES)) return;
 
         boolean isRecycle = true;
 
@@ -321,7 +322,9 @@ public class GTRecipeRegistrator {
                 // material) instead takes the flag ladder below.
                 boolean declaresSmeltTarget = tMaterial.mMaterial.getProperty(GTMaterialProperties.SMELT_INTO) != null
                     || tMaterial.mMaterial.getProperty(GTMaterialProperties.ARC_SMELT_INTO) != null;
-                Material arcTarget = declaresSmeltTarget ? MU.arcSmeltInto(MU.smeltInto(tMaterial.mMaterial)) : null;
+                Material arcTarget = declaresSmeltTarget
+                    ? MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(tMaterial.mMaterial))
+                    : null;
                 if (arcTarget == null) {
                     tMaterial.mAmount = 0;
                 } else {
@@ -341,34 +344,34 @@ public class GTRecipeRegistrator {
                 }
             }
 
-            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.UNBURNABLE)) {
-                tMaterial.mMaterial = MU.arcSmeltInto(MU.smeltInto(tMaterial.mMaterial));
+            if (MaterialUtils.hasFlag(tMaterial.mMaterial, GTMaterialFlag.UNBURNABLE)) {
+                tMaterial.mMaterial = MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(tMaterial.mMaterial));
                 continue;
             }
-            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.EXPLOSIVE)) {
+            if (MaterialUtils.hasFlag(tMaterial.mMaterial, GTMaterialFlag.EXPLOSIVE)) {
                 tMaterial.mMaterial = Materials2Materials.Ash;
                 tMaterial.mAmount /= 16;
                 continue;
             }
-            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.FLAMMABLE)) {
+            if (MaterialUtils.hasFlag(tMaterial.mMaterial, GTMaterialFlag.FLAMMABLE)) {
                 tMaterial.mMaterial = Materials2Materials.Ash;
                 tMaterial.mAmount /= 8;
                 continue;
             }
-            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.NO_SMELTING)) {
+            if (MaterialUtils.hasFlag(tMaterial.mMaterial, GTMaterialFlag.NO_SMELTING)) {
                 tMaterial.mAmount = 0;
                 continue;
             }
-            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.METAL)) {
+            if (MaterialUtils.hasFlag(tMaterial.mMaterial, GTMaterialFlag.METAL)) {
 
-                tMaterial.mMaterial = MU.arcSmeltInto(MU.smeltInto(tMaterial.mMaterial));
+                tMaterial.mMaterial = MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(tMaterial.mMaterial));
                 continue;
             }
             // A reconstructed werkstoff/gtpp metal that generates an ingot but never carried the legacy METAL
             // flag still recycles like a metal -- arc-smelt into its ingot, so its storage block (and other
             // parts) recycle through GT's arc path instead of the retired bartworks/gtpp per-material loaders.
             if (GTOreDictUnificator.get(OrePrefixes.ingot, tMaterial.mMaterial, 1L) != null) {
-                tMaterial.mMaterial = MU.arcSmeltInto(MU.smeltInto(tMaterial.mMaterial));
+                tMaterial.mMaterial = MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(tMaterial.mMaterial));
                 continue;
             }
             tMaterial.mAmount = 0;
@@ -387,7 +390,7 @@ public class GTRecipeRegistrator {
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
             boolean shapeless = !LegacyNameDomain.contains(tMaterial.mMaterial) && tMaterial.mMaterial.getShapes()
                 .isEmpty();
-            tAmount += tMaterial.mAmount * (shapeless ? 0 : MU.mass(tMaterial.mMaterial));
+            tAmount += tMaterial.mAmount * (shapeless ? 0 : MaterialUtils.mass(tMaterial.mMaterial));
         }
 
         ArrayList<ItemStack> outputs = new ArrayList<>();
@@ -490,7 +493,7 @@ public class GTRecipeRegistrator {
         if (!data.hasValidMaterialData()) return;
 
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) if (LegacyNameDomain.contains(tMaterial.mMaterial))
-            tMaterial.mMaterial = MU.macerateInto(tMaterial.mMaterial);
+            tMaterial.mMaterial = MaterialUtils.macerateInto(tMaterial.mMaterial);
 
         data = new ItemData(data);
 
@@ -499,7 +502,7 @@ public class GTRecipeRegistrator {
         long tAmount = 0;
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
             if (LegacyNameDomain.contains(tMaterial.mMaterial))
-                tAmount += tMaterial.mAmount * MU.mass(tMaterial.mMaterial);
+                tAmount += tMaterial.mAmount * MaterialUtils.mass(tMaterial.mMaterial);
         }
 
         {
@@ -532,8 +535,8 @@ public class GTRecipeRegistrator {
 
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
             if (LegacyNameDomain.contains(tMaterial.mMaterial)
-                && MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.CRYSTAL)
-                && !MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.METAL)
+                && MaterialUtils.hasFlag(tMaterial.mMaterial, GTMaterialFlag.CRYSTAL)
+                && !MaterialUtils.hasFlag(tMaterial.mMaterial, GTMaterialFlag.METAL)
                 && tMaterial.mMaterial != Materials2Materials.Glass
                 && GTOreDictUnificator.getDust(data.mMaterial) != null) {
                 GTValues.RA.stdBuilder()

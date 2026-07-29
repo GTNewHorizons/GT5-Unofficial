@@ -41,7 +41,7 @@ import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
@@ -520,7 +520,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                     : formatNumber(baseCycleTime / 20.0) + " seconds"))
             .beginStructureBlock(3, 3, 7, false)
             .addController("Front bottom center")
-            .addCasing("15", MU.internalName(getFrameMaterial()) + " Frame Box", false)
+            .addCasing("15", MaterialUtils.internalName(getFrameMaterial()) + " Frame Box", false)
             .addCasing("5-7", casings, false)
             .addEnergyHatch("1-2", "Any bottom casing (" + VN[getMinTier()] + "+)", 1)
             .addMaintenanceHatch("1", "Any bottom casing", 1)
@@ -952,7 +952,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             && itemData.mPrefix != OrePrefixes.gemFlawed
             && itemData.mPrefix != OrePrefixes.gemFlawless
             && itemData.mMaterial.mMaterial != Materials2Materials.Oilsands
-            && !MU.hasFlag(itemData.mMaterial.mMaterial, GTMaterialFlag.ICE_ORE);
+            && !MaterialUtils.hasFlag(itemData.mMaterial.mMaterial, GTMaterialFlag.ICE_ORE);
     }
 
     private boolean tryConsumeDrillingFluid(boolean simulate) {

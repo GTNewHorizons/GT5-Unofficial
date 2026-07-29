@@ -100,7 +100,7 @@ public class GTMaterialProperties {
     /// The `FluidRegistry` name of a gtPlusPlus-originated material's plasma fluid, present only for the 37
     /// materials where it is not [FluidNames#plasma] on [#LEGACY_FLUIDS]. A merged material's combined
     /// `LEGACY_FLUIDS.plasma` may be a gregtech-side plasma sharing the slot, so the gtPlusPlus contribution
-    /// cannot be derived from that slot and is pinned here instead. Backs [MU#legacyGtppPlasmaOf].
+    /// cannot be derived from that slot and is pinned here instead. Backs [MaterialUtils#legacyGtppPlasmaOf].
     public static final Property<String> GTPP_PLASMA_NAME = Property.of("gregtech", "gtppPlasmaName");
     /// The gtPlusPlus material state (`SOLID`/`LIQUID`/`GAS`/...).
     public static final Property<String> GTPP_STATE = Property.of("gregtech", "gtppState");

@@ -40,7 +40,7 @@ import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2ParentMods;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
@@ -129,14 +129,15 @@ public class GTPreLoad {
             .parallelStream()
             .filter(LegacyNameDomain::contains)
             .forEach(
-                material -> GTLanguageManager
-                    .addStringLocalization(MU.localizedNameKey(material), MU.localName(material)));
+                material -> GTLanguageManager.addStringLocalization(
+                    MaterialUtils.localizedNameKey(material),
+                    MaterialUtils.localName(material)));
 
         for (Material superconductor : Materials2Markers.getSuperconductorMarkers()) {
             GTLanguageManager.addStringLocalization(
-                "Material." + MU.internalName(superconductor)
+                "Material." + MaterialUtils.internalName(superconductor)
                     .toLowerCase(),
-                MU.localName(superconductor));
+                MaterialUtils.localName(superconductor));
         }
     }
 
@@ -284,9 +285,9 @@ public class GTPreLoad {
                                 if (mlMaterial != null && Materials2ParentMods.hasParentMod(mlMaterial)) {
                                     final String tag;
                                     if (tags.length > prefix) {
-                                        tag = tags[prefix] + MU.internalName(mlMaterial);
+                                        tag = tags[prefix] + MaterialUtils.internalName(mlMaterial);
                                     } else {
-                                        tag = MU.internalName(mlMaterial);
+                                        tag = MaterialUtils.internalName(mlMaterial);
                                     }
                                     if (!oreTags.contains(tag)) oreTags.add(tag);
                                 } else if (material > 0) {

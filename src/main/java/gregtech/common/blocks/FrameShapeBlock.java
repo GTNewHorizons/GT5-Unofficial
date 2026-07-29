@@ -37,7 +37,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
@@ -72,7 +72,7 @@ public class FrameShapeBlock extends ShapeBlock implements IBlockWithTextures {
     /// The display name of a material's frame box, with the special cases the legacy frame block carried
     /// (the Infused stones and the sand-family materials name the material alone).
     public static String displayName(Material material) {
-        String internalName = MU.internalName(material);
+        String internalName = MaterialUtils.internalName(material);
         return switch (internalName) {
             case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> OrePrefixes
                 .getLocalizedNameForItem("%material Infused Stone", internalName);
@@ -404,7 +404,7 @@ public class FrameShapeBlock extends ShapeBlock implements IBlockWithTextures {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        TextureSet textureSet = MU.iconSet(MaterialLibAPI.getMaterialByIndex(meta));
+        TextureSet textureSet = MaterialUtils.iconSet(MaterialLibAPI.getMaterialByIndex(meta));
         if (textureSet == null) return super.getIcon(side, meta);
         return textureSet.mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon();
     }
@@ -426,8 +426,8 @@ public class FrameShapeBlock extends ShapeBlock implements IBlockWithTextures {
     public ITexture[][] getTextures(int meta) {
         return texturesByIndex.computeIfAbsent(meta, index -> {
             Material material = MaterialLibAPI.getMaterialByIndex(index);
-            TextureSet textureSet = MU.iconSet(material);
-            short[] rgba = MU.rgba(material);
+            TextureSet textureSet = MaterialUtils.iconSet(material);
+            short[] rgba = MaterialUtils.rgba(material);
             if (textureSet == null || rgba == null) return null;
             ITexture[] texture = { TextureFactory
                 .of(textureSet.mTextures[OrePrefixes.frameGt.getTextureIndex()], Dyes.getModulation(-1, rgba)) };
@@ -461,7 +461,7 @@ public class FrameShapeBlock extends ShapeBlock implements IBlockWithTextures {
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advanced) {
             super.addInformation(stack, player, list, advanced);
             Material material = MaterialLibAPI.getMaterialByIndex(stack.getItemDamage());
-            MU.addTooltips(material, list);
+            MaterialUtils.addTooltips(material, list);
             list.add(StatCollector.translateToLocal(MTEFrame.LOCALIZED_DESC_FORMAT));
         }
     }

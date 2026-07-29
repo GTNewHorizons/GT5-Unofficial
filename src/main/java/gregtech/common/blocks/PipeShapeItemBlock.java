@@ -24,7 +24,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
@@ -79,16 +79,16 @@ public class PipeShapeItemBlock extends ItemBlock {
     /// `.itempipe.newname`), matching the keys the legacy pipe registrations put the same names under.
     public static String overrideKeyFor(Material material, String suffix) {
         if (material == null) return null;
-        String display = MATERIAL_DISPLAY_OVERRIDES.get(MU.internalName(material));
+        String display = MATERIAL_DISPLAY_OVERRIDES.get(MaterialUtils.internalName(material));
         if (display == null) return null;
-        String key = MU.localizedNameKey(material) + suffix;
+        String key = MaterialUtils.localizedNameKey(material) + suffix;
         GTLanguageManager.addStringLocalization(key, display);
         return key;
     }
 
     /// Whether a material's pipes hide the material tooltip (only the High Pressure pipes do).
     public static boolean skipsMaterialTooltip(Material material) {
-        return material != null && "Redstone".equals(MU.internalName(material));
+        return material != null && "Redstone".equals(MaterialUtils.internalName(material));
     }
 
     private MetaPipeEntity prototype() {

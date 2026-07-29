@@ -82,6 +82,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -282,7 +283,7 @@ public class AdditionalRecipes {
             ImmutablePair.of(GTPPFluids.IndustrialStrengthHydrogenChloride, 224),
             ImmutablePair.of(GTPPFluids.PropionicAcid, 150),
             ImmutablePair.of(
-                MU.molten(Materials2Materials.Redstone, 1)
+                MaterialUtils.molten(Materials2Materials.Redstone, 1)
                     .getFluid(),
                 40));
         for (Pair<Fluid, Integer> otherFuel : liquidOtherFuels) {

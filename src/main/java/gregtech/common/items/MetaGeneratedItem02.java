@@ -210,7 +210,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.items.MetaGeneratedItemX32;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTFoodStat;
@@ -2346,13 +2346,14 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
     public boolean isItemStackUsable(ItemStack aStack) {
         int aDamage = aStack.getItemDamage();
         Material aMaterial = getMaterial(aDamage);
-        Enchantment enchantment = MU.getToolEnchantment(aMaterial);
+        Enchantment enchantment = MaterialUtils.getToolEnchantment(aMaterial);
         if ((aDamage >= 25000) && (aDamage < 27000) && (enchantment != null)) {
             Enchantment tEnchant = enchantment == Enchantment.fortune ? Enchantment.looting : enchantment;
             if (tEnchant.type == EnumEnchantmentType.weapon) {
                 if (!ItemStackNBT.getBoolean(aStack, "GT.HasBeenUpdated")) {
                     ItemStackNBT.setBoolean(aStack, "GT.HasBeenUpdated", true);
-                    GTUtility.ItemNBT.addEnchantment(aStack, tEnchant, MU.getToolEnchantmentLevel(aMaterial));
+                    GTUtility.ItemNBT
+                        .addEnchantment(aStack, tEnchant, MaterialUtils.getToolEnchantmentLevel(aMaterial));
                 }
             }
         }

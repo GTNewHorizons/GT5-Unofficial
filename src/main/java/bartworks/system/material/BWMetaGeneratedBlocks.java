@@ -42,7 +42,7 @@ import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.render.GTRendererBlock;
 
@@ -87,7 +87,7 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
         com.ruling_0.materiallib.api.Material mat = Materials2WerkstoffIndex.get(meta);
 
         if (mat != null) {
-            TextureSet set = MU.iconSet(mat);
+            TextureSet set = MaterialUtils.iconSet(mat);
 
             IIconContainer baseIcon = PrefixTextureLinker.texMapBlocks.getOrDefault(prefix, Collections.emptyMap())
                 .get(set);
@@ -96,7 +96,7 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
                 baseIcon = TextureSet.SET_NONE.mTextures[OrePrefixes.block.getTextureIndex()];
             }
 
-            baseTexture = TextureFactory.of(baseIcon, MU.rgba(mat));
+            baseTexture = TextureFactory.of(baseIcon, MaterialUtils.rgba(mat));
         }
 
         if (baseTexture == null) {

@@ -61,6 +61,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.maps.AssemblerBackend;
@@ -1442,7 +1443,8 @@ public final class RecipeMaps {
                 .build()
                 .ifPresent(ret::add);
             b.fluidInputs(
-                MU.fluid(Materials2Materials.dimensionallyshiftedsuperfluid, clamp(aDuration * aEUt / 4000, 1, 10)))
+                MaterialUtils
+                    .fluid(Materials2Materials.dimensionallyshiftedsuperfluid, clamp(aDuration * aEUt / 4000, 1, 10)))
                 .duration((int) (aDuration / 2.5))
                 .build()
                 .ifPresent(ret::add);

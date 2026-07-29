@@ -14,7 +14,7 @@ import gregtech.api.enums.TextureSet;
 /// Resolves the legacy `Materials#mIconSet` [TextureSet] for a MaterialLib [Material] from its
 /// [StandardProperties#TEXTURE_SET] name, plus the five materials whose icon set overlays a handful of icons
 /// onto a base set. Facade-independent -- reads only the [Material] and its texture-set property -- so it
-/// outlives the legacy `Materials` facade. `MU#iconSet` resolves every material's icon set through here,
+/// outlives the legacy `Materials` facade. `MaterialUtils#iconSet` resolves every material's icon set through here,
 /// bartworks-origin materials included.
 public final class Materials2Textures {
 

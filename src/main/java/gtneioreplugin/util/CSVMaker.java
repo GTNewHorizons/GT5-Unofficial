@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialUtils;
 import gtneioreplugin.Config;
 import gtneioreplugin.GTNEIOrePlugin;
 import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
@@ -30,7 +30,7 @@ public class CSVMaker implements Runnable {
                 GT5OreSmallHelper.OreSmallWrapper oreLayer = pair.getValue();
 
                 oremix.setOreName(oreLayer.oreGenName);
-                oremix.setOreMaterial(MU.internalName(oreLayer.material));
+                oremix.setOreMaterial(MaterialUtils.internalName(oreLayer.material));
                 oremix.setHeight(oreLayer.worldGenHeightRange);
                 oremix.setAmount(oreLayer.amountPerChunk);
                 oremix.setDims(oreLayer.enabledDims);
@@ -78,21 +78,21 @@ public class CSVMaker implements Runnable {
                 Set<String> Dims = pair.getValue().abbrDimNames;
                 OreLayerWrapper oreLayer = pair.getValue();
                 oremix.setOreMixName(oreLayer.veinName);
-                oremix.setPrimary(MU.internalName(oreLayer.ores[0]));
-                oremix.setSecondary(MU.internalName(oreLayer.ores[1]));
-                oremix.setInbetween(MU.internalName(oreLayer.ores[2]));
-                oremix.setSporadic(MU.internalName(oreLayer.ores[3]));
+                oremix.setPrimary(MaterialUtils.internalName(oreLayer.ores[0]));
+                oremix.setSecondary(MaterialUtils.internalName(oreLayer.ores[1]));
+                oremix.setInbetween(MaterialUtils.internalName(oreLayer.ores[2]));
+                oremix.setSporadic(MaterialUtils.internalName(oreLayer.ores[3]));
                 oremix.setSize(oreLayer.size);
                 oremix.setHeight(oreLayer.worldGenHeightRange);
                 oremix.setDensity(oreLayer.density);
                 oremix.setWeight(oreLayer.randomWeight);
                 oremix.setOreMixIDs(
-                    MU.internalName(oreLayer.ores[0]) + "|"
-                        + MU.internalName(oreLayer.ores[1])
+                    MaterialUtils.internalName(oreLayer.ores[0]) + "|"
+                        + MaterialUtils.internalName(oreLayer.ores[1])
                         + "|"
-                        + MU.internalName(oreLayer.ores[2])
+                        + MaterialUtils.internalName(oreLayer.ores[2])
                         + "|"
-                        + MU.internalName(oreLayer.ores[3]));
+                        + MaterialUtils.internalName(oreLayer.ores[3]));
                 oremix.setDims(Dims);
                 OreVeins.add(oremix);
 
