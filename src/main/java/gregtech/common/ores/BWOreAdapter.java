@@ -342,11 +342,8 @@ public final class BWOreAdapter implements IOreAdapter {
     }
 
     @Override
-    public @NotNull ArrayList<ItemStack> getOreDrops(Random random, OreInfo info2, boolean silktouch, int fortune) {
-        if (!supports(info2)) return new ArrayList<>();
-
-        @SuppressWarnings("unchecked")
-        OreInfo info = (OreInfo) info2;
+    public @NotNull ArrayList<ItemStack> getOreDrops(Random random, OreInfo info, boolean silktouch, int fortune) {
+        if (!supports(info)) return new ArrayList<>();
 
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
         if (!info.isNatural) fortune = 0;
@@ -363,11 +360,8 @@ public final class BWOreAdapter implements IOreAdapter {
     }
 
     @Override
-    public List<ItemStack> getPotentialDrops(OreInfo info2) {
-        if (!supports(info2)) return new ArrayList<>();
-
-        @SuppressWarnings("unchecked")
-        OreInfo info = (OreInfo) info2;
+    public List<ItemStack> getPotentialDrops(OreInfo info) {
+        if (!supports(info)) return new ArrayList<>();
 
         if (info.isSmall) {
             ObjectLinkedOpenHashSet<ItemId> drops = new ObjectLinkedOpenHashSet<>();
