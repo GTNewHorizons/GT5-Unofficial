@@ -28,9 +28,9 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialParts;
@@ -467,7 +467,7 @@ public class RecipeLoaderGlueLine {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Markers.SuperconductorUHV, 2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Backings.SuperconductorUHV, 2),
                 MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.plate, (int) (56)))
             .itemOutputs(ItemList.BatteryHull_UMV.get(1))
             .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.EthylCyanoacrylateSuperGlue, 9216))
@@ -476,7 +476,7 @@ public class RecipeLoaderGlueLine {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Markers.SuperconductorUHV, 2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Backings.SuperconductorUHV, 2),
                 MaterialLibAPI.getStack(Materials2Materials.DraconiumAwakened, Materials2Shapes.plate, (int) (64)))
             .itemOutputs(ItemList.BatteryHull_UxV.get(1))
             .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.EthylCyanoacrylateSuperGlue, 18432))

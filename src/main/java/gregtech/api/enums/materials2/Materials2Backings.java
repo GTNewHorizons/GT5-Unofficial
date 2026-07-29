@@ -19,16 +19,27 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialRef;
 
-/// The shapeless marker backings for materials with no real ore/item/fluid data: the eleven superconductor
-/// wire markers (`SuperconductorMV`..`SuperconductorUMV`) and the six wildcard markers
+/// The materials that back an ore-dictionary entry without carrying composition of their own: the eleven
+/// superconductor wire markers (`SuperconductorMV`..`SuperconductorUMV`) and the six wildcard markers
 /// (`AnyBronze`/`AnyCopper`/`AnyCarbon`/`AnyIron`/`AnyRubber`/`AnySyntheticRubber`). Held as declared fields
 /// so call sites reference them directly instead of looking them up by registry name.
+/// [gregtech.loaders.materials.RecognitionMaterials] holds the separate backings for foreign mods'
+/// ore-dictionary names.
+///
+/// The two populations differ in whether they generate items, and that difference is load-bearing. The
+/// wildcard markers stay shapeless, so the `getShapes().isEmpty()` test that [gregtech.common.GTProxy] and
+/// [gregtech.api.util.GTRecipeRegistrator] use to mean "no composition, no items, contributes no mass"
+/// recognises them. The superconductor markers cannot be shapeless, because their wires are real items:
+/// [Materials2PipeMaterials] gives each of them `wireGt01`..`wireGt16`. So that test does not see them, and
+/// their marker role is spelled out instead -- [#isSuperconductorMarker] for the recipe gates, and
+/// [gregtech.api.material.MaterialParts#namedIngredient] for crafting ingredients, so a reversible recipe
+/// derives no recycling from a material that has no dust or ingot to recycle into.
 ///
 /// [#registerBackingMaterials] registers them during material registration (from
-/// [gregtech.api.enums.Materials2#init], after [Materials2Materials#init]) and assigns the fields from the
-/// same builders; `SuperconductorUHV` in particular must bind by builder reference, since its backing's
-/// registry name is `Superconductor`, not `SuperconductorUHV`.
-public class Materials2Markers {
+/// [gregtech.api.enums.Materials2#init]) and assigns the fields from the same builders;
+/// `SuperconductorUHV` in particular must bind by builder reference, since its backing's registry name is
+/// `Superconductor`, not `SuperconductorUHV`.
+public class Materials2Backings {
 
     public static Material AnyBronze;
     public static Material AnyCarbon;
@@ -79,7 +90,7 @@ public class Materials2Markers {
         return oreReRegistrations.getOrDefault(material, Collections.emptyList());
     }
 
-    private Materials2Markers() {}
+    private Materials2Backings() {}
 
     private record Backing(Consumer<Material> field, String internalName, String localName, int argb) {}
 
@@ -98,22 +109,13 @@ public class Materials2Markers {
         new Backing(m -> SuperconductorUMV = m, "SuperconductorUMV", "Superconductor UMV", 0x00b526cd), };
     // spotless:on
 
-    /// Registers a shapeless MaterialLib [Material] backing each superconductor marker, which
-    /// `MaterialUtils#byLegacyName`
-    /// resolves by registry name, and assigns the superconductor fields from the same builders --
-    /// `SuperconductorUHV`'s backing name is `Superconductor`, so binding by name lookup would be wrong. A
-    /// backing whose internal name already names a MaterialLib material is not re-registered; the field binds
-    /// that existing material, matching `MaterialUtils#byLegacyName`'s registry fallback. Runs during material
-    /// registration,
-    /// after [Materials2Materials#init], so the skip check sees every real material.
+    /// Registers a MaterialLib [Material] backing each superconductor marker, which
+    /// [gregtech.api.material.MaterialUtils#byLegacyName] resolves by registry name, and assigns the
+    /// superconductor fields from the same builders -- `SuperconductorUHV`'s backing name is
+    /// `Superconductor`, so binding by name lookup would be wrong. The wire shapes these materials generate
+    /// are added afterwards, by [Materials2PipeMaterials].
     public static void registerBackingMaterials() {
         for (Backing sc : SUPERCONDUCTOR_BACKINGS) {
-            Material existing = MaterialLibAPI.getMaterial("gregtech", sc.internalName());
-            if (existing != null) {
-                sc.field()
-                    .accept(existing);
-                continue;
-            }
             sc.field()
                 .accept(
                     MaterialLibAPI
@@ -165,13 +167,12 @@ public class Materials2Markers {
     }
 
     /// Registers a shapeless MaterialLib backing for a wildcard marker material (`AnyCopper`, `AnyIron`, ...),
-    /// which `MaterialUtils#byLegacyName` resolves by [GTMaterialProperties#LEGACY_NAME]. Ports the smelt/macerate/arc
-    /// targets, the metal flag, and `setUnifiable(false)` that every wildcard marker carries; a name that
-    /// already names a real MaterialLib material is returned as-is instead of re-registered.
+    /// which [gregtech.api.material.MaterialUtils#byLegacyName] resolves by registry name. Ports the
+    /// smelt/macerate/arc targets, the metal flag, and `setUnifiable(false)` that every wildcard marker
+    /// carries. These stay shapeless: no shape table adds to them, which is what keeps them on the
+    /// shapeless side of the class-level split.
     private static Material registerWildcard(String name, String localName, TextureSet texture, GTMaterialFlag flag,
         String smeltInto, String macerateInto, String arcSmeltInto) {
-        Material existing = MaterialLibAPI.getMaterial("gregtech", name);
-        if (existing != null) return existing;
         com.ruling_0.materiallib.api.MaterialBuilder builder = MaterialLibAPI
             .newMaterial("gregtech", name, com.ruling_0.materiallib.api.TextureSet.of("gregtech", texture.mSetName))
             .setProperty(GTMaterialProperties.LOCAL_NAME, localName)

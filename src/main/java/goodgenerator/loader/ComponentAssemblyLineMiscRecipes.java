@@ -34,8 +34,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialParts;
@@ -129,7 +129,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 ComponentType.Electric_Motor.getComponent(t)
                     .get(10),
                 MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.gearGt, 4),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Markers.AnyCopper, 6),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Backings.AnyCopper, 6),
                 getCircuit(t, 8),
                 getCircuit(t - 1, 16))
             .fluidInputs(

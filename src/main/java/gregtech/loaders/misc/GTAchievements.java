@@ -29,7 +29,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Markers;
+import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
@@ -721,7 +721,7 @@ public class GTAchievements {
                                 data.getAllMaterialStacks()
                                     .get(i).mMaterial));
                         if (data.getAllMaterialStacks()
-                            .get(i).mMaterial == Materials2Markers.AnyIron) {
+                            .get(i).mMaterial == Materials2Backings.AnyIron) {
                             issueAchievement(player, "iron");
                         }
                         if (data.getAllMaterialStacks()
