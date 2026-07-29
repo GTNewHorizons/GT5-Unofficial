@@ -21,6 +21,7 @@ import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Sievert;
+import gregtech.loaders.materials.LegacyNameDomain;
 
 public class RadioHatchMaterialLoader {
 
@@ -110,7 +111,7 @@ public class RadioHatchMaterialLoader {
         }
 
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (!MU.isLegacyNamed(material) || MU.element(material) == null) continue;
+            if (!LegacyNameDomain.contains(material) || MU.element(material) == null) continue;
 
             boolean validProton = MU.protons(material) >= 83 && material != Materials2Materials.Tritanium // No
                                                                                                           // Tritanium

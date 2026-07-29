@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.material.MU;
@@ -27,7 +28,7 @@ public class AssemblyLineServer {
     /// assembly-line data packets, so they must be byte-identical to the legacy internal name;
     /// [MU#internalName] resolves exactly that string, including the LEGACY_NAME divergents.
     private static @Nullable String generatedMaterialName(int id) {
-        Material material = MU.byId(id);
+        Material material = Materials2IDIndex.get(id);
         if (material == null) return null;
         if (!Materials2ParentMods.hasParentMod(material)) return null;
         return MU.internalName(material);

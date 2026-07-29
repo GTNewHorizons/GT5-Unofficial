@@ -36,6 +36,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.events.OreInteractEvent;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
@@ -431,7 +432,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
     @Nullable
     public com.ruling_0.materiallib.api.Material getMaterial(int meta) {
-        return MU.byId(getMaterialIndex(meta));
+        return Materials2IDIndex.get(getMaterialIndex(meta));
     }
 
     @Nullable

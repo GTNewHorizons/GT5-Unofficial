@@ -28,6 +28,7 @@ import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
+import gregtech.loaders.materials.LegacyNameDomain;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -115,7 +116,7 @@ public class GregtechSimpleWasher {
         ItemStack dustDirty;
         ItemStack dustPure;
         for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
-            if (!MU.isLegacyNamed(ml)) {
+            if (!LegacyNameDomain.contains(ml)) {
                 continue;
             }
             if (MU.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) {
@@ -176,7 +177,7 @@ public class GregtechSimpleWasher {
         ItemStack crushedClean;
         ItemStack crushedDirty;
         for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
-            if (!MU.isLegacyNamed(ml)) {
+            if (!LegacyNameDomain.contains(ml)) {
                 continue;
             }
             if (MU.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) {

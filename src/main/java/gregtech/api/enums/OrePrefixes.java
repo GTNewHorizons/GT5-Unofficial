@@ -2742,7 +2742,8 @@ public class OrePrefixes {
         wireFine.mCondition = SubTag.METAL;
 
         sheetmetal.mCondition = new ICondition.And<>(
-            obj -> obj instanceof MaterialSubTagView view && MU.hasMetalItems(view.material),
+            obj -> obj instanceof MaterialSubTagView view
+                && MU.generates(view.material, GTMaterialGenerationFlag.METAL),
             new ICondition.Nor<>(SubTag.STRETCHY, SubTag.SOFT, SubTag.BOUNCY, SubTag.NO_SMASHING));
         // -----
 

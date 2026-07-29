@@ -46,6 +46,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeMaps;
@@ -63,6 +64,7 @@ import gregtech.common.config.Other;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTERockBreaker;
+import gregtech.loaders.materials.LegacyNameDomain;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
@@ -243,7 +245,7 @@ public class GTPostLoad {
             }
         }
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (!MU.isLegacyNamed(material)) continue;
+            if (!LegacyNameDomain.contains(material)) continue;
             GTScannerResult scannerResult = ScannerHandlerLoader.getElementScanResult(material);
             if (scannerResult == null || scannerResult.isNotMet()) continue;
 
@@ -254,10 +256,10 @@ public class GTPostLoad {
                 GTOreDictUnificator.get(OrePrefixes.cell, material, 1L));
         }
 
-        // A reconstructed werkstoff material is outside MU#isLegacyNamed, so the loop above skips it; this
+        // A reconstructed werkstoff material is outside LegacyNameDomain#contains, so the loop above skips it; this
         // second pass covers the cell-bearing ones with the same scanner/replicator recipes.
         for (Material material : MaterialLibAPI.getMaterials()) {
-            if (MU.isLegacyNamed(material)) continue;
+            if (LegacyNameDomain.contains(material)) continue;
             List<String> werkstoffPrefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
             if (werkstoffPrefixes == null || !werkstoffPrefixes.contains(OrePrefixes.cell.name())) continue;
 
@@ -443,9 +445,9 @@ public class GTPostLoad {
         String plateName = OrePrefixes.plate.oreDictName(ml)
             .toString();
         boolean noSmash = !MU.hasFlag(ml, GTMaterialFlag.NO_SMASHING);
-        if (MU.hasMetalItems(ml)) GTRecipeRegistrator
+        if (MU.generates(ml, GTMaterialGenerationFlag.METAL)) GTRecipeRegistrator
             .registerUsagesForMaterials(plateName, noSmash, GTOreDictUnificator.get(OrePrefixes.ingot, ml, 1));
-        if (MU.hasGemItems(ml)) GTRecipeRegistrator
+        if (MU.generates(ml, GTMaterialGenerationFlag.GEM)) GTRecipeRegistrator
             .registerUsagesForMaterials(plateName, noSmash, GTOreDictUnificator.get(OrePrefixes.gem, ml, 1));
         ItemStack blocks = GTOreDictUnificator.get(OrePrefixes.block, ml, 1);
         if (blocks != null) GTRecipeRegistrator.registerUsagesForMaterials(null, noSmash, blocks);

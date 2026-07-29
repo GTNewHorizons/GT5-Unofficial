@@ -24,7 +24,6 @@ import gregtech.api.material.FluidRef;
 public class Materials2FluidShapes {
 
     // spotless:off
-    public static Shape fluidSolid;
     public static Shape fluidLiquid;
     public static Shape fluidGas;
     public static Shape fluidPlasma;
@@ -38,11 +37,6 @@ public class Materials2FluidShapes {
     // spotless:on
 
     public static void init() {
-        fluidSolid = fluidShape(
-            "fluidSolid",
-            "Solid %s",
-            legacySlot(FluidNames::solid),
-            Materials2FluidShapes::solidAttrs);
         fluidLiquid = fluidShape(
             "fluidLiquid",
             "%s",
@@ -127,11 +121,6 @@ public class Materials2FluidShapes {
                 "No legacy fluid data for " + material.getKey() + " in " + (shape != null ? shape : "fluid shape"));
         }
         return fluidRef;
-    }
-
-    private static void solidAttrs(Fluid fluid, int temperature) {
-        fluid.setGaseous(false)
-            .setViscosity(10000);
     }
 
     private static void liquidAttrs(Fluid fluid, int temperature) {

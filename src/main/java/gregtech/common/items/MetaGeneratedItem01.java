@@ -503,6 +503,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TieredItems;
+import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
@@ -510,6 +511,7 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedItemX32;
+import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.MU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
@@ -3953,7 +3955,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         int aDamage = aItemEntity.getEntityItem()
             .getItemDamage();
         if (isMaterialItem(aDamage) && (!aItemEntity.worldObj.isRemote)) {
-            Material aMaterial = MU.byId(aDamage % 1000);
+            Material aMaterial = Materials2IDIndex.get(aDamage % 1000);
             if ((aMaterial != null) && (aMaterial != Materials2Materials.Empty)
                 && (aMaterial != Materials2Materials.NULL)) {
                 int tX = MathHelper.floor_double(aItemEntity.posX);
@@ -4013,7 +4015,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             final int damage = oldItemStack.getItemDamage();
 
             if (isMaterialItem(damage)) {
-                final Material oldMaterial = MU.byId(damage % 1000);
+                final Material oldMaterial = Materials2IDIndex.get(damage % 1000);
                 final OrePrefixes oldPrefix = this.mGeneratedPrefixList[(damage / 1000)];
                 final ItemStack newItemStack = getCauldronWashingResult(oldPrefix, oldMaterial, oldItemStack.stackSize);
 
@@ -4079,7 +4081,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         super.addAdditionalToolTips(aList, aStack, aPlayer);
         int aDamage = aStack.getItemDamage();
         if (isMaterialItem(aDamage)) {
-            Material aMaterial = MU.byId(aDamage % 1000);
+            Material aMaterial = Materials2IDIndex.get(aDamage % 1000);
             if ((aMaterial != null) && (aMaterial != Materials2Materials.Empty)
                 && (aMaterial != Materials2Materials.NULL)) {
                 OrePrefixes aPrefix = this.mGeneratedPrefixList[(aDamage / 1000)];
@@ -4097,7 +4099,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         // Requires the material to carry a registered plasma fluid
         FluidStack plasma = MU.plasma(aMaterial, 1L);
         if (aPrefix == OrePrefixes.cellPlasma && plasma != null) {
-            if (MU.hasPlasma(aMaterial)) return true;
+            if (MU.generates(aMaterial, GTMaterialGenerationFlag.PLASMA)) return true;
             // Loop through fusion recipes
             for (GTRecipe recipe : RecipeMaps.fusionRecipes.getAllRecipes()) {
                 // Make sure fluid output can't be null (not sure if possible)

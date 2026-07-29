@@ -15,6 +15,7 @@ import gregtech.api.material.MU;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.GTPPOreAdapter;
+import gregtech.loaders.materials.LegacyNameDomain;
 
 /// Hand-maintained block [Shape] declarations for GT's ores. Unlike `block`, `ore` and `oreSmall` carry a real
 /// generation bit (`ORE`), so membership follows the capability-bit pipeline rather than a curated list.
@@ -184,7 +185,7 @@ public class Materials2OreShapes {
     /// `-1`), so it still counts as gtpp here, mirroring [GTPPOreAdapter]'s own `isGtpp` discriminator.
     private static boolean isGtpp(Material material) {
         if (material.getProperty(GTMaterialProperties.GTPP_STATE) == null) return false;
-        return !MU.isLegacyNamed(material) || MU.oldSubId(material) < 0;
+        return !LegacyNameDomain.contains(material) || MU.oldSubId(material) < 0;
     }
 
     private static Block stoneBlock(String variant) {
