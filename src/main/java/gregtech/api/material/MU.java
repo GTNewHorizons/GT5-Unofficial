@@ -231,7 +231,7 @@ public class MU {
 
     /// [#fluid], for a material's `solid()` slot.
     public static @Nullable FluidStack solid(@Nullable Material material, long amount) {
-        Fluid fluid = resolveSlotFluid(material, FluidState.SOLID, FluidNames::solid);
+        Fluid fluid = storedFluid(material, FluidState.SOLID);
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
     }
 
@@ -299,14 +299,12 @@ public class MU {
     /// Whether a material has a corresponding registered fluid -- [GTMaterialProperties#HAS_CORRESPONDING_FLUID],
     /// `false` when absent.
     public static boolean hasCorrespondingFluid(@Nullable Material material) {
-        return material != null
-            && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID));
+        return material != null && material.getProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID);
     }
 
     /// [#hasCorrespondingFluid], for [GTMaterialProperties#HAS_CORRESPONDING_GAS].
     public static boolean hasCorrespondingGas(@Nullable Material material) {
-        return material != null
-            && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS));
+        return material != null && material.getProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS);
     }
 
     /// The five legacy fluid fields a material can carry, keying [#recordSlotFluid]'s store: `mFluid`
@@ -459,6 +457,9 @@ public class MU {
     /// The block-form metadata index a material was assigned (e.g. the frame and storage-block variant
     /// selector), from [GTMaterialProperties#OLD_SUB_ID], or -1 if unset. Callers reading block-form
     /// metadata (frame tiers, worldgen) use this accessor.
+    /// `-1` is this accessor's own sentinel, not a [GTMaterialProperties#OLD_SUB_ID] default: absence is
+    /// meaningful for that key, and [gregtech.api.enums.materials2.Materials2IDIndex] and
+    /// [Materials2WerkstoffIndex#generatesPrefix] both branch on it.
     public static int oldSubId(@Nullable Material material) {
         if (material == null) return -1;
         Integer id = material.getProperty(GTMaterialProperties.OLD_SUB_ID);
@@ -501,7 +502,7 @@ public class MU {
     /// Whether a material requires a blast furnace to smelt -- [GTMaterialProperties#BLAST_REQUIRED],
     /// `false` when absent.
     public static boolean blastFurnaceRequired(@Nullable Material material) {
-        return material != null && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.BLAST_REQUIRED));
+        return material != null && material.getProperty(GTMaterialProperties.BLAST_REQUIRED);
     }
 
     /// A material's density -- [MaterialAtomics#density]. `GTValues.M` is returned for a null `material`,
@@ -546,19 +547,17 @@ public class MU {
     /// Whether a material has an electrolyzer recipe -- [GTMaterialProperties#HAS_ELECTROLYZER_RECIPE],
     /// `false` when absent.
     public static boolean hasElectrolyzerRecipe(@Nullable Material material) {
-        return material != null
-            && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE));
+        return material != null && material.getProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE);
     }
 
     /// [#hasElectrolyzerRecipe], for [GTMaterialProperties#HAS_CENTRIFUGE_RECIPE].
     public static boolean hasCentrifugeRecipe(@Nullable Material material) {
-        return material != null
-            && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE));
+        return material != null && material.getProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE);
     }
 
     /// Whether a material can be cracked -- [GTMaterialProperties#CAN_BE_CRACKED], `false` when absent.
     public static boolean canBeCracked(@Nullable Material material) {
-        return material != null && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.CAN_BE_CRACKED));
+        return material != null && material.getProperty(GTMaterialProperties.CAN_BE_CRACKED);
     }
 
     /// A material's [Dyes] -- [GTMaterialProperties#DYE] when present, otherwise [#nearestDye]. [Dyes#_NULL]
@@ -595,16 +594,12 @@ public class MU {
     /// Whether a material auto-generates blast furnace recipes --
     /// [GTMaterialProperties#AUTO_BLAST_FURNACE_RECIPES], `true` when absent.
     public static boolean autoGenerateBlastFurnaceRecipes(@Nullable Material material) {
-        if (material == null) return true;
-        Boolean value = material.getProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES);
-        return value == null || value;
+        return material == null || material.getProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES);
     }
 
     /// [#autoGenerateBlastFurnaceRecipes], for [GTMaterialProperties#AUTO_VACUUM_FREEZER_RECIPES].
     public static boolean autoGenerateVacuumFreezerRecipes(@Nullable Material material) {
-        if (material == null) return true;
-        Boolean value = material.getProperty(GTMaterialProperties.AUTO_VACUUM_FREEZER_RECIPES);
-        return value == null || value;
+        return material == null || material.getProperty(GTMaterialProperties.AUTO_VACUUM_FREEZER_RECIPES);
     }
 
     /// Whether a material auto-generates recycle recipes -- [GTMaterialProperties#AUTO_RECYCLE_RECIPES],
@@ -612,16 +607,12 @@ public class MU {
     /// [#isLegacyNamed]) ever carry it, so a reverse-recipe gate that only means to skip legacy-named
     /// materials with the flag unset can read this predicate directly without an additional domain check.
     public static boolean autoGenerateRecycleRecipes(@Nullable Material material) {
-        if (material == null) return true;
-        Boolean value = material.getProperty(GTMaterialProperties.AUTO_RECYCLE_RECIPES);
-        return value == null || value;
+        return material == null || material.getProperty(GTMaterialProperties.AUTO_RECYCLE_RECIPES);
     }
 
     /// The Kelvin melting point for a material -- [GTMaterialProperties#MELTING_POINT], or `0` if unset.
     public static int meltingPoint(@Nullable Material material) {
-        if (material == null) return 0;
-        Integer meltingPoint = material.getProperty(GTMaterialProperties.MELTING_POINT);
-        return meltingPoint == null ? 0 : meltingPoint;
+        return material == null ? 0 : material.getProperty(GTMaterialProperties.MELTING_POINT);
     }
 
     /// A material's gas registration temperature in Kelvin: room temperature (295 K) when
@@ -644,53 +635,39 @@ public class MU {
     /// The Kelvin blast furnace temperature for a material -- [GTMaterialProperties#BLAST_TEMP], or `0` if
     /// unset.
     public static int blastFurnaceTemp(@Nullable Material material) {
-        if (material == null) return 0;
-        Integer blastTemp = material.getProperty(GTMaterialProperties.BLAST_TEMP);
-        return blastTemp == null ? 0 : blastTemp;
+        return material == null ? 0 : material.getProperty(GTMaterialProperties.BLAST_TEMP);
     }
 
     /// The material tier -- [GTMaterialProperties#TIER], or `0` if unset.
     public static int tier(@Nullable Material material) {
-        if (material == null) return 0;
-        Integer tier = material.getProperty(GTMaterialProperties.TIER);
-        return tier == null ? 0 : tier;
+        return material == null ? 0 : material.getProperty(GTMaterialProperties.TIER);
     }
 
     /// The recipe voltage multiplier for a material -- [GTMaterialProperties#VOLTAGE_MULTIPLIER], or `16` if
     /// unset, which is the value every tier-0 material carries.
     public static long voltageMultiplier(@Nullable Material material) {
-        if (material == null) return 16L;
-        Long multiplier = material.getProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER);
-        return multiplier != null ? multiplier : 16L;
+        return material == null ? 16L : material.getProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER);
     }
 
     /// The processing material tier EU value for a material --
     /// [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU], or `0` if unset.
     public static int processingMaterialTierEU(@Nullable Material material) {
-        if (material == null) return 0;
-        Integer tierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-        return tierEU == null ? 0 : tierEU;
+        return material == null ? 0 : material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
     }
 
     /// The tool durability for a material -- [GTMaterialProperties#DURABILITY], or `0` if unset.
     public static int durability(@Nullable Material material) {
-        if (material == null) return 0;
-        Integer durability = material.getProperty(GTMaterialProperties.DURABILITY);
-        return durability == null ? 0 : durability;
+        return material == null ? 0 : material.getProperty(GTMaterialProperties.DURABILITY);
     }
 
     /// [#durability], for [GTMaterialProperties#TOOL_QUALITY].
     public static int toolQuality(@Nullable Material material) {
-        if (material == null) return 0;
-        Integer toolQuality = material.getProperty(GTMaterialProperties.TOOL_QUALITY);
-        return toolQuality == null ? 0 : toolQuality;
+        return material == null ? 0 : material.getProperty(GTMaterialProperties.TOOL_QUALITY);
     }
 
     /// [#durability], for [GTMaterialProperties#TOOL_SPEED] -- absent defaults to `1.0f`.
     public static float toolSpeed(@Nullable Material material) {
-        if (material == null) return 1.0f;
-        Float toolSpeed = material.getProperty(GTMaterialProperties.TOOL_SPEED);
-        return toolSpeed == null ? 1.0f : toolSpeed;
+        return material == null ? 1.0f : material.getProperty(GTMaterialProperties.TOOL_SPEED);
     }
 
     /// The tool [Enchantment] for a material, named by [GTMaterialProperties#TOOL_ENCHANTMENT] (an
@@ -733,30 +710,24 @@ public class MU {
 
     /// The heat damage for a material -- [GTMaterialProperties#HEAT_DAMAGE], or `0` if unset.
     public static float heatDamage(@Nullable Material material) {
-        if (material == null) return 0f;
-        Float heatDamage = material.getProperty(GTMaterialProperties.HEAT_DAMAGE);
-        return heatDamage == null ? 0f : heatDamage;
+        return material == null ? 0f : material.getProperty(GTMaterialProperties.HEAT_DAMAGE);
     }
 
     /// Whether a material's items unify under the ore dictionary -- `true` unless
     /// [GTMaterialProperties#UNIFIABLE] is explicitly `false`.
     public static boolean unifiable(@Nullable Material material) {
-        return material == null || !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE));
+        return material == null || material.getProperty(GTMaterialProperties.UNIFIABLE);
     }
 
     /// The fuel power for a material -- [GTMaterialProperties#FUEL_POWER], or `0` if unset.
     public static int fuelPower(@Nullable Material material) {
-        if (material == null) return 0;
-        Integer fuelPower = material.getProperty(GTMaterialProperties.FUEL_POWER);
-        return fuelPower == null ? 0 : fuelPower;
+        return material == null ? 0 : material.getProperty(GTMaterialProperties.FUEL_POWER);
     }
 
     /// The fuel type ordinal for a material into [gregtech.api.util.GTRecipeConstants.FuelType], or `0`
     /// (`FuelType#DieselFuel`) if unset -- [GTMaterialProperties#FUEL_TYPE], see [#fuelPower(Material)].
     public static int fuelType(@Nullable Material material) {
-        if (material == null) return 0;
-        Integer fuelType = material.getProperty(GTMaterialProperties.FUEL_TYPE);
-        return fuelType == null ? 0 : fuelType;
+        return material == null ? 0 : material.getProperty(GTMaterialProperties.FUEL_TYPE);
     }
 
     /// The smelting target for a material, resolved from [GTMaterialProperties#SMELT_INTO]: an unset property

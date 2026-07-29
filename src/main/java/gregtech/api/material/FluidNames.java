@@ -7,7 +7,7 @@ import com.github.bsideup.jabel.Desugar;
 /// `gregtech.loaders.preload.LoaderGTBlockFluid` register fluids under exactly these names, which world NBT
 /// resolves fluid stacks against.
 @Desugar
-public record FluidNames(FluidRef solid, FluidRef fluid, FluidRef gas, FluidRef plasma, FluidRef molten) {
+public record FluidNames(FluidRef fluid, FluidRef gas, FluidRef plasma, FluidRef molten) {
 
     /// The name of a gtPlusPlus-originated material's non-plasma fluid: `molten` first, else `fluid`, else
     /// `gas`. Null when none of the three slots is set.

@@ -22,10 +22,13 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ruling_0.materiallib.api.Family;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Property;
 import com.ruling_0.materiallib.api.Shape;
 import com.ruling_0.materiallib.api.ShapeItem;
 import com.ruling_0.materiallib.api.StandardProperties;
@@ -104,6 +107,13 @@ public final class MaterialDataDump {
 
     // region oreprefixes.json
 
+    /// A property's declared value, or null when neither the material nor its families set one. Property
+    /// defaults must not reach the dump: the parity harness compares it against the legacy dumps, where an
+    /// unset value is absent rather than defaulted.
+    private static <T> @Nullable T raw(com.ruling_0.materiallib.api.Material material, Property<T> property) {
+        return material.hasProperty(property) ? material.getProperty(property) : null;
+    }
+
     private static Map<String, Object> dumpMaterialStack(MaterialStack stack) {
         if (stack == null || stack.mMaterial == null) return null;
         Map<String, Object> json = new LinkedHashMap<>();
@@ -157,7 +167,7 @@ public final class MaterialDataDump {
     private static List<Map<String, Object>> dumpWerkstoff() {
         List<Map<String, Object>> out = new ArrayList<>();
         for (com.ruling_0.materiallib.api.Material material : MaterialLibAPI.getMaterials()) {
-            if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
+            if (raw(material, GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
             out.add(dumpWerkstoff(material));
         }
         return out;
@@ -177,46 +187,46 @@ public final class MaterialDataDump {
 
         Map<String, Object> json = new LinkedHashMap<>();
         json.put("id", id);
-        json.put("name", material.getProperty(GTMaterialProperties.LOCAL_NAME));
+        json.put("name", raw(material, GTMaterialProperties.LOCAL_NAME));
         json.put("varName", MU.internalName(material));
         json.put("rgb", rgba != null ? new int[] { rgba[0], rgba[1], rgba[2] } : null);
         json.put("texSet", texSet != null ? texSet.mSetName : null);
-        json.put("type", material.getProperty(GTMaterialProperties.WERKSTOFF_TYPE));
+        json.put("type", raw(material, GTMaterialProperties.WERKSTOFF_TYPE));
         json.put("pool", werkstoffPool(id));
-        json.put("meltingPoint", material.getProperty(GTMaterialProperties.MELTING_POINT));
-        json.put("boilingPoint", material.getProperty(GTMaterialProperties.BOILING_POINT));
+        json.put("meltingPoint", raw(material, GTMaterialProperties.MELTING_POINT));
+        json.put("boilingPoint", raw(material, GTMaterialProperties.BOILING_POINT));
         json.put("protons", MU.protons(material));
         json.put("neutrons", MU.neutrons(material));
         json.put("mass", MU.mass(material));
-        json.put("meltingVoltage", material.getProperty(GTMaterialProperties.MELTING_VOLTAGE));
-        json.put("durability", material.getProperty(GTMaterialProperties.DURABILITY));
-        json.put("speed", material.getProperty(GTMaterialProperties.TOOL_SPEED));
-        json.put("quality", material.getProperty(GTMaterialProperties.TOOL_QUALITY));
-        json.put("toxic", material.getProperty(GTMaterialProperties.TOXIC));
-        json.put("radioactive", material.getProperty(GTMaterialProperties.IS_RADIOACTIVE));
-        json.put("blastFurnace", material.getProperty(GTMaterialProperties.BLAST_REQUIRED));
-        json.put("elektrolysis", material.getProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE));
-        json.put("centrifuge", material.getProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE));
-        json.put("gas", material.getProperty(GTMaterialProperties.HAS_GAS));
-        json.put("contents", dumpMlMaterialRefStacks(material.getProperty(GTMaterialProperties.COMPOSITION)));
-        json.put("oreByProducts", dumpMlMaterialRefNames(material.getProperty(GTMaterialProperties.ORE_BYPRODUCTS)));
-        json.put("generatedPrefixes", orEmpty(material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES)));
-        json.put("enforceUnification", material.getProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION));
-        json.put("chemicalRecipes", material.getProperty(GTMaterialProperties.HAS_CHEMICAL_RECIPE));
+        json.put("meltingVoltage", raw(material, GTMaterialProperties.MELTING_VOLTAGE));
+        json.put("durability", raw(material, GTMaterialProperties.DURABILITY));
+        json.put("speed", raw(material, GTMaterialProperties.TOOL_SPEED));
+        json.put("quality", raw(material, GTMaterialProperties.TOOL_QUALITY));
+        json.put("toxic", raw(material, GTMaterialProperties.TOXIC));
+        json.put("radioactive", raw(material, GTMaterialProperties.IS_RADIOACTIVE));
+        json.put("blastFurnace", raw(material, GTMaterialProperties.BLAST_REQUIRED));
+        json.put("elektrolysis", raw(material, GTMaterialProperties.HAS_ELECTROLYZER_RECIPE));
+        json.put("centrifuge", raw(material, GTMaterialProperties.HAS_CENTRIFUGE_RECIPE));
+        json.put("gas", raw(material, GTMaterialProperties.HAS_GAS));
+        json.put("contents", dumpMlMaterialRefStacks(raw(material, GTMaterialProperties.COMPOSITION)));
+        json.put("oreByProducts", dumpMlMaterialRefNames(raw(material, GTMaterialProperties.ORE_BYPRODUCTS)));
+        json.put("generatedPrefixes", orEmpty(raw(material, GTMaterialProperties.WERKSTOFF_PREFIXES)));
+        json.put("enforceUnification", raw(material, GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION));
+        json.put("chemicalRecipes", raw(material, GTMaterialProperties.HAS_CHEMICAL_RECIPE));
         json.put(
             "metalCraftingSolidifierRecipes",
             MaterialDumpData.hasMetalCraftingSolidifierRecipe(material.getName()));
         json.put("metalSolidifierRecipes", MaterialDumpData.hasMetalSolidifierRecipe(material.getName()));
-        json.put("mixerRecipes", material.getProperty(GTMaterialProperties.HAS_MIXER_RECIPE));
-        json.put("sifterRecipes", material.getProperty(GTMaterialProperties.HAS_SIFTER_RECIPE));
-        json.put("mixCircuit", material.getProperty(GTMaterialProperties.MIX_CIRCUIT));
-        json.put("ebfGasTimeMultiplier", material.getProperty(GTMaterialProperties.EBF_GAS_TIME_MULTIPLIER));
-        json.put("ebfGasAmountMultiplier", material.getProperty(GTMaterialProperties.EBF_GAS_AMOUNT_MULTIPLIER));
-        json.put("autoBlastFurnaceRecipes", material.getProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES));
-        json.put("autoVacuumFreezerRecipes", material.getProperty(GTMaterialProperties.AUTO_VACUUM_FREEZER_RECIPES));
-        json.put("subTags", orEmpty(material.getProperty(GTMaterialProperties.SUB_TAGS)));
-        json.put("formula", material.getProperty(GTMaterialProperties.FORMULA));
-        json.put("formulaLocalized", material.getProperty(GTMaterialProperties.FORMULA_LOCALIZED));
+        json.put("mixerRecipes", raw(material, GTMaterialProperties.HAS_MIXER_RECIPE));
+        json.put("sifterRecipes", raw(material, GTMaterialProperties.HAS_SIFTER_RECIPE));
+        json.put("mixCircuit", raw(material, GTMaterialProperties.MIX_CIRCUIT));
+        json.put("ebfGasTimeMultiplier", raw(material, GTMaterialProperties.EBF_GAS_TIME_MULTIPLIER));
+        json.put("ebfGasAmountMultiplier", raw(material, GTMaterialProperties.EBF_GAS_AMOUNT_MULTIPLIER));
+        json.put("autoBlastFurnaceRecipes", raw(material, GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES));
+        json.put("autoVacuumFreezerRecipes", raw(material, GTMaterialProperties.AUTO_VACUUM_FREEZER_RECIPES));
+        json.put("subTags", orEmpty(raw(material, GTMaterialProperties.SUB_TAGS)));
+        json.put("formula", raw(material, GTMaterialProperties.FORMULA));
+        json.put("formulaLocalized", raw(material, GTMaterialProperties.FORMULA_LOCALIZED));
         return json;
     }
 
@@ -249,91 +259,91 @@ public final class MaterialDataDump {
     private static Map<String, Object> dumpMlMaterial(com.ruling_0.materiallib.api.Material material) {
         Map<String, Object> json = new LinkedHashMap<>();
         json.put("name", material.getName());
-        json.put("legacyName", material.getProperty(GTMaterialProperties.LEGACY_NAME));
+        json.put("legacyName", raw(material, GTMaterialProperties.LEGACY_NAME));
         json.put("tint", material.getProperty(StandardProperties.TINT));
-        json.put("argb", material.getProperty(GTMaterialProperties.ARGB));
-        json.put("moltenArgb", material.getProperty(GTMaterialProperties.MOLTEN_ARGB));
+        json.put("argb", raw(material, GTMaterialProperties.ARGB));
+        json.put("moltenArgb", raw(material, GTMaterialProperties.MOLTEN_ARGB));
         json.put(
             "textureSet",
             material.getProperty(StandardProperties.TEXTURE_SET)
                 .getName());
         json.put("shapes", dumpMlShapes(material));
         json.put("families", dumpMlFamilies(material));
-        json.put("localName", material.getProperty(GTMaterialProperties.LOCAL_NAME));
-        json.put("meltingPoint", material.getProperty(GTMaterialProperties.MELTING_POINT));
-        json.put("boilingPoint", material.getProperty(GTMaterialProperties.BOILING_POINT));
-        json.put("meltingVoltage", material.getProperty(GTMaterialProperties.MELTING_VOLTAGE));
-        json.put("blastTemp", material.getProperty(GTMaterialProperties.BLAST_TEMP));
-        json.put("blastRequired", material.getProperty(GTMaterialProperties.BLAST_REQUIRED));
-        json.put("toxic", material.getProperty(GTMaterialProperties.TOXIC));
-        json.put("isRadioactive", material.getProperty(GTMaterialProperties.IS_RADIOACTIVE));
-        json.put("radiationLevel", material.getProperty(GTMaterialProperties.RADIATION_LEVEL));
-        json.put("tier", material.getProperty(GTMaterialProperties.TIER));
-        json.put("voltageMultiplier", material.getProperty(GTMaterialProperties.VOLTAGE_MULTIPLIER));
-        json.put("mixCircuit", material.getProperty(GTMaterialProperties.MIX_CIRCUIT));
-        json.put("ebfGasTimeMultiplier", material.getProperty(GTMaterialProperties.EBF_GAS_TIME_MULTIPLIER));
-        json.put("ebfGasAmountMultiplier", material.getProperty(GTMaterialProperties.EBF_GAS_AMOUNT_MULTIPLIER));
-        json.put("subTags", material.getProperty(GTMaterialProperties.SUB_TAGS));
-        json.put("gasTemp", material.getProperty(GTMaterialProperties.GAS_TEMP));
-        json.put("fuelPower", material.getProperty(GTMaterialProperties.FUEL_POWER));
-        json.put("fuelType", material.getProperty(GTMaterialProperties.FUEL_TYPE));
-        json.put("heatDamage", material.getProperty(GTMaterialProperties.HEAT_DAMAGE));
-        json.put("toolSpeed", material.getProperty(GTMaterialProperties.TOOL_SPEED));
-        json.put("toolDurability", material.getProperty(GTMaterialProperties.DURABILITY));
-        json.put("toolQuality", material.getProperty(GTMaterialProperties.TOOL_QUALITY));
-        json.put("subId", material.getProperty(GTMaterialProperties.OLD_SUB_ID));
-        json.put("formula", material.getProperty(GTMaterialProperties.FORMULA));
-        json.put("formulaLocalized", material.getProperty(GTMaterialProperties.FORMULA_LOCALIZED));
-        json.put("moltenTint", material.getProperty(GTMaterialProperties.MOLTEN_TINT));
-        json.put("element", material.getProperty(GTMaterialProperties.ELEMENT));
-        json.put("composition", dumpMlMaterialRefStacks(material.getProperty(GTMaterialProperties.COMPOSITION)));
-        json.put("smeltInto", dumpMlMaterialRef(material.getProperty(GTMaterialProperties.SMELT_INTO)));
-        json.put("macerateInto", dumpMlMaterialRef(material.getProperty(GTMaterialProperties.MACERATE_INTO)));
-        json.put("arcSmeltInto", dumpMlMaterialRef(material.getProperty(GTMaterialProperties.ARC_SMELT_INTO)));
-        json.put("directSmelting", dumpMlMaterialRef(material.getProperty(GTMaterialProperties.DIRECT_SMELTING)));
-        json.put("handleMaterial", dumpMlMaterialRef(material.getProperty(GTMaterialProperties.HANDLE_MATERIAL)));
-        json.put("oreByProducts", dumpMlMaterialRefNames(material.getProperty(GTMaterialProperties.ORE_BYPRODUCTS)));
-        json.put("oreMultiplier", material.getProperty(GTMaterialProperties.ORE_MULTIPLIER));
-        json.put("byProductMultiplier", material.getProperty(GTMaterialProperties.BYPRODUCT_MULTIPLIER));
-        json.put("smeltingMultiplier", material.getProperty(GTMaterialProperties.SMELTING_MULTIPLIER));
-        json.put("flags", dumpMlFlags(material.getProperty(GTMaterialProperties.FLAGS)));
-        json.put("aspects", dumpMlAspects(material.getProperty(GTMaterialProperties.ASPECTS)));
+        json.put("localName", raw(material, GTMaterialProperties.LOCAL_NAME));
+        json.put("meltingPoint", raw(material, GTMaterialProperties.MELTING_POINT));
+        json.put("boilingPoint", raw(material, GTMaterialProperties.BOILING_POINT));
+        json.put("meltingVoltage", raw(material, GTMaterialProperties.MELTING_VOLTAGE));
+        json.put("blastTemp", raw(material, GTMaterialProperties.BLAST_TEMP));
+        json.put("blastRequired", raw(material, GTMaterialProperties.BLAST_REQUIRED));
+        json.put("toxic", raw(material, GTMaterialProperties.TOXIC));
+        json.put("isRadioactive", raw(material, GTMaterialProperties.IS_RADIOACTIVE));
+        json.put("radiationLevel", raw(material, GTMaterialProperties.RADIATION_LEVEL));
+        json.put("tier", raw(material, GTMaterialProperties.TIER));
+        json.put("voltageMultiplier", raw(material, GTMaterialProperties.VOLTAGE_MULTIPLIER));
+        json.put("mixCircuit", raw(material, GTMaterialProperties.MIX_CIRCUIT));
+        json.put("ebfGasTimeMultiplier", raw(material, GTMaterialProperties.EBF_GAS_TIME_MULTIPLIER));
+        json.put("ebfGasAmountMultiplier", raw(material, GTMaterialProperties.EBF_GAS_AMOUNT_MULTIPLIER));
+        json.put("subTags", raw(material, GTMaterialProperties.SUB_TAGS));
+        json.put("gasTemp", raw(material, GTMaterialProperties.GAS_TEMP));
+        json.put("fuelPower", raw(material, GTMaterialProperties.FUEL_POWER));
+        json.put("fuelType", raw(material, GTMaterialProperties.FUEL_TYPE));
+        json.put("heatDamage", raw(material, GTMaterialProperties.HEAT_DAMAGE));
+        json.put("toolSpeed", raw(material, GTMaterialProperties.TOOL_SPEED));
+        json.put("toolDurability", raw(material, GTMaterialProperties.DURABILITY));
+        json.put("toolQuality", raw(material, GTMaterialProperties.TOOL_QUALITY));
+        json.put("subId", raw(material, GTMaterialProperties.OLD_SUB_ID));
+        json.put("formula", raw(material, GTMaterialProperties.FORMULA));
+        json.put("formulaLocalized", raw(material, GTMaterialProperties.FORMULA_LOCALIZED));
+        json.put("moltenTint", raw(material, GTMaterialProperties.MOLTEN_TINT));
+        json.put("element", raw(material, GTMaterialProperties.ELEMENT));
+        json.put("composition", dumpMlMaterialRefStacks(raw(material, GTMaterialProperties.COMPOSITION)));
+        json.put("smeltInto", dumpMlMaterialRef(raw(material, GTMaterialProperties.SMELT_INTO)));
+        json.put("macerateInto", dumpMlMaterialRef(raw(material, GTMaterialProperties.MACERATE_INTO)));
+        json.put("arcSmeltInto", dumpMlMaterialRef(raw(material, GTMaterialProperties.ARC_SMELT_INTO)));
+        json.put("directSmelting", dumpMlMaterialRef(raw(material, GTMaterialProperties.DIRECT_SMELTING)));
+        json.put("handleMaterial", dumpMlMaterialRef(raw(material, GTMaterialProperties.HANDLE_MATERIAL)));
+        json.put("oreByProducts", dumpMlMaterialRefNames(raw(material, GTMaterialProperties.ORE_BYPRODUCTS)));
+        json.put("oreMultiplier", raw(material, GTMaterialProperties.ORE_MULTIPLIER));
+        json.put("byProductMultiplier", raw(material, GTMaterialProperties.BYPRODUCT_MULTIPLIER));
+        json.put("smeltingMultiplier", raw(material, GTMaterialProperties.SMELTING_MULTIPLIER));
+        json.put("flags", dumpMlFlags(raw(material, GTMaterialProperties.FLAGS)));
+        json.put("aspects", dumpMlAspects(raw(material, GTMaterialProperties.ASPECTS)));
         json.put("fluids", dumpMlFluids(Materials2FluidNames.of(material.getName())));
         json.put("crackedHydroFluids", dumpMlFluidRefList(Materials2FluidNames.hydroCracked(material.getName())));
         json.put("crackedSteamFluids", dumpMlFluidRefList(Materials2FluidNames.steamCracked(material.getName())));
-        json.put("color", material.getProperty(GTMaterialProperties.DYE));
-        json.put("autoBlast", material.getProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES));
-        json.put("autoVacuum", material.getProperty(GTMaterialProperties.AUTO_VACUUM_FREEZER_RECIPES));
-        json.put("autoRecycle", material.getProperty(GTMaterialProperties.AUTO_RECYCLE_RECIPES));
-        json.put("toolEnchantment", material.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT));
-        json.put("toolEnchantmentLevel", material.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT_LEVEL));
-        json.put("armorEnchantment", material.getProperty(GTMaterialProperties.ARMOR_ENCHANTMENT));
-        json.put("armorEnchantmentLevel", material.getProperty(GTMaterialProperties.ARMOR_ENCHANTMENT_LEVEL));
-        json.put("unifiable", material.getProperty(GTMaterialProperties.UNIFIABLE));
-        json.put("densityMultiplier", material.getProperty(GTMaterialProperties.DENSITY_MULTIPLIER));
-        json.put("densityDivider", material.getProperty(GTMaterialProperties.DENSITY_DIVIDER));
-        json.put("steamMultiplier", material.getProperty(GTMaterialProperties.STEAM_MULTIPLIER));
-        json.put("gasMultiplier", material.getProperty(GTMaterialProperties.GAS_MULTIPLIER));
-        json.put("plasmaMultiplier", material.getProperty(GTMaterialProperties.PLASMA_MULTIPLIER));
-        json.put("generationFlags", dumpMlGenerationFlags(material.getProperty(GTMaterialProperties.GENERATION_FLAGS)));
-        json.put("hasCorrespondingFluid", material.getProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID));
-        json.put("hasCorrespondingGas", material.getProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS));
-        json.put("hasElectrolyzerRecipe", material.getProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE));
-        json.put("hasCentrifugeRecipe", material.getProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE));
-        json.put("hasGas", material.getProperty(GTMaterialProperties.HAS_GAS));
-        json.put("enforceOreDictUnification", material.getProperty(GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION));
-        json.put("hasChemicalRecipe", material.getProperty(GTMaterialProperties.HAS_CHEMICAL_RECIPE));
-        json.put("hasMixerRecipe", material.getProperty(GTMaterialProperties.HAS_MIXER_RECIPE));
-        json.put("hasSifterRecipe", material.getProperty(GTMaterialProperties.HAS_SIFTER_RECIPE));
+        json.put("color", raw(material, GTMaterialProperties.DYE));
+        json.put("autoBlast", raw(material, GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES));
+        json.put("autoVacuum", raw(material, GTMaterialProperties.AUTO_VACUUM_FREEZER_RECIPES));
+        json.put("autoRecycle", raw(material, GTMaterialProperties.AUTO_RECYCLE_RECIPES));
+        json.put("toolEnchantment", raw(material, GTMaterialProperties.TOOL_ENCHANTMENT));
+        json.put("toolEnchantmentLevel", raw(material, GTMaterialProperties.TOOL_ENCHANTMENT_LEVEL));
+        json.put("armorEnchantment", raw(material, GTMaterialProperties.ARMOR_ENCHANTMENT));
+        json.put("armorEnchantmentLevel", raw(material, GTMaterialProperties.ARMOR_ENCHANTMENT_LEVEL));
+        json.put("unifiable", raw(material, GTMaterialProperties.UNIFIABLE));
+        json.put("densityMultiplier", raw(material, GTMaterialProperties.DENSITY_MULTIPLIER));
+        json.put("densityDivider", raw(material, GTMaterialProperties.DENSITY_DIVIDER));
+        json.put("steamMultiplier", raw(material, GTMaterialProperties.STEAM_MULTIPLIER));
+        json.put("gasMultiplier", raw(material, GTMaterialProperties.GAS_MULTIPLIER));
+        json.put("plasmaMultiplier", raw(material, GTMaterialProperties.PLASMA_MULTIPLIER));
+        json.put("generationFlags", dumpMlGenerationFlags(raw(material, GTMaterialProperties.GENERATION_FLAGS)));
+        json.put("hasCorrespondingFluid", raw(material, GTMaterialProperties.HAS_CORRESPONDING_FLUID));
+        json.put("hasCorrespondingGas", raw(material, GTMaterialProperties.HAS_CORRESPONDING_GAS));
+        json.put("hasElectrolyzerRecipe", raw(material, GTMaterialProperties.HAS_ELECTROLYZER_RECIPE));
+        json.put("hasCentrifugeRecipe", raw(material, GTMaterialProperties.HAS_CENTRIFUGE_RECIPE));
+        json.put("hasGas", raw(material, GTMaterialProperties.HAS_GAS));
+        json.put("enforceOreDictUnification", raw(material, GTMaterialProperties.ENFORCE_ORE_DICT_UNIFICATION));
+        json.put("hasChemicalRecipe", raw(material, GTMaterialProperties.HAS_CHEMICAL_RECIPE));
+        json.put("hasMixerRecipe", raw(material, GTMaterialProperties.HAS_MIXER_RECIPE));
+        json.put("hasSifterRecipe", raw(material, GTMaterialProperties.HAS_SIFTER_RECIPE));
         json.put(
             "hasMetalCraftingSolidifierRecipe",
             MaterialDumpData.hasMetalCraftingSolidifierRecipe(material.getName()));
         json.put("hasMetalSolidifierRecipe", MaterialDumpData.hasMetalSolidifierRecipe(material.getName()));
-        json.put("canBeCracked", material.getProperty(GTMaterialProperties.CAN_BE_CRACKED));
-        json.put("hasGlowingOre", material.getProperty(GTMaterialProperties.HAS_GLOWING_ORE));
-        json.put("processingMaterialTierEU", material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU));
-        json.put("addedPrefixes", material.getProperty(GTMaterialProperties.ADDED_PREFIXES));
-        json.put("removedPrefixes", material.getProperty(GTMaterialProperties.REMOVED_PREFIXES));
+        json.put("canBeCracked", raw(material, GTMaterialProperties.CAN_BE_CRACKED));
+        json.put("hasGlowingOre", raw(material, GTMaterialProperties.HAS_GLOWING_ORE));
+        json.put("processingMaterialTierEU", raw(material, GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU));
+        json.put("addedPrefixes", raw(material, GTMaterialProperties.ADDED_PREFIXES));
+        json.put("removedPrefixes", raw(material, GTMaterialProperties.REMOVED_PREFIXES));
         json.put("werkstoff", dumpMlWerkstoff(material));
         json.put("gtpp", dumpMlGtpp(material));
         return json;
@@ -345,7 +355,7 @@ public final class MaterialDataDump {
     /// the chemical formula -- are canonical properties serialized at the top level instead, and the
     /// proton/neutron counts are computed (see [gregtech.api.material.MaterialAtomics]).
     private static Map<String, Object> dumpMlGtpp(com.ruling_0.materiallib.api.Material material) {
-        String state = material.getProperty(GTMaterialProperties.GTPP_STATE);
+        String state = raw(material, GTMaterialProperties.GTPP_STATE);
         if (state == null) return null;
 
         FluidNames legacyFluids = Materials2FluidNames.of(material.getName());
@@ -356,7 +366,7 @@ public final class MaterialDataDump {
         json.put("generatesFluid", generatesFluid);
         json.put("generatesCells", MaterialDumpData.gtppGeneratesCells(material.getName()));
         json.put("fluidName", generatesFluid && legacyFluids != null ? legacyFluids.legacyGtppFluidName() : null);
-        json.put("plasmaName", generatesFluid ? material.getProperty(GTMaterialProperties.GTPP_PLASMA_NAME) : null);
+        json.put("plasmaName", generatesFluid ? raw(material, GTMaterialProperties.GTPP_PLASMA_NAME) : null);
         return json;
     }
 
@@ -367,17 +377,17 @@ public final class MaterialDataDump {
     /// flags -- are canonical properties serialized at the top level instead, and the proton/mass counts are
     /// computed (see [gregtech.api.material.MaterialAtomics]).
     private static Map<String, Object> dumpMlWerkstoff(com.ruling_0.materiallib.api.Material material) {
-        List<Integer> ids = material.getProperty(GTMaterialProperties.WERKSTOFF_IDS);
+        List<Integer> ids = raw(material, GTMaterialProperties.WERKSTOFF_IDS);
         if (ids == null) return null;
 
         Map<String, Object> json = new LinkedHashMap<>();
         json.put("ids", ids);
-        json.put("type", material.getProperty(GTMaterialProperties.WERKSTOFF_TYPE));
+        json.put("type", raw(material, GTMaterialProperties.WERKSTOFF_TYPE));
         json.put("pool", MaterialDumpData.werkstoffPool(material.getName()));
         // Always empty: every recipe-gen flag is a top-level canonical property. Emitted so the JSON shape
         // stays stable.
         json.put("flags", List.of());
-        json.put("prefixes", orEmpty(material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES)));
+        json.put("prefixes", orEmpty(raw(material, GTMaterialProperties.WERKSTOFF_PREFIXES)));
         return json;
     }
 
@@ -477,7 +487,6 @@ public final class MaterialDataDump {
 
     private static Map<String, Object> dumpMlFluids(FluidNames fluids) {
         Map<String, Object> json = new LinkedHashMap<>();
-        json.put("solid", dumpMlFluidRef(fluids != null ? fluids.solid() : null));
         json.put("fluid", dumpMlFluidRef(fluids != null ? fluids.fluid() : null));
         json.put("gas", dumpMlFluidRef(fluids != null ? fluids.gas() : null));
         json.put("plasma", dumpMlFluidRef(fluids != null ? fluids.plasma() : null));
