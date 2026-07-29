@@ -620,7 +620,8 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                                     if (aBaseMetaTileEntity.addStackToSlot(drone, mOutputItems[i])) break;
                             } else if (mAutoQueen && i == 0
                                 && j == 0
-                                && beeRoot.isMember(mOutputItems[0], EnumBeeType.QUEEN.ordinal())
+                                && (beeRoot.isMember(mOutputItems[0], EnumBeeType.QUEEN.ordinal())
+                                    || beeRoot.isMember(mOutputItems[0], EnumBeeType.PRINCESS.ordinal()))
                                 && aBaseMetaTileEntity.addStackToSlot(queen, mOutputItems[0])) break;
                             if (aBaseMetaTileEntity
                                 .addStackToSlot(getOutputSlot() + ((j + i) % mOutputItems.length), mOutputItems[i]))
