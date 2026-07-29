@@ -417,11 +417,9 @@ public final class GTOreAdapter implements IOreAdapter {
     }
 
     @Override
-    public @NotNull ArrayList<ItemStack> getOreDrops(Random random, OreInfo info2, boolean silktouch, int fortune) {
-        if (!supports(info2)) return new ArrayList<>();
+    public @NotNull ArrayList<ItemStack> getOreDrops(Random random, OreInfo info, boolean silktouch, int fortune) {
+        if (!supports(info)) return new ArrayList<>();
 
-        @SuppressWarnings("unchecked")
-        OreInfo info = (OreInfo) info2;
         info.material = gtFamilyOf(info.material);
 
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
@@ -438,11 +436,9 @@ public final class GTOreAdapter implements IOreAdapter {
     }
 
     @Override
-    public List<ItemStack> getPotentialDrops(OreInfo info2) {
-        if (!supports(info2)) return new ArrayList<>();
+    public List<ItemStack> getPotentialDrops(OreInfo info) {
+        if (!supports(info)) return new ArrayList<>();
 
-        @SuppressWarnings("unchecked")
-        OreInfo info = (OreInfo) info2;
         info.material = gtFamilyOf(info.material);
 
         if (info.isSmall) {
