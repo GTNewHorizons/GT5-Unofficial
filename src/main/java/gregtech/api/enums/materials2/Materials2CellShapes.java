@@ -12,7 +12,8 @@ import com.ruling_0.materiallib.api.Shape;
 ///
 /// `cellPlasma` needs two shapes sharing one oredict prefix: legacy plasma cells hold [GTRecipeBuilder#INGOTS]
 /// (144 mB) when the material also has a molten fluid (metal plasmas), or 1000 mB otherwise (gas/element
-/// plasmas) -- a per-material volume MaterialLib's container shape does not support directly. [MU] resolves the
+/// plasmas) -- a per-material volume MaterialLib's container shape does not support directly. [MaterialParts] resolves
+/// the
 /// two back to one prefix.
 public class Materials2CellShapes {
 

@@ -962,7 +962,7 @@ public class LoaderGTBlockFluid implements Runnable {
             MaterialUtils.FluidState.LIQUID,
             constructionFoamFluid);
         // UUMatter is GT-owned but its fluid is IC2's, resolved from the filled cell at runtime (no static
-        // LEGACY_FLUIDS name to port). Bind MU's slot store from the resolved IC2 fluid directly.
+        // LEGACY_FLUIDS name to port). Bind MaterialUtils' slot store from the resolved IC2 fluid directly.
         Fluid uuMatterFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("uuMatterCell", 1L), true)
             .getFluid();
         MaterialUtils.recordSlotFluid(Materials2Materials.UUMatter, MaterialUtils.FluidState.LIQUID, uuMatterFluid);
@@ -1133,7 +1133,8 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L));
 
         // The dedicated Steam material carries no LEGACY_FLUIDS gas row (see Materials2Materials.Steam), so
-        // point MU's gas slot at the "steam" Forge fluid registered above -- the same fluid configureMaterials
+        // point MaterialUtils' gas slot at the "steam" Forge fluid registered above -- the same fluid
+        // configureMaterials
         // wired to Water -- read directly from the fluid registry since Steam has no property-based route to
         // it.
         Fluid steamFluid = FluidRegistry.getFluid("steam");

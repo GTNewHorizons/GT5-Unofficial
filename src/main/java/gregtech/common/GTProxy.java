@@ -144,7 +144,7 @@ import gregtech.api.items.armor.ArmorKeybinds;
 import gregtech.api.material.AspectRefStack;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
@@ -2459,12 +2459,12 @@ public class GTProxy implements IFuelHandler {
     /// Registers a cell (fluid, filled item) pair for a material whose fluid MaterialLib already registered
     /// (so no [IGTRegisteredFluid] wrapper exists to call that instance method on), matching
     /// `GTFluid#registerContainers`'s canner-recipe fallback. Skipped when `cellPrefix` itself cut over for
-    /// `material` (see [MU]): MaterialLib's own `ShapeFluidInContainer#registerContainers` is then the sole
+    /// `material` (see [MaterialParts]): MaterialLib's own `ShapeFluidInContainer#registerContainers` is then the sole
     /// registration for that (fluid, filled) pair, registered later at MaterialLib's init -- registering it
     /// again here first would make that later registration a rejected duplicate (Forge's
     /// `FluidContainerRegistry` is a flat map keyed by the filled item).
     private static void registerCellContainer(OrePrefixes cellPrefix, Material material, Fluid fluid, int amount) {
-        if (MU.isCutOver(cellPrefix, material)) return;
+        if (MaterialParts.isCutOver(cellPrefix, material)) return;
         ItemStack filledCell = GTOreDictUnificator.get(cellPrefix, material, 1L);
         if (filledCell == null) return;
         FluidStack fluidStack = new FluidStack(fluid, amount);

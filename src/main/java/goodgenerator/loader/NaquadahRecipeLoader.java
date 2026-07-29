@@ -49,7 +49,6 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
@@ -924,7 +923,7 @@ public class NaquadahReworkRecipeLoader {
                             .getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.dustTiny, (int) (1)))) {
                                 tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                     tRecipe.mOutputs[i].stackSize * 2,
-                                    MU.stack(
+                                    MaterialParts.stack(
                                         OrePrefixes.dustTiny,
                                         Materials2Materials.EnrichedNaquadahOxideMixture,
                                         1));
@@ -956,7 +955,7 @@ public class NaquadahReworkRecipeLoader {
                                         (int) (1)))) {
                                             tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                                 tRecipe.mOutputs[i].stackSize * 2,
-                                                MU.stack(
+                                                MaterialParts.stack(
                                                     OrePrefixes.dust,
                                                     Materials2Materials.EnrichedNaquadahOxideMixture,
                                                     1));
@@ -968,7 +967,7 @@ public class NaquadahReworkRecipeLoader {
                                             (int) (1)))) {
                                                 tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                                     tRecipe.mOutputs[i].stackSize * 2,
-                                                    MU.stack(
+                                                    MaterialParts.stack(
                                                         OrePrefixes.dust,
                                                         Materials2Materials.NaquadriaOxideMixture,
                                                         1));
@@ -980,7 +979,7 @@ public class NaquadahReworkRecipeLoader {
                                                 (int) (1)))) {
                                                     tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                                         tRecipe.mOutputs[i].stackSize * 2,
-                                                        MU.stack(
+                                                        MaterialParts.stack(
                                                             OrePrefixes.dustSmall,
                                                             Materials2Materials.NaquadahOxideMixture,
                                                             1));
@@ -992,7 +991,7 @@ public class NaquadahReworkRecipeLoader {
                                                     (int) (1)))) {
                                                         tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                                             tRecipe.mOutputs[i].stackSize * 2,
-                                                            MU.stack(
+                                                            MaterialParts.stack(
                                                                 OrePrefixes.dustSmall,
                                                                 Materials2Materials.EnrichedNaquadahOxideMixture,
                                                                 1));
@@ -1004,7 +1003,7 @@ public class NaquadahReworkRecipeLoader {
                                                         (int) (1)))) {
                                                             tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                                                 tRecipe.mOutputs[i].stackSize * 2,
-                                                                MU.stack(
+                                                                MaterialParts.stack(
                                                                     OrePrefixes.dustSmall,
                                                                     Materials2Materials.NaquadriaOxideMixture,
                                                                     1));

@@ -13,7 +13,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -46,7 +46,7 @@ public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegist
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.screw, material, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "fX", "X ", 'X', MU.craftIngredient(OrePrefixes.bolt, material) });
+                        new Object[] { "fX", "X ", 'X', MaterialParts.craftIngredient(OrePrefixes.bolt, material) });
                 }
             }
         }

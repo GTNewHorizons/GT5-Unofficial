@@ -21,7 +21,7 @@ import gregtech.api.material.MaterialUtils;
 /// long rod, bolt, screw, ring, rotor).
 ///
 /// [#materialFluid] resolves the input fluid by name ([gregtech.api.enums.materials2.Materials2FluidNames] ->
-/// [FluidNames#legacyGtppFluidName]) rather than through [gregtech.api.material.MU]'s state-specific
+/// [FluidNames#legacyGtppFluidName]) rather than through [gregtech.api.material.MaterialUtils]'s state-specific
 /// accessors, which cannot resolve a gtPlusPlus-only material's fluid -- see
 /// [ProcessingAlloyBlastSmelter]'s class javadoc for the same resolution.
 ///

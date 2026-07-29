@@ -25,7 +25,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
@@ -356,7 +356,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             GTModHandler.addCraftingRecipe(
                                 GTOreDictUnificator.get(OrePrefixes.ring, material, 1L),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h ", "fX", 'X', MU.craftIngredient(OrePrefixes.stick, material) });
+                                new Object[] { "h ", "fX", 'X',
+                                    MaterialParts.craftIngredient(OrePrefixes.stick, material) });
                         }
                     }
                 }

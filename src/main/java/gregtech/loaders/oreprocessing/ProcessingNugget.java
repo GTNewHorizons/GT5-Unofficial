@@ -18,7 +18,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
@@ -91,7 +91,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.nugget, material, 8L),
                     GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "sI ", 'I', MU.craftIngredient(OrePrefixes.ingot, material) });
+                    new Object[] { "sI ", 'I', MaterialParts.craftIngredient(OrePrefixes.ingot, material) });
             }
         }
     }

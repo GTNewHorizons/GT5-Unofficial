@@ -7,7 +7,7 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeRegistrator;
@@ -33,7 +33,7 @@ public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeReg
             GTModHandler.addCraftingRecipe(
                 GTUtility.copyAmount(1, stack),
                 GTModHandler.RecipeBits.BITS_STD,
-                new Object[] { "Xx", 'X', MU.craftIngredient(OrePrefixes.foil, material) });
+                new Object[] { "Xx", 'X', MaterialParts.craftIngredient(OrePrefixes.foil, material) });
         }
     }
 }

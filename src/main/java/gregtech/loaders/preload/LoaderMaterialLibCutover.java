@@ -13,13 +13,13 @@ import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
 /// Hands the ore-dictionary unificator MaterialLib stacks for the item cutover: every (prefix,
-/// material) pair [MU] maps to a MaterialLib shape gets unified the same way
+/// material) pair [MaterialParts] maps to a MaterialLib shape gets unified the same way
 /// [gregtech.api.items.MetaGeneratedItemX32]'s constructor unifies its own generated stacks (including the
 /// soldering-metal and toolbox bookkeeping), run after that constructor so the MaterialLib stack becomes
 /// the unificator's preferred one.
@@ -41,12 +41,12 @@ public class LoaderMaterialLibCutover implements Runnable {
     @Override
     public void run() {
         for (OrePrefixes prefix : OrePrefixes.VALUES) {
-            Shape shape = MU.shape(prefix);
+            Shape shape = MaterialParts.shape(prefix);
             if (shape == null) continue;
             for (int id = 0; id < 1000; id++) {
                 Material material = Materials2IDIndex.get(id);
                 if (material == null || !prefix.doGenerateItem(material)) continue;
-                ItemStack stack = MU.stack(prefix, material, 1);
+                ItemStack stack = MaterialParts.stack(prefix, material, 1);
                 if (stack == null) continue;
                 if (prefix.isUnifiable()) {
                     GTOreDictUnificator.set(prefix, material, stack);
@@ -77,7 +77,7 @@ public class LoaderMaterialLibCutover implements Runnable {
 
     private static void unifyMembershipDriven() {
         for (OrePrefixes prefix : MEMBERSHIP_DRIVEN_PREFIXES) {
-            for (Shape shape : MU.shapes(prefix)) {
+            for (Shape shape : MaterialParts.shapes(prefix)) {
                 ShapeBlock block = (ShapeBlock) MaterialLibAPI.getBlock(shape);
                 for (Material material : block.getServedMaterials()) {
                     ItemStack stack = block.getStack(material, 1);

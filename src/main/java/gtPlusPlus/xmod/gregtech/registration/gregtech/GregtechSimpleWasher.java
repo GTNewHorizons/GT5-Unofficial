@@ -25,7 +25,6 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -170,7 +169,8 @@ public class GregtechSimpleWasher {
     /// gregtech's part autogen covers shapes the werkstoff system never had, so a plain stack lookup would
     /// wash materials this loop never covered.
     private static ItemStack werkstoffStack(com.ruling_0.materiallib.api.Material material, OrePrefixes prefix) {
-        return Materials2WerkstoffIndex.generatesPrefix(material, prefix) ? MU.stack(prefix, material, 1L) : null;
+        return Materials2WerkstoffIndex.generatesPrefix(material, prefix) ? MaterialParts.stack(prefix, material, 1L)
+            : null;
     }
 
     private static boolean generateDirtyCrushedRecipes() {

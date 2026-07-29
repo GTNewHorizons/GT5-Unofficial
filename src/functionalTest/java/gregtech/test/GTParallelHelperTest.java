@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -28,12 +28,12 @@ public class GTParallelHelperTest {
     @BeforeAll
     static void setup() {
         machine = new MockIVoidableMachine();
-        ItemStack rubberDust = MU.stack(OrePrefixes.dust, Materials2Materials.RawRubber, 1);
-        ItemStack sulfurDust = MU.stack(OrePrefixes.dust, Materials2Materials.Sulfur, 1);
+        ItemStack rubberDust = MaterialParts.stack(OrePrefixes.dust, Materials2Materials.RawRubber, 1);
+        ItemStack sulfurDust = MaterialParts.stack(OrePrefixes.dust, Materials2Materials.Sulfur, 1);
         rubberRecipe = new GTRecipe(
             new ItemStack[] { rubberDust.copy(), sulfurDust.copy() },
-            new ItemStack[] { MU.stack(OrePrefixes.dust, Materials2Materials.Rubber, 1),
-                MU.stack(OrePrefixes.dustTiny, Materials2Materials.Rubber, 1) },
+            new ItemStack[] { MaterialParts.stack(OrePrefixes.dust, Materials2Materials.Rubber, 1),
+                MaterialParts.stack(OrePrefixes.dustTiny, Materials2Materials.Rubber, 1) },
             null,
             null,
             new int[] { 10000, 6667 },

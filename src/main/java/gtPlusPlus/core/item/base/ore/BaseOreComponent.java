@@ -20,7 +20,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -56,7 +56,7 @@ public class BaseOreComponent extends Item {
         // would create a second entry that races the MaterialLib one across launches; keep the item itself
         // (legacy saves/oredict-name lookups still work through MaterialLib), just skip the duplicate
         // association.
-        if (!MU.isCutOver(componentType.getOrePrefixEnum(), material)) {
+        if (!MaterialParts.isCutOver(componentType.getOrePrefixEnum(), material)) {
             GTOreDictUnificator.registerOre(
                 componentType.getOrePrefix() + MaterialUtils.internalName(material),
                 new ItemStack(this, 1));

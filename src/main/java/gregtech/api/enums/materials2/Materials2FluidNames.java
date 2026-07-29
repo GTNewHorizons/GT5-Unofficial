@@ -20,7 +20,8 @@ import gregtech.api.material.FluidRef;
 /// tank-bearing tile entity in the pack, with an unregistered name silently emptying the tank it was in.
 ///
 /// The state set is also wider than the shape set: a material whose liquid and gas share one Forge fluid name
-/// registers only one shape, so `gregtech.api.material.MU` reads the slots here to tell "has no gas" from "has
+/// registers only one shape, so `gregtech.api.material.MaterialUtils` reads the slots here to tell "has no gas" from
+/// "has
 /// a gas that shares the liquid's registration". Held as a table rather than as material properties because
 /// every reader already has the material in hand and needs only its name, so nothing gains from attaching it
 /// to a [com.ruling_0.materiallib.api.Material].

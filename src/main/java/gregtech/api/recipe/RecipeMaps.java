@@ -63,7 +63,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
@@ -1287,7 +1287,8 @@ public final class RecipeMaps {
         .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_STEAM)
         .progressBarTextureSteamMUI2(GTGuiTextures.PROGRESSBAR_ARROW_STEAM)
         .recipeEmitter(b -> {
-            if (MU.isPartOf(b.getItemInputBasic(0), Materials2Materials.Graphite)) return Collections.emptyList();
+            if (MaterialParts.isPartOf(b.getItemInputBasic(0), Materials2Materials.Graphite))
+                return Collections.emptyList();
             if (GTUtility.isArrayOfLength(b.getItemInputsBasic(), 1)) {
                 ItemStack aInput1 = b.getItemInputBasic(0);
                 if (((OrePrefixes.ingot.contains(aInput1)) || (OrePrefixes.dust.contains(aInput1))

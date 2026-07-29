@@ -51,7 +51,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -631,9 +630,9 @@ public class NetheriteRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MU.stack(prefix, Materials2Materials.InfusedGold, multiplier),
+                MaterialParts.stack(prefix, Materials2Materials.InfusedGold, multiplier),
                 ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(inverseMultiplier))
-            .itemOutputs(MU.stack(prefix, Materials2Materials.Netherite, multiplier))
+            .itemOutputs(MaterialParts.stack(prefix, Materials2Materials.Netherite, multiplier))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Boron,

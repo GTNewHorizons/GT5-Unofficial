@@ -14,7 +14,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -38,7 +38,7 @@ public class ProcessingFrame implements IOreRecipeRegistrator {
             GTModHandler.addCraftingRecipe(
                 GTUtility.copyAmount(2, stack),
                 GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "SSS", "SwS", "SSS", 'S', MU.craftIngredient(OrePrefixes.stick, material) });
+                new Object[] { "SSS", "SwS", "SSS", 'S', MaterialParts.craftIngredient(OrePrefixes.stick, material) });
         }
 
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)

@@ -22,7 +22,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -43,10 +43,11 @@ public class StaticRecipeChangeLoaders {
         String internalName = MaterialUtils.internalName(material);
         for (OrePrefixes prefixes : OrePrefixes.VALUES)
             if (Materials2WerkstoffIndex.generatesPrefix(material, prefixes)) {
-                GTOreDictUnificator.set(prefixes, material, MU.stack(prefixes, material, 1), true, true);
+                GTOreDictUnificator.set(prefixes, material, MaterialParts.stack(prefixes, material, 1), true, true);
                 for (ItemStack stack : OreDictionary.getOres(prefixes + internalName)) {
                     GTOreDictUnificator.addAssociation(prefixes, material, stack, false);
-                    GTOreDictUnificator.getAssociation(stack).mUnificationTarget = MU.stack(prefixes, material, 1);
+                    GTOreDictUnificator.getAssociation(stack).mUnificationTarget = MaterialParts
+                        .stack(prefixes, material, 1);
                 }
             }
     }
@@ -55,7 +56,7 @@ public class StaticRecipeChangeLoaders {
         String internalName = MaterialUtils.internalName(material);
         for (OrePrefixes prefixes : OrePrefixes.VALUES)
             if (Materials2WerkstoffIndex.generatesPrefix(material, prefixes)) {
-                GTOreDictUnificator.set(prefixes, material, MU.stack(prefixes, material, 1), true, true);
+                GTOreDictUnificator.set(prefixes, material, MaterialParts.stack(prefixes, material, 1), true, true);
                 for (ItemStack stack : OreDictionary.getOres(prefixes + internalName)) {
                     GTOreDictUnificator.addAssociation(prefixes, material, stack, false);
                 }

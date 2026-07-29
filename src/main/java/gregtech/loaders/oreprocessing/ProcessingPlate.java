@@ -45,7 +45,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.render.TextureFactory;
@@ -136,7 +136,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         GTModHandler.addCraftingRecipe(
             GTOreDictUnificator.get(OrePrefixes.foil, material, 2L),
             BITS_STD,
-            new Object[] { "hX", 'X', MU.craftIngredient(OrePrefixes.plate, material) });
+            new Object[] { "hX", 'X', MaterialParts.craftIngredient(OrePrefixes.plate, material) });
 
         if (material == Materials2Materials.Paper) {
             GTModHandler.addCraftingRecipe(
@@ -157,13 +157,13 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                         GTOreDictUnificator.get(OrePrefixes.plate, material, 1L),
                         BITS_STD,
                         new Object[] { "h", // craftingToolHardHammer
-                            "X", "X", 'X', MU.craftIngredient(OrePrefixes.ingot, material) });
+                            "X", "X", 'X', MaterialParts.craftIngredient(OrePrefixes.ingot, material) });
 
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.plate, material, 1L),
                         BITS_STD,
                         new Object[] { "h", // craftingToolHardHammer
-                            "X", 'X', MU.craftIngredient(OrePrefixes.gem, material) });
+                            "X", 'X', MaterialParts.craftIngredient(OrePrefixes.gem, material) });
                 }
             }
 
@@ -174,7 +174,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                         GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
                         BITS_STD,
                         new Object[] { ToolDictNames.craftingToolMortar,
-                            MU.craftIngredient(OrePrefixes.plate, material) });
+                            MaterialParts.craftIngredient(OrePrefixes.plate, material) });
                 }
             }
         }
@@ -220,7 +220,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (!noSmashing) {
-            Object plateStack = MU.craftIngredient(OrePrefixes.plate, material);
+            Object plateStack = MaterialParts.craftIngredient(OrePrefixes.plate, material);
             Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
             if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
@@ -274,12 +274,12 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         if (!noSmashing) {
             Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
             if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
-                Object plateStack = MU.craftIngredient(OrePrefixes.plate, material);
+                Object plateStack = MaterialParts.craftIngredient(OrePrefixes.plate, material);
                 GTModHandler.addCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
                     DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
                     new Object[] { "I", "B", "h", // craftingToolHardHammer
-                        'I', MU.craftIngredient(OrePrefixes.plateDouble, material), 'B', plateStack });
+                        'I', MaterialParts.craftIngredient(OrePrefixes.plateDouble, material), 'B', plateStack });
             }
         }
 
@@ -327,12 +327,12 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         if (!noSmashing) {
             Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
             if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
-                Object plateStack = MU.craftIngredient(OrePrefixes.plate, material);
+                Object plateStack = MaterialParts.craftIngredient(OrePrefixes.plate, material);
                 GTModHandler.addCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
                     DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
                     new Object[] { "I", "B", "h", // craftingToolHardHammer
-                        'I', MU.craftIngredient(OrePrefixes.plateTriple, material), 'B', plateStack });
+                        'I', MaterialParts.craftIngredient(OrePrefixes.plateTriple, material), 'B', plateStack });
             }
         }
     }
@@ -368,12 +368,12 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         if (!noSmashing) {
             Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
             if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
-                Object plateStack = MU.craftIngredient(OrePrefixes.plate, material);
+                Object plateStack = MaterialParts.craftIngredient(OrePrefixes.plate, material);
                 GTModHandler.addCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
                     DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
                     new Object[] { "I", "B", "h", // craftingToolHardHammer
-                        'I', MU.craftIngredient(OrePrefixes.plateQuadruple, material), 'B', plateStack });
+                        'I', MaterialParts.craftIngredient(OrePrefixes.plateQuadruple, material), 'B', plateStack });
             }
         }
     }
@@ -437,7 +437,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.itemCasing, material, 1L),
                     BITS_STD,
-                    new Object[] { "h X", 'X', MU.craftIngredient(OrePrefixes.plate, material) });
+                    new Object[] { "h X", 'X', MaterialParts.craftIngredient(OrePrefixes.plate, material) });
             }
         }
 

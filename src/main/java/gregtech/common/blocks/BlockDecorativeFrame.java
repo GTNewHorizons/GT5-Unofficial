@@ -27,7 +27,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -58,7 +58,7 @@ public class BlockDecorativeFrame extends BlockStorage implements IBlockWithText
                 Material material = materials.get(i);
 
                 if (material == null) continue;
-                if (!MU.generatesPrefix(material, OrePrefixes.frameGt)) continue;
+                if (!MaterialParts.generatesPrefix(material, OrePrefixes.frameGt)) continue;
 
                 OreDictionary.registerOre(
                     OrePrefixes.frameGt.oreDictName(MaterialUtils.internalName(material))
@@ -86,7 +86,7 @@ public class BlockDecorativeFrame extends BlockStorage implements IBlockWithText
             Material material = materials.get(i);
 
             if (material == null) continue;
-            if (!MU.generatesPrefix(material, OrePrefixes.frameGt)) continue;
+            if (!MaterialParts.generatesPrefix(material, OrePrefixes.frameGt)) continue;
 
             stacks.add(new ItemStack(self, 1, i));
         }
@@ -177,14 +177,14 @@ public class BlockDecorativeFrame extends BlockStorage implements IBlockWithText
             Material material = materials.get(i);
 
             if (material == null) continue;
-            if (!MU.generatesPrefix(material, OrePrefixes.frameGt)) continue;
-            if (!MU.generatesPrefix(material, OrePrefixes.stick)) continue;
+            if (!MaterialParts.generatesPrefix(material, OrePrefixes.frameGt)) continue;
+            if (!MaterialParts.generatesPrefix(material, OrePrefixes.stick)) continue;
             if (MaterialUtils.hasSubTag(material, SubTag.NO_RECIPES)) continue;
 
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.partOf(material, OrePrefixes.stick, 4))
+                .itemInputs(MaterialParts.partOf(material, OrePrefixes.stick, 4))
                 .circuit(4)
-                .itemOutputs(MU.partOf(material, OrePrefixes.frameGt, 1))
+                .itemOutputs(MaterialParts.partOf(material, OrePrefixes.frameGt, 1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(3 * SECONDS + 4 * TICKS)
                 .addTo(RecipeMaps.assemblerRecipes);

@@ -68,7 +68,6 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLog;
@@ -5295,7 +5294,7 @@ public class RecipeLoader {
                                             .getStack(Materials2Materials.Samarium, Materials2Shapes.dustSmall, 1))) {
                                                 tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                                     tRecipe.mOutputs[i].stackSize * 2,
-                                                    MU.stack(
+                                                    MaterialParts.stack(
                                                         OrePrefixes.dustSmall,
                                                         Materials2Materials.SamariumOreConcentrate,
                                                         1));
@@ -5568,7 +5567,7 @@ public class RecipeLoader {
                         .isItemEqual(MaterialLibAPI.getStack(Materials2Materials.Cerium, Materials2Shapes.dust, 1))) {
                         tRecipe.mOutputs[i] = GTUtility.copyAmount(
                             tRecipe.mOutputs[i].stackSize,
-                            MU.stack(
+                            MaterialParts.stack(
                                 OrePrefixes.dust,
                                 Materials2Materials.CeriumRichMixture,
                                 tRecipe.mOutputs[i].stackSize));

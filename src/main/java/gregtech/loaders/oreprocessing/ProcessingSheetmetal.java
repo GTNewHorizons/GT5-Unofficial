@@ -11,7 +11,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
@@ -30,7 +30,7 @@ public class ProcessingSheetmetal implements IOreRecipeRegistrator {
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.partOf(material, OrePrefixes.plate, 2), GTUtility.getIntegratedCircuit(11))
+            .itemInputs(MaterialParts.partOf(material, OrePrefixes.plate, 2), GTUtility.getIntegratedCircuit(11))
             .itemOutputs(GTUtility.copyAmount(1, stack))
             .eut(TierEU.RECIPE_LV)
             .duration(10)

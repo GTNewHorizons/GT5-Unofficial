@@ -17,7 +17,6 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLanguageManager;
@@ -118,7 +117,7 @@ public class LoaderWerkstoffRegistrations {
     /// then whatever already holds the oredict entry, and finally the ore adapters for the ore prefixes, whose
     /// blocks are placed and read through the adapters rather than carried as an item shape.
     private static ItemStack resolve(OrePrefixes prefix, Material material) {
-        ItemStack stack = MU.stack(prefix, material, 1);
+        ItemStack stack = MaterialParts.stack(prefix, material, 1);
         if (stack != null) return stack;
         stack = GTOreDictUnificator.get(prefix, material, 1);
         if (stack != null) return stack;

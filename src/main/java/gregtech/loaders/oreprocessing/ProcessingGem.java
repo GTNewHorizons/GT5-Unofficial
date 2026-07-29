@@ -25,7 +25,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -223,21 +223,23 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTModHandler.addCraftingRecipe(
                                 GTOreDictUnificator.get(OrePrefixes.gem, material, 2L),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X', MU.craftIngredient(OrePrefixes.gemFlawless, material) });
+                                new Object[] { "h", "X", 'X',
+                                    MaterialParts.craftIngredient(OrePrefixes.gemFlawless, material) });
 
                             if (MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)) {
                                 GTModHandler.addCraftingRecipe(
                                     GTUtility.copyAmount(1, stack),
                                     GTModHandler.RecipeBits.BITS_STD,
                                     new Object[] { "XXX", "XXX", "XXX", 'X',
-                                        MU.craftIngredient(OrePrefixes.nugget, material) });
+                                        MaterialParts.craftIngredient(OrePrefixes.nugget, material) });
                             }
 
                             if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
                                     GTModHandler.RecipeBits.BITS_STD,
-                                    new Object[] { "X", "m", 'X', MU.craftIngredient(OrePrefixes.gem, material) });
+                                    new Object[] { "X", "m", 'X',
+                                        MaterialParts.craftIngredient(OrePrefixes.gem, material) });
                             }
                         }
                     }
@@ -317,13 +319,14 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTModHandler.addCraftingRecipe(
                                 GTOreDictUnificator.get(OrePrefixes.gemChipped, material, 2L),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X', MU.craftIngredient(OrePrefixes.gemFlawed, material) });
+                                new Object[] { "h", "X", 'X',
+                                    MaterialParts.craftIngredient(OrePrefixes.gemFlawed, material) });
                             if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.dustSmall, material, 1L),
                                     GTModHandler.RecipeBits.BITS_STD,
                                     new Object[] { "X", "m", 'X',
-                                        MU.craftIngredient(OrePrefixes.gemChipped, material) });
+                                        MaterialParts.craftIngredient(OrePrefixes.gemChipped, material) });
                             }
                         }
                     }
@@ -360,7 +363,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                     GTOreDictUnificator.get(OrePrefixes.dust, material, 4L),
                                     GTModHandler.RecipeBits.BITS_STD,
                                     new Object[] { "X", "m", 'X',
-                                        MU.craftIngredient(OrePrefixes.gemExquisite, material) });
+                                        MaterialParts.craftIngredient(OrePrefixes.gemExquisite, material) });
                             }
                         }
                     }
@@ -421,13 +424,14 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTModHandler.addCraftingRecipe(
                                 GTOreDictUnificator.get(OrePrefixes.gemFlawed, material, 2L),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X', MU.craftIngredient(OrePrefixes.gem, material) });
+                                new Object[] { "h", "X", 'X',
+                                    MaterialParts.craftIngredient(OrePrefixes.gem, material) });
                             if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.dustSmall, material, 2L),
                                     GTModHandler.RecipeBits.BITS_STD,
                                     new Object[] { "X", "m", 'X',
-                                        MU.craftIngredient(OrePrefixes.gemFlawed, material) });
+                                        MaterialParts.craftIngredient(OrePrefixes.gemFlawed, material) });
                             }
                         }
                     }
@@ -501,13 +505,14 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTModHandler.addCraftingRecipe(
                                 GTOreDictUnificator.get(OrePrefixes.gemFlawless, material, 2L),
                                 GTModHandler.RecipeBits.BITS_STD,
-                                new Object[] { "h", "X", 'X', MU.craftIngredient(OrePrefixes.gemExquisite, material) });
+                                new Object[] { "h", "X", 'X',
+                                    MaterialParts.craftIngredient(OrePrefixes.gemExquisite, material) });
                             if (specialRecipeReq) {
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.dust, material, 2L),
                                     GTModHandler.RecipeBits.BITS_STD,
                                     new Object[] { "X", "m", 'X',
-                                        MU.craftIngredient(OrePrefixes.gemFlawless, material) });
+                                        MaterialParts.craftIngredient(OrePrefixes.gemFlawless, material) });
                             }
                         }
                     }

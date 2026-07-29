@@ -18,7 +18,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -57,8 +57,9 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                         case "Wood" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGt, material, 1L),
                             GTModHandler.RecipeBits.BITS_STD,
-                            new Object[] { "SPS", "PsP", "SPS", 'P', MU.craftIngredient(OrePrefixes.plank, material),
-                                'S', MU.craftIngredient(OrePrefixes.stick, material) });
+                            new Object[] { "SPS", "PsP", "SPS", 'P',
+                                MaterialParts.craftIngredient(OrePrefixes.plank, material), 'S',
+                                MaterialParts.craftIngredient(OrePrefixes.stick, material) });
                         case "Stone" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGt, material, 1L),
                             GTModHandler.RecipeBits.BITS_STD,
@@ -72,8 +73,8 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                                     GTOreDictUnificator.get(OrePrefixes.gearGt, material, 1L),
                                     GTModHandler.RecipeBits.BITS_STD,
                                     new Object[] { "SPS", "PwP", "SPS", 'P',
-                                        MU.craftIngredient(OrePrefixes.plate, material), 'S',
-                                        MU.craftIngredient(OrePrefixes.stick, material) });
+                                        MaterialParts.craftIngredient(OrePrefixes.plate, material), 'S',
+                                        MaterialParts.craftIngredient(OrePrefixes.stick, material) });
                             }
                         }
                     }
@@ -97,7 +98,8 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                         case "Wood" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGtSmall, material, 1L),
                             GTModHandler.RecipeBits.BITS_STD,
-                            new Object[] { "P ", " s", 'P', MU.craftIngredient(OrePrefixes.plank, material) });
+                            new Object[] { "P ", " s", 'P',
+                                MaterialParts.craftIngredient(OrePrefixes.plank, material) });
                         case "Stone" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGtSmall, material, 1L),
                             GTModHandler.RecipeBits.BITS_STD,
@@ -110,8 +112,8 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                                     GTOreDictUnificator.get(OrePrefixes.gearGtSmall, material, 1L),
                                     GTModHandler.RecipeBits.BITS_STD,
                                     new Object[] { " S ", "hPx", " S ", 'S',
-                                        MU.craftIngredient(OrePrefixes.stick, material), 'P',
-                                        MU.craftIngredient(OrePrefixes.plate, material) });
+                                        MaterialParts.craftIngredient(OrePrefixes.stick, material), 'P',
+                                        MaterialParts.craftIngredient(OrePrefixes.plate, material) });
                             }
                         }
                     }

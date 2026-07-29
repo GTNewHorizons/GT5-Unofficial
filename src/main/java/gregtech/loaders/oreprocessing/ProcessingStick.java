@@ -20,7 +20,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -44,7 +44,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.springSmall, material, 1L),
                     GTModHandler.RecipeBits.BUFFERED,
-                    new Object[] { " s ", "fPx", 'P', MU.craftIngredient(OrePrefixes.stick, material) });
+                    new Object[] { " s ", "fPx", 'P', MaterialParts.craftIngredient(OrePrefixes.stick, material) });
             }
         }
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
@@ -142,11 +142,11 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stick, material, 2L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "s", "X", 'X', MU.craftIngredient(OrePrefixes.stickLong, material) });
+                        new Object[] { "s", "X", 'X', MaterialParts.craftIngredient(OrePrefixes.stickLong, material) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stick, material, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[] { "f ", " X", 'X', MU.craftIngredient(OrePrefixes.ingot, material) });
+                        new Object[] { "f ", " X", 'X', MaterialParts.craftIngredient(OrePrefixes.ingot, material) });
                 }
             }
         }

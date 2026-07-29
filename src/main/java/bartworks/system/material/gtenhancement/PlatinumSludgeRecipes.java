@@ -89,7 +89,6 @@ import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
@@ -1183,7 +1182,7 @@ public class PlatinumSludgeOverHaul {
             if (PlatinumSludgeOverHaul.isInBlackList(input, availableItemList)) continue;
 
             OrePrefixes prefix = outputAssociation.mPrefix == nugget ? dustTiny : dust;
-            entry.setValue(MU.stack(prefix, newOutput, output.stackSize * 2));
+            entry.setValue(MaterialParts.stack(prefix, newOutput, output.stackSize * 2));
         }
 
         // vanilla crafting

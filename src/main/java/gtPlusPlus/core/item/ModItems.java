@@ -18,7 +18,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
@@ -382,7 +382,7 @@ public final class ModItems {
 
     private static void hideMilledIfCutOver(com.ruling_0.materiallib.api.Material material,
         GregtechItemList legacyItem) {
-        if (MU.isCutOver(OrePrefixes.milled, material)) {
+        if (MaterialParts.isCutOver(OrePrefixes.milled, material)) {
             codechicken.nei.api.API.hideItem(legacyItem.get(1));
         }
     }

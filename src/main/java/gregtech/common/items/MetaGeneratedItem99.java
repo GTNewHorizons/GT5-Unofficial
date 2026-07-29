@@ -23,7 +23,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -98,7 +98,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
                     MaterialUtils.internalName(material),
                     i));
         }
-        if (!MetaGeneratedItemX32.DUMP_MODE && MU.isCutOver(cellMolten, material)) return;
+        if (!MetaGeneratedItemX32.DUMP_MODE && MaterialParts.isCutOver(cellMolten, material)) return;
 
         ItemStack tStack = new ItemStack(this, 1, i);
         enabled.set(i);
@@ -121,7 +121,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
                         MaterialUtils.internalName(material),
                         offset + i));
             }
-            if (MetaGeneratedItemX32.DUMP_MODE || !MU.isCutOver(prefix, material)) {
+            if (MetaGeneratedItemX32.DUMP_MODE || !MaterialParts.isCutOver(prefix, material)) {
                 ItemStack tStack = new ItemStack(this, 1, offset + i);
                 enabled.set(offset + i);
 
