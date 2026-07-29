@@ -39,4 +39,4 @@ addon.late.local.gradle.kts
 layout.json
 __pycache__/
 *.pyc
-scripts/
+/scripts/
