@@ -24,7 +24,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -94,8 +94,8 @@ public class RecipeLoaderMilling {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(
-                MU.stack(OrePrefixes.dust, Materials2Materials.PlatinumMetallicPowder, 64),
-                MU.stack(OrePrefixes.dust, Materials2Materials.PlatinumMetallicPowder, 64),
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.PlatinumMetallicPowder, 64),
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.PlatinumMetallicPowder, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Rhodium, Materials2Shapes.dust, 60),
                 MaterialLibAPI.getStack(Materials2Materials.Selenium, Materials2Shapes.dust, 40),
                 MaterialLibAPI.getStack(Materials2Materials.Tellurium, Materials2Shapes.dust, (int) (10)))

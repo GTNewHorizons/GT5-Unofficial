@@ -40,6 +40,7 @@ import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -1667,7 +1668,7 @@ public class MTERecipeLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemRefer.Radiation_Protection_Plate.get(2),
-                MU.stack(OrePrefixes.plate, Materials2Materials.prismaticnaquadah, 2),
+                MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.prismaticnaquadah, 2),
                 GTOreDictUnificator.get("frameGtNaquadah", 1))
             .circuit(1)
             .itemOutputs(ItemList.NaquadahReactorCasing.get(1))

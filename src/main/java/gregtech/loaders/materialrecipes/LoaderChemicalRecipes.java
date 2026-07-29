@@ -1,7 +1,5 @@
 package gregtech.loaders.materialrecipes;
 
-import static gregtech.api.enums.OrePrefixes.dust;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +10,10 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
 import gregtech.api.material.MaterialAtomics;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLog;
@@ -59,7 +58,7 @@ public final class LoaderChemicalRecipes {
         }
         long totalAmount = 0;
         for (MaterialRefStack entry : composition) totalAmount += entry.amount();
-        ItemStack output = MU.stack(dust, material, totalAmount);
+        ItemStack output = MaterialParts.stack(Materials2Shapes.dust, material, totalAmount);
         if (output == null) return;
 
         List<ItemStack> itemInputs = new ArrayList<>();

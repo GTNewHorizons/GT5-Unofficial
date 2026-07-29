@@ -27,8 +27,9 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -49,7 +50,7 @@ public class MachineRecipes implements Runnable {
         // exit early if not in pack
         if (!NewHorizonsCoreMod.isModLoaded() || !GalacticraftCore.isModLoaded()) return;
 
-        ItemStack hypogenFrameBox_8 = MU.stack(OrePrefixes.frameGt, Materials2Materials.Hypogen, 8);
+        ItemStack hypogenFrameBox_8 = MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.Hypogen, 8);
         ItemStack hypogenScrew_32 = MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2Shapes.screw, 32);
         Fluid hypogenFluid = MaterialUtils.legacyGtppFluidOf(Materials2Materials.Hypogen);
         Fluid celestialTungstenFluid = MaterialUtils.legacyGtppFluidOf(Materials2Materials.CelestialTungsten);
@@ -58,8 +59,10 @@ public class MachineRecipes implements Runnable {
         ItemStack highComputationStationT3_32 = ItemRefer.HiC_T3.get(32);
         ItemStack highComputationStationT4_32 = ItemRefer.HiC_T4.get(32);
         ItemStack highComputationStationT5_32 = ItemRefer.HiC_T5.get(32);
-        ItemStack metaStableOgScrew_64 = MU.stack(OrePrefixes.screw, Materials2Materials.MetastableOganesson, 64);
-        ItemStack titaniumBetaCScrew_64 = MU.stack(OrePrefixes.screw, Materials2Materials.TanmolyiumBetaC, 64);
+        ItemStack metaStableOgScrew_64 = MaterialParts
+            .stack(Materials2Shapes.screw, Materials2Materials.MetastableOganesson, 64);
+        ItemStack titaniumBetaCScrew_64 = MaterialParts
+            .stack(Materials2Shapes.screw, Materials2Materials.TanmolyiumBetaC, 64);
 
         ItemStack voidMiner = ItemRegistry.voidminer[2];
 

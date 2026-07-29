@@ -40,11 +40,13 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -543,7 +545,8 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { ItemList.Circuit_Board_Optical.get(1L), ItemList.Circuit_OpticalProcessor.get(4L),
                 ItemList.Circuit_Parts_InductorXSMD.get(16L), ItemList.Circuit_Parts_CapacitorXSMD.get(20L),
                 ItemList.Circuit_Parts_ResistorXSMD.get(20L), ItemList.Circuit_Chip_NOR.get(32L),
-                ItemList.Circuit_Chip_Ram.get(64L), MU.stack(OrePrefixes.wireFine, Materials2Materials.Lumiium, 24), // Fine
+                ItemList.Circuit_Chip_Ram.get(64L),
+                MaterialParts.stack(Materials2Shapes.wireFine, Materials2Materials.Lumiium, 24), // Fine
                 // Lumiium
                 // Wire
                 new Object[] { OrePrefixes.foil.ingredient(Materials2Markers.AnySyntheticRubber), 64L }, },
@@ -567,7 +570,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_TransistorXSMD.get(24L), ItemList.Circuit_Parts_ResistorXSMD.get(24L),
                 ItemList.Circuit_Parts_CapacitorXSMD.get(24L), ItemList.Circuit_Parts_DiodeXSMD.get(24L),
                 ItemList.Circuit_Chip_NOR.get(64L), ItemList.Circuit_Chip_SoC2.get(32L),
-                MU.stack(OrePrefixes.wireFine, Materials2Materials.Lumiium, 32), // Fine
+                MaterialParts.stack(Materials2Shapes.wireFine, Materials2Materials.Lumiium, 32), // Fine
                 // Lumiium
                 // Wire
                 new Object[] { OrePrefixes.foil.ingredient(Materials2Markers.AnySyntheticRubber), 64L },
@@ -1175,7 +1178,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 CustomItemList.Godforge_MagneticConfinementCasing.get(16), ItemList.Field_Generator_UMV.get(1L),
                 GTOreDictUnificator.get("plateSuperdenseMagmatter", 1L),
                 GTOreDictUnificator.get("wireGt08SuperconductorUMV", 8L),
-                MU.stack(OrePrefixes.plateDense, Materials2Materials.Shirabon, 64) },
+                MaterialParts.stack(Materials2Shapes.plateDense, Materials2Materials.Shirabon, 64) },
             new FluidStack[] {
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.spatialFluid, Materials2FluidShapes.fluidMolten, 1 * STACKS),
@@ -1200,7 +1203,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get("frameGtWhiteDwarfMatter", 1L), ItemList.Field_Generator_UMV.get(1L),
                 GTOreDictUnificator.get("wireFineMagmatter", 64L),
                 MaterialLibAPI.getStack(Materials2Materials.SuperconductorUMVBase, Materials2Shapes.wireFine, 64),
-                MU.stack(OrePrefixes.wireFine, Materials2Materials.Shirabon, 64),
+                MaterialParts.stack(Materials2Shapes.wireFine, Materials2Materials.Shirabon, 64),
                 GTOreDictUnificator.get("plateSuperdenseFlerovium_GT5U", 16L), },
             new FluidStack[] {
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.ChromaticGlass), 1 * STACKS),
@@ -2393,15 +2396,15 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UMV,
             64,
             new Object[] { ItemList.BlockQuarkContainmentCasing.get(6),
-                MU.stack(OrePrefixes.frameGt, Materials2Materials.Tairitsu, 6),
+                MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.Tairitsu, 6),
                 GTOreDictUnificator.get("frameGtChuritsu", 6), GTOreDictUnificator.get("frameGtShijima", 6),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "IrradiantReinforcedBedrockiumPlate", 8),
                 GTOreDictUnificator.get("foilprotohalkonite", 32),
-                MU.stack(OrePrefixes.plate, Materials2Materials.Tairitsu, 8),
+                MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.Tairitsu, 8),
                 MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.screw, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Shijima, Materials2Shapes.bolt, 64),
                 MaterialLibAPI.getStack(Materials2Materials.SixPhasedCopper, Materials2Shapes.bolt, 24),
-                MU.stack(OrePrefixes.ring, Materials2Materials.Tairitsu, 12),
+                MaterialParts.stack(Materials2Shapes.ring, Materials2Materials.Tairitsu, 12),
                 MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2Shapes.screw, 24),
                 ItemList.EnergisedTesseract.get(2), ItemList.Field_Generator_UEV.get(1) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.ChromaticGlass, 384 * INGOTS),
@@ -2424,7 +2427,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get("pipeHugeTranscendentMetal", 6), ItemList.Electromagnet_Tengam.get(6),
                 GTOreDictUnificator.get("wireGt04SuperconductorUIV", 6),
                 GTOreDictUnificator.get("stickprotohalkonite", 6),
-                MU.stack(OrePrefixes.foil, Materials2Materials.Tairitsu, 24),
+                MaterialParts.stack(Materials2Shapes.foil, Materials2Materials.Tairitsu, 24),
                 MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.ring, 12),
                 MaterialLibAPI.getStack(Materials2Materials.Shijima, Materials2Shapes.screw, 48),
                 MaterialLibAPI.getStack(Materials2Materials.SixPhasedCopper, Materials2Shapes.rotor, 1),
@@ -2453,7 +2456,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Shijima, Materials2Shapes.gearGt, 2),
                 MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2Shapes.gearGtSmall, 3),
                 ItemList.UIV_Coil.get(6), GTOreDictUnificator.get("stickLongprotohalkonite", 6),
-                MU.stack(OrePrefixes.wireFine, Materials2Materials.Tairitsu, 48),
+                MaterialParts.stack(Materials2Shapes.wireFine, Materials2Materials.Tairitsu, 48),
                 MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.foil, 24),
                 MaterialLibAPI.getStack(Materials2Materials.Shijima, Materials2Shapes.screw, 48),
                 GTModHandler.getModItem(Railcraft.ID, "machine.eta", 6, 8),
@@ -2480,11 +2483,11 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { ItemRefer.Field_Restriction_Coil_T3.get(2),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(6), ItemList.UIV_Coil.get(3),
                 GTOreDictUnificator.get("stickLongprotohalkonite", 3),
-                MU.stack(OrePrefixes.wireFine, Materials2Materials.Tairitsu, 24),
+                MaterialParts.stack(Materials2Shapes.wireFine, Materials2Materials.Tairitsu, 24),
                 MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.foil, 12),
                 MaterialLibAPI.getStack(Materials2Materials.Shijima, Materials2Shapes.screw, 24),
                 GTOreDictUnificator.get("frameGtChuritsu", 2),
-                MU.stack(OrePrefixes.screw, Materials2Materials.Tairitsu, 32),
+                MaterialParts.stack(Materials2Shapes.screw, Materials2Materials.Tairitsu, 32),
                 MaterialLibAPI.getStack(Materials2Materials.Shijima, Materials2Shapes.bolt, 32) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.ChromaticGlass, 96 * INGOTS),
                 MaterialLibAPI
@@ -2504,10 +2507,12 @@ public class ResearchStationAssemblyLine implements Runnable {
             64,
             new Object[] { ItemList.CondensateGuidanceCoil.get(1),
                 GTOreDictUnificator.get("wireGt02SuperconductorUIV", 6), ItemList.Circuit_Chip_APIC.get(6),
-                ItemList.Sensor_UHV.get(12), MU.stack(OrePrefixes.plate, Materials2Materials.Tairitsu, 12),
+                ItemList.Sensor_UHV.get(12),
+                MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.Tairitsu, 12),
                 MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.itemCasing, 6),
                 MaterialLibAPI.getStack(Materials2Materials.Shijima, Materials2Shapes.screw, 64),
-                ItemList.Field_Generator_UHV.get(3), MU.stack(OrePrefixes.stickLong, Materials2Materials.Tairitsu, 6),
+                ItemList.Field_Generator_UHV.get(3),
+                MaterialParts.stack(Materials2Shapes.stickLong, Materials2Materials.Tairitsu, 6),
                 MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.ring, 3),
                 MaterialLibAPI.getStack(Materials2Materials.Shijima, Materials2Shapes.plateDouble, 6) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.ChromaticGlass, 96 * INGOTS),
@@ -2528,7 +2533,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             64,
             new Object[] { ItemRefer.AntimatterContainmentCasing.get(6),
                 GTOreDictUnificator.get("stickLongprotohalkonite", 6),
-                MU.stack(OrePrefixes.wireFine, Materials2Materials.Tairitsu, 24),
+                MaterialParts.stack(Materials2Shapes.wireFine, Materials2Materials.Tairitsu, 24),
                 MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.foil, 12),
                 MaterialLibAPI.getStack(Materials2Materials.Shijima, Materials2Shapes.screw, 24),
                 MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.itemCasing, 6),
@@ -2558,7 +2563,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.Mellion, Materials2Shapes.plateDense, 16),
                     MaterialLibAPI.getStack(Materials2Materials.SixPhasedCopper, Materials2Shapes.plateDense, 16),
                     MaterialLibAPI.getStack(Materials2Materials.Creon, Materials2Shapes.plateDense, 16),
-                    MU.stack(OrePrefixes.plateDense, Materials2Materials.MetastableOganesson, 16),
+                    MaterialParts.stack(Materials2Shapes.plateDense, Materials2Materials.MetastableOganesson, 16),
                     ItemList.StableBosonContainmentUnit.get(8),
                     GTOreDictUnificator.get("wireGt16SuperconductorUIV", 16), ItemList.Sensor_UIV.get(32),
                     new Object[] { Circuits.UIV.getIngredient(), 64L }, CustomItemList.eM_energyTunnel7_UIV.get(1),
@@ -2585,7 +2590,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UMV,
             64,
             new Object[] { GTOreDictUnificator.get("frameGtTranscendentMetal", 8),
-                MU.stack(OrePrefixes.block, Materials2Materials.MagnetoResonatic, 16),
+                MaterialParts.stack(Materials2BlockShapes.block, Materials2Materials.MagnetoResonatic, 16),
                 MaterialLibAPI.getStack(Materials2Materials.TengamAttuned, Materials2Shapes.plateDense, 32),
                 MaterialLibAPI.getStack(Materials2Materials.Creon, Materials2Shapes.plate, 16),
                 MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2Shapes.screw, 8),
@@ -2610,7 +2615,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new Object[] { GTOreDictUnificator.get("frameGtMellion", 16),
                     GTOreDictUnificator.get("frameGtSixPhasedCopper", 16),
                     GTOreDictUnificator.get("frameGtTranscendentMetal", 8),
-                    MU.stack(OrePrefixes.frameGt, Materials2Materials.AstralTitanium, 8),
+                    MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.AstralTitanium, 8),
                     MaterialLibAPI.getStack(Materials2Materials.Creon, Materials2Shapes.plate, 6),
                     ItemList.StableBosonContainmentUnit.get(1), ItemList.Field_Generator_UEV.get(2),
                     // Artificial Gravity Generator
@@ -2680,7 +2685,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new ItemStack(ItemRegistry.bw_glasses[0], 8, 8), GregtechItemList.ForceFieldGlass.get(8),
                 ItemList.StableBosonContainmentUnit.get(4), getNHCoreModItem("RadoxPolymerLens", 6),
                 getNHCoreModItem("ChromaticLens", 6), getNHCoreModItem("MysteriousCrystalLens", 6),
-                MU.stack(OrePrefixes.lens, Materials2Materials.MagnetoResonatic, 6),
+                MaterialParts.stack(Materials2Shapes.lens, Materials2Materials.MagnetoResonatic, 6),
                 MaterialLibAPI.getStack(Materials2Materials.ChromaticGlass, Materials2Shapes.plateDense, 36),
                 MaterialLibAPI.getStack(Materials2Materials.Creon, Materials2Shapes.stickLong, 6),
                 MaterialLibAPI.getStack(Materials2Materials.Mellion, Materials2Shapes.stickLong, 6),
@@ -3220,10 +3225,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                     MaterialLibAPI.getStack(Materials2Materials.SuperconductorUEVBase, Materials2Shapes.stickLong, 8),
                     getModItem(EternalSingularity.ID, "combined_singularity", 1L, 4),
                     MaterialLibAPI.getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.plateSuperdense, 2),
-                    MU.stack(OrePrefixes.frameGt, Materials2Materials.Titansteel, 4),
+                    MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.Titansteel, 4),
                     GTOreDictUnificator.get("plateprotohalkonite", 16),
                     MaterialLibAPI.getStack(Materials2Materials.CosmicNeutronium, Materials2Shapes.plateSuperdense, 2),
-                    MU.stack(OrePrefixes.frameGt, Materials2Materials.AbyssalAlloy, 4) },
+                    MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.AbyssalAlloy, 4) },
                 new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 2 * STACKS),
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.Bedrockium, Materials2FluidShapes.fluidMolten, 256 * STACKS),

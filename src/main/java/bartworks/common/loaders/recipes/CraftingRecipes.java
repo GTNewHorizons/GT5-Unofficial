@@ -43,6 +43,7 @@ import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -391,7 +392,7 @@ public class CraftingRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Materials.Naquadah, 1L), 'C',
                 OrePrefixes.circuit.oreDictName(Circuits.LuV.materialName()), 'F', ItemList.Field_Generator_LuV.get(1L),
                 'E', ItemList.Emitter_LuV.get(1L), 'S', ItemList.Sensor_LuV.get(1L), 'P',
-                MU.stack(OrePrefixes.plate, Materials2Materials.RhodiumPlatedPalladium, 1), });
+                MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.RhodiumPlatedPalladium, 1), });
 
         GTModHandler.addCraftingRecipe(
             ItemRegistry.vat.copy(),

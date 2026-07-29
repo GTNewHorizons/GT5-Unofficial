@@ -21,10 +21,12 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -153,9 +155,9 @@ public class GregtechSimpleWasher {
             if (ml.getProperty(GTMaterialProperties.GTPP_STATE) == null) {
                 continue;
             }
-            dustClean = MU.stack(OrePrefixes.dust, ml, 1L);
-            dustDirty = MU.stack(OrePrefixes.dustImpure, ml, 1L);
-            dustPure = MU.stack(OrePrefixes.dustPure, ml, 1L);
+            dustClean = MaterialParts.stack(Materials2Shapes.dust, ml, 1L);
+            dustDirty = MaterialParts.stack(Materials2Shapes.dustImpure, ml, 1L);
+            dustPure = MaterialParts.stack(Materials2Shapes.dustPure, ml, 1L);
             addSimpleWashRecipe(dustDirty, dustClean);
             addSimpleWashRecipe(dustPure, dustClean);
         }
@@ -202,8 +204,8 @@ public class GregtechSimpleWasher {
             if (ml.getProperty(GTMaterialProperties.GTPP_STATE) == null) {
                 continue;
             }
-            crushedClean = MU.stack(OrePrefixes.crushedPurified, ml, 1L);
-            crushedDirty = MU.stack(OrePrefixes.crushed, ml, 1L);
+            crushedClean = MaterialParts.stack(Materials2Shapes.crushedPurified, ml, 1L);
+            crushedDirty = MaterialParts.stack(Materials2Shapes.crushed, ml, 1L);
             addSimpleWashRecipe(crushedDirty, crushedClean);
         }
 

@@ -25,13 +25,17 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2PipeMaterials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTLog;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.blocks.FrameShapeBlock;
@@ -152,7 +156,7 @@ public class PosteaTransformers implements Runnable {
 
     private static ItemStack resolveGtppOreCutoverStack(GtppOreCutoverTable.Entry entry) {
         Material ml = MaterialLibAPI.getMaterial("gregtech", entry.unlocalizedName());
-        return MU.stack(OrePrefixes.ore, ml, 1);
+        return MaterialParts.stack(Materials2OreShapes.ore, ml, 1);
     }
 
     /// Migrates saved placed blocks and inventory stacks of a gtPlusPlus per-material frame block
@@ -168,7 +172,7 @@ public class PosteaTransformers implements Runnable {
         Material[] materials = Materials2PipeMaterials.gtppFrameMaterials();
         int count = 0;
         for (Material material : materials) {
-            ItemStack cutover = MU.stack(OrePrefixes.frameGt, material, 1);
+            ItemStack cutover = MaterialParts.stack(Materials2PipeShapes.frameGt, material, 1);
             if (cutover == null) continue;
             String legacyId = "miscutils:blockFrameGt" + material.getName();
             Block mlBlock = Block.getBlockFromItem(cutover.getItem());
@@ -216,7 +220,7 @@ public class PosteaTransformers implements Runnable {
     private static ItemStack resolveGtppCutoverStack(Entry entry) {
         Material material = MaterialLibAPI.getMaterial("gregtech", entry.materialName());
         if (entry.prefix() == OrePrefixes.cell) {
-            return MU.cellStack(material, 1);
+            return MaterialParts.cell(material, 1);
         }
         return MU.stack(entry.prefix(), material, 1);
     }
@@ -239,7 +243,7 @@ public class PosteaTransformers implements Runnable {
 
     private static void registerGtppCarryoverCellTransformer(String materialName) {
         Material material = MaterialLibAPI.getMaterial("gregtech", materialName);
-        ItemStack cutover = MU.cellStack(material, 1);
+        ItemStack cutover = MaterialParts.cell(material, 1);
         if (cutover == null) {
             throw new IllegalStateException("No MaterialLib cell stack for carryover material " + materialName);
         }
@@ -352,7 +356,7 @@ public class PosteaTransformers implements Runnable {
     private static void registerStorageBlockCutoverTransformer(String originalId, Block legacyBlock) {
         BlockMetal metal = (BlockMetal) legacyBlock;
         for (int meta = 0; meta < metal.mMats.length; meta++) {
-            ItemStack cutover = MU.stack(OrePrefixes.block, metal.mMats[meta], 1);
+            ItemStack cutover = MaterialParts.stack(Materials2BlockShapes.block, metal.mMats[meta], 1);
             if (cutover == null) continue;
             Block mlBlock = Block.getBlockFromItem(cutover.getItem());
             BlockReplacementManager.addSimpleReplacement(originalId, meta, mlBlock, cutover.getItemDamage());
@@ -518,12 +522,12 @@ public class PosteaTransformers implements Runnable {
         // For players updating from dailies
         ItemStackReplacementManager.addSimpleReplacement(
             "dreamcraft:PotassiumHydroxideDust",
-            MU.stack(OrePrefixes.dust, Materials2Materials.PotassiumHydroxideGT5U, 1),
+            MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.PotassiumHydroxideGT5U, 1),
             true);
         // For players updating directly from 2.8.4 or before
         ItemStackReplacementManager.addSimpleReplacement(
             "dreamcraft:item.PotassiumHydroxideDust",
-            MU.stack(OrePrefixes.dust, Materials2Materials.PotassiumHydroxideGT5U, 1),
+            MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.PotassiumHydroxideGT5U, 1),
             true); // FML Warning suppression in coremod
     }
 

@@ -22,9 +22,9 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.util.log.DebugLog;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 
 public class RadioHatchCompat {
@@ -45,7 +45,7 @@ public class RadioHatchCompat {
 
             if (OreDictionary.getOres("stick" + name)
                 .isEmpty()) {
-                ItemStack itemRod = MU.stack(OrePrefixes.stick, mats, 1);
+                ItemStack itemRod = MaterialParts.stack(Materials2Shapes.stick, mats, 1);
                 if (itemRod != null) {
                     OreDictionary.registerOre("stick" + name, itemRod);
                     DebugLog.log("Generate: stick" + name);
@@ -54,7 +54,7 @@ public class RadioHatchCompat {
 
             if (OreDictionary.getOres("stickLong" + name)
                 .isEmpty()) {
-                ItemStack itemRodLong = MU.stack(OrePrefixes.stickLong, mats, 1);
+                ItemStack itemRodLong = MaterialParts.stack(Materials2Shapes.stickLong, mats, 1);
                 if (itemRodLong != null) {
                     OreDictionary.registerOre("stickLong" + name, itemRodLong);
                     DebugLog.log("Generate: stickLong" + name);

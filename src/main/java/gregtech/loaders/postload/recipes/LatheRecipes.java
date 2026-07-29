@@ -10,11 +10,10 @@ import net.minecraft.item.ItemStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -32,10 +31,10 @@ public class LatheRecipes implements Runnable {
             .addTo(latheRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.gemFlawless, Materials2Materials.LanthanumHexaboride, 1))
+            .itemInputs(MaterialParts.stack(Materials2Shapes.gemFlawless, Materials2Materials.LanthanumHexaboride, 1))
             .itemOutputs(
-                MU.stack(OrePrefixes.stickLong, Materials2Materials.LanthanumHexaboride, 1),
-                MU.stack(OrePrefixes.dust, Materials2Materials.LanthanumHexaboride, 1))
+                MaterialParts.stack(Materials2Shapes.stickLong, Materials2Materials.LanthanumHexaboride, 1),
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.LanthanumHexaboride, 1))
             .duration((100 * SECONDS))
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(latheRecipes);

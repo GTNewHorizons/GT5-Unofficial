@@ -14,8 +14,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2GtppComposites;
 import gregtech.api.enums.materials2.Materials2GtppComposites.Component;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeBuilder;
 
@@ -63,11 +64,11 @@ public class ProcessingMixerGtpp implements IOreRecipeRegistrator {
         int total = 0;
         for (int i = 0; i < composites.size(); i++) {
             Component component = composites.get(i);
-            inputs[i] = MU.stack(OrePrefixes.dust, component.material(), component.parts());
+            inputs[i] = MaterialParts.stack(Materials2Shapes.dust, component.material(), component.parts());
             if (inputs[i] == null) return;
             total += component.parts();
         }
-        ItemStack output = MU.stack(OrePrefixes.dust, material, total);
+        ItemStack output = MaterialParts.stack(Materials2Shapes.dust, material, total);
         if (output == null) return;
 
         int circuit = circuitFor(material, composites.size());

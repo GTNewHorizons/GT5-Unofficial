@@ -60,7 +60,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HatchElement;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -72,7 +71,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -1109,14 +1108,14 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         public static final Fuel_[] sHTGR_Fuel = { new Fuel_(
             "Thorium",
             "Thorium",
-            MU.stack(OrePrefixes.dust, Materials2Materials.Thorium232, 64),
+            MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Thorium232, 64),
             MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.dust, (int) (4)),
             GTValues.NF,
             new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Lutetium, Materials2Shapes.dust, (int) (1)),
-                MU.stack(OrePrefixes.dust, Materials2Materials.Thorium232, 1) },
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Thorium232, 1) },
             new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 9900 / 4, 162 / 4 },
             "Multiplies coolant by 1"),
             new Fuel_(

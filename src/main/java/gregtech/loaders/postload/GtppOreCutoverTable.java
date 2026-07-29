@@ -4,7 +4,7 @@ package gregtech.loaders.postload;
 /// The gtPlusPlus ore-cutover Postea migration table: one row per legacy
 /// `BlockBaseOre` instance, read from the supplementary `gtpp-ores.json` dump (see
 /// `MaterialDataDump#dumpGtppOres`, not itself pinned like `gtpp-materials.json`). [PosteaTransformers]
-/// migrates each row's legacy placed block/item stack to `MU.stack(OrePrefixes.ore,
+/// migrates each row's legacy placed block/item stack to `MaterialParts.stack(Materials2OreShapes.ore,
 /// MaterialLibAPI.getMaterial("gregtech", unlocalizedName), 1)`. A material that never gained
 /// `Materials2OreShapes#ore` membership resolves null and is left on its legacy slot.
 public final class GtppOreCutoverTable {

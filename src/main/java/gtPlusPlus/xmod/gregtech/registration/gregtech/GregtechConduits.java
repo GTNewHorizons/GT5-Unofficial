@@ -14,11 +14,12 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MU;
+import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -182,22 +183,22 @@ public class GregtechConduits {
 
     public static boolean generateWireRecipes(Material aMaterial) {
 
-        ItemStack aPlate = MU.stack(OrePrefixes.plate, aMaterial, 1);
-        ItemStack aIngot = MU.stack(OrePrefixes.ingot, aMaterial, 1);
-        ItemStack aRod = MU.stack(OrePrefixes.stick, aMaterial, 1);
-        ItemStack aWire01 = MU.stack(OrePrefixes.wireGt01, aMaterial, 1);
-        ItemStack aWire02 = MU.stack(OrePrefixes.wireGt02, aMaterial, 1);
-        ItemStack aWire04 = MU.stack(OrePrefixes.wireGt04, aMaterial, 1);
-        ItemStack aWire08 = MU.stack(OrePrefixes.wireGt08, aMaterial, 1);
-        ItemStack aWire12 = MU.stack(OrePrefixes.wireGt12, aMaterial, 1);
-        ItemStack aWire16 = MU.stack(OrePrefixes.wireGt16, aMaterial, 1);
-        ItemStack aCable01 = MU.stack(OrePrefixes.cableGt01, aMaterial, 1);
-        ItemStack aCable02 = MU.stack(OrePrefixes.cableGt02, aMaterial, 1);
-        ItemStack aCable04 = MU.stack(OrePrefixes.cableGt04, aMaterial, 1);
-        ItemStack aCable08 = MU.stack(OrePrefixes.cableGt08, aMaterial, 1);
-        ItemStack aCable12 = MU.stack(OrePrefixes.cableGt12, aMaterial, 1);
-        ItemStack aCable16 = MU.stack(OrePrefixes.cableGt16, aMaterial, 1);
-        ItemStack aFineWire = MU.stack(OrePrefixes.wireFine, aMaterial, 1);
+        ItemStack aPlate = MaterialParts.stack(Materials2Shapes.plate, aMaterial, 1);
+        ItemStack aIngot = MaterialParts.stack(Materials2Shapes.ingot, aMaterial, 1);
+        ItemStack aRod = MaterialParts.stack(Materials2Shapes.stick, aMaterial, 1);
+        ItemStack aWire01 = MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 1);
+        ItemStack aWire02 = MaterialParts.stack(Materials2PipeShapes.wireGt02, aMaterial, 1);
+        ItemStack aWire04 = MaterialParts.stack(Materials2PipeShapes.wireGt04, aMaterial, 1);
+        ItemStack aWire08 = MaterialParts.stack(Materials2PipeShapes.wireGt08, aMaterial, 1);
+        ItemStack aWire12 = MaterialParts.stack(Materials2PipeShapes.wireGt12, aMaterial, 1);
+        ItemStack aWire16 = MaterialParts.stack(Materials2PipeShapes.wireGt16, aMaterial, 1);
+        ItemStack aCable01 = MaterialParts.stack(Materials2PipeShapes.cableGt01, aMaterial, 1);
+        ItemStack aCable02 = MaterialParts.stack(Materials2PipeShapes.cableGt02, aMaterial, 1);
+        ItemStack aCable04 = MaterialParts.stack(Materials2PipeShapes.cableGt04, aMaterial, 1);
+        ItemStack aCable08 = MaterialParts.stack(Materials2PipeShapes.cableGt08, aMaterial, 1);
+        ItemStack aCable12 = MaterialParts.stack(Materials2PipeShapes.cableGt12, aMaterial, 1);
+        ItemStack aCable16 = MaterialParts.stack(Materials2PipeShapes.cableGt16, aMaterial, 1);
+        ItemStack aFineWire = MaterialParts.stack(Materials2Shapes.wireFine, aMaterial, 1);
 
         // Adds manual crafting recipe
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlate, aWire01 })
@@ -212,44 +213,44 @@ public class GregtechConduits {
         if (ItemUtils
             .checkForInvalidItems(new ItemStack[] { aIngot, aWire01, aWire02, aWire04, aWire08, aWire12, aWire16 })) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.ingot, aMaterial, 1))
+                .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, aMaterial, 1))
                 .circuit(1)
-                .itemOutputs(MU.stack(OrePrefixes.wireGt01, aMaterial, 2))
+                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 2))
                 .duration(5 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.ingot, aMaterial, 1))
+                .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, aMaterial, 1))
                 .circuit(2)
-                .itemOutputs(MU.stack(OrePrefixes.wireGt02, aMaterial, 1))
+                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt02, aMaterial, 1))
                 .duration(7 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.ingot, aMaterial, 2))
+                .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, aMaterial, 2))
                 .circuit(4)
-                .itemOutputs(MU.stack(OrePrefixes.wireGt04, aMaterial, 1))
+                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt04, aMaterial, 1))
                 .duration(10 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.ingot, aMaterial, 4))
+                .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, aMaterial, 4))
                 .circuit(8)
-                .itemOutputs(MU.stack(OrePrefixes.wireGt08, aMaterial, 1))
+                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt08, aMaterial, 1))
                 .duration(12 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.ingot, aMaterial, 6))
+                .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, aMaterial, 6))
                 .circuit(12)
-                .itemOutputs(MU.stack(OrePrefixes.wireGt12, aMaterial, 1))
+                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt12, aMaterial, 1))
                 .duration(15 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.ingot, aMaterial, 8))
+                .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, aMaterial, 8))
                 .circuit(16)
-                .itemOutputs(MU.stack(OrePrefixes.wireGt16, aMaterial, 1))
+                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt16, aMaterial, 1))
                 .duration(17 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(wiremillRecipes);
@@ -259,44 +260,44 @@ public class GregtechConduits {
         if (ItemUtils
             .checkForInvalidItems(new ItemStack[] { aRod, aWire01, aWire02, aWire04, aWire08, aWire12, aWire16 })) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.stick, aMaterial, 1))
+                .itemInputs(MaterialParts.stack(Materials2Shapes.stick, aMaterial, 1))
                 .circuit(1)
-                .itemOutputs(MU.stack(OrePrefixes.wireGt01, aMaterial, 1))
+                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 1))
                 .duration(2 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.stick, aMaterial, 2))
+                .itemInputs(MaterialParts.stack(Materials2Shapes.stick, aMaterial, 2))
                 .circuit(2)
-                .itemOutputs(MU.stack(OrePrefixes.wireGt02, aMaterial, 1))
+                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt02, aMaterial, 1))
                 .duration(5 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.stick, aMaterial, 4))
+                .itemInputs(MaterialParts.stack(Materials2Shapes.stick, aMaterial, 4))
                 .circuit(4)
-                .itemOutputs(MU.stack(OrePrefixes.wireGt04, aMaterial, 1))
+                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt04, aMaterial, 1))
                 .duration(7 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.stick, aMaterial, 8))
+                .itemInputs(MaterialParts.stack(Materials2Shapes.stick, aMaterial, 8))
                 .circuit(8)
-                .itemOutputs(MU.stack(OrePrefixes.wireGt08, aMaterial, 1))
+                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt08, aMaterial, 1))
                 .duration(10 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.stick, aMaterial, 12))
+                .itemInputs(MaterialParts.stack(Materials2Shapes.stick, aMaterial, 12))
                 .circuit(12)
-                .itemOutputs(MU.stack(OrePrefixes.wireGt12, aMaterial, 1))
+                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt12, aMaterial, 1))
                 .duration(12 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.stick, aMaterial, 16))
+                .itemInputs(MaterialParts.stack(Materials2Shapes.stick, aMaterial, 16))
                 .circuit(16)
-                .itemOutputs(MU.stack(OrePrefixes.wireGt16, aMaterial, 1))
+                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt16, aMaterial, 1))
                 .duration(15 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
@@ -305,9 +306,9 @@ public class GregtechConduits {
 
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aIngot, aFineWire })) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.ingot, aMaterial, 1))
+                .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, aMaterial, 1))
                 .circuit(3)
-                .itemOutputs(MU.stack(OrePrefixes.wireFine, aMaterial, 8))
+                .itemOutputs(MaterialParts.stack(Materials2Shapes.wireFine, aMaterial, 8))
                 .duration(5 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
@@ -316,9 +317,9 @@ public class GregtechConduits {
 
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aRod, aFineWire })) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.stick, aMaterial, 1))
+                .itemInputs(MaterialParts.stack(Materials2Shapes.stick, aMaterial, 1))
                 .circuit(3)
-                .itemOutputs(MU.stack(OrePrefixes.wireFine, aMaterial, 4))
+                .itemOutputs(MaterialParts.stack(Materials2Shapes.wireFine, aMaterial, 4))
                 .duration(2 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(wiremillRecipes);
@@ -327,9 +328,9 @@ public class GregtechConduits {
 
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aFineWire })) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.wireGt01, aMaterial, 1))
+                .itemInputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 1))
                 .circuit(1)
-                .itemOutputs(MU.stack(OrePrefixes.wireFine, aMaterial, 4))
+                .itemOutputs(MaterialParts.stack(Materials2Shapes.wireFine, aMaterial, 4))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(wiremillRecipes);
@@ -340,7 +341,7 @@ public class GregtechConduits {
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aIngot, aWire01 })) {
             GTValues.RA.stdBuilder()
                 .itemInputs(aIngot, ItemList.Shape_Extruder_Wire.get(0))
-                .itemOutputs(MU.stack(OrePrefixes.wireGt01, aMaterial, 2))
+                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 2))
                 .duration(9 * SECONDS + 16 * TICKS)
                 .eut(96)
                 .addTo(extruderRecipes);
@@ -359,7 +360,7 @@ public class GregtechConduits {
         // 2x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
             GTModHandler.addShapelessCraftingRecipe(
-                MU.stack(OrePrefixes.wireGt01, aMaterial, 2),
+                MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 2),
                 GTModHandler.RecipeBits.BUFFERED,
                 new ItemStack[] { aWire02 });
         }
@@ -367,7 +368,7 @@ public class GregtechConduits {
         // 4x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire04 })) {
             GTModHandler.addShapelessCraftingRecipe(
-                MU.stack(OrePrefixes.wireGt01, aMaterial, 4),
+                MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 4),
                 GTModHandler.RecipeBits.BUFFERED,
                 new ItemStack[] { aWire04 });
         }
@@ -375,7 +376,7 @@ public class GregtechConduits {
         // 8x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire08 })) {
             GTModHandler.addShapelessCraftingRecipe(
-                MU.stack(OrePrefixes.wireGt01, aMaterial, 8),
+                MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 8),
                 GTModHandler.RecipeBits.BUFFERED,
                 new ItemStack[] { aWire08 });
         }
@@ -383,7 +384,7 @@ public class GregtechConduits {
         // 12x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire12 })) {
             GTModHandler.addShapelessCraftingRecipe(
-                MU.stack(OrePrefixes.wireGt01, aMaterial, 12),
+                MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 12),
                 GTModHandler.RecipeBits.BUFFERED,
                 new ItemStack[] { aWire12 });
         }
@@ -391,7 +392,7 @@ public class GregtechConduits {
         // 16x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire16 })) {
             GTModHandler.addShapelessCraftingRecipe(
-                MU.stack(OrePrefixes.wireGt01, aMaterial, 16),
+                MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 16),
                 GTModHandler.RecipeBits.BUFFERED,
                 new ItemStack[] { aWire16 });
         }
@@ -566,35 +567,35 @@ public class GregtechConduits {
         // Assemble small wires into bigger wires
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.wireGt01, aMaterial, 2))
+                .itemInputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 2))
                 .circuit(2)
                 .itemOutputs(aWire02)
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.wireGt01, aMaterial, 4))
+                .itemInputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 4))
                 .circuit(4)
                 .itemOutputs(aWire04)
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.wireGt01, aMaterial, 8))
+                .itemInputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 8))
                 .circuit(8)
                 .itemOutputs(aWire08)
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.wireGt01, aMaterial, 12))
+                .itemInputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 12))
                 .circuit(12)
                 .itemOutputs(aWire12)
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MU.stack(OrePrefixes.wireGt01, aMaterial, 16))
+                .itemInputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 16))
                 .circuit(16)
                 .itemOutputs(aWire16)
                 .duration(5 * SECONDS)

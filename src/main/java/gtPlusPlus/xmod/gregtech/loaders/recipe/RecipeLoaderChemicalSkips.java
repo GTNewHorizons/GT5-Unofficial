@@ -31,8 +31,9 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Markers;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -69,14 +70,14 @@ public class RecipeLoaderChemicalSkips {
         ItemStack biocells = GTUtility.copyAmountUnsafe(64 * 32, ItemList.Circuit_Chip_Biocell.get(1));
         // Platline
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.PlatinumMetallicPowder, 32))
+            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.PlatinumMetallicPowder, 32))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Palladium, Materials2Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.dust, (int) (64)),
-                MU.stack(OrePrefixes.dust, Materials2Materials.Rhodium, 64),
-                MU.stack(OrePrefixes.dust, Materials2Materials.Ruthenium, 64))
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Rhodium, 64),
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Ruthenium, 64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .metadata(QFT_CATALYST, GregtechItemList.PlatinumGroupCatalyst.get(0))
@@ -84,18 +85,18 @@ public class RecipeLoaderChemicalSkips {
             .addTo(quantumForceTransformerRecipes);
         // Partial platline (from Pd, Os, Ir, Rh and leach)
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.PalladiumMetallicPowder, 32))
+            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.PalladiumMetallicPowder, 32))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Palladium, Materials2Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.dust, (int) (64)),
-                MU.stack(OrePrefixes.dust, Materials2Materials.RhodiumPlatedPalladium, 64))
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.RhodiumPlatedPalladium, 64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .metadata(QFT_CATALYST, GregtechItemList.PlatinumGroupCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.IridiumMetalResidue, 32))
+            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.IridiumMetalResidue, 32))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.dust, (int) (64)),
@@ -106,7 +107,7 @@ public class RecipeLoaderChemicalSkips {
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.RarestMetalResidue, 32))
+            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.RarestMetalResidue, 32))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.dust, (int) (64)),
@@ -117,24 +118,24 @@ public class RecipeLoaderChemicalSkips {
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.CrudeRhodiumMetal, 32))
+            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.CrudeRhodiumMetal, 32))
             .itemOutputs(
-                MU.stack(OrePrefixes.dust, Materials2Materials.Rhodium, 64),
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Rhodium, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Palladium, Materials2Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.dust, (int) (64)),
-                MU.stack(OrePrefixes.dust, Materials2Materials.RhodiumPlatedPalladium, 64))
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.RhodiumPlatedPalladium, 64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .metadata(QFT_CATALYST, GregtechItemList.PlatinumGroupCatalyst.get(0))
             .metadata(QFT_FOCUS_TIER, 1)
             .addTo(quantumForceTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.LeachResidue, 32))
+            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.LeachResidue, 32))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.dust, (int) (64)),
-                MU.stack(OrePrefixes.dust, Materials2Materials.Rhodium, 64),
-                MU.stack(OrePrefixes.dust, Materials2Materials.Ruthenium, 64))
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Rhodium, 64),
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Ruthenium, 64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .metadata(QFT_CATALYST, GregtechItemList.PlatinumGroupCatalyst.get(0))
@@ -289,8 +290,8 @@ public class RecipeLoaderChemicalSkips {
                 MaterialLibAPI.getStack(Materials2Materials.Cerium, Materials2Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Gadolinium, Materials2Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Samarium, Materials2Shapes.dust, (int) (64)),
-                MU.stack(OrePrefixes.dust, Materials2Materials.Hafnia, 64),
-                MU.stack(OrePrefixes.dust, Materials2Materials.Zirconium, 64),
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Hafnia, 64),
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Zirconium, 64),
                 ItemList.SuperconductorComposite.get(1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -313,7 +314,7 @@ public class RecipeLoaderChemicalSkips {
             .addTo(quantumForceTransformerRecipes);
         // Bastline from Cerium-rich mixture
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.CeriumRichMixture, 16))
+            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.CeriumRichMixture, 16))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Holmium, Materials2Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials2Materials.Cerium, Materials2Shapes.dust, (int) (64)),
@@ -584,7 +585,7 @@ public class RecipeLoaderChemicalSkips {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(1),
-                MU.stack(OrePrefixes.dust, Materials2Materials.RhodiumPlatedPalladium, 64),
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.RhodiumPlatedPalladium, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Osmiridium, Materials2Shapes.dust, (int) (64)),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Carbon, 64))
             .circuit(10)
@@ -621,7 +622,7 @@ public class RecipeLoaderChemicalSkips {
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 MaterialLibAPI.getStack(Materials2Materials.Indalloy140, Materials2Shapes.dust, 64),
-                MU.cellStack(Materials2Materials.EthylCyanoacrylateSuperGlue, 64),
+                MaterialParts.cell(Materials2Materials.EthylCyanoacrylateSuperGlue, 64),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Carbon, 64))
             .circuit(10)
             .itemOutputs(GregtechItemList.AdhesionPromoterCatalyst.get(1))
@@ -895,7 +896,7 @@ public class RecipeLoaderChemicalSkips {
             1024,
             (int) TierEU.RECIPE_ZPM,
             32,
-            new ItemStack[] { MU.stack(OrePrefixes.frameGt, Materials2Materials.Quantum, 1),
+            new ItemStack[] { MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.Quantum, 1),
                 GTOreDictUnificator.get("plateDensePreciousMetalsAlloy", 4),
                 MaterialLibAPI.getStack(Materials2Materials.Netherite, Materials2Shapes.plateSuperdense, (int) (2)),
                 ItemList.Field_Generator_UV.get(1),
@@ -911,7 +912,7 @@ public class RecipeLoaderChemicalSkips {
             2048,
             (int) TierEU.RECIPE_UV,
             32,
-            new ItemStack[] { MU.stack(OrePrefixes.frameGt, Materials2Materials.Quantum, 2),
+            new ItemStack[] { MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.Quantum, 2),
                 GTOreDictUnificator.get("plateDenseEnrichedNaquadahAlloy", 4),
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.plateSuperdense, (int) (2)),
                 ItemList.Field_Generator_UEV.get(1),
@@ -928,7 +929,7 @@ public class RecipeLoaderChemicalSkips {
             4096,
             (int) TierEU.RECIPE_UHV,
             32,
-            new ItemStack[] { MU.stack(OrePrefixes.frameGt, Materials2Materials.Quantum, 4),
+            new ItemStack[] { MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.Quantum, 4),
                 MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2Shapes.plateDense, 4),
                 MaterialLibAPI
                     .getStack(Materials2Materials.protohalkonite, Materials2Shapes.plateSuperdense, (int) (2)),
@@ -945,7 +946,7 @@ public class RecipeLoaderChemicalSkips {
             8192,
             (int) TierEU.RECIPE_UEV,
             32,
-            new ItemStack[] { MU.stack(OrePrefixes.frameGt, Materials2Materials.Quantum, 8),
+            new ItemStack[] { MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.Quantum, 8),
                 GTOreDictUnificator.get("plateDenseShirabon", 4),
                 MaterialLibAPI.getStack(Materials2Materials.SpaceTime, Materials2Shapes.plateSuperdense, (int) (2)),
                 ItemList.Field_Generator_UMV.get(1),

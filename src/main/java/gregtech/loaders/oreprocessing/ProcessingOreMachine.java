@@ -29,9 +29,10 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -405,8 +406,8 @@ public class ProcessingOreMachine {
     /// `cellMolten`. Package-visible: [ProcessingPlasmaGtpp] shares this same cell resolution for its own
     /// plasma-cell cooldown recipe's cell output, which needs the identical cell-then-cellMolten fallback.
     static ItemStack cellStack(Material material, long amount) {
-        ItemStack cell = MU.stack(OrePrefixes.cell, material, amount);
-        return cell != null ? cell : MU.stack(OrePrefixes.cellMolten, material, amount);
+        ItemStack cell = MaterialParts.stack(Materials2CellShapes.cell, material, amount);
+        return cell != null ? cell : MaterialParts.stack(Materials2CellShapes.cellMolten, material, amount);
     }
 
     private static List<MaterialRefStack> composition(Material material) {

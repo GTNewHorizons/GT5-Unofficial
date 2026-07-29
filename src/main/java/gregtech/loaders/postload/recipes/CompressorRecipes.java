@@ -19,12 +19,12 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -353,8 +353,8 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.gem, Materials2Materials.MagnetoResonatic, 9))
-            .itemOutputs(MU.stack(OrePrefixes.block, Materials2Materials.MagnetoResonatic, 1))
+            .itemInputs(MaterialParts.stack(Materials2Shapes.gem, Materials2Materials.MagnetoResonatic, 9))
+            .itemOutputs(MaterialParts.stack(Materials2BlockShapes.block, Materials2Materials.MagnetoResonatic, 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);

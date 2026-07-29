@@ -26,12 +26,12 @@ import com.ruling_0.materiallib.api.Shape;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials2.Materials2FluidNames;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2Textures;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.MaterialStack;
@@ -77,7 +77,7 @@ public class MaterialUtils {
     public static @Nullable ItemStack compositionDust(MaterialRefStack entry) {
         Material material = entry.material()
             .resolve();
-        return material == null ? null : MU.stack(OrePrefixes.dust, material, entry.amount());
+        return material == null ? null : MaterialParts.stack(Materials2Shapes.dust, material, entry.amount());
     }
 
     /// The gas [FluidStack] a [GTMaterialProperties#COMPOSITION] entry contributes when its material has no

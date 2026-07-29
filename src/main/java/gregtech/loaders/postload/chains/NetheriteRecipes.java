@@ -32,6 +32,7 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
@@ -187,7 +188,7 @@ public class NetheriteRecipes {
             GTValues.RA.stdBuilder() // Crystallization
                 .itemInputs(
                     ItemList.Prismarine_Precipitate.get(1),
-                    MU.stack(OrePrefixes.lens, Materials2Materials.MagnetoResonatic, 0))
+                    MaterialParts.stack(Materials2Shapes.lens, Materials2Materials.MagnetoResonatic, 0))
                 .itemOutputs(ItemList.Prismatic_Crystal.get(1))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -267,7 +268,7 @@ public class NetheriteRecipes {
                 .itemInputs(
                     MetaItemCraftingComponent.getInstance()
                         .getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 4),
-                    MU.stack(OrePrefixes.dust, Materials2Materials.RawFluorophlogopite, 24))
+                    MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.RawFluorophlogopite, 24))
                 .fluidInputs(
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.prismaticnaquadah, Materials2FluidShapes.fluidMolten, 576))

@@ -37,7 +37,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.recipe.maps.PurificationUnitParticleExtractorFrontend;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GTOreDictUnificator;
@@ -321,7 +321,8 @@ public class PurifiedWaterRecipes {
             .hidden()
             .addTo(purificationPlasmaHeatingRecipes);
 
-        MTEPurificationUnitUVTreatment.LENS_ITEMS.add(MU.stack(OrePrefixes.lens, Materials2Materials.Orundum, 1));
+        MTEPurificationUnitUVTreatment.LENS_ITEMS
+            .add(MaterialParts.stack(Materials2Shapes.lens, Materials2Materials.Orundum, 1));
         MTEPurificationUnitUVTreatment.LENS_ITEMS
             .add(MaterialLibAPI.getStack(Materials2Materials.Amber, Materials2Shapes.lens, (int) (1)));
         MTEPurificationUnitUVTreatment.LENS_ITEMS
@@ -335,7 +336,7 @@ public class PurifiedWaterRecipes {
         MTEPurificationUnitUVTreatment.LENS_ITEMS
             .add(MaterialLibAPI.getStack(Materials2Materials.Amethyst, Materials2Shapes.lens, (int) (1)));
         MTEPurificationUnitUVTreatment.LENS_ITEMS
-            .add(MU.stack(OrePrefixes.lens, Materials2Materials.FluorBuergerite, 1));
+            .add(MaterialParts.stack(Materials2Shapes.lens, Materials2Materials.FluorBuergerite, 1));
         MTEPurificationUnitUVTreatment.LENS_ITEMS
             .add(MaterialLibAPI.getStack(Materials2Materials.Dilithium, Materials2Shapes.lens, (int) (1)));
 

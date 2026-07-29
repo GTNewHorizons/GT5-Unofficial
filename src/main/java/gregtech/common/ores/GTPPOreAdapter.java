@@ -18,11 +18,11 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.Materials2OreShapes;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.common.GTProxy.OreDropSystem;
 
@@ -150,17 +150,17 @@ public final class GTPPOreAdapter implements IOreAdapter {
         ArrayList<ItemStack> drops = new ArrayList<>();
 
         switch (oreDropMode) {
-            case Item -> drops.add(MU.stack(OrePrefixes.rawOre, info.material, 1));
+            case Item -> drops.add(MaterialParts.stack(Materials2Shapes.rawOre, info.material, 1));
             case FortuneItem -> {
                 if (fortune > 0) {
                     int aMinAmount = 1;
                     if (fortune > 3) fortune = 3;
                     long amount = (long) random.nextInt(fortune) + aMinAmount;
                     for (int i = 0; i < amount; i++) {
-                        drops.add(MU.stack(OrePrefixes.rawOre, info.material, 1));
+                        drops.add(MaterialParts.stack(Materials2Shapes.rawOre, info.material, 1));
                     }
                 } else {
-                    drops.add(MU.stack(OrePrefixes.rawOre, info.material, 1));
+                    drops.add(MaterialParts.stack(Materials2Shapes.rawOre, info.material, 1));
                 }
             }
             case UnifiedBlock, PerDimBlock, Block -> drops.add(oreStack(info.material));

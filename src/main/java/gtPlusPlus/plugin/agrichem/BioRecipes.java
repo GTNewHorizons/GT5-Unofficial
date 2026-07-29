@@ -36,10 +36,11 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -138,7 +139,7 @@ public class BioRecipes {
         // Lithium Chloride
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.BrownAlgaeBiomass.get(4))
-            .itemOutputs(MU.stack(OrePrefixes.dust, Materials2Materials.LithiumChloride, 1))
+            .itemOutputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.LithiumChloride, 1))
             .duration(1 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -484,7 +485,7 @@ public class BioRecipes {
 
     private static void recipePelletMold() {
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.block, Materials2Materials.Tumbaga, 1))
+            .itemInputs(MaterialParts.stack(Materials2BlockShapes.block, Materials2Materials.Tumbaga, 1))
             .itemOutputs(GregtechItemList.Pellet_Mold.get(1))
             .duration(7 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_MV / 4 * 3)
@@ -611,7 +612,7 @@ public class BioRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.RockSalt, Materials2Shapes.dust, (int) (8)),
-                MU.stack(OrePrefixes.dust, Materials2Materials.LithiumChloride, 10))
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.LithiumChloride, 10))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Lithium, Materials2Shapes.dust, (int) (2)),
                 MaterialLibAPI.getStack(Materials2Materials.Lithium, Materials2Shapes.dustSmall, (int) (3)),
@@ -631,7 +632,7 @@ public class BioRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Potash, Materials2Shapes.dust, (int) (10)),
-                MU.stack(OrePrefixes.dust, Materials2Materials.LithiumChloride, 16))
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.LithiumChloride, 16))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Lithium, Materials2Shapes.dust, (int) (3)),
                 MaterialLibAPI.getStack(Materials2Materials.Lithium, Materials2Shapes.dustSmall, (int) (5)),

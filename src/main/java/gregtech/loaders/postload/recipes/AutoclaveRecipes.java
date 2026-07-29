@@ -18,12 +18,11 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -357,10 +356,10 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(
                 GTUtility.copyAmount(0, GTOreDictUnificator.get("naniteMagmatter", 1)),
                 MaterialLibAPI.getStack(Materials2Materials.Amalgatite, Materials2Shapes.gemFlawless, (int) (3)),
-                MU.stack(OrePrefixes.gemChipped, Materials2Materials.Olenite, 64),
-                MU.stack(OrePrefixes.gemChipped, Materials2Materials.Salt, 64),
+                MaterialParts.stack(Materials2Shapes.gemChipped, Materials2Materials.Olenite, 64),
+                MaterialParts.stack(Materials2Shapes.gemChipped, Materials2Materials.Salt, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.gemChipped, (int) (64)),
-                MU.stack(OrePrefixes.gemChipped, Materials2Materials.VanadioOxyDravite, 64))
+                MaterialParts.stack(Materials2Shapes.gemChipped, Materials2Materials.VanadioOxyDravite, 64))
             .fluidInputs(
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.ChromaticGlass), 1_000_000))
             .itemOutputs(

@@ -28,7 +28,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
@@ -444,7 +444,9 @@ public class HTGRLoader {
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.dust, Materials2Materials.Alumina, 4), ItemList.Shape_Mold_Ring.get(0))
+            .itemInputs(
+                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Alumina, 4),
+                ItemList.Shape_Mold_Ring.get(0))
             .itemOutputs(ItemList.Alumina_Support_Ring_Raw.get(1L))
             .duration(GTRecipeBuilder.SECONDS * 25)
             .eut(TierEU.RECIPE_IV)

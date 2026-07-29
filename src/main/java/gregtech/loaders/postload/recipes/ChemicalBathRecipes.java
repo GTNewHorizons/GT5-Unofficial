@@ -28,7 +28,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MU;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -393,7 +393,7 @@ public class ChemicalBathRecipes implements Runnable {
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MU.stack(OrePrefixes.gemExquisite, Materials2Materials.CubicZirconia, 1))
+            .itemInputs(MaterialParts.stack(Materials2Shapes.gemExquisite, Materials2Materials.CubicZirconia, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Firestone, Materials2Shapes.gem, (int) (1)))
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2hotcoolant"), 250))
             .duration(2 * SECONDS)
