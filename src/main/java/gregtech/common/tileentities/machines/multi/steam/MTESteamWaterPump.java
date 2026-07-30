@@ -41,7 +41,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.PipeShapes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -140,8 +140,8 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
                             { " A ", " A ", "AAA", " A " },
                             { " A ", "   ", "A A", " A " },
                             { "C~C", "CCC", "CCC", "CCC" } }))
-                .addElement('A', ofBlocksTiered(MTESteamWaterPump::getFrameTier, ImmutableList.of(Pair.of(MaterialLibAPI.getBlock(Materials2PipeShapes.frameGt), Materials.Bronze.getIndex()),
-                    Pair.of(MaterialLibAPI.getBlock(Materials2PipeShapes.frameGt), Materials.Steel.getIndex())), -1, (pump, tier) -> pump.mSetTier = tier , pump -> pump.mSetTier))
+                .addElement('A', ofBlocksTiered(MTESteamWaterPump::getFrameTier, ImmutableList.of(Pair.of(MaterialLibAPI.getBlock(PipeShapes.frameGt), Materials.Bronze.getIndex()),
+                    Pair.of(MaterialLibAPI.getBlock(PipeShapes.frameGt), Materials.Steel.getIndex())), -1, (pump, tier) -> pump.mSetTier = tier , pump -> pump.mSetTier))
                 .addElement(
                     'C',
                         ofChain(
@@ -165,7 +165,7 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
 
     @Nullable
     public static Integer getFrameTier(Block block, int meta) {
-        if (block == MaterialLibAPI.getBlock(Materials2PipeShapes.frameGt)) {
+        if (block == MaterialLibAPI.getBlock(PipeShapes.frameGt)) {
             if (meta == Materials.Bronze.getIndex()) return 1;
             if (meta == Materials.Steel.getIndex()) return 2;
         }

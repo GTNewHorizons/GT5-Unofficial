@@ -45,7 +45,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.PipeShapes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -153,7 +153,7 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
 
     @Nullable
     public static Integer getTierFrame(Block block, int meta) {
-        if (block == MaterialLibAPI.getBlock(Materials2PipeShapes.frameGt)) {
+        if (block == MaterialLibAPI.getBlock(PipeShapes.frameGt)) {
             if (meta == Materials.Bronze.getIndex()) return 1;
             if (meta == Materials.Steel.getIndex()) return 2;
         }
@@ -233,10 +233,10 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
                         MTESteamMixer::getTierFrame,
                         ImmutableList.of(
                             Pair.of(
-                                MaterialLibAPI.getBlock(Materials2PipeShapes.frameGt),
+                                MaterialLibAPI.getBlock(PipeShapes.frameGt),
                                 Materials.Bronze.getIndex()),
                             Pair.of(
-                                MaterialLibAPI.getBlock(Materials2PipeShapes.frameGt),
+                                MaterialLibAPI.getBlock(PipeShapes.frameGt),
                                 Materials.Steel.getIndex())),
                         -1,
                         (t, m) -> t.tierFrame = m,

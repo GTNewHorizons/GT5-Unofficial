@@ -12,7 +12,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
-import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.PipeShapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -95,12 +95,12 @@ public class LoaderMaterialLibCutover implements Runnable {
     private static void registerHighPressureNames() {
         GTOreDictUnificator.registerOre(
             TieredItems.ZPM.getPipeSmallIngredient(),
-            MaterialLibAPI.getStack(Materials.Redstone, Materials2PipeShapes.pipeSmall, 1));
+            MaterialLibAPI.getStack(Materials.Redstone, PipeShapes.pipeSmall, 1));
         GTOreDictUnificator.registerOre(
             TieredItems.ZPM.getPipeMediumIngredient(),
-            MaterialLibAPI.getStack(Materials.Redstone, Materials2PipeShapes.pipeMedium, 1));
+            MaterialLibAPI.getStack(Materials.Redstone, PipeShapes.pipeMedium, 1));
         GTOreDictUnificator.registerOre(
             TieredItems.ZPM.getPipeLargeIngredient(),
-            MaterialLibAPI.getStack(Materials.Redstone, Materials2PipeShapes.pipeLarge, 1));
+            MaterialLibAPI.getStack(Materials.Redstone, PipeShapes.pipeLarge, 1));
     }
 }

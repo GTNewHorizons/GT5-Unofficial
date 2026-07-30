@@ -22,7 +22,7 @@ import com.ruling_0.materiallib.api.Shape;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.CellShapes;
-import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.PipeShapes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -184,7 +184,7 @@ public class MaterialParts {
             collectShapes(map, CellShapes.class);
             collectShapes(map, BlockShapes.class);
             collectShapes(map, OreShapes.class);
-            collectShapes(map, Materials2PipeShapes.class);
+            collectShapes(map, PipeShapes.class);
             for (Map.Entry<String, List<Shape>> entry : map.entrySet()) {
                 String prefix = entry.getKey();
                 entry.getValue()
