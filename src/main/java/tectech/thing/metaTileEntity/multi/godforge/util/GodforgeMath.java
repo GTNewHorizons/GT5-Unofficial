@@ -15,7 +15,7 @@ import tectech.thing.metaTileEntity.multi.godforge.MTESmeltingModule;
 public class GodforgeMath {
 
     public static int getRandomIntInRange(int min, int max) {
-        return (int) (Math.random() * (max - min)) + min;
+        return (int) (Math.random() * (max - min + 1)) + min;
     }
 
     public static double calculateFuelConsumption(ForgeOfGodsData data) {
