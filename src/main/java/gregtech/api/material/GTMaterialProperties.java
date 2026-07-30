@@ -172,10 +172,10 @@ public class GTMaterialProperties {
     /// is how the ore adapters and shape gating distinguish the werkstoff-origin materials from the gregtech
     /// and gtPlusPlus families.
     public static final Property<List<Integer>> WERKSTOFF_IDS = Property.of("gregtech", "werkstoffIds");
-    /// The dumped `generatedPrefixes` ground truth (every `OrePrefixes` name `hasItemType` reported), minus
-    /// `sheetmetal`/`frameGt`: those two cut over to MaterialLib shapes through
-    /// [PipeMaterials]'s own declared array rather than through this
-    /// property, so they never appear here. Elided when empty.
+    /// The frozen list of `OrePrefixes` names a werkstoff-backed material's legacy part set covered, read by
+    /// [gregtech.api.enums.materials.LegacyWerkstoffIndex#generatesPrefix]. `sheetmetal` and `frameGt` never
+    /// appear here: their membership is declared as a MaterialLib shape on the material itself
+    /// ([gregtech.api.enums.materials.Materials]), not through this property. Elided when empty.
     public static final Property<List<String>> WERKSTOFF_PREFIXES = Property.of("gregtech", "werkstoffPrefixes");
     /// The legacy bartworks material-type enum constant name.
     public static final Property<String> WERKSTOFF_TYPE = Property.of("gregtech", "werkstoffType");
