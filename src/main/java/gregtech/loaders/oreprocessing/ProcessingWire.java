@@ -16,6 +16,7 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
 import java.util.ArrayList;
 
+import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
@@ -28,7 +29,6 @@ import appeng.core.Api;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
@@ -110,7 +110,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 // combining assembler recipes below (see gregtech.loaders.shapeconsumers.ConsumerWire) and
                 // never had a plate crafting recipe, so they skip this block.
                 Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-                if (!Materials2Backings.isSuperconductorMarker(material)
+                if (!MaterialFacades.isSuperconductorMarker(material)
                     && !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
                     && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)
                     && ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV)) {

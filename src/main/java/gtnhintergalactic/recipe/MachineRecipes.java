@@ -10,6 +10,7 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 
+import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
@@ -26,7 +27,6 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.material.MaterialUtils;
@@ -506,7 +506,7 @@ public class MachineRecipes implements Runnable {
         // MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.wireFine, (int) (64)),
         // MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.wireFine, (int) (64)),
         // metaStableOgScrew_64,
-        // GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Backings.SuperconductorUHV, 32) },
+        // GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialFacades.SuperconductorUHV, 32) },
         // new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 32 * INGOTS),
         // MaterialLibAPI.getFluidStack(Materials.Infinity, Materials2FluidShapes.fluidMolten, (int) (16
         // * INGOTS)), MaterialUtils.fluid(Materials.UUMatter, 8_000),
@@ -546,7 +546,7 @@ public class MachineRecipes implements Runnable {
             8,
             new Object[] { ItemList.OreDrill4.get(1), ItemList.Robot_Arm_UV.get(8), ItemList.Field_Generator_UV.get(4),
                 new Object[] { Circuits.UV.getIngredient(), 16 }, ItemList.Sensor_UV.get(16),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Backings.SuperconductorUV, 32),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialFacades.SuperconductorUV, 32),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 16) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 20 * INGOTS),
                 MaterialLibAPI.getFluidStack(
@@ -568,7 +568,7 @@ public class MachineRecipes implements Runnable {
             new Object[] { ItemList.SpaceElevatorModuleMinerT1.get(1), ItemList.Robot_Arm_UHV.get(8),
                 ItemList.Field_Generator_UHV.get(4), new Object[] { Circuits.UHV.getIngredient(), 16 },
                 ItemList.Sensor_UHV.get(16),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Backings.SuperconductorUHV, 32),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialFacades.SuperconductorUHV, 32),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 16) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 20 * INGOTS),
                 MaterialLibAPI.getFluidStack(
@@ -590,7 +590,7 @@ public class MachineRecipes implements Runnable {
             new Object[] { ItemList.SpaceElevatorModuleMinerT2.get(1), ItemList.Robot_Arm_UEV.get(8),
                 ItemList.Field_Generator_UEV.get(4), new Object[] { Circuits.UEV.getIngredient(), 16 },
                 ItemList.Sensor_UEV.get(16),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Backings.SuperconductorUEV, 32),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialFacades.SuperconductorUEV, 32),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 16) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 20 * INGOTS),
                 MaterialLibAPI.getFluidStack(

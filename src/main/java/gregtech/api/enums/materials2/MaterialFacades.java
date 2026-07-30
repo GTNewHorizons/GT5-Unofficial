@@ -39,7 +39,7 @@ import gregtech.api.material.MaterialRef;
 /// [gregtech.api.enums.Materials2#init]) and assigns the fields from the same builders;
 /// `SuperconductorUHV` in particular must bind by builder reference, since its backing's registry name is
 /// `Superconductor`, not `SuperconductorUHV`.
-public class Materials2Backings {
+public class MaterialFacades {
 
     public static Material AnyBronze;
     public static Material AnyCarbon;
@@ -90,7 +90,7 @@ public class Materials2Backings {
         return oreReRegistrations.getOrDefault(material, Collections.emptyList());
     }
 
-    private Materials2Backings() {}
+    private MaterialFacades() {}
 
     private record Backing(Consumer<Material> field, String internalName, String localName, int argb) {}
 

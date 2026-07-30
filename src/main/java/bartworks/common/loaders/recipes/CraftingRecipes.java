@@ -16,6 +16,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.Windmill;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 
+import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
@@ -41,7 +42,6 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
-import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -120,7 +120,7 @@ public class CraftingRecipes implements Runnable {
             new ItemStack(ItemRegistry.TESLASTAFF),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "BO ", "OP ", "  P", 'O',
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Backings.SuperconductorUHV, 1), 'B',
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, MaterialFacades.SuperconductorUHV, 1), 'B',
                 ItemList.Energy_LapotronicOrb.get(1L), 'P', "plateAlloyIridium", });
 
         GTModHandler.addCraftingRecipe(
@@ -546,7 +546,7 @@ public class CraftingRecipes implements Runnable {
                 MaterialLibAPI
                     .getStack(Materials.Polytetrafluoroethylene, Shapes.plate, (int) (1L)),
                 'L', MaterialLibAPI.getStack(Materials.GarnetYellow, Shapes.lens, (int) (1L)), 'S',
-                ItemList.Sensor_IV.get(1), 'R', OrePrefixes.foil.ingredient(Materials2Backings.AnySyntheticRubber) });
+                ItemList.Sensor_IV.get(1), 'R', OrePrefixes.foil.ingredient(MaterialFacades.AnySyntheticRubber) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Item_Redstone_Sniffer.get(1L),
@@ -570,14 +570,14 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "DCD", "PWP", "DCD", 'D',
                 OrePrefixes.plateDense.ingredient(Materials.NeodymiumMagnetic), 'C', ItemList.HV_Coil, 'P',
                 OrePrefixes.plate.ingredient(Materials.Silver), 'W',
-                MaterialParts.namedIngredient(OrePrefixes.wireGt12, Materials2Backings.SuperconductorIV) });
+                MaterialParts.namedIngredient(OrePrefixes.wireGt12, MaterialFacades.SuperconductorIV) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Vajra_Core.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "wEh", "ITI", "SRS", 'E', OrePrefixes.plate.ingredient(Materials.Silver), 'I',
                 OrePrefixes.plateDense.ingredient(Materials.Iridium), 'T', ItemList.Transformer_EV_HV.get(1),
-                'S', MaterialParts.namedIngredient(OrePrefixes.wireGt12, Materials2Backings.SuperconductorIV), 'R',
+                'S', MaterialParts.namedIngredient(OrePrefixes.wireGt12, MaterialFacades.SuperconductorIV), 'R',
                 ItemList.Transformer_IV_EV.get(1) });
     }
 }

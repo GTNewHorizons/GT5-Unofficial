@@ -26,7 +26,7 @@ import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Backings;
+import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -83,7 +83,7 @@ public class TecTechResearchLoader {
                 MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plateSuperdense, (int) (1)),
                 MaterialLibAPI.getStack(Materials.Osmium, Shapes.stickLong, (int) (64)),
                 MaterialLibAPI.getStack(Materials.Osmium, Shapes.ring, (int) (64)),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Backings.SuperconductorUHV, 64),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, MaterialFacades.SuperconductorUHV, 64),
                 ItemList.Electric_Piston_UV.get(64), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 10 * INGOTS),
                 MaterialLibAPI

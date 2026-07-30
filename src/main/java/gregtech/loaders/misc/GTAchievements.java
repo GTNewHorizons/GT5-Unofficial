@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
+import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -29,7 +30,6 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
@@ -721,7 +721,7 @@ public class GTAchievements {
                                 data.getAllMaterialStacks()
                                     .get(i).mMaterial));
                         if (data.getAllMaterialStacks()
-                            .get(i).mMaterial == Materials2Backings.AnyIron) {
+                            .get(i).mMaterial == MaterialFacades.AnyIron) {
                             issueAchievement(player, "iron");
                         }
                         if (data.getAllMaterialStacks()

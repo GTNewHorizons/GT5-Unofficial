@@ -7,8 +7,8 @@ import java.util.stream.IntStream;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.Shape;
 
+import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 
 /// The retired per-material pipe-family MTE ids, mapped to the MaterialLib shape and material each id's
@@ -75,26 +75,26 @@ public final class LegacyPipeCutoverTable {
         wireCable(Materials.Duranium, 1820);
         wireCable(Materials.TPVAlloy, 1840);
         wireCable(Materials.RedAlloy, 2000);
-        wireOnly(Materials2Backings.SuperconductorUHV, 2020);
-        wireOnly(Materials2Backings.SuperconductorUEV, 2026);
+        wireOnly(MaterialFacades.SuperconductorUHV, 2020);
+        wireOnly(MaterialFacades.SuperconductorUEV, 2026);
         wireOnly(Materials.SuperconductorUEVBase, 2032);
         wireOnly(Materials.SuperconductorUIVBase, 2052);
         wireOnly(Materials.SuperconductorUMVBase, 2072);
-        wireOnly(Materials2Backings.SuperconductorUIV, 2081);
-        wireOnly(Materials2Backings.SuperconductorUMV, 2089);
+        wireOnly(MaterialFacades.SuperconductorUIV, 2081);
+        wireOnly(MaterialFacades.SuperconductorUMV, 2089);
         wireOnly(Materials.Pentacadmiummagnesiumhexaoxid, 2200);
         wireOnly(Materials.Titaniumonabariumdecacoppereikosaoxid, 2220);
         wireOnly(Materials.Uraniumtriplatinid, 2240);
         wireOnly(Materials.Vanadiumtriindinid, 2260);
         wireOnly(Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid, 2280);
         wireOnly(Materials.Tetranaquadahdiindiumhexaplatiumosminid, 2300);
-        wireOnly(Materials2Backings.SuperconductorMV, 2320);
-        wireOnly(Materials2Backings.SuperconductorHV, 2340);
-        wireOnly(Materials2Backings.SuperconductorEV, 2360);
-        wireOnly(Materials2Backings.SuperconductorIV, 2380);
-        wireOnly(Materials2Backings.SuperconductorLuV, 2400);
-        wireOnly(Materials2Backings.SuperconductorZPM, 2420);
-        wireOnly(Materials2Backings.SuperconductorUV, 2440);
+        wireOnly(MaterialFacades.SuperconductorMV, 2320);
+        wireOnly(MaterialFacades.SuperconductorHV, 2340);
+        wireOnly(MaterialFacades.SuperconductorEV, 2360);
+        wireOnly(MaterialFacades.SuperconductorIV, 2380);
+        wireOnly(MaterialFacades.SuperconductorLuV, 2400);
+        wireOnly(MaterialFacades.SuperconductorZPM, 2420);
+        wireOnly(MaterialFacades.SuperconductorUV, 2440);
         wireOnly(Materials.Longasssuperconductornameforuvwire, 2500);
         wireOnly(Materials.Longasssuperconductornameforuhvwire, 2520);
         wireOnly(Materials.Ichorium, 2600);

@@ -1,7 +1,7 @@
 package gregtech.api.enums;
 
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2Backings;
+import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2Families;
@@ -36,7 +36,7 @@ public class Materials2 {
         Materials2PipeShapes.init();
         Materials2Families.init();
         Materials.init();
-        Materials2Backings.registerBackingMaterials();
+        MaterialFacades.registerBackingMaterials();
         RecognitionMaterials.registerBackingMaterials();
         Materials2PipeMaterials.init();
         Materials2ShapeData.init();

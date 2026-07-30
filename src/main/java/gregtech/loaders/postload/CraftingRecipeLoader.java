@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
@@ -22,7 +23,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ToolDictNames;
-import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLog;
@@ -103,9 +103,9 @@ public class CraftingRecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.FenceIron.get(6L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { aTextIron2, aTextIron2, " w ", 'X', OrePrefixes.stick.ingredient(Materials2Backings.AnyIron),
+            new Object[] { aTextIron2, aTextIron2, " w ", 'X', OrePrefixes.stick.ingredient(MaterialFacades.AnyIron),
                 'S', MaterialParts.craftIngredient(OrePrefixes.stick, Materials.Wood), 'I',
-                OrePrefixes.ingot.ingredient(Materials2Backings.AnyIron) });
+                OrePrefixes.ingot.ingredient(MaterialFacades.AnyIron) });
 
         tMat = new ItemStack(Items.gold_ingot);
         {
