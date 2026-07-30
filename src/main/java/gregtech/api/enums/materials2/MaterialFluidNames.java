@@ -13,7 +13,7 @@ import gregtech.api.material.FluidRef;
 /// The Forge fluid each material registers per state, and the six cracked fluids, keyed by MaterialLib
 /// registration name.
 ///
-/// These are the names, temperatures and icon paths [Materials2FluidShapes] registers its fluids under, and a
+/// These are the names, temperatures and icon paths [FluidShapes] registers its fluids under, and a
 /// world stores fluid stacks by name, so they are permanent: renaming one orphans every saved stack of it.
 /// Postea can migrate blocks, item stacks and tile entities, but has no fluid transformer, and its dispatch is
 /// keyed per item and per tile entity id -- so a rename would mean enumerating every container item and every

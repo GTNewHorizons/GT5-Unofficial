@@ -16,7 +16,7 @@ import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
@@ -30,7 +30,7 @@ public class MaterialFix {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.gearGtSmall, 1))
                 .fluidOutputs(
-                    MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
                 .duration(1 * SECONDS + 12 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
@@ -39,7 +39,7 @@ public class MaterialFix {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.spring, 1))
                 .fluidOutputs(
-                    MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
                 .duration(1 * SECONDS + 12 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
@@ -49,7 +49,7 @@ public class MaterialFix {
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.foil, 1))
                 .fluidOutputs(
                     MaterialLibAPI
-                        .getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (1 * QUARTER_INGOTS)))
+                        .getFluidStack(material, FluidShapes.fluidMolten, (int) (1 * QUARTER_INGOTS)))
                 .duration(8 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
@@ -59,7 +59,7 @@ public class MaterialFix {
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.springSmall, 1))
                 .fluidOutputs(
                     MaterialLibAPI
-                        .getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (1 * QUARTER_INGOTS)))
+                        .getFluidStack(material, FluidShapes.fluidMolten, (int) (1 * QUARTER_INGOTS)))
                 .duration(8 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
@@ -69,7 +69,7 @@ public class MaterialFix {
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.ring, 1))
                 .fluidOutputs(
                     MaterialLibAPI
-                        .getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (1 * QUARTER_INGOTS)))
+                        .getFluidStack(material, FluidShapes.fluidMolten, (int) (1 * QUARTER_INGOTS)))
                 .duration(8 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
@@ -79,7 +79,7 @@ public class MaterialFix {
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.bolt, 1))
                 .fluidOutputs(
                     MaterialLibAPI
-                        .getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (1 * EIGHTH_INGOTS)))
+                        .getFluidStack(material, FluidShapes.fluidMolten, (int) (1 * EIGHTH_INGOTS)))
                 .duration(4 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
@@ -89,7 +89,7 @@ public class MaterialFix {
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.wireFine, 1))
                 .fluidOutputs(
                     MaterialLibAPI
-                        .getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (1 * EIGHTH_INGOTS)))
+                        .getFluidStack(material, FluidShapes.fluidMolten, (int) (1 * EIGHTH_INGOTS)))
                 .duration(4 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
@@ -98,7 +98,7 @@ public class MaterialFix {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.screw, 1))
                 .fluidOutputs(
-                    MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
+                    MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
                 .duration(4 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
@@ -106,7 +106,7 @@ public class MaterialFix {
         if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.rotor)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.rotor, 1))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (612)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (612)))
                 .duration(136 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
@@ -115,7 +115,7 @@ public class MaterialFix {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.gearGt, 1))
                 .fluidOutputs(
-                    MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+                    MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
                 .duration(128 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);

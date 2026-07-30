@@ -10,6 +10,7 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -26,7 +27,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
@@ -44,7 +44,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .itemOutputs(GTModHandler.getModItem(Railcraft.ID, "cube", 1L, 8))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Creosote, Materials2FluidShapes.fluidLiquid, (int) (750)))
+                        .getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (750)))
                 .duration(16 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(chemicalBathRecipes);
@@ -55,7 +55,7 @@ public class ChemicalBathRecipes implements Runnable {
             .itemOutputs(ItemList.Food_Fries.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.FryingOilHot, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                    .getFluidStack(Materials.FryingOilHot, FluidShapes.fluidLiquid, (int) (10)))
             .duration(16 * TICKS)
             .eut(4)
             .addTo(chemicalBathRecipes);
@@ -64,7 +64,7 @@ public class ChemicalBathRecipes implements Runnable {
             .itemInputs(GTModHandler.getIC2Item("dynamite", 1))
             .itemOutputs(GTModHandler.getIC2Item("stickyDynamite", 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Glue, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, (int) (10)))
             .duration(16 * TICKS)
             .eut(4)
             .addTo(chemicalBathRecipes);
@@ -74,7 +74,7 @@ public class ChemicalBathRecipes implements Runnable {
             .itemOutputs(ItemList.Block_ReinforcedConcrete.get(1L))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Concrete, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Concrete, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(4)
             .addTo(chemicalBathRecipes);
@@ -125,7 +125,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .itemOutputs(new ItemStack(Blocks.wool, 1, 0))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, (int) (50)))
+                        .getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, (int) (50)))
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(chemicalBathRecipes);
@@ -136,7 +136,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .itemOutputs(new ItemStack(Blocks.carpet, 1, 0))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, (int) (25)))
+                        .getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, (int) (25)))
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(chemicalBathRecipes);
@@ -147,7 +147,7 @@ public class ChemicalBathRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.stained_hardened_clay, 1, 32767))
             .itemOutputs(new ItemStack(Blocks.hardened_clay, 1, 0))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, (int) (50)))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, (int) (50)))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(chemicalBathRecipes);
@@ -157,7 +157,7 @@ public class ChemicalBathRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.stained_glass, 1, 32767))
             .itemOutputs(new ItemStack(Blocks.glass, 1, 0))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, (int) (50)))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, (int) (50)))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(chemicalBathRecipes);
@@ -167,7 +167,7 @@ public class ChemicalBathRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.stained_glass_pane, 1, 32767))
             .itemOutputs(new ItemStack(Blocks.glass_pane, 1, 0))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, (int) (20)))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, (int) (20)))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(chemicalBathRecipes);
@@ -199,7 +199,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.Concrete,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (1 * INGOTS)))
                 .duration(10 * SECONDS)
                 .eut(4)
@@ -211,7 +211,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.Steel,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (2 * INGOTS)))
                 .duration(12 * SECONDS + 10 * TICKS)
                 .eut(TierEU.RECIPE_LV / 2)
@@ -223,7 +223,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.Titanium,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (1 * INGOTS)))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -235,7 +235,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.TungstenSteel,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (1 * INGOTS)))
                 .duration(17 * SECONDS + 10 * TICKS)
                 .eut(TierEU.RECIPE_MV / 2)
@@ -247,7 +247,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.Iridium,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (1 * INGOTS)))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
@@ -259,7 +259,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.Osmium,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (1 * INGOTS)))
                 .duration(22 * SECONDS + 10 * TICKS)
                 .eut(TierEU.RECIPE_HV / 2)
@@ -271,7 +271,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.Naquadria,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (1 * INGOTS)))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
@@ -283,7 +283,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.Concrete,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (1 * INGOTS)))
                 .duration(10 * SECONDS)
                 .eut(4)
@@ -365,7 +365,7 @@ public class ChemicalBathRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get("gemEnderEye", 1))
             .itemOutputs(ItemList.QuantumEye.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Radon, Materials2FluidShapes.fluidGas, (int) (250)))
+                MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidGas, (int) (250)))
             .duration(24 * SECONDS)
             .eut(384)
             .addTo(chemicalBathRecipes);
@@ -374,7 +374,7 @@ public class ChemicalBathRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get("gemNetherStar", 1))
             .itemOutputs(ItemList.QuantumStar.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Radon, Materials2FluidShapes.fluidGas, (int) (1250)))
+                MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidGas, (int) (1250)))
             .duration(1 * MINUTES + 36 * SECONDS)
             .eut(384)
             .addTo(chemicalBathRecipes);
@@ -385,7 +385,7 @@ public class ChemicalBathRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.PolyurethaneResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -406,7 +406,7 @@ public class ChemicalBathRecipes implements Runnable {
             .fluidInputs(GTUtility.getWater(1_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (1_000)))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(chemicalBathRecipes);
@@ -423,7 +423,7 @@ public class ChemicalBathRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SodiumPersulfate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (100)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
@@ -438,7 +438,7 @@ public class ChemicalBathRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SodiumPersulfate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (100)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
@@ -453,7 +453,7 @@ public class ChemicalBathRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SodiumPersulfate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (100)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
@@ -468,7 +468,7 @@ public class ChemicalBathRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SodiumPersulfate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (100)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
@@ -483,7 +483,7 @@ public class ChemicalBathRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SodiumPersulfate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (100)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
@@ -498,7 +498,7 @@ public class ChemicalBathRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SodiumPersulfate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (100)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
@@ -513,7 +513,7 @@ public class ChemicalBathRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SodiumPersulfate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (100)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
@@ -551,7 +551,7 @@ public class ChemicalBathRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.protohalkonitebase,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) ((long) partFraction * multiplier)))
             .duration((int) (multiplier * (8 * SECONDS * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UEV)
@@ -563,7 +563,7 @@ public class ChemicalBathRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.protohalkonitebase,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) ((long) partFraction * multiplier / 2L)))
             .duration((int) (multiplier * (2 * SECONDS * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UIV)
@@ -575,7 +575,7 @@ public class ChemicalBathRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.protohalkonitebase,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) ((long) partFraction * multiplier / 2L)))
             .duration((int) (multiplier * (2 * SECONDS * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UIV)

@@ -39,7 +39,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -226,7 +226,7 @@ public class MTEExoticModule extends MTEBaseModule {
                 .addAll(convertItemToPlasma(randomizedItemInput, 9), convertFluidToPlasma(randomizedFluidInput, 1)),
             new FluidStack[] { MaterialLibAPI.getFluidStack(
                 Materials.QuarkGluonPlasma,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (1000 * actualParallel)) },
             10 * SECONDS,
             (int) TierEU.RECIPE_MAX,
@@ -447,7 +447,7 @@ public class MTEExoticModule extends MTEBaseModule {
             } else {
                 outputFluid = MaterialLibAPI.getFluidStack(
                     Materials.QuarkGluonPlasma,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1000 * actualParallel));
             }
 

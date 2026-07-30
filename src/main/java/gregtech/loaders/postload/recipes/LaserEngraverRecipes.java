@@ -11,6 +11,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.WaferEngravingRecipes;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
@@ -21,7 +22,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -36,11 +36,11 @@ public class LaserEngraverRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DimensionallyTranscendentCrudeCatalyst,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     1_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.ExcitedDTCC, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.ExcitedDTCC, FluidShapes.fluidLiquid, (int) (1_000)))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_ZPM)
@@ -50,11 +50,11 @@ public class LaserEngraverRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DimensionallyTranscendentProsaicCatalyst,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     1_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.ExcitedDTPC, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.ExcitedDTPC, FluidShapes.fluidLiquid, (int) (1_000)))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UV)
@@ -64,11 +64,11 @@ public class LaserEngraverRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DimensionallyTranscendentResplendentCatalyst,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     1_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.ExcitedDTRC, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.ExcitedDTRC, FluidShapes.fluidLiquid, (int) (1_000)))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UHV)
@@ -78,11 +78,11 @@ public class LaserEngraverRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DimensionallyTranscendentExoticCatalyst,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     1_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.ExcitedDTEC, FluidShapes.fluidLiquid, (int) (1_000)))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UEV)
@@ -92,11 +92,11 @@ public class LaserEngraverRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DimensionallyTranscendentStellarCatalyst,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     1_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.ExcitedDTSC, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.ExcitedDTSC, FluidShapes.fluidLiquid, (int) (1_000)))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UIV)
@@ -110,7 +110,7 @@ public class LaserEngraverRecipes implements Runnable {
             .itemOutputs(new net.minecraft.item.ItemStack(Items.comparator, 1, 0))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Concrete, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Concrete, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(2 * SECONDS)
             .eut(20)
             .addTo(assemblerRecipes);

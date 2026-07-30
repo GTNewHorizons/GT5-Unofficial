@@ -33,6 +33,7 @@ import java.util.concurrent.atomic.AtomicIntegerArray;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.enchantment.Enchantment;
@@ -72,7 +73,6 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.ToolDictNames;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.internal.IGTCraftingRecipe;
@@ -226,7 +226,7 @@ public class GTModHandler {
     public static FluidStack getLiquidDNA(long aAmount) {
         if (Gendustry.isModLoaded()) return FluidRegistry.getFluidStack("liquiddna", (int) aAmount);
         else return MaterialLibAPI
-            .getFluidStack(Materials.Biomass, Materials2FluidShapes.fluidLiquid, (int) (aAmount));
+            .getFluidStack(Materials.Biomass, FluidShapes.fluidLiquid, (int) (aAmount));
     }
 
     /**
@@ -287,7 +287,7 @@ public class GTModHandler {
     @Deprecated
     public static FluidStack getMilk(long aAmount) {
         return MaterialLibAPI
-            .getFluidStack(Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (aAmount));
+            .getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, (int) (aAmount));
     }
 
     /**

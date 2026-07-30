@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
@@ -36,7 +37,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
@@ -172,127 +172,127 @@ public class Godforge implements Runnable {
 
                 FluidStack[] solid_plasmas_t0_1step = {
                     MaterialLibAPI
-                        .getFluidStack(Materials.Aluminium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Aluminium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Iron, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Iron, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Calcium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Calcium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Sulfur, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Sulfur, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Zinc, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Zinc, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Niobium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Niobium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Tin, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Tin, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Titanium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Titanium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Nickel, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Nickel, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Silver, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Silver, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Americium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Americium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Antimony, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Antimony, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Ardite, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Ardite, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Arsenic, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Arsenic, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Barium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Barium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Beryllium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Beryllium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Caesium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Caesium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Cadmium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Cadmium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Carbon, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Carbon, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Cerium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Cerium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Cobalt, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Cobalt, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Copper, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Copper, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Desh, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Desh, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Dysprosium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Dysprosium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Erbium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Erbium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Europium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Europium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Gadolinium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Gadolinium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Gallium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Gallium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Gold, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Gold, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Holmium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Holmium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Indium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Indium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Lanthanum, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Lanthanum, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Lithium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Lithium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Lutetium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Lutetium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Magnesium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Magnesium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Manganese, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Manganese, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.MeteoricIron, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.MeteoricIron, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Molybdenum, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Molybdenum, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Neodymium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Neodymium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Oriharukon, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Oriharukon, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Palladium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Palladium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Phosphorus, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Phosphorus, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Potassium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Potassium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Praseodymium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Praseodymium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Promethium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Promethium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Rubidium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Rubidium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Samarium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Samarium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Silicon, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Silicon, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Sodium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Sodium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Strontium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Strontium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Tantalum, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Tantalum, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Tellurium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Tellurium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Terbium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Terbium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Thulium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Thulium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Tungsten, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Tungsten, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Uranium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Uranium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Uranium235, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Uranium235, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Vanadium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Vanadium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Ytterbium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Ytterbium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Yttrium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Yttrium, FluidShapes.fluidPlasma, 1 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Chrome, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                        .getFluidStack(Materials.Chrome, FluidShapes.fluidPlasma, 1 * INGOTS),
                     new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Zirconium), 1 * INGOTS),
                     new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Thorium232), 1 * INGOTS),
                     new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Germanium), 1 * INGOTS),
@@ -348,21 +348,21 @@ public class Godforge implements Runnable {
             FluidStack[] solid_plasmas_t0_xstep = {
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Force), 1 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Bismuth, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                    .getFluidStack(Materials.Bismuth, FluidShapes.fluidPlasma, 1 * INGOTS),
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.AdvancedNitinol), 1 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Boron, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Boron, FluidShapes.fluidPlasma, 1 * INGOTS),
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.AstralTitanium), 1 * INGOTS),
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Runite), 1 * INGOTS),
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.CelestialTungsten), 1 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Iridium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                    .getFluidStack(Materials.Iridium, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Naquadah, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Osmium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                    .getFluidStack(Materials.Naquadah, FluidShapes.fluidPlasma, 1 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Platinum, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                    .getFluidStack(Materials.Platinum, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Plutonium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                    .getFluidStack(Materials.Plutonium, FluidShapes.fluidPlasma, 1 * INGOTS),
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Californium), 1 * INGOTS) };
 
             for (int i = 0; i < solids_t0_xstep.length; i++) {
@@ -400,18 +400,18 @@ public class Godforge implements Runnable {
             FluidStack[] molten_t1_1step = convertToFluid(solids_t1_1step);
 
             FluidStack[] solid_plasmas_t1_1step = {
-                MaterialLibAPI.getFluidStack(Materials.Lead, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Lead, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Plutonium241, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                    .getFluidStack(Materials.Plutonium241, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Thorium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                    .getFluidStack(Materials.Thorium, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Naquadria, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                    .getFluidStack(Materials.Naquadria, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Redstone, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                    .getFluidStack(Materials.Redstone, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials.CosmicNeutronium,
-                    Materials2FluidShapes.fluidPlasma,
+                    FluidShapes.fluidPlasma,
                     1 * INGOTS) };
 
             for (int i = 0; i < solids_t1_1step.length; i++) {
@@ -490,17 +490,17 @@ public class Godforge implements Runnable {
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Dragonblood), 1 * INGOTS),
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.ChromaticGlass), 1 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Bedrockium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                    .getFluidStack(Materials.Bedrockium, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Draconium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                    .getFluidStack(Materials.Draconium, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials.DraconiumAwakened,
-                    Materials2FluidShapes.fluidPlasma,
+                    FluidShapes.fluidPlasma,
                     1 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Ichorium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                    .getFluidStack(Materials.Ichorium, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Infinity, Materials2FluidShapes.fluidPlasma, 1 * INGOTS) };
+                    .getFluidStack(Materials.Infinity, FluidShapes.fluidPlasma, 1 * INGOTS) };
 
             for (int i = 0; i < solids_t2_1step.length; i++) {
                 GTValues.RA.stdBuilder()
@@ -538,14 +538,14 @@ public class Godforge implements Runnable {
             FluidStack[] solid_plasmas_t2_xstep = {
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Hypogen), 144),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Tritanium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                    .getFluidStack(Materials.Tritanium, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.FleroviumGT5U, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                    .getFluidStack(Materials.FleroviumGT5U, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Neutronium, Materials2FluidShapes.fluidPlasma, 1 * INGOTS),
+                    .getFluidStack(Materials.Neutronium, FluidShapes.fluidPlasma, 1 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials.SixPhasedCopper,
-                    Materials2FluidShapes.fluidPlasma,
+                    FluidShapes.fluidPlasma,
                     1 * INGOTS) };
 
             for (int i = 0; i < solids_t2_xstep.length; i++) {
@@ -580,27 +580,27 @@ public class Godforge implements Runnable {
             {
                 // Single step
                 FluidStack[] fluids_t0_1step = {
-                    MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, 500),
-                    MaterialLibAPI.getFluidStack(Materials.Nitrogen, Materials2FluidShapes.fluidGas, 500),
-                    MaterialLibAPI.getFluidStack(Materials.Argon, Materials2FluidShapes.fluidGas, 500),
-                    MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 500),
-                    MaterialLibAPI.getFluidStack(Materials.Deuterium, Materials2FluidShapes.fluidGas, 500),
-                    MaterialLibAPI.getFluidStack(Materials.Fluorine, Materials2FluidShapes.fluidGas, 500),
-                    MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, 500),
-                    MaterialLibAPI.getFluidStack(Materials.Radon, Materials2FluidShapes.fluidGas, 500),
-                    MaterialLibAPI.getFluidStack(Materials.Tritium, Materials2FluidShapes.fluidGas, 500),
-                    MaterialLibAPI.getFluidStack(Materials.Mercury, Materials2FluidShapes.fluidLiquid, 500) };
+                    MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Deuterium, FluidShapes.fluidGas, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidGas, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Tritium, FluidShapes.fluidGas, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Mercury, FluidShapes.fluidLiquid, 500) };
                 FluidStack[] fluid_plasmas_t0_1step = {
-                    MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidPlasma, 500),
-                    MaterialLibAPI.getFluidStack(Materials.Nitrogen, Materials2FluidShapes.fluidPlasma, 500),
-                    MaterialLibAPI.getFluidStack(Materials.Argon, Materials2FluidShapes.fluidPlasma, 500),
-                    MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidPlasma, 500),
-                    MaterialLibAPI.getFluidStack(Materials.Deuterium, Materials2FluidShapes.fluidPlasma, 500),
-                    MaterialLibAPI.getFluidStack(Materials.Fluorine, Materials2FluidShapes.fluidPlasma, 500),
-                    MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidPlasma, 500),
-                    MaterialLibAPI.getFluidStack(Materials.Radon, Materials2FluidShapes.fluidPlasma, 500),
-                    MaterialLibAPI.getFluidStack(Materials.Tritium, Materials2FluidShapes.fluidPlasma, 500),
-                    MaterialLibAPI.getFluidStack(Materials.Mercury, Materials2FluidShapes.fluidPlasma, 500) };
+                    MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidPlasma, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidPlasma, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidPlasma, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidPlasma, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Deuterium, FluidShapes.fluidPlasma, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidPlasma, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidPlasma, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidPlasma, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Tritium, FluidShapes.fluidPlasma, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Mercury, FluidShapes.fluidPlasma, 500) };
 
                 for (int i = 0; i < fluids_t0_1step.length; i++) {
                     GTValues.RA.stdBuilder()
@@ -615,12 +615,12 @@ public class Godforge implements Runnable {
 
                 // Multi-step
                 FluidStack[] fluids_t0_xstep = { MaterialUtils.legacyGtppFluid(Materials.Neon, 500),
-                    MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 500),
                     MaterialUtils.legacyGtppFluid(Materials.Krypton, 500),
                     MaterialUtils.legacyGtppFluid(Materials.Xenon, 500) };
                 FluidStack[] fluid_plasmas_t0_xstep = {
                     new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Neon), 500),
-                    MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidPlasma, 500),
+                    MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidPlasma, 500),
                     new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Krypton), 500),
                     new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Xenon), 500) };
 
@@ -661,10 +661,10 @@ public class Godforge implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(Materials.Iron, Materials2FluidShapes.fluidMolten, 1))
+                    MaterialLibAPI.getFluidStack(Materials.Iron, FluidShapes.fluidMolten, 1))
                 .fluidOutputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.QuarkGluonPlasma, Materials2FluidShapes.fluidLiquid, 1_000))
+                        .getFluidStack(Materials.QuarkGluonPlasma, FluidShapes.fluidLiquid, 1_000))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MAX)
                 .metadata(FOG_EXOTIC_TIER, 1)
@@ -675,11 +675,11 @@ public class Godforge implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(Materials.Iron, Materials2FluidShapes.fluidMolten, 1),
-                    MaterialLibAPI.getFluidStack(Materials.Bismuth, Materials2FluidShapes.fluidMolten, 1))
+                    MaterialLibAPI.getFluidStack(Materials.Iron, FluidShapes.fluidMolten, 1),
+                    MaterialLibAPI.getFluidStack(Materials.Bismuth, FluidShapes.fluidMolten, 1))
                 .fluidOutputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Magmatter, Materials2FluidShapes.fluidMolten, 4 * INGOTS))
+                        .getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, 4 * INGOTS))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_MAX)
                 .metadata(FOG_EXOTIC_TIER, 1)
@@ -860,7 +860,7 @@ public class Godforge implements Runnable {
 
         // Mercury is weird, it has neither dust nor gas, so it needs to be added separately
         exoticModulePlasmaFluidMap
-            .put(MaterialLibAPI.getFluidStack(Materials.Mercury, Materials2FluidShapes.fluidLiquid, 1), 6000);
+            .put(MaterialLibAPI.getFluidStack(Materials.Mercury, FluidShapes.fluidLiquid, 1), 6000);
 
         // Loop for adding all GT plasma materials
         for (int i = 0; i < plasmaGTMaterialList.size(); i++) {
@@ -1056,7 +1056,7 @@ public class Godforge implements Runnable {
             .itemOutputs(CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(1))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.QuarkGluonPlasma, Materials2FluidShapes.fluidLiquid, 1_000))
+                    .getFluidStack(Materials.QuarkGluonPlasma, FluidShapes.fluidLiquid, 1_000))
             .duration(1)
             .eut(1)
             .metadata(FOG_UPGRADE_NAME_SHORT, translateToLocal(ForgeOfGodsUpgrade.QGPIU.getShortNameKey()))
@@ -1074,8 +1074,8 @@ public class Godforge implements Runnable {
             .itemInputs(ForgeOfGodsUpgrade.EE.getExtraCostNoNulls())
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Magmatter, Materials2FluidShapes.fluidMolten, 4 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Neutronium, Materials2FluidShapes.fluidPlasma, 1_000))
+                    .getFluidStack(Materials.Magmatter, FluidShapes.fluidMolten, 4 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidPlasma, 1_000))
             .duration(1)
             .eut(1)
             .metadata(FOG_UPGRADE_NAME_SHORT, translateToLocal(ForgeOfGodsUpgrade.EE.getShortNameKey()))
@@ -1141,11 +1141,11 @@ public class Godforge implements Runnable {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.InfusedGold, Shapes.dust, 1),
                 ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1L))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Boron, Materials2FluidShapes.fluidPlasma, 2))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Boron, FluidShapes.fluidPlasma, 2))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.activatednetherite, Materials2FluidShapes.fluidMolten, 144),
-                MaterialLibAPI.getFluidStack(Materials.Boron, Materials2FluidShapes.fluidMolten, 2))
+                    .getFluidStack(Materials.activatednetherite, FluidShapes.fluidMolten, 144),
+                MaterialLibAPI.getFluidStack(Materials.Boron, FluidShapes.fluidMolten, 2))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .metadata(COIL_HEAT, 50000)

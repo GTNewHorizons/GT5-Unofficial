@@ -43,7 +43,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.CellShapes;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.fluid.GTFluidFactory;
@@ -1835,7 +1835,7 @@ public class LoaderGTBlockFluid implements Runnable {
             FluidContainerRegistry.registerFluidContainer(
                 new FluidContainerRegistry.FluidContainerData(
                     MaterialLibAPI
-                        .getFluidStack(Materials.FierySteel, Materials2FluidShapes.fluidLiquid, (int) (250)),
+                        .getFluidStack(Materials.FierySteel, FluidShapes.fluidLiquid, (int) (250)),
                     ItemList.TF_Vial_FieryBlood.get(1L),
                     ItemList.Bottle_Empty.get(1L)));
         }
@@ -1843,34 +1843,34 @@ public class LoaderGTBlockFluid implements Runnable {
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
+                    .getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, (int) (1_000)),
                 GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Milk, 1L),
                 GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Empty, 1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                MaterialLibAPI.getFluidStack(Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (250)),
+                MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, (int) (250)),
                 ItemList.Bottle_Milk.get(1L),
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
                 MaterialLibAPI
-                    .getFluidStack(Materials.HolyWater, Materials2FluidShapes.fluidLiquid, (int) (250)),
+                    .getFluidStack(Materials.HolyWater, FluidShapes.fluidLiquid, (int) (250)),
                 ItemList.Bottle_Holy_Water.get(1L),
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
                 MaterialLibAPI
-                    .getFluidStack(Materials.McGuffium239, Materials2FluidShapes.fluidLiquid, (int) (250)),
+                    .getFluidStack(Materials.McGuffium239, FluidShapes.fluidLiquid, (int) (250)),
                 ItemList.McGuffium_239.get(1L),
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                MaterialLibAPI.getFluidStack(Materials.Fuel, Materials2FluidShapes.fluidLiquid, 100),
+                MaterialLibAPI.getFluidStack(Materials.Fuel, FluidShapes.fluidLiquid, 100),
                 ItemList.Tool_Lighter_Invar_Full.get(1L),
                 ItemList.Tool_Lighter_Invar_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                MaterialLibAPI.getFluidStack(Materials.Fuel, Materials2FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.Fuel, FluidShapes.fluidLiquid, 1_000),
                 ItemList.Tool_Lighter_Platinum_Full.get(1L),
                 ItemList.Tool_Lighter_Platinum_Empty.get(1L)));
 

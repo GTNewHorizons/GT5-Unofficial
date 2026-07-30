@@ -49,7 +49,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -305,7 +305,7 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
                 tWater += fluid.amount;
             } else if (fluid != null && fluid.equals(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (1)))) {
+                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (1)))) {
                         tLube += fluid.amount;
                     }
         }
@@ -361,7 +361,7 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
         depleteInput(
             MaterialLibAPI.getFluidStack(
                 Materials.Lubricant,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (finalParallel * 2)));
 
         // Consume items and generate outputs

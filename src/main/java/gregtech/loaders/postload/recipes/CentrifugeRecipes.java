@@ -16,6 +16,7 @@ import static gregtech.loaders.misc.GTBees.combs;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
@@ -30,7 +31,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.CellShapes;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.util.GTOreDictUnificator;
@@ -46,7 +46,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new OreDictItemStack("logWood", 1))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (60)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (60)))
             .duration(10 * SECONDS)
             .eut(20)
             .addTo(centrifugeRecipes);
@@ -61,7 +61,7 @@ public class CentrifugeRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, (int) (1)))
             .outputChances(5000, 3750, 2500, 2500)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (60)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (60)))
             .duration(10 * SECONDS)
             .eut(20)
             .addTo(centrifugeRecipes);
@@ -75,7 +75,7 @@ public class CentrifugeRecipes implements Runnable {
             .outputChances(10000, 10000, 9000)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Mercury, Materials2FluidShapes.fluidLiquid, (int) (200)))
+                    .getFluidStack(Materials.Mercury, FluidShapes.fluidLiquid, (int) (200)))
             .duration(20 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
@@ -84,10 +84,10 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(ItemList.Cell_Empty.get(1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cell, (int) (1)))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Air, Materials2FluidShapes.fluidGas, (int) (10_000)))
+                MaterialLibAPI.getFluidStack(Materials.Air, FluidShapes.fluidGas, (int) (10_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Nitrogen, Materials2FluidShapes.fluidGas, (int) (3_900)))
+                    .getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, (int) (3_900)))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(centrifugeRecipes);
@@ -118,7 +118,7 @@ public class CentrifugeRecipes implements Runnable {
             .outputChances(10000, 4000, 2000, 2000, 2000, 2000)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SluiceJuice, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, (int) (1_000)))
             .fluidOutputs(GTUtility.getWater(500))
             .duration(2 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
@@ -131,7 +131,7 @@ public class CentrifugeRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(new ItemStack(Items.gold_ingot, 64))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (4608)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (4608)))
             .duration(7 * MINUTES + 40 * SECONDS + 16 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -141,7 +141,7 @@ public class CentrifugeRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(new ItemStack(Items.gold_ingot, 7))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (576)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (576)))
             .duration(7 * MINUTES + 40 * SECONDS + 16 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -151,7 +151,7 @@ public class CentrifugeRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(new ItemStack(Items.gold_nugget, 6))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (576)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (576)))
             .duration(7 * MINUTES + 40 * SECONDS + 16 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -161,7 +161,7 @@ public class CentrifugeRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(new ItemStack(Items.gold_nugget, 6))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (576)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (576)))
             .duration(7 * MINUTES + 40 * SECONDS + 16 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -171,7 +171,7 @@ public class CentrifugeRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(new ItemStack(Items.bowl, 1, 0))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (36)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (36)))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -180,7 +180,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.apple, 1, 0))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (18)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (18)))
             .duration(7 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -189,7 +189,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.bread, 1, 0))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (9)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (9)))
             .duration(3 * SECONDS + 12 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -198,7 +198,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.porkchop, 1, 0))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (48)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (48)))
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -207,7 +207,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.cooked_porkchop, 1, 0))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (36)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (36)))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -216,7 +216,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.beef, 1, 0))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (48)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (48)))
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -225,7 +225,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.cooked_beef, 1, 0))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (36)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (36)))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -234,7 +234,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.fish, 1, 32767))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (48)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (48)))
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -243,7 +243,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.cooked_fished, 1, 32767))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (36)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (36)))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -252,7 +252,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.chicken, 1, 0))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (48)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (48)))
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -261,7 +261,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.cooked_chicken, 1, 0))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (36)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (36)))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -270,7 +270,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.melon, 1, 0))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (9)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (9)))
             .duration(3 * SECONDS + 12 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -279,7 +279,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.pumpkin, 1, 0))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (36)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (36)))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -288,7 +288,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.rotten_flesh, 1, 0))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (36)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (36)))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -297,7 +297,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.spider_eye, 1, 0))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (18)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (18)))
             .duration(7 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -306,7 +306,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.carrot, 1, 0))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (36)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (36)))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -315,7 +315,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(ItemList.Food_Raw_Potato.get(1))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (36)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (36)))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -324,7 +324,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(ItemList.Food_Poisonous_Potato.get(1))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (48)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (48)))
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -333,7 +333,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(ItemList.Food_Baked_Potato.get(24))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (576)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (576)))
             .duration(3 * MINUTES + 50 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -342,7 +342,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.cookie, 1, 0))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (9)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (9)))
             .duration(3 * SECONDS + 12 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -351,7 +351,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.cake, 1, 0))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (72)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (72)))
             .duration(28 * SECONDS + 16 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -360,7 +360,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.brown_mushroom_block, 1, 32767))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (48)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (48)))
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -369,7 +369,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.red_mushroom_block, 1, 32767))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (48)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (48)))
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -378,7 +378,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.brown_mushroom, 1, 32767))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (18)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (18)))
             .duration(7 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -387,7 +387,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.red_mushroom, 1, 32767))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (18)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (18)))
             .duration(7 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -396,7 +396,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.nether_wart, 1, 32767))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (18)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (18)))
             .duration(7 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -405,7 +405,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(getModItem(TwilightForest.ID, "item.meefRaw", 1L, 32767))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (48)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (48)))
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -414,7 +414,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(getModItem(TwilightForest.ID, "item.meefSteak", 1L, 32767))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (36)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (36)))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -423,7 +423,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(getModItem(TwilightForest.ID, "item.venisonRaw", 1L, 32767))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (48)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (48)))
             .duration(19 * SECONDS + 4 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -432,7 +432,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(getModItem(TwilightForest.ID, "item.venisonCooked", 1L, 32767))
             .circuit(1)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (36)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (36)))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -489,7 +489,7 @@ public class CentrifugeRecipes implements Runnable {
                 ItemList.IC2_Plantball.get(1))
             .outputChances(10000, 1000)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Glue, Materials2FluidShapes.fluidLiquid, (int) (100)))
+                MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, (int) (100)))
             .duration(15 * SECONDS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -514,7 +514,7 @@ public class CentrifugeRecipes implements Runnable {
                 .outputChances(10000)
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Fluorine, Materials2FluidShapes.fluidGas, (int) (4_000)))
+                        .getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, (int) (4_000)))
                 .duration(3 * MINUTES + 20 * SECONDS)
                 .eut((int) TierEU.RECIPE_EV)
                 .addTo(centrifugeRecipes);
@@ -552,9 +552,9 @@ public class CentrifugeRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (160)))
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (160)))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Deuterium, Materials2FluidShapes.fluidGas, (int) (40)))
+                MaterialLibAPI.getFluidStack(Materials.Deuterium, FluidShapes.fluidGas, (int) (40)))
             .duration(8 * SECONDS)
             .eut(20)
             .addTo(centrifugeRecipes);
@@ -562,18 +562,18 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Deuterium, Materials2FluidShapes.fluidGas, (int) (160)))
+                    .getFluidStack(Materials.Deuterium, FluidShapes.fluidGas, (int) (160)))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Tritium, Materials2FluidShapes.fluidGas, (int) (40)))
+                MaterialLibAPI.getFluidStack(Materials.Tritium, FluidShapes.fluidGas, (int) (40)))
             .duration(8 * SECONDS)
             .eut(80)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, (int) (80)))
+                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int) (80)))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Helium3, Materials2FluidShapes.fluidGas, (int) (5)))
+                MaterialLibAPI.getFluidStack(Materials.Helium3, FluidShapes.fluidGas, (int) (5)))
             .duration(8 * SECONDS)
             .eut(80)
             .addTo(centrifugeRecipes);
@@ -595,7 +595,7 @@ public class CentrifugeRecipes implements Runnable {
                 new ItemStack(Blocks.sand, 36))
             .outputChances(3750, 2500, 9000)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, (int) (4_320)))
+                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int) (4_320)))
             .duration(9 * MINUTES + 36 * SECONDS)
             .eut(20)
             .addTo(centrifugeRecipes);
@@ -650,7 +650,7 @@ public class CentrifugeRecipes implements Runnable {
                 new ItemStack(Blocks.sand, 1))
             .outputChances(1000, 700, 9000)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Oil, Materials2FluidShapes.fluidLiquid, (int) (200)))
+                MaterialLibAPI.getFluidStack(Materials.Oil, FluidShapes.fluidLiquid, (int) (200)))
             .duration(10 * SECONDS)
             .eut(12)
             .addTo(centrifugeRecipes);
@@ -763,18 +763,18 @@ public class CentrifugeRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Propane, Materials2FluidShapes.fluidGas, (int) (320)))
+                MaterialLibAPI.getFluidStack(Materials.Propane, FluidShapes.fluidGas, (int) (320)))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.LPG, Materials2FluidShapes.fluidLiquid, (int) (290)))
+                MaterialLibAPI.getFluidStack(Materials.LPG, FluidShapes.fluidLiquid, (int) (290)))
             .duration(20 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Butane, Materials2FluidShapes.fluidGas, (int) (320)))
+                MaterialLibAPI.getFluidStack(Materials.Butane, FluidShapes.fluidGas, (int) (320)))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.LPG, Materials2FluidShapes.fluidLiquid, (int) (370)))
+                MaterialLibAPI.getFluidStack(Materials.LPG, FluidShapes.fluidLiquid, (int) (370)))
             .duration(20 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -989,16 +989,16 @@ public class CentrifugeRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SpaceTime,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (20 * INGOTS)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.spatialFluid,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (10 * INGOTS)),
                 MaterialLibAPI.getFluidStack(
                     Materials.temporalFluid,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (10 * INGOTS)))
             .metadata(CentrifugeRecipeKey.INSTANCE, true)
             .duration(10 * SECONDS)

@@ -21,7 +21,7 @@ import gregtech.api.material.FluidRef;
 /// `GTFluid#configureFromStateTemperature`'s temperature/gaseous/density/viscosity/luminosity attributes, so a
 /// material's fluid keeps its pre-cutover Forge registry name and behavior byte-identical -- fluid stacks
 /// persist in world NBT by name.
-public class Materials2FluidShapes {
+public class FluidShapes {
 
     // spotless:off
     public static Shape fluidLiquid;
@@ -41,49 +41,49 @@ public class Materials2FluidShapes {
             "fluidLiquid",
             "%s",
             legacySlot(FluidNames::fluid),
-            Materials2FluidShapes::liquidAttrs);
-        fluidGas = fluidShape("fluidGas", "%s", legacySlot(FluidNames::gas), Materials2FluidShapes::gasAttrs);
+            FluidShapes::liquidAttrs);
+        fluidGas = fluidShape("fluidGas", "%s", legacySlot(FluidNames::gas), FluidShapes::gasAttrs);
         fluidPlasma = fluidShape(
             "fluidPlasma",
             "%s Plasma",
             legacySlot(FluidNames::plasma),
-            Materials2FluidShapes::plasmaAttrs);
+            FluidShapes::plasmaAttrs);
         fluidMolten = fluidShape(
             "fluidMolten",
             "Molten %s",
             legacySlot(FluidNames::molten),
-            Materials2FluidShapes::moltenAttrs);
+            FluidShapes::moltenAttrs);
 
         fluidHydroCracked1 = fluidShape(
             "fluidHydroCracked1",
             "Lightly Hydro-Cracked %s",
             crackedSlot(MaterialFluidNames::hydroCracked, 0),
-            Materials2FluidShapes::gasAttrs);
+            FluidShapes::gasAttrs);
         fluidHydroCracked2 = fluidShape(
             "fluidHydroCracked2",
             "Moderately Hydro-Cracked %s",
             crackedSlot(MaterialFluidNames::hydroCracked, 1),
-            Materials2FluidShapes::gasAttrs);
+            FluidShapes::gasAttrs);
         fluidHydroCracked3 = fluidShape(
             "fluidHydroCracked3",
             "Severely Hydro-Cracked %s",
             crackedSlot(MaterialFluidNames::hydroCracked, 2),
-            Materials2FluidShapes::gasAttrs);
+            FluidShapes::gasAttrs);
         fluidSteamCracked1 = fluidShape(
             "fluidSteamCracked1",
             "Lightly Steam-Cracked %s",
             crackedSlot(MaterialFluidNames::steamCracked, 0),
-            Materials2FluidShapes::gasAttrs);
+            FluidShapes::gasAttrs);
         fluidSteamCracked2 = fluidShape(
             "fluidSteamCracked2",
             "Moderately Steam-Cracked %s",
             crackedSlot(MaterialFluidNames::steamCracked, 1),
-            Materials2FluidShapes::gasAttrs);
+            FluidShapes::gasAttrs);
         fluidSteamCracked3 = fluidShape(
             "fluidSteamCracked3",
             "Severely Steam-Cracked %s",
             crackedSlot(MaterialFluidNames::steamCracked, 2),
-            Materials2FluidShapes::gasAttrs);
+            FluidShapes::gasAttrs);
     }
 
     private static Function<Material, FluidRef> legacySlot(Function<FluidNames, FluidRef> slot) {
@@ -150,5 +150,5 @@ public class Materials2FluidShapes {
             .setLuminosity(luminosity);
     }
 
-    private Materials2FluidShapes() {}
+    private FluidShapes() {}
 }

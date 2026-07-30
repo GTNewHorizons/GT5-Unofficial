@@ -16,8 +16,8 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -77,7 +77,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
                                     Materials.Lubricant,
-                                    Materials2FluidShapes.fluidLiquid,
+                                    FluidShapes.fluidLiquid,
                                     (int) (1)))
                             .duration(10 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
@@ -146,7 +146,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(
                                 Materials.Lubricant,
-                                Materials2FluidShapes.fluidLiquid,
+                                FluidShapes.fluidLiquid,
                                 (int) (1)))
                         .duration(10 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)

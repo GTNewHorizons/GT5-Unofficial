@@ -11,6 +11,7 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,7 +40,6 @@ import goodgenerator.blocks.tileEntity.render.TileAntimatter;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.MetaTileEntityIDs;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -70,27 +70,27 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
     private static final FluidStack[] magneticUpgrades = {
-        MaterialLibAPI.getFluidStack(Materials.TengamPurified, Materials2FluidShapes.fluidMolten, 1),
+        MaterialLibAPI.getFluidStack(Materials.TengamPurified, FluidShapes.fluidMolten, 1),
         MaterialUtils.molten(Materials.temporalFluid, 1L),
         MaterialUtils.molten(Materials.Magmatter, 1L) };
     private static final FluidStack[] gravityUpgrades = {
-        MaterialLibAPI.getFluidStack(Materials.SpaceTime, Materials2FluidShapes.fluidMolten, 1),
+        MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 1),
         MaterialUtils.molten(Materials.spatialFluid, 1L),
-        MaterialLibAPI.getFluidStack(Materials.Eternity, Materials2FluidShapes.fluidMolten, 1) };
+        MaterialLibAPI.getFluidStack(Materials.Eternity, FluidShapes.fluidMolten, 1) };
     private static final FluidStack[] containmentUpgrades = {
-        MaterialLibAPI.getFluidStack(Materials.Shirabon, Materials2FluidShapes.fluidMolten, (int) (1)),
+        MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, (int) (1)),
         MaterialUtils.molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1L) };
     private static final FluidStack[] activationUpgrades = {
         MaterialLibAPI.getFluidStack(
             Materials.NaquadahBasedLiquidFuelMkVDepleted,
-            Materials2FluidShapes.fluidLiquid,
+            FluidShapes.fluidLiquid,
             (int) (1)),
         MaterialLibAPI.getFluidStack(
             Materials.NaquadahBasedLiquidFuelMkVIDepleted,
-            Materials2FluidShapes.fluidLiquid,
+            FluidShapes.fluidLiquid,
             (int) (1)) };
     private static final FluidStack ZERO_ANTIMATTER = MaterialLibAPI
-        .getFluidStack(Materials.Antimatter, Materials2FluidShapes.fluidLiquid, 0);
+        .getFluidStack(Materials.Antimatter, FluidShapes.fluidLiquid, 0);
 
     public static final String MAIN_NAME = "antimatterForge";
 
@@ -576,13 +576,13 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         if (!this.depleteInput(
             MaterialLibAPI.getFluidStack(
                 Materials.Protomatter,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 Math.abs(antimatterChange)))) {
             decimateAntimatter();
             stopMachine(
                 ShutDownReasonRegistry.outOfFluid(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Protomatter, Materials2FluidShapes.fluidLiquid, 1)));
+                        .getFluidStack(Materials.Protomatter, FluidShapes.fluidLiquid, 1)));
             setProtoRender(false);
             return CheckRecipeResultRegistry.NO_FUEL_FOUND;
         }
@@ -656,7 +656,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             if (change >= 0) {
                 hatch.fill(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Antimatter, Materials2FluidShapes.fluidLiquid, change),
+                        .getFluidStack(Materials.Antimatter, FluidShapes.fluidLiquid, change),
                     true);
             } else {
                 hatch.drain(-change, true);

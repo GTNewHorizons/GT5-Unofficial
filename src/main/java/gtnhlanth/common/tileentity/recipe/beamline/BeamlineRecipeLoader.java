@@ -10,6 +10,7 @@ import static gtnhlanth.common.beamline.Particle.PHOTON;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
@@ -21,7 +22,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.util.GTUtility;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.item.MaskList;
@@ -42,24 +42,24 @@ public class BeamlineRecipeLoader {
          */
 
         coolantMap.put(
-            MaterialLibAPI.getFluidStack(Materials.LiquidNitrogen, Materials2FluidShapes.fluidGas, 1)
+            MaterialLibAPI.getFluidStack(Materials.LiquidNitrogen, FluidShapes.fluidGas, 1)
                 .getFluid()
                 .getName(),
-            MaterialLibAPI.getFluidStack(Materials.Nitrogen, Materials2FluidShapes.fluidGas, 1)
+            MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, 1)
                 .getFluid());
         coolantMap.put(
-            MaterialLibAPI.getFluidStack(Materials.LiquidOxygen, Materials2FluidShapes.fluidGas, 1)
+            MaterialLibAPI.getFluidStack(Materials.LiquidOxygen, FluidShapes.fluidGas, 1)
                 .getFluid()
                 .getName(),
-            MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 1)
+            MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1)
                 .getFluid());
         coolantMap.put("ic2coolant", FluidRegistry.getFluid("ic2hotcoolant"));
         coolantMap.put(
-            MaterialLibAPI.getFluidStack(Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, 1)
+            MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, 1)
                 .getFluid()
                 .getName(),
             MaterialLibAPI
-                .getFluidStack(Materials.HotSuperCoolant, Materials2FluidShapes.fluidLiquid, (int) (1_000))
+                .getFluidStack(Materials.HotSuperCoolant, FluidShapes.fluidLiquid, (int) (1_000))
                 .getFluid());
 
         /*
@@ -147,7 +147,7 @@ public class BeamlineRecipeLoader {
          */
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, 1000))
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1000))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()

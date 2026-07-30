@@ -15,8 +15,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -42,7 +42,7 @@ public class AssemblyLine implements Runnable {
             .fluidInputs(
                 MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 10 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Neon, Materials2FluidShapes.fluidLiquid, (int) (20_000)))
+                    .getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, (int) (20_000)))
             .itemOutputs(ItemRegistry.voidminer[0].copy())
             .eut(TierEU.RECIPE_LuV)
             .duration(2 * MINUTES)
@@ -81,7 +81,7 @@ public class AssemblyLine implements Runnable {
             .fluidInputs(
                 MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 32 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, (int) (8000)))
+                    .getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, (int) (8000)))
             .itemOutputs(ItemList.PCBCoolingTower.get(1L))
             .eut(TierEU.RECIPE_UV)
             .duration(300 * SECONDS)
@@ -103,7 +103,7 @@ public class AssemblyLine implements Runnable {
                 MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials.GrowthMediumSterilized,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (27648)))
             .itemOutputs(ItemList.PCBBioChamber.get(1L))
             .eut(TierEU.RECIPE_UV)

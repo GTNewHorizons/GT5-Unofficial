@@ -18,9 +18,9 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.CellShapes;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -36,7 +36,7 @@ public class ArtificialMicaLine {
             .itemInputs(MaterialLibAPI.getStack(Materials.Magnesium, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Magnesia, Shapes.dust, 2))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(UniversalChemical);
@@ -51,7 +51,7 @@ public class ArtificialMicaLine {
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.HexafluorosilicicAcid,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -63,7 +63,7 @@ public class ArtificialMicaLine {
             .circuit(2)
             .itemOutputs(MaterialLibAPI.getStack(Materials.RockSalt, Shapes.dust, 2))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 1_000))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(UniversalChemical);
@@ -75,7 +75,7 @@ public class ArtificialMicaLine {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.HexafluorosilicicAcid,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(MaterialUtils.fluid(Materials.HydrochloricAcidGT5U, 2_000))
             .duration(1 * SECONDS)
@@ -91,7 +91,7 @@ public class ArtificialMicaLine {
                 MaterialLibAPI.getStack(Materials.PotassiumCarbonate, Shapes.dust, 6),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -175,7 +175,7 @@ public class ArtificialMicaLine {
             .itemInputs(MaterialLibAPI.getStack(Materials.Magnesia, Shapes.dust, 1))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Magnesia, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Magnesia, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidExtractionRecipes);
@@ -186,11 +186,11 @@ public class ArtificialMicaLine {
             .itemOutputs(MaterialLibAPI.getStack(Materials.Glass, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Magnesia, Materials2FluidShapes.fluidMolten, (int) (5 * INGOTS)))
+                    .getFluidStack(Materials.Magnesia, FluidShapes.fluidMolten, (int) (5 * INGOTS)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.UnformedFluorophlogopite,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (32 * INGOTS)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -204,7 +204,7 @@ public class ArtificialMicaLine {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.UnformedFluorophlogopite,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1 * INGOTS)))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_MV)

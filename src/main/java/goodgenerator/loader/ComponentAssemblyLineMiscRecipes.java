@@ -23,6 +23,7 @@ import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import java.util.HashMap;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -35,7 +36,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.MaterialFacades;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
@@ -81,8 +81,8 @@ public class ComponentAssemblyLineMiscRecipes {
             .fluidInputs(
                 MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 12 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Naquadria, Materials2FluidShapes.fluidMolten, 16 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 5_000))
+                    .getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, 16 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 5_000))
             .itemOutputs(Component_Assembly_Line.get(1))
             .eut(TierEU.RECIPE_UHV / 2)
             .duration(30 * SECONDS)
@@ -109,7 +109,7 @@ public class ComponentAssemblyLineMiscRecipes {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SolderingAlloy,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (t + 1) * INGOTS))
             .itemOutputs(Compassline_Casing_LV.get(1))
             .duration(16 * SECONDS)
@@ -134,7 +134,7 @@ public class ComponentAssemblyLineMiscRecipes {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SolderingAlloy,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (t + 1) * INGOTS))
             .itemOutputs(Compassline_Casing_MV.get(1))
             .duration(16 * SECONDS)
@@ -159,7 +159,7 @@ public class ComponentAssemblyLineMiscRecipes {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SolderingAlloy,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (t + 1) * INGOTS))
             .itemOutputs(Compassline_Casing_HV.get(1))
             .duration(16 * SECONDS)
@@ -184,7 +184,7 @@ public class ComponentAssemblyLineMiscRecipes {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SolderingAlloy,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (t + 1) * INGOTS))
             .itemOutputs(Compassline_Casing_EV.get(1))
             .duration(16 * SECONDS)
@@ -209,7 +209,7 @@ public class ComponentAssemblyLineMiscRecipes {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SolderingAlloy,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (t + 1) * INGOTS))
             .itemOutputs(Compassline_Casing_IV.get(1))
             .duration(16 * SECONDS)
@@ -240,7 +240,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 MaterialUtils.legacyGtppFluid(Materials.Zeron100, t * 2 * INGOTS),
                 StackUtils.getTieredFluid(t, t * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 1000 * (t - 2)))
+                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1000 * (t - 2)))
             .itemOutputs(Compassline_Casing_LuV.get(1))
             .eut(TierEU.RECIPE_IV)
             .duration(30 * SECONDS)
@@ -269,7 +269,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 MaterialUtils.legacyGtppFluid(Materials.Pikyonium64B, t * 2 * INGOTS),
                 StackUtils.getTieredFluid(t, t * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 1000 * (t - 2)))
+                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1000 * (t - 2)))
             .itemOutputs(Compassline_Casing_ZPM.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(30 * SECONDS)
@@ -299,7 +299,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 MaterialUtils.legacyGtppFluid(Materials.AdvancedNitinol, t * 2 * INGOTS),
                 StackUtils.getTieredFluid(t, t * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 1000 * (t - 2)))
+                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1000 * (t - 2)))
             .itemOutputs(Compassline_Casing_UV.get(1))
             .eut(TierEU.RECIPE_ZPM)
             .duration(30 * SECONDS)
@@ -328,7 +328,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 MaterialUtils.legacyGtppFluid(Materials.AbyssalAlloy, t * 2 * INGOTS),
                 StackUtils.getTieredFluid(t, t * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 1000 * (t - 2)) },
+                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1000 * (t - 2)) },
             Compassline_Casing_UHV.get(1),
             50 * SECONDS,
             (int) TierEU.RECIPE_UV);
@@ -356,7 +356,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 MaterialUtils.legacyGtppFluid(Materials.Quantum, t * 2 * INGOTS),
                 StackUtils.getTieredFluid(t, t * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 1000 * (t - 2)) },
+                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1000 * (t - 2)) },
             Compassline_Casing_UEV.get(1),
             50 * SECONDS,
             (int) TierEU.RECIPE_UHV);
@@ -397,7 +397,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.SolderingAlloy,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         1 * HALF_INGOTS))
                 .itemOutputs(new ItemStack(Loaders.circuitWrap, 1, i))
                 .duration(30 * SECONDS)

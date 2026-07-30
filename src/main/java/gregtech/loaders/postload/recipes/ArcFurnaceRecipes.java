@@ -14,9 +14,9 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
@@ -477,7 +477,7 @@ public class ArcFurnaceRecipes implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, (int) (1L)))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, (int) (3)))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (2_000)))
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (2_000)))
             .duration(60 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(arcFurnaceRecipes);

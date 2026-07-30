@@ -7,6 +7,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
@@ -20,7 +21,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -494,7 +494,7 @@ public class RecipesMachinesTiered {
             .itemOutputs(GregtechItemList.GTPP_Casing_ULV.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Steel, Materials2FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+                    .getFluidStack(Materials.Steel, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -647,7 +647,7 @@ public class RecipesMachinesTiered {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SolderingAlloy,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -664,7 +664,7 @@ public class RecipesMachinesTiered {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SolderingAlloy,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (2 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -681,7 +681,7 @@ public class RecipesMachinesTiered {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SolderingAlloy,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (3 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -698,7 +698,7 @@ public class RecipesMachinesTiered {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SolderingAlloy,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (4 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -715,7 +715,7 @@ public class RecipesMachinesTiered {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SolderingAlloy,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (5 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -1104,7 +1104,7 @@ public class RecipesMachinesTiered {
             .itemOutputs(GregtechItemList.Generator_SemiFluid_LV.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, Materials2FluidShapes.fluidMolten, 1 * INGOTS))
+                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -1130,7 +1130,7 @@ public class RecipesMachinesTiered {
             .itemOutputs(GregtechItemList.Generator_SemiFluid_MV.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, Materials2FluidShapes.fluidMolten, 1 * INGOTS))
+                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -1156,7 +1156,7 @@ public class RecipesMachinesTiered {
             .itemOutputs(GregtechItemList.Generator_SemiFluid_HV.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, Materials2FluidShapes.fluidMolten, 1 * INGOTS))
+                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -1182,7 +1182,7 @@ public class RecipesMachinesTiered {
             .itemOutputs(GregtechItemList.Generator_SemiFluid_EV.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, Materials2FluidShapes.fluidMolten, 1 * INGOTS))
+                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -1209,7 +1209,7 @@ public class RecipesMachinesTiered {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Polytetrafluoroethylene,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)

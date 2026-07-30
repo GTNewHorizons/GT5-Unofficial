@@ -12,6 +12,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.List;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -30,7 +31,6 @@ import forestry.api.core.Tabs;
 import forestry.api.recipes.RecipeManagers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeBuilder;
 
@@ -113,7 +113,7 @@ public class ItemDrop extends Item {
         RecipeManagers.squeezerManager.addRecipe(
             40,
             new ItemStack[] { tDrop },
-            MaterialLibAPI.getFluidStack(Materials.OilHeavy, Materials2FluidShapes.fluidLiquid, 100),
+            MaterialLibAPI.getFluidStack(Materials.OilHeavy, FluidShapes.fluidLiquid, 100),
             GTModHandler.getModItem(Forestry.ID, "propolis", 1L, 0),
             30);
         tDrop = getStackForType(DropType.COOLANT);
@@ -133,7 +133,7 @@ public class ItemDrop extends Item {
         tDrop = getStackForType(DropType.SNOW_QUEEN);
         addProcessMV(
             tDrop,
-            MaterialLibAPI.getFluidStack(Materials.FierySteel, Materials2FluidShapes.fluidLiquid, 200),
+            MaterialLibAPI.getFluidStack(Materials.FierySteel, FluidShapes.fluidLiquid, 200),
             GTModHandler.getModItem(NewHorizonsCoreMod.ID, "SnowQueenBloodDrop", 1L, 0),
             1500,
             48);
@@ -147,7 +147,7 @@ public class ItemDrop extends Item {
         tDrop = getStackForType(DropType.HYDRA);
         addProcessMV(
             tDrop,
-            MaterialLibAPI.getFluidStack(Materials.FierySteel, Materials2FluidShapes.fluidLiquid, 50),
+            MaterialLibAPI.getFluidStack(Materials.FierySteel, FluidShapes.fluidLiquid, 50),
             GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 2),
             3000,
             8);
@@ -155,7 +155,7 @@ public class ItemDrop extends Item {
         RecipeManagers.squeezerManager.addRecipe(
             400,
             new ItemStack[] { tDrop },
-            MaterialLibAPI.getFluidStack(Materials.LiquidOxygen, Materials2FluidShapes.fluidGas, 100),
+            MaterialLibAPI.getFluidStack(Materials.LiquidOxygen, FluidShapes.fluidGas, 100),
             GTModHandler.getModItem(ExtraBees.ID, "propolis", 1L, 2),
             30);
         tDrop = getStackForType(DropType.ENDERGOO);

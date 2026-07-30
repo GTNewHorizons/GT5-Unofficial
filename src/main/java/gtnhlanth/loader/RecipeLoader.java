@@ -44,6 +44,7 @@ import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.dissolutionTankRecipes;
 
 import java.util.HashSet;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
@@ -67,7 +68,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.CellShapes;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -94,7 +94,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 2 * INGOTS))
+                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 2 * INGOTS))
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
                 MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plateDense, 8),
@@ -112,7 +112,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 2 * INGOTS))
+                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 2 * INGOTS))
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
                 MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plateDense, 8),
@@ -131,7 +131,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 2 * INGOTS))
+                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 2 * INGOTS))
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
                 MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plateDense, 8),
@@ -150,7 +150,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 48 * INGOTS))
+                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 48 * INGOTS))
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
                 MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plateDense, 8),
@@ -194,7 +194,7 @@ public class RecipeLoader {
             .circuit(6)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 1 * INGOTS))
+                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 1 * INGOTS))
             .itemOutputs(new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_CASING, 1))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -209,7 +209,7 @@ public class RecipeLoader {
             .circuit(6)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 2 * INGOTS))
+                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 2 * INGOTS))
             .itemOutputs(new ItemStack(LanthItemList.ELECTRODE_CASING, 1))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -230,9 +230,9 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tungsten, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 2 * INGOTS),
+                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 2 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 8 * INGOTS))
+                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 8 * INGOTS))
             .itemOutputs(new ItemStack(LanthItemList.COOLANT_DELIVERY_CASING))
             .metadata(GTRecipeConstants.RESEARCH_ITEM, ItemList.Casing_Pipe_TungstenSteel.get(1L))
             .metadata(SCANNING, new Scanning(30 * SECONDS, TierEU.RECIPE_IV))
@@ -251,9 +251,9 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tungsten, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 2 * INGOTS),
+                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 2 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, 8 * INGOTS))
+                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 8 * INGOTS))
             .itemOutputs(new ItemStack(LanthItemList.COOLANT_DELIVERY_CASING))
             .metadata(GTRecipeConstants.RESEARCH_ITEM, ItemList.Casing_Pipe_TungstenSteel.get(1L))
             .metadata(SCANNING, new Scanning(30 * SECONDS, TierEU.RECIPE_IV))
@@ -265,10 +265,10 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 48 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Gold, Materials2FluidShapes.fluidMolten, 32 * INGOTS),
+                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 48 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Gold, FluidShapes.fluidMolten, 32 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Xenon, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
+                    .getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, (int) (2_000)))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tungsten, 1),
                 MaterialLibAPI.getStack(Materials.Copper, Shapes.plate, 4),
@@ -291,10 +291,10 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 96 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Gold, Materials2FluidShapes.fluidMolten, 48 * INGOTS),
+                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 96 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Gold, FluidShapes.fluidMolten, 48 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Xenon, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
+                    .getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, (int) (2_000)))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenCarbide, 1),
                 MaterialLibAPI.getStack(Materials.Copper, Shapes.plate, 4),
@@ -317,7 +317,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Niobium, 1),
                 MaterialLibAPI.getStack(Materials.Niobium, Shapes.plate, 6))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, 2_000))
+                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 2_000))
             .itemOutputs(new ItemStack(LanthItemList.NIOBIUM_CAVITY_CASING, 1))
             .duration(12 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -327,9 +327,9 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 64 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Gold, Materials2FluidShapes.fluidMolten, 16 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Argon, Materials2FluidShapes.fluidGas, 1_000))
+                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 64 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Gold, FluidShapes.fluidMolten, 16 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, 1_000))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
 
@@ -392,9 +392,9 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 64 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Gold, Materials2FluidShapes.fluidMolten, 16 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Argon, Materials2FluidShapes.fluidGas, 1_000))
+                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 64 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Gold, FluidShapes.fluidMolten, 16 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, 1_000))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
                 new Object[] { Circuits.IV.getIngredient(), 4 },
@@ -419,7 +419,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.Silver, Shapes.dust, 2))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Silicone, Materials2FluidShapes.fluidMolten, 2 * INGOTS))
+                    .getFluidStack(Materials.Silicone, FluidShapes.fluidMolten, 2 * INGOTS))
             .itemOutputs(new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -435,7 +435,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.Silver, Shapes.dust, 2))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Silicone, Materials2FluidShapes.fluidMolten, 2 * INGOTS))
+                    .getFluidStack(Materials.Silicone, FluidShapes.fluidMolten, 2 * INGOTS))
             .itemOutputs(new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -448,7 +448,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stick, 4))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 1 * INGOTS))
+                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 1 * INGOTS))
             .itemOutputs(new ItemStack(LanthItemList.MM_LATTICE, 1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -460,7 +460,7 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.BorosilicateGlass,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     1 * INGOTS))
             .itemOutputs(new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 1))
             .duration(25 * SECONDS)
@@ -477,7 +477,7 @@ public class RecipeLoader {
             .circuit(7)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 1 * INGOTS))
+                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 1 * INGOTS))
             .itemOutputs(LanthItemList.BEAMLINE_PIPE)
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -487,9 +487,9 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 64 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Argon, Materials2FluidShapes.fluidGas, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, 2_000))
+                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 64 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 2_000))
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
                 new Object[] { Circuits.LuV.getIngredient(), 2 },
@@ -508,9 +508,9 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 64 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Argon, Materials2FluidShapes.fluidGas, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, 6_000))
+                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 64 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 6_000))
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
                 new Object[] { Circuits.LuV.getIngredient(), 6 },
@@ -531,26 +531,26 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chloroform, Materials2FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.Chloroform, FluidShapes.fluidLiquid, 1_000),
                 MaterialLibAPI
-                    .getFluidStack(Materials.HydrofluoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 3_000))
+                    .getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 3_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Fluoroform, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
+                    .getFluidStack(Materials.Fluoroform, FluidShapes.fluidLiquid, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 3_000))
+                    .getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 3_000))
             .duration(15 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Nitrogen, Materials2FluidShapes.fluidPlasma, 4_000))
+                MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidPlasma, 4_000))
             .itemInputs(MaterialLibAPI.getStack(Materials.Silane, CellShapes.cell, 2))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SilaneNitrogenPlasmaMixture,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (6_000)))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 2))
             .duration(20 * GTRecipeBuilder.SECONDS)
@@ -562,12 +562,12 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Fluoroform, Materials2FluidShapes.fluidLiquid, (int) (3_000)))
+                    .getFluidStack(Materials.Fluoroform, FluidShapes.fluidLiquid, (int) (3_000)))
             .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cell, 4))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ReactiveIonEtchingMixture,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (5_000)))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 4))
             .duration(15 * GTRecipeBuilder.SECONDS)
@@ -578,12 +578,12 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ReactiveIonEtchingMixture,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (5_000)))
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 4))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Fluoroform, Materials2FluidShapes.fluidLiquid, (int) (3_000)))
+                    .getFluidStack(Materials.Fluoroform, FluidShapes.fluidLiquid, (int) (3_000)))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cell, 4))
             .duration(5 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -605,7 +605,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(LanthItemList.IRON_COATED_QUARTZ))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK1)))
             .outputChances(10000)
             .requiresCleanRoom()
@@ -617,7 +617,7 @@ public class RecipeLoader {
          * Unsure what was intended with this recipe? GT_Values.RA.stdBuilder() .itemInputs(new
          * ItemStack(LanthItemList.IRON_COATED_QUARTZ), MaterialLibAPI.getStack(Materials.Chrome,
          * Shapes.dust, 1))
-         * .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas,
+         * .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas,
          * 1_000)) .itemOutputs(new
          * ItemStack(LanthItemList.maskMap.get(MaskList.BLANK2))) .outputChances(10000).requiresCleanRoom().duration(12
          * * SECONDS).eut(7980).addTo(autoclaveRecipes);
@@ -627,7 +627,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Glass, Shapes.plate, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Silane, Materials2FluidShapes.fluidGas, 4_000))
+                MaterialLibAPI.getFluidStack(Materials.Silane, FluidShapes.fluidGas, 4_000))
             .itemOutputs(new ItemStack(LanthItemList.SUBSTRATE_PRECURSOR))
             .duration(60 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -640,10 +640,10 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SilaneNitrogenPlasmaMixture,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (4_000)))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Nitrogen, Materials2FluidShapes.fluidGas, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, 3_000))
             .itemOutputs(new ItemStack(LanthItemList.MASK_SUBSTRATE))
             .duration(30 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -655,7 +655,7 @@ public class RecipeLoader {
          * GT_Values.RA.stdBuilder().itemInputs(MaterialLibAPI.getStack(Materials.Silicon,
          * Shapes.foil, 1))
          * .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SiliconTetrachloride,
-         * Materials2FluidShapes.fluidLiquid, 3_000), MaterialUtils.fluid(Materials.Ammonia, 4_000))
+         * FluidShapes.fluidLiquid, 3_000), MaterialUtils.fluid(Materials.Ammonia, 4_000))
          * .fluidOutputs(MaterialUtils.fluid(Materials.HydrochloricAcidGT5U, 12_000))
          * .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconNitride, Shapes.plate, 1))
          * .duration(GTRecipeBuilder.SECONDS *
@@ -679,7 +679,7 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ReactiveIonEtchingMixture,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (4_000)))
             .itemOutputs(new ItemStack(LanthItemList.ETCHED_MASK_1))
             .duration(60 * GTRecipeBuilder.SECONDS)
@@ -707,7 +707,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.Chrome, Shapes.plate, 1),
                 MaterialLibAPI.getStack(Materials.Gold, Shapes.plate, 2))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1_000))
             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK3)))
             .duration(2 * GTRecipeBuilder.MINUTES)
             .eut(TierEU.RECIPE_ZPM)
@@ -721,7 +721,7 @@ public class RecipeLoader {
                 GregtechItemList.LithiumHydroxideDust.get(2),
                 MaterialLibAPI.getStack(Materials.Epoxid, Shapes.dust, 4))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, 2_000))
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 2_000))
             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.CBLANK)))
             .duration(4 * GTRecipeBuilder.MINUTES)
             .eut(TierEU.RECIPE_ZPM)
@@ -747,7 +747,7 @@ public class RecipeLoader {
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(
                                 Materials.VanadiumGallium,
-                                Materials2FluidShapes.fluidMolten,
+                                FluidShapes.fluidMolten,
                                 2 * INGOTS))
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrPIC)))
                         .duration(60 * GTRecipeBuilder.SECONDS)
@@ -764,7 +764,7 @@ public class RecipeLoader {
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(
                                 Materials.Naquadah,
-                                Materials2FluidShapes.fluidMolten,
+                                FluidShapes.fluidMolten,
                                 4 * INGOTS))
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrHPIC)))
                         .duration(60 * GTRecipeBuilder.SECONDS)
@@ -782,7 +782,7 @@ public class RecipeLoader {
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(
                                 Materials.Sunnarium,
-                                Materials2FluidShapes.fluidMolten,
+                                FluidShapes.fluidMolten,
                                 10 * INGOTS))
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrNPIC)))
                         .duration(60 * GTRecipeBuilder.SECONDS)
@@ -799,7 +799,7 @@ public class RecipeLoader {
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(
                                 Materials.InfinityCatalyst,
-                                Materials2FluidShapes.fluidMolten,
+                                FluidShapes.fluidMolten,
                                 4 * INGOTS))
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrQPIC)))
                         .duration(60 * GTRecipeBuilder.SECONDS)
@@ -816,7 +816,7 @@ public class RecipeLoader {
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(
                                 Materials.Glowstone,
-                                Materials2FluidShapes.fluidMolten,
+                                FluidShapes.fluidMolten,
                                 4 * INGOTS))
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrCPU)))
                         .duration(60 * GTRecipeBuilder.SECONDS)
@@ -832,7 +832,7 @@ public class RecipeLoader {
                             MaterialLibAPI
                                 .getStack(Materials.IndiumGalliumPhosphide, Shapes.dust, 1))
                         .fluidInputs(
-                            MaterialLibAPI.getFluidStack(Materials.Radon, Materials2FluidShapes.fluidGas, 50))
+                            MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidGas, 50))
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrNCPU)))
                         .duration(60 * GTRecipeBuilder.SECONDS)
                         .eut(mask.getEngraverEUt())
@@ -844,7 +844,7 @@ public class RecipeLoader {
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(
                                 Materials.GalliumArsenide,
-                                Materials2FluidShapes.fluidMolten,
+                                FluidShapes.fluidMolten,
                                 2 * INGOTS))
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrNCPU)))
                         .duration(45 * GTRecipeBuilder.SECONDS)
@@ -906,7 +906,7 @@ public class RecipeLoader {
                                 // cost)
                                 MaterialLibAPI.getFluidStack(
                                     Materials.BiohMediumSterilized,
-                                    Materials2FluidShapes.fluidLiquid,
+                                    FluidShapes.fluidLiquid,
                                     (int) ((mask.getDamage() + 1) * 4L * 50 * 3 / 4)))
                             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
                             .requiresCleanRoom()
@@ -944,7 +944,7 @@ public class RecipeLoader {
             .itemOutputs(MaterialLibAPI.getStack(Materials.ZirconiumTetrachloride, Shapes.dust, 5))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 4_000))
+                    .getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 4_000))
             .fluidOutputs(GTUtility.getWater(2_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -958,7 +958,7 @@ public class RecipeLoader {
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ZirconiumTetrachlorideSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -975,7 +975,7 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ZirconiumTetrachlorideSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -991,7 +991,7 @@ public class RecipeLoader {
             .itemOutputs(MaterialLibAPI.getStack(Materials.HafniumTetrachloride, Shapes.dust, 5))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 4_000))
+                    .getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 4_000))
             .fluidOutputs(GTUtility.getWater(2_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -1005,7 +1005,7 @@ public class RecipeLoader {
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.HafniumTetrachlorideSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -1022,7 +1022,7 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.HafniumTetrachlorideSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -1037,7 +1037,7 @@ public class RecipeLoader {
             .itemOutputs(MaterialLibAPI.getStack(Materials.HafniumIodide, Shapes.dust, 5))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Iodine, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.Iodine, FluidShapes.fluidLiquid, (int) (4_000)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -1061,7 +1061,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.HafniumRunoff, Shapes.dustTiny, 1))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Iodine, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.Iodine, FluidShapes.fluidLiquid, (int) (4_000)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 3400)
@@ -1076,7 +1076,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.HafniumRunoff, Shapes.dust, 1))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Iodine, Materials2FluidShapes.fluidLiquid, (int) (36_000)))
+                    .getFluidStack(Materials.Iodine, FluidShapes.fluidLiquid, (int) (36_000)))
             .duration(4 * MINUTES + 30 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 3400)
@@ -1107,11 +1107,11 @@ public class RecipeLoader {
             .circuit(12)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Ammonia, Materials2FluidShapes.fluidGas, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.AmmoniumNitrateSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(400)
@@ -1120,12 +1120,12 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .circuit(12)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.Ammonia, Materials2FluidShapes.fluidGas, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.AmmoniumNitrateSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(400)
@@ -1143,11 +1143,11 @@ public class RecipeLoader {
             .itemOutputs(MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.DilutedSulfuricAcid, Materials2FluidShapes.fluidLiquid, 1_200))
+                    .getFluidStack(Materials.DilutedSulfuricAcid, FluidShapes.fluidLiquid, 1_200))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SeaweedConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_200)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
@@ -1160,12 +1160,12 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SeaweedConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (2_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SeaweedByproducts,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (200)))
             .eut(TierEU.RECIPE_HV)
             .duration(38 * SECONDS)
@@ -1194,7 +1194,7 @@ public class RecipeLoader {
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Pyrolusite, Shapes.dust, 3))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 2_000))
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 2_000))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -1207,7 +1207,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.RockSalt, Shapes.dust, 10),
                 MaterialLibAPI.getStack(Materials.PotassiumChlorate, Shapes.dust, 5))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 6_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 6_000))
             .fluidOutputs(GTUtility.getWater(3_000))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -1224,12 +1224,12 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.HexafluorosilicicAcid,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Sodiumfluorosilicate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(30 * SECONDS)
             .eut(450)
@@ -1241,10 +1241,10 @@ public class RecipeLoader {
             .circuit(1)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 3_000))
+                    .getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 3_000))
             .itemOutputs(MaterialLibAPI.getStack(Materials.LanthaniumChloride, Shapes.dust, 4))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 3_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
@@ -1254,7 +1254,7 @@ public class RecipeLoader {
             .fluidInputs(GTUtility.getWater(3_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 6_000))
+                    .getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 6_000))
             .itemInputs(MaterialLibAPI.getStack(Materials.LanthaniumChloride, Shapes.dust, 8))
             .itemOutputs(MaterialLibAPI.getStack(Materials.LanthanumOxide, Shapes.dust, 1))
             .duration(10 * GTRecipeBuilder.SECONDS)
@@ -1275,7 +1275,7 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.Boron, Shapes.dust, 2))
             .circuit(2)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 3_000))
             .itemOutputs(MaterialLibAPI.getStack(Materials.BoronTrioxide, Shapes.dust, 1))
             .duration(30 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -1285,11 +1285,11 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Phosgene, Materials2FluidShapes.fluidLiquid, (int) (3_000)))
+                    .getFluidStack(Materials.Phosgene, FluidShapes.fluidLiquid, (int) (3_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.BoronTrichloride,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (2_000)))
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.BoronTrioxide, Shapes.dust, 1),
@@ -1304,7 +1304,7 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.BoronTrichloride,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (8_000)))
             .fluidOutputs(FluidRegistry.getFluidStack("boricacid", 1_000))
             .itemInputs(MaterialLibAPI.getStack(Materials.LanthanumOxide, Shapes.dust, 1))
@@ -1321,12 +1321,12 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.VanadiumPentoxide, Shapes.dustTiny, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Methanol, Materials2FluidShapes.fluidLiquid, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, Materials2FluidShapes.fluidGas, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 3_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.OxalicAcid, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
+                    .getFluidStack(Materials.OxalicAcid, FluidShapes.fluidLiquid, (int) (1_000)),
                 GTUtility.getWater(1_000))
             .duration(22 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV / 2)
@@ -1336,12 +1336,12 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.VanadiumPentoxide, Shapes.dust, 1))
             .circuit(9)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Methanol, Materials2FluidShapes.fluidLiquid, 9_000),
-                MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, Materials2FluidShapes.fluidGas, 9_000),
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 27_000))
+                MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, 9_000),
+                MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 9_000),
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 27_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.OxalicAcid, Materials2FluidShapes.fluidLiquid, (int) (9_000)),
+                    .getFluidStack(Materials.OxalicAcid, FluidShapes.fluidLiquid, (int) (9_000)),
                 GTUtility.getWater(9_000))
             .duration(3 * MINUTES + 22 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV / 2)
@@ -1353,11 +1353,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.VanadiumPentoxide, Shapes.dustTiny, 1))
             .itemOutputs()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Ethanol, Materials2FluidShapes.fluidLiquid, 1_000),
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 5_000))
+                MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 5_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.OxalicAcid, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
+                    .getFluidStack(Materials.OxalicAcid, FluidShapes.fluidLiquid, (int) (1_000)),
                 GTUtility.getWater(2_000))
             .duration(22 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV / 2)
@@ -1367,11 +1367,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.VanadiumPentoxide, Shapes.dust, 1))
             .circuit(9)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Ethanol, Materials2FluidShapes.fluidLiquid, 9_000),
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 45_000))
+                MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, 9_000),
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 45_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.OxalicAcid, Materials2FluidShapes.fluidLiquid, (int) (9_000)),
+                    .getFluidStack(Materials.OxalicAcid, FluidShapes.fluidLiquid, (int) (9_000)),
                 GTUtility.getWater(18_000))
             .duration(3 * MINUTES + 22 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV / 2)
@@ -1385,10 +1385,10 @@ public class RecipeLoader {
             .itemOutputs(MaterialLibAPI.getStack(Materials.CeriumOxalate, Shapes.dust, 5))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.OxalicAcid, Materials2FluidShapes.fluidLiquid, (int) (3_000)))
+                    .getFluidStack(Materials.OxalicAcid, FluidShapes.fluidLiquid, (int) (3_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 6_000))
+                    .getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 6_000))
             .duration(15 * SECONDS)
             .eut(450)
             .addTo(UniversalChemical);
@@ -1397,12 +1397,12 @@ public class RecipeLoader {
         // MONAZITE
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, 700))
+                MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 700))
             .itemInputs(MaterialLibAPI.getStack(Materials.Monazite, Shapes.crushed, 2))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.MuddyMonaziteRareEarthSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (400)))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .eut(TierEU.RECIPE_EV)
@@ -1421,12 +1421,12 @@ public class RecipeLoader {
                 GTUtility.getWater(10_000),
                 MaterialLibAPI.getFluidStack(
                     Materials.MuddyMonaziteRareEarthSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedMonaziteRareEarthMud,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (11_000)))
             .eut(TierEU.RECIPE_HV)
             .duration(900)
@@ -1444,12 +1444,12 @@ public class RecipeLoader {
                 GTUtility.getWater(90_000),
                 MaterialLibAPI.getFluidStack(
                     Materials.MuddyMonaziteRareEarthSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (9_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedMonaziteRareEarthMud,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (99_000)))
             .eut(TierEU.RECIPE_HV)
             .duration(8100)
@@ -1460,7 +1460,7 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedMonaziteRareEarthMud,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.MonaziteSulfate, Shapes.dust, 1),
@@ -1479,7 +1479,7 @@ public class RecipeLoader {
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedMonaziteSulfate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (7_000)))
             .duration(24 * SECONDS)
             .eut(400)
@@ -1492,11 +1492,11 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedMonaziteSulfate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.AmmoniumNitrateSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (200)))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -1508,11 +1508,11 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedMonaziteSulfate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (9_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.AmmoniumNitrateSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_800)))
             .duration(3 * MINUTES + 36 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -1556,7 +1556,7 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.AmmoniumNitrateSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (320)))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
@@ -1582,7 +1582,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.NeutralizedUraniumFiltrate, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.HydrofluoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 100))
+                    .getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 100))
             .duration(18 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(chemicalBathRecipes);
@@ -1618,11 +1618,11 @@ public class RecipeLoader {
                 MaterialLibAPI
                     .getStack(Materials.DriedMonaziteRareEarthConcentrate, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, 500))
+                MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 500))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NitrogenatedMonaziteRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -1634,12 +1634,12 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NitrogenatedMonaziteRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NitricLeachedMonaziteMixture,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -1649,12 +1649,12 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NitrogenatedMonaziteRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NitricLeachedMonaziteMixture,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (2_000)))
             .duration(11 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -1664,14 +1664,14 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NitricLeachedMonaziteMixture,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(MaterialLibAPI.getStack(Materials.CeriumDioxide, Shapes.dust, 1))
             .outputChances(11_11)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NitricMonaziteLeachedConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
@@ -1686,7 +1686,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.Monazite, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 750))
+                    .getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 750))
             .fluidOutputs(GTUtility.getWater(750))
             .duration(25 * SECONDS)
             .eut(450)
@@ -1701,7 +1701,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.CeriumChloride, Shapes.dust, 4),
                 MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cell, 3))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(MaterialUtils.gas(Materials.Steam, 2_000))
             .duration(15 * SECONDS)
             .eut(450)
@@ -1714,7 +1714,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 3))
             .itemOutputs(MaterialLibAPI.getStack(Materials.CeriumIIIOxide, Shapes.dust, 5))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, Materials2FluidShapes.fluidGas, 9_000))
+                MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 9_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 800)
@@ -1729,7 +1729,7 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NitricMonaziteLeachedConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
@@ -1762,7 +1762,7 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.EuropiumOxide, Shapes.dust, 2))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Europium, Shapes.dust, 1))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
             .duration(15 * SECONDS)
             .eut(33_000)
             .addTo(electrolyzerRecipes);
@@ -1787,7 +1787,7 @@ public class RecipeLoader {
                     Shapes.dust,
                     1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 1_000))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 1200)
@@ -1803,7 +1803,7 @@ public class RecipeLoader {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.SaturatedMonaziteRareEarth, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Acetone, Materials2FluidShapes.fluidLiquid, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Acetone, FluidShapes.fluidLiquid, 1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(mixerRecipes);
@@ -1817,7 +1817,7 @@ public class RecipeLoader {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.SaturatedMonaziteRareEarth, Shapes.dust, 3))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Acetone, Materials2FluidShapes.fluidLiquid, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Acetone, FluidShapes.fluidLiquid, 1_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(mixerRecipes);
@@ -1827,7 +1827,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.SaturatedMonaziteRareEarth, Shapes.dust, 4))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SamaricResidue, Shapes.dust, 3))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Chloromethane, Materials2FluidShapes.fluidGas, 400))
+                MaterialLibAPI.getFluidStack(Materials.Chloromethane, FluidShapes.fluidGas, 400))
             .eut(TierEU.RECIPE_EV)
             .duration(2 * MINUTES + 37 * SECONDS + 10 * TICKS)
             .addTo(centrifugeRecipes);
@@ -1845,12 +1845,12 @@ public class RecipeLoader {
         // BASTNASITE (god help me)
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, 700))
+                MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 700))
             .itemInputs(MaterialLibAPI.getStack(Materials.Bastnasite, Shapes.crushed, 2))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.MuddyBastnasiteRareEarthSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (400)))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .eut(TierEU.RECIPE_EV)
@@ -1863,13 +1863,13 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.MuddyBastnasiteRareEarthSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialUtils.gas(Materials.Steam, 1_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SteamCrackedBastnasiteMud,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (2_000)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -1883,12 +1883,12 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Sodiumfluorosilicate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (320)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ConditionedBastnasiteMud,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_320)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -1899,13 +1899,13 @@ public class RecipeLoader {
                 GTUtility.getWater(10_000),
                 MaterialLibAPI.getFluidStack(
                     Materials.ConditionedBastnasiteMud,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemInputs(MaterialLibAPI.getStack(Materials.Saltpeter, Shapes.dust, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedBastnasiteMud,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (11_000)))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Gangue, Shapes.dust, 1))
             .eut(TierEU.RECIPE_EV)
@@ -1923,12 +1923,12 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedBastnasiteMud,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilteredBastnasiteMud,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (400)))
             .eut(TierEU.RECIPE_HV / 2)
             .duration(20 * SECONDS)
@@ -1941,7 +1941,7 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilteredBastnasiteMud,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(25 * SECONDS)
             .eut(600)
@@ -1956,7 +1956,7 @@ public class RecipeLoader {
                     .getStack(Materials.AcidLeachedBastnasiteRareEarthOxides, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 500))
+                    .getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 500))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalBathRecipes);
@@ -1968,9 +1968,9 @@ public class RecipeLoader {
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.RoastedRareEarthOxides, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Fluorine, Materials2FluidShapes.fluidGas, 13))
+                MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 13))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -1990,10 +1990,10 @@ public class RecipeLoader {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.CeriumOxidisedRareEarthOxides, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Fluorine, Materials2FluidShapes.fluidGas, 4_000))
+                MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 4_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.HydrofluoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 4_000))
+                    .getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 4_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
@@ -2013,11 +2013,11 @@ public class RecipeLoader {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.BastnasiteRarerEarthOxides, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, 400))
+                MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 400))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NitrogenatedBastnasiteRarerEarthOxides,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -2029,11 +2029,11 @@ public class RecipeLoader {
                     .getStack(Materials.NitrogenatedBastnasiteRarerEarthOxides, CellShapes.cell, 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Acetone, Materials2FluidShapes.fluidLiquid, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Acetone, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.BastnasiteRarerEarthOxideSuspension,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(35 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -2047,11 +2047,11 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.BastnasiteRarerEarthOxideSuspension,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.DilutedAcetone, Materials2FluidShapes.fluidLiquid, (int) (750)))
+                    .getFluidStack(Materials.DilutedAcetone, FluidShapes.fluidLiquid, (int) (750)))
             .eut(TierEU.RECIPE_HV)
             .duration(45 * SECONDS)
             .addTo(centrifugeRecipes);
@@ -2065,7 +2065,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.NeodymiumOxide, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 2_000))
+                    .getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 2_000))
             .duration(45 * SECONDS)
             .eut(800)
             .addTo(UniversalChemical);
@@ -2079,7 +2079,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.FluorinatedSamaricConcentrate, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.HydrofluoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 2_000))
+                    .getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 2_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
@@ -2092,7 +2092,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.FluorinatedSamaricConcentrate, Shapes.dust, 2))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.HydrofluoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 2_000))
+                    .getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 2_000))
             .duration(17 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
@@ -2107,7 +2107,7 @@ public class RecipeLoader {
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.CalciumFluoride,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (12_000)))
             .duration(1 * MINUTES + 20 * TICKS)
             .eut(TierEU.RECIPE_EV)
@@ -2170,11 +2170,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.Lanthanum, Shapes.crushed, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.LanthanumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (3_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2184,11 +2184,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.LanthanumOreConcentrate, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.LanthanumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2199,20 +2199,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.LanthanumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.LanthanumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledLanthanumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -2224,11 +2224,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.Praseodymium, Shapes.crushed, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.PraseodymiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (3_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2239,11 +2239,11 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.PraseodymiumOreConcentrate, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.PraseodymiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2254,20 +2254,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.PraseodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.PraseodymiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledPraseodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -2279,11 +2279,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.Cerium, Shapes.crushed, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.CeriumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (3_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2293,11 +2293,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.CeriumRichMixture, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.CeriumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2308,20 +2308,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.CeriumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.CeriumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledCeriumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -2333,11 +2333,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.Neodymium, Shapes.crushed, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NeodymiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (3_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2347,11 +2347,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.NeodymiumOreConcentrate, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NeodymiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2362,20 +2362,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NeodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.NeodymiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledNeodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -2387,11 +2387,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.Promethium, Shapes.crushed, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.PromethiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (3_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2401,11 +2401,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.PromethiumOreConcentrate, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.PromethiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2420,11 +2420,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.Samarium, Shapes.crushed, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SamariumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (3_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2434,11 +2434,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.SamariumOreConcentrate, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SamariumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2449,20 +2449,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SamariumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.SamariumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledSamariumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -2474,11 +2474,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.Europium, Shapes.crushed, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.EuropiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (3_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2488,11 +2488,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.EuropiumOreConcentrate, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.EuropiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2503,20 +2503,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.EuropiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.EuropiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledEuropiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -2528,11 +2528,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.Gadolinium, Shapes.crushed, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.GadoliniumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (3_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2542,11 +2542,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.GadoliniumOreConcentrate, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.GadoliniumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2557,20 +2557,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.GadoliniumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.GadoliniumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledGadoliniumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -2582,11 +2582,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.Terbium, Shapes.crushed, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.TerbiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (3_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2596,11 +2596,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.TerbiumOreConcentrate, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.TerbiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2611,20 +2611,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.TerbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.TerbiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledTerbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -2636,11 +2636,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.Dysprosium, Shapes.crushed, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DysprosiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (3_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2650,11 +2650,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.DysprosiumOreConcentrate, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DysprosiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2665,20 +2665,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DysprosiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.DysprosiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledDysprosiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -2690,11 +2690,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.Holmium, Shapes.crushed, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.HolmiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (3_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2704,11 +2704,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.HolmiumOreConcentrate, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.HolmiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2719,20 +2719,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.HolmiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.HolmiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledHolmiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -2744,11 +2744,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.Erbium, Shapes.crushed, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ErbiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (3_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2758,11 +2758,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.ErbiumOreConcentrate, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ErbiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2773,20 +2773,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ErbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ErbiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledErbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -2798,11 +2798,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.Thulium, Shapes.crushed, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ThuliumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (3_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2812,11 +2812,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.ThuliumOreConcentrate, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ThuliumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2827,20 +2827,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ThuliumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ThuliumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledThuliumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -2852,11 +2852,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.Ytterbium, Shapes.crushed, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.YtterbiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (3_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2866,11 +2866,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.YtterbiumOreConcentrate, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.YtterbiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2881,20 +2881,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.YtterbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.YtterbiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledYtterbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -2906,11 +2906,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.Lutetium, Shapes.crushed, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.LutetiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (3_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2920,11 +2920,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.LutetiumOreConcentrate, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.LutetiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_ZPM)
@@ -2935,20 +2935,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.LutetiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.LutetiumChlorideConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledLutetiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -2965,11 +2965,11 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.P507, FluidShapes.fluidLiquid, (int) (4_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.LanthanumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -2983,11 +2983,11 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.P507, FluidShapes.fluidLiquid, (int) (4_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.PraseodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -3001,11 +3001,11 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.P507, FluidShapes.fluidLiquid, (int) (4_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.CeriumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -3019,11 +3019,11 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.P507, FluidShapes.fluidLiquid, (int) (4_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NeodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -3037,11 +3037,11 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.P507, FluidShapes.fluidLiquid, (int) (4_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SamariumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -3055,11 +3055,11 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.P507, FluidShapes.fluidLiquid, (int) (4_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.EuropiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -3073,11 +3073,11 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.P507, FluidShapes.fluidLiquid, (int) (4_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.GadoliniumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -3091,11 +3091,11 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.P507, FluidShapes.fluidLiquid, (int) (4_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.TerbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -3109,11 +3109,11 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.P507, FluidShapes.fluidLiquid, (int) (4_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DysprosiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -3127,11 +3127,11 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.P507, FluidShapes.fluidLiquid, (int) (4_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.HolmiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -3145,11 +3145,11 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.P507, FluidShapes.fluidLiquid, (int) (4_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ErbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -3163,11 +3163,11 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.P507, FluidShapes.fluidLiquid, (int) (4_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ThuliumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -3181,11 +3181,11 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.P507, FluidShapes.fluidLiquid, (int) (4_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.YtterbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -3199,11 +3199,11 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.P507, FluidShapes.fluidLiquid, (int) (4_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.LutetiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(10 * SECONDS)
@@ -3217,13 +3217,13 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledLanthanumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.LanthanumExtractingNanoResin, CellShapes.cell, 1),
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Lanthanum, 1))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
             .addTo(electrolyzerRecipes);
@@ -3234,14 +3234,14 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledPraseodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(
                 MaterialLibAPI
                     .getStack(Materials.PraseodymiumExtractingNanoResin, CellShapes.cell, 1),
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Praseodymium, 1))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
             .addTo(electrolyzerRecipes);
@@ -3252,13 +3252,13 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledCeriumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.CeriumExtractingNanoResin, CellShapes.cell, 1),
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Cerium, 1))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
             .addTo(electrolyzerRecipes);
@@ -3269,13 +3269,13 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledNeodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.NeodymiumExtractingNanoResin, CellShapes.cell, 1),
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Neodymium, 1))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
             .addTo(electrolyzerRecipes);
@@ -3286,13 +3286,13 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledSamariumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.SamariumExtractingNanoResin, CellShapes.cell, 1),
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Samarium, 1))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
             .addTo(electrolyzerRecipes);
@@ -3303,13 +3303,13 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledEuropiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.EuropiumExtractingNanoResin, CellShapes.cell, 1),
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Europium, 1))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
             .addTo(electrolyzerRecipes);
@@ -3320,14 +3320,14 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledGadoliniumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(
                 MaterialLibAPI
                     .getStack(Materials.GadoliniumExtractingNanoResin, CellShapes.cell, 1),
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Gadolinium, 1))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
             .addTo(electrolyzerRecipes);
@@ -3338,13 +3338,13 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledTerbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.TerbiumExtractingNanoResin, CellShapes.cell, 1),
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Terbium, 1))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
             .addTo(electrolyzerRecipes);
@@ -3355,14 +3355,14 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledDysprosiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(
                 MaterialLibAPI
                     .getStack(Materials.DysprosiumExtractingNanoResin, CellShapes.cell, 1),
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Dysprosium, 1))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
             .addTo(electrolyzerRecipes);
@@ -3373,13 +3373,13 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledHolmiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.HolmiumExtractingNanoResin, CellShapes.cell, 1),
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Holmium, 1))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
             .addTo(electrolyzerRecipes);
@@ -3390,13 +3390,13 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledErbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.ErbiumExtractingNanoResin, CellShapes.cell, 1),
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Erbium, 1))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
             .addTo(electrolyzerRecipes);
@@ -3407,13 +3407,13 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledThuliumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.ThuliumExtractingNanoResin, CellShapes.cell, 1),
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Thulium, 1))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
             .addTo(electrolyzerRecipes);
@@ -3424,13 +3424,13 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledYtterbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.YtterbiumExtractingNanoResin, CellShapes.cell, 1),
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Ytterbium, 1))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
             .addTo(electrolyzerRecipes);
@@ -3441,13 +3441,13 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledLutetiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.LutetiumExtractingNanoResin, CellShapes.cell, 1),
                 GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Lutetium, 1))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
             .addTo(electrolyzerRecipes);
@@ -3459,20 +3459,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.LanthanumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledLanthanumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -3481,20 +3481,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.LanthanumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledLanthanumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -3503,19 +3503,19 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.LanthanumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledLanthanumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.WasteLiquid, FluidShapes.fluidLiquid, (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
             .addTo(multiblockChemicalReactorRecipes);
@@ -3525,20 +3525,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.PraseodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledPraseodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -3547,20 +3547,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.PraseodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledPraseodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -3569,19 +3569,19 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.PraseodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledPraseodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.WasteLiquid, FluidShapes.fluidLiquid, (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
             .addTo(multiblockChemicalReactorRecipes);
@@ -3591,20 +3591,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.CeriumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledCeriumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -3613,20 +3613,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.CeriumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledCeriumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -3635,19 +3635,19 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.CeriumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledCeriumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.WasteLiquid, FluidShapes.fluidLiquid, (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
             .addTo(multiblockChemicalReactorRecipes);
@@ -3657,20 +3657,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NeodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledNeodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -3679,20 +3679,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NeodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledNeodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -3701,19 +3701,19 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NeodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledNeodymiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.WasteLiquid, FluidShapes.fluidLiquid, (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
             .addTo(multiblockChemicalReactorRecipes);
@@ -3723,20 +3723,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SamariumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledSamariumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -3745,20 +3745,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SamariumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledSamariumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -3767,19 +3767,19 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SamariumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledSamariumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.WasteLiquid, FluidShapes.fluidLiquid, (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
             .addTo(multiblockChemicalReactorRecipes);
@@ -3789,20 +3789,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.EuropiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledEuropiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -3811,20 +3811,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.EuropiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledEuropiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -3833,19 +3833,19 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.EuropiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledEuropiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.WasteLiquid, FluidShapes.fluidLiquid, (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
             .addTo(multiblockChemicalReactorRecipes);
@@ -3855,20 +3855,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.GadoliniumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledGadoliniumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -3877,20 +3877,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.GadoliniumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledGadoliniumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -3899,19 +3899,19 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.GadoliniumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledGadoliniumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.WasteLiquid, FluidShapes.fluidLiquid, (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
             .addTo(multiblockChemicalReactorRecipes);
@@ -3921,20 +3921,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.TerbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledTerbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -3943,20 +3943,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.TerbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledTerbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -3965,19 +3965,19 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.TerbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledTerbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.WasteLiquid, FluidShapes.fluidLiquid, (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
             .addTo(multiblockChemicalReactorRecipes);
@@ -3987,20 +3987,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DysprosiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledDysprosiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -4009,20 +4009,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DysprosiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledDysprosiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -4031,19 +4031,19 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DysprosiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledDysprosiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.WasteLiquid, FluidShapes.fluidLiquid, (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
             .addTo(multiblockChemicalReactorRecipes);
@@ -4053,20 +4053,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.HolmiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledHolmiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -4075,20 +4075,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.HolmiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledHolmiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -4097,19 +4097,19 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.HolmiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledHolmiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.WasteLiquid, FluidShapes.fluidLiquid, (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
             .addTo(multiblockChemicalReactorRecipes);
@@ -4119,20 +4119,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ErbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledErbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -4141,20 +4141,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ErbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledErbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -4163,19 +4163,19 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ErbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledErbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.WasteLiquid, FluidShapes.fluidLiquid, (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
             .addTo(multiblockChemicalReactorRecipes);
@@ -4185,20 +4185,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ThuliumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledThuliumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -4207,20 +4207,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ThuliumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledThuliumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -4229,19 +4229,19 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ThuliumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledThuliumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.WasteLiquid, FluidShapes.fluidLiquid, (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
             .addTo(multiblockChemicalReactorRecipes);
@@ -4251,20 +4251,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.YtterbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledYtterbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -4273,20 +4273,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.YtterbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledYtterbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -4295,19 +4295,19 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.YtterbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledYtterbiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.WasteLiquid, FluidShapes.fluidLiquid, (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
             .addTo(multiblockChemicalReactorRecipes);
@@ -4317,20 +4317,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.LutetiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthConcentrate,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledLutetiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -4339,20 +4339,20 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.LutetiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthEnrichedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledLutetiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
@@ -4361,19 +4361,19 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.LutetiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.ChlorinatedRareEarthDilutedSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilledLutetiumExtractingNanoResin,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.WasteLiquid, FluidShapes.fluidLiquid, (int) (1_000)))
             .eut(TierEU.RECIPE_UV)
             .duration(1 * SECONDS)
             .addTo(multiblockChemicalReactorRecipes);
@@ -4384,13 +4384,13 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.SamariumOreConcentrate, Shapes.dust, 16))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, 200))
+                MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 200))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.ThoriumPhosphateConcentrate, Shapes.dust, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.MuddySamariumRareEarthSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (800)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_EV)
@@ -4401,13 +4401,13 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Samarium, Shapes.crushed, 8))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, 300))
+                MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 300))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.ThoriumPhosphateConcentrate, Shapes.dust, 3))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.MuddySamariumRareEarthSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_200)))
             .metadata(COIL_HEAT, 800)
             .eut(TierEU.RECIPE_EV)
@@ -4422,15 +4422,15 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.CeriumDioxide, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.CeriumRichMixture, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 1_000),
                 MaterialLibAPI.getFluidStack(
                     Materials.MuddySamariumRareEarthSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SamariumRareEarthMud,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (2_000)))
             .metadata(DISSOLUTION_TANK_RATIO, 1)
             .outputChances(8000, 6000)
@@ -4443,15 +4443,15 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.CeriumDioxide, Shapes.dust, 9),
                 MaterialLibAPI.getStack(Materials.CeriumRichMixture, Shapes.dust, 9))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, 9_000),
+                MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 9_000),
                 MaterialLibAPI.getFluidStack(
                     Materials.MuddySamariumRareEarthSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (9_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SamariumRareEarthMud,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (18_000)))
             .metadata(DISSOLUTION_TANK_RATIO, 1)
             .outputChances(8000, 6000)
@@ -4462,16 +4462,16 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .circuit(1)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 1_000),
                 MaterialLibAPI.getFluidStack(
                     Materials.MuddySamariumRareEarthSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(MaterialLibAPI.getStack(Materials.CeriumDioxide, Shapes.dust, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SamariumRareEarthMud,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .outputChances(5000)
             .eut(TierEU.RECIPE_EV)
@@ -4486,7 +4486,7 @@ public class RecipeLoader {
                 GTUtility.getWater(9_000),
                 MaterialLibAPI.getFluidStack(
                     Materials.SamariumRareEarthMud,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.NeodymiumRareEarthConcentrate, Shapes.dust, 1),
@@ -4494,7 +4494,7 @@ public class RecipeLoader {
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedSamariumRareEarthSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (10_000)))
             .metadata(DISSOLUTION_TANK_RATIO, 9)
             .outputChances(9000, 6000)
@@ -4507,7 +4507,7 @@ public class RecipeLoader {
                 GTUtility.getWater(81_000),
                 MaterialLibAPI.getFluidStack(
                     Materials.SamariumRareEarthMud,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (9_000)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.NeodymiumRareEarthConcentrate, Shapes.dust, 9),
@@ -4515,7 +4515,7 @@ public class RecipeLoader {
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedSamariumRareEarthSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (90_000)))
             .metadata(DISSOLUTION_TANK_RATIO, 9)
             .outputChances(9000, 6000)
@@ -4528,13 +4528,13 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SamariumRareEarthMud,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 GTUtility.getWater(16_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedSamariumRareEarthSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (8_000)))
             .eut(TierEU.RECIPE_EV)
             .duration(1200)
@@ -4549,17 +4549,17 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedSamariumRareEarthSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (2_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.OxalicAcid, Materials2FluidShapes.fluidLiquid, (int) (3_000)))
+                    .getFluidStack(Materials.OxalicAcid, FluidShapes.fluidLiquid, (int) (3_000)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.SamariumIIIOxalate, Shapes.dust, 5),
                 MaterialLibAPI.getStack(Materials.DephosphatedSamariumConcentrate, Shapes.dust, 3))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.MuddySamariumRareEarthSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (50)))
             .outputChances(10000, 1000)
             .eut(TierEU.RECIPE_EV)
@@ -4571,10 +4571,10 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.SamariumIIIOxalate, Shapes.dust, 5))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 6_000))
+                    .getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 6_000))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SamariumIIIChloride, Shapes.dust, 8))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, Materials2FluidShapes.fluidGas, 6_000))
+                MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 6_000))
             .eut(TierEU.RECIPE_EV / 2)
             .duration(10 * SECONDS)
             .addTo(multiblockChemicalReactorRecipes);
@@ -4609,7 +4609,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.RarestEarthResidue, Shapes.dustTiny, 2))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 4_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 4_000))
             .eut(TierEU.RECIPE_IV)
             .duration(1 * SECONDS)
             .addTo(electrolyzerRecipes);
@@ -4623,7 +4623,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 9),
                 MaterialLibAPI.getStack(Materials.RarestEarthResidue, Shapes.dust, 2))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 36_000))
             .eut(TierEU.RECIPE_LuV)
             .duration(2 * SECONDS)
             .addTo(electrolyzerRecipes);
@@ -4636,11 +4636,11 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SamariumIIIChloride,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (5_184)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Samarium, Materials2FluidShapes.fluidMolten, 16 * INGOTS))
+                    .getFluidStack(Materials.Samarium, FluidShapes.fluidMolten, 16 * INGOTS))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * SECONDS)
             .addTo(distillationTowerRecipes);
@@ -4664,10 +4664,10 @@ public class RecipeLoader {
                 MaterialLibAPI
                     .getStack(Materials.TelluriumMolybdenumOxideCatalyst, Shapes.dustTiny, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Butane, Materials2FluidShapes.fluidGas, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Butane, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials._14Butanediol, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials._14Butanediol, FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(UniversalChemical);
@@ -4677,10 +4677,10 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.TelluriumMolybdenumOxideCatalyst, Shapes.dust, 1))
             .circuit(9)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Butane, Materials2FluidShapes.fluidGas, 9_000))
+                MaterialLibAPI.getFluidStack(Materials.Butane, FluidShapes.fluidGas, 9_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials._14Butanediol, Materials2FluidShapes.fluidLiquid, (int) (9_000)))
+                    .getFluidStack(Materials._14Butanediol, FluidShapes.fluidLiquid, (int) (9_000)))
             .duration(6 * MINUTES + 45 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -4703,12 +4703,12 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Dinitrotoluene,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Diaminotoluene,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -4719,11 +4719,11 @@ public class RecipeLoader {
             .itemInputs(MaterialLibAPI.getStack(Materials.NitricAcid, CellShapes.cell, 2))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 2))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Toluene, Materials2FluidShapes.fluidLiquid, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Toluene, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Dinitrotoluene,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -4743,7 +4743,7 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Polytetrafluoroethylene,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     10 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV / 2)
@@ -4762,7 +4762,7 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Polytetrafluoroethylene,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     5 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV / 2)
@@ -4771,9 +4771,9 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.DilutedAcetone, Materials2FluidShapes.fluidLiquid, (int) (50)))
+                    .getFluidStack(Materials.DilutedAcetone, FluidShapes.fluidLiquid, (int) (50)))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Acetone, Materials2FluidShapes.fluidLiquid, 30))
+                MaterialLibAPI.getFluidStack(Materials.Acetone, FluidShapes.fluidLiquid, 30))
             .duration(1 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidHeaterRecipes);
@@ -4782,11 +4782,11 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.HotSuperCoolant,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, 1_000))
+                    .getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, 1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(vacuumFreezerRecipes);
@@ -4888,7 +4888,7 @@ public class RecipeLoader {
                     .getStack(Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, Shapes.gem, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lutetium, Materials2FluidShapes.fluidMolten, 8 * INGOTS))
+                    .getFluidStack(Materials.Lutetium, FluidShapes.fluidMolten, 8 * INGOTS))
             .outputChances(514)
             .eut(TierEU.RECIPE_UV)
             .duration(500)
@@ -4912,7 +4912,7 @@ public class RecipeLoader {
                     1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (40)))
+                    .getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (40)))
             .outputChances(8000, 1900)
             .eut(TierEU.RECIPE_UHV)
             .duration(512)
@@ -4933,7 +4933,7 @@ public class RecipeLoader {
                     Shapes.gemExquisite,
                     1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Xenon, Materials2FluidShapes.fluidLiquid, (int) (25)))
+                MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, (int) (25)))
             .outputChances(9000, 1000)
             .eut(TierEU.RECIPE_UHV)
             .duration(256)
@@ -4954,7 +4954,7 @@ public class RecipeLoader {
                     1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Oganesson, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                    .getFluidStack(Materials.Oganesson, FluidShapes.fluidLiquid, (int) (10)))
             .outputChances(10000, 100)
             .eut(TierEU.RECIPE_UHV)
             .duration(128)
@@ -4976,7 +4976,7 @@ public class RecipeLoader {
                     2))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Oganesson, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                    .getFluidStack(Materials.Oganesson, FluidShapes.fluidLiquid, (int) (10)))
             .outputChances(10000, 2000)
             .eut(TierEU.RECIPE_UHV)
             .duration(128)
@@ -4995,7 +4995,7 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.CeriumdopedLutetiumAluminiumOxygenBlend,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (108)))
             .metadata(COIL_HEAT, 9100)
             .eut(TierEU.RECIPE_UHV)
@@ -5014,7 +5014,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.Jade, Shapes.gem, 64))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Protomatter, Materials2FluidShapes.fluidLiquid, 250_000))
+                    .getFluidStack(Materials.Protomatter, FluidShapes.fluidLiquid, 250_000))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gem, 1))
             .metadata(COIL_HEAT, 13500)
             .duration(5 * SECONDS)

@@ -5,6 +5,7 @@ import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
@@ -16,7 +17,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -177,7 +177,7 @@ public class RecipeIC2 {
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Helmet.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Rubber, Materials2FluidShapes.fluidMolten, (int) (144 * 4)))
+                    .getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, (int) (144 * 4)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -194,7 +194,7 @@ public class RecipeIC2 {
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Chest.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Rubber, Materials2FluidShapes.fluidMolten, (int) (144 * 10)))
+                    .getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, (int) (144 * 10)))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -211,7 +211,7 @@ public class RecipeIC2 {
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Legs.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Rubber, Materials2FluidShapes.fluidMolten, (int) (144 * 8)))
+                    .getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, (int) (144 * 8)))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -228,7 +228,7 @@ public class RecipeIC2 {
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Boots.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Rubber, Materials2FluidShapes.fluidMolten, (int) (144 * 6)))
+                    .getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, (int) (144 * 6)))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);

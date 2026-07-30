@@ -8,8 +8,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -25,12 +25,12 @@ public class FluidHeaterRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.GrowthMediumRaw,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.GrowthMediumSterilized,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -39,7 +39,7 @@ public class FluidHeaterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.BioMediumRaw, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.BioMediumRaw, FluidShapes.fluidLiquid, (int) (1_000)))
             .fluidOutputs(MaterialUtils.fluid(Materials.BiohMediumSterilized, 1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -64,10 +64,10 @@ public class FluidHeaterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SeedOil, Materials2FluidShapes.fluidLiquid, (int) (16)))
+                    .getFluidStack(Materials.SeedOil, FluidShapes.fluidLiquid, (int) (16)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.FryingOilHot, Materials2FluidShapes.fluidLiquid, (int) (16)))
+                    .getFluidStack(Materials.FryingOilHot, FluidShapes.fluidLiquid, (int) (16)))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidHeaterRecipes);
@@ -75,10 +75,10 @@ public class FluidHeaterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.FishOil, Materials2FluidShapes.fluidLiquid, (int) (16)))
+                    .getFluidStack(Materials.FishOil, FluidShapes.fluidLiquid, (int) (16)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.FryingOilHot, Materials2FluidShapes.fluidLiquid, (int) (16)))
+                    .getFluidStack(Materials.FryingOilHot, FluidShapes.fluidLiquid, (int) (16)))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidHeaterRecipes);
@@ -88,11 +88,11 @@ public class FluidHeaterRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.CalciumAcetateSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Acetone, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.Acetone, FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidHeaterRecipes);
@@ -102,7 +102,7 @@ public class FluidHeaterRecipes implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 1))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Sodium, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.Sodium, FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidHeaterRecipes);
@@ -110,10 +110,10 @@ public class FluidHeaterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Acetone, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.Acetone, FluidShapes.fluidLiquid, (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Ethenone, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.Ethenone, FluidShapes.fluidGas, (int) (1_000)))
             .duration(8 * SECONDS)
             .eut(160)
             .addTo(fluidHeaterRecipes);

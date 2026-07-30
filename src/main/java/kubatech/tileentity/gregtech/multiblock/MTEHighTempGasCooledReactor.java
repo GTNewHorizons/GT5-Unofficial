@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.entity.player.EntityPlayer;
@@ -65,7 +66,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -593,7 +593,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 FluidStack fluidStack = this.getInputFromHatch(
                     heliumInputHatch,
                     MaterialLibAPI
-                        .getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, (int) (1)));
+                        .getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int) (1)));
                 if (fluidStack != null) {
                     int toGet = Math
                         .min(MTEHighTempGasCooledReactor.HELIUM_NEEDED - this.heliumSupply, fluidStack.amount);

@@ -17,7 +17,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -43,7 +43,7 @@ public class Assembler implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Polytetrafluoroethylene,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -73,7 +73,7 @@ public class Assembler implements Runnable {
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Glass, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Glass, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -119,7 +119,7 @@ public class Assembler implements Runnable {
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 4))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Epoxid, Materials2FluidShapes.fluidMolten, (int) (6 * INGOTS)))
+                    .getFluidStack(Materials.Epoxid, FluidShapes.fluidMolten, (int) (6 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -136,7 +136,7 @@ public class Assembler implements Runnable {
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 5))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Epoxid, Materials2FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+                    .getFluidStack(Materials.Epoxid, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -271,7 +271,7 @@ public class Assembler implements Runnable {
             .itemOutputs(new ItemStack(Blocks.yszUnit, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (4_000)))
+                    .getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (4_000)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -292,7 +292,7 @@ public class Assembler implements Runnable {
             .itemOutputs(new ItemStack(Blocks.gdcUnit, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (16_000)))
+                    .getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (16_000)))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);

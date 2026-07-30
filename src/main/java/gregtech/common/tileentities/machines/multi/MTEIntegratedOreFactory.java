@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -48,7 +49,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -246,7 +246,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             if (fluid.equals(GTModHandler.getDistilledWater(1L))) waterAmount += fluid.amount;
             else if (fluid.equals(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (1))))
+                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (1))))
                 lubricantAmount += fluid.amount;
         }
 
@@ -296,13 +296,13 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             if (!depleteInput(
                 MaterialLibAPI.getFluidStack(
                     Materials.Lubricant,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (tryDrain)))) {
                 int maxHatch = 0;
                 for (FluidStack sf : getStoredFluids()) {
                     if (sf != null && sf.isFluidEqual(
                         MaterialLibAPI
-                            .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (1)))
+                            .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (1)))
                         && sf.amount > maxHatch) {
                         maxHatch = sf.amount;
                     }
@@ -312,7 +312,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 if (!depleteInput(
                     MaterialLibAPI.getFluidStack(
                         Materials.Lubricant,
-                        Materials2FluidShapes.fluidLiquid,
+                        FluidShapes.fluidLiquid,
                         (int) (tryDrain))))
                     break;
             }

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
@@ -31,7 +32,6 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials2.MaterialFluidNames;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Textures;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.MaterialStack;
@@ -89,28 +89,28 @@ public class MaterialUtils {
     public static @Nullable FluidStack compositionGas(MaterialRefStack entry) {
         Material material = entry.material()
             .resolve();
-        if (material == null || !material.hasShape(Materials2FluidShapes.fluidGas)) return null;
-        return MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidGas, (int) (1000 * entry.amount()));
+        if (material == null || !material.hasShape(FluidShapes.fluidGas)) return null;
+        return MaterialLibAPI.getFluidStack(material, FluidShapes.fluidGas, (int) (1000 * entry.amount()));
     }
 
     /// Whether a material has a resolvable molten fluid (see [#molten]), for callers needing the presence
     /// check independent of a fluid amount, such as one gate guarding several [#molten] calls of different
-    /// amounts. True when the material carries the [Materials2FluidShapes#fluidMolten] shape or a
+    /// amounts. True when the material carries the [FluidShapes#fluidMolten] shape or a
     /// [#recordSlotFluid]-stored MOLTEN fluid, which `GTFluid#configureMaterials` writes for the materials
     /// excluded from the shape-backed fluids.
     public static boolean hasMolten(@Nullable Material material) {
         if (material == null) return false;
-        return material.hasShape(Materials2FluidShapes.fluidMolten) || storedFluid(material, FluidState.MOLTEN) != null;
+        return material.hasShape(FluidShapes.fluidMolten) || storedFluid(material, FluidState.MOLTEN) != null;
     }
 
     /// The molten fluid stack for a material at `amount`, or null when [#hasMolten] is false. A
     /// [#recordSlotFluid]-stored MOLTEN fluid takes precedence; otherwise resolves the
-    /// [Materials2FluidShapes#fluidMolten] MaterialLib shape stack directly.
+    /// [FluidShapes#fluidMolten] MaterialLib shape stack directly.
     public static @Nullable FluidStack molten(@Nullable Material material, long amount) {
         Fluid stored = storedFluid(material, FluidState.MOLTEN);
         if (stored != null) return new FluidStack(stored, (int) amount);
         if (!hasMolten(material)) return null;
-        return MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) amount);
+        return MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) amount);
     }
 
     /// [#fluidOf], as a sized [FluidStack]; null when the material carries no fluid slot.
@@ -122,7 +122,7 @@ public class MaterialUtils {
     /// The raw [Fluid] for a material's liquid slot, for presence gates and callers building their own
     /// stacks. A [#recordSlotFluid]-stored LIQUID fluid takes precedence; otherwise resolved from
     /// [MaterialFluidNames]'s `fluid()` slot by Forge fluid name -- NOT from a
-    /// [Materials2FluidShapes#fluidLiquid] shape lookup, since a material whose fluid is a vanilla or
+    /// [FluidShapes#fluidLiquid] shape lookup, since a material whose fluid is a vanilla or
     /// foreign Forge fluid (`Water` -> `water`, `Milk` -> `milk`) carries the slot without any ML fluid
     /// shape, which a shape-based lookup would miss.
     public static @Nullable Fluid fluidOf(@Nullable Material material) {
@@ -130,8 +130,8 @@ public class MaterialUtils {
     }
 
     /// [#fluid], for a material's `gas()` slot; null when it carries none. Agrees with any
-    /// [Materials2FluidShapes#fluidGas] shape the material generates -- that shape only registers when the
-    /// material carries the slot ([Materials2FluidShapes]'s `requireRef` fails fluid registration
+    /// [FluidShapes#fluidGas] shape the material generates -- that shape only registers when the
+    /// material carries the slot ([FluidShapes]'s `requireRef` fails fluid registration
     /// otherwise), under the slot's own Forge fluid name -- but also resolves gas fluids that never became
     /// an ML shape.
     public static @Nullable FluidStack gas(@Nullable Material material, long amount) {
@@ -170,8 +170,8 @@ public class MaterialUtils {
 
     /// The shapes [#legacyGtppFluidOf] tries, in the order the legacy gtPlusPlus fluid name was derived:
     /// molten first, then liquid, then gas.
-    private static final Shape[] GTPP_FLUID_SHAPES = { Materials2FluidShapes.fluidMolten,
-        Materials2FluidShapes.fluidLiquid, Materials2FluidShapes.fluidGas };
+    private static final Shape[] GTPP_FLUID_SHAPES = { FluidShapes.fluidMolten,
+        FluidShapes.fluidLiquid, FluidShapes.fluidGas };
 
     /// Materials whose fluid is registered directly by name rather than through a shape of their own, so no
     /// shape lookup can reach it.
@@ -213,7 +213,7 @@ public class MaterialUtils {
     /// [#fluidOf]'s raw [Fluid] for the `molten()` slot, resolved from the same
     /// [MaterialFluidNames] `molten` slot (or [#recordSlotFluid] store) as [#molten].
     /// Unlike
-    /// [#molten], does not fall back to the [Materials2FluidShapes#fluidMolten] shape lookup -- this is null
+    /// [#molten], does not fall back to the [FluidShapes#fluidMolten] shape lookup -- this is null
     /// exactly when the slot itself is unset, which the fluid autogen loop gates on.
     public static @Nullable Fluid moltenOf(@Nullable Material material) {
         return resolveSlotFluid(material, FluidState.MOLTEN, FluidNames::molten);
@@ -266,13 +266,13 @@ public class MaterialUtils {
     private static final EnumMap<FluidState, Shape[]> STATE_SHAPES = new EnumMap<>(
         Map.of(
             FluidState.LIQUID,
-            new Shape[] { Materials2FluidShapes.fluidLiquid, Materials2FluidShapes.fluidGas },
+            new Shape[] { FluidShapes.fluidLiquid, FluidShapes.fluidGas },
             FluidState.GAS,
-            new Shape[] { Materials2FluidShapes.fluidGas, Materials2FluidShapes.fluidLiquid },
+            new Shape[] { FluidShapes.fluidGas, FluidShapes.fluidLiquid },
             FluidState.MOLTEN,
-            new Shape[] { Materials2FluidShapes.fluidMolten },
+            new Shape[] { FluidShapes.fluidMolten },
             FluidState.PLASMA,
-            new Shape[] { Materials2FluidShapes.fluidPlasma },
+            new Shape[] { FluidShapes.fluidPlasma },
             FluidState.SOLID,
             new Shape[] {}));
 
@@ -333,11 +333,11 @@ public class MaterialUtils {
     private static final EnumMap<CrackType, Shape[]> CRACKED_SHAPES = new EnumMap<>(
         Map.of(
             CrackType.HYDRO,
-            new Shape[] { Materials2FluidShapes.fluidHydroCracked1, Materials2FluidShapes.fluidHydroCracked2,
-                Materials2FluidShapes.fluidHydroCracked3 },
+            new Shape[] { FluidShapes.fluidHydroCracked1, FluidShapes.fluidHydroCracked2,
+                FluidShapes.fluidHydroCracked3 },
             CrackType.STEAM,
-            new Shape[] { Materials2FluidShapes.fluidSteamCracked1, Materials2FluidShapes.fluidSteamCracked2,
-                Materials2FluidShapes.fluidSteamCracked3 }));
+            new Shape[] { FluidShapes.fluidSteamCracked1, FluidShapes.fluidSteamCracked2,
+                FluidShapes.fluidSteamCracked3 }));
 
     /// The cracked Forge fluid for `material`'s `type` cracking family at `severity` (0/1/2 =
     /// light/moderate/severe), or null when the material carries none. A [#recordCrackedFluid] autogenerated

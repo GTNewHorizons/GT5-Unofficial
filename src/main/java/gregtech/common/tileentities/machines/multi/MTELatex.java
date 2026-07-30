@@ -48,7 +48,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -157,9 +157,9 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
     private double discount = 0.0625 * itemPipeTier;
     private int base_parallel = 8;
     private static final FluidStack[] valid_rubbers = {
-        MaterialLibAPI.getFluidStack(Materials.Rubber, Materials2FluidShapes.fluidMolten, (int) (1)),
+        MaterialLibAPI.getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, (int) (1)),
         MaterialUtils.molten(Materials.Silicone, 1L), MaterialLibAPI
-            .getFluidStack(Materials.StyreneButadieneRubber, Materials2FluidShapes.fluidMolten, (int) (1)) };
+            .getFluidStack(Materials.StyreneButadieneRubber, FluidShapes.fluidMolten, (int) (1)) };
 
     @Override
     protected ProcessingLogic createProcessingLogic() {

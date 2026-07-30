@@ -5,6 +5,7 @@ import static gregtech.api.recipe.RecipeMaps.polarizerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
@@ -14,7 +15,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -66,7 +66,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
                                     Materials.FierySteel,
-                                    Materials2FluidShapes.fluidLiquid,
+                                    FluidShapes.fluidLiquid,
                                     (int) (GTUtility.translateMaterialToAmount(prefix.getMaterialAmount(), 250, true))))
                             .duration(5 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
@@ -96,7 +96,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
                                     Materials.FierySteel,
-                                    Materials2FluidShapes.fluidLiquid,
+                                    FluidShapes.fluidLiquid,
                                     (int) (GTUtility.translateMaterialToAmount(prefix.getMaterialAmount(), 225, true))))
                             .duration(5 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
@@ -126,7 +126,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
                                     Materials.FierySteel,
-                                    Materials2FluidShapes.fluidLiquid,
+                                    FluidShapes.fluidLiquid,
                                     (int) (GTUtility.translateMaterialToAmount(prefix.getMaterialAmount(), 200, true))))
                             .duration(5 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)

@@ -11,6 +11,7 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -20,7 +21,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -166,7 +166,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
             fakeFluids.add(
                 MaterialLibAPI.getFluidStack(
                     Materials.GrowthMediumSterilized,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     Integer.MAX_VALUE));
         }
         if (baseMulti.bioT3Active) {
@@ -191,7 +191,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
             if (baseMulti.wetwareT3Active && stack.getFluid()
                 .equals(
                     MaterialLibAPI
-                        .getFluidStack(Materials.GrowthMediumSterilized, Materials2FluidShapes.fluidLiquid, 1)
+                        .getFluidStack(Materials.GrowthMediumSterilized, FluidShapes.fluidLiquid, 1)
                         .getFluid()))
                 fluidInputs[i] = null;
             if (baseMulti.bioT3Active && stack.getFluid()

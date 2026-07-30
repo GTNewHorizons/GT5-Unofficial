@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi.xlturbines;
 
 import java.util.ArrayList;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -12,7 +13,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
@@ -142,7 +142,7 @@ public class MTEXLTurbineSCSteam extends MTEXLTurbineBase {
             addOutputPartial(
                 MaterialLibAPI.getFluidStack(
                     Materials.DenseSuperheatedSteam,
-                    Materials2FluidShapes.fluidGas,
+                    FluidShapes.fluidGas,
                     (int) ((long) steamFlowForNextSteam)));
         } else {
             addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));

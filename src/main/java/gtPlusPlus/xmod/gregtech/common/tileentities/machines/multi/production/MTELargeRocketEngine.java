@@ -33,7 +33,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TAE;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -225,7 +225,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     public static void setAir() {
         if (sAirFluidStack == null) {
             sAirFluidStack = MaterialLibAPI
-                .getFluidStack(Materials.Air, Materials2FluidShapes.fluidGas, (int) (1));
+                .getFluidStack(Materials.Air, FluidShapes.fluidGas, (int) (1));
         }
         if (sAirFluid == null && sAirFluidStack != null) {
             sAirFluid = sAirFluidStack.getFluid();
@@ -376,7 +376,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         return this.depleteInput(
             MaterialLibAPI.getFluidStack(
                 Materials.CarbonDioxide,
-                Materials2FluidShapes.fluidGas,
+                FluidShapes.fluidGas,
                 (int) (this.boostEu ? 3 : 1)));
     }
 

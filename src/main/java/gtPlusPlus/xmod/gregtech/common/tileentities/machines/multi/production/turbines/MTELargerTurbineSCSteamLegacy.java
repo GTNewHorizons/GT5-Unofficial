@@ -9,7 +9,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
@@ -111,7 +111,7 @@ public class MTELargerTurbineSCSteamLegacy extends MTELargerTurbineBaseLegacy {
             addOutputPartial(
                 MaterialLibAPI.getFluidStack(
                     Materials.DenseSuperheatedSteam,
-                    Materials2FluidShapes.fluidGas,
+                    FluidShapes.fluidGas,
                     (int) ((long) steamFlowForNextSteam)));
         } else {
             addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));

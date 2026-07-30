@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import gregtech.api.enums.materials2.BlockShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
@@ -31,7 +32,6 @@ import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialRefStack;
@@ -51,43 +51,43 @@ public class EyeOfHarmonyRecipe {
     static final FluidStackLong[] SPECIAL_FLUIDS = new FluidStackLong[] {
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials.WhiteDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (1_152)),
+                .getFluidStack(Materials.WhiteDwarfMatter, FluidShapes.fluidMolten, (int) (1_152)),
             1_152),
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials.WhiteDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (1_152)),
+                .getFluidStack(Materials.WhiteDwarfMatter, FluidShapes.fluidMolten, (int) (1_152)),
             1_152),
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials.WhiteDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (4_608)),
+                .getFluidStack(Materials.WhiteDwarfMatter, FluidShapes.fluidMolten, (int) (4_608)),
             4_608),
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials.WhiteDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (18_432)),
+                .getFluidStack(Materials.WhiteDwarfMatter, FluidShapes.fluidMolten, (int) (18_432)),
             18_432),
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials.BlackDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (1_152)),
+                .getFluidStack(Materials.BlackDwarfMatter, FluidShapes.fluidMolten, (int) (1_152)),
             1_152),
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials.BlackDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (4_608)),
+                .getFluidStack(Materials.BlackDwarfMatter, FluidShapes.fluidMolten, (int) (4_608)),
             4_608),
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials.BlackDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (18_432)),
+                .getFluidStack(Materials.BlackDwarfMatter, FluidShapes.fluidMolten, (int) (18_432)),
             18_432),
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials.Universium, Materials2FluidShapes.fluidMolten, (int) (1_152)),
+                .getFluidStack(Materials.Universium, FluidShapes.fluidMolten, (int) (1_152)),
             1_152),
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials.Universium, Materials2FluidShapes.fluidMolten, (int) (4_608)),
+                .getFluidStack(Materials.Universium, FluidShapes.fluidMolten, (int) (4_608)),
             4_608),
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials.Universium, Materials2FluidShapes.fluidMolten, (int) (18_432)),
+                .getFluidStack(Materials.Universium, FluidShapes.fluidMolten, (int) (18_432)),
             18_432) };
 
     HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<>() {
@@ -214,7 +214,7 @@ public class EyeOfHarmonyRecipe {
             new FluidStackLong(
                 MaterialLibAPI.getFluidStack(
                     Materials.RawStarMatter,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) ((this.spacetimeCasingTierRequired + 1) * 100_000)),
                 (this.spacetimeCasingTierRequired + 1) * 100_000));
 

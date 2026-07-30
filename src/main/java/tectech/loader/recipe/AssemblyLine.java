@@ -7,6 +7,7 @@ import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
@@ -19,7 +20,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.MaterialFacades;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -42,7 +42,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Cover_Screen.get(1))
             .fluidInputs(
                 GTModHandler.getIC2Coolant(2_000),
-                MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1_000))
             .itemOutputs(CustomItemList.Machine_Multi_DataBank.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(2 * MINUTES)
@@ -64,9 +64,9 @@ public class AssemblyLine implements Runnable {
                     16))
             .fluidInputs(
                 MaterialUtils.molten(BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium), 9 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Osmium, Materials2FluidShapes.fluidMolten, 9 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, 9 * INGOTS),
                 GTModHandler.getIC2Coolant(2_000),
-                MaterialLibAPI.getFluidStack(Materials.Argon, Materials2FluidShapes.fluidGas, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, 1_000))
             .itemOutputs(CustomItemList.eM_Hollow.get(2))
             .eut(200_000)
             .duration(10 * SECONDS)
@@ -83,7 +83,7 @@ public class AssemblyLine implements Runnable {
                 MaterialLibAPI.getStack(Materials.Europium, Shapes.wireFine, 64),
                 MaterialLibAPI.getStack(Materials.Europium, Shapes.foil, 64))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Glass, Materials2FluidShapes.fluidMolten, 16 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, 16 * INGOTS),
                 MaterialUtils.molten(Materials.Silicone, 1872),
                 GTModHandler.getIC2Coolant(2_000),
                 MaterialUtils.molten(BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium), 9 * INGOTS))
@@ -110,7 +110,7 @@ public class AssemblyLine implements Runnable {
             .fluidInputs(
                 MaterialUtils.fluid(Materials.UUMatter, 500),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Iridium, Materials2FluidShapes.fluidMolten, 9 * INGOTS),
+                    .getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 9 * INGOTS),
                 GTModHandler.getIC2Coolant(1_000))
             .itemOutputs(CustomItemList.holder_Hatch.get(1))
             .eut(TierEU.RECIPE_UV)
@@ -134,9 +134,9 @@ public class AssemblyLine implements Runnable {
             .fluidInputs(
                 MaterialUtils.fluid(Materials.UUMatter, 1_000),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Iridium, Materials2FluidShapes.fluidMolten, 9 * INGOTS),
+                    .getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 9 * INGOTS),
                 GTModHandler.getIC2Coolant(2_000),
-                MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1_000))
             .itemOutputs(CustomItemList.Machine_Multi_Computer.get(1))
             .eut(100_000)
             .duration(60 * SECONDS)
@@ -159,9 +159,9 @@ public class AssemblyLine implements Runnable {
             .fluidInputs(
                 MaterialUtils.fluid(Materials.UUMatter, 1_000),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Iridium, Materials2FluidShapes.fluidMolten, 9 * INGOTS),
+                    .getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 9 * INGOTS),
                 GTModHandler.getIC2Coolant(2_000),
-                MaterialLibAPI.getFluidStack(Materials.Osmium, Materials2FluidShapes.fluidMolten, 9 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, 9 * INGOTS))
             .itemOutputs(CustomItemList.Machine_Multi_Research.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(3 * MINUTES)
@@ -177,8 +177,8 @@ public class AssemblyLine implements Runnable {
                 CustomItemList.eM_Power.get(8),
                 MaterialLibAPI.getStack(Materials.NeodymiumMagnetic, Shapes.screw, 16))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Electrum, Materials2FluidShapes.fluidMolten, 2592),
-                MaterialLibAPI.getFluidStack(Materials.Europium, Materials2FluidShapes.fluidMolten, 1872),
+                MaterialLibAPI.getFluidStack(Materials.Electrum, FluidShapes.fluidMolten, 2592),
+                MaterialLibAPI.getFluidStack(Materials.Europium, FluidShapes.fluidMolten, 1872),
                 GTModHandler.getIC2Coolant(2_000))
             .itemOutputs(CustomItemList.Machine_Multi_Infuser.get(1))
             .eut(200_000)

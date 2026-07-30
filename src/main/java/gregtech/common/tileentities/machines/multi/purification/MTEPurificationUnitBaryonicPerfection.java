@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -40,7 +41,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -441,7 +441,7 @@ public class MTEPurificationUnitBaryonicPerfection
                     // Try to deplete catalyst cost first
                     int cost = calculateCatalystCost(stack);
                     FluidStack inputCost = MaterialLibAPI
-                        .getFluidStack(Materials.Infinity, Materials2FluidShapes.fluidMolten, (int) (cost));
+                        .getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, (int) (cost));
                     // Drain the input cost directly from a hatch since we are not inside
                     // recipe processing
                     boolean drained = false;

@@ -20,7 +20,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
@@ -249,7 +249,7 @@ public class FormingPressRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SolderingAlloy,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (10 * INGOTS)))
             .itemOutputs(ItemList.T1Sawblade.get(1))
             .duration(120 * SECONDS)
@@ -302,7 +302,7 @@ public class FormingPressRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.UnformedHexanite,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (8 * INGOTS)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
@@ -316,7 +316,7 @@ public class FormingPressRecipes implements Runnable {
             .itemOutputs(ItemList.PeaceEnforcementCasing.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Shijima, Materials2FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+                    .getFluidStack(Materials.Shijima, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(formingPressRecipes);
@@ -329,7 +329,7 @@ public class FormingPressRecipes implements Runnable {
             .itemOutputs(ItemList.ConflictInducementCasing.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Tairitsu, Materials2FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+                    .getFluidStack(Materials.Tairitsu, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(formingPressRecipes);

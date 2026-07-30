@@ -5,6 +5,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.Set;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
@@ -14,7 +15,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.util.GTModHandler;
 
 /// Reproduces the retired gtPlusPlus `RecipeGenOre`'s crafting-table recipes for every material in [#ELIGIBLE]:
@@ -130,7 +130,7 @@ public class ProcessingOreCrafting {
                 ProcessingDustGeneration.stackOf(OrePrefixes.dustPure, Materials.FluoriteF, 1L))
             .outputChances(10000, 5000, 1000)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, 1000))
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(chemicalBathRecipes);

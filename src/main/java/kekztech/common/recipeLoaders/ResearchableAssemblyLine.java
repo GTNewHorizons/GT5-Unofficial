@@ -15,7 +15,7 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -45,7 +45,7 @@ public class ResearchableAssemblyLine implements Runnable {
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials.Naquadria,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (1 * STACKS)),
                 GTModHandler.getIC2Coolant(32_000) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
@@ -69,14 +69,14 @@ public class ResearchableAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialFacades.SuperconductorUEV, 64) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 1 * STACKS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Quantium, Materials2FluidShapes.fluidMolten, (int) (2 * STACKS)),
+                    .getFluidStack(Materials.Quantium, FluidShapes.fluidMolten, (int) (2 * STACKS)),
                 MaterialLibAPI.getFluidStack(
                     Materials.Naquadria,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (2 * STACKS)),
                 MaterialLibAPI.getFluidStack(
                     Materials.SuperCoolant,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (64_000)) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 8),
             250 * 20,
@@ -100,10 +100,10 @@ public class ResearchableAssemblyLine implements Runnable {
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 2 * STACKS),
                 MaterialUtils.legacyGtppFluid(Materials.CelestialTungsten, 2 * STACKS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Quantium, Materials2FluidShapes.fluidMolten, (int) (2 * STACKS)),
+                    .getFluidStack(Materials.Quantium, FluidShapes.fluidMolten, (int) (2 * STACKS)),
                 MaterialLibAPI.getFluidStack(
                     Materials.SuperCoolant,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (128_000)) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 9),
             300 * 20,
@@ -129,7 +129,7 @@ public class ResearchableAssemblyLine implements Runnable {
                 MaterialUtils.legacyGtppFluid(Materials.CelestialTungsten, 4 * STACKS),
                 MaterialLibAPI.getFluidStack(
                     Materials.SuperCoolant,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (256_000)) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 10),
             360 * 20,

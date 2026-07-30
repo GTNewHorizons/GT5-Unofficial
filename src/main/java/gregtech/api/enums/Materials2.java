@@ -1,11 +1,11 @@
 package gregtech.api.enums;
 
 import gregtech.api.enums.materials2.BlockShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Families;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.OreShapes;
 import gregtech.api.enums.materials2.Materials2PipeMaterials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
@@ -28,7 +28,7 @@ public class Materials2 {
     // real material, and it binds that rather than registering a duplicate. Materials2PipeMaterials runs last
     // because its rows reference the material fields the passes above assign.
     public static void init() {
-        Materials2FluidShapes.init();
+        FluidShapes.init();
         CellShapes.init();
         BlockShapes.init();
         OreShapes.init();

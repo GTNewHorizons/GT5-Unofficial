@@ -17,6 +17,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
@@ -32,7 +33,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.CellShapes;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -64,9 +64,9 @@ public class RecipeLoaderGlueLine {
             .circuit(17)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonMonoxide, Materials2FluidShapes.fluidGas, (int) (1_000)),
+                    .getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.MethylAcetate, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.MethylAcetate, FluidShapes.fluidLiquid, (int) (1_000)))
             .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.AceticAnhydride, 1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -76,9 +76,9 @@ public class RecipeLoaderGlueLine {
             .circuit(18)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.AceticAcid, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
+                    .getFluidStack(Materials.AceticAcid, FluidShapes.fluidLiquid, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, (int) (1_000)),
+                    .getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, (int) (1_000)),
                 MaterialUtils.legacyGtppFluid(Materials.AceticAnhydride, 1_000))
             .fluidOutputs(
                 MaterialUtils.legacyGtppFluid(Materials.ChloroaceticMixture, 1_000),
@@ -101,7 +101,7 @@ public class RecipeLoaderGlueLine {
                 MaterialUtils.fluid(Materials.HydrochloricAcidGT5U, 2_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)),
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)),
                 GTUtility.getWater(1_000))
             .duration(20 * SECONDS)
             .eut(1000)
@@ -118,7 +118,7 @@ public class RecipeLoaderGlueLine {
                 MaterialLibAPI.getStack(Materials.CopperIISulfatePentahydrate, Shapes.dust, 11))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Ethanol, Materials2FluidShapes.fluidLiquid, (int) (5_000)))
+                    .getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, (int) (5_000)))
             .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.EthylCyanoacetate, 5_000))
             .duration(8 * MINUTES + 20 * SECONDS)
             .eut(6000)
@@ -130,7 +130,7 @@ public class RecipeLoaderGlueLine {
             .circuit(21)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Ethanol, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, (int) (1_000)))
             .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.EthylCyanoacetate, 1_000))
             .duration(16 * MINUTES + 40 * SECONDS)
             .eut(6000)
@@ -156,10 +156,10 @@ public class RecipeLoaderGlueLine {
             .circuit(23)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (2_000)),
+                    .getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (2_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Ammonia, Materials2FluidShapes.fluidGas, (int) (2_000)),
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (6_000)))
+                    .getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, (int) (2_000)),
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (6_000)))
             .fluidOutputs(
                 MaterialUtils.legacyGtppFluid(Materials.HydrogenCyanide, 2_000),
                 GTUtility.getWater(6_000))
@@ -201,7 +201,7 @@ public class RecipeLoaderGlueLine {
             .fluidInputs(MaterialUtils.fluid(Materials.HydrochloricAcidGT5U, 2_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -214,11 +214,11 @@ public class RecipeLoaderGlueLine {
             .itemOutputs(MaterialLibAPI.getStack(Materials.CopperIISulfate, Shapes.dust, 6))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
+                    .getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (2_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedSulfuricAcid,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -231,11 +231,11 @@ public class RecipeLoaderGlueLine {
             .itemOutputs(MaterialLibAPI.getStack(Materials.CopperIISulfate, Shapes.dust, 6))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
+                    .getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (2_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedSulfuricAcid,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -294,7 +294,7 @@ public class RecipeLoaderGlueLine {
             .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (1_000)))
             .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.SolidAcidCatalystMixture, 1_000))
             .duration(5 * SECONDS)
             .eut(40)

@@ -10,6 +10,7 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
@@ -23,7 +24,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.OreDictItemStack;
@@ -362,7 +362,7 @@ public class CuttingRecipes implements Runnable {
             .itemOutputs(MaterialLibAPI.getStack(Materials.Concrete, Shapes.plate, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (2)))
+                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (2)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
@@ -373,7 +373,7 @@ public class CuttingRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.dimensionallyshiftedsuperfluid,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1)))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -403,7 +403,7 @@ public class CuttingRecipes implements Runnable {
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Redrock, 1L))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (4)))
+                        .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (4)))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(cutterRecipes);
@@ -414,7 +414,7 @@ public class CuttingRecipes implements Runnable {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.dimensionallyshiftedsuperfluid,
-                        Materials2FluidShapes.fluidLiquid,
+                        FluidShapes.fluidLiquid,
                         (int) (1)))
                 .duration(4 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -443,7 +443,7 @@ public class CuttingRecipes implements Runnable {
             .itemOutputs(MaterialLibAPI.getStack(Materials.Marble, Shapes.plate, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (4)))
+                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (4)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
@@ -454,7 +454,7 @@ public class CuttingRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.dimensionallyshiftedsuperfluid,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1)))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -485,7 +485,7 @@ public class CuttingRecipes implements Runnable {
             .itemOutputs(MaterialLibAPI.getStack(Materials.Basalt, Shapes.plate, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (4)))
+                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (4)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
@@ -497,7 +497,7 @@ public class CuttingRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.dimensionallyshiftedsuperfluid,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1)))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -525,7 +525,7 @@ public class CuttingRecipes implements Runnable {
             .itemOutputs(MaterialLibAPI.getStack(Materials.GraniteBlack, Shapes.plate, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (4)))
+                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (4)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
@@ -536,7 +536,7 @@ public class CuttingRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.dimensionallyshiftedsuperfluid,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1)))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -564,7 +564,7 @@ public class CuttingRecipes implements Runnable {
             .itemOutputs(MaterialLibAPI.getStack(Materials.GraniteRed, Shapes.plate, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (4)))
+                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (4)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(cutterRecipes);
@@ -575,7 +575,7 @@ public class CuttingRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.dimensionallyshiftedsuperfluid,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1)))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -629,7 +629,7 @@ public class CuttingRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Lubricant,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (Math.max(1, Math.min(250, duration * eut / 1280)))))
             .duration(duration)
             .eut(eut)
@@ -642,7 +642,7 @@ public class CuttingRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.dimensionallyshiftedsuperfluid,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (Math.max(1, Math.min(10, duration * eut / 4000)))))
             .duration((int) (duration / 2.5))
             .eut(eut)

@@ -70,7 +70,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
@@ -279,7 +279,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             add(MaterialUtils.fluid(Materials.DimensionallyTranscendentResidue, 1));
             add(
                 MaterialLibAPI
-                    .getFluidStack(Materials.RawStarMatter, Materials2FluidShapes.fluidLiquid, (int) (1)));
+                    .getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, (int) (1)));
             add(MaterialUtils.molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1));
         }
     };

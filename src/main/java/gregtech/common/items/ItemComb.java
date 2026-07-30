@@ -29,6 +29,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import java.util.Arrays;
 import java.util.List;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -58,7 +59,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.material.MaterialRenderers;
@@ -939,27 +939,27 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
         // (Noble)gas Line
         addFluidExtractorProcess(
             CombType.HELIUM,
-            MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, (int) (250)),
+            MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int) (250)),
             Voltage.HV);
         addFluidExtractorProcess(
             CombType.ARGON,
-            MaterialLibAPI.getFluidStack(Materials.Argon, Materials2FluidShapes.fluidGas, (int) (250)),
+            MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, (int) (250)),
             Voltage.MV);
         addFluidExtractorProcess(
             CombType.NITROGEN,
-            MaterialLibAPI.getFluidStack(Materials.Nitrogen, Materials2FluidShapes.fluidGas, (int) (500)),
+            MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, (int) (500)),
             Voltage.MV);
         addFluidExtractorProcess(
             CombType.HYDROGEN,
-            MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (500)),
+            MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (500)),
             Voltage.MV);
         addFluidExtractorProcess(
             CombType.FLUORINE,
-            MaterialLibAPI.getFluidStack(Materials.Fluorine, Materials2FluidShapes.fluidGas, (int) (250)),
+            MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, (int) (250)),
             Voltage.MV);
         addFluidExtractorProcess(
             CombType.OXYGEN,
-            MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (500)),
+            MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (500)),
             Voltage.MV);
         // Organic part 2, unknown liquid
         // yes, unknowwater. It's not a typo, it's how it is spelled. Stupid game.
@@ -1023,7 +1023,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                         fluidInput = volt.getFluidAccordingToCombTier();
                         fluidOutput = MaterialLibAPI.getFluidStack(
                             Materials.Neutronium,
-                            Materials2FluidShapes.fluidMolten,
+                            FluidShapes.fluidMolten,
                             (int) (4 * INGOTS));
                         durationTicks = volt.getComplexTime() * 17;
                         eut = volt.getChemicalEnergy();
@@ -1036,7 +1036,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                         fluidInput = volt.getFluidAccordingToCombTier();
                         fluidOutput = MaterialLibAPI.getFluidStack(
                             Materials.Osmium,
-                            Materials2FluidShapes.fluidMolten,
+                            FluidShapes.fluidMolten,
                             (int) (2 * INGOTS));
                         durationTicks = volt.getComplexTime() * 17;
                         eut = volt.getChemicalEnergy();
@@ -1049,7 +1049,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                         fluidInput = volt.getFluidAccordingToCombTier();
                         fluidOutput = MaterialLibAPI.getFluidStack(
                             Materials.Platinum,
-                            Materials2FluidShapes.fluidMolten,
+                            FluidShapes.fluidMolten,
                             (int) (2 * INGOTS));
                         durationTicks = volt.getComplexTime() * 10;
                         eut = volt.getChemicalEnergy();
@@ -1062,7 +1062,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                         fluidInput = volt.getFluidAccordingToCombTier();
                         fluidOutput = MaterialLibAPI.getFluidStack(
                             Materials.Iridium,
-                            Materials2FluidShapes.fluidMolten,
+                            FluidShapes.fluidMolten,
                             (int) (2 * INGOTS));
                         durationTicks = volt.getComplexTime() * 14;
                         eut = volt.getChemicalEnergy();
@@ -1293,7 +1293,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                     /* LV */
                     MaterialLibAPI.getFluidStack(
                         Materials.SulfuricAcid,
-                        Materials2FluidShapes.fluidLiquid,
+                        FluidShapes.fluidLiquid,
                         (int) (fluidAmount));
                 case 2 ->
                     /* MV */
@@ -1348,7 +1348,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             .itemOutputs(MaterialLibAPI.getStack(Materials.Manasteel, Shapes.dust, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Steel, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Steel, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(GTRecipeConstants.UniversalChemical);
@@ -1359,7 +1359,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             .itemOutputs(MaterialLibAPI.getStack(Materials.Manasteel, Shapes.dust, (int) (4)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Thaumium, Materials2FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+                    .getFluidStack(Materials.Thaumium, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(GTRecipeConstants.UniversalChemical);
@@ -1373,7 +1373,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Void,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (1 * EIGHTH_INGOTS)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -1395,7 +1395,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Manasteel,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (2 * INGOTS)))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -1407,7 +1407,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             .itemOutputs(MaterialLibAPI.getStack(Materials.ElvenElementium, Shapes.dust, (int) (4)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Shadow, Materials2FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+                    .getFluidStack(Materials.Shadow, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(GTRecipeConstants.UniversalChemical);
@@ -1421,13 +1421,13 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ElvenElementium,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (4 * INGOTS)))
             .outputChances(50 * 100)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Terrasteel,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -1443,7 +1443,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ElvenElementium,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (4 * INGOTS)))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -1459,7 +1459,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Terrasteel,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (2 * INGOTS)))
             .duration(33 * SECONDS)
             .eut(TierEU.RECIPE_LuV)

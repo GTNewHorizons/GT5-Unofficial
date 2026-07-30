@@ -13,6 +13,7 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -25,7 +26,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.CellShapes;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
@@ -53,7 +53,7 @@ public class RecipeLoaderCoalTar {
 
         FluidStack bioEth1 = FluidRegistry.getFluidStack("fluid.bioethanol", 1_000);
         FluidStack bioEth2 = MaterialLibAPI
-            .getFluidStack(Materials.Ethanol, Materials2FluidShapes.fluidLiquid, (int) (1_000));
+            .getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, (int) (1_000));
 
         // C2H6O = C2H4 + H2O
         if (bioEth1 != null) {
@@ -89,10 +89,10 @@ public class RecipeLoaderCoalTar {
             .itemOutputs(MaterialLibAPI.getStack(Materials.Benzene, CellShapes.cell, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (2_000)))
+                    .getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (2_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (1_000)))
             .duration(10 * SECONDS)
             .eut(90)
             .addTo(chemicalDehydratorRecipes);
@@ -106,7 +106,7 @@ public class RecipeLoaderCoalTar {
             .itemOutputs(ItemList.Cell_Empty.get(2))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Benzene, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
+                    .getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, (int) (2_000)))
             .fluidOutputs(new FluidStack(GTPPFluids.Ethylbenzene, 2_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -118,7 +118,7 @@ public class RecipeLoaderCoalTar {
             .itemOutputs(ItemList.Cell_Empty.get(2))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (2_000)))
+                    .getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, (int) (2_000)))
             .fluidOutputs(new FluidStack(GTPPFluids.Ethylbenzene, 2_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -221,7 +221,7 @@ public class RecipeLoaderCoalTar {
             .fluidInputs(new FluidStack(GTPPFluids.CoalTar, 1_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Naphtha, Materials2FluidShapes.fluidLiquid, (int) (150)))
+                    .getFluidStack(Materials.Naphtha, FluidShapes.fluidLiquid, (int) (150)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(distilleryRecipes);
@@ -256,7 +256,7 @@ public class RecipeLoaderCoalTar {
             .fluidOutputs(
                 new FluidStack(GTPPFluids.CoalTarOil, 600),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Naphtha, Materials2FluidShapes.fluidLiquid, (int) (150)),
+                    .getFluidStack(Materials.Naphtha, FluidShapes.fluidLiquid, (int) (150)),
                 new FluidStack(GTPPFluids.Ethylbenzene, 200),
                 new FluidStack(GTPPFluids.Anthracene, 50),
                 new FluidStack(GTPPFluids.Kerosene, 600))

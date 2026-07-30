@@ -7,6 +7,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import java.util.Set;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -16,7 +17,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 
 /// Reproduces the retired gtPlusPlus `MaterialGenerator#generateNuclearDusts`'s chemical-dehydrator recipe (a
@@ -84,7 +84,7 @@ public class ProcessingNuclearDehydratorGtpp {
                 ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials.Copper, 2L))
             .outputChances(10000, 1000, 1000, 3000, 2000)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, 8000))
+                MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 8000))
             .fluidOutputs(MaterialUtils.fluid(Materials.HydrofluoricAcidGT5U, 16000))
             .eut(RECIPE_HV / 2)
             .duration(10 * MINUTES)

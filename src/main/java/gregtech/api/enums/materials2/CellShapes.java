@@ -46,7 +46,7 @@ public class CellShapes {
     public static void init() {
         cell = MaterialLibAPI.newFluidInContainerShape("gregtech", "cell")
             .displayName("%s Cell")
-            .fluid(Materials2FluidShapes.fluidLiquid, Materials2FluidShapes.fluidGas)
+            .fluid(FluidShapes.fluidLiquid, FluidShapes.fluidGas)
             .emptyContainer(EMPTY_CELL, 0)
             .volume(1000)
             .emptyIcon(CELL_BASE)
@@ -54,14 +54,14 @@ public class CellShapes {
 
         cellPlasma = MaterialLibAPI.newFluidInContainerShape("gregtech", "cellPlasma")
             .displayName("%s Plasma Cell")
-            .fluid(Materials2FluidShapes.fluidPlasma)
+            .fluid(FluidShapes.fluidPlasma)
             .emptyContainer(EMPTY_CELL, 0)
             .volume(INGOTS)
             .emptyIcon(CELL_PLASMA_BASE)
             .build();
         cellPlasmaLight = MaterialLibAPI.newFluidInContainerShape("gregtech", "cellPlasmaLight")
             .displayName("%s Plasma Cell")
-            .fluid(Materials2FluidShapes.fluidPlasma)
+            .fluid(FluidShapes.fluidPlasma)
             .emptyContainer(EMPTY_CELL, 0)
             .volume(1000)
             .oreDict("cellPlasma")
@@ -70,7 +70,7 @@ public class CellShapes {
 
         cellMolten = MaterialLibAPI.newFluidInContainerShape("gregtech", "cellMolten")
             .displayName("Molten %s Cell")
-            .fluid(Materials2FluidShapes.fluidMolten)
+            .fluid(FluidShapes.fluidMolten)
             .emptyContainer(EMPTY_CELL, 0)
             .volume(INGOTS)
             .emptyIcon(CELL_PLASMA_BASE)
@@ -79,27 +79,27 @@ public class CellShapes {
         cellHydroCracked1 = crackedCellShape(
             "cellHydroCracked1",
             "Lightly Hydro-Cracked %s Cell",
-            Materials2FluidShapes.fluidHydroCracked1);
+            FluidShapes.fluidHydroCracked1);
         cellHydroCracked2 = crackedCellShape(
             "cellHydroCracked2",
             "Moderately Hydro-Cracked %s Cell",
-            Materials2FluidShapes.fluidHydroCracked2);
+            FluidShapes.fluidHydroCracked2);
         cellHydroCracked3 = crackedCellShape(
             "cellHydroCracked3",
             "Severely Hydro-Cracked %s Cell",
-            Materials2FluidShapes.fluidHydroCracked3);
+            FluidShapes.fluidHydroCracked3);
         cellSteamCracked1 = crackedCellShape(
             "cellSteamCracked1",
             "Lightly Steam-Cracked %s Cell",
-            Materials2FluidShapes.fluidSteamCracked1);
+            FluidShapes.fluidSteamCracked1);
         cellSteamCracked2 = crackedCellShape(
             "cellSteamCracked2",
             "Moderately Steam-Cracked %s Cell",
-            Materials2FluidShapes.fluidSteamCracked2);
+            FluidShapes.fluidSteamCracked2);
         cellSteamCracked3 = crackedCellShape(
             "cellSteamCracked3",
             "Severely Steam-Cracked %s Cell",
-            Materials2FluidShapes.fluidSteamCracked3);
+            FluidShapes.fluidSteamCracked3);
     }
 
     private static Shape crackedCellShape(String name, String displayFormat, Shape fluidShape) {
