@@ -93,6 +93,8 @@ public class GTShapeProperties {
                 mismatches += compare(shape, prefix, RECYCLABLE, prefix.isRecyclable());
                 mismatches += compare(shape, prefix, ENCHANTABLE, prefix.isEnchantable());
                 mismatches += compare(shape, prefix, SKIP_ACTIVE_UNIFICATION, prefix.skipActiveUnification());
+                mismatches += compare(shape, prefix, SECONDARY_MATERIAL, prefix.mSecondaryMaterial);
+                mismatches += compareAspects(shape, prefix);
             }
         }
         if (mismatches == 0) {
@@ -104,6 +106,43 @@ public class GTShapeProperties {
                     + checked
                     + " pairs; re-run scripts/mu/gen_shape_data.py");
         }
+    }
+
+    /// Compared field by field rather than through [java.util.Objects#equals]: [TC_AspectStack] declares no
+    /// `equals`, so two lists holding the same aspects would otherwise never match.
+    private static int compareAspects(Shape shape, OrePrefixes prefix) {
+        List<TC_AspectStack> fromShape = shape.getProperty(ASPECTS);
+        List<TC_AspectStack> fromPrefix = prefix.mAspects;
+        if (fromShape == null) fromShape = List.of();
+        boolean same = fromShape.size() == fromPrefix.size();
+        for (int i = 0; same && i < fromShape.size(); i++) {
+            same = fromShape.get(i).mAspect == fromPrefix.get(i).mAspect
+                && fromShape.get(i).mAmount == fromPrefix.get(i).mAmount;
+        }
+        if (same) return 0;
+        GTLog.err.println(
+            "GTShapeProperties: shape " + shape.getName()
+                + " has "
+                + ASPECTS
+                + " = "
+                + describe(fromShape)
+                + " but prefix "
+                + prefix.getName()
+                + " declares "
+                + describe(fromPrefix));
+        return 1;
+    }
+
+    private static String describe(List<TC_AspectStack> aspects) {
+        StringBuilder text = new StringBuilder("[");
+        for (TC_AspectStack aspect : aspects) {
+            if (text.length() > 1) text.append(", ");
+            text.append(aspect.mAspect)
+                .append('x')
+                .append(aspect.mAmount);
+        }
+        return text.append(']')
+            .toString();
     }
 
     private static <T> int compare(Shape shape, OrePrefixes prefix, Property<T> property, T fromPrefix) {
