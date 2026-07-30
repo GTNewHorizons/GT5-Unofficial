@@ -9,8 +9,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import tectech.thing.CustomItemList;
 

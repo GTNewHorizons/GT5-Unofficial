@@ -16,8 +16,8 @@ import net.minecraft.util.StatCollector;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;

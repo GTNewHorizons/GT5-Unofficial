@@ -33,7 +33,7 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

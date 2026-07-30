@@ -12,8 +12,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 
 public class FluidSolidifier implements Runnable {
 

@@ -2,7 +2,7 @@ package gregtech.api.objects;
 
 import com.ruling_0.materiallib.api.Material;
 
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 

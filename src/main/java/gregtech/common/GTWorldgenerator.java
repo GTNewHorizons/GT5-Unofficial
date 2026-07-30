@@ -35,7 +35,7 @@ import galacticgreg.api.enums.DimensionDef;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.events.VeinGenerateEvent;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.net.GTPacketSendOregenPattern;

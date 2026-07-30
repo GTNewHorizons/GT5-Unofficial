@@ -5,8 +5,8 @@ import net.minecraftforge.fluids.FluidStack;
 import com.google.common.base.Supplier;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialUtils;
 import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 

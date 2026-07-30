@@ -47,7 +47,7 @@ import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEYOTTAHatch;
 import goodgenerator.client.GUI.GGUITextures;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;

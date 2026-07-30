@@ -9,8 +9,8 @@ import net.minecraftforge.fluids.FluidStack;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.fluid.IGTFluidBuilder;
 import gregtech.api.material.MaterialUtils;

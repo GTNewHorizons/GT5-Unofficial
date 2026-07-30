@@ -47,7 +47,7 @@ import bartworks.API.BorosilicateGlass;
 import bartworks.MainMod;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;

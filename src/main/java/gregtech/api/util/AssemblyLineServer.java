@@ -13,9 +13,9 @@ import org.jetbrains.annotations.Nullable;
 import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
-import gregtech.api.enums.materials2.MaterialParentMods;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.LegacyMaterialIDIndex;
+import gregtech.api.enums.materials.MaterialParentMods;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialUtils;
 
 public class AssemblyLineServer {

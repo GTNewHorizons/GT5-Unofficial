@@ -6,8 +6,8 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import tectech.thing.CustomItemList;
 
 public class Extractor implements Runnable {

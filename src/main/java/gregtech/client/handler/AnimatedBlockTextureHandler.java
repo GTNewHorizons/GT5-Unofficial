@@ -16,9 +16,9 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.materials2.BlockShapes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.PipeShapes;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.PipeShapes;
 
 /// Angelica pauses an animated block icon's frame advance while it is off-screen. [#ANIMATED]'s storage-block
 /// and frame-box art must keep animating regardless of visibility, so this forces their icons to tick every

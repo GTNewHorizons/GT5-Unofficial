@@ -20,8 +20,8 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import codechicken.nei.PositionedStack;
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;

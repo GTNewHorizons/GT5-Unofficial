@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Shapes;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingCrushedOre;
 
 /// Dispatches [ProcessingCrushedOre]'s `crushedCentrifuged`/`crushedPurified` recipe generation for

@@ -14,7 +14,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Modules;

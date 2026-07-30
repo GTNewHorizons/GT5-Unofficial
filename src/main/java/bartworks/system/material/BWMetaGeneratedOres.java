@@ -35,7 +35,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
-import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
+import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.GTMaterialProperties;

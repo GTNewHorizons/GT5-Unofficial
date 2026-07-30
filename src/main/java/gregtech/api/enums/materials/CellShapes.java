@@ -1,4 +1,4 @@
-package gregtech.api.enums.materials2;
+package gregtech.api.enums.materials;
 
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 

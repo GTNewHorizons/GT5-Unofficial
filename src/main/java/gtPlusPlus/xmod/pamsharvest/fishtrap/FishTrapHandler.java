@@ -9,9 +9,9 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class FishTrapHandler {

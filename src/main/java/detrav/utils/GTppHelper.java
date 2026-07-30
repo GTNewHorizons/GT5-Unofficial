@@ -6,7 +6,7 @@ import net.minecraft.block.Block;
 
 import com.ruling_0.materiallib.api.Material;
 
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;

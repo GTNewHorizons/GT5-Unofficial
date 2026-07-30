@@ -322,7 +322,7 @@ import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;

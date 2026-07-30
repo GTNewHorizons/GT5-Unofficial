@@ -29,7 +29,7 @@ import cofh.api.energy.IEnergyContainerItem;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.material.MaterialUtils;

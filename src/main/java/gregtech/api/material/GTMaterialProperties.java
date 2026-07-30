@@ -59,7 +59,7 @@ public class GTMaterialProperties {
     /// The single chemical-formula display string [MaterialFormulas] resolves, whichever origin it came from:
     /// a werkstoff-backed material carries its own bartworks formula-tooltip string (it beat any same-name
     /// gtpp value), a gregtech-dumped material the value declared in
-    /// [gregtech.api.enums.materials2.Materials2Formulas] (which also beat any same-name gtpp value), and a
+    /// [gregtech.api.enums.materials.Materials2Formulas] (which also beat any same-name gtpp value), and a
     /// remaining gtpp material its `Material#vChemicalFormula` as displayed (the legacy renderer's
     /// `StringUtils#sanitizeStringKeepBrackets` cleanup baked in).
     public static final Property<String> FORMULA = Property.of("gregtech", "formula");

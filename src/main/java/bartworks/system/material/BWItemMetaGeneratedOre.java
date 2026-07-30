@@ -11,8 +11,8 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.LegacyWerkstoffIndex;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialFormulas;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;

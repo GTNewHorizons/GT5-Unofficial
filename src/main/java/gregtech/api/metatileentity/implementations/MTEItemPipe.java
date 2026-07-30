@@ -29,7 +29,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.PipeProperties;
+import gregtech.api.enums.materials.PipeProperties;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityItemPipe;

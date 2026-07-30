@@ -4,7 +4,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Industrial_Solar_Tower;
 import static gregtech.api.enums.MetaTileEntityIDs.Solar_Tower_Reflector;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialUtils;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;

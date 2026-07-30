@@ -19,7 +19,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.materials2.Shapes;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPPropolisType;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;

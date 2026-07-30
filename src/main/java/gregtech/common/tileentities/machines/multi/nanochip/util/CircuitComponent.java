@@ -13,10 +13,10 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.MaterialFacades;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.PipeShapes;
-import gregtech.api.enums.materials2.Shapes;
+import gregtech.api.enums.materials.MaterialFacades;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.util.GTOreDictUnificator;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;

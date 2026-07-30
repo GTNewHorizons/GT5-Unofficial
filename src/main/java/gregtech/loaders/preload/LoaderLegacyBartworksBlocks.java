@@ -14,7 +14,7 @@ import bartworks.system.material.BWTileEntityMetaGeneratedWerkstoffBlock;
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
+import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.common.ores.BWOreAdapter;

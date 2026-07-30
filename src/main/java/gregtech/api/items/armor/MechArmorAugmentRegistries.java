@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.VoltageIndex;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.items.ItemAugment;
 import gregtech.api.items.ItemAugmentCore;
 import gregtech.api.items.ItemAugmentFrame;

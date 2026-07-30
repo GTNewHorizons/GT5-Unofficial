@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Shapes;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingRawOre;
 
 /// Dispatches [ProcessingRawOre]'s `rawOre`-prefix recipe generation for MaterialLib's cutover raw-ore shape.

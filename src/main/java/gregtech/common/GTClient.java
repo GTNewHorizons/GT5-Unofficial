@@ -68,7 +68,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolboxSlot;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.hazards.Hazard;

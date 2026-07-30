@@ -8,7 +8,7 @@ import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.util.GTUtility;
 
 public class OreDictEventContainer {

@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.CellShapes;
+import gregtech.api.enums.materials.CellShapes;
 import gregtech.loaders.oreprocessing.ProcessingCell;
 
 /// Dispatches [ProcessingCell]'s `cell`/`cellPlasma` recipe generation for MaterialLib's cutover cell shapes.

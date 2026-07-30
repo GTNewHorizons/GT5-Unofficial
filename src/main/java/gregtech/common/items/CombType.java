@@ -8,7 +8,7 @@ import org.apache.commons.lang3.text.WordUtils;
 
 import com.ruling_0.materiallib.api.Material;
 
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.loaders.materials.RecognitionMaterials;
 

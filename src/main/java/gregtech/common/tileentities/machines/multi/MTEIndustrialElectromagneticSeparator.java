@@ -38,7 +38,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;

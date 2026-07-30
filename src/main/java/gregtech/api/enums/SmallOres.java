@@ -35,7 +35,7 @@ import static galacticgreg.api.enums.DimensionDef.Triton;
 import static galacticgreg.api.enums.DimensionDef.VegaB;
 import static galacticgreg.api.enums.DimensionDef.Venus;
 
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.common.SmallOreBuilder;
 import gregtech.common.WorldgenGTOreSmallPieces;
 

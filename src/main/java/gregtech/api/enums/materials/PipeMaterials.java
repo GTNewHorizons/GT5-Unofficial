@@ -1,4 +1,4 @@
-package gregtech.api.enums.materials2;
+package gregtech.api.enums.materials;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialEdit;

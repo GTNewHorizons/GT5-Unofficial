@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.ruling_0.materiallib.api.Material;
 
-import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
-import gregtech.api.enums.materials2.MaterialParentMods;
+import gregtech.api.enums.materials.LegacyMaterialIDIndex;
+import gregtech.api.enums.materials.MaterialParentMods;
 import gregtech.api.material.MaterialUtils;
 
 public class MaterialDumper extends GregTechIDDumper {

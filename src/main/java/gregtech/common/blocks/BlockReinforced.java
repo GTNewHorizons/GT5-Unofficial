@@ -35,7 +35,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;

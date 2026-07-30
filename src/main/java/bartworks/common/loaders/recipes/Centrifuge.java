@@ -17,8 +17,8 @@ import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTRecipeBuilder;
 import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
 

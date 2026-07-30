@@ -3,8 +3,8 @@ package gregtech.loaders.shapeconsumers;
 import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.PipeShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.PipeShapes;
 import gregtech.loaders.oreprocessing.ProcessingPipe;
 
 /// Dispatches [ProcessingPipe]'s recipe generation for the twelve pipe prefixes. The fluid and item shapes
