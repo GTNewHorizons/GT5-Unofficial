@@ -305,6 +305,7 @@ public class GTMod {
     @SubscribeEvent
     public void materialRegistration(MaterialRegistrationEvent event) {
         Materials2.init();
+        OrePrefixes.copyDataFromShapes();
         LoaderShapeConsumers.register();
     }
 

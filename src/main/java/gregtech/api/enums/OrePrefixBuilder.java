@@ -1,6 +1,10 @@
 package gregtech.api.enums;
 
+import java.util.Set;
+
 import org.intellij.lang.annotations.MagicConstant;
+
+import gregtech.api.material.GTMaterialGenerationFlag;
 
 public class OrePrefixBuilder {
 
@@ -15,7 +19,7 @@ public class OrePrefixBuilder {
     private boolean skipActiveUnification = false;
     private boolean isRecyclable = false;
     private boolean isEnchantable = false;
-    private int materialGenerationBits = 0;
+    private Set<GTMaterialGenerationFlag> generationFlags = Set.of();
     private long materialAmount = -1;
     private int defaultStackSize = 64;
     private int textureIndex = -1;
@@ -38,7 +42,7 @@ public class OrePrefixBuilder {
             skipActiveUnification,
             isRecyclable,
             isEnchantable,
-            materialGenerationBits,
+            generationFlags,
             materialAmount,
             defaultStackSize,
             textureIndex
@@ -101,9 +105,9 @@ public class OrePrefixBuilder {
         return this;
     }
 
-    public OrePrefixBuilder materialGenerationBits(
-        @MagicConstant(flagsFromClass = OrePrefixes.class) int materialGenerationBits) {
-        this.materialGenerationBits = materialGenerationBits;
+    /// The material generation groups a material must belong to for this prefix to generate an item for it.
+    public OrePrefixBuilder generationFlags(GTMaterialGenerationFlag... generationFlags) {
+        this.generationFlags = Set.of(generationFlags);
         return this;
     }
 
