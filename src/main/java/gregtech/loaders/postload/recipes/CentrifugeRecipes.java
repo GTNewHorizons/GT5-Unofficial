@@ -29,7 +29,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
@@ -82,7 +82,7 @@ public class CentrifugeRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Cell_Empty.get(1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Oxygen, Materials2CellShapes.cell, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cell, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Air, Materials2FluidShapes.fluidGas, (int) (10_000)))
             .fluidOutputs(
@@ -1011,7 +1011,7 @@ public class CentrifugeRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.ore, Materials.Oilsands, 2),
                 ItemList.Cell_Empty.get(1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Oil, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Oil, CellShapes.cell, (int) (1)),
                 new ItemStack(Blocks.sand, 1, 0))
             .duration(50 * SECONDS)
             .eut(5)

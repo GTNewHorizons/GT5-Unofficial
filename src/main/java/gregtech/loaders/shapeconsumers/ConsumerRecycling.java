@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.loaders.oreprocessing.ProcessingRecycling;
 
@@ -9,7 +9,7 @@ import gregtech.loaders.oreprocessing.ProcessingRecycling;
 /// every cut-over prefix its legacy dynamic registration targets (`isMaterialBased() && getMaterialAmount() >
 /// 0 && isContainer()`, mirrored here instead of hand-listing the nine cell-family prefixes it matches),
 /// scoped to prefixes with a MaterialLib shape via [MaterialParts#shape]. `cellPlasma` additionally generates
-/// [Materials2CellShapes#cellPlasmaLight] for materials with no molten fluid (see [MaterialParts]'s javadoc on its
+/// [CellShapes#cellPlasmaLight] for materials with no molten fluid (see [MaterialParts]'s javadoc on its
 /// ordered-candidate-list exception), so it is registered as a second target explicitly; every other matching
 /// prefix has exactly one candidate shape. `bucket`/`bucketClay`/`bottle`/`capsule`/`capsuleMolten`/
 /// `blockCasing`/`blockCasingAdvanced` also match the legacy filter but have no MaterialLib shape and keep
@@ -24,6 +24,6 @@ public final class ConsumerRecycling {
             ShapeConsumerSupport.delegate(MaterialParts.shape(prefix), prefix, () -> ProcessingRecycling.INSTANCE);
         }
         ShapeConsumerSupport
-            .delegate(Materials2CellShapes.cellPlasmaLight, OrePrefixes.cellPlasma, () -> ProcessingRecycling.INSTANCE);
+            .delegate(CellShapes.cellPlasmaLight, OrePrefixes.cellPlasma, () -> ProcessingRecycling.INSTANCE);
     }
 }

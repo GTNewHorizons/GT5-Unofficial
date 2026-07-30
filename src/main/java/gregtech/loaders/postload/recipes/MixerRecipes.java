@@ -35,7 +35,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
@@ -589,19 +589,19 @@ public class MixerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.LightFuel, Materials2CellShapes.cell, 5),
-                MaterialLibAPI.getStack(Materials.HeavyFuel, Materials2CellShapes.cell, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Fuel, Materials2CellShapes.cell, 6))
+                MaterialLibAPI.getStack(Materials.LightFuel, CellShapes.cell, 5),
+                MaterialLibAPI.getStack(Materials.HeavyFuel, CellShapes.cell, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Fuel, CellShapes.cell, 6))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.LightFuel, Materials2CellShapes.cell, 5),
+                MaterialLibAPI.getStack(Materials.LightFuel, CellShapes.cell, 5),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Fuel, Materials2CellShapes.cell, 6))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Fuel, CellShapes.cell, 6))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.HeavyFuel, Materials2FluidShapes.fluidLiquid, 1_000))
             .duration(16 * TICKS)
@@ -610,10 +610,10 @@ public class MixerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.HeavyFuel, Materials2CellShapes.cell, 1),
+                MaterialLibAPI.getStack(Materials.HeavyFuel, CellShapes.cell, 1),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 5))
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Fuel, Materials2CellShapes.cell, 6))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Fuel, CellShapes.cell, 6))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.LightFuel, Materials2FluidShapes.fluidLiquid, 5_000))
             .duration(16 * TICKS)
@@ -621,7 +621,7 @@ public class MixerRecipes implements Runnable {
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.LightFuel, Materials2CellShapes.cell, 5))
+            .itemInputs(MaterialLibAPI.getStack(Materials.LightFuel, CellShapes.cell, 5))
             .circuit(5)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 5))
             .fluidInputs(
@@ -633,7 +633,7 @@ public class MixerRecipes implements Runnable {
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.HeavyFuel, Materials2CellShapes.cell, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.HeavyFuel, CellShapes.cell, 1))
             .circuit(6)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
             .fluidInputs(
@@ -1191,7 +1191,7 @@ public class MixerRecipes implements Runnable {
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SulfuricAcid, Materials2CellShapes.cell, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SulfuricAcid, CellShapes.cell, 1))
             .circuit(1)
             .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(
@@ -1203,10 +1203,10 @@ public class MixerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SulfuricAcid, Materials2CellShapes.cell, 1),
-                MaterialLibAPI.getStack(Materials.NitricAcid, Materials2CellShapes.cell, 1))
+                MaterialLibAPI.getStack(Materials.SulfuricAcid, CellShapes.cell, 1),
+                MaterialLibAPI.getStack(Materials.NitricAcid, CellShapes.cell, 1))
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.NitrationMixture, Materials2CellShapes.cell, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.NitrationMixture, CellShapes.cell, 2))
             .duration(24 * SECONDS)
             .eut(2)
             .addTo(mixerRecipes);
@@ -1308,7 +1308,7 @@ public class MixerRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1),
-                MaterialLibAPI.getStack(Materials.CarbonDioxide, Materials2CellShapes.cell, 1))
+                MaterialLibAPI.getStack(Materials.CarbonDioxide, CellShapes.cell, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.AceticAcid, Materials2FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(
@@ -1326,8 +1326,8 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 2))
             .circuit(11)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.CalciumAcetateSolution, Materials2CellShapes.cell, 1),
-                MaterialLibAPI.getStack(Materials.CarbonDioxide, Materials2CellShapes.cell, 1))
+                MaterialLibAPI.getStack(Materials.CalciumAcetateSolution, CellShapes.cell, 1),
+                MaterialLibAPI.getStack(Materials.CarbonDioxide, CellShapes.cell, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.AceticAcid, Materials2FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(GTUtility.getWater(1_000))
@@ -1342,7 +1342,7 @@ public class MixerRecipes implements Runnable {
             .circuit(21)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1),
-                MaterialLibAPI.getStack(Materials.CalciumAcetateSolution, Materials2CellShapes.cell, 1))
+                MaterialLibAPI.getStack(Materials.CalciumAcetateSolution, CellShapes.cell, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.AceticAcid, Materials2FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(
@@ -1356,7 +1356,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, 5),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
             .circuit(4)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.CarbonDioxide, Materials2CellShapes.cell, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.CarbonDioxide, CellShapes.cell, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.AceticAcid, Materials2FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(
@@ -1374,7 +1374,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
             .circuit(14)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.CalciumAcetateSolution, Materials2CellShapes.cell, 1))
+                MaterialLibAPI.getStack(Materials.CalciumAcetateSolution, CellShapes.cell, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.AceticAcid, Materials2FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(
@@ -1390,7 +1390,7 @@ public class MixerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Calcium, Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 2))
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, Materials2CellShapes.cell, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 2))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.AceticAcid, Materials2FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(
@@ -1408,7 +1408,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
             .circuit(11)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.CalciumAcetateSolution, Materials2CellShapes.cell, 1))
+                MaterialLibAPI.getStack(Materials.CalciumAcetateSolution, CellShapes.cell, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.AceticAcid, Materials2FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(
@@ -1442,7 +1442,7 @@ public class MixerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
             .circuit(11)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.CalciumAcetateSolution, Materials2CellShapes.cell, 1))
+                MaterialLibAPI.getStack(Materials.CalciumAcetateSolution, CellShapes.cell, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.AceticAcid, Materials2FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(GTUtility.getWater(1_000))
@@ -1453,7 +1453,7 @@ public class MixerRecipes implements Runnable {
         // 2CH3COOCH3 + 3CH3COCH3/(C4H6O2)n = 5Glue
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Acetone, Materials2CellShapes.cell, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Acetone, CellShapes.cell, 3))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 3))
             .fluidInputs(
                 MaterialLibAPI
@@ -1466,7 +1466,7 @@ public class MixerRecipes implements Runnable {
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.PolyvinylAcetate, Materials2CellShapes.cell, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.PolyvinylAcetate, CellShapes.cell, 2))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 2))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Acetone, Materials2FluidShapes.fluidLiquid, 3_000))
@@ -1478,7 +1478,7 @@ public class MixerRecipes implements Runnable {
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.MethylAcetate, Materials2CellShapes.cell, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.MethylAcetate, CellShapes.cell, 3))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 3))
             .fluidInputs(
                 MaterialLibAPI
@@ -1491,7 +1491,7 @@ public class MixerRecipes implements Runnable {
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.PolyvinylAcetate, Materials2CellShapes.cell, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.PolyvinylAcetate, CellShapes.cell, 2))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 2))
             .fluidInputs(
                 MaterialLibAPI
@@ -1530,7 +1530,7 @@ public class MixerRecipes implements Runnable {
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Fuel, Materials2CellShapes.cell, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Fuel, CellShapes.cell, 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
             .fluidInputs(
                 MaterialLibAPI
@@ -1542,7 +1542,7 @@ public class MixerRecipes implements Runnable {
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.BioDiesel, Materials2CellShapes.cell, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.BioDiesel, CellShapes.cell, 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
             .fluidInputs(
                 MaterialLibAPI
@@ -1557,10 +1557,10 @@ public class MixerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Methanol, Materials2CellShapes.cell, 1),
-                MaterialLibAPI.getStack(Materials.Butene, Materials2CellShapes.cell, 1))
+                MaterialLibAPI.getStack(Materials.Methanol, CellShapes.cell, 1),
+                MaterialLibAPI.getStack(Materials.Butene, CellShapes.cell, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.MTBEReactionMixtureButene, Materials2CellShapes.cell, 1),
+                MaterialLibAPI.getStack(Materials.MTBEReactionMixtureButene, CellShapes.cell, 1),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_HV)
@@ -1568,10 +1568,10 @@ public class MixerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Methanol, Materials2CellShapes.cell, 1),
-                MaterialLibAPI.getStack(Materials.Butane, Materials2CellShapes.cell, 1))
+                MaterialLibAPI.getStack(Materials.Methanol, CellShapes.cell, 1),
+                MaterialLibAPI.getStack(Materials.Butane, CellShapes.cell, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.MTBEReactionMixtureButane, Materials2CellShapes.cell, 1),
+                MaterialLibAPI.getStack(Materials.MTBEReactionMixtureButane, CellShapes.cell, 1),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_HV)
@@ -1579,21 +1579,21 @@ public class MixerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Naphtha, Materials2CellShapes.cell, 16),
-                MaterialLibAPI.getStack(Materials.Gas, Materials2CellShapes.cell, 2),
-                MaterialLibAPI.getStack(Materials.Methanol, Materials2CellShapes.cell, 1),
-                MaterialLibAPI.getStack(Materials.Acetone, Materials2CellShapes.cell, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.RawGasoline, Materials2CellShapes.cell, 20))
+                MaterialLibAPI.getStack(Materials.Naphtha, CellShapes.cell, 16),
+                MaterialLibAPI.getStack(Materials.Gas, CellShapes.cell, 2),
+                MaterialLibAPI.getStack(Materials.Methanol, CellShapes.cell, 1),
+                MaterialLibAPI.getStack(Materials.Acetone, CellShapes.cell, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.RawGasoline, CellShapes.cell, 20))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Gasoline, Materials2CellShapes.cell, 20),
-                MaterialLibAPI.getStack(Materials.Octane, Materials2CellShapes.cell, 2),
-                MaterialLibAPI.getStack(Materials.NitrousOxide, Materials2CellShapes.cell, 6),
-                MaterialLibAPI.getStack(Materials.Toluene, Materials2CellShapes.cell, 1))
+                MaterialLibAPI.getStack(Materials.Gasoline, CellShapes.cell, 20),
+                MaterialLibAPI.getStack(Materials.Octane, CellShapes.cell, 2),
+                MaterialLibAPI.getStack(Materials.NitrousOxide, CellShapes.cell, 6),
+                MaterialLibAPI.getStack(Materials.Toluene, CellShapes.cell, 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 29))
             .fluidInputs(
                 MaterialLibAPI

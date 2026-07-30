@@ -42,7 +42,7 @@ import bartworks.util.BioData;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -231,7 +231,7 @@ public class MTEBioLab extends MTEBasicMachine {
 
     private boolean isEthanolCell(ItemStack stack) {
         return GTUtility
-            .areStacksEqual(stack, MaterialLibAPI.getStack(Materials.Ethanol, Materials2CellShapes.cell, 1));
+            .areStacksEqual(stack, MaterialLibAPI.getStack(Materials.Ethanol, CellShapes.cell, 1));
     }
 
     private boolean isFluorescentDNACell(ItemStack stack) {

@@ -32,7 +32,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -155,7 +155,7 @@ public class RecipeLoaderNuclear {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Oxygen, Materials2CellShapes.cell, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cell, (int) (8)),
                 MaterialLibAPI.getStack(Materials.Lithium7, Shapes.dust, 16))
             .itemOutputs(ItemList.Cell_Empty.get(8))
             .fluidInputs(GTUtility.getWater(8_000))
@@ -191,7 +191,7 @@ public class RecipeLoaderNuclear {
 
         // Ammonium Bifluoride
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.HydrofluoricAcidGT5U, Materials2CellShapes.cell, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.HydrofluoricAcidGT5U, CellShapes.cell, 2))
             .circuit(3)
             .itemOutputs(ItemList.Cell_Empty.get(2))
             .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.Ammonia, 1_000))
@@ -203,7 +203,7 @@ public class RecipeLoaderNuclear {
         // Ammonium
         // To be deprecated now that it is no longer needed for ammonium bifluoride
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, Materials2CellShapes.cell, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, (int) (1)))
             .circuit(3)
             .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(
@@ -285,8 +285,8 @@ public class RecipeLoaderNuclear {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Potassium, Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials.Aluminium, Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Oxygen, Materials2CellShapes.cell, (int) (10)),
-                MaterialLibAPI.getStack(Materials.Fluorine, Materials2CellShapes.cell, (int) (2)),
+                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cell, (int) (10)),
+                MaterialLibAPI.getStack(Materials.Fluorine, CellShapes.cell, (int) (2)),
                 GregtechItemList.LithiumCarbonateDust.get(3))
             .fluidInputs(
                 MaterialLibAPI
@@ -381,7 +381,7 @@ public class RecipeLoaderNuclear {
             .itemInputs(ItemList.Cell_Empty.get(3))
             .circuit(17)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Ammonia, Materials2CellShapes.cell, 2),
+                MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cell, 2),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
                 MaterialLibAPI.getStack(Materials.BerylliumFluoride, Shapes.dust, 3))
             .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.AmmoniumTetrafluoroberyllate, 1_000))

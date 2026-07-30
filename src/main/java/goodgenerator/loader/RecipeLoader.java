@@ -53,7 +53,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.MaterialFacades;
-import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.SubstituteFluidStack;
@@ -253,13 +253,13 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.ThoriumBasedLiquidFuel, Materials2CellShapes.cell, 1))
+                MaterialLibAPI.getStack(Materials.ThoriumBasedLiquidFuel, CellShapes.cell, 1))
             .circuit(1)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidPlasma, 250))
             .itemOutputs(
                 MaterialLibAPI
-                    .getStack(Materials.ThoriumBasedLiquidFuelExcitedState, Materials2CellShapes.cell, 1))
+                    .getStack(Materials.ThoriumBasedLiquidFuelExcitedState, CellShapes.cell, 1))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_IV / 2)
             .addTo(mixerRecipes);
@@ -650,40 +650,40 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.RawGasoline, Materials2CellShapes.cell, 9),
-                MaterialLibAPI.getStack(Materials.Ethanol, Materials2CellShapes.cell, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.EthanolGasoline, Materials2CellShapes.cell, 10))
+                MaterialLibAPI.getStack(Materials.RawGasoline, CellShapes.cell, 9),
+                MaterialLibAPI.getStack(Materials.Ethanol, CellShapes.cell, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.EthanolGasoline, CellShapes.cell, 10))
             .duration(15 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Ether, Materials2CellShapes.cell, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ether, CellShapes.cell, 1))
             .metadata(FUEL_VALUE, 537)
             .metadata(FUEL_TYPE, 0)
             .addTo(GTRecipeConstants.Fuel);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Ether, Materials2CellShapes.cell, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ether, CellShapes.cell, 1))
             .metadata(FUEL_VALUE, 537)
             .metadata(FUEL_TYPE, 1)
             .addTo(GTRecipeConstants.Fuel);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.EthanolGasoline, Materials2CellShapes.cell, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.EthanolGasoline, CellShapes.cell, 1))
             .metadata(FUEL_VALUE, 1100)
             .metadata(FUEL_TYPE, 0)
             .addTo(GTRecipeConstants.Fuel);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Cyclopentadiene, Materials2CellShapes.cell, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Cyclopentadiene, CellShapes.cell, 1))
             .metadata(FUEL_VALUE, 70)
             .metadata(FUEL_TYPE, 1)
             .addTo(GTRecipeConstants.Fuel);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.JetFuelA, Materials2CellShapes.cell, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.JetFuelA, CellShapes.cell, 1))
             .metadata(FUEL_VALUE, 2248)
             .metadata(FUEL_TYPE, 0)
             .addTo(GTRecipeConstants.Fuel);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.JetFuelNo3, Materials2CellShapes.cell, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.JetFuelNo3, CellShapes.cell, 1))
             .metadata(FUEL_VALUE, 1824)
             .metadata(FUEL_TYPE, 0)
             .addTo(GTRecipeConstants.Fuel);
@@ -836,7 +836,7 @@ public class RecipeLoader {
             TierEU.RECIPE_EV);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.NaquadahGas, Materials2CellShapes.cell, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NaquadahGas, CellShapes.cell, 1))
             .metadata(FUEL_VALUE, 1024)
             .metadata(FUEL_TYPE, 1)
             .addTo(GTRecipeConstants.Fuel);

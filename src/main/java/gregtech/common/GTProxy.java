@@ -131,7 +131,7 @@ import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
-import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.IProjectileItem;
@@ -2523,7 +2523,7 @@ public class GTProxy implements IFuelHandler {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     MaterialLibAPI
-                        .getStack(Materials.Hydrogen, Materials2CellShapes.cell, (int) (hydrogenAmount)))
+                        .getStack(Materials.Hydrogen, CellShapes.cell, (int) (hydrogenAmount)))
                 .circuit(i + 1)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, hydrogenAmount))
                 .fluidInputs(new FluidStack(uncrackedFluid, 1000))

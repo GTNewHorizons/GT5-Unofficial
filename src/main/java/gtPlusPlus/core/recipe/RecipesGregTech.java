@@ -70,7 +70,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
-import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.material.MaterialUtils;
@@ -1297,8 +1297,8 @@ public class RecipesGregTech {
             .itemInputs(ItemList.Cell_Empty.get(3))
             .circuit(17)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Styrene, Materials2CellShapes.cell, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Hydrogen, Materials2CellShapes.cell, (int) (2)))
+                MaterialLibAPI.getStack(Materials.Styrene, CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, (int) (2)))
             .fluidInputs(new FluidStack(GTPPFluids.Ethylbenzene, 1_000))
             .eut(TierEU.RECIPE_LV)
             .duration(3 * SECONDS)
@@ -1745,7 +1745,7 @@ public class RecipesGregTech {
     private static void centrifugeRecipes() {
         // Solar Salt (Cold) processing
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SolarSaltCold, Materials2CellShapes.cellMolten, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SolarSaltCold, CellShapes.cellMolten, 1))
             .circuit(2)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.SodiumNitrate, Shapes.dust, 3),
@@ -1763,7 +1763,7 @@ public class RecipesGregTech {
                 MaterialLibAPI.getStack(Materials.SodiumNitrate, Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials.PotassiumNitrate, Shapes.dust, 2))
             .circuit(2)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SolarSaltCold, Materials2CellShapes.cellMolten, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SolarSaltCold, CellShapes.cellMolten, 1))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);

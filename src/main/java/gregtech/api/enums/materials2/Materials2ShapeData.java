@@ -104,7 +104,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ELECTRUM, 1L)));
-        Materials2CellShapes.cell.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
+        CellShapes.cell.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(CELL, EMPTY))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Cell")
@@ -114,7 +114,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
-        Materials2CellShapes.cellHydroCracked1.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
+        CellShapes.cellHydroCracked1.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Lightly Hydro-Cracked %s Cell")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -122,7 +122,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
-        Materials2CellShapes.cellHydroCracked2.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
+        CellShapes.cellHydroCracked2.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Moderately Hydro-Cracked %s Cell")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -130,7 +130,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
-        Materials2CellShapes.cellHydroCracked3.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
+        CellShapes.cellHydroCracked3.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Severely Hydro-Cracked %s Cell")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -138,7 +138,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
-        Materials2CellShapes.cellMolten.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
+        CellShapes.cellMolten.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL_PLASMA)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(TOOL_HEAD))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Molten %s Cell")
@@ -148,7 +148,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.HEAT_DAMAGE, 3.0F)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
-        Materials2CellShapes.cellPlasma.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
+        CellShapes.cellPlasma.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL_PLASMA)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(PLASMA))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Plasma Cell")
@@ -158,7 +158,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.HEAT_DAMAGE, 6.0F)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
-        Materials2CellShapes.cellPlasmaLight // from prefix cellPlasma
+        CellShapes.cellPlasmaLight // from prefix cellPlasma
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL_PLASMA)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(PLASMA))
@@ -169,7 +169,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.HEAT_DAMAGE, 6.0F)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
-        Materials2CellShapes.cellSteamCracked1.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
+        CellShapes.cellSteamCracked1.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Lightly Steam-Cracked %s Cell")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -177,7 +177,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
-        Materials2CellShapes.cellSteamCracked2.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
+        CellShapes.cellSteamCracked2.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Moderately Steam-Cracked %s Cell")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -185,7 +185,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
-        Materials2CellShapes.cellSteamCracked3.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
+        CellShapes.cellSteamCracked3.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Severely Steam-Cracked %s Cell")
             .setProperty(GTShapeProperties.UNIFIABLE, true)

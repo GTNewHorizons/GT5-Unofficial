@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.CellShapes;
 import gregtech.loaders.oreprocessing.ProcessingCellMolten;
 
 /// Dispatches [ProcessingCellMolten]'s molten-fluid extraction and container registration for MaterialLib's
@@ -12,6 +12,6 @@ public final class ConsumerCellMolten {
 
     static void register() {
         ShapeConsumerSupport
-            .delegate(Materials2CellShapes.cellMolten, OrePrefixes.cellMolten, () -> ProcessingCellMolten.INSTANCE);
+            .delegate(CellShapes.cellMolten, OrePrefixes.cellMolten, () -> ProcessingCellMolten.INSTANCE);
     }
 }
