@@ -31,7 +31,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.PipeShapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -69,9 +69,9 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             lazy(
                 t -> ofBlock(
                     Block.getBlockFromItem(
-                        MaterialLibAPI.getStack(Materials.Octiron, Materials2PipeShapes.frameGt, 1)
+                        MaterialLibAPI.getStack(Materials.Octiron, PipeShapes.frameGt, 1)
                             .getItem()),
-                    MaterialLibAPI.getStack(Materials.Octiron, Materials2PipeShapes.frameGt, 1)
+                    MaterialLibAPI.getStack(Materials.Octiron, PipeShapes.frameGt, 1)
                         .getItemDamage())))
         // Nanochip Mesh Interface Casing
         .addElement('B', Casings.NanochipMeshInterfaceCasing.asElement())

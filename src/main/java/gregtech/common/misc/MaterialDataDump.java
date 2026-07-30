@@ -45,7 +45,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.MaterialFluidNames;
-import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.PipeShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.AspectRefStack;
@@ -146,7 +146,7 @@ public final class MaterialDataDump {
     private static List<Map<String, Object>> dumpDeclaredShapes() {
         List<Map<String, Object>> shapes = new ArrayList<>();
         for (Class<?> declaring : new Class<?>[] { Shapes.class, CellShapes.class,
-            BlockShapes.class, OreShapes.class, Materials2PipeShapes.class }) {
+            BlockShapes.class, OreShapes.class, PipeShapes.class }) {
             for (java.lang.reflect.Field field : declaring.getFields()) {
                 if (field.getType() != Shape.class) continue;
                 Shape shape;

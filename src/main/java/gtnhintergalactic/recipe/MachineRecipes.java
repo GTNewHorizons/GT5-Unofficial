@@ -28,7 +28,7 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.PipeShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -50,7 +50,7 @@ public class MachineRecipes implements Runnable {
         if (!NewHorizonsCoreMod.isModLoaded() || !GalacticraftCore.isModLoaded()) return;
 
         ItemStack hypogenFrameBox_8 = MaterialLibAPI
-            .getStack(Materials.Hypogen, Materials2PipeShapes.frameGt, 8);
+            .getStack(Materials.Hypogen, PipeShapes.frameGt, 8);
         ItemStack hypogenScrew_32 = MaterialLibAPI.getStack(Materials.Hypogen, Shapes.screw, 32);
         Fluid hypogenFluid = MaterialUtils.legacyGtppFluidOf(Materials.Hypogen);
         Fluid celestialTungstenFluid = MaterialUtils.legacyGtppFluidOf(Materials.CelestialTungsten);

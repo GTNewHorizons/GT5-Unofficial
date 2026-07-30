@@ -68,37 +68,37 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true);
-        Materials2PipeShapes.cableGt01.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 2)
+        PipeShapes.cableGt01.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 2)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "1x %s Cable")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ELECTRUM, 1L)));
-        Materials2PipeShapes.cableGt02.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
+        PipeShapes.cableGt02.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "2x %s Cable")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ELECTRUM, 1L)));
-        Materials2PipeShapes.cableGt04.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 2)
+        PipeShapes.cableGt04.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 2)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "4x %s Cable")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ELECTRUM, 1L)));
-        Materials2PipeShapes.cableGt08.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 4)
+        PipeShapes.cableGt08.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 4)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "8x %s Cable")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ELECTRUM, 1L)));
-        Materials2PipeShapes.cableGt12.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 6)
+        PipeShapes.cableGt12.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 6)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "12x %s Cable")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ELECTRUM, 1L)));
-        Materials2PipeShapes.cableGt16.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 8)
+        PipeShapes.cableGt16.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 8)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "16x %s Cable")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -261,7 +261,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true);
-        Materials2PipeShapes.frameGt.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 2)
+        PipeShapes.frameGt.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 2)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.FRAME)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Frame Box")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -356,7 +356,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true);
-        Materials2PipeShapes.itemPipeHuge // from prefix pipeHuge
+        PipeShapes.itemPipeHuge // from prefix pipeHuge
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 12)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_HUGE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Huge %s Pipe")
@@ -365,7 +365,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
-        Materials2PipeShapes.itemPipeLarge // from prefix pipeLarge
+        PipeShapes.itemPipeLarge // from prefix pipeLarge
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 6)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_LARGE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Large %s Pipe")
@@ -374,7 +374,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
-        Materials2PipeShapes.itemPipeMedium // from prefix pipeMedium
+        PipeShapes.itemPipeMedium // from prefix pipeMedium
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 3)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_MEDIUM)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Medium %s Pipe")
@@ -383,7 +383,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
-        Materials2PipeShapes.itemPipeRestrictiveHuge // from prefix pipeRestrictiveHuge
+        PipeShapes.itemPipeRestrictiveHuge // from prefix pipeRestrictiveHuge
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 12)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_HUGE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Huge Restrictive %s Pipe")
@@ -393,7 +393,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Steel, M / 4 * 5))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
-        Materials2PipeShapes.itemPipeRestrictiveLarge // from prefix pipeRestrictiveLarge
+        PipeShapes.itemPipeRestrictiveLarge // from prefix pipeRestrictiveLarge
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 6)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_LARGE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Large Restrictive %s Pipe")
@@ -403,7 +403,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Steel, M / 4 * 4))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
-        Materials2PipeShapes.itemPipeRestrictiveMedium // from prefix pipeRestrictiveMedium
+        PipeShapes.itemPipeRestrictiveMedium // from prefix pipeRestrictiveMedium
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 3)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_MEDIUM)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Medium Restrictive %s Pipe")
@@ -413,7 +413,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Steel, M / 4 * 3))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
-        Materials2PipeShapes.itemPipeRestrictiveSmall // from prefix pipeRestrictiveSmall
+        PipeShapes.itemPipeRestrictiveSmall // from prefix pipeRestrictiveSmall
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_SMALL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Small Restrictive %s Pipe")
@@ -423,7 +423,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Steel, M / 4 * 2))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
-        Materials2PipeShapes.itemPipeRestrictiveTiny // from prefix pipeRestrictiveTiny
+        PipeShapes.itemPipeRestrictiveTiny // from prefix pipeRestrictiveTiny
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 2)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_TINY)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Tiny Restrictive %s Pipe")
@@ -433,7 +433,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Steel, M / 4))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
-        Materials2PipeShapes.itemPipeSmall // from prefix pipeSmall
+        PipeShapes.itemPipeSmall // from prefix pipeSmall
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_SMALL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Small %s Pipe")
@@ -442,7 +442,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
-        Materials2PipeShapes.itemPipeTiny // from prefix pipeTiny
+        PipeShapes.itemPipeTiny // from prefix pipeTiny
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 2)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_TINY)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Tiny %s Pipe")
@@ -487,7 +487,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Stone, M * 2))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.TERRA, 1L)));
-        Materials2PipeShapes.pipeHuge.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 12)
+        PipeShapes.pipeHuge.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 12)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_HUGE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Huge %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -495,7 +495,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
-        Materials2PipeShapes.pipeLarge.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 6)
+        PipeShapes.pipeLarge.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 6)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_LARGE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Large %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -503,7 +503,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
-        Materials2PipeShapes.pipeMedium.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 3)
+        PipeShapes.pipeMedium.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 3)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_MEDIUM)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Medium %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -511,7 +511,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
-        Materials2PipeShapes.pipeNonuple.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 9)
+        PipeShapes.pipeNonuple.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 9)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_NONUPLE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Nonuple %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -519,7 +519,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
-        Materials2PipeShapes.pipeQuadruple.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 12)
+        PipeShapes.pipeQuadruple.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 12)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_QUADRUPLE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Quadruple %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -527,7 +527,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
-        Materials2PipeShapes.pipeSmall.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
+        PipeShapes.pipeSmall.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_SMALL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Small %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -535,7 +535,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
-        Materials2PipeShapes.pipeTiny.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 2)
+        PipeShapes.pipeTiny.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 2)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_TINY)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Tiny %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -747,37 +747,37 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ELECTRUM, 1L)));
-        Materials2PipeShapes.wireGt01.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 2)
+        PipeShapes.wireGt01.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 2)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "1x %s Wire")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ELECTRUM, 1L)));
-        Materials2PipeShapes.wireGt02.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
+        PipeShapes.wireGt02.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "2x %s Wire")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ELECTRUM, 1L)));
-        Materials2PipeShapes.wireGt04.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 2)
+        PipeShapes.wireGt04.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 2)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "4x %s Wire")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ELECTRUM, 1L)));
-        Materials2PipeShapes.wireGt08.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 4)
+        PipeShapes.wireGt08.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 4)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "8x %s Wire")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ELECTRUM, 1L)));
-        Materials2PipeShapes.wireGt12.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 6)
+        PipeShapes.wireGt12.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 6)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "12x %s Wire")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ELECTRUM, 1L)));
-        Materials2PipeShapes.wireGt16.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 8)
+        PipeShapes.wireGt16.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 8)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "16x %s Wire")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)

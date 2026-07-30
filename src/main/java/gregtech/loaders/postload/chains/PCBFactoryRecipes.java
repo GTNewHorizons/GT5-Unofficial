@@ -25,7 +25,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.PipeShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
@@ -80,7 +80,7 @@ public class PCBFactoryRecipes {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.CelestialTungsten, Materials2PipeShapes.frameGt, 1),
+                MaterialLibAPI.getStack(Materials.CelestialTungsten, PipeShapes.frameGt, 1),
                 MaterialLibAPI.getStack(Materials.Quantum, Shapes.plate, 6),
                 ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.get(24))
             .itemOutputs(ItemList.RadiationProofPhotolithographicFrameworkCasing.get(1))
@@ -89,7 +89,7 @@ public class PCBFactoryRecipes {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Hypogen, Materials2PipeShapes.frameGt, 1),
+                MaterialLibAPI.getStack(Materials.Hypogen, PipeShapes.frameGt, 1),
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.rotor, (int) (2)),
                 MaterialLibAPI.getStack(Materials.Thulium, Shapes.plate, (int) (6)))
             .itemOutputs(ItemList.InfinityCooledCasing.get(1))

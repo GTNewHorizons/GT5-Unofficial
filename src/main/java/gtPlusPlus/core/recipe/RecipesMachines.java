@@ -22,7 +22,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.PipeShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
@@ -202,12 +202,12 @@ public class RecipesMachines {
             new Object[] { "RPR", "PFP", "PPP", 'R',
                 MaterialLibAPI.getStack(Materials.Grisium, Shapes.stick, 1), 'P',
                 MaterialLibAPI.getStack(Materials.Grisium, Shapes.plate, 1), 'F',
-                MaterialLibAPI.getStack(Materials.Grisium, Materials2PipeShapes.frameGt, 1) });
+                MaterialLibAPI.getStack(Materials.Grisium, PipeShapes.frameGt, 1) });
 
         // Trinium Plated Casing (unused but craftable)
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.TriniumNaquadahCarbonite, Materials2PipeShapes.frameGt, 4),
+                MaterialLibAPI.getStack(Materials.TriniumNaquadahCarbonite, PipeShapes.frameGt, 4),
                 MaterialLibAPI.getStack(Materials.TriniumTitaniumAlloy, Shapes.plateDouble, 1),
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.gearGt, 2),
                 MaterialLibAPI.getStack(Materials.ArceusAlloy2B, Shapes.plateDouble, 4),

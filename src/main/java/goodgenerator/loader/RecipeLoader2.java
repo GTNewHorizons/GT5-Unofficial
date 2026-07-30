@@ -55,7 +55,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.CellShapes;
-import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.PipeShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
@@ -1163,13 +1163,13 @@ public class RecipeLoader2 {
                 MaterialLibAPI.getStack(Materials.MARM200Steel, Shapes.plate, 1), 'H',
                 ItemList.Hull_IV.get(1), 'G',
                 MaterialLibAPI.getStack(Materials.MARCeM200Steel, Shapes.gearGt, 1), 'I',
-                MaterialLibAPI.getStack(Materials.Incoloy903, Materials2PipeShapes.pipeLarge, 1) });
+                MaterialLibAPI.getStack(Materials.Incoloy903, PipeShapes.pipeLarge, 1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.MARM200Steel, Shapes.plate, 2),
                 MaterialLibAPI.getStack(Materials.MARCeM200Steel, Shapes.gearGt, 2),
-                MaterialLibAPI.getStack(Materials.Incoloy903, Materials2PipeShapes.pipeLarge, 2),
+                MaterialLibAPI.getStack(Materials.Incoloy903, PipeShapes.pipeLarge, 2),
                 Circuits.LuV.get(2),
                 ItemList.Hull_IV.get(1))
             .itemOutputs(ItemList.SCSteamTurbine.get(1))

@@ -16,7 +16,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.MaterialFacades;
-import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.PipeShapes;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.util.GTOreDictUnificator;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -320,11 +320,11 @@ public enum CircuitComponent {
     FrameboxCelestialTungsten(
         1402,
         "gt.circuitcomponent.frame.celestialtungsten",
-        () -> MaterialLibAPI.getStack(Materials.CelestialTungsten, Materials2PipeShapes.frameGt, 1)),
+        () -> MaterialLibAPI.getStack(Materials.CelestialTungsten, PipeShapes.frameGt, 1)),
     FrameboxHypogen(
         1403,
         "gt.circuitcomponent.frame.hypogen",
-        () -> MaterialLibAPI.getStack(Materials.Hypogen, Materials2PipeShapes.frameGt, 1)),
+        () -> MaterialLibAPI.getStack(Materials.Hypogen, PipeShapes.frameGt, 1)),
     FrameboxMagMatter(
         1404,
         "gt.circuitcomponent.frame.magmatter",

@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.PipeShapes;
 import gregtech.loaders.oreprocessing.ProcessingFrame;
 
 /// Dispatches [ProcessingFrame]'s frame-box recipe generation for the `frameGt` shape. The shape's membership
@@ -14,6 +14,6 @@ public final class ConsumerFrame {
 
     static void register() {
         ShapeConsumerSupport
-            .delegate(Materials2PipeShapes.frameGt, OrePrefixes.frameGt, () -> ProcessingFrame.INSTANCE);
+            .delegate(PipeShapes.frameGt, OrePrefixes.frameGt, () -> ProcessingFrame.INSTANCE);
     }
 }

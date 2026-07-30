@@ -9,7 +9,7 @@ import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.PipeShapes;
 
 /// The retired per-material pipe-family MTE ids, mapped to the MaterialLib shape and material each id's
 /// wire/cable/fluid-pipe/item-pipe served, for [PosteaTransformers]' save migration. Rows reproduce the id
@@ -165,24 +165,24 @@ public final class LegacyPipeCutoverTable {
         putRange(
             material,
             startId + 6,
-            Materials2PipeShapes.cableGt01,
-            Materials2PipeShapes.cableGt02,
-            Materials2PipeShapes.cableGt04,
-            Materials2PipeShapes.cableGt08,
-            Materials2PipeShapes.cableGt12,
-            Materials2PipeShapes.cableGt16);
+            PipeShapes.cableGt01,
+            PipeShapes.cableGt02,
+            PipeShapes.cableGt04,
+            PipeShapes.cableGt08,
+            PipeShapes.cableGt12,
+            PipeShapes.cableGt16);
     }
 
     private static void wireOnly(Material material, int startId) {
         putRange(
             material,
             startId,
-            Materials2PipeShapes.wireGt01,
-            Materials2PipeShapes.wireGt02,
-            Materials2PipeShapes.wireGt04,
-            Materials2PipeShapes.wireGt08,
-            Materials2PipeShapes.wireGt12,
-            Materials2PipeShapes.wireGt16);
+            PipeShapes.wireGt01,
+            PipeShapes.wireGt02,
+            PipeShapes.wireGt04,
+            PipeShapes.wireGt08,
+            PipeShapes.wireGt12,
+            PipeShapes.wireGt16);
     }
 
     private static void fluidPipe(Material material, int startId) {
@@ -191,27 +191,27 @@ public final class LegacyPipeCutoverTable {
 
     private static void fluidPipe(Material material, int startId, int multiFluidStartId) {
         fluidPipeNoMulti(material, startId);
-        putRange(material, multiFluidStartId, Materials2PipeShapes.pipeQuadruple, Materials2PipeShapes.pipeNonuple);
+        putRange(material, multiFluidStartId, PipeShapes.pipeQuadruple, PipeShapes.pipeNonuple);
     }
 
     private static void fluidPipeNoMulti(Material material, int startId) {
         putRange(
             material,
             startId,
-            Materials2PipeShapes.pipeTiny,
-            Materials2PipeShapes.pipeSmall,
-            Materials2PipeShapes.pipeMedium,
-            Materials2PipeShapes.pipeLarge,
-            Materials2PipeShapes.pipeHuge);
+            PipeShapes.pipeTiny,
+            PipeShapes.pipeSmall,
+            PipeShapes.pipeMedium,
+            PipeShapes.pipeLarge,
+            PipeShapes.pipeHuge);
     }
 
     private static void threeSizeFluidPipe(Material material, int startId) {
         putRange(
             material,
             startId,
-            Materials2PipeShapes.pipeSmall,
-            Materials2PipeShapes.pipeMedium,
-            Materials2PipeShapes.pipeLarge);
+            PipeShapes.pipeSmall,
+            PipeShapes.pipeMedium,
+            PipeShapes.pipeLarge);
     }
 
     private static void itemPipe(Material material, int startId) {
@@ -222,11 +222,11 @@ public final class LegacyPipeCutoverTable {
     }
 
     private static void itemPipeIds(Material material, int... ids) {
-        Shape[] sizes = { Materials2PipeShapes.itemPipeTiny, Materials2PipeShapes.itemPipeSmall,
-            Materials2PipeShapes.itemPipeMedium, Materials2PipeShapes.itemPipeLarge, Materials2PipeShapes.itemPipeHuge,
-            Materials2PipeShapes.itemPipeRestrictiveTiny, Materials2PipeShapes.itemPipeRestrictiveSmall,
-            Materials2PipeShapes.itemPipeRestrictiveMedium, Materials2PipeShapes.itemPipeRestrictiveLarge,
-            Materials2PipeShapes.itemPipeRestrictiveHuge };
+        Shape[] sizes = { PipeShapes.itemPipeTiny, PipeShapes.itemPipeSmall,
+            PipeShapes.itemPipeMedium, PipeShapes.itemPipeLarge, PipeShapes.itemPipeHuge,
+            PipeShapes.itemPipeRestrictiveTiny, PipeShapes.itemPipeRestrictiveSmall,
+            PipeShapes.itemPipeRestrictiveMedium, PipeShapes.itemPipeRestrictiveLarge,
+            PipeShapes.itemPipeRestrictiveHuge };
         for (int i = 0; i < sizes.length; i++) {
             put(ids[i], sizes[i], material);
         }
@@ -236,12 +236,12 @@ public final class LegacyPipeCutoverTable {
         putRange(
             material,
             startId,
-            Materials2PipeShapes.itemPipeMedium,
-            Materials2PipeShapes.itemPipeLarge,
-            Materials2PipeShapes.itemPipeHuge,
-            Materials2PipeShapes.itemPipeRestrictiveMedium,
-            Materials2PipeShapes.itemPipeRestrictiveLarge,
-            Materials2PipeShapes.itemPipeRestrictiveHuge);
+            PipeShapes.itemPipeMedium,
+            PipeShapes.itemPipeLarge,
+            PipeShapes.itemPipeHuge,
+            PipeShapes.itemPipeRestrictiveMedium,
+            PipeShapes.itemPipeRestrictiveLarge,
+            PipeShapes.itemPipeRestrictiveHuge);
     }
 
     private static void putRange(Material material, int startId, Shape... shapes) {

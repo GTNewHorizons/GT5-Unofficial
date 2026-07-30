@@ -37,7 +37,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.PipeShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
@@ -972,8 +972,8 @@ public class Godforge implements Runnable {
             ForgeOfGodsUpgrade.CD.addExtraCost(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 64),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUMVBase, 64),
-                MaterialLibAPI.getStack(Materials.Hypogen, Materials2PipeShapes.frameGt, 64),
-                MaterialLibAPI.getStack(Materials.Dragonblood, Materials2PipeShapes.frameGt, 64),
+                MaterialLibAPI.getStack(Materials.Hypogen, PipeShapes.frameGt, 64),
+                MaterialLibAPI.getStack(Materials.Dragonblood, PipeShapes.frameGt, 64),
                 CustomItemList.EOH_Reinforced_Spatial_Casing.get(64),
                 CustomItemList.EOH_Infinite_Energy_Casing.get(8),
                 ItemList.ZPM6.get(2),

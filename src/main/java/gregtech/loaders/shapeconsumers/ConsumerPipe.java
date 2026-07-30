@@ -4,12 +4,12 @@ import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.PipeShapes;
 import gregtech.loaders.oreprocessing.ProcessingPipe;
 
 /// Dispatches [ProcessingPipe]'s recipe generation for the twelve pipe prefixes. The fluid and item shapes
 /// sharing a `pipeTiny`..`pipeHuge` prefix string are both delegated under that prefix (their material sets
-/// are disjoint, see [Materials2PipeShapes]), matching the legacy oredict dispatch that fired for either
+/// are disjoint, see [PipeShapes]), matching the legacy oredict dispatch that fired for either
 /// family's registrations.
 ///
 /// The High Pressure (Redstone) fluid pipes are skipped: their oredict identity is the tier-keyed
@@ -21,42 +21,42 @@ public final class ConsumerPipe {
     private ConsumerPipe() {}
 
     static void register() {
-        fluid(Materials2PipeShapes.pipeTiny, OrePrefixes.pipeTiny);
-        fluid(Materials2PipeShapes.pipeSmall, OrePrefixes.pipeSmall);
-        fluid(Materials2PipeShapes.pipeMedium, OrePrefixes.pipeMedium);
-        fluid(Materials2PipeShapes.pipeLarge, OrePrefixes.pipeLarge);
-        fluid(Materials2PipeShapes.pipeHuge, OrePrefixes.pipeHuge);
-        fluid(Materials2PipeShapes.pipeQuadruple, OrePrefixes.pipeQuadruple);
-        fluid(Materials2PipeShapes.pipeNonuple, OrePrefixes.pipeNonuple);
+        fluid(PipeShapes.pipeTiny, OrePrefixes.pipeTiny);
+        fluid(PipeShapes.pipeSmall, OrePrefixes.pipeSmall);
+        fluid(PipeShapes.pipeMedium, OrePrefixes.pipeMedium);
+        fluid(PipeShapes.pipeLarge, OrePrefixes.pipeLarge);
+        fluid(PipeShapes.pipeHuge, OrePrefixes.pipeHuge);
+        fluid(PipeShapes.pipeQuadruple, OrePrefixes.pipeQuadruple);
+        fluid(PipeShapes.pipeNonuple, OrePrefixes.pipeNonuple);
 
         ShapeConsumerSupport
-            .delegate(Materials2PipeShapes.itemPipeTiny, OrePrefixes.pipeTiny, () -> ProcessingPipe.INSTANCE);
+            .delegate(PipeShapes.itemPipeTiny, OrePrefixes.pipeTiny, () -> ProcessingPipe.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2PipeShapes.itemPipeSmall, OrePrefixes.pipeSmall, () -> ProcessingPipe.INSTANCE);
+            .delegate(PipeShapes.itemPipeSmall, OrePrefixes.pipeSmall, () -> ProcessingPipe.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2PipeShapes.itemPipeMedium, OrePrefixes.pipeMedium, () -> ProcessingPipe.INSTANCE);
+            .delegate(PipeShapes.itemPipeMedium, OrePrefixes.pipeMedium, () -> ProcessingPipe.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2PipeShapes.itemPipeLarge, OrePrefixes.pipeLarge, () -> ProcessingPipe.INSTANCE);
+            .delegate(PipeShapes.itemPipeLarge, OrePrefixes.pipeLarge, () -> ProcessingPipe.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2PipeShapes.itemPipeHuge, OrePrefixes.pipeHuge, () -> ProcessingPipe.INSTANCE);
+            .delegate(PipeShapes.itemPipeHuge, OrePrefixes.pipeHuge, () -> ProcessingPipe.INSTANCE);
         ShapeConsumerSupport.delegate(
-            Materials2PipeShapes.itemPipeRestrictiveTiny,
+            PipeShapes.itemPipeRestrictiveTiny,
             OrePrefixes.pipeRestrictiveTiny,
             () -> ProcessingPipe.INSTANCE);
         ShapeConsumerSupport.delegate(
-            Materials2PipeShapes.itemPipeRestrictiveSmall,
+            PipeShapes.itemPipeRestrictiveSmall,
             OrePrefixes.pipeRestrictiveSmall,
             () -> ProcessingPipe.INSTANCE);
         ShapeConsumerSupport.delegate(
-            Materials2PipeShapes.itemPipeRestrictiveMedium,
+            PipeShapes.itemPipeRestrictiveMedium,
             OrePrefixes.pipeRestrictiveMedium,
             () -> ProcessingPipe.INSTANCE);
         ShapeConsumerSupport.delegate(
-            Materials2PipeShapes.itemPipeRestrictiveLarge,
+            PipeShapes.itemPipeRestrictiveLarge,
             OrePrefixes.pipeRestrictiveLarge,
             () -> ProcessingPipe.INSTANCE);
         ShapeConsumerSupport.delegate(
-            Materials2PipeShapes.itemPipeRestrictiveHuge,
+            PipeShapes.itemPipeRestrictiveHuge,
             OrePrefixes.pipeRestrictiveHuge,
             () -> ProcessingPipe.INSTANCE);
     }

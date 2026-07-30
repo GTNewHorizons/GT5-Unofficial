@@ -65,7 +65,7 @@ import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials2.BlockShapes;
-import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.PipeShapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -318,7 +318,7 @@ public class GTStructureUtility {
             public boolean check(T t, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
                 BlockMaterialInfo info = MaterialLibAPI.lookupBlock(block, world.getBlockMetadata(x, y, z));
-                return info != null && info.shape() == Materials2PipeShapes.frameGt
+                return info != null && info.shape() == PipeShapes.frameGt
                     && info.material() == materialSupplier.get();
             }
 

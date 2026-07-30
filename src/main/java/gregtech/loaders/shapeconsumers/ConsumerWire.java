@@ -4,7 +4,7 @@ import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.MaterialFacades;
-import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.PipeShapes;
 import gregtech.loaders.oreprocessing.ProcessingWire;
 
 /// Dispatches [ProcessingWire]'s recipe generation for the six wire shapes.
@@ -19,12 +19,12 @@ public final class ConsumerWire {
 
     static void register() {
         ShapeConsumerSupport
-            .delegate(Materials2PipeShapes.wireGt01, OrePrefixes.wireGt01, () -> ProcessingWire.INSTANCE);
-        delegateThick(Materials2PipeShapes.wireGt02, OrePrefixes.wireGt02);
-        delegateThick(Materials2PipeShapes.wireGt04, OrePrefixes.wireGt04);
-        delegateThick(Materials2PipeShapes.wireGt08, OrePrefixes.wireGt08);
-        delegateThick(Materials2PipeShapes.wireGt12, OrePrefixes.wireGt12);
-        delegateThick(Materials2PipeShapes.wireGt16, OrePrefixes.wireGt16);
+            .delegate(PipeShapes.wireGt01, OrePrefixes.wireGt01, () -> ProcessingWire.INSTANCE);
+        delegateThick(PipeShapes.wireGt02, OrePrefixes.wireGt02);
+        delegateThick(PipeShapes.wireGt04, OrePrefixes.wireGt04);
+        delegateThick(PipeShapes.wireGt08, OrePrefixes.wireGt08);
+        delegateThick(PipeShapes.wireGt12, OrePrefixes.wireGt12);
+        delegateThick(PipeShapes.wireGt16, OrePrefixes.wireGt16);
     }
 
     private static void delegateThick(Shape shape, OrePrefixes prefix) {
