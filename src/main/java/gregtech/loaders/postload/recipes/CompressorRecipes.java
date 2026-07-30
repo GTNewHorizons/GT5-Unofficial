@@ -22,7 +22,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2BlockShapes;
+import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
@@ -353,7 +353,7 @@ public class CompressorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.MagnetoResonatic, Shapes.gem, 9))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.MagnetoResonatic, Materials2BlockShapes.block, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.MagnetoResonatic, BlockShapes.block, 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);

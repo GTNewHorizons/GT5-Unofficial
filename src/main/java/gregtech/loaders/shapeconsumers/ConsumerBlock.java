@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2BlockShapes;
+import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.loaders.oreprocessing.ProcessingBlock;
 
 /// Dispatches [ProcessingBlock]'s `block`-prefix recipe generation for MaterialLib's cutover storage-block
@@ -11,6 +11,6 @@ public final class ConsumerBlock {
     private ConsumerBlock() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2BlockShapes.block, OrePrefixes.block, () -> ProcessingBlock.INSTANCE);
+        ShapeConsumerSupport.delegate(BlockShapes.block, OrePrefixes.block, () -> ProcessingBlock.INSTANCE);
     }
 }

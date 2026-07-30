@@ -18,6 +18,7 @@ import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeConstants.NANITE_TIERS;
 import static kekztech.common.Blocks.lscLapotronicEnergyUnit;
 
+import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
@@ -35,7 +36,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -135,7 +135,7 @@ public class BECRecipes implements Runnable {
         addBec(
             CustomItemList.Godforge_MagneticConfinementCasing.get(12),
             new ItemStack[] { GTOreDictUnificator.get("frameGtTranscendentMetal", 12),
-                MaterialLibAPI.getStack(Materials.MagnetoResonatic, Materials2BlockShapes.block, 16),
+                MaterialLibAPI.getStack(Materials.MagnetoResonatic, BlockShapes.block, 16),
                 MaterialLibAPI.getStack(Materials.TengamAttuned, Shapes.plateDense, (int) (32)),
                 MaterialLibAPI.getStack(Materials.Creon, Shapes.plate, (int) (16)),
                 MaterialLibAPI.getStack(Materials.Hypogen, Shapes.screw, 8),

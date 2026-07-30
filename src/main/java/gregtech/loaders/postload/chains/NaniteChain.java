@@ -12,6 +12,7 @@ import static gregtech.api.util.GTRecipeConstants.NANO_FORGE_TIER;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
+import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
@@ -23,7 +24,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -97,7 +97,7 @@ public class NaniteChain {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 aUVTierLens,
-                MaterialLibAPI.getStack(Materials.Carbon, Materials2BlockShapes.blockCasingAdvanced, 8),
+                MaterialLibAPI.getStack(Materials.Carbon, BlockShapes.blockCasingAdvanced, 8),
                 ItemList.Circuit_Chip_SoC.get(64))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 64))
             .fluidInputs(MaterialUtils.fluid(Materials.UUMatter, 200_000))
@@ -110,7 +110,7 @@ public class NaniteChain {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 aUEVTierLens,
-                MaterialLibAPI.getStack(Materials.Silver, Materials2BlockShapes.block, 8),
+                MaterialLibAPI.getStack(Materials.Silver, BlockShapes.block, 8),
                 ItemList.Circuit_Chip_SoC.get(16))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 1))
             .fluidInputs(MaterialUtils.fluid(Materials.UUMatter, 200_000))
@@ -178,7 +178,7 @@ public class NaniteChain {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 aUIVTierLens,
-                MaterialLibAPI.getStack(Materials.SixPhasedCopper, Materials2BlockShapes.block, 16),
+                MaterialLibAPI.getStack(Materials.SixPhasedCopper, BlockShapes.block, 16),
                 ItemList.Circuit_Chip_SoC2.get(64),
                 ItemList.Circuit_Chip_SoC2.get(64),
                 ItemList.Circuit_Chip_SoC2.get(64))
@@ -282,7 +282,7 @@ public class NaniteChain {
                 // Quantum Anomaly
                 GregtechItemList.Laser_Lens_Special.get(0),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 1),
-                MaterialLibAPI.getStack(Materials.Eternity, Materials2BlockShapes.block, 8),
+                MaterialLibAPI.getStack(Materials.Eternity, BlockShapes.block, 8),
                 ItemList.Circuit_Chip_APIC.get(64),
                 ItemList.Timepiece.get(4))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 4))
@@ -305,7 +305,7 @@ public class NaniteChain {
                 GTOreDictUnificator.get(OrePrefixes.lens, Materials.Forcicium, 0, false),
                 GTOreDictUnificator.get(OrePrefixes.lens, Materials.Forcillium, 0, false),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 1),
-                MaterialLibAPI.getStack(Materials.Magmatter, Materials2BlockShapes.block, 8),
+                MaterialLibAPI.getStack(Materials.Magmatter, BlockShapes.block, 8),
                 ItemList.Circuit_Chip_YPIC.get(64),
                 Circuits.MAX.get(1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Magmatter, 1))

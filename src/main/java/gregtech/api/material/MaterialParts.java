@@ -19,7 +19,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2BlockShapes;
+import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
@@ -182,7 +182,7 @@ public class MaterialParts {
             Map<String, List<Shape>> map = new HashMap<>();
             collectShapes(map, Shapes.class);
             collectShapes(map, CellShapes.class);
-            collectShapes(map, Materials2BlockShapes.class);
+            collectShapes(map, BlockShapes.class);
             collectShapes(map, OreShapes.class);
             collectShapes(map, Materials2PipeShapes.class);
             for (Map.Entry<String, List<Shape>> entry : map.entrySet()) {

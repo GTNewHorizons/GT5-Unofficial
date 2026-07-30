@@ -13,7 +13,7 @@ import gregtech.common.blocks.SheetmetalShapeBlock;
 /// `gregtech.common.blocks.BlockMetal` rather than the generic pipeline every other prefix uses (its
 /// `generationBits` is `0`). `sheetmetal` generates through that generic pipeline, same
 /// as the pipe/frame shapes in [Materials2PipeShapes].
-public class Materials2BlockShapes {
+public class BlockShapes {
 
     public static Shape block;
     public static Shape blockCasing;
@@ -33,5 +33,5 @@ public class Materials2BlockShapes {
             .registerBlockShape(new SheetmetalShapeBlock("sheetmetal", "%s Sheetmetal", "sheetmetal"));
     }
 
-    private Materials2BlockShapes() {}
+    private BlockShapes() {}
 }

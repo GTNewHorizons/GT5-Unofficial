@@ -40,21 +40,21 @@ public final class Materials2ShapeData {
     private Materials2ShapeData() {}
 
     public static void init() {
-        Materials2BlockShapes.block.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 9)
+        BlockShapes.block.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 9)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.BLOCK)
             .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, OTHER_STACK_SIZE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Block of %s")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true);
-        Materials2BlockShapes.blockCasing.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 9)
+        BlockShapes.blockCasing.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 9)
             .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, OTHER_STACK_SIZE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Bolted %s Casing")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true);
-        Materials2BlockShapes.blockCasingAdvanced.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 9)
+        BlockShapes.blockCasingAdvanced.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 9)
             .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, OTHER_STACK_SIZE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Rebolted %s Casing")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -634,7 +634,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true);
-        Materials2BlockShapes.sheetmetal.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 2)
+        BlockShapes.sheetmetal.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 2)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.BLOCK_SHEETMETAL)
             .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, OTHER_STACK_SIZE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL))

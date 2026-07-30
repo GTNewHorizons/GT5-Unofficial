@@ -27,6 +27,7 @@ import static kubatech.loaders.BlockLoader.defcCasingBlock;
 import static tectech.loader.recipe.BaseRecipeLoader.getNHCoreModItem;
 import static tectech.thing.CustomItemList.eM_dynamoTunnel5_UMV;
 
+import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
@@ -43,7 +44,6 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.material.MaterialUtils;
@@ -2589,7 +2589,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UMV,
             64,
             new Object[] { GTOreDictUnificator.get("frameGtTranscendentMetal", 8),
-                MaterialLibAPI.getStack(Materials.MagnetoResonatic, Materials2BlockShapes.block, 16),
+                MaterialLibAPI.getStack(Materials.MagnetoResonatic, BlockShapes.block, 16),
                 MaterialLibAPI.getStack(Materials.TengamAttuned, Shapes.plateDense, 32),
                 MaterialLibAPI.getStack(Materials.Creon, Shapes.plate, 16),
                 MaterialLibAPI.getStack(Materials.Hypogen, Shapes.screw, 8),

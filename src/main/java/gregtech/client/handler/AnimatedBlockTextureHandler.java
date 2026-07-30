@@ -3,6 +3,7 @@ package gregtech.client.handler;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.materials2.BlockShapes;
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
@@ -16,7 +17,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 
@@ -57,7 +57,7 @@ public class AnimatedBlockTextureHandler implements IResourceManagerReloadListen
 
     private static IIcon[] resolveIcons() {
         List<IIcon> resolved = new ArrayList<>();
-        Block block = MaterialLibAPI.getBlock(Materials2BlockShapes.block);
+        Block block = MaterialLibAPI.getBlock(BlockShapes.block);
         Block frame = MaterialLibAPI.getBlock(Materials2PipeShapes.frameGt);
         for (Material material : ANIMATED) {
             addIcon(resolved, block, material);
