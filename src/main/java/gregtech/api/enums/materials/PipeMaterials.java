@@ -14,8 +14,10 @@ import gregtech.api.enums.TierEU;
 ///
 /// Editing rather than declaring is deliberate here (unlike [ShapeData]'s declare-path): every target key
 /// comes off a live [Material] field, so [MaterialLibAPI#editMaterial]'s silently-skipped-edit hazard --
-/// naming a material that does not exist -- cannot arise, and the late edit queue is what lets a row's
-/// `generateShape` win over a builder-time `removeShape`.
+/// naming a material that does not exist -- cannot arise.
+///
+/// Only stat-bearing membership lives here. Frame and sheetmetal membership carries no stats, so it is
+/// declared on each material's own builder in [Materials] instead.
 ///
 /// The wooden and High Pressure fluid pipes exist in three sizes whose capacities follow no base-value
 /// formula, so they carry per-size capacity constants here instead of a [PipeProperties#BASE_PIPE_FLOW]
@@ -46,10 +48,7 @@ public class PipeMaterials {
         applyWireCables();
         applyFluidPipes();
         applyItemPipes();
-        applyFrames();
-        applyGtppFrame();
-        applyWerkstoffFrameAndSheetmetal();
-        applySheetmetal();
+        applyModGatedFrames();
     }
 
     // spotless:off
@@ -281,273 +280,12 @@ public class PipeMaterials {
         }
     }
 
-    // spotless:off
-    /// Frame membership: the materials the legacy frame registrations serve, i.e. every generated legacy
-    /// material whose dumped [gregtech.api.material.GTMaterialProperties#GENERATION_FLAGS] carry `METAL`
-    /// (the [gregtech.api.material.MaterialUtils#generates] `METAL` mirror) and whose
-    /// [gregtech.api.material.GTMaterialProperties#OLD_SUB_ID] marks a generated slot. The list is declared
-    /// rather than derived because membership must be settled during material registration, before MaterialLib
-    /// property reads are available.
-    public static Material[] frameMaterials() {
-        return new Material[] {
-            Materials.Adamantium, Materials.Alduorite, Materials.Aluminium,
-            Materials.Alumite, Materials.Americium, Materials.AnnealedCopper,
-            Materials.Antimony, Materials.Ardite, Materials.Arsenic,
-            Materials.AstralSilver, Materials.Barium, Materials.BatteryAlloy,
-            Materials.Bedrockium, Materials.Beryllium, Materials.Bismuth,
-            Materials.BismuthBronze, Materials.BlackBronze,
-            Materials.BlackDwarfMatter, Materials.BlackPlutonium,
-            Materials.BlackSteel, Materials.BloodInfusedIron, Materials.BlueAlloy,
-            Materials.BlueSteel, Materials.BorosilicateGlass, Materials.Brass,
-            Materials.Bronze, Materials.Caesium, Materials.CallistoIce,
-            Materials.Carbon, Materials.CastIron, Materials.Cerium,
-            Materials.Ceruclase, Materials.Chrome, Materials.ChromiumDioxide,
-            Materials.Chrysotile, Materials.Churitsu, Materials.Cobalt,
-            Materials.CobaltBrass, Materials.ConductiveIron, Materials.Copper,
-            Materials.CosmicNeutronium, Materials.Creon, Materials.CrudeSteel,
-            Materials.CrystallineAlloy, Materials.CrystallinePinkSlime,
-            Materials.Cupronickel, Materials.DamascusSteel, Materials.DarkIron,
-            Materials.DarkSteel, Materials.DeepIron, Materials.Desh,
-            Materials.Draconium, Materials.DraconiumAwakened, Materials.Dreamwood,
-            Materials.Duralumin, Materials.Duranium, Materials.Dysprosium,
-            Materials.ElectricalSteel, Materials.Electrum, Materials.ElectrumFlux,
-            Materials.ElvenElementium, Materials.EndSteel, Materials.Enderium,
-            Materials.EnderiumBase, Materials.EnergeticAlloy,
-            Materials.EnergeticSilver, Materials.EnhancedGalgadorian,
-            Materials.EnrichedHolmium, Materials.Epoxid,
-            Materials.EpoxidFiberReinforced, Materials.Erbium, Materials.Eternity,
-            Materials.Europium, Materials.FierySteel, Materials.FleroviumGT5U,
-            Materials.Force, Materials.Gadolinium, Materials.GaiaSpirit,
-            Materials.Galgadorian, Materials.Gallium, Materials.GalliumArsenide,
-            Materials.Gold, Materials.HSSE, Materials.HSSG,
-            Materials.HSSS, Materials.HeeEndium, Materials.HellishMetal,
-            Materials.Hexanite, Materials.Holmium, Materials.Ichorium,
-            Materials.Indium, Materials.IndiumGalliumPhosphide, Materials.Infinity,
-            Materials.InfinityCatalyst, Materials.InfusedGold, Materials.Invar,
-            Materials.Iridium, Materials.Iron, Materials.IronMagnetic,
-            Materials.IronWood, Materials.Kanthal, Materials.Kevlar,
-            Materials.Knightmetal, Materials.Lanthanum, Materials.Lead,
-            Materials.Ledox, Materials.Lithium, Materials.Livingwood,
-            Materials.Longasssuperconductornameforuhvwire,
-            Materials.Longasssuperconductornameforuvwire, Materials.Lutetium,
-            Materials.Magmatter, Materials.Magnalium, Materials.Magnesium,
-            Materials.MagnetohydrodynamicallyConstrainedStarMatter, Materials.Manasteel,
-            Materials.Manganese, Materials.Manyullyn, Materials.Mellion,
-            Materials.MelodicAlloy, Materials.MeteoricIron, Materials.MeteoricSteel,
-            Materials.Mithril, Materials.Molybdenum, Materials.MysteriousCrystal,
-            Materials.Mytryl, Materials.Naquadah, Materials.NaquadahAlloy,
-            Materials.NaquadahEnriched, Materials.Naquadria, Materials.Neodymium,
-            Materials.NeodymiumMagnetic, Materials.Netherite, Materials.Neutronium,
-            Materials.Nichrome, Materials.Nickel, Materials.NickelAluminide,
-            Materials.NickelZincFerrite, Materials.Niobium, Materials.NiobiumNitride,
-            Materials.NiobiumTitanium, Materials.Obsidian, Materials.Orichalcum,
-            Materials.Oriharukon, Materials.Osmiridium, Materials.Osmium,
-            Materials.Palladium, Materials.Pentacadmiummagnesiumhexaoxid,
-            Materials.PigIron, Materials.Plastic, Materials.Platinum,
-            Materials.Plutonium, Materials.Plutonium241, Materials.Polybenzimidazole,
-            Materials.Polycaprolactam, Materials.PolyphenyleneSulfide,
-            Materials.Polystyrene, Materials.Polytetrafluoroethylene,
-            Materials.PolyvinylChloride, Materials.Potassium, Materials.Praseodymium,
-            Materials.Promethium, Materials.PulsatingIron, Materials.Quantium,
-            Materials.RadoxPoly, Materials.Realgar, Materials.RedAlloy,
-            Materials.RedSteel, Materials.RedstoneAlloy, Materials.Reinforced,
-            Materials.RoseGold, Materials.Rubber, Materials.Rubidium,
-            Materials.Rubracium, Materials.Samarium, Materials.SamariumMagnetic,
-            Materials.Scandium, Materials.Shadow, Materials.ShadowIron,
-            Materials.ShadowSteel, Materials.Shijima, Materials.Silicon,
-            Materials.SiliconSolarGrade, Materials.Silicone, Materials.Silver,
-            Materials.SixPhasedCopper, Materials.SolderingAlloy, Materials.Soularium,
-            Materials.SpaceTime, Materials.StainlessSteel, Materials.Steel,
-            Materials.SteelMagnetic, Materials.Steeleaf, Materials.StellarAlloy,
-            Materials.SterlingSilver, Materials.Strontium,
-            Materials.StyreneButadieneRubber, Materials.Sunnarium,
-            Materials.SuperconductorUEVBase, Materials.SuperconductorUIVBase,
-            Materials.SuperconductorUMVBase, Materials.TPVAlloy, Materials.Tantalum,
-            Materials.Tartarite, Materials.Tellurium, Materials.TengamAttuned,
-            Materials.TengamPurified, Materials.Terbium, Materials.Terrasteel,
-            Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
-            Materials.Tetranaquadahdiindiumhexaplatiumosminid, Materials.Thaumium,
-            Materials.Thorium, Materials.Thulium, Materials.Tin,
-            Materials.TinAlloy, Materials.Titanium,
-            Materials.Titaniumonabariumdecacoppereikosaoxid, Materials.TranscendentMetal,
-            Materials.Trinium, Materials.Tritanium, Materials.Tungsten,
-            Materials.TungstenCarbide, Materials.TungstenSteel, Materials.Ultimet,
-            Materials.Universium, Materials.Uranium, Materials.Uranium235,
-            Materials.Uraniumtriplatinid, Materials.Vanadium,
-            Materials.VanadiumGallium, Materials.VanadiumSteel,
-            Materials.Vanadiumtriindinid, Materials.VibrantAlloy, Materials.Vinteum,
-            Materials.VividAlloy, Materials.Void, Materials.Vulcanite,
-            Materials.Vyroxeres, Materials.WhiteDwarfMatter, Materials.Wood,
-            Materials.WoodSealed, Materials.Ytterbium, Materials.Yttrium,
-            Materials.YttriumBariumCuprate, Materials.Zinc, Materials.exohalkonite,
-            Materials.hotexohalkonite, Materials.hotprotohalkonite,
-            Materials.prismaticnaquadah, Materials.protohalkonite };
-    }
-    // spotless:on
-
-    private static void applyFrames() {
-        for (Material material : frameMaterials()) {
-            edit(material).generateShape(PipeShapes.frameGt);
-        }
-        // HSLA's frame recipe requires RotaryCraft, so it is generated here instead of through frameMaterials().
+    /// HSLA's frame is the one row that cannot be a `generateShape` on the material's own declaration: it
+    /// exists only when RotaryCraft supplies the recipe, and a builder chain cannot be conditional. Every
+    /// other frame and sheetmetal membership is declared in [Materials].
+    private static void applyModGatedFrames() {
         if (Mods.RotaryCraft.isModLoaded()) {
             edit(Materials.HSLA).generateShape(PipeShapes.frameGt);
-        }
-    }
-
-    // spotless:off
-    /// gtPlusPlus's frame membership: every material reached by `MaterialGenerator.generate`'s solid-state,
-    /// non-radioactive gate. `TungstenCarbide` is deliberately absent -- it is built through
-    /// `MaterialUtils#generateMaterialFromGtENUM`, which never runs that gate. The entry that suggests
-    /// otherwise comes from `Material#getComponentByPrefix` caching a resolved MaterialLib stack after a
-    /// `getFrameBox()` recipe read, not from a real frame-block construction.
-    public static Material[] gtppFrameMaterials() {
-        return new Material[] {
-            Materials.AbyssalAlloy, Materials.Arcanite, Materials.ArceusAlloy2B,
-            Materials.AstralTitanium, Materials.BlackMetal, Materials.BloodSteel,
-            Materials.Botmium, Materials.CelestialTungsten, Materials.ChromaticGlass,
-            Materials.CinobiteA243, Materials.Dragonblood, Materials.EglinSteel,
-            Materials.EnergyCrystal, Materials.Germanium, Materials.Grisium,
-            Materials.HS188A, Materials.HastelloyC276, Materials.HastelloyN,
-            Materials.HastelloyW, Materials.HastelloyX, Materials.HeLiCoPtEr,
-            Materials.Hypogen, Materials.Incoloy020, Materials.IncoloyDS,
-            Materials.IncoloyMA956, Materials.Inconel625, Materials.Inconel690,
-            Materials.Inconel792, Materials.Iodine, Materials.LafiumCompound,
-            Materials.Laurenium, Materials.MaragingSteel250, Materials.MaragingSteel300,
-            Materials.MaragingSteel350, Materials.NiobiumCarbide, Materials.Nitinol60,
-            Materials.Octiron, Materials.Pikyonium64B, Materials.Potin,
-            Materials.Quantum, Materials.Rhenium, Materials.Selenium,
-            Materials.SiliconCarbide, Materials.Staballoy, Materials.Stellite,
-            Materials.Talonite, Materials.Tantalloy60, Materials.Tantalloy61,
-            Materials.TantalumCarbide, Materials.Thallium, Materials.Titansteel,
-            Materials.TriniumNaquadahCarbonite, Materials.TriniumTitaniumAlloy, Materials.Tumbaga,
-            Materials.TungstenTitaniumCarbide, Materials.WatertightSteel, Materials.Zeron100,
-            Materials.ZirconiumCarbide };
-    }
-    // spotless:on
-
-    private static void applyGtppFrame() {
-        for (Material material : gtppFrameMaterials()) {
-            edit(material).generateShape(PipeShapes.frameGt);
-        }
-    }
-
-    // spotless:off
-    /// Bartworks-backed frame and sheetmetal membership. The two sets are identical for bartworks-backed
-    /// materials, so one declared list serves both shapes.
-    public static Material[] werkstoffFrameAndSheetmetalMaterials() {
-        return new Material[] {
-            Materials.Ruthenium, Materials.Rhodium, Materials.RhodiumPlatedPalladium,
-            Materials.Tiberium, Materials.Ruridit,
-            Materials.HighDurabilityCompoundSteel, Materials.AdemicSteel,
-            Materials.AtomicSeparationCatalyst, Materials.ExtremelyUnstableNaquadah,
-            Materials.Zircaloy4, Materials.Zircaloy2, Materials.Incoloy903,
-            Materials.AdamantiumAlloy, Materials.MARM200Steel,
-            Materials.MARCeM200Steel, Materials.Signalium, Materials.Lumiium,
-            Materials.ArtheriumSn, Materials.TanmolyiumBetaC, Materials.Dalisenite,
-            Materials.Hikarium, Materials.Tairitsu, Materials.PreciousMetalsAlloy,
-            Materials.EnrichedNaquadahAlloy, Materials.MetastableOganesson,
-            Materials.Shirabon, Materials.Mumetal };
-    }
-    // spotless:on
-
-    private static void applyWerkstoffFrameAndSheetmetal() {
-        for (Material material : werkstoffFrameAndSheetmetalMaterials()) {
-            edit(material).generateShape(PipeShapes.frameGt)
-                .generateShape(BlockShapes.sheetmetal);
-        }
-    }
-
-    // spotless:off
-    /// Native GT sheetmetal membership: every legacy material pinned by the legacy dump's `generatedPrefixes`
-    /// ground truth, i.e. every generated legacy material that passed the legacy sheetmetal generation
-    /// predicate. Declared rather than derived for the same reason as [#frameMaterials].
-    public static Material[] sheetmetalMaterials() {
-        return new Material[] {
-            Materials.Lithium, Materials.Beryllium, Materials.Magnesium,
-            Materials.Aluminium, Materials.Silicon, Materials.Potassium,
-            Materials.Scandium, Materials.Titanium, Materials.Vanadium,
-            Materials.Chrome, Materials.Manganese, Materials.Iron,
-            Materials.Cobalt, Materials.Nickel, Materials.Copper,
-            Materials.Zinc, Materials.Gallium, Materials.Arsenic,
-            Materials.Rubidium, Materials.Strontium, Materials.Yttrium,
-            Materials.Niobium, Materials.Molybdenum, Materials.Palladium,
-            Materials.Silver, Materials.Indium, Materials.Tin,
-            Materials.Antimony, Materials.Tellurium, Materials.Caesium,
-            Materials.Barium, Materials.Lanthanum, Materials.Cerium,
-            Materials.Praseodymium, Materials.Neodymium, Materials.Promethium,
-            Materials.Samarium, Materials.Europium, Materials.Gadolinium,
-            Materials.Terbium, Materials.Dysprosium, Materials.Holmium,
-            Materials.Erbium, Materials.Thulium, Materials.Ytterbium,
-            Materials.Lutetium, Materials.Tantalum, Materials.Tungsten,
-            Materials.Osmium, Materials.Iridium, Materials.Platinum,
-            Materials.Gold, Materials.Lead, Materials.Bismuth,
-            Materials.Thorium, Materials.Uranium235, Materials.Uranium,
-            Materials.Plutonium, Materials.Plutonium241, Materials.Americium,
-            Materials.TengamPurified, Materials.TengamAttuned,
-            Materials.HellishMetal, Materials.Neutronium,
-            Materials.SuperconductorUIVBase, Materials.SuperconductorUMVBase,
-            Materials.SixPhasedCopper, Materials.Mellion, Materials.Creon,
-            Materials.prismaticnaquadah, Materials.Shijima, Materials.Churitsu,
-            Materials.Manasteel, Materials.Terrasteel, Materials.ElvenElementium,
-            Materials.Bronze, Materials.Brass, Materials.Invar,
-            Materials.Electrum, Materials.CastIron, Materials.Steel,
-            Materials.StainlessSteel, Materials.PigIron, Materials.RedAlloy,
-            Materials.BlueAlloy, Materials.Cupronickel, Materials.Nichrome,
-            Materials.Kanthal, Materials.Magnalium, Materials.SolderingAlloy,
-            Materials.BatteryAlloy, Materials.TungstenSteel, Materials.Osmiridium,
-            Materials.Sunnarium, Materials.Adamantium, Materials.ElectrumFlux,
-            Materials.Enderium, Materials.InfusedGold, Materials.Naquadah,
-            Materials.NaquadahAlloy, Materials.NaquadahEnriched, Materials.Naquadria,
-            Materials.Duranium, Materials.Tritanium, Materials.Thaumium,
-            Materials.Mithril, Materials.AstralSilver, Materials.BlackSteel,
-            Materials.DamascusSteel, Materials.ShadowIron, Materials.ShadowSteel,
-            Materials.IronWood, Materials.Steeleaf, Materials.MeteoricIron,
-            Materials.MeteoricSteel, Materials.DarkIron, Materials.CobaltBrass,
-            Materials.Ultimet, Materials.AnnealedCopper, Materials.FierySteel,
-            Materials.RedSteel, Materials.BlueSteel, Materials.SterlingSilver,
-            Materials.RoseGold, Materials.BlackBronze, Materials.BismuthBronze,
-            Materials.IronMagnetic, Materials.SteelMagnetic,
-            Materials.NeodymiumMagnetic, Materials.VanadiumGallium,
-            Materials.YttriumBariumCuprate, Materials.NiobiumNitride,
-            Materials.NiobiumTitanium, Materials.ChromiumDioxide,
-            Materials.Knightmetal, Materials.TinAlloy, Materials.EnergeticAlloy,
-            Materials.VibrantAlloy, Materials.Shadow, Materials.TungstenCarbide,
-            Materials.VanadiumSteel, Materials.HSSG, Materials.HSSE,
-            Materials.HSSS, Materials.Soularium, Materials.EnderiumBase,
-            Materials.Ardite, Materials.Reinforced, Materials.Galgadorian,
-            Materials.EnhancedGalgadorian, Materials.Manyullyn, Materials.Mytryl,
-            Materials.BlackPlutonium, Materials.CallistoIce, Materials.Ledox,
-            Materials.Quantium, Materials.Duralumin, Materials.Oriharukon,
-            Materials.InfinityCatalyst, Materials.Infinity,
-            Materials.MysteriousCrystal, Materials.SamariumMagnetic,
-            Materials.Alumite, Materials.EndSteel, Materials.CrudeSteel,
-            Materials.CrystallineAlloy, Materials.MelodicAlloy,
-            Materials.EnergeticSilver, Materials.VividAlloy, Materials.Alduorite,
-            Materials.Rubracium, Materials.Vulcanite, Materials.Force,
-            Materials.Vinteum, Materials.TPVAlloy, Materials.TranscendentMetal,
-            Materials.EnrichedHolmium, Materials.BlackDwarfMatter,
-            Materials.SpaceTime, Materials.NickelZincFerrite, Materials.HeeEndium,
-            Materials.NickelAluminide, Materials.DeepIron,
-            Materials.SiliconSolarGrade, Materials.Trinium, Materials.Desh,
-            Materials.Chrysotile, Materials.Realgar, Materials.Vyroxeres,
-            Materials.Ceruclase, Materials.Tartarite, Materials.Orichalcum,
-            Materials.Void, Materials.SuperconductorUEVBase,
-            Materials.BloodInfusedIron, Materials.GalliumArsenide,
-            Materials.IndiumGalliumPhosphide, Materials.FleroviumGT5U,
-            Materials.Longasssuperconductornameforuhvwire,
-            Materials.Longasssuperconductornameforuvwire,
-            Materials.Pentacadmiummagnesiumhexaoxid,
-            Materials.Titaniumonabariumdecacoppereikosaoxid, Materials.Uraniumtriplatinid,
-            Materials.Vanadiumtriindinid,
-            Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
-            Materials.Tetranaquadahdiindiumhexaplatiumosminid };
-    }
-    // spotless:on
-
-    private static void applySheetmetal() {
-        for (Material material : sheetmetalMaterials()) {
-            edit(material).generateShape(BlockShapes.sheetmetal);
         }
     }
 

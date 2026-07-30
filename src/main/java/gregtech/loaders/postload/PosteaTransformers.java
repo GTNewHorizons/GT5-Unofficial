@@ -33,7 +33,6 @@ import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.OreShapes;
-import gregtech.api.enums.materials.PipeMaterials;
 import gregtech.api.enums.materials.PipeShapes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.items.MetaGeneratedItemX32;
@@ -208,12 +207,12 @@ public class PosteaTransformers implements Runnable {
     /// (`miscutils:blockFrameGt<Name>`, one distinct registered block per material at meta 0) into the
     /// equivalent MaterialLib `frameGt` shape stack. Unlike every metadata-keyed legacy part, the material is
     /// fixed by which registry name is being migrated rather than by a damage value, so each of
-    /// [PipeMaterials#gtppFrameMaterials]'s materials gets its own registration instead of sharing
+    /// [GtppFrameCutoverTable]'s materials gets its own registration instead of sharing
     /// one metadata-keyed handler. `addSimpleReplacement`'s block+meta overload registers a matching item
     /// replacement automatically, so no separate item-side call is needed. A material whose frame shape did
     /// not generate is left on its legacy slot.
     private static void registerGtppFrameCutoverTransformers() {
-        Material[] materials = PipeMaterials.gtppFrameMaterials();
+        Material[] materials = GtppFrameCutoverTable.materials();
         int count = 0;
         for (Material material : materials) {
             if (!material.hasShape(PipeShapes.frameGt)) continue;
