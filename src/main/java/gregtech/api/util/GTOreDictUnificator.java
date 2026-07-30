@@ -45,6 +45,12 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 /// own shapes back, but not the second and not for names it does not back, so this stays. It is the index
 /// that lets [GTRecipeRegistrator] generate recycling for other mods' items; see [ItemData].
 ///
+/// This class is the single ore-dictionary unification authority in a pack that ships both mods. MaterialLib's
+/// unificator answers for a strictly narrower set of names and knows nothing of the material associations the
+/// recycling and recipe-lookup paths here depend on, so it ships disabled (`unifyOreDict=false`) and nothing
+/// here consults it. Turning it back on would create a second authority over the same slots with neither
+/// consulting the other.
+///
 /// Keyed by [OrePrefixes] throughout, because an association starts from an ore-dictionary name. That is the
 /// permanent shape of this class, not a step toward being keyed by
 /// [com.ruling_0.materiallib.api.Shape] -- see [OrePrefixes]'s class javadoc for why the two spaces are not

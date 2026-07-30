@@ -14,8 +14,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialUtils;
 
-/// Reproduces the retired gtPlusPlus `RecipeGenAlloySmelter` for every material in [#ELIGIBLE]: the
-/// ingot-to-nugget, ingot-to-gear, and nugget-to-ingot alloy smelter conversions.
+/// The ingot-to-nugget, ingot-to-gear, and nugget-to-ingot alloy smelter conversions, for every material in
+/// [#ELIGIBLE].
 ///
 /// [#run] is called from `CompatHandler#startLoadingGregAPIBasedRecipes` -- see
 /// [ProcessingDustGeneration]'s class javadoc for why that timing matters.
@@ -23,10 +23,8 @@ public class ProcessingAlloySmelterGtpp {
 
     private ProcessingAlloySmelterGtpp() {}
 
-    /// Every material the retired `RecipeGenAlloySmelter` reached: `MaterialGenerator#generate` (any
-    /// `generateEverything` value) or `#generateOreMaterialWithAllExcessComponents`, both of which construct
-    /// it unconditionally -- excluding a `PURE_GAS`/`PURE_LIQUID`-state material, since `generate` returns
-    /// before constructing it for those two states (`Bromine`, `Krypton`).
+    /// The frozen set of materials this pass covers. Notably excludes the pure-gas and pure-liquid materials
+    /// (`Bromine`, `Krypton`).
     // spotless:off
     private static final Set<Material> ELIGIBLE = Set.of(
         Materials.Selenium, Materials.Iodine, Materials.Rhenium,

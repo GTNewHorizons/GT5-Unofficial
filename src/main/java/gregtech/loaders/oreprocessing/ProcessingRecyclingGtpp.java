@@ -24,9 +24,9 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTUtility;
 
-/// Reproduces the retired gtPlusPlus `RecipeGenRecycling` for every material in [#ELIGIBLE]: for every
-/// [#PREFIXES] shape the material carries, a macerator recipe into the best-fitting dust size, a universal arc
-/// furnace recipe into ingot or nugget, and a fluid extractor recipe into the material's own fluid.
+/// For every [#PREFIXES] shape a material in [#ELIGIBLE] carries: a macerator recipe into the best-fitting
+/// dust size, a universal arc furnace recipe into ingot or nugget, and a fluid extractor recipe into the
+/// material's own fluid.
 ///
 /// [#materialFluid] resolves the fluid extractor output by name ([MaterialFluidNames]
 /// ->
@@ -41,13 +41,10 @@ public class ProcessingRecyclingGtpp {
 
     private ProcessingRecyclingGtpp() {}
 
-    /// Every material the retired `RecipeGenRecycling` reached: `MaterialGenerator#generate` (any
-    /// `generateEverything` value), `#generateOreMaterialWithAllExcessComponents`, or
-    /// `#generateNuclearMaterial`/`#generateNuclearDusts` (which construct it unconditionally) -- excluding a
-    /// `PURE_GAS`/`PURE_LIQUID`-state material reached only through `generate`, since it returns before
-    /// constructing this generator for those two states (`Bromine`, `Krypton`). Membership here does not by
-    /// itself mean a recipe registers -- see [#generate]'s runtime state gate, which also excludes several
-    /// `PURE_LIQUID`/`GAS`-state nuclear materials reached through the unconditional nuclear path.
+    /// The frozen set of materials this pass covers -- nuclear materials included. Notably excludes the
+    /// pure-gas and pure-liquid materials (`Bromine`, `Krypton`). Membership does not by itself mean a recipe
+    /// registers -- see [#generate]'s runtime state gate, which also excludes several pure-liquid and gas
+    /// nuclear materials.
     // spotless:off
     private static final Set<Material> ELIGIBLE = Set.of(
         Materials.Selenium, Materials.Iodine, Materials.Rhenium,
@@ -84,9 +81,8 @@ public class ProcessingRecyclingGtpp {
         Materials.LFTRFuel3);
     // spotless:on
 
-    /// The retired generator's exact prefix scan order, minus `ingotHot`: every material in [#ELIGIBLE] is
-    /// solid or liquid by the time it reaches [#generate]'s state gate, and the retired generator skipped
-    /// `ingotHot` unconditionally regardless of whether it resolved.
+    /// The frozen prefix scan order. `ingotHot` is deliberately absent: it never gets a recycling recipe
+    /// here, whether or not the material carries the shape.
     // spotless:off
     private static final OrePrefixes[] PREFIXES = { OrePrefixes.ingot, OrePrefixes.nugget, OrePrefixes.plate,
         OrePrefixes.plateDense, OrePrefixes.plateDouble, OrePrefixes.plateTriple, OrePrefixes.plateQuadruple,
@@ -188,7 +184,7 @@ public class ProcessingRecyclingGtpp {
     }
 
     /// The best dust size resolving `materialAmount`/[GTValues#M] units of `material` without a remainder,
-    /// preferring `dust`, then `dustSmall`, then `dustTiny` -- the retired `RecipeGenRecycling#getDust`.
+    /// preferring `dust`, then `dustSmall`, then `dustTiny`.
     private static ItemStack recycledDust(Material material, long materialAmount) {
         if (materialAmount <= 0) return null;
         ItemStack stack = null;

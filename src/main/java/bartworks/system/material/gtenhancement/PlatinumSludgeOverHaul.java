@@ -1358,7 +1358,7 @@ public class PlatinumSludgeOverHaul {
     /// `BlockBaseModular` stacks that the bartworks-modid check above (`WERKSTOFF_IDS`) and the gtpp-material
     /// association check below (`GTPP_STATE`) blacklisted wholesale. Blacklisting it keeps this overhaul
     /// sparing the lossless block-to-dust storage cycle (macerating a compressed Ruthenium/Rhodium/gtPlusPlus-
-    /// material block returns its own dust), exactly as it did pre-cutover. Deliberately narrow: a material's
+    /// material block returns its own dust). Deliberately narrow: a material's
     /// other MaterialLib stacks (ore, crushed, dust, ...) stay subject to the overhaul the same way GT-modid
     /// inputs always were.
     private static boolean isCutOverStorageBlock(ItemStack stack) {

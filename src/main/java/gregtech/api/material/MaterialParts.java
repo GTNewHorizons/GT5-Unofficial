@@ -54,9 +54,6 @@ public class MaterialParts {
     /// material whose single fluid claimed the molten shape rather than a liquid or gas slot holds its cell
     /// only under `cellMolten`. Null when the material carries neither, or is itself null.
     ///
-    /// This exists for the callers resolving an arbitrary material at runtime -- a save-migration table row, a
-    /// composition component. A caller that knows its material statically names the shape and calls
-    /// [MaterialLibAPI#getStack] directly, so the recipe says which of the two items it means.
     /// [gregtech.loaders.oreprocessing.ProcessingDustGeneration#stackOf]'s ore-dictionary fallback is
     /// deliberately not used here: for a material with no plain `cell` shape it resolves the legacy gtPlusPlus
     /// cell item rather than `cellMolten`.
@@ -91,13 +88,9 @@ public class MaterialParts {
         return shapes == null ? Collections.emptyList() : shapes;
     }
 
-    /// The MaterialLib stack backing a legacy (prefix, material) pair, or **null when the pair has no
-    /// MaterialLib backing** -- either the prefix declares no shape at all (a container or tool prefix outside
-    /// the cutover) or this particular material generates none of the prefix's candidate shapes. Null is a
-    /// normal answer, not a fault: every caller reaching here holds a prefix that arrived at runtime and has a
-    /// defined legacy behaviour for the un-backed case (skip the migration, fall back to the unificator, keep
-    /// the legacy block). A caller holding a [Shape] statically calls [MaterialLibAPI#getStack] instead and
-    /// lets a wrong pair throw.
+    /// The MaterialLib stack backing a legacy (prefix, material) pair, or null when the pair has no
+    /// MaterialLib backing -- either the prefix declares no shape at all, or this particular material generates
+    /// none of the prefix's candidate shapes.
     ///
     /// When a prefix maps to more than one candidate shape (`cellPlasma`, `pipeTiny`..`pipeHuge`), the first
     /// one `material` generates wins; [#shapes] exposes the full candidate list.
@@ -112,12 +105,9 @@ public class MaterialParts {
     }
 
     /// Whether a (prefix, material) pair has a MaterialLib equivalent (see [#stack]). Unlike [#shape], which
-    /// answers whether a prefix has cut over at all, this answers per material -- needed because a
-    /// fluid-in-container shape's membership does not always mirror every material with a real legacy slot: a
-    /// material can hold a legacy `cell` item generated purely from its `CELL` capability flag while never
-    /// having a fluid to put in it (MaterialLib's container contract requires a material to also generate one
-    /// of the container's fluid shapes, so such a material is left off `cell`'s membership and keeps its
-    /// legacy item instead). Legacy construction code should skip a (prefix, material) pair exactly when this
+    /// answers whether a prefix has cut over at all, this answers per material: a material can hold a legacy
+    /// `cell` item generated from its `CELL` capability flag while never having a fluid to put in it, which
+    /// leaves it off `cell`'s MaterialLib membership. Legacy construction code skips a pair exactly when this
     /// is true, not merely when [#shape] is non-null.
     public static boolean isCutOver(OrePrefixes prefix, @Nullable Material material) {
         if (prefix == null || material == null) return false;
@@ -137,15 +127,11 @@ public class MaterialParts {
         return association != null && association.mMaterial.mMaterial == material;
     }
 
-    /// The crafting-table ingredient for `prefix` and `material`, built directly from the MaterialLib
-    /// [Material]. Returns the [ItemData] that [gregtech.api.util.GTModHandler#addCraftingRecipe] resolves
-    /// to an ore-dictionary name (through [ItemData#toString]) so the ingredient still accepts any matching
-    /// item, while also carrying the material association that drives a reversible recipe's auto-generated
-    /// recycling recipes. A bare ore-dictionary [String] ingredient supplies only the name, not that
-    /// association, so a reversible recipe built from one silently loses its recycling; this preserves
-    /// both. Null when `prefix` or `material` is null. Callers whose ingredient should not carry a
-    /// material association -- e.g. a marker material such as a superconductor wire that unifies under its
-    /// own name without being composed of it -- use [#namedIngredient] instead.
+    /// The crafting-table ingredient for `prefix` and `material`. The returned [ItemData] resolves to an
+    /// ore-dictionary name through [ItemData#toString], so the ingredient accepts any matching item, and also
+    /// carries the material association a reversible recipe's auto-generated recycling needs -- a bare
+    /// ore-dictionary [String] ingredient would supply the name but not the association. Null when `prefix` or
+    /// `material` is null. Use [#namedIngredient] for an ingredient that must not carry an association.
     public static @Nullable ItemData craftIngredient(OrePrefixes prefix, @Nullable Material material) {
         return prefix == null || material == null ? null : new ItemData(prefix, material);
     }

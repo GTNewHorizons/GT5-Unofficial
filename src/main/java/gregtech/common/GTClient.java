@@ -98,7 +98,7 @@ import gregtech.client.BlockOverlayRenderer;
 import gregtech.client.GTMouseEventHandler;
 import gregtech.client.GTPowerfailRenderer;
 import gregtech.client.GTWorkAreaRenderer;
-import gregtech.client.Materials2FormulaTooltip;
+import gregtech.client.MaterialFormulaTooltip;
 import gregtech.client.SeekingOggCodec;
 import gregtech.client.handler.AnimatedBlockTextureHandler;
 import gregtech.client.handler.CondensateAnimationTickHandler;
@@ -289,7 +289,7 @@ public class GTClient extends GTProxy {
         MinecraftForge.EVENT_BUS.register(mPollutionRenderer);
         FMLCommonHandler.instance().bus().register(mPollutionRenderer);
         MinecraftForge.EVENT_BUS.register(new GTMouseEventHandler());
-        MinecraftForge.EVENT_BUS.register(new Materials2FormulaTooltip());
+        MinecraftForge.EVENT_BUS.register(new MaterialFormulaTooltip());
         MinecraftForge.EVENT_BUS.register(new BlockOverlayRenderer());
         MinecraftForge.EVENT_BUS.register(new MTEDebugStructureWriter.EventHandler());
         MinecraftForge.EVENT_BUS.register(new GTWorkAreaRenderer());

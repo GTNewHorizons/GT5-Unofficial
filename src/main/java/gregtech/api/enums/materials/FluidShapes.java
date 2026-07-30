@@ -17,10 +17,9 @@ import gregtech.api.material.FluidRef;
 /// (solid/fluid/gas/plasma/molten) plus the six cracked-fluid slots. Each needs its own [FluidRef] extractor
 /// rather than a uniform mapping.
 ///
-/// Each shape's `FluidNamer` returns the exact legacy dumped fluid name and its `FluidConfigurer` reproduces
-/// `GTFluid#configureFromStateTemperature`'s temperature/gaseous/density/viscosity/luminosity attributes, so a
-/// material's fluid keeps its pre-cutover Forge registry name and behavior byte-identical -- fluid stacks
-/// persist in world NBT by name.
+/// Each shape's `FluidNamer` returns the material's frozen Forge registry name and its `FluidConfigurer`
+/// supplies the matching temperature/gaseous/density/viscosity/luminosity attributes. The names are frozen
+/// because fluid stacks persist in world NBT by name.
 public class FluidShapes {
 
     // spotless:off

@@ -1915,13 +1915,6 @@ public class GTProxy implements IFuelHandler {
                                             return;
                                         }
                                     }
-                                    // GT_FML_LOGGER.info("Material Name: "+aEvent.Name+ "
-                                    // !!!Unknown Material detected!!! Please report to GregTech Intergalactical for
-                                    // additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is
-                                    // just
-                                    // an Information, which you should pass to me.");
-                                    // GTLog.ore.println(tModToName + " uses an unknown
-                                    // Material. Report this to GregTech.");
                                     return;
                                 }
                             }
@@ -2007,9 +2000,7 @@ public class GTProxy implements IFuelHandler {
     }
 
     /// Whether a recognition marker is both unifiable and CRYSTALLISABLE (only `Fluix`; a marker carries no
-    /// composition of its own, so no other marker routes into the census). Shared by [#resolveCensusMaterial]
-    /// and the [OreDictEventContainer] construction in [#registerOre], which both need to agree on when a
-    /// registration's census is marker-driven.
+    /// composition of its own, so no other marker routes into the census).
     private static boolean isCensusMarker(Material recognitionMarker) {
         return recognitionMarker != null && MaterialUtils.unifiable(recognitionMarker)
             && MaterialUtils.hasFlag(recognitionMarker, GTMaterialFlag.CRYSTALLISABLE);
@@ -2019,14 +2010,13 @@ public class GTProxy implements IFuelHandler {
     /// [OreDictEventContainer] census and [#registerUnificationEntries]) -- for a recognition marker that
     /// [#isCensusMarker], that marker's own backing; otherwise resolved ML-registry-first, by the same raw
     /// name [#registerOre] already stripped the prefix down to (`tName`), falling back to `aMaterial` (the
-    /// [LegacyNameDomain#lookup] result, null when unresolved -- a null resolves to the `NULL` placeholder
-    /// material) when the registry has nothing under that exact name, or when `tName` is in the domain
-    /// [MaterialsDeclaredFieldsTable] freezes (see [#hasDeclaredMaterialsField]). The declared-name check
-    /// keeps this in lockstep with [#registerOre]'s own upstream `aMaterial` resolution: a name in that
-    /// domain returns exactly what [LegacyNameDomain#lookup] already resolved it to, rather than substituting
-    /// an independent registry hit under the same string. A name outside the domain resolves
-    /// ML-registry-first regardless, so a reconstructed werkstoff/gtpp material -- never a
-    /// [MaterialsDeclaredFieldsTable] entry -- keeps a census through the registry hit.
+    /// [LegacyNameDomain#lookup] result; a null resolves to the `NULL` placeholder material) when the registry
+    /// has nothing under that exact name, or when `tName` is one [MaterialsDeclaredFieldsTable] freezes.
+    ///
+    /// That declared-name check keeps this in lockstep with [#registerOre]'s own upstream `aMaterial`
+    /// resolution: a declared name returns exactly what [LegacyNameDomain#lookup] resolved it to rather than
+    /// substituting an independent registry hit under the same string, while a reconstructed werkstoff/gtpp
+    /// material -- never a declared name -- keeps its census through the registry hit.
     private static Material resolveCensusMaterial(@Nullable String tName, @Nullable Material aMaterial,
         Material recognitionMarker) {
         if (isCensusMarker(recognitionMarker)) {

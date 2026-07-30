@@ -7,42 +7,19 @@ import java.util.Map;
 import com.github.bsideup.jabel.Desugar;
 import com.ruling_0.materiallib.api.Material;
 
-/// gtPlusPlus's curated mixer-recipe composite table (component material + ratio parts), pinning the exact
-/// entries the retired `gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration` mixer generator emitted a
-/// recipe for: a material with 1-4 composites (the retired gtPlusPlus `Material#getComposites`), reduced to
-/// gtpp's smallest-ratio form (`gtPlusPlus.core.util.math.MathUtils#simplifyNumbersToSmallestForm`), reached
-/// through one of the construction paths that builds `RecipeGenDustGeneration` with `disableOptional=false` --
-/// `MaterialGenerator.generate`/`generateOreMaterialWithAllExcessComponents` (both construct it unconditionally),
-/// or `gtPlusPlus.core.util.minecraft.ItemUtils#generateSpecialUseDusts`/`gtPlusPlus.core.util.minecraft.
-/// MaterialUtils#generateSpecialDustAndAssignToAMaterial` called with mixer recipes left enabled (e.g.
-/// `WoodsGlass`, which reaches the mixer block through `ItemUtils#generateSpecialUseDusts` rather than
-/// `generate`). This is narrower than MaterialLib's own [gregtech.api.material.GTMaterialProperties#COMPOSITION],
-/// which records a material's chemical makeup -- a broader, differently-shaped dataset than the crafting ratio
-/// these recipes mix.
+/// The curated composite table gtPlusPlus-originated materials mix from: per material, 1-4 component
+/// materials and their ratio parts, already reduced to smallest-ratio form.
 ///
-/// A composite-bearing material reachable only through `generateNuclearDusts` (which always disables optional
-/// recipes, including the mixer block), `generateOreMaterial` (which never constructs
-/// `RecipeGenDustGeneration` at all), or the above `ItemUtils`/`MaterialUtils` helpers called with mixer
-/// recipes explicitly disabled, never reached the legacy mixer block, so it has no entry here despite
-/// superficially qualifying by composite count alone -- likewise a `PURE_LIQUID`/`PURE_GAS`-state material
-/// registered through `MaterialGenerator.generate` (which returns before constructing
-/// `RecipeGenDustGeneration` for those states), though that state check does not apply to a material reached
-/// through one of the other construction paths instead. `EglinSteelBaseCompound` is the one entry generated
-/// through `addMixerRecipe_Standalone` instead of the ordinary mixer block -- see
-/// [gregtech.loaders.oreprocessing.ProcessingMixerGtpp]'s circuit handling.
+/// This is a crafting ratio, not a chemical makeup, so it is a separate and narrower dataset from
+/// [gregtech.api.material.GTMaterialProperties#COMPOSITION] and is not derivable from it. The entry set is
+/// frozen: a material qualifies by being listed here, never by composite count or any other property.
 ///
-/// [gregtech.loaders.oreprocessing.ProcessingAlloyBlastSmelter] reuses these same ratios for the retired
-/// `gtPlusPlus.xmod.gregtech.loaders.RecipeGenBlastSmelter`'s composite-dust-to-molten-fluid recipe -- that
-/// generator read the identical `Material#getComposites`/`vSmallestRatio` fields the mixer did, so a shared
-/// entry's parts are valid for both consumers. Its own eligibility is neither a subset nor a superset of the
-/// mixer's: `BloodSteel`, `Nitinol60`, and `Botmium` are mixer-eligible entries the blast smelter's own
-/// material blacklist/`generateBlastSmelterRecipes=false` calls exclude, while `AbyssalAlloy`, `AncientGranite`,
-/// `ArceusAlloy2B`, `BlackTitanium`, `CinobiteA243`, `Grisium`, `HS188A`, `HastelloyC276`, `HastelloyN`,
-/// `HastelloyW`, `HastelloyX`, `HeLiCoPtEr`, `Inconel625`, `LafiumCompound`, `Laurenium`, `MaragingSteel250`,
-/// `MaragingSteel300`, `MaragingSteel350`, `Octiron`, `Pikyonium64B`, `Quantum`, `WatertightSteel`, and
-/// `Zeron100` are blast-smelter-eligible entries the mixer generator's own (undocumented, not reproduced here)
-/// filtering never reached. See [gregtech.loaders.oreprocessing.ProcessingAlloyBlastSmelter] for the blast
-/// smelter's own declared eligibility.
+/// Two consumers read it -- [gregtech.loaders.oreprocessing.ProcessingMixerGtpp] for the mixer recipe and
+/// [gregtech.loaders.oreprocessing.ProcessingAlloyBlastSmelter] for the composite-dust-to-molten-fluid recipe
+/// -- and each declares its own eligibility, which is neither a subset nor a superset of the other's. A shared
+/// entry's parts are valid for both. `EglinSteelBaseCompound` is the one entry the mixer builds standalone
+/// rather than through the ordinary mixer block; see [gregtech.loaders.oreprocessing.ProcessingMixerGtpp]'s
+/// circuit handling.
 public final class LegacyGTPPComposites {
 
     @Desugar

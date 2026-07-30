@@ -16,8 +16,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.SubstituteFluidStack;
 
-/// Reproduces the retired gtPlusPlus `RecipeGenAssembler` for every material in [#ELIGIBLE]: the rod-to-frame
-/// and plate/ring-to-rotor assembler recipes.
+/// The rod-to-frame and plate/ring-to-rotor assembler recipes, for every material in [#ELIGIBLE].
 ///
 /// [#run] is called from `CompatHandler#startLoadingGregAPIBasedRecipes` -- see
 /// [ProcessingDustGeneration]'s class javadoc for why that timing matters.
@@ -25,11 +24,8 @@ public class ProcessingAssemblerGtpp {
 
     private ProcessingAssemblerGtpp() {}
 
-    /// Every material the retired `RecipeGenAssembler` reached: `MaterialGenerator#generate` (any
-    /// `generateEverything` value) or `#generateOreMaterialWithAllExcessComponents`, both of which construct
-    /// it unconditionally -- excluding a `PURE_GAS`/`PURE_LIQUID`-state material, since `generate` returns
-    /// before constructing it for those two states (`Bromine`, `Krypton`). No `generateNuclearMaterial` call
-    /// ever passes `generatePlates=true`, the only path that would have added a nuclear material here too.
+    /// The frozen set of materials this pass covers. Notably excludes the pure-gas and pure-liquid materials
+    /// (`Bromine`, `Krypton`) and every nuclear material.
     // spotless:off
     private static final Set<Material> ELIGIBLE = Set.of(
         Materials.Selenium, Materials.Iodine, Materials.Rhenium,

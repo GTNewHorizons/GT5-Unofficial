@@ -205,8 +205,7 @@ public class PosteaTransformers implements Runnable {
     }
 
     /// Migrates saved placed blocks and inventory stacks of a gtPlusPlus per-material frame block
-    /// (`miscutils:blockFrameGt<Name>`, one distinct registered block per material at meta 0, retired
-    /// alongside `gtPlusPlus.core.block.base.BlockBaseModular`'s `BlockTypes.FRAME` construction) into the
+    /// (`miscutils:blockFrameGt<Name>`, one distinct registered block per material at meta 0) into the
     /// equivalent MaterialLib `frameGt` shape stack. Unlike every metadata-keyed legacy part, the material is
     /// fixed by which registry name is being migrated rather than by a damage value, so each of
     /// [PipeMaterials#gtppFrameMaterials]'s materials gets its own registration instead of sharing

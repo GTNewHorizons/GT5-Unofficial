@@ -19,10 +19,8 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialUtils;
 
-/// Reproduces the retired gtPlusPlus `MaterialGenerator#generateNuclearDusts`'s chemical-dehydrator recipe (a
-/// material's own fluid dehydrating back into its dust) for every material in [#ELIGIBLE], plus the one
-/// hand-written `FluoriteF` acid-leach dehydrator recipe `MaterialGenerator#generateOreMaterial` carried
-/// alongside it.
+/// The chemical-dehydrator recipe turning a nuclear material's own fluid back into its dust, for every
+/// material in [#ELIGIBLE], plus the one hand-written `FluoriteF` acid-leach dehydrator recipe.
 ///
 /// [#run] is called from `CompatHandler#startLoadingGregAPIBasedRecipes` -- see
 /// [ProcessingDustGeneration]'s class javadoc for why that timing matters.
@@ -30,11 +28,9 @@ public class ProcessingNuclearDehydratorGtpp {
 
     private ProcessingNuclearDehydratorGtpp() {}
 
-    /// Every material `generateNuclearDusts` reached with its `generateDehydratorRecipe` parameter left at the
-    /// default `true` (`ModItems#runMaterialGenerator`): `UraniumTetrafluoride`/`UraniumHexafluoride` passed
-    /// `false` there and are excluded, and `ZirconiumTetrafluoride` -- also left at the default -- is excluded
-    /// too, since its fluid registration ran after this recipe's `matInfo.getFluid() != null` gate in the
-    /// retired call order, so gtpp itself never actually registered a recipe for it.
+    /// The frozen set of materials that get a dehydrator recipe. `UraniumTetrafluoride`,
+    /// `UraniumHexafluoride`, and `ZirconiumTetrafluoride` are deliberately excluded despite otherwise
+    /// qualifying.
     // spotless:off
     private static final Set<Material> ELIGIBLE = Set.of(
         Materials.AmmoniumBifluoride, Materials.BerylliumHydroxide,

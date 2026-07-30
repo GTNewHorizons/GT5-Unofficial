@@ -13,9 +13,8 @@ import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 
-/// Reproduces the retired gtPlusPlus `RecipeGenShapedCrafting` for every material in [#ELIGIBLE]: the
-/// crafting-table shape conversions (plate, double plate, ring, frame box, bolt, fine wire, foil, rod, long
-/// rod, rotor, gear, screw).
+/// The crafting-table shape conversions (plate, double plate, ring, frame box, bolt, fine wire, foil, rod,
+/// long rod, rotor, gear, screw), for every material in [#ELIGIBLE].
 ///
 /// [#run] is called from `CompatHandler#startLoadingGregAPIBasedRecipes` -- see
 /// [ProcessingDustGeneration]'s class javadoc for why that timing matters.
@@ -23,11 +22,9 @@ public class ProcessingShapedCraftingGtpp {
 
     private ProcessingShapedCraftingGtpp() {}
 
-    /// Every material the retired `RecipeGenShapedCrafting` reached: `MaterialGenerator#generate` (any
-    /// `generateEverything` value) or `#generateOreMaterialWithAllExcessComponents`, both of which construct
-    /// it unconditionally -- excluding a `PURE_GAS`/`PURE_LIQUID`-state material, since `generate` returns
-    /// before constructing it for those two states (`Bromine`, `Krypton`). Membership here does not by itself
-    /// mean a recipe registers -- see [#generate]'s runtime tier gate.
+    /// The frozen set of materials this pass covers. Notably excludes the pure-gas and pure-liquid materials
+    /// (`Bromine`, `Krypton`). Membership does not by itself mean a recipe registers -- see [#generate]'s
+    /// runtime tier gate.
     // spotless:off
     private static final Set<Material> ELIGIBLE = Set.of(
         Materials.Selenium, Materials.Iodine, Materials.Rhenium,

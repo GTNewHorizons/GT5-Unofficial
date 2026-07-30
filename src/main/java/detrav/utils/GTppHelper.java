@@ -17,9 +17,8 @@ public class GTppHelper {
     private static final HashMap<Short, Material> decodeoresGTpp = new HashMap<>();
     private static final HashMap<Material, Short> encodeoresGTpp = new HashMap<>();
 
-    /// The gtpp ore materials detrav's ore scanner assigns ids to, in the exact order the retired
-    /// `MaterialsOres` pool declared its fields -- detrav's external scanner keys ids by this order (see
-    /// [#generate_OreIDs]), so it must stay stable.
+    /// The gtpp ore materials detrav's ore scanner assigns ids to. The order is frozen: detrav's external
+    /// scanner keys ids by position in this array (see [#generate_OreIDs]).
     // spotless:off
     private static final Material[] ORE_IDS = {
         Materials.AgarditeCd, Materials.AgarditeLa, Materials.AgarditeNd,

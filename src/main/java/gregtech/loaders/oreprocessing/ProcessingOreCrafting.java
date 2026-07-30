@@ -17,28 +17,21 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.util.GTModHandler;
 
-/// Reproduces the retired gtPlusPlus `RecipeGenOre`'s crafting-table recipes for every material in [#ELIGIBLE]:
-/// the three hard-hammer shaped conversions (crushed/crushedPurified/crushedCentrifuged into their next dust
-/// stage without a machine) and the four dust/dustSmall/dustTiny size conversions [ProcessingDustGeneration]
-/// registers for its own, disjoint material list. [ProcessingOreMachine] covers the retired generator's
-/// machine recipes (macerator, ore-washer, thermal centrifuge, forge hammer, centrifuge,
-/// electrolyzer/chemical-dehydrator) -- these crafting-table ones have no canonical ore-autogen counterpart
-/// at all, machine or otherwise, and carry no byproduct of their own, so they were unaffected by that class's
-/// property-based approach failing the recipe census (see its class javadoc).
+/// The crafting-table ore recipes for every material in [#ELIGIBLE]: the three hard-hammer shaped conversions
+/// (crushed/crushedPurified/crushedCentrifuged into their next dust stage without a machine) and the four
+/// dust/dustSmall/dustTiny size conversions [ProcessingDustGeneration] registers for its own, disjoint
+/// material list. [ProcessingOreMachine] covers these minerals' machine recipes; the crafting-table ones here
+/// have no canonical ore-autogen counterpart and carry no byproduct of their own.
 ///
-/// [#run] is called from `CompatHandler#startLoadingGregAPIBasedRecipes`, the exact drain point the retired
-/// generator's own `run()` used (queued through the retired gtPlusPlus `MaterialGenerator#mRecipeMapsToGenerate`)
-/// -- see [ProcessingDustGeneration]'s class javadoc for why the timing matters. [#generateFluoriteChemicalBath]
-/// reproduces `RecipeGenOre`'s one material-specific recipe, gated there the same way (`material ==
-/// MaterialsFluorides.FLUORITE`) rather than through [#ELIGIBLE] membership.
+/// [#run] is called from `CompatHandler#startLoadingGregAPIBasedRecipes` -- see [ProcessingDustGeneration]'s
+/// class javadoc for why the timing matters. [#generateFluoriteChemicalBath] is the one material-specific
+/// recipe, gated on the material directly rather than through [#ELIGIBLE] membership.
 public class ProcessingOreCrafting {
 
     private ProcessingOreCrafting() {}
 
-    /// Every material the retired `RecipeGenOre` reached, through either `MaterialGenerator#generateOreMaterial`
-    /// or `#generateOreMaterialWithAllExcessComponents` -- unlike [ProcessingOreMachine]'s electrolyzer/
-    /// chemical-dehydrator eligibility, this crafting section ran unconditionally for both, so it is not split
-    /// by `disableOptional`.
+    /// The frozen set of materials this pass covers -- the union of [ProcessingOreMachine]'s two eligibility
+    /// sets, since these crafting recipes are not split the way its electrolyzer branch is.
     // spotless:off
     private static final Set<Material> ELIGIBLE = Set.of(
         Materials.AgarditeCd, Materials.AgarditeLa, Materials.AgarditeNd,

@@ -27,11 +27,9 @@ import gregtech.api.util.GTUtility;
 /// Forge `FluidContainerRegistry` registration. Dispatched once per cellMolten-generating material by
 /// [gregtech.loaders.shapeconsumers.ConsumerCellMolten].
 ///
-/// Ported from the retired bartworks `MoltenCellLoader`. Shape-to-molten extraction is not part of GregTech's
-/// own autogen (which only does the reverse, mold solidification of molten into ingot/plate/... -- that stays
-/// canonical); it was a werkstoff-only feature. Membership is therefore restricted to werkstoff-derived
-/// materials ([GTMaterialProperties#WERKSTOFF_IDS]) so the cutover neither drops it for the werkstoffe that
-/// carried it nor grants it to the gregtech/gtPlusPlus molten-cell materials that never had it.
+/// Shape-to-molten extraction is not part of GregTech's own autogen, which only does the reverse (mold
+/// solidification of molten into ingot/plate/...). Membership is restricted to werkstoff-derived materials
+/// ([GTMaterialProperties#WERKSTOFF_IDS]): the gregtech and gtPlusPlus molten-cell materials do not get it.
 public class ProcessingCellMolten implements IOreRecipeRegistrator {
 
     public static final ProcessingCellMolten INSTANCE = new ProcessingCellMolten();

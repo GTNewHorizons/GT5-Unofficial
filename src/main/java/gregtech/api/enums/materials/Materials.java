@@ -18,13 +18,12 @@ import gregtech.api.material.MaterialRef;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.api.util.CustomGlyphs;
 
-// One-time output of scripts/mu/gen_materials.py (RETIRED, see its module docstring); hand-maintained from here -- edit
-// this file directly.
+// Hand-maintained -- edit this file directly.
 /// The materials maintenance surface: one [Material] field per ported material (name matches the material's
 /// name where that is already a valid Java identifier, else a sanitized variant), then every material's
 /// complete declaration
 /// (tint, texture set, family membership, shape adds/removes, properties, fluids) as one contiguous statement run in
-/// `initPartN()` (split only to stay under the JVM's 64KB bytecode-per-method limit -- see `MATERIALS_PER_INIT_CHUNK`).
+/// `initPartN()` (split only to stay under the JVM's 64KB bytecode-per-method limit).
 public class Materials {
 
     // spotless:off

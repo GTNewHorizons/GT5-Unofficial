@@ -62,10 +62,9 @@ public class ProcessingOreMachine {
 
     private ProcessingOreMachine() {}
 
-    /// Every material the retired `RecipeGenOre` reached through `MaterialGenerator#generateOreMaterial`
-    /// (`disableOptional=false`) -- the electrolyzer/chemical-dehydrator branch in [#generate] runs only for
-    /// these. Together with [#ELIGIBLE_NO_OPTIONAL] this is the exact same 51-material union
-    /// [ProcessingOreCrafting#ELIGIBLE] declares for its own, disableOptional-independent, crafting recipes.
+    /// The frozen set whose members get the electrolyzer/chemical-dehydrator branch in [#generate]. Together
+    /// with [#ELIGIBLE_NO_OPTIONAL] this is the same 51-material union [ProcessingOreCrafting#ELIGIBLE]
+    /// declares for its own crafting recipes.
     // spotless:off
     private static final Set<Material> ELIGIBLE_STANDARD = Set.of(
         Materials.Crocoite, Materials.Geikielite, Materials.Nichromite,
@@ -87,9 +86,8 @@ public class ProcessingOreMachine {
         Materials.Koboldite);
     // spotless:on
 
-    /// Every material the retired `RecipeGenOre` reached through `MaterialGenerator
-    /// #generateOreMaterialWithAllExcessComponents` (`disableOptional=true`) -- everything in [#generate]
-    /// except the electrolyzer/chemical-dehydrator branch.
+    /// The frozen set whose members get everything in [#generate] except the electrolyzer/chemical-dehydrator
+    /// branch.
     private static final Set<Material> ELIGIBLE_NO_OPTIONAL = Set.of(Materials.AncientGranite, Materials.Runite);
 
     private static final Material mStone = Materials.Stone;
@@ -313,12 +311,10 @@ public class ProcessingOreMachine {
         }
     }
 
-    /// The retired generator's electrolyzer (`slots=6`)/chemical-dehydrator (`slots=9`) decomposition recipe:
-    /// one dust or empty-cell-filling item per composite part (a cell for a non-`SOLID` part -- the
-    /// dehydrator branch also counts `ORE` as solid, exactly as the retired generator did), all at 100% chance
-    /// (`GTValues.NI`'s null-replacement pass before the null-strip is a no-op -- `NI` is itself `null` --
-    /// reproduced anyway so this stays a literal port), input dust sized to the composition's GCD-reduced
-    /// total (falling back to the raw total, then skipping the recipe if neither resolves).
+    /// The electrolyzer (`slots=6`)/chemical-dehydrator (`slots=9`) decomposition recipe: one dust or
+    /// empty-cell-filling item per composite part (a cell for a non-`SOLID` part; the dehydrator branch counts
+    /// `ORE` as solid too), all at 100% chance, input dust sized to the composition's GCD-reduced total
+    /// (falling back to the raw total, then skipping the recipe if neither resolves).
     private static void registerDecomposition(Material material, ArrayList<Pair<Integer, Material>> componentMap,
         int slots, boolean dehydrator, int tVoltageMultiplier) {
         ItemStack[] mInternalOutputs = new ItemStack[slots];
@@ -470,12 +466,9 @@ public class ProcessingOreMachine {
         return "SOLID";
     }
 
-    /// The retired `Material#hasSolidForm()` predicate: a material counts as solid only when its `dust`,
-    /// `block`, `dustTiny`, and `dustSmall` shapes all resolve -- the exact conjunction
-    /// `ItemUtils#checkForInvalidItems` applied to `getDust`/`getBlock`/`getTinyDust`/`getSmallDust`, not a
-    /// [#gtppState] stand-in: a material can carry `GTPP_STATE == SOLID` while missing one of these four
-    /// shapes (or vice versa for a non-`SOLID` material that still carries all four), and the retired predicate
-    /// followed the shapes, not the state.
+    /// Whether a material counts as solid here: its `dust`, `block`, `dustTiny`, and `dustSmall` shapes must
+    /// all resolve. Deliberately not a [#gtppState] stand-in -- a material can carry `GTPP_STATE == SOLID`
+    /// while missing one of these four shapes, and vice versa, and these recipes follow the shapes.
     private static boolean hasSolidForm(Material material) {
         return ProcessingDustGeneration.stackOf(OrePrefixes.dust, material, 1) != null
             && ProcessingDustGeneration.stackOf(OrePrefixes.block, material, 1) != null
@@ -487,8 +480,7 @@ public class ProcessingOreMachine {
         return amount >= 1 && amount <= 100 ? amount : 100;
     }
 
-    /// `material`'s own [GTMaterialProperties#COMPOSITION] parts-per-hundred, GCD-reduced and summed -- the
-    /// retired `Material#smallestStackSizeWhenProcessing` field.
+    /// `material`'s own [GTMaterialProperties#COMPOSITION] parts-per-hundred, GCD-reduced and summed.
     private static long smallestStackSizeWhenProcessing(Material material) {
         List<MaterialRefStack> composites = composition(material);
         if (composites.isEmpty()) return 0;
@@ -523,8 +515,8 @@ public class ProcessingOreMachine {
         return a;
     }
 
-    /// The retired `MaterialUtils#getVoltageForTier` table, inlined -- deliberately not [GTValues#VP], which
-    /// the retired generator's own tier scaling differs from.
+    /// The tier-to-voltage table these recipes scale by -- deliberately not [GTValues#VP], whose ladder
+    /// differs.
     private static int voltageForTier(int tier) {
         return switch (tier) {
             case 0 -> 16;

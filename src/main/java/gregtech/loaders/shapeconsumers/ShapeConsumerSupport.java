@@ -20,6 +20,17 @@ import gregtech.api.material.MaterialUtils;
 ///
 /// Each `Processing*` class also runs through the oredict-event path (`gregtech.common.OreDictEventContainer`)
 /// for foreign mods' items of the same prefix.
+///
+/// Dispatch is postInit, not init: several `Processing*` bodies transitively class-load
+/// [gregtech.api.util.GTRecipeConstants], whose static initializer reads material data that
+/// [gregtech.api.enums.materials.Materials] populates from `MaterialRegistrationEvent`. Dispatching at init
+/// can reach that initializer before the registry resolves -- the class-init trap
+/// [gregtech.api.enums.materials.OreShapes]'s javadoc describes. postInit still precedes GregTech's own
+/// postInit, since `required-after:materiallib` orders MaterialLib's lifecycle first.
+///
+/// Registrators are passed as [Supplier]s, not resolved instances: `Consumer*#register` runs during
+/// `MaterialRegistrationEvent`, before `gregtech.loaders.preload.LoaderOreProcessing` has constructed the
+/// `Processing*` singletons, so an eager `INSTANCE` read would always see `null`.
 final class ShapeConsumerSupport {
 
     private ShapeConsumerSupport() {}
@@ -28,20 +39,6 @@ final class ShapeConsumerSupport {
     /// the MaterialLib material straight through to `registrator`'s
     /// [IOreRecipeRegistrator#registerOre(OrePrefixes, com.ruling_0.materiallib.api.Material, String, String,
     /// ItemStack)] entry. A shape/material pair with no resolvable stack is skipped.
-    ///
-    /// Dispatch is postInit, not init: several `Processing*` bodies transitively class-load
-    /// [gregtech.api.util.GTRecipeConstants], whose static initializer reads material data that
-    /// [Materials2Materials] populates from `MaterialRegistrationEvent`. Dispatching at init can reach that
-    /// initializer before the registry resolves, which is the class-init trap [Materials2OreShapes]'s javadoc
-    /// describes. postInit still precedes GregTech's own postInit, since `required-after:materiallib` orders
-    /// MaterialLib's lifecycle first.
-    ///
-    /// `registrator` is a [Supplier], not a resolved instance: `Consumer*#register` runs during
-    /// `MaterialRegistrationEvent`, which MaterialLib fires from its own preInit -- before
-    /// `gregtech.loaders.preload.LoaderOreProcessing` (called from GregTech's preInit, which starts only after
-    /// MaterialLib's finishes) has constructed the `Processing*` singletons this resolves. Reading the
-    /// `INSTANCE` field eagerly at registration time would always see `null`; the supplier defers that read to
-    /// dispatch time, well after `LoaderOreProcessing` has run.
     static void delegate(Shape shape, OrePrefixes prefix, Supplier<IOreRecipeRegistrator> registrator) {
         delegate(shape, prefix, material -> true, registrator);
     }
