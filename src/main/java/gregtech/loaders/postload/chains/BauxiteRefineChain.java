@@ -28,30 +28,30 @@ public class BauxiteRefineChain {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Bauxite, Shapes.crushed, (int) (32)),
+                MaterialLibAPI.getStack(Materials.Bauxite, Shapes.crushed, 32),
                 MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, (int) (4)))
+                MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, 4))
             .circuit(8)
             .fluidInputs(GTUtility.getWater(5_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.BauxiteSlurry, FluidShapes.fluidLiquid, (int) (8_000)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.BauxiteSlurry, FluidShapes.fluidLiquid, 8_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Bauxite, Shapes.crushedPurified, (int) (32)),
+                MaterialLibAPI.getStack(Materials.Bauxite, Shapes.crushedPurified, 32),
                 MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, (int) (4)))
+                MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, 4))
             .circuit(8)
             .fluidInputs(GTUtility.getWater(5_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.BauxiteSlurry, FluidShapes.fluidLiquid, (int) (8_000)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.BauxiteSlurry, FluidShapes.fluidLiquid, 8_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.BauxiteSlurry, FluidShapes.fluidLiquid, (int) (2_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.BauxiteSlurry, FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HeadedBauxiteSlurry, FluidShapes.fluidLiquid, 2_000))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -62,62 +62,62 @@ public class BauxiteRefineChain {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 16),
-                MaterialLibAPI.getStack(Materials.SodiumCarbonate, Shapes.dust, (int) (9)),
-                MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, (int) (10)),
-                MaterialLibAPI.getStack(Materials.BauxiteSlag, Shapes.dust, (int) (16)))
+                MaterialLibAPI.getStack(Materials.SodiumCarbonate, Shapes.dust, 9),
+                MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, 10),
+                MaterialLibAPI.getStack(Materials.BauxiteSlag, Shapes.dust, 16))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (5_000)),
+                MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, 5_000),
                 MaterialLibAPI.getFluidStack(Materials.HeadedBauxiteSlurry, FluidShapes.fluidLiquid, 8_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, (int) (5_000)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, 5_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.BauxiteSlag, Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.BauxiteSlag, Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Rutile, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Gallium, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Rutile, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Gallium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1))
             .outputChances(10000, 3000, 2000, 9000, 8000)
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Ilmenite, Shapes.crushedPurified, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ilmenite, Shapes.crushedPurified, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Rutile, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.IlmeniteSlag, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Rutile, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.IlmeniteSlag, Shapes.dust, 1))
             .outputChances(10000, 3000)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (1_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(new FluidStack(ItemList.sGreenVitriol, 2_000))
             .duration(21 * SECONDS)
             .eut(1000)
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Ilmenite, Shapes.crushed, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ilmenite, Shapes.crushed, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Rutile, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.IlmeniteSlag, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Rutile, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.IlmeniteSlag, Shapes.dust, 1))
             .outputChances(10000, 6000)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (1_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(new FluidStack(ItemList.sGreenVitriol, 2_000))
             .duration(21 * SECONDS)
             .eut(1000)
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.IlmeniteSlag, Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.IlmeniteSlag, Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Niobium, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Tantalum, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Manganese, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Magnesium, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Niobium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Tantalum, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Manganese, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Magnesium, Shapes.dust, 1))
             .outputChances(8000, 500, 2000, 5000, 6000)
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -134,8 +134,7 @@ public class BauxiteRefineChain {
                 .circuit(1)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
-                .fluidOutputs(
-                    MaterialLibAPI.getFluidStack(Materials.SapphireJuice, FluidShapes.fluidLiquid, (int) (1_000)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SapphireJuice, FluidShapes.fluidLiquid, 1_000))
                 .duration(2 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(mixerRecipes);
@@ -148,7 +147,7 @@ public class BauxiteRefineChain {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
                 .fluidOutputs(
-                    MaterialLibAPI.getFluidStack(Materials.GreenSapphireJuice, FluidShapes.fluidLiquid, (int) (1_000)))
+                    MaterialLibAPI.getFluidStack(Materials.GreenSapphireJuice, FluidShapes.fluidLiquid, 1_000))
                 .duration(2 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(mixerRecipes);
@@ -160,7 +159,7 @@ public class BauxiteRefineChain {
                 .circuit(1)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.RubyJuice, FluidShapes.fluidLiquid, (int) (1_000)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.RubyJuice, FluidShapes.fluidLiquid, 1_000))
                 .duration(2 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(mixerRecipes);
@@ -172,8 +171,7 @@ public class BauxiteRefineChain {
                 .circuit(9)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 9_000))
-                .fluidOutputs(
-                    MaterialLibAPI.getFluidStack(Materials.SapphireJuice, FluidShapes.fluidLiquid, (int) (9_000)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SapphireJuice, FluidShapes.fluidLiquid, 9_000))
                 .duration(3 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(mixerRecipes);
@@ -186,7 +184,7 @@ public class BauxiteRefineChain {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 9_000))
                 .fluidOutputs(
-                    MaterialLibAPI.getFluidStack(Materials.GreenSapphireJuice, FluidShapes.fluidLiquid, (int) (9_000)))
+                    MaterialLibAPI.getFluidStack(Materials.GreenSapphireJuice, FluidShapes.fluidLiquid, 9_000))
                 .duration(3 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(mixerRecipes);
@@ -198,7 +196,7 @@ public class BauxiteRefineChain {
                 .circuit(9)
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 9_000))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.RubyJuice, FluidShapes.fluidLiquid, (int) (9_000)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.RubyJuice, FluidShapes.fluidLiquid, 9_000))
                 .duration(3 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(mixerRecipes);
@@ -208,11 +206,11 @@ public class BauxiteRefineChain {
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.AluminiumHydroxide, Shapes.dust, 2),
-                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Vanadium, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Magnesium, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Vanadium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Magnesium, Shapes.dust, 1))
             .outputChances(10000, 300, 200, 200)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SapphireJuice, FluidShapes.fluidLiquid, (int) (1_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SapphireJuice, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(100)
@@ -222,13 +220,12 @@ public class BauxiteRefineChain {
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.AluminiumHydroxide, Shapes.dust, 2),
-                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Vanadium, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Manganese, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Beryllium, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Vanadium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Manganese, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Beryllium, Shapes.dust, 1))
             .outputChances(10000, 300, 200, 200, 200)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.GreenSapphireJuice, FluidShapes.fluidLiquid, (int) (1_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.GreenSapphireJuice, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(100)
@@ -238,109 +235,109 @@ public class BauxiteRefineChain {
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.AluminiumHydroxide, Shapes.dust, 2),
-                MaterialLibAPI.getStack(Materials.Chrome, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Vanadium, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Magnesium, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Chrome, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Vanadium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Magnesium, Shapes.dust, 1))
             .outputChances(10000, 5000, 300, 200, 200)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.RubyJuice, FluidShapes.fluidLiquid, (int) (1_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.RubyJuice, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(100)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Pyrope, Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Pyrope, Shapes.dust, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Magnesia, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Silver, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Vanadium, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Magnesia, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Silver, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Vanadium, Shapes.dust, 1))
             .outputChances(5000, 4000, 300, 300, 300, 200)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, (int) (10)))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, (int) (10)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 10))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, 10))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Almandine, Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Almandine, Shapes.dust, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Gold, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Chrome, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Vanadium, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Chrome, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Vanadium, Shapes.dust, 1))
             .outputChances(5000, 4000, 300, 300, 200, 200)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, (int) (10)))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, (int) (10)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 10))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, 10))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Spessartine, Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Spessartine, Shapes.dust, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Pyrolusite, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Magnesium, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Tantalum, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Pyrolusite, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Magnesium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Tantalum, Shapes.dust, 1))
             .outputChances(5000, 4000, 300, 300, 300, 200)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, (int) (10)))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, (int) (10)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 10))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, 10))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Andradite, Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Andradite, Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Gold, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Vanadium, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Rutile, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Vanadium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Rutile, Shapes.dust, 1))
             .outputChances(5000, 4000, 300, 300, 200, 600)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, (int) (10)))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, (int) (10)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 10))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, 10))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Uvarovite, Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Uvarovite, Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Chrome, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Silver, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Chrome, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Silver, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Manganese, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Manganese, Shapes.dust, 1))
             .outputChances(5000, 1000, 300, 300, 200, 200)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, (int) (10)))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, (int) (10)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 10))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, 10))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Grossular, Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Grossular, Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Gold, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Vanadium, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Vanadium, Shapes.dust, 1))
             .outputChances(5000, 4000, 300, 300, 300, 200)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, (int) (10)))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, (int) (10)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 10))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, 10))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);

@@ -37,7 +37,7 @@ public class Unpackager implements Runnable {
                 .itemInputs(new ItemStack(Blocks.tfftStorageField, 1, 2))
                 .itemOutputs(
                     ItemList.Casing_Tank_1.get(1),
-                    MaterialLibAPI.getStack(Materials.EnergeticSilver, Shapes.plate, (int) (6)))
+                    MaterialLibAPI.getStack(Materials.EnergeticSilver, Shapes.plate, 6))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(unpackagerRecipes);
@@ -46,7 +46,7 @@ public class Unpackager implements Runnable {
                 .itemInputs(new ItemStack(Blocks.tfftStorageField, 1, 3))
                 .itemOutputs(
                     ItemList.Casing_Tank_3.get(1),
-                    MaterialLibAPI.getStack(Materials.VividAlloy, Shapes.plate, (int) (6)))
+                    MaterialLibAPI.getStack(Materials.VividAlloy, Shapes.plate, 6))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(unpackagerRecipes);
@@ -55,7 +55,7 @@ public class Unpackager implements Runnable {
                 .itemInputs(new ItemStack(Blocks.tfftStorageField, 1, 4))
                 .itemOutputs(
                     ItemList.Casing_Tank_5.get(1),
-                    MaterialLibAPI.getStack(Materials.Enderium, Shapes.plate, (int) (6)))
+                    MaterialLibAPI.getStack(Materials.Enderium, Shapes.plate, 6))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(unpackagerRecipes);
@@ -64,7 +64,7 @@ public class Unpackager implements Runnable {
                 .itemInputs(new ItemStack(Blocks.tfftStorageField, 1, 5))
                 .itemOutputs(
                     ItemList.Casing_Tank_7.get(1),
-                    MaterialLibAPI.getStack(Materials.CrystallineAlloy, Shapes.plate, (int) (6)))
+                    MaterialLibAPI.getStack(Materials.CrystallineAlloy, Shapes.plate, 6))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(unpackagerRecipes);
@@ -73,7 +73,7 @@ public class Unpackager implements Runnable {
                 .itemInputs(new ItemStack(Blocks.tfftStorageField, 1, 6))
                 .itemOutputs(
                     ItemList.Casing_Tank_7.get(4),
-                    MaterialLibAPI.getStack(Materials.CrystallinePinkSlime, Shapes.plateQuadruple, (int) (6)))
+                    MaterialLibAPI.getStack(Materials.CrystallinePinkSlime, Shapes.plateQuadruple, 6))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(unpackagerRecipes);
@@ -82,7 +82,7 @@ public class Unpackager implements Runnable {
                 .itemInputs(new ItemStack(Blocks.tfftStorageField, 1, 7))
                 .itemOutputs(
                     ItemList.Casing_Tank_10.get(16),
-                    MaterialLibAPI.getStack(Materials.MelodicAlloy, Shapes.plateQuadruple, (int) (6)))
+                    MaterialLibAPI.getStack(Materials.MelodicAlloy, Shapes.plateQuadruple, 6))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(unpackagerRecipes);
@@ -91,7 +91,7 @@ public class Unpackager implements Runnable {
                 .itemInputs(new ItemStack(Blocks.tfftStorageField, 1, 8))
                 .itemOutputs(
                     ItemList.Quantum_Tank_IV.get(1),
-                    MaterialLibAPI.getStack(Materials.StellarAlloy, Shapes.plateDense, (int) (12)))
+                    MaterialLibAPI.getStack(Materials.StellarAlloy, Shapes.plateDense, 12))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(unpackagerRecipes);
@@ -100,7 +100,7 @@ public class Unpackager implements Runnable {
                 .itemInputs(new ItemStack(Blocks.tfftStorageField, 1, 9))
                 .itemOutputs(
                     ItemList.Quantum_Tank_IV.get(4),
-                    MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.plateDense, (int) (12)))
+                    MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.plateDense, 12))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(unpackagerRecipes);
@@ -109,7 +109,7 @@ public class Unpackager implements Runnable {
                 .itemInputs(new ItemStack(Blocks.tfftStorageField, 1, 10))
                 .itemOutputs(
                     ItemList.Quantum_Tank_IV.get(16),
-                    MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plateDense, (int) (12)))
+                    MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plateDense, 12))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(unpackagerRecipes);
@@ -139,7 +139,7 @@ public class Unpackager implements Runnable {
                 .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2))
                 .itemOutputs(
                     ItemList.Energy_LapotronicOrb2.get(1L),
-                    MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.screw, (int) (24)))
+                    MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.screw, 24))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(unpackagerRecipes);
@@ -148,7 +148,7 @@ public class Unpackager implements Runnable {
                 .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3))
                 .itemOutputs(
                     ItemList.Energy_Module.get(1L),
-                    MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.screw, (int) (24)))
+                    MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.screw, 24))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(unpackagerRecipes);
@@ -157,7 +157,7 @@ public class Unpackager implements Runnable {
                 .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4))
                 .itemOutputs(
                     ItemList.Energy_Cluster.get(1L),
-                    MaterialLibAPI.getStack(Materials.Neutronium, Shapes.screw, (int) (24)))
+                    MaterialLibAPI.getStack(Materials.Neutronium, Shapes.screw, 24))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(unpackagerRecipes);
@@ -166,16 +166,14 @@ public class Unpackager implements Runnable {
                 .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5))
                 .itemOutputs(
                     ItemList.ZPM3.get(1L),
-                    MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.screw, (int) (24)))
+                    MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.screw, 24))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(unpackagerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 8))
-                .itemOutputs(
-                    ItemList.ZPM4.get(1L),
-                    MaterialLibAPI.getStack(Materials.Infinity, Shapes.screw, (int) (24)))
+                .itemOutputs(ItemList.ZPM4.get(1L), MaterialLibAPI.getStack(Materials.Infinity, Shapes.screw, 24))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(unpackagerRecipes);
@@ -184,16 +182,14 @@ public class Unpackager implements Runnable {
                 .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 9))
                 .itemOutputs(
                     ItemList.ZPM5.get(1L),
-                    MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.screw, (int) (24)))
+                    MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.screw, 24))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(unpackagerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 10))
-                .itemOutputs(
-                    ItemList.ZPM6.get(1L),
-                    MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.screw, (int) (24)))
+                .itemOutputs(ItemList.ZPM6.get(1L), MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.screw, 24))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(unpackagerRecipes);

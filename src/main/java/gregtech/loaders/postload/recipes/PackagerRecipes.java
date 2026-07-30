@@ -33,27 +33,21 @@ public class PackagerRecipes implements Runnable {
             .addTo(packagerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Food_Fries.get(1),
-                MaterialLibAPI.getStack(Materials.Paper, Shapes.plateDouble, (int) (1)))
+            .itemInputs(ItemList.Food_Fries.get(1), MaterialLibAPI.getStack(Materials.Paper, Shapes.plateDouble, 1))
             .itemOutputs(ItemList.Food_Packaged_Fries.get(1))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(packagerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Food_PotatoChips.get(1),
-                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.foil, (int) (1)))
+            .itemInputs(ItemList.Food_PotatoChips.get(1), MaterialLibAPI.getStack(Materials.Aluminium, Shapes.foil, 1))
             .itemOutputs(ItemList.Food_Packaged_PotatoChips.get(1))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(packagerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Food_ChiliChips.get(1),
-                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.foil, (int) (1)))
+            .itemInputs(ItemList.Food_ChiliChips.get(1), MaterialLibAPI.getStack(Materials.Aluminium, Shapes.foil, 1))
             .itemOutputs(ItemList.Food_Packaged_ChiliChips.get(1))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)

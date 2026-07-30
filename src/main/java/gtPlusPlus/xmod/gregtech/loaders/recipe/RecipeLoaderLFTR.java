@@ -30,10 +30,10 @@ public class RecipeLoaderLFTR {
         if (mSpargeGases == null) {
             mSpargeGases = new ArrayList<>();
             mSpargeGases.add(
-                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int) (1))
+                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 1)
                     .getFluid());
             mSpargeGases.add(
-                MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, (int) (1))
+                MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 1)
                     .getFluid());
         }
         if (mNobleGases == null) {
@@ -110,11 +110,11 @@ public class RecipeLoaderLFTR {
         // For no randomization, set metadata to 0 with key SPARGE_MAX_BYPRODUCT.
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int) (1_000)),
+                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 1_000),
                 MaterialUtils.anyFluid(Materials.UraniumDepletedMoltenSaltUSalt, 50))
             .fluidOutputs(
                 MaterialUtils.anyFluid(Materials.HeliumSpargedUSalt, 50),
-                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int) (0)),
+                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 0),
                 new FluidStack(mNobleGases.get(1), 0),
                 new FluidStack(mNobleGases.get(2), 0),
                 new FluidStack(mNobleGases.get(3), 0),
@@ -127,11 +127,11 @@ public class RecipeLoaderLFTR {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, (int) (100)),
+                MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 100),
                 MaterialUtils.anyFluid(Materials.ThoriumDepletedMoltenSaltTSalt, 50))
             .fluidOutputs(
                 MaterialUtils.anyFluid(Materials.FluorineSpargedTSalt, 50),
-                MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, (int) (0)),
+                MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 0),
                 new FluidStack(mFluorideGases.get(1), 0),
                 new FluidStack(mFluorideGases.get(2), 0),
                 new FluidStack(mFluorideGases.get(3), 0),
@@ -144,11 +144,11 @@ public class RecipeLoaderLFTR {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, (int) (100)),
+                MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 100),
                 MaterialUtils.anyFluid(Materials.ThoriumBerylliumDepletedMoltenSaltTBSalt, 50))
             .fluidOutputs(
                 MaterialUtils.anyFluid(Materials.FluorineSpargedTBSalt, 50),
-                MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, (int) (0)),
+                MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 0),
                 new FluidStack(mFluorideGases.get(1), 0),
                 new FluidStack(mFluorideGases.get(2), 0),
                 new FluidStack(mFluorideGases.get(3), 0),

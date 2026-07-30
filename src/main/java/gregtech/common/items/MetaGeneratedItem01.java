@@ -692,7 +692,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     1,
                     0.1F,
                     EnumAction.eat,
-                    MaterialLibAPI.getStack(Materials.Gold, Shapes.foil, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Gold, Shapes.foil, 1),
                     true,
                     false,
                     false,

@@ -34,14 +34,14 @@ public class AssemblyLine implements Runnable {
             .itemInputs(
                 ItemList.OreDrill4.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 4L),
-                MaterialLibAPI.getStack(Materials.Europium, Shapes.plate, (int) (3)),
+                MaterialLibAPI.getStack(Materials.Europium, Shapes.plate, 3),
                 ItemList.Electric_Motor_LuV.get(9L),
                 ItemList.Sensor_LuV.get(9L),
                 ItemList.Field_Generator_LuV.get(9L),
                 MaterialLibAPI.getStack(Materials.Europium, Shapes.screw, (int) (36L)))
             .fluidInputs(
                 MaterialUtils.anyFluid(Materials.Indalloy140, 10 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, (int) (20_000)))
+                MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, 20_000))
             .itemOutputs(ItemRegistry.voidminer[0].copy())
             .eut(TierEU.RECIPE_LuV)
             .duration(2 * MINUTES)
@@ -73,13 +73,13 @@ public class AssemblyLine implements Runnable {
                 ItemList.ReinforcedPhotolithographicFrameworkCasing.get(4L),
                 ItemList.Casing_Coil_Superconductor.get(16L),
                 new Object[] { Circuits.UHV.getIngredient(), 2L },
-                MaterialLibAPI.getStack(Materials.DamascusSteel, Shapes.foil, (int) (16)),
+                MaterialLibAPI.getStack(Materials.DamascusSteel, Shapes.foil, 16),
                 ItemList.Electric_Pump_UV.get(1L),
                 ItemList.Sensor_UV.get(4L),
-                MaterialLibAPI.getStack(Materials.Infinity, Shapes.wireFine, (int) (32)))
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.wireFine, 32))
             .fluidInputs(
                 MaterialUtils.anyFluid(Materials.Indalloy140, 32 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, (int) (8000)))
+                MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, 8000))
             .itemOutputs(ItemList.PCBCoolingTower.get(1L))
             .eut(TierEU.RECIPE_UV)
             .duration(300 * SECONDS)
@@ -96,10 +96,10 @@ public class AssemblyLine implements Runnable {
                 ItemList.FluidRegulator_ZPM.get(1L),
                 ItemList.Electric_Pump_ZPM.get(1L),
                 ItemList.Sensor_ZPM.get(4L),
-                MaterialLibAPI.getStack(Materials.Holmium, Shapes.wireFine, (int) (32)))
+                MaterialLibAPI.getStack(Materials.Holmium, Shapes.wireFine, 32))
             .fluidInputs(
                 MaterialUtils.anyFluid(Materials.Indalloy140, 32 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.GrowthMediumSterilized, FluidShapes.fluidLiquid, (int) (27648)))
+                MaterialLibAPI.getFluidStack(Materials.GrowthMediumSterilized, FluidShapes.fluidLiquid, 27648))
             .itemOutputs(ItemList.PCBBioChamber.get(1L))
             .eut(TierEU.RECIPE_UV)
             .duration(300 * SECONDS)

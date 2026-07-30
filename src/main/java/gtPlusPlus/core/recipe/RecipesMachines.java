@@ -70,7 +70,7 @@ public class RecipesMachines {
             .itemInputs(
                 ItemList.Hull_LV.get(1),
                 new OreDictItemStack("plateAnyRubber", 32),
-                MaterialLibAPI.getStack(Materials.Lead, Shapes.plateDense, (int) (9)),
+                MaterialLibAPI.getStack(Materials.Lead, Shapes.plateDense, 9),
                 new ItemStack(Blocks.chest))
             .itemOutputs(new ItemStack(ModBlocks.blockDecayablesChest))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Lead, FluidShapes.fluidMolten, (int) (16 * INGOTS)))
@@ -85,7 +85,7 @@ public class RecipesMachines {
                 MaterialLibAPI.getStack(Materials.Nitinol60, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.MaragingSteel350, Shapes.gearGt, 4),
                 ItemList.Field_Generator_EV.get(8),
-                MaterialLibAPI.getStack(Materials.Platinum, Shapes.wireFine, (int) (32)),
+                MaterialLibAPI.getStack(Materials.Platinum, Shapes.wireFine, 32),
                 Circuits.LuV.get(4))
             .itemOutputs(GregtechItemList.RTG.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.NiobiumCarbide, 16 * INGOTS))

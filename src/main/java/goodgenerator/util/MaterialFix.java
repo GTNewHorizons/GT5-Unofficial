@@ -98,7 +98,7 @@ public class MaterialFix {
         if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.rotor)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.rotor, 1))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (612)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, 612))
                 .duration(136 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);

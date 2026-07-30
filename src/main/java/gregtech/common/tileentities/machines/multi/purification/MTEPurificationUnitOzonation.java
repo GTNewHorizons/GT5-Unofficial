@@ -234,7 +234,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
         if (!result.wasSuccessful()) return result;
         // Look for ozone, blow up if more than max allowed
         for (FluidStack fluid : this.storedFluids) {
-            if (fluid.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Ozone, FluidShapes.fluidGas, (int) (1)))) {
+            if (fluid.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Ozone, FluidShapes.fluidGas, 1))) {
                 if (fluid.amount > MAX_OZONE_GAS_FOR_EXPLOSION) {
                     this.explodeMultiblock();
                 }

@@ -55,17 +55,17 @@ public final class MaterialTextures {
         };
     }
 
-    /// The legacy [TextureSet] for `ml`, resolved from its [StandardProperties#TEXTURE_SET] name (or the
+    /// The legacy [TextureSet] for `material`, resolved from its [StandardProperties#TEXTURE_SET] name (or the
     /// custom overlay for one of the five special-cased materials). Throws if the texture-set name names no
     /// legacy [TextureSet].
-    public static TextureSet iconSetOf(Material ml) {
-        TextureSet custom = customIconSet(ml.getName());
+    public static TextureSet iconSetOf(Material material) {
+        TextureSet custom = customIconSet(material.getName());
         if (custom != null) return custom;
-        String setName = ml.getProperty(StandardProperties.TEXTURE_SET)
+        String setName = material.getProperty(StandardProperties.TEXTURE_SET)
             .getName();
         TextureSet resolved = TEXTURE_SETS_BY_NAME.get(setName);
-        if (resolved == null)
-            throw new IllegalStateException("No legacy TextureSet named " + setName + " for material " + ml.getName());
+        if (resolved == null) throw new IllegalStateException(
+            "No legacy TextureSet named " + setName + " for material " + material.getName());
         return resolved;
     }
 }

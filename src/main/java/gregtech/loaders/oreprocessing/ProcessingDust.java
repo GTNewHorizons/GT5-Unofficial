@@ -367,14 +367,13 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     case "MeatRaw":
                         GTModHandler.addSmeltingRecipe(
                             GTUtility.copyAmount(1, stack),
-                            MaterialLibAPI.getStack(Materials.MeatCooked, Shapes.dust, (int) (1)));
+                            MaterialLibAPI.getStack(Materials.MeatCooked, Shapes.dust, 1));
                         break;
                     case "Oilsands":
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .fluidOutputs(
-                                MaterialLibAPI
-                                    .getFluidStack(Materials.OilHeavy, FluidShapes.fluidLiquid, (int) (1_000)))
+                                MaterialLibAPI.getFluidStack(Materials.OilHeavy, FluidShapes.fluidLiquid, 1_000))
                             .duration(33 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(centrifugeRecipes);
@@ -382,7 +381,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     case "HydratedCoal":
                         GTModHandler.addSmeltingRecipe(
                             GTUtility.copyAmount(1, stack),
-                            MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, (int) (1)));
+                            MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, 1));
                         break;
                     case "Diamond": {
                         GTValues.RA.stdBuilder()
@@ -483,7 +482,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(
                                 GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
-                                MaterialLibAPI.getStack(Materials.Gold, Shapes.dustSmall, (int) (1)),
+                                MaterialLibAPI.getStack(Materials.Gold, Shapes.dustSmall, 1),
                                 GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Gold, 1L))
                             .outputChances(10000, 4000, 2000)
                             .duration(20 * SECONDS)
@@ -495,8 +494,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(
                                 GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
-                                MaterialLibAPI.getStack(Materials.Iron, Shapes.dustSmall, (int) (1)),
-                                MaterialLibAPI.getStack(Materials.Iron, Shapes.nugget, (int) (1)))
+                                MaterialLibAPI.getStack(Materials.Iron, Shapes.dustSmall, 1),
+                                MaterialLibAPI.getStack(Materials.Iron, Shapes.nugget, 1))
                             .outputChances(10000, 4000, 2000)
                             .duration(20 * SECONDS)
                             .eut(24)
@@ -507,8 +506,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(
                                 GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
-                                MaterialLibAPI.getStack(Materials.Neodymium, Shapes.dustSmall, (int) (1)),
-                                MaterialLibAPI.getStack(Materials.Neodymium, Shapes.nugget, (int) (1)))
+                                MaterialLibAPI.getStack(Materials.Neodymium, Shapes.dustSmall, 1),
+                                MaterialLibAPI.getStack(Materials.Neodymium, Shapes.nugget, 1))
                             .outputChances(10000, 4000, 2000)
                             .duration(20 * SECONDS)
                             .eut(24)

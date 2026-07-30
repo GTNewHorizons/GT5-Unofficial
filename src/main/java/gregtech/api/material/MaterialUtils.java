@@ -5,9 +5,11 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 import net.minecraft.enchantment.Enchantment;
@@ -671,7 +673,7 @@ public class MaterialUtils {
         reconstructedHandles.put(material, handle);
     }
 
-    private static final java.util.Set<Material> reconstructedBridgeRegistrations = new java.util.HashSet<>();
+    private static final Set<Material> reconstructedBridgeRegistrations = new HashSet<>();
 
     /// Records that `material` (a reconstructed bartworks-origin material) has reached this point in
     /// loading -- called by `LoaderWerkstoffRegistrations` once its other per-material registration steps

@@ -84,7 +84,7 @@ public class RecipesGeneral {
             GregtechItemList.BlueprintBase.get(2),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PL ", "PL ", "LL ", 'P', new ItemStack(Items.paper), 'L',
-                MaterialLibAPI.getStack(Materials.Lazurite, Shapes.dust, (int) (1)) });
+                MaterialLibAPI.getStack(Materials.Lazurite, Shapes.dust, 1) });
 
         // Rainforest Oak Sapling
         GTModHandler.addCraftingRecipe(
@@ -127,8 +127,7 @@ public class RecipesGeneral {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Large_Fluid_Cell_Aluminium.get(1))
             .itemOutputs(GregtechItemList.VOLUMETRIC_FLASK_8k.get(2))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.BorosilicateGlass, FluidShapes.fluidMolten, (int) (4000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.BorosilicateGlass, FluidShapes.fluidMolten, 4000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(fluidSolidifierRecipes);
@@ -137,8 +136,7 @@ public class RecipesGeneral {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Large_Fluid_Cell_TungstenSteel.get(1))
             .itemOutputs(GregtechItemList.VOLUMETRIC_FLASK_32k.get(2))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.BorosilicateGlass, FluidShapes.fluidMolten, (int) (16000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.BorosilicateGlass, FluidShapes.fluidMolten, 16000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(fluidSolidifierRecipes);

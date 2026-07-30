@@ -35,14 +35,14 @@ public class CompressorRecipes implements Runnable {
     public void run() {
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Netherrack, Shapes.dust, (int) (4)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Netherrack, Shapes.dust, 4))
             .itemOutputs(GTOreDictUnificator.get(new ItemStack(Blocks.netherrack, 3)))
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Endstone, Shapes.dust, (int) (4)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Endstone, Shapes.dust, 4))
             .itemOutputs(GTOreDictUnificator.get(new ItemStack(Blocks.end_stone, 3)))
             .duration(5 * SECONDS)
             .eut(2)
@@ -56,8 +56,8 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Lapis, Shapes.dust, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Lapis, Shapes.plate, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Lapis, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Lapis, Shapes.plate, 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
@@ -161,8 +161,8 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, (int) (8)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Wood, Shapes.plate, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 8))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Wood, Shapes.plate, 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
@@ -182,35 +182,35 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 1))
             .itemOutputs(GTModHandler.getIC2Item("Uran238", 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, 1))
             .itemOutputs(GTModHandler.getIC2Item("Uran235", 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, 1))
             .itemOutputs(GTModHandler.getIC2Item("Plutonium", 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dustTiny, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dustTiny, 1))
             .itemOutputs(GTModHandler.getIC2Item("smallUran235", 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, 1))
             .itemOutputs(GTModHandler.getIC2Item("smallPlutonium", 1))
             .duration(15 * SECONDS)
             .eut(2)
@@ -224,14 +224,14 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Ice, Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ice, Shapes.dust, 1))
             .itemOutputs(new ItemStack(Blocks.ice, 1, 0))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.gem, (int) (4)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.gem, 4))
             .itemOutputs(getModItem(AppliedEnergistics2.ID, "tile.BlockQuartz", 1))
             .duration(15 * SECONDS)
             .eut(2)
@@ -271,21 +271,21 @@ public class CompressorRecipes implements Runnable {
          */
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, (int) (4)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, 4))
             .itemOutputs(new ItemStack(Blocks.glowstone, 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Fireclay, Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Fireclay, Shapes.dust, 1))
             .itemOutputs(ItemList.CompressedFireclay.get(1))
             .duration(4 * SECONDS)
             .eut(4)
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Infinity, Shapes.plateSuperdense, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Infinity, Shapes.plateSuperdense, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.protohalkonitebase, FluidShapes.fluidLiquid, 1 * STACKS))
             .itemOutputs(GTOreDictUnificator.get("plateSuperdensehotprotohalkonite", 1))
@@ -296,7 +296,7 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Creon, Shapes.plateSuperdense, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Creon, Shapes.plateSuperdense, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.protohalkonitebase, FluidShapes.fluidLiquid, 32 * INGOTS))
             .itemOutputs(GTOreDictUnificator.get("plateSuperdensehotprotohalkonite", 1))
@@ -307,7 +307,7 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Mellion, Shapes.plateSuperdense, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Mellion, Shapes.plateSuperdense, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.protohalkonitebase, FluidShapes.fluidLiquid, 32 * INGOTS))
             .itemOutputs(GTOreDictUnificator.get("plateSuperdensehotprotohalkonite", 1))

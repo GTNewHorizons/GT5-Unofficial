@@ -111,7 +111,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
 
         // Infinity Catalyst
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.InfinityCatalyst, Shapes.dust, (int) (64)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.InfinityCatalyst, Shapes.dust, 64))
             .itemOutputs(getModItem(Avaritia.ID, "Resource", 1L, 5))
             .duration(1)
             .eut(TierEU.RECIPE_UIV)
@@ -133,14 +133,13 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Magmatter, 1)),
-                MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemChipped, (int) (3)),
+                MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemChipped, 3),
                 GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.FoolsRuby, 64),
-                MaterialLibAPI.getStack(Materials.Amethyst, Shapes.gemFlawless, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Amethyst, Shapes.gemFlawless, 64),
                 MaterialLibAPI.getStack(Materials.Fluorspar, Shapes.gemFlawless, 64),
-                MaterialLibAPI.getStack(Materials.Tanzanite, Shapes.gemFlawless, (int) (64)))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.PhononCrystalSolution, FluidShapes.fluidLiquid, (int) (500)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemFlawed, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Tanzanite, Shapes.gemFlawless, 64))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.PhononCrystalSolution, FluidShapes.fluidLiquid, 500))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemFlawed, 1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(electricImplosionCompressorRecipes);

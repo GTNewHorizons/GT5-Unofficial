@@ -184,7 +184,7 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
 
     public boolean hasDimensionalTeleportCapability() {
         return this.mDebug || (sInterDimensionalTeleportAllowed && (this.hasBlock || mFluid != null
-            && mFluid.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidPlasma, (int) (1)))
+            && mFluid.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidPlasma, 1))
             && mFluid.amount >= 1000));
     }
 
@@ -196,7 +196,7 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (mFluid == null) {
-            mFluid = MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidPlasma, (int) (0));
+            mFluid = MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidPlasma, 0);
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (getBaseMetaTileEntity().isServerSide()) {
@@ -211,7 +211,7 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
                     if (hasDimensionalTeleportCapability()
                         && this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId
                         && mFluid.isFluidEqual(
-                            MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidPlasma, (int) (1)))) {
+                            MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidPlasma, 1))) {
                         mFluid.amount--;
                         if (mFluid.amount < 1) {
                             mFluid = null;

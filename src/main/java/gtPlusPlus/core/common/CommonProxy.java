@@ -111,20 +111,20 @@ public class CommonProxy implements IFuelHandler {
         if (Mods.COFHCore.isModLoaded()) {
             EntityUtils.registerDropsForMob(
                 EntityBlaze.class,
-                MaterialLibAPI.getStack(Materials.Pyrotheum, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Pyrotheum, Shapes.dust, 1),
                 1,
                 10);
             EntityUtils.registerDropsForMob(
                 EntityBlaze.class,
-                MaterialLibAPI.getStack(Materials.Pyrotheum, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Pyrotheum, Shapes.dust, 1),
                 1,
                 10);
         }
 
         // GalaxySpace Support
         if (Mods.GalaxySpace.isModLoaded()) {
-            ItemStack aBlizz = MaterialLibAPI.getStack(Materials.Blizz, Shapes.dust, (int) (1));
-            ItemStack aCryo = MaterialLibAPI.getStack(Materials.Cryotheum, Shapes.dust, (int) (1));
+            ItemStack aBlizz = MaterialLibAPI.getStack(Materials.Blizz, Shapes.dust, 1);
+            ItemStack aCryo = MaterialLibAPI.getStack(Materials.Cryotheum, Shapes.dust, 1);
             EntityUtils.registerDropsForMob(
                 EntityEvolvedColdBlaze.class,
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Blizz, 1),

@@ -53,7 +53,7 @@ public class BotRecipes {
 
         // tungsten chain
         FluidStack sodiumTungsten = MaterialLibAPI
-            .getFluidStack(Materials.SodiumTungstate, FluidShapes.fluidLiquid, (int) (1_000));
+            .getFluidStack(Materials.SodiumTungstate, FluidShapes.fluidLiquid, 1_000);
         ItemStack scheelite = MaterialLibAPI.getStack(Materials.Scheelite, Shapes.dust, 6);
 
         // Li2WO4 + 2Na = Na2WO4 + 2Li
@@ -183,7 +183,7 @@ public class BotRecipes {
             .circuit(2)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 1_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Phosgene, FluidShapes.fluidLiquid, (int) (1_000)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Phosgene, FluidShapes.fluidLiquid, 1_000))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
@@ -204,8 +204,7 @@ public class BotRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(cells)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cell, 1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.AmmoniumChloride, FluidShapes.fluidLiquid, (int) (1_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AmmoniumChloride, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
             .eut(TierEU.RECIPE_MV)
             .duration(2 * SECONDS + 10 * TICKS)
@@ -259,7 +258,7 @@ public class BotRecipes {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Propane, FluidShapes.fluidGas, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, 2_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Nitromethane, FluidShapes.fluidLiquid, (int) (2_000)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Nitromethane, FluidShapes.fluidLiquid, 2_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(crackingRecipes);

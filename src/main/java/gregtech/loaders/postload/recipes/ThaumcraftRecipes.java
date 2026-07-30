@@ -871,9 +871,8 @@ public class ThaumcraftRecipes implements Runnable {
                     tKey,
                     ItemList.Hull_HV.get(1L),
                     new ItemStack[] { ItemList.MagicEnergyConverter_MV.get(1L), Circuits.EV.get(1),
-                        MaterialLibAPI.getStack(Materials.Void, Shapes.plate, (int) (1)),
-                        ItemList.Field_Generator_MV.get(1L), Circuits.EV.get(1),
-                        MaterialLibAPI.getStack(Materials.Void, Shapes.plate, (int) (1)), },
+                        MaterialLibAPI.getStack(Materials.Void, Shapes.plate, 1), ItemList.Field_Generator_MV.get(1L),
+                        Circuits.EV.get(1), MaterialLibAPI.getStack(Materials.Void, Shapes.plate, 1), },
                     ItemList.MagicEnergyAbsorber_HV.get(1L),
                     8,
                     Arrays.asList(
@@ -887,11 +886,11 @@ public class ThaumcraftRecipes implements Runnable {
                     tKey,
                     ItemList.Hull_EV.get(1L),
                     new ItemStack[] { ItemList.MagicEnergyConverter_HV.get(1L), Circuits.IV.get(1),
-                        MaterialLibAPI.getStack(Materials.Void, Shapes.plate, (int) (1)),
-                        MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, (int) (1)),
+                        MaterialLibAPI.getStack(Materials.Void, Shapes.plate, 1),
+                        MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, 1),
                         ItemList.Field_Generator_HV.get(1L), Circuits.IV.get(1),
-                        MaterialLibAPI.getStack(Materials.Void, Shapes.plate, (int) (1)),
-                        MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, (int) (1)), },
+                        MaterialLibAPI.getStack(Materials.Void, Shapes.plate, 1),
+                        MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, 1), },
                     ItemList.MagicEnergyAbsorber_EV.get(1L),
                     10,
                     Arrays.asList(
@@ -936,13 +935,13 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 32L),
                         new TCAspects.TC_AspectStack(TCAspects.VENENUM, 16L)),
                     new ItemStack[] { getModItem(Thaumcraft.ID, "ItemResource", 1L, 14),
-                        MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, (int) (1)),
-                        MaterialLibAPI.getStack(Materials.Rubber, Shapes.plate, (int) (1)),
-                        MaterialLibAPI.getStack(Materials.Lead, Shapes.plateDense, (int) (1)),
+                        MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 1),
+                        MaterialLibAPI.getStack(Materials.Rubber, Shapes.plate, 1),
+                        MaterialLibAPI.getStack(Materials.Lead, Shapes.plateDense, 1),
                         getModItem(Thaumcraft.ID, "ItemResource", 1L, 14),
-                        MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, (int) (1)),
-                        MaterialLibAPI.getStack(Materials.Rubber, Shapes.plate, (int) (1)),
-                        MaterialLibAPI.getStack(Materials.Lead, Shapes.plateDense, (int) (1)) }) });
+                        MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 1),
+                        MaterialLibAPI.getStack(Materials.Rubber, Shapes.plate, 1),
+                        MaterialLibAPI.getStack(Materials.Lead, Shapes.plateDense, 1) }) });
 
     }
 }

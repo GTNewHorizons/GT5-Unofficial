@@ -28,10 +28,10 @@ public class Centrifuge implements Runnable {
     @Override
     public void run() {
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Thorium232, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Thorium232, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Thorium232, Shapes.dust, 1))
@@ -61,7 +61,7 @@ public class Centrifuge implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 6))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Lead, Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Lead, Shapes.dust, 1))
             .outputChances(300)
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)

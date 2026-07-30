@@ -89,7 +89,7 @@ public class HandlerRailcraft {
             .itemInputs(plant)
             .circuit(3)
             .itemOutputs(charcoal)
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (100)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 100))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(1 * SECONDS)
             .addTo(industrialCokeOvenRecipes);
@@ -98,8 +98,8 @@ public class HandlerRailcraft {
             .itemInputs(plant)
             .circuit(4)
             .itemOutputs(charcoal)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, (int) (100)))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CharcoalByproducts, FluidShapes.fluidGas, (int) (200)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, 100))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CharcoalByproducts, FluidShapes.fluidGas, 200))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(10 * TICKS)
             .addTo(industrialCokeOvenRecipes);
@@ -108,7 +108,7 @@ public class HandlerRailcraft {
             .itemInputs(charcoal)
             .circuit(3)
             .itemOutputs(coke)
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (200)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 200))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(2 * SECONDS)
             .addTo(industrialCokeOvenRecipes);
@@ -117,8 +117,8 @@ public class HandlerRailcraft {
             .itemInputs(charcoal)
             .circuit(4)
             .itemOutputs(coke)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, (int) (50)))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CharcoalByproducts, FluidShapes.fluidGas, (int) (100)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, 50))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CharcoalByproducts, FluidShapes.fluidGas, 100))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(1 * SECONDS)
             .addTo(industrialCokeOvenRecipes);
@@ -127,9 +127,9 @@ public class HandlerRailcraft {
         GTValues.RA.stdBuilder()
             .itemInputs(coke)
             .circuit(5)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dustSmall, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dustSmall, 1))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 100))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.WoodTar, FluidShapes.fluidLiquid, (int) (200)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.WoodTar, FluidShapes.fluidLiquid, 200))
             .eut(TierEU.RECIPE_HV / 2)
             .duration(3 * SECONDS)
             .addTo(industrialCokeOvenRecipes);
@@ -137,9 +137,9 @@ public class HandlerRailcraft {
         GTValues.RA.stdBuilder()
             .itemInputs(coke)
             .circuit(6)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dustSmall, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dustSmall, 1))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 100))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.WoodGas, FluidShapes.fluidGas, (int) (300)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.WoodGas, FluidShapes.fluidGas, 300))
             .eut(TierEU.RECIPE_HV / 2)
             .duration(3 * SECONDS)
             .addTo(industrialCokeOvenRecipes);
@@ -147,9 +147,9 @@ public class HandlerRailcraft {
         // Fluid Extracting the Charcoals for Wood Tar
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 1))
             .outputChances(1000)
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.WoodTar, FluidShapes.fluidLiquid, (int) (50)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.WoodTar, FluidShapes.fluidLiquid, 50))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidExtractionRecipes);
@@ -159,9 +159,9 @@ public class HandlerRailcraft {
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal)
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, (int) (1)))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (500)))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, (int) (500)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, 1))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 500))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 500))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(UniversalChemical);
@@ -170,9 +170,9 @@ public class HandlerRailcraft {
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal)
             .circuit(2)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, (int) (1)))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (2_000)))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, 1))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 2_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, 1_000))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(UniversalChemical);
@@ -183,14 +183,14 @@ public class HandlerRailcraft {
                 true,
                 true,
                 charcoal,
-                MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (30)),
+                MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 30),
                 500);
             RailcraftUtils.addCokeOvenRecipe(
                 charcoal,
                 true,
                 true,
                 coke,
-                MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (30)),
+                MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 30),
                 500);
 
             if (NewHorizonsCoreMod.isModLoaded()) {

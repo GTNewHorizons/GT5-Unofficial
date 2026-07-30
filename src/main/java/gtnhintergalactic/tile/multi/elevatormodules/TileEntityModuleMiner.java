@@ -630,23 +630,22 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         if (fluidStack == null) {
             return 0;
         }
-        if ((fluidStack
-            .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Plutonium241, FluidShapes.fluidPlasma, (int) (1)))
+        if ((fluidStack.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Plutonium241, FluidShapes.fluidPlasma, 1))
             && fluidStack.amount >= PLASMA_PLUTONIUM241_USAGE)) {
             return 5;
         } else if ((fluidStack.isFluidEqual(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Technetium), 1))
             && fluidStack.amount >= PLASMA_TECHNETIUM_USAGE)) {
                 return 4;
-            } else if (fluidStack
-                .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidPlasma, (int) (1)))
+            } else
+            if (fluidStack.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidPlasma, 1))
                 && fluidStack.amount >= PLASMA_RADON_USAGE) {
                     return 3;
-                } else if (fluidStack
-                    .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Bismuth, FluidShapes.fluidPlasma, (int) (1)))
+                } else
+                if (fluidStack.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Bismuth, FluidShapes.fluidPlasma, 1))
                     && fluidStack.amount >= PLASMA_BISMUTH_USAGE) {
                         return 2;
-                    } else if (fluidStack.isFluidEqual(
-                        MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidPlasma, (int) (1)))
+                    } else if (fluidStack
+                        .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidPlasma, 1))
                         && fluidStack.amount >= PLASMA_HELIUM_USAGE) {
                             return 1;
                         }

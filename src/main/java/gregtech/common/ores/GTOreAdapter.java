@@ -152,16 +152,15 @@ public final class GTOreAdapter implements IOreAdapter {
 
         TileEntityReplacementManager.tileEntityTransformer("GT_TileEntity_Ores", (tag, world, chunk) -> {
             int meta = tag.getInteger("m");
-            boolean natural = tag.getBoolean("n");
 
-            ImmutableBlockMeta bm = resolveLegacyMeta(meta, natural);
+            ImmutableBlockMeta bm = resolveLegacyMeta(meta);
 
             return new BlockInfo(bm.getBlock(), bm.getBlockMeta());
         });
 
         ItemStackReplacementManager.addTransformationHandler("gregtech:gt.blockores", (originalId, tag) -> {
             int meta = tag.getInteger("Damage");
-            ImmutableBlockMeta bm = resolveLegacyMeta(meta, false);
+            ImmutableBlockMeta bm = resolveLegacyMeta(meta);
             if (bm.getBlock() == Blocks.air) return false;
 
             IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(Item.getItemFromBlock(bm.getBlock())));
@@ -175,7 +174,10 @@ public final class GTOreAdapter implements IOreAdapter {
     /// Decodes the pre-`GTBlockOre` era's 7-stone packing (see [#LEGACY_STONES]) and resolves it to the
     /// MaterialLib block/meta -- shared by the `GT_TileEntity_Ores` tile-entity transformer and the single
     /// `gregtech:gt.blockores` item transformer, both of which used this exact packing.
-    private ImmutableBlockMeta resolveLegacyMeta(int meta, boolean natural) {
+    ///
+    /// Every migrated ore is marked natural, whatever the saved tag's own natural flag said, so that a
+    /// migrated block drops what an unmined ore of its material drops.
+    private ImmutableBlockMeta resolveLegacyMeta(int meta) {
         try (OreInfo info = OreInfo.getNewInfo()) {
             info.stoneType = GTUtility.getIndexSafe(LEGACY_STONES, (meta % 16000) / 1000);
             info.material = LegacyMaterialIDIndex.get(meta % 1000);

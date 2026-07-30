@@ -63,8 +63,8 @@ public class RecipeLoaderGlueLine {
             .itemInputs(GregtechItemList.BlueMetalCatalyst.get(0))
             .circuit(17)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, (int) (1_000)),
-                MaterialLibAPI.getFluidStack(Materials.MethylAcetate, FluidShapes.fluidLiquid, (int) (1_000)))
+                MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.MethylAcetate, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialUtils.anyFluid(Materials.AceticAnhydride, 1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -73,8 +73,8 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .circuit(18)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.AceticAcid, FluidShapes.fluidLiquid, (int) (1_000)),
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, (int) (1_000)),
+                MaterialLibAPI.getFluidStack(Materials.AceticAcid, FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 1_000),
                 MaterialUtils.anyFluid(Materials.AceticAnhydride, 1_000))
             .fluidOutputs(
                 MaterialUtils.anyFluid(Materials.ChloroaceticMixture, 1_000),
@@ -86,17 +86,17 @@ public class RecipeLoaderGlueLine {
         // Na2CO3 + NaCN + C2H3O2Cl + 2HCl = C3H3NO2 + 3NaCl + CO2 + H2O
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SodiumCarbonate, Shapes.dust, (int) (6)),
+                MaterialLibAPI.getStack(Materials.SodiumCarbonate, Shapes.dust, 6),
                 MaterialLibAPI.getStack(Materials.SodiumCyanide, Shapes.dust, 3))
             .circuit(19)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.CyanoaceticAcid, Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.Salt, Shapes.dust, (int) (6)))
+                MaterialLibAPI.getStack(Materials.Salt, Shapes.dust, 6))
             .fluidInputs(
                 MaterialUtils.anyFluid(Materials.ChloroaceticAcid, 1_000),
                 MaterialUtils.fluid(Materials.HydrochloricAcidGT5U, 2_000))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)),
+                MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, 1_000),
                 GTUtility.getWater(1_000))
             .duration(20 * SECONDS)
             .eut(1000)
@@ -110,7 +110,7 @@ public class RecipeLoaderGlueLine {
                 MaterialLibAPI.getStack(Materials.CyanoaceticAcid, Shapes.dust, 45))
             .circuit(20)
             .itemOutputs(MaterialLibAPI.getStack(Materials.CopperIISulfatePentahydrate, Shapes.dust, 11))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, (int) (5_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, 5_000))
             .fluidOutputs(MaterialUtils.anyFluid(Materials.EthylCyanoacetate, 5_000))
             .duration(8 * MINUTES + 20 * SECONDS)
             .eut(6000)
@@ -120,7 +120,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.CyanoaceticAcid, Shapes.dust, 9))
             .circuit(21)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, (int) (1_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialUtils.anyFluid(Materials.EthylCyanoacetate, 1_000))
             .duration(16 * MINUTES + 40 * SECONDS)
             .eut(6000)
@@ -143,9 +143,9 @@ public class RecipeLoaderGlueLine {
             .itemInputs(GregtechItemList.PinkMetalCatalyst.get(0))
             .circuit(23)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (2_000)),
-                MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, (int) (2_000)),
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (6_000)))
+                MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, 2_000),
+                MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 2_000),
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 6_000))
             .fluidOutputs(MaterialUtils.anyFluid(Materials.HydrogenCyanide, 2_000), GTUtility.getWater(6_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -183,7 +183,7 @@ public class RecipeLoaderGlueLine {
             .circuit(8)
             .itemOutputs(MaterialLibAPI.getStack(Materials.CalciumChloride, Shapes.dust, 3))
             .fluidInputs(MaterialUtils.fluid(Materials.HydrochloricAcidGT5U, 2_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, 1_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -191,24 +191,22 @@ public class RecipeLoaderGlueLine {
         // Cu + 2H2SO4 = CuSO4 + SO2 + 2H2O
         // SO2 + 2H2O -> diluted sulfuric acid
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Copper, Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Copper, Shapes.dust, 1))
             .circuit(19)
             .itemOutputs(MaterialLibAPI.getStack(Materials.CopperIISulfate, Shapes.dust, 6))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (2_000)))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.DilutedSulfuricAcid, FluidShapes.fluidLiquid, (int) (1_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 2_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.DilutedSulfuricAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalReactorRecipes);
 
         // #UniversalChemical won't generate LCR recipe if config >= 10
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Copper, Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Copper, Shapes.dust, 1))
             .circuit(19)
             .itemOutputs(MaterialLibAPI.getStack(Materials.CopperIISulfate, Shapes.dust, 6))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (2_000)))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.DilutedSulfuricAcid, FluidShapes.fluidLiquid, (int) (1_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 2_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.DilutedSulfuricAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -258,10 +256,10 @@ public class RecipeLoaderGlueLine {
             .eut(100)
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SulfurTrioxide, CellShapes.cell, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SulfurTrioxide, CellShapes.cell, 1))
             .circuit(2)
             .itemOutputs(ItemList.Cell_Empty.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (1_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialUtils.anyFluid(Materials.SolidAcidCatalystMixture, 1_000))
             .duration(5 * SECONDS)
             .eut(40)
@@ -273,7 +271,7 @@ public class RecipeLoaderGlueLine {
         // Braintech Tape recipe, PBI and superglue make 16 tape at once
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Polybenzimidazole, Shapes.plate, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Polybenzimidazole, Shapes.plate, 1),
                 GTModHandler.getIC2Item("carbonMesh", 1L))
             .circuit(10)
             .itemOutputs(ItemList.Duct_Tape.get(16L))
@@ -293,49 +291,47 @@ public class RecipeLoaderGlueLine {
         // Graphene recipes from later wafer tiers, using superglue instead of the bronze age glue
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 64),
                 ItemList.Circuit_Silicon_Wafer2.get(8L))
             .circuit(2)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Graphene, Shapes.dust, (int) (64)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Graphene, Shapes.dust, 64))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 1000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 64),
                 ItemList.Circuit_Silicon_Wafer3.get(2L))
             .circuit(2)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Graphene, Shapes.dust, (int) (64)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Graphene, Shapes.dust, 64))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 750))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 64),
                 ItemList.Circuit_Silicon_Wafer4.get(1L))
             .circuit(2)
-            .itemOutputs(
-                GTUtility.copyAmountUnsafe(128, MaterialLibAPI.getStack(Materials.Graphene, Shapes.dust, (int) (1))))
+            .itemOutputs(GTUtility.copyAmountUnsafe(128, MaterialLibAPI.getStack(Materials.Graphene, Shapes.dust, 1)))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 500))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 64),
                 ItemList.Circuit_Silicon_Wafer5.get(1L),
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (64)))
-            .itemOutputs(
-                GTUtility.copyAmountUnsafe(512, MaterialLibAPI.getStack(Materials.Graphene, Shapes.dust, (int) (1))))
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 64))
+            .itemOutputs(GTUtility.copyAmountUnsafe(512, MaterialLibAPI.getStack(Materials.Graphene, Shapes.dust, 1)))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 250))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -343,9 +339,9 @@ public class RecipeLoaderGlueLine {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, (int) (4)))
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 4))
             .circuit(1)
             .itemOutputs(ItemList.SFMixture.get(32))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 100))
@@ -356,8 +352,8 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.GelledToluene.get(1),
-                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Polybenzimidazole, Shapes.dustTiny, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Polybenzimidazole, Shapes.dustTiny, 1))
             .circuit(1)
             .itemOutputs(ItemList.SFMixture.get(64))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 100))
@@ -367,7 +363,7 @@ public class RecipeLoaderGlueLine {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.PolyvinylChloride, Shapes.foil, (int) (8)),
+                MaterialLibAPI.getStack(Materials.PolyvinylChloride, Shapes.foil, 8),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 32))
             .itemOutputs(new ItemStack(Items.book, 64, 0))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 200))
@@ -377,7 +373,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Naquadah, 2),
-                MaterialLibAPI.getStack(Materials.RedSteel, Shapes.plate, (int) (18)))
+                MaterialLibAPI.getStack(Materials.RedSteel, Shapes.plate, 18))
             .itemOutputs(ItemList.BatteryHull_LuV.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 144))
             .duration(15 * SECONDS)
@@ -386,7 +382,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 2),
-                MaterialLibAPI.getStack(Materials.Europium, Shapes.plate, (int) (6)))
+                MaterialLibAPI.getStack(Materials.Europium, Shapes.plate, 6))
             .itemOutputs(ItemList.BatteryHull_ZPM.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 288))
             .duration(10 * SECONDS)
@@ -395,7 +391,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.ElectrumFlux, 2),
-                MaterialLibAPI.getStack(Materials.Americium, Shapes.plate, (int) (18)))
+                MaterialLibAPI.getStack(Materials.Americium, Shapes.plate, 18))
             .itemOutputs(ItemList.BatteryHull_UV.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 576))
             .duration(15 * SECONDS)
@@ -404,7 +400,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.ElectrumFlux, 2),
-                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.plate, (int) (24)))
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.plate, 24))
             .itemOutputs(ItemList.BatteryHull_UHV.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 1152))
             .duration(5 * SECONDS)
@@ -413,7 +409,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.ElectrumFlux, 2),
-                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.plate, (int) (36)))
+                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.plate, 36))
             .itemOutputs(ItemList.BatteryHull_UEV.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 2304))
             .duration(10 * SECONDS)
@@ -422,7 +418,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.ElectrumFlux, 2),
-                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.plate, (int) (48)))
+                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.plate, 48))
             .itemOutputs(ItemList.BatteryHull_UIV.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 4608))
             .duration(15 * SECONDS)
@@ -431,7 +427,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, MaterialFacades.SuperconductorUHV, 2),
-                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, (int) (56)))
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 56))
             .itemOutputs(ItemList.BatteryHull_UMV.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 9216))
             .duration(30 * SECONDS)
@@ -440,7 +436,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, MaterialFacades.SuperconductorUHV, 2),
-                MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.plate, (int) (64)))
+                MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.plate, 64))
             .itemOutputs(ItemList.BatteryHull_UxV.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 18432))
             .duration(60 * SECONDS)
@@ -451,7 +447,7 @@ public class RecipeLoaderGlueLine {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     getModItem(Mods.GalacticraftMars.ID, "item.itemBasicAsteroids", 1, 7),
-                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.foil, (int) (8)),
+                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.foil, 8),
                     getModItem(Mods.NewHorizonsCoreMod.ID, "TungstenString", 8))
                 .circuit(1)
                 .itemOutputs(getModItem(Mods.GalaxySpace.ID, "item.ThermalClothT2", 1))

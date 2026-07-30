@@ -18,22 +18,22 @@ public final class MaterialAtomics {
 
     private MaterialAtomics() {}
 
-    public static long protons(Material ml) {
-        return compute(ml, Element::getProtons);
+    public static long protons(Material material) {
+        return compute(material, Element::getProtons);
     }
 
-    public static long neutrons(Material ml) {
-        return compute(ml, Element::getNeutrons);
+    public static long neutrons(Material material) {
+        return compute(material, Element::getNeutrons);
     }
 
-    public static long mass(Material ml) {
-        return compute(ml, Element::getMass);
+    public static long mass(Material material) {
+        return compute(material, Element::getMass);
     }
 
-    private static long compute(Material ml, ToLongFunction<Element> value) {
-        String elementName = ml.getProperty(GTMaterialProperties.ELEMENT);
+    private static long compute(Material material, ToLongFunction<Element> value) {
+        String elementName = material.getProperty(GTMaterialProperties.ELEMENT);
         if (elementName != null) return value.applyAsLong(Element.get(elementName));
-        List<MaterialRefStack> composition = ml.getProperty(GTMaterialProperties.COMPOSITION);
+        List<MaterialRefStack> composition = material.getProperty(GTMaterialProperties.COMPOSITION);
         if (composition == null || composition.isEmpty()) return value.applyAsLong(Element.Tc);
         long totalAmount = 0;
         long sum = 0;
@@ -44,15 +44,15 @@ public final class MaterialAtomics {
                     .resolve(),
                 value);
         }
-        return (density(ml) * sum) / (totalAmount * M);
+        return (density(material) * sum) / (totalAmount * M);
     }
 
     /// The density value `(M * densityMultiplier) / densityDivider` from
     /// [GTMaterialProperties#DENSITY_MULTIPLIER]/[GTMaterialProperties#DENSITY_DIVIDER] (each `1` when
     /// absent), using integer division with no rounding.
-    public static long density(Material ml) {
-        Integer multiplier = ml.getProperty(GTMaterialProperties.DENSITY_MULTIPLIER);
-        Integer divider = ml.getProperty(GTMaterialProperties.DENSITY_DIVIDER);
+    public static long density(Material material) {
+        Integer multiplier = material.getProperty(GTMaterialProperties.DENSITY_MULTIPLIER);
+        Integer divider = material.getProperty(GTMaterialProperties.DENSITY_DIVIDER);
         return (M * (multiplier != null ? multiplier : 1)) / (divider != null ? divider : 1);
     }
 }

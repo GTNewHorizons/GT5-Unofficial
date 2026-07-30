@@ -147,10 +147,10 @@ public class CircuitAssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.plate, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Gold, Shapes.bolt, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Copper, Shapes.wireFine, (int) (2)),
-                MaterialLibAPI.getStack(Materials.AnnealedCopper, Shapes.stickLong, (int) (2)))
+                MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.plate, 1),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.bolt, 2),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.wireFine, 2),
+                MaterialLibAPI.getStack(Materials.AnnealedCopper, Shapes.stickLong, 2))
             .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, 0))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(10 * SECONDS)
@@ -161,10 +161,10 @@ public class CircuitAssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.plate, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Gold, Shapes.bolt, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Copper, Shapes.wireFine, (int) (2)),
-                MaterialLibAPI.getStack(Materials.CastIron, Shapes.stickLong, (int) (2)))
+                MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.plate, 1),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.bolt, 2),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.wireFine, 2),
+                MaterialLibAPI.getStack(Materials.CastIron, Shapes.stickLong, 2))
             .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, 3))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(10 * SECONDS)
@@ -190,9 +190,9 @@ public class CircuitAssemblerRecipes implements Runnable {
         for (int metaid = 0; metaid < rodMaterials.length; metaid++) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.plate, (int) (1)),
-                    MaterialLibAPI.getStack(Materials.Gold, Shapes.bolt, (int) (2)),
-                    MaterialLibAPI.getStack(Materials.Copper, Shapes.wireFine, (int) (2)),
+                    MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.plate, 1),
+                    MaterialLibAPI.getStack(Materials.Gold, Shapes.bolt, 2),
+                    MaterialLibAPI.getStack(Materials.Copper, Shapes.wireFine, 2),
                     rodMaterials[metaid])
                 .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, metaid))
                 .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
@@ -205,9 +205,9 @@ public class CircuitAssemblerRecipes implements Runnable {
             .itemInputs(
                 ItemList.Circuit_Board_Coated_Basic.get(1),
                 GTOreDictUnificator.get("circuitPrimitive", 2),
-                MaterialLibAPI.getStack(Materials.Iron, Shapes.foil, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Iron, Shapes.screw, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Iron, Shapes.wireFine, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.foil, 2),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.screw, 4),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.wireFine, 1))
             .circuit(1)
             .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 0))
             .fluidInputs(SubstituteFluidStack.soldering(4 * INGOTS))
@@ -219,9 +219,9 @@ public class CircuitAssemblerRecipes implements Runnable {
             .itemInputs(
                 ItemList.Circuit_Board_Coated_Basic.get(1),
                 GTOreDictUnificator.get("circuitBasic", 2),
-                MaterialLibAPI.getStack(Materials.Bronze, Shapes.foil, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Bronze, Shapes.screw, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Bronze, Shapes.wireFine, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Bronze, Shapes.foil, 2),
+                MaterialLibAPI.getStack(Materials.Bronze, Shapes.screw, 4),
+                MaterialLibAPI.getStack(Materials.Bronze, Shapes.wireFine, 1))
             .circuit(1)
             .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 1))
             .fluidInputs(SubstituteFluidStack.soldering(4 * INGOTS))
@@ -233,9 +233,9 @@ public class CircuitAssemblerRecipes implements Runnable {
             .itemInputs(
                 ItemList.Circuit_Board_Phenolic_Good.get(1),
                 GTOreDictUnificator.get("circuitGood", 2),
-                MaterialLibAPI.getStack(Materials.Steel, Shapes.foil, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Steel, Shapes.screw, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Steel, Shapes.wireFine, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.foil, 2),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.screw, 4),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.wireFine, 1))
             .circuit(1)
             .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 2))
             .fluidInputs(SubstituteFluidStack.soldering(576))
@@ -247,9 +247,9 @@ public class CircuitAssemblerRecipes implements Runnable {
             .itemInputs(
                 ItemList.Circuit_Board_Phenolic_Good.get(1),
                 GTOreDictUnificator.get("circuitAdvanced", 2),
-                MaterialLibAPI.getStack(Materials.Electrum, Shapes.foil, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Electrum, Shapes.screw, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Electrum, Shapes.wireFine, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Electrum, Shapes.foil, 2),
+                MaterialLibAPI.getStack(Materials.Electrum, Shapes.screw, 4),
+                MaterialLibAPI.getStack(Materials.Electrum, Shapes.wireFine, 1))
             .circuit(1)
             .itemOutputs(getModItem(Forestry.ID, "chipsets", 1L, 3))
             .fluidInputs(SubstituteFluidStack.soldering(576))

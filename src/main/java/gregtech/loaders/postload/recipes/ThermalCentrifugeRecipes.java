@@ -22,28 +22,28 @@ public class ThermalCentrifugeRecipes implements Runnable {
     public void run() {
         GTValues.RA.stdBuilder()
             .itemInputs(getIC2Item("RTGPellets", 1))
-            .itemOutputs(getIC2Item("Plutonium", 3), MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (54)))
+            .itemOutputs(getIC2Item("Plutonium", 3), MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 54))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherQuartz, 2))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Lithium, Shapes.dustTiny, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Lithium, Shapes.dustTiny, 1))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Clay, Shapes.dust, (int) (4)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Clay, Shapes.dust, 4))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.cobblestone, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, 1))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);

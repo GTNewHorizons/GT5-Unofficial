@@ -75,7 +75,7 @@ public class RecipeIC2 {
         // Shafts
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.EnergeticAlloy, Shapes.ingot, (int) (9)),
+                MaterialLibAPI.getStack(Materials.EnergeticAlloy, Shapes.ingot, 9),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.EnergeticAlloyShaft.get(1))
             .duration(2 * MINUTES + 8 * SECONDS)
@@ -92,7 +92,7 @@ public class RecipeIC2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.ingot, (int) (9)),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.ingot, 9),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.TungstenSteelShaft.get(1))
             .duration(4 * MINUTES + 16 * SECONDS)
@@ -109,7 +109,7 @@ public class RecipeIC2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.VibrantAlloy, Shapes.ingot, (int) (9)),
+                MaterialLibAPI.getStack(Materials.VibrantAlloy, Shapes.ingot, 9),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.VibrantAlloyShaft.get(1))
             .duration(8 * MINUTES + 32 * SECONDS)
@@ -126,7 +126,7 @@ public class RecipeIC2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Iridium, Shapes.ingot, (int) (9)),
+                MaterialLibAPI.getStack(Materials.Iridium, Shapes.ingot, 9),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.IridiumShaft.get(1))
             .duration(17 * MINUTES + 4 * SECONDS)
@@ -171,8 +171,8 @@ public class RecipeIC2 {
                 Ic2Items.hazmatHelmet.copy(),
                 new ItemStack(Blocks.wool, 16, 4), // Yellow Wool
                 GTUtility.copyAmount(8, Ic2Items.coil),
-                MaterialLibAPI.getStack(Materials.Cobalt, Shapes.plate, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.gearGtSmall, (int) (4)))
+                MaterialLibAPI.getStack(Materials.Cobalt, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.gearGtSmall, 4))
             .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Helmet.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, (int) (144 * 4)))
@@ -186,7 +186,7 @@ public class RecipeIC2 {
                 Ic2Items.hazmatChestplate.copy(),
                 new ItemStack(Blocks.wool, 64, 4), // Yellow Wool
                 GTUtility.copyAmount(32, Ic2Items.coil),
-                MaterialLibAPI.getStack(Materials.Cobalt, Shapes.plate, (int) (16)),
+                MaterialLibAPI.getStack(Materials.Cobalt, Shapes.plate, 16),
                 MaterialLibAPI.getStack(Materials.SiliconCarbide, Shapes.gearGt, 8))
             .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Chest.get(1))
@@ -201,7 +201,7 @@ public class RecipeIC2 {
                 Ic2Items.hazmatLeggings.copy(),
                 new ItemStack(Blocks.wool, 32, 4), // Yellow Wool
                 GTUtility.copyAmount(16, Ic2Items.coil),
-                MaterialLibAPI.getStack(Materials.Cobalt, Shapes.plate, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Cobalt, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.SiliconCarbide, Shapes.gearGt, 4))
             .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Legs.get(1))
@@ -216,7 +216,7 @@ public class RecipeIC2 {
                 Ic2Items.hazmatBoots.copy(),
                 new ItemStack(Blocks.wool, 16, 15), // Black Wool
                 GTUtility.copyAmount(6, Ic2Items.coil),
-                MaterialLibAPI.getStack(Materials.Steel, Shapes.gearGtSmall, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.gearGtSmall, 8),
                 MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.gearGt, 4))
             .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Boots.get(1))

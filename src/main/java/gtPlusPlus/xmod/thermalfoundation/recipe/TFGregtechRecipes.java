@@ -34,7 +34,7 @@ public class TFGregtechRecipes {
         // Gelid Cryotheum
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.ore, Materials.Cinnabar, 1L))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Cinnabar, Shapes.dust, (int) (3)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Cinnabar, Shapes.dust, 3))
             .fluidInputs(new FluidStack(TFFluids.fluidCryotheum, 1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -43,8 +43,8 @@ public class TFGregtechRecipes {
         // Blizz Powder
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.blaze_powder, 4))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Blizz, Shapes.dust, (int) (4)))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidNitrogen, FluidShapes.fluidGas, (int) (100)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Blizz, Shapes.dust, 4))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidNitrogen, FluidShapes.fluidGas, 100))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(chemicalBathRecipes);
@@ -59,33 +59,33 @@ public class TFGregtechRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1L))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Pyrotheum, Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Pyrotheum, Shapes.dust, 1))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Saltpeter, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Snow, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Lapis, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Blizz, Shapes.dust, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Cryotheum, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Saltpeter, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Snow, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Lapis, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Blizz, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Cryotheum, Shapes.dust, 1))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Niter, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Snow, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Lapis, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Blizz, Shapes.dust, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Cryotheum, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Niter, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Snow, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Lapis, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Blizz, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Cryotheum, Shapes.dust, 1))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);

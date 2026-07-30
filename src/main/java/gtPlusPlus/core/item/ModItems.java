@@ -524,7 +524,7 @@ public final class ModItems {
                 25000,
                 new String[] { StringUtils.superscript("238Np"),
                     "Result: Plutonium 239 (" + StringUtils.superscript("239Pu") + ")" },
-                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, 1),
                 5,
                 GTRecipeConstants.DecayType.BetaMinus));
 

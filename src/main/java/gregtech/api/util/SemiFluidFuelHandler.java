@@ -21,12 +21,9 @@ import gregtech.api.recipe.RecipeMaps;
 public class SemiFluidFuelHandler {
 
     public static boolean generateFuels() {
-        final FluidStack aCreosote = MaterialLibAPI
-            .getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (1_000));
-        final FluidStack aHeavyFuel = MaterialLibAPI
-            .getFluidStack(Materials.HeavyFuel, FluidShapes.fluidLiquid, (int) (1_000));
-        final FluidStack aHeavyOil = MaterialLibAPI
-            .getFluidStack(Materials.OilHeavy, FluidShapes.fluidLiquid, (int) (1_000));
+        final FluidStack aCreosote = MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 1_000);
+        final FluidStack aHeavyFuel = MaterialLibAPI.getFluidStack(Materials.HeavyFuel, FluidShapes.fluidLiquid, 1_000);
+        final FluidStack aHeavyOil = MaterialLibAPI.getFluidStack(Materials.OilHeavy, FluidShapes.fluidLiquid, 1_000);
         final HashMap<Integer, Pair<FluidStack, Integer>> aFoundFluidsFromItems = new HashMap<>();
         // Find Fluids From items
         for (final GTRecipe r : RecipeMaps.denseLiquidFuels.getAllRecipes()) {

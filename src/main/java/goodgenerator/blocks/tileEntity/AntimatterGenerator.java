@@ -155,11 +155,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
 
         if (catalyst.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Copper, FluidShapes.fluidMolten, 1))) {
             modifier = 1.0F;
-        } else if (catalyst.isFluidEqual(
-            MaterialLibAPI.getFluidStack(Materials.SuperconductorUIVBase, FluidShapes.fluidMolten, (int) (1)))) {
+        } else if (catalyst
+            .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.SuperconductorUIVBase, FluidShapes.fluidMolten, 1))) {
                 modifier = 1.02F;
             } else if (catalyst.isFluidEqual(
-                MaterialLibAPI.getFluidStack(Materials.SuperconductorUMVBase, FluidShapes.fluidMolten, (int) (1)))) {
+                MaterialLibAPI.getFluidStack(Materials.SuperconductorUMVBase, FluidShapes.fluidMolten, 1))) {
                     modifier = 1.03F;
                 }
         long catalystCount = catalyst.amount;

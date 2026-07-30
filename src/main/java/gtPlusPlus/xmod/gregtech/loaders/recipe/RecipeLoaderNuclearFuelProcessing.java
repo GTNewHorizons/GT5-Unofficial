@@ -39,7 +39,7 @@ public class RecipeLoaderNuclearFuelProcessing {
                 MaterialUtils.anyFluid(Materials.LithiumFluoride, 550),
                 MaterialUtils.anyFluid(Materials.BerylliumFluoride, 150),
                 MaterialUtils.anyFluid(Materials.ZirconiumTetrafluoride, 60),
-                MaterialLibAPI.getFluidStack(Materials.Uranium235, FluidShapes.fluidMolten, (int) (240)))
+                MaterialLibAPI.getFluidStack(Materials.Uranium235, FluidShapes.fluidMolten, 240))
             .fluidOutputs(MaterialUtils.anyFluid(Materials.LFTRFuel1, 1000))
             .duration(30 * MINUTES)
             .eut(TierEU.RECIPE_EV)
@@ -224,7 +224,7 @@ public class RecipeLoaderNuclearFuelProcessing {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.UraniumHexafluoride, CellShapes.cellMolten, 1),
                 MaterialLibAPI.getStack(Materials.StableMoltenSaltBase, CellShapes.cellMolten, 1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (2_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 2_000))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2))
             .fluidOutputs(MaterialUtils.anyFluid(Materials.LFTRFuelBase, 3000))
             .duration(2 * MINUTES + 30 * SECONDS)

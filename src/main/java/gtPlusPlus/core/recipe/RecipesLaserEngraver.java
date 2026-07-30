@@ -34,7 +34,7 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
         if (aOreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Lithium, Shapes.plate, (int) (2)),
+                    MaterialLibAPI.getStack(Materials.Lithium, Shapes.plate, 2),
                     GTUtility.copyAmount(0L, aStack))
                 .itemOutputs(MaterialLibAPI.getStack(Materials.Lithium7, Shapes.plateDouble, 1))
                 .duration(4 * MINUTES)
@@ -42,7 +42,7 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
                 .addTo(laserEngraverRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, (int) (3)),
+                    MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, 3),
                     GTUtility.copyAmount(0L, aStack))
                 .itemOutputs(MaterialLibAPI.getStack(Materials.Lithium7, Shapes.dust, 1))
                 .duration(2 * MINUTES)

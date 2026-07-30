@@ -1077,7 +1077,7 @@ public class GTProxy implements IFuelHandler {
 
             FluidContainerRegistry.registerFluidContainer(
                 new FluidContainerRegistry.FluidContainerData(
-                    MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, (int) (1_000)),
+                    MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, 1_000),
                     GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Milk, 1L),
                     GTOreDictUnificator.get(OrePrefixes.bucketClay, Materials.Empty, 1L)));
         }

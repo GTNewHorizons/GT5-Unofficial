@@ -50,10 +50,10 @@ public class RecipesSeleniumProcessing {
             .circuit(14)
             .fluidInputs(
                 MaterialUtils.anyFluid(Materials.SeleniousAcid, 750),
-                MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (8_000)))
+                MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 8_000))
             .fluidOutputs(
                 MaterialUtils.anyFluid(Materials.Selenium, 2 * INGOTS + 1 * QUARTER_INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.DilutedSulfuricAcid, FluidShapes.fluidLiquid, (int) (12_000)))
+                MaterialLibAPI.getFluidStack(Materials.DilutedSulfuricAcid, FluidShapes.fluidLiquid, 12_000))
             .eut(TierEU.RECIPE_IV)
             .duration(5 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);

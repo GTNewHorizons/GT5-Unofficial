@@ -39,10 +39,10 @@ public class ArcFurnaceLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hatch_Input_Bus_IV.get(1),
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.plate, (int) (4)),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.plate, 4),
                 new Object[] { Circuits.IV.getIngredient(), 1L })
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (1152)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 1152))
             .itemOutputs(kubatech.api.enums.ItemList.ElectrodeHatch.get(1))
             .circuit(1)
             .eut(TierEU.RECIPE_IV)
@@ -74,8 +74,7 @@ public class ArcFurnaceLoader {
                 .itemInputs(
                     MaterialParts.partOf(electrode.associatedMaterial, OrePrefixes.dust, 64),
                     ItemList.Shape_Mold_Rod_Long.get(0))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (1152)))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 1152))
                 .itemOutputs(electrode.getElectrodeItem(1))
                 .eut(TierEU.RECIPE_IV)
                 .duration(2 * MINUTES)

@@ -13,7 +13,7 @@ import tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData;
 public enum Fuels {
 
     RESIDUE(() -> MaterialUtils.fluid(Materials.DimensionallyTranscendentResidue, 1)),
-    STELLAR(() -> MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, (int) (1))),
+    STELLAR(() -> MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, 1)),
     MHDCSM(() -> MaterialUtils.molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1));
 
     public static final Fuels[] VALUES = values();
