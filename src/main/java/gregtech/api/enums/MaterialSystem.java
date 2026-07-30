@@ -9,9 +9,9 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.enums.materials.PipeMaterials;
 import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.enums.materials.ShapeData;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.loaders.materials.RecognitionMaterials;
 
 public class MaterialSystem {
 

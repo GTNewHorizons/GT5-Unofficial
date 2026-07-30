@@ -18,9 +18,9 @@ import gregtech.common.config.Gregtech;
 /// gregtech-owned material passes that have no MaterialLib equivalent: disabling the hot-ingot variant for
 /// materials whose blast furnace temperature does not warrant one, and writing the configured harvest-level
 /// overrides into [GTMod#proxy]'s harvest-level table.
-public final class LoaderLegacyMaterialPasses {
+public final class LoaderGTMaterialPasses {
 
-    private LoaderLegacyMaterialPasses() {}
+    private LoaderGTMaterialPasses() {}
 
     public static void run() {
         applyPrefixGenerationOverrides();

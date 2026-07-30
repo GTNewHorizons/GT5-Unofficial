@@ -2991,7 +2991,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.plate, 12),
                 MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.screw, 4))
             .itemOutputs(ItemList.RadiantNaquadahAlloyCasing.get(4))
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 9 * INGOTS))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.Indalloy140, 9 * INGOTS))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
@@ -4618,7 +4618,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(CustomItemList.LASERpipe.get(1), ItemList.Naquarite_Universal_Insulator_Foil.get(4))
             .itemOutputs(CustomItemList.Pipe_BEC.get(1))
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.ChromaticGlass, INGOTS))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.ChromaticGlass, INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);

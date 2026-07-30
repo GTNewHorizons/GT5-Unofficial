@@ -27,7 +27,7 @@ import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.loaders.materials.LegacyNameDomain;
+import gregtech.api.material.LegacyNameDomain;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;

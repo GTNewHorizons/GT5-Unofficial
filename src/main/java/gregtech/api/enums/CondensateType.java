@@ -50,12 +50,12 @@ public enum CondensateType {
         "chromaticglass",
         () -> Materials.ChromaticGlass,
         144,
-        () -> MaterialUtils.legacyGtppFluid(Materials.ChromaticGlass, 144), 20, TierEU.RECIPE_UEV),
+        () -> MaterialUtils.anyFluid(Materials.ChromaticGlass, 144), 20, TierEU.RECIPE_UEV),
     CelestialTungsten(
         "celestialtungsten",
         () -> Materials.CelestialTungsten,
         144,
-        () -> MaterialUtils.legacyGtppFluid(Materials.CelestialTungsten, 144), 20, TierEU.RECIPE_UEV),
+        () -> MaterialUtils.anyFluid(Materials.CelestialTungsten, 144), 20, TierEU.RECIPE_UEV),
     Infinity(
         "infinity",
         () -> Materials.Infinity,
@@ -65,7 +65,7 @@ public enum CondensateType {
         "hypogen",
         () -> Materials.Hypogen,
         144,
-        () -> MaterialUtils.legacyGtppFluid(Materials.Hypogen, 144), 40, TierEU.RECIPE_UIV),
+        () -> MaterialUtils.anyFluid(Materials.Hypogen, 144), 40, TierEU.RECIPE_UIV),
     TranscendentMetal(
         "transcendentmetal",
         () -> Materials.TranscendentMetal,

@@ -39,20 +39,20 @@ public class RecipeLoaderLFTR {
         if (mNobleGases == null) {
             mNobleGases = new ArrayList<>();
             mNobleGases.add(mSpargeGases.get(0));
-            mNobleGases.add(MaterialUtils.legacyGtppFluidOf(Materials.Xenon));
-            mNobleGases.add(MaterialUtils.legacyGtppFluidOf(Materials.Neon));
-            mNobleGases.add(MaterialUtils.legacyGtppFluidOf(Materials.Argon));
-            mNobleGases.add(MaterialUtils.legacyGtppFluidOf(Materials.Krypton));
-            mNobleGases.add(MaterialUtils.legacyGtppFluidOf(Materials.Radon));
+            mNobleGases.add(MaterialUtils.anyFluidOf(Materials.Xenon));
+            mNobleGases.add(MaterialUtils.anyFluidOf(Materials.Neon));
+            mNobleGases.add(MaterialUtils.anyFluidOf(Materials.Argon));
+            mNobleGases.add(MaterialUtils.anyFluidOf(Materials.Krypton));
+            mNobleGases.add(MaterialUtils.anyFluidOf(Materials.Radon));
         }
         if (mFluorideGases == null) {
             mFluorideGases = new ArrayList<>();
             mFluorideGases.add(mSpargeGases.get(1));
-            mFluorideGases.add(MaterialUtils.legacyGtppFluidOf(Materials.LithiumFluoride));
-            mFluorideGases.add(MaterialUtils.legacyGtppFluidOf(Materials.NeptuniumHexafluoride));
-            mFluorideGases.add(MaterialUtils.legacyGtppFluidOf(Materials.TechnetiumHexafluoride));
-            mFluorideGases.add(MaterialUtils.legacyGtppFluidOf(Materials.SeleniumHexafluoride));
-            mFluorideGases.add(MaterialUtils.legacyGtppFluidOf(Materials.ThoriumTetrafluoride));
+            mFluorideGases.add(MaterialUtils.anyFluidOf(Materials.LithiumFluoride));
+            mFluorideGases.add(MaterialUtils.anyFluidOf(Materials.NeptuniumHexafluoride));
+            mFluorideGases.add(MaterialUtils.anyFluidOf(Materials.TechnetiumHexafluoride));
+            mFluorideGases.add(MaterialUtils.anyFluidOf(Materials.SeleniumHexafluoride));
+            mFluorideGases.add(MaterialUtils.anyFluidOf(Materials.ThoriumTetrafluoride));
         }
     }
 
@@ -65,16 +65,16 @@ public class RecipeLoaderLFTR {
         // 1l/10t= 1000l/2.5hr LiFBeF2ZrF4U235
 
         configureSparging();
-        FluidStack Li2BeF4 = MaterialUtils.legacyGtppFluid(Materials.LithiumTetrafluoroberyllateLFTB, 200);
+        FluidStack Li2BeF4 = MaterialUtils.anyFluid(Materials.LithiumTetrafluoroberyllateLFTB, 200);
 
         // LiFBeF2ThF4UF4 - T3
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.LFTRFuel3, 100), Li2BeF4)
+            .fluidInputs(MaterialUtils.anyFluid(Materials.LFTRFuel3, 100), Li2BeF4)
             .fluidOutputs(
-                MaterialUtils.legacyGtppFluid(Materials.UraniumDepletedMoltenSaltUSalt, 100),
-                MaterialUtils.legacyGtppFluid(Materials.ThoriumBerylliumDepletedMoltenSaltTBSalt, 200),
-                MaterialUtils.legacyGtppFluid(Materials.UraniumHexafluoride, 20),
-                MaterialUtils.legacyGtppFluid(Materials.UraniumHexafluoride, 10))
+                MaterialUtils.anyFluid(Materials.UraniumDepletedMoltenSaltUSalt, 100),
+                MaterialUtils.anyFluid(Materials.ThoriumBerylliumDepletedMoltenSaltTBSalt, 200),
+                MaterialUtils.anyFluid(Materials.UraniumHexafluoride, 20),
+                MaterialUtils.anyFluid(Materials.UraniumHexafluoride, 10))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(LFTR_OUTPUT_POWER, 32768 * 4)
@@ -82,12 +82,12 @@ public class RecipeLoaderLFTR {
 
         // LiFBeF2ZrF4UF4 - T2
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.LFTRFuel2, 100), Li2BeF4)
+            .fluidInputs(MaterialUtils.anyFluid(Materials.LFTRFuel2, 100), Li2BeF4)
             .fluidOutputs(
-                MaterialUtils.legacyGtppFluid(Materials.UraniumDepletedMoltenSaltUSalt, 50),
-                MaterialUtils.legacyGtppFluid(Materials.ThoriumBerylliumDepletedMoltenSaltTBSalt, 100),
-                MaterialUtils.legacyGtppFluid(Materials.UraniumHexafluoride, 10),
-                MaterialUtils.legacyGtppFluid(Materials.UraniumHexafluoride, 5))
+                MaterialUtils.anyFluid(Materials.UraniumDepletedMoltenSaltUSalt, 50),
+                MaterialUtils.anyFluid(Materials.ThoriumBerylliumDepletedMoltenSaltTBSalt, 100),
+                MaterialUtils.anyFluid(Materials.UraniumHexafluoride, 10),
+                MaterialUtils.anyFluid(Materials.UraniumHexafluoride, 5))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(LFTR_OUTPUT_POWER, 8192 * 4)
@@ -95,12 +95,12 @@ public class RecipeLoaderLFTR {
 
         // LiFBeF2ZrF4U235 - T1
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.LFTRFuel1, 100), Li2BeF4)
+            .fluidInputs(MaterialUtils.anyFluid(Materials.LFTRFuel1, 100), Li2BeF4)
             .fluidOutputs(
-                MaterialUtils.legacyGtppFluid(Materials.UraniumDepletedMoltenSaltUSalt, 25),
-                MaterialUtils.legacyGtppFluid(Materials.ThoriumDepletedMoltenSaltTSalt, 50),
-                MaterialUtils.legacyGtppFluid(Materials.UraniumHexafluoride, 4),
-                MaterialUtils.legacyGtppFluid(Materials.UraniumHexafluoride, 2))
+                MaterialUtils.anyFluid(Materials.UraniumDepletedMoltenSaltUSalt, 25),
+                MaterialUtils.anyFluid(Materials.ThoriumDepletedMoltenSaltTSalt, 50),
+                MaterialUtils.anyFluid(Materials.UraniumHexafluoride, 4),
+                MaterialUtils.anyFluid(Materials.UraniumHexafluoride, 2))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(LFTR_OUTPUT_POWER, 8192)
@@ -111,9 +111,9 @@ public class RecipeLoaderLFTR {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int) (1_000)),
-                MaterialUtils.legacyGtppFluid(Materials.UraniumDepletedMoltenSaltUSalt, 50))
+                MaterialUtils.anyFluid(Materials.UraniumDepletedMoltenSaltUSalt, 50))
             .fluidOutputs(
-                MaterialUtils.legacyGtppFluid(Materials.HeliumSpargedUSalt, 50),
+                MaterialUtils.anyFluid(Materials.HeliumSpargedUSalt, 50),
                 MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int) (0)),
                 new FluidStack(mNobleGases.get(1), 0),
                 new FluidStack(mNobleGases.get(2), 0),
@@ -128,9 +128,9 @@ public class RecipeLoaderLFTR {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, (int) (100)),
-                MaterialUtils.legacyGtppFluid(Materials.ThoriumDepletedMoltenSaltTSalt, 50))
+                MaterialUtils.anyFluid(Materials.ThoriumDepletedMoltenSaltTSalt, 50))
             .fluidOutputs(
-                MaterialUtils.legacyGtppFluid(Materials.FluorineSpargedTSalt, 50),
+                MaterialUtils.anyFluid(Materials.FluorineSpargedTSalt, 50),
                 MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, (int) (0)),
                 new FluidStack(mFluorideGases.get(1), 0),
                 new FluidStack(mFluorideGases.get(2), 0),
@@ -145,9 +145,9 @@ public class RecipeLoaderLFTR {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, (int) (100)),
-                MaterialUtils.legacyGtppFluid(Materials.ThoriumBerylliumDepletedMoltenSaltTBSalt, 50))
+                MaterialUtils.anyFluid(Materials.ThoriumBerylliumDepletedMoltenSaltTBSalt, 50))
             .fluidOutputs(
-                MaterialUtils.legacyGtppFluid(Materials.FluorineSpargedTBSalt, 50),
+                MaterialUtils.anyFluid(Materials.FluorineSpargedTBSalt, 50),
                 MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, (int) (0)),
                 new FluidStack(mFluorideGases.get(1), 0),
                 new FluidStack(mFluorideGases.get(2), 0),

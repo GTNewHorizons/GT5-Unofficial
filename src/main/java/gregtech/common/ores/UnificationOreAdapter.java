@@ -30,9 +30,9 @@ import gregtech.GTMod;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IStoneType;
+import gregtech.api.material.LegacyNameDomain;
 import gregtech.common.GTMockWorld;
 import gregtech.common.blocks.GTBlockOre;
-import gregtech.loaders.materials.LegacyNameDomain;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 

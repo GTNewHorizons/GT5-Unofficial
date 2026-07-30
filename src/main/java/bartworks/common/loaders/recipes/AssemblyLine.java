@@ -40,7 +40,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_LuV.get(9L),
                 MaterialLibAPI.getStack(Materials.Europium, Shapes.screw, (int) (36L)))
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 10 * INGOTS),
+                MaterialUtils.anyFluid(Materials.Indalloy140, 10 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, (int) (20_000)))
             .itemOutputs(ItemRegistry.voidminer[0].copy())
             .eut(TierEU.RECIPE_LuV)
@@ -59,7 +59,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Emitter_LuV.get(1L),
                 ItemList.Sensor_LuV.get(1L),
                 MaterialLibAPI.getStack(Materials.RhodiumPlatedPalladium, Shapes.plate, 8))
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 10 * INGOTS))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.Indalloy140, 10 * INGOTS))
             .itemOutputs(ItemRegistry.cal.copy())
             .eut(TierEU.RECIPE_ZPM)
             .duration(60 * SECONDS)
@@ -78,7 +78,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Sensor_UV.get(4L),
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.wireFine, (int) (32)))
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 32 * INGOTS),
+                MaterialUtils.anyFluid(Materials.Indalloy140, 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, (int) (8000)))
             .itemOutputs(ItemList.PCBCoolingTower.get(1L))
             .eut(TierEU.RECIPE_UV)
@@ -98,7 +98,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Sensor_ZPM.get(4L),
                 MaterialLibAPI.getStack(Materials.Holmium, Shapes.wireFine, (int) (32)))
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 32 * INGOTS),
+                MaterialUtils.anyFluid(Materials.Indalloy140, 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.GrowthMediumSterilized, FluidShapes.fluidLiquid, (int) (27648)))
             .itemOutputs(ItemList.PCBBioChamber.get(1L))
             .eut(TierEU.RECIPE_UV)

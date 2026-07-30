@@ -273,7 +273,7 @@ public class RecipeLoader2 {
                 GTModHandler.getModItem(GalacticraftMars.ID, "item.null", 1L, 6),
                 MaterialLibAPI.getStack(Materials.Polycaprolactam, Shapes.foil, 32))
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 16 * INGOTS),
+                MaterialUtils.anyFluid(Materials.Indalloy140, 16 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 4_000))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T3.get(1))
             .eut(TierEU.RECIPE_LuV)
@@ -293,7 +293,7 @@ public class RecipeLoader2 {
                 MaterialLibAPI.getStack(Materials.StyreneButadieneRubber, Shapes.foil, 64),
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.TungstenSteel, 64))
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 2 * STACKS),
+                MaterialUtils.anyFluid(Materials.Indalloy140, 2 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 16_000))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T4.get(1))
             .eut(TierEU.RECIPE_ZPM)
@@ -356,7 +356,7 @@ public class RecipeLoader2 {
                 MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.plateDense, 16))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Draconium, FluidShapes.fluidMolten, 2 * STACKS + 32 * INGOTS),
-                MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 16 * INGOTS),
+                MaterialUtils.anyFluid(Materials.Indalloy140, 16 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.InfinityCatalyst, FluidShapes.fluidMolten, 1_140))
             .itemOutputs(ItemRefer.Fluid_Storage_Core_T7.get(1))
             .eut(TierEU.RECIPE_UEV)
@@ -377,7 +377,7 @@ public class RecipeLoader2 {
                 MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.plateDense, 16))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Draconium, FluidShapes.fluidMolten, 4 * STACKS),
-                MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 3 * STACKS + 18 * INGOTS),
+                MaterialUtils.anyFluid(Materials.Indalloy140, 3 * STACKS + 18 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials.InfinityCatalyst,
                     FluidShapes.fluidMolten,
@@ -401,7 +401,7 @@ public class RecipeLoader2 {
                 MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.plateDense, 8))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Draconium, FluidShapes.fluidMolten, 4 * STACKS),
-                MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 3 * STACKS + 18 * INGOTS),
+                MaterialUtils.anyFluid(Materials.Indalloy140, 3 * STACKS + 18 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, 10 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials.InfinityCatalyst,
@@ -426,7 +426,7 @@ public class RecipeLoader2 {
                 MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plateDouble, 4))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Draconium, FluidShapes.fluidMolten, 4 * STACKS),
-                MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 5 * STACKS),
+                MaterialUtils.anyFluid(Materials.Indalloy140, 5 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, 30 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials.InfinityCatalyst,
@@ -1440,7 +1440,7 @@ public class RecipeLoader2 {
                 MaterialLibAPI.getStack(Materials.EnrichedNaquadahAlloy, Shapes.gearGtSmall, 64) },
             new FluidStack[] { MaterialLibAPI.getFluidStack(Materials.RadoxPoly, FluidShapes.fluidMolten, 9 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Dalisenite, FluidShapes.fluidMolten, (int) (8 * INGOTS)),
-                MaterialUtils.legacyGtppFluid(Materials.Botmium, 288) },
+                MaterialUtils.anyFluid(Materials.Botmium, 288) },
             ItemRefer.Compact_Fusion_MK4.get(1),
             6000,
             (int) TierEU.RECIPE_UV);
@@ -1454,7 +1454,7 @@ public class RecipeLoader2 {
                 GregtechItemList.Energy_Core_IV.get(1))
             .itemOutputs(ItemRefer.Compact_Fusion_Coil_T4.get(1))
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.BlackTitanium, 8 * INGOTS),
+                MaterialUtils.anyFluid(Materials.BlackTitanium, 8 * INGOTS),
                 MaterialLibAPI
                     .getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -1476,8 +1476,7 @@ public class RecipeLoader2 {
                 MaterialLibAPI.getStack(Materials.MetastableOganesson, Shapes.gearGtSmall, 64) },
             new FluidStack[] {
                 MaterialLibAPI.getFluidStack(Materials.Tairitsu, FluidShapes.fluidMolten, (int) (16 * INGOTS)),
-                MaterialUtils.legacyGtppFluid(Materials.Octiron, 8 * INGOTS),
-                MaterialUtils.legacyGtppFluid(Materials.Rhugnor, 288) },
+                MaterialUtils.anyFluid(Materials.Octiron, 8 * INGOTS), MaterialUtils.anyFluid(Materials.Rhugnor, 288) },
             ItemRefer.Compact_Fusion_MK5.get(1),
             6000,
             (int) TierEU.RECIPE_UHV);

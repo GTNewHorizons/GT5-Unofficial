@@ -104,7 +104,7 @@ public class GTPPDrop extends Item {
         for (GTPPDropType aDrop : GTPP_Bees.sDropMappings.values()) {
             tDrop = aDrop.getStackForType(1);
             int tier = MaterialUtils.tier(aDrop.mMaterial);
-            FluidStack aOutput = new FluidStack(MaterialUtils.legacyGtppFluidOf(aDrop.mMaterial), sFluidOutputs[tier]);
+            FluidStack aOutput = new FluidStack(MaterialUtils.anyFluidOf(aDrop.mMaterial), sFluidOutputs[tier]);
             GTValues.RA.stdBuilder()
                 .itemInputs(tDrop)
                 .fluidOutputs(aOutput)

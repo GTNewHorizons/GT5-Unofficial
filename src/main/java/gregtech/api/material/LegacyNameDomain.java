@@ -1,4 +1,4 @@
-package gregtech.loaders.materials;
+package gregtech.api.material;
 
 import java.util.HashSet;
 import java.util.Set;

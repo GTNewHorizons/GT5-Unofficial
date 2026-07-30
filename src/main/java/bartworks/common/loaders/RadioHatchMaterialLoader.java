@@ -19,10 +19,10 @@ import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Sievert;
-import gregtech.loaders.materials.LegacyNameDomain;
 
 public class RadioHatchMaterialLoader {
 

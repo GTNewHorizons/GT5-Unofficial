@@ -100,7 +100,10 @@ public class GTMaterialProperties {
     /// `LEGACY_FLUIDS.plasma` may be a gregtech-side plasma sharing the slot, so the gtPlusPlus contribution
     /// cannot be derived from that slot and is pinned here instead. Backs [MaterialUtils#legacyGtppPlasmaOf].
     public static final Property<String> GTPP_PLASMA_NAME = Property.of("gregtech", "gtppPlasmaName");
-    /// The gtPlusPlus material state (`SOLID`/`LIQUID`/`GAS`/...).
+    /// The gtPlusPlus material state (`SOLID`/`LIQUID`/`GAS`/...). Like [#WERKSTOFF_IDS], this doubles as the
+    /// origin discriminator for its family -- its presence is the "this material carries gtPlusPlus data"
+    /// signal that `gregtech.common.ores.GTOreAdapter` and the shape gating read -- and is therefore
+    /// permanent, even though the state value itself has no other consumer.
     public static final Property<String> GTPP_STATE = Property.of("gregtech", "gtppState");
     public static final Property<String> LOCAL_NAME = Property.of("gregtech", "localName");
     public static final Property<MaterialRef> MACERATE_INTO = Property.of("gregtech", "macerateInto");

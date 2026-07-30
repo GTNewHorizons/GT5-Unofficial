@@ -76,7 +76,7 @@ public final class ModItems {
         ItemsFoods.load();
 
         // Zirconium Tetrafluoride's fluid is registered directly by name rather than through a material
-        // declaration, so MaterialUtils#legacyGtppFluidOf falls back to its pinned Forge fluid name for it.
+        // declaration, so MaterialUtils#anyFluidOf falls back to its pinned Forge fluid name for it.
         FluidUtils.generateFluidNoPrefix(
             "ZirconiumTetrafluoride",
             "Zirconium Tetrafluoride",

@@ -52,7 +52,7 @@ public class PCBFactoryRecipes {
                 new Object[] { Circuits.LuV.getIngredient(), 16 },
                 ItemList.Robot_Arm_ZPM.get(8))
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 36 * INGOTS),
+                MaterialUtils.anyFluid(Materials.Indalloy140, 36 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Naquadah, FluidShapes.fluidMolten, (int) (18 * INGOTS)))
             .itemOutputs(ItemList.PCBFactory.get(1))
             .eut(TierEU.RECIPE_UV)

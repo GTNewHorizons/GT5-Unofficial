@@ -23,7 +23,7 @@ import gregtech.api.material.MaterialRef;
 /// superconductor wire markers (`SuperconductorMV`..`SuperconductorUMV`) and the six wildcard markers
 /// (`AnyBronze`/`AnyCopper`/`AnyCarbon`/`AnyIron`/`AnyRubber`/`AnySyntheticRubber`). Held as declared fields
 /// so call sites reference them directly instead of looking them up by registry name.
-/// [gregtech.loaders.materials.RecognitionMaterials] holds the separate backings for foreign mods'
+/// [gregtech.api.enums.materials.RecognitionMaterials] holds the separate backings for foreign mods'
 /// ore-dictionary names.
 ///
 /// The two populations differ in whether they generate items, and that difference is load-bearing. The
@@ -192,7 +192,7 @@ public class MaterialFacades {
     }
 
     /// The eleven superconductor wire marker backings, in tier order. The markers fall outside the legacy
-    /// name domain ([gregtech.loaders.materials.LegacyNameDomain]), so the legacy-named lang-registration
+    /// name domain ([gregtech.api.material.LegacyNameDomain]), so the legacy-named lang-registration
     /// pass in `gregtech.loaders.preload.GTPreLoad` skips them; their display-name keys are registered from
     /// this array instead. Evaluated after [#registerBackingMaterials] has populated the fields.
     public static Material[] getSuperconductorMarkers() {

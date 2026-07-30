@@ -18,8 +18,8 @@ import com.google.gson.GsonBuilder;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialUtils;
-import gregtech.loaders.materials.LegacyNameDomain;
 
 /// Per-material snapshot of the fluid slots and generation gates that recipe autogeneration reads, keyed by
 /// material name. Written alongside the recipe census so a shift in which materials generate fluids or items can
@@ -44,7 +44,7 @@ public final class MaterialGateDump {
             row.put("gas", name(MaterialUtils.gasOf(material)));
             row.put("molten", name(MaterialUtils.moltenOf(material)));
             row.put("plasma", name(MaterialUtils.plasmaOf(material)));
-            row.put("legacyGtppFluid", name(MaterialUtils.legacyGtppFluidOf(material)));
+            row.put("anyFluid", name(MaterialUtils.anyFluidOf(material)));
             row.put("legacyGtppPlasma", name(MaterialUtils.legacyGtppPlasmaOf(material)));
             for (MaterialUtils.CrackType type : MaterialUtils.CrackType.values()) {
                 for (int severity = 0; severity < 3; severity++) {

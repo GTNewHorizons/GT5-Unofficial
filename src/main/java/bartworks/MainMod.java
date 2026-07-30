@@ -48,7 +48,6 @@ import bartworks.server.EventHandler.ServerEventHandler;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import bartworks.system.material.CircuitGeneration.CircuitPartsItem;
 import bartworks.system.material.CircuitGeneration.CircuitWraps;
-import bartworks.system.material.WerkstoffHazardHandler;
 import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
 import bartworks.system.material.processingLoaders.AdditionalRecipes;
 import bartworks.system.oredict.OreDictHandler;
@@ -73,6 +72,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.CasingTier;
 import gregtech.api.util.GlassTier;
+import gregtech.common.MaterialHazardHandler;
 import gregtech.loaders.postload.LoaderWerkstoffRegistrations;
 import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
 import tectech.loader.recipe.Godforge;
@@ -163,7 +163,7 @@ public final class MainMod {
         }
         FMLCommonHandler.instance()
             .bus()
-            .register(new WerkstoffHazardHandler());
+            .register(new MaterialHazardHandler());
         ServerEventHandler serverEventHandler = new ServerEventHandler();
         if (event.getSide()
             .isServer()) {

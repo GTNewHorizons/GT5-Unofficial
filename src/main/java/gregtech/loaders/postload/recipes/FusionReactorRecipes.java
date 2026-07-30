@@ -376,7 +376,7 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Cobalt, FluidShapes.fluidMolten, (int) (1 * INGOTS)),
-                MaterialUtils.legacyGtppFluid(Materials.Neon, 1 * INGOTS))
+                MaterialUtils.anyFluid(Materials.Neon, 1 * INGOTS))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Rubidium, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(1 * SECONDS + 4 * TICKS)
             .eut(98304)

@@ -40,19 +40,19 @@ public class GTShapeProperties {
     /// on the other side: the material declares which groups it is in, the shape which groups it accepts, and
     /// an item exists where the two overlap.
     public static final Property<Set<GTMaterialGenerationFlag>> GENERATION_FLAGS = Property
-        .of("gregtech", "generationFlags", Set.of());
+        .of("gregtech", "shapeGenerationFlags", Set.of());
 
     /// Damage dealt per tick while an item of this shape is held, added to the material's own
     /// ([gregtech.api.enums.OrePrefixes#mHeatDamage]). Negative is frost damage.
-    public static final Property<Float> HEAT_DAMAGE = Property.of("gregtech", "heatDamage", 0.0F);
+    public static final Property<Float> HEAT_DAMAGE = Property.of("gregtech", "shapeHeatDamage", 0.0F);
 
     /// The Thaumcraft aspects an item of this shape carries before the material's own are added.
-    public static final Property<List<TC_AspectStack>> ASPECTS = Property.of("gregtech", "aspects");
+    public static final Property<List<TC_AspectStack>> ASPECTS = Property.of("gregtech", "shapeAspects");
 
     /// The display-name format, with `%s` standing for the material name (e.g. `"%s Gear"`).
     public static final Property<String> LOCAL_NAME_FORMAT = Property.of("gregtech", "localNameFormat");
 
-    public static final Property<Boolean> UNIFIABLE = Property.of("gregtech", "unifiable", false);
+    public static final Property<Boolean> UNIFIABLE = Property.of("gregtech", "shapeUnifiable", false);
     public static final Property<Boolean> MATERIAL_BASED = Property.of("gregtech", "materialBased", false);
     public static final Property<Boolean> SELF_REFERENCING = Property.of("gregtech", "selfReferencing", false);
     public static final Property<Boolean> CONTAINER = Property.of("gregtech", "container", false);

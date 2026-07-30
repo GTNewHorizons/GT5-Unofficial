@@ -36,33 +36,33 @@ public class RecipeLoaderNuclearFuelProcessing {
         // 7LiF - BeF2 - ZrF4 - U235 - 590C
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.LithiumFluoride, 550),
-                MaterialUtils.legacyGtppFluid(Materials.BerylliumFluoride, 150),
-                MaterialUtils.legacyGtppFluid(Materials.ZirconiumTetrafluoride, 60),
+                MaterialUtils.anyFluid(Materials.LithiumFluoride, 550),
+                MaterialUtils.anyFluid(Materials.BerylliumFluoride, 150),
+                MaterialUtils.anyFluid(Materials.ZirconiumTetrafluoride, 60),
                 MaterialLibAPI.getFluidStack(Materials.Uranium235, FluidShapes.fluidMolten, (int) (240)))
-            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.LFTRFuel1, 1000))
+            .fluidOutputs(MaterialUtils.anyFluid(Materials.LFTRFuel1, 1000))
             .duration(30 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(fissionFuelProcessingRecipes);
         // 7LiF - BeF2 - ZrF4 - UF4 - 650C
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.LithiumFluoride, 600),
-                MaterialUtils.legacyGtppFluid(Materials.BerylliumFluoride, 250),
-                MaterialUtils.legacyGtppFluid(Materials.ZirconiumTetrafluoride, 80),
-                MaterialUtils.legacyGtppFluid(Materials.UraniumTetrafluoride, 70))
-            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.LFTRFuel2, 1000))
+                MaterialUtils.anyFluid(Materials.LithiumFluoride, 600),
+                MaterialUtils.anyFluid(Materials.BerylliumFluoride, 250),
+                MaterialUtils.anyFluid(Materials.ZirconiumTetrafluoride, 80),
+                MaterialUtils.anyFluid(Materials.UraniumTetrafluoride, 70))
+            .fluidOutputs(MaterialUtils.anyFluid(Materials.LFTRFuel2, 1000))
             .duration(40 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(fissionFuelProcessingRecipes);
         // 7liF - BeF2 - ThF4 - UF4 - 566C
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.LithiumFluoride, 580),
-                MaterialUtils.legacyGtppFluid(Materials.BerylliumFluoride, 270),
-                MaterialUtils.legacyGtppFluid(Materials.ThoriumTetrafluoride, 80),
-                MaterialUtils.legacyGtppFluid(Materials.UraniumTetrafluoride, 70))
-            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.LFTRFuel3, 1000))
+                MaterialUtils.anyFluid(Materials.LithiumFluoride, 580),
+                MaterialUtils.anyFluid(Materials.BerylliumFluoride, 270),
+                MaterialUtils.anyFluid(Materials.ThoriumTetrafluoride, 80),
+                MaterialUtils.anyFluid(Materials.UraniumTetrafluoride, 70))
+            .fluidOutputs(MaterialUtils.anyFluid(Materials.LFTRFuel3, 1000))
             .duration(50 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(fissionFuelProcessingRecipes);
@@ -83,8 +83,8 @@ public class RecipeLoaderNuclearFuelProcessing {
                 MaterialLibAPI.getStack(Materials.Protactinium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Protactinium, Shapes.dust, 1))
             .outputChances(10000, 10000, 500, 500, 500, 250, 250, 250)
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.ThoriumDepletedMoltenSaltTSalt, 10000))
-            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.FluorinatedUraniumHexafluorideFUF6, 1500))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.ThoriumDepletedMoltenSaltTSalt, 10000))
+            .fluidOutputs(MaterialUtils.anyFluid(Materials.FluorinatedUraniumHexafluorideFUF6, 1500))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(reactorProcessingUnitRecipes);
@@ -102,8 +102,8 @@ public class RecipeLoaderNuclearFuelProcessing {
                 MaterialLibAPI.getStack(Materials.Protactinium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Protactinium, Shapes.dust, 1))
             .outputChances(10000, 10000, 10000, 1000, 1000, 1000, 500, 500, 500)
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.ThoriumBerylliumDepletedMoltenSaltTBSalt, 10000))
-            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.FluorinatedUraniumHexafluorideFUF6, 3000))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.ThoriumBerylliumDepletedMoltenSaltTBSalt, 10000))
+            .fluidOutputs(MaterialUtils.anyFluid(Materials.FluorinatedUraniumHexafluorideFUF6, 3000))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(reactorProcessingUnitRecipes);
@@ -121,8 +121,8 @@ public class RecipeLoaderNuclearFuelProcessing {
                 MaterialLibAPI.getStack(Materials.Protactinium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Protactinium, Shapes.dust, 1))
             .outputChances(10000, 10000, 1000, 1000, 1000, 1000, 1000, 1000)
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.FluorineSpargedTSalt, 10000))
-            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.FluorinatedUraniumHexafluorideFUF6, 3000))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.FluorineSpargedTSalt, 10000))
+            .fluidOutputs(MaterialUtils.anyFluid(Materials.FluorinatedUraniumHexafluorideFUF6, 3000))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(reactorProcessingUnitRecipes);
@@ -140,8 +140,8 @@ public class RecipeLoaderNuclearFuelProcessing {
                 MaterialLibAPI.getStack(Materials.Protactinium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Protactinium, Shapes.dust, 1))
             .outputChances(10000, 10000, 10000, 2000, 2000, 2000, 2000, 2000, 2000)
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.FluorineSpargedTBSalt, 10000))
-            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.FluorinatedUraniumHexafluorideFUF6, 6000))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.FluorineSpargedTBSalt, 10000))
+            .fluidOutputs(MaterialUtils.anyFluid(Materials.FluorinatedUraniumHexafluorideFUF6, 6000))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(reactorProcessingUnitRecipes);
@@ -157,8 +157,8 @@ public class RecipeLoaderNuclearFuelProcessing {
                 MaterialLibAPI.getStack(Materials.Uranium233, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Uranium233, Shapes.dust, 1))
             .outputChances(10000, 10000, 3000, 2000, 1000)
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.FluorinatedUraniumHexafluorideFUF6, 3000))
-            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.SodiumFluoride, 2000))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.FluorinatedUraniumHexafluorideFUF6, 3000))
+            .fluidOutputs(MaterialUtils.anyFluid(Materials.SodiumFluoride, 2000))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .addTo(coldTrapRecipes);
@@ -171,7 +171,7 @@ public class RecipeLoaderNuclearFuelProcessing {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.PhosphorousUraniumHexafluoridePUF6, CellShapes.cellMolten, 1))
             .outputChances(10000)
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.UraniumDepletedMoltenSaltUSalt, 1000))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.UraniumDepletedMoltenSaltUSalt, 1000))
             .fluidOutputs(new FluidStack(GTPPFluids.ImpureMoltenSaltBase, 1000))
             .duration(2 * HOURS)
             .eut(TierEU.RECIPE_HV)
@@ -184,7 +184,7 @@ public class RecipeLoaderNuclearFuelProcessing {
             .itemOutputs(
                 ItemList.Cell_Empty.get(1),
                 MaterialLibAPI.getStack(Materials.PhosphorousUraniumHexafluoridePUF6, CellShapes.cellMolten, 2))
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.HeliumSpargedUSalt, 1000))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.HeliumSpargedUSalt, 1000))
             .fluidOutputs(new FluidStack(GTPPFluids.ImpureMoltenSaltBase, 2000))
             .duration(60 * MINUTES)
             .eut(TierEU.RECIPE_HV)
@@ -204,8 +204,8 @@ public class RecipeLoaderNuclearFuelProcessing {
                 MaterialLibAPI.getStack(Materials.Phosphorus, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Phosphorus, Shapes.dust, 1))
             .outputChances(10000, 10000, 5000, 5000, 5000, 5000, 5000, 5000)
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.PhosphorousUraniumHexafluoridePUF6, 2000))
-            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.SodiumFluoride, 2000))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.PhosphorousUraniumHexafluoridePUF6, 2000))
+            .fluidOutputs(MaterialUtils.anyFluid(Materials.SodiumFluoride, 2000))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(coldTrapRecipes);
@@ -213,7 +213,7 @@ public class RecipeLoaderNuclearFuelProcessing {
         // Reactor Core step 2B - Distillation
         GTValues.RA.stdBuilder()
             .fluidInputs(new FluidStack(GTPPFluids.ImpureMoltenSaltBase, 1000))
-            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.StableMoltenSaltBase, 250))
+            .fluidOutputs(MaterialUtils.anyFluid(Materials.StableMoltenSaltBase, 250))
             .duration(7 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(distillationTowerRecipes);
@@ -226,7 +226,7 @@ public class RecipeLoaderNuclearFuelProcessing {
                 MaterialLibAPI.getStack(Materials.StableMoltenSaltBase, CellShapes.cellMolten, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (2_000)))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2))
-            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.LFTRFuelBase, 3000))
+            .fluidOutputs(MaterialUtils.anyFluid(Materials.LFTRFuelBase, 3000))
             .duration(2 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 5400)
@@ -235,11 +235,11 @@ public class RecipeLoaderNuclearFuelProcessing {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.UraniumHexafluoride, 1000),
-                MaterialUtils.legacyGtppFluid(Materials.StableMoltenSaltBase, 1000),
-                MaterialUtils.legacyGtppFluid(Materials.Hydrogen, 2000))
+                MaterialUtils.anyFluid(Materials.UraniumHexafluoride, 1000),
+                MaterialUtils.anyFluid(Materials.StableMoltenSaltBase, 1000),
+                MaterialUtils.anyFluid(Materials.Hydrogen, 2000))
             .fluidOutputs(
-                MaterialUtils.legacyGtppFluid(Materials.LFTRFuelBase, 3000),
+                MaterialUtils.anyFluid(Materials.LFTRFuelBase, 3000),
                 new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 2000))
             .duration(2 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -248,17 +248,17 @@ public class RecipeLoaderNuclearFuelProcessing {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.ZirconiumTetrafluoride, 100),
-                MaterialUtils.legacyGtppFluid(Materials.LFTRFuelBase, 900))
-            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.LFTRFuel2, 1000))
+                MaterialUtils.anyFluid(Materials.ZirconiumTetrafluoride, 100),
+                MaterialUtils.anyFluid(Materials.LFTRFuelBase, 900))
+            .fluidOutputs(MaterialUtils.anyFluid(Materials.LFTRFuel2, 1000))
             .duration(12 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(fissionFuelProcessingRecipes);
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.ThoriumTetrafluoride, 100),
-                MaterialUtils.legacyGtppFluid(Materials.LFTRFuelBase, 900))
-            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.LFTRFuel3, 1000))
+                MaterialUtils.anyFluid(Materials.ThoriumTetrafluoride, 100),
+                MaterialUtils.anyFluid(Materials.LFTRFuelBase, 900))
+            .fluidOutputs(MaterialUtils.anyFluid(Materials.LFTRFuel3, 1000))
             .duration(15 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(fissionFuelProcessingRecipes);

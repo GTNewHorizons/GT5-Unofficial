@@ -133,7 +133,7 @@ public class FuelRecipeLoader {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.NaquadahBasedLiquidFuelMkIII, FluidShapes.fluidLiquid, (int) (2_000)),
-                MaterialUtils.legacyGtppFluid(Materials.Hypogen, 240))
+                MaterialUtils.anyFluid(Materials.Hypogen, 240))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.NaquadahBasedLiquidFuelMkIV, FluidShapes.fluidLiquid, (int) (500)))
@@ -152,8 +152,8 @@ public class FuelRecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.HeavyNaquadahFuel, FluidShapes.fluidLiquid, (int) (4_000)),
                 MaterialLibAPI.getFluidStack(Materials.LightNaquadahFuel, FluidShapes.fluidLiquid, (int) (5_000)),
-                MaterialUtils.legacyGtppFluid(Materials.Hypogen, 120),
-                MaterialUtils.legacyGtppFluid(Materials.ChromaticGlass, 45 * INGOTS))
+                MaterialUtils.anyFluid(Materials.Hypogen, 120),
+                MaterialUtils.anyFluid(Materials.ChromaticGlass, 45 * INGOTS))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.NaquadahBasedLiquidFuelMkIV, FluidShapes.fluidLiquid, (int) (250)))

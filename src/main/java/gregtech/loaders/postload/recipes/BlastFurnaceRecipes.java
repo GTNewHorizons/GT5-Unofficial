@@ -792,7 +792,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.ingotHot, (int) (1)))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Tungsten, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
-            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.CelestialTungsten, 1 * HALF_INGOTS))
+            .fluidOutputs(MaterialUtils.anyFluid(Materials.CelestialTungsten, 1 * HALF_INGOTS))
             .duration(3 * MINUTES)
             .eut(TierEU.RECIPE_UIV)
             .metadata(COIL_HEAT, 11701)

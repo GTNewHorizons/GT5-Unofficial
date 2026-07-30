@@ -147,7 +147,7 @@ public class RecipesGeneral {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
             .itemOutputs(GregtechItemList.KLEIN_BOTTLE.get(1))
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.ChromaticGlass, 16 * INGOTS))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.ChromaticGlass, 16 * INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(fluidSolidifierRecipes);

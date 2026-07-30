@@ -72,6 +72,7 @@ import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.material.LegacyNameDomainTable;
 import gregtech.api.material.MaterialDeclarationValidator;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -122,8 +123,7 @@ import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.GTItemIterator;
 import gregtech.loaders.load.MTERecipeLoader;
 import gregtech.loaders.materialrecipes.LoaderMaterialRecipes;
-import gregtech.loaders.materials.LegacyNameDomainTable;
-import gregtech.loaders.materials.LoaderLegacyMaterialPasses;
+import gregtech.loaders.materials.LoaderGTMaterialPasses;
 import gregtech.loaders.misc.CoverLoader;
 import gregtech.loaders.misc.GTAchievements;
 import gregtech.loaders.misc.GTBees;
@@ -240,7 +240,7 @@ public class GTMod {
     public static GTProxy gregtechproxy;
     public static final boolean DEBUG = Boolean.getBoolean("gt.debug");
 
-    /// Set once {@link gregtech.loaders.materials.LoaderLegacyMaterialPasses#run} and
+    /// Set once {@link gregtech.loaders.materials.LoaderGTMaterialPasses#run} and
     /// {@link gregtech.api.enums.OrePrefixes#lateStaticInit} have completed during preInit. `OreRegisterEvent`
     /// listeners registered during mod construction ({@link gregtech.common.GTProxy#registerOre} and
     /// {@link gregtech.common.ores.UnificationOreAdapter#onOreRegistered}) can otherwise fire -- from another
@@ -352,7 +352,7 @@ public class GTMod {
         new EnchantmentEnderDamage();
         new EnchantmentRadioactivity();
 
-        LoaderLegacyMaterialPasses.run();
+        LoaderGTMaterialPasses.run();
         OrePrefixes.lateStaticInit();
         sMaterialsReady = true;
         proxy.catchUpPreExistingOreDictEntries();

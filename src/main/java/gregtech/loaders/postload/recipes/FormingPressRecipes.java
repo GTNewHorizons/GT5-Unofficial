@@ -259,7 +259,7 @@ public class FormingPressRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.plate, (int) (8)),
                 MaterialLibAPI.getStack(Materials.HighDurabilityCompoundSteel, Shapes.ring, 2),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.prismaticnaquadah, 16L))
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 10 * INGOTS))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.Indalloy140, 10 * INGOTS))
             .itemOutputs(ItemList.T2Sawblade.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -271,7 +271,7 @@ public class FormingPressRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.plate, (int) (8)),
                 MaterialLibAPI.getStack(Materials.Tairitsu, Shapes.ring, 2),
                 MaterialLibAPI.getStack(Materials.ElectrumFlux, Shapes.screw, (int) (16)))
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 10 * INGOTS))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 10 * INGOTS))
             .itemOutputs(ItemList.T3Sawblade.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_UHV)

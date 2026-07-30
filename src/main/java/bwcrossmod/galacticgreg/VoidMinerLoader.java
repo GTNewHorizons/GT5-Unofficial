@@ -7,12 +7,12 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.StoneType;
+import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialUtils;
 import gregtech.common.config.Gregtech;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.OreInfo;
-import gregtech.loaders.materials.LegacyNameDomain;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 

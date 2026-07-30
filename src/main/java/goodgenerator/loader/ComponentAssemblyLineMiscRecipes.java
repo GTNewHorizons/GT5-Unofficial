@@ -79,7 +79,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 getALCircuit(7, 20),
                 getALCircuit(6, 24))
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 12 * INGOTS),
+                MaterialUtils.anyFluid(Materials.Indalloy140, 12 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, 16 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 5_000))
             .itemOutputs(Component_Assembly_Line.get(1))
@@ -220,8 +220,8 @@ public class ComponentAssemblyLineMiscRecipes {
                 getALCircuit(t, 8),
                 getALCircuit(t - 1, 16))
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.Indalloy140, t * 4 * INGOTS),
-                MaterialUtils.legacyGtppFluid(Materials.Zeron100, t * 2 * INGOTS),
+                MaterialUtils.anyFluid(Materials.Indalloy140, t * 4 * INGOTS),
+                MaterialUtils.anyFluid(Materials.Zeron100, t * 2 * INGOTS),
                 StackUtils.getTieredFluid(t, t * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1000 * (t - 2)))
             .itemOutputs(Compassline_Casing_LuV.get(1))
@@ -248,8 +248,8 @@ public class ComponentAssemblyLineMiscRecipes {
                 getALCircuit(t, 8),
                 getALCircuit(t - 1, 16))
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.Indalloy140, t * 4 * INGOTS),
-                MaterialUtils.legacyGtppFluid(Materials.Pikyonium64B, t * 2 * INGOTS),
+                MaterialUtils.anyFluid(Materials.Indalloy140, t * 4 * INGOTS),
+                MaterialUtils.anyFluid(Materials.Pikyonium64B, t * 2 * INGOTS),
                 StackUtils.getTieredFluid(t, t * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1000 * (t - 2)))
             .itemOutputs(Compassline_Casing_ZPM.get(1))
@@ -277,8 +277,8 @@ public class ComponentAssemblyLineMiscRecipes {
                 getALCircuit(t, 8),
                 getALCircuit(t - 1, 16))
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.Indalloy140, t * 4 * INGOTS),
-                MaterialUtils.legacyGtppFluid(Materials.AdvancedNitinol, t * 2 * INGOTS),
+                MaterialUtils.anyFluid(Materials.Indalloy140, t * 4 * INGOTS),
+                MaterialUtils.anyFluid(Materials.AdvancedNitinol, t * 2 * INGOTS),
                 StackUtils.getTieredFluid(t, t * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1000 * (t - 2)))
             .itemOutputs(Compassline_Casing_UV.get(1))
@@ -305,8 +305,8 @@ public class ComponentAssemblyLineMiscRecipes {
                 MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.gearGtSmall, 16),
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Bedrockium, 8), getALCircuit(t, 8),
                 getALCircuit(t - 1, 16) },
-            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, t * 4 * INGOTS),
-                MaterialUtils.legacyGtppFluid(Materials.AbyssalAlloy, t * 2 * INGOTS),
+            new FluidStack[] { MaterialUtils.anyFluid(Materials.Indalloy140, t * 4 * INGOTS),
+                MaterialUtils.anyFluid(Materials.AbyssalAlloy, t * 2 * INGOTS),
                 StackUtils.getTieredFluid(t, t * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1000 * (t - 2)) },
             Compassline_Casing_UHV.get(1),
@@ -332,9 +332,8 @@ public class ComponentAssemblyLineMiscRecipes {
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.gearGtSmall, 16),
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Draconium, 8), getALCircuit(t, 8),
                 getALCircuit(t - 1, 16) },
-            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, t * 4 * INGOTS),
-                MaterialUtils.legacyGtppFluid(Materials.Quantum, t * 2 * INGOTS),
-                StackUtils.getTieredFluid(t, t * INGOTS),
+            new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, t * 4 * INGOTS),
+                MaterialUtils.anyFluid(Materials.Quantum, t * 2 * INGOTS), StackUtils.getTieredFluid(t, t * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 1000 * (t - 2)) },
             Compassline_Casing_UEV.get(1),
             50 * SECONDS,
@@ -359,9 +358,8 @@ public class ComponentAssemblyLineMiscRecipes {
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.protohalkonite, 16),
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 8), getALCircuit(t, 8),
                 getALCircuit(t - 1, 16) },
-            new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, t * 4 * INGOTS),
-                MaterialUtils.legacyGtppFluid(Materials.Hypogen, t * 2 * INGOTS),
-                StackUtils.getTieredFluid(t, t * INGOTS),
+            new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, t * 4 * INGOTS),
+                MaterialUtils.anyFluid(Materials.Hypogen, t * 2 * INGOTS), StackUtils.getTieredFluid(t, t * INGOTS),
                 MaterialUtils.fluid(Materials.dimensionallyshiftedsuperfluid, 1000 * (t - 2)) },
             Compassline_Casing_UIV.get(1),
             50 * SECONDS,

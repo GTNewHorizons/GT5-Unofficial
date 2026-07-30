@@ -75,7 +75,7 @@ public class ProcessingFluidSolidifierGtpp {
     }
 
     private static void generate(Material material) {
-        if (MaterialUtils.legacyGtppFluid(material, 1) == null) return;
+        if (MaterialUtils.anyFluid(material, 1) == null) return;
 
         solidify(material, OrePrefixes.ingot, ItemList.Shape_Mold_Ingot, 1, 144, 3 * SECONDS);
         solidify(material, OrePrefixes.plate, ItemList.Shape_Mold_Plate, 1, 144, 3 * SECONDS);
@@ -95,7 +95,7 @@ public class ProcessingFluidSolidifierGtpp {
         int fluidAmount, int duration) {
         ItemStack output = ProcessingDustGeneration.stackOf(shapePrefix, material, shapeAmount);
         if (output == null) return;
-        FluidStack fluid = MaterialUtils.legacyGtppFluid(material, fluidAmount);
+        FluidStack fluid = MaterialUtils.anyFluid(material, fluidAmount);
         if (fluid == null) return;
 
         GTValues.RA.stdBuilder()

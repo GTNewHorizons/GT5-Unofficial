@@ -25,7 +25,7 @@ import java.util.Set;
 /// - names whose MaterialLib registration name had to be sanitized (`"Computation Base"` ->
 /// `"ComputationBase"`), where the domain is keyed by the legacy name and this set holds the sanitized one,
 /// - the many names retired outright, which resolve nowhere either way.
-public final class MaterialsDeclaredFieldsTable {
+public final class DeclaredMaterialNameTable {
 
     public static final Set<String> NAMES = new HashSet<>(
         Arrays.asList(
@@ -869,5 +869,5 @@ public final class MaterialsDeclaredFieldsTable {
             "Zinc",
             "Zincite"));
 
-    private MaterialsDeclaredFieldsTable() {}
+    private DeclaredMaterialNameTable() {}
 }

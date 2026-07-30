@@ -83,12 +83,12 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
-import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
@@ -101,7 +101,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.FrameShapeBlock;
 import gregtech.common.blocks.GTBlockOre;
-import gregtech.loaders.materials.LegacyNameDomain;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import kubatech.loaders.item.htgritem.HTGRItem;
 
@@ -970,9 +969,9 @@ public class PlatinumSludgeOverHaul {
 
             final Material newOutput;
             if (outputAssociation.mMaterial.mMaterial == Materials.Platinum) {
-                newOutput = LegacyWerkstoffIndex.get(47);
+                newOutput = Materials.PlatinumMetallicPowder;
             } else if (outputAssociation.mMaterial.mMaterial == Materials.Palladium) {
-                newOutput = LegacyWerkstoffIndex.get(53);
+                newOutput = Materials.PalladiumMetallicPowder;
             } else {
                 continue;
             }
@@ -1106,13 +1105,13 @@ public class PlatinumSludgeOverHaul {
 
                     final Material replacementMaterial;
                     if (association.mMaterial.mMaterial == Materials.Platinum) {
-                        replacementMaterial = LegacyWerkstoffIndex.get(47);
+                        replacementMaterial = Materials.PlatinumMetallicPowder;
                     } else if (association.mMaterial.mMaterial == Materials.Palladium) {
-                        replacementMaterial = LegacyWerkstoffIndex.get(53);
+                        replacementMaterial = Materials.PalladiumMetallicPowder;
                     } else if (association.mMaterial.mMaterial == Materials.Osmium) {
-                        replacementMaterial = LegacyWerkstoffIndex.get(69);
+                        replacementMaterial = Materials.RarestMetalResidue;
                     } else if (association.mMaterial.mMaterial == Materials.Iridium) {
-                        replacementMaterial = LegacyWerkstoffIndex.get(70);
+                        replacementMaterial = Materials.IridiumMetalResidue;
                     } else {
                         continue;
                     }

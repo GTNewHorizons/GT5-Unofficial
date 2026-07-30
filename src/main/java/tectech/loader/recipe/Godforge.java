@@ -38,6 +38,7 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.PipeShapes;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
@@ -46,7 +47,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
-import gregtech.loaders.materials.LegacyNameDomain;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
@@ -523,10 +523,9 @@ public class Godforge implements Runnable {
                 }
 
                 // Multi-step
-                FluidStack[] fluids_t0_xstep = { MaterialUtils.legacyGtppFluid(Materials.Neon, 500),
+                FluidStack[] fluids_t0_xstep = { MaterialUtils.anyFluid(Materials.Neon, 500),
                     MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 500),
-                    MaterialUtils.legacyGtppFluid(Materials.Krypton, 500),
-                    MaterialUtils.legacyGtppFluid(Materials.Xenon, 500) };
+                    MaterialUtils.anyFluid(Materials.Krypton, 500), MaterialUtils.anyFluid(Materials.Xenon, 500) };
                 FluidStack[] fluid_plasmas_t0_xstep = {
                     new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Neon), 500),
                     MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidPlasma, 500),
@@ -548,7 +547,7 @@ public class Godforge implements Runnable {
             {
                 // Single step
                 GTValues.RA.stdBuilder()
-                    .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.Bromine, 500))
+                    .fluidInputs(MaterialUtils.anyFluid(Materials.Bromine, 500))
                     .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Bromine), 500))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_MAX)

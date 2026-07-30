@@ -385,7 +385,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
                 FluidStack aFuelFluid = null;
                 for (FluidStack aFluidInput : recipe.mFluidInputs) {
                     if (!aFluidInput.getFluid()
-                        .equals(MaterialUtils.legacyGtppFluidOf(Materials.LithiumTetrafluoroberyllateLFTB))) {
+                        .equals(MaterialUtils.anyFluidOf(Materials.LithiumTetrafluoroberyllateLFTB))) {
                         aFuelFluid = aFluidInput;
                         break;
                     }
@@ -395,7 +395,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
                         if (fluidStack.isFluidEqual(aFuelFluid)) {
                             mFuelRemaining += fluidStack.amount;
                         } else if (fluidStack.getFluid()
-                            .equals(MaterialUtils.legacyGtppFluidOf(Materials.LithiumTetrafluoroberyllateLFTB))) {
+                            .equals(MaterialUtils.anyFluidOf(Materials.LithiumTetrafluoroberyllateLFTB))) {
                                 li2bef4 += fluidStack.amount;
                             }
                     }
@@ -509,7 +509,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
         if (this.mEfficiency == this.getMaxEfficiency(null)) {
             // Try output some Uranium-233
             if (MathUtils.randInt(1, 300) == 1) {
-                this.addOutputPartial(MaterialUtils.legacyGtppFluid(Materials.Uranium233, MathUtils.randInt(1, 10)));
+                this.addOutputPartial(MaterialUtils.anyFluid(Materials.Uranium233, MathUtils.randInt(1, 10)));
             }
         }
         return super.onRunningTick(aStack);

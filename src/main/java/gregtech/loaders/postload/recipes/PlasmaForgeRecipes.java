@@ -173,11 +173,11 @@ public class PlasmaForgeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(Avaritia.ID, "Singularity", 8, 5))
                 .fluidInputs(
-                    MaterialUtils.legacyGtppFluid(Materials.CelestialTungsten, 1 * STACKS + 8 * INGOTS),
-                    MaterialUtils.legacyGtppFluid(Materials.AstralTitanium, 4 * STACKS + 32 * INGOTS),
-                    MaterialUtils.legacyGtppFluid(Materials.Hypogen, 36 * INGOTS),
-                    MaterialUtils.legacyGtppFluid(Materials.ChromaticGlass, 9 * STACKS),
-                    MaterialUtils.legacyGtppFluid(Materials.Rhugnor, 18 * INGOTS),
+                    MaterialUtils.anyFluid(Materials.CelestialTungsten, 1 * STACKS + 8 * INGOTS),
+                    MaterialUtils.anyFluid(Materials.AstralTitanium, 4 * STACKS + 32 * INGOTS),
+                    MaterialUtils.anyFluid(Materials.Hypogen, 36 * INGOTS),
+                    MaterialUtils.anyFluid(Materials.ChromaticGlass, 9 * STACKS),
+                    MaterialUtils.anyFluid(Materials.Rhugnor, 18 * INGOTS),
                     MaterialLibAPI
                         .getFluidStack(Materials.Mellion, FluidShapes.fluidMolten, (int) (1 * STACKS + 8 * INGOTS)))
                 .fluidOutputs(
