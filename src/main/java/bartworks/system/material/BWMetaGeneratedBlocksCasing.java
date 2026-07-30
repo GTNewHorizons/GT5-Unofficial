@@ -32,7 +32,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -95,7 +95,7 @@ public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
             if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
 
             boolean biologicalCasing = "BIOLOGICAL".equals(material.getProperty(GTMaterialProperties.WERKSTOFF_TYPE))
-                && Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.blockCasing);
+                && LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.blockCasing);
             boolean fullyPartedCasing = GTOreDictUnificator.get(OrePrefixes.plate, material, 1L) != null
                 && GTOreDictUnificator.get(OrePrefixes.screw, material, 1L) != null
                 && GTOreDictUnificator.get(OrePrefixes.plateDouble, material, 1L) != null
@@ -103,7 +103,7 @@ public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
                 && GTOreDictUnificator.get(OrePrefixes.gearGtSmall, material, 1L) != null;
 
             if (biologicalCasing || fullyPartedCasing) {
-                aList.add(new ItemStack(aItem, 1, Materials2WerkstoffIndex.idOf(material)));
+                aList.add(new ItemStack(aItem, 1, LegacyWerkstoffIndex.idOf(material)));
             }
         }
     }

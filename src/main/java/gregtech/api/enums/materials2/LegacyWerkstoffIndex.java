@@ -25,12 +25,12 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 /// backs the index rather than a fixed array. Populated at the start of GT's preInit -- listing the registry
 /// requires MaterialLib to have resolved it, which happens only after every MaterialRegistrationEvent handler
 /// has completed.
-public class Materials2WerkstoffIndex {
+public class LegacyWerkstoffIndex {
 
     private static final Int2ObjectMap<Material> INDEX = new Int2ObjectOpenHashMap<>();
     private static int size;
 
-    private Materials2WerkstoffIndex() {}
+    private LegacyWerkstoffIndex() {}
 
     public static void init() {
         for (Material material : MaterialLibAPI.getMaterials()) {
@@ -50,7 +50,7 @@ public class Materials2WerkstoffIndex {
                 size++;
             }
         }
-        GTMod.GT_FML_LOGGER.info("Materials2WerkstoffIndex populated {} id slots", size);
+        GTMod.GT_FML_LOGGER.info("LegacyWerkstoffIndex populated {} id slots", size);
     }
 
     /// The material occupying a legacy werkstoff id slot; null for an unoccupied id.

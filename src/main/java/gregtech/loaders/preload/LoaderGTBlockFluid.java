@@ -45,7 +45,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
-import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.items.BlockLongDistancePipe;
 import gregtech.api.items.CircuitComponentFakeItem;
@@ -913,12 +913,12 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GregTechAPI.sBlockSheetmetalBW = new BlockSheetMetal(
             "bw.sheetmetal",
-            meta -> Materials2WerkstoffIndex.get(meta),
+            meta -> LegacyWerkstoffIndex.get(meta),
             Short.MAX_VALUE);
 
         GregTechAPI.sBlockFramesBW = new BlockDecorativeFrame(
             "bw.frames",
-            meta -> Materials2WerkstoffIndex.get(meta),
+            meta -> LegacyWerkstoffIndex.get(meta),
             Short.MAX_VALUE);
 
         GTLog.out.println("GTMod: Register TileEntities.");

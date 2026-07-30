@@ -22,7 +22,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.MaterialFacades;
-import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
@@ -179,7 +179,7 @@ public class GregtechSimpleWasher {
     /// gregtech's part autogen covers shapes the werkstoff system never had, so a plain stack lookup would
     /// wash materials this loop never covered.
     private static ItemStack werkstoffStack(com.ruling_0.materiallib.api.Material material, OrePrefixes prefix) {
-        return Materials2WerkstoffIndex.generatesPrefix(material, prefix) ? MaterialParts.stack(prefix, material, 1L)
+        return LegacyWerkstoffIndex.generatesPrefix(material, prefix) ? MaterialParts.stack(prefix, material, 1L)
             : null;
     }
 

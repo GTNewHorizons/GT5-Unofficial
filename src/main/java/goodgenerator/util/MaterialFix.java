@@ -17,8 +17,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials2.Shapes;
-import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -26,7 +26,7 @@ import gregtech.api.util.GTModHandler;
 public class MaterialFix {
 
     public static void MaterialFluidExtractionFix(Material material) {
-        if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.gearGtSmall)) {
+        if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.gearGtSmall)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.gearGtSmall, 1))
                 .fluidOutputs(
@@ -35,7 +35,7 @@ public class MaterialFix {
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
-        if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.spring)) {
+        if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.spring)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.spring, 1))
                 .fluidOutputs(
@@ -44,7 +44,7 @@ public class MaterialFix {
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
-        if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.foil)) {
+        if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.foil)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.foil, 1))
                 .fluidOutputs(
@@ -54,7 +54,7 @@ public class MaterialFix {
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
-        if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.springSmall)) {
+        if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.springSmall)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.springSmall, 1))
                 .fluidOutputs(
@@ -64,7 +64,7 @@ public class MaterialFix {
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
-        if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.ring)) {
+        if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.ring)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.ring, 1))
                 .fluidOutputs(
@@ -74,7 +74,7 @@ public class MaterialFix {
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
-        if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.bolt)) {
+        if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.bolt)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.bolt, 1))
                 .fluidOutputs(
@@ -84,7 +84,7 @@ public class MaterialFix {
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
-        if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.wireFine)) {
+        if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.wireFine)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.wireFine, 1))
                 .fluidOutputs(
@@ -94,7 +94,7 @@ public class MaterialFix {
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
-        if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.screw)) {
+        if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.screw)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.screw, 1))
                 .fluidOutputs(
@@ -103,7 +103,7 @@ public class MaterialFix {
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
-        if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.rotor)) {
+        if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.rotor)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.rotor, 1))
                 .fluidOutputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (612)))
@@ -111,7 +111,7 @@ public class MaterialFix {
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
-        if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.gearGt)) {
+        if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.gearGt)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.gearGt, 1))
                 .fluidOutputs(
@@ -127,12 +127,12 @@ public class MaterialFix {
     /// `plateDouble` and `plateDense` come from the `metals` family and are individually removable, while
     /// `plateTriple` comes from the separate `multiPlates` family.
     ///
-    /// The gate reads [Materials2WerkstoffIndex#generatesPrefix], the werkstoff part set alone, rather than
+    /// The gate reads [LegacyWerkstoffIndex#generatesPrefix], the werkstoff part set alone, rather than
     /// [MaterialParts#generatesPrefix], which also answers true for a part gregtech's own autogen adds --
     /// widening it here would double-generate against gregtech's part loaders.
     private static boolean generatesAll(Material material, OrePrefixes... prefixes) {
         for (OrePrefixes prefix : prefixes) {
-            if (!Materials2WerkstoffIndex.generatesPrefix(material, prefix)) return false;
+            if (!LegacyWerkstoffIndex.generatesPrefix(material, prefix)) return false;
         }
         return true;
     }

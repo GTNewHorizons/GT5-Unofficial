@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.entity.player.EntityPlayer;
@@ -70,7 +71,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.Materials2IDIndex;
-import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -321,7 +321,7 @@ public class GTMod {
         }
 
         Materials2IDIndex.init();
-        Materials2WerkstoffIndex.init();
+        LegacyWerkstoffIndex.init();
 
         GTPreLoad.getConfiguration(event.getModConfigurationDirectory());
         GTPreLoad.createLogFiles(

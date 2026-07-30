@@ -1,5 +1,6 @@
 package gregtech.loaders.preload;
 
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
@@ -14,7 +15,6 @@ import bartworks.system.material.BWTileEntityMetaGeneratedWerkstoffBlock;
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.common.ores.BWOreAdapter;
@@ -67,8 +67,8 @@ public class LoaderLegacyBartworksBlocks {
 
     private static void hideSlot(Material material, OrePrefixes prefix, Block legacyBlock) {
         if (legacyBlock == null) return;
-        if (!Materials2WerkstoffIndex.generatesPrefix(material, prefix)) return;
+        if (!LegacyWerkstoffIndex.generatesPrefix(material, prefix)) return;
         if (MaterialParts.stack(prefix, material, 1) == null) return;
-        API.hideItem(new ItemStack(legacyBlock, 1, Materials2WerkstoffIndex.idOf(material)));
+        API.hideItem(new ItemStack(legacyBlock, 1, LegacyWerkstoffIndex.idOf(material)));
     }
 }

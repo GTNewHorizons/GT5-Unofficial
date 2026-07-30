@@ -595,7 +595,7 @@ public class Gregtech {
         @Config.Name("Deep Dark GT Ore Weights")
         public String[] gregtechWeightsDD;
 
-        @Config.Comment("List of BartWorks material names to adjust weight. Example line: \"Bismutite : 0.3\". Intervening whitespace will be ignored. Use the debug options to get valid names. Use weight <= 0 to disable an ore entirely. Anything not specified in the list will have weight 1. See: gregtech.api.enums.materials2.Materials2WerkstoffIndex")
+        @Config.Comment("List of BartWorks material names to adjust weight. Example line: \"Bismutite : 0.3\". Intervening whitespace will be ignored. Use the debug options to get valid names. Use weight <= 0 to disable an ore entirely. Anything not specified in the list will have weight 1. See: gregtech.api.enums.materials2.LegacyWerkstoffIndex")
         @Config.Name("Deep Dark BW Ore Weights")
         public String[] bartworksWeightsDD;
 
