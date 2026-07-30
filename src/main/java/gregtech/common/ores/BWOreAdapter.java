@@ -34,7 +34,7 @@ import codechicken.nei.api.API;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.StoneType;
-import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
@@ -47,7 +47,7 @@ import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 /// prospecting, and the void miner place and read BW ore blocks through this singleton (via [OreManager], never
 /// [BWMetaGeneratedOres] or MaterialLib directly), mirroring [GTOreAdapter]'s port of the same pattern for GT's
 /// own ores. A legacy `bw.blockores*`/`bw.blockoresTE` meta resolves to its MaterialLib material through
-/// [Materials2WerkstoffIndex]; a meta with no entry there (unknown to MaterialLib) is left unresolved.
+/// [LegacyWerkstoffIndex]; a meta with no entry there (unknown to MaterialLib) is left unresolved.
 ///
 /// BW only ever generated ore on two [StoneType]s, both of which already have a [OreShapes] variant
 /// declared for GT's own ores: `StoneType.Stone` -> variant `"stone"` (index 0) and `StoneType.Moon` -> variant
@@ -145,7 +145,7 @@ public final class BWOreAdapter implements IOreAdapter {
     /// method this replaces, which unconditionally resolved through the `Stone` [Ores] entry.
     private ImmutableBlockMeta resolveLegacyTE(int meta, boolean small) {
         try (OreInfo info = OreInfo.getNewInfo()) {
-            info.material = Materials2WerkstoffIndex.get(meta);
+            info.material = LegacyWerkstoffIndex.get(meta);
             info.stoneType = StoneType.Stone;
             info.isSmall = small;
             info.isNatural = true;
@@ -190,7 +190,7 @@ public final class BWOreAdapter implements IOreAdapter {
 
     private ImmutableBlockMeta resolveCurrentGenMeta(StoneType stoneType, boolean small, int meta) {
         try (OreInfo info = OreInfo.getNewInfo()) {
-            info.material = Materials2WerkstoffIndex.get(meta);
+            info.material = LegacyWerkstoffIndex.get(meta);
             info.stoneType = stoneType;
             info.isSmall = small;
             info.isNatural = true;
@@ -265,7 +265,7 @@ public final class BWOreAdapter implements IOreAdapter {
     @Override
     public OreInfo getOreInfo(Block block, int meta) {
         if (block instanceof BWMetaGeneratedOres oreBlock) {
-            Material material = Materials2WerkstoffIndex.get(meta);
+            Material material = LegacyWerkstoffIndex.get(meta);
             if (material == null) return null;
 
             OreInfo info = OreInfo.getNewInfo();

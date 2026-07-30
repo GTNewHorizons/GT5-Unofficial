@@ -35,7 +35,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
-import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.GTMaterialProperties;
@@ -85,9 +85,9 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
     }
 
     protected void doRegistrationStuff(com.ruling_0.materiallib.api.Material material) {
-        if (!Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.ore)) return;
+        if (!LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.ore)) return;
 
-        ItemStack self = new ItemStack(this, 1, Materials2WerkstoffIndex.idOf(material));
+        ItemStack self = new ItemStack(this, 1, LegacyWerkstoffIndex.idOf(material));
 
         GTOreDictUnificator.registerOre(getPrefix().oreDictName(material), self);
     }
@@ -122,8 +122,8 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
         if (!isNatural) {
             for (com.ruling_0.materiallib.api.Material material : MaterialLibAPI.getMaterials()) {
                 if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
-                if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.ore)) {
-                    aList.add(new ItemStack(aItem, 1, Materials2WerkstoffIndex.idOf(material)));
+                if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.ore)) {
+                    aList.add(new ItemStack(aItem, 1, LegacyWerkstoffIndex.idOf(material)));
                 }
             }
         }
@@ -172,7 +172,7 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
     @Override
     @Nullable
     public ITexture[][] getTextures(int metadata) {
-        com.ruling_0.materiallib.api.Material material = Materials2WerkstoffIndex.get(metadata);
+        com.ruling_0.materiallib.api.Material material = LegacyWerkstoffIndex.get(metadata);
 
         OrePrefixes prefix = getPrefix();
 

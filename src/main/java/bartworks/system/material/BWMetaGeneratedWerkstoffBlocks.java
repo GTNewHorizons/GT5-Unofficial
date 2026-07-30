@@ -15,6 +15,7 @@ package bartworks.system.material;
 
 import java.util.List;
 
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -27,7 +28,6 @@ import net.minecraft.world.IBlockAccess;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
 
 public class BWMetaGeneratedWerkstoffBlocks extends BWMetaGeneratedBlocks {
@@ -59,9 +59,9 @@ public class BWMetaGeneratedWerkstoffBlocks extends BWMetaGeneratedBlocks {
     public void getSubBlocks(Item aItem, CreativeTabs tab, List<ItemStack> aList) {
         for (com.ruling_0.materiallib.api.Material material : MaterialLibAPI.getMaterials()) {
             if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) continue;
-            if (!Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
-                && !Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.ingot)) continue;
-            aList.add(new ItemStack(aItem, 1, Materials2WerkstoffIndex.idOf(material)));
+            if (!LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
+                && !LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.ingot)) continue;
+            aList.add(new ItemStack(aItem, 1, LegacyWerkstoffIndex.idOf(material)));
         }
     }
 }

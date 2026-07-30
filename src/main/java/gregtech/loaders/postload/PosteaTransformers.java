@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.function.IntFunction;
 
 import gregtech.api.enums.materials2.BlockShapes;
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.block.Block;
@@ -32,7 +33,6 @@ import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.OreShapes;
 import gregtech.api.enums.materials2.Materials2PipeMaterials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
-import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTLog;
@@ -45,7 +45,7 @@ import vexatos.tgregworks.reference.Mods;
 
 public class PosteaTransformers implements Runnable {
 
-    // Legacy bartworks werkstoff id offset (see Materials2WerkstoffIndex)
+    // Legacy bartworks werkstoff id offset (see LegacyWerkstoffIndex)
     private static final int OFFSET_ID_3 = 11_300;
     private static final int[] WERKSTOFFS_REMOVED_IN_2_9 = new int[] { OFFSET_ID_3, OFFSET_ID_3 + 2, OFFSET_ID_3 + 6,
         OFFSET_ID_3 + 7, OFFSET_ID_3 + 8, OFFSET_ID_3 + 11, OFFSET_ID_3 + 12 };
@@ -252,7 +252,7 @@ public class PosteaTransformers implements Runnable {
     }
 
     /// Migrates saved bartworks werkstoff item stacks (`bartworks:gt.bwMetaGenerated<prefix>`, damage =
-    /// werkstoff id) into the equivalent MaterialLib stack, resolved through [Materials2WerkstoffIndex] exactly
+    /// werkstoff id) into the equivalent MaterialLib stack, resolved through [LegacyWerkstoffIndex] exactly
     /// like the live item path ([MaterialParts#stack]). Damages of
     /// werkstoffe unknown to MaterialLib (a third-party mod's own werkstoff ids) pass through unchanged. Ore/small ore
     /// migrate through [BWOreAdapter] instead (block-kind, no `bw.bwMetaGenerated<prefix>` item exists for
@@ -280,7 +280,7 @@ public class PosteaTransformers implements Runnable {
             ItemStackReplacementManager
                 .addTransformationHandler("bartworks:gt.bwMetaGenerated" + prefix.getName(), (originalId, tag) -> {
                     int damage = tag.getInteger("Damage");
-                    Material material = Materials2WerkstoffIndex.get(damage);
+                    Material material = LegacyWerkstoffIndex.get(damage);
                     if (material == null) return false;
                     ItemStack cutover = MaterialParts.stack(prefix, material, 1);
                     if (cutover == null) return false;
@@ -329,14 +329,14 @@ public class PosteaTransformers implements Runnable {
     }
 
     /// Migrates saved placed (TE-based) and inventory bartworks werkstoff storage-block stacks (`m`/`Damage` =
-    /// werkstoff id) into the equivalent MaterialLib block stack, resolved through [Materials2WerkstoffIndex]
+    /// werkstoff id) into the equivalent MaterialLib block stack, resolved through [LegacyWerkstoffIndex]
     /// exactly like the live item path ([MaterialParts#stack]). Third-party
     /// werkstoffe unknown to MaterialLib pass through unchanged, leaving the legacy slot canonical for them.
     /// `bw.werkstoffblockTE` already has a handler registered by [#removeWerkstoffTileEntities]; Postea tries
     /// each registered handler in turn until one returns non-null, so the two coexist without conflict.
     private static void registerWerkstoffBlockCutoverTransformer(String teId, String itemId, OrePrefixes prefix) {
         TileEntityReplacementManager.tileEntityTransformer(teId, (tag, world, chunk) -> {
-            Material material = Materials2WerkstoffIndex.get(tag.getShort("m"));
+            Material material = LegacyWerkstoffIndex.get(tag.getShort("m"));
             if (material == null) return null;
             ItemStack cutover = MaterialParts.stack(prefix, material, 1);
             if (cutover == null) return null;
@@ -344,7 +344,7 @@ public class PosteaTransformers implements Runnable {
         });
 
         ItemStackReplacementManager.addTransformationHandler(itemId, (originalId, tag) -> {
-            Material material = Materials2WerkstoffIndex.get(tag.getInteger("Damage"));
+            Material material = LegacyWerkstoffIndex.get(tag.getInteger("Damage"));
             if (material == null) return false;
             ItemStack cutover = MaterialParts.stack(prefix, material, 1);
             if (cutover == null) return false;
@@ -387,7 +387,7 @@ public class PosteaTransformers implements Runnable {
     /// (a third-party mod's own werkstoff id) -- the [#registerPartCutoverTransformer] resolver for
     /// werkstoff-keyed legacy parts.
     private static Material werkstoffMaterialAt(int meta) {
-        return Materials2WerkstoffIndex.get(meta);
+        return LegacyWerkstoffIndex.get(meta);
     }
 
     /// Migrates saved placed blocks and inventory stacks of a legacy non-TE part block whose meta is a

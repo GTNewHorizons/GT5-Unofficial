@@ -16,6 +16,7 @@ package bartworks.system.material;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -26,7 +27,6 @@ import com.ruling_0.materiallib.api.Material;
 import bartworks.common.items.BWItemBlocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
@@ -42,7 +42,7 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
         Block block = Block.getBlockFromItem(aStack.getItem());
         if (block instanceof BWMetaGeneratedBlocks metaBlock) {
             int aMetaData = aStack.getItemDamage();
-            Material material = Materials2WerkstoffIndex.get(aMetaData);
+            Material material = LegacyWerkstoffIndex.get(aMetaData);
             String internalName = material != null ? MaterialUtils.internalName(material) : "_NULL";
             return metaBlock.prefix.getLocalizedNameForItem(internalName);
         }
@@ -58,7 +58,7 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
         if (aList == null) {
             aList = new ArrayList<>();
         }
-        Material material = Materials2WerkstoffIndex.get(aStack.getItemDamage());
+        Material material = LegacyWerkstoffIndex.get(aStack.getItemDamage());
         if (material != null) {
             MaterialUtils.addTooltips(material, aList);
         }

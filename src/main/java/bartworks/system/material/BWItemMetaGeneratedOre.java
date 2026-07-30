@@ -2,6 +2,7 @@ package bartworks.system.material;
 
 import java.util.List;
 
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,7 +13,6 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.MaterialFormulas;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
@@ -49,7 +49,7 @@ public class BWItemMetaGeneratedOre extends ItemBlock {
     public String getItemStackDisplayName(ItemStack stack) {
         int meta = stack.getItemDamage();
 
-        Material material = Materials2WerkstoffIndex.get(meta);
+        Material material = LegacyWerkstoffIndex.get(meta);
 
         if (material == null) {
             return blockOre.getPrefix()
@@ -67,7 +67,7 @@ public class BWItemMetaGeneratedOre extends ItemBlock {
         }
         int meta = stack.getItemDamage();
 
-        Material material = Materials2WerkstoffIndex.get(meta);
+        Material material = LegacyWerkstoffIndex.get(meta);
 
         if (material != null) {
             String formula = MaterialFormulas.forSearch(material);

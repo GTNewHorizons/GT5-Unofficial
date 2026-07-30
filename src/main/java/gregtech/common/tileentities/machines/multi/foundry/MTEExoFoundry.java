@@ -70,7 +70,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
-import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -263,8 +263,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('d', ofFrame(Materials.Erbium))
         .addElement('e', ofBlock(GregTechAPI.sBlockCasingsFoundry,8))
         .addElement('f', ofSheetMetal(Materials.Erbium))
-        .addElement('g',  lazy(() -> ofBlock(LoaderLegacyBartworksBlocks.casingsAdvanced, Materials2WerkstoffIndex.idOf(Materials.PreciousMetalsAlloy))))
-        .addElement('h',  lazy(() -> ofBlock(LoaderLegacyBartworksBlocks.casings, Materials2WerkstoffIndex.idOf(Materials.PreciousMetalsAlloy))))
+        .addElement('g',  lazy(() -> ofBlock(LoaderLegacyBartworksBlocks.casingsAdvanced, LegacyWerkstoffIndex.idOf(Materials.PreciousMetalsAlloy))))
+        .addElement('h',  lazy(() -> ofBlock(LoaderLegacyBartworksBlocks.casings, LegacyWerkstoffIndex.idOf(Materials.PreciousMetalsAlloy))))
         .addShape(
             FoundryModule.POWER_EFFICIENT_SUBSYSTEMS.structureID,
             transpose(

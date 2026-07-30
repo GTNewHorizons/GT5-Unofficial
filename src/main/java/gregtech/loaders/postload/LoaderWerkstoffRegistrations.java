@@ -3,6 +3,7 @@ package gregtech.loaders.postload;
 import java.util.List;
 
 import gregtech.api.enums.materials2.BlockShapes;
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
@@ -15,7 +16,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import bartworks.util.BWColorUtil;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -40,7 +40,7 @@ public class LoaderWerkstoffRegistrations {
             registerLocalization(material);
             registerHandleMaterial(material);
             registerAssociations(material);
-            registerLegacyCasings(material, Materials2WerkstoffIndex.idOf(material));
+            registerLegacyCasings(material, LegacyWerkstoffIndex.idOf(material));
             registerAdditionalOreDict(material);
             MaterialUtils.recordBridgeRegistration(material);
         }
@@ -55,7 +55,7 @@ public class LoaderWerkstoffRegistrations {
     /// storage block joins the name-keyed block group. A merged declaration is excluded: gregtech's own part
     /// registration owns those materials' lenses and blocks.
     private static void registerAdditionalOreDict(Material material) {
-        if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
+        if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
             && material.hasShape(Shapes.lens)) {
             short[] rgba = MaterialUtils.rgba(material);
             if (rgba != null) {
@@ -65,8 +65,8 @@ public class LoaderWerkstoffRegistrations {
             }
         }
         if (material.hasShape(BlockShapes.block)
-            && (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
-                || Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.ingot))) {
+            && (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
+                || LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.ingot))) {
             GTOreDictUnificator.registerOre(
                 OrePrefixes.block + MaterialUtils.internalName(material),
                 MaterialLibAPI.getStack(material, BlockShapes.block, 1));
@@ -100,7 +100,7 @@ public class LoaderWerkstoffRegistrations {
 
     /// Registers the canonical stack for every part the werkstoff set names. This reads
     /// [GTMaterialProperties#WERKSTOFF_PREFIXES] directly rather than through
-    /// [Materials2WerkstoffIndex#generatesPrefix]: a material declared in both families still needs its
+    /// [LegacyWerkstoffIndex#generatesPrefix]: a material declared in both families still needs its
     /// werkstoff-side parts associated, whereas that helper deliberately yields those prefixes to gregtech so
     /// the part recipe loaders do not double-generate them.
     private static void registerAssociations(Material material) {

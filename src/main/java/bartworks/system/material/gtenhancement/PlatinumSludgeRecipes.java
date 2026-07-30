@@ -61,6 +61,7 @@ import java.util.List;
 import java.util.Map;
 
 import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.block.Block;
@@ -85,7 +86,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.CellShapes;
-import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.material.GTMaterialProperties;
@@ -1164,9 +1164,9 @@ public class PlatinumSludgeOverHaul {
 
             final Material newOutput;
             if (outputAssociation.mMaterial.mMaterial == Materials.Platinum) {
-                newOutput = Materials2WerkstoffIndex.get(47);
+                newOutput = LegacyWerkstoffIndex.get(47);
             } else if (outputAssociation.mMaterial.mMaterial == Materials.Palladium) {
-                newOutput = Materials2WerkstoffIndex.get(53);
+                newOutput = LegacyWerkstoffIndex.get(53);
             } else {
                 continue;
             }
@@ -1331,13 +1331,13 @@ public class PlatinumSludgeOverHaul {
 
                     final Material replacementMaterial;
                     if (association.mMaterial.mMaterial == Materials.Platinum) {
-                        replacementMaterial = Materials2WerkstoffIndex.get(47);
+                        replacementMaterial = LegacyWerkstoffIndex.get(47);
                     } else if (association.mMaterial.mMaterial == Materials.Palladium) {
-                        replacementMaterial = Materials2WerkstoffIndex.get(53);
+                        replacementMaterial = LegacyWerkstoffIndex.get(53);
                     } else if (association.mMaterial.mMaterial == Materials.Osmium) {
-                        replacementMaterial = Materials2WerkstoffIndex.get(69);
+                        replacementMaterial = LegacyWerkstoffIndex.get(69);
                     } else if (association.mMaterial.mMaterial == Materials.Iridium) {
-                        replacementMaterial = Materials2WerkstoffIndex.get(70);
+                        replacementMaterial = LegacyWerkstoffIndex.get(70);
                     } else {
                         continue;
                     }

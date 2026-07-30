@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import com.ruling_0.materiallib.api.Property;
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 
 /// Typed property keys GregTech attaches to MaterialLib materials; values referencing other materials use
 /// [MaterialRef] because registration order is unspecified.
@@ -166,7 +167,7 @@ public class GTMaterialProperties {
     ///
     /// Every legacy werkstoff `mID` this material covers -- more than one when two same-name werkstoffe folded
     /// into one MaterialLib declaration. This property is PERMANENT: saved worlds address bartworks items and
-    /// ore blocks by their legacy `mID`, so [gregtech.api.enums.materials2.Materials2WerkstoffIndex] must keep
+    /// ore blocks by their legacy `mID`, so [LegacyWerkstoffIndex] must keep
     /// decoding those ids indefinitely. It doubles as the "this material carries werkstoff data" signal, which
     /// is how the ore adapters and shape gating distinguish the werkstoff-origin materials from the gregtech
     /// and gtPlusPlus families.

@@ -41,7 +41,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -90,7 +90,7 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
             'c',
             StructureUtility.ofBlock(
                 LoaderLegacyBartworksBlocks.casingsAdvanced,
-                Materials2WerkstoffIndex.idOf(Materials.RhodiumPlatedPalladium)))
+                LegacyWerkstoffIndex.idOf(Materials.RhodiumPlatedPalladium)))
         .addElement(
             'b',
             GTStructureUtility.buildHatchAdder(TileEntityPlanetaryGasSiphonLegacy.class)

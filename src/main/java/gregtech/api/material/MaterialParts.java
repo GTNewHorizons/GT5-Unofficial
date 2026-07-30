@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials2.OreShapes;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
@@ -22,7 +23,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
-import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -160,10 +160,10 @@ public class MaterialParts {
 
     /// Whether a [Material] generates `prefix` -- either through gregtech's own part autogen (see
     /// [OrePrefixes#doGenerateItem(Material)]) or the werkstoff part set (see
-    /// [Materials2WerkstoffIndex#generatesPrefix]). False for a null material.
+    /// [LegacyWerkstoffIndex#generatesPrefix]). False for a null material.
     public static boolean generatesPrefix(@Nullable Material material, OrePrefixes prefix) {
         if (material == null) return false;
-        return prefix.doGenerateItem(material) || Materials2WerkstoffIndex.generatesPrefix(material, prefix);
+        return prefix.doGenerateItem(material) || LegacyWerkstoffIndex.generatesPrefix(material, prefix);
     }
 
     /// The ore-dictionary-unified [ItemStack] for a [Material] at `prefix` and `amount` (see
