@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -58,7 +59,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -143,7 +143,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 .buildAndChain(
                     onElementPass(MTEBlackHoleCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 12))))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 11))
-        .addElement('D', ofFrame(Materials2Materials.NaquadahAlloy))
+        .addElement('D', ofFrame(Materials.NaquadahAlloy))
         .addElement(
             'E',
             buildHatchAdder(MTEBlackHoleCompressor.class).atLeast(InputHatch)
@@ -167,7 +167,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     @SideOnly(Side.CLIENT)
     private SoundLoopAnyBlock blackholeSoundLoop;
 
-    private final FluidStack blackholeCatalyzingCost = MaterialUtils.molten(Materials2Materials.SpaceTime, 1);
+    private final FluidStack blackholeCatalyzingCost = MaterialUtils.molten(Materials.SpaceTime, 1);
     private int catalyzingCostModifier = 1;
 
     public MTEBlackHoleCompressor(final int aID, final String aName, final String aNameRegional) {

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -39,7 +40,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -225,7 +225,7 @@ public class MTEExoticModule extends MTEBaseModule {
             ArrayUtils
                 .addAll(convertItemToPlasma(randomizedItemInput, 9), convertFluidToPlasma(randomizedFluidInput, 1)),
             new FluidStack[] { MaterialLibAPI.getFluidStack(
-                Materials2Materials.QuarkGluonPlasma,
+                Materials.QuarkGluonPlasma,
                 Materials2FluidShapes.fluidLiquid,
                 (int) (1000 * actualParallel)) },
             10 * SECONDS,
@@ -241,8 +241,8 @@ public class MTEExoticModule extends MTEBaseModule {
         int timeAmount = GodforgeMath.getRandomIntInRange(1, 50);
         int spaceAmount = GodforgeMath.getRandomIntInRange(51, 100);
         randomizedFluidInput = new FluidStack[] {
-            MaterialUtils.molten(Materials2Materials.temporalFluid, timeAmount * 1000L),
-            MaterialUtils.molten(Materials2Materials.spatialFluid, spaceAmount * 1000L) };
+            MaterialUtils.molten(Materials.temporalFluid, timeAmount * 1000L),
+            MaterialUtils.molten(Materials.spatialFluid, spaceAmount * 1000L) };
 
         return new GTRecipe(
             null,
@@ -254,9 +254,9 @@ public class MTEExoticModule extends MTEBaseModule {
             null,
             ArrayUtils.addAll(
                 convertItemToPlasma(randomizedItemInput, spaceAmount - timeAmount),
-                MaterialUtils.molten(Materials2Materials.temporalFluid, timeAmount),
-                MaterialUtils.molten(Materials2Materials.spatialFluid, spaceAmount)),
-            new FluidStack[] { MaterialUtils.molten(Materials2Materials.Magmatter, 576 * actualParallel) },
+                MaterialUtils.molten(Materials.temporalFluid, timeAmount),
+                MaterialUtils.molten(Materials.spatialFluid, spaceAmount)),
+            new FluidStack[] { MaterialUtils.molten(Materials.Magmatter, 576 * actualParallel) },
             10 * SECONDS,
             (int) TierEU.RECIPE_MAX,
             0);
@@ -443,10 +443,10 @@ public class MTEExoticModule extends MTEBaseModule {
 
             FluidStack outputFluid;
             if (magmatterMode) {
-                outputFluid = MaterialUtils.molten(Materials2Materials.Magmatter, actualParallel * 4 * INGOTS);
+                outputFluid = MaterialUtils.molten(Materials.Magmatter, actualParallel * 4 * INGOTS);
             } else {
                 outputFluid = MaterialLibAPI.getFluidStack(
-                    Materials2Materials.QuarkGluonPlasma,
+                    Materials.QuarkGluonPlasma,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (1000 * actualParallel));
             }

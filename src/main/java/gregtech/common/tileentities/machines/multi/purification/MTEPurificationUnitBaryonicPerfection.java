@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -40,7 +41,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -113,7 +113,7 @@ public class MTEPurificationUnitBaryonicPerfection
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings9, 15))
         // Non-Photonic Matter Exclusion Glass
         .addElement('D', ofBlock(GregTechAPI.sBlockGlass1, 3))
-        .addElement('E', ofFrame(Materials2Materials.Bedrockium))
+        .addElement('E', ofFrame(Materials.Bedrockium))
         .build();
 
     private static class CatalystCombination {
@@ -441,7 +441,7 @@ public class MTEPurificationUnitBaryonicPerfection
                     // Try to deplete catalyst cost first
                     int cost = calculateCatalystCost(stack);
                     FluidStack inputCost = MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Infinity, Materials2FluidShapes.fluidMolten, (int) (cost));
+                        .getFluidStack(Materials.Infinity, Materials2FluidShapes.fluidMolten, (int) (cost));
                     // Drain the input cost directly from a hatch since we are not inside
                     // recipe processing
                     boolean drained = false;
@@ -478,7 +478,7 @@ public class MTEPurificationUnitBaryonicPerfection
             correctStartIndex = checkSequence();
             // If we found something, immediately output stable baryonic matter
             if (correctStartIndex != -1)
-                addOutputPartial(MaterialUtils.fluid(Materials2Materials.stablebaryonicmatter, BARYONIC_MATTER_OUTPUT));
+                addOutputPartial(MaterialUtils.fluid(Materials.stablebaryonicmatter, BARYONIC_MATTER_OUTPUT));
         }
     }
 

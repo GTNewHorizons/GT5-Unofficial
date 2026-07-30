@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -15,7 +16,6 @@ import ggfab.items.SingleUseTool;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
@@ -31,16 +31,16 @@ class SingleUseToolRecipeLoader implements Runnable {
     @Override
     public void run() {
         // Hard tool recipes
-        addSingleUseToolRecipes(Materials2Materials.Steel, SingleUseTool.HARD_TOOLS);
-        addSingleUseToolRecipes(Materials2Materials.Silver, SingleUseTool.HARD_TOOLS);
-        addSingleUseToolRecipes(Materials2Materials.VanadiumSteel, SingleUseTool.HARD_TOOLS);
-        addSingleUseToolRecipes(Materials2Materials.TungstenSteel, SingleUseTool.HARD_TOOLS);
-        addSingleUseToolRecipes(Materials2Materials.HSSG, SingleUseTool.HARD_TOOLS);
+        addSingleUseToolRecipes(Materials.Steel, SingleUseTool.HARD_TOOLS);
+        addSingleUseToolRecipes(Materials.Silver, SingleUseTool.HARD_TOOLS);
+        addSingleUseToolRecipes(Materials.VanadiumSteel, SingleUseTool.HARD_TOOLS);
+        addSingleUseToolRecipes(Materials.TungstenSteel, SingleUseTool.HARD_TOOLS);
+        addSingleUseToolRecipes(Materials.HSSG, SingleUseTool.HARD_TOOLS);
 
         // Soft tool recipes
-        addSingleUseToolRecipes(Materials2Materials.Rubber, SingleUseTool.SOFT_TOOLS);
-        addSingleUseToolRecipes(Materials2Materials.StyreneButadieneRubber, SingleUseTool.SOFT_TOOLS);
-        addSingleUseToolRecipes(Materials2Materials.Silicone, SingleUseTool.SOFT_TOOLS);
+        addSingleUseToolRecipes(Materials.Rubber, SingleUseTool.SOFT_TOOLS);
+        addSingleUseToolRecipes(Materials.StyreneButadieneRubber, SingleUseTool.SOFT_TOOLS);
+        addSingleUseToolRecipes(Materials.Silicone, SingleUseTool.SOFT_TOOLS);
 
         // Mold recipes
         for (SingleUseTool singleUseTool : SingleUseTool.values()) {

@@ -24,6 +24,7 @@ import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -42,7 +43,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -107,7 +107,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 onElementPass(t -> t.casingCount++, ofBlock(GregTechAPI.sBlockCasings9, 11))))
         // Omni-purpose infinity fused glass
         .addElement('B', ofBlock(GregTechAPI.sBlockGlass1, 2))
-        .addElement('C', ofFrame(Materials2Materials.Bedrockium))
+        .addElement('C', ofFrame(Materials.Bedrockium))
         .build();
 
     private static final int STRUCTURE_X_OFFSET = 8;
@@ -116,10 +116,10 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
 
     // Supplier because werkstoff loads later than multiblock controllers... fml
     private static final Supplier<FluidStack[]> INERT_GASES = () -> new FluidStack[] {
-        MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int) (10_000)),
-        MaterialLibAPI.getFluidStack(Materials2Materials.Neon, Materials2FluidShapes.fluidLiquid, (int) (7_500)),
-        MaterialLibAPI.getFluidStack(Materials2Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (5_000)),
-        MaterialLibAPI.getFluidStack(Materials2Materials.Xenon, Materials2FluidShapes.fluidLiquid, (int) (2_500)) };
+        MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, (int) (10_000)),
+        MaterialLibAPI.getFluidStack(Materials.Neon, Materials2FluidShapes.fluidLiquid, (int) (7_500)),
+        MaterialLibAPI.getFluidStack(Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (5_000)),
+        MaterialLibAPI.getFluidStack(Materials.Xenon, Materials2FluidShapes.fluidLiquid, (int) (2_500)) };
 
     private static final class SuperconductorMaterial {
 
@@ -136,34 +136,34 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
 
     private static final Supplier<SuperconductorMaterial[]> SUPERCONDUCTOR_MATERIALS = () -> new SuperconductorMaterial[] {
         new SuperconductorMaterial(
-            MaterialUtils.molten(Materials2Materials.Longasssuperconductornameforuvwire, SUPERCON_FLUID_AMOUNT),
+            MaterialUtils.molten(Materials.Longasssuperconductornameforuvwire, SUPERCON_FLUID_AMOUNT),
             1.0f),
         new SuperconductorMaterial(
-            MaterialUtils.molten(Materials2Materials.Longasssuperconductornameforuhvwire, SUPERCON_FLUID_AMOUNT),
+            MaterialUtils.molten(Materials.Longasssuperconductornameforuhvwire, SUPERCON_FLUID_AMOUNT),
             1.25f),
         new SuperconductorMaterial(
             MaterialLibAPI.getFluidStack(
-                Materials2Materials.SuperconductorUEVBase,
+                Materials.SuperconductorUEVBase,
                 Materials2FluidShapes.fluidMolten,
                 (int) (SUPERCON_FLUID_AMOUNT)),
             1.5f),
         new SuperconductorMaterial(
             MaterialLibAPI.getFluidStack(
-                Materials2Materials.SuperconductorUIVBase,
+                Materials.SuperconductorUIVBase,
                 Materials2FluidShapes.fluidMolten,
                 (int) (SUPERCON_FLUID_AMOUNT)),
             1.75f),
         new SuperconductorMaterial(
             MaterialLibAPI.getFluidStack(
-                Materials2Materials.SuperconductorUMVBase,
+                Materials.SuperconductorUMVBase,
                 Materials2FluidShapes.fluidMolten,
                 (int) (SUPERCON_FLUID_AMOUNT)),
             2.0f), };
 
     private static final FluidStack CATALYST_FLUID = MaterialLibAPI
-        .getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.fluidMolten, (int) (32 * INGOTS));
+        .getFluidStack(Materials.Neutronium, Materials2FluidShapes.fluidMolten, (int) (32 * INGOTS));
     private static final FluidStack COOLANT_FLUID = MaterialLibAPI
-        .getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, (int) (10_000));
+        .getFluidStack(Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, (int) (10_000));
 
     private static final long CONSUME_INTERVAL = 20;
 

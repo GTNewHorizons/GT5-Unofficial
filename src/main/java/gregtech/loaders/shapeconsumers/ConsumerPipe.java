@@ -3,7 +3,7 @@ package gregtech.loaders.shapeconsumers;
 import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.loaders.oreprocessing.ProcessingPipe;
 
@@ -65,7 +65,7 @@ public final class ConsumerPipe {
         ShapeConsumerSupport.delegate(
             shape,
             prefix,
-            material -> material != Materials2Materials.Redstone,
+            material -> material != Materials.Redstone,
             () -> ProcessingPipe.INSTANCE);
     }
 }

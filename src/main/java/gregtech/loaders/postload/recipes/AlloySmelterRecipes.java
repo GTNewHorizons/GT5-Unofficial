@@ -4,6 +4,7 @@ import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -15,7 +16,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.objects.OreDictItemStack;
@@ -24,46 +24,46 @@ import gregtech.api.util.GTOreDictUnificator;
 public class AlloySmelterRecipes implements Runnable {
 
     private final MaterialStack[][] mAlloySmelterList = {
-        { new MaterialStack(Materials2Materials.Tetrahedrite, 3L), new MaterialStack(Materials2Materials.Tin, 1L),
-            new MaterialStack(Materials2Materials.Bronze, 3L) },
-        { new MaterialStack(Materials2Materials.Tetrahedrite, 3L), new MaterialStack(Materials2Materials.Zinc, 1L),
-            new MaterialStack(Materials2Materials.Brass, 3L) },
-        { new MaterialStack(Materials2Materials.Copper, 3L), new MaterialStack(Materials2Materials.Tin, 1L),
-            new MaterialStack(Materials2Materials.Bronze, 4L) },
-        { new MaterialStack(Materials2Materials.Copper, 3L), new MaterialStack(Materials2Materials.Zinc, 1L),
-            new MaterialStack(Materials2Materials.Brass, 4L) },
-        { new MaterialStack(Materials2Materials.Copper, 1L), new MaterialStack(Materials2Materials.Nickel, 1L),
-            new MaterialStack(Materials2Materials.Cupronickel, 2L) },
-        { new MaterialStack(Materials2Materials.Copper, 1L), new MaterialStack(Materials2Materials.Redstone, 4L),
-            new MaterialStack(Materials2Materials.RedAlloy, 1L) },
-        { new MaterialStack(Materials2Materials.AnnealedCopper, 3L), new MaterialStack(Materials2Materials.Tin, 1L),
-            new MaterialStack(Materials2Materials.Bronze, 4L) },
-        { new MaterialStack(Materials2Materials.AnnealedCopper, 3L), new MaterialStack(Materials2Materials.Zinc, 1L),
-            new MaterialStack(Materials2Materials.Brass, 4L) },
-        { new MaterialStack(Materials2Materials.AnnealedCopper, 1L), new MaterialStack(Materials2Materials.Nickel, 1L),
-            new MaterialStack(Materials2Materials.Cupronickel, 2L) },
-        { new MaterialStack(Materials2Materials.AnnealedCopper, 1L),
-            new MaterialStack(Materials2Materials.Redstone, 4L), new MaterialStack(Materials2Materials.RedAlloy, 1L) },
-        { new MaterialStack(Materials2Materials.Iron, 1L), new MaterialStack(Materials2Materials.Tin, 1L),
-            new MaterialStack(Materials2Materials.TinAlloy, 2L) },
-        { new MaterialStack(Materials2Materials.CastIron, 1L), new MaterialStack(Materials2Materials.Tin, 1L),
-            new MaterialStack(Materials2Materials.TinAlloy, 2L) },
-        { new MaterialStack(Materials2Materials.Iron, 2L), new MaterialStack(Materials2Materials.Nickel, 1L),
-            new MaterialStack(Materials2Materials.Invar, 3L) },
-        { new MaterialStack(Materials2Materials.CastIron, 2L), new MaterialStack(Materials2Materials.Nickel, 1L),
-            new MaterialStack(Materials2Materials.Invar, 3L) },
-        { new MaterialStack(Materials2Materials.Tin, 9L), new MaterialStack(Materials2Materials.Antimony, 1L),
-            new MaterialStack(Materials2Materials.SolderingAlloy, 10L) },
-        { new MaterialStack(Materials2Materials.Lead, 4L), new MaterialStack(Materials2Materials.Antimony, 1L),
-            new MaterialStack(Materials2Materials.BatteryAlloy, 5L) },
-        { new MaterialStack(Materials2Materials.Gold, 1L), new MaterialStack(Materials2Materials.Silver, 1L),
-            new MaterialStack(Materials2Materials.Electrum, 2L) },
-        { new MaterialStack(Materials2Materials.Magnesium, 1L), new MaterialStack(Materials2Materials.Aluminium, 2L),
-            new MaterialStack(Materials2Materials.Magnalium, 3L) },
-        { new MaterialStack(Materials2Materials.Silver, 1L), new MaterialStack(Materials2Materials.Electrotine, 4L),
-            new MaterialStack(Materials2Materials.BlueAlloy, 1L) },
-        { new MaterialStack(Materials2Materials.Boron, 1L), new MaterialStack(Materials2Materials.Glass, 7L),
-            new MaterialStack(Materials2Materials.BorosilicateGlass, 8L) } };
+        { new MaterialStack(Materials.Tetrahedrite, 3L), new MaterialStack(Materials.Tin, 1L),
+            new MaterialStack(Materials.Bronze, 3L) },
+        { new MaterialStack(Materials.Tetrahedrite, 3L), new MaterialStack(Materials.Zinc, 1L),
+            new MaterialStack(Materials.Brass, 3L) },
+        { new MaterialStack(Materials.Copper, 3L), new MaterialStack(Materials.Tin, 1L),
+            new MaterialStack(Materials.Bronze, 4L) },
+        { new MaterialStack(Materials.Copper, 3L), new MaterialStack(Materials.Zinc, 1L),
+            new MaterialStack(Materials.Brass, 4L) },
+        { new MaterialStack(Materials.Copper, 1L), new MaterialStack(Materials.Nickel, 1L),
+            new MaterialStack(Materials.Cupronickel, 2L) },
+        { new MaterialStack(Materials.Copper, 1L), new MaterialStack(Materials.Redstone, 4L),
+            new MaterialStack(Materials.RedAlloy, 1L) },
+        { new MaterialStack(Materials.AnnealedCopper, 3L), new MaterialStack(Materials.Tin, 1L),
+            new MaterialStack(Materials.Bronze, 4L) },
+        { new MaterialStack(Materials.AnnealedCopper, 3L), new MaterialStack(Materials.Zinc, 1L),
+            new MaterialStack(Materials.Brass, 4L) },
+        { new MaterialStack(Materials.AnnealedCopper, 1L), new MaterialStack(Materials.Nickel, 1L),
+            new MaterialStack(Materials.Cupronickel, 2L) },
+        { new MaterialStack(Materials.AnnealedCopper, 1L),
+            new MaterialStack(Materials.Redstone, 4L), new MaterialStack(Materials.RedAlloy, 1L) },
+        { new MaterialStack(Materials.Iron, 1L), new MaterialStack(Materials.Tin, 1L),
+            new MaterialStack(Materials.TinAlloy, 2L) },
+        { new MaterialStack(Materials.CastIron, 1L), new MaterialStack(Materials.Tin, 1L),
+            new MaterialStack(Materials.TinAlloy, 2L) },
+        { new MaterialStack(Materials.Iron, 2L), new MaterialStack(Materials.Nickel, 1L),
+            new MaterialStack(Materials.Invar, 3L) },
+        { new MaterialStack(Materials.CastIron, 2L), new MaterialStack(Materials.Nickel, 1L),
+            new MaterialStack(Materials.Invar, 3L) },
+        { new MaterialStack(Materials.Tin, 9L), new MaterialStack(Materials.Antimony, 1L),
+            new MaterialStack(Materials.SolderingAlloy, 10L) },
+        { new MaterialStack(Materials.Lead, 4L), new MaterialStack(Materials.Antimony, 1L),
+            new MaterialStack(Materials.BatteryAlloy, 5L) },
+        { new MaterialStack(Materials.Gold, 1L), new MaterialStack(Materials.Silver, 1L),
+            new MaterialStack(Materials.Electrum, 2L) },
+        { new MaterialStack(Materials.Magnesium, 1L), new MaterialStack(Materials.Aluminium, 2L),
+            new MaterialStack(Materials.Magnalium, 3L) },
+        { new MaterialStack(Materials.Silver, 1L), new MaterialStack(Materials.Electrotine, 4L),
+            new MaterialStack(Materials.BlueAlloy, 1L) },
+        { new MaterialStack(Materials.Boron, 1L), new MaterialStack(Materials.Glass, 7L),
+            new MaterialStack(Materials.BorosilicateGlass, 8L) } };
 
     @Override
     public void run() {
@@ -115,8 +115,8 @@ public class AlloySmelterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get("dustRawRubber", 3L),
-                MaterialLibAPI.getStack(Materials2Materials.Sulfur, Materials2Shapes.dust, (int) (1L)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Rubber, Materials2Shapes.ingot, (int) (1L)))
+                MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dust, (int) (1L)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Rubber, Materials2Shapes.ingot, (int) (1L)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(alloySmelterRecipes);
@@ -124,7 +124,7 @@ public class AlloySmelterRecipes implements Runnable {
         // Bartworks Glass Tube
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.Glass, Materials2Shapes.dust, (int) (2L)),
+                MaterialLibAPI.getStack(Materials.Glass, Materials2Shapes.dust, (int) (2L)),
                 ItemList.Shape_Mold_Rod_Long.get(0L))
             .itemOutputs(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0))
             .duration(15 * SECONDS)
@@ -135,7 +135,7 @@ public class AlloySmelterRecipes implements Runnable {
         for (Dyes dye : Dyes.VALUES) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials2Materials.Glass, Materials2Shapes.dust, (int) (8L)),
+                    MaterialLibAPI.getStack(Materials.Glass, Materials2Shapes.dust, (int) (8L)),
                     new OreDictItemStack(dye.name(), 1))
                 .itemOutputs(new net.minecraft.item.ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex))
                 .duration(10 * SECONDS)

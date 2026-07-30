@@ -38,6 +38,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -60,7 +61,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.material.MaterialParts;
@@ -946,20 +946,20 @@ public final class RecipeMaps {
             }
 
             GTRecipeTemplate coll = asTemplate(rr.get());
-            for (Material coal : new Material[] { Materials2Materials.Coal, Materials2Materials.Charcoal }) {
+            for (Material coal : new Material[] { Materials.Coal, Materials.Charcoal }) {
                 coll.derive()
                     .setInputs(aInput1, aInput2, GTOreDictUnificator.get(OrePrefixes.gem, coal, aCoalAmount))
                     .setOutputs(
                         aOutput1,
                         aOutput2,
-                        GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.DarkAsh, aDustAmount))
+                        GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, aDustAmount))
                     .setOutputChances(coalChances);
                 coll.derive()
                     .setInputs(aInput1, aInput2, GTOreDictUnificator.get(OrePrefixes.dust, coal, aCoalAmount))
                     .setOutputs(
                         aOutput1,
                         aOutput2,
-                        GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.DarkAsh, aDustAmount))
+                        GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, aDustAmount))
                     .setOutputChances(coalChances);
             }
             int aDuration = builder.getDuration();
@@ -978,7 +978,7 @@ public final class RecipeMaps {
                     .setOutputs(
                         aOutput1,
                         aOutput2,
-                        MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (aDustAmount)))
+                        MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dust, (int) (aDustAmount)))
                     .setDuration(aDuration * 2 / 3)
                     .setOutputChances(cokeChances);
             }
@@ -1000,7 +1000,7 @@ public final class RecipeMaps {
                 .setOutputs(
                     aOutput1,
                     aOutput2,
-                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (aDustAmount)))
+                    MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dust, (int) (aDustAmount)))
                 .setDuration(aDuration * 2 / 3)
                 .setOutputChances(cactusSugarCokeChances);
             coll.derive()
@@ -1008,7 +1008,7 @@ public final class RecipeMaps {
                 .setOutputs(
                     aOutput1,
                     aOutput2,
-                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (aDustAmount)))
+                    MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dust, (int) (aDustAmount)))
                 .setDuration(aDuration * 2 / 3)
                 .setOutputChances(cactusSugarCokeChances);
             if ((aInput1 == null || aInput1.stackSize <= 6) && (aInput2 == null || aInput2.stackSize <= 6)
@@ -1019,13 +1019,13 @@ public final class RecipeMaps {
                 aInput2 = multiplyStack(10, aInput2);
                 aOutput1 = multiplyStack(10, aOutput1);
                 aOutput2 = multiplyStack(10, aOutput2);
-                for (Material coal : new Material[] { Materials2Materials.Coal, Materials2Materials.Charcoal }) {
+                for (Material coal : new Material[] { Materials.Coal, Materials.Charcoal }) {
                     coll.derive()
                         .setInputs(aInput1, aInput2, GTOreDictUnificator.get(OrePrefixes.block, coal, aCoalAmount))
                         .setOutputs(
                             aOutput1,
                             aOutput2,
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.DarkAsh, aCoalAmount))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, aCoalAmount))
                         .setDuration(aDuration * 10);
                 }
                 if (Railcraft.isModLoaded()) {
@@ -1035,7 +1035,7 @@ public final class RecipeMaps {
                             aOutput1,
                             aOutput2,
                             MaterialLibAPI
-                                .getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (aCoalAmount / 2)))
+                                .getStack(Materials.Ash, Materials2Shapes.dust, (int) (aCoalAmount / 2)))
                         .setDuration(aDuration * 20 / 3);
                 }
                 ItemStack cactusCokeBlock = GregtechItemList.BlockCactusCoke.get(aCoalAmount * 2L);
@@ -1046,7 +1046,7 @@ public final class RecipeMaps {
                         aOutput1,
                         aOutput2,
                         MaterialLibAPI
-                            .getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (aCoalAmount * 2)))
+                            .getStack(Materials.Ash, Materials2Shapes.dust, (int) (aCoalAmount * 2)))
                     .setDuration(aDuration * 20 / 3);
                 coll.derive()
                     .setInputs(aInput1, aInput2, sugarCokeBlock)
@@ -1054,7 +1054,7 @@ public final class RecipeMaps {
                         aOutput1,
                         aOutput2,
                         MaterialLibAPI
-                            .getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (aCoalAmount * 2)))
+                            .getStack(Materials.Ash, Materials2Shapes.dust, (int) (aCoalAmount * 2)))
                     .setDuration(aDuration * 20 / 3);
                 if (Thaumcraft.isModLoaded()) {
                     ItemStack alumentum = GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", aCoalAmount * 2L, 0);
@@ -1064,7 +1064,7 @@ public final class RecipeMaps {
                             aOutput1,
                             aOutput2,
                             MaterialLibAPI
-                                .getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (aCoalAmount * 2)))
+                                .getStack(Materials.Ash, Materials2Shapes.dust, (int) (aCoalAmount * 2)))
                         .setDuration(aDuration * 20 / 3);
                 }
             }
@@ -1287,7 +1287,7 @@ public final class RecipeMaps {
         .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_STEAM)
         .progressBarTextureSteamMUI2(GTGuiTextures.PROGRESSBAR_ARROW_STEAM)
         .recipeEmitter(b -> {
-            if (MaterialParts.isPartOf(b.getItemInputBasic(0), Materials2Materials.Graphite))
+            if (MaterialParts.isPartOf(b.getItemInputBasic(0), Materials.Graphite))
                 return Collections.emptyList();
             if (GTUtility.isArrayOfLength(b.getItemInputsBasic(), 1)) {
                 ItemStack aInput1 = b.getItemInputBasic(0);
@@ -1462,7 +1462,7 @@ public final class RecipeMaps {
             b.copy()
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Lubricant,
+                        Materials.Lubricant,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (clamp(aDuration * aEUt / 1280, 1, 250))))
                 .duration(aDuration)
@@ -1470,7 +1470,7 @@ public final class RecipeMaps {
                 .ifPresent(ret::add);
             b.fluidInputs(
                 MaterialUtils
-                    .fluid(Materials2Materials.dimensionallyshiftedsuperfluid, clamp(aDuration * aEUt / 4000, 1, 10)))
+                    .fluid(Materials.dimensionallyshiftedsuperfluid, clamp(aDuration * aEUt / 4000, 1, 10)))
                 .duration((int) (aDuration / 2.5))
                 .build()
                 .ifPresent(ret::add);

@@ -38,7 +38,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials2IDIndex;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTConfig;
@@ -332,7 +332,7 @@ public class GTPreLoad {
                 // mGeneratedItems and mDisabledItems are both ML-keyed. An unresolved tag falls back to the
                 // _NULL placeholder -- harmless membership, doGenerateItem gates on _NULL first.
                 Material ml = LegacyNameDomain.lookup(reEnable.replaceFirst(tPrefix.toString(), ""));
-                Material mlName = ml == null ? Materials2Materials.NULL : ml;
+                Material mlName = ml == null ? Materials.NULL : ml;
                 tPrefix.mDisabledItems.remove(mlName);
                 tPrefix.mGeneratedItems.add(mlName);
                 if (tPrefix == OrePrefixes.screw) {

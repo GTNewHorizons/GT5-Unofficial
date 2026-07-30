@@ -63,7 +63,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -291,7 +291,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTETreeFarm>builder()
                 .addShape(STRUCTURE_PIECE_MAIN, shape)
-                .addElement('A', ofFrame(Materials2Materials.Steel))
+                .addElement('A', ofFrame(Materials.Steel))
                 .addElement('B', chainAllGlasses())
                 .addElement(
                     'C',

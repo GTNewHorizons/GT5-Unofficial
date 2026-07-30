@@ -4,6 +4,7 @@ import static gregtech.api.recipe.RecipeMaps.multiblockRockBreakerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -13,7 +14,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -36,7 +36,7 @@ public class RecipeLoaderIndustrialRockBreaker {
             .addTo(multiblockRockBreakerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, (int) (1)))
             .circuit(3)
             .itemOutputs(new ItemStack(Blocks.obsidian, 1))
             .duration(6 * SECONDS + 8 * TICKS)
@@ -44,7 +44,7 @@ public class RecipeLoaderIndustrialRockBreaker {
             .addTo(multiblockRockBreakerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Glowstone, Materials2Shapes.dust, (int) (1)))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.netherrack, 1))
             .duration(16 * TICKS)
@@ -57,7 +57,7 @@ public class RecipeLoaderIndustrialRockBreaker {
                     GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "blue_ice", 0, 0),
                     new ItemStack(Blocks.soul_sand, 0))
                 .circuit(4)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials2Materials.Basalt, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.Basalt, 1L))
                 .duration(16 * TICKS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(multiblockRockBreakerRecipes);

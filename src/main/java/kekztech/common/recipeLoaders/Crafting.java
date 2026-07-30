@@ -2,6 +2,7 @@ package kekztech.common.recipeLoaders;
 
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -10,7 +11,6 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -26,17 +26,17 @@ public class Crafting implements Runnable {
         GTModHandler.addCraftingRecipe(
             TileEntities.tfft.getStackForm(1),
             new Object[] { "ESE", "FTF", "CVC", 'E',
-                MaterialLibAPI.getStack(Materials2Materials.EnderEye, Materials2Shapes.screw, (int) (1)), 'S',
+                MaterialLibAPI.getStack(Materials.EnderEye, Materials2Shapes.screw, (int) (1)), 'S',
                 ItemList.Cover_Screen.get(1), 'F', ItemList.Field_Generator_LV.get(1), 'T',
                 new ItemStack(Blocks.tfftStorageField, 1), 'C', "circuitData", 'V',
-                MaterialLibAPI.getStack(Materials2Materials.VibrantAlloy, Materials2Shapes.rotor, (int) (1)), });
+                MaterialLibAPI.getStack(Materials.VibrantAlloy, Materials2Shapes.rotor, (int) (1)), });
 
         // SOFC Controller mk1
         final Object[] mk1_recipe = { "CCC", "PHP", "FBL", 'C', Circuits.HV.getIngredient(), 'P',
             ItemList.Electric_Pump_HV.get(1L), 'H', ItemList.Hull_HV.get(1L), 'F',
-            GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials2Materials.StainlessSteel, 1), 'B',
-            GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials2Materials.Gold, 1), 'L',
-            GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials2Materials.StainlessSteel, 1) };
+            GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.StainlessSteel, 1), 'B',
+            GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Gold, 1), 'L',
+            GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 1) };
         GTModHandler.addCraftingRecipe(TileEntities.sofc1.getStackForm(1), mk1_recipe);
 
         // SOFC Controller mk2
@@ -53,29 +53,29 @@ public class Crafting implements Runnable {
 
         // LSC casing
         final Object[] lcBase_recipe = { "WBW", "RLR", "WBW", 'W',
-            OrePrefixes.plate.ingredient(Materials2Materials.Tantalum), 'B',
-            OrePrefixes.frameGt.ingredient(Materials2Materials.TungstenSteel), 'R',
-            OrePrefixes.stickLong.ingredient(Materials2Materials.TungstenSteel), 'L',
-            OrePrefixes.block.ingredient(Materials2Materials.Lapis) };
+            OrePrefixes.plate.ingredient(Materials.Tantalum), 'B',
+            OrePrefixes.frameGt.ingredient(Materials.TungstenSteel), 'R',
+            OrePrefixes.stickLong.ingredient(Materials.TungstenSteel), 'L',
+            OrePrefixes.block.ingredient(Materials.Lapis) };
         GTModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 0), lcBase_recipe);
 
         // Empty Capacitor
         final Object[] lcEmpty_recipe = { "SLS", "L L", "SLS", 'S',
-            OrePrefixes.screw.ingredient(Materials2Materials.Lapis), 'L',
-            OrePrefixes.plate.ingredient(Materials2Materials.Lapis) };
+            OrePrefixes.screw.ingredient(Materials.Lapis), 'L',
+            OrePrefixes.plate.ingredient(Materials.Lapis) };
         GTModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 6), lcEmpty_recipe);
 
         // EV Capacitor
         final Object[] lcEV_recipe = { "SLS", "LCL", "SLS", 'S',
-            OrePrefixes.screw.ingredient(Materials2Materials.Lapis), 'L',
-            OrePrefixes.plate.ingredient(Materials2Materials.Lapis), 'C',
+            OrePrefixes.screw.ingredient(Materials.Lapis), 'L',
+            OrePrefixes.plate.ingredient(Materials.Lapis), 'C',
             GTModHandler.getIC2Item("lapotronCrystal", 1L, WILDCARD) };
         GTModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7), lcEV_recipe);
 
         // IV Capacitor
         final Object[] lcIV_recipe = { "SLS", "LOL", "SLS", 'S',
-            OrePrefixes.screw.ingredient(Materials2Materials.Lapis), 'L',
-            OrePrefixes.plate.ingredient(Materials2Materials.Lapis), 'O', ItemList.Energy_LapotronicOrb.get(1L) };
+            OrePrefixes.screw.ingredient(Materials.Lapis), 'L',
+            OrePrefixes.plate.ingredient(Materials.Lapis), 'O', ItemList.Energy_LapotronicOrb.get(1L) };
         GTModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1), lcIV_recipe);
 
     }

@@ -30,7 +30,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Backings;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
@@ -76,8 +76,8 @@ public class GTAchievements {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.HARDHAMMER.ID,
                 1,
-                Materials2Materials.Iron,
-                Materials2Materials.Wood,
+                Materials.Iron,
+                Materials.Wood,
                 null),
             "gettingstartedwithgt",
             false);
@@ -88,8 +88,8 @@ public class GTAchievements {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.DRILL_LV.ID,
                 1,
-                Materials2Materials.BlueSteel,
-                Materials2Materials.StainlessSteel,
+                Materials.BlueSteel,
+                Materials.StainlessSteel,
                 null),
             "tools",
             false);
@@ -100,8 +100,8 @@ public class GTAchievements {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.CHAINSAW_LV.ID,
                 1,
-                Materials2Materials.BlueSteel,
-                Materials2Materials.StainlessSteel,
+                Materials.BlueSteel,
+                Materials.StainlessSteel,
                 null),
             "driltime",
             false);
@@ -112,8 +112,8 @@ public class GTAchievements {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.DRILL_HV.ID,
                 1,
-                Materials2Materials.TungstenSteel,
-                Materials2Materials.TungstenSteel,
+                Materials.TungstenSteel,
+                Materials.TungstenSteel,
                 null),
             "driltime",
             false);
@@ -124,8 +124,8 @@ public class GTAchievements {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.JACKHAMMER_HV.ID,
                 1,
-                Materials2Materials.TungstenSteel,
-                Materials2Materials.TungstenSteel,
+                Materials.TungstenSteel,
+                Materials.TungstenSteel,
                 null),
             "highpowerdrill",
             false);
@@ -136,28 +136,28 @@ public class GTAchievements {
             "crushed",
             0,
             6,
-            MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.crushed, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.crushed, (int) (1)),
             "tools",
             false);
         registerAchievement(
             "cleandust",
             0,
             10,
-            MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.dust, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, (int) (1)),
             "crushed",
             false);
         registerAchievement(
             "washing",
             -2,
             6,
-            MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.crushedPurified, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.crushedPurified, (int) (1)),
             "crushed",
             false);
         registerAchievement(
             "spinit",
             -4,
             6,
-            MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.crushedCentrifuged, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.crushedCentrifuged, (int) (1)),
             "crushed",
             false);
 
@@ -166,7 +166,7 @@ public class GTAchievements {
             "newmetal",
             -4,
             10,
-            MaterialLibAPI.getStack(Materials2Materials.Lutetium, Materials2Shapes.dust, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Lutetium, Materials2Shapes.dust, (int) (1)),
             "newfuel",
             false);
         registerAchievement("reflect", -2, 9, ItemList.Neutron_Reflector.get(1), "newfuel", false);
@@ -175,7 +175,7 @@ public class GTAchievements {
             "bronze",
             2,
             0,
-            MaterialLibAPI.getStack(Materials2Materials.Bronze, Materials2Shapes.dust, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Bronze, Materials2Shapes.dust, (int) (1)),
             "gettingstartedwithgt",
             false);
         registerAchievement(
@@ -228,7 +228,7 @@ public class GTAchievements {
             "steel",
             4,
             0,
-            MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.ingot, (int) (1)),
             "bronze",
             false);
         registerAchievement("highpressure", 4, 2, ItemList.Machine_Steel_Boiler.get(1), "steel", false);
@@ -244,7 +244,7 @@ public class GTAchievements {
             "complexalloys",
             6,
             3,
-            MaterialLibAPI.getStack(Materials2Materials.BlueSteel, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.BlueSteel, Materials2Shapes.ingot, (int) (1)),
             "cheapermac",
             false);
 
@@ -252,7 +252,7 @@ public class GTAchievements {
             "magneticiron",
             4,
             -2,
-            MaterialLibAPI.getStack(Materials2Materials.IronMagnetic, Materials2Shapes.stick, (int) (1)),
+            MaterialLibAPI.getStack(Materials.IronMagnetic, Materials2Shapes.stick, (int) (1)),
             "steel",
             false);
         registerAchievement("lvmotor", 4, -6, ItemList.Electric_Motor_LV.get(1), "magneticiron", false);
@@ -277,7 +277,7 @@ public class GTAchievements {
             "gtaluminium",
             8,
             0,
-            MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.ingot, (int) (1)),
             "steel",
             false);
         registerAchievement("highpowersmelt", 8, 2, ItemList.Machine_Multi_Furnace.get(1), "gtaluminium", false);
@@ -290,7 +290,7 @@ public class GTAchievements {
             "titan",
             14,
             0,
-            MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.ingot, (int) (1)),
             "upgrade",
             false);
         registerAchievement("magic", 14, 3, ItemList.MagicEnergyConverter_LV.get(1), "titan", false);
@@ -304,14 +304,14 @@ public class GTAchievements {
             "tungsten",
             16,
             2,
-            MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Tungsten, Materials2Shapes.ingot, (int) (1)),
             "upgrade2",
             false);
         registerAchievement(
             "osmium",
             16,
             -2,
-            MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.ingot, (int) (1)),
             "upgrade2",
             false);
         registerAchievement("hightech", 15, -3, ItemList.Field_Generator_LV.get(1), "osmium", false);
@@ -325,7 +325,7 @@ public class GTAchievements {
             "tungstensteel",
             16,
             4,
-            MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.ingot, (int) (1)),
             "tungsten",
             false);
         registerAchievement("upgrade3", 15, 5, ItemList.Casing_Coil_TungstenSteel.get(1), "tungstensteel", false);
@@ -333,7 +333,7 @@ public class GTAchievements {
             "hssg",
             13,
             5,
-            MaterialLibAPI.getStack(Materials2Materials.HSSG, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.HSSG, Materials2Shapes.ingot, (int) (1)),
             "upgrade3",
             false);
         registerAchievement("upgrade4", 11, 5, ItemList.Casing_Coil_HSSG.get(1), "hssg", false);
@@ -341,7 +341,7 @@ public class GTAchievements {
             "stargatematerial",
             11,
             7,
-            MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.ingot, (int) (1)),
             "upgrade4",
             false);
         registerAchievement("conducting", 14, 6, ItemList.Casing_Coil_Superconductor.get(1), "upgrade3", false);
@@ -357,7 +357,7 @@ public class GTAchievements {
             "alienmetallurgy",
             9,
             7,
-            MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.NaquadahAlloy, Materials2Shapes.ingot, (int) (1)),
             "upgrade5",
             false);
         registerAchievement("over9000", 7, 7, ItemList.Casing_Coil_NaquadahAlloy.get(1), "alienmetallurgy", false);
@@ -365,7 +365,7 @@ public class GTAchievements {
             "finalpreparations",
             7,
             9,
-            MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Naquadria, Materials2Shapes.ingot, (int) (1)),
             "over9000",
             false);
         registerAchievement("denseaspossible", 6, 10, ItemList.FusionComputer_UV.get(1), "finalpreparations", false);
@@ -484,25 +484,25 @@ public class GTAchievements {
 
         if ((data != null) && (data.mPrefix == OrePrefixes.ingot)) {
             Material tMaterial = data.mMaterial.mMaterial;
-            if (tMaterial == Materials2Materials.Aluminium) {
+            if (tMaterial == Materials.Aluminium) {
                 issueAchievement(player, "gtaluminium");
-            } else if (tMaterial == Materials2Materials.Titanium) {
+            } else if (tMaterial == Materials.Titanium) {
                 issueAchievement(player, "titan");
-            } else if (tMaterial == Materials2Materials.BlueSteel) {
+            } else if (tMaterial == Materials.BlueSteel) {
                 issueAchievement(player, "complexalloys");
-            } else if (tMaterial == Materials2Materials.Tungsten) {
+            } else if (tMaterial == Materials.Tungsten) {
                 issueAchievement(player, "tungsten");
-            } else if (tMaterial == Materials2Materials.Osmium) {
+            } else if (tMaterial == Materials.Osmium) {
                 issueAchievement(player, "osmium");
-            } else if (tMaterial == Materials2Materials.TungstenSteel) {
+            } else if (tMaterial == Materials.TungstenSteel) {
                 issueAchievement(player, "tungstensteel");
-            } else if (tMaterial == Materials2Materials.HSSG) {
+            } else if (tMaterial == Materials.HSSG) {
                 issueAchievement(player, "hssg");
-            } else if (tMaterial == Materials2Materials.Naquadah) {
+            } else if (tMaterial == Materials.Naquadah) {
                 issueAchievement(player, "stargatematerial");
-            } else if (tMaterial == Materials2Materials.NaquadahAlloy) {
+            } else if (tMaterial == Materials.NaquadahAlloy) {
                 issueAchievement(player, "alienmetallurgy");
-            } else if (tMaterial == Materials2Materials.Naquadria) {
+            } else if (tMaterial == Materials.Naquadria) {
                 issueAchievement(player, "finalpreparations");
             }
         }
@@ -536,7 +536,7 @@ public class GTAchievements {
         }
         ItemData data = GTOreDictUnificator.getItemData(stack);
         if (data != null) {
-            if (data.mPrefix == OrePrefixes.dust && data.mMaterial.mMaterial == Materials2Materials.Bronze) {
+            if (data.mPrefix == OrePrefixes.dust && data.mMaterial.mMaterial == Materials.Bronze) {
                 issueAchievement(player, "bronze");
             }
         }
@@ -704,10 +704,10 @@ public class GTAchievements {
         ItemData data = GTOreDictUnificator.getItemData(stack);
         if (data != null && data.mPrefix != null) {
             if (data.mPrefix == OrePrefixes.dust) {
-                if (data.mMaterial.mMaterial == Materials2Materials.Lutetium) {
+                if (data.mMaterial.mMaterial == Materials.Lutetium) {
                     issueAchievement(player, "newmetal");
                 }
-                if (data.mMaterial.mMaterial != Materials2Materials.Gunpowder) {
+                if (data.mMaterial.mMaterial != Materials.Gunpowder) {
                     issueAchievement(player, "cleandust");
                 }
             } else if (data.mPrefix.getName()
@@ -725,9 +725,9 @@ public class GTAchievements {
                             issueAchievement(player, "iron");
                         }
                         if (data.getAllMaterialStacks()
-                            .get(i).mMaterial == Materials2Materials.Copper
+                            .get(i).mMaterial == Materials.Copper
                             || data.getAllMaterialStacks()
-                                .get(i).mMaterial == Materials2Materials.Tin) {
+                                .get(i).mMaterial == Materials.Tin) {
                             issueAchievement(event.entityPlayer, "mineOre");
                         }
                     }
@@ -737,7 +737,7 @@ public class GTAchievements {
                     issueAchievement(player, "washing");
                 } else if (data.mPrefix == OrePrefixes.crushedCentrifuged) {
                     issueAchievement(player, "spinit");
-                } else if (data.mMaterial.mMaterial == Materials2Materials.Steel) {
+                } else if (data.mMaterial.mMaterial == Materials.Steel) {
                     if (data.mPrefix == OrePrefixes.ingot && stack.stackSize == stack.getMaxStackSize()) {
                         issueAchievement(player, "steel");
                     } else if (data.mPrefix == OrePrefixes.nugget && Thaumcraft.isModLoaded()

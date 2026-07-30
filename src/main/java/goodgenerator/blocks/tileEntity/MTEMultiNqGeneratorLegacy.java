@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -33,7 +34,6 @@ import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -71,28 +71,28 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
 
     static {
         excitedLiquid = Arrays.asList(
-            Pair.of(MaterialUtils.molten(Materials2Materials.spatialFluid, 20L), ExcitedLiquidCoe[0]),
+            Pair.of(MaterialUtils.molten(Materials.spatialFluid, 20L), ExcitedLiquidCoe[0]),
             Pair.of(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.AtomicSeparationCatalyst,
+                    Materials.AtomicSeparationCatalyst,
                     Materials2FluidShapes.fluidMolten,
                     (int) (20)),
                 ExcitedLiquidCoe[1]),
             Pair.of(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Naquadah, Materials2FluidShapes.fluidMolten, 20),
+                MaterialLibAPI.getFluidStack(Materials.Naquadah, Materials2FluidShapes.fluidMolten, 20),
                 ExcitedLiquidCoe[2]),
             Pair.of(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Uranium235, Materials2FluidShapes.fluidMolten, 180),
+                MaterialLibAPI.getFluidStack(Materials.Uranium235, Materials2FluidShapes.fluidMolten, 180),
                 ExcitedLiquidCoe[3]),
             Pair.of(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Caesium, Materials2FluidShapes.fluidMolten, 180),
+                MaterialLibAPI.getFluidStack(Materials.Caesium, Materials2FluidShapes.fluidMolten, 180),
                 ExcitedLiquidCoe[4]));
         coolant = Arrays.asList(
-            Pair.of(MaterialUtils.molten(Materials2Materials.temporalFluid, 20L), CoolantEfficiency[0]),
+            Pair.of(MaterialUtils.molten(Materials.temporalFluid, 20L), CoolantEfficiency[0]),
             Pair.of(new FluidStack(TFFluids.fluidCryotheum, 1_000), CoolantEfficiency[1]),
             Pair.of(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, 1_000),
+                    .getFluidStack(Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, 1_000),
                 CoolantEfficiency[2]),
             Pair.of(GTModHandler.getIC2Coolant(1_000), CoolantEfficiency[3]));
     }
@@ -241,7 +241,7 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
                 int time = 1;
                 if (LiquidAirConsumptionPerSecond != 0 && !consumeFuel(
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.LiquidAir,
+                        Materials.LiquidAir,
                         Materials2FluidShapes.fluidLiquid,
                         LiquidAirConsumptionPerSecond),
                     input)) {

@@ -14,7 +14,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
@@ -63,7 +63,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTOreDictUnificator.get(OrePrefixes.pipeSmall, material, 6L),
                         GTModHandler.RecipeBits.BUFFERED,
                         new Object[] { "PWP", "P P", "PHP", 'P',
-                            material == Materials2Materials.Wood
+                            material == Materials.Wood
                                 ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
                                 : MaterialParts.craftIngredient(OrePrefixes.plate, material),
                             'H',
@@ -75,7 +75,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTOreDictUnificator.get(OrePrefixes.pipeMedium, material, 2L),
                         GTModHandler.RecipeBits.BUFFERED,
                         new Object[] { "PPP", "W H", "PPP", 'P',
-                            material == Materials2Materials.Wood
+                            material == Materials.Wood
                                 ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
                                 : MaterialParts.craftIngredient(OrePrefixes.plate, material),
                             'H',
@@ -87,7 +87,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTOreDictUnificator.get(OrePrefixes.pipeLarge, material, 1L),
                         GTModHandler.RecipeBits.BUFFERED,
                         new Object[] { "PHP", "P P", "PWP", 'P',
-                            material == Materials2Materials.Wood
+                            material == Materials.Wood
                                 ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
                                 : MaterialParts.craftIngredient(OrePrefixes.plate, material),
                             'H',
@@ -106,7 +106,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         MaterialLibAPI.getStack(
-                            Materials2Materials.Steel,
+                            Materials.Steel,
                             Materials2Shapes.ring,
                             (int) (prefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.getMaterialAmount())),
                         GTOreDictUnificator.get(oreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true))

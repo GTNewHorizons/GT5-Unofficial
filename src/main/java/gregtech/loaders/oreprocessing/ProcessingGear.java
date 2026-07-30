@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -15,7 +16,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
@@ -41,7 +41,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
             case "gearGt" -> {
                 GTModHandler.removeRecipeByOutputDelayed(stack);
                 if (MaterialUtils.hasMolten(material)) {
-                    if (!(material == Materials2Materials.AnnealedCopper || material == Materials2Materials.CastIron)) {
+                    if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Gear.get(0L))
                             .itemOutputs(GTOreDictUnificator.get(prefix, material, 1L))
@@ -82,7 +82,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
             }
             case "gearGtSmall" -> {
                 if (MaterialUtils.hasMolten(material)) {
-                    if (!(material == Materials2Materials.AnnealedCopper || material == Materials2Materials.CastIron)) {
+                    if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Gear_Small.get(0L))
                             .itemOutputs(GTUtility.copyAmount(1, stack))

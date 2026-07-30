@@ -13,7 +13,7 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -56,7 +56,7 @@ public class MTELargeTurbineSCSteam extends MTELargeTurbineBase {
 
     @Override
     public Material getFrameMaterial() {
-        return Materials2Materials.Polybenzimidazole;
+        return Materials.Polybenzimidazole;
     }
 
     @Override

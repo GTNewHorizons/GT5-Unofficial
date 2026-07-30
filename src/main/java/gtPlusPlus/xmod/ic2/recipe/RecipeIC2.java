@@ -5,6 +5,7 @@ import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -15,7 +16,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -53,29 +53,29 @@ public class RecipeIC2 {
                 | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod, 'X',
-                OrePrefixes.plate.ingredient(Materials2Materials.DarkSteel), 'S',
-                OrePrefixes.screw.ingredient(Materials2Materials.DarkSteel) });
+                OrePrefixes.plate.ingredient(Materials.DarkSteel), 'S',
+                OrePrefixes.screw.ingredient(Materials.DarkSteel) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Shape_Extruder_WindmillShaft.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod, 'X',
-                OrePrefixes.plate.ingredient(Materials2Materials.TungstenSteel), 'S',
-                OrePrefixes.screw.ingredient(Materials2Materials.TungstenSteel) });
+                OrePrefixes.plate.ingredient(Materials.TungstenSteel), 'S',
+                OrePrefixes.screw.ingredient(Materials.TungstenSteel) });
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Shape_Extruder_WindmillShaft.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Rod, 'X',
-                OrePrefixes.plate.ingredient(Materials2Materials.Molybdenum), 'S',
-                OrePrefixes.screw.ingredient(Materials2Materials.Molybdenum) });
+                OrePrefixes.plate.ingredient(Materials.Molybdenum), 'S',
+                OrePrefixes.screw.ingredient(Materials.Molybdenum) });
 
         // Shafts
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.EnergeticAlloy, Materials2Shapes.ingot, (int) (9)),
+                MaterialLibAPI.getStack(Materials.EnergeticAlloy, Materials2Shapes.ingot, (int) (9)),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.EnergeticAlloyShaft.get(1))
             .duration(2 * MINUTES + 8 * SECONDS)
@@ -83,7 +83,7 @@ public class RecipeIC2 {
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.EnergeticAlloy, 1),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials.EnergeticAlloy, 1),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.EnergeticAlloyShaft.get(1))
             .duration(2 * MINUTES + 8 * SECONDS)
@@ -92,7 +92,7 @@ public class RecipeIC2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.ingot, (int) (9)),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.ingot, (int) (9)),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.TungstenSteelShaft.get(1))
             .duration(4 * MINUTES + 16 * SECONDS)
@@ -100,7 +100,7 @@ public class RecipeIC2 {
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.TungstenSteel, 1),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials.TungstenSteel, 1),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.TungstenSteelShaft.get(1))
             .duration(4 * MINUTES + 16 * SECONDS)
@@ -109,7 +109,7 @@ public class RecipeIC2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.VibrantAlloy, Materials2Shapes.ingot, (int) (9)),
+                MaterialLibAPI.getStack(Materials.VibrantAlloy, Materials2Shapes.ingot, (int) (9)),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.VibrantAlloyShaft.get(1))
             .duration(8 * MINUTES + 32 * SECONDS)
@@ -117,7 +117,7 @@ public class RecipeIC2 {
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.VibrantAlloy, 1),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials.VibrantAlloy, 1),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.VibrantAlloyShaft.get(1))
             .duration(8 * MINUTES + 32 * SECONDS)
@@ -126,7 +126,7 @@ public class RecipeIC2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.ingot, (int) (9)),
+                MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.ingot, (int) (9)),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.IridiumShaft.get(1))
             .duration(17 * MINUTES + 4 * SECONDS)
@@ -134,7 +134,7 @@ public class RecipeIC2 {
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.Iridium, 1),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials.Iridium, 1),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.IridiumShaft.get(1))
             .duration(17 * MINUTES + 4 * SECONDS)
@@ -171,13 +171,13 @@ public class RecipeIC2 {
                 Ic2Items.hazmatHelmet.copy(),
                 new ItemStack(Blocks.wool, 16, 4), // Yellow Wool
                 GTUtility.copyAmount(8, Ic2Items.coil),
-                MaterialLibAPI.getStack(Materials2Materials.Cobalt, Materials2Shapes.plate, (int) (4)),
-                MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.gearGtSmall, (int) (4)))
+                MaterialLibAPI.getStack(Materials.Cobalt, Materials2Shapes.plate, (int) (4)),
+                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.gearGtSmall, (int) (4)))
             .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Helmet.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Rubber, Materials2FluidShapes.fluidMolten, (int) (144 * 4)))
+                    .getFluidStack(Materials.Rubber, Materials2FluidShapes.fluidMolten, (int) (144 * 4)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -188,13 +188,13 @@ public class RecipeIC2 {
                 Ic2Items.hazmatChestplate.copy(),
                 new ItemStack(Blocks.wool, 64, 4), // Yellow Wool
                 GTUtility.copyAmount(32, Ic2Items.coil),
-                MaterialLibAPI.getStack(Materials2Materials.Cobalt, Materials2Shapes.plate, (int) (16)),
-                MaterialLibAPI.getStack(Materials2Materials.SiliconCarbide, Materials2Shapes.gearGt, 8))
+                MaterialLibAPI.getStack(Materials.Cobalt, Materials2Shapes.plate, (int) (16)),
+                MaterialLibAPI.getStack(Materials.SiliconCarbide, Materials2Shapes.gearGt, 8))
             .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Chest.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Rubber, Materials2FluidShapes.fluidMolten, (int) (144 * 10)))
+                    .getFluidStack(Materials.Rubber, Materials2FluidShapes.fluidMolten, (int) (144 * 10)))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -205,13 +205,13 @@ public class RecipeIC2 {
                 Ic2Items.hazmatLeggings.copy(),
                 new ItemStack(Blocks.wool, 32, 4), // Yellow Wool
                 GTUtility.copyAmount(16, Ic2Items.coil),
-                MaterialLibAPI.getStack(Materials2Materials.Cobalt, Materials2Shapes.plate, (int) (8)),
-                MaterialLibAPI.getStack(Materials2Materials.SiliconCarbide, Materials2Shapes.gearGt, 4))
+                MaterialLibAPI.getStack(Materials.Cobalt, Materials2Shapes.plate, (int) (8)),
+                MaterialLibAPI.getStack(Materials.SiliconCarbide, Materials2Shapes.gearGt, 4))
             .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Legs.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Rubber, Materials2FluidShapes.fluidMolten, (int) (144 * 8)))
+                    .getFluidStack(Materials.Rubber, Materials2FluidShapes.fluidMolten, (int) (144 * 8)))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -222,13 +222,13 @@ public class RecipeIC2 {
                 Ic2Items.hazmatBoots.copy(),
                 new ItemStack(Blocks.wool, 16, 15), // Black Wool
                 GTUtility.copyAmount(6, Ic2Items.coil),
-                MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.gearGtSmall, (int) (8)),
-                MaterialLibAPI.getStack(Materials2Materials.Tumbaga, Materials2Shapes.gearGt, 4))
+                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.gearGtSmall, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Tumbaga, Materials2Shapes.gearGt, 4))
             .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Boots.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Rubber, Materials2FluidShapes.fluidMolten, (int) (144 * 6)))
+                    .getFluidStack(Materials.Rubber, Materials2FluidShapes.fluidMolten, (int) (144 * 6)))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);

@@ -12,7 +12,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
@@ -26,7 +26,7 @@ public class ImplosionCompressorRecipes implements Runnable {
             .itemInputs(ItemList.IC2_Compressed_Coal_Chunk.get(1L))
             .itemOutputs(
                 ItemList.IC2_Industrial_Diamond.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 4L))
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L))
             .metadata(GTRecipeConstants.ADDITIVE_AMOUNT, 8)
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -35,8 +35,8 @@ public class ImplosionCompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Ingot_IridiumAlloy.get(1L))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials2Materials.Iridium, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 4L))
+                GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L))
             .metadata(GTRecipeConstants.ADDITIVE_AMOUNT, 8)
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -48,7 +48,7 @@ public class ImplosionCompressorRecipes implements Runnable {
                 .itemInputs(ItemList.Ingot_Heavy1.get(1L))
                 .itemOutputs(
                     getModItem(GalacticraftCore.ID, "item.heavyPlating", 1L),
-                    MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.dustTiny, (int) (1L)))
+                    MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.dustTiny, (int) (1L)))
                 .metadata(GTRecipeConstants.ADDITIVE_AMOUNT, 8)
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -58,7 +58,7 @@ public class ImplosionCompressorRecipes implements Runnable {
                 .itemInputs(ItemList.Ingot_Heavy2.get(1L))
                 .itemOutputs(
                     getModItem(GalacticraftMars.ID, "item.null", 1L, 3),
-                    MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.dustTiny, (int) (2L)))
+                    MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.dustTiny, (int) (2L)))
                 .metadata(GTRecipeConstants.ADDITIVE_AMOUNT, 16)
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -68,7 +68,7 @@ public class ImplosionCompressorRecipes implements Runnable {
                 .itemInputs(ItemList.Ingot_Heavy3.get(1L))
                 .itemOutputs(
                     getModItem(GalacticraftMars.ID, "item.itemBasicAsteroids", 1L),
-                    MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.dustTiny, (int) (3L)))
+                    MaterialLibAPI.getStack(Materials.Platinum, Materials2Shapes.dustTiny, (int) (3L)))
                 .metadata(GTRecipeConstants.ADDITIVE_AMOUNT, 24)
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -25,7 +26,6 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HatchElement;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -63,7 +63,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
         .<MTEOpticalOrganizerModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, OPTICAL_STRING)
         // Awakened Draconium Frame Box
-        .addElement('A', ofFrame(Materials2Materials.DraconiumAwakened))
+        .addElement('A', ofFrame(Materials.DraconiumAwakened))
         // Nanochip Mesh Interface Casing
         .addElement('B', Casings.NanochipMeshInterfaceCasing.asElement())
         // Nanochip Reinforcement Casing
@@ -256,12 +256,12 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
     }
 
     private static final List<BoostingWater> WATER_LIST = ImmutableList.of(
-        new BoostingWater(Materials2Materials.Grade3PurifiedWater, 1000, module -> { module.waterDiscount *= 0.8f; }),
-        new BoostingWater(Materials2Materials.Grade4PurifiedWater, 800, module -> { module.waterDiscount *= 0.6f; }),
-        new BoostingWater(Materials2Materials.Grade5PurifiedWater, 800, module -> { module.speedModifier *= 0.9f; }),
-        new BoostingWater(Materials2Materials.Grade6PurifiedWater, 600, module -> { module.speedModifier *= 0.7f; }),
-        new BoostingWater(Materials2Materials.Grade7PurifiedWater, 600, module -> { module.euMultiplier *= 0.9f; }),
-        new BoostingWater(Materials2Materials.Grade8PurifiedWater, 400, module -> { module.euMultiplier *= 0.7f; }));
+        new BoostingWater(Materials.Grade3PurifiedWater, 1000, module -> { module.waterDiscount *= 0.8f; }),
+        new BoostingWater(Materials.Grade4PurifiedWater, 800, module -> { module.waterDiscount *= 0.6f; }),
+        new BoostingWater(Materials.Grade5PurifiedWater, 800, module -> { module.speedModifier *= 0.9f; }),
+        new BoostingWater(Materials.Grade6PurifiedWater, 600, module -> { module.speedModifier *= 0.7f; }),
+        new BoostingWater(Materials.Grade7PurifiedWater, 600, module -> { module.euMultiplier *= 0.9f; }),
+        new BoostingWater(Materials.Grade8PurifiedWater, 400, module -> { module.euMultiplier *= 0.7f; }));
 
     private static class BoostingWater {
 

@@ -4,6 +4,7 @@ import static gtPlusPlus.core.lib.GTPPCore.RANDOM;
 
 import java.util.ArrayList;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
@@ -12,7 +13,6 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTModHandler;
@@ -47,7 +47,7 @@ public class MTEXLTurbineSteam extends MTEXLTurbineBase {
 
     @Override
     protected Material getFrameMaterial() {
-        return Materials2Materials.Steel;
+        return Materials.Steel;
     }
 
     @Override

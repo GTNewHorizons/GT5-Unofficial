@@ -11,6 +11,8 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.materials2.Materials;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -38,7 +40,6 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -69,27 +70,27 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
     private static final FluidStack[] magneticUpgrades = {
-        MaterialLibAPI.getFluidStack(Materials2Materials.TengamPurified, Materials2FluidShapes.fluidMolten, 1),
-        MaterialUtils.molten(Materials2Materials.temporalFluid, 1L),
-        MaterialUtils.molten(Materials2Materials.Magmatter, 1L) };
+        MaterialLibAPI.getFluidStack(Materials.TengamPurified, Materials2FluidShapes.fluidMolten, 1),
+        MaterialUtils.molten(Materials.temporalFluid, 1L),
+        MaterialUtils.molten(Materials.Magmatter, 1L) };
     private static final FluidStack[] gravityUpgrades = {
-        MaterialLibAPI.getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, 1),
-        MaterialUtils.molten(Materials2Materials.spatialFluid, 1L),
-        MaterialLibAPI.getFluidStack(Materials2Materials.Eternity, Materials2FluidShapes.fluidMolten, 1) };
+        MaterialLibAPI.getFluidStack(Materials.SpaceTime, Materials2FluidShapes.fluidMolten, 1),
+        MaterialUtils.molten(Materials.spatialFluid, 1L),
+        MaterialLibAPI.getFluidStack(Materials.Eternity, Materials2FluidShapes.fluidMolten, 1) };
     private static final FluidStack[] containmentUpgrades = {
-        MaterialLibAPI.getFluidStack(Materials2Materials.Shirabon, Materials2FluidShapes.fluidMolten, (int) (1)),
-        MaterialUtils.molten(Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1L) };
+        MaterialLibAPI.getFluidStack(Materials.Shirabon, Materials2FluidShapes.fluidMolten, (int) (1)),
+        MaterialUtils.molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1L) };
     private static final FluidStack[] activationUpgrades = {
         MaterialLibAPI.getFluidStack(
-            Materials2Materials.NaquadahBasedLiquidFuelMkVDepleted,
+            Materials.NaquadahBasedLiquidFuelMkVDepleted,
             Materials2FluidShapes.fluidLiquid,
             (int) (1)),
         MaterialLibAPI.getFluidStack(
-            Materials2Materials.NaquadahBasedLiquidFuelMkVIDepleted,
+            Materials.NaquadahBasedLiquidFuelMkVIDepleted,
             Materials2FluidShapes.fluidLiquid,
             (int) (1)) };
     private static final FluidStack ZERO_ANTIMATTER = MaterialLibAPI
-        .getFluidStack(Materials2Materials.Antimatter, Materials2FluidShapes.fluidLiquid, 0);
+        .getFluidStack(Materials.Antimatter, Materials2FluidShapes.fluidLiquid, 0);
 
     public static final String MAIN_NAME = "antimatterForge";
 
@@ -132,10 +133,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         protected IStructureDefinition<AntimatterForge> computeValue(Class<?> type) {
             return StructureDefinition.<AntimatterForge>builder()
                 .addShape(MAIN_NAME, AntimatterStructures.ANTIMATTER_FORGE)
-                .addElement('A', lazy(() -> ofBlock(Loaders.antimatterContainmentCasing, 0)))
-                .addElement('B', lazy(() -> ofBlock(Loaders.protomatterActivationCoil, 0)))
-                .addElement('C', lazy(() -> ofBlock(Loaders.gravityStabilizationCasing, 0)))
-                .addElement('D', lazy(() -> ofBlock(Loaders.magneticFluxCasing, 0)))
+                .addElement('A', lazy(x -> ofBlock(x.getFrameBlock(), x.getFrameMeta())))
+                .addElement('B', lazy(x -> ofBlock(x.getCoilBlock(), x.getCoilMeta())))
+                .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(2), x.getCasingMeta(2))))
+                .addElement('D', lazy(x -> ofBlock(x.getCasingBlock(1), x.getCasingMeta(1))))
                 .addElement(
                     'F',
                     lazy(
@@ -144,7 +145,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                             .adder(AntimatterForge::addFluidIO)
                             .casingIndex(x.textureIndex(2))
                             .hint(1)
-                            .buildAndChain(ofBlock(Loaders.gravityStabilizationCasing, 0))))
+                            .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
                 .addElement(
                     'E',
                     lazy(
@@ -163,7 +164,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                             .adder(AntimatterForge::addEnergyInjector)
                             .casingIndex(x.textureIndex(2))
                             .hint(2)
-                            .buildAndChain(ofBlock(Loaders.gravityStabilizationCasing, 0))))
+                            .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
                 .build();
         }
     };
@@ -330,19 +331,19 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "^(1/3) L of fluid per cycle)")
             .addInfo("1. Depleted Naquadah Fuel Mk V = " + EnumChatFormatting.AQUA + "0.05" + EnumChatFormatting.GRAY)
             .addInfo("2. Depleted Naquadah Fuel Mk VI = " + EnumChatFormatting.AQUA + "0.10" + EnumChatFormatting.GRAY)
-            .beginStructureBlock(53, 53, 47, false)
-            .addController("Front center, 27th layer")
+            .beginStructureBlock(47, 53, 53, false)
+            .addController("Front center")
             .addCasing("2274", "Magnetic Flux Casing", false)
             .addCasing("624-637", "Gravity Stabilization Casing", false)
             .addCasing("514", "Antimatter Containment Casing", false)
             .addCasing("126", "Protomatter Activation Coil", false)
-            .addEnergyHatch("1+", "Back, left, or right side of the structure", 2)
-            .addInputHatch("1+", "Top or bottom side of the structure", 1)
             .addMiscHatch(
                 "16",
                 StatCollector.translateToLocal("gg.structure.tooltip.antimatter_hatch"),
                 "Around the inner ring",
                 3)
+            .addEnergyHatch("1+", "Back, left, or right side of the structure", 2)
+            .addInputHatch("1+", "Top or bottom side of the structure", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -355,6 +356,33 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     @Override
     public boolean supportsPowerPanel() {
         return false;
+    }
+
+    public Block getCasingBlock(int type) {
+        if (type == 2) {
+            return Loaders.gravityStabilizationCasing;
+        }
+        return Loaders.magneticFluxCasing;
+    }
+
+    public int getCasingMeta(int type) {
+        return 0;
+    }
+
+    public Block getCoilBlock() {
+        return Loaders.protomatterActivationCoil;
+    }
+
+    public int getCoilMeta() {
+        return 0;
+    }
+
+    public Block getFrameBlock() {
+        return Loaders.antimatterContainmentCasing;
+    }
+
+    public int getFrameMeta() {
+        return 0;
     }
 
     public int textureIndex(int type) {
@@ -431,10 +459,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             if (!amOutputHatches.isEmpty()) {
                 drainEnergyInput(calculateEnergyContainmentCost(totalAntimatterAmount));
             }
-
-            if (!aBaseMetaTileEntity.isActive()) {
-                this.guiAntimatterAmount = totalAntimatterAmount;
-            }
+            this.guiAntimatterAmount = totalAntimatterAmount;
 
             if ((this.mProgresstime >= this.mMaxProgresstime) && (!isAllowedToWork())) {
                 setProtoRender(false);
@@ -550,20 +575,19 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         // We didn't have enough protomatter, reduce antimatter by 10% and stop the machine.
         if (!this.depleteInput(
             MaterialLibAPI.getFluidStack(
-                Materials2Materials.Protomatter,
+                Materials.Protomatter,
                 Materials2FluidShapes.fluidLiquid,
                 Math.abs(antimatterChange)))) {
             decimateAntimatter();
             stopMachine(
                 ShutDownReasonRegistry.outOfFluid(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Protomatter, Materials2FluidShapes.fluidLiquid, 1)));
+                        .getFluidStack(Materials.Protomatter, Materials2FluidShapes.fluidLiquid, 1)));
             setProtoRender(false);
             return CheckRecipeResultRegistry.NO_FUEL_FOUND;
         }
 
         this.guiAntimatterChange = ratioLosses + antimatterChange;
-        this.guiAntimatterAmount = totalAntimatterAmount;
 
         if (this.canRender) {
             updateAntimatterSize(this.guiAntimatterAmount);
@@ -632,7 +656,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             if (change >= 0) {
                 hatch.fill(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Antimatter, Materials2FluidShapes.fluidLiquid, change),
+                        .getFluidStack(Materials.Antimatter, Materials2FluidShapes.fluidLiquid, change),
                     true);
             } else {
                 hatch.drain(-change, true);
@@ -680,23 +704,19 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
         addIfSmartInput(aMetaTileEntity);
-        switch (aMetaTileEntity) {
-            case MTEHatchInput tInput -> {
-                tInput.mRecipeMap = getRecipeMap();
-                return mInputHatches.add(tInput);
-            }
-            case AntimatterOutputHatch tAntimatter -> {
-                return amOutputHatches.add(tAntimatter);
-            }
-            case MTEHatchOutput tOutput -> {
-                return mOutputHatches.add(tOutput);
-            }
-            case IDualInputHatch tInput -> {
-                tInput.updateCraftingIcon(this.getMachineCraftingIcon());
-                return mDualInputHatches.add(tInput);
-            }
-            default -> {
-            }
+        if (aMetaTileEntity instanceof MTEHatchInput tInput) {
+            tInput.mRecipeMap = getRecipeMap();
+            return mInputHatches.add(tInput);
+        }
+        if (aMetaTileEntity instanceof AntimatterOutputHatch tAntimatter) {
+            return amOutputHatches.add(tAntimatter);
+        }
+        if (aMetaTileEntity instanceof MTEHatchOutput tOutput) {
+            return mOutputHatches.add(tOutput);
+        }
+        if (aMetaTileEntity instanceof IDualInputHatch tInput) {
+            tInput.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mDualInputHatches.add(tInput);
         }
         return false;
     }
@@ -797,7 +817,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         aNBT.setBoolean("canRender", this.canRender);
         aNBT.setLong("rollingCost", this.rollingCost);
         aNBT.setFloat("currentMagneticModifier", this.modifiers[MAGNETIC_ID]);
-        aNBT.setLong("guiAntimatterAmount", this.guiAntimatterAmount);
     }
 
     @Override
@@ -811,9 +830,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
         if (aNBT.hasKey("currentMagneticModifier")) {
             this.modifiers[MAGNETIC_ID] = aNBT.getFloat("currentMagneticModifier");
-        }
-        if (aNBT.hasKey("guiAntimatterAmount")) {
-            this.guiAntimatterAmount = aNBT.getLong("guiAntimatterAmount");
         }
     }
 

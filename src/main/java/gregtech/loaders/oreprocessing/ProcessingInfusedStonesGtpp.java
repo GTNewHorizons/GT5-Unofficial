@@ -2,13 +2,13 @@ package gregtech.loaders.oreprocessing;
 
 import java.util.Set;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 
 /// Replays the missed dust-prefix oreDict notification for `InfusedAir`/`InfusedFire`/`InfusedEarth`/
@@ -27,10 +27,10 @@ public final class ProcessingInfusedStonesGtpp {
     private ProcessingInfusedStonesGtpp() {}
 
     private static final Set<Material> MATERIALS = Set.of(
-        Materials2Materials.InfusedAir,
-        Materials2Materials.InfusedFire,
-        Materials2Materials.InfusedEarth,
-        Materials2Materials.InfusedWater);
+        Materials.InfusedAir,
+        Materials.InfusedFire,
+        Materials.InfusedEarth,
+        Materials.InfusedWater);
 
     public static void run() {
         if (ProcessingDust.INSTANCE == null) return;

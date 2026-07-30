@@ -12,7 +12,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 
 public class EntityStaballoyConstruct extends EntityIronGolem {
@@ -77,7 +77,7 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 
         if (ingots > 0) {
             this.entityDropItem(
-                MaterialLibAPI.getStack(Materials2Materials.Staballoy, Materials2Shapes.ingot, ingots),
+                MaterialLibAPI.getStack(Materials.Staballoy, Materials2Shapes.ingot, ingots),
                 0.0f);
         }
     }

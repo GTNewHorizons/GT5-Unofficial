@@ -8,6 +8,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -17,7 +18,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
@@ -105,7 +105,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, material, 4L))
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
-                            Materials2Materials.Lubricant,
+                            Materials.Lubricant,
                             Materials2FluidShapes.fluidLiquid,
                             (int) (Math.max(
                                 1,
@@ -123,7 +123,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, material, 4L))
                     .fluidInputs(
                         MaterialUtils.fluid(
-                            Materials2Materials.dimensionallyshiftedsuperfluid,
+                            Materials.dimensionallyshiftedsuperfluid,
                             Math.max(
                                 1,
                                 Math.min(

@@ -18,6 +18,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -38,7 +39,6 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.IToolStats;
@@ -289,7 +289,7 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
     }
 
     protected Material getFrameMaterial() {
-        return Materials2Materials.Steel;
+        return Materials.Steel;
     }
 
     protected Casings getRotorCasing() {

@@ -17,6 +17,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -34,7 +35,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -69,7 +69,7 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
     private static final IStructureDefinition<MTEIndustrialChemicalBath> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEIndustrialChemicalBath>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addElement('A', ofFrame(Materials2Materials.WatertightSteel))
+        .addElement('A', ofFrame(Materials.WatertightSteel))
         .addElement('B', Casings.ChemicallyInertMachineCasing.asElement())
         .addElement('C', ofBlock(GregTechAPI.sBlockMetal2, 7))
         .addElement('D', ofBlock(GregTechAPI.sBlockMetal8, 6))

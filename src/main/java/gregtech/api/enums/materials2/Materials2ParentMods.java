@@ -24,10 +24,10 @@ public class Materials2ParentMods {
 
     private static Map<Material, Mods> table() {
         if (table == null) {
-            if (Materials2Materials.HSLA == null) {
+            if (Materials.HSLA == null) {
                 throw new IllegalStateException("Parent-mod table consulted before Materials2.init");
             }
-            table = Map.of(Materials2Materials.HSLA, Mods.RotaryCraft);
+            table = Map.of(Materials.HSLA, Mods.RotaryCraft);
         }
         return table;
     }

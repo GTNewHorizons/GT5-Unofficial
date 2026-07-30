@@ -5,6 +5,7 @@ import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import java.util.List;
 import java.util.Set;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -14,7 +15,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2GtppComposites;
 import gregtech.api.enums.materials2.Materials2GtppComposites.Component;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.MaterialUtils;
@@ -37,17 +37,17 @@ public class ProcessingMixerGtpp implements IOreRecipeRegistrator {
     /// [Materials2GtppComposites]'s class javadoc for the construction paths that determined this set.
     // spotless:off
     private static final Set<Material> ELIGIBLE = Set.of(
-        Materials2Materials.Arcanite, Materials2Materials.BabbitAlloy, Materials2Materials.BlackMetal,
-        Materials2Materials.BloodSteel, Materials2Materials.Botmium, Materials2Materials.EglinSteel,
-        Materials2Materials.EglinSteelBaseCompound, Materials2Materials.EnergyCrystal, Materials2Materials.Incoloy020,
-        Materials2Materials.IncoloyDS, Materials2Materials.IncoloyMA956, Materials2Materials.Inconel690,
-        Materials2Materials.Inconel792, Materials2Materials.NiobiumCarbide, Materials2Materials.Nitinol60,
-        Materials2Materials.Potin, Materials2Materials.SiliconCarbide, Materials2Materials.Staballoy,
-        Materials2Materials.Stellite, Materials2Materials.Talonite, Materials2Materials.Tantalloy60,
-        Materials2Materials.Tantalloy61, Materials2Materials.TantalumCarbide, Materials2Materials.Titansteel,
-        Materials2Materials.TriniumNaquadahAlloy, Materials2Materials.TriniumNaquadahCarbonite,
-        Materials2Materials.TriniumTitaniumAlloy, Materials2Materials.Tumbaga, Materials2Materials.TungstenTitaniumCarbide,
-        Materials2Materials.WoodsGlass, Materials2Materials.ZirconiumCarbide);
+        Materials.Arcanite, Materials.BabbitAlloy, Materials.BlackMetal,
+        Materials.BloodSteel, Materials.Botmium, Materials.EglinSteel,
+        Materials.EglinSteelBaseCompound, Materials.EnergyCrystal, Materials.Incoloy020,
+        Materials.IncoloyDS, Materials.IncoloyMA956, Materials.Inconel690,
+        Materials.Inconel792, Materials.NiobiumCarbide, Materials.Nitinol60,
+        Materials.Potin, Materials.SiliconCarbide, Materials.Staballoy,
+        Materials.Stellite, Materials.Talonite, Materials.Tantalloy60,
+        Materials.Tantalloy61, Materials.TantalumCarbide, Materials.Titansteel,
+        Materials.TriniumNaquadahAlloy, Materials.TriniumNaquadahCarbonite,
+        Materials.TriniumTitaniumAlloy, Materials.Tumbaga, Materials.TungstenTitaniumCarbide,
+        Materials.WoodsGlass, Materials.ZirconiumCarbide);
     // spotless:on
 
     public static boolean isEligible(Material material) {
@@ -87,7 +87,7 @@ public class ProcessingMixerGtpp implements IOreRecipeRegistrator {
     /// `RecipeGenDustGeneration#addMixerRecipe_Standalone` instead of the ordinary `generateRecipes` mixer
     /// block: a flat circuit 20 below 4 inputs, rather than a circuit keyed 11/12/13 by input count.
     private static int circuitFor(Material material, int inputCount) {
-        if (material == Materials2Materials.EglinSteelBaseCompound) return inputCount <= 3 ? 20 : -1;
+        if (material == Materials.EglinSteelBaseCompound) return inputCount <= 3 ? 20 : -1;
         return switch (inputCount) {
             case 1 -> 11;
             case 2 -> 12;

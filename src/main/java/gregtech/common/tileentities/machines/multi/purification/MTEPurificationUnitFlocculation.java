@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -42,7 +43,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -87,12 +87,12 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
     /**
      * Fluid that needs to be supplied to boost success chance
      */
-    private static final Material INPUT_CHEMICAL = Materials2Materials.PolyaluminiumChloride;
+    private static final Material INPUT_CHEMICAL = Materials.PolyaluminiumChloride;
     /**
      * Output fluid to be produced as waste. The intended behaviour is that this output fluid can be cycled
      * semi-perfectly into the input fluid.
      */
-    private static final Material OUTPUT_WASTE = Materials2Materials.FlocculationWasteLiquid;
+    private static final Material OUTPUT_WASTE = Materials.FlocculationWasteLiquid;
 
     /**
      * Total amount of input fluid consumed during this recipe cycle.
@@ -140,7 +140,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings9, 5))
         // Sterile Water Plant Casing
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings9, 4))
-        .addElement('E', ofFrame(Materials2Materials.Adamantium))
+        .addElement('E', ofFrame(Materials.Adamantium))
         .addElement('W', ofChain(ofAnyWater(false), isAir()))
         // Tinted industrial glass
         .addElement('G', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass))

@@ -11,6 +11,7 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,7 +33,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -161,7 +161,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
                 .atLeast(InputBus)
                 .hint(1)
                 .casingIndex(183)
-                .buildAndChain(GTStructureUtility.ofFrame(Materials2Materials.TungstenSteel)))
+                .buildAndChain(GTStructureUtility.ofFrame(Materials.TungstenSteel)))
         .addElement(
             'K',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
@@ -190,7 +190,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
                 .hint(2)
                 .casingIndex(183)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
-        .addElement('n', GTStructureUtility.ofFrame(Materials2Materials.TungstenSteel))
+        .addElement('n', GTStructureUtility.ofFrame(Materials.TungstenSteel))
         .build();
 
     public MTEComponentAssemblyLine(int aID, String aName, String aNameRegional) {

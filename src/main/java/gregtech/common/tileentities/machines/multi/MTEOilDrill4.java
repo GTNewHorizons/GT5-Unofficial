@@ -4,7 +4,7 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
@@ -31,7 +31,7 @@ public class MTEOilDrill4 extends MTEOilDrillBase {
 
     @Override
     protected Material getFrameMaterial() {
-        return Materials2Materials.TungstenSteel;
+        return Materials.TungstenSteel;
     }
 
     @Override

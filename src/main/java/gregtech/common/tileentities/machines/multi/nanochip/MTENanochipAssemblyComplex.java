@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
@@ -46,7 +47,6 @@ import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -110,7 +110,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         .addElement('C', Casings.NanochipReinforcementCasing.asElement())
         // Computational Matrix Casing
         .addElement('J', Casings.NanochipComputationalMatrixCasing.asElement())
-        .addElement('D', ofFrame(Materials2Materials.Naquadah))
+        .addElement('D', ofFrame(Materials.Naquadah))
         // Nanochip Glass
         .addElement('E', Casings.NanochipComplexGlass.asElement())
         // Either a module or an ignored hatch (since this hatch would be on the module)

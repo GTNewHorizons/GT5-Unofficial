@@ -2,12 +2,12 @@ package gregtech.api.enums;
 
 import java.text.MessageFormat;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import com.ruling_0.materiallib.api.Material;
 
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
@@ -45,18 +45,18 @@ public enum NaniteTier {
 
     public Material getMaterial() {
         return switch (this) {
-            case Carbon -> Materials2Materials.Carbon;
-            case Glowstone -> Materials2Materials.Glowstone;
-            case Silver -> Materials2Materials.Silver;
-            case Neutronium -> Materials2Materials.Neutronium;
-            case Gold -> Materials2Materials.Gold;
-            case Transcendent -> Materials2Materials.TranscendentMetal;
-            case WhiteDwarf -> Materials2Materials.WhiteDwarfMatter;
-            case BlackDwarf -> Materials2Materials.BlackDwarfMatter;
-            case SixPhasedCopper -> Materials2Materials.SixPhasedCopper;
-            case Universium -> Materials2Materials.Universium;
-            case MagMatter -> Materials2Materials.Magmatter;
-            case Eternity -> Materials2Materials.Eternity;
+            case Carbon -> Materials.Carbon;
+            case Glowstone -> Materials.Glowstone;
+            case Silver -> Materials.Silver;
+            case Neutronium -> Materials.Neutronium;
+            case Gold -> Materials.Gold;
+            case Transcendent -> Materials.TranscendentMetal;
+            case WhiteDwarf -> Materials.WhiteDwarfMatter;
+            case BlackDwarf -> Materials.BlackDwarfMatter;
+            case SixPhasedCopper -> Materials.SixPhasedCopper;
+            case Universium -> Materials.Universium;
+            case MagMatter -> Materials.Magmatter;
+            case Eternity -> Materials.Eternity;
         };
     }
 
@@ -76,18 +76,18 @@ public enum NaniteTier {
     }
 
     public static NaniteTier fromMaterial(Material mat) {
-        if (mat == Materials2Materials.Carbon) return Carbon;
-        if (mat == Materials2Materials.Glowstone) return Glowstone;
-        if (mat == Materials2Materials.Silver) return Silver;
-        if (mat == Materials2Materials.Neutronium) return Neutronium;
-        if (mat == Materials2Materials.Gold) return Gold;
-        if (mat == Materials2Materials.TranscendentMetal) return Transcendent;
-        if (mat == Materials2Materials.WhiteDwarfMatter) return WhiteDwarf;
-        if (mat == Materials2Materials.BlackDwarfMatter) return BlackDwarf;
-        if (mat == Materials2Materials.SixPhasedCopper) return SixPhasedCopper;
-        if (mat == Materials2Materials.Universium) return Universium;
-        if (mat == Materials2Materials.Magmatter) return MagMatter;
-        if (mat == Materials2Materials.Eternity) return Eternity;
+        if (mat == Materials.Carbon) return Carbon;
+        if (mat == Materials.Glowstone) return Glowstone;
+        if (mat == Materials.Silver) return Silver;
+        if (mat == Materials.Neutronium) return Neutronium;
+        if (mat == Materials.Gold) return Gold;
+        if (mat == Materials.TranscendentMetal) return Transcendent;
+        if (mat == Materials.WhiteDwarfMatter) return WhiteDwarf;
+        if (mat == Materials.BlackDwarfMatter) return BlackDwarf;
+        if (mat == Materials.SixPhasedCopper) return SixPhasedCopper;
+        if (mat == Materials.Universium) return Universium;
+        if (mat == Materials.Magmatter) return MagMatter;
+        if (mat == Materials.Eternity) return Eternity;
 
         return null;
     }

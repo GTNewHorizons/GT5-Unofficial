@@ -11,6 +11,7 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -20,7 +21,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
@@ -62,7 +62,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                         .addTo(GTRecipeConstants.Fuel);
                 }
                 if (MaterialUtils.hasMolten(material)
-                    && !(material == Materials2Materials.AnnealedCopper || material == Materials2Materials.CastIron)) {
+                    && !(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
                     // Fluid solidifier recipes
 
                     GTValues.RA.stdBuilder()

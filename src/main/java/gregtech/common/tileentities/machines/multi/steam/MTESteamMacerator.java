@@ -14,6 +14,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -37,7 +38,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -121,8 +121,8 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
     @Nullable
     public static Integer getTierFrame(Block block, int meta) {
         if (block == MaterialLibAPI.getBlock(Materials2PipeShapes.frameGt)) {
-            if (meta == Materials2Materials.Bronze.getIndex()) return 1;
-            if (meta == Materials2Materials.Steel.getIndex()) return 2;
+            if (meta == Materials.Bronze.getIndex()) return 1;
+            if (meta == Materials.Steel.getIndex()) return 2;
         }
         return null;
     }
@@ -215,10 +215,10 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
                         ImmutableList.of(
                             Pair.of(
                                 MaterialLibAPI.getBlock(Materials2PipeShapes.frameGt),
-                                Materials2Materials.Bronze.getIndex()),
+                                Materials.Bronze.getIndex()),
                             Pair.of(
                                 MaterialLibAPI.getBlock(Materials2PipeShapes.frameGt),
-                                Materials2Materials.Steel.getIndex())),
+                                Materials.Steel.getIndex())),
                         -1,
                         (t, m) -> t.tierFrame = m,
                         t -> t.tierFrame))

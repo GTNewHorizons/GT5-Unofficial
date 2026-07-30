@@ -1,5 +1,6 @@
 package gregtech.loaders.preload;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -11,7 +12,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.Materials2IDIndex;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -54,8 +54,8 @@ public class LoaderMaterialLibCutover implements Runnable {
                     GTOreDictUnificator.registerOre(prefix.oreDictName(material), stack);
                 }
                 if ((prefix == OrePrefixes.stick || prefix == OrePrefixes.wireFine || prefix == OrePrefixes.ingot)
-                    && (material == Materials2Materials.Lead || material == Materials2Materials.Tin
-                        || material == Materials2Materials.SolderingAlloy)) {
+                    && (material == Materials.Lead || material == Materials.Tin
+                        || material == Materials.SolderingAlloy)) {
                     GregTechAPI.sSolderingMetalList.add(stack);
                     GTModHandler.registerBoxableItemToToolBox(stack);
                 }
@@ -95,12 +95,12 @@ public class LoaderMaterialLibCutover implements Runnable {
     private static void registerHighPressureNames() {
         GTOreDictUnificator.registerOre(
             TieredItems.ZPM.getPipeSmallIngredient(),
-            MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2PipeShapes.pipeSmall, 1));
+            MaterialLibAPI.getStack(Materials.Redstone, Materials2PipeShapes.pipeSmall, 1));
         GTOreDictUnificator.registerOre(
             TieredItems.ZPM.getPipeMediumIngredient(),
-            MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2PipeShapes.pipeMedium, 1));
+            MaterialLibAPI.getStack(Materials.Redstone, Materials2PipeShapes.pipeMedium, 1));
         GTOreDictUnificator.registerOre(
             TieredItems.ZPM.getPipeLargeIngredient(),
-            MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2PipeShapes.pipeLarge, 1));
+            MaterialLibAPI.getStack(Materials.Redstone, Materials2PipeShapes.pipeLarge, 1));
     }
 }

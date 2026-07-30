@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -661,7 +662,7 @@ public final class GTOreAdapter implements IOreAdapter {
     /// for a shared rule.
     ///
     /// The `rawOre` lookups are unguarded: [#supportsGtpp] has already established `ore`, and the two shapes
-    /// are declared together throughout [gregtech.api.enums.materials2.Materials2Materials].
+    /// are declared together throughout [Materials].
     private ArrayList<ItemStack> gtppBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo info, int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
 

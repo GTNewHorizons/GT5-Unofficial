@@ -4,6 +4,7 @@ import static kubatech.kubatech.KT;
 
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.material.MaterialRenderers;
 import gregtech.api.material.MaterialUtils;
@@ -137,6 +137,6 @@ public class ElectrodeItem extends Item implements IGT_ItemWithMaterialRenderer 
     public short[] getRGBa(ItemStack aStack) {
         ArcFurnaceElectrode electrode = getElectrodeFromStack(aStack);
         if (electrode != null) return MaterialUtils.rgba(electrode.associatedMaterial);
-        return MaterialUtils.rgba(Materials2Materials.NULL);
+        return MaterialUtils.rgba(Materials.NULL);
     }
 }

@@ -10,8 +10,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTUtility;
 
@@ -21,12 +21,12 @@ public class NeutronActivatorLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.ThoriumBasedLiquidFuelExcitedState,
+                    Materials.ThoriumBasedLiquidFuelExcitedState,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (200)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.ThoriumBasedLiquidFuelDepleted,
+                    Materials.ThoriumBasedLiquidFuelDepleted,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (200)))
             .duration(8 * MINUTES + 20 * SECONDS)
@@ -36,15 +36,15 @@ public class NeutronActivatorLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility
-                    .copyAmount(0, MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.plate, 1)))
+                    .copyAmount(0, MaterialLibAPI.getStack(Materials.Tungsten, Materials2Shapes.plate, 1)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.UraniumBasedLiquidFuel,
+                    Materials.UraniumBasedLiquidFuel,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (100)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.UraniumBasedLiquidFuelExcitedState,
+                    Materials.UraniumBasedLiquidFuelExcitedState,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (100)))
             .duration(4 * SECONDS)
@@ -54,15 +54,15 @@ public class NeutronActivatorLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility
-                    .copyAmount(0, MaterialLibAPI.getStack(Materials2Materials.Tritanium, Materials2Shapes.plate, 1)))
+                    .copyAmount(0, MaterialLibAPI.getStack(Materials.Tritanium, Materials2Shapes.plate, 1)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.PlutoniumBasedLiquidFuel,
+                    Materials.PlutoniumBasedLiquidFuel,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (100)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.PlutoniumBasedLiquidFuelExcitedState,
+                    Materials.PlutoniumBasedLiquidFuelExcitedState,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (100)))
             .duration(4 * SECONDS)
@@ -74,12 +74,12 @@ public class NeutronActivatorLoader {
             .itemInputs(ItemList.Tesseract.get(1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.NaquadahBasedLiquidFuelMkV,
+                    Materials.NaquadahBasedLiquidFuelMkV,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (64)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.NaquadahBasedLiquidFuelMkVDepleted,
+                    Materials.NaquadahBasedLiquidFuelMkVDepleted,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (64)))
             .itemOutputs(ItemList.EnergisedTesseract.get(1))
@@ -92,12 +92,12 @@ public class NeutronActivatorLoader {
             .itemInputs(ItemList.Tesseract.get(1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.NaquadahBasedLiquidFuelMkVI,
+                    Materials.NaquadahBasedLiquidFuelMkVI,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (64)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.NaquadahBasedLiquidFuelMkVIDepleted,
+                    Materials.NaquadahBasedLiquidFuelMkVIDepleted,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (64)))
             .itemOutputs(ItemList.EnergisedTesseract.get(1))

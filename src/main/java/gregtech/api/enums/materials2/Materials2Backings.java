@@ -72,19 +72,19 @@ public class Materials2Backings {
         if (material == null) return Collections.emptyList();
         if (oreReRegistrations == null) {
             Map<Material, List<Material>> m = new HashMap<>();
-            m.put(Materials2Materials.Iron, Collections.singletonList(AnyIron));
-            m.put(Materials2Materials.PigIron, Collections.singletonList(AnyIron));
-            m.put(Materials2Materials.CastIron, Collections.singletonList(AnyIron));
-            m.put(Materials2Materials.Copper, Collections.singletonList(AnyCopper));
-            m.put(Materials2Materials.AnnealedCopper, Collections.singletonList(AnyCopper));
-            m.put(Materials2Materials.Bronze, Collections.singletonList(AnyBronze));
-            m.put(Materials2Materials.Rubber, Collections.singletonList(AnyRubber));
-            m.put(Materials2Materials.StyreneButadieneRubber, Arrays.asList(AnyRubber, AnySyntheticRubber));
-            m.put(Materials2Materials.Silicone, Arrays.asList(AnyRubber, AnySyntheticRubber));
-            m.put(Materials2Materials.Carbon, Collections.singletonList(AnyCarbon));
-            m.put(Materials2Materials.Coal, Collections.singletonList(AnyCarbon));
-            m.put(Materials2Materials.Charcoal, Collections.singletonList(AnyCarbon));
-            m.put(Materials2Materials.Lignite, Collections.singletonList(AnyCarbon));
+            m.put(Materials.Iron, Collections.singletonList(AnyIron));
+            m.put(Materials.PigIron, Collections.singletonList(AnyIron));
+            m.put(Materials.CastIron, Collections.singletonList(AnyIron));
+            m.put(Materials.Copper, Collections.singletonList(AnyCopper));
+            m.put(Materials.AnnealedCopper, Collections.singletonList(AnyCopper));
+            m.put(Materials.Bronze, Collections.singletonList(AnyBronze));
+            m.put(Materials.Rubber, Collections.singletonList(AnyRubber));
+            m.put(Materials.StyreneButadieneRubber, Arrays.asList(AnyRubber, AnySyntheticRubber));
+            m.put(Materials.Silicone, Arrays.asList(AnyRubber, AnySyntheticRubber));
+            m.put(Materials.Carbon, Collections.singletonList(AnyCarbon));
+            m.put(Materials.Coal, Collections.singletonList(AnyCarbon));
+            m.put(Materials.Charcoal, Collections.singletonList(AnyCarbon));
+            m.put(Materials.Lignite, Collections.singletonList(AnyCarbon));
             oreReRegistrations = m;
         }
         return oreReRegistrations.getOrDefault(material, Collections.emptyList());

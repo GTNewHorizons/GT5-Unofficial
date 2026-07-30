@@ -3,12 +3,11 @@ package gregtech.loaders.materials;
 import java.util.HashSet;
 import java.util.Set;
 
+import gregtech.api.enums.materials2.Materials;
 import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
-
-import gregtech.api.enums.materials2.Materials2Materials;
 
 /// The legacy material name domain: the single by-name resolution seam for every consumer that needs to
 /// resolve a legacy material name to its MaterialLib counterpart and treat a miss as a plain null
@@ -36,7 +35,7 @@ public final class LegacyNameDomain {
     }
 
     /// Whether `material` is a gregtech-declared legacy material. Covers every [#lookup]-reachable material
-    /// plus the null sentinel ([Materials2Materials#NULL]): the sentinel is itself a declared material, but
+    /// plus the null sentinel ([Materials#NULL]): the sentinel is itself a declared material, but
     /// stays unreachable by name so a foreign name can never resolve onto it through [#lookup].
     public static boolean contains(@Nullable Material material) {
         if (material == null) return false;
@@ -50,7 +49,7 @@ public final class LegacyNameDomain {
                 Material material = MaterialLibAPI.getMaterial("gregtech", mlName);
                 if (material != null) set.add(material);
             }
-            set.add(Materials2Materials.NULL);
+            set.add(Materials.NULL);
             membership = set;
         }
         return membership;

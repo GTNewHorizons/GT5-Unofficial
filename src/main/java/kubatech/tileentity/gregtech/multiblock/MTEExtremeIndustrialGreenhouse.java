@@ -50,6 +50,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
@@ -84,7 +85,6 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.VoltageIndex;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -141,7 +141,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public static final int EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT = 1000;
     public static final int EIG_BALANCE_WATER_USAGE_PER_SEED = 1000;
 
-    private static final Fluid WEEDEX_FLUID = MaterialUtils.fluidOf(Materials2Materials.WeedEX9000);
+    private static final Fluid WEEDEX_FLUID = MaterialUtils.fluidOf(Materials.WeedEX9000);
     private static final LinkedList<ItemStack> FERTILIZER_ITEM_LIST = new LinkedList<>();
 
     public static void addFertilizerItem(ItemStack fertilizer) {
@@ -290,7 +290,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             'f',
             ofBlock(
                 MaterialLibAPI.getBlock(Materials2PipeShapes.frameGt),
-                Materials2Materials.TungstenSteel.getIndex()))
+                Materials.TungstenSteel.getIndex()))
         .addElement(
             'l',
             ProjectRedIllumination.isModLoaded()

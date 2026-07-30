@@ -54,7 +54,7 @@ import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
@@ -370,9 +370,9 @@ public class Loaders {
             MetaTileEntityIDs.ComponentAssemblyLine.ID,
             "ComponentAssemblyLine",
             "Component Assembly Line").getStackForm(1L);
-        CrackRecipeAdder.registerPipe(Materials2Materials.Incoloy903);
-        CrackRecipeAdder.registerWire(Materials2Materials.Signalium);
-        CrackRecipeAdder.registerWire(Materials2Materials.Lumiium);
+        CrackRecipeAdder.registerPipe(Materials.Incoloy903);
+        CrackRecipeAdder.registerWire(Materials.Signalium);
+        CrackRecipeAdder.registerWire(Materials.Lumiium);
         Loaders.AMForge = new AntimatterForge(
             MetaTileEntityIDs.AntimatterForge.ID,
             "AntimatterForge",

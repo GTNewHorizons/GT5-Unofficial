@@ -7,6 +7,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -17,7 +18,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -33,8 +33,8 @@ public class TFGregtechRecipes {
 
         // Gelid Cryotheum
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ore, Materials2Materials.Cinnabar, 1L))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Cinnabar, Materials2Shapes.dust, (int) (3)))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ore, Materials.Cinnabar, 1L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Cinnabar, Materials2Shapes.dust, (int) (3)))
             .fluidInputs(new FluidStack(TFFluids.fluidCryotheum, 1 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -43,10 +43,10 @@ public class TFGregtechRecipes {
         // Blizz Powder
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.blaze_powder, 4))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Blizz, Materials2Shapes.dust, (int) (4)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Blizz, Materials2Shapes.dust, (int) (4)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.LiquidNitrogen, Materials2FluidShapes.fluidGas, (int) (100)))
+                    .getFluidStack(Materials.LiquidNitrogen, Materials2FluidShapes.fluidGas, (int) (100)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(chemicalBathRecipes);
@@ -54,40 +54,40 @@ public class TFGregtechRecipes {
         // Blizz Rod
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.blaze_rod))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials2Materials.Blizz, 1L))
-            .duration(((int) Math.max((MaterialUtils.mass(Materials2Materials.Blaze)) * 3L, 1L)) * TICKS)
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Blizz, 1L))
+            .duration(((int) Math.max((MaterialUtils.mass(Materials.Blaze)) * 3L, 1L)) * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(vacuumFreezerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Sulfur, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.dust, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.Blaze, 1L))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Pyrotheum, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Coal, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, (int) (1)),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Pyrotheum, Materials2Shapes.dust, (int) (1)))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.Saltpeter, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Snow, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Lapis, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Blizz, Materials2Shapes.dust, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Cryotheum, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Saltpeter, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Snow, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Lapis, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Blizz, Materials2Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Cryotheum, Materials2Shapes.dust, (int) (1)))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.Niter, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Snow, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Lapis, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Blizz, Materials2Shapes.dust, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Cryotheum, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Niter, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Snow, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Lapis, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Blizz, Materials2Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Cryotheum, Materials2Shapes.dust, (int) (1)))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.function.IntFunction;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -27,7 +28,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2IDIndex;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2PipeMaterials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
@@ -524,12 +524,12 @@ public class PosteaTransformers implements Runnable {
         // For players updating from dailies
         ItemStackReplacementManager.addSimpleReplacement(
             "dreamcraft:PotassiumHydroxideDust",
-            MaterialLibAPI.getStack(Materials2Materials.PotassiumHydroxideGT5U, Materials2Shapes.dust, 1),
+            MaterialLibAPI.getStack(Materials.PotassiumHydroxideGT5U, Materials2Shapes.dust, 1),
             true);
         // For players updating directly from 2.8.4 or before
         ItemStackReplacementManager.addSimpleReplacement(
             "dreamcraft:item.PotassiumHydroxideDust",
-            MaterialLibAPI.getStack(Materials2Materials.PotassiumHydroxideGT5U, Materials2Shapes.dust, 1),
+            MaterialLibAPI.getStack(Materials.PotassiumHydroxideGT5U, Materials2Shapes.dust, 1),
             true); // FML Warning suppression in coremod
     }
 

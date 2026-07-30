@@ -25,7 +25,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -72,9 +72,9 @@ public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MT
                     .hint(1)
                     .build(),
                 onElementPass(x -> ++x.casingAmount, Casings.RobustTungstenSteelMachineCasing.asElement())))
-        .addElement('C', ofFrame(Materials2Materials.Gold))
-        .addElement('D', ofFrame(Materials2Materials.TungstenSteel))
-        .addElement('E', ofSheetMetal(Materials2Materials.Gold))
+        .addElement('C', ofFrame(Materials.Gold))
+        .addElement('D', ofFrame(Materials.TungstenSteel))
+        .addElement('E', ofSheetMetal(Materials.Gold))
         .build();
 
     public MTEAdvImplosionCompressor(int aID, String aName, String aNameRegional) {

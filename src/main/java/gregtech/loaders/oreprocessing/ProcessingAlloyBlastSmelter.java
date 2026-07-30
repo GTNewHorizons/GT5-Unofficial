@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -21,7 +22,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.materials2.Materials2GtppComposites;
 import gregtech.api.enums.materials2.Materials2GtppComposites.Component;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
@@ -70,23 +70,23 @@ public class ProcessingAlloyBlastSmelter {
     /// this differs from the mixer's own eligibility over the same table.
     // spotless:off
     private static final Set<Material> COMPOSITE = Set.of(
-        Materials2Materials.AbyssalAlloy, Materials2Materials.AncientGranite, Materials2Materials.Arcanite,
-        Materials2Materials.ArceusAlloy2B, Materials2Materials.BabbitAlloy, Materials2Materials.BlackMetal,
-        Materials2Materials.BlackTitanium, Materials2Materials.CinobiteA243, Materials2Materials.EglinSteel,
-        Materials2Materials.EnergyCrystal, Materials2Materials.Grisium, Materials2Materials.HS188A,
-        Materials2Materials.HastelloyC276, Materials2Materials.HastelloyN, Materials2Materials.HastelloyW,
-        Materials2Materials.HastelloyX, Materials2Materials.HeLiCoPtEr, Materials2Materials.Incoloy020,
-        Materials2Materials.IncoloyDS, Materials2Materials.IncoloyMA956, Materials2Materials.Inconel625,
-        Materials2Materials.Inconel690, Materials2Materials.Inconel792, Materials2Materials.LafiumCompound,
-        Materials2Materials.Laurenium, Materials2Materials.MaragingSteel250, Materials2Materials.MaragingSteel300,
-        Materials2Materials.MaragingSteel350, Materials2Materials.NiobiumCarbide, Materials2Materials.Octiron,
-        Materials2Materials.Pikyonium64B, Materials2Materials.Potin, Materials2Materials.Quantum,
-        Materials2Materials.SiliconCarbide, Materials2Materials.Staballoy, Materials2Materials.Stellite,
-        Materials2Materials.Talonite, Materials2Materials.Tantalloy60, Materials2Materials.Tantalloy61,
-        Materials2Materials.TantalumCarbide, Materials2Materials.Titansteel, Materials2Materials.TriniumNaquadahAlloy,
-        Materials2Materials.TriniumNaquadahCarbonite, Materials2Materials.TriniumTitaniumAlloy, Materials2Materials.Tumbaga,
-        Materials2Materials.TungstenTitaniumCarbide, Materials2Materials.WatertightSteel, Materials2Materials.Zeron100,
-        Materials2Materials.ZirconiumCarbide);
+        Materials.AbyssalAlloy, Materials.AncientGranite, Materials.Arcanite,
+        Materials.ArceusAlloy2B, Materials.BabbitAlloy, Materials.BlackMetal,
+        Materials.BlackTitanium, Materials.CinobiteA243, Materials.EglinSteel,
+        Materials.EnergyCrystal, Materials.Grisium, Materials.HS188A,
+        Materials.HastelloyC276, Materials.HastelloyN, Materials.HastelloyW,
+        Materials.HastelloyX, Materials.HeLiCoPtEr, Materials.Incoloy020,
+        Materials.IncoloyDS, Materials.IncoloyMA956, Materials.Inconel625,
+        Materials.Inconel690, Materials.Inconel792, Materials.LafiumCompound,
+        Materials.Laurenium, Materials.MaragingSteel250, Materials.MaragingSteel300,
+        Materials.MaragingSteel350, Materials.NiobiumCarbide, Materials.Octiron,
+        Materials.Pikyonium64B, Materials.Potin, Materials.Quantum,
+        Materials.SiliconCarbide, Materials.Staballoy, Materials.Stellite,
+        Materials.Talonite, Materials.Tantalloy60, Materials.Tantalloy61,
+        Materials.TantalumCarbide, Materials.Titansteel, Materials.TriniumNaquadahAlloy,
+        Materials.TriniumNaquadahCarbonite, Materials.TriniumTitaniumAlloy, Materials.Tumbaga,
+        Materials.TungstenTitaniumCarbide, Materials.WatertightSteel, Materials.Zeron100,
+        Materials.ZirconiumCarbide);
     // spotless:on
 
     /// Registers [#COMPOSITE]'s recipes. Call once, before [#generateFromExistingBlastFurnaceRecipes] (whose
@@ -112,22 +112,22 @@ public class ProcessingAlloyBlastSmelter {
     /// recipe gets registered -- see [#generateSingleDust]'s runtime gate and [#materialFluid]'s javadoc.
     // spotless:off
     private static final Set<Material> SINGLE_DUST = Set.of(
-        Materials2Materials.AbyssalAlloy, Materials2Materials.AdvancedNitinol, Materials2Materials.Arcanite,
-        Materials2Materials.ArceusAlloy2B, Materials2Materials.AstralTitanium, Materials2Materials.BabbitAlloy,
-        Materials2Materials.BlackTitanium, Materials2Materials.CelestialTungsten, Materials2Materials.CinobiteA243,
-        Materials2Materials.Dragonblood, Materials2Materials.EnergyCrystal, Materials2Materials.Grisium,
-        Materials2Materials.HS188A, Materials2Materials.HastelloyC276, Materials2Materials.HastelloyN,
-        Materials2Materials.HastelloyW, Materials2Materials.HastelloyX, Materials2Materials.HeLiCoPtEr,
-        Materials2Materials.Hypogen, Materials2Materials.Incoloy020, Materials2Materials.IncoloyDS,
-        Materials2Materials.IncoloyMA956, Materials2Materials.Inconel625, Materials2Materials.Inconel690,
-        Materials2Materials.Inconel792, Materials2Materials.LafiumCompound, Materials2Materials.Laurenium,
-        Materials2Materials.MaragingSteel250, Materials2Materials.MaragingSteel300, Materials2Materials.MaragingSteel350,
-        Materials2Materials.NiobiumCarbide, Materials2Materials.Octiron, Materials2Materials.Pikyonium64B,
-        Materials2Materials.Quantum, Materials2Materials.Runite, Materials2Materials.Staballoy,
-        Materials2Materials.Stellite, Materials2Materials.Talonite, Materials2Materials.Tantalloy60,
-        Materials2Materials.Tantalloy61, Materials2Materials.TantalumCarbide, Materials2Materials.Titansteel,
-        Materials2Materials.TriniumNaquadahCarbonite, Materials2Materials.TriniumTitaniumAlloy,
-        Materials2Materials.TungstenTitaniumCarbide, Materials2Materials.WatertightSteel, Materials2Materials.Zeron100);
+        Materials.AbyssalAlloy, Materials.AdvancedNitinol, Materials.Arcanite,
+        Materials.ArceusAlloy2B, Materials.AstralTitanium, Materials.BabbitAlloy,
+        Materials.BlackTitanium, Materials.CelestialTungsten, Materials.CinobiteA243,
+        Materials.Dragonblood, Materials.EnergyCrystal, Materials.Grisium,
+        Materials.HS188A, Materials.HastelloyC276, Materials.HastelloyN,
+        Materials.HastelloyW, Materials.HastelloyX, Materials.HeLiCoPtEr,
+        Materials.Hypogen, Materials.Incoloy020, Materials.IncoloyDS,
+        Materials.IncoloyMA956, Materials.Inconel625, Materials.Inconel690,
+        Materials.Inconel792, Materials.LafiumCompound, Materials.Laurenium,
+        Materials.MaragingSteel250, Materials.MaragingSteel300, Materials.MaragingSteel350,
+        Materials.NiobiumCarbide, Materials.Octiron, Materials.Pikyonium64B,
+        Materials.Quantum, Materials.Runite, Materials.Staballoy,
+        Materials.Stellite, Materials.Talonite, Materials.Tantalloy60,
+        Materials.Tantalloy61, Materials.TantalumCarbide, Materials.Titansteel,
+        Materials.TriniumNaquadahCarbonite, Materials.TriniumTitaniumAlloy,
+        Materials.TungstenTitaniumCarbide, Materials.WatertightSteel, Materials.Zeron100);
     // spotless:on
 
     /// Registers [#SINGLE_DUST]'s recipes, each gated at runtime on `BLAST_REQUIRED` and on [#materialFluid]

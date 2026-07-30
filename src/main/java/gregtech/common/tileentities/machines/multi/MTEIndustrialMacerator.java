@@ -42,7 +42,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -181,7 +181,7 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
                 .addElement('A', Casings.SteelGearBoxCasing.asElement())
                 .addElement('B', Casings.GrateMachineCasing.asElement())
                 .addElement('E', chainAllGlasses())
-                .addElement('D', ofFrame(Materials2Materials.HSSG))
+                .addElement('D', ofFrame(Materials.HSSG))
                 .build();
         }
         return STRUCTURE_DEFINITION;

@@ -9,13 +9,13 @@ import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -48,9 +48,9 @@ public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTr
         // Nanochip Reinforcement Casing
         .addElement('B', Casings.NanochipReinforcementCasing.asElement())
         // Superconductor UEV Base Sheetmetal
-        .addElement('C', ofSheetMetal(Materials2Materials.SuperconductorUEVBase))
+        .addElement('C', ofSheetMetal(Materials.SuperconductorUEVBase))
         // Superconductor UHV Base Framebox
-        .addElement('D', ofFrame(Materials2Materials.Longasssuperconductornameforuhvwire))
+        .addElement('D', ofFrame(Materials.Longasssuperconductornameforuhvwire))
         // Nanochip Glass
         .addElement('E', Casings.NanochipComplexGlass.asElement())
         .build();
@@ -121,7 +121,7 @@ public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTr
             // Superconductor Base UEV Sheetmetal
             .addCasing(
                 "1",
-                OrePrefixes.sheetmetal.getDefaultLocalNameForItem(Materials2Materials.SuperconductorUEVBase),
+                OrePrefixes.sheetmetal.getDefaultLocalNameForItem(Materials.SuperconductorUEVBase),
                 false)
             .addMiscHatch(
                 "0+",

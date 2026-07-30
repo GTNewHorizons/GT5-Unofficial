@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -29,7 +30,6 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -75,7 +75,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         // Nanochip Reinforcement Casing
         .addElement('B', Casings.NanochipReinforcementCasing.asElement())
         // Kevlar FrameBox
-        .addElement('C', ofFrame(Materials2Materials.Kevlar))
+        .addElement('C', ofFrame(Materials.Kevlar))
         .build();
 
     @Override

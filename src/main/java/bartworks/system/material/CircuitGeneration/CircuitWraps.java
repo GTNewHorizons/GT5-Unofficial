@@ -7,13 +7,13 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.HashMap;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import bartworks.MainMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
@@ -139,7 +139,7 @@ public enum CircuitWraps {
         GTValues.RA.stdBuilder()
             .itemInputs(itemSingle.get(16), GTUtility.getIntegratedCircuit(16))
             .itemOutputs(getCircuitParts().getStack(id))
-            .fluidInputs(MaterialUtils.molten(Materials2Materials.Plastic, 1 * HALF_INGOTS))
+            .fluidInputs(MaterialUtils.molten(Materials.Plastic, 1 * HALF_INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);

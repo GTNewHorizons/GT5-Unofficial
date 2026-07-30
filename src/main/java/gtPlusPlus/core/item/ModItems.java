@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.NotEnoughItems;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -16,7 +17,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -306,44 +306,44 @@ public final class ModItems {
 
         // Milled Ore Processing
         GregtechItemList.MilledSphalerite
-            .set(BaseItemMilledOre.generate(Materials2Materials.Sphalerite, TierEU.RECIPE_LuV));
+            .set(BaseItemMilledOre.generate(Materials.Sphalerite, TierEU.RECIPE_LuV));
         GregtechItemList.MilledChalcopyrite
-            .set(BaseItemMilledOre.generate(Materials2Materials.Chalcopyrite, TierEU.RECIPE_IV));
-        GregtechItemList.MilledNickel.set(BaseItemMilledOre.generate(Materials2Materials.Nickel, TierEU.RECIPE_IV));
+            .set(BaseItemMilledOre.generate(Materials.Chalcopyrite, TierEU.RECIPE_IV));
+        GregtechItemList.MilledNickel.set(BaseItemMilledOre.generate(Materials.Nickel, TierEU.RECIPE_IV));
         GregtechItemList.MilledPlatinum
-            .set(BaseItemMilledOre.generate(Materials2Materials.Platinum, TierEU.RECIPE_LuV));
+            .set(BaseItemMilledOre.generate(Materials.Platinum, TierEU.RECIPE_LuV));
         GregtechItemList.MilledPentlandite
-            .set(BaseItemMilledOre.generate(Materials2Materials.Pentlandite, TierEU.RECIPE_LuV));
-        GregtechItemList.MilledRedstone.set(BaseItemMilledOre.generate(Materials2Materials.Redstone, TierEU.RECIPE_IV));
+            .set(BaseItemMilledOre.generate(Materials.Pentlandite, TierEU.RECIPE_LuV));
+        GregtechItemList.MilledRedstone.set(BaseItemMilledOre.generate(Materials.Redstone, TierEU.RECIPE_IV));
         GregtechItemList.MilledSpessartine
-            .set(BaseItemMilledOre.generate(Materials2Materials.Spessartine, TierEU.RECIPE_LuV));
+            .set(BaseItemMilledOre.generate(Materials.Spessartine, TierEU.RECIPE_LuV));
         GregtechItemList.MilledGrossular
-            .set(BaseItemMilledOre.generate(Materials2Materials.Grossular, TierEU.RECIPE_LuV));
+            .set(BaseItemMilledOre.generate(Materials.Grossular, TierEU.RECIPE_LuV));
         GregtechItemList.MilledAlmandine
-            .set(BaseItemMilledOre.generate(Materials2Materials.Almandine, TierEU.RECIPE_LuV));
-        GregtechItemList.MilledPyrope.set(BaseItemMilledOre.generate(Materials2Materials.Pyrope, TierEU.RECIPE_EV));
+            .set(BaseItemMilledOre.generate(Materials.Almandine, TierEU.RECIPE_LuV));
+        GregtechItemList.MilledPyrope.set(BaseItemMilledOre.generate(Materials.Pyrope, TierEU.RECIPE_EV));
         GregtechItemList.MilledMonazite
-            .set(BaseItemMilledOre.generate(Materials2Materials.Monazite, TierEU.RECIPE_ZPM));
+            .set(BaseItemMilledOre.generate(Materials.Monazite, TierEU.RECIPE_ZPM));
         GregtechItemList.MilledNetherite.set(
             BaseItemMilledOre
-                .generate(Materials2Materials.Netherrack, TierEU.RECIPE_IV, new ItemStack(Blocks.netherrack, 256)));
+                .generate(Materials.Netherrack, TierEU.RECIPE_IV, new ItemStack(Blocks.netherrack, 256)));
 
         // These items stay registered for save/item-ID stability (BaseOreComponent's oredict skip already
         // defers the milled<Material> oredict name to MaterialLib once cut over), so only their NEI visibility
         // needs to follow the cutover.
         if (NotEnoughItems.isModLoaded()) {
-            hideMilledIfCutOver(Materials2Materials.Sphalerite, GregtechItemList.MilledSphalerite);
-            hideMilledIfCutOver(Materials2Materials.Chalcopyrite, GregtechItemList.MilledChalcopyrite);
-            hideMilledIfCutOver(Materials2Materials.Nickel, GregtechItemList.MilledNickel);
-            hideMilledIfCutOver(Materials2Materials.Platinum, GregtechItemList.MilledPlatinum);
-            hideMilledIfCutOver(Materials2Materials.Pentlandite, GregtechItemList.MilledPentlandite);
-            hideMilledIfCutOver(Materials2Materials.Redstone, GregtechItemList.MilledRedstone);
-            hideMilledIfCutOver(Materials2Materials.Spessartine, GregtechItemList.MilledSpessartine);
-            hideMilledIfCutOver(Materials2Materials.Grossular, GregtechItemList.MilledGrossular);
-            hideMilledIfCutOver(Materials2Materials.Almandine, GregtechItemList.MilledAlmandine);
-            hideMilledIfCutOver(Materials2Materials.Pyrope, GregtechItemList.MilledPyrope);
-            hideMilledIfCutOver(Materials2Materials.Monazite, GregtechItemList.MilledMonazite);
-            hideMilledIfCutOver(Materials2Materials.Netherrack, GregtechItemList.MilledNetherite);
+            hideMilledIfCutOver(Materials.Sphalerite, GregtechItemList.MilledSphalerite);
+            hideMilledIfCutOver(Materials.Chalcopyrite, GregtechItemList.MilledChalcopyrite);
+            hideMilledIfCutOver(Materials.Nickel, GregtechItemList.MilledNickel);
+            hideMilledIfCutOver(Materials.Platinum, GregtechItemList.MilledPlatinum);
+            hideMilledIfCutOver(Materials.Pentlandite, GregtechItemList.MilledPentlandite);
+            hideMilledIfCutOver(Materials.Redstone, GregtechItemList.MilledRedstone);
+            hideMilledIfCutOver(Materials.Spessartine, GregtechItemList.MilledSpessartine);
+            hideMilledIfCutOver(Materials.Grossular, GregtechItemList.MilledGrossular);
+            hideMilledIfCutOver(Materials.Almandine, GregtechItemList.MilledAlmandine);
+            hideMilledIfCutOver(Materials.Pyrope, GregtechItemList.MilledPyrope);
+            hideMilledIfCutOver(Materials.Monazite, GregtechItemList.MilledMonazite);
+            hideMilledIfCutOver(Materials.Netherrack, GregtechItemList.MilledNetherite);
         }
 
         // Baubles
@@ -522,7 +522,7 @@ public final class ModItems {
                 50000,
                 new String[] { StringUtils.superscript("238Np"),
                     "Result: Plutonium 238 (" + StringUtils.superscript("238Pu") + ")" },
-                MaterialLibAPI.getStack(Materials2Materials.Plutonium238, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Plutonium238, Materials2Shapes.dust, 1),
                 5,
                 GTRecipeConstants.DecayType.BetaMinus));
 
@@ -533,7 +533,7 @@ public final class ModItems {
                 25000,
                 new String[] { StringUtils.superscript("238Np"),
                     "Result: Plutonium 239 (" + StringUtils.superscript("239Pu") + ")" },
-                MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Plutonium, Materials2Shapes.dust, (int) (1)),
                 5,
                 GTRecipeConstants.DecayType.BetaMinus));
 
@@ -542,12 +542,12 @@ public final class ModItems {
                 "DecayedRadium226",
                 "Decayed Radium-226",
                 "Contains Radon (" + StringUtils.superscript("222Rn") + ")",
-                MathUtils.getRgbAsHex(MaterialUtils.rgba(Materials2Materials.Radium)))[0]);
+                MathUtils.getRgbAsHex(MaterialUtils.rgba(Materials.Radium)))[0]);
 
         GregtechItemList.Radium226Dust.set(
             new DustDecayable(
                 "dustRadium226",
-                MathUtils.getRgbAsHex(MaterialUtils.rgba(Materials2Materials.Radium)),
+                MathUtils.getRgbAsHex(MaterialUtils.rgba(Materials.Radium)),
                 90000,
                 new String[] { StringUtils.superscript("226Ra"),
                     "Result: Radon (" + StringUtils.superscript("222Rn") + ")" },
@@ -558,11 +558,11 @@ public final class ModItems {
         GregtechItemList.Protactinium233Dust.set(
             new DustDecayable(
                 "dustProtactinium233",
-                MathUtils.getRgbAsHex(MaterialUtils.rgba(Materials2Materials.Protactinium)),
+                MathUtils.getRgbAsHex(MaterialUtils.rgba(Materials.Protactinium)),
                 32000,
                 new String[] { StringUtils.superscript("233Pa"),
                     "Result: Uranium 233 (" + StringUtils.superscript("233U") + ")" },
-                MaterialLibAPI.getStack(Materials2Materials.Uranium233, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Uranium233, Materials2Shapes.dust, 1),
                 6,
                 GTRecipeConstants.DecayType.BetaMinus));
     }

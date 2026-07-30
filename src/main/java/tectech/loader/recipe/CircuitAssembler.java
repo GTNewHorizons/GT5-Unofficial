@@ -9,7 +9,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import tectech.thing.CustomItemList;
@@ -20,9 +20,9 @@ public class CircuitAssembler implements Runnable {
     public void run() {
         // Parametrizer Memory Card
         GTValues.RA.stdBuilder()
-            .itemInputs(Circuits.LV.get(2), MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.foil, 4))
+            .itemInputs(Circuits.LV.get(2), MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.foil, 4))
             .itemOutputs(CustomItemList.parametrizerMemory.get(1))
-            .fluidInputs(MaterialUtils.molten(Materials2Materials.Plastic, 1 * HALF_INGOTS))
+            .fluidInputs(MaterialUtils.molten(Materials.Plastic, 1 * HALF_INGOTS))
             .requiresCleanRoom()
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)

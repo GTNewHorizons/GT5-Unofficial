@@ -2,6 +2,7 @@ package gtPlusPlus.core.handler.events;
 
 import java.util.ArrayList;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -16,7 +17,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ReflectionUtil;
@@ -37,7 +37,7 @@ public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
             for (int y = 0; y < MathUtils.randInt(100, 250); y++) {
                 int aAmount = MathUtils.randInt(5, 25);
                 event.entityLiving.entityDropItem(
-                    MaterialLibAPI.getStack(Materials2Materials.Dragonblood, Materials2Shapes.nugget, aAmount),
+                    MaterialLibAPI.getStack(Materials.Dragonblood, Materials2Shapes.nugget, aAmount),
                     MathUtils.randFloat(0, 1));
                 aCountTotal = aAmount;
             }
@@ -45,7 +45,7 @@ public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
             for (int y = 0; y < MathUtils.randInt(100, 200); y++) {
                 int aAmount = MathUtils.randInt(1, 5);
                 event.entityLiving.entityDropItem(
-                    MaterialLibAPI.getStack(Materials2Materials.Dragonblood, Materials2Shapes.ingot, aAmount),
+                    MaterialLibAPI.getStack(Materials.Dragonblood, Materials2Shapes.ingot, aAmount),
                     MathUtils.randFloat(0, 1));
                 aCountTotal = aAmount;
             }
@@ -53,7 +53,7 @@ public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
             for (int y = 0; y < MathUtils.randInt(25, 50); y++) {
                 int aAmount = MathUtils.randInt(1, 10);
                 event.entityLiving.entityDropItem(
-                    MaterialLibAPI.getStack(Materials2Materials.Dragonblood, Materials2Shapes.nugget, aAmount),
+                    MaterialLibAPI.getStack(Materials.Dragonblood, Materials2Shapes.nugget, aAmount),
                     MathUtils.randFloat(0, 1));
                 aCountTotal = aAmount;
             }
@@ -76,7 +76,7 @@ public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
         @NotNull MobRecipe recipe) {
         if (mHardcoreDragonClass != null && mHardcoreDragonClass.isInstance(recipe.entity)) {
             MobDrop drop = new MobDrop(
-                MaterialLibAPI.getStack(Materials2Materials.Dragonblood, Materials2Shapes.nugget, 1),
+                MaterialLibAPI.getStack(Materials.Dragonblood, Materials2Shapes.nugget, 1),
                 MobDrop.DropType.Normal,
                 (int) (MobDrop.getChanceBasedOnFromTo(100, 250) * MobDrop.getChanceBasedOnFromTo(5, 25) * 10000d),
                 null,
@@ -89,7 +89,7 @@ public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
             drops.add(drop);
         } else if (mChaoseDragonClass != null && mChaoseDragonClass.isInstance(recipe.entity)) {
             MobDrop drop = new MobDrop(
-                MaterialLibAPI.getStack(Materials2Materials.Dragonblood, Materials2Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Dragonblood, Materials2Shapes.ingot, 1),
                 MobDrop.DropType.Normal,
                 (int) (MobDrop.getChanceBasedOnFromTo(100, 200) * MobDrop.getChanceBasedOnFromTo(1, 5) * 10000d),
                 null,
@@ -102,7 +102,7 @@ public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
             drops.add(drop);
         } else if (recipe.entity instanceof EntityDragon) {
             MobDrop drop = new MobDrop(
-                MaterialLibAPI.getStack(Materials2Materials.Dragonblood, Materials2Shapes.nugget, 1),
+                MaterialLibAPI.getStack(Materials.Dragonblood, Materials2Shapes.nugget, 1),
                 MobDrop.DropType.Normal,
                 (int) (MobDrop.getChanceBasedOnFromTo(25, 50) * MobDrop.getChanceBasedOnFromTo(1, 10) * 10000d),
                 null,

@@ -8,12 +8,12 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -46,7 +46,7 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
         // Nanochip Reinforcement Casing
         .addElement('B', Casings.NanochipReinforcementCasing.asElement())
         // Quantium Frame Box
-        .addElement('C', ofFrame(Materials2Materials.Quantium))
+        .addElement('C', ofFrame(Materials.Quantium))
         // Nanochip Glass
         .addElement('D', Casings.NanochipComplexGlass.asElement())
         .build();

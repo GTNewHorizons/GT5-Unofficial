@@ -8,6 +8,7 @@ import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -18,7 +19,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -206,9 +206,9 @@ public class RecipeLoaderAgriculturalChem {
             .fluidOutputs(
                 new FluidStack(GTPPFluids.Butanol, 18_000),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Acetone, Materials2FluidShapes.fluidLiquid, (int) (9_000)),
+                    .getFluidStack(Materials.Acetone, Materials2FluidShapes.fluidLiquid, (int) (9_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Ethanol, Materials2FluidShapes.fluidLiquid, (int) (3_000)))
+                    .getFluidStack(Materials.Ethanol, Materials2FluidShapes.fluidLiquid, (int) (3_000)))
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .metadata(CHEMPLANT_CASING_TIER, 1)
@@ -220,12 +220,12 @@ public class RecipeLoaderAgriculturalChem {
         GTValues.RA.stdBuilder()
             .circuit(10)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.dustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.dustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.dustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Sulfur, Materials2Shapes.dustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.dustTiny, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.dustTiny, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Nickel, Materials2Shapes.dustTiny, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Lead, Materials2Shapes.dustTiny, (int) (1)))
             .outputChances(3000, 3000, 2000, 2000, 1000, 1000)
             .fluidInputs(new FluidStack(GTPPFluids.RedMud, 1_000))
             .fluidOutputs(GTUtility.getWater(500))

@@ -11,6 +11,7 @@ import java.util.Objects;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,7 +25,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.material.MaterialUtils;
@@ -235,7 +235,7 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
 
         // We'll just steal the icons from Water. They are all the same anyway (except _NULL is broken for cells).
         for (CellType cellType : CellType.values()) {
-            IIconContainer iconContainer = MaterialUtils.iconSet(Materials2Materials.Water).mTextures[cellType.prefix
+            IIconContainer iconContainer = MaterialUtils.iconSet(Materials.Water).mTextures[cellType.prefix
                 .getTextureIndex()];
             INSTANCE.iconContainerMap.put(cellType, iconContainer);
         }
@@ -303,7 +303,7 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
     }
 
     private void registerOreDict() {
-        // The GregTech ore dictionary requires an entry in Materials2Materials, and since the whole
+        // The GregTech ore dictionary requires an entry in Materials, and since the whole
         // point of this class is to add cell items for non-GregTech fluids, the vast majority of
         // cell items won't have an associated material. So only a rare few cell items will need to
         // be registered.
@@ -311,15 +311,15 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
         // Register IC2 steam cell and Railcraft steam cell as synonyms.
         // There is no steam material, so we'll use Water.cellMolten instead.
         GTOreDictUnificator
-            .add(OrePrefixes.cellMolten, Materials2Materials.Water, GTModHandler.getIC2Item("steamCell", 1L));
-        GTOreDictUnificator.add(OrePrefixes.cellMolten, Materials2Materials.Water, FluidCell.STEAM.getNoCopy());
+            .add(OrePrefixes.cellMolten, Materials.Water, GTModHandler.getIC2Item("steamCell", 1L));
+        GTOreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, FluidCell.STEAM.getNoCopy());
     }
 
     @Override
     public short[] getRGBa(ItemStack aStack) {
         RegisteredFluidData fluidData = registeredFluidDataMap.get(aStack.getItemDamage());
         if (fluidData == null) {
-            return MaterialUtils.rgba(Materials2Materials.NULL);
+            return MaterialUtils.rgba(Materials.NULL);
         }
 
         return fluidData.rgba;

@@ -15,18 +15,18 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.recipe.RecipeMaps;
 
 public class SemiFluidFuelHandler {
 
     public static boolean generateFuels() {
         final FluidStack aCreosote = MaterialLibAPI
-            .getFluidStack(Materials2Materials.Creosote, Materials2FluidShapes.fluidLiquid, (int) (1_000));
+            .getFluidStack(Materials.Creosote, Materials2FluidShapes.fluidLiquid, (int) (1_000));
         final FluidStack aHeavyFuel = MaterialLibAPI
-            .getFluidStack(Materials2Materials.HeavyFuel, Materials2FluidShapes.fluidLiquid, (int) (1_000));
+            .getFluidStack(Materials.HeavyFuel, Materials2FluidShapes.fluidLiquid, (int) (1_000));
         final FluidStack aHeavyOil = MaterialLibAPI
-            .getFluidStack(Materials2Materials.OilHeavy, Materials2FluidShapes.fluidLiquid, (int) (1_000));
+            .getFluidStack(Materials.OilHeavy, Materials2FluidShapes.fluidLiquid, (int) (1_000));
         final HashMap<Integer, Pair<FluidStack, Integer>> aFoundFluidsFromItems = new HashMap<>();
         // Find Fluids From items
         for (final GTRecipe r : RecipeMaps.denseLiquidFuels.getAllRecipes()) {

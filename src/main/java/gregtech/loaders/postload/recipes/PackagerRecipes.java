@@ -9,7 +9,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 
 public class PackagerRecipes implements Runnable {
@@ -19,7 +19,7 @@ public class PackagerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Tool_Matches.get(16L),
-                MaterialLibAPI.getStack(Materials2Materials.Paper, Materials2Shapes.plateDouble, (int) (1L)))
+                MaterialLibAPI.getStack(Materials.Paper, Materials2Shapes.plateDouble, (int) (1L)))
             .itemOutputs(ItemList.Tool_MatchBox_Full.get(1L))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
@@ -35,7 +35,7 @@ public class PackagerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Food_Fries.get(1),
-                MaterialLibAPI.getStack(Materials2Materials.Paper, Materials2Shapes.plateDouble, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Paper, Materials2Shapes.plateDouble, (int) (1)))
             .itemOutputs(ItemList.Food_Packaged_Fries.get(1))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
@@ -44,7 +44,7 @@ public class PackagerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Food_PotatoChips.get(1),
-                MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.foil, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.foil, (int) (1)))
             .itemOutputs(ItemList.Food_Packaged_PotatoChips.get(1))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
@@ -53,7 +53,7 @@ public class PackagerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Food_ChiliChips.get(1),
-                MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.foil, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.foil, (int) (1)))
             .itemOutputs(ItemList.Food_Packaged_ChiliChips.get(1))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)

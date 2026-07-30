@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -29,7 +30,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialRefStack;
@@ -53,7 +53,7 @@ import gregtech.api.util.GTUtility;
 /// different byproducts. [#gtppState] serves the narrower cell-vs-dust split in [#registerDecomposition]
 /// (`SOLID`/`ORE` parts decompose to dust, everything else to a cell).
 ///
-/// The shaped-crafting and [Materials2Materials#FluoriteF] chemical-bath recipes carry no byproduct and live
+/// The shaped-crafting and [Materials#FluoriteF] chemical-bath recipes carry no byproduct and live
 /// in [ProcessingOreCrafting].
 ///
 /// [#run] is called from `CompatHandler#startLoadingGregAPIBasedRecipes` -- see [ProcessingDustGeneration]'s
@@ -68,32 +68,32 @@ public class ProcessingOreMachine {
     /// [ProcessingOreCrafting#ELIGIBLE] declares for its own, disableOptional-independent, crafting recipes.
     // spotless:off
     private static final Set<Material> ELIGIBLE_STANDARD = Set.of(
-        Materials2Materials.Crocoite, Materials2Materials.Geikielite, Materials2Materials.Nichromite,
-        Materials2Materials.Titanite, Materials2Materials.Zimbabweite, Materials2Materials.Zirconolite,
-        Materials2Materials.GadoliniteCe, Materials2Materials.GadoliniteY, Materials2Materials.Lepersonnite,
-        Materials2Materials.SamarskiteY, Materials2Materials.SamarskiteYb, Materials2Materials.Xenotime,
-        Materials2Materials.Yttriaite, Materials2Materials.Yttrialite, Materials2Materials.Yttrocerite,
-        Materials2Materials.Zircon, Materials2Materials.Polycrase, Materials2Materials.Zircophyllite,
-        Materials2Materials.Zirkelite, Materials2Materials.LanthaniteLa, Materials2Materials.LanthaniteCe,
-        Materials2Materials.LanthaniteNd, Materials2Materials.AgarditeY, Materials2Materials.AgarditeCd,
-        Materials2Materials.AgarditeLa, Materials2Materials.AgarditeNd, Materials2Materials.Hibonite,
-        Materials2Materials.Cerite, Materials2Materials.Fluorcaphite, Materials2Materials.Florencite,
-        Materials2Materials.CryoliteF, Materials2Materials.Lautarite, Materials2Materials.Lafossaite,
-        Materials2Materials.DemicheleiteBr, Materials2Materials.Comancheite, Materials2Materials.Perroudite,
-        Materials2Materials.Honeaite, Materials2Materials.Alburnite, Materials2Materials.Miessiite,
-        Materials2Materials.Kashinite, Materials2Materials.Irarsite, Materials2Materials.Greenockite,
-        Materials2Materials.BariteRa, Materials2Materials.RadioactiveMineralMix, Materials2Materials.RareEarthI,
-        Materials2Materials.RareEarthII, Materials2Materials.RareEarthIII, Materials2Materials.FluoriteF,
-        Materials2Materials.Koboldite);
+        Materials.Crocoite, Materials.Geikielite, Materials.Nichromite,
+        Materials.Titanite, Materials.Zimbabweite, Materials.Zirconolite,
+        Materials.GadoliniteCe, Materials.GadoliniteY, Materials.Lepersonnite,
+        Materials.SamarskiteY, Materials.SamarskiteYb, Materials.Xenotime,
+        Materials.Yttriaite, Materials.Yttrialite, Materials.Yttrocerite,
+        Materials.Zircon, Materials.Polycrase, Materials.Zircophyllite,
+        Materials.Zirkelite, Materials.LanthaniteLa, Materials.LanthaniteCe,
+        Materials.LanthaniteNd, Materials.AgarditeY, Materials.AgarditeCd,
+        Materials.AgarditeLa, Materials.AgarditeNd, Materials.Hibonite,
+        Materials.Cerite, Materials.Fluorcaphite, Materials.Florencite,
+        Materials.CryoliteF, Materials.Lautarite, Materials.Lafossaite,
+        Materials.DemicheleiteBr, Materials.Comancheite, Materials.Perroudite,
+        Materials.Honeaite, Materials.Alburnite, Materials.Miessiite,
+        Materials.Kashinite, Materials.Irarsite, Materials.Greenockite,
+        Materials.BariteRa, Materials.RadioactiveMineralMix, Materials.RareEarthI,
+        Materials.RareEarthII, Materials.RareEarthIII, Materials.FluoriteF,
+        Materials.Koboldite);
     // spotless:on
 
     /// Every material the retired `RecipeGenOre` reached through `MaterialGenerator
     /// #generateOreMaterialWithAllExcessComponents` (`disableOptional=true`) -- everything in [#generate]
     /// except the electrolyzer/chemical-dehydrator branch.
     private static final Set<Material> ELIGIBLE_NO_OPTIONAL = Set
-        .of(Materials2Materials.AncientGranite, Materials2Materials.Runite);
+        .of(Materials.AncientGranite, Materials.Runite);
 
-    private static final Material mStone = Materials2Materials.Stone;
+    private static final Material mStone = Materials.Stone;
 
     public static void run() {
         for (Material material : ELIGIBLE_STANDARD) {
@@ -407,7 +407,7 @@ public class ProcessingOreMachine {
     /// which is not the same question as whether a part decomposes into further byproducts here: Koboldite's
     /// `Thaumium` part is composed of `[Iron, Magic]`, but it is a byproduct in its own right, and expanding
     /// it would shift both byproduct picks along the flattened list. The ore materials that genuinely do
-    /// decompose further ([Materials2Materials#Fluorcaphite], the rare earth mixes) are all members of
+    /// decompose further ([Materials#Fluorcaphite], the rare earth mixes) are all members of
     /// [#ELIGIBLE_STANDARD]/[#ELIGIBLE_NO_OPTIONAL] themselves.
     private static List<Material> compoundMaterialsRecursively(Material toSearch) {
         List<Material> result = new ArrayList<>();
@@ -438,24 +438,24 @@ public class ProcessingOreMachine {
     /// `[Iron, Magic]` but is itself the byproduct, while `BlackMetal` genuinely resolves to its own parts.
     // spotless:off
     private static final Set<Material> EXPANDABLE = Set.of(
-        Materials2Materials.AgarditeCd, Materials2Materials.AgarditeLa, Materials2Materials.AgarditeNd,
-        Materials2Materials.AgarditeY, Materials2Materials.Alburnite, Materials2Materials.AncientGranite,
-        Materials2Materials.BariteRa, Materials2Materials.BlackMetal, Materials2Materials.Cerite,
-        Materials2Materials.Comancheite, Materials2Materials.Crocoite, Materials2Materials.CryoliteF,
-        Materials2Materials.DemicheleiteBr, Materials2Materials.Florencite, Materials2Materials.Fluorcaphite,
-        Materials2Materials.FluoriteF, Materials2Materials.GadoliniteCe, Materials2Materials.GadoliniteY,
-        Materials2Materials.Geikielite, Materials2Materials.Greenockite, Materials2Materials.Hibonite,
-        Materials2Materials.Honeaite, Materials2Materials.Irarsite, Materials2Materials.Kashinite,
-        Materials2Materials.Koboldite, Materials2Materials.Lafossaite, Materials2Materials.LanthaniteCe,
-        Materials2Materials.LanthaniteLa, Materials2Materials.LanthaniteNd, Materials2Materials.Lautarite,
-        Materials2Materials.Lepersonnite, Materials2Materials.Miessiite, Materials2Materials.Nichromite,
-        Materials2Materials.Perroudite, Materials2Materials.Polycrase, Materials2Materials.RadioactiveMineralMix,
-        Materials2Materials.RareEarthI, Materials2Materials.RareEarthII, Materials2Materials.RareEarthIII,
-        Materials2Materials.SamarskiteY, Materials2Materials.SamarskiteYb, Materials2Materials.StrontiumOxide,
-        Materials2Materials.Titanite, Materials2Materials.Xenotime, Materials2Materials.Yttriaite,
-        Materials2Materials.Yttrialite, Materials2Materials.Yttrocerite, Materials2Materials.Zimbabweite,
-        Materials2Materials.Zircon, Materials2Materials.Zirconolite, Materials2Materials.Zircophyllite,
-        Materials2Materials.Zirkelite);
+        Materials.AgarditeCd, Materials.AgarditeLa, Materials.AgarditeNd,
+        Materials.AgarditeY, Materials.Alburnite, Materials.AncientGranite,
+        Materials.BariteRa, Materials.BlackMetal, Materials.Cerite,
+        Materials.Comancheite, Materials.Crocoite, Materials.CryoliteF,
+        Materials.DemicheleiteBr, Materials.Florencite, Materials.Fluorcaphite,
+        Materials.FluoriteF, Materials.GadoliniteCe, Materials.GadoliniteY,
+        Materials.Geikielite, Materials.Greenockite, Materials.Hibonite,
+        Materials.Honeaite, Materials.Irarsite, Materials.Kashinite,
+        Materials.Koboldite, Materials.Lafossaite, Materials.LanthaniteCe,
+        Materials.LanthaniteLa, Materials.LanthaniteNd, Materials.Lautarite,
+        Materials.Lepersonnite, Materials.Miessiite, Materials.Nichromite,
+        Materials.Perroudite, Materials.Polycrase, Materials.RadioactiveMineralMix,
+        Materials.RareEarthI, Materials.RareEarthII, Materials.RareEarthIII,
+        Materials.SamarskiteY, Materials.SamarskiteYb, Materials.StrontiumOxide,
+        Materials.Titanite, Materials.Xenotime, Materials.Yttriaite,
+        Materials.Yttrialite, Materials.Yttrocerite, Materials.Zimbabweite,
+        Materials.Zircon, Materials.Zirconolite, Materials.Zircophyllite,
+        Materials.Zirkelite);
     // spotless:on
 
     /// `material`'s state, taken from [GTMaterialProperties#GTPP_STATE] when set and otherwise derived from

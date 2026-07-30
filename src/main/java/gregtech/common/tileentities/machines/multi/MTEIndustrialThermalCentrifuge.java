@@ -31,7 +31,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -160,7 +160,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
                             ofCoil(
                                 MTEIndustrialThermalCentrifuge::setCoilLevel,
                                 MTEIndustrialThermalCentrifuge::getCoilLevel))))
-                .addElement('E', ofFrame(Materials2Materials.RedSteel))
+                .addElement('E', ofFrame(Materials.RedSteel))
                 .build();
         }
         return STRUCTURE_DEFINITION;

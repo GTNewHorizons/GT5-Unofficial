@@ -29,7 +29,7 @@ import cofh.api.energy.IEnergyContainerItem;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.material.MaterialUtils;
@@ -211,7 +211,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
                     if (item.isRepairable()) {
                         FluidStack uum = getStoredFluids().stream()
                             .filter(
-                                fluid -> MaterialUtils.fluid(Materials2Materials.UUMatter, 1)
+                                fluid -> MaterialUtils.fluid(Materials.UUMatter, 1)
                                     .isFluidEqual(fluid))
                             .findAny()
                             .orElse(null);
@@ -221,7 +221,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
                             long euCost = repairedDamage * usedEuPerDurability;
                             if (getEUVar() >= euCost && depleteInput(
                                 new FluidStack(
-                                    MaterialUtils.fluidOf(Materials2Materials.UUMatter),
+                                    MaterialUtils.fluidOf(Materials.UUMatter),
                                     repairedDamage * usedUumPerDurability))) {
                                 item.setDamage(
                                     itemStackInBus,

@@ -21,7 +21,7 @@ import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.material.MaterialUtils;
@@ -47,8 +47,8 @@ public class FuelLoader implements Runnable {
         ItemList.sRocketFuel = GTFluidFactory.of("rocket_fuel", "Rocket Fuel", FluidState.LIQUID, 295);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.bolt, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.bolt, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NaquadahEnriched, Materials2Shapes.bolt, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.bolt, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 50_000)
@@ -56,8 +56,8 @@ public class FuelLoader implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.stick, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.stick, (int) (1)))
+                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Materials2Shapes.stick, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.stick, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 250_000)
@@ -65,24 +65,24 @@ public class FuelLoader implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.stickLong, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.stickLong, (int) (1)))
+                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Materials2Shapes.stickLong, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.stickLong, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 500_000)
             .addTo(hugeNaquadahReactorFuels);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.bolt, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.bolt, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Naquadria, Materials2Shapes.bolt, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.bolt, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 250_000)
             .addTo(extremeNaquadahReactorFuels);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.stick, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.stick, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Naquadria, Materials2Shapes.stick, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.stick, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 1_000_000)
@@ -142,8 +142,8 @@ public class FuelLoader implements Runnable {
             .addTo(GTRecipeConstants.Fuel);
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.beacon, 1))
-            .metadata(FUEL_VALUE, MaterialUtils.fuelPower(Materials2Materials.NetherStar) * 2)
-            .metadata(FUEL_TYPE, MaterialUtils.fuelType(Materials2Materials.NetherStar))
+            .metadata(FUEL_VALUE, MaterialUtils.fuelPower(Materials.NetherStar) * 2)
+            .metadata(FUEL_TYPE, MaterialUtils.fuelType(Materials.NetherStar))
             .addTo(GTRecipeConstants.Fuel);
         if (Mods.EnderIO.isModLoaded()) {
             GTValues.RA.stdBuilder()

@@ -12,6 +12,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -22,7 +23,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
@@ -46,7 +46,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (((material == Materials2Materials.Glass)
+        if (((material == Materials.Glass)
             || (GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L) != null))
             && (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING))) {
             long materialMass = MaterialUtils.mass(material);
@@ -65,8 +65,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
 
                 if (!OrePrefixes.block.isIgnored(MaterialUtils.smeltInto(material))
                     && (GTOreDictUnificator.get(OrePrefixes.block, MaterialUtils.smeltInto(material), 1L) != null)
-                    && material != Materials2Materials.Ichorium
-                    && material != Materials2Materials.Obsidian) {
+                    && material != Materials.Ichorium
+                    && material != Materials.Obsidian) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Extruder_Block.get(0L))
                         .itemOutputs(
@@ -173,7 +173,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .addTo(extruderRecipes);
                 }
 
-                if (!(material == Materials2Materials.AnnealedCopper || material == Materials2Materials.CastIron)
+                if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)
                     && !(MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING))
                     && prefix == OrePrefixes.ingot) {
                     if (MaterialUtils.hasMolten(material)) {
@@ -287,8 +287,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         }
                     }
                 }
-                if (tAmount * 2 <= 64 && material != Materials2Materials.Obsidian) {
-                    if (!(material == Materials2Materials.Aluminium)) {
+                if (tAmount * 2 <= 64 && material != Materials.Obsidian) {
+                    if (!(material == Materials.Aluminium)) {
                         if (GTOreDictUnificator.get(OrePrefixes.stick, MaterialUtils.smeltInto(material), 1L) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(1, stack), ItemList.Shape_Extruder_Rod.get(0L))
@@ -403,8 +403,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .addTo(extruderRecipes);
                 }
 
-                if (!(material == Materials2Materials.StyreneButadieneRubber
-                    || material == Materials2Materials.Silicone)) {
+                if (!(material == Materials.StyreneButadieneRubber
+                    || material == Materials.Silicone)) {
                     Integer plateTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
                     if ((plateTierEU == null ? 0 : plateTierEU) < TierEU.IV) {
                         if (GTOreDictUnificator.get(OrePrefixes.plate, MaterialUtils.smeltInto(material), 1L) != null) {

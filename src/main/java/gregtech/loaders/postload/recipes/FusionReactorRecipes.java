@@ -12,8 +12,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MaterialUtils;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -31,14 +31,14 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Lithium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)),
+                    .getFluidStack(Materials.Lithium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)),
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Tungsten,
+                    Materials.Tungsten,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Iridium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Iridium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .metadata(FUSION_THRESHOLD, 300_000_000L)
@@ -47,11 +47,11 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Deuterium, Materials2FluidShapes.fluidGas, (int) (125)),
-                MaterialLibAPI.getFluidStack(Materials2Materials.Tritium, Materials2FluidShapes.fluidGas, (int) (125)))
+                    .getFluidStack(Materials.Deuterium, Materials2FluidShapes.fluidGas, (int) (125)),
+                MaterialLibAPI.getFluidStack(Materials.Tritium, Materials2FluidShapes.fluidGas, (int) (125)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidPlasma, (int) (125)))
+                    .getFluidStack(Materials.Helium, Materials2FluidShapes.fluidPlasma, (int) (125)))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_IV / 2)
             .metadata(FUSION_THRESHOLD, 40_000_000L)
@@ -60,11 +60,11 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Deuterium, Materials2FluidShapes.fluidGas, (int) (125)),
-                MaterialLibAPI.getFluidStack(Materials2Materials.Helium3, Materials2FluidShapes.fluidGas, (int) (125)))
+                    .getFluidStack(Materials.Deuterium, Materials2FluidShapes.fluidGas, (int) (125)),
+                MaterialLibAPI.getFluidStack(Materials.Helium3, Materials2FluidShapes.fluidGas, (int) (125)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidPlasma, (int) (125)))
+                    .getFluidStack(Materials.Helium, Materials2FluidShapes.fluidPlasma, (int) (125)))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .metadata(FUSION_THRESHOLD, 60_000_000L)
@@ -73,14 +73,14 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Aluminium,
+                    Materials.Aluminium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Lithium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Lithium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Sulfur, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Sulfur, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(10240)
             .metadata(FUSION_THRESHOLD, 240_000_000L)
@@ -89,14 +89,14 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Beryllium,
+                    Materials.Beryllium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Deuterium, Materials2FluidShapes.fluidGas, (int) (375)))
+                    .getFluidStack(Materials.Deuterium, Materials2FluidShapes.fluidGas, (int) (375)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.fluidPlasma, (int) (125)))
+                    .getFluidStack(Materials.Nitrogen, Materials2FluidShapes.fluidPlasma, (int) (125)))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LuV / 2)
             .metadata(FUSION_THRESHOLD, 180_000_000L)
@@ -105,14 +105,14 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Silicon, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)),
+                    .getFluidStack(Materials.Silicon, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)),
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Magnesium,
+                    Materials.Magnesium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Iron, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Iron, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .metadata(FUSION_THRESHOLD, 360_000_000L)
@@ -121,14 +121,14 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Potassium,
+                    Materials.Potassium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Fluorine, Materials2FluidShapes.fluidGas, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Fluorine, Materials2FluidShapes.fluidGas, (int) (1 * INGOTS)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Nickel, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Nickel, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .metadata(FUSION_THRESHOLD, 480_000_000L)
@@ -137,16 +137,16 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Beryllium,
+                    Materials.Beryllium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)),
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Tungsten,
+                    Materials.Tungsten,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Platinum,
+                    Materials.Platinum,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)))
             .duration(1 * SECONDS + 12 * TICKS)
@@ -157,14 +157,14 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Neodymium,
+                    Materials.Neodymium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (3 * NUGGETS)))
+                    .getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (3 * NUGGETS)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Europium,
+                    Materials.Europium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)))
             .duration(1 * SECONDS + 12 * TICKS)
@@ -175,16 +175,16 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Neodymium,
+                    Materials.Neodymium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (2 * NUGGETS)),
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Promethium,
+                    Materials.Promethium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Europium,
+                    Materials.Europium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (2 * NUGGETS)))
             .duration(8 * TICKS)
@@ -195,14 +195,14 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Lutetium,
+                    Materials.Lutetium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Chrome, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Chrome, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Americium,
+                    Materials.Americium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)))
             .duration(4 * SECONDS + 16 * TICKS)
@@ -213,16 +213,16 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Lutetium,
+                    Materials.Lutetium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (2 * NUGGETS)),
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Promethium,
+                    Materials.Promethium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Americium,
+                    Materials.Americium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (2 * NUGGETS)))
             .duration(24 * TICKS)
@@ -233,14 +233,14 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Plutonium,
+                    Materials.Plutonium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Thorium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Thorium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Naquadah,
+                    Materials.Naquadah,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)))
             .duration(3 * SECONDS + 4 * TICKS)
@@ -251,16 +251,16 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Americium,
+                    Materials.Americium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)),
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Naquadria,
+                    Materials.Naquadria,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Neutronium,
+                    Materials.Neutronium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(12 * SECONDS)
@@ -271,13 +271,13 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Glowstone,
+                    Materials.Glowstone,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)),
-                MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidPlasma, (int) (4)))
+                MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidPlasma, (int) (4)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Sunnarium,
+                    Materials.Sunnarium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)))
             .duration(1 * SECONDS + 12 * TICKS)
@@ -289,14 +289,14 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Tungsten,
+                    Materials.Tungsten,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, (int) (1 * NUGGETS)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Osmium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Osmium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
             .duration(12 * SECONDS + 16 * TICKS)
             .eut(24578)
             .metadata(FUSION_THRESHOLD, 150_000_000L)
@@ -305,14 +305,14 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Manganese,
+                    Materials.Manganese,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (1 * NUGGETS)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Iron, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Iron, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .metadata(FUSION_THRESHOLD, 120_000_000L)
@@ -321,14 +321,14 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Magnesium,
+                    Materials.Magnesium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (8 * NUGGETS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (8 * NUGGETS)))
+                    .getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (8 * NUGGETS)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Calcium, Materials2FluidShapes.fluidPlasma, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Calcium, Materials2FluidShapes.fluidPlasma, (int) (1 * NUGGETS)))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .metadata(FUSION_THRESHOLD, 120_000_000L)
@@ -337,14 +337,14 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Mercury, Materials2FluidShapes.fluidLiquid, (int) (1 * NUGGETS)),
+                    .getFluidStack(Materials.Mercury, Materials2FluidShapes.fluidLiquid, (int) (1 * NUGGETS)),
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Magnesium,
+                    Materials.Magnesium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Uranium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Uranium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 240_000_000L)
@@ -353,14 +353,14 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Gold, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)),
+                    .getFluidStack(Materials.Gold, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)),
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Aluminium,
+                    Materials.Aluminium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Uranium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Uranium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 240_000_000L)
@@ -369,12 +369,12 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Uranium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)),
+                    .getFluidStack(Materials.Uranium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, (int) (1 * NUGGETS)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Plutonium,
+                    Materials.Plutonium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)))
             .duration(6 * SECONDS + 8 * TICKS)
@@ -385,13 +385,13 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Vanadium,
+                    Materials.Vanadium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)),
-                MaterialLibAPI.getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (125)))
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (125)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Chrome, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Chrome, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(24576)
             .metadata(FUSION_THRESHOLD, 140_000_000L)
@@ -400,11 +400,11 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Gallium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)),
-                MaterialLibAPI.getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.fluidGas, (int) (125)))
+                    .getFluidStack(Materials.Gallium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)),
+                MaterialLibAPI.getFluidStack(Materials.Radon, Materials2FluidShapes.fluidGas, (int) (125)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Duranium,
+                    Materials.Duranium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)))
             .duration(3 * SECONDS + 4 * TICKS)
@@ -415,16 +415,16 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Titanium,
+                    Materials.Titanium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (3 * NUGGETS)),
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Duranium,
+                    Materials.Duranium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (2 * NUGGETS)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Tritanium,
+                    Materials.Tritanium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)))
             .duration(3 * SECONDS + 4 * TICKS)
@@ -435,14 +435,14 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Tantalum,
+                    Materials.Tantalum,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Tritium, Materials2FluidShapes.fluidGas, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Tritium, Materials2FluidShapes.fluidGas, (int) (1 * NUGGETS)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Tungsten,
+                    Materials.Tungsten,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)))
             .duration(16 * TICKS)
@@ -453,12 +453,12 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Silver, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)),
+                    .getFluidStack(Materials.Silver, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Lithium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Lithium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Indium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Indium, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(24576)
             .metadata(FUSION_THRESHOLD, 380_000_000L)
@@ -467,13 +467,13 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Copper,
+                    Materials.Copper,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * HALF_INGOTS)),
-                MaterialLibAPI.getFluidStack(Materials2Materials.Tritium, Materials2FluidShapes.fluidGas, (int) (250)))
+                MaterialLibAPI.getFluidStack(Materials.Tritium, Materials2FluidShapes.fluidGas, (int) (250)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Zinc,
+                    Materials.Zinc,
                     Materials2FluidShapes.fluidPlasma,
                     (int) (1 * HALF_INGOTS)))
             .duration(16 * TICKS)
@@ -484,12 +484,12 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Cobalt, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)),
+                    .getFluidStack(Materials.Cobalt, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Silicon, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Silicon, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Niobium, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Niobium, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
             .duration(16 * TICKS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 200_000_000L)
@@ -498,12 +498,12 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Gold, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)),
+                    .getFluidStack(Materials.Gold, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Arsenic, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Arsenic, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Silver, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Silver, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
             .duration(16 * TICKS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 350_000_000L)
@@ -512,11 +512,11 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Silver, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)),
-                MaterialLibAPI.getFluidStack(Materials2Materials.Helium3, Materials2FluidShapes.fluidGas, (int) (375)))
+                    .getFluidStack(Materials.Silver, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Helium3, Materials2FluidShapes.fluidGas, (int) (375)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Tin, Materials2FluidShapes.fluidPlasma, (int) (2 * INGOTS)))
+                    .getFluidStack(Materials.Tin, Materials2FluidShapes.fluidPlasma, (int) (2 * INGOTS)))
             .duration(16 * TICKS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 280_000_000L)
@@ -525,11 +525,11 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Tantalum, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)),
-                MaterialLibAPI.getFluidStack(Materials2Materials.Zinc, Materials2FluidShapes.fluidPlasma, (int) (72)))
+                    .getFluidStack(Materials.Tantalum, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Zinc, Materials2FluidShapes.fluidPlasma, (int) (72)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Bismuth, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Bismuth, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
             .duration(16 * TICKS)
             .eut(98304)
             .metadata(FUSION_THRESHOLD, 350_000_000L)
@@ -538,11 +538,11 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Iridium, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)),
-                MaterialLibAPI.getFluidStack(Materials2Materials.Fluorine, Materials2FluidShapes.fluidGas, (int) (500)))
+                    .getFluidStack(Materials.Iridium, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Fluorine, Materials2FluidShapes.fluidGas, (int) (500)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Radon, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(98304)
             .metadata(FUSION_THRESHOLD, 450_000_000L)
@@ -551,14 +551,14 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Plutonium241,
+                    Materials.Plutonium241,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (2_000)))
+                    .getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (2_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Americium,
+                    Materials.Americium,
                     Materials2FluidShapes.fluidPlasma,
                     (int) (1 * INGOTS)))
             .duration(3 * SECONDS + 4 * TICKS)
@@ -569,11 +569,11 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Cobalt, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)),
-                MaterialUtils.legacyGtppFluid(Materials2Materials.Neon, 1 * INGOTS))
+                    .getFluidStack(Materials.Cobalt, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)),
+                MaterialUtils.legacyGtppFluid(Materials.Neon, 1 * INGOTS))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Rubidium, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Rubidium, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(1 * SECONDS + 4 * TICKS)
             .eut(98304)
             .metadata(FUSION_THRESHOLD, 500_000_000L)
@@ -582,12 +582,12 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Lutetium, Materials2FluidShapes.fluidMolten, (int) (4 * INGOTS)),
+                    .getFluidStack(Materials.Lutetium, Materials2FluidShapes.fluidMolten, (int) (4 * INGOTS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Vanadium, Materials2FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+                    .getFluidStack(Materials.Vanadium, Materials2FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Plutonium241,
+                    Materials.Plutonium241,
                     Materials2FluidShapes.fluidPlasma,
                     (int) (4 * INGOTS)))
             .duration(4 * TICKS)
@@ -598,14 +598,14 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Tellurium,
+                    Materials.Tellurium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (4 * INGOTS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Zinc, Materials2FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+                    .getFluidStack(Materials.Zinc, Materials2FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Lead, Materials2FluidShapes.fluidPlasma, (int) (4 * INGOTS)))
+                    .getFluidStack(Materials.Lead, Materials2FluidShapes.fluidPlasma, (int) (4 * INGOTS)))
             .duration(4 * TICKS)
             .eut(TierEU.RECIPE_UEV / 2)
             .metadata(FUSION_THRESHOLD, 6_000_000_000L)
@@ -614,12 +614,12 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Osmium, Materials2FluidShapes.fluidMolten, (int) (4 * INGOTS)),
+                    .getFluidStack(Materials.Osmium, Materials2FluidShapes.fluidMolten, (int) (4 * INGOTS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Silicon, Materials2FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+                    .getFluidStack(Materials.Silicon, Materials2FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Thorium, Materials2FluidShapes.fluidPlasma, (int) (4 * INGOTS)))
+                    .getFluidStack(Materials.Thorium, Materials2FluidShapes.fluidPlasma, (int) (4 * INGOTS)))
             .duration(4 * TICKS)
             .eut(TierEU.RECIPE_UEV / 2)
             .metadata(FUSION_THRESHOLD, 6_000_000_000L)
@@ -628,12 +628,12 @@ public class FusionReactorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Redstone, Materials2FluidShapes.fluidPlasma, (int) (4 * INGOTS)),
+                    .getFluidStack(Materials.Redstone, Materials2FluidShapes.fluidPlasma, (int) (4 * INGOTS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Ichorium, Materials2FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+                    .getFluidStack(Materials.Ichorium, Materials2FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.UnformedHexanite,
+                    Materials.UnformedHexanite,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (4 * INGOTS)))
             .duration(32 * TICKS)

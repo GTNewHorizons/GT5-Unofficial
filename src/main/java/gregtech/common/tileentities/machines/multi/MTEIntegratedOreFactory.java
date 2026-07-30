@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -48,7 +49,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -127,8 +127,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         .addElement('E', Casings.ElectrumFluxCoilBlock.asElement()) // the latest available at uhv
         .addElement('F', Casings.AdvancedIridiumPlatedMachineCasing.asElement())
 
-        .addElement('G', ofFrame(Materials2Materials.StainlessSteel))
-        .addElement('J', ofSheetMetal(Materials2Materials.Iridium))
+        .addElement('G', ofFrame(Materials.StainlessSteel))
+        .addElement('J', ofSheetMetal(Materials.Iridium))
         .addElement('I', Casings.CentrifugeCasing.asElement())
         .addElement('H', Casings.LargeSieveGrate.asElement())
         .build();
@@ -246,7 +246,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             if (fluid.equals(GTModHandler.getDistilledWater(1L))) waterAmount += fluid.amount;
             else if (fluid.equals(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (1))))
+                    .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (1))))
                 lubricantAmount += fluid.amount;
         }
 
@@ -295,14 +295,14 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             int tryDrain = (int) Math.min(totalLubricantToDrain, Integer.MAX_VALUE);
             if (!depleteInput(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Lubricant,
+                    Materials.Lubricant,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (tryDrain)))) {
                 int maxHatch = 0;
                 for (FluidStack sf : getStoredFluids()) {
                     if (sf != null && sf.isFluidEqual(
                         MaterialLibAPI
-                            .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (1)))
+                            .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (1)))
                         && sf.amount > maxHatch) {
                         maxHatch = sf.amount;
                     }
@@ -311,7 +311,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 tryDrain = (int) Math.min(totalLubricantToDrain, maxHatch);
                 if (!depleteInput(
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Lubricant,
+                        Materials.Lubricant,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (tryDrain))))
                     break;
@@ -602,7 +602,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         HashMap<Integer, Integer> merged = new HashMap<>();
         for (ItemStack stack : aList) {
             if (doesVoidStone && GTUtility.areStacksEqual(
-                MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1)),
                 stack)) continue;
             int id = GTUtility.stackToInt(stack);
             if (id != 0) {

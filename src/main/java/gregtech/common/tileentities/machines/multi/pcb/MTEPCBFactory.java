@@ -29,6 +29,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -60,7 +61,6 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
@@ -199,10 +199,10 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings3, 10))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 11))
         .addElement('D', ofBlock(GregTechAPI.sBlockReinforced, 2))
-        .addElement('E', ofFrame(Materials2Materials.DamascusSteel))
-        .addElement('F', ofFrame(Materials2Materials.VibrantAlloy))
+        .addElement('E', ofFrame(Materials.DamascusSteel))
+        .addElement('F', ofFrame(Materials.VibrantAlloy))
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings8, 12))
-        .addElement('H', ofFrame(Materials2Materials.Duranium))
+        .addElement('H', ofFrame(Materials.Duranium))
         .addElement(
             'I',
             buildHatchAdder(MTEPCBFactory.class)
@@ -506,7 +506,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                         FluidStack tFluid = compatMode.OCTier == 1
                             ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
                             : MaterialLibAPI.getFluidStack(
-                                Materials2Materials.SuperCoolant,
+                                Materials.SuperCoolant,
                                 Materials2FluidShapes.fluidLiquid,
                                 COOLANT_CONSUMED_PER_SEC);
                         if (!drain(compatMode.coolantHatch, tFluid, true)) {
@@ -518,7 +518,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 } else {
                     FluidStack tFluid = mCoolingTower.isTier1 ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
                         : MaterialLibAPI.getFluidStack(
-                            Materials2Materials.SuperCoolant,
+                            Materials.SuperCoolant,
                             Materials2FluidShapes.fluidLiquid,
                             COOLANT_CONSUMED_PER_SEC);
                     if (!mCoolingTower.drain(mCoolingTower.mCoolantInputHatch, tFluid, true)) {

@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,7 +37,6 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -76,7 +76,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
     private static final Fluid fluidWater = FluidRegistry.WATER;
     private static final Fluid fluidDistilledWater = GTModHandler.getDistilledWater(1)
         .getFluid();
-    private static final Fluid fluidSteam = MaterialUtils.gas(Materials2Materials.Steam, 1)
+    private static final Fluid fluidSteam = MaterialUtils.gas(Materials.Steam, 1)
         .getFluid();
     private static final Fluid fluidSHSteam = GTModHandler.getSuperHeatedSteam(1)
         .getFluid();
@@ -304,7 +304,7 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
                         { "CCFBB", "DFFFE", "DF FE", "DFFFE", "CCFBB" },
                         { "D A E", "DFFFE", "DFFFE", "DFFFE", "DAAAE" },
                         { "     ", "D   E", "C   B", "D   E", "AA AA" } })
-                .addElement('A', ofFrame(Materials2Materials.MaragingSteel350))
+                .addElement('A', ofFrame(Materials.MaragingSteel350))
                 .addElement('B', Casings.BronzePipeCasing.asElement())
                 .addElement('C', Casings.TungstensteelPipeCasing.asElement())
                 .addElement(

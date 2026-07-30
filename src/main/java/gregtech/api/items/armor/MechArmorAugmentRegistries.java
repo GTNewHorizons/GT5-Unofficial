@@ -11,6 +11,7 @@ import static gregtech.loaders.ExtraIcons.revealingAugment;
 import java.util.Collection;
 import java.util.HashMap;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -19,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.VoltageIndex;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.items.ItemAugment;
 import gregtech.api.items.ItemAugmentCore;
 import gregtech.api.items.ItemAugmentFrame;
@@ -173,7 +173,7 @@ public class MechArmorAugmentRegistries {
             .setId("Infinity")
             .setItemId("armorframeinfinity")
             .setSlotCounts(5, 5, 5, 5)
-            .setColor(MaterialUtils.rgba(Materials2Materials.Infinity))
+            .setColor(MaterialUtils.rgba(Materials.Infinity))
             .setRarity(EnumRarity.epic)
             .setProtection(1)
         );

@@ -26,6 +26,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
@@ -38,7 +39,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.TCAspects.TC_AspectStack;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
@@ -2051,23 +2051,23 @@ public class OrePrefixes {
         cellSteamCracked2,
         cellSteamCracked3);
 
-    /// The subset of {@link OrePrefixes} static setup that references `Materials2Materials` constants. Split
+    /// The subset of {@link OrePrefixes} static setup that references `Materials` constants. Split
     /// out of a `static {}` block and called explicitly from GT's preInit, because {@code OrePrefixes} loads
     /// earlier than that: {@code GTMod}'s own constructor touches
     /// {@link gregtech.common.ores.UnificationOreAdapter}, whose static initializer reads {@link #VALUES},
-    /// forcing this class to load before any mod's preInit runs -- well before `Materials2Materials` data can
+    /// forcing this class to load before any mod's preInit runs -- well before `Materials` data can
     /// resolve.
     public static void lateStaticInit() {
         block.ignoreMaterials(
-            Materials2Materials.Ice,
-            Materials2Materials.Snow,
-            Materials2Materials.Concrete,
-            Materials2Materials.Glass,
-            Materials2Materials.Glowstone,
-            Materials2Materials.DarkIron,
-            Materials2Materials.Marble,
-            Materials2Materials.CertusQuartz);
-        ingot.ignoreMaterials(Materials2Materials.Brick, Materials2Materials.NetherBrick);
+            Materials.Ice,
+            Materials.Snow,
+            Materials.Concrete,
+            Materials.Glass,
+            Materials.Glowstone,
+            Materials.DarkIron,
+            Materials.Marble,
+            Materials.CertusQuartz);
+        ingot.ignoreMaterials(Materials.Brick, Materials.NetherBrick);
 
         dust.addFamiliarPrefix(dustTiny);
         dust.addFamiliarPrefix(dustSmall);
@@ -2089,7 +2089,7 @@ public class OrePrefixes {
             }
         }
 
-        cell.disableComponent(Materials2Materials.GravitonShard);
+        cell.disableComponent(Materials.GravitonShard);
 
         dust.mGeneratedItems.addAll(dustPure.mGeneratedItems);
         dust.mGeneratedItems.addAll(dustImpure.mGeneratedItems);
@@ -2175,23 +2175,23 @@ public class OrePrefixes {
             new ICondition.Nor<>(SubTag.STRETCHY, SubTag.SOFT, SubTag.BOUNCY, SubTag.NO_SMASHING));
         // -----
 
-        bucket.mSecondaryMaterial = new MaterialStack(Materials2Materials.Iron, ingot.materialAmount * 3);
-        bucketClay.mSecondaryMaterial = new MaterialStack(Materials2Materials.Clay, dust.materialAmount * 5);
-        oreRedgranite.mSecondaryMaterial = new MaterialStack(Materials2Materials.GraniteRed, dust.materialAmount);
-        oreBlackgranite.mSecondaryMaterial = new MaterialStack(Materials2Materials.GraniteBlack, dust.materialAmount);
-        oreNetherrack.mSecondaryMaterial = new MaterialStack(Materials2Materials.Netherrack, dust.materialAmount);
-        oreNether.mSecondaryMaterial = new MaterialStack(Materials2Materials.Netherrack, dust.materialAmount);
-        oreEndstone.mSecondaryMaterial = new MaterialStack(Materials2Materials.Endstone, dust.materialAmount);
-        oreEnd.mSecondaryMaterial = new MaterialStack(Materials2Materials.Endstone, dust.materialAmount);
-        oreMarble.mSecondaryMaterial = new MaterialStack(Materials2Materials.Marble, dust.materialAmount);
-        oreBasalt.mSecondaryMaterial = new MaterialStack(Materials2Materials.Basalt, dust.materialAmount);
-        oreDense.mSecondaryMaterial = new MaterialStack(Materials2Materials.Stone, dust.materialAmount);
-        orePoor.mSecondaryMaterial = new MaterialStack(Materials2Materials.Stone, dust.materialAmount * 2);
-        oreNormal.mSecondaryMaterial = new MaterialStack(Materials2Materials.Stone, dust.materialAmount * 2);
-        oreRich.mSecondaryMaterial = new MaterialStack(Materials2Materials.Stone, dust.materialAmount * 2);
-        bulletGtSmall.mSecondaryMaterial = new MaterialStack(Materials2Materials.Brass, ingot.materialAmount / 9);
-        bulletGtMedium.mSecondaryMaterial = new MaterialStack(Materials2Materials.Brass, ingot.materialAmount / 6);
-        bulletGtLarge.mSecondaryMaterial = new MaterialStack(Materials2Materials.Brass, ingot.materialAmount / 3);
+        bucket.mSecondaryMaterial = new MaterialStack(Materials.Iron, ingot.materialAmount * 3);
+        bucketClay.mSecondaryMaterial = new MaterialStack(Materials.Clay, dust.materialAmount * 5);
+        oreRedgranite.mSecondaryMaterial = new MaterialStack(Materials.GraniteRed, dust.materialAmount);
+        oreBlackgranite.mSecondaryMaterial = new MaterialStack(Materials.GraniteBlack, dust.materialAmount);
+        oreNetherrack.mSecondaryMaterial = new MaterialStack(Materials.Netherrack, dust.materialAmount);
+        oreNether.mSecondaryMaterial = new MaterialStack(Materials.Netherrack, dust.materialAmount);
+        oreEndstone.mSecondaryMaterial = new MaterialStack(Materials.Endstone, dust.materialAmount);
+        oreEnd.mSecondaryMaterial = new MaterialStack(Materials.Endstone, dust.materialAmount);
+        oreMarble.mSecondaryMaterial = new MaterialStack(Materials.Marble, dust.materialAmount);
+        oreBasalt.mSecondaryMaterial = new MaterialStack(Materials.Basalt, dust.materialAmount);
+        oreDense.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount);
+        orePoor.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
+        oreNormal.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
+        oreRich.mSecondaryMaterial = new MaterialStack(Materials.Stone, dust.materialAmount * 2);
+        bulletGtSmall.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.materialAmount / 9);
+        bulletGtMedium.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.materialAmount / 6);
+        bulletGtLarge.mSecondaryMaterial = new MaterialStack(Materials.Brass, ingot.materialAmount / 3);
     }
 
     public final ArrayList<ItemStack> mPrefixedItems = new GTArrayList<>(false, 16);
@@ -2507,7 +2507,7 @@ public class OrePrefixes {
 
         if (material == null) return;
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_RECIPES)) return;
-        if (material == Materials2Materials.NULL && !isSelfReferencing && isMaterialBased) return;
+        if (material == Materials.NULL && !isSelfReferencing && isMaterialBased) return;
         if (!GTUtility.isStackValid(stack)) return;
 
         for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
@@ -2675,7 +2675,7 @@ public class OrePrefixes {
     }
 
     public String getDefaultLocalNameFormatForItem() {
-        return getDefaultLocalNameForItem(Materials2Materials.NULL);
+        return getDefaultLocalNameForItem(Materials.NULL);
     }
 
     public static String getOreprefixKey(String prefix, String formatString) {
@@ -2696,7 +2696,7 @@ public class OrePrefixes {
     }
 
     public String getOreprefixKey() {
-        return getOreprefixKeyForMaterial(MaterialUtils.internalName(Materials2Materials.NULL));
+        return getOreprefixKeyForMaterial(MaterialUtils.internalName(Materials.NULL));
     }
 
     public String getLocalizedNameForItem(String materialName) {

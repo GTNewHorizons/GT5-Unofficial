@@ -15,6 +15,7 @@ package bartworks.common.loaders;
 
 import static gregtech.api.enums.MetaTileEntityIDs.*;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -63,7 +64,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTOreDictUnificator;
 import ic2.api.item.IKineticRotor;
 import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
@@ -284,11 +284,11 @@ public class ItemRegistry {
 
         GTOreDictUnificator.add(
             OrePrefixes.block,
-            Materials2Materials.BorosilicateGlass,
+            Materials.BorosilicateGlass,
             new ItemStack(ItemRegistry.bw_glasses[0], 1, 0));
         GTOreDictUnificator.registerOre(
             OrePrefixes.block,
-            Materials2Materials.NickelZincFerrite,
+            Materials.NickelZincFerrite,
             new ItemStack(ItemRegistry.BW_BLOCKS[2]));
 
         int[] Diode2A = new int[] { Diode2A_ULV.ID, Diode2A_LV.ID, Diode2A_MV.ID, Diode2A_HV.ID, Diode2A_EV.ID,

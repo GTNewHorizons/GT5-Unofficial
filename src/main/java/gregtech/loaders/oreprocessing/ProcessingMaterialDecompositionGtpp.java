@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -20,7 +21,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2GtppComposites;
 import gregtech.api.enums.materials2.Materials2GtppComposites.Component;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MaterialUtils;
 
 /// Reproduces the retired gtPlusPlus `RecipeGenMaterialProcessing` for every material in [#ELIGIBLE] that
@@ -49,30 +49,30 @@ public class ProcessingMaterialDecompositionGtpp {
     /// have added a nuclear material here too.
     // spotless:off
     private static final Set<Material> ELIGIBLE = Set.of(
-        Materials2Materials.Selenium, Materials2Materials.Iodine, Materials2Materials.Rhenium,
-        Materials2Materials.Thallium, Materials2Materials.Germanium, Materials2Materials.Technetium,
-        Materials2Materials.Lithium7, Materials2Materials.Uranium232, Materials2Materials.Uranium233,
-        Materials2Materials.AdvancedNitinol, Materials2Materials.AstralTitanium, Materials2Materials.CelestialTungsten,
-        Materials2Materials.Hypogen, Materials2Materials.ChromaticGlass, Materials2Materials.BlackMetal,
-        Materials2Materials.Dragonblood, Materials2Materials.SiliconCarbide, Materials2Materials.ZirconiumCarbide,
-        Materials2Materials.TantalumCarbide, Materials2Materials.NiobiumCarbide, Materials2Materials.TungstenTitaniumCarbide,
-        Materials2Materials.EnergyCrystal, Materials2Materials.BloodSteel, Materials2Materials.Zeron100,
-        Materials2Materials.Tumbaga, Materials2Materials.Potin, Materials2Materials.Staballoy,
-        Materials2Materials.Tantalloy60, Materials2Materials.Tantalloy61, Materials2Materials.Inconel625,
-        Materials2Materials.Inconel690, Materials2Materials.Inconel792, Materials2Materials.EglinSteel,
-        Materials2Materials.MaragingSteel250, Materials2Materials.MaragingSteel300, Materials2Materials.MaragingSteel350,
-        Materials2Materials.WatertightSteel, Materials2Materials.Nitinol60, Materials2Materials.Stellite,
-        Materials2Materials.Talonite, Materials2Materials.HastelloyW, Materials2Materials.HastelloyX,
-        Materials2Materials.HastelloyC276, Materials2Materials.HastelloyN, Materials2Materials.Incoloy020,
-        Materials2Materials.IncoloyDS, Materials2Materials.IncoloyMA956, Materials2Materials.Grisium,
-        Materials2Materials.HG1223, Materials2Materials.TriniumTitaniumAlloy, Materials2Materials.TriniumNaquadahAlloy,
-        Materials2Materials.TriniumNaquadahCarbonite, Materials2Materials.ArceusAlloy2B, Materials2Materials.HeLiCoPtEr,
-        Materials2Materials.LafiumCompound, Materials2Materials.CinobiteA243, Materials2Materials.Pikyonium64B,
-        Materials2Materials.AbyssalAlloy, Materials2Materials.Laurenium, Materials2Materials.Botmium,
-        Materials2Materials.HS188A, Materials2Materials.Titansteel, Materials2Materials.Arcanite,
-        Materials2Materials.Octiron, Materials2Materials.BabbitAlloy, Materials2Materials.BlackTitanium,
-        Materials2Materials.Indalloy140, Materials2Materials.Rhugnor, Materials2Materials.Quantum,
-        Materials2Materials.AncientGranite, Materials2Materials.Runite, Materials2Materials.EglinSteelBaseCompound);
+        Materials.Selenium, Materials.Iodine, Materials.Rhenium,
+        Materials.Thallium, Materials.Germanium, Materials.Technetium,
+        Materials.Lithium7, Materials.Uranium232, Materials.Uranium233,
+        Materials.AdvancedNitinol, Materials.AstralTitanium, Materials.CelestialTungsten,
+        Materials.Hypogen, Materials.ChromaticGlass, Materials.BlackMetal,
+        Materials.Dragonblood, Materials.SiliconCarbide, Materials.ZirconiumCarbide,
+        Materials.TantalumCarbide, Materials.NiobiumCarbide, Materials.TungstenTitaniumCarbide,
+        Materials.EnergyCrystal, Materials.BloodSteel, Materials.Zeron100,
+        Materials.Tumbaga, Materials.Potin, Materials.Staballoy,
+        Materials.Tantalloy60, Materials.Tantalloy61, Materials.Inconel625,
+        Materials.Inconel690, Materials.Inconel792, Materials.EglinSteel,
+        Materials.MaragingSteel250, Materials.MaragingSteel300, Materials.MaragingSteel350,
+        Materials.WatertightSteel, Materials.Nitinol60, Materials.Stellite,
+        Materials.Talonite, Materials.HastelloyW, Materials.HastelloyX,
+        Materials.HastelloyC276, Materials.HastelloyN, Materials.Incoloy020,
+        Materials.IncoloyDS, Materials.IncoloyMA956, Materials.Grisium,
+        Materials.HG1223, Materials.TriniumTitaniumAlloy, Materials.TriniumNaquadahAlloy,
+        Materials.TriniumNaquadahCarbonite, Materials.ArceusAlloy2B, Materials.HeLiCoPtEr,
+        Materials.LafiumCompound, Materials.CinobiteA243, Materials.Pikyonium64B,
+        Materials.AbyssalAlloy, Materials.Laurenium, Materials.Botmium,
+        Materials.HS188A, Materials.Titansteel, Materials.Arcanite,
+        Materials.Octiron, Materials.BabbitAlloy, Materials.BlackTitanium,
+        Materials.Indalloy140, Materials.Rhugnor, Materials.Quantum,
+        Materials.AncientGranite, Materials.Runite, Materials.EglinSteelBaseCompound);
     // spotless:on
 
     /// `HG1223`'s composites, in the order the retired generator's own `Material#getComposites` carried them
@@ -86,13 +86,13 @@ public class ProcessingMaterialDecompositionGtpp {
     /// [ProcessingMixerGtpp] and [ProcessingAlloyBlastSmelter] also read and whose own eligibility this material
     /// does not belong to.
     private static final Map<Material, List<Component>> COMPOSITION_FALLBACK = Map.of(
-        Materials2Materials.HG1223,
+        Materials.HG1223,
         List.of(
-            new Component(Materials2Materials.Mercury, 1),
-            new Component(Materials2Materials.Oxygen, 8),
-            new Component(Materials2Materials.Calcium, 2),
-            new Component(Materials2Materials.Copper, 3),
-            new Component(Materials2Materials.Barium, 2)));
+            new Component(Materials.Mercury, 1),
+            new Component(Materials.Oxygen, 8),
+            new Component(Materials.Calcium, 2),
+            new Component(Materials.Copper, 3),
+            new Component(Materials.Barium, 2)));
 
     public static void run() {
         for (Material material : ELIGIBLE) {

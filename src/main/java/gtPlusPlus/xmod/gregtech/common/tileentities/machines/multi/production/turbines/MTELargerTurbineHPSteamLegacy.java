@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.t
 
 import java.util.ArrayList;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -9,7 +10,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.material.MaterialUtils;
@@ -128,11 +128,11 @@ public class MTELargerTurbineHPSteamLegacy extends MTELargerTurbineBaseLegacy {
         if (isUsingDenseSteam) {
             addOutputPartial(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.DenseSteam,
+                    Materials.DenseSteam,
                     Materials2FluidShapes.fluidGas,
                     (int) ((long) steamFlowForNextSteam)));
         } else {
-            addOutputPartial(MaterialUtils.gas(Materials2Materials.Steam, totalFlow));
+            addOutputPartial(MaterialUtils.gas(Materials.Steam, totalFlow));
         }
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);

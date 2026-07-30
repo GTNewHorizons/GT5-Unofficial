@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.NANITE_TIERS;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -17,7 +18,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import tectech.recipe.TecTechRecipeMaps;
@@ -37,21 +38,21 @@ public class BECMetaMaterialRecipes implements Runnable {
     private static final int[] baseAmounts = { 1, 2, 4, 8 };
     private static final int baseDuration = 300 * SECONDS;
 
-    private static final Material[] other3Tier = { Materials2Materials.protohalkonite, Materials2Materials.Hexanite,
-        Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter };
-    private static final Material[] black3Tier = { Materials2Materials.Tairitsu, Materials2Materials.TranscendentMetal,
-        Materials2Materials.BlackDwarfMatter };
-    private static final Material[] gray3Tier = { Materials2Materials.Churitsu, Materials2Materials.SpaceTime,
-        Materials2Materials.Eternity };
-    private static final Material[] white3Tier = { Materials2Materials.Shijima, Materials2Materials.WhiteDwarfMatter,
-        Materials2Materials.Magmatter };
+    private static final Material[] other3Tier = { Materials.protohalkonite, Materials.Hexanite,
+        Materials.MagnetohydrodynamicallyConstrainedStarMatter };
+    private static final Material[] black3Tier = { Materials.Tairitsu, Materials.TranscendentMetal,
+        Materials.BlackDwarfMatter };
+    private static final Material[] gray3Tier = { Materials.Churitsu, Materials.SpaceTime,
+        Materials.Eternity };
+    private static final Material[] white3Tier = { Materials.Shijima, Materials.WhiteDwarfMatter,
+        Materials.Magmatter };
 
-    private static final Material[] black4Tier = { Materials2Materials.Tairitsu, Materials2Materials.Hypogen,
-        Materials2Materials.Shirabon, Materials2Materials.SpaceTime };
-    private static final Material[] gray4Tier = { Materials2Materials.Churitsu, Materials2Materials.WhiteDwarfMatter,
-        Materials2Materials.BlackDwarfMatter, Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter };
-    private static final Material[] white4Tier = { Materials2Materials.Shijima, Materials2Materials.protohalkonite,
-        Materials2Materials.Hexanite, Materials2Materials.Eternity };
+    private static final Material[] black4Tier = { Materials.Tairitsu, Materials.Hypogen,
+        Materials.Shirabon, Materials.SpaceTime };
+    private static final Material[] gray4Tier = { Materials.Churitsu, Materials.WhiteDwarfMatter,
+        Materials.BlackDwarfMatter, Materials.MagnetohydrodynamicallyConstrainedStarMatter };
+    private static final Material[] white4Tier = { Materials.Shijima, Materials.protohalkonite,
+        Materials.Hexanite, Materials.Eternity };
 
     private static final int[] chromatic4TierAmts = { 8, 12, 16, 24 };
     private static final int[] infinity4TierAmts = { 4, 6, 8, 12 };

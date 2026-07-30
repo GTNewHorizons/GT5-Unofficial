@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -18,7 +19,6 @@ import gregtech.api.enums.MachineType;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -166,7 +166,7 @@ public class MTEPotionBrewer extends MTEBasicMachine {
                     };
                 }
                 if (GTUtility.areStacksEqual(
-                    MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Glowstone, Materials2Shapes.dust, (int) (1)),
                     getInputAt(0))) {
                     if (!tModifier.startsWith("strong")) {
                         return setOutput(
@@ -178,7 +178,7 @@ public class MTEPotionBrewer extends MTEBasicMachine {
                     return setOutput("potion.thick");
                 }
                 if (GTUtility.areStacksEqual(
-                    MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, (int) (1)),
                     getInputAt(0))) {
                     if (!tModifier.startsWith("long")) {
                         return setOutput(
@@ -190,7 +190,7 @@ public class MTEPotionBrewer extends MTEBasicMachine {
                     return setOutput("potion.mundane");
                 }
                 if (GTUtility.areStacksEqual(
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.Gunpowder, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gunpowder, 1L),
                     getInputAt(0))) {
                     if (!tInputName.endsWith(".splash")) {
                         return setOutput("potion." + tInputName + ".splash");

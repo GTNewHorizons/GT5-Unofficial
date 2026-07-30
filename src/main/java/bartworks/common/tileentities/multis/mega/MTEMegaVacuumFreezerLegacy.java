@@ -31,6 +31,7 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -50,7 +51,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -114,9 +114,9 @@ public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuum
 
     private static final ArrayList<SubspaceCoolingFluid> SUBSPACE_COOLING_FLUIDS = new ArrayList<>(
         Arrays.asList(
-            new SubspaceCoolingFluid(Materials2Materials.SpaceTime, 1, 75),
-            new SubspaceCoolingFluid(Materials2Materials.spatialFluid, 2, 50),
-            new SubspaceCoolingFluid(Materials2Materials.Eternity, 3, 25)));
+            new SubspaceCoolingFluid(Materials.SpaceTime, 1, 75),
+            new SubspaceCoolingFluid(Materials.spatialFluid, 2, 50),
+            new SubspaceCoolingFluid(Materials.Eternity, 3, 25)));
 
     private SubspaceCoolingFluid currentCoolingFluid = null;
 

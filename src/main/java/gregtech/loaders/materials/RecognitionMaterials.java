@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import gregtech.api.enums.materials2.Materials;
 import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
@@ -36,7 +37,7 @@ import gregtech.api.material.GTMaterialProperties;
 /// `Fluix` additionally reaches `OrePrefixes#processRecognitionOre` so its crystal and dust recipes generate.
 /// `Advanced`
 /// names IC2's advanced alloy plate for `OrePrefixes#plateAlloy`, which is unifiable but not material-based: an
-/// entry registered under it without a material resolves to `Materials2Materials#NULL`
+/// entry registered under it without a material resolves to `Materials#NULL`
 /// (`GTProxy#resolveCensusMaterial`'s fallback), and every `plateAlloy` entry then contends for that one
 /// shared unification key in `GTProxy#registerUnificationEntries`, so such an entry unifies into whichever
 /// plate claims it first.
@@ -74,7 +75,7 @@ public class RecognitionMaterials {
         return RECOGNITION_MARKERS_BY_NAME.get(name);
     }
 
-    /// Fallback for a bare JUnit run, where [gregtech.api.enums.materials2.Materials2Materials#init] -- and so
+    /// Fallback for a bare JUnit run, where [Materials#init] -- and so
     /// [#registerBackingMaterials] -- never runs because nothing fires MaterialLib's registration event.
     /// Resolves whatever MaterialLib already has registered under each marker name, without registering
     /// anything itself; a name with nothing registered under it stays unresolved.
@@ -108,7 +109,7 @@ public class RecognitionMaterials {
     /// `MaterialUtils#hasFlag` reads. Also populates the by-name lookup [#getRecognitionMarker] serves, and the 8
     /// declared
     /// fields, from the same registered-or-found material. Runs during material registration, after
-    /// [gregtech.api.enums.materials2.Materials2Materials#init], so the skip check sees every real material.
+    /// [Materials#init], so the skip check sees every real material.
     public static void registerBackingMaterials() {
         List<MarkerSpec> markers = Stream.concat(
             Stream.of(MARKERS)

@@ -41,7 +41,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -119,12 +119,12 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
     /**
      * Alkaline catalyst material
      */
-    public static final Material ALKALINE_MATERIAL = Materials2Materials.SodiumHydroxideGT5U;
+    public static final Material ALKALINE_MATERIAL = Materials.SodiumHydroxideGT5U;
 
     /**
      * Acidic catalyst material
      */
-    public static final Material ACIDIC_MATERIAL = Materials2Materials.HydrochloricAcidGT5U;
+    public static final Material ACIDIC_MATERIAL = Materials.HydrochloricAcidGT5U;
 
     /**
      * The input hatch for the acidic material
@@ -147,7 +147,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings9, 8))
         // Naquadah Reinforced Water Plant Casing
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings9, 7))
-        .addElement('E', ofFrame(Materials2Materials.NaquadahAlloy))
+        .addElement('E', ofFrame(Materials.NaquadahAlloy))
         // pH Resistant Glass
         .addElement('G', ofBlock(GregTechAPI.sBlockGlass1, 0))
         .addElement('H', ofBlock(GregTechAPI.sBlockGlass1, 0))

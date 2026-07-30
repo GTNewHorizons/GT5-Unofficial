@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,7 +33,6 @@ import ggfab.mte.MTELinkedInputBus;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -632,25 +632,25 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         }
         if ((fluidStack.isFluidEqual(
             MaterialLibAPI
-                .getFluidStack(Materials2Materials.Plutonium241, Materials2FluidShapes.fluidPlasma, (int) (1)))
+                .getFluidStack(Materials.Plutonium241, Materials2FluidShapes.fluidPlasma, (int) (1)))
             && fluidStack.amount >= PLASMA_PLUTONIUM241_USAGE)) {
             return 5;
         } else if ((fluidStack
-            .isFluidEqual(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Technetium), 1))
+            .isFluidEqual(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Technetium), 1))
             && fluidStack.amount >= PLASMA_TECHNETIUM_USAGE)) {
                 return 4;
             } else if (fluidStack.isFluidEqual(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.fluidPlasma, (int) (1)))
+                MaterialLibAPI.getFluidStack(Materials.Radon, Materials2FluidShapes.fluidPlasma, (int) (1)))
                 && fluidStack.amount >= PLASMA_RADON_USAGE) {
                     return 3;
                 } else if (fluidStack.isFluidEqual(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Bismuth, Materials2FluidShapes.fluidPlasma, (int) (1)))
+                        .getFluidStack(Materials.Bismuth, Materials2FluidShapes.fluidPlasma, (int) (1)))
                     && fluidStack.amount >= PLASMA_BISMUTH_USAGE) {
                         return 2;
                     } else if (fluidStack.isFluidEqual(
                         MaterialLibAPI
-                            .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidPlasma, (int) (1)))
+                            .getFluidStack(Materials.Helium, Materials2FluidShapes.fluidPlasma, (int) (1)))
                         && fluidStack.amount >= PLASMA_HELIUM_USAGE) {
                             return 1;
                         }

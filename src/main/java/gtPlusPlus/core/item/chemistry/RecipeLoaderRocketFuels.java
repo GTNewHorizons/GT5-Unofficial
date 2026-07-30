@@ -11,6 +11,7 @@ import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -20,7 +21,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipe;
@@ -54,7 +54,7 @@ public class RecipeLoaderRocketFuels {
     private static void createKerosene() {
         GTValues.RA.stdBuilder()
             .circuit(23)
-            .fluidInputs(MaterialUtils.fluid(Materials2Materials.Fuel, 250))
+            .fluidInputs(MaterialUtils.fluid(Materials.Fuel, 250))
             .fluidOutputs(new FluidStack(GTPPFluids.Kerosene, 150))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV / 2)
@@ -75,12 +75,12 @@ public class RecipeLoaderRocketFuels {
         // 2HNO3 + Cu = N2O4 + H2O + CuO
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.dust, (int) (1)),
                 GregtechItemList.OrangeMetalCatalyst.get(0))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.CupricOxide, Materials2Shapes.dust, (int) (2)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.CupricOxide, Materials2Shapes.dust, (int) (2)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
+                    .getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
             .fluidOutputs(new FluidStack(GTPPFluids.NitrogenTetroxide, 1_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -95,7 +95,7 @@ public class RecipeLoaderRocketFuels {
             .fluidInputs(
                 new FluidStack(GTPPFluids.HydrogenPeroxide, 1_000),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Ammonia, Materials2FluidShapes.fluidGas, (int) (2_000)))
+                    .getFluidStack(Materials.Ammonia, Materials2FluidShapes.fluidGas, (int) (2_000)))
             .fluidOutputs(new FluidStack(GTPPFluids.Hydrazine, 1_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -106,11 +106,11 @@ public class RecipeLoaderRocketFuels {
     private static void createMonomethylhydrazine() {
         // C + 2H + N2H4 = CH6N2
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dust, (int) (1)))
             .circuit(21)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (2_000)),
+                    .getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (2_000)),
                 new FluidStack(GTPPFluids.Hydrazine, 1_000))
             .fluidOutputs(new FluidStack(GTPPFluids.Monomethylhydrazine, 1_000))
             .duration(48 * SECONDS)
@@ -121,7 +121,7 @@ public class RecipeLoaderRocketFuels {
 
     private static void createLOH() {
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Hydrogen, Materials2CellShapes.cell, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, Materials2CellShapes.cell, (int) (1)))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellLiquidHydrogen", 1))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -134,9 +134,9 @@ public class RecipeLoaderRocketFuels {
             .circuit(21)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Ammonia, Materials2FluidShapes.fluidGas, (int) (4_000)),
+                    .getFluidStack(Materials.Ammonia, Materials2FluidShapes.fluidGas, (int) (4_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
             .fluidOutputs(new FluidStack(GTPPFluids.HydratedAmmoniumNitrateSlurry, 36 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -162,9 +162,9 @@ public class RecipeLoaderRocketFuels {
             .circuit(21)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (32_000)),
+                    .getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (32_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Methanol, Materials2FluidShapes.fluidLiquid, (int) (32_000)))
+                    .getFluidStack(Materials.Methanol, Materials2FluidShapes.fluidLiquid, (int) (32_000)))
             .fluidOutputs(new FluidStack(GTPPFluids.Formaldehyde, 32_000))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -175,8 +175,8 @@ public class RecipeLoaderRocketFuels {
     private static void createFormaldehydeCatalyst() {
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.dust, (int) (16)),
-                MaterialLibAPI.getStack(Materials2Materials.Vanadium, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.dust, (int) (16)),
+                MaterialLibAPI.getStack(Materials.Vanadium, Materials2Shapes.dust, (int) (1)))
             .circuit(18)
             .itemOutputs(GregtechItemList.FormaldehydeCatalystDust.get(4))
             .duration(8 * SECONDS)
@@ -192,9 +192,9 @@ public class RecipeLoaderRocketFuels {
                 new FluidStack(GTPPFluids.Hydrazine, 2_000),
                 new FluidStack(GTPPFluids.Formaldehyde, 2_000),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (4_000)))
+                    .getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (4_000)))
             .fluidOutputs(
-                MaterialUtils.fluid(Materials2Materials._11Dimethylhydrazine, 2_000),
+                MaterialUtils.fluid(Materials._11Dimethylhydrazine, 2_000),
                 GTUtility.getWater(2_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -232,7 +232,7 @@ public class RecipeLoaderRocketFuels {
             .circuit(1)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.LiquidOxygen, Materials2FluidShapes.fluidGas, (int) (2_000)),
+                    .getFluidStack(Materials.LiquidOxygen, Materials2FluidShapes.fluidGas, (int) (2_000)),
                 new FluidStack(GTPPFluids.RP1, 500))
             .fluidOutputs(new FluidStack(GTPPFluids.RP1RocketFuel, 1_500))
             .duration(15 * SECONDS)
@@ -246,7 +246,7 @@ public class RecipeLoaderRocketFuels {
             .fluidInputs(
                 new FluidStack(GTPPFluids.Hydrazine, 4_000),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Methanol, Materials2FluidShapes.fluidLiquid, (int) (6_000)))
+                    .getFluidStack(Materials.Methanol, Materials2FluidShapes.fluidLiquid, (int) (6_000)))
             .fluidOutputs(new FluidStack(GTPPFluids.DenseHydrazineFuelMixture, 10_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
@@ -259,7 +259,7 @@ public class RecipeLoaderRocketFuels {
             .fluidInputs(
                 new FluidStack(GTPPFluids.Monomethylhydrazine, 2_000),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
             .fluidOutputs(new FluidStack(GTPPFluids.CN3H7O3RocketFuel, 2_000))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -270,7 +270,7 @@ public class RecipeLoaderRocketFuels {
         GTValues.RA.stdBuilder()
             .circuit(4)
             .fluidInputs(
-                MaterialUtils.fluid(Materials2Materials._11Dimethylhydrazine, 2_000),
+                MaterialUtils.fluid(Materials._11Dimethylhydrazine, 2_000),
                 new FluidStack(GTPPFluids.NitrogenTetroxide, 2_000))
             .fluidOutputs(new FluidStack(GTPPFluids.H8N4C2O4RocketFuel, 5_000))
             .duration(60 * SECONDS)

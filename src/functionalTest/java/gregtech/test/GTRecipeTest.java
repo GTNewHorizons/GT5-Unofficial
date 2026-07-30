@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -42,7 +43,6 @@ import org.junit.jupiter.api.Test;
 
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.recipe.RecipeMap;
@@ -83,7 +83,7 @@ class GTRecipeTest {
             .addTo(recipeMap);
 
         lapotronChipRecipe = RA.stdBuilder()
-            .itemInputs(IC2_LapotronCrystal.getWildcard(1), copyAmount(0, get(lens, Materials2Materials.BlueTopaz, 1)))
+            .itemInputs(IC2_LapotronCrystal.getWildcard(1), copyAmount(0, get(lens, Materials.BlueTopaz, 1)))
             .itemOutputs(Circuit_Parts_Crystal_Chip_Master.get(3))
             .duration(0)
             .eut(0)
@@ -169,7 +169,7 @@ class GTRecipeTest {
         assertNotNull(chestRecipe);
 
         GTRecipe lapotronChipRecipe = recipeMap.findRecipeQuery()
-            .items(IC2_LapotronCrystal.getWildcard(1), copyAmount(0, get(lens, Materials2Materials.BlueTopaz, 1)))
+            .items(IC2_LapotronCrystal.getWildcard(1), copyAmount(0, get(lens, Materials.BlueTopaz, 1)))
             .find();
         assertNotNull(lapotronChipRecipe);
     }

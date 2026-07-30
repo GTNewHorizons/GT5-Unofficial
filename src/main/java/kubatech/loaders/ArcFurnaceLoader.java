@@ -19,8 +19,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTOreDictUnificator;
@@ -39,12 +39,12 @@ public class ArcFurnaceLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hatch_Input_Bus_IV.get(1),
-                MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.plate, (int) (4)),
+                MaterialLibAPI.getStack(Materials.Graphite, Materials2Shapes.dust, (int) (4)),
+                MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.plate, (int) (4)),
                 new Object[] { Circuits.IV.getIngredient(), 1L })
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, (int) (1152)))
+                    .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, (int) (1152)))
             .itemOutputs(kubatech.api.enums.ItemList.ElectrodeHatch.get(1))
             .circuit(1)
             .eut(TierEU.RECIPE_IV)
@@ -78,7 +78,7 @@ public class ArcFurnaceLoader {
                     ItemList.Shape_Mold_Rod_Long.get(0))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.SolderingAlloy,
+                        Materials.SolderingAlloy,
                         Materials2FluidShapes.fluidMolten,
                         (int) (1152)))
                 .itemOutputs(electrode.getElectrodeItem(1))
@@ -88,20 +88,20 @@ public class ArcFurnaceLoader {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Neutronium, 64))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 64))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.fluidMolten, (int) (64 * 144)))
+                    .getFluidStack(Materials.Neutronium, Materials2FluidShapes.fluidMolten, (int) (64 * 144)))
             .itemOutputs(ArcFurnaceElectrode.NeutroniumNaniteElectrode.getElectrodeItem(1))
             .eut(TierEU.RECIPE_UV)
             .duration(2 * MINUTES)
             .addTo(neutroniumCompressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.TranscendentMetal, 16))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 16))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.TranscendentMetal,
+                    Materials.TranscendentMetal,
                     Materials2FluidShapes.fluidMolten,
                     (int) (16 * 144)))
             .itemOutputs(ArcFurnaceElectrode.TranscendentNaniteElectrode.getElectrodeItem(1))
@@ -111,10 +111,10 @@ public class ArcFurnaceLoader {
             .addTo(neutroniumCompressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Universium, 4))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 4))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Universium, Materials2FluidShapes.fluidMolten, (int) (4 * 144)))
+                    .getFluidStack(Materials.Universium, Materials2FluidShapes.fluidMolten, (int) (4 * 144)))
             .itemOutputs(ArcFurnaceElectrode.UniversiumNaniteElectrode.getElectrodeItem(1))
             .eut(TierEU.RECIPE_UXV)
             .duration(8 * MINUTES)

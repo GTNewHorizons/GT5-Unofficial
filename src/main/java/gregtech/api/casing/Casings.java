@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -31,7 +32,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
@@ -675,66 +675,66 @@ public enum Casings implements ICasing {
     BoltedOsmiridiumCasing(() -> LoaderLegacyBartworksBlocks.casings, 32083, 32083) {
 
         @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials2Materials.Osmiridium, false).getBlock(); }
+        public @NotNull Block getBlock() { return bwCasing(Materials.Osmiridium, false).getBlock(); }
 
         @Override
-        public int getBlockMeta() { return bwCasing(Materials2Materials.Osmiridium, false).getBlockMeta(); }
+        public int getBlockMeta() { return bwCasing(Materials.Osmiridium, false).getBlockMeta(); }
     },
     ReboltedOsmiridiumCasing(() -> LoaderLegacyBartworksBlocks.casingsAdvanced, 32083, 32083) {
 
         @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials2Materials.Osmiridium, true).getBlock(); }
+        public @NotNull Block getBlock() { return bwCasing(Materials.Osmiridium, true).getBlock(); }
 
         @Override
-        public int getBlockMeta() { return bwCasing(Materials2Materials.Osmiridium, true).getBlockMeta(); }
+        public int getBlockMeta() { return bwCasing(Materials.Osmiridium, true).getBlockMeta(); }
     },
     BoltedNaquadahCasing(() -> LoaderLegacyBartworksBlocks.casings, 32090, 32090) {
 
         @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials2Materials.Naquadah, false).getBlock(); }
+        public @NotNull Block getBlock() { return bwCasing(Materials.Naquadah, false).getBlock(); }
 
         @Override
-        public int getBlockMeta() { return bwCasing(Materials2Materials.Naquadah, false).getBlockMeta(); }
+        public int getBlockMeta() { return bwCasing(Materials.Naquadah, false).getBlockMeta(); }
     },
     ReboltedNaquadahCasing(() -> LoaderLegacyBartworksBlocks.casingsAdvanced, 32090, 32090) {
 
         @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials2Materials.Naquadah, true).getBlock(); }
+        public @NotNull Block getBlock() { return bwCasing(Materials.Naquadah, true).getBlock(); }
 
         @Override
-        public int getBlockMeta() { return bwCasing(Materials2Materials.Naquadah, true).getBlockMeta(); }
+        public int getBlockMeta() { return bwCasing(Materials.Naquadah, true).getBlockMeta(); }
     },
     BoltedNaquadahAlloyCasing(() -> LoaderLegacyBartworksBlocks.casings, 32091, 32091) {
 
         @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials2Materials.NaquadahAlloy, false).getBlock(); }
+        public @NotNull Block getBlock() { return bwCasing(Materials.NaquadahAlloy, false).getBlock(); }
 
         @Override
-        public int getBlockMeta() { return bwCasing(Materials2Materials.NaquadahAlloy, false).getBlockMeta(); }
+        public int getBlockMeta() { return bwCasing(Materials.NaquadahAlloy, false).getBlockMeta(); }
     },
     ReboltedNaquadahAlloyCasing(() -> LoaderLegacyBartworksBlocks.casingsAdvanced, 32091, 32091) {
 
         @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials2Materials.NaquadahAlloy, true).getBlock(); }
+        public @NotNull Block getBlock() { return bwCasing(Materials.NaquadahAlloy, true).getBlock(); }
 
         @Override
-        public int getBlockMeta() { return bwCasing(Materials2Materials.NaquadahAlloy, true).getBlockMeta(); }
+        public int getBlockMeta() { return bwCasing(Materials.NaquadahAlloy, true).getBlockMeta(); }
     },
     BoltedIridiumCasing(() -> LoaderLegacyBartworksBlocks.casings, 31850, 31850) {
 
         @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials2Materials.Iridium, false).getBlock(); }
+        public @NotNull Block getBlock() { return bwCasing(Materials.Iridium, false).getBlock(); }
 
         @Override
-        public int getBlockMeta() { return bwCasing(Materials2Materials.Iridium, false).getBlockMeta(); }
+        public int getBlockMeta() { return bwCasing(Materials.Iridium, false).getBlockMeta(); }
     },
     ReboltedIridiumCasing(() -> LoaderLegacyBartworksBlocks.casingsAdvanced, 31850, 31850) {
 
         @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials2Materials.Iridium, true).getBlock(); }
+        public @NotNull Block getBlock() { return bwCasing(Materials.Iridium, true).getBlock(); }
 
         @Override
-        public int getBlockMeta() { return bwCasing(Materials2Materials.Iridium, true).getBlockMeta(); }
+        public int getBlockMeta() { return bwCasing(Materials.Iridium, true).getBlockMeta(); }
     },
     // spotless:on
 

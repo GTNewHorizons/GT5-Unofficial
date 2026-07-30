@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -53,7 +54,6 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolModes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2PipeMaterials;
 import gregtech.api.enums.materials2.Materials2PipeProperties;
 import gregtech.api.interfaces.IIconContainer;
@@ -895,10 +895,10 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     public int getBaseCapacity() {
         Material material = shapeMaterial();
         if (material == null) return 0;
-        if (material == Materials2Materials.Wood) {
+        if (material == Materials.Wood) {
             return bespokeCapacity(Materials2PipeMaterials.WOOD_FLUID_PIPE_CAPACITY);
         }
-        if (material == Materials2Materials.Redstone) {
+        if (material == Materials.Redstone) {
             return bespokeCapacity(Materials2PipeMaterials.HIGH_PRESSURE_FLUID_PIPE_CAPACITY);
         }
         Integer base = material.getProperty(Materials2PipeProperties.BASE_PIPE_FLOW);

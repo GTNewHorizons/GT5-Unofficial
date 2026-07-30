@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -51,7 +52,6 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -113,13 +113,13 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private int maxFluidUse = 200;
 
     private final static ItemStack FRANCIUM_HYDROXIDE_DUST = MaterialLibAPI
-        .getStack(Materials2Materials.FranciumHydroxide, Materials2Shapes.dust, 1);
+        .getStack(Materials.FranciumHydroxide, Materials2Shapes.dust, 1);
     private final static ItemStack CAESIUM_HYDROXIDE_DUST = GTOreDictUnificator
-        .get(OrePrefixes.dust, Materials2Materials.CaesiumHydroxideGT5U, 1);
+        .get(OrePrefixes.dust, Materials.CaesiumHydroxideGT5U, 1);
     private final static ItemStack POTASSIUM_HYDROXIDE_DUST = GTOreDictUnificator
-        .get(OrePrefixes.dust, Materials2Materials.PotassiumHydroxideGT5U, 1);
+        .get(OrePrefixes.dust, Materials.PotassiumHydroxideGT5U, 1);
     private final static ItemStack SODIUM_HYDROXIDE_DUST = GTOreDictUnificator
-        .get(OrePrefixes.dust, Materials2Materials.SodiumHydroxideGT5U, 1);
+        .get(OrePrefixes.dust, Materials.SodiumHydroxideGT5U, 1);
 
     private final ArrayList<MTEToxicResidueSensor> sensorHatches = new ArrayList<>();
 
@@ -292,7 +292,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                                 -1,
                                 (m, t) -> m.structureTier = t,
                                 m -> m.structureTier))))
-                .addElement('F', ofFrame(Materials2Materials.Polytetrafluoroethylene))
+                .addElement('F', ofFrame(Materials.Polytetrafluoroethylene))
                 .addElement('P', ofBlock(GregTechAPI.sBlockCasings8, 1))
                 .build();
         }

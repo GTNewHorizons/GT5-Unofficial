@@ -30,7 +30,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -47,7 +47,7 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (2000)))
+                    .getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (2000)))
             .itemOutputs(new ItemStack(ModItems.itemStandarParticleBase, 1, 24))
             // unknown particle
             .metadata(
@@ -83,7 +83,7 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Duranium, Materials2FluidShapes.fluidMolten, (int) (40)))
+                    .getFluidStack(Materials.Duranium, Materials2FluidShapes.fluidMolten, (int) (40)))
             .itemInputs(new ItemStack(ModItems.itemStandarParticleBase, 1, 24))
             .itemOutputs(GregtechItemList.Laser_Lens_Special.get(1)) // q anomaly
             .metadata(
@@ -102,7 +102,7 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Americium, Materials2FluidShapes.fluidPlasma, (int) (9216)))
+                    .getFluidStack(Materials.Americium, Materials2FluidShapes.fluidPlasma, (int) (9216)))
             .itemInputs(ItemList.Superconducting_Magnet_Solenoid_UV.get(4), ItemList.Field_Generator_ZPM.get(4))
             .itemOutputs(ItemList.CMSCasing.get(4))
             .metadata(
@@ -118,7 +118,7 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.AdvancedNitinol, 9216))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.AdvancedNitinol, 9216))
             .itemInputs(ItemList.Superconducting_Magnet_Solenoid_UHV.get(4), ItemList.Field_Generator_UV.get(4))
             .itemOutputs(ItemList.ATLASCasing.get(4))
             .metadata(
@@ -134,7 +134,7 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.AbyssalAlloy, 9216))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.AbyssalAlloy, 9216))
             .itemInputs(ItemList.Superconducting_Magnet_Solenoid_UEV.get(4), ItemList.Field_Generator_UHV.get(4))
             .itemOutputs(ItemList.ALICECasing.get(4))
             .metadata(
@@ -150,7 +150,7 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Quantum, 9216))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.Quantum, 9216))
             .itemInputs(ItemList.Superconducting_Magnet_Solenoid_UIV.get(4), ItemList.Field_Generator_UEV.get(4))
             .itemOutputs(ItemList.LHCbCasing.get(4))
             .metadata(
@@ -166,10 +166,10 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Uranium, Materials2Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Deuterium, Materials2FluidShapes.fluidGas, (int) (400)))
+                    .getFluidStack(Materials.Deuterium, Materials2FluidShapes.fluidGas, (int) (400)))
             .itemOutputs(GregtechItemList.Neptunium238Dust.get(1))
             .metadata(
                 BEAMCRAFTER_METADATA,
@@ -187,9 +187,9 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 Particle.getBaseParticle(Particle.UNKNOWN, 8),
-                MaterialLibAPI.getStack(Materials2Materials.Plutonium238, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.Plutonium238, Materials2Shapes.dust, 1))
             .fluidInputs(new FluidStack(TFFluids.fluidEnder, 1000))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.RadioactiveMineralMix, Materials2Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.RadioactiveMineralMix, Materials2Shapes.dust, 1))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -207,7 +207,7 @@ public class BeamCrafterRecipes implements Runnable {
             .itemInputs(ItemList.Quark_Catalyst_Housing.get(1))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Up.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int) (1000)))
+                MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, (int) (1000)))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -224,7 +224,7 @@ public class BeamCrafterRecipes implements Runnable {
             .itemInputs(ItemList.Quark_Catalyst_Housing.get(1))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Down.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Neon, Materials2FluidShapes.fluidLiquid, (int) (1000)))
+                MaterialLibAPI.getFluidStack(Materials.Neon, Materials2FluidShapes.fluidLiquid, (int) (1000)))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -241,7 +241,7 @@ public class BeamCrafterRecipes implements Runnable {
             .itemInputs(ItemList.Quark_Catalyst_Housing.get(1))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Charm.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Argon, Materials2FluidShapes.fluidGas, (int) (1000)))
+                MaterialLibAPI.getFluidStack(Materials.Argon, Materials2FluidShapes.fluidGas, (int) (1000)))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -259,7 +259,7 @@ public class BeamCrafterRecipes implements Runnable {
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Strange.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (1000)))
+                    .getFluidStack(Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (1000)))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -277,7 +277,7 @@ public class BeamCrafterRecipes implements Runnable {
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Bottom.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Xenon, Materials2FluidShapes.fluidLiquid, (int) (1000)))
+                    .getFluidStack(Materials.Xenon, Materials2FluidShapes.fluidLiquid, (int) (1000)))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -294,7 +294,7 @@ public class BeamCrafterRecipes implements Runnable {
             .itemInputs(ItemList.Quark_Catalyst_Housing.get(1))
             .itemOutputs(ItemList.Quark_Creation_Catalyst_Top.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.fluidGas, (int) (1000)))
+                MaterialLibAPI.getFluidStack(Materials.Radon, Materials2FluidShapes.fluidGas, (int) (1000)))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -311,7 +311,7 @@ public class BeamCrafterRecipes implements Runnable {
             .itemInputs(ItemList.StableEmptyContainmentUnit.get(1))
             .itemOutputs(ItemList.StableBaryonContainmentUnit.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int) (100)))
+                MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, (int) (100)))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -328,7 +328,7 @@ public class BeamCrafterRecipes implements Runnable {
             .itemInputs(ItemList.StableEmptyContainmentUnit.get(1))
             .itemOutputs(ItemList.StableLeptonContainmentUnit.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Neon, Materials2FluidShapes.fluidLiquid, (int) (100)))
+                MaterialLibAPI.getFluidStack(Materials.Neon, Materials2FluidShapes.fluidLiquid, (int) (100)))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -345,7 +345,7 @@ public class BeamCrafterRecipes implements Runnable {
             .itemInputs(ItemList.StableEmptyContainmentUnit.get(1))
             .itemOutputs(ItemList.StableMesonContainmentUnit.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Argon, Materials2FluidShapes.fluidGas, (int) (100)))
+                MaterialLibAPI.getFluidStack(Materials.Argon, Materials2FluidShapes.fluidGas, (int) (100)))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -363,7 +363,7 @@ public class BeamCrafterRecipes implements Runnable {
             .itemOutputs(ItemList.StableBosonContainmentUnit.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (100)))
+                    .getFluidStack(Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (100)))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
@@ -394,12 +394,12 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.PlutoniumBasedLiquidFuel,
+                    Materials.PlutoniumBasedLiquidFuel,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (1000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.PlutoniumBasedLiquidFuelExcitedState,
+                    Materials.PlutoniumBasedLiquidFuelExcitedState,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (1000)))
             .metadata(
@@ -417,21 +417,21 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.PseudoStar.get(64L),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.TranscendentMetal, 2))
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 2))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.InactiveCosmicSolder,
+                    Materials.InactiveCosmicSolder,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (160_000)),
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.SpaceTime,
+                    Materials.SpaceTime,
                     Materials2FluidShapes.fluidMolten,
                     (int) (16 * INGOTS)))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.TranscendentMetal, 2))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 2))
             .outputChances(8000)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.BoundlessCosmicSolder,
+                    Materials.BoundlessCosmicSolder,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (160_000)))
             .metadata(

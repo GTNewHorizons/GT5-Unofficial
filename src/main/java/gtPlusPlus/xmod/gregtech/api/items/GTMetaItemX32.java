@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.api.items;
 import java.util.Arrays;
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,7 +17,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2IDIndex;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.material.MaterialUtils;
@@ -76,8 +76,8 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
                     GTOreDictUnificator.registerOre(tPrefix.oreDictName(tMaterial), tStack);
                 }
                 if (((tPrefix == OrePrefixes.stick) || (tPrefix == OrePrefixes.wireFine))
-                    && ((tMaterial == Materials2Materials.Lead) || (tMaterial == Materials2Materials.Tin)
-                        || (tMaterial == Materials2Materials.SolderingAlloy))) {
+                    && ((tMaterial == Materials.Lead) || (tMaterial == Materials.Tin)
+                        || (tMaterial == Materials.SolderingAlloy))) {
                     GregTechAPI.sSolderingMetalList.add(tStack);
                 }
             }
@@ -130,8 +130,8 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
         final int aDamage = aStack.getItemDamage();
         if (MetaGeneratedItem.isMaterialItem(aDamage)) {
             final Material aMaterial = Materials2IDIndex.get(aDamage % 1000);
-            if ((aMaterial != null) && (aMaterial != Materials2Materials.Empty)
-                && (aMaterial != Materials2Materials.NULL)) {
+            if ((aMaterial != null) && (aMaterial != Materials.Empty)
+                && (aMaterial != Materials.NULL)) {
                 final OrePrefixes aPrefix = this.mGeneratedPrefixList[aDamage / 1000];
                 if (aPrefix != null) {
                     return GTUtility.copyAmount(1, aPrefix.mContainerItem);

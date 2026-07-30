@@ -3,7 +3,7 @@ package gregtech.common.tileentities.machines.multi;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -35,7 +35,7 @@ public class MTEConcreteBackfiller2 extends MTEConcreteBackfillerBase {
 
     @Override
     protected Material getFrameMaterial() {
-        return Materials2Materials.Titanium;
+        return Materials.Titanium;
     }
 
     @Override

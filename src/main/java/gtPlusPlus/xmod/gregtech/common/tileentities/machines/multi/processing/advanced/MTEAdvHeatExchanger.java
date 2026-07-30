@@ -32,7 +32,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TAE;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -72,7 +72,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                     { " f f ", "f   f", "     ", "f   f", " f f " },
                     { " f f ", "f   f", "     ", "f   f", " f f " }, }))
         .addElement('P', ofBlock(GregTechAPI.sBlockCasings2, 15))
-        .addElement('f', ofFrame(Materials2Materials.Talonite))
+        .addElement('f', ofFrame(Materials.Talonite))
         .addElement(
             'C',
             ofChain(
@@ -301,7 +301,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                         // superheated
                         // steam
                     } else {
-                        addOutputPartial(MaterialUtils.gas(Materials2Materials.Steam, tGeneratedEU)); // Generate
+                        addOutputPartial(MaterialUtils.gas(Materials.Steam, tGeneratedEU)); // Generate
                                                                                                       // regular steam
                     }
                 } else {

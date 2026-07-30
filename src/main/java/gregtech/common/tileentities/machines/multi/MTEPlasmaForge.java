@@ -56,7 +56,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -100,38 +100,38 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
     // Valid fuels which the discount will get applied to.
     private static final FluidStack[] valid_fuels = {
-        MaterialLibAPI.getFluidStack(Materials2Materials.ExcitedDTCC, Materials2FluidShapes.fluidLiquid, (int) (1)),
-        MaterialLibAPI.getFluidStack(Materials2Materials.ExcitedDTPC, Materials2FluidShapes.fluidLiquid, (int) (1)),
-        MaterialLibAPI.getFluidStack(Materials2Materials.ExcitedDTRC, Materials2FluidShapes.fluidLiquid, (int) (1)),
-        MaterialLibAPI.getFluidStack(Materials2Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, (int) (1)),
-        MaterialLibAPI.getFluidStack(Materials2Materials.ExcitedDTSC, Materials2FluidShapes.fluidLiquid, (int) (1)) };
+        MaterialLibAPI.getFluidStack(Materials.ExcitedDTCC, Materials2FluidShapes.fluidLiquid, (int) (1)),
+        MaterialLibAPI.getFluidStack(Materials.ExcitedDTPC, Materials2FluidShapes.fluidLiquid, (int) (1)),
+        MaterialLibAPI.getFluidStack(Materials.ExcitedDTRC, Materials2FluidShapes.fluidLiquid, (int) (1)),
+        MaterialLibAPI.getFluidStack(Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, (int) (1)),
+        MaterialLibAPI.getFluidStack(Materials.ExcitedDTSC, Materials2FluidShapes.fluidLiquid, (int) (1)) };
 
     private static final HashMap<Fluid, Pair<Long, Float>> FUEL_ENERGY_VALUES = new HashMap<>() {
 
         {
             put(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.ExcitedDTCC, Materials2FluidShapes.fluidLiquid, (int) (1))
+                    .getFluidStack(Materials.ExcitedDTCC, Materials2FluidShapes.fluidLiquid, (int) (1))
                     .getFluid(),
                 Pair.of(14_514_983L, 1 / 8f));
             put(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.ExcitedDTPC, Materials2FluidShapes.fluidLiquid, (int) (1))
+                    .getFluidStack(Materials.ExcitedDTPC, Materials2FluidShapes.fluidLiquid, (int) (1))
                     .getFluid(),
                 Pair.of(66_768_460L, 1 / 4f));
             put(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.ExcitedDTRC, Materials2FluidShapes.fluidLiquid, (int) (1))
+                    .getFluidStack(Materials.ExcitedDTRC, Materials2FluidShapes.fluidLiquid, (int) (1))
                     .getFluid(),
                 Pair.of(269_326_451L, 1 / 2f));
             put(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, (int) (1))
+                    .getFluidStack(Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, (int) (1))
                     .getFluid(),
                 Pair.of(1_073_007_393L, 1f));
             put(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.ExcitedDTSC, Materials2FluidShapes.fluidLiquid, (int) (1))
+                    .getFluidStack(Materials.ExcitedDTSC, Materials2FluidShapes.fluidLiquid, (int) (1))
                     .getFluid(),
                 Pair.of(4_276_767_521L, 2f));
         }
@@ -786,7 +786,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 fluidOutputsWithResidue[i] = tRecipe.mFluidOutputs[i].copy();
             }
             fluidOutputsWithResidue[tRecipe.mFluidOutputs.length] = MaterialUtils
-                .fluid(Materials2Materials.DimensionallyTranscendentResidue, 0);
+                .fluid(Materials.DimensionallyTranscendentResidue, 0);
             tRecipe.mFluidOutputs = fluidOutputsWithResidue;
             recalculateDiscount();
 
@@ -937,7 +937,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         // Increase present catalyst and residue by calculated amount
         for (FluidStack outputFluid : recipe.mFluidOutputs) {
             if (outputFluid
-                .isFluidEqual(MaterialUtils.fluid(Materials2Materials.DimensionallyTranscendentResidue, 1))) {
+                .isFluidEqual(MaterialUtils.fluid(Materials.DimensionallyTranscendentResidue, 1))) {
                 outputFluid.amount += (int) (extraCatalystNeeded * FUEL_ENERGY_VALUES.get(validFuel)
                     .getRight());
             }

@@ -36,7 +36,7 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -76,7 +76,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
         protected IStructureDefinition<AntimatterGenerator> computeValue(@NotNull Class<?> type) {
             return StructureDefinition.<AntimatterGenerator>builder()
                 .addShape(MAIN_NAME, AntimatterStructures.ANTIMATTER_GENERATOR)
-                .addElement('F', lazy(x -> ofFrame(Materials2Materials.Naquadria))) // Naquadria Frame Box
+                .addElement('F', lazy(x -> ofFrame(Materials.Naquadria))) // Naquadria Frame Box
                 .addElement('D', lazy(x -> ofBlock(x.getCasingBlock(1), x.getCasingMeta(1)))) // Black Casing
                 .addElement('G', lazy(x -> ofBlock(x.getCoilBlock(1), x.getCoilMeta(1)))) // Annihilation Coil
                 .addElement('B', lazy(x -> ofBlock(x.getCoilBlock(2), x.getCoilMeta(2)))) // Containment Coil
@@ -125,7 +125,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
         while (i < inputFluids.size()) {
             FluidStack inputFluid = inputFluids.get(i);
             if (inputFluid.isFluidEqual(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Antimatter, Materials2FluidShapes.fluidLiquid, 1))) {
+                MaterialLibAPI.getFluidStack(Materials.Antimatter, Materials2FluidShapes.fluidLiquid, 1))) {
                 containedAntimatter += inputFluid.amount;
             } else {
                 catalystFluid = inputFluid.copy();
@@ -154,18 +154,18 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
         Float modifier = null;
 
         if (catalyst.isFluidEqual(
-            MaterialLibAPI.getFluidStack(Materials2Materials.Copper, Materials2FluidShapes.fluidMolten, 1))) {
+            MaterialLibAPI.getFluidStack(Materials.Copper, Materials2FluidShapes.fluidMolten, 1))) {
             modifier = 1.0F;
         } else if (catalyst.isFluidEqual(
             MaterialLibAPI.getFluidStack(
-                Materials2Materials.SuperconductorUIVBase,
+                Materials.SuperconductorUIVBase,
                 Materials2FluidShapes.fluidMolten,
                 (int) (1)))) {
                     modifier = 1.02F;
                 } else
             if (catalyst.isFluidEqual(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.SuperconductorUMVBase,
+                    Materials.SuperconductorUMVBase,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1)))) {
                         modifier = 1.03F;

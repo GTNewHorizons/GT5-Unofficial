@@ -1,6 +1,6 @@
 package gtPlusPlus.core.recipe;
 
-import static gregtech.api.enums.materials2.Materials2Materials.Obsidian;
+import static gregtech.api.enums.materials2.Materials.Obsidian;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
@@ -53,6 +53,7 @@ import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.TripleCompress
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generateWireRecipes;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -66,7 +67,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -84,7 +84,7 @@ public class RecipesGeneral {
             GregtechItemList.BlueprintBase.get(2),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PL ", "PL ", "LL ", 'P', new ItemStack(Items.paper), 'L',
-                MaterialLibAPI.getStack(Materials2Materials.Lazurite, Materials2Shapes.dust, (int) (1)) });
+                MaterialLibAPI.getStack(Materials.Lazurite, Materials2Shapes.dust, (int) (1)) });
 
         // Rainforest Oak Sapling
         GTModHandler.addCraftingRecipe(
@@ -94,7 +94,7 @@ public class RecipesGeneral {
 
         // Potin
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials2Materials.Potin, Materials2Shapes.dust, 5),
+            MaterialLibAPI.getStack(Materials.Potin, Materials2Shapes.dust, 5),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "dustLead", "dustBronze", "dustTin", "dustLead", "dustBronze" });
 
@@ -104,7 +104,7 @@ public class RecipesGeneral {
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "dustGold", "dustGold", "dustCopper" });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials2Materials.Tumbaga, Materials2Shapes.dust, 10),
+            MaterialLibAPI.getStack(Materials.Tumbaga, Materials2Shapes.dust, 10),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { GregtechItemList.TumbagaMixDust.get(1), GregtechItemList.TumbagaMixDust.get(1),
                 GregtechItemList.TumbagaMixDust.get(1), "dustGold" });
@@ -129,7 +129,7 @@ public class RecipesGeneral {
             .itemOutputs(GregtechItemList.VOLUMETRIC_FLASK_8k.get(2))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.BorosilicateGlass,
+                    Materials.BorosilicateGlass,
                     Materials2FluidShapes.fluidMolten,
                     (int) (4000)))
             .duration(15 * SECONDS)
@@ -142,7 +142,7 @@ public class RecipesGeneral {
             .itemOutputs(GregtechItemList.VOLUMETRIC_FLASK_32k.get(2))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.BorosilicateGlass,
+                    Materials.BorosilicateGlass,
                     Materials2FluidShapes.fluidMolten,
                     (int) (16000)))
             .duration(15 * SECONDS)
@@ -153,7 +153,7 @@ public class RecipesGeneral {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
             .itemOutputs(GregtechItemList.KLEIN_BOTTLE.get(1))
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.ChromaticGlass, 16 * INGOTS))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.ChromaticGlass, 16 * INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(fluidSolidifierRecipes);
@@ -163,7 +163,7 @@ public class RecipesGeneral {
             GregtechItemList.MiningExplosives.get(3),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "ITI", "TFT", "STS", 'I', Ic2Items.industrialTnt.copy(), 'T', new ItemStack(Blocks.tnt), 'F',
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.Iron, 1), 'S', "dustSulfur" });
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iron, 1), 'S', "dustSulfur" });
 
         // Alkalus Disk
         GTModHandler.addCraftingRecipe(
@@ -187,13 +187,13 @@ public class RecipesGeneral {
                 new ItemStack(Items.feather, 64),
                 new ItemStack(Blocks.emerald_block, 32),
                 new ItemStack(Blocks.diamond_block, 32),
-                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.Ruby, 32),
-                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.Sapphire, 32),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials.Ruby, 32),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials.Sapphire, 32),
                 new ItemStack(Blocks.gold_block, 32))
             .itemOutputs(GregtechItemList.MagicFeather.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Silver, Materials2FluidShapes.fluidMolten, (int) (32 * INGOTS)))
+                    .getFluidStack(Materials.Silver, Materials2FluidShapes.fluidMolten, (int) (32 * INGOTS)))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -331,27 +331,27 @@ public class RecipesGeneral {
     }
 
     private static void addPipesAndWires() {
-        generateWireRecipes(Materials2Materials.Zirconium);
-        generateWireRecipes(Materials2Materials.HG1223);
-        generateWireRecipes(Materials2Materials.Grisium);
-        generateWireRecipes(Materials2Materials.TriniumTitaniumAlloy);
-        generateWireRecipes(Materials2Materials.Hypogen);
-        generateWireRecipes(Materials2Materials.ChromaticGlass);
-        generateWireRecipes(Materials2Materials.Dragonblood);
-        generateWireRecipes(Materials2Materials.CelestialTungsten);
-        generateWireRecipes(Materials2Materials.Rhugnor);
+        generateWireRecipes(Materials.Zirconium);
+        generateWireRecipes(Materials.HG1223);
+        generateWireRecipes(Materials.Grisium);
+        generateWireRecipes(Materials.TriniumTitaniumAlloy);
+        generateWireRecipes(Materials.Hypogen);
+        generateWireRecipes(Materials.ChromaticGlass);
+        generateWireRecipes(Materials.Dragonblood);
+        generateWireRecipes(Materials.CelestialTungsten);
+        generateWireRecipes(Materials.Rhugnor);
 
-        generatePipeRecipes(Materials2Materials.Staballoy);
-        generatePipeRecipes(Materials2Materials.Tantalloy60);
-        generatePipeRecipes(Materials2Materials.Tantalloy61);
-        generatePipeRecipes(Materials2Materials.Potin);
-        generatePipeRecipes(Materials2Materials.MaragingSteel300);
-        generatePipeRecipes(Materials2Materials.MaragingSteel350);
-        generatePipeRecipes(Materials2Materials.Inconel690);
-        generatePipeRecipes(Materials2Materials.Inconel792);
-        generatePipeRecipes(Materials2Materials.HastelloyX);
-        generatePipeRecipes(Materials2Materials.TriniumNaquadahCarbonite);
-        generatePipeRecipes(null, MaterialUtils.localName(Materials2Materials.Clay), 15);
+        generatePipeRecipes(Materials.Staballoy);
+        generatePipeRecipes(Materials.Tantalloy60);
+        generatePipeRecipes(Materials.Tantalloy61);
+        generatePipeRecipes(Materials.Potin);
+        generatePipeRecipes(Materials.MaragingSteel300);
+        generatePipeRecipes(Materials.MaragingSteel350);
+        generatePipeRecipes(Materials.Inconel690);
+        generatePipeRecipes(Materials.Inconel792);
+        generatePipeRecipes(Materials.HastelloyX);
+        generatePipeRecipes(Materials.TriniumNaquadahCarbonite);
+        generatePipeRecipes(null, MaterialUtils.localName(Materials.Clay), 15);
     }
 
     private static void migratedRecipes() {

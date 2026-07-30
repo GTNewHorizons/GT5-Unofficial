@@ -3,6 +3,7 @@ package gregtech.loaders.materialrecipes;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -10,7 +11,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialAtomics;
@@ -33,8 +33,8 @@ import gregtech.api.util.GTRecipeConstants;
 /// composition's entry count.
 public final class LoaderChemicalRecipes {
 
-    private static final Material[] CARRIERS = { Materials2Materials.BismuthTelluride,
-        Materials2Materials.Dibismuthhydroborat, Materials2Materials.PotassiumDisulfate };
+    private static final Material[] CARRIERS = { Materials.BismuthTelluride,
+        Materials.Dibismuthhydroborat, Materials.PotassiumDisulfate };
 
     private LoaderChemicalRecipes() {}
 

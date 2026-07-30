@@ -84,6 +84,7 @@ import static kubatech.api.enums.ItemList.WhiteTeaLeaf;
 import static kubatech.api.enums.ItemList.YellowTea;
 import static kubatech.api.enums.ItemList.YellowTeaLeaf;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -96,7 +97,6 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -180,9 +180,9 @@ public class RecipeLoader {
                     gregtech.api.enums.ItemList.Robot_Arm_UV.get(16L),
                     new Object[] { Circuits.UV.getIngredient(), 16L })
                 .fluidInputs(
-                    MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 3 * STACKS + 8 * INGOTS),
+                    MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 3 * STACKS + 8 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Honey, Materials2FluidShapes.fluidLiquid, (int) (20_000)))
+                        .getFluidStack(Materials.Honey, Materials2FluidShapes.fluidLiquid, (int) (20_000)))
                 .itemOutputs(ExtremeIndustrialApiary.get(1))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(5 * MINUTES)
@@ -347,7 +347,7 @@ public class RecipeLoader {
                 .itemOutputs(MilkTea.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (100)))
+                        .getFluidStack(Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (100)))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
@@ -377,7 +377,7 @@ public class RecipeLoader {
                     gregtech.api.enums.ItemList.Quantum_Tank_EV.get(1),
                     FluidExtractorUHV.get(10),
                     new Object[] { Circuits.UV.getIngredient(), 16L })
-                .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 3 * STACKS + 8 * INGOTS))
+                .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 3 * STACKS + 8 * INGOTS))
                 .itemOutputs(TeaAcceptor.get(1))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(5 * MINUTES)

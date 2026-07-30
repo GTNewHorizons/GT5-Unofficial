@@ -12,6 +12,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -28,7 +29,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -57,7 +57,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(GTOreDictUnificator.get("gemMercury", 1L))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Mercury, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.Mercury, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidSolidifierRecipes);
@@ -107,7 +107,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(new ItemStack(GregTechAPI.sBlockConcretes, 1, 8))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Concrete, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Concrete, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(12 * TICKS)
             .eut(4)
             .addTo(fluidSolidifierRecipes);
@@ -117,7 +117,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(new ItemStack(Blocks.glowstone, 1, 0))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Glowstone,
+                    Materials.Glowstone,
                     Materials2FluidShapes.fluidMolten,
                     (int) (4 * INGOTS)))
             .duration(12 * TICKS)
@@ -129,7 +129,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(new ItemStack(Blocks.glass, 1, 0))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Glass, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Glass, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(12 * TICKS)
             .eut(4)
             .addTo(fluidSolidifierRecipes);
@@ -139,7 +139,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(ItemList.Bottle_Empty.get(1L))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Glass, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Glass, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(12 * TICKS)
             .eut(4)
             .addTo(fluidSolidifierRecipes);
@@ -148,7 +148,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemInputs(ItemList.Shape_Mold_Cylinder.get(0L))
             .itemOutputs(ItemList.Food_Cheese.get(1L))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (250)))
+                MaterialLibAPI.getFluidStack(Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (250)))
             .duration(51 * SECONDS + 4 * TICKS)
             .eut(4)
             .addTo(fluidSolidifierRecipes);
@@ -158,7 +158,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(ItemList.Food_Cheese.get(1L))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Cheese, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Cheese, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(fluidSolidifierRecipes);
@@ -167,7 +167,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemInputs(ItemList.Shape_Mold_Anvil.get(0L))
             .itemOutputs(new ItemStack(Blocks.anvil, 1, 0))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Iron, Materials2FluidShapes.fluidMolten, (int) (4464)))
+                MaterialLibAPI.getFluidStack(Materials.Iron, Materials2FluidShapes.fluidMolten, (int) (4464)))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidSolidifierRecipes);
@@ -177,17 +177,17 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(new ItemStack(Blocks.anvil, 1, 0))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.CastIron, Materials2FluidShapes.fluidMolten, (int) (4464)))
+                    .getFluidStack(Materials.CastIron, Materials2FluidShapes.fluidMolten, (int) (4464)))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Boron, Materials2Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Boron, Materials2Shapes.dust, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Boron, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Boron, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidSolidifierRecipes);
@@ -197,7 +197,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(ItemList.Circuit_Parts_PetriDish.get(1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Polytetrafluoroethylene,
+                    Materials.Polytetrafluoroethylene,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * QUARTER_INGOTS)))
             .duration(8 * SECONDS)
@@ -209,7 +209,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(ItemList.Circuit_Parts_PetriDish.get(1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Polystyrene,
+                    Materials.Polystyrene,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * QUARTER_INGOTS)))
             .duration(8 * SECONDS)
@@ -221,7 +221,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(ItemList.Circuit_Parts_PetriDish.get(1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.BorosilicateGlass,
+                    Materials.BorosilicateGlass,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * HALF_INGOTS)))
             .duration(8 * SECONDS)
@@ -233,7 +233,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(ItemList.ReinforcedGlass.get(1L))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.ReinforcedGlass,
+                    Materials.ReinforcedGlass,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(8 * SECONDS)
@@ -245,7 +245,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(ItemList.Circuit_Parts_Glass_Tube.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Glass, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Glass, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(24)
             .addTo(fluidSolidifierRecipes);
@@ -255,7 +255,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(ItemList.Circuit_Parts_Reinforced_Glass_Tube.get(1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.ReinforcedGlass,
+                    Materials.ReinforcedGlass,
                     Materials2FluidShapes.fluidMolten,
                     (int) (2 * INGOTS)))
             .duration(10 * SECONDS)
@@ -280,10 +280,10 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.nugget, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.nugget, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.AnnealedCopper,
+                    Materials.AnnealedCopper,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)))
             .duration(16 * TICKS)
@@ -292,10 +292,10 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ingot.get(0L))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.ingot, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.ingot, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.AnnealedCopper,
+                    Materials.AnnealedCopper,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(1 * SECONDS + 12 * TICKS)
@@ -307,7 +307,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(GTOreDictUnificator.get("blockCopper", 1L))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.AnnealedCopper,
+                    Materials.AnnealedCopper,
                     Materials2FluidShapes.fluidMolten,
                     (int) (9 * INGOTS)))
             .duration(14 * SECONDS + 8 * TICKS)
@@ -316,10 +316,10 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.nugget, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.nugget, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.CastIron,
+                    Materials.CastIron,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)))
             .duration(16 * TICKS)
@@ -331,7 +331,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(GTOreDictUnificator.get("ingotIron", 1L))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.CastIron, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.CastIron, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(fluidSolidifierRecipes);
@@ -341,7 +341,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(GTOreDictUnificator.get("blockIron", 1L))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.CastIron, Materials2FluidShapes.fluidMolten, (int) (9 * INGOTS)))
+                    .getFluidStack(Materials.CastIron, Materials2FluidShapes.fluidMolten, (int) (9 * INGOTS)))
             .duration(14 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(fluidSolidifierRecipes);
@@ -351,7 +351,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(ItemList.KevlarFiber.get(8L))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.LiquidCrystalKevlar,
+                    Materials.LiquidCrystalKevlar,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (1 * INGOTS)))
             .duration(40 * SECONDS)
@@ -363,7 +363,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(getModItem(Railcraft.ID, "anvil", 1L, 0))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Steel, Materials2FluidShapes.fluidMolten, (int) (4464)))
+                    .getFluidStack(Materials.Steel, Materials2FluidShapes.fluidMolten, (int) (4464)))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidSolidifierRecipes);
@@ -372,7 +372,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemInputs(ItemList.Shape_Mold_Rod_Long.get(0L))
             .itemOutputs(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Glass, Materials2FluidShapes.fluidMolten, (int) (288)))
+                MaterialLibAPI.getFluidStack(Materials.Glass, Materials2FluidShapes.fluidMolten, (int) (288)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidSolidifierRecipes);
@@ -383,7 +383,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(GTOreDictUnificator.get("stoneGraniteRed", 1L))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.GraniteRed,
+                    Materials.GraniteRed,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(5 * SECONDS)
@@ -395,7 +395,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(GTOreDictUnificator.get("stoneGraniteBlack", 1L))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.GraniteBlack,
+                    Materials.GraniteBlack,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(5 * SECONDS)
@@ -431,11 +431,11 @@ public class FluidSolidifierRecipes implements Runnable {
         final int partFraction = (int) (prefix.getMaterialAmount() * INGOTS / M);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(prefix, Materials2Materials.Netherite, multiplier))
-            .itemOutputs(GTOreDictUnificator.get(prefix, Materials2Materials.Hexanite, multiplier))
+            .itemInputs(GTOreDictUnificator.get(prefix, Materials.Netherite, multiplier))
+            .itemOutputs(GTOreDictUnificator.get(prefix, Materials.Hexanite, multiplier))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.UnformedHexanite,
+                    Materials.UnformedHexanite,
                     Materials2FluidShapes.fluidLiquid,
                     (int) ((long) partFraction * multiplier)))
             .duration((int) (multiplier * (2 * SECONDS * partFraction / (float) INGOTS)))

@@ -13,6 +13,7 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -20,7 +21,6 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.MaterialStack;
@@ -47,7 +47,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
 
         switch (prefix.getName()) {
             case "cell" -> {
-                if (material == Materials2Materials.Empty) {
+                if (material == Materials.Empty) {
                     GTModHandler.removeRecipeByOutputDelayed(stack);
                     if (modName.equalsIgnoreCase("AtomicScience")) {
                         RA.stdBuilder()
@@ -92,7 +92,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         }
 
                         ItemStack tStack;
-                        if (tMat.mMaterial == Materials2Materials.Air) {
+                        if (tMat.mMaterial == Materials.Air) {
                             tStack = ItemList.Cell_Air.get(tMat.mAmount * tDensityMultiplier / 2L);
                         } else {
                             tStack = GTOreDictUnificator.get(OrePrefixes.dust, tMat.mMaterial, tMat.mAmount);
@@ -197,7 +197,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                 }
             }
             case "cellPlasma" -> {
-                if (material == Materials2Materials.Empty) {
+                if (material == Materials.Empty) {
                     GTModHandler.removeRecipeByOutputDelayed(stack);
                 } else {
                     GTRecipeBuilder recipeBuilder = RA.stdBuilder();

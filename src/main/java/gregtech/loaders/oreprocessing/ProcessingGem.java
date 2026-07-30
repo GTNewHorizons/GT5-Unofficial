@@ -14,6 +14,7 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -22,7 +23,6 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
@@ -58,7 +58,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
         boolean unifiable = !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE));
 
         // Nether quartz is skipped due to its 4:1 ratio.
-        if (material == Materials2Materials.NetherQuartz) return;
+        if (material == Materials.NetherQuartz) return;
 
         switch (prefix.getName()) {
             case "gem" -> {
@@ -75,7 +75,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     && GTOreDictUnificator.get(OrePrefixes.block, material, 1L) != null) {
                     // Compressor recipes
                     // need to avoid iridium exploit
-                    if (material != Materials2Materials.Iridium) {
+                    if (material != Materials.Iridium) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(9, stack))
                             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.block, material, 1L))
@@ -109,7 +109,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     {
                         // need to avoid iridium exploit
                         if (GTOreDictUnificator.get(OrePrefixes.plate, material, 1L) != null
-                            && material != Materials2Materials.Iridium) {
+                            && material != Materials.Iridium) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(1, stack))
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 1L))
@@ -120,7 +120,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     }
 
                     // Bender recipes
-                    if (material != Materials2Materials.Iridium) {
+                    if (material != Materials.Iridium) {
                         if (GTOreDictUnificator.get(OrePrefixes.plate, material, 1L) != null) {
                             // Plate
                             GTValues.RA.stdBuilder()
@@ -212,7 +212,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .itemInputs(GTUtility.copyAmount(3, stack))
                                 .itemOutputs(
                                     GTOreDictUnificator.get(OrePrefixes.gemFlawless, material, 1),
-                                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 2))
+                                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
                                 .duration(1 * SECONDS)
                                 .eut(TierEU.RECIPE_LV)
                                 .metadata(ADDITIVE_AMOUNT, 8)
@@ -306,7 +306,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                     .itemInputs(GTUtility.copyAmount(3, stack))
                                     .itemOutputs(
                                         GTOreDictUnificator.get(OrePrefixes.gemFlawed, material, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 2))
+                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
                                     .duration(1 * SECONDS)
                                     .eut(TierEU.RECIPE_LV)
                                     .metadata(ADDITIVE_AMOUNT, 8)
@@ -411,7 +411,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                     .itemInputs(GTUtility.copyAmount(3, stack))
                                     .itemOutputs(
                                         GTOreDictUnificator.get(OrePrefixes.gem, material, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 2))
+                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
                                     .duration(1 * SECONDS)
                                     .eut(TierEU.RECIPE_LV)
                                     .metadata(ADDITIVE_AMOUNT, 8)
@@ -492,7 +492,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                     .itemInputs(GTUtility.copyAmount(3, stack))
                                     .itemOutputs(
                                         GTOreDictUnificator.get(OrePrefixes.gemExquisite, material, 1),
-                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 2))
+                                        GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2))
                                     .duration(1 * SECONDS)
                                     .eut(TierEU.RECIPE_LV)
                                     .metadata(ADDITIVE_AMOUNT, 8)

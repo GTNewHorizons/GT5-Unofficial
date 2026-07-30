@@ -28,6 +28,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.quantumForceTransformerRecipe
 
 import java.util.HashSet;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
@@ -47,7 +48,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
@@ -68,18 +68,18 @@ public class NaquadahReworkRecipeLoader {
         // Naquadah (UEV)
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.NaquadahOxideMixture, Materials2Shapes.dust, 32),
-                MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.NaquadahOxideMixture, Materials2Shapes.dust, 32),
+                MaterialLibAPI.getStack(Materials.Sodium, Materials2Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.InertNaquadah, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials2Materials.Adamantium, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials2Materials.Gallium, Materials2Shapes.dust, 64))
+                MaterialLibAPI.getStack(Materials.InertNaquadah, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Adamantium, Materials2Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Gallium, Materials2Shapes.dust, 64))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, 64_000),
-                MaterialLibAPI.getFluidStack(Materials2Materials.Fluorine, Materials2FluidShapes.fluidGas, 64_000),
-                MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, 100))
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, 64_000),
+                MaterialLibAPI.getFluidStack(Materials.Fluorine, Materials2FluidShapes.fluidGas, 64_000),
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 100))
             .duration(10 * SECONDS)
             .eut(GTValues.VP[10])
             .metadata(QFT_CATALYST, GregtechItemList.SimpleNaquadahCatalyst.get(0))
@@ -88,19 +88,19 @@ public class NaquadahReworkRecipeLoader {
         // Enriched Naquadah (UIV)
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.EnrichedNaquadahOxideMixture, Materials2Shapes.dust, 32),
-                MaterialLibAPI.getStack(Materials2Materials.Zinc, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.EnrichedNaquadahOxideMixture, Materials2Shapes.dust, 32),
+                MaterialLibAPI.getStack(Materials.Zinc, Materials2Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.InertEnrichedNaquadah, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Trinium, Materials2Shapes.dust, 64))
+                MaterialLibAPI.getStack(Materials.InertEnrichedNaquadah, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Trinium, Materials2Shapes.dust, 64))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, 16_000),
-                MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, 100))
+                    .getFluidStack(Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, 16_000),
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 100))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (32_000)))
+                    .getFluidStack(Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (32_000)))
             .duration(10 * SECONDS)
             .eut(GTValues.VP[11])
             .metadata(QFT_CATALYST, GregtechItemList.SimpleNaquadahCatalyst.get(0))
@@ -109,19 +109,19 @@ public class NaquadahReworkRecipeLoader {
         // Naquadria (UMV)
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.NaquadriaOxideMixture, Materials2Shapes.dust, 32),
-                MaterialLibAPI.getStack(Materials2Materials.Magnesium, Materials2Shapes.dust, 64))
+                MaterialLibAPI.getStack(Materials.NaquadriaOxideMixture, Materials2Shapes.dust, 32),
+                MaterialLibAPI.getStack(Materials.Magnesium, Materials2Shapes.dust, 64))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.InertNaquadria, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Barium, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials2Materials.Indium, Materials2Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.InertNaquadria, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Barium, Materials2Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Indium, Materials2Shapes.dust, 64),
                 ItemList.NaquadriaSupersolid.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.PhosphoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 16_000),
+                    .getFluidStack(Materials.PhosphoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 16_000),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, 16_000),
-                MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, 100))
+                    .getFluidStack(Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, 16_000),
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 100))
             .duration(5 * SECONDS)
             .eut(GTValues.VP[12])
             .metadata(QFT_CATALYST, GregtechItemList.AdvancedNaquadahCatalyst.get(0))
@@ -132,30 +132,30 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.InertNaquadah, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials2Materials.InertNaquadah, Materials2Shapes.dust, 32))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.dust, 16))
+                MaterialLibAPI.getStack(Materials.InertNaquadah, Materials2Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.InertNaquadah, Materials2Shapes.dust, 32))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Nickel, Materials2Shapes.dust, 16))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Nickel, Materials2FluidShapes.fluidPlasma, 16 * INGOTS))
+                    .getFluidStack(Materials.Nickel, Materials2FluidShapes.fluidPlasma, 16 * INGOTS))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Naquadah, Materials2FluidShapes.fluidMolten, 144 * STACKS))
+                    .getFluidStack(Materials.Naquadah, Materials2FluidShapes.fluidMolten, 144 * STACKS))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(600, 500))
             .addTo(neutronActivatorRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.InertEnrichedNaquadah, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials2Materials.InertEnrichedNaquadah, Materials2Shapes.dust, 32))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.dust, 16))
+                MaterialLibAPI.getStack(Materials.InertEnrichedNaquadah, Materials2Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.InertEnrichedNaquadah, Materials2Shapes.dust, 32))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.dust, 16))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Titanium, Materials2FluidShapes.fluidPlasma, 16 * INGOTS))
+                    .getFluidStack(Materials.Titanium, Materials2FluidShapes.fluidPlasma, 16 * INGOTS))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.NaquadahEnriched,
+                    Materials.NaquadahEnriched,
                     Materials2FluidShapes.fluidMolten,
                     144 * STACKS))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -164,15 +164,15 @@ public class NaquadahReworkRecipeLoader {
             .addTo(neutronActivatorRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.InertNaquadria, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials2Materials.InertNaquadria, Materials2Shapes.dust, 32))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Americium, Materials2Shapes.dust, 16))
+                MaterialLibAPI.getStack(Materials.InertNaquadria, Materials2Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.InertNaquadria, Materials2Shapes.dust, 32))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Americium, Materials2Shapes.dust, 16))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Americium, Materials2FluidShapes.fluidPlasma, 16 * INGOTS))
+                    .getFluidStack(Materials.Americium, Materials2FluidShapes.fluidPlasma, 16 * INGOTS))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Naquadria, Materials2FluidShapes.fluidMolten, 144 * STACKS))
+                    .getFluidStack(Materials.Naquadria, Materials2FluidShapes.fluidMolten, 144 * STACKS))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(1100, 1080))
@@ -180,19 +180,19 @@ public class NaquadahReworkRecipeLoader {
 
         // Naquadah Rework Line
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.NaquadahOxideMixture, Materials2Shapes.dust, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NaquadahOxideMixture, Materials2Shapes.dust, 2))
             .circuit(1)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.FluoroantimonicAcid,
+                    Materials.FluoroantimonicAcid,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (3_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.LowQualityNaquadahEmulsion,
+                    Materials.LowQualityNaquadahEmulsion,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (2_000)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.TitaniumTrifluoride, Materials2Shapes.dust, 4))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.TitaniumTrifluoride, Materials2Shapes.dust, 4))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 3000)
@@ -200,14 +200,14 @@ public class NaquadahReworkRecipeLoader {
 
         // TiF3 + 3H = Ti + 3HF
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.TitaniumTrifluoride, Materials2Shapes.dust, 4))
+            .itemInputs(MaterialLibAPI.getStack(Materials.TitaniumTrifluoride, Materials2Shapes.dust, 4))
             .circuit(1)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, 3_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.HydrofluoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 3_000))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.ingotHot, 1))
+                    .getFluidStack(Materials.HydrofluoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 3_000))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.ingotHot, 1))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .metadata(COIL_HEAT, 2000)
@@ -215,14 +215,14 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.plate, 1)),
-                MaterialLibAPI.getStack(Materials2Materials.Hydrogen, Materials2CellShapes.cell, 8))
+                GTUtility.copyAmount(0, MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.plate, 1)),
+                MaterialLibAPI.getStack(Materials.Hydrogen, Materials2CellShapes.cell, 8))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.SeedOil, Materials2FluidShapes.fluidLiquid, 3_000))
+                MaterialLibAPI.getFluidStack(Materials.SeedOil, Materials2FluidShapes.fluidLiquid, 3_000))
             .itemOutputs(ItemList.Cell_Empty.get(8))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials._2Ethyl1Hexanol,
+                    Materials._2Ethyl1Hexanol,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(20 * SECONDS)
@@ -231,32 +231,32 @@ public class NaquadahReworkRecipeLoader {
 
         // 2C8H18O + H3PO4 =Na,C2H6O= C16H35O3P + 2H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Sodium, Materials2Shapes.dust, 2))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials._2Ethyl1Hexanol,
+                    Materials._2Ethyl1Hexanol,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (2_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.PhosphoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 1_000),
-                MaterialLibAPI.getFluidStack(Materials2Materials.Ethanol, Materials2FluidShapes.fluidLiquid, 2_000))
+                    .getFluidStack(Materials.PhosphoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.Ethanol, Materials2FluidShapes.fluidLiquid, 2_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.LowQualityNaquadahSolution, Materials2CellShapes.cell, 36),
-                MaterialLibAPI.getStack(Materials2Materials.P507, Materials2CellShapes.cell, 4))
+                MaterialLibAPI.getStack(Materials.LowQualityNaquadahSolution, Materials2CellShapes.cell, 36),
+                MaterialLibAPI.getStack(Materials.P507, Materials2CellShapes.cell, 4))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.NaquadahAdamantiumSolution, Materials2CellShapes.cell, 30),
+                MaterialLibAPI.getStack(Materials.NaquadahAdamantiumSolution, Materials2CellShapes.cell, 30),
                 ItemList.Cell_Empty.get(10))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.FluorineRichWasteLiquid,
+                    Materials.FluorineRichWasteLiquid,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (10_000)))
             .duration(3 * MINUTES + 20 * SECONDS)
@@ -266,18 +266,18 @@ public class NaquadahReworkRecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (4_000)),
+                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (4_000)),
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.LowQualityNaquadahSolution,
+                    Materials.LowQualityNaquadahSolution,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (36_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.FluorineRichWasteLiquid,
+                    Materials.FluorineRichWasteLiquid,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (10_000)),
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.NaquadahAdamantiumSolution,
+                    Materials.NaquadahAdamantiumSolution,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (30_000)))
             .duration(3 * MINUTES + 20 * SECONDS)
@@ -285,48 +285,48 @@ public class NaquadahReworkRecipeLoader {
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Quicklime, Materials2Shapes.dust, 40))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Quicklime, Materials2Shapes.dust, 40))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.FluorineRichWasteLiquid,
+                    Materials.FluorineRichWasteLiquid,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (1_500)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Fluorspar, Materials2Shapes.dust, 60))
+                    .getFluidStack(Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Fluorspar, Materials2Shapes.dust, 60))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(UniversalChemical);
 
         CrackRecipeAdder.addUniversalDistillationRecipe(
             MaterialLibAPI
-                .getFluidStack(Materials2Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (10_000)),
+                .getFluidStack(Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (10_000)),
             new FluidStack[] {
-                MaterialLibAPI.getFluidStack(Materials2Materials.SaltWater, Materials2FluidShapes.fluidLiquid, 3_000),
-                MaterialLibAPI.getFluidStack(Materials2Materials.Phenol, Materials2FluidShapes.fluidLiquid, 2_000),
+                MaterialLibAPI.getFluidStack(Materials.SaltWater, Materials2FluidShapes.fluidLiquid, 3_000),
+                MaterialLibAPI.getFluidStack(Materials.Phenol, Materials2FluidShapes.fluidLiquid, 2_000),
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.HydrochloricAcidGT5U,
+                    Materials.HydrochloricAcidGT5U,
                     Materials2FluidShapes.fluidLiquid,
                     5_000) },
-            MaterialLibAPI.getStack(Materials2Materials.Chrome, Materials2Shapes.dust, 3),
+            MaterialLibAPI.getStack(Materials.Chrome, Materials2Shapes.dust, 3),
             15 * SECONDS,
             TierEU.RECIPE_HV);
 
         GTValues.RA.stdBuilder()
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Adamantine, Materials2Shapes.dust, 4),
-                MaterialLibAPI.getStack(Materials2Materials.NaquadahOxideMixture, Materials2Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Adamantine, Materials2Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.NaquadahOxideMixture, Materials2Shapes.dust, 2),
                 MaterialLibAPI
-                    .getStack(Materials2Materials.ConcentratedEnrichedNaquadahSludge, Materials2Shapes.dust, 1))
+                    .getStack(Materials.ConcentratedEnrichedNaquadahSludge, Materials2Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.NaquadahAdamantiumSolution,
+                    Materials.NaquadahAdamantiumSolution,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (3_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.NaquadahRichSolution,
+                    Materials.NaquadahRichSolution,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (2_000)))
             .duration(5 * SECONDS)
@@ -335,16 +335,16 @@ public class NaquadahReworkRecipeLoader {
             .addTo(neutronActivatorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 27))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 27))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.NaquadahRichSolution,
+                    Materials.NaquadahRichSolution,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (5_000)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadahine, Materials2Shapes.dust, 30))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadahine, Materials2Shapes.dust, 30))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(autoclaveRecipes);
@@ -352,32 +352,32 @@ public class NaquadahReworkRecipeLoader {
         // NqO2 + C = CO2 + Nq
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.Naquadahine, Materials2Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.Naquadahine, Materials2Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dust, 1))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, 1_000))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.ingotHot, 1))
+                MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, 1_000))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.ingotHot, 1))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 5000)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 27))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 27))
             .circuit(1)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.LowQualityNaquadahEmulsion,
+                    Materials.LowQualityNaquadahEmulsion,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (10_000)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.GalliumHydroxide, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials2Materials.GalliumHydroxide, Materials2Shapes.dust, 48),
-                MaterialLibAPI.getStack(Materials2Materials.Antimony, Materials2Shapes.dust, 15))
+                MaterialLibAPI.getStack(Materials.GalliumHydroxide, Materials2Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.GalliumHydroxide, Materials2Shapes.dust, 48),
+                MaterialLibAPI.getStack(Materials.Antimony, Materials2Shapes.dust, 15))
             .outputChances(6250, 6250, 10000)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.LowQualityNaquadahSolution,
+                    Materials.LowQualityNaquadahSolution,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (9_000)))
             .duration(50 * SECONDS)
@@ -386,52 +386,52 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.EnrichedNaquadahOxideMixture, Materials2Shapes.dust, 4))
+                MaterialLibAPI.getStack(Materials.EnrichedNaquadahOxideMixture, Materials2Shapes.dust, 4))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
+                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, 18_000))
+                    .getFluidStack(Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, 18_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.EnrichedNaquadahRichSolution,
+                    Materials.EnrichedNaquadahRichSolution,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (4_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.WasteLiquid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.NaquadahOxideMixture, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials2Materials.TriniumSulphate, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.NaquadahOxideMixture, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.TriniumSulphate, Materials2Shapes.dust, 1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
         // ZnSO4 + 2H = H2SO4 + Zn
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.ZincSulfate, Materials2Shapes.dust, 6))
+            .itemInputs(MaterialLibAPI.getStack(Materials.ZincSulfate, Materials2Shapes.dust, 6))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, 2_000))
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, 2_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, 1_000))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Zinc, Materials2Shapes.dust, 1))
+                    .getFluidStack(Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, 1_000))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Zinc, Materials2Shapes.dust, 1))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 60))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 60))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.EnrichedNaquadahRichSolution,
+                    Materials.EnrichedNaquadahRichSolution,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (10_000)))
             .itemOutputs(
                 MaterialLibAPI
-                    .getStack(Materials2Materials.ConcentratedEnrichedNaquadahSludge, Materials2Shapes.dust, 8))
+                    .getStack(Materials.ConcentratedEnrichedNaquadahSludge, Materials2Shapes.dust, 8))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (2_500)))
+                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (2_500)))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(autoclaveRecipes);
@@ -439,15 +439,15 @@ public class NaquadahReworkRecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI
-                    .getStack(Materials2Materials.ConcentratedEnrichedNaquadahSludge, Materials2Shapes.dust, 16))
+                    .getStack(Materials.ConcentratedEnrichedNaquadahSludge, Materials2Shapes.dust, 16))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.EnrichedNaquadahSulphate, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials2Materials.EnrichedNaquadahSulphate, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials2Materials.EnrichedNaquadahSulphate, Materials2Shapes.dust, 37),
-                MaterialLibAPI.getStack(Materials2Materials.SodiumSulfate, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials2Materials.SodiumSulfate, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials2Materials.SodiumSulfate, Materials2Shapes.dust, 12),
-                MaterialLibAPI.getStack(Materials2Materials.LowQualityNaquadriaSulphate, Materials2Shapes.dust, 2))
+                MaterialLibAPI.getStack(Materials.EnrichedNaquadahSulphate, Materials2Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.EnrichedNaquadahSulphate, Materials2Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.EnrichedNaquadahSulphate, Materials2Shapes.dust, 37),
+                MaterialLibAPI.getStack(Materials.SodiumSulfate, Materials2Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.SodiumSulfate, Materials2Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.SodiumSulfate, Materials2Shapes.dust, 12),
+                MaterialLibAPI.getStack(Materials.LowQualityNaquadriaSulphate, Materials2Shapes.dust, 2))
             .duration(6 * SECONDS)
             .eut(0)
             .metadata(NKE_RANGE, computeRangeNKE(480, 460))
@@ -456,11 +456,11 @@ public class NaquadahReworkRecipeLoader {
         // Nq+(SO4)2 + 2Zn = Nq+ + 2ZnSO4
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.EnrichedNaquadahSulphate, Materials2Shapes.dust, 11),
-                MaterialLibAPI.getStack(Materials2Materials.Zinc, Materials2Shapes.dust, 2))
+                MaterialLibAPI.getStack(Materials.EnrichedNaquadahSulphate, Materials2Shapes.dust, 11),
+                MaterialLibAPI.getStack(Materials.Zinc, Materials2Shapes.dust, 2))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.ingotHot, 1),
-                MaterialLibAPI.getStack(Materials2Materials.ZincSulfate, Materials2Shapes.dust, 12))
+                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Materials2Shapes.ingotHot, 1),
+                MaterialLibAPI.getStack(Materials.ZincSulfate, Materials2Shapes.dust, 12))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 7500)
@@ -468,25 +468,25 @@ public class NaquadahReworkRecipeLoader {
 
         // KeSO4 + 2H = Ke + H2SO4
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.TriniumSulphate, Materials2Shapes.dust, 6))
+            .itemInputs(MaterialLibAPI.getStack(Materials.TriniumSulphate, Materials2Shapes.dust, 6))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, 2_000))
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, 2_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, 1_000))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Trinium, Materials2Shapes.dust, 1))
+                    .getFluidStack(Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, 1_000))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Trinium, Materials2Shapes.dust, 1))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.NaquadriaOxideMixture, Materials2Shapes.dust, 4))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NaquadriaOxideMixture, Materials2Shapes.dust, 4))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.PhosphoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 4_000))
+                    .getFluidStack(Materials.PhosphoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 4_000))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.IndiumPhosphate, Materials2Shapes.dust, 6),
-                MaterialLibAPI.getStack(Materials2Materials.LowQualityNaquadriaPhosphate, Materials2Shapes.dust, 4))
+                MaterialLibAPI.getStack(Materials.IndiumPhosphate, Materials2Shapes.dust, 6),
+                MaterialLibAPI.getStack(Materials.LowQualityNaquadriaPhosphate, Materials2Shapes.dust, 4))
             .outputChances(2000, 10000)
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -495,11 +495,11 @@ public class NaquadahReworkRecipeLoader {
         // Ga(OH)3 + 3Na = Ga + 3NaOH
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.GalliumHydroxide, Materials2Shapes.dust, 7),
-                MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, 3))
+                MaterialLibAPI.getStack(Materials.GalliumHydroxide, Materials2Shapes.dust, 7),
+                MaterialLibAPI.getStack(Materials.Sodium, Materials2Shapes.dust, 3))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Gallium, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials2Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 9))
+                MaterialLibAPI.getStack(Materials.Gallium, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 9))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -507,27 +507,27 @@ public class NaquadahReworkRecipeLoader {
         // 2InPO4 + 3Ca = 2In + Ca3(PO4)2
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.IndiumPhosphate, Materials2Shapes.dust, 12),
-                MaterialLibAPI.getStack(Materials2Materials.Calcium, Materials2Shapes.dust, 3))
+                MaterialLibAPI.getStack(Materials.IndiumPhosphate, Materials2Shapes.dust, 12),
+                MaterialLibAPI.getStack(Materials.Calcium, Materials2Shapes.dust, 3))
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Indium, Materials2Shapes.dust, 2),
-                MaterialLibAPI.getStack(Materials2Materials.TricalciumPhosphate, Materials2Shapes.dust, 5))
+                MaterialLibAPI.getStack(Materials.Indium, Materials2Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.TricalciumPhosphate, Materials2Shapes.dust, 5))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.LowQualityNaquadriaPhosphate, Materials2Shapes.dust, 10),
-                MaterialLibAPI.getStack(Materials2Materials.SulfuricAcid, Materials2CellShapes.cell, 30))
+                MaterialLibAPI.getStack(Materials.LowQualityNaquadriaPhosphate, Materials2Shapes.dust, 10),
+                MaterialLibAPI.getStack(Materials.SulfuricAcid, Materials2CellShapes.cell, 30))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.NaquadriaRichSolution,
+                    Materials.NaquadriaRichSolution,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (9_000)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Barite, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Barite, Materials2Shapes.dust, 1),
                 ItemList.Cell_Empty.get(30))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -535,11 +535,11 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.NaquadriaSulphate, Materials2Shapes.dust, 44),
-                MaterialLibAPI.getStack(Materials2Materials.LowQualityNaquadriaSulphate, Materials2Shapes.dust, 6))
+                MaterialLibAPI.getStack(Materials.NaquadriaSulphate, Materials2Shapes.dust, 44),
+                MaterialLibAPI.getStack(Materials.LowQualityNaquadriaSulphate, Materials2Shapes.dust, 6))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.NaquadriaRichSolution,
+                    Materials.NaquadriaRichSolution,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (9_000)))
             .duration(5 * SECONDS)
@@ -549,13 +549,13 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.LowQualityNaquadriaSulphate, Materials2Shapes.dust, 3),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Water, 3))
+                MaterialLibAPI.getStack(Materials.LowQualityNaquadriaSulphate, Materials2Shapes.dust, 3),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Water, 3))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (500)))
+                MaterialLibAPI.getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (500)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.LowQualityNaquadriaSulphate,
+                    Materials.LowQualityNaquadriaSulphate,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (3_500)))
             .itemOutputs(ItemList.Cell_Empty.get(3))
@@ -565,32 +565,32 @@ public class NaquadahReworkRecipeLoader {
 
         CrackRecipeAdder.addUniversalDistillationRecipe(
             MaterialLibAPI.getFluidStack(
-                Materials2Materials.LowQualityNaquadriaSulphate,
+                Materials.LowQualityNaquadriaSulphate,
                 Materials2FluidShapes.fluidLiquid,
                 (int) (7_000)),
             new FluidStack[] {
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
+                    .getFluidStack(Materials.P507, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.NaquadriaRichSolution,
+                    Materials.NaquadriaRichSolution,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (5_400)),
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.DilutedSulfuricAcid,
+                    Materials.DilutedSulfuricAcid,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (12_000)) },
-            MaterialLibAPI.getStack(Materials2Materials.EnrichedNaquadahOxideMixture, Materials2Shapes.dust, 2),
+            MaterialLibAPI.getStack(Materials.EnrichedNaquadahOxideMixture, Materials2Shapes.dust, 2),
             25 * SECONDS,
             TierEU.RECIPE_IV);
 
         // Nq*(SO4)2 + 2Mg = Nq* + 2MgSO4
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.NaquadriaSulphate, Materials2Shapes.dust, 11),
-                MaterialLibAPI.getStack(Materials2Materials.Magnesium, Materials2Shapes.dust, 2))
+                MaterialLibAPI.getStack(Materials.NaquadriaSulphate, Materials2Shapes.dust, 11),
+                MaterialLibAPI.getStack(Materials.Magnesium, Materials2Shapes.dust, 2))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.ingotHot, 1),
-                MaterialLibAPI.getStack(Materials2Materials.MagnesiumSulphate, Materials2Shapes.dust, 12))
+                MaterialLibAPI.getStack(Materials.Naquadria, Materials2Shapes.ingotHot, 1),
+                MaterialLibAPI.getStack(Materials.MagnesiumSulphate, Materials2Shapes.dust, 12))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(COIL_HEAT, 9100)
@@ -599,10 +599,10 @@ public class NaquadahReworkRecipeLoader {
         // InPO4 + Ga(OH)3 = InGaP
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.IndiumPhosphate, Materials2Shapes.dust, 6),
-                MaterialLibAPI.getStack(Materials2Materials.GalliumHydroxide, Materials2Shapes.dust, 7))
+                MaterialLibAPI.getStack(Materials.IndiumPhosphate, Materials2Shapes.dust, 6),
+                MaterialLibAPI.getStack(Materials.GalliumHydroxide, Materials2Shapes.dust, 7))
             .circuit(2)
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.IndiumGalliumPhosphide, Materials2Shapes.dust, 3))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.IndiumGalliumPhosphide, Materials2Shapes.dust, 3))
             .duration(15 * TICKS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(mixerRecipes);
@@ -611,7 +611,7 @@ public class NaquadahReworkRecipeLoader {
             .itemInputs(ItemList.Shape_Mold_Ball.get(0))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.NaquadahGoo, Materials2FluidShapes.fluidLiquid, (int) (72)))
+                    .getFluidStack(Materials.NaquadahGoo, Materials2FluidShapes.fluidLiquid, (int) (72)))
             .itemOutputs(ItemRefer.Naquadah_Mass.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -621,7 +621,7 @@ public class NaquadahReworkRecipeLoader {
             .itemInputs(ItemList.Shape_Mold_Ball.get(0))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.EnrichedNaquadahGoo,
+                    Materials.EnrichedNaquadahGoo,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (72)))
             .itemOutputs(ItemRefer.Enriched_Naquadah_Mass.get(1))
@@ -633,7 +633,7 @@ public class NaquadahReworkRecipeLoader {
             .itemInputs(ItemList.Shape_Mold_Ball.get(0))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.NaquadriaGoo, Materials2FluidShapes.fluidLiquid, (int) (72)))
+                    .getFluidStack(Materials.NaquadriaGoo, Materials2FluidShapes.fluidLiquid, (int) (72)))
             .itemOutputs(ItemRefer.Naquadria_Mass.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -642,8 +642,8 @@ public class NaquadahReworkRecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemRefer.Naquadah_Mass.get(1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.NaquadahOxideMixture, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials2Materials.EnrichedNaquadahOxideMixture, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.NaquadahOxideMixture, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.EnrichedNaquadahOxideMixture, Materials2Shapes.dust, 1))
             .outputChances(10000, 100)
             .duration(5 * SECONDS)
             .eut(2)
@@ -652,8 +652,8 @@ public class NaquadahReworkRecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemRefer.Enriched_Naquadah_Mass.get(1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.EnrichedNaquadahOxideMixture, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials2Materials.NaquadriaOxideMixture, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.EnrichedNaquadahOxideMixture, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.NaquadriaOxideMixture, Materials2Shapes.dust, 1))
             .outputChances(10000, 100)
             .duration(5 * SECONDS)
             .eut(2)
@@ -662,8 +662,8 @@ public class NaquadahReworkRecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemRefer.Naquadria_Mass.get(1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.NaquadriaOxideMixture, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials2Materials.NaquadriaOxideMixture, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.NaquadriaOxideMixture, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.NaquadriaOxideMixture, Materials2Shapes.dust, 1))
             .outputChances(10000, 100)
             .duration(5 * SECONDS)
             .eut(2)
@@ -671,8 +671,8 @@ public class NaquadahReworkRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.SiliconSolarGrade, 16),
-                MaterialLibAPI.getStack(Materials2Materials.Naquadahine, Materials2Shapes.dust, 3),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials.SiliconSolarGrade, 16),
+                MaterialLibAPI.getStack(Materials.Naquadahine, Materials2Shapes.dust, 3),
                 ItemList.GalliumArsenideCrystal.get(1L))
             .itemOutputs(ItemList.Circuit_Silicon_Ingot3.get(1))
             .duration(50 * SECONDS)
@@ -684,19 +684,19 @@ public class NaquadahReworkRecipeLoader {
         // NqO2 + 4Na = 2Na2O + Nq
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.Naquadahine, Materials2Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, 4))
+                MaterialLibAPI.getStack(Materials.Naquadahine, Materials2Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Sodium, Materials2Shapes.dust, 4))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials2Materials.SodiumOxide, Materials2Shapes.dust, 6))
+                MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.SodiumOxide, Materials2Shapes.dust, 6))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.NaquadahOxideMixture, Materials2Shapes.dust, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NaquadahOxideMixture, Materials2Shapes.dust, 2))
             .circuit(2)
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.nugget, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.nugget, 1))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 5000)
@@ -707,26 +707,26 @@ public class NaquadahReworkRecipeLoader {
         GTValues.RA.stdBuilder()
             .circuit(24)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Ethylene, Materials2FluidShapes.fluidGas, 1_000),
-                MaterialUtils.gas(Materials2Materials.Steam, 2_000))
+                MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, 1_000),
+                MaterialUtils.gas(Materials.Steam, 2_000))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Ethanol, Materials2FluidShapes.fluidLiquid, 1_000))
+                MaterialLibAPI.getFluidStack(Materials.Ethanol, Materials2FluidShapes.fluidLiquid, 1_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Ethylene, Materials2CellShapes.cell, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ethylene, Materials2CellShapes.cell, 1))
             .circuit(24)
-            .fluidInputs(MaterialUtils.gas(Materials2Materials.Steam, 2_000))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ethanol, Materials2CellShapes.cell, 1))
+            .fluidInputs(MaterialUtils.gas(Materials.Steam, 2_000))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ethanol, Materials2CellShapes.cell, 1))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.ingotHot, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.ingot, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.ingotHot, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.ingot, 1))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(vacuumFreezerRecipes);
@@ -888,11 +888,11 @@ public class NaquadahReworkRecipeLoader {
                 for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                     if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
                     if (tRecipe.mOutputs[i].isItemEqual(
-                        MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.dustTiny, (int) (1)))) {
+                        MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.dustTiny, (int) (1)))) {
                         tRecipe.mOutputs[i] = GTUtility.copyAmount(
                             tRecipe.mOutputs[i].stackSize * 2L,
                             MaterialLibAPI
-                                .getStack(Materials2Materials.NaquadahOxideMixture, Materials2Shapes.dustTiny, 1));
+                                .getStack(Materials.NaquadahOxideMixture, Materials2Shapes.dustTiny, 1));
                         modified = true;
                     }
                 }
@@ -916,98 +916,98 @@ public class NaquadahReworkRecipeLoader {
                 for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                     if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
                     if (tRecipe.mOutputs[i].isItemEqual(
-                        MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.dustTiny, (int) (1)))) {
+                        MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.dustTiny, (int) (1)))) {
                         tRecipe.mOutputs[i] = GTUtility.copyAmount(
                             tRecipe.mOutputs[i].stackSize * 2,
                             MaterialLibAPI
-                                .getStack(Materials2Materials.NaquadahOxideMixture, Materials2Shapes.dustTiny, 1));
+                                .getStack(Materials.NaquadahOxideMixture, Materials2Shapes.dustTiny, 1));
                     } else if (tRecipe.mOutputs[i].isItemEqual(
                         MaterialLibAPI
-                            .getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.dustTiny, (int) (1)))) {
+                            .getStack(Materials.NaquadahEnriched, Materials2Shapes.dustTiny, (int) (1)))) {
                                 tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                     tRecipe.mOutputs[i].stackSize * 2,
                                     MaterialLibAPI.getStack(
-                                        Materials2Materials.EnrichedNaquadahOxideMixture,
+                                        Materials.EnrichedNaquadahOxideMixture,
                                         Materials2Shapes.dustTiny,
                                         1));
                             } else
                         if (tRecipe.mOutputs[i].isItemEqual(
                             MaterialLibAPI
-                                .getStack(Materials2Materials.Naquadria, Materials2Shapes.dustTiny, (int) (1)))) {
+                                .getStack(Materials.Naquadria, Materials2Shapes.dustTiny, (int) (1)))) {
                                     tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                         tRecipe.mOutputs[i].stackSize * 2,
                                         MaterialLibAPI.getStack(
-                                            Materials2Materials.NaquadriaOxideMixture,
+                                            Materials.NaquadriaOxideMixture,
                                             Materials2Shapes.dustTiny,
                                             1));
                                 } else
                             if (tRecipe.mOutputs[i].isItemEqual(
                                 MaterialLibAPI
-                                    .getStack(Materials2Materials.Naquadah, Materials2Shapes.dust, (int) (1)))) {
+                                    .getStack(Materials.Naquadah, Materials2Shapes.dust, (int) (1)))) {
                                         tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                             tRecipe.mOutputs[i].stackSize * 2,
                                             MaterialLibAPI.getStack(
-                                                Materials2Materials.NaquadahOxideMixture,
+                                                Materials.NaquadahOxideMixture,
                                                 Materials2Shapes.dust,
                                                 1));
                                     } else
                                 if (tRecipe.mOutputs[i].isItemEqual(
                                     MaterialLibAPI.getStack(
-                                        Materials2Materials.NaquadahEnriched,
+                                        Materials.NaquadahEnriched,
                                         Materials2Shapes.dust,
                                         (int) (1)))) {
                                             tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                                 tRecipe.mOutputs[i].stackSize * 2,
                                                 MaterialLibAPI.getStack(
-                                                    Materials2Materials.EnrichedNaquadahOxideMixture,
+                                                    Materials.EnrichedNaquadahOxideMixture,
                                                     Materials2Shapes.dust,
                                                     1));
                                         } else
                                     if (tRecipe.mOutputs[i].isItemEqual(
                                         MaterialLibAPI.getStack(
-                                            Materials2Materials.Naquadria,
+                                            Materials.Naquadria,
                                             Materials2Shapes.dust,
                                             (int) (1)))) {
                                                 tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                                     tRecipe.mOutputs[i].stackSize * 2,
                                                     MaterialLibAPI.getStack(
-                                                        Materials2Materials.NaquadriaOxideMixture,
+                                                        Materials.NaquadriaOxideMixture,
                                                         Materials2Shapes.dust,
                                                         1));
                                             } else
                                         if (tRecipe.mOutputs[i].isItemEqual(
                                             MaterialLibAPI.getStack(
-                                                Materials2Materials.Naquadah,
+                                                Materials.Naquadah,
                                                 Materials2Shapes.dustSmall,
                                                 (int) (1)))) {
                                                     tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                                         tRecipe.mOutputs[i].stackSize * 2,
                                                         MaterialLibAPI.getStack(
-                                                            Materials2Materials.NaquadahOxideMixture,
+                                                            Materials.NaquadahOxideMixture,
                                                             Materials2Shapes.dustSmall,
                                                             1));
                                                 } else
                                             if (tRecipe.mOutputs[i].isItemEqual(
                                                 MaterialLibAPI.getStack(
-                                                    Materials2Materials.NaquadahEnriched,
+                                                    Materials.NaquadahEnriched,
                                                     Materials2Shapes.dustSmall,
                                                     (int) (1)))) {
                                                         tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                                             tRecipe.mOutputs[i].stackSize * 2,
                                                             MaterialLibAPI.getStack(
-                                                                Materials2Materials.EnrichedNaquadahOxideMixture,
+                                                                Materials.EnrichedNaquadahOxideMixture,
                                                                 Materials2Shapes.dustSmall,
                                                                 1));
                                                     } else
                                                 if (tRecipe.mOutputs[i].isItemEqual(
                                                     MaterialLibAPI.getStack(
-                                                        Materials2Materials.Naquadria,
+                                                        Materials.Naquadria,
                                                         Materials2Shapes.dustSmall,
                                                         (int) (1)))) {
                                                             tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                                                 tRecipe.mOutputs[i].stackSize * 2,
                                                                 MaterialLibAPI.getStack(
-                                                                    Materials2Materials.NaquadriaOxideMixture,
+                                                                    Materials.NaquadriaOxideMixture,
                                                                     Materials2Shapes.dustSmall,
                                                                     1));
                                                         } else {
@@ -1073,15 +1073,15 @@ public class NaquadahReworkRecipeLoader {
                 if (recipe.mFluidOutputs[i] == null) continue;
                 if (recipe.mFluidOutputs[i].isFluidEqual(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Naquadah, Materials2FluidShapes.fluidMolten, (int) (1)))
+                        .getFluidStack(Materials.Naquadah, Materials2FluidShapes.fluidMolten, (int) (1)))
                     || recipe.mFluidOutputs[i].isFluidEqual(
                         MaterialLibAPI.getFluidStack(
-                            Materials2Materials.NaquadahEnriched,
+                            Materials.NaquadahEnriched,
                             Materials2FluidShapes.fluidMolten,
                             (int) (1)))
                     || recipe.mFluidOutputs[i].isFluidEqual(
                         MaterialLibAPI.getFluidStack(
-                            Materials2Materials.Naquadria,
+                            Materials.Naquadria,
                             Materials2FluidShapes.fluidMolten,
                             (int) (1)))) {
                     isAny = true;
@@ -1095,30 +1095,30 @@ public class NaquadahReworkRecipeLoader {
                 if (recipe.mFluidOutputs[i] == null) continue;
                 if (recipe.mFluidOutputs[i].isFluidEqual(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Naquadah, Materials2FluidShapes.fluidMolten, (int) (1)))) {
+                        .getFluidStack(Materials.Naquadah, Materials2FluidShapes.fluidMolten, (int) (1)))) {
                     tRecipe.mFluidOutputs[i] = MaterialLibAPI.getFluidStack(
-                        Materials2Materials.NaquadahGoo,
+                        Materials.NaquadahGoo,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (recipe.mFluidOutputs[i].amount * 2));
                     modified = true;
                 } else if (recipe.mFluidOutputs[i].isFluidEqual(
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.NaquadahEnriched,
+                        Materials.NaquadahEnriched,
                         Materials2FluidShapes.fluidMolten,
                         (int) (1)))) {
                             tRecipe.mFluidOutputs[i] = MaterialLibAPI.getFluidStack(
-                                Materials2Materials.EnrichedNaquadahGoo,
+                                Materials.EnrichedNaquadahGoo,
                                 Materials2FluidShapes.fluidLiquid,
                                 (int) (recipe.mFluidOutputs[i].amount * 2));
                             modified = true;
                         } else
                     if (recipe.mFluidOutputs[i].isFluidEqual(
                         MaterialLibAPI.getFluidStack(
-                            Materials2Materials.Naquadria,
+                            Materials.Naquadria,
                             Materials2FluidShapes.fluidMolten,
                             (int) (1)))) {
                                 tRecipe.mFluidOutputs[i] = MaterialLibAPI.getFluidStack(
-                                    Materials2Materials.NaquadriaGoo,
+                                    Materials.NaquadriaGoo,
                                     Materials2FluidShapes.fluidLiquid,
                                     (int) (recipe.mFluidOutputs[i].amount * 2));
                                 modified = true;
@@ -1151,15 +1151,15 @@ public class NaquadahReworkRecipeLoader {
                 if (recipe.mFluidOutputs[i] == null) continue;
                 if (recipe.mFluidOutputs[i].isFluidEqual(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Naquadah, Materials2FluidShapes.fluidMolten, (int) (1)))
+                        .getFluidStack(Materials.Naquadah, Materials2FluidShapes.fluidMolten, (int) (1)))
                     || recipe.mFluidOutputs[i].isFluidEqual(
                         MaterialLibAPI.getFluidStack(
-                            Materials2Materials.NaquadahEnriched,
+                            Materials.NaquadahEnriched,
                             Materials2FluidShapes.fluidMolten,
                             (int) (1)))
                     || recipe.mFluidOutputs[i].isFluidEqual(
                         MaterialLibAPI.getFluidStack(
-                            Materials2Materials.Naquadria,
+                            Materials.Naquadria,
                             Materials2FluidShapes.fluidMolten,
                             (int) (1)))) {
                     isAny = true;
@@ -1173,30 +1173,30 @@ public class NaquadahReworkRecipeLoader {
                 if (recipe.mFluidOutputs[i] == null) continue;
                 if (recipe.mFluidOutputs[i].isFluidEqual(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Naquadah, Materials2FluidShapes.fluidMolten, (int) (1)))) {
+                        .getFluidStack(Materials.Naquadah, Materials2FluidShapes.fluidMolten, (int) (1)))) {
                     tRecipe.mFluidOutputs[i] = MaterialLibAPI.getFluidStack(
-                        Materials2Materials.NaquadahGoo,
+                        Materials.NaquadahGoo,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (recipe.mFluidOutputs[i].amount * 2));
                     modified = true;
                 } else if (recipe.mFluidOutputs[i].isFluidEqual(
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.NaquadahEnriched,
+                        Materials.NaquadahEnriched,
                         Materials2FluidShapes.fluidMolten,
                         (int) (1)))) {
                             tRecipe.mFluidOutputs[i] = MaterialLibAPI.getFluidStack(
-                                Materials2Materials.EnrichedNaquadahGoo,
+                                Materials.EnrichedNaquadahGoo,
                                 Materials2FluidShapes.fluidLiquid,
                                 (int) (recipe.mFluidOutputs[i].amount * 2));
                             modified = true;
                         } else
                     if (recipe.mFluidOutputs[i].isFluidEqual(
                         MaterialLibAPI.getFluidStack(
-                            Materials2Materials.Naquadria,
+                            Materials.Naquadria,
                             Materials2FluidShapes.fluidMolten,
                             (int) (1)))) {
                                 tRecipe.mFluidOutputs[i] = MaterialLibAPI.getFluidStack(
-                                    Materials2Materials.NaquadriaGoo,
+                                    Materials.NaquadriaGoo,
                                     Materials2FluidShapes.fluidLiquid,
                                     (int) (recipe.mFluidOutputs[i].amount * 2));
                                 modified = true;
@@ -1235,29 +1235,29 @@ public class NaquadahReworkRecipeLoader {
                 for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                     if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
                     if (tRecipe.mOutputs[i].isItemEqual(
-                        MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.dust, (int) (1)))) {
+                        MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.dust, (int) (1)))) {
                         tRecipe.mOutputs[i] = GTUtility.copyAmount(
                             tRecipe.mOutputs[i].stackSize,
                             MaterialLibAPI
-                                .getStack(Materials2Materials.NaquadahOxideMixture, Materials2Shapes.dust, 1));
+                                .getStack(Materials.NaquadahOxideMixture, Materials2Shapes.dust, 1));
                         modified = true;
                     } else if (tRecipe.mOutputs[i].isItemEqual(
                         MaterialLibAPI
-                            .getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.dust, (int) (1)))) {
+                            .getStack(Materials.NaquadahEnriched, Materials2Shapes.dust, (int) (1)))) {
                                 tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                     tRecipe.mOutputs[i].stackSize,
                                     MaterialLibAPI.getStack(
-                                        Materials2Materials.EnrichedNaquadahOxideMixture,
+                                        Materials.EnrichedNaquadahOxideMixture,
                                         Materials2Shapes.dust,
                                         1));
                                 modified = true;
                             } else
                         if (tRecipe.mOutputs[i].isItemEqual(
-                            MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.dust, (int) (1)))) {
+                            MaterialLibAPI.getStack(Materials.Naquadria, Materials2Shapes.dust, (int) (1)))) {
                                 tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                     tRecipe.mOutputs[i].stackSize,
                                     MaterialLibAPI
-                                        .getStack(Materials2Materials.NaquadriaOxideMixture, Materials2Shapes.dust, 1));
+                                        .getStack(Materials.NaquadriaOxideMixture, Materials2Shapes.dust, 1));
                                 modified = true;
                             }
                 }
@@ -1285,11 +1285,11 @@ public class NaquadahReworkRecipeLoader {
         GTLog.out.print("Simple Washer done!\n");
 
         // For Cauldron Wash
-        registerCauldronCleaningFor(Materials2Materials.Naquadah, Materials2Materials.NaquadahOxideMixture);
+        registerCauldronCleaningFor(Materials.Naquadah, Materials.NaquadahOxideMixture);
         registerCauldronCleaningFor(
-            Materials2Materials.NaquadahEnriched,
-            Materials2Materials.EnrichedNaquadahOxideMixture);
-        registerCauldronCleaningFor(Materials2Materials.Naquadria, Materials2Materials.NaquadriaOxideMixture);
+            Materials.NaquadahEnriched,
+            Materials.EnrichedNaquadahOxideMixture);
+        registerCauldronCleaningFor(Materials.Naquadria, Materials.NaquadriaOxideMixture);
         GTLog.out.print(GoodGenerator.MOD_ID + ": Replace 3! ");
         GTLog.out.print("Cauldron Wash done!\n");
 
@@ -1308,24 +1308,24 @@ public class NaquadahReworkRecipeLoader {
         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
             if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
             if (tRecipe.mOutputs[i]
-                .isItemEqual(MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.dust, (int) (1)))) {
+                .isItemEqual(MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.dust, (int) (1)))) {
                 tRecipe.mOutputs[i] = GTUtility.copyAmount(
                     tRecipe.mOutputs[i].stackSize * 2,
-                    MaterialLibAPI.getStack(Materials2Materials.NaquadahOxideMixture, Materials2Shapes.dust, 1));
+                    MaterialLibAPI.getStack(Materials.NaquadahOxideMixture, Materials2Shapes.dust, 1));
                 modified = true;
             } else if (tRecipe.mOutputs[i].isItemEqual(
-                MaterialLibAPI.getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.dust, (int) (1)))) {
+                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Materials2Shapes.dust, (int) (1)))) {
                     tRecipe.mOutputs[i] = GTUtility.copyAmount(
                         tRecipe.mOutputs[i].stackSize * 2,
                         MaterialLibAPI
-                            .getStack(Materials2Materials.EnrichedNaquadahOxideMixture, Materials2Shapes.dust, 1));
+                            .getStack(Materials.EnrichedNaquadahOxideMixture, Materials2Shapes.dust, 1));
                     modified = true;
                 } else if (tRecipe.mOutputs[i].isItemEqual(
-                    MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.dust, (int) (1)))) {
+                    MaterialLibAPI.getStack(Materials.Naquadria, Materials2Shapes.dust, (int) (1)))) {
                         tRecipe.mOutputs[i] = GTUtility.copyAmount(
                             tRecipe.mOutputs[i].stackSize * 2,
                             MaterialLibAPI
-                                .getStack(Materials2Materials.NaquadriaOxideMixture, Materials2Shapes.dust, 1));
+                                .getStack(Materials.NaquadriaOxideMixture, Materials2Shapes.dust, 1));
                         modified = true;
                     }
         }
@@ -1347,32 +1347,32 @@ public class NaquadahReworkRecipeLoader {
 
         if (GTUtility.areStacksEqual(
             result,
-            MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.dust, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.dust, (int) (1)),
             true)) {
-            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials2Materials.Naquadah)) {
+            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Naquadah)) {
                 return;
             }
             mutableRecipe.gt5u$setRecipeOutputItem(
-                MaterialLibAPI.getStack(Materials2Materials.NaquadahOxideMixture, Materials2Shapes.dust, 2));
+                MaterialLibAPI.getStack(Materials.NaquadahOxideMixture, Materials2Shapes.dust, 2));
         } else if (GTUtility.areStacksEqual(
             result,
-            MaterialLibAPI.getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.dust, (int) (1)),
+            MaterialLibAPI.getStack(Materials.NaquadahEnriched, Materials2Shapes.dust, (int) (1)),
             true)) {
-                if (PlatinumSludgeOverHaul.checkRecipe(input, Materials2Materials.NaquadahEnriched)) {
+                if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.NaquadahEnriched)) {
                     return;
                 }
                 mutableRecipe.gt5u$setRecipeOutputItem(
                     MaterialLibAPI
-                        .getStack(Materials2Materials.EnrichedNaquadahOxideMixture, Materials2Shapes.dust, 2));
+                        .getStack(Materials.EnrichedNaquadahOxideMixture, Materials2Shapes.dust, 2));
             } else if (GTUtility.areStacksEqual(
                 result,
-                MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Naquadria, Materials2Shapes.dust, (int) (1)),
                 true)) {
-                    if (PlatinumSludgeOverHaul.checkRecipe(input, Materials2Materials.Naquadria)) {
+                    if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Naquadria)) {
                         return;
                     }
                     mutableRecipe.gt5u$setRecipeOutputItem(
-                        MaterialLibAPI.getStack(Materials2Materials.NaquadriaOxideMixture, Materials2Shapes.dust, 2));
+                        MaterialLibAPI.getStack(Materials.NaquadriaOxideMixture, Materials2Shapes.dust, 2));
                 }
     }
 }

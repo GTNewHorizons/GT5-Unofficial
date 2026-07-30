@@ -70,184 +70,184 @@ public final class Materials2GtppComposites {
 
     // spotless:off
     static {
-        add(Materials2Materials.AbyssalAlloy,
-            of(Materials2Materials.StainlessSteel, 5), of(Materials2Materials.TungstenCarbide, 5),
-            of(Materials2Materials.Nichrome, 5), of(Materials2Materials.Bronze, 5),
-            of(Materials2Materials.IncoloyMA956, 5), of(Materials2Materials.Iodine, 1),
-            of(Materials2Materials.Radon, 1), of(Materials2Materials.Germanium, 1));
-        add(Materials2Materials.AncientGranite,
-            of(Materials2Materials.Oxygen, 8), of(Materials2Materials.Iron, 5),
-            of(Materials2Materials.SiliconDioxide, 5), of(Materials2Materials.Alumina, 3),
-            of(Materials2Materials.Potassium, 3), of(Materials2Materials.Calcium, 2),
-            of(Materials2Materials.Sodium, 2), of(Materials2Materials.Ytterbium, 1));
-        add(Materials2Materials.Arcanite,
-            of(Materials2Materials.Thorium232, 4), of(Materials2Materials.EnergyCrystal, 4),
-            of(Materials2Materials.InfusedOrder, 1), of(Materials2Materials.InfusedEntropy, 1));
-        add(Materials2Materials.ArceusAlloy2B,
-            of(Materials2Materials.Trinium, 3), of(Materials2Materials.MaragingSteel350, 4),
-            of(Materials2Materials.TungstenSteel, 2), of(Materials2Materials.Osmiridium, 1),
-            of(Materials2Materials.Strontium, 1));
-        add(Materials2Materials.BabbitAlloy,
-            of(Materials2Materials.Tin, 5), of(Materials2Materials.Lead, 36),
-            of(Materials2Materials.Antimony, 8), of(Materials2Materials.Arsenic, 1));
-        add(Materials2Materials.BlackMetal,
-            of(Materials2Materials.Lead, 3), of(Materials2Materials.Manganese, 5), of(Materials2Materials.Carbon, 12));
-        add(Materials2Materials.BlackTitanium,
-            of(Materials2Materials.Titanium, 55), of(Materials2Materials.Lanthanum, 12),
-            of(Materials2Materials.Tungsten, 8), of(Materials2Materials.Cobalt, 6),
-            of(Materials2Materials.Manganese, 4), of(Materials2Materials.Phosphorus, 4),
-            of(Materials2Materials.Palladium, 4), of(Materials2Materials.Niobium, 2),
-            of(Materials2Materials.Argon, 5));
-        add(Materials2Materials.BloodSteel,
-            of(Materials2Materials.Steel, 1), of(Materials2Materials.InfusedFire, 1));
-        add(Materials2Materials.Botmium,
-            of(Materials2Materials.Nitinol60, 1), of(Materials2Materials.Osmium, 6),
-            of(Materials2Materials.Ruthenium, 6), of(Materials2Materials.Thallium, 3));
-        add(Materials2Materials.CinobiteA243,
-            of(Materials2Materials.Zeron100, 16), of(Materials2Materials.Naquadria, 7),
-            of(Materials2Materials.Gadolinium, 5), of(Materials2Materials.Aluminium, 3),
-            of(Materials2Materials.Mercury, 2), of(Materials2Materials.Tin, 2),
-            of(Materials2Materials.Titanium, 12), of(Materials2Materials.Osmiridium, 6));
-        add(Materials2Materials.EglinSteel,
-            of(Materials2Materials.EglinSteelBaseCompound, 10), of(Materials2Materials.Sulfur, 1),
-            of(Materials2Materials.Silicon, 4), of(Materials2Materials.Carbon, 1));
-        add(Materials2Materials.EglinSteelBaseCompound,
-            of(Materials2Materials.Iron, 4), of(Materials2Materials.Kanthal, 1), of(Materials2Materials.Invar, 5));
-        add(Materials2Materials.EnergyCrystal,
-            of(Materials2Materials.InfusedAir, 1), of(Materials2Materials.InfusedEarth, 1),
-            of(Materials2Materials.InfusedFire, 1), of(Materials2Materials.InfusedWater, 1));
-        add(Materials2Materials.Grisium,
-            of(Materials2Materials.Titanium, 9), of(Materials2Materials.Carbon, 9),
-            of(Materials2Materials.Potassium, 9), of(Materials2Materials.Lithium, 9),
-            of(Materials2Materials.Sulfur, 9), of(Materials2Materials.Hydrogen, 5));
-        add(Materials2Materials.HastelloyC276,
-            of(Materials2Materials.Cobalt, 1), of(Materials2Materials.Molybdenum, 8),
-            of(Materials2Materials.Tungsten, 1), of(Materials2Materials.Copper, 1),
-            of(Materials2Materials.Chrome, 7), of(Materials2Materials.Nickel, 32));
-        add(Materials2Materials.HastelloyN,
-            of(Materials2Materials.Yttrium, 2), of(Materials2Materials.Molybdenum, 4),
-            of(Materials2Materials.Chrome, 2), of(Materials2Materials.Titanium, 2),
-            of(Materials2Materials.Nickel, 15));
-        add(Materials2Materials.HastelloyW,
-            of(Materials2Materials.Iron, 3), of(Materials2Materials.Cobalt, 1),
-            of(Materials2Materials.Molybdenum, 12), of(Materials2Materials.Chrome, 3),
-            of(Materials2Materials.Nickel, 31));
-        add(Materials2Materials.HastelloyX,
-            of(Materials2Materials.Iron, 9), of(Materials2Materials.Manganese, 1),
-            of(Materials2Materials.Silicon, 1), of(Materials2Materials.Molybdenum, 4),
-            of(Materials2Materials.Chrome, 11), of(Materials2Materials.Nickel, 24));
-        add(Materials2Materials.HeLiCoPtEr,
-            of(Materials2Materials.Helium, 1), of(Materials2Materials.Lithium, 1),
-            of(Materials2Materials.Cobalt, 1), of(Materials2Materials.Platinum, 1),
-            of(Materials2Materials.Erbium, 1));
-        add(Materials2Materials.HS188A,
-            of(Materials2Materials.Cobalt, 10), of(Materials2Materials.Hafnium, 10),
-            of(Materials2Materials.Talonite, 8), of(Materials2Materials.Rhenium, 5),
-            of(Materials2Materials.NiobiumCarbide, 5), of(Materials2Materials.HastelloyX, 4),
-            of(Materials2Materials.TungstenSteel, 4), of(Materials2Materials.ZirconiumCarbide, 4));
-        add(Materials2Materials.Incoloy020,
-            of(Materials2Materials.Iron, 10), of(Materials2Materials.Copper, 1),
-            of(Materials2Materials.Chrome, 5), of(Materials2Materials.Nickel, 9));
-        add(Materials2Materials.IncoloyDS,
-            of(Materials2Materials.Iron, 23), of(Materials2Materials.Cobalt, 9),
-            of(Materials2Materials.Chrome, 9), of(Materials2Materials.Nickel, 9));
-        add(Materials2Materials.IncoloyMA956,
-            of(Materials2Materials.Iron, 16), of(Materials2Materials.Aluminium, 3),
-            of(Materials2Materials.Chrome, 5), of(Materials2Materials.Yttrium, 1));
-        add(Materials2Materials.Inconel625,
-            of(Materials2Materials.Nickel, 3), of(Materials2Materials.Chrome, 7),
-            of(Materials2Materials.Molybdenum, 10), of(Materials2Materials.Invar, 10),
-            of(Materials2Materials.Nichrome, 13));
-        add(Materials2Materials.Inconel690,
-            of(Materials2Materials.Chrome, 1), of(Materials2Materials.Niobium, 2),
-            of(Materials2Materials.Molybdenum, 2), of(Materials2Materials.Nichrome, 3));
-        add(Materials2Materials.Inconel792,
-            of(Materials2Materials.Nickel, 2), of(Materials2Materials.Niobium, 1),
-            of(Materials2Materials.Aluminium, 2), of(Materials2Materials.Nichrome, 1));
-        add(Materials2Materials.LafiumCompound,
-            of(Materials2Materials.HastelloyN, 4), of(Materials2Materials.Naquadah, 2),
-            of(Materials2Materials.Samarium, 1), of(Materials2Materials.Tungsten, 2),
-            of(Materials2Materials.Argon, 1), of(Materials2Materials.Aluminium, 3),
-            of(Materials2Materials.Nickel, 4), of(Materials2Materials.Carbon, 1));
-        add(Materials2Materials.Laurenium,
-            of(Materials2Materials.EglinSteel, 8), of(Materials2Materials.Indium, 2),
-            of(Materials2Materials.Chrome, 4), of(Materials2Materials.Dysprosium, 1),
-            of(Materials2Materials.Rhenium, 1));
-        add(Materials2Materials.MaragingSteel250,
-            of(Materials2Materials.Steel, 16), of(Materials2Materials.Molybdenum, 1),
-            of(Materials2Materials.Titanium, 1), of(Materials2Materials.Nickel, 4),
-            of(Materials2Materials.Cobalt, 2));
-        add(Materials2Materials.MaragingSteel300,
-            of(Materials2Materials.Steel, 16), of(Materials2Materials.Titanium, 1),
-            of(Materials2Materials.Aluminium, 1), of(Materials2Materials.Nickel, 4),
-            of(Materials2Materials.Cobalt, 2));
-        add(Materials2Materials.MaragingSteel350,
-            of(Materials2Materials.Steel, 16), of(Materials2Materials.Aluminium, 1),
-            of(Materials2Materials.Molybdenum, 1), of(Materials2Materials.Nickel, 4),
-            of(Materials2Materials.Cobalt, 2));
-        add(Materials2Materials.NiobiumCarbide,
-            of(Materials2Materials.Niobium, 1), of(Materials2Materials.Carbon, 1));
-        add(Materials2Materials.Nitinol60,
-            of(Materials2Materials.Nickel, 2), of(Materials2Materials.Titanium, 3));
-        add(Materials2Materials.Octiron,
-            of(Materials2Materials.Arcanite, 6), of(Materials2Materials.Titansteel, 6),
-            of(Materials2Materials.EnergyCrystal, 1), of(Materials2Materials.BlackSteel, 2),
-            of(Materials2Materials.Thaumium, 5));
-        add(Materials2Materials.Pikyonium64B,
-            of(Materials2Materials.Inconel792, 8), of(Materials2Materials.EglinSteel, 5),
-            of(Materials2Materials.NaquadahEnriched, 4), of(Materials2Materials.Cerium, 3),
-            of(Materials2Materials.Antimony, 2), of(Materials2Materials.Platinum, 2),
-            of(Materials2Materials.Ytterbium, 1), of(Materials2Materials.TungstenSteel, 4));
-        add(Materials2Materials.Potin,
-            of(Materials2Materials.Lead, 2), of(Materials2Materials.Bronze, 2), of(Materials2Materials.Tin, 1));
-        add(Materials2Materials.Quantum,
-            of(Materials2Materials.Stellite, 3), of(Materials2Materials.EnergyCrystal, 1),
-            of(Materials2Materials.SiliconCarbide, 1), of(Materials2Materials.Gallium, 1),
-            of(Materials2Materials.Americium, 1), of(Materials2Materials.Palladium, 1),
-            of(Materials2Materials.Bismuth, 1), of(Materials2Materials.Germanium, 1));
-        add(Materials2Materials.SiliconCarbide,
-            of(Materials2Materials.Silicon, 1), of(Materials2Materials.Carbon, 1));
-        add(Materials2Materials.Staballoy,
-            of(Materials2Materials.Uranium, 9), of(Materials2Materials.Titanium, 1));
-        add(Materials2Materials.Stellite,
-            of(Materials2Materials.Cobalt, 7), of(Materials2Materials.Chrome, 7),
-            of(Materials2Materials.Manganese, 4), of(Materials2Materials.Titanium, 2));
-        add(Materials2Materials.Talonite,
-            of(Materials2Materials.Cobalt, 4), of(Materials2Materials.Chrome, 3),
-            of(Materials2Materials.Phosphorus, 2), of(Materials2Materials.Molybdenum, 1));
-        add(Materials2Materials.Tantalloy60,
-            of(Materials2Materials.Tungsten, 2), of(Materials2Materials.Tantalum, 23));
-        add(Materials2Materials.Tantalloy61,
-            of(Materials2Materials.Tantalloy60, 1), of(Materials2Materials.Titanium, 6), of(Materials2Materials.Yttrium, 4));
-        add(Materials2Materials.TantalumCarbide,
-            of(Materials2Materials.Tantalum, 1), of(Materials2Materials.Carbon, 1));
-        add(Materials2Materials.Titansteel,
-            of(Materials2Materials.TungstenTitaniumCarbide, 3), of(Materials2Materials.InfusedFire, 1),
-            of(Materials2Materials.InfusedEarth, 1), of(Materials2Materials.InfusedEntropy, 1));
-        add(Materials2Materials.TriniumNaquadahAlloy,
-            of(Materials2Materials.Trinium, 5), of(Materials2Materials.Naquadah, 9));
-        add(Materials2Materials.TriniumNaquadahCarbonite,
-            of(Materials2Materials.TriniumNaquadahAlloy, 9), of(Materials2Materials.Carbon, 1));
-        add(Materials2Materials.TriniumTitaniumAlloy,
-            of(Materials2Materials.Trinium, 3), of(Materials2Materials.Titanium, 7));
-        add(Materials2Materials.Tumbaga,
-            of(Materials2Materials.Gold, 7), of(Materials2Materials.Copper, 3));
-        add(Materials2Materials.TungstenTitaniumCarbide,
-            of(Materials2Materials.TungstenCarbide, 7), of(Materials2Materials.Titanium, 3));
-        add(Materials2Materials.WatertightSteel,
-            of(Materials2Materials.Steel, 12), of(Materials2Materials.Carbon, 2),
-            of(Materials2Materials.Manganese, 1), of(Materials2Materials.Silicon, 2),
-            of(Materials2Materials.Phosphorus, 1), of(Materials2Materials.Sulfur, 1),
-            of(Materials2Materials.Aluminium, 1));
-        add(Materials2Materials.WoodsGlass,
-            of(Materials2Materials.Silicon, 4), of(Materials2Materials.Barium, 3),
-            of(Materials2Materials.Sodium, 2), of(Materials2Materials.Nickel, 1));
-        add(Materials2Materials.Zeron100,
-            of(Materials2Materials.Chrome, 13), of(Materials2Materials.Nickel, 3),
-            of(Materials2Materials.Molybdenum, 2), of(Materials2Materials.Copper, 10),
-            of(Materials2Materials.Tungsten, 2), of(Materials2Materials.Steel, 20));
-        add(Materials2Materials.ZirconiumCarbide,
-            of(Materials2Materials.Zirconium, 1), of(Materials2Materials.Carbon, 1));
+        add(Materials.AbyssalAlloy,
+            of(Materials.StainlessSteel, 5), of(Materials.TungstenCarbide, 5),
+            of(Materials.Nichrome, 5), of(Materials.Bronze, 5),
+            of(Materials.IncoloyMA956, 5), of(Materials.Iodine, 1),
+            of(Materials.Radon, 1), of(Materials.Germanium, 1));
+        add(Materials.AncientGranite,
+            of(Materials.Oxygen, 8), of(Materials.Iron, 5),
+            of(Materials.SiliconDioxide, 5), of(Materials.Alumina, 3),
+            of(Materials.Potassium, 3), of(Materials.Calcium, 2),
+            of(Materials.Sodium, 2), of(Materials.Ytterbium, 1));
+        add(Materials.Arcanite,
+            of(Materials.Thorium232, 4), of(Materials.EnergyCrystal, 4),
+            of(Materials.InfusedOrder, 1), of(Materials.InfusedEntropy, 1));
+        add(Materials.ArceusAlloy2B,
+            of(Materials.Trinium, 3), of(Materials.MaragingSteel350, 4),
+            of(Materials.TungstenSteel, 2), of(Materials.Osmiridium, 1),
+            of(Materials.Strontium, 1));
+        add(Materials.BabbitAlloy,
+            of(Materials.Tin, 5), of(Materials.Lead, 36),
+            of(Materials.Antimony, 8), of(Materials.Arsenic, 1));
+        add(Materials.BlackMetal,
+            of(Materials.Lead, 3), of(Materials.Manganese, 5), of(Materials.Carbon, 12));
+        add(Materials.BlackTitanium,
+            of(Materials.Titanium, 55), of(Materials.Lanthanum, 12),
+            of(Materials.Tungsten, 8), of(Materials.Cobalt, 6),
+            of(Materials.Manganese, 4), of(Materials.Phosphorus, 4),
+            of(Materials.Palladium, 4), of(Materials.Niobium, 2),
+            of(Materials.Argon, 5));
+        add(Materials.BloodSteel,
+            of(Materials.Steel, 1), of(Materials.InfusedFire, 1));
+        add(Materials.Botmium,
+            of(Materials.Nitinol60, 1), of(Materials.Osmium, 6),
+            of(Materials.Ruthenium, 6), of(Materials.Thallium, 3));
+        add(Materials.CinobiteA243,
+            of(Materials.Zeron100, 16), of(Materials.Naquadria, 7),
+            of(Materials.Gadolinium, 5), of(Materials.Aluminium, 3),
+            of(Materials.Mercury, 2), of(Materials.Tin, 2),
+            of(Materials.Titanium, 12), of(Materials.Osmiridium, 6));
+        add(Materials.EglinSteel,
+            of(Materials.EglinSteelBaseCompound, 10), of(Materials.Sulfur, 1),
+            of(Materials.Silicon, 4), of(Materials.Carbon, 1));
+        add(Materials.EglinSteelBaseCompound,
+            of(Materials.Iron, 4), of(Materials.Kanthal, 1), of(Materials.Invar, 5));
+        add(Materials.EnergyCrystal,
+            of(Materials.InfusedAir, 1), of(Materials.InfusedEarth, 1),
+            of(Materials.InfusedFire, 1), of(Materials.InfusedWater, 1));
+        add(Materials.Grisium,
+            of(Materials.Titanium, 9), of(Materials.Carbon, 9),
+            of(Materials.Potassium, 9), of(Materials.Lithium, 9),
+            of(Materials.Sulfur, 9), of(Materials.Hydrogen, 5));
+        add(Materials.HastelloyC276,
+            of(Materials.Cobalt, 1), of(Materials.Molybdenum, 8),
+            of(Materials.Tungsten, 1), of(Materials.Copper, 1),
+            of(Materials.Chrome, 7), of(Materials.Nickel, 32));
+        add(Materials.HastelloyN,
+            of(Materials.Yttrium, 2), of(Materials.Molybdenum, 4),
+            of(Materials.Chrome, 2), of(Materials.Titanium, 2),
+            of(Materials.Nickel, 15));
+        add(Materials.HastelloyW,
+            of(Materials.Iron, 3), of(Materials.Cobalt, 1),
+            of(Materials.Molybdenum, 12), of(Materials.Chrome, 3),
+            of(Materials.Nickel, 31));
+        add(Materials.HastelloyX,
+            of(Materials.Iron, 9), of(Materials.Manganese, 1),
+            of(Materials.Silicon, 1), of(Materials.Molybdenum, 4),
+            of(Materials.Chrome, 11), of(Materials.Nickel, 24));
+        add(Materials.HeLiCoPtEr,
+            of(Materials.Helium, 1), of(Materials.Lithium, 1),
+            of(Materials.Cobalt, 1), of(Materials.Platinum, 1),
+            of(Materials.Erbium, 1));
+        add(Materials.HS188A,
+            of(Materials.Cobalt, 10), of(Materials.Hafnium, 10),
+            of(Materials.Talonite, 8), of(Materials.Rhenium, 5),
+            of(Materials.NiobiumCarbide, 5), of(Materials.HastelloyX, 4),
+            of(Materials.TungstenSteel, 4), of(Materials.ZirconiumCarbide, 4));
+        add(Materials.Incoloy020,
+            of(Materials.Iron, 10), of(Materials.Copper, 1),
+            of(Materials.Chrome, 5), of(Materials.Nickel, 9));
+        add(Materials.IncoloyDS,
+            of(Materials.Iron, 23), of(Materials.Cobalt, 9),
+            of(Materials.Chrome, 9), of(Materials.Nickel, 9));
+        add(Materials.IncoloyMA956,
+            of(Materials.Iron, 16), of(Materials.Aluminium, 3),
+            of(Materials.Chrome, 5), of(Materials.Yttrium, 1));
+        add(Materials.Inconel625,
+            of(Materials.Nickel, 3), of(Materials.Chrome, 7),
+            of(Materials.Molybdenum, 10), of(Materials.Invar, 10),
+            of(Materials.Nichrome, 13));
+        add(Materials.Inconel690,
+            of(Materials.Chrome, 1), of(Materials.Niobium, 2),
+            of(Materials.Molybdenum, 2), of(Materials.Nichrome, 3));
+        add(Materials.Inconel792,
+            of(Materials.Nickel, 2), of(Materials.Niobium, 1),
+            of(Materials.Aluminium, 2), of(Materials.Nichrome, 1));
+        add(Materials.LafiumCompound,
+            of(Materials.HastelloyN, 4), of(Materials.Naquadah, 2),
+            of(Materials.Samarium, 1), of(Materials.Tungsten, 2),
+            of(Materials.Argon, 1), of(Materials.Aluminium, 3),
+            of(Materials.Nickel, 4), of(Materials.Carbon, 1));
+        add(Materials.Laurenium,
+            of(Materials.EglinSteel, 8), of(Materials.Indium, 2),
+            of(Materials.Chrome, 4), of(Materials.Dysprosium, 1),
+            of(Materials.Rhenium, 1));
+        add(Materials.MaragingSteel250,
+            of(Materials.Steel, 16), of(Materials.Molybdenum, 1),
+            of(Materials.Titanium, 1), of(Materials.Nickel, 4),
+            of(Materials.Cobalt, 2));
+        add(Materials.MaragingSteel300,
+            of(Materials.Steel, 16), of(Materials.Titanium, 1),
+            of(Materials.Aluminium, 1), of(Materials.Nickel, 4),
+            of(Materials.Cobalt, 2));
+        add(Materials.MaragingSteel350,
+            of(Materials.Steel, 16), of(Materials.Aluminium, 1),
+            of(Materials.Molybdenum, 1), of(Materials.Nickel, 4),
+            of(Materials.Cobalt, 2));
+        add(Materials.NiobiumCarbide,
+            of(Materials.Niobium, 1), of(Materials.Carbon, 1));
+        add(Materials.Nitinol60,
+            of(Materials.Nickel, 2), of(Materials.Titanium, 3));
+        add(Materials.Octiron,
+            of(Materials.Arcanite, 6), of(Materials.Titansteel, 6),
+            of(Materials.EnergyCrystal, 1), of(Materials.BlackSteel, 2),
+            of(Materials.Thaumium, 5));
+        add(Materials.Pikyonium64B,
+            of(Materials.Inconel792, 8), of(Materials.EglinSteel, 5),
+            of(Materials.NaquadahEnriched, 4), of(Materials.Cerium, 3),
+            of(Materials.Antimony, 2), of(Materials.Platinum, 2),
+            of(Materials.Ytterbium, 1), of(Materials.TungstenSteel, 4));
+        add(Materials.Potin,
+            of(Materials.Lead, 2), of(Materials.Bronze, 2), of(Materials.Tin, 1));
+        add(Materials.Quantum,
+            of(Materials.Stellite, 3), of(Materials.EnergyCrystal, 1),
+            of(Materials.SiliconCarbide, 1), of(Materials.Gallium, 1),
+            of(Materials.Americium, 1), of(Materials.Palladium, 1),
+            of(Materials.Bismuth, 1), of(Materials.Germanium, 1));
+        add(Materials.SiliconCarbide,
+            of(Materials.Silicon, 1), of(Materials.Carbon, 1));
+        add(Materials.Staballoy,
+            of(Materials.Uranium, 9), of(Materials.Titanium, 1));
+        add(Materials.Stellite,
+            of(Materials.Cobalt, 7), of(Materials.Chrome, 7),
+            of(Materials.Manganese, 4), of(Materials.Titanium, 2));
+        add(Materials.Talonite,
+            of(Materials.Cobalt, 4), of(Materials.Chrome, 3),
+            of(Materials.Phosphorus, 2), of(Materials.Molybdenum, 1));
+        add(Materials.Tantalloy60,
+            of(Materials.Tungsten, 2), of(Materials.Tantalum, 23));
+        add(Materials.Tantalloy61,
+            of(Materials.Tantalloy60, 1), of(Materials.Titanium, 6), of(Materials.Yttrium, 4));
+        add(Materials.TantalumCarbide,
+            of(Materials.Tantalum, 1), of(Materials.Carbon, 1));
+        add(Materials.Titansteel,
+            of(Materials.TungstenTitaniumCarbide, 3), of(Materials.InfusedFire, 1),
+            of(Materials.InfusedEarth, 1), of(Materials.InfusedEntropy, 1));
+        add(Materials.TriniumNaquadahAlloy,
+            of(Materials.Trinium, 5), of(Materials.Naquadah, 9));
+        add(Materials.TriniumNaquadahCarbonite,
+            of(Materials.TriniumNaquadahAlloy, 9), of(Materials.Carbon, 1));
+        add(Materials.TriniumTitaniumAlloy,
+            of(Materials.Trinium, 3), of(Materials.Titanium, 7));
+        add(Materials.Tumbaga,
+            of(Materials.Gold, 7), of(Materials.Copper, 3));
+        add(Materials.TungstenTitaniumCarbide,
+            of(Materials.TungstenCarbide, 7), of(Materials.Titanium, 3));
+        add(Materials.WatertightSteel,
+            of(Materials.Steel, 12), of(Materials.Carbon, 2),
+            of(Materials.Manganese, 1), of(Materials.Silicon, 2),
+            of(Materials.Phosphorus, 1), of(Materials.Sulfur, 1),
+            of(Materials.Aluminium, 1));
+        add(Materials.WoodsGlass,
+            of(Materials.Silicon, 4), of(Materials.Barium, 3),
+            of(Materials.Sodium, 2), of(Materials.Nickel, 1));
+        add(Materials.Zeron100,
+            of(Materials.Chrome, 13), of(Materials.Nickel, 3),
+            of(Materials.Molybdenum, 2), of(Materials.Copper, 10),
+            of(Materials.Tungsten, 2), of(Materials.Steel, 20));
+        add(Materials.ZirconiumCarbide,
+            of(Materials.Zirconium, 1), of(Materials.Carbon, 1));
     }
     // spotless:on
 }

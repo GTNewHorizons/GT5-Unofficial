@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import codechicken.nei.api.API;
@@ -15,7 +16,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.StoneType;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;
 import gtneioreplugin.GTNEIOrePlugin;
@@ -69,11 +69,11 @@ public class NEIPluginConfig implements IConfigureNEI {
         OreInfo info = OreInfo.getNewInfo();
 
         info.stoneType = StoneType.Stone;
-        info.material = Materials2Materials.Manyullyn;
+        info.material = Materials.Manyullyn;
 
         handlers.put("PluginGT5VeinStat", OreManager.getStack(info, 1));
 
-        info.material = Materials2Materials.Platinum;
+        info.material = Materials.Platinum;
         info.isSmall = true;
 
         handlers.put("PluginGT5SmallOreStat", OreManager.getStack(info, 1));

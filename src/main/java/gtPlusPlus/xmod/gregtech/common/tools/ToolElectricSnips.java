@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tools;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -11,7 +12,6 @@ import net.minecraft.util.IChatComponent;
 import gregtech.GTMod;
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Textures.ItemIcons;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.material.MaterialUtils;
@@ -51,7 +51,7 @@ public class ToolElectricSnips extends ToolWireCutter {
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? MaterialUtils.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
-            : MaterialUtils.rgba(Materials2Materials.TungstenSteel);
+            : MaterialUtils.rgba(Materials.TungstenSteel);
     }
 
     @Override

@@ -34,7 +34,7 @@ import com.ruling_0.materiallib.api.Material;
 import bartworks.MainMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -138,7 +138,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
     @Override
     protected Material getFrameMaterial() {
-        return Materials2Materials.Tungsten;
+        return Materials.Tungsten;
     }
 
     @Override

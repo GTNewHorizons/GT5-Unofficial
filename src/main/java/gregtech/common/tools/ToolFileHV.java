@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.material.MaterialUtils;
@@ -19,7 +19,7 @@ public class ToolFileHV extends ToolFileLV {
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? MaterialUtils.rgba(MetaGeneratedTool.getPrimaryMaterialML(aStack))
-            : MaterialUtils.rgba(Materials2Materials.StainlessSteel);
+            : MaterialUtils.rgba(Materials.StainlessSteel);
     }
 
     @Override

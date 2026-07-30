@@ -2,6 +2,7 @@ package gregtech.loaders.postload;
 
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
@@ -13,7 +14,6 @@ import bartworks.util.BWColorUtil;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
@@ -46,7 +46,7 @@ public class LoaderWerkstoffRegistrations {
         }
         GTOreDictUnificator.registerOre(
             "craftingIndustrialDiamond",
-            MaterialLibAPI.getStack(Materials2Materials.CubicZirconia, Materials2Shapes.gemExquisite, 1));
+            MaterialLibAPI.getStack(Materials.CubicZirconia, Materials2Shapes.gemExquisite, 1));
         BWOreAdapter.INSTANCE.registerOredict();
     }
 
@@ -88,12 +88,12 @@ public class LoaderWerkstoffRegistrations {
     private static void registerHandleMaterial(Material material) {
         if (LegacyNameDomain.lookup(MaterialUtils.internalName(material)) == material) return;
         Material handle;
-        if (MaterialUtils.hasSubTag(material, SubTag.BURNING.mName)) handle = Materials2Materials.Blaze;
-        else if (MaterialUtils.hasSubTag(material, SubTag.MAGICAL.mName)) handle = Materials2Materials.Thaumium;
+        if (MaterialUtils.hasSubTag(material, SubTag.BURNING.mName)) handle = Materials.Blaze;
+        else if (MaterialUtils.hasSubTag(material, SubTag.MAGICAL.mName)) handle = Materials.Thaumium;
         else {
             int durability = MaterialUtils.durability(material);
-            handle = durability > 5120 ? Materials2Materials.TungstenSteel
-                : durability > 1280 ? Materials2Materials.Steel : Materials2Materials.Wood;
+            handle = durability > 5120 ? Materials.TungstenSteel
+                : durability > 1280 ? Materials.Steel : Materials.Wood;
         }
         MaterialUtils.recordHandleMaterial(material, handle);
     }

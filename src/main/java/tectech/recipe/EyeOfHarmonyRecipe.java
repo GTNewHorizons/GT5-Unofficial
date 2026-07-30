@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -30,7 +31,6 @@ import gnu.trove.strategy.HashingStrategy;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
@@ -51,43 +51,43 @@ public class EyeOfHarmonyRecipe {
     static final FluidStackLong[] SPECIAL_FLUIDS = new FluidStackLong[] {
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials2Materials.WhiteDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (1_152)),
+                .getFluidStack(Materials.WhiteDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (1_152)),
             1_152),
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials2Materials.WhiteDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (1_152)),
+                .getFluidStack(Materials.WhiteDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (1_152)),
             1_152),
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials2Materials.WhiteDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (4_608)),
+                .getFluidStack(Materials.WhiteDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (4_608)),
             4_608),
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials2Materials.WhiteDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (18_432)),
+                .getFluidStack(Materials.WhiteDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (18_432)),
             18_432),
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials2Materials.BlackDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (1_152)),
+                .getFluidStack(Materials.BlackDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (1_152)),
             1_152),
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials2Materials.BlackDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (4_608)),
+                .getFluidStack(Materials.BlackDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (4_608)),
             4_608),
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials2Materials.BlackDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (18_432)),
+                .getFluidStack(Materials.BlackDwarfMatter, Materials2FluidShapes.fluidMolten, (int) (18_432)),
             18_432),
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials2Materials.Universium, Materials2FluidShapes.fluidMolten, (int) (1_152)),
+                .getFluidStack(Materials.Universium, Materials2FluidShapes.fluidMolten, (int) (1_152)),
             1_152),
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials2Materials.Universium, Materials2FluidShapes.fluidMolten, (int) (4_608)),
+                .getFluidStack(Materials.Universium, Materials2FluidShapes.fluidMolten, (int) (4_608)),
             4_608),
         new FluidStackLong(
             MaterialLibAPI
-                .getFluidStack(Materials2Materials.Universium, Materials2FluidShapes.fluidMolten, (int) (18_432)),
+                .getFluidStack(Materials.Universium, Materials2FluidShapes.fluidMolten, (int) (18_432)),
             18_432) };
 
     HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<>() {
@@ -213,7 +213,7 @@ public class EyeOfHarmonyRecipe {
         fluidStackLongArrayList.add(
             new FluidStackLong(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.RawStarMatter,
+                    Materials.RawStarMatter,
                     Materials2FluidShapes.fluidLiquid,
                     (int) ((this.spacetimeCasingTierRequired + 1) * 100_000)),
                 (this.spacetimeCasingTierRequired + 1) * 100_000));
@@ -253,11 +253,11 @@ public class EyeOfHarmonyRecipe {
     }
 
     private ItemStack getStoneDustType(String key) {
-        ItemStack placeholder = MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.dust, (int) (1));
+        ItemStack placeholder = MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1));
         return switch (key) {
-            case "Ne" -> MaterialLibAPI.getStack(Materials2Materials.Netherrack, Materials2Shapes.dust, (int) (1));
+            case "Ne" -> MaterialLibAPI.getStack(Materials.Netherrack, Materials2Shapes.dust, (int) (1));
             case "ED", "VA", "EA" -> MaterialLibAPI
-                .getStack(Materials2Materials.Endstone, Materials2Shapes.dust, (int) (1));
+                .getStack(Materials.Endstone, Materials2Shapes.dust, (int) (1));
             case "Mo", "Ra" -> getModItem(NewHorizonsCoreMod.ID, "MoonStoneDust", 1, placeholder);
             case "De" -> getModItem(NewHorizonsCoreMod.ID, "DeimosStoneDust", 1, placeholder);
             case "Ma" -> getModItem(NewHorizonsCoreMod.ID, "MarsStoneDust", 1, placeholder);
@@ -405,11 +405,11 @@ public class EyeOfHarmonyRecipe {
             (MaterialUtils.oreMultiplier(material) * 2) * mainMultiplier * probability);
 
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_GOLD))
-            outputMap.add(Materials2Materials.Gold, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
+            outputMap.add(Materials.Gold, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_IRON))
-            outputMap.add(Materials2Materials.Iron, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
+            outputMap.add(Materials.Iron, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)) outputMap
-            .add(Materials2Materials.Neodymium, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
+            .add(Materials.Neodymium, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
 
         List<com.ruling_0.materiallib.api.Material> byProducts = MaterialUtils.oreByProducts(material);
 
@@ -580,10 +580,10 @@ public class EyeOfHarmonyRecipe {
         // Need two valid outputs
         if (bonusA != null && hasSolidForm(bonusA)) {
             outputMap.add(bonusA, 2 * GTPP_PRIMARY_MULTIPLIER * mainMultiplier * probability);
-        } else outputMap.add(Materials2Materials.Stone, 2 * GTPP_PRIMARY_MULTIPLIER * mainMultiplier * probability);
+        } else outputMap.add(Materials.Stone, 2 * GTPP_PRIMARY_MULTIPLIER * mainMultiplier * probability);
         if (bonusB != null && hasSolidForm(bonusB)) {
             outputMap.add(bonusB, 2 * GTPP_SECONDARY_MULTIPLIER * mainMultiplier * probability);
-        } else outputMap.add(Materials2Materials.Stone, 2 * GTPP_SECONDARY_MULTIPLIER * mainMultiplier * probability);
+        } else outputMap.add(Materials.Stone, 2 * GTPP_SECONDARY_MULTIPLIER * mainMultiplier * probability);
     }
 
     /// Accumulates a vein material's dust yield. Only a gregtech-declared or werkstoff-origin material carries the
@@ -682,22 +682,22 @@ public class EyeOfHarmonyRecipe {
 
     private static final List<com.ruling_0.materiallib.api.Material> VALID_PLASMAS = Stream
         .of(
-            Materials2Materials.Helium,
-            Materials2Materials.Iron,
-            Materials2Materials.Calcium,
-            Materials2Materials.Niobium,
-            Materials2Materials.Nitrogen,
-            Materials2Materials.Zinc,
-            Materials2Materials.Silver,
-            Materials2Materials.Titanium,
-            Materials2Materials.Radon,
-            Materials2Materials.Nickel,
-            Materials2Materials.Boron,
-            Materials2Materials.Sulfur,
-            Materials2Materials.Americium,
-            Materials2Materials.Bismuth,
-            Materials2Materials.Oxygen,
-            Materials2Materials.Tin)
+            Materials.Helium,
+            Materials.Iron,
+            Materials.Calcium,
+            Materials.Niobium,
+            Materials.Nitrogen,
+            Materials.Zinc,
+            Materials.Silver,
+            Materials.Titanium,
+            Materials.Radon,
+            Materials.Nickel,
+            Materials.Boron,
+            Materials.Sulfur,
+            Materials.Americium,
+            Materials.Bismuth,
+            Materials.Oxygen,
+            Materials.Tin)
         .collect(Collectors.toList());
 
     private static final HashMap<String, Long> plasmaEnergyMap = new HashMap<>() {

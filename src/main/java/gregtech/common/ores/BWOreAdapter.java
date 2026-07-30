@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -405,7 +406,7 @@ public final class BWOreAdapter implements IOreAdapter {
     }
 
     /// The `rawOre` lookups are unguarded: [#supports] has already established `ore`, and the two shapes are
-    /// declared together throughout [gregtech.api.enums.materials2.Materials2Materials].
+    /// declared together throughout [Materials].
     private ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo info, int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
 

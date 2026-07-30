@@ -14,8 +14,8 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.recipe.Scanning;
@@ -35,9 +35,9 @@ class ComponentRecipeLoader implements Runnable {
                 new Object[] { Circuits.EV.getIngredient(), 8 },
                 ItemList.Automation_ChestBuffer_LuV.get(1L))
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 9 * INGOTS),
+                MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 9 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
+                    .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
             .itemOutputs(GGItemList.AdvAssLine.get(1L))
             .eut(TierEU.RECIPE_LuV)
             .duration(3 * MINUTES)
@@ -48,12 +48,12 @@ class ComponentRecipeLoader implements Runnable {
                 ItemList.Hatch_Input_Bus_IV.get(1L),
                 ItemList.Emitter_IV.get(1L),
                 ItemList.Sensor_IV.get(1L),
-                MaterialLibAPI.getStack(Materials2Materials.Enderium, Materials2Shapes.plateDense, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Enderium, Materials2Shapes.plateDense, (int) (1)))
             .circuit(12)
             .itemOutputs(GGItemList.LinkedInputBus.get(1L))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Polybenzimidazole,
+                    Materials.Polybenzimidazole,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(30 * SECONDS)

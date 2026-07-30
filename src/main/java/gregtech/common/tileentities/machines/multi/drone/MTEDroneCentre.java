@@ -20,6 +20,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,7 +53,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -199,14 +199,14 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                         .buildAndChain(
                             onElementPass(t -> t.casingAmount++, Casings.SolidSteelMachineCasing.asElement())))
                 .addElement('B', Casings.SteelPipeCasing.asElement())
-                .addElement('C', ofFrame(Materials2Materials.Iron))
-                .addElement('D', ofFrame(Materials2Materials.Steel))
+                .addElement('C', ofFrame(Materials.Iron))
+                .addElement('D', ofFrame(Materials.Steel))
                 .addElement('E', lazy(t -> {
                     if (Mods.Chisel.isModLoaded()) {
                         Block hempcrete = GameRegistry.findBlock(Mods.Chisel.ID, "hempcrete");
                         return ofBlockAnyMeta(hempcrete, 15);
                     } else {
-                        return ofSheetMetal(Materials2Materials.Steel);
+                        return ofSheetMetal(Materials.Steel);
                     }
                 }))
                 .addElement(

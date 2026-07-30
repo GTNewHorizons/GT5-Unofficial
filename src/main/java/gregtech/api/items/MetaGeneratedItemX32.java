@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -21,7 +22,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2IDIndex;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialRenderers;
@@ -96,8 +96,8 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
                     GTOreDictUnificator.registerOre(tPrefix.oreDictName(tMaterial), tStack);
                 }
                 if ((tPrefix == OrePrefixes.stick || tPrefix == OrePrefixes.wireFine || tPrefix == OrePrefixes.ingot)
-                    && (tMaterial == Materials2Materials.Lead || tMaterial == Materials2Materials.Tin
-                        || tMaterial == Materials2Materials.SolderingAlloy)) {
+                    && (tMaterial == Materials.Lead || tMaterial == Materials.Tin
+                        || tMaterial == Materials.SolderingAlloy)) {
                     GregTechAPI.sSolderingMetalList.add(tStack);
                     GTModHandler.registerBoxableItemToToolBox(tStack);
                 }
@@ -113,11 +113,11 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     @Override
     public short[] getRGBa(ItemStack aStack) {
         if (!isMaterialItem(getDamage(aStack))) {
-            return MaterialUtils.rgba(Materials2Materials.NULL);
+            return MaterialUtils.rgba(Materials.NULL);
         }
         Material tMaterial = Materials2IDIndex.get(getDamage(aStack) % 1000);
         short[] rgba = MaterialUtils.rgba(tMaterial);
-        return rgba != null ? rgba : MaterialUtils.rgba(Materials2Materials.NULL);
+        return rgba != null ? rgba : MaterialUtils.rgba(Materials.NULL);
     }
 
     /**
@@ -173,7 +173,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
         int aDamage = aStack.getItemDamage();
         if (isMaterialItem(aDamage)) {
             Material aMaterial = Materials2IDIndex.get(aDamage % 1000);
-            if (aMaterial != null && aMaterial != Materials2Materials.Empty && aMaterial != Materials2Materials.NULL) {
+            if (aMaterial != null && aMaterial != Materials.Empty && aMaterial != Materials.NULL) {
                 OrePrefixes aPrefix = getOrePrefix(aDamage);
                 if (aPrefix != null) return GTUtility.copyAmount(1, aPrefix.mContainerItem);
             }

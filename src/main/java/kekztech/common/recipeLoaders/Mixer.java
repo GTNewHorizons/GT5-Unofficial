@@ -3,12 +3,12 @@ package kekztech.common.recipeLoaders;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTOreDictUnificator;
 import kekztech.Items;
 import kekztech.common.items.ErrorItem;
@@ -34,7 +34,7 @@ public class Mixer implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(
                     OrePrefixes.dust,
-                    Materials2Materials.Gadolinium,
+                    Materials.Gadolinium,
                     new ItemStack(ErrorItem.getInstance(), 1),
                     1),
                 craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 9))

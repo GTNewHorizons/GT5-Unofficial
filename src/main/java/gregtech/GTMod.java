@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -68,7 +69,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.Materials2IDIndex;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.gui.modularui.GTUIInfos;
@@ -497,15 +497,15 @@ public class GTMod {
         GTOreDictUnificator.addItemData(
             GTModHandler.getRecipeOutput(
                 null,
-                MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.ingot, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.ingot, (int) (1)),
                 null,
-                MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.ingot, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.ingot, (int) (1)),
                 null,
-                MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.ingot, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.ingot, (int) (1)),
                 null,
                 null,
                 null),
-            new ItemData(Materials2Materials.Tin, 10886400L));
+            new ItemData(Materials.Tin, 10886400L));
         GTModHandler.removeRecipe(
             new ItemStack(Items.glowstone_dust, 1),
             new ItemStack(Items.glowstone_dust, 1),
@@ -555,7 +555,7 @@ public class GTMod {
             GTModHandler.getIC2Item("machine", 1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "RRR", "RwR", "RRR", 'R', OrePrefixes.plate.ingredient(Materials2Materials.Iron) });
+            new Object[] { "RRR", "RwR", "RRR", 'R', OrePrefixes.plate.ingredient(Materials.Iron) });
 
         GTPostLoad.registerFluidCannerRecipes();
 
