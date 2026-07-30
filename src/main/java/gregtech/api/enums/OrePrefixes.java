@@ -53,6 +53,28 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
 
 @SuppressWarnings({ "PointlessArithmeticExpression", "unused" })
+/// The legacy form namespace: the ore-dictionary prefix strings GregTech and every other mod name item forms
+/// with, and the data those forms carry.
+///
+/// A prefix and a MaterialLib [com.ruling_0.materiallib.api.Shape] both name a form, but they are not
+/// interchangeable and neither replaces the other:
+///
+/// - **A shape owns the data.** For the 88 prefixes a shape serves, the per-form values below --
+/// [#getMaterialAmount], [#getTextureIndex], [#mSecondaryMaterial], the behaviour flags -- are declared on
+/// the shape (see [gregtech.api.enums.materials2.Materials2ShapeData]) and copied here at load by
+/// [#copyDataFromShapes]. The 220 prefixes no shape serves -- tool and armor forms, containers, the ore
+/// stone variants, and the foreign-mod marker names -- declare their own.
+/// - **A prefix owns the names.** Prefix names and the [#VALUES] ordinals are frozen by saved data: a type
+/// filter writes its prefix name into NBT, and the Postea transformers build registry-name strings from
+/// them. `___placeholder___` exists purely to hold an ordinal. Nothing may rename or reorder them.
+/// - **Only a prefix can read a foreign mod's oredict entry.** Another mod registering `plateCopper` gives
+/// GregTech a string; [#getOrePrefix] parses it back to a prefix, and the shape space cannot help, because
+/// a shape knows only the items MaterialLib itself generated. That is why the prefix keeps answering for
+/// its own data rather than deferring to the shape at every call.
+///
+/// Shape-side code should read the shape. Code holding a prefix at runtime -- the oredict handler, the save
+/// migrations, anything iterating [#VALUES] -- reads the prefix, and gets the shape's values for free wherever
+/// a shape serves it.
 public class OrePrefixes {
 
     private static List<OrePrefixes> VALUES_LIST = new ArrayList<>();

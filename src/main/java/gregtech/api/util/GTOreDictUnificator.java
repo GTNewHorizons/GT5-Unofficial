@@ -32,15 +32,23 @@ import gregtech.api.objects.MaterialStack;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 
-/**
- * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
- * <p/>
- * This is the Core of my OreDict Unification Code
- * <p/>
- * If you just want to use this to unificate your Items, then use the Function in the GregTechAPI File
- * <p/>
- * P.S. It is intended to be named "Unificator" and not "Unifier", because that sounds more awesome.
- */
+/// NEVER INCLUDE THIS FILE IN YOUR MOD!!!
+///
+/// This is the Core of my OreDict Unification Code
+///
+/// If you just want to use this to unificate your Items, then use the Function in the GregTechAPI File
+///
+/// P.S. It is intended to be named "Unificator" and not "Unifier", because that sounds more awesome.
+///
+/// Two maps: which stack is canonical for an ore-dictionary name, and what material any stack is made of
+/// ([ItemData]). MaterialLib has an `OreDictUnificator` of its own that does the first job for the names its
+/// own shapes back, but not the second and not for names it does not back, so this stays. It is the index
+/// that lets [GTRecipeRegistrator] generate recycling for other mods' items; see [ItemData].
+///
+/// Keyed by [OrePrefixes] throughout, because an association starts from an ore-dictionary name. That is the
+/// permanent shape of this class, not a step toward being keyed by
+/// [com.ruling_0.materiallib.api.Shape] -- see [OrePrefixes]'s class javadoc for why the two spaces are not
+/// interchangeable.
 public class GTOreDictUnificator {
 
     private static final Map<String, ItemStack> sName2StackMap = new HashMap<>();
