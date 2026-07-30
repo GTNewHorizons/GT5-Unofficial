@@ -1,8 +1,8 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.OreShapes;
-import gregtech.api.enums.materials2.Shapes;
+import gregtech.api.enums.materials.OreShapes;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingIceOre;
 
 /// Dispatches [ProcessingIceOre]'s `ore`/`rawOre` recipe generation (a second, independent registrator on

@@ -7,7 +7,7 @@ import com.gtnewhorizon.structurelib.StructureLibAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.util.GTModHandler;
 import tectech.thing.CustomItemList;
 import tectech.thing.item.ItemEuMeterGT;

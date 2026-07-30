@@ -11,8 +11,8 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.MaterialParentMods;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.MaterialParentMods;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;

@@ -15,8 +15,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import appeng.api.AEApi;
 import appeng.api.storage.data.IAEFluidStack;
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.util.GTUtility;
 
 public class StackUtils {

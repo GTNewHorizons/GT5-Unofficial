@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.PipeShapes;
+import gregtech.api.enums.materials.PipeShapes;
 import gregtech.loaders.oreprocessing.ProcessingFrame;
 
 /// Dispatches [ProcessingFrame]'s frame-box recipe generation for the `frameGt` shape. The shape's membership

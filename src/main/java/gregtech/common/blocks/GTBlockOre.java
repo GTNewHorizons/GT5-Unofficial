@@ -36,7 +36,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
+import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.events.OreInteractEvent;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;

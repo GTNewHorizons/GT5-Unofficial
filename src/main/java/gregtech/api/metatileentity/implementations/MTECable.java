@@ -31,7 +31,7 @@ import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.PipeProperties;
+import gregtech.api.enums.materials.PipeProperties;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.NodeList;
 import gregtech.api.graphs.PowerNode;

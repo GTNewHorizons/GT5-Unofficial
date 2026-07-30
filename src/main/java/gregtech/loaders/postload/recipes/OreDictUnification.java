@@ -4,7 +4,7 @@ import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.util.GTModHandler.getModItem;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class OreDictUnification implements Runnable {

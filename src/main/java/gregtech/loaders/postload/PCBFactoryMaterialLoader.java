@@ -1,6 +1,6 @@
 package gregtech.loaders.postload;
 
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.util.PCBFactoryManager;
 
 public class PCBFactoryMaterialLoader {

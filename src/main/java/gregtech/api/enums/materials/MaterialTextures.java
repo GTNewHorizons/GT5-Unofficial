@@ -1,4 +1,4 @@
-package gregtech.api.enums.materials2;
+package gregtech.api.enums.materials;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

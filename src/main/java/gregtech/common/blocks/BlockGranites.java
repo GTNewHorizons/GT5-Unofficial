@@ -7,7 +7,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class BlockGranites extends BlockStonesAbstract {

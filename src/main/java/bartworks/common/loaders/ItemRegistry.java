@@ -63,7 +63,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.util.GTOreDictUnificator;
 import ic2.api.item.IKineticRotor;
 import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;

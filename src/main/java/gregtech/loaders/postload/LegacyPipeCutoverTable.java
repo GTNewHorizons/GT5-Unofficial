@@ -7,9 +7,9 @@ import java.util.stream.IntStream;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.Shape;
 
-import gregtech.api.enums.materials2.MaterialFacades;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.PipeShapes;
+import gregtech.api.enums.materials.MaterialFacades;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.PipeShapes;
 
 /// The retired per-material pipe-family MTE ids, mapped to the MaterialLib shape and material each id's
 /// wire/cable/fluid-pipe/item-pipe served, for [PosteaTransformers]' save migration. Rows reproduce the id

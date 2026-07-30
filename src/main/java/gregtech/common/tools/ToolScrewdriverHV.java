@@ -2,7 +2,7 @@ package gregtech.common.tools;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.material.MaterialUtils;
 

@@ -52,7 +52,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Output_ZPM;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.GTAuthors;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.material.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;

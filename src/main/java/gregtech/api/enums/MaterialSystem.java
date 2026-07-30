@@ -1,16 +1,16 @@
 package gregtech.api.enums;
 
-import gregtech.api.enums.materials2.BlockShapes;
-import gregtech.api.enums.materials2.CellShapes;
-import gregtech.api.enums.materials2.Families;
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.MaterialFacades;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.OreShapes;
-import gregtech.api.enums.materials2.PipeMaterials;
-import gregtech.api.enums.materials2.PipeShapes;
-import gregtech.api.enums.materials2.ShapeData;
-import gregtech.api.enums.materials2.Shapes;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.CellShapes;
+import gregtech.api.enums.materials.Families;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.MaterialFacades;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.OreShapes;
+import gregtech.api.enums.materials.PipeMaterials;
+import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.ShapeData;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.loaders.materials.RecognitionMaterials;
 
 public class MaterialSystem {

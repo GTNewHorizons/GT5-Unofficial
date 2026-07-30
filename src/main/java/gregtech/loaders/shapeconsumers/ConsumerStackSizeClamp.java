@@ -8,8 +8,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.BlockShapes;
-import gregtech.api.enums.materials2.OreShapes;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.OreShapes;
 
 /// Reproduces `gregtech.loaders.oreprocessing.ProcessingAll`'s stack-size clamp for MaterialLib's block-kind
 /// shapes (`block`, `ore`, `oreSmall` -- the only cutover shapes backed by an [ItemBlock], since every

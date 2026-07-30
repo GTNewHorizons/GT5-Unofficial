@@ -13,7 +13,7 @@ import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import gregtech.GTMod;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;

@@ -46,7 +46,7 @@ import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
+import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.OCMethod;

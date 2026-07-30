@@ -11,8 +11,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;

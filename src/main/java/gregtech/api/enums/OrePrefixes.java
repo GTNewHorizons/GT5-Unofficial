@@ -38,8 +38,8 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.TCAspects.TC_AspectStack;
-import gregtech.api.enums.materials2.MaterialParentMods;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.MaterialParentMods;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.interfaces.ISubTagContainer;

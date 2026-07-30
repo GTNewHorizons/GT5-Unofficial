@@ -55,7 +55,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.material.GTMaterialProperties;

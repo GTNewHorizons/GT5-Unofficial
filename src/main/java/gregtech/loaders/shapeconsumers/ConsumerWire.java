@@ -3,8 +3,8 @@ package gregtech.loaders.shapeconsumers;
 import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.MaterialFacades;
-import gregtech.api.enums.materials2.PipeShapes;
+import gregtech.api.enums.materials.MaterialFacades;
+import gregtech.api.enums.materials.PipeShapes;
 import gregtech.loaders.oreprocessing.ProcessingWire;
 
 /// Dispatches [ProcessingWire]'s recipe generation for the six wire shapes.

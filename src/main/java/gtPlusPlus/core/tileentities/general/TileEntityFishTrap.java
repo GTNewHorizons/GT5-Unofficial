@@ -18,8 +18,8 @@ import net.minecraftforge.common.FishingHooks;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.inventories.InventoryFishTrap;
 import gtPlusPlus.core.util.math.MathUtils;

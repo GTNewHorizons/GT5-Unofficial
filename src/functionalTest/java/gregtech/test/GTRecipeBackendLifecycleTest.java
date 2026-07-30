@@ -27,7 +27,7 @@ import com.ruling_0.materiallib.api.Material;
 import goodgenerator.api.recipe.ExtremeHeatExchangerBackend;
 import goodgenerator.api.recipe.ExtremeHeatExchangerRecipe;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.maps.FormingPressBackend;

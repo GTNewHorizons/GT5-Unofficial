@@ -7,7 +7,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IUpdatePlayerMovement;
 import gregtech.api.util.GTOreDictUnificator;
 

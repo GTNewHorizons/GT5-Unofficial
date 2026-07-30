@@ -17,12 +17,12 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.BlockShapes;
-import gregtech.api.enums.materials2.CellShapes;
-import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
-import gregtech.api.enums.materials2.OreShapes;
-import gregtech.api.enums.materials2.PipeShapes;
-import gregtech.api.enums.materials2.Shapes;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.CellShapes;
+import gregtech.api.enums.materials.LegacyWerkstoffIndex;
+import gregtech.api.enums.materials.OreShapes;
+import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.Shapes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 

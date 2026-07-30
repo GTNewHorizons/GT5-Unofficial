@@ -32,7 +32,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
+import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.util.GTOreDictUnificator;
 

@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.BlockShapes;
+import gregtech.api.enums.materials.BlockShapes;
 import gregtech.loaders.oreprocessing.ProcessingCasing;
 
 /// Dispatches [ProcessingCasing]'s casing recipe generation for MaterialLib's `blockCasing` shape (the
