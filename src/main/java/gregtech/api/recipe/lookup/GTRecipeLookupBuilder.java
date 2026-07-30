@@ -262,8 +262,8 @@ public final class GTRecipeLookupBuilder {
     }
 
     private static void addItemDataIngredient(ItemStack stack, List<GTRecipeLookupIngredient> group) {
-        ItemData itemData = GTOreDictUnificator.getAssociation(stack);
-        if (itemData != null && itemData.hasValidPrefixMaterialData()) {
+        ItemData itemData = GTOreDictUnificator.getItemData(stack);
+        if (itemData != null && itemData.hasUnificationName()) {
             addIfAbsent(group, GTItemDataLookupIngredient.fromItemData(itemData));
         }
     }

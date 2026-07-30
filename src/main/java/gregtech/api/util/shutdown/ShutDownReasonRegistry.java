@@ -9,8 +9,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.util.GTUtility;
-
 public class ShutDownReasonRegistry {
 
     private static final Map<String, ShutDownReason> registry = new HashMap<>();
@@ -133,7 +131,7 @@ public class ShutDownReasonRegistry {
 
     static {
         register(new SimpleShutDownReason("", false));
-        register(new ReasonOutOfFluid(GTUtility.getWater(0)));
+        register(new ReasonOutOfFluid(null));
         register(new ReasonOutOfItem(new ItemStack(Items.feather, 1)));
         register(new ReasonOutOfStuff("stuff", 1));
         register(new ReasonMissingCondensate(null));

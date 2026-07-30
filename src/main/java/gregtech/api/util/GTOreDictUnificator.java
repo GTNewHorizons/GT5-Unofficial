@@ -203,8 +203,8 @@ public class GTOreDictUnificator {
      */
     public static ItemStack get(boolean useBlackList, ItemStack stack, boolean unsafe) {
         if (GTUtility.isStackInvalid(stack)) return null;
-        ItemData itemData = getAssociation(stack);
-        if (itemData == null || !itemData.hasValidPrefixMaterialData() || (useBlackList && itemData.mBlackListed)) {
+        ItemData itemData = getItemData(stack);
+        if (itemData == null || !itemData.hasUnificationName() || (useBlackList && itemData.mBlackListed)) {
             return GTUtility.copyOrNull(stack);
         }
         if (useBlackList && !GregTechAPI.sUnificationEntriesRegistered && isBlacklisted(stack)) {
@@ -243,8 +243,8 @@ public class GTOreDictUnificator {
      */
     public static ItemStack get_nocopy(boolean useBlackList, ItemStack stack) {
         if (GTUtility.isStackInvalid(stack)) return null;
-        ItemData itemData = getAssociation(stack);
-        if (itemData == null || !itemData.hasValidPrefixMaterialData() || (useBlackList && itemData.mBlackListed)) {
+        ItemData itemData = getItemData(stack);
+        if (itemData == null || !itemData.hasUnificationName() || (useBlackList && itemData.mBlackListed)) {
             return stack;
         }
         if (useBlackList && !GregTechAPI.sUnificationEntriesRegistered && isBlacklisted(stack)) {
@@ -288,7 +288,7 @@ public class GTOreDictUnificator {
      */
     public static boolean isInputStackEqual(ItemStack stack, ItemStack unified_tStack) {
         if (GTUtility.isStackInvalid(stack)) return false;
-        return isInputStackEqual(stack, getAssociation(stack), unified_tStack);
+        return isInputStackEqual(stack, getItemData(stack), unified_tStack);
     }
 
     /**
@@ -299,7 +299,7 @@ public class GTOreDictUnificator {
         boolean alreadyCompared = false;
         if (GTUtility.isStackInvalid(stack)) return false;
         ItemStack rStack = null;
-        if (stackPrefixData == null || !stackPrefixData.hasValidPrefixMaterialData())
+        if (stackPrefixData == null || !stackPrefixData.hasUnificationName())
             return GTUtility.areStacksEqual(stack, unified_tStack, true);
         else if (stackPrefixData.mBlackListed) {
             if (GTUtility.areStacksEqual(stack, unified_tStack, true)) return true;

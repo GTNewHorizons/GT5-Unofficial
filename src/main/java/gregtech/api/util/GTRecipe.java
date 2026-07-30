@@ -623,7 +623,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         final ItemData[] unifiedProvidedInputs = new ItemData[itemInputs.length];
         for (int i = 0; i < itemInputs.length; i++) {
-            unifiedProvidedInputs[i] = GTOreDictUnificator.getAssociation(itemInputs[i]);
+            unifiedProvidedInputs[i] = GTOreDictUnificator.getItemData(itemInputs[i]);
         }
         final @NotNull RecipeItemInput @NotNull [] combinedInputs = getCachedCombinedItemInputs();
 
@@ -733,7 +733,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
             final ItemData[] unifiedProvidedInputs = new ItemData[aInputs.length];
             for (int i = 0; i < aInputs.length; i++) {
-                unifiedProvidedInputs[i] = GTOreDictUnificator.getAssociation(aInputs[i]);
+                unifiedProvidedInputs[i] = GTOreDictUnificator.getItemData(aInputs[i]);
             }
 
             recipeItemLoop: for (final RecipeItemInput combinedInput : combinedInputs) {

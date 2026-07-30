@@ -129,6 +129,13 @@ public class ItemData {
         return mPrefix != null && mMaterial != null && mMaterial.mMaterial != null;
     }
 
+    /// Whether [#toString] names a unification target. True both for a prefix+material association and for the
+    /// composition-free name-only form, so the unification read paths in [gregtech.api.util.GTOreDictUnificator]
+    /// accept both; the recycling and composition paths still require [#hasValidPrefixMaterialData].
+    public final boolean hasUnificationName() {
+        return oreDictName != null || hasValidPrefixMaterialData();
+    }
+
     public final boolean hasValidPrefixData() {
         return mPrefix != null;
     }

@@ -19,8 +19,8 @@ public final class GTItemDataLookupIngredient extends GTRecipeLookupIngredient {
 
     public static GTItemDataLookupIngredient fromItemData(ItemData itemData) {
         Objects.requireNonNull(itemData, "itemData");
-        if (!itemData.hasValidPrefixMaterialData()) {
-            throw new IllegalArgumentException("itemData must have prefix and material data");
+        if (!itemData.hasUnificationName()) {
+            throw new IllegalArgumentException("itemData must name a unification target");
         }
         String unificationName = itemData.toString();
         if (unificationName.isEmpty()) {
@@ -30,7 +30,7 @@ public final class GTItemDataLookupIngredient extends GTRecipeLookupIngredient {
     }
 
     public static void fromRuntime(Consumer<? super GTItemDataLookupIngredient> ingredients, ItemStack stack) {
-        ItemData itemData = GTOreDictUnificator.getAssociation(stack);
+        ItemData itemData = GTOreDictUnificator.getItemData(stack);
         if (itemData == null) return;
         String unificationName = itemData.toString();
         if (unificationName.isEmpty()) return;
