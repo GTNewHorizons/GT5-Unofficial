@@ -12,13 +12,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPPropolisType;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
@@ -79,10 +80,10 @@ public class GTPPPropolis extends Item {
         ItemStack tDrop;
         for (GTPPPropolisType aProp : GTPP_Bees.sPropolisMappings.values()) {
             tDrop = aProp.getStackForType(1);
-            ItemStack aOutput = MaterialParts.stack(Materials2Shapes.dust, aProp.mMaterial, 1);
-            if (aOutput == null) {
+            if (aProp.mMaterial == null) {
                 continue;
             }
+            ItemStack aOutput = MaterialLibAPI.getStack(aProp.mMaterial, Materials2Shapes.dust, 1);
             int tier = MaterialUtils.tier(aProp.mMaterial);
             GTValues.RA.stdBuilder()
                 .itemInputs(tDrop)

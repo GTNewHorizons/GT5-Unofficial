@@ -19,7 +19,6 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Sievert;
@@ -105,10 +104,10 @@ public class RadioHatchMaterialLoader {
 
             int level = (int) MaterialUtils.protons(material);
             if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.stick)) {
-                radioHatchMaterialAdder(MaterialParts.stack(Materials2Shapes.stick, material, 1), level, 1);
+                radioHatchMaterialAdder(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 1), level, 1);
             }
             if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.stickLong)) {
-                radioHatchMaterialAdder(MaterialParts.stack(Materials2Shapes.stickLong, material, 1), level, 2);
+                radioHatchMaterialAdder(MaterialLibAPI.getStack(material, Materials2Shapes.stickLong, 1), level, 2);
             }
         }
 

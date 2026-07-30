@@ -43,6 +43,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -51,7 +52,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
@@ -207,7 +207,7 @@ public class NetheriteRecipes {
             GTValues.RA.stdBuilder() // Crystallization
                 .itemInputs(
                     ItemList.Prismarine_Precipitate.get(1),
-                    MaterialParts.stack(Materials2Shapes.lens, Materials2Materials.MagnetoResonatic, 0))
+                    MaterialLibAPI.getStack(Materials2Materials.MagnetoResonatic, Materials2Shapes.lens, 0))
                 .itemOutputs(ItemList.Prismatic_Crystal.get(1))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -287,7 +287,7 @@ public class NetheriteRecipes {
                 .itemInputs(
                     MetaItemCraftingComponent.getInstance()
                         .getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 4),
-                    MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.RawFluorophlogopite, 24))
+                    MaterialLibAPI.getStack(Materials2Materials.RawFluorophlogopite, Materials2Shapes.dust, 24))
                 .fluidInputs(
                     MaterialLibAPI
                         .getFluidStack(Materials2Materials.prismaticnaquadah, Materials2FluidShapes.fluidMolten, 576))
@@ -549,21 +549,21 @@ public class NetheriteRecipes {
     }
 
     private static void addNetheriteParts() {
-        addNetheritePartRecipe(OrePrefixes.ingot, 1, 1);
-        addNetheritePartRecipe(OrePrefixes.plate, 1, 1);
-        addNetheritePartRecipe(OrePrefixes.plateDouble, 1, 2);
-        addNetheritePartRecipe(OrePrefixes.plateDense, 1, 9);
-        addNetheritePartRecipe(OrePrefixes.stick, 2, 1);
-        addNetheritePartRecipe(OrePrefixes.round, 9, 1);
-        addNetheritePartRecipe(OrePrefixes.bolt, 8, 1);
-        addNetheritePartRecipe(OrePrefixes.screw, 8, 1);
-        addNetheritePartRecipe(OrePrefixes.ring, 4, 1);
-        addNetheritePartRecipe(OrePrefixes.foil, 4, 1);
-        addNetheritePartRecipe(OrePrefixes.itemCasing, 2, 1);
-        addNetheritePartRecipe(OrePrefixes.gearGtSmall, 1, 1);
-        addNetheritePartRecipe(OrePrefixes.rotor, 1, 5);
-        addNetheritePartRecipe(OrePrefixes.stickLong, 1, 1);
-        addNetheritePartRecipe(OrePrefixes.gearGt, 1, 4);
+        addNetheritePartRecipe(Materials2Shapes.ingot, 1, 1);
+        addNetheritePartRecipe(Materials2Shapes.plate, 1, 1);
+        addNetheritePartRecipe(Materials2Shapes.plateDouble, 1, 2);
+        addNetheritePartRecipe(Materials2Shapes.plateDense, 1, 9);
+        addNetheritePartRecipe(Materials2Shapes.stick, 2, 1);
+        addNetheritePartRecipe(Materials2Shapes.round, 9, 1);
+        addNetheritePartRecipe(Materials2Shapes.bolt, 8, 1);
+        addNetheritePartRecipe(Materials2Shapes.screw, 8, 1);
+        addNetheritePartRecipe(Materials2Shapes.ring, 4, 1);
+        addNetheritePartRecipe(Materials2Shapes.foil, 4, 1);
+        addNetheritePartRecipe(Materials2Shapes.itemCasing, 2, 1);
+        addNetheritePartRecipe(Materials2Shapes.gearGtSmall, 1, 1);
+        addNetheritePartRecipe(Materials2Shapes.rotor, 1, 5);
+        addNetheritePartRecipe(Materials2Shapes.stickLong, 1, 1);
+        addNetheritePartRecipe(Materials2Shapes.gearGt, 1, 4);
         if (EtFuturumRequiem.isModLoaded()) {
             addNetheritePartRecipe(
                 GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.InfusedGold, 1),
@@ -626,13 +626,13 @@ public class NetheriteRecipes {
             .addTo(blastFurnaceRecipes);
     }
 
-    private static void addNetheritePartRecipe(OrePrefixes prefix, int multiplier, int inverseMultiplier) {
+    private static void addNetheritePartRecipe(Shape shape, int multiplier, int inverseMultiplier) {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(prefix, Materials2Materials.InfusedGold, multiplier),
+                MaterialLibAPI.getStack(Materials2Materials.InfusedGold, shape, multiplier),
                 ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(inverseMultiplier))
-            .itemOutputs(MaterialParts.stack(prefix, Materials2Materials.Netherite, multiplier))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Netherite, shape, multiplier))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.Boron,

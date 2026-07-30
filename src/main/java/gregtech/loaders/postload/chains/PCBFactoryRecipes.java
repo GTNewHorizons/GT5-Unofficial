@@ -26,7 +26,6 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
@@ -81,7 +80,7 @@ public class PCBFactoryRecipes {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.CelestialTungsten, 1),
+                MaterialLibAPI.getStack(Materials2Materials.CelestialTungsten, Materials2PipeShapes.frameGt, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Quantum, Materials2Shapes.plate, 6),
                 ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.get(24))
             .itemOutputs(ItemList.RadiationProofPhotolithographicFrameworkCasing.get(1))
@@ -90,7 +89,7 @@ public class PCBFactoryRecipes {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.Hypogen, 1),
+                MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2PipeShapes.frameGt, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.rotor, (int) (2)),
                 MaterialLibAPI.getStack(Materials2Materials.Thulium, Materials2Shapes.plate, (int) (6)))
             .itemOutputs(ItemList.InfinityCooledCasing.get(1))
@@ -783,8 +782,10 @@ public class PCBFactoryRecipes {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.plate, PCBFactoryManager.getPlasticMaterialFromTier(tier), 1),
-                    MaterialParts
-                        .stack(Materials2Shapes.foil, Materials2Materials.Tairitsu, (int) (16 * (Math.sqrt(tier - 6)))),
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Tairitsu,
+                        Materials2Shapes.foil,
+                        (int) (16 * (Math.sqrt(tier - 6)))),
                     GTOreDictUnificator.get(
                         OrePrefixes.foil,
                         Materials2Materials.InfinityCatalyst,
@@ -824,8 +825,10 @@ public class PCBFactoryRecipes {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.plate, PCBFactoryManager.getPlasticMaterialFromTier(tier), 1),
-                    MaterialParts
-                        .stack(Materials2Shapes.foil, Materials2Materials.Tairitsu, (int) (16 * (Math.sqrt(tier - 6)))),
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Tairitsu,
+                        Materials2Shapes.foil,
+                        (int) (16 * (Math.sqrt(tier - 6)))),
                     GTOreDictUnificator.get(
                         OrePrefixes.foil,
                         Materials2Materials.InfinityCatalyst,
@@ -866,8 +869,10 @@ public class PCBFactoryRecipes {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.plate, PCBFactoryManager.getPlasticMaterialFromTier(tier), 1),
-                    MaterialParts
-                        .stack(Materials2Shapes.foil, Materials2Materials.Tairitsu, (int) (16 * (Math.sqrt(tier - 6)))),
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Tairitsu,
+                        Materials2Shapes.foil,
+                        (int) (16 * (Math.sqrt(tier - 6)))),
                     GTOreDictUnificator.get(
                         OrePrefixes.foil,
                         Materials2Materials.InfinityCatalyst,

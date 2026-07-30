@@ -13,7 +13,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -31,10 +30,11 @@ public class LatheRecipes implements Runnable {
             .addTo(latheRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.gemFlawless, Materials2Materials.LanthanumHexaboride, 1))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.LanthanumHexaboride, Materials2Shapes.gemFlawless, 1))
             .itemOutputs(
-                MaterialParts.stack(Materials2Shapes.stickLong, Materials2Materials.LanthanumHexaboride, 1),
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.LanthanumHexaboride, 1))
+                MaterialLibAPI.getStack(Materials2Materials.LanthanumHexaboride, Materials2Shapes.stickLong, 1),
+                MaterialLibAPI.getStack(Materials2Materials.LanthanumHexaboride, Materials2Shapes.dust, 1))
             .duration((100 * SECONDS))
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(latheRecipes);

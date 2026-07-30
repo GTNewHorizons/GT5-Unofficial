@@ -30,6 +30,8 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -44,7 +46,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -55,6 +56,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -591,9 +593,14 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
 
         // Lenses of werkstoff-origin materials, keyed by the legacy werkstoff id their colour was chosen for.
         for (int[] row : WERKSTOFF_LENS_COLORS) {
-            ItemStack lens = MaterialParts.stack(Materials2Shapes.lens, Materials2WerkstoffIndex.get(row[0]), 1);
-            if (lens == null) continue;
-            lensColors.put(getUniqueIdentifier(lens), Colors.values()[row[1]]);
+            Material material = Materials2WerkstoffIndex.get(row[0]);
+            if (material == null || !material.hasShape(Materials2Shapes.lens)) {
+                GTLog.err.println("MTEIndustrialLaserEngraver: werkstoff " + row[0] + " no longer carries a lens");
+                continue;
+            }
+            lensColors.put(
+                getUniqueIdentifier(MaterialLibAPI.getStack(material, Materials2Shapes.lens, 1)),
+                Colors.values()[row[1]]);
         }
         lensColors.put("MU-metaitem.0132140", Colors.Purple);
 

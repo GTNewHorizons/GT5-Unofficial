@@ -23,7 +23,6 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
@@ -203,12 +202,12 @@ public class RecipesMachines {
             new Object[] { "RPR", "PFP", "PPP", 'R',
                 MaterialLibAPI.getStack(Materials2Materials.Grisium, Materials2Shapes.stick, 1), 'P',
                 MaterialLibAPI.getStack(Materials2Materials.Grisium, Materials2Shapes.plate, 1), 'F',
-                MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.Grisium, 1) });
+                MaterialLibAPI.getStack(Materials2Materials.Grisium, Materials2PipeShapes.frameGt, 1) });
 
         // Trinium Plated Casing (unused but craftable)
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.TriniumNaquadahCarbonite, 4),
+                MaterialLibAPI.getStack(Materials2Materials.TriniumNaquadahCarbonite, Materials2PipeShapes.frameGt, 4),
                 MaterialLibAPI.getStack(Materials2Materials.TriniumTitaniumAlloy, Materials2Shapes.plateDouble, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Pikyonium64B, Materials2Shapes.gearGt, 2),
                 MaterialLibAPI.getStack(Materials2Materials.ArceusAlloy2B, Materials2Shapes.plateDouble, 4),

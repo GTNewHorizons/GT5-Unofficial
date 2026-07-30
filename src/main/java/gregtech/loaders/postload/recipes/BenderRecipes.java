@@ -15,7 +15,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -294,9 +293,9 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, Materials2Materials.Tairitsu, 9))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Tairitsu, Materials2Shapes.ingot, 9))
             .circuit(9)
-            .itemOutputs(MaterialParts.stack(Materials2Shapes.plateDense, Materials2Materials.Tairitsu, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Tairitsu, Materials2Shapes.plateDense, 1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(benderRecipes);

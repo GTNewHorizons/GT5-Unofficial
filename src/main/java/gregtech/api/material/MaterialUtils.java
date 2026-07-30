@@ -77,7 +77,8 @@ public class MaterialUtils {
     public static @Nullable ItemStack compositionDust(MaterialRefStack entry) {
         Material material = entry.material()
             .resolve();
-        return material == null ? null : MaterialParts.stack(Materials2Shapes.dust, material, entry.amount());
+        if (material == null || !material.hasShape(Materials2Shapes.dust)) return null;
+        return MaterialLibAPI.getStack(material, Materials2Shapes.dust, (int) entry.amount());
     }
 
     /// The gas [FluidStack] a [GTMaterialProperties#COMPOSITION] entry contributes when its material has no

@@ -3,8 +3,8 @@ package gregtech.loaders.materialrecipes;
 /// Registers every canonical marker-driven material recipe generator in this package, dispatched from `GTMod`'s
 /// postInit.
 ///
-/// PostInit, not init or preInit, because these generators read composition and marker data off materials
-/// through [gregtech.api.material.MaterialParts], which resolves items via `MaterialLibAPI.getStack` -- only valid once
+/// PostInit, not init or preInit, because these generators read composition and marker data off materials and
+/// resolve their items through `MaterialLibAPI.getStack` -- only valid once
 /// MaterialLib's shapes have resolved -- and some formulas replicate bartworks facade behavior that is only
 /// populated once every mod's own init phase has run (the same postInit-not-init timing
 /// [gregtech.loaders.shapeconsumers.ShapeConsumerSupport] documents for the shape-driven generators). Unlike

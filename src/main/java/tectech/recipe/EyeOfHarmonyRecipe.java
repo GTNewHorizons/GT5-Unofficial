@@ -34,7 +34,6 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -479,10 +478,9 @@ public class EyeOfHarmonyRecipe {
     /// a usable bonus output -- the [GTMaterialProperties#COMPOSITION]-based port of the retired gtPlusPlus
     /// `Material#hasSolidForm`, which likewise required all four shapes present (not merely one).
     private static boolean hasSolidForm(com.ruling_0.materiallib.api.Material material) {
-        return MaterialParts.stack(Materials2Shapes.dust, material, 1) != null
-            && MaterialParts.stack(Materials2BlockShapes.block, material, 1) != null
-            && MaterialParts.stack(Materials2Shapes.dustTiny, material, 1) != null
-            && MaterialParts.stack(Materials2Shapes.dustSmall, material, 1) != null;
+        return material.hasShape(Materials2Shapes.dust) && material.hasShape(Materials2BlockShapes.block)
+            && material.hasShape(Materials2Shapes.dustTiny)
+            && material.hasShape(Materials2Shapes.dustSmall);
     }
 
     /// A breadth-first walk of `material`'s [GTMaterialProperties#COMPOSITION] tree, collecting every leaf

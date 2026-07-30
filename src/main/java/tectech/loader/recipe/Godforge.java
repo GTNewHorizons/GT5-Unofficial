@@ -38,7 +38,6 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
@@ -856,7 +855,8 @@ public class Godforge implements Runnable {
             .put(MaterialLibAPI.getStack(Materials2Materials.Curium, Materials2Shapes.dust, 1), 10000);
 
         // Lanthanides Materials
-        exoticModulePlasmaItemMap.put(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Iodine, 1), 6000);
+        exoticModulePlasmaItemMap
+            .put(MaterialLibAPI.getStack(Materials2Materials.Iodine, Materials2Shapes.dust, 1), 6000);
 
         // Mercury is weird, it has neither dust nor gas, so it needs to be added separately
         exoticModulePlasmaFluidMap
@@ -864,13 +864,12 @@ public class Godforge implements Runnable {
 
         // Loop for adding all GT plasma materials
         for (int i = 0; i < plasmaGTMaterialList.size(); i++) {
-            if (MaterialParts.stack(Materials2Shapes.dustTiny, plasmaGTMaterialList.get(i), 1) != null) {
-                exoticModulePlasmaItemMap.put(
-                    MaterialParts.stack(Materials2Shapes.dust, plasmaGTMaterialList.get(i), 1),
-                    plasmaGTWeightList.get(i));
+            Material plasmaMaterial = plasmaGTMaterialList.get(i);
+            if (plasmaMaterial.hasShape(Materials2Shapes.dust)) {
+                exoticModulePlasmaItemMap
+                    .put(MaterialLibAPI.getStack(plasmaMaterial, Materials2Shapes.dust, 1), plasmaGTWeightList.get(i));
             } else {
-                exoticModulePlasmaFluidMap
-                    .put(MaterialUtils.gas(plasmaGTMaterialList.get(i), 1), plasmaGTWeightList.get(i));
+                exoticModulePlasmaFluidMap.put(MaterialUtils.gas(plasmaMaterial, 1), plasmaGTWeightList.get(i));
             }
         }
 
@@ -933,7 +932,7 @@ public class Godforge implements Runnable {
             ForgeOfGodsUpgrade.START.addExtraCost(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.SuperconductorUIVBase, 64),
                 ItemList.SuperconductorComposite.get(32),
-                MaterialParts.stack(Materials2Shapes.gearGt, Materials2Materials.MetastableOganesson, 16),
+                MaterialLibAPI.getStack(Materials2Materials.MetastableOganesson, Materials2Shapes.gearGt, 16),
                 getModItem(EternalSingularity.ID, "eternal_singularity", 8L),
                 ItemList.Robot_Arm_UIV.get(64L),
                 ItemList.Field_Generator_UEV.get(64L));
@@ -973,8 +972,8 @@ public class Godforge implements Runnable {
             ForgeOfGodsUpgrade.CD.addExtraCost(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.SpaceTime, 64),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials2Materials.SuperconductorUMVBase, 64),
-                MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.Hypogen, 64),
-                MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.Dragonblood, 64),
+                MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2PipeShapes.frameGt, 64),
+                MaterialLibAPI.getStack(Materials2Materials.Dragonblood, Materials2PipeShapes.frameGt, 64),
                 CustomItemList.EOH_Reinforced_Spatial_Casing.get(64),
                 CustomItemList.EOH_Infinite_Energy_Casing.get(8),
                 ItemList.ZPM6.get(2),

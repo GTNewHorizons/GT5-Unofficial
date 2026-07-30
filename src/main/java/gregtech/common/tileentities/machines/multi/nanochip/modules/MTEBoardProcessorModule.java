@@ -35,7 +35,6 @@ import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -70,9 +69,9 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             lazy(
                 t -> ofBlock(
                     Block.getBlockFromItem(
-                        MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.Octiron, 1)
+                        MaterialLibAPI.getStack(Materials2Materials.Octiron, Materials2PipeShapes.frameGt, 1)
                             .getItem()),
-                    MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.Octiron, 1)
+                    MaterialLibAPI.getStack(Materials2Materials.Octiron, Materials2PipeShapes.frameGt, 1)
                         .getItemDamage())))
         // Nanochip Mesh Interface Casing
         .addElement('B', Casings.NanochipMeshInterfaceCasing.asElement())

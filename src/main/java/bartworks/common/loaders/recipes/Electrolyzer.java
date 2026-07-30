@@ -14,7 +14,6 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class Electrolyzer implements Runnable {
@@ -24,7 +23,7 @@ public class Electrolyzer implements Runnable {
     public void run() {
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Forsterite, 7))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Forsterite, Materials2Shapes.dust, 7))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Magnesium, Materials2Shapes.dust, (int) (2L)),
                 MaterialLibAPI.getStack(Materials2Materials.SiliconDioxide, Materials2Shapes.dust, (int) (1L)))
@@ -35,9 +34,9 @@ public class Electrolyzer implements Runnable {
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.RedZircon, 6))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.RedZircon, Materials2Shapes.dust, 6))
             .itemOutputs(
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Zirconium, 1),
+                MaterialLibAPI.getStack(Materials2Materials.Zirconium, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.SiliconDioxide, Materials2Shapes.dust, (int) (1L)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (2_000)))
@@ -46,7 +45,7 @@ public class Electrolyzer implements Runnable {
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Fayalite, 7))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Fayalite, Materials2Shapes.dust, 7))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.dust, (int) (2L)),
                 MaterialLibAPI.getStack(Materials2Materials.SiliconDioxide, Materials2Shapes.dust, (int) (1L)))
@@ -57,7 +56,7 @@ public class Electrolyzer implements Runnable {
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Prasiolite, 16))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Prasiolite, Materials2Shapes.dust, 16))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.SiliconDioxide, Materials2Shapes.dust, (int) (5L)),
                 MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.dust, (int) (1L)))
@@ -66,7 +65,7 @@ public class Electrolyzer implements Runnable {
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Hedenbergite, 10))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Hedenbergite, Materials2Shapes.dust, 10))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Calcium, Materials2Shapes.dust, (int) (1L)),
                 MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.dust, (int) (1L)),
@@ -79,7 +78,7 @@ public class Electrolyzer implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.GreenFuchsite, 21),
+                MaterialLibAPI.getStack(Materials2Materials.GreenFuchsite, Materials2Shapes.dust, 21),
                 ItemList.Cell_Empty.get(2))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Potassium, Materials2Shapes.dust, (int) (1L)),
@@ -94,7 +93,7 @@ public class Electrolyzer implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.RedFuchsite, 21),
+                MaterialLibAPI.getStack(Materials2Materials.RedFuchsite, Materials2Shapes.dust, 21),
                 ItemList.Cell_Empty.get(2))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Potassium, Materials2Shapes.dust, (int) (1L)),
@@ -109,7 +108,7 @@ public class Electrolyzer implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.VanadioOxyDravite, 53),
+                MaterialLibAPI.getStack(Materials2Materials.VanadioOxyDravite, Materials2Shapes.dust, 53),
                 ItemList.Cell_Empty.get(3))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, (int) (1L)),
@@ -127,7 +126,7 @@ public class Electrolyzer implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.ChromoAluminoPovondraite, 53),
+                MaterialLibAPI.getStack(Materials2Materials.ChromoAluminoPovondraite, Materials2Shapes.dust, 53),
                 ItemList.Cell_Empty.get(3))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, (int) (1L)),
@@ -145,7 +144,7 @@ public class Electrolyzer implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.FluorBuergerite, 50),
+                MaterialLibAPI.getStack(Materials2Materials.FluorBuergerite, Materials2Shapes.dust, 50),
                 ItemList.Cell_Empty.get(3))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, (int) (1L)),
@@ -162,7 +161,7 @@ public class Electrolyzer implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Olenite, 51),
+                MaterialLibAPI.getStack(Materials2Materials.Olenite, Materials2Shapes.dust, 51),
                 ItemList.Cell_Empty.get(1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, (int) (1L)),

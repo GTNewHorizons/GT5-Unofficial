@@ -11,15 +11,14 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2PipeMaterials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -181,428 +180,261 @@ public class GregtechConduits {
         }
     }
 
-    public static boolean generateWireRecipes(Material aMaterial) {
+    /// Whether `material` carries the whole `wireGt01`..`wireGt16` ladder [Materials2PipeMaterials] grants as
+    /// one unit -- the precondition every wire block in [#generateWireRecipes] shares.
+    private static boolean hasWireLadder(Material material) {
+        for (Shape shape : Materials2PipeMaterials.wireShapes()) {
+            if (!material.hasShape(shape)) return false;
+        }
+        return true;
+    }
 
-        ItemStack aPlate = MaterialParts.stack(Materials2Shapes.plate, aMaterial, 1);
-        ItemStack aIngot = MaterialParts.stack(Materials2Shapes.ingot, aMaterial, 1);
-        ItemStack aRod = MaterialParts.stack(Materials2Shapes.stick, aMaterial, 1);
-        ItemStack aWire01 = MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 1);
-        ItemStack aWire02 = MaterialParts.stack(Materials2PipeShapes.wireGt02, aMaterial, 1);
-        ItemStack aWire04 = MaterialParts.stack(Materials2PipeShapes.wireGt04, aMaterial, 1);
-        ItemStack aWire08 = MaterialParts.stack(Materials2PipeShapes.wireGt08, aMaterial, 1);
-        ItemStack aWire12 = MaterialParts.stack(Materials2PipeShapes.wireGt12, aMaterial, 1);
-        ItemStack aWire16 = MaterialParts.stack(Materials2PipeShapes.wireGt16, aMaterial, 1);
-        ItemStack aCable01 = MaterialParts.stack(Materials2PipeShapes.cableGt01, aMaterial, 1);
-        ItemStack aCable02 = MaterialParts.stack(Materials2PipeShapes.cableGt02, aMaterial, 1);
-        ItemStack aCable04 = MaterialParts.stack(Materials2PipeShapes.cableGt04, aMaterial, 1);
-        ItemStack aCable08 = MaterialParts.stack(Materials2PipeShapes.cableGt08, aMaterial, 1);
-        ItemStack aCable12 = MaterialParts.stack(Materials2PipeShapes.cableGt12, aMaterial, 1);
-        ItemStack aCable16 = MaterialParts.stack(Materials2PipeShapes.cableGt16, aMaterial, 1);
-        ItemStack aFineWire = MaterialParts.stack(Materials2Shapes.wireFine, aMaterial, 1);
+    /// The wire recipes gtPlusPlus generated for its own conduit materials: the wiremill fine-wire pair, and
+    /// -- for a material carrying the wire ladder -- the wiremill wire ladders, the wire extruder recipe, the
+    /// shapeless size conversions, and the assembler wire-combining ladder.
+    ///
+    /// Fine wire is drawn straight from the ingot and the rod, so those two recipes depend only on
+    /// `ingot`/`stick`/`wireFine`; most callers carry none of the wire ladder and reach only those two.
+    /// Everything else needs the ladder, whose membership comes from [Materials2PipeMaterials]: it grants
+    /// `wireGt01`..`wireGt16` together, so [#hasWireLadder] covers every wire size below it. Cables are absent
+    /// by the same table -- it grants `cableGt01`..`cableGt16` only to its `WireCable` rows, and no caller here
+    /// is one. [gregtech.loaders.oreprocessing.ProcessingWire] owns wire-to-cable for the materials that have
+    /// cables.
+    public static void generateWireRecipes(Material material) {
+        boolean hasIngot = material.hasShape(Materials2Shapes.ingot);
+        boolean hasStick = material.hasShape(Materials2Shapes.stick);
+        boolean hasFineWire = material.hasShape(Materials2Shapes.wireFine);
+
+        if (hasIngot && hasFineWire) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 1))
+                .circuit(3)
+                .itemOutputs(MaterialLibAPI.getStack(material, Materials2Shapes.wireFine, 8))
+                .duration(5 * SECONDS)
+                .eut(4)
+                .addTo(wiremillRecipes);
+        }
+
+        if (hasStick && hasFineWire) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 1))
+                .circuit(3)
+                .itemOutputs(MaterialLibAPI.getStack(material, Materials2Shapes.wireFine, 4))
+                .duration(2 * SECONDS + 10 * TICKS)
+                .eut(4)
+                .addTo(wiremillRecipes);
+        }
+
+        if (!hasWireLadder(material)) return;
+
+        ItemStack wire01 = MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt01, 1);
+        ItemStack wire02 = MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt02, 1);
+        ItemStack wire04 = MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt04, 1);
+        ItemStack wire08 = MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt08, 1);
+        ItemStack wire12 = MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt12, 1);
+        ItemStack wire16 = MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt16, 1);
 
         // Adds manual crafting recipe
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlate, aWire01 })
-            && MaterialUtils.voltageMultiplier(aMaterial) < 7680) {
+        if (material.hasShape(Materials2Shapes.plate) && MaterialUtils.voltageMultiplier(material) < 7680) {
             GTModHandler.addCraftingRecipe(
-                aWire01,
+                wire01,
                 GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "Px ", "   ", "   ", 'P', aPlate });
+                new Object[] { "Px ", "   ", "   ", 'P',
+                    MaterialLibAPI.getStack(material, Materials2Shapes.plate, 1) });
         }
 
         // Wire mill
-        if (ItemUtils
-            .checkForInvalidItems(new ItemStack[] { aIngot, aWire01, aWire02, aWire04, aWire08, aWire12, aWire16 })) {
+        if (hasIngot) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, aMaterial, 1))
+                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 1))
                 .circuit(1)
-                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 2))
+                .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt01, 2))
                 .duration(5 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, aMaterial, 1))
+                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 1))
                 .circuit(2)
-                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt02, aMaterial, 1))
+                .itemOutputs(wire02)
                 .duration(7 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, aMaterial, 2))
+                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 2))
                 .circuit(4)
-                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt04, aMaterial, 1))
+                .itemOutputs(wire04)
                 .duration(10 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, aMaterial, 4))
+                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 4))
                 .circuit(8)
-                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt08, aMaterial, 1))
+                .itemOutputs(wire08)
                 .duration(12 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, aMaterial, 6))
+                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 6))
                 .circuit(12)
-                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt12, aMaterial, 1))
+                .itemOutputs(wire12)
                 .duration(15 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, aMaterial, 8))
+                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 8))
                 .circuit(16)
-                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt16, aMaterial, 1))
+                .itemOutputs(wire16)
                 .duration(17 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(wiremillRecipes);
-
         }
 
-        if (ItemUtils
-            .checkForInvalidItems(new ItemStack[] { aRod, aWire01, aWire02, aWire04, aWire08, aWire12, aWire16 })) {
+        if (hasStick) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2Shapes.stick, aMaterial, 1))
+                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 1))
                 .circuit(1)
-                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 1))
+                .itemOutputs(wire01)
                 .duration(2 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2Shapes.stick, aMaterial, 2))
+                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 2))
                 .circuit(2)
-                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt02, aMaterial, 1))
+                .itemOutputs(wire02)
                 .duration(5 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2Shapes.stick, aMaterial, 4))
+                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 4))
                 .circuit(4)
-                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt04, aMaterial, 1))
+                .itemOutputs(wire04)
                 .duration(7 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2Shapes.stick, aMaterial, 8))
+                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 8))
                 .circuit(8)
-                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt08, aMaterial, 1))
+                .itemOutputs(wire08)
                 .duration(10 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2Shapes.stick, aMaterial, 12))
+                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 12))
                 .circuit(12)
-                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt12, aMaterial, 1))
+                .itemOutputs(wire12)
                 .duration(12 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2Shapes.stick, aMaterial, 16))
+                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 16))
                 .circuit(16)
-                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt16, aMaterial, 1))
+                .itemOutputs(wire16)
                 .duration(15 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
-
         }
 
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aIngot, aFineWire })) {
+        if (hasFineWire) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, aMaterial, 1))
-                .circuit(3)
-                .itemOutputs(MaterialParts.stack(Materials2Shapes.wireFine, aMaterial, 8))
-                .duration(5 * SECONDS)
-                .eut(4)
-                .addTo(wiremillRecipes);
-
-        }
-
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aRod, aFineWire })) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2Shapes.stick, aMaterial, 1))
-                .circuit(3)
-                .itemOutputs(MaterialParts.stack(Materials2Shapes.wireFine, aMaterial, 4))
-                .duration(2 * SECONDS + 10 * TICKS)
-                .eut(4)
-                .addTo(wiremillRecipes);
-
-        }
-
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aFineWire })) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 1))
+                .itemInputs(wire01)
                 .circuit(1)
-                .itemOutputs(MaterialParts.stack(Materials2Shapes.wireFine, aMaterial, 4))
+                .itemOutputs(MaterialLibAPI.getStack(material, Materials2Shapes.wireFine, 4))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(wiremillRecipes);
-
         }
 
         // Extruder
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aIngot, aWire01 })) {
+        if (hasIngot) {
             GTValues.RA.stdBuilder()
-                .itemInputs(aIngot, ItemList.Shape_Extruder_Wire.get(0))
-                .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 2))
+                .itemInputs(
+                    MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 1),
+                    ItemList.Shape_Extruder_Wire.get(0))
+                .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt01, 2))
                 .duration(9 * SECONDS + 16 * TICKS)
                 .eut(96)
                 .addTo(extruderRecipes);
         }
 
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aCable01, aWire01 })) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(aCable01)
-                .itemOutputs(aWire01)
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_ULV)
-                .addTo(unpackagerRecipes);
-        }
+        // Shapeless down-crafting
+        GTModHandler.addShapelessCraftingRecipe(
+            MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt01, 2),
+            GTModHandler.RecipeBits.BUFFERED,
+            new ItemStack[] { wire02 });
+        GTModHandler.addShapelessCraftingRecipe(
+            MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt01, 4),
+            GTModHandler.RecipeBits.BUFFERED,
+            new ItemStack[] { wire04 });
+        GTModHandler.addShapelessCraftingRecipe(
+            MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt01, 8),
+            GTModHandler.RecipeBits.BUFFERED,
+            new ItemStack[] { wire08 });
+        GTModHandler.addShapelessCraftingRecipe(
+            MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt01, 12),
+            GTModHandler.RecipeBits.BUFFERED,
+            new ItemStack[] { wire12 });
+        GTModHandler.addShapelessCraftingRecipe(
+            MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt01, 16),
+            GTModHandler.RecipeBits.BUFFERED,
+            new ItemStack[] { wire16 });
 
-        // Shapeless Down-Crafting
-        // 2x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
-            GTModHandler.addShapelessCraftingRecipe(
-                MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 2),
-                GTModHandler.RecipeBits.BUFFERED,
-                new ItemStack[] { aWire02 });
-        }
-
-        // 4x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire04 })) {
-            GTModHandler.addShapelessCraftingRecipe(
-                MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 4),
-                GTModHandler.RecipeBits.BUFFERED,
-                new ItemStack[] { aWire04 });
-        }
-
-        // 8x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire08 })) {
-            GTModHandler.addShapelessCraftingRecipe(
-                MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 8),
-                GTModHandler.RecipeBits.BUFFERED,
-                new ItemStack[] { aWire08 });
-        }
-
-        // 12x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire12 })) {
-            GTModHandler.addShapelessCraftingRecipe(
-                MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 12),
-                GTModHandler.RecipeBits.BUFFERED,
-                new ItemStack[] { aWire12 });
-        }
-
-        // 16x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire16 })) {
-            GTModHandler.addShapelessCraftingRecipe(
-                MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 16),
-                GTModHandler.RecipeBits.BUFFERED,
-                new ItemStack[] { aWire16 });
-        }
-
-        // 1x -> 2x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
-            GTModHandler.addShapelessCraftingRecipe(
-                aWire02,
-                GTModHandler.RecipeBits.BUFFERED,
-                new ItemStack[] { aWire01, aWire01 });
-        }
-
-        // 2x -> 4x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire02, aWire04 })) {
-            GTModHandler.addShapelessCraftingRecipe(
-                aWire04,
-                GTModHandler.RecipeBits.BUFFERED,
-                new ItemStack[] { aWire02, aWire02 });
-        }
-
-        // 4x -> 8x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire04, aWire08 })) {
-            GTModHandler.addShapelessCraftingRecipe(
-                aWire08,
-                GTModHandler.RecipeBits.BUFFERED,
-                new ItemStack[] { aWire04, aWire04 });
-        }
-
-        // 8x -> 12x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire04, aWire08, aWire12 })) {
-            GTModHandler.addShapelessCraftingRecipe(
-                aWire12,
-                GTModHandler.RecipeBits.BUFFERED,
-                new ItemStack[] { aWire04, aWire08 });
-        }
-
-        // 12x -> 16x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire04, aWire12, aWire16 })) {
-            GTModHandler.addShapelessCraftingRecipe(
-                aWire16,
-                GTModHandler.RecipeBits.BUFFERED,
-                new ItemStack[] { aWire04, aWire12 });
-        }
-
-        // 8x -> 16x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire08, aWire16 })) {
-            GTModHandler.addShapelessCraftingRecipe(
-                aWire16,
-                GTModHandler.RecipeBits.BUFFERED,
-                new ItemStack[] { aWire08, aWire08 });
-        }
-
-        // 1x -> 4x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire04 })) {
-            GTModHandler.addShapelessCraftingRecipe(
-                aWire04,
-                GTModHandler.RecipeBits.BUFFERED,
-                new ItemStack[] { aWire01, aWire01, aWire01, aWire01 });
-        }
-
-        // 1x -> 8x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire08 })) {
-            GTModHandler.addShapelessCraftingRecipe(
-                aWire08,
-                GTModHandler.RecipeBits.BUFFERED,
-                new ItemStack[] { aWire01, aWire01, aWire01, aWire01, aWire01, aWire01, aWire01, aWire01 });
-        }
-
-        // Wire to Cable
-        // 1x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aCable01 })) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(aWire01)
-                .circuit(24)
-                .itemOutputs(aCable01)
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Rubber,
-                        Materials2FluidShapes.fluidMolten,
-                        (int) (1 * INGOTS)))
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_ULV)
-                .addTo(assemblerRecipes);
-
-        }
-
-        // 2x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire02, aCable02 })) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(aWire02)
-                .circuit(24)
-                .itemOutputs(aCable02)
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Rubber,
-                        Materials2FluidShapes.fluidMolten,
-                        (int) (1 * INGOTS)))
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_ULV)
-                .addTo(assemblerRecipes);
-
-        }
-
-        // 4x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire04, aCable04 })) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(aWire04)
-                .circuit(24)
-                .itemOutputs(aCable04)
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Rubber,
-                        Materials2FluidShapes.fluidMolten,
-                        (int) (2 * INGOTS)))
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_ULV)
-                .addTo(assemblerRecipes);
-
-        }
-
-        // 8x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire08, aCable08 })) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(aWire08)
-                .circuit(24)
-                .itemOutputs(aCable08)
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Rubber,
-                        Materials2FluidShapes.fluidMolten,
-                        (int) (3 * INGOTS)))
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_ULV)
-                .addTo(assemblerRecipes);
-
-        }
-
-        // 12x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire12, aCable12 })) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(aWire12)
-                .circuit(24)
-                .itemOutputs(aCable12)
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Rubber,
-                        Materials2FluidShapes.fluidMolten,
-                        (int) (4 * INGOTS)))
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_ULV)
-                .addTo(assemblerRecipes);
-
-        }
-
-        // 16x
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire16, aCable16 })) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(aWire16)
-                .circuit(24)
-                .itemOutputs(aCable16)
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Rubber,
-                        Materials2FluidShapes.fluidMolten,
-                        (int) (5 * INGOTS)))
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_ULV)
-                .addTo(assemblerRecipes);
-
-        }
+        // Shapeless up-crafting
+        GTModHandler
+            .addShapelessCraftingRecipe(wire02, GTModHandler.RecipeBits.BUFFERED, new ItemStack[] { wire01, wire01 });
+        GTModHandler
+            .addShapelessCraftingRecipe(wire04, GTModHandler.RecipeBits.BUFFERED, new ItemStack[] { wire02, wire02 });
+        GTModHandler
+            .addShapelessCraftingRecipe(wire08, GTModHandler.RecipeBits.BUFFERED, new ItemStack[] { wire04, wire04 });
+        GTModHandler
+            .addShapelessCraftingRecipe(wire12, GTModHandler.RecipeBits.BUFFERED, new ItemStack[] { wire04, wire08 });
+        GTModHandler
+            .addShapelessCraftingRecipe(wire16, GTModHandler.RecipeBits.BUFFERED, new ItemStack[] { wire04, wire12 });
+        GTModHandler
+            .addShapelessCraftingRecipe(wire16, GTModHandler.RecipeBits.BUFFERED, new ItemStack[] { wire08, wire08 });
+        GTModHandler.addShapelessCraftingRecipe(
+            wire04,
+            GTModHandler.RecipeBits.BUFFERED,
+            new ItemStack[] { wire01, wire01, wire01, wire01 });
+        GTModHandler.addShapelessCraftingRecipe(
+            wire08,
+            GTModHandler.RecipeBits.BUFFERED,
+            new ItemStack[] { wire01, wire01, wire01, wire01, wire01, wire01, wire01, wire01 });
 
         // Assemble small wires into bigger wires
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 2))
-                .circuit(2)
-                .itemOutputs(aWire02)
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_ULV)
-                .addTo(assemblerRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 4))
-                .circuit(4)
-                .itemOutputs(aWire04)
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_ULV)
-                .addTo(assemblerRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 8))
-                .circuit(8)
-                .itemOutputs(aWire08)
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_ULV)
-                .addTo(assemblerRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 12))
-                .circuit(12)
-                .itemOutputs(aWire12)
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_ULV)
-                .addTo(assemblerRecipes);
-            GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, aMaterial, 16))
-                .circuit(16)
-                .itemOutputs(aWire16)
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_ULV)
-                .addTo(assemblerRecipes);
-        }
-
-        return true;
+        GTValues.RA.stdBuilder()
+            .itemInputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt01, 2))
+            .circuit(2)
+            .itemOutputs(wire02)
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_ULV)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt01, 4))
+            .circuit(4)
+            .itemOutputs(wire04)
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_ULV)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt01, 8))
+            .circuit(8)
+            .itemOutputs(wire08)
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_ULV)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt01, 12))
+            .circuit(12)
+            .itemOutputs(wire12)
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_ULV)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt01, 16))
+            .circuit(16)
+            .itemOutputs(wire16)
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_ULV)
+            .addTo(assemblerRecipes);
     }
 }

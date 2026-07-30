@@ -1782,7 +1782,7 @@ public class CraftingRecipeLoader implements Runnable {
             ItemList.Casing_Advanced_Rhodium_Palladium.get(1L),
             bits,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
-                MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.RhodiumPlatedPalladium, 1), 'F',
+                MaterialLibAPI.getStack(Materials2Materials.RhodiumPlatedPalladium, Materials2Shapes.plate, 1), 'F',
                 MaterialParts.craftIngredient(OrePrefixes.frameGt, Materials2Materials.Chrome) });
 
         if (Forestry.isModLoaded()) {

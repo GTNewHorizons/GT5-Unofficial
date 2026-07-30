@@ -8,6 +8,7 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
@@ -16,7 +17,6 @@ import gregtech.api.enums.materials2.Materials2GtppComposites.Component;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeBuilder;
 
@@ -60,16 +60,18 @@ public class ProcessingMixerGtpp implements IOreRecipeRegistrator {
         List<Component> composites = Materials2GtppComposites.composites(material);
         if (composites.isEmpty()) return;
 
+        // A composite whose component is a gas or liquid has no mixer recipe: the table is shared with
+        // ProcessingAlloyBlastSmelter, whose own eligible set does include such composites.
         ItemStack[] inputs = new ItemStack[composites.size()];
         int total = 0;
         for (int i = 0; i < composites.size(); i++) {
             Component component = composites.get(i);
-            inputs[i] = MaterialParts.stack(Materials2Shapes.dust, component.material(), component.parts());
-            if (inputs[i] == null) return;
+            if (!component.material()
+                .hasShape(Materials2Shapes.dust)) return;
+            inputs[i] = MaterialLibAPI.getStack(component.material(), Materials2Shapes.dust, component.parts());
             total += component.parts();
         }
-        ItemStack output = MaterialParts.stack(Materials2Shapes.dust, material, total);
-        if (output == null) return;
+        ItemStack output = MaterialLibAPI.getStack(material, Materials2Shapes.dust, total);
 
         int circuit = circuitFor(material, composites.size());
         GTRecipeBuilder builder = GTValues.RA.stdBuilder()

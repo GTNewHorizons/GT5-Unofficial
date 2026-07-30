@@ -29,7 +29,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeBuilder;
 
@@ -112,10 +111,12 @@ public class CrackRecipeAdder {
             EUt / 3);
     }
 
+    /// `material` must carry `dust` and, above 1750 K, `ingotHot` -- see
+    /// [goodgenerator.loader.RecipeLoader2]'s declared caller list.
     public static void reAddBlastRecipe(Material material, int duration, int EUt, int level, boolean gas) {
-        ItemStack input = MaterialParts.stack(Materials2Shapes.dust, material, 1);
-        ItemStack output = level > 1750 ? MaterialParts.stack(Materials2Shapes.ingotHot, material, 1)
-            : MaterialParts.stack(Materials2Shapes.ingot, material, 1);
+        ItemStack input = MaterialLibAPI.getStack(material, Materials2Shapes.dust, 1);
+        ItemStack output = level > 1750 ? MaterialLibAPI.getStack(material, Materials2Shapes.ingotHot, 1)
+            : MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 1);
         if (gas) {
             GTValues.RA.stdBuilder()
                 .itemInputs(input)
@@ -194,44 +195,46 @@ public class CrackRecipeAdder {
         return new FluidStack(fluid.getFluid(), amount);
     }
 
+    /// `material` must carry `ingot` and the `pipeTiny`..`pipeHuge` ladder -- see
+    /// [gregtech.api.enums.materials2.Materials2PipeMaterials] for which materials do.
     public static void registerPipe(Material material) {
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2Shapes.ingot, material, 1),
+                MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 1),
                 ItemList.Shape_Extruder_Pipe_Tiny.get(0))
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.pipeTiny, material, 2))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.pipeTiny, 2))
             .duration(MaterialUtils.mass(material) * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2Shapes.ingot, material, 1),
+                MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 1),
                 ItemList.Shape_Extruder_Pipe_Small.get(0))
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.pipeSmall, material, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.pipeSmall, 1))
             .duration(MaterialUtils.mass(material) * 2 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2Shapes.ingot, material, 3),
+                MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 3),
                 ItemList.Shape_Extruder_Pipe_Medium.get(0))
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.pipeMedium, material, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.pipeMedium, 1))
             .duration(MaterialUtils.mass(material) * 6 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2Shapes.ingot, material, 6),
+                MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 6),
                 ItemList.Shape_Extruder_Pipe_Large.get(0))
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.pipeLarge, material, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.pipeLarge, 1))
             .duration(MaterialUtils.mass(material) * 12 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2Shapes.ingot, material, 12),
+                MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 12),
                 ItemList.Shape_Extruder_Pipe_Huge.get(0))
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.pipeHuge, material, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.pipeHuge, 1))
             .duration(MaterialUtils.mass(material) * 24 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(extruderRecipes);
@@ -239,115 +242,117 @@ public class CrackRecipeAdder {
             .itemInputs(ItemList.Shape_Mold_Pipe_Tiny.get(0))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (1 * HALF_INGOTS)))
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.pipeTiny, material, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.pipeTiny, 1))
             .duration(MaterialUtils.mass(material) * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidSolidifierRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Pipe_Small.get(0))
             .fluidInputs(MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.pipeSmall, material, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.pipeSmall, 1))
             .duration(MaterialUtils.mass(material) * 2 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidSolidifierRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Pipe_Medium.get(0))
             .fluidInputs(MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (3 * INGOTS)))
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.pipeMedium, material, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.pipeMedium, 1))
             .duration(MaterialUtils.mass(material) * 6 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidSolidifierRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Pipe_Large.get(0))
             .fluidInputs(MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (6 * INGOTS)))
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.pipeLarge, material, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.pipeLarge, 1))
             .duration(MaterialUtils.mass(material) * 12 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidSolidifierRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Pipe_Huge.get(0))
             .fluidInputs(MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (1728)))
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.pipeHuge, material, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.pipeHuge, 1))
             .duration(MaterialUtils.mass(material) * 24 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidSolidifierRecipes);
     }
 
+    /// `material` must carry `ingot`, `stick` and the `wireGt01`..`wireGt16` ladder -- see
+    /// [gregtech.api.enums.materials2.Materials2PipeMaterials] for which materials do.
     public static void registerWire(Material material) {
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, material, 1))
+            .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 1))
             .circuit(1)
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, material, 2))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt01, 2))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(wiremillRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, material, 1))
+            .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 1))
             .circuit(2)
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt02, material, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt02, 1))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(4)
             .addTo(wiremillRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, material, 2))
+            .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 2))
             .circuit(4)
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt04, material, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt04, 1))
             .duration(10 * SECONDS)
             .eut(4)
             .addTo(wiremillRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, material, 4))
+            .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 4))
             .circuit(8)
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt08, material, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt08, 1))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(4)
             .addTo(wiremillRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, material, 6))
+            .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 6))
             .circuit(12)
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt12, material, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt12, 1))
             .duration(15 * SECONDS)
             .eut(4)
             .addTo(wiremillRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.ingot, material, 8))
+            .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 8))
             .circuit(16)
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt16, material, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt16, 1))
             .duration(17 * SECONDS + 10 * TICKS)
             .eut(4)
             .addTo(wiremillRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.stick, material, 1))
+            .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 1))
             .circuit(1)
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt01, material, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt01, 1))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(4)
             .addTo(wiremillRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.stick, material, 2))
+            .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 2))
             .circuit(2)
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt02, material, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt02, 1))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(wiremillRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.stick, material, 4))
+            .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 4))
             .circuit(4)
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt04, material, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt04, 1))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(4)
             .addTo(wiremillRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.stick, material, 8))
+            .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 8))
             .circuit(8)
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt08, material, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt08, 1))
             .duration(10 * SECONDS)
             .eut(4)
             .addTo(wiremillRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.stick, material, 12))
+            .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 12))
             .circuit(12)
-            .itemOutputs(MaterialParts.stack(Materials2PipeShapes.wireGt12, material, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt12, 1))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(4)
             .addTo(wiremillRecipes);

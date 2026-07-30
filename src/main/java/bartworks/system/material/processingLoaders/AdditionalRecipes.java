@@ -73,7 +73,6 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -294,8 +293,8 @@ public class AdditionalRecipes {
         runBWRecipes();
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.RawAdemicSteel, 1))
-            .itemOutputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.AdemicSteel, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.RawAdemicSteel, Materials2Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.AdemicSteel, Materials2Shapes.dust, 1))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .metadata(ADDITIVE_AMOUNT, 4)
@@ -304,8 +303,8 @@ public class AdditionalRecipes {
         // Thorium/Yttrium Glass
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2Shapes.dustSmall, Materials2Materials.YttriumOxide, 2),
-                MaterialParts.stack(Materials2Shapes.dustSmall, Materials2Materials.Thorianite, 2))
+                MaterialLibAPI.getStack(Materials2Materials.YttriumOxide, Materials2Shapes.dustSmall, 2),
+                MaterialLibAPI.getStack(Materials2Materials.Thorianite, Materials2Shapes.dustSmall, 2))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 0))
             .fluidInputs(
                 MaterialLibAPI
@@ -317,14 +316,14 @@ public class AdditionalRecipes {
 
         // Thorianite recipes
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.crushedPurified, Materials2Materials.Thorianite, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Thorianite, Materials2Shapes.crushedPurified, 1))
             .itemOutputs(
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Thorianite, 1),
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Thorianite, 1),
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Thorianite, 1),
+                MaterialLibAPI.getStack(Materials2Materials.Thorianite, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials2Materials.Thorianite, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials2Materials.Thorianite, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (1)),
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Thorium232, 1))
+                MaterialLibAPI.getStack(Materials2Materials.Thorium232, Materials2Shapes.dust, 1))
             .outputChances(7000, 1300, 700, 600, 300, 100)
             .duration(20 * SECONDS)
             .eut((int) TierEU.RECIPE_IV)
@@ -333,7 +332,7 @@ public class AdditionalRecipes {
         // 3ThO2 + 4Al = 3Th + 2Al2O3
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Thorianite, 9),
+                MaterialLibAPI.getStack(Materials2Materials.Thorianite, Materials2Shapes.dust, 9),
                 MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.dust, (int) (4)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (3)),
@@ -345,7 +344,7 @@ public class AdditionalRecipes {
         // ThO2 + 2Mg = Th + 2MgO
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Thorianite, 3),
+                MaterialLibAPI.getStack(Materials2Materials.Thorianite, Materials2Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials2Materials.Magnesium, Materials2Shapes.dust, (int) (2)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (1)),
@@ -359,7 +358,7 @@ public class AdditionalRecipes {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.Quartzite, Materials2Shapes.dust, (int) (4)),
                 MaterialLibAPI.getStack(Materials2Materials.Amethyst, Materials2Shapes.dust, (int) (1)))
-            .itemOutputs(MaterialParts.stack(Materials2Shapes.gemFlawed, Materials2Materials.Prasiolite, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Prasiolite, Materials2Shapes.gemFlawed, 2))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 500)
@@ -378,7 +377,7 @@ public class AdditionalRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Yttrium, Materials2Shapes.dust, (int) (2)))
             .circuit(5)
-            .itemOutputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.YttriumOxide, 5))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.YttriumOxide, Materials2Shapes.dust, 5))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (3_000)))
             .duration(3 * MINUTES + 24 * SECONDS + 16 * TICKS)
@@ -388,9 +387,9 @@ public class AdditionalRecipes {
         // Zr + 2O =Y22O3= ZrO2
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Zirconium, 10),
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.YttriumOxide, 0))
-            .itemOutputs(MaterialParts.stack(Materials2Shapes.gemFlawed, Materials2Materials.CubicZirconia, 40))
+                MaterialLibAPI.getStack(Materials2Materials.Zirconium, Materials2Shapes.dust, 10),
+                MaterialLibAPI.getStack(Materials2Materials.YttriumOxide, Materials2Shapes.dust, 0))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.CubicZirconia, Materials2Shapes.gemFlawed, 40))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (20_000)))
@@ -475,8 +474,8 @@ public class AdditionalRecipes {
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.MagnetoResonatic, 1))
-            .itemOutputs(MaterialParts.stack(Materials2Shapes.gemChipped, Materials2Materials.MagnetoResonatic, 9))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.MagnetoResonatic, Materials2Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.MagnetoResonatic, Materials2Shapes.gemChipped, 9))
             .outputChances(90_00)
             .fluidInputs(
                 MaterialLibAPI
@@ -486,8 +485,8 @@ public class AdditionalRecipes {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.MagnetoResonatic, 1))
-            .itemOutputs(MaterialParts.stack(Materials2Shapes.gem, Materials2Materials.MagnetoResonatic, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.MagnetoResonatic, Materials2Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.MagnetoResonatic, Materials2Shapes.gem, 1))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
@@ -516,35 +515,35 @@ public class AdditionalRecipes {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.bolt, Materials2Materials.Tiberium, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Tiberium, Materials2Shapes.bolt, 1))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 12_500)
             .addTo(smallNaquadahReactorFuels);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.stick, Materials2Materials.Tiberium, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Tiberium, Materials2Shapes.stick, 1))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 62_500)
             .addTo(largeNaquadahReactorFuels);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.stickLong, Materials2Materials.Tiberium, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Tiberium, Materials2Shapes.stickLong, 1))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 125_000)
             .addTo(hugeNaquadahReactorFuels);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.stick, Materials2Materials.Tiberium, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Tiberium, Materials2Shapes.stick, 1))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 31_250)
             .addTo(extremeNaquadahReactorFuels);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.stickLong, Materials2Materials.Tiberium, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Tiberium, Materials2Shapes.stickLong, 1))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 125_000)

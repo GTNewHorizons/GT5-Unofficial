@@ -36,7 +36,6 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
@@ -405,12 +404,15 @@ public final class BWOreAdapter implements IOreAdapter {
         return drops;
     }
 
+    /// The `rawOre` lookups are unguarded: [#supports] has already established `ore`, and the two shapes are
+    /// declared together throughout [gregtech.api.enums.materials2.Materials2Materials].
     private ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo info, int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
 
         switch (oreDropMode) {
             case Item -> {
-                drops.add(MaterialParts.stack(Materials2Shapes.rawOre, info.material, info.stoneType.isRich() ? 2 : 1));
+                drops.add(
+                    MaterialLibAPI.getStack(info.material, Materials2Shapes.rawOre, info.stoneType.isRich() ? 2 : 1));
             }
             case FortuneItem -> {
                 if (fortune > 0) {
@@ -422,11 +424,11 @@ public final class BWOreAdapter implements IOreAdapter {
                     int amount = (info.stoneType.isRich() ? 2 : 1) * (addedDrops + 1);
 
                     for (int i = 0; i < amount; i++) {
-                        drops.add(MaterialParts.stack(Materials2Shapes.rawOre, info.material, 1));
+                        drops.add(MaterialLibAPI.getStack(info.material, Materials2Shapes.rawOre, 1));
                     }
                 } else {
                     for (int i = 0; i < (info.stoneType.isRich() ? 2 : 1); i++) {
-                        drops.add(MaterialParts.stack(Materials2Shapes.rawOre, info.material, 1));
+                        drops.add(MaterialLibAPI.getStack(info.material, Materials2Shapes.rawOre, 1));
                     }
                 }
             }

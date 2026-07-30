@@ -10,7 +10,7 @@ import gregtech.api.enums.OrePrefixes;
 /// already resolved to a non-`miscutils:` item by dump time are hand-migrated in
 /// [PosteaTransformers] instead, since this table can only see registry names the dump captured.
 /// [PosteaTransformers] migrates each row's legacy stack to `MaterialParts.stack(prefix, MaterialLibAPI.getMaterial(
-/// "gregtech", materialName), 1)` (`cell` rows through `MaterialParts#cellStack` instead, for its `cellMolten`
+/// "gregtech", materialName), 1)` (`cell` rows through `MaterialParts.cell` instead, for its `cellMolten`
 /// fallback) in a single loop. A `block` row resolves null
 /// (leaving the legacy slot canonical), same as every other prefix here, exactly when the row's material has
 /// no `Materials2BlockShapes#block` shape; it additionally gets a `BlockReplacementManager` handler alongside

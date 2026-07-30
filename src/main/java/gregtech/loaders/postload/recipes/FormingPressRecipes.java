@@ -22,7 +22,6 @@ import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
@@ -244,8 +243,8 @@ public class FormingPressRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials2Materials.TungstenTitaniumCarbide, Materials2Shapes.gearGt, 16),
-                MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.MARM200Steel, 8),
-                MaterialParts.stack(Materials2Shapes.ring, Materials2Materials.AdemicSteel, 2),
+                MaterialLibAPI.getStack(Materials2Materials.MARM200Steel, Materials2Shapes.plate, 8),
+                MaterialLibAPI.getStack(Materials2Materials.AdemicSteel, Materials2Shapes.ring, 2),
                 MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.screw, (int) (16)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
@@ -261,7 +260,7 @@ public class FormingPressRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.gear, Materials2Materials.MysteriousCrystal, 16),
                 MaterialLibAPI.getStack(Materials2Materials.NaquadahAlloy, Materials2Shapes.plate, (int) (8)),
-                MaterialParts.stack(Materials2Shapes.ring, Materials2Materials.HighDurabilityCompoundSteel, 2),
+                MaterialLibAPI.getStack(Materials2Materials.HighDurabilityCompoundSteel, Materials2Shapes.ring, 2),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials2Materials.prismaticnaquadah, 16L))
             .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 10 * INGOTS))
             .itemOutputs(ItemList.T2Sawblade.get(1))
@@ -273,7 +272,7 @@ public class FormingPressRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.gear, Materials2Materials.Neutronium, 16),
                 MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.plate, (int) (8)),
-                MaterialParts.stack(Materials2Shapes.ring, Materials2Materials.Tairitsu, 2),
+                MaterialLibAPI.getStack(Materials2Materials.Tairitsu, Materials2Shapes.ring, 2),
                 MaterialLibAPI.getStack(Materials2Materials.ElectrumFlux, Materials2Shapes.screw, (int) (16)))
             .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 10 * INGOTS))
             .itemOutputs(ItemList.T3Sawblade.get(1))
@@ -286,7 +285,7 @@ public class FormingPressRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.gear, Materials2Materials.TranscendentMetal, 16),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials2Materials.protohalkonite, 8),
                 MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.ring, (int) (2)),
-                MaterialParts.stack(Materials2Shapes.screw, Materials2Materials.MetastableOganesson, 16))
+                MaterialLibAPI.getStack(Materials2Materials.MetastableOganesson, Materials2Shapes.screw, 16))
             .fluidInputs(MaterialUtils.fluid(Materials2Materials.dimensionallyshiftedsuperfluid, 10 * INGOTS))
             .itemOutputs(ItemList.T4Sawblade.get(1))
             .duration(120 * SECONDS)
@@ -312,7 +311,7 @@ public class FormingPressRecipes implements Runnable {
         // Peace Enforcement Casing
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.Tairitsu, 1),
+                MaterialLibAPI.getStack(Materials2Materials.Tairitsu, Materials2PipeShapes.frameGt, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.itemCasing, (int) (2)))
             .itemOutputs(ItemList.PeaceEnforcementCasing.get(1))
             .fluidInputs(

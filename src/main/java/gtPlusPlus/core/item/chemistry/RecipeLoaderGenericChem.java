@@ -26,7 +26,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -202,7 +201,7 @@ public class RecipeLoaderGenericChem {
         ItemStack aluminaBallOutput = GregtechItemList.Milling_Ball_Alumina.get(8);
         ItemGenericChemBase.createMillingBallNBT(aluminaBallOutput);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Alumina, 64))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Alumina, Materials2Shapes.dust, 64))
             .circuit(10)
             .itemOutputs(aluminaBallOutput)
             .fluidInputs(new FluidStack(GTPPFluids.Aniline, 4_000))
@@ -329,7 +328,7 @@ public class RecipeLoaderGenericChem {
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(10),
                 MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.dust, (int) (6)),
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Ruthenium, 6))
+                MaterialLibAPI.getStack(Materials2Materials.Ruthenium, Materials2Shapes.dust, 6))
             .circuit(16)
             .itemOutputs(GregtechItemList.PurpleMetalCatalyst.get(10))
             .duration(2 * MINUTES)
@@ -357,7 +356,7 @@ public class RecipeLoaderGenericChem {
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(10),
                 MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.dust, (int) (4)),
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Rhodium, 4))
+                MaterialLibAPI.getStack(Materials2Materials.Rhodium, Materials2Shapes.dust, 4))
             .circuit(12)
             .itemOutputs(GregtechItemList.PinkMetalCatalyst.get(10))
             .duration(30 * SECONDS)

@@ -6,9 +6,9 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
@@ -16,7 +16,6 @@ import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTLog;
 
 /// Generates the sifter (crushed ore -> gem grade) recipe and the compressor (gem -> block) recipe for
@@ -48,6 +47,12 @@ public final class LoaderSifterRecipes {
         Materials2Materials.Prasiolite, Materials2Materials.BArTiMaEuSNeK, Materials2Materials.Tiberium,
         Materials2Materials.Fluorspar, Materials2Materials.Orundum };
 
+    private static final Shape[] COMPRESSOR_SHAPES = { Materials2Shapes.gem, Materials2BlockShapes.block };
+
+    private static final Shape[] SIFTER_SHAPES = { Materials2Shapes.crushedPurified, Materials2Shapes.gemExquisite,
+        Materials2Shapes.gemFlawless, Materials2Shapes.gem, Materials2Shapes.gemFlawed, Materials2Shapes.gemChipped,
+        Materials2Shapes.dust };
+
     private LoaderSifterRecipes() {}
 
     public static void run() {
@@ -58,8 +63,8 @@ public final class LoaderSifterRecipes {
                         + " no longer satisfies the sifter gate");
                 continue;
             }
-            registerCompressor(material);
-            registerSifter(material);
+            if (declares(material, COMPRESSOR_SHAPES)) registerCompressor(material);
+            if (declares(material, SIFTER_SHAPES)) registerSifter(material);
         }
     }
 
@@ -69,41 +74,41 @@ public final class LoaderSifterRecipes {
         return prefixes != null && prefixes.contains("ore") && prefixes.contains("dust");
     }
 
+    /// Whether `material` carries every one of `shapes`, logging the first it is missing. Checked separately
+    /// from [#hasSifterGate] because that gate reads `ore` and `dust`, which say nothing about the gem grades:
+    /// carrier-set membership is what makes those present, and this is what keeps the set honest.
+    private static boolean declares(Material material, Shape[] shapes) {
+        for (Shape shape : shapes) {
+            if (!material.hasShape(shape)) {
+                GTLog.err.println(
+                    "LoaderSifterRecipes: declared carrier " + material.getName()
+                        + " no longer carries "
+                        + shape.getName());
+                return false;
+            }
+        }
+        return true;
+    }
+
     private static void registerCompressor(Material material) {
-        ItemStack gemInput = MaterialParts.stack(Materials2Shapes.gem, material, 9);
-        ItemStack blockOutput = MaterialParts.stack(Materials2BlockShapes.block, material, 1);
-        if (gemInput == null || blockOutput == null) return;
         GTValues.RA.stdBuilder()
-            .itemInputs(gemInput)
-            .itemOutputs(blockOutput)
+            .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.gem, 9))
+            .itemOutputs(MaterialLibAPI.getStack(material, Materials2BlockShapes.block, 1))
             .duration(15 * SECONDS)
             .eut(recipeEU(material, 2))
             .addTo(compressorRecipes);
     }
 
     private static void registerSifter(Material material) {
-        ItemStack crushedPurifiedInput = MaterialParts.stack(Materials2Shapes.crushedPurified, material, 1);
-        ItemStack gemExquisiteOutput = MaterialParts.stack(Materials2Shapes.gemExquisite, material, 1);
-        ItemStack gemFlawlessOutput = MaterialParts.stack(Materials2Shapes.gemFlawless, material, 1);
-        ItemStack gemOutput = MaterialParts.stack(Materials2Shapes.gem, material, 1);
-        ItemStack gemFlawedOutput = MaterialParts.stack(Materials2Shapes.gemFlawed, material, 1);
-        ItemStack gemChippedOutput = MaterialParts.stack(Materials2Shapes.gemChipped, material, 1);
-        ItemStack dustOutput = MaterialParts.stack(Materials2Shapes.dust, material, 1);
-        if (crushedPurifiedInput == null || gemExquisiteOutput == null
-            || gemFlawlessOutput == null
-            || gemOutput == null
-            || gemFlawedOutput == null
-            || gemChippedOutput == null
-            || dustOutput == null) return;
         GTValues.RA.stdBuilder()
-            .itemInputs(crushedPurifiedInput)
+            .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.crushedPurified, 1))
             .itemOutputs(
-                gemExquisiteOutput,
-                gemFlawlessOutput,
-                gemOutput,
-                gemFlawedOutput,
-                gemChippedOutput,
-                dustOutput)
+                MaterialLibAPI.getStack(material, Materials2Shapes.gemExquisite, 1),
+                MaterialLibAPI.getStack(material, Materials2Shapes.gemFlawless, 1),
+                MaterialLibAPI.getStack(material, Materials2Shapes.gem, 1),
+                MaterialLibAPI.getStack(material, Materials2Shapes.gemFlawed, 1),
+                MaterialLibAPI.getStack(material, Materials2Shapes.gemChipped, 1),
+                MaterialLibAPI.getStack(material, Materials2Shapes.dust, 1))
             .outputChances(200, 1000, 2500, 2000, 4000, 5000)
             .duration(40 * SECONDS)
             .eut(recipeEU(material, (int) (TierEU.RECIPE_LV / 2)))

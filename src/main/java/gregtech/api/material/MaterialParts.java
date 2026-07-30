@@ -26,55 +26,49 @@ import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 
-/// Resolves a material's items from the MaterialLib [Shape] that backs them.
+/// The bridge between GregTech's legacy [OrePrefixes] domain and MaterialLib's [Shape] domain.
 ///
-/// [MaterialLibAPI#getStack] throws for a material that does not generate the shape, which is the wrong
-/// contract for most of GregTech: a missing part is a data condition recipe generation is expected to skip,
-/// not a fault. [#stack] guards with [Material#hasShape] and answers null instead; [#require] is the
-/// throwing form, for a caller whose material came *from* the shape's own membership and where a miss is a
-/// bug.
+/// Code holding a shape calls [MaterialLibAPI#getStack] directly and lets it throw: both sides of a
+/// (material, shape) pair are explicitly declared, so a call site naming a pair the material does not
+/// generate is a declaration bug, not a data condition. This class serves the callers that do *not* hold a
+/// shape -- a prefix read from a saved NBT tag, a werkstoff prefix list, an ore-dictionary name -- where the
+/// prefix domain is strictly wider than the shape domain and "no MaterialLib backing for this pair" is an
+/// expected answer with a defined legacy behaviour on the other side. Those entry points answer null, and
+/// each caller decides what null means for it.
 ///
-/// The guard is exact rather than conservative: `ShapeRegistry` binds each shape's served materials by
-/// routing every entry of [Material#getShapes] through the same canonical-shape mapping [MaterialLibAPI#
-/// getStack] applies before its own membership check, so `hasShape` cannot report true where `getStack`
-/// would throw.
+/// The ore-dictionary ingredient builders live here too: their material amounts and secondary materials
+/// still live on the prefix rather than the shape.
 ///
 /// Amounts are `long` because that is what GregTech's recipe code carries; MaterialLib takes an `int`.
 ///
-/// The legacy [OrePrefixes]-keyed entry points remain for the callers that hold a prefix at runtime rather
-/// than a shape -- the save-migration transformers and the prefix-domain registration loops -- and for the
-/// ore-dictionary ingredients, whose material amounts and secondary materials still live on the prefix.
+/// The membership checks below read [Material#hasShape], which tests the material's *declared* shape
+/// instances by identity, while [MaterialLibAPI#getStack] canonicalizes first. The two can only disagree for
+/// a material declared with a foreign mod's same-named shape alias; every material here is declared with
+/// gregtech's own `Materials2*Shapes` constants. `ShapeItem#getServedMaterials` is the canonical-safe
+/// alternative when iterating a shape's materials rather than testing one material.
 public class MaterialParts {
 
     private MaterialParts() {}
 
-    /// The stack of `material` in `shape` at `amount`, or null when either is absent or the material does not
-    /// generate the shape.
-    public static @Nullable ItemStack stack(Shape shape, @Nullable Material material, long amount) {
-        if (shape == null || material == null || !material.hasShape(shape)) return null;
-        return MaterialLibAPI.getStack(material, shape, (int) amount);
-    }
-
-    /// [#stack] for a material already known to generate `shape` -- MaterialLib's own throw is left in place,
-    /// so a miss surfaces rather than silently dropping whatever was being built.
-    public static ItemStack require(Shape shape, Material material, long amount) {
-        return MaterialLibAPI.getStack(material, shape, (int) amount);
-    }
-
     /// A material's full cell, falling back to `cellMolten` when it carries no plain `cell`: a gtPlusPlus
     /// material whose single fluid claimed the molten shape rather than a liquid or gas slot holds its cell
-    /// only under `cellMolten`.
+    /// only under `cellMolten`. Null when the material carries neither, or is itself null.
+    ///
+    /// This exists for the callers resolving an arbitrary material at runtime -- a save-migration table row, a
+    /// composition component. A caller that knows its material statically names the shape and calls
+    /// [MaterialLibAPI#getStack] directly, so the recipe says which of the two items it means.
+    /// [gregtech.loaders.oreprocessing.ProcessingDustGeneration#stackOf]'s ore-dictionary fallback is
+    /// deliberately not used here: for a material with no plain `cell` shape it resolves the legacy gtPlusPlus
+    /// cell item rather than `cellMolten`.
     public static @Nullable ItemStack cell(@Nullable Material material, long amount) {
-        ItemStack cell = stack(Materials2CellShapes.cell, material, amount);
-        return cell != null ? cell : stack(Materials2CellShapes.cellMolten, material, amount);
-    }
-
-    /// A material's plasma cell. The two plasma cell shapes share the `cellPlasma` oredict prefix and differ
-    /// only in volume, and membership is a per-material choice -- 73 materials take the full-size shape and
-    /// 51 the light one, with no overlap -- so naming either statically is wrong for the other half.
-    public static @Nullable ItemStack plasmaCell(@Nullable Material material, long amount) {
-        ItemStack plasma = stack(Materials2CellShapes.cellPlasma, material, amount);
-        return plasma != null ? plasma : stack(Materials2CellShapes.cellPlasmaLight, material, amount);
+        if (material == null) return null;
+        if (material.hasShape(Materials2CellShapes.cell)) {
+            return MaterialLibAPI.getStack(material, Materials2CellShapes.cell, (int) amount);
+        }
+        if (material.hasShape(Materials2CellShapes.cellMolten)) {
+            return MaterialLibAPI.getStack(material, Materials2CellShapes.cellMolten, (int) amount);
+        }
+        return null;
     }
 
     private static Map<String, List<Shape>> prefixToShapes;
@@ -97,16 +91,22 @@ public class MaterialParts {
         return shapes == null ? Collections.emptyList() : shapes;
     }
 
-    /// The cutover MaterialLib stack for a (prefix, material) pair, or null when either side has no cutover
-    /// mapping. When a prefix maps to more than one candidate shape (`cellPlasma`), the first one `material`
-    /// actually generates is used.
+    /// The MaterialLib stack backing a legacy (prefix, material) pair, or **null when the pair has no
+    /// MaterialLib backing** -- either the prefix declares no shape at all (a container or tool prefix outside
+    /// the cutover) or this particular material generates none of the prefix's candidate shapes. Null is a
+    /// normal answer, not a fault: every caller reaching here holds a prefix that arrived at runtime and has a
+    /// defined legacy behaviour for the un-backed case (skip the migration, fall back to the unificator, keep
+    /// the legacy block). A caller holding a [Shape] statically calls [MaterialLibAPI#getStack] instead and
+    /// lets a wrong pair throw.
+    ///
+    /// When a prefix maps to more than one candidate shape (`cellPlasma`, `pipeTiny`..`pipeHuge`), the first
+    /// one `material` generates wins; [#shapes] exposes the full candidate list.
     public static @Nullable ItemStack stack(OrePrefixes prefix, @Nullable Material material, long amount) {
         if (prefix == null || material == null) return null;
         List<Shape> shapes = prefixShapes().get(prefix.name());
         if (shapes == null) return null;
         for (Shape shape : shapes) {
-            ItemStack stack = MaterialParts.stack(shape, material, amount);
-            if (stack != null) return stack;
+            if (material.hasShape(shape)) return MaterialLibAPI.getStack(material, shape, (int) amount);
         }
         return null;
     }
@@ -120,7 +120,13 @@ public class MaterialParts {
     /// legacy item instead). Legacy construction code should skip a (prefix, material) pair exactly when this
     /// is true, not merely when [#shape] is non-null.
     public static boolean isCutOver(OrePrefixes prefix, @Nullable Material material) {
-        return stack(prefix, material, 1) != null;
+        if (prefix == null || material == null) return false;
+        List<Shape> shapes = prefixShapes().get(prefix.name());
+        if (shapes == null) return false;
+        for (Shape shape : shapes) {
+            if (material.hasShape(shape)) return true;
+        }
+        return false;
     }
 
     /// Whether `stack`'s unification association ([GTOreDictUnificator#getAssociation]) names `material` as

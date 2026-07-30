@@ -11,7 +11,6 @@ import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 
 /// Shared dispatch glue for the `Consumer*` classes in this package: each targets one legacy `OrePrefixes`/
@@ -55,7 +54,7 @@ final class ShapeConsumerSupport {
         if (shape == null) return;
         MaterialLibAPI.registerPostInitShapeConsumer("gregtech", shape, (s, material) -> {
             if (!filter.test(material)) return;
-            ItemStack stack = MaterialParts.require(s, material, 1);
+            ItemStack stack = MaterialLibAPI.getStack(material, s, 1);
             registrator.get()
                 .registerOre(
                     prefix,
