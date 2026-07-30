@@ -13,7 +13,7 @@ import com.ruling_0.materiallib.api.Shape;
 import gregtech.api.material.FluidNames;
 import gregtech.api.material.FluidRef;
 
-/// Hand-maintained fluid [Shape] declarations, one per [gregtech.api.enums.materials2.Materials2FluidNames] slot
+/// Hand-maintained fluid [Shape] declarations, one per [MaterialFluidNames] slot
 /// (solid/fluid/gas/plasma/molten) plus the six cracked-fluid slots. Each needs its own [FluidRef] extractor
 /// rather than a uniform mapping.
 ///
@@ -57,38 +57,38 @@ public class Materials2FluidShapes {
         fluidHydroCracked1 = fluidShape(
             "fluidHydroCracked1",
             "Lightly Hydro-Cracked %s",
-            crackedSlot(Materials2FluidNames::hydroCracked, 0),
+            crackedSlot(MaterialFluidNames::hydroCracked, 0),
             Materials2FluidShapes::gasAttrs);
         fluidHydroCracked2 = fluidShape(
             "fluidHydroCracked2",
             "Moderately Hydro-Cracked %s",
-            crackedSlot(Materials2FluidNames::hydroCracked, 1),
+            crackedSlot(MaterialFluidNames::hydroCracked, 1),
             Materials2FluidShapes::gasAttrs);
         fluidHydroCracked3 = fluidShape(
             "fluidHydroCracked3",
             "Severely Hydro-Cracked %s",
-            crackedSlot(Materials2FluidNames::hydroCracked, 2),
+            crackedSlot(MaterialFluidNames::hydroCracked, 2),
             Materials2FluidShapes::gasAttrs);
         fluidSteamCracked1 = fluidShape(
             "fluidSteamCracked1",
             "Lightly Steam-Cracked %s",
-            crackedSlot(Materials2FluidNames::steamCracked, 0),
+            crackedSlot(MaterialFluidNames::steamCracked, 0),
             Materials2FluidShapes::gasAttrs);
         fluidSteamCracked2 = fluidShape(
             "fluidSteamCracked2",
             "Moderately Steam-Cracked %s",
-            crackedSlot(Materials2FluidNames::steamCracked, 1),
+            crackedSlot(MaterialFluidNames::steamCracked, 1),
             Materials2FluidShapes::gasAttrs);
         fluidSteamCracked3 = fluidShape(
             "fluidSteamCracked3",
             "Severely Steam-Cracked %s",
-            crackedSlot(Materials2FluidNames::steamCracked, 2),
+            crackedSlot(MaterialFluidNames::steamCracked, 2),
             Materials2FluidShapes::gasAttrs);
     }
 
     private static Function<Material, FluidRef> legacySlot(Function<FluidNames, FluidRef> slot) {
         return material -> {
-            FluidNames names = Materials2FluidNames.of(material.getName());
+            FluidNames names = MaterialFluidNames.of(material.getName());
             return names == null ? null : slot.apply(names);
         };
     }

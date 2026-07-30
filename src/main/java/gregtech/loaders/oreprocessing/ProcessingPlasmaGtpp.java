@@ -19,7 +19,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidNames;
+import gregtech.api.enums.materials2.MaterialFluidNames;
 import gregtech.api.material.FluidNames;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -30,7 +30,7 @@ import gregtech.api.util.GTUtility;
 /// plasma-turbine fuel recipe and the plasma-cell-to-cell vacuum freezer cooldown recipe, for whichever
 /// material in [#ELIGIBLE] carries a plasma fluid.
 ///
-/// [#materialPlasma] resolves the plasma fluid by name ([gregtech.api.enums.materials2.Materials2FluidNames]'s `plasma`
+/// [#materialPlasma] resolves the plasma fluid by name ([MaterialFluidNames]'s `plasma`
 /// slot)
 /// rather than through [MaterialParts]'s state-specific accessors, which cannot resolve a gtPlusPlus-only material's
 /// fluid -- see [ProcessingAlloyBlastSmelter]'s class javadoc for the same resolution. The cooldown recipe's
@@ -179,7 +179,7 @@ public class ProcessingPlasmaGtpp {
     }
 
     private static FluidStack materialPlasma(Material material, long amount) {
-        FluidNames fluids = Materials2FluidNames.of(material.getName());
+        FluidNames fluids = MaterialFluidNames.of(material.getName());
         String name = fluids == null || fluids.plasma() == null ? null
             : fluids.plasma()
                 .name();

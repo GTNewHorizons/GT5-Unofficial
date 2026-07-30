@@ -43,7 +43,7 @@ import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.CellShapes;
-import gregtech.api.enums.materials2.Materials2FluidNames;
+import gregtech.api.enums.materials2.MaterialFluidNames;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
@@ -364,9 +364,9 @@ public final class MaterialDataDump {
         json.put("smeltingMultiplier", raw(material, GTMaterialProperties.SMELTING_MULTIPLIER));
         json.put("flags", dumpMlFlags(raw(material, GTMaterialProperties.FLAGS)));
         json.put("aspects", dumpMlAspects(raw(material, GTMaterialProperties.ASPECTS)));
-        json.put("fluids", dumpMlFluids(Materials2FluidNames.of(material.getName())));
-        json.put("crackedHydroFluids", dumpMlFluidRefList(Materials2FluidNames.hydroCracked(material.getName())));
-        json.put("crackedSteamFluids", dumpMlFluidRefList(Materials2FluidNames.steamCracked(material.getName())));
+        json.put("fluids", dumpMlFluids(MaterialFluidNames.of(material.getName())));
+        json.put("crackedHydroFluids", dumpMlFluidRefList(MaterialFluidNames.hydroCracked(material.getName())));
+        json.put("crackedSteamFluids", dumpMlFluidRefList(MaterialFluidNames.steamCracked(material.getName())));
         json.put("color", raw(material, GTMaterialProperties.DYE));
         json.put("autoBlast", raw(material, GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES));
         json.put("autoVacuum", raw(material, GTMaterialProperties.AUTO_VACUUM_FREEZER_RECIPES));
@@ -414,7 +414,7 @@ public final class MaterialDataDump {
         String state = raw(material, GTMaterialProperties.GTPP_STATE);
         if (state == null) return null;
 
-        FluidNames legacyFluids = Materials2FluidNames.of(material.getName());
+        FluidNames legacyFluids = MaterialFluidNames.of(material.getName());
         boolean generatesFluid = MaterialDumpData.gtppGeneratesFluid(material.getName());
 
         Map<String, Object> json = new LinkedHashMap<>();

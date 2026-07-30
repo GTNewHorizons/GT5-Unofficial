@@ -25,9 +25,9 @@ import gregtech.api.material.FluidRef;
 /// a gas that shares the liquid's registration". Held as a table rather than as material properties because
 /// every reader already has the material in hand and needs only its name, so nothing gains from attaching it
 /// to a [com.ruling_0.materiallib.api.Material].
-public final class Materials2FluidNames {
+public final class MaterialFluidNames {
 
-    private Materials2FluidNames() {}
+    private MaterialFluidNames() {}
 
     private static final Map<String, FluidNames> LEGACY = buildLegacy();
     private static final Map<String, List<FluidRef>> HYDRO_CRACKED = buildHydroCracked();
