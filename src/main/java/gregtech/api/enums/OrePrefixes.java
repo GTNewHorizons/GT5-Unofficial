@@ -2515,12 +2515,19 @@ public class OrePrefixes {
     /// serves -- tool and armor forms, containers, the ore stone variants, the foreign-mod marker names -- keep
     /// the values their own builder declared.
     ///
+    /// This copy is permanent, not a step on the way to deleting it. A prefix still has to answer for its own
+    /// data because the oredict path holds a prefix and never a shape: a foreign mod registering `plateCopper`
+    /// reaches [gregtech.common.GTProxy#registerOre], which parses the name down to `plate` and then asks that
+    /// prefix whether it is material-based, unifiable, self-referencing, and whether to skip active
+    /// unification. Shapes cannot serve that path, so the prefix stays a view of the shape rather than
+    /// stopping at one.
+    ///
     /// Copied once rather than read through on every access: these are the accessors under
     /// [gregtech.api.objects.ItemData]'s constructor and several thousand
     /// [gregtech.api.util.GTOreDictUnificator] lookups, and a copy keeps them plain field reads. Called from
     /// [#lateStaticInit], which GregTech's preInit reaches after MaterialLib's has resolved the shapes and
     /// before `GTMod` sets `sMaterialsReady`, so nothing has read a prefix's data yet.
-    private static void hydrateFromShapes() {
+    private static void copyDataFromShapes() {
         GTShapeProperties.verifyAgainstPrefixes();
         for (OrePrefixes prefix : VALUES) {
             List<Shape> shapes = MaterialParts.shapes(prefix);
@@ -2830,7 +2837,7 @@ public class OrePrefixes {
 
         // Last, so the shapes win: the assignments above still read one prefix's amount to derive another's
         // secondary material, and several of them target a prefix a shape now speaks for.
-        hydrateFromShapes();
+        copyDataFromShapes();
     }
 
     public final ArrayList<ItemStack> mPrefixedItems = new GTArrayList<>(false, 16);
