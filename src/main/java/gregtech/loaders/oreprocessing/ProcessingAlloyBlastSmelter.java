@@ -22,8 +22,8 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.materials2.Materials2GtppComposites;
-import gregtech.api.enums.materials2.Materials2GtppComposites.Component;
+import gregtech.api.enums.materials2.LegacyGTPPComposites;
+import gregtech.api.enums.materials2.LegacyGTPPComposites.Component;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
@@ -36,10 +36,10 @@ import gregtech.common.items.ItemIntegratedCircuit;
 /// Alloy blast smelter recipes that turn a solid material into its molten fluid, ported from the retired
 /// gtPlusPlus `RecipeGenBlastSmelter`/`RecipeGenBlastSmelterGTNH`.
 ///
-/// - [#generateComposites] reproduces a [Materials2GtppComposites] entry's component dusts (or, for a
+/// - [#generateComposites] reproduces a [LegacyGTPPComposites] entry's component dusts (or, for a
 /// non-solid component, its fluid) combining into the output's molten fluid, mirroring the ratio the retired
 /// mixer-recipe generator also read from the same `Material#getComposites`/`vSmallestRatio` fields -- see
-/// [Materials2GtppComposites]'s class javadoc for how [#COMPOSITE]'s eligibility differs from the mixer's own.
+/// [LegacyGTPPComposites]'s class javadoc for how [#COMPOSITE]'s eligibility differs from the mixer's own.
 /// - [#generateSingleDust] reproduces a material's own dust blasting directly into its own molten fluid, the
 /// retired generator's other recipe shape (`if (Material#requiresBlastFurnace())`, unconditional on composite
 /// status).
@@ -67,7 +67,7 @@ public class ProcessingAlloyBlastSmelter {
     /// The exact materials the retired `RecipeGenBlastSmelter` registered a composite recipe for -- every
     /// material reachable through `MaterialGenerator.generate`'s `generateBlastSmelterRecipes` parameter left
     /// enabled (or `generateOreMaterialWithAllExcessComponents`, which does not take that parameter) whose
-    /// `Material#getComposites` held more than one part. See [Materials2GtppComposites]'s class javadoc for how
+    /// `Material#getComposites` held more than one part. See [LegacyGTPPComposites]'s class javadoc for how
     /// this differs from the mixer's own eligibility over the same table.
     // spotless:off
     private static final Set<Material> COMPOSITE = Set.of(
@@ -94,7 +94,7 @@ public class ProcessingAlloyBlastSmelter {
     /// dedup check must see these).
     public static void generateComposites() {
         for (Material material : COMPOSITE) {
-            List<Component> composites = Materials2GtppComposites.composites(material);
+            List<Component> composites = LegacyGTPPComposites.composites(material);
             if (composites.isEmpty()) continue;
             int totalParts = composites.stream()
                 .mapToInt(Component::parts)
@@ -144,7 +144,7 @@ public class ProcessingAlloyBlastSmelter {
 
             int tier = Math.max(1, MaterialUtils.tier(material));
             int duration = tier <= 4 ? 20 * tier * 10 : 120 * tier * 10;
-            int totalParts = Materials2GtppComposites.composites(material)
+            int totalParts = LegacyGTPPComposites.composites(material)
                 .stream()
                 .mapToInt(Component::parts)
                 .sum();
