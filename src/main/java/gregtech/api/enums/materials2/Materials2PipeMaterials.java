@@ -465,7 +465,7 @@ public class Materials2PipeMaterials {
     private static void applyWerkstoffFrameAndSheetmetal() {
         for (Material material : werkstoffFrameAndSheetmetalMaterials()) {
             edit(material).generateShape(Materials2PipeShapes.frameGt)
-                .generateShape(Materials2BlockShapes.sheetmetal);
+                .generateShape(BlockShapes.sheetmetal);
         }
     }
 
@@ -558,7 +558,7 @@ public class Materials2PipeMaterials {
 
     private static void applySheetmetal() {
         for (Material material : sheetmetalMaterials()) {
-            edit(material).generateShape(Materials2BlockShapes.sheetmetal);
+            edit(material).generateShape(BlockShapes.sheetmetal);
         }
     }
 

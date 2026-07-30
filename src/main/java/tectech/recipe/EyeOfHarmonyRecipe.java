@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
@@ -30,7 +31,6 @@ import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
@@ -478,7 +478,7 @@ public class EyeOfHarmonyRecipe {
     /// a usable bonus output -- the [GTMaterialProperties#COMPOSITION]-based port of the retired gtPlusPlus
     /// `Material#hasSolidForm`, which likewise required all four shapes present (not merely one).
     private static boolean hasSolidForm(com.ruling_0.materiallib.api.Material material) {
-        return material.hasShape(Shapes.dust) && material.hasShape(Materials2BlockShapes.block)
+        return material.hasShape(Shapes.dust) && material.hasShape(BlockShapes.block)
             && material.hasShape(Shapes.dustTiny)
             && material.hasShape(Shapes.dustSmall);
     }

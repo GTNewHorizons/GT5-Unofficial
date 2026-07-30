@@ -82,7 +82,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2BlockShapes;
+import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
@@ -1599,7 +1599,7 @@ public class PlatinumSludgeOverHaul {
         return MATERIALS_BLACKLIST.contains(association.mMaterial.mMaterial);
     }
 
-    /// Whether `stack` is a MaterialLib storage block (`Materials2BlockShapes#block`) of a werkstoff- or
+    /// Whether `stack` is a MaterialLib storage block (`BlockShapes#block`) of a werkstoff- or
     /// gtPlusPlus-backed material -- the cutover equivalent of the legacy `bw.werkstoffblocks.01`/
     /// `BlockBaseModular` stacks that the bartworks-modid check above (`WERKSTOFF_IDS`) and the gtpp-material
     /// association check below (`GTPP_STATE`) blacklisted wholesale. Blacklisting it keeps this overhaul
@@ -1611,7 +1611,7 @@ public class PlatinumSludgeOverHaul {
         Block block = Block.getBlockFromItem(stack.getItem());
         if (block == null) return false;
         BlockMaterialInfo info = MaterialLibAPI.lookupBlock(block, stack.getItemDamage());
-        if (info == null || info.shape() != Materials2BlockShapes.block || info.material() == null) {
+        if (info == null || info.shape() != BlockShapes.block || info.material() == null) {
             return false;
         }
         return info.material()

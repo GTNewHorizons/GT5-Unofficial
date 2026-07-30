@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.function.Consumer;
 
+import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -38,7 +39,6 @@ import forestry.apiculture.genetics.alleles.AlleleEffect;
 import forestry.core.genetics.alleles.AlleleHelper;
 import forestry.core.genetics.alleles.EnumAllele.Lifespan;
 import forestry.core.genetics.alleles.EnumAllele.Tolerance;
-import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.items.CombType;
@@ -130,7 +130,7 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
     }
 
     private static Block blockOf(Material material) {
-        ItemStack stack = MaterialLibAPI.getStack(material, Materials2BlockShapes.block, 1);
+        ItemStack stack = MaterialLibAPI.getStack(material, BlockShapes.block, 1);
         Block block = Block.getBlockFromItem(stack.getItem());
         return block != null ? block : Blocks.lit_furnace;
     }

@@ -69,7 +69,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2BlockShapes;
+import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
@@ -859,9 +859,9 @@ public class RecipesGregTech {
         // Advanced Nitinol Block
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Nitinol60, Materials2BlockShapes.block, 2),
+                MaterialLibAPI.getStack(Materials.Nitinol60, BlockShapes.block, 2),
                 GregtechItemList.Laser_Lens_Special.get(0))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.AdvancedNitinol, Materials2BlockShapes.block, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.AdvancedNitinol, BlockShapes.block, 1))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_UV)
             .addTo(laserEngraverRecipes);

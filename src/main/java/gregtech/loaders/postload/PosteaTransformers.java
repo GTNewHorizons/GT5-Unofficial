@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.function.IntFunction;
 
+import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.block.Block;
@@ -27,7 +28,6 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.OreShapes;
 import gregtech.api.enums.materials2.Materials2PipeMaterials;
@@ -358,8 +358,8 @@ public class PosteaTransformers implements Runnable {
         BlockMetal metal = (BlockMetal) legacyBlock;
         for (int meta = 0; meta < metal.mMats.length; meta++) {
             Material material = metal.mMats[meta];
-            if (material == null || !material.hasShape(Materials2BlockShapes.block)) continue;
-            ItemStack cutover = MaterialLibAPI.getStack(material, Materials2BlockShapes.block, 1);
+            if (material == null || !material.hasShape(BlockShapes.block)) continue;
+            ItemStack cutover = MaterialLibAPI.getStack(material, BlockShapes.block, 1);
             Block mlBlock = Block.getBlockFromItem(cutover.getItem());
             BlockReplacementManager.addSimpleReplacement(originalId, meta, mlBlock, cutover.getItemDamage());
         }

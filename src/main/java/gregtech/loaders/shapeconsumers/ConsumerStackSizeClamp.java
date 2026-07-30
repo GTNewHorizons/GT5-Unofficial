@@ -8,7 +8,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2BlockShapes;
+import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.OreShapes;
 
 /// Reproduces `gregtech.loaders.oreprocessing.ProcessingAll`'s stack-size clamp for MaterialLib's block-kind
@@ -25,7 +25,7 @@ public final class ConsumerStackSizeClamp {
     private ConsumerStackSizeClamp() {}
 
     static void register() {
-        clamp(Materials2BlockShapes.block, OrePrefixes.block);
+        clamp(BlockShapes.block, OrePrefixes.block);
         clamp(OreShapes.ore, OrePrefixes.ore);
         clamp(OreShapes.oreSmall, OrePrefixes.oreSmall);
     }

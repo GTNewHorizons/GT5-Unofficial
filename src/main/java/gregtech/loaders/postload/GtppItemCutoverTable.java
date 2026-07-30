@@ -13,7 +13,7 @@ import gregtech.api.enums.OrePrefixes;
 /// "gregtech", materialName), 1)` (`cell` rows through `MaterialParts.cell` instead, for its `cellMolten`
 /// fallback) in a single loop. A `block` row resolves null
 /// (leaving the legacy slot canonical), same as every other prefix here, exactly when the row's material has
-/// no `Materials2BlockShapes#block` shape; it additionally gets a `BlockReplacementManager` handler alongside
+/// no `BlockShapes#block` shape; it additionally gets a `BlockReplacementManager` handler alongside
 /// the `ItemStackReplacementManager` one, since a storage block is placeable.
 public final class GtppItemCutoverTable {
 

@@ -2,6 +2,7 @@ package gregtech.loaders.postload;
 
 import java.util.List;
 
+import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
@@ -14,7 +15,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import bartworks.util.BWColorUtil;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
@@ -64,12 +64,12 @@ public class LoaderWerkstoffRegistrations {
                     MaterialLibAPI.getStack(material, Shapes.lens, 1));
             }
         }
-        if (material.hasShape(Materials2BlockShapes.block)
+        if (material.hasShape(BlockShapes.block)
             && (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
                 || Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.ingot))) {
             GTOreDictUnificator.registerOre(
                 OrePrefixes.block + MaterialUtils.internalName(material),
-                MaterialLibAPI.getStack(material, Materials2BlockShapes.block, 1));
+                MaterialLibAPI.getStack(material, BlockShapes.block, 1));
         }
     }
 

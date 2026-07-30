@@ -65,7 +65,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2BlockShapes;
+import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
@@ -203,7 +203,7 @@ public class RecipeLoader {
         // Accelerator Electrode Casing
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Silver, Materials2BlockShapes.blockCasingAdvanced, 1),
+                MaterialLibAPI.getStack(Materials.Silver, BlockShapes.blockCasingAdvanced, 1),
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Silver, 12),
                 MaterialLibAPI.getStack(Materials.Gold, Shapes.plateDense, 6))
             .circuit(6)

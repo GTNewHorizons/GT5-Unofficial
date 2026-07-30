@@ -12,8 +12,8 @@ import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.util.GTLog;
@@ -47,7 +47,7 @@ public final class LoaderSifterRecipes {
         Materials.Prasiolite, Materials.BArTiMaEuSNeK, Materials.Tiberium,
         Materials.Fluorspar, Materials.Orundum };
 
-    private static final Shape[] COMPRESSOR_SHAPES = { Shapes.gem, Materials2BlockShapes.block };
+    private static final Shape[] COMPRESSOR_SHAPES = { Shapes.gem, BlockShapes.block };
 
     private static final Shape[] SIFTER_SHAPES = { Shapes.crushedPurified, Shapes.gemExquisite,
         Shapes.gemFlawless, Shapes.gem, Shapes.gemFlawed, Shapes.gemChipped,
@@ -93,7 +93,7 @@ public final class LoaderSifterRecipes {
     private static void registerCompressor(Material material) {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(material, Shapes.gem, 9))
-            .itemOutputs(MaterialLibAPI.getStack(material, Materials2BlockShapes.block, 1))
+            .itemOutputs(MaterialLibAPI.getStack(material, BlockShapes.block, 1))
             .duration(15 * SECONDS)
             .eut(recipeEU(material, 2))
             .addTo(compressorRecipes);

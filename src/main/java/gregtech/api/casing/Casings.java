@@ -30,7 +30,7 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.materials2.Materials2BlockShapes;
+import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
@@ -1140,7 +1140,7 @@ public enum Casings implements ICasing {
     /// blockCasingAdvanced variant of its material.
     private static ImmutableBlockMeta bwCasing(Material material, boolean advanced) {
         return BW_CASING_CACHE.computeIfAbsent(MaterialUtils.internalName(material) + (advanced ? "!adv" : ""), k -> {
-            Shape shape = advanced ? Materials2BlockShapes.blockCasingAdvanced : Materials2BlockShapes.blockCasing;
+            Shape shape = advanced ? BlockShapes.blockCasingAdvanced : BlockShapes.blockCasing;
             ItemStack stack = Objects.requireNonNull(
                 MaterialLibAPI.getStack(material, shape, 1),
                 () -> "No " + shape + " stack for casing material " + MaterialUtils.internalName(material));
