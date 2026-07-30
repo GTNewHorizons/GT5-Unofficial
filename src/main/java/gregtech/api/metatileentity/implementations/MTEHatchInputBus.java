@@ -266,8 +266,9 @@ public class MTEHatchInputBus extends MTEHatch
     @Override
     public List<Integer> getPhysicalCircuitNumbers() {
         List<Integer> numbers = new ArrayList<>();
-        for (int i = 0; i < getSlots(mTier); i++) {
-            ItemStack stack = mInventory[i];
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (i == getCircuitSlot()) continue;
+            ItemStack stack = getStackInSlot(i);
             if (GTUtility.isAnyIntegratedCircuit(stack)) {
                 numbers.add(stack.getItemDamage());
             }
@@ -282,8 +283,9 @@ public class MTEHatchInputBus extends MTEHatch
         if (nonConsumedIds.isEmpty()) return Collections.emptyList();
 
         List<ItemStack> result = new ArrayList<>();
-        for (int i = 0; i < getSlots(mTier); i++) {
-            ItemStack stack = mInventory[i];
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (i == getCircuitSlot()) continue;
+            ItemStack stack = getStackInSlot(i);
             if (stack != null && nonConsumedIds.contains(GTUtility.ItemId.create(stack))) {
                 result.add(stack);
             }
