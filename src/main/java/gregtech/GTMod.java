@@ -72,7 +72,6 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.gui.modularui.GTUIInfos;
-import gregtech.api.material.GTShapeProperties;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuiTheme;
@@ -350,7 +349,6 @@ public class GTMod {
 
         LoaderLegacyMaterialPasses.run();
         OrePrefixes.lateStaticInit();
-        GTShapeProperties.verifyAgainstPrefixes();
         sMaterialsReady = true;
         proxy.catchUpPreExistingOreDictEntries();
         UnificationOreAdapter.catchUp();

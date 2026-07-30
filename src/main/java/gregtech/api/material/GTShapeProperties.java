@@ -64,12 +64,13 @@ public class GTShapeProperties {
 
     private GTShapeProperties() {}
 
-    /// Reports every shape whose declared property disagrees with the [OrePrefixes] field it was copied from.
+    /// Reports every shape whose declared property disagrees with the [OrePrefixes] field it is about to
+    /// overwrite.
     ///
-    /// The two are duplicated on purpose while the shape values are being proven: this is what shows they are a
-    /// faithful copy before anything is made to depend on them, and what catches
-    /// `scripts/mu/gen_shape_data.py` being re-run against a stale dump. Once the prefix reads its values from
-    /// the shape there is only one source and this check, along with the prefix fields it reads, goes away.
+    /// Called from `OrePrefixes#hydrateFromShapes` immediately before it copies, which is the only moment both
+    /// values exist: afterwards the prefix holds what the shape gave it and a comparison would compare a value
+    /// with itself. It catches `scripts/mu/gen_shape_data.py` being re-run against a stale dump, and goes away
+    /// with the prefix literals it reads.
     public static void verifyAgainstPrefixes() {
         int checked = 0;
         int mismatches = 0;

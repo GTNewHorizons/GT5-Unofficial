@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.materials2.Materials2Materials;
@@ -33,6 +34,8 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.GTShapeProperties;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialSubTagView;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.GTArrayList;
@@ -2453,19 +2456,19 @@ public class OrePrefixes {
 
     private final @NotNull String name;
     private final @NotNull String defaultLocalName;
-    private final @NotNull String materialPrefix;
-    private final @NotNull String materialPostfix;
-    private final boolean isUnifiable;
-    private final boolean isMaterialBased;
-    private final boolean isSelfReferencing;
-    private final boolean isContainer;
-    private final boolean skipActiveUnification;
-    private final boolean isRecyclable;
-    private final boolean isEnchantable;
-    private final int materialGenerationBits;
-    private final long materialAmount;
-    private final int defaultStackSize;
-    private final int textureIndex;
+    private @NotNull String materialPrefix;
+    private @NotNull String materialPostfix;
+    private boolean isUnifiable;
+    private boolean isMaterialBased;
+    private boolean isSelfReferencing;
+    private boolean isContainer;
+    private boolean skipActiveUnification;
+    private boolean isRecyclable;
+    private boolean isEnchantable;
+    private int materialGenerationBits;
+    private long materialAmount;
+    private int defaultStackSize;
+    private int textureIndex;
 
     OrePrefixes(
         // spotless:off
@@ -2505,6 +2508,47 @@ public class OrePrefixes {
         addAspectForName();
 
         VALUES_LIST.add(this);
+    }
+
+    /// Copies the per-form data of every prefix a [Shape] serves off that shape, making the shape the one
+    /// declaration of it (see [gregtech.api.enums.materials2.Materials2ShapeData]). The 220 prefixes no shape
+    /// serves -- tool and armor forms, containers, the ore stone variants, the foreign-mod marker names -- keep
+    /// the values their own builder declared.
+    ///
+    /// Copied once rather than read through on every access: these are the accessors under
+    /// [gregtech.api.objects.ItemData]'s constructor and several thousand
+    /// [gregtech.api.util.GTOreDictUnificator] lookups, and a copy keeps them plain field reads. Called from
+    /// [#lateStaticInit], which GregTech's preInit reaches after MaterialLib's has resolved the shapes and
+    /// before `GTMod` sets `sMaterialsReady`, so nothing has read a prefix's data yet.
+    private static void hydrateFromShapes() {
+        GTShapeProperties.verifyAgainstPrefixes();
+        for (OrePrefixes prefix : VALUES) {
+            List<Shape> shapes = MaterialParts.shapes(prefix);
+            if (shapes.isEmpty()) continue;
+            Shape shape = shapes.get(0);
+            String format = shape.getProperty(GTShapeProperties.LOCAL_NAME_FORMAT);
+            if (format != null) {
+                int split = format.indexOf("%s");
+                prefix.materialPrefix = format.substring(0, split);
+                prefix.materialPostfix = format.substring(split + 2);
+            }
+            prefix.materialAmount = shape.getProperty(GTShapeProperties.MATERIAL_AMOUNT);
+            prefix.textureIndex = shape.getProperty(GTShapeProperties.TEXTURE_INDEX);
+            prefix.defaultStackSize = shape.getProperty(GTShapeProperties.DEFAULT_STACK_SIZE);
+            prefix.materialGenerationBits = shape.getProperty(GTShapeProperties.MATERIAL_GENERATION_BITS);
+            prefix.isUnifiable = shape.getProperty(GTShapeProperties.UNIFIABLE);
+            prefix.isMaterialBased = shape.getProperty(GTShapeProperties.MATERIAL_BASED);
+            prefix.isSelfReferencing = shape.getProperty(GTShapeProperties.SELF_REFERENCING);
+            prefix.isContainer = shape.getProperty(GTShapeProperties.CONTAINER);
+            prefix.isRecyclable = shape.getProperty(GTShapeProperties.RECYCLABLE);
+            prefix.isEnchantable = shape.getProperty(GTShapeProperties.ENCHANTABLE);
+            prefix.skipActiveUnification = shape.getProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION);
+            prefix.mHeatDamage = shape.getProperty(GTShapeProperties.HEAT_DAMAGE);
+            prefix.mSecondaryMaterial = shape.getProperty(GTShapeProperties.SECONDARY_MATERIAL);
+            List<TC_AspectStack> aspects = shape.getProperty(GTShapeProperties.ASPECTS);
+            prefix.mAspects.clear();
+            if (aspects != null) prefix.mAspects.addAll(aspects);
+        }
     }
 
     private void addAspectForName() {
@@ -2783,6 +2827,10 @@ public class OrePrefixes {
         bulletGtSmall.mSecondaryMaterial = new MaterialStack(Materials2Materials.Brass, ingot.materialAmount / 9);
         bulletGtMedium.mSecondaryMaterial = new MaterialStack(Materials2Materials.Brass, ingot.materialAmount / 6);
         bulletGtLarge.mSecondaryMaterial = new MaterialStack(Materials2Materials.Brass, ingot.materialAmount / 3);
+
+        // Last, so the shapes win: the assignments above still read one prefix's amount to derive another's
+        // secondary material, and several of them target a prefix a shape now speaks for.
+        hydrateFromShapes();
     }
 
     public final ArrayList<ItemStack> mPrefixedItems = new GTArrayList<>(false, 16);
