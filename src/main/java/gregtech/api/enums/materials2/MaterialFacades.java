@@ -30,7 +30,7 @@ import gregtech.api.material.MaterialRef;
 /// wildcard markers stay shapeless, so the `getShapes().isEmpty()` test that [gregtech.common.GTProxy] and
 /// [gregtech.api.util.GTRecipeRegistrator] use to mean "no composition, no items, contributes no mass"
 /// recognises them. The superconductor markers cannot be shapeless, because their wires are real items:
-/// [Materials2PipeMaterials] gives each of them `wireGt01`..`wireGt16`. So that test does not see them, and
+/// [PipeMaterials] gives each of them `wireGt01`..`wireGt16`. So that test does not see them, and
 /// their marker role is spelled out instead -- [#isSuperconductorMarker] for the recipe gates, and
 /// [gregtech.api.material.MaterialParts#namedIngredient] for crafting ingredients, so a reversible recipe
 /// derives no recycling from a material that has no dust or ingot to recycle into.
@@ -113,7 +113,7 @@ public class MaterialFacades {
     /// [gregtech.api.material.MaterialUtils#byLegacyName] resolves by registry name, and assigns the
     /// superconductor fields from the same builders -- `SuperconductorUHV`'s backing name is
     /// `Superconductor`, so binding by name lookup would be wrong. The wire shapes these materials generate
-    /// are added afterwards, by [Materials2PipeMaterials].
+    /// are added afterwards, by [PipeMaterials].
     public static void registerBackingMaterials() {
         for (Backing sc : SUPERCONDUCTOR_BACKINGS) {
             sc.field()

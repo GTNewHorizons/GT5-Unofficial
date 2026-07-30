@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ruling_0.materiallib.api.Property;
 import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
+import gregtech.api.enums.materials2.PipeMaterials;
 
 /// Typed property keys GregTech attaches to MaterialLib materials; values referencing other materials use
 /// [MaterialRef] because registration order is unspecified.
@@ -174,7 +175,7 @@ public class GTMaterialProperties {
     public static final Property<List<Integer>> WERKSTOFF_IDS = Property.of("gregtech", "werkstoffIds");
     /// The dumped `generatedPrefixes` ground truth (every `OrePrefixes` name `hasItemType` reported), minus
     /// `sheetmetal`/`frameGt`: those two cut over to MaterialLib shapes through
-    /// [gregtech.api.enums.materials2.Materials2PipeMaterials]'s own declared array rather than through this
+    /// [PipeMaterials]'s own declared array rather than through this
     /// property, so they never appear here. Elided when empty.
     public static final Property<List<String>> WERKSTOFF_PREFIXES = Property.of("gregtech", "werkstoffPrefixes");
     /// The legacy bartworks material-type enum constant name.

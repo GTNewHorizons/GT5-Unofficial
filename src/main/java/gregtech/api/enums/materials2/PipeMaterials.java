@@ -20,7 +20,7 @@ import gregtech.api.enums.TierEU;
 ///
 /// Rows reference [Materials] and [MaterialFacades] fields, so [#init] must run after those are
 /// assigned; [gregtech.api.enums.Materials2#init] orders it so.
-public class Materials2PipeMaterials {
+public class PipeMaterials {
 
     /// Fluid capacities (small, medium, large) of the wooden fluid pipes.
     public static final int[] WOOD_FLUID_PIPE_CAPACITY = { 10, 30, 60 };
@@ -566,5 +566,5 @@ public class Materials2PipeMaterials {
         return MaterialLibAPI.editMaterial(material.getModId(), material.getName());
     }
 
-    private Materials2PipeMaterials() {}
+    private PipeMaterials() {}
 }
