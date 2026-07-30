@@ -9,8 +9,6 @@ import static gregtech.api.util.GTRecipeConstants.SPARGE_MAX_BYPRODUCT;
 
 import java.util.ArrayList;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -18,6 +16,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.MaterialUtils;
 
 public class RecipeLoaderLFTR {

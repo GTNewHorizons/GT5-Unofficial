@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tools;
 import java.util.Arrays;
 import java.util.List;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,6 +18,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.ItemIcons;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.material.MaterialUtils;

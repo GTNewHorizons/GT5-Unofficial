@@ -15,7 +15,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -49,6 +48,7 @@ import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEYOTTAHatch;
 import goodgenerator.client.GUI.GGUITextures;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;

@@ -4,7 +4,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.Geothermal_Engine_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.Geothermal_Engine_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.Geothermal_Engine_LuV;
 
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -13,6 +12,7 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTEGeothermalGenerator;

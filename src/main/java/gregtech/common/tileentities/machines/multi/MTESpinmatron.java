@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import gregtech.api.enums.materials2.FluidShapes;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -53,6 +52,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.PipeShapes;
 import gregtech.api.interfaces.IHatchElement;
@@ -694,8 +694,8 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
     private boolean checkFluid(int amount) {
         // checks for fluid in hatch, does not drain it.
-        final FluidStack tFluid = tier2Fluid ? MaterialLibAPI
-            .getFluidStack(Materials.BiocatalyzedPropulsionFluid, FluidShapes.fluidLiquid, amount)
+        final FluidStack tFluid = tier2Fluid
+            ? MaterialLibAPI.getFluidStack(Materials.BiocatalyzedPropulsionFluid, FluidShapes.fluidLiquid, amount)
             : new FluidStack(GTPPFluids.Kerosene, amount);
 
         return this.depleteInput(tFluid, true);
@@ -749,10 +749,10 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         // might need a cleanup here
         if (ticker % 21 == 0) {
 
-            FluidStack tFluid = tier2Fluid ? MaterialLibAPI.getFluidStack(
-                Materials.BiocatalyzedPropulsionFluid,
-                FluidShapes.fluidLiquid,
-                amountToDrain) : new FluidStack(GTPPFluids.Kerosene, amountToDrain); // gets fluid to drain
+            FluidStack tFluid = tier2Fluid
+                ? MaterialLibAPI
+                    .getFluidStack(Materials.BiocatalyzedPropulsionFluid, FluidShapes.fluidLiquid, amountToDrain)
+                : new FluidStack(GTPPFluids.Kerosene, amountToDrain); // gets fluid to drain
             for (MTEHatchInput mInputHatch : mInputHatches) {
                 if (drain(mInputHatch, tFluid, true)) {
                     ticker = 1;

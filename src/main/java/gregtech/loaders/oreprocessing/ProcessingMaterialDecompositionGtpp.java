@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -21,6 +20,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.LegacyGTPPComposites;
 import gregtech.api.enums.materials2.LegacyGTPPComposites.Component;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.MaterialUtils;
 
 /// Reproduces the retired gtPlusPlus `RecipeGenMaterialProcessing` for every material in [#ELIGIBLE] that

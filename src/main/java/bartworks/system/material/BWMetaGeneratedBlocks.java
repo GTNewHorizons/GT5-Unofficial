@@ -18,7 +18,6 @@ import static bartworks.system.material.BWMetaGeneratedOres.ORE_TAB;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -38,6 +37,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;

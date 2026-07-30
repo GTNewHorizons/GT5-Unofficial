@@ -5,7 +5,6 @@ import static gregtech.api.enums.OrePrefixes.cellMolten;
 import java.util.BitSet;
 import java.util.List;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -18,6 +17,7 @@ import com.ruling_0.materiallib.api.Material;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedItemX32;

@@ -5,7 +5,6 @@ import static gregtech.api.util.GTModHandler.getIC2Item;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -13,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 

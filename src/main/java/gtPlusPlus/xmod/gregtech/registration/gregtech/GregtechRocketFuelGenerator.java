@@ -6,7 +6,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.Rocket_Engine_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.Rocket_Engine_LuV;
 import static gregtech.api.util.GTModHandler.RecipeBits.BITS;
 
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -15,6 +14,7 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTERocketFuelGenerator;
@@ -45,8 +45,7 @@ public class GregtechRocketFuelGenerator {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_RocketEngine.get(1L),
             BITS,
-            new Object[] { "PhP", "RFR", "PWP", 'R',
-                OrePrefixes.pipeMedium.ingredient(Materials.TungstenSteel), 'F',
+            new Object[] { "PhP", "RFR", "PWP", 'R', OrePrefixes.pipeMedium.ingredient(Materials.TungstenSteel), 'F',
                 ItemList.Casing_RobustTungstenSteel, 'P',
                 MaterialLibAPI.getStack(Materials.Nitinol60, Shapes.gearGt, 1), 'W',
                 OrePrefixes.stickLong.ingredient(Materials.TungstenSteel) });

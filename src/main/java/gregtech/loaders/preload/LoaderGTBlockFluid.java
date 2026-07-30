@@ -20,7 +20,6 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -44,8 +43,9 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.items.BlockLongDistancePipe;
 import gregtech.api.items.CircuitComponentFakeItem;
@@ -195,10 +195,8 @@ public class LoaderGTBlockFluid implements Runnable {
         ItemList.Rotor_LV.set(MaterialLibAPI.getStack(Materials.Tin, Shapes.rotor, (int) (1)));
         ItemList.Rotor_MV.set(MaterialLibAPI.getStack(Materials.Bronze, Shapes.rotor, (int) (1)));
         ItemList.Rotor_HV.set(MaterialLibAPI.getStack(Materials.Steel, Shapes.rotor, (int) (1)));
-        ItemList.Rotor_EV
-            .set(MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.rotor, (int) (1)));
-        ItemList.Rotor_IV
-            .set(MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.rotor, (int) (1)));
+        ItemList.Rotor_EV.set(MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.rotor, (int) (1)));
+        ItemList.Rotor_IV.set(MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.rotor, (int) (1)));
 
         ItemList.VOLUMETRIC_FLASK.set(new ItemVolumetricFlask("Volumetric_Flask", "Volumetric flask", 1_000));
 
@@ -777,128 +775,106 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GregTechAPI.sBlockMetal1 = new BlockMetal(
             "gt.blockmetal1",
-            new Material[] { Materials.Adamantium, Materials.Aluminium,
-                Materials.Americium, Materials.AnnealedCopper, Materials.Antimony,
-                Materials.Arsenic, Materials.AstralSilver, Materials.BatteryAlloy,
-                Materials.Beryllium, Materials.Bismuth, Materials.BismuthBronze,
-                Materials.BlackBronze, Materials.BlackSteel, Materials.BlueAlloy,
-                Materials.BlueSteel, Materials.Brass },
+            new Material[] { Materials.Adamantium, Materials.Aluminium, Materials.Americium, Materials.AnnealedCopper,
+                Materials.Antimony, Materials.Arsenic, Materials.AstralSilver, Materials.BatteryAlloy,
+                Materials.Beryllium, Materials.Bismuth, Materials.BismuthBronze, Materials.BlackBronze,
+                Materials.BlackSteel, Materials.BlueAlloy, Materials.BlueSteel, Materials.Brass },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS1);
 
         GregTechAPI.sBlockMetal2 = new BlockMetal(
             "gt.blockmetal2",
-            new Material[] { Materials.Bronze, Materials.Caesium, Materials.Cerium,
-                Materials.Chrome, Materials.ChromiumDioxide, Materials.Cobalt,
-                Materials.CobaltBrass, Materials.Copper, Materials.Cupronickel,
-                Materials.DamascusSteel, Materials.DarkIron, Materials.DeepIron,
-                Materials.Desh, Materials.Duranium, Materials.Dysprosium,
-                Materials.Electrum },
+            new Material[] { Materials.Bronze, Materials.Caesium, Materials.Cerium, Materials.Chrome,
+                Materials.ChromiumDioxide, Materials.Cobalt, Materials.CobaltBrass, Materials.Copper,
+                Materials.Cupronickel, Materials.DamascusSteel, Materials.DarkIron, Materials.DeepIron, Materials.Desh,
+                Materials.Duranium, Materials.Dysprosium, Materials.Electrum },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS2);
 
         GregTechAPI.sBlockMetal3 = new BlockMetal(
             "gt.blockmetal3",
-            new Material[] { Materials.ElectrumFlux, Materials.Enderium, Materials.Erbium,
-                Materials.Europium, Materials.FierySteel, Materials.Gadolinium,
-                Materials.Gallium, Materials.Holmium, Materials.HSLA,
-                Materials.Indium, Materials.InfusedGold, Materials.Invar,
-                Materials.Iridium, Materials.IronMagnetic, Materials.IronWood,
-                Materials.Kanthal },
+            new Material[] { Materials.ElectrumFlux, Materials.Enderium, Materials.Erbium, Materials.Europium,
+                Materials.FierySteel, Materials.Gadolinium, Materials.Gallium, Materials.Holmium, Materials.HSLA,
+                Materials.Indium, Materials.InfusedGold, Materials.Invar, Materials.Iridium, Materials.IronMagnetic,
+                Materials.IronWood, Materials.Kanthal },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS3);
 
         GregTechAPI.sBlockMetal4 = new BlockMetal(
             "gt.blockmetal4",
-            new Material[] { Materials.Knightmetal, Materials.Lanthanum, Materials.Lead,
-                Materials.Lutetium, Materials.Magnalium, Materials.Magnesium,
-                Materials.Manganese, Materials.MeteoricIron, Materials.MeteoricSteel,
-                Materials.Trinium, Materials.Mithril, Materials.Molybdenum,
-                Materials.Naquadah, Materials.NaquadahAlloy, Materials.NaquadahEnriched,
-                Materials.Naquadria },
+            new Material[] { Materials.Knightmetal, Materials.Lanthanum, Materials.Lead, Materials.Lutetium,
+                Materials.Magnalium, Materials.Magnesium, Materials.Manganese, Materials.MeteoricIron,
+                Materials.MeteoricSteel, Materials.Trinium, Materials.Mithril, Materials.Molybdenum, Materials.Naquadah,
+                Materials.NaquadahAlloy, Materials.NaquadahEnriched, Materials.Naquadria },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS4);
 
         GregTechAPI.sBlockMetal5 = new BlockMetal(
             "gt.blockmetal5",
-            new Material[] { Materials.Neodymium, Materials.NeodymiumMagnetic,
-                Materials.Neutronium, Materials.Nichrome, Materials.Nickel,
-                Materials.Niobium, Materials.NiobiumNitride, Materials.NiobiumTitanium,
-                Materials.Osmiridium, Materials.Osmium, Materials.Palladium,
-                Materials.PigIron, Materials.Platinum, Materials.Plutonium,
-                Materials.Plutonium241, Materials.Praseodymium },
+            new Material[] { Materials.Neodymium, Materials.NeodymiumMagnetic, Materials.Neutronium, Materials.Nichrome,
+                Materials.Nickel, Materials.Niobium, Materials.NiobiumNitride, Materials.NiobiumTitanium,
+                Materials.Osmiridium, Materials.Osmium, Materials.Palladium, Materials.PigIron, Materials.Platinum,
+                Materials.Plutonium, Materials.Plutonium241, Materials.Praseodymium },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS5);
 
         GregTechAPI.sBlockMetal6 = new BlockMetal(
             "gt.blockmetal6",
-            new Material[] { Materials.Promethium, Materials.RedAlloy, Materials.RedSteel,
-                Materials.RoseGold, Materials.Rubidium, Materials.Samarium,
-                Materials.Scandium, Materials.ShadowIron, Materials.ShadowSteel,
-                Materials.Silicon, Materials.Silver, Materials.SolderingAlloy,
-                Materials.StainlessSteel, Materials.Steel, Materials.SteelMagnetic,
-                Materials.SterlingSilver },
+            new Material[] { Materials.Promethium, Materials.RedAlloy, Materials.RedSteel, Materials.RoseGold,
+                Materials.Rubidium, Materials.Samarium, Materials.Scandium, Materials.ShadowIron, Materials.ShadowSteel,
+                Materials.Silicon, Materials.Silver, Materials.SolderingAlloy, Materials.StainlessSteel,
+                Materials.Steel, Materials.SteelMagnetic, Materials.SterlingSilver },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS6);
 
         GregTechAPI.sBlockMetal7 = new BlockMetal(
             "gt.blockmetal7",
-            new Material[] { Materials.Sunnarium, Materials.Tantalum, Materials.Tellurium,
-                Materials.Terbium, Materials.Thaumium, Materials.Thorium,
-                Materials.Thulium, Materials.Tin, Materials.TinAlloy,
-                Materials.Titanium, Materials.Tritanium, Materials.Tungsten,
-                Materials.TungstenSteel, Materials.Ultimet, Materials.Uranium,
-                Materials.Uranium235 },
+            new Material[] { Materials.Sunnarium, Materials.Tantalum, Materials.Tellurium, Materials.Terbium,
+                Materials.Thaumium, Materials.Thorium, Materials.Thulium, Materials.Tin, Materials.TinAlloy,
+                Materials.Titanium, Materials.Tritanium, Materials.Tungsten, Materials.TungstenSteel, Materials.Ultimet,
+                Materials.Uranium, Materials.Uranium235 },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS7);
 
         GregTechAPI.sBlockMetal8 = new BlockMetal(
             "gt.blockmetal8",
-            new Material[] { Materials.Vanadium, Materials.VanadiumGallium,
-                Materials.CastIron, Materials.Ytterbium, Materials.Yttrium,
-                Materials.YttriumBariumCuprate, Materials.Zinc, Materials.TungstenCarbide,
-                Materials.VanadiumSteel, Materials.HSSG, Materials.HSSE,
-                Materials.HSSS, Materials.Steeleaf, Materials.Ichorium,
-                Materials.Firestone, Materials.Shadow },
+            new Material[] { Materials.Vanadium, Materials.VanadiumGallium, Materials.CastIron, Materials.Ytterbium,
+                Materials.Yttrium, Materials.YttriumBariumCuprate, Materials.Zinc, Materials.TungstenCarbide,
+                Materials.VanadiumSteel, Materials.HSSG, Materials.HSSE, Materials.HSSS, Materials.Steeleaf,
+                Materials.Ichorium, Materials.Firestone, Materials.Shadow },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS8);
 
         GregTechAPI.sBlockGem1 = new BlockMetal(
             "gt.blockgem1",
-            new Material[] { Materials.InfusedAir, Materials.Amber, Materials.Amethyst,
-                Materials.InfusedWater, Materials.BlueTopaz, Materials.CertusQuartz,
-                Materials.Dilithium, Materials.EnderEye, Materials.EnderPearl,
-                Materials.FoolsRuby, Materials.Force, Materials.Forcicium,
-                Materials.Forcillium, Materials.GreenSapphire, Materials.InfusedFire,
-                Materials.Jasper },
+            new Material[] { Materials.InfusedAir, Materials.Amber, Materials.Amethyst, Materials.InfusedWater,
+                Materials.BlueTopaz, Materials.CertusQuartz, Materials.Dilithium, Materials.EnderEye,
+                Materials.EnderPearl, Materials.FoolsRuby, Materials.Force, Materials.Forcicium, Materials.Forcillium,
+                Materials.GreenSapphire, Materials.InfusedFire, Materials.Jasper },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS9);
 
         GregTechAPI.sBlockGem2 = new BlockMetal(
             "gt.blockgem2",
-            new Material[] { Materials.Lazurite, Materials.Lignite, Materials.Monazite,
-                Materials.Niter, Materials.Olivine, Materials.Opal,
-                Materials.InfusedOrder, Materials.InfusedEntropy,
-                Materials.TricalciumPhosphate, Materials.Quartzite, Materials.GarnetRed,
-                Materials.Ruby, Materials.Sapphire, Materials.Sodalite,
-                Materials.Tanzanite, Materials.InfusedEarth },
+            new Material[] { Materials.Lazurite, Materials.Lignite, Materials.Monazite, Materials.Niter,
+                Materials.Olivine, Materials.Opal, Materials.InfusedOrder, Materials.InfusedEntropy,
+                Materials.TricalciumPhosphate, Materials.Quartzite, Materials.GarnetRed, Materials.Ruby,
+                Materials.Sapphire, Materials.Sodalite, Materials.Tanzanite, Materials.InfusedEarth },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS10);
 
         GregTechAPI.sBlockGem3 = new BlockMetal(
             "gt.blockgem3",
-            new Material[] { Materials.Topaz, Materials.Vinteum, Materials.GarnetYellow,
-                Materials.NetherStar, Materials.Charcoal, Materials.Blaze },
+            new Material[] { Materials.Topaz, Materials.Vinteum, Materials.GarnetYellow, Materials.NetherStar,
+                Materials.Charcoal, Materials.Blaze },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS11);
 
         GregTechAPI.sBlockMetal9 = new BlockMetal(
             "gt.blockmetal9",
-            new Material[] { Materials.Cryolite, Materials.SiliconSolarGrade,
-                Materials.NickelAluminide, Materials.SpaceTime,
-                Materials.TranscendentMetal, Materials.Oriharukon,
-                Materials.WhiteDwarfMatter, Materials.BlackDwarfMatter,
-                Materials.Universium, Materials.Eternity, Materials.Magmatter,
+            new Material[] { Materials.Cryolite, Materials.SiliconSolarGrade, Materials.NickelAluminide,
+                Materials.SpaceTime, Materials.TranscendentMetal, Materials.Oriharukon, Materials.WhiteDwarfMatter,
+                Materials.BlackDwarfMatter, Materials.Universium, Materials.Eternity, Materials.Magmatter,
                 Materials.SixPhasedCopper, Materials.HellishMetal,
                 Materials.MagnetohydrodynamicallyConstrainedStarMatter, Materials.Hexanite },
             OrePrefixes.block,
@@ -957,10 +933,8 @@ public class LoaderGTBlockFluid implements Runnable {
         GTLog.out.println("GTMod: Registering Fluids.");
         Fluid constructionFoamFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("CFCell", 1L), true)
             .getFluid();
-        MaterialUtils.recordSlotFluid(
-            Materials.ConstructionFoam,
-            MaterialUtils.FluidState.LIQUID,
-            constructionFoamFluid);
+        MaterialUtils
+            .recordSlotFluid(Materials.ConstructionFoam, MaterialUtils.FluidState.LIQUID, constructionFoamFluid);
         // UUMatter is GT-owned but its fluid is IC2's, resolved from the filled cell at runtime (no static
         // LEGACY_FLUIDS name to port). Bind MaterialUtils' slot store from the resolved IC2 fluid directly.
         Fluid uuMatterFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("uuMatterCell", 1L), true)
@@ -1081,8 +1055,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.Titaniumtetrachloride)
             .addLocalizedName(Materials.Titaniumtetrachloride)
             .registerBContainers(
-                MaterialLibAPI
-                    .getStack(Materials.Titaniumtetrachloride, CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Titaniumtetrachloride, CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Helium-3")
             .withDefaultLocalName("Helium-3")
@@ -1696,8 +1669,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.PhononCrystalSolution)
             .addLocalizedName(Materials.PhononCrystalSolution)
             .registerBContainers(
-                MaterialLibAPI
-                    .getStack(Materials.PhononCrystalSolution, CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.PhononCrystalSolution, CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("antimatter")
@@ -1747,8 +1719,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.CosmicNeutronium)
             .addLocalizedName(Materials.CosmicNeutronium)
             .registerBContainers(
-                MaterialLibAPI
-                    .getStack(Materials.CosmicNeutronium, CellShapes.cellPlasma, (int) (1)),
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, CellShapes.cellPlasma, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("molten.cosmicneutronium")
@@ -1798,8 +1769,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.BoundlessCosmicSolder)
             .addLocalizedName(Materials.BoundlessCosmicSolder)
             .registerBContainers(
-                MaterialLibAPI
-                    .getStack(Materials.BoundlessCosmicSolder, CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.BoundlessCosmicSolder, CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("ComputationBase")
@@ -1834,16 +1804,14 @@ public class LoaderGTBlockFluid implements Runnable {
         if (ItemList.TF_Vial_FieryBlood.get(1L) != null) {
             FluidContainerRegistry.registerFluidContainer(
                 new FluidContainerRegistry.FluidContainerData(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.FierySteel, FluidShapes.fluidLiquid, (int) (250)),
+                    MaterialLibAPI.getFluidStack(Materials.FierySteel, FluidShapes.fluidLiquid, (int) (250)),
                     ItemList.TF_Vial_FieryBlood.get(1L),
                     ItemList.Bottle_Empty.get(1L)));
         }
 
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, (int) (1_000)),
+                MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, (int) (1_000)),
                 GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Milk, 1L),
                 GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Empty, 1L)));
         FluidContainerRegistry.registerFluidContainer(
@@ -1853,14 +1821,12 @@ public class LoaderGTBlockFluid implements Runnable {
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                MaterialLibAPI
-                    .getFluidStack(Materials.HolyWater, FluidShapes.fluidLiquid, (int) (250)),
+                MaterialLibAPI.getFluidStack(Materials.HolyWater, FluidShapes.fluidLiquid, (int) (250)),
                 ItemList.Bottle_Holy_Water.get(1L),
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                MaterialLibAPI
-                    .getFluidStack(Materials.McGuffium239, FluidShapes.fluidLiquid, (int) (250)),
+                MaterialLibAPI.getFluidStack(Materials.McGuffium239, FluidShapes.fluidLiquid, (int) (250)),
                 ItemList.McGuffium_239.get(1L),
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
@@ -2731,63 +2697,35 @@ public class LoaderGTBlockFluid implements Runnable {
             OrePrefixes.ingot,
             Materials.IronWood,
             GTModHandler.getModItem(TwilightForest.ID, "item.ironwoodIngot", 1L, 0));
-        GTOreDictUnificator.set(
-            OrePrefixes.gem,
-            Materials.InfusedAir,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 0));
-        GTOreDictUnificator.set(
-            OrePrefixes.gem,
-            Materials.InfusedFire,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 1));
-        GTOreDictUnificator.set(
-            OrePrefixes.gem,
-            Materials.InfusedWater,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 2));
-        GTOreDictUnificator.set(
-            OrePrefixes.gem,
-            Materials.InfusedEarth,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 3));
-        GTOreDictUnificator.set(
-            OrePrefixes.gem,
-            Materials.InfusedOrder,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 4));
-        GTOreDictUnificator.set(
-            OrePrefixes.gem,
-            Materials.InfusedEntropy,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 5));
-        GTOreDictUnificator.set(
-            OrePrefixes.nugget,
-            Materials.Mercury,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 5));
-        GTOreDictUnificator.set(
-            OrePrefixes.nugget,
-            Materials.Thaumium,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 6));
-        GTOreDictUnificator.set(
-            OrePrefixes.ingot,
-            Materials.Thaumium,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 2));
-        GTOreDictUnificator.set(
-            OrePrefixes.gem,
-            Materials.Mercury,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 3));
-        GTOreDictUnificator.set(
-            OrePrefixes.gem,
-            Materials.Amber,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 6));
-        GTOreDictUnificator.set(
-            OrePrefixes.gem,
-            Materials.Firestone,
-            GTModHandler.getModItem(Railcraft.ID, "firestone.raw", 1L));
+        GTOreDictUnificator
+            .set(OrePrefixes.gem, Materials.InfusedAir, GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 0));
+        GTOreDictUnificator
+            .set(OrePrefixes.gem, Materials.InfusedFire, GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 1));
+        GTOreDictUnificator
+            .set(OrePrefixes.gem, Materials.InfusedWater, GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 2));
+        GTOreDictUnificator
+            .set(OrePrefixes.gem, Materials.InfusedEarth, GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 3));
+        GTOreDictUnificator
+            .set(OrePrefixes.gem, Materials.InfusedOrder, GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 4));
+        GTOreDictUnificator
+            .set(OrePrefixes.gem, Materials.InfusedEntropy, GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 5));
+        GTOreDictUnificator
+            .set(OrePrefixes.nugget, Materials.Mercury, GTModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 5));
+        GTOreDictUnificator
+            .set(OrePrefixes.nugget, Materials.Thaumium, GTModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 6));
+        GTOreDictUnificator
+            .set(OrePrefixes.ingot, Materials.Thaumium, GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 2));
+        GTOreDictUnificator
+            .set(OrePrefixes.gem, Materials.Mercury, GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 3));
+        GTOreDictUnificator
+            .set(OrePrefixes.gem, Materials.Amber, GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 6));
+        GTOreDictUnificator
+            .set(OrePrefixes.gem, Materials.Firestone, GTModHandler.getModItem(Railcraft.ID, "firestone.raw", 1L));
 
-        GTOreDictUnificator.set(
-            OrePrefixes.nugget,
-            Materials.Void,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 7));
-        GTOreDictUnificator.set(
-            OrePrefixes.ingot,
-            Materials.Void,
-            GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 16));
+        GTOreDictUnificator
+            .set(OrePrefixes.nugget, Materials.Void, GTModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 7));
+        GTOreDictUnificator
+            .set(OrePrefixes.ingot, Materials.Void, GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 16));
 
         // Special secondary oredict for Sodium Hydroxide
         GTOreDictUnificator.registerOre(

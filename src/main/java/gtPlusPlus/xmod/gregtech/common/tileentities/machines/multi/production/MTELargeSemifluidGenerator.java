@@ -12,7 +12,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,6 +29,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -129,10 +129,8 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
         // Check for lubricant and oxygen first, so we can compute costs ahead of time.
         // This will allow us to check costs without needing to actually try to deplete fluids
         // (wasting earlier fluids in the check if later fluids turn out to be insufficient).
-        FluidStack lubricant = MaterialLibAPI
-            .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (0));
-        FluidStack oxygen = MaterialLibAPI
-            .getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (0));
+        FluidStack lubricant = MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (0));
+        FluidStack oxygen = MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (0));
         for (FluidStack hatchFluid : tFluids) {
             if (hatchFluid.isFluidEqual(lubricant)) {
                 lubricant.amount = Math.max(lubricant.amount, hatchFluid.amount);
@@ -162,18 +160,15 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
                 // But check the return values anyway just to be safe.
                 if (boostEu) {
                     if (!depleteInput(
-                        MaterialLibAPI
-                            .getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (4)))) {
+                        MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (4)))) {
                         return SimpleCheckRecipeResult.ofFailure("no_oxygen");
                     }
                 }
                 // Deplete Lubricant. 2000L should = 1 hour of runtime (if baseEU = 2048)
                 if (mRuntime % 72 == 0 || mRuntime == 0) {
                     if (!depleteInput(
-                        MaterialLibAPI.getFluidStack(
-                            Materials.Lubricant,
-                            FluidShapes.fluidLiquid,
-                            (int) (lubricantCost)))) {
+                        MaterialLibAPI
+                            .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (lubricantCost)))) {
                         return SimpleCheckRecipeResult.ofFailure("no_lubricant");
                     }
                 }

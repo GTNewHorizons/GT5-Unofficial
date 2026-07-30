@@ -2,7 +2,6 @@ package gtnhintergalactic.item;
 
 import java.util.List;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -12,6 +11,7 @@ import net.minecraft.util.IIcon;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.materials2.Materials;
 import gtnhintergalactic.GTNHIntergalactic;
 
 /**

@@ -6,7 +6,6 @@ import java.util.Set;
 import com.ruling_0.materiallib.api.Property;
 
 import gregtech.api.enums.TCAspects.TC_AspectStack;
-import gregtech.api.enums.materials2.ShapeData;
 import gregtech.api.objects.MaterialStack;
 
 /// Typed property keys GregTech attaches to MaterialLib shapes, holding the per-form data a form knows about

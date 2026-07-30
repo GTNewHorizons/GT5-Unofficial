@@ -318,8 +318,7 @@ public class GTStructureUtility {
             public boolean check(T t, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
                 BlockMaterialInfo info = MaterialLibAPI.lookupBlock(block, world.getBlockMetadata(x, y, z));
-                return info != null && info.shape() == PipeShapes.frameGt
-                    && info.material() == materialSupplier.get();
+                return info != null && info.shape() == PipeShapes.frameGt && info.material() == materialSupplier.get();
             }
 
             @Override

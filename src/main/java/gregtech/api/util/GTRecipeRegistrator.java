@@ -26,7 +26,6 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBlock;
@@ -49,6 +48,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.MaterialArcSmeltHelper;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
@@ -160,8 +160,7 @@ public class GTRecipeRegistrator {
 
     public static void registerMaterialRecycling(ItemStack stack, ItemData data) {
         if (GTUtility.isStackInvalid(stack) || GTUtility.areStacksEqual(new ItemStack(Items.blaze_rod), stack)
-            || GTUtility
-                .areStacksEqual(GTOreDictUnificator.get(OrePrefixes.block, Materials.Ichorium, 1L), stack)
+            || GTUtility.areStacksEqual(GTOreDictUnificator.get(OrePrefixes.block, Materials.Ichorium, 1L), stack)
             || GTUtility.areStacksEqual(new ItemStack(Blocks.quartz_block, 1), stack)
             || GTUtility.areStacksEqual(new ItemStack(Blocks.obsidian), stack)
             || data == null
@@ -521,8 +520,7 @@ public class GTRecipeRegistrator {
                 recipeBuilder.itemInputs(stack)
                     .itemOutputs(outputsArray)
                     .duration(
-                        (data.mMaterial.mMaterial == Materials.Marble ? 1 : (int) Math.max(16, tAmount / M))
-                            * TICKS)
+                        (data.mMaterial.mMaterial == Materials.Marble ? 1 : (int) Math.max(16, tAmount / M)) * TICKS)
                     .eut(4);
                 if (isRecycling) recipeBuilder.recipeCategory(RecipeCategories.maceratorRecycling);
                 recipeBuilder.addTo(maceratorRecipes);
@@ -555,11 +553,10 @@ public class GTRecipeRegistrator {
     /**
      * Place Materials which you want to replace in Non-GT-Recipes here (warning HUGHE impact on loading times!)
      */
-    private static final Material[] VANILLA_MATS = { Materials.Cobalt, Materials.Gold,
-        Materials.Iron, Materials.Lead, Materials.FierySteel, Materials.Void,
-        Materials.Bronze, Materials.Diamond, Materials.Ruby, Materials.Sapphire,
-        Materials.Steel, Materials.IronWood, Materials.Steeleaf,
-        Materials.Knightmetal, Materials.Thaumium, Materials.DarkSteel, };
+    private static final Material[] VANILLA_MATS = { Materials.Cobalt, Materials.Gold, Materials.Iron, Materials.Lead,
+        Materials.FierySteel, Materials.Void, Materials.Bronze, Materials.Diamond, Materials.Ruby, Materials.Sapphire,
+        Materials.Steel, Materials.IronWood, Materials.Steeleaf, Materials.Knightmetal, Materials.Thaumium,
+        Materials.DarkSteel, };
 
     /**
      * You give this Function a Material and it will scan almost everything for adding recycling Recipes and replacing

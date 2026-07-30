@@ -20,8 +20,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -31,6 +29,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -73,10 +73,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .itemInputs(new ItemStack(highDensityPlutoniumNugget, 5))
             .itemOutputs(new ItemStack(highDensityPlutonium, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Neutronium,
-                    FluidShapes.fluidMolten,
-                    (int) (1 * HALF_INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, (int) (1 * HALF_INGOTS)))
             .duration(1)
             .eut(TierEU.RECIPE_UEV)
             .addTo(electricImplosionCompressorRecipes);
@@ -85,10 +82,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .itemInputs(new ItemStack(highDensityUraniumNugget, 5))
             .itemOutputs(new ItemStack(highDensityUranium, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Neutronium,
-                    FluidShapes.fluidMolten,
-                    (int) (1 * HALF_INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, (int) (1 * HALF_INGOTS)))
             .duration(1)
             .eut(TierEU.RECIPE_UEV)
             .addTo(electricImplosionCompressorRecipes);
@@ -97,10 +91,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .itemInputs(new ItemStack(highDensityThoriumNugget, 5))
             .itemOutputs(new ItemStack(highDensityThorium, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Neutronium,
-                    FluidShapes.fluidMolten,
-                    (int) (1 * HALF_INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, (int) (1 * HALF_INGOTS)))
             .duration(1)
             .eut(TierEU.RECIPE_UEV)
             .addTo(electricImplosionCompressorRecipes);
@@ -112,20 +103,15 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.BlackDwarfMatter, 1L))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.RawStarMatter,
-                    FluidShapes.fluidLiquid,
-                    (int) (1 * STACKS)))
-            .fluidOutputs(
-                MaterialUtils.molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, 16 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, (int) (1 * STACKS)))
+            .fluidOutputs(MaterialUtils.molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, 16 * INGOTS))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(electricImplosionCompressorRecipes);
 
         // Infinity Catalyst
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.InfinityCatalyst, Shapes.dust, (int) (64)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.InfinityCatalyst, Shapes.dust, (int) (64)))
             .itemOutputs(getModItem(Avaritia.ID, "Resource", 1L, 5))
             .duration(1)
             .eut(TierEU.RECIPE_UIV)
@@ -137,12 +123,8 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 1),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.RawStarMatter,
-                    FluidShapes.fluidLiquid,
-                    (int) (2 * STACKS)))
-            .fluidOutputs(
-                MaterialUtils.molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, 36 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, (int) (2 * STACKS)))
+            .fluidOutputs(MaterialUtils.molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, 36 * INGOTS))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(electricImplosionCompressorRecipes);
@@ -157,10 +139,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Fluorspar, Shapes.gemFlawless, 64),
                 MaterialLibAPI.getStack(Materials.Tanzanite, Shapes.gemFlawless, (int) (64)))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.PhononCrystalSolution,
-                    FluidShapes.fluidLiquid,
-                    (int) (500)))
+                MaterialLibAPI.getFluidStack(Materials.PhononCrystalSolution, FluidShapes.fluidLiquid, (int) (500)))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemFlawed, (int) (1)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
@@ -206,12 +185,10 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 getModItem(OpenComputers.ID, "hologram2", circuitMultiplier, 0),
                 GTOreDictUnificator.get(part, Materials.Eternity, multiplier))
             .itemOutputs(
-                GTOreDictUnificator
-                    .get(part, Materials.MagnetohydrodynamicallyConstrainedStarMatter, multiplier))
+                GTOreDictUnificator.get(part, Materials.MagnetohydrodynamicallyConstrainedStarMatter, multiplier))
             .fluidInputs(
-                MaterialUtils.molten(
-                    Materials.MagnetohydrodynamicallyConstrainedStarMatter,
-                    (long) partFraction * multiplier))
+                MaterialUtils
+                    .molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, (long) partFraction * multiplier))
             .duration((int) (multiplier * (20 * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UXV)
             .addTo(electricImplosionCompressorRecipes);

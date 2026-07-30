@@ -7,8 +7,6 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -27,6 +25,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -54,9 +54,7 @@ public class GTItemIterator implements Runnable {
                 .eut(2)
                 .addTo(maceratorRecipes);
 
-            GTModHandler.addSmeltingRecipe(
-                tStack,
-                MaterialLibAPI.getStack(Materials.Bronze, Shapes.ingot, (int) (8)));
+            GTModHandler.addSmeltingRecipe(tStack, MaterialLibAPI.getStack(Materials.Bronze, Shapes.ingot, (int) (8)));
         }
         tStack2 = MaterialLibAPI.getStack(Materials.Bronze, Shapes.plate, (int) (1));
         tStack = GTModHandler
@@ -71,9 +69,7 @@ public class GTItemIterator implements Runnable {
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(maceratorRecipes);
-            GTModHandler.addSmeltingRecipe(
-                tStack,
-                MaterialLibAPI.getStack(Materials.Bronze, Shapes.ingot, (int) (8)));
+            GTModHandler.addSmeltingRecipe(tStack, MaterialLibAPI.getStack(Materials.Bronze, Shapes.ingot, (int) (8)));
         }
 
         ItemStack tStack3 = new ItemStack(Blocks.glass, 1, 0);

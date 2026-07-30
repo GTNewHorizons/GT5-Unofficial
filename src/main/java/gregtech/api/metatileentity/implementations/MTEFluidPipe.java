@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,6 +53,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolModes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.PipeMaterials;
 import gregtech.api.enums.materials2.PipeProperties;
 import gregtech.api.interfaces.IIconContainer;

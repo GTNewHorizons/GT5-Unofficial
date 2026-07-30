@@ -53,8 +53,6 @@ import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.TripleCompress
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generateWireRecipes;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -67,6 +65,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -128,10 +128,7 @@ public class RecipesGeneral {
             .itemInputs(ItemList.Large_Fluid_Cell_Aluminium.get(1))
             .itemOutputs(GregtechItemList.VOLUMETRIC_FLASK_8k.get(2))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.BorosilicateGlass,
-                    FluidShapes.fluidMolten,
-                    (int) (4000)))
+                MaterialLibAPI.getFluidStack(Materials.BorosilicateGlass, FluidShapes.fluidMolten, (int) (4000)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(fluidSolidifierRecipes);
@@ -141,10 +138,7 @@ public class RecipesGeneral {
             .itemInputs(ItemList.Large_Fluid_Cell_TungstenSteel.get(1))
             .itemOutputs(GregtechItemList.VOLUMETRIC_FLASK_32k.get(2))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.BorosilicateGlass,
-                    FluidShapes.fluidMolten,
-                    (int) (16000)))
+                MaterialLibAPI.getFluidStack(Materials.BorosilicateGlass, FluidShapes.fluidMolten, (int) (16000)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(fluidSolidifierRecipes);
@@ -191,9 +185,7 @@ public class RecipesGeneral {
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Sapphire, 32),
                 new ItemStack(Blocks.gold_block, 32))
             .itemOutputs(GregtechItemList.MagicFeather.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Silver, FluidShapes.fluidMolten, (int) (32 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Silver, FluidShapes.fluidMolten, (int) (32 * INGOTS)))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);

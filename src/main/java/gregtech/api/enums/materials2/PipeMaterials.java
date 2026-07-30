@@ -5,7 +5,6 @@ import com.ruling_0.materiallib.api.MaterialEdit;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
-import gregtech.api.enums.MaterialSystem;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TierEU;
 
@@ -143,8 +142,7 @@ public class PipeMaterials {
 
         for (WireOnly[] rows : new WireOnly[][] { wireOnly, superconductorBases, superconductorMarkers }) {
             for (WireOnly row : rows) {
-                MaterialEdit edit = edit(row.material())
-                    .setProperty(PipeProperties.BASE_CABLE_AMP, row.amperage())
+                MaterialEdit edit = edit(row.material()).setProperty(PipeProperties.BASE_CABLE_AMP, row.amperage())
                     .setProperty(PipeProperties.BASE_CABLE_VOLT, row.voltage())
                     .setProperty(PipeProperties.WIRE_LOSS, row.wireLoss())
                     .setProperty(PipeProperties.NO_CABLE, true)
@@ -159,15 +157,13 @@ public class PipeMaterials {
     /// The wire sizes this table grants as one unit: a material carrying any of them carries all six. Public
     /// so a consumer can state that unit as its own precondition instead of re-listing the sizes.
     public static Shape[] wireShapes() {
-        return new Shape[] { PipeShapes.wireGt01, PipeShapes.wireGt02,
-            PipeShapes.wireGt04, PipeShapes.wireGt08, PipeShapes.wireGt12,
-            PipeShapes.wireGt16 };
+        return new Shape[] { PipeShapes.wireGt01, PipeShapes.wireGt02, PipeShapes.wireGt04, PipeShapes.wireGt08,
+            PipeShapes.wireGt12, PipeShapes.wireGt16 };
     }
 
     private static Shape[] cableShapes() {
-        return new Shape[] { PipeShapes.cableGt01, PipeShapes.cableGt02,
-            PipeShapes.cableGt04, PipeShapes.cableGt08, PipeShapes.cableGt12,
-            PipeShapes.cableGt16 };
+        return new Shape[] { PipeShapes.cableGt01, PipeShapes.cableGt02, PipeShapes.cableGt04, PipeShapes.cableGt08,
+            PipeShapes.cableGt12, PipeShapes.cableGt16 };
     }
 
     // spotless:off
@@ -217,8 +213,7 @@ public class PipeMaterials {
         // spotless:on
 
         for (FluidPipe row : fluidPipes) {
-            MaterialEdit edit = edit(row.material())
-                .setProperty(PipeProperties.BASE_PIPE_FLOW, row.baseCapacity())
+            MaterialEdit edit = edit(row.material()).setProperty(PipeProperties.BASE_PIPE_FLOW, row.baseCapacity())
                 .setProperty(PipeProperties.PIPE_HEAT_RESISTANCE, row.heatResistance());
             // These two rows exist only with their parent mod (Void pipes with Thaumcraft, DarkSteel with
             // EnderIO); the properties themselves stay unconditional.
@@ -234,20 +229,13 @@ public class PipeMaterials {
                 PipeShapes.pipeNonuple);
         }
 
-        edit(Materials.Wood)
-            .setProperty(PipeProperties.PIPE_HEAT_RESISTANCE, WOOD_FLUID_PIPE_HEAT_RESISTANCE)
+        edit(Materials.Wood).setProperty(PipeProperties.PIPE_HEAT_RESISTANCE, WOOD_FLUID_PIPE_HEAT_RESISTANCE)
             .setProperty(PipeProperties.PIPE_GAS_PROOF, false)
-            .generateShapes(
-                PipeShapes.pipeSmall,
-                PipeShapes.pipeMedium,
-                PipeShapes.pipeLarge);
+            .generateShapes(PipeShapes.pipeSmall, PipeShapes.pipeMedium, PipeShapes.pipeLarge);
         edit(Materials.Clay).setProperty(PipeProperties.PIPE_GAS_PROOF, false);
         edit(Materials.Redstone)
             .setProperty(PipeProperties.PIPE_HEAT_RESISTANCE, HIGH_PRESSURE_FLUID_PIPE_HEAT_RESISTANCE)
-            .generateShapes(
-                PipeShapes.pipeSmall,
-                PipeShapes.pipeMedium,
-                PipeShapes.pipeLarge);
+            .generateShapes(PipeShapes.pipeSmall, PipeShapes.pipeMedium, PipeShapes.pipeLarge);
     }
 
     // spotless:off
@@ -270,8 +258,7 @@ public class PipeMaterials {
         // spotless:on
 
         for (ItemPipe row : itemPipes) {
-            MaterialEdit edit = edit(row.material())
-                .setProperty(PipeProperties.BASE_ITEM_PIPE_SLOTS, row.hugeSlots())
+            MaterialEdit edit = edit(row.material()).setProperty(PipeProperties.BASE_ITEM_PIPE_SLOTS, row.hugeSlots())
                 .generateShapes(
                     PipeShapes.itemPipeMedium,
                     PipeShapes.itemPipeLarge,

@@ -1,7 +1,5 @@
 package gregtech.loaders.postload;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
@@ -12,6 +10,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -103,18 +103,10 @@ public class BookAndLootLoader implements Runnable {
                 10));
         ChestGenHooks.addItem(
             "dungeonChest",
-            new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1L),
-                1,
-                6,
-                20));
+            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1L), 1, 6, 20));
         ChestGenHooks.addItem(
             "dungeonChest",
-            new WeightedRandomChestContent(
-                MaterialLibAPI.getStack(Materials.Ruby, Shapes.gem, (int) (1L)),
-                1,
-                6,
-                20));
+            new WeightedRandomChestContent(MaterialLibAPI.getStack(Materials.Ruby, Shapes.gem, (int) (1L)), 1, 6, 20));
         ChestGenHooks.addItem(
             "dungeonChest",
             new WeightedRandomChestContent(
@@ -184,11 +176,7 @@ public class BookAndLootLoader implements Runnable {
                 4));
         ChestGenHooks.addItem(
             "pyramidDesertyChest",
-            new WeightedRandomChestContent(
-                MaterialLibAPI.getStack(Materials.Ruby, Shapes.gem, (int) (1L)),
-                2,
-                8,
-                2));
+            new WeightedRandomChestContent(MaterialLibAPI.getStack(Materials.Ruby, Shapes.gem, (int) (1L)), 2, 8, 2));
         ChestGenHooks.addItem(
             "pyramidDesertyChest",
             new WeightedRandomChestContent(
@@ -240,11 +228,7 @@ public class BookAndLootLoader implements Runnable {
                 12));
         ChestGenHooks.addItem(
             "pyramidJungleChest",
-            new WeightedRandomChestContent(
-                MaterialLibAPI.getStack(Materials.Ruby, Shapes.gem, (int) (1L)),
-                2,
-                8,
-                2));
+            new WeightedRandomChestContent(MaterialLibAPI.getStack(Materials.Ruby, Shapes.gem, (int) (1L)), 2, 8, 2));
         ChestGenHooks.addItem(
             "pyramidJungleChest",
             new WeightedRandomChestContent(
@@ -294,11 +278,7 @@ public class BookAndLootLoader implements Runnable {
                 12));
         ChestGenHooks.addItem(
             "mineshaftCorridor",
-            new WeightedRandomChestContent(
-                MaterialLibAPI.getStack(Materials.Lead, Shapes.ingot, (int) (1L)),
-                1,
-                4,
-                3));
+            new WeightedRandomChestContent(MaterialLibAPI.getStack(Materials.Lead, Shapes.ingot, (int) (1L)), 1, 4, 3));
         ChestGenHooks.addItem(
             "mineshaftCorridor",
             new WeightedRandomChestContent(
@@ -350,18 +330,10 @@ public class BookAndLootLoader implements Runnable {
                 4));
         ChestGenHooks.addItem(
             "mineshaftCorridor",
-            new WeightedRandomChestContent(
-                MaterialLibAPI.getStack(Materials.Ruby, Shapes.gem, (int) (1L)),
-                1,
-                4,
-                2));
+            new WeightedRandomChestContent(MaterialLibAPI.getStack(Materials.Ruby, Shapes.gem, (int) (1L)), 1, 4, 2));
         ChestGenHooks.addItem(
             "mineshaftCorridor",
-            new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1L),
-                1,
-                4,
-                2));
+            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1L), 1, 4, 2));
 
         ChestGenHooks
             .addItem("villageBlacksmith", new WeightedRandomChestContent(ItemList.McGuffium_239.get(1L), 1, 1, 1));

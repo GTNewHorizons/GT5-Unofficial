@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -43,6 +42,7 @@ import org.junit.jupiter.api.Test;
 
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.recipe.RecipeMap;

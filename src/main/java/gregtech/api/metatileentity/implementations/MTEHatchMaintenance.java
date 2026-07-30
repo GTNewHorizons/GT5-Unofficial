@@ -10,7 +10,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MAINTENANCE;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -44,6 +43,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.enums.materials2.CellShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

@@ -10,7 +10,6 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.enums.materials2.MaterialFluidNames;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;

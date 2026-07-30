@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -32,6 +31,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.materials2.BlockShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;

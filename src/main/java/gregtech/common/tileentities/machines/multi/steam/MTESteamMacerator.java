@@ -14,7 +14,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -38,6 +37,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.PipeShapes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -213,12 +213,8 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
                     ofBlocksTiered(
                         MTESteamMacerator::getTierFrame,
                         ImmutableList.of(
-                            Pair.of(
-                                MaterialLibAPI.getBlock(PipeShapes.frameGt),
-                                Materials.Bronze.getIndex()),
-                            Pair.of(
-                                MaterialLibAPI.getBlock(PipeShapes.frameGt),
-                                Materials.Steel.getIndex())),
+                            Pair.of(MaterialLibAPI.getBlock(PipeShapes.frameGt), Materials.Bronze.getIndex()),
+                            Pair.of(MaterialLibAPI.getBlock(PipeShapes.frameGt), Materials.Steel.getIndex())),
                         -1,
                         (t, m) -> t.tierFrame = m,
                         t -> t.tierFrame))

@@ -13,9 +13,6 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -26,6 +23,9 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -82,12 +82,8 @@ public class RecipeLoaderGenericChem {
             .itemInputs(MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, (int) (1)))
             .circuit(16)
             .itemOutputs(GregtechItemList.SodiumEthoxide.get(9))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, (int) (1_000)))
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (1_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, (int) (1_000)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (1_000)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 2)
@@ -102,9 +98,7 @@ public class RecipeLoaderGenericChem {
                 GregtechItemList.CalciumHydroxideDust.get(5))
             .circuit(18)
             .itemOutputs(GregtechItemList.CalciumCarbonateDust.get(5), GregtechItemList.PotassiumHydroxide.get(6))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 2)
@@ -119,8 +113,7 @@ public class RecipeLoaderGenericChem {
             .circuit(17)
             .itemOutputs(GregtechItemList.PotassiumEthylXanthate.get(12))
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, (int) (1_000)),
+                MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, (int) (1_000)),
                 new FluidStack(GTPPFluids.CarbonDisulfide, 1_000))
             .fluidOutputs(GTUtility.getWater(1_000))
             .duration(60 * SECONDS)
@@ -174,13 +167,10 @@ public class RecipeLoaderGenericChem {
                 ItemList.Gravistar.get(8),
                 MaterialLibAPI.getStack(Materials.InfinityCatalyst, Shapes.dust, (int) (2)))
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Tin, FluidShapes.fluidPlasma, (int) (18_000)),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Bismuth, FluidShapes.fluidPlasma, (int) (18_000)),
+                MaterialLibAPI.getFluidStack(Materials.Tin, FluidShapes.fluidPlasma, (int) (18_000)),
+                MaterialLibAPI.getFluidStack(Materials.Bismuth, FluidShapes.fluidPlasma, (int) (18_000)),
                 new FluidStack(TFFluids.fluidCryotheum, 4_000))
-            .fluidOutputs(
-                MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 4 * STACKS + 24 * INGOTS))
+            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 4 * STACKS + 24 * INGOTS))
             .duration(13 * MINUTES + 20 * SECONDS)
             .eut(3842160)
             .metadata(CHEMPLANT_CASING_TIER, 7)
@@ -229,10 +219,8 @@ public class RecipeLoaderGenericChem {
             .itemInputs(GregtechItemList.BrownMetalCatalyst.get(0))
             .circuit(8)
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, (int) (1_000)),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (6_000)))
+                MaterialLibAPI.getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, (int) (1_000)),
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (6_000)))
             .fluidOutputs(new FluidStack(GTPPFluids.Cyclohexane, 1_000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_MV)
@@ -434,8 +422,7 @@ public class RecipeLoaderGenericChem {
             .circuit(12)
             .fluidInputs(
                 new FluidStack(GTPPFluids.Nitrobenzene, 1_000),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (6_000)))
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (6_000)))
             .fluidOutputs(new FluidStack(GTPPFluids.Aniline, 1_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -448,12 +435,9 @@ public class RecipeLoaderGenericChem {
         GTValues.RA.stdBuilder()
             .circuit(12)
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, (int) (5_000)),
-                MaterialLibAPI
-                    .getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (1_000)),
-                MaterialLibAPI
-                    .getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, (int) (5_000)),
+                MaterialLibAPI.getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, (int) (5_000)),
+                MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (1_000)),
+                MaterialLibAPI.getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, (int) (5_000)),
                 GTModHandler.getDistilledWater(10_000))
             .fluidOutputs(new FluidStack(GTPPFluids.Nitrobenzene, 5_000))
             .duration(30 * SECONDS)
@@ -482,8 +466,7 @@ public class RecipeLoaderGenericChem {
             .circuit(4)
             .fluidInputs(
                 new FluidStack(GTPPFluids.Ethylanthraquinone, 1_000),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (2_000)))
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (2_000)))
             .fluidOutputs(new FluidStack(GTPPFluids.Ethylanthrahydroquinone, 1_000))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -534,8 +517,7 @@ public class RecipeLoaderGenericChem {
         GTValues.RA.stdBuilder()
             .circuit(4)
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (10_000)),
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (10_000)),
                 new FluidStack(GTPPFluids.Ethylanthrahydroquinone, 5_000),
                 new FluidStack(GTPPFluids.Anthracene, 50))
             .fluidOutputs(

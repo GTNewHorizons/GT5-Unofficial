@@ -12,8 +12,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -23,6 +21,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -39,8 +39,7 @@ public class RecipeLoaderNuclearFuelProcessing {
                 MaterialUtils.legacyGtppFluid(Materials.LithiumFluoride, 550),
                 MaterialUtils.legacyGtppFluid(Materials.BerylliumFluoride, 150),
                 MaterialUtils.legacyGtppFluid(Materials.ZirconiumTetrafluoride, 60),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Uranium235, FluidShapes.fluidMolten, (int) (240)))
+                MaterialLibAPI.getFluidStack(Materials.Uranium235, FluidShapes.fluidMolten, (int) (240)))
             .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.LFTRFuel1, 1000))
             .duration(30 * MINUTES)
             .eut(TierEU.RECIPE_EV)
@@ -103,8 +102,7 @@ public class RecipeLoaderNuclearFuelProcessing {
                 MaterialLibAPI.getStack(Materials.Protactinium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Protactinium, Shapes.dust, 1))
             .outputChances(10000, 10000, 10000, 1000, 1000, 1000, 500, 500, 500)
-            .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.ThoriumBerylliumDepletedMoltenSaltTBSalt, 10000))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.ThoriumBerylliumDepletedMoltenSaltTBSalt, 10000))
             .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.FluorinatedUraniumHexafluorideFUF6, 3000))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_IV)
@@ -171,10 +169,7 @@ public class RecipeLoaderNuclearFuelProcessing {
             .itemInputs(MaterialLibAPI.getStack(Materials.Fluorine, CellShapes.cell, 1))
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(
-                    Materials.PhosphorousUraniumHexafluoridePUF6,
-                    CellShapes.cellMolten,
-                    1))
+                MaterialLibAPI.getStack(Materials.PhosphorousUraniumHexafluoridePUF6, CellShapes.cellMolten, 1))
             .outputChances(10000)
             .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.UraniumDepletedMoltenSaltUSalt, 1000))
             .fluidOutputs(new FluidStack(GTPPFluids.ImpureMoltenSaltBase, 1000))
@@ -188,10 +183,7 @@ public class RecipeLoaderNuclearFuelProcessing {
             .circuit(1)
             .itemOutputs(
                 ItemList.Cell_Empty.get(1),
-                MaterialLibAPI.getStack(
-                    Materials.PhosphorousUraniumHexafluoridePUF6,
-                    CellShapes.cellMolten,
-                    2))
+                MaterialLibAPI.getStack(Materials.PhosphorousUraniumHexafluoridePUF6, CellShapes.cellMolten, 2))
             .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.HeliumSpargedUSalt, 1000))
             .fluidOutputs(new FluidStack(GTPPFluids.ImpureMoltenSaltBase, 2000))
             .duration(60 * MINUTES)
@@ -232,9 +224,7 @@ public class RecipeLoaderNuclearFuelProcessing {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.UraniumHexafluoride, CellShapes.cellMolten, 1),
                 MaterialLibAPI.getStack(Materials.StableMoltenSaltBase, CellShapes.cellMolten, 1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (2_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (2_000)))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2))
             .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.LFTRFuelBase, 3000))
             .duration(2 * MINUTES + 30 * SECONDS)

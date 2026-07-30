@@ -2,11 +2,11 @@ package detrav.utils;
 
 import java.util.HashMap;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 
 import com.ruling_0.materiallib.api.Material;
 
+import gregtech.api.enums.materials2.Materials;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;

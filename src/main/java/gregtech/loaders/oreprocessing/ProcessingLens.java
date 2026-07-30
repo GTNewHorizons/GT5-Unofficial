@@ -34,8 +34,7 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (material == Materials.Salt || material == Materials.RockSalt
-            || material == Materials.Spodumene) return;
+        if (material == Materials.Salt || material == Materials.RockSalt || material == Materials.Spodumene) return;
 
         AEApi.instance()
             .registries()

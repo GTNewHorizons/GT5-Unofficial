@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -26,6 +25,7 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -705,26 +705,11 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
         if (sGregTurbines == null) {
             sGregTurbines = new ItemStack[3];
             sGregTurbines[0] = MetaGeneratedTool.sInstances.get("gt.metatool.01")
-                .getToolWithStats(
-                    IDMetaTool01.TURBINE_SMALL.ID,
-                    1,
-                    Materials.Iron,
-                    Materials.Iron,
-                    null);
+                .getToolWithStats(IDMetaTool01.TURBINE_SMALL.ID, 1, Materials.Iron, Materials.Iron, null);
             sGregTurbines[1] = MetaGeneratedTool.sInstances.get("gt.metatool.01")
-                .getToolWithStats(
-                    IDMetaTool01.TURBINE_SMALL.ID,
-                    1,
-                    Materials.Bronze,
-                    Materials.Bronze,
-                    null);
+                .getToolWithStats(IDMetaTool01.TURBINE_SMALL.ID, 1, Materials.Bronze, Materials.Bronze, null);
             sGregTurbines[2] = MetaGeneratedTool.sInstances.get("gt.metatool.01")
-                .getToolWithStats(
-                    IDMetaTool01.TURBINE_SMALL.ID,
-                    1,
-                    Materials.Steel,
-                    Materials.Steel,
-                    null);
+                .getToolWithStats(IDMetaTool01.TURBINE_SMALL.ID, 1, Materials.Steel, Materials.Steel, null);
         } else {
             return sGregTurbines[aTier];
         }

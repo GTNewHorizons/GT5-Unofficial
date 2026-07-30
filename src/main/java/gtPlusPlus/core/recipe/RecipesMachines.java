@@ -8,8 +8,6 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -22,7 +20,9 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.PipeShapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
@@ -46,11 +46,7 @@ public class RecipesMachines {
                 ItemList.Hull_IV.get(1),
                 Circuits.ZPM.get(2))
             .itemOutputs(GregtechItemList.Gregtech_Computer_Cube.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Tantalum,
-                    FluidShapes.fluidMolten,
-                    (int) (16 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Tantalum, FluidShapes.fluidMolten, (int) (16 * INGOTS)))
             .duration(3 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -64,9 +60,7 @@ public class RecipesMachines {
                 Circuits.LV.get(2),
                 Circuits.MV.get(2))
             .itemOutputs(new ItemStack(ModBlocks.blockCircuitProgrammer))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Iron, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Iron, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -79,9 +73,7 @@ public class RecipesMachines {
                 MaterialLibAPI.getStack(Materials.Lead, Shapes.plateDense, (int) (9)),
                 new ItemStack(Blocks.chest))
             .itemOutputs(new ItemStack(ModBlocks.blockDecayablesChest))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Lead, FluidShapes.fluidMolten, (int) (16 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Lead, FluidShapes.fluidMolten, (int) (16 * INGOTS)))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(assemblerRecipes);
@@ -143,17 +135,15 @@ public class RecipesMachines {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Air_Intake_Extreme.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "PRP", "IHI", 'P',
-                MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 1), 'C',
-                GregtechItemList.Hatch_Air_Intake, 'R', ItemList.FluidRegulator_ZPM, 'I', "circuitUltimate", 'H',
+            new Object[] { "PCP", "PRP", "IHI", 'P', MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 1),
+                'C', GregtechItemList.Hatch_Air_Intake, 'R', ItemList.FluidRegulator_ZPM, 'I', "circuitUltimate", 'H',
                 ItemList.Hatch_Input_ZPM });
 
         // Atmospheric Intake Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Air_Intake_Atmospheric.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "PRP", "IHI", 'P',
-                MaterialLibAPI.getStack(Materials.Octiron, Shapes.plate, 1), 'C',
+            new Object[] { "PCP", "PRP", "IHI", 'P', MaterialLibAPI.getStack(Materials.Octiron, Shapes.plate, 1), 'C',
                 GregtechItemList.Hatch_Air_Intake_Extreme, 'R', ItemList.FluidRegulator_UHV, 'I', "circuitInfinite",
                 'H', ItemList.Hatch_Input_UHV });
 
@@ -199,8 +189,7 @@ public class RecipesMachines {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_MultitankExterior.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "RPR", "PFP", "PPP", 'R',
-                MaterialLibAPI.getStack(Materials.Grisium, Shapes.stick, 1), 'P',
+            new Object[] { "RPR", "PFP", "PPP", 'R', MaterialLibAPI.getStack(Materials.Grisium, Shapes.stick, 1), 'P',
                 MaterialLibAPI.getStack(Materials.Grisium, Shapes.plate, 1), 'F',
                 MaterialLibAPI.getStack(Materials.Grisium, PipeShapes.frameGt, 1) });
 

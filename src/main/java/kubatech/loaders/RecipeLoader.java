@@ -84,7 +84,6 @@ import static kubatech.api.enums.ItemList.WhiteTeaLeaf;
 import static kubatech.api.enums.ItemList.YellowTea;
 import static kubatech.api.enums.ItemList.YellowTeaLeaf;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -97,6 +96,7 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -181,8 +181,7 @@ public class RecipeLoader {
                     new Object[] { Circuits.UV.getIngredient(), 16L })
                 .fluidInputs(
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 3 * STACKS + 8 * INGOTS),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Honey, FluidShapes.fluidLiquid, (int) (20_000)))
+                    MaterialLibAPI.getFluidStack(Materials.Honey, FluidShapes.fluidLiquid, (int) (20_000)))
                 .itemOutputs(ExtremeIndustrialApiary.get(1))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(5 * MINUTES)
@@ -345,9 +344,7 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1))
                 .itemOutputs(MilkTea.get(1))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, (int) (100)))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, (int) (100)))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);

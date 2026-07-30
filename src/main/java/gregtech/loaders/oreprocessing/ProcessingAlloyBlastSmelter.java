@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import gregtech.api.enums.materials2.MaterialFluidNames;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -24,6 +21,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.materials2.LegacyGTPPComposites;
 import gregtech.api.enums.materials2.LegacyGTPPComposites.Component;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;

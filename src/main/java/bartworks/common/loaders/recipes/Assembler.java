@@ -5,9 +5,6 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -20,6 +17,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.CellShapes;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -56,20 +56,16 @@ public class Assembler implements Runnable {
                 ItemList.OilDrill4.get(1),
                 TieredItems.ZPM.getPipeLarge(8),
                 MaterialLibAPI.getStack(Materials.Incoloy903, Shapes.gearGt, 32),
-                MaterialLibAPI
-                    .getStack(Materials.Polytetrafluoroethylene, Shapes.plateDense, (int) (16)),
+                MaterialLibAPI.getStack(Materials.Polytetrafluoroethylene, Shapes.plateDense, (int) (16)),
                 ItemList.Field_Generator_IV.get(1))
             .itemOutputs(ItemRegistry.dehp)
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.HSSE, FluidShapes.fluidMolten, (int) (32 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HSSE, FluidShapes.fluidMolten, (int) (32 * INGOTS)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.AnnealedCopper, Shapes.wireFine, (int) (64L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.AnnealedCopper, Shapes.wireFine, (int) (64L)))
             .circuit(17)
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[2], 1, 1))
             .fluidInputs(MaterialUtils.molten(Materials.Plastic, 8 * INGOTS))
@@ -85,10 +81,7 @@ public class Assembler implements Runnable {
                 ItemList.Battery_RE_LV_Lithium.get(1L))
             .itemOutputs(new ItemStack(ItemRegistry.CIRCUIT_PROGRAMMER))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.SolderingAlloy,
-                    FluidShapes.fluidMolten,
-                    (int) (2 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -127,9 +120,7 @@ public class Assembler implements Runnable {
                 MaterialLibAPI.getStack(Materials.Lead, Shapes.plateDense, (int) (6)),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1))
             .itemOutputs(ItemList.Casing_RadiationProof.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Concrete, FluidShapes.fluidMolten, (int) (9 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Concrete, FluidShapes.fluidMolten, (int) (9 * INGOTS)))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -141,9 +132,7 @@ public class Assembler implements Runnable {
                 MaterialLibAPI.getStack(Materials.Europium, Shapes.foil, (int) (6)),
                 MaterialLibAPI.getStack(Materials.Europium, Shapes.screw, (int) (24)))
             .itemOutputs(ItemList.Casing_AdvancedRadiationProof.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Lead, FluidShapes.fluidMolten, (int) (6 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Lead, FluidShapes.fluidMolten, (int) (6 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);

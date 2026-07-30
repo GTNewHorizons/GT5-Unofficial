@@ -13,7 +13,6 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -30,6 +29,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.material.MaterialParts;
@@ -208,14 +208,12 @@ public class MTEBoilerBronze extends MTEBoiler {
     }
 
     private static boolean couldProduceDarkAshes(ItemStack fuel, String lowerCaseBlockName) {
-        return MaterialParts.isPartOf(fuel, Materials.Coal)
-            || MaterialParts.isPartOf(fuel, Materials.Lignite)
+        return MaterialParts.isPartOf(fuel, Materials.Coal) || MaterialParts.isPartOf(fuel, Materials.Lignite)
             || lowerCaseBlockName.matches("tile\\..+compressedcoal");
     }
 
     private static boolean couldProduceRegularAshes(ItemStack fuel, String lowerCaseBlockName, int burnTime) {
-        return MaterialParts.isPartOf(fuel, Materials.Charcoal)
-            || MaterialParts.isPartOf(fuel, Materials.Diamond)
+        return MaterialParts.isPartOf(fuel, Materials.Charcoal) || MaterialParts.isPartOf(fuel, Materials.Diamond)
             || (Stream.of("^tile\\..+charcoal", "^tile\\..+coke", "^tile\\..+railcraft.cube")
                 .anyMatch(lowerCaseBlockName::matches))
             || Stream.of("fuelCoke", "fuelCactusCharcoal", "fuelCactusCoke", "fuelSugarCharcoal", "fuelSugarCoke")

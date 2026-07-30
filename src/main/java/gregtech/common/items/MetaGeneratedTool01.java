@@ -55,8 +55,6 @@ import static gregtech.common.items.IDMetaTool01.WRENCH_HV;
 import static gregtech.common.items.IDMetaTool01.WRENCH_LV;
 import static gregtech.common.items.IDMetaTool01.WRENCH_MV;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -68,6 +66,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.tools.ItemNetworkAnalyzer;
@@ -709,8 +709,8 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
         GTModHandler.addCraftingRecipe(
             INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.DamascusSteel, Materials.Stone, null),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.ingredient(Materials.DamascusSteel),
-                'S', OrePrefixes.stone });
+            new Object[] { " I ", "SIS", "SSS", 'I', OrePrefixes.ingot.ingredient(Materials.DamascusSteel), 'S',
+                OrePrefixes.stone });
         GTModHandler.addCraftingRecipe(
             INSTANCE.getToolWithStats(MORTAR.ID, 1, Materials.Thaumium, Materials.Stone, null),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
@@ -723,34 +723,22 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.plank.ingredient(Materials.Wood), 'S',
                 OrePrefixes.stick.ingredient(Materials.Wood) });
         GTModHandler.addCraftingRecipe(
-            INSTANCE
-                .getToolWithStats(ROLLING_PIN.ID, 1, Materials.Plastic, Materials.Plastic, null),
+            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Plastic, Materials.Plastic, null),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.ingredient(Materials.Plastic), 'S',
                 OrePrefixes.stick.ingredient(Materials.Plastic) });
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(
-                ROLLING_PIN.ID,
-                1,
-                Materials.Aluminium,
-                Materials.Aluminium,
-                null),
+            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Aluminium, Materials.Aluminium, null),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.ingredient(Materials.Aluminium), 'S',
                 OrePrefixes.stick.ingredient(Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(
-                ROLLING_PIN.ID,
-                1,
-                Materials.StainlessSteel,
-                Materials.StainlessSteel,
-                null),
+            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.StainlessSteel, Materials.StainlessSteel, null),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.ingredient(Materials.StainlessSteel),
-                'S', OrePrefixes.stick.ingredient(Materials.StainlessSteel) });
+            new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.ingredient(Materials.StainlessSteel), 'S',
+                OrePrefixes.stick.ingredient(Materials.StainlessSteel) });
         GTModHandler.addCraftingRecipe(
-            INSTANCE
-                .getToolWithStats(ROLLING_PIN.ID, 1, Materials.IronWood, Materials.IronWood, null),
+            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.IronWood, Materials.IronWood, null),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.ingredient(Materials.IronWood), 'S',
                 OrePrefixes.stick.ingredient(Materials.IronWood) });

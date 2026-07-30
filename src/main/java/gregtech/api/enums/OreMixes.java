@@ -50,12 +50,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 
 import galacticgreg.api.enums.DimensionDef;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;

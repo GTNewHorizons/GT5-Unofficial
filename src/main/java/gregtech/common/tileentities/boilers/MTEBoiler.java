@@ -2,7 +2,6 @@ package gregtech.common.tileentities.boilers;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -30,6 +29,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TieredVariant;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -513,8 +513,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     }
 
     public boolean isValidFluidInputSlotItem(@NotNull ItemStack stack) {
-        return GTUtility
-            .fillFluidContainer(MaterialUtils.gas(Materials.Steam, getSteamCapacity()), stack, false, true)
+        return GTUtility.fillFluidContainer(MaterialUtils.gas(Materials.Steam, getSteamCapacity()), stack, false, true)
             != null || isFluidInputAllowed(GTUtility.getFluidForFilledItem(stack, true));
     }
 

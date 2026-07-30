@@ -9,7 +9,6 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.ArrayList;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -22,6 +21,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;

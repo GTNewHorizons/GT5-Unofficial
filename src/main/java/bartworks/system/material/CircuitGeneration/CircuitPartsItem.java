@@ -21,8 +21,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.List;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,6 +44,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -83,10 +83,7 @@ public class CircuitPartsItem extends Item {
             .itemInputs(ItemList.RawImprintBoard.get(1), new OreDictItemStack("craftingLensYellow", 0))
             .itemOutputs(ItemList.ImprintBoard.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.SolderingAlloy,
-                    FluidShapes.fluidMolten,
-                    (int) (4 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .requiresCleanRoom()

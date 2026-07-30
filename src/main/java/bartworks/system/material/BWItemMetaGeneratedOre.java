@@ -2,8 +2,6 @@ package bartworks.system.material;
 
 import java.util.List;
 
-import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -13,6 +11,8 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.MaterialFormulas;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;

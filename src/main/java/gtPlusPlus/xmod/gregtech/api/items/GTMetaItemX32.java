@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.api.items;
 import java.util.Arrays;
 import java.util.List;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,6 +16,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.material.MaterialUtils;
@@ -130,8 +130,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
         final int aDamage = aStack.getItemDamage();
         if (MetaGeneratedItem.isMaterialItem(aDamage)) {
             final Material aMaterial = LegacyMaterialIDIndex.get(aDamage % 1000);
-            if ((aMaterial != null) && (aMaterial != Materials.Empty)
-                && (aMaterial != Materials.NULL)) {
+            if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials.NULL)) {
                 final OrePrefixes aPrefix = this.mGeneratedPrefixList[aDamage / 1000];
                 if (aPrefix != null) {
                     return GTUtility.copyAmount(1, aPrefix.mContainerItem);

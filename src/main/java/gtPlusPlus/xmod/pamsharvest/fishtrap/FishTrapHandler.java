@@ -38,17 +38,13 @@ public class FishTrapHandler {
                     .addTo(maceratorRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1))
-                    .fluidOutputs(
-                        MaterialLibAPI
-                            .getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (48)))
+                    .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (48)))
                     .duration(19 * SECONDS + 4 * TICKS)
                     .eut(5)
                     .addTo(centrifugeRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1))
-                    .fluidOutputs(
-                        MaterialLibAPI
-                            .getFluidStack(Materials.FishOil, FluidShapes.fluidLiquid, (int) (50)))
+                    .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.FishOil, FluidShapes.fluidLiquid, (int) (50)))
                     .duration(16 * TICKS)
                     .eut(4)
                     .addTo(fluidExtractionRecipes);
@@ -66,17 +62,13 @@ public class FishTrapHandler {
                 .addTo(maceratorRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1))
-                .fluidOutputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (48)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (48)))
                 .duration(19 * SECONDS + 4 * TICKS)
                 .eut(5)
                 .addTo(centrifugeRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1))
-                .fluidOutputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.FishOil, FluidShapes.fluidLiquid, (int) (50)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.FishOil, FluidShapes.fluidLiquid, (int) (50)))
                 .duration(16 * TICKS)
                 .eut(4)
                 .addTo(fluidExtractionRecipes);

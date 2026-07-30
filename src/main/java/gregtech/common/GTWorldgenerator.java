@@ -13,7 +13,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
@@ -37,6 +36,7 @@ import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.events.VeinGenerateEvent;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.net.GTPacketSendOregenPattern;

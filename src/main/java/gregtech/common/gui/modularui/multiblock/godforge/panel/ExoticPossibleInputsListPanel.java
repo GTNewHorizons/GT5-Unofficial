@@ -3,7 +3,6 @@ package gregtech.common.gui.modularui.multiblock.godforge.panel;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
@@ -22,6 +21,7 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.google.common.collect.ImmutableList;
 
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
@@ -105,9 +105,8 @@ public class ExoticPossibleInputsListPanel {
         IFluidTanksHandler fluidHandler = new FluidTanksHandler(fluidSize, 128000);
 
         List<ItemStack> possibleItems = new ArrayList<>(Godforge.exoticModuleMagmatterItemMap.keySet());
-        List<FluidStack> possibleFluids = ImmutableList.of(
-            MaterialUtils.molten(Materials.spatialFluid, 1),
-            MaterialUtils.molten(Materials.temporalFluid, 1));
+        List<FluidStack> possibleFluids = ImmutableList
+            .of(MaterialUtils.molten(Materials.spatialFluid, 1), MaterialUtils.molten(Materials.temporalFluid, 1));
 
         // Fill handlers
         for (int i = 0; i < itemSize; i++) {

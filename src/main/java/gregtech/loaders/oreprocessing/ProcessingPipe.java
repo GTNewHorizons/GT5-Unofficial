@@ -63,8 +63,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTOreDictUnificator.get(OrePrefixes.pipeSmall, material, 6L),
                         GTModHandler.RecipeBits.BUFFERED,
                         new Object[] { "PWP", "P P", "PHP", 'P',
-                            material == Materials.Wood
-                                ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
+                            material == Materials.Wood ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
                                 : MaterialParts.craftIngredient(OrePrefixes.plate, material),
                             'H',
                             MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSoftMallet
@@ -75,8 +74,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTOreDictUnificator.get(OrePrefixes.pipeMedium, material, 2L),
                         GTModHandler.RecipeBits.BUFFERED,
                         new Object[] { "PPP", "W H", "PPP", 'P',
-                            material == Materials.Wood
-                                ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
+                            material == Materials.Wood ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
                                 : MaterialParts.craftIngredient(OrePrefixes.plate, material),
                             'H',
                             MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSoftMallet
@@ -87,8 +85,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTOreDictUnificator.get(OrePrefixes.pipeLarge, material, 1L),
                         GTModHandler.RecipeBits.BUFFERED,
                         new Object[] { "PHP", "P P", "PWP", 'P',
-                            material == Materials.Wood
-                                ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
+                            material == Materials.Wood ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
                                 : MaterialParts.craftIngredient(OrePrefixes.plate, material),
                             'H',
                             MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSoftMallet

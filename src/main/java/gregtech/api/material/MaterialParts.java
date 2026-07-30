@@ -8,9 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
-import gregtech.api.enums.materials2.OreShapes;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +19,10 @@ import com.ruling_0.materiallib.api.Shape;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.CellShapes;
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
+import gregtech.api.enums.materials2.OreShapes;
 import gregtech.api.enums.materials2.PipeShapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 

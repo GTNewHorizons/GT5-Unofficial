@@ -1,6 +1,5 @@
 package gregtech.common.blocks;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.item.ItemStack;
@@ -8,6 +7,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class BlockGranites extends BlockStonesAbstract {

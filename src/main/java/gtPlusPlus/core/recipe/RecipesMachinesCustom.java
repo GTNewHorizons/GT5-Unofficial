@@ -13,10 +13,6 @@ import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.MaterialFacades;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -31,7 +27,11 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.CellShapes;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.MaterialFacades;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.PipeShapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
@@ -71,9 +71,7 @@ public class RecipesMachinesCustom {
                 ItemList.Electric_Motor_HV.get(2),
                 ItemList.Casing_Gearbox_Titanium.get(1))
             .itemOutputs(GregtechItemList.Casing_Turbine_Shaft.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (2_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (2_000)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -89,10 +87,7 @@ public class RecipesMachinesCustom {
             .circuit(18)
             .itemOutputs(GregtechItemList.Hatch_Turbine_Rotor.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.StainlessSteel,
-                    FluidShapes.fluidMolten,
-                    (int) (8 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.StainlessSteel, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -105,11 +100,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.Inconel625, Shapes.screw, 8))
             .circuit(18)
             .itemOutputs(GregtechItemList.Casing_Turbine_LP.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Aluminium,
-                    FluidShapes.fluidMolten,
-                    (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Aluminium, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -124,9 +115,7 @@ public class RecipesMachinesCustom {
                 Circuits.EV.get(8))
             .circuit(18)
             .itemOutputs(ItemList.SteamTurbineXL.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -139,9 +128,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.Inconel625, Shapes.screw, 8))
             .circuit(18)
             .itemOutputs(GregtechItemList.Casing_Turbine_Gas.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -156,9 +143,7 @@ public class RecipesMachinesCustom {
                 Circuits.LuV.get(8))
             .circuit(18)
             .itemOutputs(ItemList.GasTurbineXL.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Chrome, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chrome, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -172,10 +157,7 @@ public class RecipesMachinesCustom {
             .circuit(18)
             .itemOutputs(GregtechItemList.Casing_Turbine_HP.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.StainlessSteel,
-                    FluidShapes.fluidMolten,
-                    (int) (2 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.StainlessSteel, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -191,10 +173,7 @@ public class RecipesMachinesCustom {
             .circuit(18)
             .itemOutputs(ItemList.HPSteamTurbineXL.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.TungstenSteel,
-                    FluidShapes.fluidMolten,
-                    (int) (8 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.TungstenSteel, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -208,10 +187,7 @@ public class RecipesMachinesCustom {
             .circuit(18)
             .itemOutputs(GregtechItemList.Casing_Turbine_Plasma.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.TungstenSteel,
-                    FluidShapes.fluidMolten,
-                    (int) (2 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.TungstenSteel, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -226,9 +202,7 @@ public class RecipesMachinesCustom {
                 Circuits.ZPM.get(8))
             .circuit(18)
             .itemOutputs(ItemList.PlasmaTurbineXL.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -242,10 +216,7 @@ public class RecipesMachinesCustom {
             .circuit(18)
             .itemOutputs(GregtechItemList.Casing_Turbine_SC.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.AdamantiumAlloy,
-                    FluidShapes.fluidMolten,
-                    (int) (2 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.AdamantiumAlloy, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -260,9 +231,7 @@ public class RecipesMachinesCustom {
                 Circuits.ZPM.get(8))
             .circuit(18)
             .itemOutputs(ItemList.SCSteamTurbineXL.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Hikarium, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hikarium, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -334,9 +303,7 @@ public class RecipesMachinesCustom {
                 Circuits.HV.get(4))
             .circuit(17)
             .itemOutputs(GregtechItemList.Solar_Tower_Reflector.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -402,9 +369,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.SolderingAlloy, Shapes.wireFine, (int) (16)))
             .circuit(15)
             .itemOutputs(GregtechItemList.Bus_Catalysts.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Bronze, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Bronze, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -433,9 +398,8 @@ public class RecipesMachinesCustom {
             GregtechItemList.Industrial_AlloyBlastSmelter.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "WMW", "PCP", 'P',
-                MaterialLibAPI.getStack(Materials.ZirconiumCarbide, Shapes.plate, 1), 'C',
-                "circuitElite", 'W', OrePrefixes.cableGt04.ingredient(Materials.Tungsten), 'M',
-                ItemList.Machine_IV_AlloySmelter });
+                MaterialLibAPI.getStack(Materials.ZirconiumCarbide, Shapes.plate, 1), 'C', "circuitElite", 'W',
+                OrePrefixes.cableGt04.ingredient(Materials.Tungsten), 'M', ItemList.Machine_IV_AlloySmelter });
 
         // Blast Smelter Casing Block
         GTModHandler.addCraftingRecipe(
@@ -459,8 +423,7 @@ public class RecipesMachinesCustom {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Coil_BlastSmelter.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PPP", "FCF", "PPP", 'P',
-                MaterialLibAPI.getStack(Materials.Staballoy, Shapes.plate, 1), 'F',
+            new Object[] { "PPP", "FCF", "PPP", 'P', MaterialLibAPI.getStack(Materials.Staballoy, Shapes.plate, 1), 'F',
                 MaterialLibAPI.getStack(Materials.Staballoy, PipeShapes.frameGt, 1), 'C',
                 ItemList.Casing_Gearbox_Titanium });
 
@@ -544,8 +507,7 @@ public class RecipesMachinesCustom {
                 OrePrefixes.cableGt12.ingredient(Materials.Naquadah), 'C',
                 MaterialLibAPI.getStack(Materials.HastelloyN, Shapes.plateDouble, 1), 'D',
                 GregtechItemList.Gregtech_Computer_Cube, 'E',
-                MaterialLibAPI.getStack(Materials.Thorium232, Shapes.plate, 1), 'F',
-                ItemList.Hull_IV });
+                MaterialLibAPI.getStack(Materials.Thorium232, Shapes.plate, 1), 'F', ItemList.Hull_IV });
 
         // Reactor Shield Casing
         GTModHandler.addCraftingRecipe(
@@ -553,8 +515,7 @@ public class RecipesMachinesCustom {
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PdP", "GFG", "PhP", 'P',
                 MaterialLibAPI.getStack(Materials.HastelloyC276, Shapes.plateDouble, 1), 'G',
-                MaterialLibAPI.getStack(Materials.Talonite, Shapes.gearGt, 1), 'F',
-                ItemList.Field_Generator_LV });
+                MaterialLibAPI.getStack(Materials.Talonite, Shapes.gearGt, 1), 'F', ItemList.Field_Generator_LV });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -590,26 +551,22 @@ public class RecipesMachinesCustom {
             new Object[] { "CiC", "PXP", "GHG", 'C', "circuitElite", 'P',
                 OrePrefixes.plateDense.ingredient(Materials.TungstenSteel), 'X',
                 GregtechItemList.Gregtech_Computer_Cube, 'G',
-                MaterialLibAPI.getStack(Materials.Stellite, Shapes.gearGt, 1), 'H',
-                ItemList.Hull_IV });
+                MaterialLibAPI.getStack(Materials.Stellite, Shapes.gearGt, 1), 'H', ItemList.Hull_IV });
 
         // Incoloy-DS Fluid Containment Block
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Refinery_Internal.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PHP", "GTG", "PHP", 'P',
-                MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plate, 1), 'H',
+            new Object[] { "PHP", "GTG", "PHP", 'P', MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plate, 1), 'H',
                 MaterialLibAPI.getStack(Materials.Staballoy, PipeShapes.pipeHuge, 1), 'G',
-                MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.gearGt, 1), 'T',
-                ItemList.Super_Tank_IV });
+                MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.gearGt, 1), 'T', ItemList.Super_Tank_IV });
 
         // Hastelloy-N Sealant Block
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Refinery_External.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "ABA", "BFB", "ABA", 'A',
-                MaterialLibAPI.getStack(Materials.IncoloyMA956, Shapes.plate, 1), 'B',
-                MaterialLibAPI.getStack(Materials.HastelloyN, Shapes.plate, 1), 'F',
+            new Object[] { "ABA", "BFB", "ABA", 'A', MaterialLibAPI.getStack(Materials.IncoloyMA956, Shapes.plate, 1),
+                'B', MaterialLibAPI.getStack(Materials.HastelloyN, Shapes.plate, 1), 'F',
                 MaterialLibAPI.getStack(Materials.HastelloyC276, PipeShapes.frameGt, 1) });
 
         GTValues.RA.stdBuilder()
@@ -626,29 +583,25 @@ public class RecipesMachinesCustom {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Refinery_Structural.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "RGP", "hFw", "PHR", 'R',
-                MaterialLibAPI.getStack(Materials.Inconel792, Shapes.ring, 1), 'G',
+            new Object[] { "RGP", "hFw", "PHR", 'R', MaterialLibAPI.getStack(Materials.Inconel792, Shapes.ring, 1), 'G',
                 MaterialLibAPI.getStack(Materials.HastelloyX, Shapes.gearGt, 1), 'P',
                 OrePrefixes.plate.ingredient(Materials.Steel), 'F',
-                MaterialLibAPI.getStack(Materials.HastelloyC276, PipeShapes.frameGt, 1), 'H',
-                ItemList.Casing_EV });
+                MaterialLibAPI.getStack(Materials.HastelloyC276, PipeShapes.frameGt, 1), 'H', ItemList.Casing_EV });
 
         // Cold Trap I
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ColdTrap_IV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PDP", "PCP", "RFR", 'P',
-                MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plate, 1), 'D',
-                MaterialLibAPI.getStack(Materials.HastelloyX, Shapes.plateDouble, 1), 'C',
-                ItemList.Casing_IV, 'R', ItemList.Robot_Arm_IV, 'F', ItemList.Casing_FrostProof });
+            new Object[] { "PDP", "PCP", "RFR", 'P', MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plate, 1),
+                'D', MaterialLibAPI.getStack(Materials.HastelloyX, Shapes.plateDouble, 1), 'C', ItemList.Casing_IV, 'R',
+                ItemList.Robot_Arm_IV, 'F', ItemList.Casing_FrostProof });
 
         // Cold Trap II
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ColdTrap_ZPM.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PDP", "PCP", "RFR", 'P',
-                MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 1), 'D',
-                MaterialLibAPI.getStack(Materials.HS188A, Shapes.plateDouble, 1), 'C',
+            new Object[] { "PDP", "PCP", "RFR", 'P', MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 1),
+                'D', MaterialLibAPI.getStack(Materials.HS188A, Shapes.plateDouble, 1), 'C',
                 GregtechItemList.ColdTrap_IV, 'R', ItemList.Robot_Arm_ZPM, 'F', ItemList.Casing_FrostProof });
 
         // Reactor Processing Unit I
@@ -675,8 +628,8 @@ public class RecipesMachinesCustom {
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "ABA", "CDC", "AEA", 'A', OrePrefixes.plate.ingredient(Materials.Osmiridium), 'B',
                 GregtechItemList.ReactorProcessingUnit_IV, 'C',
-                MaterialLibAPI.getStack(Materials.Ruridit, Shapes.plate, 1), 'D', "circuitUltimate",
-                'E', GregtechItemList.ColdTrap_IV });
+                MaterialLibAPI.getStack(Materials.Ruridit, Shapes.plate, 1), 'D', "circuitUltimate", 'E',
+                GregtechItemList.ColdTrap_IV });
     }
 
     private static void cyclotron() {
@@ -725,9 +678,8 @@ public class RecipesMachinesCustom {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.PowerSubStation.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "ABA", "CDC", "EAE", 'A',
-                MaterialLibAPI.getStack(Materials.IncoloyMA956, Shapes.plate, 1), 'B',
-                GregtechItemList.LFTRControlCircuit, 'C', GregtechItemList.Casing_Power_SubStation, 'D',
+            new Object[] { "ABA", "CDC", "EAE", 'A', MaterialLibAPI.getStack(Materials.IncoloyMA956, Shapes.plate, 1),
+                'B', GregtechItemList.LFTRControlCircuit, 'C', GregtechItemList.Casing_Power_SubStation, 'D',
                 GregtechItemList.Casing_Vanadium_Redox, 'E',
                 MaterialLibAPI.getStack(Materials.Incoloy020, Shapes.plate, 1) });
 
@@ -739,9 +691,7 @@ public class RecipesMachinesCustom {
                 Circuits.HV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, MaterialFacades.SuperconductorHV, 2))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (16_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (16_000)))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(assemblerRecipes);
@@ -754,9 +704,7 @@ public class RecipesMachinesCustom {
                 Circuits.EV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, MaterialFacades.SuperconductorEV, 2))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_IV.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, (int) (16_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, (int) (16_000)))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -769,8 +717,7 @@ public class RecipesMachinesCustom {
                 Circuits.IV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, MaterialFacades.SuperconductorIV, 2))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_LuV.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int) (8_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int) (8_000)))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -783,8 +730,7 @@ public class RecipesMachinesCustom {
                 Circuits.LuV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, MaterialFacades.SuperconductorLuV, 2))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_ZPM.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, (int) (4_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, (int) (4_000)))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -797,8 +743,7 @@ public class RecipesMachinesCustom {
                 Circuits.ZPM.get(4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, MaterialFacades.SuperconductorZPM, 2))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_UV.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidGas, (int) (4_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidGas, (int) (4_000)))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -811,9 +756,7 @@ public class RecipesMachinesCustom {
                 Circuits.UV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, MaterialFacades.SuperconductorUV, 2))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_MAX.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (500)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (500)))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
@@ -845,9 +788,8 @@ public class RecipesMachinesCustom {
             ItemList.FishingPort.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "WFW", "PCP", 'P',
-                MaterialLibAPI.getStack(Materials.WatertightSteel, Shapes.plate, 1), 'C',
-                "circuitElite", 'W', OrePrefixes.wireFine.ingredient(Materials.Electrum), 'F',
-                GregtechItemList.FishTrap });
+                MaterialLibAPI.getStack(Materials.WatertightSteel, Shapes.plate, 1), 'C', "circuitElite", 'W',
+                OrePrefixes.wireFine.ingredient(Materials.Electrum), 'F', GregtechItemList.FishTrap });
     }
 
     private static void milling() {
@@ -882,10 +824,7 @@ public class RecipesMachinesCustom {
             .circuit(7)
             .itemOutputs(GregtechItemList.Casing_IsaMill_Gearbox.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.TungstenSteel,
-                    FluidShapes.fluidMolten,
-                    (int) (8 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.TungstenSteel, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -899,9 +838,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.Zeron100, Shapes.screw, 8))
             .circuit(7)
             .itemOutputs(GregtechItemList.Casing_IsaMill_Casing.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -916,11 +853,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.HSSE, Shapes.screw, (int) (8)))
             .circuit(7)
             .itemOutputs(GregtechItemList.Casing_IsaMill_Pipe.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Aluminium,
-                    FluidShapes.fluidMolten,
-                    (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Aluminium, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -958,10 +891,7 @@ public class RecipesMachinesCustom {
             .circuit(7)
             .itemOutputs(GregtechItemList.Casing_Flotation_Cell.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.StainlessSteel,
-                    FluidShapes.fluidMolten,
-                    (int) (8 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.StainlessSteel, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -976,9 +906,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.SolderingAlloy, Shapes.wireFine, (int) (16)))
             .circuit(7)
             .itemOutputs(GregtechItemList.Bus_Milling_Balls.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Tungsten, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Tungsten, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(4 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -1014,18 +942,13 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.HS188A, Shapes.plate, 32),
                 MaterialLibAPI.getStack(Materials.HastelloyN, Shapes.plateDouble, 16),
                 MaterialLibAPI.getStack(Materials.HastelloyN, Shapes.screw, 64),
-                MaterialLibAPI
-                    .getStack(Materials.YttriumBariumCuprate, Shapes.wireFine, (int) (64)),
-                MaterialLibAPI
-                    .getStack(Materials.YttriumBariumCuprate, Shapes.wireFine, (int) (64)),
+                MaterialLibAPI.getStack(Materials.YttriumBariumCuprate, Shapes.wireFine, (int) (64)),
+                MaterialLibAPI.getStack(Materials.YttriumBariumCuprate, Shapes.wireFine, (int) (64)),
                 MaterialLibAPI.getStack(Materials.Platinum, Shapes.foil, (int) (64)))
             .fluidInputs(
                 MaterialUtils.legacyGtppFluid(Materials.IncoloyDS, 16 * INGOTS),
                 MaterialUtils.legacyGtppFluid(Materials.TantalumCarbide, 32 * INGOTS),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Titanium,
-                    FluidShapes.fluidMolten,
-                    (int) (32 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, (int) (32 * INGOTS)))
             .itemOutputs(GregtechItemList.Controller_Sparge_Tower.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(60 * SECONDS)
@@ -1042,10 +965,7 @@ public class RecipesMachinesCustom {
             .circuit(8)
             .itemOutputs(GregtechItemList.Casing_Sparge_Tower_Exterior.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.StainlessSteel,
-                    FluidShapes.fluidMolten,
-                    (int) (8 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.StainlessSteel, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -1152,8 +1072,8 @@ public class RecipesMachinesCustom {
             ItemList.ThermalBoiler.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "LCL", "GIG", "LCL", 'L', getModItem(RemoteIO.ID, "tile.machine", 1, 1), 'C',
-                ItemList.Machine_HV_Centrifuge, 'G', OrePrefixes.gearGt.ingredient(Materials.TungstenSteel),
-                'I', "circuitElite" });
+                ItemList.Machine_HV_Centrifuge, 'G', OrePrefixes.gearGt.ingredient(Materials.TungstenSteel), 'I',
+                "circuitElite" });
 
         // Thermal Containment Casing
         GTModHandler.addCraftingRecipe(

@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
-import gregtech.api.enums.materials2.MaterialParentMods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,6 +38,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
+import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
+import gregtech.api.enums.materials2.MaterialParentMods;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IFoodStat;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;

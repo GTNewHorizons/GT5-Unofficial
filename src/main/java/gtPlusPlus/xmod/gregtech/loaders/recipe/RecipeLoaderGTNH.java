@@ -7,8 +7,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -19,6 +17,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.MaterialUtils;
 
 public class RecipeLoaderGTNH {
@@ -35,10 +35,7 @@ public class RecipeLoaderGTNH {
         // MK3
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Plutonium241,
-                    FluidShapes.fluidMolten,
-                    (int) (1 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Plutonium241, FluidShapes.fluidMolten, (int) (1 * INGOTS)),
                 MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int) (1_000)))
             .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.Curium, 1 * INGOTS))
             .duration(4 * SECONDS + 16 * TICKS)
@@ -50,8 +47,7 @@ public class RecipeLoaderGTNH {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialUtils.legacyGtppFluid(Materials.Curium, 1 * INGOTS),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Helium, FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
             .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.Californium, 1 * INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(196608)
@@ -60,12 +56,8 @@ public class RecipeLoaderGTNH {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Plutonium241,
-                    FluidShapes.fluidMolten,
-                    (int) (1 * INGOTS)),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Calcium, FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Plutonium241, FluidShapes.fluidMolten, (int) (1 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Calcium, FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
             .fluidOutputs(MaterialUtils.molten(Materials.FleroviumGT5U, 1 * INGOTS))
             .duration(8 * SECONDS)
             .eut(196608)
@@ -74,10 +66,7 @@ public class RecipeLoaderGTNH {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Manganese,
-                    FluidShapes.fluidMolten,
-                    (int) (1 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Manganese, FluidShapes.fluidMolten, (int) (1 * INGOTS)),
                 MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, (int) (500)))
             .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Bromine), 1 * INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)
@@ -87,8 +76,7 @@ public class RecipeLoaderGTNH {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, (int) (1_000)),
+                MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, (int) (1_000)),
                 MaterialUtils.legacyGtppFluid(Materials.Selenium, 1 * INGOTS))
             .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Technetium), 2 * INGOTS))
             .duration(3 * SECONDS + 4 * TICKS)

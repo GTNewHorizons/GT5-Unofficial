@@ -278,8 +278,7 @@ public class ArcFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 3))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.ingot, (int) (2L)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.ingot, (int) (2L)))
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(RECYCLE, true)
@@ -476,8 +475,7 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, (int) (1L)))
             .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, (int) (3)))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (2_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (2_000)))
             .duration(60 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(arcFurnaceRecipes);

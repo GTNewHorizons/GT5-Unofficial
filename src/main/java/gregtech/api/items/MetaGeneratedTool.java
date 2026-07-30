@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -56,6 +55,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.material.GTMaterialProperties;

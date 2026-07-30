@@ -15,8 +15,6 @@ import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.BlastFurnaceWithGas;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
-import gregtech.api.enums.materials2.PipeMaterials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -30,6 +28,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.PipeShapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeBuilder;
 
@@ -200,49 +199,38 @@ public class CrackRecipeAdder {
     /// [PipeMaterials] for which materials do.
     public static void registerPipe(Material material) {
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(material, Shapes.ingot, 1),
-                ItemList.Shape_Extruder_Pipe_Tiny.get(0))
+            .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1), ItemList.Shape_Extruder_Pipe_Tiny.get(0))
             .itemOutputs(MaterialLibAPI.getStack(material, PipeShapes.pipeTiny, 2))
             .duration(MaterialUtils.mass(material) * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(material, Shapes.ingot, 1),
-                ItemList.Shape_Extruder_Pipe_Small.get(0))
+            .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1), ItemList.Shape_Extruder_Pipe_Small.get(0))
             .itemOutputs(MaterialLibAPI.getStack(material, PipeShapes.pipeSmall, 1))
             .duration(MaterialUtils.mass(material) * 2 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(material, Shapes.ingot, 3),
-                ItemList.Shape_Extruder_Pipe_Medium.get(0))
+            .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 3), ItemList.Shape_Extruder_Pipe_Medium.get(0))
             .itemOutputs(MaterialLibAPI.getStack(material, PipeShapes.pipeMedium, 1))
             .duration(MaterialUtils.mass(material) * 6 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(material, Shapes.ingot, 6),
-                ItemList.Shape_Extruder_Pipe_Large.get(0))
+            .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 6), ItemList.Shape_Extruder_Pipe_Large.get(0))
             .itemOutputs(MaterialLibAPI.getStack(material, PipeShapes.pipeLarge, 1))
             .duration(MaterialUtils.mass(material) * 12 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(material, Shapes.ingot, 12),
-                ItemList.Shape_Extruder_Pipe_Huge.get(0))
+            .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 12), ItemList.Shape_Extruder_Pipe_Huge.get(0))
             .itemOutputs(MaterialLibAPI.getStack(material, PipeShapes.pipeHuge, 1))
             .duration(MaterialUtils.mass(material) * 24 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(extruderRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Pipe_Tiny.get(0))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (1 * HALF_INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (1 * HALF_INGOTS)))
             .itemOutputs(MaterialLibAPI.getStack(material, PipeShapes.pipeTiny, 1))
             .duration(MaterialUtils.mass(material) * TICKS)
             .eut(TierEU.RECIPE_LV)

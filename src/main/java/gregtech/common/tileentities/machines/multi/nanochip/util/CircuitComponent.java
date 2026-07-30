@@ -6,8 +6,6 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.function.Supplier;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -16,7 +14,9 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.MaterialFacades;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.PipeShapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.util.GTOreDictUnificator;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;

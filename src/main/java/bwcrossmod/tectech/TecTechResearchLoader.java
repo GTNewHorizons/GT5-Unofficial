@@ -16,9 +16,6 @@ package bwcrossmod.tectech;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -27,7 +24,10 @@ import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.MaterialFacades;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import tectech.recipe.TTRecipeAdder;
@@ -47,8 +47,7 @@ public class TecTechResearchLoader {
                 ItemList.Electric_Motor_ZPM.get(9L), ItemList.Sensor_ZPM.get(9L), ItemList.Field_Generator_ZPM.get(9L),
                 MaterialLibAPI.getStack(Materials.BlackPlutonium, Shapes.screw, (int) (36)) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 10 * INGOTS),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (20_000)) },
+                MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (20_000)) },
             ItemRegistry.voidminer[1].copy(),
             2 * MINUTES,
             (int) TierEU.RECIPE_ZPM);
@@ -66,8 +65,7 @@ public class TecTechResearchLoader {
                 ItemList.Electric_Motor_UV.get(9L), ItemList.Sensor_UV.get(9L), ItemList.Field_Generator_UV.get(9L),
                 MaterialLibAPI.getStack(Materials.Neutronium, Shapes.screw, (int) (36)) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 10 * INGOTS),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Oganesson, FluidShapes.fluidLiquid, (int) (20_000)) },
+                MaterialLibAPI.getFluidStack(Materials.Oganesson, FluidShapes.fluidLiquid, (int) (20_000)) },
             ItemRegistry.voidminer[2].copy(),
             2 * MINUTES,
             (int) TierEU.RECIPE_UV);
@@ -86,12 +84,8 @@ public class TecTechResearchLoader {
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, MaterialFacades.SuperconductorUHV, 64),
                 ItemList.Electric_Piston_UV.get(64), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 10 * INGOTS),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, (int) (10 * INGOTS)),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Neutronium,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)) },
+                MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, (int) (10 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, (int) (10 * INGOTS)) },
             ItemList.ElectricImplosionCompressor.get(1L),
             2 * MINUTES,
             (int) TierEU.RECIPE_UV);

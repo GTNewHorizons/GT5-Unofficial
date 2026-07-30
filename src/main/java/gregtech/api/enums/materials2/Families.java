@@ -76,10 +76,7 @@ public class Families {
                 Shapes.wireFine)
             .build();
         multiPlates = MaterialLibAPI.newFamily("gregtech", "MultiPlates")
-            .generateShapes(
-                Shapes.plateTriple,
-                Shapes.plateQuadruple,
-                Shapes.plateQuintuple)
+            .generateShapes(Shapes.plateTriple, Shapes.plateQuadruple, Shapes.plateQuintuple)
             .build();
         gems = MaterialLibAPI.newFamily("gregtech", "Gems")
             .generateShapes(
@@ -96,11 +93,7 @@ public class Families {
                 Shapes.stickLong)
             .build();
         gemQualities = MaterialLibAPI.newFamily("gregtech", "GemQualities")
-            .generateShapes(
-                Shapes.gemChipped,
-                Shapes.gemFlawed,
-                Shapes.gemFlawless,
-                Shapes.gemExquisite)
+            .generateShapes(Shapes.gemChipped, Shapes.gemFlawed, Shapes.gemFlawless, Shapes.gemExquisite)
             .build();
         ores = MaterialLibAPI.newFamily("gregtech", "Ores")
             .generateShapes(
@@ -117,18 +110,10 @@ public class Families {
                 OreShapes.oreSmall)
             .build();
         toolParts = MaterialLibAPI.newFamily("gregtech", "ToolParts")
-            .generateShapes(
-                Shapes.toolHeadHammer,
-                Shapes.toolHeadSaw,
-                Shapes.toolHeadWrench,
-                Shapes.turbineBlade)
+            .generateShapes(Shapes.toolHeadHammer, Shapes.toolHeadSaw, Shapes.toolHeadWrench, Shapes.turbineBlade)
             .build();
         poweredToolParts = MaterialLibAPI.newFamily("gregtech", "PoweredToolParts")
-            .generateShapes(
-                Shapes.toolHeadBuzzSaw,
-                Shapes.toolHeadChainsaw,
-                Shapes.toolHeadDrill,
-                Shapes.toolHeadFile)
+            .generateShapes(Shapes.toolHeadBuzzSaw, Shapes.toolHeadChainsaw, Shapes.toolHeadDrill, Shapes.toolHeadFile)
             .build();
         gears = MaterialLibAPI.newFamily("gregtech", "Gears")
             .generateShapes(Shapes.gearGt, Shapes.gearGtSmall, Shapes.rotor)

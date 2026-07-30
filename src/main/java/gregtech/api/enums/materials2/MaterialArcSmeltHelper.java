@@ -30,12 +30,8 @@ public class MaterialArcSmeltHelper {
                 throw new IllegalStateException("Gas-arc table consulted before MaterialSystem.init");
             }
             Map<Material, Map<Material, Material>> rows = new LinkedHashMap<>();
-            rows.put(
-                Materials.Copper,
-                Map.of(Materials.Oxygen, Materials.AnnealedCopper));
-            rows.put(
-                MaterialFacades.AnyCopper,
-                Map.of(Materials.Oxygen, Materials.AnnealedCopper));
+            rows.put(Materials.Copper, Map.of(Materials.Oxygen, Materials.AnnealedCopper));
+            rows.put(MaterialFacades.AnyCopper, Map.of(Materials.Oxygen, Materials.AnnealedCopper));
             table = rows;
         }
         return table;

@@ -12,7 +12,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -23,6 +22,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
@@ -46,8 +46,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (((material == Materials.Glass)
-            || (GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L) != null))
+        if (((material == Materials.Glass) || (GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L) != null))
             && (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING))) {
             long materialMass = MaterialUtils.mass(material);
             int tAmount = (int) (prefix.getMaterialAmount() / 3628800L);
@@ -403,8 +402,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                         .addTo(extruderRecipes);
                 }
 
-                if (!(material == Materials.StyreneButadieneRubber
-                    || material == Materials.Silicone)) {
+                if (!(material == Materials.StyreneButadieneRubber || material == Materials.Silicone)) {
                     Integer plateTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
                     if ((plateTierEU == null ? 0 : plateTierEU) < TierEU.IV) {
                         if (GTOreDictUnificator.get(OrePrefixes.plate, MaterialUtils.smeltInto(material), 1L) != null) {

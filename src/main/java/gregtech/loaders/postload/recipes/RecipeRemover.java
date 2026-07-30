@@ -5,7 +5,6 @@ import static gregtech.api.enums.Mods.ExtraTrees;
 import java.util.Iterator;
 import java.util.Map;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -15,6 +14,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -142,14 +142,11 @@ public class RecipeRemover implements Runnable {
 
     public void removeSmelting() {
         GTModHandler.removeFurnaceSmelting(GTOreDictUnificator.get(OrePrefixes.ore, Materials.Graphite, 1L));
-        GTModHandler.removeFurnaceSmelting(
-            GTOreDictUnificator.get(OrePrefixes.oreBlackgranite, Materials.Graphite, 1L));
         GTModHandler
-            .removeFurnaceSmelting(GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Graphite, 1L));
-        GTModHandler.removeFurnaceSmelting(
-            GTOreDictUnificator.get(OrePrefixes.oreNetherrack, Materials.Graphite, 1L));
-        GTModHandler.removeFurnaceSmelting(
-            GTOreDictUnificator.get(OrePrefixes.oreRedgranite, Materials.Graphite, 1L));
+            .removeFurnaceSmelting(GTOreDictUnificator.get(OrePrefixes.oreBlackgranite, Materials.Graphite, 1L));
+        GTModHandler.removeFurnaceSmelting(GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Graphite, 1L));
+        GTModHandler.removeFurnaceSmelting(GTOreDictUnificator.get(OrePrefixes.oreNetherrack, Materials.Graphite, 1L));
+        GTModHandler.removeFurnaceSmelting(GTOreDictUnificator.get(OrePrefixes.oreRedgranite, Materials.Graphite, 1L));
         GTModHandler.removeFurnaceSmelting(ItemList.IC2_Resin.get(1L));
     }
 }

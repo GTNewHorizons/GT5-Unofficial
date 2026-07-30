@@ -4,7 +4,6 @@ import static kubatech.kubatech.KT;
 
 import java.util.List;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.material.MaterialRenderers;
 import gregtech.api.material.MaterialUtils;

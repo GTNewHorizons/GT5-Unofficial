@@ -7,7 +7,6 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import java.util.Set;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -15,6 +14,7 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;

@@ -27,9 +27,6 @@ import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static kekztech.common.Blocks.lscLapotronicEnergyUnit;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -49,6 +46,9 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.objects.SubstituteFluidStack;
@@ -241,9 +241,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Invar, Shapes.plate, 2),
-                    new ItemStack(Items.flint, 1))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Invar, Shapes.plate, 2), new ItemStack(Items.flint, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Tool_Lighter_Invar_Empty.get(1L))
                 .duration(12 * SECONDS + 16 * TICKS)
@@ -251,9 +249,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Platinum, Shapes.plate, 2),
-                    new ItemStack(Items.flint, 1))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Platinum, Shapes.plate, 2), new ItemStack(Items.flint, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Tool_Lighter_Platinum_Empty.get(1L))
                 .duration(12 * SECONDS + 16 * TICKS)
@@ -289,9 +285,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Sensor_EV.get(1L),
-                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 1))
+                .itemInputs(ItemList.Sensor_EV.get(1L), MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Cover_PlayerDetector.get(1L))
                 .duration(2 * MINUTES + 40 * SECONDS)
@@ -299,27 +293,21 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, 1),
-                    ItemList.Cover_Drain.get(1L))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, 1), ItemList.Cover_Drain.get(1L))
                 .circuit(1)
                 .itemOutputs(ItemList.Cover_Shutter.get(1L))
                 .duration(40 * SECONDS)
                 .eut(TierEU.RECIPE_LV / 2)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Iron, Shapes.plate, 1),
-                    ItemList.Cover_Drain.get(1L))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.plate, 1), ItemList.Cover_Drain.get(1L))
                 .circuit(1)
                 .itemOutputs(ItemList.Cover_Shutter.get(1L))
                 .duration(40 * SECONDS)
                 .eut(TierEU.RECIPE_LV / 2)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    MaterialLibAPI.getStack(Materials.CastIron, Shapes.plate, 1),
-                    ItemList.Cover_Drain.get(1L))
+                .itemInputs(MaterialLibAPI.getStack(Materials.CastIron, Shapes.plate, 1), ItemList.Cover_Drain.get(1L))
                 .circuit(1)
                 .itemOutputs(ItemList.Cover_Shutter.get(1L))
                 .duration(40 * SECONDS)
@@ -415,9 +403,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Emitter_MV.get(1L),
-                    MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, 1))
+                .itemInputs(ItemList.Emitter_MV.get(1L), MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Cover_NeedsMaintainance.get(1L))
                 .duration(30 * SECONDS)
@@ -451,10 +437,8 @@ public class AssemblerRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials.BlueSteel, Shapes.plate, 2))
                 .itemOutputs(ItemList.BatteryHull_EV.get(1L))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        1 * INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 1 * INGOTS))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(assemblerRecipes);
@@ -465,10 +449,8 @@ public class AssemblerRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials.RoseGold, Shapes.plate, 6))
                 .itemOutputs(ItemList.BatteryHull_IV.get(1L))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        2 * INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 2 * INGOTS))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(assemblerRecipes);
@@ -479,10 +461,7 @@ public class AssemblerRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials.RedSteel, Shapes.plate, 18))
                 .itemOutputs(ItemList.BatteryHull_LuV.get(1L))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        1 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 1 * INGOTS))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(assemblerRecipes);
@@ -493,10 +472,7 @@ public class AssemblerRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials.Europium, Shapes.plate, 6))
                 .itemOutputs(ItemList.BatteryHull_ZPM.get(1L))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        2 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 2 * INGOTS))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(assemblerRecipes);
@@ -507,10 +483,7 @@ public class AssemblerRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials.Americium, Shapes.plate, 18))
                 .itemOutputs(ItemList.BatteryHull_UV.get(1L))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        4 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 4 * INGOTS))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(assemblerRecipes);
@@ -521,10 +494,7 @@ public class AssemblerRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials.Naquadah, Shapes.plate, 24))
                 .itemOutputs(ItemList.BatteryHull_UHV.get(1L))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        8 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 8 * INGOTS))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .addTo(assemblerRecipes);
@@ -535,10 +505,7 @@ public class AssemblerRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.plate, 36))
                 .itemOutputs(ItemList.BatteryHull_UEV.get(1L))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        16 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 16 * INGOTS))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
@@ -549,10 +516,7 @@ public class AssemblerRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.plate, 48))
                 .itemOutputs(ItemList.BatteryHull_UIV.get(1L))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        32 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 32 * INGOTS))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
@@ -563,10 +527,7 @@ public class AssemblerRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 56))
                 .itemOutputs(ItemList.BatteryHull_UMV.get(1L))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        1 * STACKS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 1 * STACKS))
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
@@ -576,9 +537,7 @@ public class AssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get("wireGt16Superconductor", 2L),
                     MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.plate, 64))
                 .itemOutputs(ItemList.BatteryHull_UxV.get(1L))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 18432))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 18432))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
@@ -591,9 +550,7 @@ public class AssemblerRecipes implements Runnable {
                         GTOreDictUnificator.get("wireGt01Infinity", 2L),
                         ItemList.WIRELESS_ENERGY_HATCHES[i + 1].get(1))
                     .itemOutputs(ItemList.WIRELESS_ENERGY_COVERS[i].get(1L))
-                    .fluidInputs(
-                        MaterialLibAPI
-                            .getFluidStack(Materials.ExcitedDTEC, FluidShapes.fluidLiquid, 32_000))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.ExcitedDTEC, FluidShapes.fluidLiquid, 32_000))
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
@@ -613,10 +570,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Machine_Multi_Cleanroom.get(1L))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.StainlessSteel,
-                        FluidShapes.fluidMolten,
-                        1 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.StainlessSteel, FluidShapes.fluidMolten, 1 * INGOTS))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(assemblerRecipes);
@@ -634,8 +588,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(new OreDictItemStack("stickWood", 1))
             .circuit(2)
             .itemOutputs(ItemList.FR_Stick.get(1L))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SeedOil, FluidShapes.fluidLiquid, 50))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SeedOil, FluidShapes.fluidLiquid, 50))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
@@ -644,8 +597,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(new OreDictItemStack("logWood", 8))
             .circuit(8)
             .itemOutputs(ItemList.FR_Casing_Impregnated.get(1L))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SeedOil, FluidShapes.fluidLiquid, 250))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SeedOil, FluidShapes.fluidLiquid, 250))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -655,9 +607,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get("frameGtBlackSteel", 1),
                 MaterialLibAPI.getStack(Materials.Plastic, Shapes.dust, 1))
             .itemOutputs(ItemList.Block_Plascrete.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Concrete, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Concrete, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(10 * SECONDS)
             .eut(48)
             .addTo(assemblerRecipes);
@@ -672,9 +622,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Energy_LapotronicOrb.get(1))
             .circuit(4)
             .itemOutputs(ItemList.TierdDrone0.get(4))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.AdvancedGlue, FluidShapes.fluidLiquid, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AdvancedGlue, FluidShapes.fluidLiquid, 1 * INGOTS))
             .duration(10 * SECONDS)
             .eut(48)
             .addTo(assemblerRecipes);
@@ -692,9 +640,7 @@ public class AssemblerRecipes implements Runnable {
                 GalacticraftCore.isModLoaded() ? GTModHandler.getModItem(GalacticraftCore.ID, "item.basicItem", 1, 19)
                     : ItemList.Sensor_EV.get(4))
             .itemOutputs(ItemList.DroneCentre.get(1L))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.AdvancedGlue, FluidShapes.fluidLiquid, 8_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AdvancedGlue, FluidShapes.fluidLiquid, 8_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -708,9 +654,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Conveyor_Module_EV.get(1))
             .circuit(3)
             .itemOutputs(ItemList.Hatch_DroneDownLink.get(1L))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.AdvancedGlue, FluidShapes.fluidLiquid, 1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AdvancedGlue, FluidShapes.fluidLiquid, 1_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -764,9 +708,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Zinc, Shapes.foil, 16))
             .circuit(1)
             .itemOutputs(ItemList.Component_Filter.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -777,8 +719,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Circuit_Silicon_Wafer2.get(32))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Graphene, Shapes.dust, 64))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.AdvancedGlue, FluidShapes.fluidLiquid, 500))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AdvancedGlue, FluidShapes.fluidLiquid, 500))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -789,8 +730,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Circuit_Silicon_Wafer3.get(8))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Graphene, Shapes.dust, 64))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.AdvancedGlue, FluidShapes.fluidLiquid, 250))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AdvancedGlue, FluidShapes.fluidLiquid, 250))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -1187,8 +1127,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get("gearSteel", 2L))
             .circuit(2)
             .itemOutputs(ItemList.Long_Distance_Pipeline_Fluid.get(2L))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Tin, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Tin, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -1200,8 +1139,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get("gearSteel", 2L))
             .circuit(2)
             .itemOutputs(ItemList.Long_Distance_Pipeline_Item.get(2L))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Tin, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Tin, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -1212,8 +1150,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 9))
             .circuit(24)
             .itemOutputs(ItemList.Long_Distance_Pipeline_Fluid_Pipe.get(64L))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Tin, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Tin, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -1224,8 +1161,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 9))
             .circuit(24)
             .itemOutputs(ItemList.Long_Distance_Pipeline_Item_Pipe.get(64L))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Tin, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Tin, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -1234,8 +1170,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get("pipeQuadrupleStainlessSteel", 1L), ItemList.Hull_EV.get(1L))
             .circuit(4)
             .itemOutputs(ItemList.Hatch_Input_Multi_2x2_EV.get(1L))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, 16 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -1244,8 +1179,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get("pipeQuadrupleTitanium", 1L), ItemList.Hull_IV.get(1L))
             .circuit(4)
             .itemOutputs(ItemList.Hatch_Input_Multi_2x2_IV.get(1L))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, 16 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -1255,10 +1189,7 @@ public class AssemblerRecipes implements Runnable {
             .circuit(4)
             .itemOutputs(ItemList.Hatch_Input_Multi_2x2_LuV.get(1L))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Polytetrafluoroethylene,
-                    FluidShapes.fluidMolten,
-                    16 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -1268,10 +1199,7 @@ public class AssemblerRecipes implements Runnable {
             .circuit(4)
             .itemOutputs(ItemList.Hatch_Input_Multi_2x2_ZPM.get(1L))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Polytetrafluoroethylene,
-                    FluidShapes.fluidMolten,
-                    16 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -1281,10 +1209,7 @@ public class AssemblerRecipes implements Runnable {
             .circuit(4)
             .itemOutputs(ItemList.Hatch_Input_Multi_2x2_UV.get(1L))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Polybenzimidazole,
-                    FluidShapes.fluidMolten,
-                    16 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
@@ -1294,10 +1219,7 @@ public class AssemblerRecipes implements Runnable {
             .circuit(4)
             .itemOutputs(ItemList.Hatch_Input_Multi_2x2_UHV.get(1L))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Polybenzimidazole,
-                    FluidShapes.fluidMolten,
-                    16 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
@@ -1446,9 +1368,7 @@ public class AssemblerRecipes implements Runnable {
                 new ItemStack(Blocks.redstone_torch, 2, 32767),
                 MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1))
             .itemOutputs(new ItemStack(Items.repeater, 1, 0))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Concrete, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Concrete, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(4 * SECONDS)
             .eut(20)
             .addTo(assemblerRecipes);
@@ -1456,9 +1376,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("leather", 1), new ItemStack(Items.lead, 1, 32767))
             .itemOutputs(new ItemStack(Items.name_tag, 1, 0))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 1 * HALF_INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 1 * HALF_INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
@@ -1475,9 +1393,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Tantalum, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Manganese, Shapes.foil, 1))
             .itemOutputs(ItemList.Battery_RE_ULV_Tantalum.get(8))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(assemblerRecipes);
@@ -1535,9 +1451,7 @@ public class AssemblerRecipes implements Runnable {
                 getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 16),
                 getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 20))
             .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 23))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Redstone, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Redstone, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -1547,9 +1461,7 @@ public class AssemblerRecipes implements Runnable {
                 getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 17),
                 getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 20))
             .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 24))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Redstone, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Redstone, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -1559,9 +1471,7 @@ public class AssemblerRecipes implements Runnable {
                 getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 18),
                 getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 20))
             .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 22))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Redstone, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Redstone, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -1639,8 +1549,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get("stickWood", 1), new ItemStack(Blocks.wool, 1, 32767))
             .itemOutputs(new ItemStack(Blocks.torch, 6, 0))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 1_000))
             .duration(2 * SECONDS)
             .eut(20)
             .addTo(assemblerRecipes);
@@ -1716,8 +1625,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(ItemList.Hull_LV.get(1), ItemList.Duct_Tape.get(2))
             .circuit(2)
             .itemOutputs(ItemList.Hatch_Maintenance.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 1_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 1_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -1758,8 +1666,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Food_Baked_Cake.get(1), new ItemStack(Items.egg, 1, 0))
             .itemOutputs(new ItemStack(Items.cake, 1, 0))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, 3_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, 3_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
@@ -1813,18 +1720,14 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Food_Sliced_Bun.get(2),
-                MaterialLibAPI.getStack(Materials.MeatCooked, Shapes.dust, 1))
+            .itemInputs(ItemList.Food_Sliced_Bun.get(2), MaterialLibAPI.getStack(Materials.MeatCooked, Shapes.dust, 1))
             .itemOutputs(ItemList.Food_Burger_Meat.get(1))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Food_Sliced_Buns.get(1),
-                MaterialLibAPI.getStack(Materials.MeatCooked, Shapes.dust, 1))
+            .itemInputs(ItemList.Food_Sliced_Buns.get(1), MaterialLibAPI.getStack(Materials.MeatCooked, Shapes.dust, 1))
             .itemOutputs(ItemList.Food_Burger_Meat.get(1))
             .duration(5 * SECONDS)
             .eut(4)
@@ -1859,9 +1762,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Food_Flat_Dough.get(1),
-                MaterialLibAPI.getStack(Materials.MeatCooked, Shapes.dust, 1))
+            .itemInputs(ItemList.Food_Flat_Dough.get(1), MaterialLibAPI.getStack(Materials.MeatCooked, Shapes.dust, 1))
             .itemOutputs(ItemList.Food_Raw_Pizza_Meat.get(1))
             .duration(5 * SECONDS)
             .eut(4)
@@ -1883,8 +1784,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_MV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorMV", 3))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 2_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 2_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -1896,8 +1796,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_HV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorHV", 6))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 4_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 4_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -1909,8 +1808,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_EV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorEV", 9))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 6_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 6_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -1922,8 +1820,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_IV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorIV", 12))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 8_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 8_000))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -1935,8 +1832,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_LuV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorLuV", 15))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 12_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 12_000))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -1948,8 +1844,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_ZPM.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorZPM", 18))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 16_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 16_000))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -1961,8 +1856,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_UV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorUV", 21))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 20_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 20_000))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
@@ -1974,8 +1868,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_UHV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01Superconductor", 24))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 24000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 24000))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
@@ -1987,9 +1880,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_MV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorMV", 3))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.LiquidHelium, FluidShapes.fluidLiquid, (int) (2_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidHelium, FluidShapes.fluidLiquid, (int) (2_000)))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -2001,9 +1892,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_HV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorHV", 6))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.LiquidHelium, FluidShapes.fluidLiquid, (int) (4_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidHelium, FluidShapes.fluidLiquid, (int) (4_000)))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -2015,9 +1904,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_EV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorEV", 9))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.LiquidHelium, FluidShapes.fluidLiquid, (int) (6000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidHelium, FluidShapes.fluidLiquid, (int) (6000)))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -2029,9 +1916,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_IV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorIV", 12))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.LiquidHelium, FluidShapes.fluidLiquid, (int) (8_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidHelium, FluidShapes.fluidLiquid, (int) (8_000)))
             .duration(32 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -2043,9 +1928,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_LuV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorLuV", 15))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.LiquidHelium, FluidShapes.fluidLiquid, (int) (12000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidHelium, FluidShapes.fluidLiquid, (int) (12000)))
             .duration(32 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -2057,9 +1940,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_ZPM.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorZPM", 18))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.LiquidHelium, FluidShapes.fluidLiquid, (int) (16000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidHelium, FluidShapes.fluidLiquid, (int) (16000)))
             .duration(1 * MINUTES + 4 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -2071,9 +1952,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_UV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorUV", 21))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.LiquidHelium, FluidShapes.fluidLiquid, (int) (20000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidHelium, FluidShapes.fluidLiquid, (int) (20000)))
             .duration(1 * MINUTES + 4 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
@@ -2085,9 +1964,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_UHV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01Superconductor", 24))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.LiquidHelium, FluidShapes.fluidLiquid, (int) (24000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidHelium, FluidShapes.fluidLiquid, (int) (24000)))
             .duration(2 * MINUTES + 8 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
@@ -2099,9 +1976,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_UEV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorUEV", 27))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.LiquidHelium, FluidShapes.fluidLiquid, (int) (28000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.LiquidHelium, FluidShapes.fluidLiquid, (int) (28000)))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
@@ -2113,8 +1988,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_MV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorMV", 3))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 4))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 4))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -2126,8 +2000,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_HV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorHV", 6))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 8))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 8))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -2139,8 +2012,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_EV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorEV", 9))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 12))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 12))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -2152,9 +2024,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_IV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorIV", 12))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 1 * NUGGETS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 1 * NUGGETS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -2166,8 +2036,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_LuV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorLuV", 15))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 24))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 24))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -2179,9 +2048,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_ZPM.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorZPM", 18))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 2 * NUGGETS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 2 * NUGGETS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -2193,8 +2060,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_UV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorUV", 21))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 40))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 40))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(assemblerRecipes);
@@ -2206,9 +2072,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_UHV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01Superconductor", 24))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 3 * NUGGETS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 3 * NUGGETS))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
@@ -2220,8 +2084,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_UEV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorUEV", 27))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 56))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 56))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
@@ -2233,8 +2096,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_UIV.get(1L))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorUIV", 30L))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 68))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 68))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(assemblerRecipes);
@@ -2246,9 +2108,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Electric_Pump_UMV.get(1))
             .circuit(9)
             .itemOutputs(GTOreDictUnificator.get("wireGt01SuperconductorUMV", 33))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);
@@ -2836,8 +2696,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.HSSS, Shapes.plate, 4),
                 ItemList.Casing_LuV.get(1))
             .itemOutputs(ItemList.Casing_Fusion.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.HSSG, FluidShapes.fluidMolten, 2 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HSSG, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -2848,9 +2707,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Americium, Shapes.plate, 4),
                 ItemList.Casing_Fusion.get(1))
             .itemOutputs(ItemList.Casing_Fusion2.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.NaquadahAlloy, FluidShapes.fluidMolten, 2 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NaquadahAlloy, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -2885,9 +2742,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 6),
-                ItemList.Casing_Turbine.get(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 6), ItemList.Casing_Turbine.get(1))
             .itemOutputs(ItemList.Casing_Turbine2.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
@@ -2906,9 +2761,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(ItemList.Casing_SolidSteel.get(1))
             .circuit(6)
             .itemOutputs(ItemList.Casing_Chemically_Inert.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 216))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 216))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -2925,9 +2778,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get("cableGt01Lead", 2), ItemList.Casing_ULV.get(1))
             .itemOutputs(ItemList.Hull_ULV.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(1 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -2935,9 +2786,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get("cableGt01Tin", 2), ItemList.Casing_LV.get(1))
             .itemOutputs(ItemList.Hull_LV.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -2945,9 +2794,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("cableGt01AnyCopper", 2), ItemList.Casing_MV.get(1))
             .itemOutputs(ItemList.Hull_MV.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -2955,9 +2802,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get("cableGt01Gold", 2), ItemList.Casing_HV.get(1))
             .itemOutputs(ItemList.Hull_HV.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -2965,9 +2810,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get("cableGt01Aluminium", 2), ItemList.Casing_EV.get(1))
             .itemOutputs(ItemList.Hull_EV.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -2976,10 +2819,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get("cableGt01Tungsten", 2), ItemList.Casing_IV.get(1))
             .itemOutputs(ItemList.Hull_IV.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Polytetrafluoroethylene,
-                    FluidShapes.fluidMolten,
-                    2 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -2988,10 +2828,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get("cableGt01VanadiumGallium", 2), ItemList.Casing_LuV.get(1))
             .itemOutputs(ItemList.Hull_LuV.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Polytetrafluoroethylene,
-                    FluidShapes.fluidMolten,
-                    2 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -2999,11 +2836,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get("cableGt01Naquadah", 2), ItemList.Casing_ZPM.get(1))
             .itemOutputs(ItemList.Hull_ZPM.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Polybenzimidazole,
-                    FluidShapes.fluidMolten,
-                    2 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -3011,11 +2844,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get("cableGt04NaquadahAlloy", 2), ItemList.Casing_UV.get(1))
             .itemOutputs(ItemList.Hull_UV.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Polybenzimidazole,
-                    FluidShapes.fluidMolten,
-                    2 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -3023,11 +2852,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get("wireGt04SuperconductorUV", 2), ItemList.Casing_MAX.get(1))
             .itemOutputs(ItemList.Hull_MAX.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Polybenzimidazole,
-                    FluidShapes.fluidMolten,
-                    2 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -3037,9 +2862,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get("cableGt01Tin", 1),
                 MaterialLibAPI.getStack(Materials.BatteryAlloy, Shapes.plate, 1))
             .itemOutputs(ItemList.Battery_Hull_LV.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(4 * SECONDS)
             .eut(20)
             .addTo(assemblerRecipes);
@@ -3049,9 +2872,7 @@ public class AssemblerRecipes implements Runnable {
                 new OreDictItemStack("cableGt01AnyCopper", 2),
                 MaterialLibAPI.getStack(Materials.BatteryAlloy, Shapes.plate, 3))
             .itemOutputs(ItemList.Battery_Hull_MV.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 3 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 3 * INGOTS))
             .duration(16 * SECONDS)
             .eut(20)
             .addTo(assemblerRecipes);
@@ -3061,9 +2882,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get("cableGt01Gold", 4),
                 MaterialLibAPI.getStack(Materials.BatteryAlloy, Shapes.plate, 9))
             .itemOutputs(ItemList.Battery_Hull_HV.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 9 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 9 * INGOTS))
             .duration(1 * MINUTES + 4 * SECONDS)
             .eut(20)
             .addTo(assemblerRecipes);
@@ -3193,15 +3012,12 @@ public class AssemblerRecipes implements Runnable {
                 getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 28))
             .circuit(2)
             .itemOutputs(ItemList.Cover_Metrics_Transmitter.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
 
-        ItemStack[] plates = new ItemStack[] {
-            MaterialLibAPI.getStack(Materials.Iron, Shapes.plate, 1),
+        ItemStack[] plates = new ItemStack[] { MaterialLibAPI.getStack(Materials.Iron, Shapes.plate, 1),
             MaterialLibAPI.getStack(Materials.CastIron, Shapes.plate, 1),
             MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, 1) };
 
@@ -3258,8 +3074,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.SuperconductorUIVBase, Shapes.foil, 64),
                 MaterialLibAPI.getStack(Materials.Netherite, Shapes.plate, 32),
                 ItemList.Electric_Pump_UIV.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.PhononMedium, FluidShapes.fluidLiquid, 100))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.PhononMedium, FluidShapes.fluidLiquid, 100))
             .itemOutputs(ItemList.Thermal_Superconductor.get(1))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
@@ -3272,8 +3087,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.SuperconductorUIVBase, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.SixPhasedCopper, Shapes.rotor, 3),
                 ItemList.Field_Generator_UEV.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.PhononMedium, FluidShapes.fluidLiquid, 500))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.PhononMedium, FluidShapes.fluidLiquid, 500))
             .itemOutputs(ItemList.Relativistic_Heat_Capacitor.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
@@ -3328,9 +3142,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Emitter_IV.get(4L),
                 ItemList.Casing_RobustTungstenSteel.get(1L))
             .itemOutputs(ItemList.LargeMolecularAssembler.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 9 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 9 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -3341,8 +3153,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.FleroviumGT5U, Shapes.stickLong, 64),
                 ItemList.Field_Generator_UMV.get(1L))
             .itemOutputs(ItemList.NaniteShieldingGlass.get(4L))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 16))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 16))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(assemblerRecipes);
@@ -3354,9 +3165,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.NaquadriaSupersolid.get(16L),
                 MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.plateSuperdense, 2))
             .itemOutputs(ItemList.FieldEnergyAbsorberCasing.get(2L))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.ExcitedDTSC, FluidShapes.fluidLiquid, 16_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.ExcitedDTSC, FluidShapes.fluidLiquid, 16_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(assemblerRecipes);
@@ -3369,9 +3178,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Magmatter, Shapes.plate, 6),
                 GTOreDictUnificator.get("circuitCosmic", 1L))
             .itemOutputs(ItemList.LoadbearingDistributionCasing.get(1L))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.CosmicNeutronium, FluidShapes.fluidPlasma, 1 * STACKS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CosmicNeutronium, FluidShapes.fluidPlasma, 1 * STACKS))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(assemblerRecipes);
@@ -3417,9 +3224,7 @@ public class AssemblerRecipes implements Runnable {
                 new ItemStack(Blocks.chest, 1),
                 new OreDictItemStack("dyeRed", 4),
                 new OreDictItemStack("dyeOrange", 1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 4 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 4 * INGOTS))
             .itemOutputs(ItemList.ToolBox.get(1L))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -3440,9 +3245,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 6),
                 MaterialLibAPI.getStack(Materials.Platinum, Shapes.plate, 2),
                 ItemList.Casing_Chemically_Inert.get(1L))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 144))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 144))
             .itemOutputs(ItemList.Casing_Strengthened_Inanimate.get(1L))
             .circuit(1)
             .eut(TierEU.RECIPE_LV / 2)
@@ -3453,8 +3256,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Iridium, Shapes.plate, 6),
                 MaterialLibAPI.getStack(Materials.Osmium, Shapes.plate, 2),
                 ItemList.Casing_Chemically_Inert.get(1L))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Naquadah, FluidShapes.fluidMolten, 9))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Naquadah, FluidShapes.fluidMolten, 9))
             .itemOutputs(ItemList.Casing_Precise_Stationary.get(1L))
             .circuit(1)
             .eut(TierEU.RECIPE_LV / 2)
@@ -3465,8 +3267,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Naquadah, Shapes.plate, 6),
                 MaterialLibAPI.getStack(Materials.Netherite, Shapes.plate, 2),
                 ItemList.Casing_Chemically_Inert.get(1L))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Quantium, FluidShapes.fluidMolten, 144))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Quantium, FluidShapes.fluidMolten, 144))
             .itemOutputs(ItemList.Casing_Ultimately_Static.get(1L))
             .circuit(1)
             .eut(TierEU.RECIPE_LV / 2)
@@ -3488,9 +3289,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Casing_IV.get(1L),
                 ItemList.Sensor_EV.get(2L),
                 ItemList.Casing_Strengthened_Inanimate.get(1L))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 8 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 8 * INGOTS))
             .itemOutputs(ItemList.Hatch_ToxicResidueSensor.get(1L))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(50 * TICKS)
@@ -3504,9 +3303,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Naquadah, Shapes.stick, 4),
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.itemCasing, 4),
                 new Object[] { Circuits.IV.getIngredient(), 1 })
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 16 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 16 * INGOTS))
             .itemOutputs(ItemList.CasingNaquadahReinforcedDistillation.get(4))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -3523,9 +3320,16 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_ULV.get(1), getModItem(NewHorizonsCoreMod.ID, "BabyChest", 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_Bus_ULV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 1 * INGOTS))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 1 * INGOTS))
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hull_ULV.get(1), getModItem(NewHorizonsCoreMod.ID, "BabyChest", 1))
+                .circuit(1)
+                .itemOutputs(ItemList.Hatch_Input_Bus_ULV.get(1))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -3536,7 +3340,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.Hatch_Input_Bus_ULV.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 1 * EIGHTH_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -3545,22 +3349,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_ULV.get(1), getModItem(NewHorizonsCoreMod.ID, "BabyChest", 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_Bus_ULV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        1 * EIGHTH_INGOTS))
-                .duration(24 * SECONDS)
-                .eut(TierEU.RECIPE_ULV)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hull_ULV.get(1), getModItem(NewHorizonsCoreMod.ID, "BabyChest", 1))
-                .circuit(1)
-                .itemOutputs(ItemList.Hatch_Input_Bus_ULV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 4))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 4))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -3572,9 +3361,16 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_LV.get(1), new ItemStack(Blocks.chest))
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_Bus_LV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 5 * INGOTS))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 5 * INGOTS))
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hull_LV.get(1), new ItemStack(Blocks.chest))
+                .circuit(1)
+                .itemOutputs(ItemList.Hatch_Input_Bus_LV.get(1))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
@@ -3585,7 +3381,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.Hatch_Input_Bus_LV.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
@@ -3594,22 +3390,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_LV.get(1), new ItemStack(Blocks.chest))
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_Bus_LV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        1 * HALF_INGOTS))
-                .duration(24 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hull_LV.get(1), new ItemStack(Blocks.chest))
-                .circuit(1)
-                .itemOutputs(ItemList.Hatch_Input_Bus_LV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 9))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 9))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
@@ -3621,9 +3402,18 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_MV.get(1), getModItem(IronChests.ID, "BlockIronChest", 1, 3))
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_Bus_MV.get(1))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hull_MV.get(1), getModItem(IronChests.ID, "BlockIronChest", 1, 3))
+                .circuit(1)
+                .itemOutputs(ItemList.Hatch_Input_Bus_MV.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 1 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(assemblerRecipes);
@@ -3633,23 +3423,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_Bus_MV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        1 * INGOTS))
-                .duration(24 * SECONDS)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hull_MV.get(1), getModItem(IronChests.ID, "BlockIronChest", 1, 3))
-                .circuit(1)
-                .itemOutputs(ItemList.Hatch_Input_Bus_MV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        1 * EIGHTH_INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 1 * EIGHTH_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(assemblerRecipes);
@@ -3661,9 +3436,18 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_HV.get(1), getModItem(IronChests.ID, "BlockIronChest", 1, 0))
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_Bus_HV.get(1))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 3 * INGOTS))
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hull_HV.get(1), getModItem(IronChests.ID, "BlockIronChest", 1, 0))
+                .circuit(1)
+                .itemOutputs(ItemList.Hatch_Input_Bus_HV.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 3 * INGOTS))
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 2 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(assemblerRecipes);
@@ -3673,23 +3457,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_Bus_HV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        2 * INGOTS))
-                .duration(24 * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hull_HV.get(1), getModItem(IronChests.ID, "BlockIronChest", 1, 0))
-                .circuit(1)
-                .itemOutputs(ItemList.Hatch_Input_Bus_HV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        1 * QUARTER_INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 1 * QUARTER_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(assemblerRecipes);
@@ -3702,10 +3471,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_Bus_EV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        4 * INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 4 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(assemblerRecipes);
@@ -3715,10 +3482,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_Bus_EV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        1 * HALF_INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(assemblerRecipes);
@@ -3731,10 +3495,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_Bus_IV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        8 * INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 8 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(assemblerRecipes);
@@ -3744,10 +3506,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_Bus_IV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        1 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 1 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(assemblerRecipes);
@@ -3760,10 +3519,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_Bus_LuV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        16 * INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 16 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(assemblerRecipes);
@@ -3773,10 +3530,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_Bus_LuV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        2 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 2 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(assemblerRecipes);
@@ -3789,10 +3543,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_Bus_ZPM.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        4 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 4 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(assemblerRecipes);
@@ -3805,10 +3556,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_Bus_UV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        8 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 8 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .addTo(assemblerRecipes);
@@ -3821,10 +3569,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_Bus_MAX.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        16 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 16 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
@@ -3851,9 +3596,16 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_ULV.get(1), getModItem(NewHorizonsCoreMod.ID, "BabyChest", 1))
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_Bus_ULV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 1 * INGOTS))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 1 * INGOTS))
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hull_ULV.get(1), getModItem(NewHorizonsCoreMod.ID, "BabyChest", 1))
+                .circuit(2)
+                .itemOutputs(ItemList.Hatch_Output_Bus_ULV.get(1))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -3864,7 +3616,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.Hatch_Output_Bus_ULV.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 1 * EIGHTH_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -3873,22 +3625,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_ULV.get(1), getModItem(NewHorizonsCoreMod.ID, "BabyChest", 1))
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_Bus_ULV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        1 * EIGHTH_INGOTS))
-                .duration(24 * SECONDS)
-                .eut(TierEU.RECIPE_ULV)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hull_ULV.get(1), getModItem(NewHorizonsCoreMod.ID, "BabyChest", 1))
-                .circuit(2)
-                .itemOutputs(ItemList.Hatch_Output_Bus_ULV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 4))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 4))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -3900,9 +3637,16 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_LV.get(1), new ItemStack(Blocks.chest))
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_Bus_LV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 5 * INGOTS))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 5 * INGOTS))
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hull_LV.get(1), new ItemStack(Blocks.chest))
+                .circuit(2)
+                .itemOutputs(ItemList.Hatch_Output_Bus_LV.get(1))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
@@ -3913,7 +3657,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.Hatch_Output_Bus_LV.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
@@ -3922,22 +3666,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_LV.get(1), new ItemStack(Blocks.chest))
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_Bus_LV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        1 * HALF_INGOTS))
-                .duration(24 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hull_LV.get(1), new ItemStack(Blocks.chest))
-                .circuit(2)
-                .itemOutputs(ItemList.Hatch_Output_Bus_LV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 9))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 9))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
@@ -3953,9 +3682,18 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_MV.get(1), getModItem(IronChests.ID, "BlockIronChest", 1, 3))
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_Bus_MV.get(1))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hull_MV.get(1), getModItem(IronChests.ID, "BlockIronChest", 1, 3))
+                .circuit(2)
+                .itemOutputs(ItemList.Hatch_Output_Bus_MV.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 1 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(assemblerRecipes);
@@ -3965,23 +3703,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_Bus_MV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        1 * INGOTS))
-                .duration(24 * SECONDS)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hull_MV.get(1), getModItem(IronChests.ID, "BlockIronChest", 1, 3))
-                .circuit(2)
-                .itemOutputs(ItemList.Hatch_Output_Bus_MV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        1 * EIGHTH_INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 1 * EIGHTH_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(assemblerRecipes);
@@ -3993,9 +3716,18 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_HV.get(1), getModItem(IronChests.ID, "BlockIronChest", 1, 0))
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_Bus_HV.get(1))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 3 * INGOTS))
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hull_HV.get(1), getModItem(IronChests.ID, "BlockIronChest", 1, 0))
+                .circuit(2)
+                .itemOutputs(ItemList.Hatch_Output_Bus_HV.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 3 * INGOTS))
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 2 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(assemblerRecipes);
@@ -4005,23 +3737,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_Bus_HV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        2 * INGOTS))
-                .duration(24 * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hull_HV.get(1), getModItem(IronChests.ID, "BlockIronChest", 1, 0))
-                .circuit(2)
-                .itemOutputs(ItemList.Hatch_Output_Bus_HV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        1 * QUARTER_INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 1 * QUARTER_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(assemblerRecipes);
@@ -4034,10 +3751,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_Bus_EV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        4 * INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 4 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(assemblerRecipes);
@@ -4047,10 +3762,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_Bus_EV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        1 * HALF_INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(assemblerRecipes);
@@ -4063,10 +3775,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_Bus_IV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        8 * INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 8 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(assemblerRecipes);
@@ -4076,10 +3786,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_Bus_IV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        1 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 1 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(assemblerRecipes);
@@ -4092,10 +3799,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_Bus_LuV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        16 * INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 16 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(assemblerRecipes);
@@ -4105,10 +3810,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_Bus_LuV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        2 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 2 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(assemblerRecipes);
@@ -4121,10 +3823,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_Bus_ZPM.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        4 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 4 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(assemblerRecipes);
@@ -4137,10 +3836,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_Bus_UV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        8 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 8 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .addTo(assemblerRecipes);
@@ -4157,10 +3853,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_Bus_MAX.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        16 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 16 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
@@ -4191,9 +3884,16 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_ULV.get(1), GTOreDictUnificator.get("cellEmpty", 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_ULV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 1 * INGOTS))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 1 * INGOTS))
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hull_ULV.get(1), GTOreDictUnificator.get("cellEmpty", 1))
+                .circuit(1)
+                .itemOutputs(ItemList.Hatch_Input_ULV.get(1))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -4204,7 +3904,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.Hatch_Input_ULV.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 1 * EIGHTH_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -4213,22 +3913,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_ULV.get(1), GTOreDictUnificator.get("cellEmpty", 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_ULV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        1 * EIGHTH_INGOTS))
-                .duration(24 * SECONDS)
-                .eut(TierEU.RECIPE_ULV)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hull_ULV.get(1), GTOreDictUnificator.get("cellEmpty", 1))
-                .circuit(1)
-                .itemOutputs(ItemList.Hatch_Input_ULV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 4))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 4))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -4249,9 +3934,16 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_LV.get(1), getModItem(BuildCraftFactory.ID, "tankBlock", 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_LV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 5 * INGOTS))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 5 * INGOTS))
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hull_LV.get(1), getModItem(BuildCraftFactory.ID, "tankBlock", 1))
+                .circuit(1)
+                .itemOutputs(ItemList.Hatch_Input_LV.get(1))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
@@ -4262,7 +3954,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.Hatch_Input_LV.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
@@ -4271,22 +3963,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_LV.get(1), getModItem(BuildCraftFactory.ID, "tankBlock", 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_LV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        1 * HALF_INGOTS))
-                .duration(24 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hull_LV.get(1), getModItem(BuildCraftFactory.ID, "tankBlock", 1))
-                .circuit(1)
-                .itemOutputs(ItemList.Hatch_Input_LV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 9))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 9))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
@@ -4302,9 +3979,18 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_MV.get(1), getModItem(IronTanks.ID, "copperTank", 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_MV.get(1))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hull_MV.get(1), getModItem(IronTanks.ID, "copperTank", 1))
+                .circuit(1)
+                .itemOutputs(ItemList.Hatch_Input_MV.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 1 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(assemblerRecipes);
@@ -4314,23 +4000,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_MV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        1 * INGOTS))
-                .duration(24 * SECONDS)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hull_MV.get(1), getModItem(IronTanks.ID, "copperTank", 1))
-                .circuit(1)
-                .itemOutputs(ItemList.Hatch_Input_MV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        1 * EIGHTH_INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 1 * EIGHTH_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(assemblerRecipes);
@@ -4342,9 +4013,18 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_HV.get(1), getModItem(IronTanks.ID, "ironTank", 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_HV.get(1))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 3 * INGOTS))
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hull_HV.get(1), getModItem(IronTanks.ID, "ironTank", 1))
+                .circuit(1)
+                .itemOutputs(ItemList.Hatch_Input_HV.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 3 * INGOTS))
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 2 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(assemblerRecipes);
@@ -4354,23 +4034,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_HV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        2 * INGOTS))
-                .duration(24 * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hull_HV.get(1), getModItem(IronTanks.ID, "ironTank", 1))
-                .circuit(1)
-                .itemOutputs(ItemList.Hatch_Input_HV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        1 * QUARTER_INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 1 * QUARTER_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(assemblerRecipes);
@@ -4383,10 +4048,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_EV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        4 * INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 4 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(assemblerRecipes);
@@ -4396,10 +4059,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_EV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        1 * HALF_INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(assemblerRecipes);
@@ -4412,10 +4072,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_IV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        8 * INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 8 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(assemblerRecipes);
@@ -4425,10 +4083,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_IV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        1 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 1 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(assemblerRecipes);
@@ -4441,10 +4096,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_LuV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        16 * INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 16 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(assemblerRecipes);
@@ -4454,10 +4107,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_LuV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        2 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 2 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(assemblerRecipes);
@@ -4470,10 +4120,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_ZPM.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        4 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 4 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(assemblerRecipes);
@@ -4486,10 +4133,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_UV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        8 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 8 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .addTo(assemblerRecipes);
@@ -4502,10 +4146,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(1)
                 .itemOutputs(ItemList.Hatch_Input_UHV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        16 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 16 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
@@ -4522,9 +4163,16 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_ULV.get(1), GTOreDictUnificator.get("cellEmpty", 1))
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_ULV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 1 * INGOTS))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 1 * INGOTS))
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hull_ULV.get(1), GTOreDictUnificator.get("cellEmpty", 1))
+                .circuit(2)
+                .itemOutputs(ItemList.Hatch_Output_ULV.get(1))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -4535,7 +4183,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.Hatch_Output_ULV.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 1 * EIGHTH_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -4544,22 +4192,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_ULV.get(1), GTOreDictUnificator.get("cellEmpty", 1))
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_ULV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        1 * EIGHTH_INGOTS))
-                .duration(24 * SECONDS)
-                .eut(TierEU.RECIPE_ULV)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hull_ULV.get(1), GTOreDictUnificator.get("cellEmpty", 1))
-                .circuit(2)
-                .itemOutputs(ItemList.Hatch_Output_ULV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 4))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 4))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -4580,9 +4213,16 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_LV.get(1), getModItem(BuildCraftFactory.ID, "tankBlock", 1))
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_LV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 5 * INGOTS))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, 5 * INGOTS))
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hull_LV.get(1), getModItem(BuildCraftFactory.ID, "tankBlock", 1))
+                .circuit(2)
+                .itemOutputs(ItemList.Hatch_Output_LV.get(1))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
@@ -4593,7 +4233,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(ItemList.Hatch_Output_LV.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
@@ -4602,22 +4242,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_LV.get(1), getModItem(BuildCraftFactory.ID, "tankBlock", 1))
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_LV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        1 * HALF_INGOTS))
-                .duration(24 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hull_LV.get(1), getModItem(BuildCraftFactory.ID, "tankBlock", 1))
-                .circuit(2)
-                .itemOutputs(ItemList.Hatch_Output_LV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 9))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 9))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
@@ -4633,9 +4258,18 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_MV.get(1), getModItem(IronTanks.ID, "copperTank", 1))
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_MV.get(1))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hull_MV.get(1), getModItem(IronTanks.ID, "copperTank", 1))
+                .circuit(2)
+                .itemOutputs(ItemList.Hatch_Output_MV.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 2 * INGOTS))
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 1 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(assemblerRecipes);
@@ -4645,23 +4279,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_MV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        1 * INGOTS))
-                .duration(24 * SECONDS)
-                .eut(TierEU.RECIPE_MV)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hull_MV.get(1), getModItem(IronTanks.ID, "copperTank", 1))
-                .circuit(2)
-                .itemOutputs(ItemList.Hatch_Output_MV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        1 * EIGHTH_INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 1 * EIGHTH_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(assemblerRecipes);
@@ -4673,9 +4292,18 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hull_HV.get(1), getModItem(IronTanks.ID, "ironTank", 1))
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_HV.get(1))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 3 * INGOTS))
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hull_HV.get(1), getModItem(IronTanks.ID, "ironTank", 1))
+                .circuit(2)
+                .itemOutputs(ItemList.Hatch_Output_HV.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 3 * INGOTS))
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 2 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(assemblerRecipes);
@@ -4685,23 +4313,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_HV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        2 * INGOTS))
-                .duration(24 * SECONDS)
-                .eut(TierEU.RECIPE_HV)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hull_HV.get(1), getModItem(IronTanks.ID, "ironTank", 1))
-                .circuit(2)
-                .itemOutputs(ItemList.Hatch_Output_HV.get(1))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        1 * QUARTER_INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 1 * QUARTER_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(assemblerRecipes);
@@ -4714,10 +4327,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_EV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        4 * INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 4 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(assemblerRecipes);
@@ -4727,10 +4338,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_EV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        1 * HALF_INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(assemblerRecipes);
@@ -4743,10 +4351,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_IV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        8 * INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 8 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(assemblerRecipes);
@@ -4756,10 +4362,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_IV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        1 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 1 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(assemblerRecipes);
@@ -4772,10 +4375,8 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_LuV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polytetrafluoroethylene,
-                        FluidShapes.fluidMolten,
-                        16 * INGOTS))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 16 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(assemblerRecipes);
@@ -4785,10 +4386,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_LuV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        2 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 2 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(assemblerRecipes);
@@ -4801,10 +4399,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_ZPM.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        4 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 4 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(assemblerRecipes);
@@ -4817,10 +4412,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_UV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        8 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 8 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .addTo(assemblerRecipes);
@@ -4833,10 +4425,7 @@ public class AssemblerRecipes implements Runnable {
                 .circuit(2)
                 .itemOutputs(ItemList.Hatch_Output_UHV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Polybenzimidazole,
-                        FluidShapes.fluidMolten,
-                        16 * INGOTS))
+                    MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, 16 * INGOTS))
                 .duration(24 * SECONDS)
                 .eut(TierEU.RECIPE_UHV)
                 .addTo(assemblerRecipes);
@@ -5071,8 +4660,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
             .circuit(8)
             .itemOutputs(ItemList.RC_Rail_HS.get(16))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Blaze, FluidShapes.fluidMolten, 216))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Blaze, FluidShapes.fluidMolten, 216))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -5083,9 +4671,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
             .circuit(9)
             .itemOutputs(ItemList.RC_Rail_HS.get(8))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.ConductiveIron, FluidShapes.fluidMolten, 3 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.ConductiveIron, FluidShapes.fluidMolten, 3 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -5096,8 +4682,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
             .circuit(9)
             .itemOutputs(ItemList.RC_Rail_HS.get(32))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.VibrantAlloy, FluidShapes.fluidMolten, 216))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.VibrantAlloy, FluidShapes.fluidMolten, 216))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -5108,58 +4693,43 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
             .circuit(9)
             .itemOutputs(ItemList.RC_Rail_HS.get(64))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.CrystallineAlloy, FluidShapes.fluidMolten, 216))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CrystallineAlloy, FluidShapes.fluidMolten, 216))
             .duration(5 * SECONDS)
             .eut(48)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RC_Rail_Standard.get(3),
-                MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
+            .itemInputs(ItemList.RC_Rail_Standard.get(3), MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
             .circuit(8)
             .itemOutputs(ItemList.RC_Rail_Adv.get(8))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Redstone, FluidShapes.fluidMolten, 216))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Redstone, FluidShapes.fluidMolten, 216))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RC_Rail_Standard.get(3),
-                MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
+            .itemInputs(ItemList.RC_Rail_Standard.get(3), MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
             .circuit(8)
             .itemOutputs(ItemList.RC_Rail_Adv.get(16))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.RedAlloy, FluidShapes.fluidMolten, 216))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.RedAlloy, FluidShapes.fluidMolten, 216))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RC_Rail_Standard.get(3),
-                MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
+            .itemInputs(ItemList.RC_Rail_Standard.get(3), MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
             .circuit(8)
             .itemOutputs(ItemList.RC_Rail_Adv.get(32))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.ConductiveIron, FluidShapes.fluidMolten, 216))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.ConductiveIron, FluidShapes.fluidMolten, 216))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RC_Rail_Standard.get(3),
-                MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
+            .itemInputs(ItemList.RC_Rail_Standard.get(3), MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
             .circuit(8)
             .itemOutputs(ItemList.RC_Rail_Adv.get(64))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.VibrantAlloy, FluidShapes.fluidMolten, 216))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.VibrantAlloy, FluidShapes.fluidMolten, 216))
             .duration(5 * SECONDS)
             .eut(48)
             .addTo(assemblerRecipes);
@@ -5229,9 +4799,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RC_Tie_Wood.get(1),
-                MaterialLibAPI.getStack(Materials.Iron, Shapes.stick, 1))
+            .itemInputs(ItemList.RC_Tie_Wood.get(1), MaterialLibAPI.getStack(Materials.Iron, Shapes.stick, 1))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Wooden.get(8))
             .duration(6 * SECONDS + 13 * TICKS)
@@ -5239,9 +4807,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RC_Tie_Wood.get(1),
-                MaterialLibAPI.getStack(Materials.CastIron, Shapes.stick, 1))
+            .itemInputs(ItemList.RC_Tie_Wood.get(1), MaterialLibAPI.getStack(Materials.CastIron, Shapes.stick, 1))
             .circuit(11)
             .itemOutputs(ItemList.RC_Rail_Wooden.get(8))
             .duration(6 * SECONDS + 13 * TICKS)
@@ -5249,9 +4815,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RC_Tie_Wood.get(1),
-                MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, 1))
+            .itemInputs(ItemList.RC_Tie_Wood.get(1), MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, 1))
             .circuit(11)
             .itemOutputs(ItemList.RC_Rail_Wooden.get(16))
             .duration(6 * SECONDS + 13 * TICKS)
@@ -5259,9 +4823,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RC_Tie_Wood.get(1),
-                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.stick, 1))
+            .itemInputs(ItemList.RC_Tie_Wood.get(1), MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.stick, 1))
             .circuit(11)
             .itemOutputs(ItemList.RC_Rail_Wooden.get(32))
             .duration(6 * SECONDS + 13 * TICKS)
@@ -5269,9 +4831,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RC_Tie_Wood.get(1),
-                MaterialLibAPI.getStack(Materials.Titanium, Shapes.stick, 1))
+            .itemInputs(ItemList.RC_Tie_Wood.get(1), MaterialLibAPI.getStack(Materials.Titanium, Shapes.stick, 1))
             .circuit(11)
             .itemOutputs(ItemList.RC_Rail_Wooden.get(64))
             .duration(6 * SECONDS + 13 * TICKS)
@@ -5377,9 +4937,7 @@ public class AssemblerRecipes implements Runnable {
         tRailReB.stackTagCompound = tTagReB;
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.copyAmount(2, tRailRe),
-                MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.plate, 1))
+            .itemInputs(GTUtility.copyAmount(2, tRailRe), MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.plate, 1))
             .circuit(22)
             .itemOutputs(tRailReB)
             .duration(15 * SECONDS)
@@ -5419,9 +4977,7 @@ public class AssemblerRecipes implements Runnable {
         tRailHsB.stackTagCompound = tTagHsB;
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.copyAmount(2, tRailHs),
-                MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.plate, 1))
+            .itemInputs(GTUtility.copyAmount(2, tRailHs), MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.plate, 1))
             .circuit(22)
             .itemOutputs(tRailHsB)
             .duration(15 * SECONDS)
@@ -5816,9 +5372,7 @@ public class AssemblerRecipes implements Runnable {
             tRailNJ.stackTagCompound = tTagNJ;
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.Steel, Shapes.screw, 4))
+                .itemInputs(new ItemStack(Blocks.rail, 2, 0), MaterialLibAPI.getStack(Materials.Steel, Shapes.screw, 4))
                 .circuit(1)
                 .itemOutputs(tRailNJ)
                 .duration(10 * SECONDS)
@@ -6047,9 +5601,7 @@ public class AssemblerRecipes implements Runnable {
             tRailRJ.stackTagCompound = tTagRJ;
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.Steel, Shapes.screw, 4))
+                .itemInputs(GTUtility.copyAmount(2, tRailRe), MaterialLibAPI.getStack(Materials.Steel, Shapes.screw, 4))
                 .circuit(1)
                 .itemOutputs(tRailRJ)
                 .duration(15 * SECONDS)
@@ -6504,9 +6056,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.Gold, Shapes.screw, 2))
+                .itemInputs(GTUtility.copyAmount(2, tRailEl), MaterialLibAPI.getStack(Materials.Gold, Shapes.screw, 2))
                 .circuit(17)
                 .itemOutputs(GTUtility.copyAmount(2, tRailEJ))
                 .duration(20 * SECONDS)
@@ -6654,8 +6204,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Lapis, Shapes.plate, 1))
             .circuit(1)
             .itemOutputs(getModItem(NewHorizonsCoreMod.ID, "EngineCore", 1L, 0))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SeedOil, FluidShapes.fluidLiquid, 250))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SeedOil, FluidShapes.fluidLiquid, 250))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -6667,8 +6216,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Lapis, Shapes.plate, 1))
             .circuit(1)
             .itemOutputs(getModItem(NewHorizonsCoreMod.ID, "EngineCore", 1L, 0))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 125))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 125))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -6759,9 +6307,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 2),
-                new OreDictItemStack("paneGlass", 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 2), new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 2L, 14))
             .duration(20 * SECONDS)
@@ -7045,10 +6591,7 @@ public class AssemblerRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(ItemList.Ingot_Heavy1.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.StainlessSteel,
-                    FluidShapes.fluidMolten,
-                    1 * HALF_INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.StainlessSteel, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -7060,10 +6603,7 @@ public class AssemblerRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(ItemList.Ingot_Heavy2.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.TungstenSteel,
-                    FluidShapes.fluidMolten,
-                    1 * HALF_INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.TungstenSteel, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -7074,9 +6614,7 @@ public class AssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Desh, Shapes.plate, 4))
             .circuit(1)
             .itemOutputs(ItemList.Ingot_Heavy3.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Platinum, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Platinum, FluidShapes.fluidMolten, 1 * HALF_INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -7096,9 +6634,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get("circuitData", 4),
                 ItemList.Shape_Extruder_Rod.get(16))
             .itemOutputs(ItemList.Spinneret.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -7229,9 +6765,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("stone", 3), new ItemStack(Blocks.redstone_torch, 2))
             .itemOutputs(new ItemStack(Items.comparator, 1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Redstone, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Redstone, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(5 * SECONDS)
             .eut(48)
             .addTo(assemblerRecipes);

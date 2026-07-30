@@ -7,7 +7,6 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 
 import java.util.Set;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -20,6 +19,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.MaterialFluidNames;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.FluidNames;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;

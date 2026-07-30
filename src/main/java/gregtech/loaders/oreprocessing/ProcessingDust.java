@@ -25,9 +25,6 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -38,6 +35,9 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.MaterialStack;
@@ -345,10 +345,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
                         .outputChances(10000)
                         .fluidInputs(
-                            MaterialLibAPI.getFluidStack(
-                                Materials.Void,
-                                FluidShapes.fluidMolten,
-                                (int) (1 * QUARTER_INGOTS)))
+                            MaterialLibAPI
+                                .getFluidStack(Materials.Void, FluidShapes.fluidMolten, (int) (1 * QUARTER_INGOTS)))
                         .duration(1 * MINUTES)
                         .eut(24)
                         .addTo(autoclaveRecipes);
@@ -375,10 +373,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .fluidOutputs(
-                                MaterialLibAPI.getFluidStack(
-                                    Materials.OilHeavy,
-                                    FluidShapes.fluidLiquid,
-                                    (int) (1_000)))
+                                MaterialLibAPI
+                                    .getFluidStack(Materials.OilHeavy, FluidShapes.fluidLiquid, (int) (1_000)))
                             .duration(33 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(centrifugeRecipes);
@@ -487,8 +483,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(
                                 GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
-                                MaterialLibAPI
-                                    .getStack(Materials.Gold, Shapes.dustSmall, (int) (1)),
+                                MaterialLibAPI.getStack(Materials.Gold, Shapes.dustSmall, (int) (1)),
                                 GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Gold, 1L))
                             .outputChances(10000, 4000, 2000)
                             .duration(20 * SECONDS)
@@ -500,8 +495,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(
                                 GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
-                                MaterialLibAPI
-                                    .getStack(Materials.Iron, Shapes.dustSmall, (int) (1)),
+                                MaterialLibAPI.getStack(Materials.Iron, Shapes.dustSmall, (int) (1)),
                                 MaterialLibAPI.getStack(Materials.Iron, Shapes.nugget, (int) (1)))
                             .outputChances(10000, 4000, 2000)
                             .duration(20 * SECONDS)
@@ -513,10 +507,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemInputs(GTUtility.copyAmount(1, stack))
                             .itemOutputs(
                                 GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
-                                MaterialLibAPI
-                                    .getStack(Materials.Neodymium, Shapes.dustSmall, (int) (1)),
-                                MaterialLibAPI
-                                    .getStack(Materials.Neodymium, Shapes.nugget, (int) (1)))
+                                MaterialLibAPI.getStack(Materials.Neodymium, Shapes.dustSmall, (int) (1)),
+                                MaterialLibAPI.getStack(Materials.Neodymium, Shapes.nugget, (int) (1)))
                             .outputChances(10000, 4000, 2000)
                             .duration(20 * SECONDS)
                             .eut(24)
@@ -549,10 +541,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
                         .outputChances(10000)
                         .fluidInputs(
-                            MaterialLibAPI.getFluidStack(
-                                Materials.Void,
-                                FluidShapes.fluidMolten,
-                                (int) (1 * QUARTER_INGOTS)))
+                            MaterialLibAPI
+                                .getFluidStack(Materials.Void, FluidShapes.fluidMolten, (int) (1 * QUARTER_INGOTS)))
                         .duration(1 * MINUTES)
                         .eut(24)
                         .addTo(autoclaveRecipes);
@@ -720,10 +710,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
                 .outputChances(10000)
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Void,
-                        FluidShapes.fluidMolten,
-                        (int) (1 * QUARTER_INGOTS)))
+                    MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, (int) (1 * QUARTER_INGOTS)))
                 .duration(1 * MINUTES)
                 .eut(24)
                 .addTo(autoclaveRecipes);

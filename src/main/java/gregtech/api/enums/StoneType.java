@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
@@ -41,6 +39,8 @@ import galacticgreg.api.enums.DimensionDef.DimNames;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.interfaces.IStoneType;

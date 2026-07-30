@@ -38,9 +38,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -62,6 +59,9 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -1034,8 +1034,7 @@ public final class RecipeMaps {
                         .setOutputs(
                             aOutput1,
                             aOutput2,
-                            MaterialLibAPI
-                                .getStack(Materials.Ash, Shapes.dust, (int) (aCoalAmount / 2)))
+                            MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (aCoalAmount / 2)))
                         .setDuration(aDuration * 20 / 3);
                 }
                 ItemStack cactusCokeBlock = GregtechItemList.BlockCactusCoke.get(aCoalAmount * 2L);
@@ -1045,16 +1044,14 @@ public final class RecipeMaps {
                     .setOutputs(
                         aOutput1,
                         aOutput2,
-                        MaterialLibAPI
-                            .getStack(Materials.Ash, Shapes.dust, (int) (aCoalAmount * 2)))
+                        MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (aCoalAmount * 2)))
                     .setDuration(aDuration * 20 / 3);
                 coll.derive()
                     .setInputs(aInput1, aInput2, sugarCokeBlock)
                     .setOutputs(
                         aOutput1,
                         aOutput2,
-                        MaterialLibAPI
-                            .getStack(Materials.Ash, Shapes.dust, (int) (aCoalAmount * 2)))
+                        MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (aCoalAmount * 2)))
                     .setDuration(aDuration * 20 / 3);
                 if (Thaumcraft.isModLoaded()) {
                     ItemStack alumentum = GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", aCoalAmount * 2L, 0);
@@ -1063,8 +1060,7 @@ public final class RecipeMaps {
                         .setOutputs(
                             aOutput1,
                             aOutput2,
-                            MaterialLibAPI
-                                .getStack(Materials.Ash, Shapes.dust, (int) (aCoalAmount * 2)))
+                            MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (aCoalAmount * 2)))
                         .setDuration(aDuration * 20 / 3);
                 }
             }
@@ -1287,8 +1283,7 @@ public final class RecipeMaps {
         .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_STEAM)
         .progressBarTextureSteamMUI2(GTGuiTextures.PROGRESSBAR_ARROW_STEAM)
         .recipeEmitter(b -> {
-            if (MaterialParts.isPartOf(b.getItemInputBasic(0), Materials.Graphite))
-                return Collections.emptyList();
+            if (MaterialParts.isPartOf(b.getItemInputBasic(0), Materials.Graphite)) return Collections.emptyList();
             if (GTUtility.isArrayOfLength(b.getItemInputsBasic(), 1)) {
                 ItemStack aInput1 = b.getItemInputBasic(0);
                 if (((OrePrefixes.ingot.contains(aInput1)) || (OrePrefixes.dust.contains(aInput1))
@@ -1469,8 +1464,7 @@ public final class RecipeMaps {
                 .build()
                 .ifPresent(ret::add);
             b.fluidInputs(
-                MaterialUtils
-                    .fluid(Materials.dimensionallyshiftedsuperfluid, clamp(aDuration * aEUt / 4000, 1, 10)))
+                MaterialUtils.fluid(Materials.dimensionallyshiftedsuperfluid, clamp(aDuration * aEUt / 4000, 1, 10)))
                 .duration((int) (aDuration / 2.5))
                 .build()
                 .ifPresent(ret::add);

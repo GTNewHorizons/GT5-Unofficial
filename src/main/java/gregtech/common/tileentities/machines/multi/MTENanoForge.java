@@ -24,7 +24,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -48,6 +47,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -630,8 +630,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 mSpecialTier = 2;
             }
 
-            if (aStack
-                .isItemEqual(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 1))
+            if (aStack.isItemEqual(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 1))
                 && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4, errors)
                 && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4, errors)) {
                 mSpecialTier = 3;

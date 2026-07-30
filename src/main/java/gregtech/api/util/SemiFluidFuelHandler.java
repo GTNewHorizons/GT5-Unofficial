@@ -5,7 +5,6 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 
 import java.util.HashMap;
 
-import gregtech.api.enums.materials2.FluidShapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -15,6 +14,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.recipe.RecipeMaps;
 

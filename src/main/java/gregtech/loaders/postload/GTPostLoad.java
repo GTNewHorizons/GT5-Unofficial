@@ -20,9 +20,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -45,6 +42,9 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.GTMaterialProperties;
@@ -321,9 +321,7 @@ public class GTPostLoad {
         MTERockBreaker.addRockBreakerRecipe(
             b -> b.sideBlocks(Blocks.water)
                 .anywhereBlocks(Blocks.lava)
-                .inputItem(
-                    MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, (int) (1)),
-                    true)
+                .inputItem(MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, (int) (1)), true)
                 .circuit(1)
                 .outputItem(new ItemStack(Blocks.obsidian, 1))
                 .duration(6 * SECONDS + 8 * TICKS));
@@ -331,9 +329,7 @@ public class GTPostLoad {
         MTERockBreaker.addRockBreakerRecipe(
             b -> b.sideBlocks(Blocks.water)
                 .anywhereBlocks(Blocks.lava)
-                .inputItem(
-                    MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, (int) (1)),
-                    true)
+                .inputItem(MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, (int) (1)), true)
                 .circuit(6)
                 .outputItem(new ItemStack(Blocks.netherrack, 1))
                 .duration(16 * TICKS));
@@ -384,8 +380,7 @@ public class GTPostLoad {
                     replicatorRecipeBuilder.fluidOutputs(fluidStack);
                 } else {
                     // if there is no fluid for some reason, add a cell recipe, with cell input.
-                    replicatorRecipeBuilder
-                        .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
+                    replicatorRecipeBuilder.itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
                         .itemOutputs(cellItem);
                 }
                 replicatorRecipeBuilder.special(scannerResult.output)

@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -22,6 +20,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialRenderers;

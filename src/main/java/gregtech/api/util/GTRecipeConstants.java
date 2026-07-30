@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -25,6 +24,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;

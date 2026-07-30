@@ -52,8 +52,7 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodLithium.get(1))
             .itemOutputs(ItemList.IC2_Fuel_Rod_Empty.get(1))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Tritium, FluidShapes.fluidGas, (int) (32)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Tritium, FluidShapes.fluidGas, (int) (32)))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(fluidExtractionRecipes);
@@ -64,8 +63,7 @@ public class FissionFuelLoader implements Runnable {
                 ItemList.IC2_Fuel_Rod_Empty.get(1),
                 MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, (int) (9)))
             .itemOutputs(ItemList.RodGlowstone.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int) (250)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int) (250)))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);
@@ -157,9 +155,7 @@ public class FissionFuelLoader implements Runnable {
                     MaterialLibAPI.getStack(Materials.Polonium, Shapes.dustSmall, 1),
                     MaterialLibAPI.getStack(Materials.Thallium, Shapes.dustTiny, 1))
                 .outputChances(100_00, 100_00, 50_00, 50_00, 50_00, 25_00)
-                .fluidOutputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (30)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (30)))
                 .duration(2 * MINUTES + 5 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeRecipes);
@@ -173,9 +169,7 @@ public class FissionFuelLoader implements Runnable {
                     MaterialLibAPI.getStack(Materials.Polonium, Shapes.dustSmall, 1),
                     MaterialLibAPI.getStack(Materials.Thallium, Shapes.dustTiny, 1))
                 .outputChances(100_00, 100_00, 50_00, 50_00, 50_00, 25_00)
-                .fluidOutputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (30)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (30)))
                 .duration(2 * MINUTES + 5 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeRecipes);
@@ -189,9 +183,7 @@ public class FissionFuelLoader implements Runnable {
                     MaterialLibAPI.getStack(Materials.Polonium, Shapes.dustSmall, 1),
                     MaterialLibAPI.getStack(Materials.Thallium, Shapes.dustTiny, 1))
                 .outputChances(100_00, 100_00, 50_00, 50_00, 50_00, 25_00)
-                .fluidOutputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (30)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (30)))
                 .duration(2 * MINUTES + 5 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeRecipes);
@@ -278,9 +270,7 @@ public class FissionFuelLoader implements Runnable {
                     MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dustSmall, (int) (1)),
                     MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, (int) (1)))
                 .outputChances(100_00, 100_00, 10_00, 10_00, 10_00, 5_00)
-                .fluidOutputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (60)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (60)))
                 .duration(4 * MINUTES + 10 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeRecipes);
@@ -294,9 +284,7 @@ public class FissionFuelLoader implements Runnable {
                     MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dustSmall, (int) (1)),
                     MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, (int) (1)))
                 .outputChances(100_00, 100_00, 10_00, 10_00, 10_00, 5_00)
-                .fluidOutputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (60)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (60)))
                 .duration(4 * MINUTES + 10 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeRecipes);
@@ -310,9 +298,7 @@ public class FissionFuelLoader implements Runnable {
                     MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dustSmall, (int) (1)),
                     MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, (int) (1)))
                 .outputChances(100_00, 100_00, 10_00, 10_00, 10_00, 5_00)
-                .fluidOutputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (60)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (60)))
                 .duration(4 * MINUTES + 10 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeRecipes);
@@ -334,9 +320,7 @@ public class FissionFuelLoader implements Runnable {
                 .addTo(cannerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.RodMOX.get(2),
-                    MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, (int) (4)))
+                .itemInputs(ItemList.RodMOX.get(2), MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, (int) (4)))
                 .circuit(2)
                 .itemOutputs(ItemList.RodMOX2.get(1))
                 .duration(10 * SECONDS)
@@ -352,9 +336,7 @@ public class FissionFuelLoader implements Runnable {
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.RodMOX2.get(2),
-                    MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, (int) (4)))
+                .itemInputs(ItemList.RodMOX2.get(2), MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, (int) (4)))
                 .circuit(5)
                 .itemOutputs(ItemList.RodMOX4.get(1))
                 .duration(10 * SECONDS)
@@ -399,9 +381,7 @@ public class FissionFuelLoader implements Runnable {
                     MaterialLibAPI.getStack(Materials.Plutonium238, Shapes.dustTiny, 1),
                     MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, (int) (1)))
                 .outputChances(100_00, 100_00, 5_00, 5_00, 5_00, 5_00)
-                .fluidOutputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (90)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (90)))
                 .duration(6 * MINUTES + 15 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeRecipes);
@@ -415,9 +395,7 @@ public class FissionFuelLoader implements Runnable {
                     MaterialLibAPI.getStack(Materials.Plutonium238, Shapes.dustTiny, 1),
                     MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, (int) (1)))
                 .outputChances(100_00, 100_00, 5_00, 5_00, 5_00, 5_00)
-                .fluidOutputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (90)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (90)))
                 .duration(6 * MINUTES + 15 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeRecipes);
@@ -431,9 +409,7 @@ public class FissionFuelLoader implements Runnable {
                     MaterialLibAPI.getStack(Materials.Plutonium238, Shapes.dustTiny, 1),
                     MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, (int) (1)))
                 .outputChances(100_00, 100_00, 5_00, 5_00, 5_00, 5_00)
-                .fluidOutputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (90)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (90)))
                 .duration(6 * MINUTES + 15 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeRecipes);
@@ -487,10 +463,7 @@ public class FissionFuelLoader implements Runnable {
             .outputChances(100_00, 50_00, 100_00, 90_00, 12_50, 7_50)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, (int) (32)),
-                MaterialLibAPI.getFluidStack(
-                    Materials.TungstenCarbide,
-                    FluidShapes.fluidMolten,
-                    (int) (1 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.TungstenCarbide, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeNonCellRecipes);
@@ -505,10 +478,7 @@ public class FissionFuelLoader implements Runnable {
                 MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (1)))
             .outputChances(100_00, 50_00, 100_00, 90_00, 12_50, 7_50)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.TungstenCarbide,
-                    FluidShapes.fluidMolten,
-                    (int) (1 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.TungstenCarbide, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .metadata(SKIP_CELL_RECIPE_GENERATION, true)
@@ -525,10 +495,7 @@ public class FissionFuelLoader implements Runnable {
             .outputChances(100_00, 100_00, 100_00, 90_00, 25_00, 15_00)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, (int) (64)),
-                MaterialLibAPI.getFluidStack(
-                    Materials.TungstenCarbide,
-                    FluidShapes.fluidMolten,
-                    (int) (2 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.TungstenCarbide, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeNonCellRecipes);
@@ -543,10 +510,7 @@ public class FissionFuelLoader implements Runnable {
                 MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (1)))
             .outputChances(100_00, 100_00, 100_00, 90_00, 25_00, 15_00)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.TungstenCarbide,
-                    FluidShapes.fluidMolten,
-                    (int) (2 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.TungstenCarbide, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .metadata(SKIP_CELL_RECIPE_GENERATION, true)
@@ -563,10 +527,7 @@ public class FissionFuelLoader implements Runnable {
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, (int) (128)),
-                MaterialLibAPI.getFluidStack(
-                    Materials.TungstenCarbide,
-                    FluidShapes.fluidMolten,
-                    (int) (4 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.TungstenCarbide, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeNonCellRecipes);
@@ -581,10 +542,7 @@ public class FissionFuelLoader implements Runnable {
                 MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (1)))
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.TungstenCarbide,
-                    FluidShapes.fluidMolten,
-                    (int) (4 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.TungstenCarbide, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .metadata(SKIP_CELL_RECIPE_GENERATION, true)
@@ -638,8 +596,7 @@ public class FissionFuelLoader implements Runnable {
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, (int) (32)),
-                MaterialLibAPI
-                    .getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeNonCellRecipes);
@@ -653,9 +610,7 @@ public class FissionFuelLoader implements Runnable {
                 MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (1)))
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .metadata(SKIP_CELL_RECIPE_GENERATION, true)
@@ -672,8 +627,7 @@ public class FissionFuelLoader implements Runnable {
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, (int) (64)),
-                MaterialLibAPI
-                    .getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeNonCellRecipes);
@@ -687,9 +641,7 @@ public class FissionFuelLoader implements Runnable {
                 MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (2)),
                 MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (2)))
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .metadata(SKIP_CELL_RECIPE_GENERATION, true)
@@ -706,8 +658,7 @@ public class FissionFuelLoader implements Runnable {
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, (int) (128)),
-                MaterialLibAPI
-                    .getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeNonCellRecipes);
@@ -721,9 +672,7 @@ public class FissionFuelLoader implements Runnable {
                 MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (4)),
                 MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (4)))
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .metadata(SKIP_CELL_RECIPE_GENERATION, true)
@@ -733,10 +682,8 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemRefer.Advanced_Fuel_Rod.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.UraniumBasedLiquidFuelExcitedState,
-                    FluidShapes.fluidLiquid,
-                    (int) (250)))
+                MaterialLibAPI
+                    .getFluidStack(Materials.UraniumBasedLiquidFuelExcitedState, FluidShapes.fluidLiquid, (int) (250)))
             .itemOutputs(ItemList.RodExcitedUranium.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -774,10 +721,8 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodExcitedUranium.get(1))
             .itemOutputs(ItemRefer.Advanced_Fuel_Rod.get(1))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.UraniumBasedLiquidFuelDepleted,
-                    FluidShapes.fluidLiquid,
-                    (int) (250)))
+                MaterialLibAPI
+                    .getFluidStack(Materials.UraniumBasedLiquidFuelDepleted, FluidShapes.fluidLiquid, (int) (250)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(centrifugeRecipes);
@@ -785,10 +730,8 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodExcitedUranium2.get(1))
             .itemOutputs(ItemRefer.Advanced_Fuel_Rod.get(2))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.UraniumBasedLiquidFuelDepleted,
-                    FluidShapes.fluidLiquid,
-                    (int) (500)))
+                MaterialLibAPI
+                    .getFluidStack(Materials.UraniumBasedLiquidFuelDepleted, FluidShapes.fluidLiquid, (int) (500)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(centrifugeRecipes);
@@ -796,10 +739,8 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodExcitedUranium4.get(1))
             .itemOutputs(ItemRefer.Advanced_Fuel_Rod.get(4))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.UraniumBasedLiquidFuelDepleted,
-                    FluidShapes.fluidLiquid,
-                    (int) (1_000)))
+                MaterialLibAPI
+                    .getFluidStack(Materials.UraniumBasedLiquidFuelDepleted, FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(centrifugeRecipes);
@@ -849,10 +790,8 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodExcitedPlutonium.get(1))
             .itemOutputs(ItemRefer.Advanced_Fuel_Rod.get(1))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.PlutoniumBasedLiquidFuelDepleted,
-                    FluidShapes.fluidLiquid,
-                    (int) (250)))
+                MaterialLibAPI
+                    .getFluidStack(Materials.PlutoniumBasedLiquidFuelDepleted, FluidShapes.fluidLiquid, (int) (250)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(centrifugeRecipes);
@@ -860,10 +799,8 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodExcitedPlutonium2.get(1))
             .itemOutputs(ItemRefer.Advanced_Fuel_Rod.get(2))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.PlutoniumBasedLiquidFuelDepleted,
-                    FluidShapes.fluidLiquid,
-                    (int) (500)))
+                MaterialLibAPI
+                    .getFluidStack(Materials.PlutoniumBasedLiquidFuelDepleted, FluidShapes.fluidLiquid, (int) (500)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(centrifugeRecipes);
@@ -871,10 +808,8 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodExcitedPlutonium4.get(1))
             .itemOutputs(ItemRefer.Advanced_Fuel_Rod.get(4))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.PlutoniumBasedLiquidFuelDepleted,
-                    FluidShapes.fluidLiquid,
-                    (int) (1_000)))
+                MaterialLibAPI
+                    .getFluidStack(Materials.PlutoniumBasedLiquidFuelDepleted, FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(centrifugeRecipes);
@@ -1105,8 +1040,7 @@ public class FissionFuelLoader implements Runnable {
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, (int) (8)),
                 MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, (int) (1)))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, (int) (1)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, (int) (1)))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -1120,8 +1054,7 @@ public class FissionFuelLoader implements Runnable {
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, (int) (18)),
                 MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, (int) (2)))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, (int) (2)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, (int) (2)))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -1135,8 +1068,7 @@ public class FissionFuelLoader implements Runnable {
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, (int) (38)),
                 MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, (int) (4)))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, (int) (4)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, (int) (4)))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);

@@ -8,9 +8,6 @@ import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -19,6 +16,9 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -158,9 +158,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(byproduct), 1L),
                     MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1)))
                 .outputChances(10000, 7000, 4000)
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Mercury, FluidShapes.fluidLiquid, (int) (1_000)))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Mercury, FluidShapes.fluidLiquid, (int) (1_000)))
                 .duration(40 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(chemicalBathRecipes);
@@ -175,9 +173,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(byproduct), 1L),
                     MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1)))
                 .outputChances(10000, 9900, 4000)
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Mercury, FluidShapes.fluidLiquid, (int) (1_000)))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Mercury, FluidShapes.fluidLiquid, (int) (1_000)))
                 .duration(40 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(chemicalBathRecipes);
@@ -193,10 +189,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                     MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1)))
                 .outputChances(10000, 7000, 4000)
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.SodiumPersulfate,
-                        FluidShapes.fluidLiquid,
-                        (int) (100)))
+                    MaterialLibAPI.getFluidStack(Materials.SodiumPersulfate, FluidShapes.fluidLiquid, (int) (100)))
                 .duration(40 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(chemicalBathRecipes);

@@ -7,8 +7,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import kekztech.Items;
 import kekztech.common.items.MetaItemCraftingComponent;
@@ -24,8 +24,7 @@ public class ChemicalReactor implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials.Cerium, Shapes.dust, (int) (1)))
             .circuit(6)
             .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 3))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (2_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (2_000)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);

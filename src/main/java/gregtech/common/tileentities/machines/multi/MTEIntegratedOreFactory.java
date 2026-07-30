@@ -24,8 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -49,6 +47,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -244,9 +244,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         for (FluidStack fluid : inputFluid) {
             if (fluid == null) continue;
             if (fluid.equals(GTModHandler.getDistilledWater(1L))) waterAmount += fluid.amount;
-            else if (fluid.equals(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (1))))
+            else if (fluid
+                .equals(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (1))))
                 lubricantAmount += fluid.amount;
         }
 
@@ -294,15 +293,12 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         while (totalLubricantToDrain > 0) {
             int tryDrain = (int) Math.min(totalLubricantToDrain, Integer.MAX_VALUE);
             if (!depleteInput(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Lubricant,
-                    FluidShapes.fluidLiquid,
-                    (int) (tryDrain)))) {
+                MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (tryDrain)))) {
                 int maxHatch = 0;
                 for (FluidStack sf : getStoredFluids()) {
-                    if (sf != null && sf.isFluidEqual(
-                        MaterialLibAPI
-                            .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (1)))
+                    if (sf != null
+                        && sf.isFluidEqual(
+                            MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (1)))
                         && sf.amount > maxHatch) {
                         maxHatch = sf.amount;
                     }
@@ -310,10 +306,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 if (maxHatch <= 0) break;
                 tryDrain = (int) Math.min(totalLubricantToDrain, maxHatch);
                 if (!depleteInput(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Lubricant,
-                        FluidShapes.fluidLiquid,
-                        (int) (tryDrain))))
+                    MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (tryDrain))))
                     break;
             }
             totalLubricantToDrain -= tryDrain;
@@ -601,9 +594,9 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private void doCompress(List<ItemStack> aList) {
         HashMap<Integer, Integer> merged = new HashMap<>();
         for (ItemStack stack : aList) {
-            if (doesVoidStone && GTUtility.areStacksEqual(
-                MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1)),
-                stack)) continue;
+            if (doesVoidStone
+                && GTUtility.areStacksEqual(MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1)), stack))
+                continue;
             int id = GTUtility.stackToInt(stack);
             if (id != 0) {
                 merged.merge(id, stack.stackSize, Integer::sum);

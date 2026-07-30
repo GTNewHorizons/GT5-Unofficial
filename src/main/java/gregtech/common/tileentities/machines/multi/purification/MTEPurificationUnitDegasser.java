@@ -24,8 +24,6 @@ import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -43,6 +41,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -142,22 +142,16 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             MaterialUtils.molten(Materials.Longasssuperconductornameforuhvwire, SUPERCON_FLUID_AMOUNT),
             1.25f),
         new SuperconductorMaterial(
-            MaterialLibAPI.getFluidStack(
-                Materials.SuperconductorUEVBase,
-                FluidShapes.fluidMolten,
-                (int) (SUPERCON_FLUID_AMOUNT)),
+            MaterialLibAPI
+                .getFluidStack(Materials.SuperconductorUEVBase, FluidShapes.fluidMolten, (int) (SUPERCON_FLUID_AMOUNT)),
             1.5f),
         new SuperconductorMaterial(
-            MaterialLibAPI.getFluidStack(
-                Materials.SuperconductorUIVBase,
-                FluidShapes.fluidMolten,
-                (int) (SUPERCON_FLUID_AMOUNT)),
+            MaterialLibAPI
+                .getFluidStack(Materials.SuperconductorUIVBase, FluidShapes.fluidMolten, (int) (SUPERCON_FLUID_AMOUNT)),
             1.75f),
         new SuperconductorMaterial(
-            MaterialLibAPI.getFluidStack(
-                Materials.SuperconductorUMVBase,
-                FluidShapes.fluidMolten,
-                (int) (SUPERCON_FLUID_AMOUNT)),
+            MaterialLibAPI
+                .getFluidStack(Materials.SuperconductorUMVBase, FluidShapes.fluidMolten, (int) (SUPERCON_FLUID_AMOUNT)),
             2.0f), };
 
     private static final FluidStack CATALYST_FLUID = MaterialLibAPI

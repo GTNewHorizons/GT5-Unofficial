@@ -8,8 +8,6 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -21,7 +19,9 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.PipeShapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
@@ -247,10 +247,7 @@ public class FormingPressRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.AdemicSteel, Shapes.ring, 2),
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.screw, (int) (16)))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.SolderingAlloy,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (10 * INGOTS)))
             .itemOutputs(ItemList.T1Sawblade.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -300,10 +297,7 @@ public class FormingPressRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 1))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 9))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.UnformedHexanite,
-                    FluidShapes.fluidLiquid,
-                    (int) (8 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.UnformedHexanite, FluidShapes.fluidLiquid, (int) (8 * INGOTS)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(formingPressRecipes);
@@ -314,9 +308,7 @@ public class FormingPressRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Tairitsu, PipeShapes.frameGt, 1),
                 MaterialLibAPI.getStack(Materials.Churitsu, Shapes.itemCasing, (int) (2)))
             .itemOutputs(ItemList.PeaceEnforcementCasing.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Shijima, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Shijima, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(formingPressRecipes);
@@ -327,9 +319,7 @@ public class FormingPressRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Shijima, 1),
                 MaterialLibAPI.getStack(Materials.Churitsu, Shapes.itemCasing, (int) (2)))
             .itemOutputs(ItemList.ConflictInducementCasing.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Tairitsu, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Tairitsu, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(formingPressRecipes);

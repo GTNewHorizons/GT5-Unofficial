@@ -11,8 +11,6 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -40,6 +38,8 @@ import goodgenerator.blocks.tileEntity.render.TileAntimatter;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.MetaTileEntityIDs;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -71,8 +71,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     private static final FluidStack[] magneticUpgrades = {
         MaterialLibAPI.getFluidStack(Materials.TengamPurified, FluidShapes.fluidMolten, 1),
-        MaterialUtils.molten(Materials.temporalFluid, 1L),
-        MaterialUtils.molten(Materials.Magmatter, 1L) };
+        MaterialUtils.molten(Materials.temporalFluid, 1L), MaterialUtils.molten(Materials.Magmatter, 1L) };
     private static final FluidStack[] gravityUpgrades = {
         MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 1),
         MaterialUtils.molten(Materials.spatialFluid, 1L),
@@ -81,14 +80,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, (int) (1)),
         MaterialUtils.molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1L) };
     private static final FluidStack[] activationUpgrades = {
-        MaterialLibAPI.getFluidStack(
-            Materials.NaquadahBasedLiquidFuelMkVDepleted,
-            FluidShapes.fluidLiquid,
-            (int) (1)),
-        MaterialLibAPI.getFluidStack(
-            Materials.NaquadahBasedLiquidFuelMkVIDepleted,
-            FluidShapes.fluidLiquid,
-            (int) (1)) };
+        MaterialLibAPI.getFluidStack(Materials.NaquadahBasedLiquidFuelMkVDepleted, FluidShapes.fluidLiquid, (int) (1)),
+        MaterialLibAPI
+            .getFluidStack(Materials.NaquadahBasedLiquidFuelMkVIDepleted, FluidShapes.fluidLiquid, (int) (1)) };
     private static final FluidStack ZERO_ANTIMATTER = MaterialLibAPI
         .getFluidStack(Materials.Antimatter, FluidShapes.fluidLiquid, 0);
 
@@ -574,15 +568,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
         // We didn't have enough protomatter, reduce antimatter by 10% and stop the machine.
         if (!this.depleteInput(
-            MaterialLibAPI.getFluidStack(
-                Materials.Protomatter,
-                FluidShapes.fluidLiquid,
-                Math.abs(antimatterChange)))) {
+            MaterialLibAPI.getFluidStack(Materials.Protomatter, FluidShapes.fluidLiquid, Math.abs(antimatterChange)))) {
             decimateAntimatter();
             stopMachine(
-                ShutDownReasonRegistry.outOfFluid(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Protomatter, FluidShapes.fluidLiquid, 1)));
+                ShutDownReasonRegistry
+                    .outOfFluid(MaterialLibAPI.getFluidStack(Materials.Protomatter, FluidShapes.fluidLiquid, 1)));
             setProtoRender(false);
             return CheckRecipeResultRegistry.NO_FUEL_FOUND;
         }
@@ -654,10 +644,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             int change = (int) (Math.ceil((r.nextGaussian() + BASE_SKEW + modifiers[ACTIVATION_ID]) * (coeff / 16)));
             difference += change;
             if (change >= 0) {
-                hatch.fill(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Antimatter, FluidShapes.fluidLiquid, change),
-                    true);
+                hatch.fill(MaterialLibAPI.getFluidStack(Materials.Antimatter, FluidShapes.fluidLiquid, change), true);
             } else {
                 hatch.drain(-change, true);
             }

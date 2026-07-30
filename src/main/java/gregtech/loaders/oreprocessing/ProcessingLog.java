@@ -75,10 +75,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                                 GTUtility.copyOrNull(tPlanks),
                                 MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, (int) (1)))
                             .fluidInputs(
-                                MaterialLibAPI.getFluidStack(
-                                    Materials.Lubricant,
-                                    FluidShapes.fluidLiquid,
-                                    (int) (1)))
+                                MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (1)))
                             .duration(10 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(cutterRecipes);
@@ -144,10 +141,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTUtility.copyOrNull(tPlanks),
                             MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, (int) (1)))
                         .fluidInputs(
-                            MaterialLibAPI.getFluidStack(
-                                Materials.Lubricant,
-                                FluidShapes.fluidLiquid,
-                                (int) (1)))
+                            MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (1)))
                         .duration(10 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
                         .addTo(cutterRecipes);

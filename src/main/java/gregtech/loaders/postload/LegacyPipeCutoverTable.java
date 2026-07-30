@@ -206,12 +206,7 @@ public final class LegacyPipeCutoverTable {
     }
 
     private static void threeSizeFluidPipe(Material material, int startId) {
-        putRange(
-            material,
-            startId,
-            PipeShapes.pipeSmall,
-            PipeShapes.pipeMedium,
-            PipeShapes.pipeLarge);
+        putRange(material, startId, PipeShapes.pipeSmall, PipeShapes.pipeMedium, PipeShapes.pipeLarge);
     }
 
     private static void itemPipe(Material material, int startId) {
@@ -222,11 +217,10 @@ public final class LegacyPipeCutoverTable {
     }
 
     private static void itemPipeIds(Material material, int... ids) {
-        Shape[] sizes = { PipeShapes.itemPipeTiny, PipeShapes.itemPipeSmall,
-            PipeShapes.itemPipeMedium, PipeShapes.itemPipeLarge, PipeShapes.itemPipeHuge,
-            PipeShapes.itemPipeRestrictiveTiny, PipeShapes.itemPipeRestrictiveSmall,
-            PipeShapes.itemPipeRestrictiveMedium, PipeShapes.itemPipeRestrictiveLarge,
-            PipeShapes.itemPipeRestrictiveHuge };
+        Shape[] sizes = { PipeShapes.itemPipeTiny, PipeShapes.itemPipeSmall, PipeShapes.itemPipeMedium,
+            PipeShapes.itemPipeLarge, PipeShapes.itemPipeHuge, PipeShapes.itemPipeRestrictiveTiny,
+            PipeShapes.itemPipeRestrictiveSmall, PipeShapes.itemPipeRestrictiveMedium,
+            PipeShapes.itemPipeRestrictiveLarge, PipeShapes.itemPipeRestrictiveHuge };
         for (int i = 0; i < sizes.length; i++) {
             put(ids[i], sizes[i], material);
         }

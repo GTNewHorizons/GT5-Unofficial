@@ -1,10 +1,10 @@
 package gregtech.common.tools;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.material.MaterialUtils;

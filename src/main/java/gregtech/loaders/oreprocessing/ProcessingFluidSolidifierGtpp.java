@@ -5,8 +5,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.Set;
 
-import gregtech.api.enums.materials2.MaterialFluidNames;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -15,6 +13,7 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.MaterialUtils;
 
 /// Reproduces the retired gtPlusPlus `RecipeGenFluids` for every material in [#ELIGIBLE]: the mold-plus-fluid

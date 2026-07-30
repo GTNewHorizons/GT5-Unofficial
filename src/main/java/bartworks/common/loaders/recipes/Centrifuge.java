@@ -6,8 +6,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.Arrays;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -19,6 +17,8 @@ import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.util.GTRecipeBuilder;
 import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
 

@@ -3,8 +3,6 @@ package bartworks.common.loaders.recipes;
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -12,6 +10,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 
 public class FormingPress implements Runnable {
 

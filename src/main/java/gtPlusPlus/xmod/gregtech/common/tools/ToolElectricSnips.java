@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tools;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -12,6 +11,7 @@ import net.minecraft.util.IChatComponent;
 import gregtech.GTMod;
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Textures.ItemIcons;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.material.MaterialUtils;

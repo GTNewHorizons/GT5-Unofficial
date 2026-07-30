@@ -22,7 +22,7 @@ public class RecipesBatteries {
             quad,
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "BWB", "CTC", "BWB", 'B', single, 'W',
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Gold, 1), 'C', "circuitAdvanced",
-                'T', ItemList.Transformer_EV_HV.get(1) });
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Gold, 1), 'C', "circuitAdvanced", 'T',
+                ItemList.Transformer_EV_HV.get(1) });
     }
 }

@@ -13,7 +13,6 @@
 
 package bartworks.common.loaders;
 
-import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -21,6 +20,7 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -41,26 +41,24 @@ public class StaticRecipeChangeLoaders {
 
     private static void runUnficationDeleter(Material material) {
         String internalName = MaterialUtils.internalName(material);
-        for (OrePrefixes prefixes : OrePrefixes.VALUES)
-            if (LegacyWerkstoffIndex.generatesPrefix(material, prefixes)) {
-                GTOreDictUnificator.set(prefixes, material, MaterialParts.stack(prefixes, material, 1), true, true);
-                for (ItemStack stack : OreDictionary.getOres(prefixes + internalName)) {
-                    GTOreDictUnificator.addAssociation(prefixes, material, stack, false);
-                    GTOreDictUnificator.getAssociation(stack).mUnificationTarget = MaterialParts
-                        .stack(prefixes, material, 1);
-                }
+        for (OrePrefixes prefixes : OrePrefixes.VALUES) if (LegacyWerkstoffIndex.generatesPrefix(material, prefixes)) {
+            GTOreDictUnificator.set(prefixes, material, MaterialParts.stack(prefixes, material, 1), true, true);
+            for (ItemStack stack : OreDictionary.getOres(prefixes + internalName)) {
+                GTOreDictUnificator.addAssociation(prefixes, material, stack, false);
+                GTOreDictUnificator.getAssociation(stack).mUnificationTarget = MaterialParts
+                    .stack(prefixes, material, 1);
             }
+        }
     }
 
     private static void runMaterialLinker(Material material) {
         String internalName = MaterialUtils.internalName(material);
-        for (OrePrefixes prefixes : OrePrefixes.VALUES)
-            if (LegacyWerkstoffIndex.generatesPrefix(material, prefixes)) {
-                GTOreDictUnificator.set(prefixes, material, MaterialParts.stack(prefixes, material, 1), true, true);
-                for (ItemStack stack : OreDictionary.getOres(prefixes + internalName)) {
-                    GTOreDictUnificator.addAssociation(prefixes, material, stack, false);
-                }
+        for (OrePrefixes prefixes : OrePrefixes.VALUES) if (LegacyWerkstoffIndex.generatesPrefix(material, prefixes)) {
+            GTOreDictUnificator.set(prefixes, material, MaterialParts.stack(prefixes, material, 1), true, true);
+            for (ItemStack stack : OreDictionary.getOres(prefixes + internalName)) {
+                GTOreDictUnificator.addAssociation(prefixes, material, stack, false);
             }
+        }
     }
 
     public static void addElectricImplosionCompressorRecipes() {

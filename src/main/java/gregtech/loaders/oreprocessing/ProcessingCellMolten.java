@@ -8,7 +8,6 @@ import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
@@ -16,6 +15,7 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;

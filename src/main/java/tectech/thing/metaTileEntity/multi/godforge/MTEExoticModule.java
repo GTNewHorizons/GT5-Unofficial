@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -40,6 +39,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -224,10 +224,8 @@ public class MTEExoticModule extends MTEBaseModule {
             null,
             ArrayUtils
                 .addAll(convertItemToPlasma(randomizedItemInput, 9), convertFluidToPlasma(randomizedFluidInput, 1)),
-            new FluidStack[] { MaterialLibAPI.getFluidStack(
-                Materials.QuarkGluonPlasma,
-                FluidShapes.fluidLiquid,
-                (int) (1000 * actualParallel)) },
+            new FluidStack[] { MaterialLibAPI
+                .getFluidStack(Materials.QuarkGluonPlasma, FluidShapes.fluidLiquid, (int) (1000 * actualParallel)) },
             10 * SECONDS,
             (int) TierEU.RECIPE_MAX,
             0);
@@ -240,8 +238,7 @@ public class MTEExoticModule extends MTEBaseModule {
         numberOfFluids = 2;
         int timeAmount = GodforgeMath.getRandomIntInRange(1, 50);
         int spaceAmount = GodforgeMath.getRandomIntInRange(51, 100);
-        randomizedFluidInput = new FluidStack[] {
-            MaterialUtils.molten(Materials.temporalFluid, timeAmount * 1000L),
+        randomizedFluidInput = new FluidStack[] { MaterialUtils.molten(Materials.temporalFluid, timeAmount * 1000L),
             MaterialUtils.molten(Materials.spatialFluid, spaceAmount * 1000L) };
 
         return new GTRecipe(
@@ -445,10 +442,8 @@ public class MTEExoticModule extends MTEBaseModule {
             if (magmatterMode) {
                 outputFluid = MaterialUtils.molten(Materials.Magmatter, actualParallel * 4 * INGOTS);
             } else {
-                outputFluid = MaterialLibAPI.getFluidStack(
-                    Materials.QuarkGluonPlasma,
-                    FluidShapes.fluidLiquid,
-                    (int) (1000 * actualParallel));
+                outputFluid = MaterialLibAPI
+                    .getFluidStack(Materials.QuarkGluonPlasma, FluidShapes.fluidLiquid, (int) (1000 * actualParallel));
             }
 
             setPlasmaRecipe(

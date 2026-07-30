@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.OreShapes;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -35,6 +32,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
+import gregtech.api.enums.materials2.OreShapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
@@ -412,8 +411,7 @@ public final class BWOreAdapter implements IOreAdapter {
 
         switch (oreDropMode) {
             case Item -> {
-                drops.add(
-                    MaterialLibAPI.getStack(info.material, Shapes.rawOre, info.stoneType.isRich() ? 2 : 1));
+                drops.add(MaterialLibAPI.getStack(info.material, Shapes.rawOre, info.stoneType.isRich() ? 2 : 1));
             }
             case FortuneItem -> {
                 if (fortune > 0) {

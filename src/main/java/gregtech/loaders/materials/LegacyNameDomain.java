@@ -3,11 +3,12 @@ package gregtech.loaders.materials;
 import java.util.HashSet;
 import java.util.Set;
 
-import gregtech.api.enums.materials2.Materials;
 import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+
+import gregtech.api.enums.materials2.Materials;
 
 /// The legacy material name domain: the single by-name resolution seam for every consumer that needs to
 /// resolve a legacy material name to its MaterialLib counterpart and treat a miss as a plain null

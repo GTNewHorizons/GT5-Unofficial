@@ -9,8 +9,6 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -20,6 +18,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
@@ -1315,8 +1315,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         GTOreDictUnificator.get(OrePrefixes.turbineBlade, material, 12L),
-                        MaterialLibAPI
-                            .getStack(Materials.TungstenSteel, Shapes.stickLong, (int) (1)))
+                        MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stickLong, (int) (1)))
                     .itemOutputs(MetaGeneratedTool01.INSTANCE.getToolWithStats(174, 1, material, material, null))
                     .duration(32 * SECONDS)
                     .eut(calculateRecipeEU(material, 1600))
@@ -1335,8 +1334,7 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             GTOreDictUnificator.get(OrePrefixes.turbineBlade, material, 1L),
                             GTModHandler.RecipeBits.BITS_STD,
                             new Object[] { "fPd", "SPS", " P ", 'P',
-                                material == Materials.Wood
-                                    ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
+                                material == Materials.Wood ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
                                     : MaterialParts.craftIngredient(OrePrefixes.plateDouble, material),
                                 'R', MaterialParts.craftIngredient(OrePrefixes.ring, material), 'S',
                                 MaterialParts.craftIngredient(OrePrefixes.screw, material) });

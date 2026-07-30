@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import gregtech.api.enums.materials2.FluidShapes;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,6 +22,7 @@ import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.util.GTOreDictUnificator;
@@ -129,11 +129,9 @@ public class EyeOfHarmonyRecipeStorage {
                 .itemInputs(planetItem)
                 .itemOutputs(outputItems.toArray(new ItemStack[0]))
                 .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (0)),
+                    MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (0)),
                     MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int) (0)),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, (int) (0)))
+                    MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, (int) (0)))
                 .fluidOutputs(outputFluids.toArray(new FluidStack[0]))
                 .duration(recipe.getRecipeTimeInTicks())
                 .eut(0)

@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
-import gregtech.api.enums.materials2.OreShapes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
@@ -44,7 +42,9 @@ import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.CellShapes;
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials2.MaterialFluidNames;
+import gregtech.api.enums.materials2.OreShapes;
 import gregtech.api.enums.materials2.PipeShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.items.MetaGeneratedItemX32;
@@ -145,8 +145,8 @@ public final class MaterialDataDump {
     /// [gregtech.api.material.MaterialParts] reflects them: the constants are the only enumeration of them.
     private static List<Map<String, Object>> dumpDeclaredShapes() {
         List<Map<String, Object>> shapes = new ArrayList<>();
-        for (Class<?> declaring : new Class<?>[] { Shapes.class, CellShapes.class,
-            BlockShapes.class, OreShapes.class, PipeShapes.class }) {
+        for (Class<?> declaring : new Class<?>[] { Shapes.class, CellShapes.class, BlockShapes.class, OreShapes.class,
+            PipeShapes.class }) {
             for (java.lang.reflect.Field field : declaring.getFields()) {
                 if (field.getType() != Shape.class) continue;
                 Shape shape;

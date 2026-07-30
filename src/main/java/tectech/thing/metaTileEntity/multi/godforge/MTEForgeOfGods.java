@@ -42,7 +42,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -71,6 +70,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
@@ -277,9 +277,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
 
         {
             add(MaterialUtils.fluid(Materials.DimensionallyTranscendentResidue, 1));
-            add(
-                MaterialLibAPI
-                    .getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, (int) (1)));
+            add(MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, (int) (1)));
             add(MaterialUtils.molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1));
         }
     };
@@ -404,8 +402,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
 
                         ItemStack itemToAbsorb = STELLAR_FUEL;
                         if (data.isUpgradeActive(END) && data.getInternalBattery() != 0) {
-                            itemToAbsorb = MaterialLibAPI
-                                .getStack(Materials.GravitonShard, Shapes.gem, (int) (1));
+                            itemToAbsorb = MaterialLibAPI.getStack(Materials.GravitonShard, Shapes.gem, (int) (1));
                         }
 
                         int invLength = inputBus.getSizeInventory();
@@ -956,8 +953,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
 
     private void ejectGravitonShards() {
         if (mOutputBusses.size() == 1) {
-            ItemStack shard = MaterialLibAPI
-                .getStack(Materials.GravitonShard, Shapes.gem, (int) (1));
+            ItemStack shard = MaterialLibAPI.getStack(Materials.GravitonShard, Shapes.gem, (int) (1));
 
             shard.stackSize = data.getGravitonShardsAvailable();
 

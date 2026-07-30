@@ -2,13 +2,13 @@ package gregtech.common.items;
 
 import java.util.Arrays;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.text.WordUtils;
 
 import com.ruling_0.materiallib.api.Material;
 
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.loaders.materials.RecognitionMaterials;
 
@@ -31,21 +31,15 @@ public enum CombType {
 
     // Alloy Line
     REDALLOY(11, "red_alloy", true, Materials.RedAlloy, 100, 0xE60000, 0xB80000, ItemComb.Voltage.LV),
-    REDSTONEALLOY(12, "redstone_alloy", true, Materials.RedstoneAlloy, 90, 0xB80000, 0xA50808,
-        ItemComb.Voltage.LV),
-    CONDUCTIVEIRON(13, "conductive_iron", true, Materials.ConductiveIron, 80, 0x817671, 0xCEADA3,
-        ItemComb.Voltage.MV),
-    VIBRANTALLOY(14, "vibrant_alloy", true, Materials.VibrantAlloy, 50, 0x86A12D, 0xC4F2AE,
-        ItemComb.Voltage.HV),
-    ENERGETICALLOY(15, "energetic_alloy", true, Materials.EnergeticAlloy, 70, 0xFF9933, 0xFFAD5C,
-        ItemComb.Voltage.HV),
+    REDSTONEALLOY(12, "redstone_alloy", true, Materials.RedstoneAlloy, 90, 0xB80000, 0xA50808, ItemComb.Voltage.LV),
+    CONDUCTIVEIRON(13, "conductive_iron", true, Materials.ConductiveIron, 80, 0x817671, 0xCEADA3, ItemComb.Voltage.MV),
+    VIBRANTALLOY(14, "vibrant_alloy", true, Materials.VibrantAlloy, 50, 0x86A12D, 0xC4F2AE, ItemComb.Voltage.HV),
+    ENERGETICALLOY(15, "energetic_alloy", true, Materials.EnergeticAlloy, 70, 0xFF9933, 0xFFAD5C, ItemComb.Voltage.HV),
     ELECTRICALSTEEL(16, "electrical_steel", true, Materials.ElectricalSteel, 90, 0x787878, 0xD8D8D8,
         ItemComb.Voltage.LV),
     DARKSTEEL(17, "dark_steel", true, Materials.DarkSteel, 80, 0x252525, 0x443B44, ItemComb.Voltage.MV),
-    PULSATINGIRON(18, "pulsating_iron", true, Materials.PulsatingIron, 80, 0x006600, 0x6DD284,
-        ItemComb.Voltage.HV),
-    STAINLESSSTEEL(19, "stainless_steel", true, Materials.StainlessSteel, 75, 0x778899, 0xC8C8DC,
-        ItemComb.Voltage.HV),
+    PULSATINGIRON(18, "pulsating_iron", true, Materials.PulsatingIron, 80, 0x006600, 0x6DD284, ItemComb.Voltage.HV),
+    STAINLESSSTEEL(19, "stainless_steel", true, Materials.StainlessSteel, 75, 0x778899, 0xC8C8DC, ItemComb.Voltage.HV),
     ENDERIUM(20, "enderium", true, Materials.Enderium, 40, 0x2E8B57, 0x599087, ItemComb.Voltage.HV),
 
     // Thaumcraft Line
@@ -56,8 +50,7 @@ public enum CombType {
     SALISMUNDUS(25, "salis_mundus", true, Materials.NULL, 75, 0xF7ADDE, 0x592582, ItemComb.Voltage.MV),
     TAINTED(26, "tainted", true, Materials.NULL, 80, 0x904BB8, 0xE800FF, ItemComb.Voltage.LV),
     MITHRIL(27, "mithril", true, Materials.Mithril, 70, 0xF0E68C, 0xFFFFD2, ItemComb.Voltage.HV),
-    ASTRALSILVER(28, "astral_silver", true, Materials.AstralSilver, 70, 0xAFEEEE, 0xE6E6FF,
-        ItemComb.Voltage.HV),
+    ASTRALSILVER(28, "astral_silver", true, Materials.AstralSilver, 70, 0xAFEEEE, 0xE6E6FF, ItemComb.Voltage.HV),
     THAUMINITE(29, "thauminite", true, Materials.NULL, 50, 0x2E2D79, 0x7581E0, ItemComb.Voltage.HV),
     SHADOWMETAL(30, "shadow_metal", true, Materials.Shadow, 50, 0x100322, 0x100342, ItemComb.Voltage.HV),
     DIVIDED(31, "divided", true, Materials.Unstable, 40, 0xF0F0F0, 0xDCDCDC, ItemComb.Voltage.HV),
@@ -72,8 +65,7 @@ public enum CombType {
     LAPIS(38, "lapis", true, Materials.Lapis, 100, 0x1947D1, 0x476CDA, ItemComb.Voltage.LV),
     RUBY(39, "ruby", true, Materials.Ruby, 100, 0xE6005C, 0xCC0052, ItemComb.Voltage.LV),
     REDGARNET(40, "red_garnet", true, Materials.GarnetRed, 100, 0xBD4C4C, 0xECCECE, ItemComb.Voltage.LV),
-    YELLOWGARNET(41, "yellow_garnet", true, Materials.GarnetYellow, 100, 0xA3A341, 0xEDEDCE,
-        ItemComb.Voltage.LV),
+    YELLOWGARNET(41, "yellow_garnet", true, Materials.GarnetYellow, 100, 0xA3A341, 0xEDEDCE, ItemComb.Voltage.LV),
     SAPPHIRE(42, "sapphire", true, Materials.Sapphire, 100, 0x0033CC, 0x00248F, ItemComb.Voltage.LV),
     DIAMOND(43, "diamond", true, Materials.Diamond, 100, 0xCCFFFF, 0xA3CCCC, ItemComb.Voltage.LV),
     OLIVINE(44, "olivine", true, Materials.Olivine, 100, 0x248F24, 0xCCFFCC, ItemComb.Voltage.LV),
@@ -134,8 +126,7 @@ public enum CombType {
 
     // Space
     SPACE(91, "space", true, Materials.NULL, 100, 0x003366, 0xC0C0C0, ItemComb.Voltage.HV),
-    METEORICIRON(92, "meteoric_iron", true, Materials.MeteoricIron, 100, 0x321928, 0x643250,
-        ItemComb.Voltage.EV),
+    METEORICIRON(92, "meteoric_iron", true, Materials.MeteoricIron, 100, 0x321928, 0x643250, ItemComb.Voltage.EV),
     DESH(93, "desh", true, Materials.Desh, 90, 0x282828, 0x323232, ItemComb.Voltage.IV),
     LEDOX(94, "ledox", true, Materials.Ledox, 75, 0x0000CD, 0x0074FF, ItemComb.Voltage.IV),
     CALLISTOICE(95, "callisto_ice", true, Materials.CallistoIce, 75, 0x0074FF, 0x1EB1FF, ItemComb.Voltage.IV),
@@ -144,8 +135,7 @@ public enum CombType {
     ORIHARUKON(98, "oriharukon", true, Materials.Oriharukon, 50, 0x228B22, 0x677D68, ItemComb.Voltage.IV),
     MYSTERIOUSCRYSTAL(99, "mysterious_crystal", true, Materials.MysteriousCrystal, 45, 0x3CB371, 0x16856C,
         ItemComb.Voltage.LuV),
-    BLACKPLUTONIUM(100, "black_plutonium", true, Materials.Quantium, 25, 0x000000, 0x323232,
-        ItemComb.Voltage.LuV),
+    BLACKPLUTONIUM(100, "black_plutonium", true, Materials.Quantium, 25, 0x000000, 0x323232, ItemComb.Voltage.LuV),
     TRINIUM(101, "trinium", true, Materials.Trinium, 25, 0xB0E0E6, 0xC8C8D2, ItemComb.Voltage.ZPM),
 
     // Planet
@@ -209,16 +199,13 @@ public enum CombType {
     INFUSEDIGNIS(146, "infused_ignis", true, Materials.NULL, 100, 0x3B0E00, 0xED3801, ItemComb.Voltage.LV),
     INFUSEDAQUA(147, "infused_aqua", true, Materials.NULL, 100, 0x002542, 0x0090FF, ItemComb.Voltage.LV),
     INFUSEDORDO(148, "infused_ordo", true, Materials.NULL, 100, 0x5C5F62, 0x8A97B0, ItemComb.Voltage.LV),
-    INFUSEDPERDITIO(149, "infused_perditio", true, Materials.NULL, 100, 0x232129, 0x2E2E41,
-        ItemComb.Voltage.LV),
+    INFUSEDPERDITIO(149, "infused_perditio", true, Materials.NULL, 100, 0x232129, 0x2E2E41, ItemComb.Voltage.LV),
     FLUORINE(150, "fluorine", true, Materials.Fluorine, 100, 0xFF6D00, 0x86AFF0, ItemComb.Voltage.MV),
     BEDROCKIUM(151, "bedrockium", true, Materials.Bedrockium, 100, 0xC6C6C6, 0x0C0C0C, ItemComb.Voltage.EV),
-    NETHERSHARD(152, "nether_shard", true, Materials.Netherrack, 100, 0x350211, 0xBE0135,
-        ItemComb.Voltage.HV),
+    NETHERSHARD(152, "nether_shard", true, Materials.Netherrack, 100, 0x350211, 0xBE0135, ItemComb.Voltage.HV),
     ENDERSHARD(153, "ender_shard", true, Materials.EnderEye, 100, 0x232129, 0x2E2E41, ItemComb.Voltage.HV),
     CAELESTISRED(154, "caelestis_red", true, Materials.NULL, 100, 0xFF0000, 0xFF00FF, ItemComb.Voltage.LV),
-    CAELESTISGREEN(155, "caelestis_green", true, Materials.NULL, 100, 0x00FF00, 0xB233FF,
-        ItemComb.Voltage.LV),
+    CAELESTISGREEN(155, "caelestis_green", true, Materials.NULL, 100, 0x00FF00, 0xB233FF, ItemComb.Voltage.LV),
     CAELESTISBLUE(156, "caelestis_blue", true, Materials.NULL, 100, 0x0000FF, 0xFF99A5, ItemComb.Voltage.LV),
     UNKNOWNLIQUID(157, "unknown_liquid", true, Materials.NULL, 100, 0x36ABFF, 0x4333A5, ItemComb.Voltage.ZPM),
     // ESSENTIA gets a use soon. Dont remove.
@@ -230,8 +217,7 @@ public enum CombType {
     AWAKENEDDRACONIUM(163, "awakened_draconium", true, Materials.DraconiumAwakened, 50, 0xD41238, 0xFFA157,
         ItemComb.Voltage.MV),
     PALLADIUM(164, "palladium", true, Materials.Palladium, 50, 0x8B8B8B, 0xF1D9D9, ItemComb.Voltage.MV),
-    INFUSEDGOLD(165, "infused_gold", true, Materials.InfusedGold, 50, 0x80641E, 0xFFC83C,
-        ItemComb.Voltage.IV),
+    INFUSEDGOLD(165, "infused_gold", true, Materials.InfusedGold, 50, 0x80641E, 0xFFC83C, ItemComb.Voltage.IV),
     // Additions to rare metals, moved here so we don't shift all comb IDs
     NEODYMIUM(166, "neodymium", true, Materials.Neodymium, 50, 0x555555, 0x4F4F4F, ItemComb.Voltage.HV),
     EUROPIUM(167, "europium", true, Materials.Europium, 10, 0xDAA0E2, 0xAB7EB1, ItemComb.Voltage.LuV),
@@ -239,8 +225,7 @@ public enum CombType {
     NETHERITE(169, "netherite", true, Materials.NULL, 10, 0x31292a, 0xada9aa, ItemComb.Voltage.LuV),
     // Gem Addition
     PRISMATIC(170, "prismatic", true, Materials.NULL, 10, 0x117777, 0xcfe4e4, ItemComb.Voltage.UHV),
-    REFINEDRAREEARTH(171, "refined_rare_earth", true, Materials.NULL, 85, 0x160822, 0x8A97B0,
-        ItemComb.Voltage.IV),
+    REFINEDRAREEARTH(171, "refined_rare_earth", true, Materials.NULL, 85, 0x160822, 0x8A97B0, ItemComb.Voltage.IV),
     // Metals Addition
     PYRITE(172, "pyrite", true, Materials.Pyrite, 100, 0xB67206, 0x654004, ItemComb.Voltage.HV),
     // Botania Line

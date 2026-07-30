@@ -1,7 +1,5 @@
 package gregtech.api.material;
 
-import gregtech.api.enums.materials2.PipeProperties;
-
 /// Pure size transforms deriving per-size wire/cable, fluid pipe, and item pipe stats from the base values
 /// held in [PipeProperties]. Wire and cable sizes are indexed 0 to 5
 /// (1x, 2x, 4x, 8x, 12x, 16x); pipe sizes 0 to 4 (tiny, small, medium, large, huge). All arithmetic is exact

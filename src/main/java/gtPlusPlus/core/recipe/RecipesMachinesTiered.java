@@ -7,9 +7,6 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -21,6 +18,9 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -492,9 +492,7 @@ public class RecipesMachinesTiered {
                 Circuits.ULV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_ULV.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Steel, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Steel, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -645,10 +643,7 @@ public class RecipesMachinesTiered {
             .circuit(19)
             .itemOutputs(GregtechItemList.Cover_Overflow_Valve_LV.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.SolderingAlloy,
-                    FluidShapes.fluidMolten,
-                    (int) (1 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -662,10 +657,7 @@ public class RecipesMachinesTiered {
             .circuit(19)
             .itemOutputs(GregtechItemList.Cover_Overflow_Valve_MV.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.SolderingAlloy,
-                    FluidShapes.fluidMolten,
-                    (int) (2 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -679,10 +671,7 @@ public class RecipesMachinesTiered {
             .circuit(19)
             .itemOutputs(GregtechItemList.Cover_Overflow_Valve_HV.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.SolderingAlloy,
-                    FluidShapes.fluidMolten,
-                    (int) (3 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (3 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -696,10 +685,7 @@ public class RecipesMachinesTiered {
             .circuit(19)
             .itemOutputs(GregtechItemList.Cover_Overflow_Valve_EV.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.SolderingAlloy,
-                    FluidShapes.fluidMolten,
-                    (int) (4 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -713,10 +699,7 @@ public class RecipesMachinesTiered {
             .circuit(19)
             .itemOutputs(GregtechItemList.Cover_Overflow_Valve_IV.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.SolderingAlloy,
-                    FluidShapes.fluidMolten,
-                    (int) (5 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (5 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -728,32 +711,28 @@ public class RecipesMachinesTiered {
             GregtechItemList.Modulator_I.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CPC", "PHP", "CPC", 'C', "circuitData", 'P',
-                MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plate, 1), 'H',
-                ItemList.Casing_EV });
+                MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plate, 1), 'H', ItemList.Casing_EV });
 
         // Modulator II
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Modulator_II.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CPC", "PHP", "CPC", 'C', "circuitElite", 'P',
-                MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plate, 1), 'H',
-                ItemList.Casing_IV });
+                MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plate, 1), 'H', ItemList.Casing_IV });
 
         // Modulator III
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Modulator_III.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CPC", "PHP", "CPC", 'C', "circuitMaster", 'P',
-                MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plate, 1), 'H',
-                ItemList.Casing_LuV });
+                MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plate, 1), 'H', ItemList.Casing_LuV });
 
         // Modulator IV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Modulator_IV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CPC", "PHP", "CPC", 'C', "circuitUltimate", 'P',
-                MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 1), 'H',
-                ItemList.Casing_ZPM });
+                MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 1), 'H', ItemList.Casing_ZPM });
     }
 
     private static void resonanceChambers() {
@@ -762,24 +741,23 @@ public class RecipesMachinesTiered {
             GregtechItemList.ResonanceChamber_I.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "FHF", "PFP", 'P',
-                MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plateDouble, 1), 'F',
-                ItemList.Field_Generator_LV, 'H', ItemList.Casing_EV });
+                MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plateDouble, 1), 'F', ItemList.Field_Generator_LV,
+                'H', ItemList.Casing_EV });
 
         // Resonance Chamber II
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ResonanceChamber_II.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "FHF", "PFP", 'P',
-                MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plateDouble, 1), 'F',
-                ItemList.Field_Generator_MV, 'H', ItemList.Casing_IV });
+                MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plateDouble, 1), 'F', ItemList.Field_Generator_MV,
+                'H', ItemList.Casing_IV });
 
         // Resonance Chamber III
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ResonanceChamber_III.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PFP", "FHF", "PFP", 'P',
-                MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plateDouble, 1), 'F',
-                ItemList.Field_Generator_HV, 'H', ItemList.Casing_LuV });
+            new Object[] { "PFP", "FHF", "PFP", 'P', MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plateDouble, 1),
+                'F', ItemList.Field_Generator_HV, 'H', ItemList.Casing_LuV });
 
         // Resonance Chamber IV
         GTModHandler.addCraftingRecipe(
@@ -811,8 +789,8 @@ public class RecipesMachinesTiered {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_HV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.StainlessSteel),
-                'C', new ItemStack(Blocks.crafting_table), 'I', Circuits.HV.getIngredient(), 'H', ItemList.Hull_HV, 'R',
+            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'C',
+                new ItemStack(Blocks.crafting_table), 'I', Circuits.HV.getIngredient(), 'H', ItemList.Hull_HV, 'R',
                 ItemList.Robot_Arm_HV });
 
         // EV
@@ -827,8 +805,8 @@ public class RecipesMachinesTiered {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Electric_Auto_Workbench_IV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.TungstenSteel),
-                'C', new ItemStack(Blocks.crafting_table), 'I', Circuits.IV.getIngredient(), 'H', ItemList.Hull_IV, 'R',
+            new Object[] { "PCP", "IHI", "PRP", 'P', OrePrefixes.plate.ingredient(Materials.TungstenSteel), 'C',
+                new ItemStack(Blocks.crafting_table), 'I', Circuits.IV.getIngredient(), 'H', ItemList.Hull_IV, 'R',
                 ItemList.Robot_Arm_IV });
 
         // LuV
@@ -1102,9 +1080,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.gearGt, 2))
             .circuit(14)
             .itemOutputs(GregtechItemList.Generator_SemiFluid_LV.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -1128,9 +1104,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.gearGt, 2))
             .circuit(14)
             .itemOutputs(GregtechItemList.Generator_SemiFluid_MV.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -1154,9 +1128,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials.Chrome, Shapes.gearGt, (int) (2)))
             .circuit(14)
             .itemOutputs(GregtechItemList.Generator_SemiFluid_HV.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -1180,9 +1152,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.gearGt, 2))
             .circuit(14)
             .itemOutputs(GregtechItemList.Generator_SemiFluid_EV.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -1207,10 +1177,8 @@ public class RecipesMachinesTiered {
             .circuit(14)
             .itemOutputs(GregtechItemList.Generator_SemiFluid_IV.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Polytetrafluoroethylene,
-                    FluidShapes.fluidMolten,
-                    (int) (1 * INGOTS)))
+                MaterialLibAPI
+                    .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -1359,40 +1327,40 @@ public class RecipesMachinesTiered {
             GregtechItemList.Pollution_Cleaner_LV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
-                OrePrefixes.plate.ingredient(Materials.Tin), 'M', ItemList.Electric_Motor_LV, 'C',
-                "circuitBasic", 'H', ItemList.Hull_LV });
+                OrePrefixes.plate.ingredient(Materials.Tin), 'M', ItemList.Electric_Motor_LV, 'C', "circuitBasic", 'H',
+                ItemList.Hull_LV });
 
         // MV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_MV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
-                OrePrefixes.plate.ingredient(Materials.Copper), 'M', ItemList.Electric_Motor_MV, 'C',
-                "circuitGood", 'H', ItemList.Hull_MV });
+                OrePrefixes.plate.ingredient(Materials.Copper), 'M', ItemList.Electric_Motor_MV, 'C', "circuitGood",
+                'H', ItemList.Hull_MV });
 
         // HV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_HV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
-                OrePrefixes.plate.ingredient(Materials.Bronze), 'M', ItemList.Electric_Motor_HV, 'C',
-                "circuitAdvanced", 'H', ItemList.Hull_HV });
+                OrePrefixes.plate.ingredient(Materials.Bronze), 'M', ItemList.Electric_Motor_HV, 'C', "circuitAdvanced",
+                'H', ItemList.Hull_HV });
 
         // EV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_EV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
-                OrePrefixes.plate.ingredient(Materials.Iron), 'M', ItemList.Electric_Motor_EV, 'C',
-                "circuitData", 'H', ItemList.Hull_EV });
+                OrePrefixes.plate.ingredient(Materials.Iron), 'M', ItemList.Electric_Motor_EV, 'C', "circuitData", 'H',
+                ItemList.Hull_EV });
 
         // IV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_IV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
-                OrePrefixes.plate.ingredient(Materials.Steel), 'M', ItemList.Electric_Motor_IV, 'C',
-                "circuitElite", 'H', ItemList.Hull_IV });
+                OrePrefixes.plate.ingredient(Materials.Steel), 'M', ItemList.Electric_Motor_IV, 'C', "circuitElite",
+                'H', ItemList.Hull_IV });
 
         // LuV
         GTModHandler.addCraftingRecipe(
@@ -1423,8 +1391,8 @@ public class RecipesMachinesTiered {
             GregtechItemList.Pollution_Cleaner_MAX.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
-                MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plate, 1), 'M',
-                ItemList.Electric_Motor_UHV, 'C', "circuitInfinite", 'H', ItemList.Hull_MAX });
+                MaterialLibAPI.getStack(Materials.Zeron100, Shapes.plate, 1), 'M', ItemList.Electric_Motor_UHV, 'C',
+                "circuitInfinite", 'H', ItemList.Hull_MAX });
     }
 
     private static void tanks() {
@@ -1451,8 +1419,7 @@ public class RecipesMachinesTiered {
             GregtechItemList.GTFluidTank_ULV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "TST", "IPI", "IBI", 'T', OrePrefixes.plate.ingredient(Materials.Tin), 'S',
-                OrePrefixes.plate.ingredient(Materials.Steel), 'I',
-                OrePrefixes.plate.ingredient(Materials.Iron), 'P',
+                OrePrefixes.plate.ingredient(Materials.Steel), 'I', OrePrefixes.plate.ingredient(Materials.Iron), 'P',
                 OrePrefixes.pipeLarge.ingredient(Materials.Clay), 'B', new ItemStack(Items.water_bucket) });
 
         // LV Fluid Tank
@@ -1460,8 +1427,7 @@ public class RecipesMachinesTiered {
             GregtechItemList.GTFluidTank_LV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SIS", "BPB", "BUB", 'S', OrePrefixes.plate.ingredient(Materials.Steel), 'I',
-                OrePrefixes.plate.ingredient(Materials.Iron), 'B',
-                OrePrefixes.plate.ingredient(Materials.Bronze), 'P',
+                OrePrefixes.plate.ingredient(Materials.Iron), 'B', OrePrefixes.plate.ingredient(Materials.Bronze), 'P',
                 OrePrefixes.pipeHuge.ingredient(Materials.Clay), 'U', ItemList.Electric_Pump_LV });
 
         // MV Fluid Tank
@@ -1469,8 +1435,7 @@ public class RecipesMachinesTiered {
             GregtechItemList.GTFluidTank_MV.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "DBD", "SPS", "SUS", 'D', OrePrefixes.plate.ingredient(Materials.DarkSteel), 'B',
-                OrePrefixes.plate.ingredient(Materials.Bronze), 'S',
-                OrePrefixes.plate.ingredient(Materials.Steel), 'P',
+                OrePrefixes.plate.ingredient(Materials.Bronze), 'S', OrePrefixes.plate.ingredient(Materials.Steel), 'P',
                 OrePrefixes.pipeMedium.ingredient(Materials.Bronze), 'U', ItemList.Electric_Pump_LV });
 
         // HV Fluid Tank

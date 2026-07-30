@@ -7,9 +7,6 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -20,6 +17,9 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
@@ -82,9 +82,7 @@ public class CokeAndPyrolyseOven {
             .itemInputs(plant)
             .circuit(3)
             .itemOutputs(charcoal)
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (2_000)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (2_000)))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(25 * SECONDS)
             .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
@@ -93,14 +91,9 @@ public class CokeAndPyrolyseOven {
             .itemInputs(plant)
             .circuit(4)
             .itemOutputs(charcoal)
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, (int) (2_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, (int) (2_000)))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.CharcoalByproducts,
-                    FluidShapes.fluidGas,
-                    (int) (4_000)))
+                MaterialLibAPI.getFluidStack(Materials.CharcoalByproducts, FluidShapes.fluidGas, (int) (4_000)))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(250 * TICKS)
             .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
@@ -110,9 +103,7 @@ public class CokeAndPyrolyseOven {
             .itemInputs(charcoal)
             .circuit(3)
             .itemOutputs(coke)
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (4_000)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (4_000)))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(50 * SECONDS)
             .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
@@ -121,14 +112,9 @@ public class CokeAndPyrolyseOven {
             .itemInputs(charcoal)
             .circuit(4)
             .itemOutputs(coke)
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, (int) (1_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, (int) (1_000)))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.CharcoalByproducts,
-                    FluidShapes.fluidGas,
-                    (int) (2_000)))
+                MaterialLibAPI.getFluidStack(Materials.CharcoalByproducts, FluidShapes.fluidGas, (int) (2_000)))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(25 * SECONDS)
             .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
@@ -139,9 +125,7 @@ public class CokeAndPyrolyseOven {
             .circuit(5)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (5)))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 2_000))
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.WoodTar, FluidShapes.fluidLiquid, (int) (4_000)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.WoodTar, FluidShapes.fluidLiquid, (int) (4_000)))
             .eut(TierEU.RECIPE_HV / 2)
             .duration(75 * SECONDS)
             .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
@@ -151,9 +135,7 @@ public class CokeAndPyrolyseOven {
             .circuit(6)
             .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (5)))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 2_000))
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.WoodGas, FluidShapes.fluidGas, (int) (6_000)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.WoodGas, FluidShapes.fluidGas, (int) (6_000)))
             .eut(TierEU.RECIPE_HV / 2)
             .duration(75 * SECONDS)
             .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
