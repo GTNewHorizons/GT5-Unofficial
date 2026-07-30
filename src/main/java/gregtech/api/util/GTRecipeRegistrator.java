@@ -48,7 +48,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2ArcSmelting;
+import gregtech.api.enums.materials2.MaterialArcSmeltHelper;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
@@ -273,13 +273,13 @@ public class GTRecipeRegistrator {
                 byProduct03));
     }
 
-    /// The gas-conditional arc-smelting recipe is consulted through [Materials2ArcSmelting#withGas]'s declared
+    /// The gas-conditional arc-smelting recipe is consulted through [MaterialArcSmeltHelper#withGas]'s declared
     /// table.
     public static boolean hasReverseArcSmeltingRecipe(Material material) {
         if (material == null) return false;
         Material arcSmeltingMaterial = MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(material));
         if (arcSmeltingMaterial != material) return true;
-        return !Materials2ArcSmelting.withGas(arcSmeltingMaterial)
+        return !MaterialArcSmeltHelper.withGas(arcSmeltingMaterial)
             .isEmpty();
     }
 
@@ -442,7 +442,7 @@ public class GTRecipeRegistrator {
         for (ItemStack output : outputs) {
             ItemData outputData = GTOreDictUnificator.getAssociation(output);
             if (outputData != null) gases.addAll(
-                Materials2ArcSmelting.withGas(outputData.mMaterial.mMaterial)
+                MaterialArcSmeltHelper.withGas(outputData.mMaterial.mMaterial)
                     .keySet());
         }
         return gases;
@@ -455,7 +455,7 @@ public class GTRecipeRegistrator {
             ItemStack output = outputs.get(i);
             ItemData outputData = GTOreDictUnificator.getAssociation(output);
             Material gasSmeltingMaterial = outputData == null ? null
-                : Materials2ArcSmelting.withGas(outputData.mMaterial.mMaterial)
+                : MaterialArcSmeltHelper.withGas(outputData.mMaterial.mMaterial)
                     .get(gas);
             if (gasSmeltingMaterial != null) {
                 long materialAmount = outputData.mMaterial.mAmount * output.stackSize;
