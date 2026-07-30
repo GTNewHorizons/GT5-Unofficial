@@ -21,7 +21,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
@@ -108,7 +107,6 @@ import gregtech.common.config.Worldgen;
 import gregtech.common.misc.GTMiscCommand;
 import gregtech.common.misc.GTPowerfailCommand;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.misc.MaterialDataDump;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
@@ -646,10 +644,6 @@ public class GTMod {
         GregTechAPI.sGTCompleteLoad = null;
         GregTechAPI.sFullLoadFinished = true;
 
-        if (Boolean.getBoolean("gt.dumpMaterialData")) {
-            MaterialDataDump.writeAll(new File(Launch.minecraftHome, "material-dump"));
-            gregtech.common.misc.MaterialGateDump.write();
-        }
     }
 
     @Mod.EventHandler

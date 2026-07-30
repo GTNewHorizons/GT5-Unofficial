@@ -20,7 +20,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
-import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -89,15 +88,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     }
 
     private void registerMolten(Material material, int i) {
-        if (MetaGeneratedItemX32.DUMP_MODE) {
-            MetaGeneratedItemX32.DUMP_VARIANTS.add(
-                new MetaGeneratedItemX32.LegacyVariant(
-                    "metaitem.99",
-                    cellMolten.getName(),
-                    MaterialUtils.internalName(material),
-                    i));
-        }
-        if (!MetaGeneratedItemX32.DUMP_MODE && MaterialParts.isCutOver(cellMolten, material)) return;
+        if (MaterialParts.isCutOver(cellMolten, material)) return;
 
         ItemStack tStack = new ItemStack(this, 1, i);
         enabled.set(i);
@@ -112,15 +103,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     private void registerCracked(Material material, int i) {
         int offset = 10_000;
         for (OrePrefixes prefix : CRACKED_CELL_TYPES) {
-            if (MetaGeneratedItemX32.DUMP_MODE) {
-                MetaGeneratedItemX32.DUMP_VARIANTS.add(
-                    new MetaGeneratedItemX32.LegacyVariant(
-                        "metaitem.99",
-                        prefix.getName(),
-                        MaterialUtils.internalName(material),
-                        offset + i));
-            }
-            if (MetaGeneratedItemX32.DUMP_MODE || !MaterialParts.isCutOver(prefix, material)) {
+            if (!MaterialParts.isCutOver(prefix, material)) {
                 ItemStack tStack = new ItemStack(this, 1, offset + i);
                 enabled.set(offset + i);
 
