@@ -27,7 +27,7 @@ public class Mixer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Thorium232, Shapes.dust, 10),
-                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, 1))
             .circuit(2)
             .itemOutputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials))
             .duration(20 * SECONDS)

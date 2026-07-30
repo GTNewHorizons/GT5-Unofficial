@@ -70,7 +70,7 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
                     MTEPurificationUnitFlocculation.INPUT_CHEMICAL_PER_LEVEL));
         } else if (stack.isItemEqual(
             GTUtility.getFluidDisplayStack(
-                MaterialLibAPI.getFluidStack(Materials.FlocculationWasteLiquid, FluidShapes.fluidLiquid, (int) (1_000)),
+                MaterialLibAPI.getFluidStack(Materials.FlocculationWasteLiquid, FluidShapes.fluidLiquid, 1_000),
                 false))) {
                     currentTip.add(StatCollector.translateToLocal("GT5U.nei.purified_water.grade_3.2"));
                 }

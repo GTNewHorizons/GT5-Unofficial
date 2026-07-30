@@ -43,7 +43,7 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.IC2_Fuel_Rod_Empty.get(1),
-                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dustTiny, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dustTiny, 1))
             .itemOutputs(ItemList.RodLithium.get(1))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV / 2)
@@ -52,7 +52,7 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodLithium.get(1))
             .itemOutputs(ItemList.IC2_Fuel_Rod_Empty.get(1))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Tritium, FluidShapes.fluidGas, (int) (32)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Tritium, FluidShapes.fluidGas, 32))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(fluidExtractionRecipes);
@@ -61,9 +61,9 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.IC2_Fuel_Rod_Empty.get(1),
-                MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, (int) (9)))
+                MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, 9))
             .itemOutputs(ItemList.RodGlowstone.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int) (250)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 250))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);
@@ -71,9 +71,9 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodGlowstone.get(1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Sunnarium, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Sunnarium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
@@ -83,34 +83,28 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemList.IC2_Fuel_Rod_Empty.get(1),
-                    MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, (int) (3)))
+                    MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, 3))
                 .itemOutputs(ItemList.RodThorium.get(1L))
                 .duration(1 * SECONDS + 10 * TICKS)
                 .eut(TierEU.RECIPE_LV / 2)
                 .addTo(cannerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.RodThorium.get(2),
-                    MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, (int) (4)))
+                .itemInputs(ItemList.RodThorium.get(2), MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, 4))
                 .circuit(2)
                 .itemOutputs(ItemList.RodThorium2.get(1))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.RodThorium.get(4),
-                    MaterialLibAPI.getStack(Materials.Steel, Shapes.stickLong, (int) (6)))
+                .itemInputs(ItemList.RodThorium.get(4), MaterialLibAPI.getStack(Materials.Steel, Shapes.stickLong, 6))
                 .circuit(4)
                 .itemOutputs(ItemList.RodThorium4.get(1))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.RodThorium2.get(2),
-                    MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, (int) (4)))
+                .itemInputs(ItemList.RodThorium2.get(2), MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, 4))
                 .circuit(5)
                 .itemOutputs(ItemList.RodThorium4.get(1))
                 .duration(10 * SECONDS)
@@ -120,27 +114,27 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodThorium.get(1))
                 .itemOutputs(
-                    MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dustSmall, (int) (2)),
-                    MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (1)))
+                    MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dustSmall, 2),
+                    MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1))
                 .duration(25 * SECONDS)
                 .eut(48)
                 .addTo(thermalCentrifugeRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodThorium2.get(1))
                 .itemOutputs(
-                    MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, (int) (2)),
-                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (3)))
+                    MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, 2),
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 3))
                 .duration(25 * SECONDS)
                 .eut(48)
                 .addTo(thermalCentrifugeRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.DepletedRodThorium4.get(1))
                 .itemOutputs(
-                    MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dust, (int) (2)),
-                    MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, (int) (4)),
-                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (6)))
+                    MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dust, 2),
+                    MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, 4),
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 6))
                 .duration(25 * SECONDS)
                 .eut(48)
                 .addTo(thermalCentrifugeRecipes);
@@ -149,13 +143,13 @@ public class FissionFuelLoader implements Runnable {
                 .itemInputs(ItemList.DepletedRodThorium.get(8))
                 .itemOutputs(
                     ItemList.IC2_Fuel_Rod_Empty.get(8),
-                    MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, (int) (2)),
+                    MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, 2),
                     MaterialLibAPI.getStack(Materials.Thorium232, Shapes.dust, 1),
-                    MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dustSmall, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dustSmall, 1),
                     MaterialLibAPI.getStack(Materials.Polonium, Shapes.dustSmall, 1),
                     MaterialLibAPI.getStack(Materials.Thallium, Shapes.dustTiny, 1))
                 .outputChances(100_00, 100_00, 50_00, 50_00, 50_00, 25_00)
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (30)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, 30))
                 .duration(2 * MINUTES + 5 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeRecipes);
@@ -163,13 +157,13 @@ public class FissionFuelLoader implements Runnable {
                 .itemInputs(ItemList.DepletedRodThorium2.get(4))
                 .itemOutputs(
                     ItemList.IC2_Fuel_Rod_Empty.get(8),
-                    MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, (int) (2)),
+                    MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, 2),
                     MaterialLibAPI.getStack(Materials.Thorium232, Shapes.dust, 1),
-                    MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dustSmall, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dustSmall, 1),
                     MaterialLibAPI.getStack(Materials.Polonium, Shapes.dustSmall, 1),
                     MaterialLibAPI.getStack(Materials.Thallium, Shapes.dustTiny, 1))
                 .outputChances(100_00, 100_00, 50_00, 50_00, 50_00, 25_00)
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (30)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, 30))
                 .duration(2 * MINUTES + 5 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeRecipes);
@@ -177,13 +171,13 @@ public class FissionFuelLoader implements Runnable {
                 .itemInputs(ItemList.DepletedRodThorium4.get(2))
                 .itemOutputs(
                     ItemList.IC2_Fuel_Rod_Empty.get(8),
-                    MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, (int) (2)),
+                    MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, 2),
                     MaterialLibAPI.getStack(Materials.Thorium232, Shapes.dust, 1),
-                    MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dustSmall, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dustSmall, 1),
                     MaterialLibAPI.getStack(Materials.Polonium, Shapes.dustSmall, 1),
                     MaterialLibAPI.getStack(Materials.Thallium, Shapes.dustTiny, 1))
                 .outputChances(100_00, 100_00, 50_00, 50_00, 50_00, 25_00)
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (30)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, 30))
                 .duration(2 * MINUTES + 5 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeRecipes);
@@ -205,27 +199,21 @@ public class FissionFuelLoader implements Runnable {
                 .addTo(cannerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.RodUranium.get(2),
-                    MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, (int) (4)))
+                .itemInputs(ItemList.RodUranium.get(2), MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, 4))
                 .circuit(2)
                 .itemOutputs(ItemList.RodUranium2.get(1))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.RodUranium.get(4),
-                    MaterialLibAPI.getStack(Materials.Steel, Shapes.stickLong, (int) (6)))
+                .itemInputs(ItemList.RodUranium.get(4), MaterialLibAPI.getStack(Materials.Steel, Shapes.stickLong, 6))
                 .circuit(4)
                 .itemOutputs(ItemList.RodUranium4.get(1))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.RodUranium2.get(2),
-                    MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, (int) (4)))
+                .itemInputs(ItemList.RodUranium2.get(2), MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, 4))
                 .circuit(5)
                 .itemOutputs(ItemList.RodUranium4.get(1))
                 .duration(10 * SECONDS)
@@ -237,7 +225,7 @@ public class FissionFuelLoader implements Runnable {
                 .itemOutputs(
                     ItemList.IC2_Plutonium_Small.get(1),
                     ItemList.IC2_Uranium_238.get(4),
-                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (1)))
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(thermalCentrifugeRecipes);
@@ -246,7 +234,7 @@ public class FissionFuelLoader implements Runnable {
                 .itemOutputs(
                     ItemList.IC2_Plutonium_Small.get(2),
                     ItemList.IC2_Uranium_238.get(8),
-                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (3)))
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 3))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(thermalCentrifugeRecipes);
@@ -255,7 +243,7 @@ public class FissionFuelLoader implements Runnable {
                 .itemOutputs(
                     ItemList.IC2_Plutonium_Small.get(4),
                     ItemList.IC2_Uranium_238.get(16),
-                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (6)))
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 6))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(thermalCentrifugeRecipes);
@@ -264,13 +252,13 @@ public class FissionFuelLoader implements Runnable {
                 .itemInputs(ItemList.DepletedRodUranium.get(8))
                 .itemOutputs(
                     ItemList.IC2_Fuel_Rod_Empty.get(8),
-                    MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (2)),
+                    MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 2),
                     MaterialLibAPI.getStack(Materials.Uranium232, Shapes.dustSmall, 1),
                     MaterialLibAPI.getStack(Materials.Uranium233, Shapes.dustSmall, 1),
-                    MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dustSmall, (int) (1)),
-                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, (int) (1)))
+                    MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dustSmall, 1),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, 1))
                 .outputChances(100_00, 100_00, 10_00, 10_00, 10_00, 5_00)
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (60)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, 60))
                 .duration(4 * MINUTES + 10 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeRecipes);
@@ -278,13 +266,13 @@ public class FissionFuelLoader implements Runnable {
                 .itemInputs(ItemList.DepletedRodUranium2.get(4))
                 .itemOutputs(
                     ItemList.IC2_Fuel_Rod_Empty.get(8),
-                    MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (2)),
+                    MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 2),
                     MaterialLibAPI.getStack(Materials.Uranium232, Shapes.dustSmall, 1),
                     MaterialLibAPI.getStack(Materials.Uranium233, Shapes.dustSmall, 1),
-                    MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dustSmall, (int) (1)),
-                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, (int) (1)))
+                    MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dustSmall, 1),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, 1))
                 .outputChances(100_00, 100_00, 10_00, 10_00, 10_00, 5_00)
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (60)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, 60))
                 .duration(4 * MINUTES + 10 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeRecipes);
@@ -292,13 +280,13 @@ public class FissionFuelLoader implements Runnable {
                 .itemInputs(ItemList.DepletedRodUranium4.get(2))
                 .itemOutputs(
                     ItemList.IC2_Fuel_Rod_Empty.get(8),
-                    MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (2)),
+                    MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 2),
                     MaterialLibAPI.getStack(Materials.Uranium232, Shapes.dustSmall, 1),
                     MaterialLibAPI.getStack(Materials.Uranium233, Shapes.dustSmall, 1),
-                    MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dustSmall, (int) (1)),
-                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, (int) (1)))
+                    MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dustSmall, 1),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, 1))
                 .outputChances(100_00, 100_00, 10_00, 10_00, 10_00, 5_00)
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (60)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, 60))
                 .duration(4 * MINUTES + 10 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeRecipes);
@@ -320,23 +308,21 @@ public class FissionFuelLoader implements Runnable {
                 .addTo(cannerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.RodMOX.get(2), MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, (int) (4)))
+                .itemInputs(ItemList.RodMOX.get(2), MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, 4))
                 .circuit(2)
                 .itemOutputs(ItemList.RodMOX2.get(1))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.RodMOX.get(4),
-                    MaterialLibAPI.getStack(Materials.Steel, Shapes.stickLong, (int) (6)))
+                .itemInputs(ItemList.RodMOX.get(4), MaterialLibAPI.getStack(Materials.Steel, Shapes.stickLong, 6))
                 .circuit(4)
                 .itemOutputs(ItemList.RodMOX4.get(1))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.RodMOX2.get(2), MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, (int) (4)))
+                .itemInputs(ItemList.RodMOX2.get(2), MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, 4))
                 .circuit(5)
                 .itemOutputs(ItemList.RodMOX4.get(1))
                 .duration(10 * SECONDS)
@@ -348,7 +334,7 @@ public class FissionFuelLoader implements Runnable {
                 .itemOutputs(
                     ItemList.IC2_Plutonium_Small.get(1),
                     ItemList.IC2_Plutonium.get(3),
-                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (1)))
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(thermalCentrifugeRecipes);
@@ -357,7 +343,7 @@ public class FissionFuelLoader implements Runnable {
                 .itemOutputs(
                     ItemList.IC2_Plutonium_Small.get(2),
                     ItemList.IC2_Plutonium.get(6),
-                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (3)))
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 3))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(thermalCentrifugeRecipes);
@@ -366,7 +352,7 @@ public class FissionFuelLoader implements Runnable {
                 .itemOutputs(
                     ItemList.IC2_Plutonium_Small.get(4),
                     ItemList.IC2_Plutonium.get(12),
-                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (6)))
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 6))
                 .duration(25 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(thermalCentrifugeRecipes);
@@ -375,13 +361,13 @@ public class FissionFuelLoader implements Runnable {
                 .itemInputs(ItemList.DepletedRodMOX.get(8))
                 .itemOutputs(
                     ItemList.IC2_Fuel_Rod_Empty.get(8),
-                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (2)),
-                    MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dustTiny, (int) (1)),
-                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, 2),
+                    MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dustTiny, 1),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, 1),
                     MaterialLibAPI.getStack(Materials.Plutonium238, Shapes.dustTiny, 1),
-                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, (int) (1)))
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, 1))
                 .outputChances(100_00, 100_00, 5_00, 5_00, 5_00, 5_00)
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (90)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, 90))
                 .duration(6 * MINUTES + 15 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeRecipes);
@@ -389,13 +375,13 @@ public class FissionFuelLoader implements Runnable {
                 .itemInputs(ItemList.DepletedRodMOX2.get(4))
                 .itemOutputs(
                     ItemList.IC2_Fuel_Rod_Empty.get(8),
-                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (2)),
-                    MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dustTiny, (int) (1)),
-                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, 2),
+                    MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dustTiny, 1),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, 1),
                     MaterialLibAPI.getStack(Materials.Plutonium238, Shapes.dustTiny, 1),
-                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, (int) (1)))
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, 1))
                 .outputChances(100_00, 100_00, 5_00, 5_00, 5_00, 5_00)
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (90)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, 90))
                 .duration(6 * MINUTES + 15 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeRecipes);
@@ -403,13 +389,13 @@ public class FissionFuelLoader implements Runnable {
                 .itemInputs(ItemList.DepletedRodMOX4.get(2))
                 .itemOutputs(
                     ItemList.IC2_Fuel_Rod_Empty.get(8),
-                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (2)),
-                    MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dustTiny, (int) (1)),
-                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, 2),
+                    MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dustTiny, 1),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, 1),
                     MaterialLibAPI.getStack(Materials.Plutonium238, Shapes.dustTiny, 1),
-                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, (int) (1)))
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dustTiny, 1))
                 .outputChances(100_00, 100_00, 5_00, 5_00, 5_00, 5_00)
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (90)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, 90))
                 .duration(6 * MINUTES + 15 * SECONDS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(centrifugeRecipes);
@@ -455,14 +441,14 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodHighDensityUranium.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(1),
-                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, 1))
             .outputChances(100_00, 50_00, 100_00, 90_00, 12_50, 7_50)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, (int) (32)),
+                MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, 32),
                 MaterialLibAPI.getFluidStack(Materials.TungstenCarbide, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -471,11 +457,11 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodHighDensityUranium.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(1),
-                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, 1))
             .outputChances(100_00, 50_00, 100_00, 90_00, 12_50, 7_50)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.TungstenCarbide, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
@@ -487,14 +473,14 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodHighDensityUranium2.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(2),
-                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, 1))
             .outputChances(100_00, 100_00, 100_00, 90_00, 25_00, 15_00)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, (int) (64)),
+                MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, 64),
                 MaterialLibAPI.getFluidStack(Materials.TungstenCarbide, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -503,11 +489,11 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodHighDensityUranium2.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(2),
-                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, 1))
             .outputChances(100_00, 100_00, 100_00, 90_00, 25_00, 15_00)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.TungstenCarbide, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
@@ -519,14 +505,14 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodHighDensityUranium4.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(4),
-                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 8),
+                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 8),
+                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, 1))
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, (int) (128)),
+                MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, 128),
                 MaterialLibAPI.getFluidStack(Materials.TungstenCarbide, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -535,11 +521,11 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodHighDensityUranium4.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(4),
-                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 8),
+                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 8),
+                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, 1))
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.TungstenCarbide, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
@@ -588,14 +574,14 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodHighDensityPlutonium.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(1),
-                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, 1))
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, (int) (32)),
+                MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, 32),
                 MaterialLibAPI.getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -604,11 +590,11 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodHighDensityPlutonium.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(1),
-                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, 1))
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(10 * SECONDS)
@@ -619,14 +605,14 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodHighDensityPlutonium2.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(2),
-                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (2)))
+                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, 8),
+                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, 2))
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, (int) (64)),
+                MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, 64),
                 MaterialLibAPI.getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -635,11 +621,11 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodHighDensityPlutonium2.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(2),
-                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (2)))
+                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, 8),
+                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, 2))
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(10 * SECONDS)
@@ -650,14 +636,14 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodHighDensityPlutonium4.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(4),
-                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (16)),
-                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (4)))
+                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, 16),
+                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, 8),
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 8),
+                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, 4))
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, (int) (128)),
+                MaterialLibAPI.getFluidStack(Materials.Argon, FluidShapes.fluidGas, 128),
                 MaterialLibAPI.getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -666,11 +652,11 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodHighDensityPlutonium4.get(1))
             .itemOutputs(
                 ItemRefer.Advanced_Fuel_Rod.get(4),
-                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (16)),
-                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (4)))
+                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, 16),
+                MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, 8),
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 8),
+                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, 4))
             .outputChances(100_00, 100_00, 100_00, 90_00, 50_00, 30_00)
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(10 * SECONDS)
@@ -683,7 +669,7 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemRefer.Advanced_Fuel_Rod.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.UraniumBasedLiquidFuelExcitedState, FluidShapes.fluidLiquid, (int) (250)))
+                    .getFluidStack(Materials.UraniumBasedLiquidFuelExcitedState, FluidShapes.fluidLiquid, 250))
             .itemOutputs(ItemList.RodExcitedUranium.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -721,8 +707,7 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodExcitedUranium.get(1))
             .itemOutputs(ItemRefer.Advanced_Fuel_Rod.get(1))
             .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.UraniumBasedLiquidFuelDepleted, FluidShapes.fluidLiquid, (int) (250)))
+                MaterialLibAPI.getFluidStack(Materials.UraniumBasedLiquidFuelDepleted, FluidShapes.fluidLiquid, 250))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(centrifugeRecipes);
@@ -730,8 +715,7 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodExcitedUranium2.get(1))
             .itemOutputs(ItemRefer.Advanced_Fuel_Rod.get(2))
             .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.UraniumBasedLiquidFuelDepleted, FluidShapes.fluidLiquid, (int) (500)))
+                MaterialLibAPI.getFluidStack(Materials.UraniumBasedLiquidFuelDepleted, FluidShapes.fluidLiquid, 500))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(centrifugeRecipes);
@@ -739,8 +723,7 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodExcitedUranium4.get(1))
             .itemOutputs(ItemRefer.Advanced_Fuel_Rod.get(4))
             .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.UraniumBasedLiquidFuelDepleted, FluidShapes.fluidLiquid, (int) (1_000)))
+                MaterialLibAPI.getFluidStack(Materials.UraniumBasedLiquidFuelDepleted, FluidShapes.fluidLiquid, 1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(centrifugeRecipes);
@@ -749,10 +732,8 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemRefer.Advanced_Fuel_Rod.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.PlutoniumBasedLiquidFuelExcitedState,
-                    FluidShapes.fluidLiquid,
-                    (int) (250)))
+                MaterialLibAPI
+                    .getFluidStack(Materials.PlutoniumBasedLiquidFuelExcitedState, FluidShapes.fluidLiquid, 250))
             .itemOutputs(ItemList.RodExcitedPlutonium.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -790,8 +771,7 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodExcitedPlutonium.get(1))
             .itemOutputs(ItemRefer.Advanced_Fuel_Rod.get(1))
             .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.PlutoniumBasedLiquidFuelDepleted, FluidShapes.fluidLiquid, (int) (250)))
+                MaterialLibAPI.getFluidStack(Materials.PlutoniumBasedLiquidFuelDepleted, FluidShapes.fluidLiquid, 250))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(centrifugeRecipes);
@@ -799,8 +779,7 @@ public class FissionFuelLoader implements Runnable {
             .itemInputs(ItemList.DepletedRodExcitedPlutonium2.get(1))
             .itemOutputs(ItemRefer.Advanced_Fuel_Rod.get(2))
             .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.PlutoniumBasedLiquidFuelDepleted, FluidShapes.fluidLiquid, (int) (500)))
+                MaterialLibAPI.getFluidStack(Materials.PlutoniumBasedLiquidFuelDepleted, FluidShapes.fluidLiquid, 500))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(centrifugeRecipes);
@@ -809,7 +788,7 @@ public class FissionFuelLoader implements Runnable {
             .itemOutputs(ItemRefer.Advanced_Fuel_Rod.get(4))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.PlutoniumBasedLiquidFuelDepleted, FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.PlutoniumBasedLiquidFuelDepleted, FluidShapes.fluidLiquid, 1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(centrifugeRecipes);
@@ -818,16 +797,14 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Large_Fluid_Cell_TungstenSteel.get(1L),
-                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.dust, (int) (3)))
+                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.dust, 3))
             .itemOutputs(ItemList.RodNaquadah.get(1L))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(cannerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodNaquadah.get(2),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stick, (int) (4)))
+            .itemInputs(ItemList.RodNaquadah.get(2), MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stick, 4))
             .circuit(2)
             .itemOutputs(ItemList.RodNaquadah2.get(1))
             .duration(5 * SECONDS)
@@ -836,16 +813,14 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.RodNaquadah.get(4),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stickLong, (int) (6)))
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stickLong, 6))
             .circuit(4)
             .itemOutputs(ItemList.RodNaquadah4.get(1))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(400)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodNaquadah2.get(2),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stick, (int) (4)))
+            .itemInputs(ItemList.RodNaquadah2.get(2), MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stick, 4))
             .circuit(5)
             .itemOutputs(ItemList.RodNaquadah4.get(1))
             .duration(5 * SECONDS)
@@ -867,12 +842,12 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodNaquadah.get(1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dustSmall, (int) (2)),
-                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.dustTiny, (int) (2)),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dustSmall, 2),
+                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.dustTiny, 2),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, 8),
+                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, 1))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -880,12 +855,12 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodNaquadah2.get(1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.dustTiny, (int) (4)),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, (int) (18)),
-                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, (int) (2)))
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.dustTiny, 4),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, 18),
+                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, 2))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -893,12 +868,12 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodNaquadah4.get(1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.dustTiny, (int) (8)),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, (int) (38)),
-                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, (int) (4)))
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.dustTiny, 8),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, 38),
+                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, 4))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -909,9 +884,9 @@ public class FissionFuelLoader implements Runnable {
                 ItemList.DepletedRodNaquadah4.get(8),
                 MaterialLibAPI.getStack(Materials.Zirconium, Shapes.dust, 64),
                 MaterialLibAPI.getStack(Materials.Zirconium, Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, (int) (16)))
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, 16))
             .outputChances(100_00, 50_00, 50_00, 100_00, 100_00, 100_00)
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -921,16 +896,14 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Large_Fluid_Cell_TungstenSteel.get(1L),
-                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dust, (int) (3)))
+                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dust, 3))
             .itemOutputs(ItemList.RodNaquadria.get(1L))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(cannerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodNaquadria.get(2),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stick, (int) (4)))
+            .itemInputs(ItemList.RodNaquadria.get(2), MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stick, 4))
             .circuit(2)
             .itemOutputs(ItemList.RodNaquadria2.get(1))
             .duration(5 * SECONDS)
@@ -939,7 +912,7 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.RodNaquadria.get(4),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stickLong, (int) (6)))
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stickLong, 6))
             .circuit(4)
             .itemOutputs(ItemList.RodNaquadria4.get(1))
             .duration(7 * SECONDS + 10 * TICKS)
@@ -948,7 +921,7 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.RodNaquadria2.get(2),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stick, (int) (4)))
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stick, 4))
             .circuit(5)
             .itemOutputs(ItemList.RodNaquadria4.get(1))
             .duration(5 * SECONDS)
@@ -958,12 +931,12 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodNaquadria.get(1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.dustSmall, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dustTiny, (int) (2)),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.dustSmall, 2),
+                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dustTiny, 2),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, 8),
+                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, 1))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -971,12 +944,12 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodNaquadria2.get(1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dustTiny, (int) (4)),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, (int) (18)),
-                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, (int) (2)))
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dustTiny, 4),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, 18),
+                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, 2))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -984,12 +957,12 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.DepletedRodNaquadria4.get(1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dustTiny, (int) (8)),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, (int) (38)),
-                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, (int) (4)))
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dustTiny, 8),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, 38),
+                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, 4))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -1037,10 +1010,10 @@ public class FissionFuelLoader implements Runnable {
                 MaterialLibAPI.getStack(Materials.Zirconium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Tiberium, Shapes.dustSmall, 2),
                 MaterialLibAPI.getStack(Materials.Zirconium, Shapes.dust, 2),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, 8),
+                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, 1))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, (int) (1)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, 1))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -1051,10 +1024,10 @@ public class FissionFuelLoader implements Runnable {
                 MaterialLibAPI.getStack(Materials.Zirconium, Shapes.dust, 2),
                 MaterialLibAPI.getStack(Materials.Tiberium, Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials.Zirconium, Shapes.dust, 4),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, (int) (18)),
-                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, (int) (2)))
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, 18),
+                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, 2))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, (int) (2)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, 2))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -1065,10 +1038,10 @@ public class FissionFuelLoader implements Runnable {
                 MaterialLibAPI.getStack(Materials.Zirconium, Shapes.dust, 4),
                 MaterialLibAPI.getStack(Materials.Tiberium, Shapes.dust, 2),
                 MaterialLibAPI.getStack(Materials.Zirconium, Shapes.dust, 8),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, (int) (38)),
-                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, (int) (4)))
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, 38),
+                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, 4))
             .outputChances(100_00, 50_00, 50_00, 25_00, 100_00, 100_00)
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, (int) (4)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, 4))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);

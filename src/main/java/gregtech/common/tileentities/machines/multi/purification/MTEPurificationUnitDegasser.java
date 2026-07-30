@@ -116,10 +116,10 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
 
     // Supplier because werkstoff loads later than multiblock controllers... fml
     private static final Supplier<FluidStack[]> INERT_GASES = () -> new FluidStack[] {
-        MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int) (10_000)),
-        MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, (int) (7_500)),
-        MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (5_000)),
-        MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, (int) (2_500)) };
+        MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 10_000),
+        MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, 7_500),
+        MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, 5_000),
+        MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, 2_500) };
 
     private static final class SuperconductorMaterial {
 
@@ -157,7 +157,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     private static final FluidStack CATALYST_FLUID = MaterialLibAPI
         .getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, (int) (32 * INGOTS));
     private static final FluidStack COOLANT_FLUID = MaterialLibAPI
-        .getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, (int) (10_000));
+        .getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, 10_000);
 
     private static final long CONSUME_INTERVAL = 20;
 

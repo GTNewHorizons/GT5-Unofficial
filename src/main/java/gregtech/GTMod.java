@@ -501,11 +501,11 @@ public class GTMod {
         GTOreDictUnificator.addItemData(
             GTModHandler.getRecipeOutput(
                 null,
-                MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, 1),
                 null,
-                MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, 1),
                 null,
-                MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, 1),
                 null,
                 null,
                 null),

@@ -258,7 +258,7 @@ public class CrackRecipeAdder {
             .addTo(fluidSolidifierRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Pipe_Huge.get(0))
-            .fluidInputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (1728)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, 1728))
             .itemOutputs(MaterialLibAPI.getStack(material, PipeShapes.pipeHuge, 1))
             .duration(MaterialUtils.mass(material) * 24 * TICKS)
             .eut(TierEU.RECIPE_LV)

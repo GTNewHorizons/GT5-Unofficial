@@ -280,22 +280,22 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             return CheckRecipeResultRegistry.NO_IMMERSION_FLUID;
         }
 
-        if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 1 && !storedFluidStack.isFluidEqual(
-            MaterialLibAPI.getFluidStack(Materials.IronIIIChloride, FluidShapes.fluidLiquid, (int) (0)))) {
+        if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 1 && !storedFluidStack
+            .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.IronIIIChloride, FluidShapes.fluidLiquid, 0))) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 2 && !storedFluidStack.isFluidEqual(
-            MaterialLibAPI.getFluidStack(Materials.GrowthMediumSterilized, FluidShapes.fluidLiquid, (int) (0)))) {
+        if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 2 && !storedFluidStack
+            .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.GrowthMediumSterilized, FluidShapes.fluidLiquid, 0))) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 3 && !storedFluidStack.isFluidEqual(
-            MaterialLibAPI.getFluidStack(Materials.BiohMediumSterilized, FluidShapes.fluidLiquid, (int) (0)))) {
+        if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 3 && !storedFluidStack
+            .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.BiohMediumSterilized, FluidShapes.fluidLiquid, 0))) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
         if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 4 && !storedFluidStack
-            .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.prismaticacid, FluidShapes.fluidLiquid, (int) (0)))) {
+            .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.prismaticacid, FluidShapes.fluidLiquid, 0))) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
@@ -362,27 +362,22 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
                     fluidAmount = storedFluidStack.amount;
                     fillPercentage = (double) fluidAmount / fluidCapacity;
                     if (storedFluidStack.isFluidEqual(
-                        MaterialLibAPI.getFluidStack(Materials.IronIIIChloride, FluidShapes.fluidLiquid, (int) (0)))) {
+                        MaterialLibAPI.getFluidStack(Materials.IronIIIChloride, FluidShapes.fluidLiquid, 0))) {
                         impurityFluidStack = MaterialLibAPI
-                            .getFluidStack(Materials.IronIIChloride, FluidShapes.fluidLiquid, (int) (0));
+                            .getFluidStack(Materials.IronIIChloride, FluidShapes.fluidLiquid, 0);
                     } else if (storedFluidStack.isFluidEqual(
-                        MaterialLibAPI
-                            .getFluidStack(Materials.GrowthMediumSterilized, FluidShapes.fluidLiquid, (int) (0)))) {
+                        MaterialLibAPI.getFluidStack(Materials.GrowthMediumSterilized, FluidShapes.fluidLiquid, 0))) {
+                            impurityFluidStack = MaterialLibAPI
+                                .getFluidStack(Materials.GrowthMediumRaw, FluidShapes.fluidLiquid, 0);
+                        } else if (storedFluidStack.isFluidEqual(
+                            MaterialLibAPI.getFluidStack(Materials.BiohMediumSterilized, FluidShapes.fluidLiquid, 0))) {
                                 impurityFluidStack = MaterialLibAPI
-                                    .getFluidStack(Materials.GrowthMediumRaw, FluidShapes.fluidLiquid, (int) (0));
-                            } else
-                        if (storedFluidStack.isFluidEqual(
-                            MaterialLibAPI
-                                .getFluidStack(Materials.BiohMediumSterilized, FluidShapes.fluidLiquid, (int) (0)))) {
+                                    .getFluidStack(Materials.BioMediumRaw, FluidShapes.fluidLiquid, 0);
+                            } else if (storedFluidStack.isFluidEqual(
+                                MaterialLibAPI.getFluidStack(Materials.prismaticacid, FluidShapes.fluidLiquid, 0))) {
                                     impurityFluidStack = MaterialLibAPI
-                                        .getFluidStack(Materials.BioMediumRaw, FluidShapes.fluidLiquid, (int) (0));
-                                } else
-                            if (storedFluidStack.isFluidEqual(
-                                MaterialLibAPI
-                                    .getFluidStack(Materials.prismaticacid, FluidShapes.fluidLiquid, (int) (0)))) {
-                                        impurityFluidStack = MaterialLibAPI
-                                            .getFluidStack(Materials.prismaticgas, FluidShapes.fluidLiquid, (int) (0));
-                                    }
+                                        .getFluidStack(Materials.prismaticgas, FluidShapes.fluidLiquid, 0);
+                                }
                 }
             }
         }

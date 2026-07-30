@@ -30,7 +30,7 @@ public class ProcessingSlab implements gregtech.api.interfaces.IOreRecipeRegistr
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(3, stack))
                     .itemOutputs(ItemList.RC_Tie_Wood.get(3L))
-                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (300)))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 300))
                     .duration(10 * SECONDS)
                     .eut(4)
                     .addTo(chemicalBathRecipes);

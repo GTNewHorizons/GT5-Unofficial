@@ -140,7 +140,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, material, 2L),
-                    MaterialLibAPI.getStack(Materials.Glass, Shapes.dust, (int) (2)))
+                    MaterialLibAPI.getStack(Materials.Glass, Shapes.dust, 2))
                 .itemOutputs(
                     GTOreDictUnificator
                         .get(OrePrefixes.ingot, MaterialUtils.directSmelting(material), (long) outputAmount),
@@ -152,7 +152,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, material, 2L),
-                    MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, (int) (2)))
+                    MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 2))
                 .itemOutputs(
                     GTOreDictUnificator
                         .get(OrePrefixes.ingot, MaterialUtils.directSmelting(material), (long) outputAmount),
@@ -164,7 +164,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, material, 2L),
-                    MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.dust, (int) (2)))
+                    MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.dust, 2))
                 .itemOutputs(
                     GTOreDictUnificator
                         .get(OrePrefixes.ingot, MaterialUtils.directSmelting(material), (long) outputAmount),
@@ -176,7 +176,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, material, 2L),
-                    MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.dust, (int) (2)))
+                    MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.dust, 2))
                 .itemOutputs(
                     GTOreDictUnificator
                         .get(OrePrefixes.ingot, MaterialUtils.directSmelting(material), (long) outputAmount),

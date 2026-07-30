@@ -186,7 +186,7 @@ public class RecipesMachinesTiered {
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Tin, 2),
                 Circuits.LV.get(2),
                 MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.screw, 6),
-                MaterialLibAPI.getStack(Materials.Lead, Shapes.bolt, (int) (12)))
+                MaterialLibAPI.getStack(Materials.Lead, Shapes.bolt, 12))
             .itemOutputs(GregtechItemList.Energy_Core_ULV.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.Potin, 4 * INGOTS))
             .duration(22 * SECONDS + 10 * TICKS)
@@ -201,7 +201,7 @@ public class RecipesMachinesTiered {
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Cobalt, 2),
                 Circuits.MV.get(2),
                 MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.screw, 6),
-                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.bolt, (int) (12)))
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.bolt, 12))
             .itemOutputs(GregtechItemList.Energy_Core_LV.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.Tumbaga, 8 * INGOTS))
             .duration(45 * SECONDS)
@@ -231,7 +231,7 @@ public class RecipesMachinesTiered {
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Gold, 2),
                 Circuits.EV.get(2),
                 MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.screw, 6),
-                MaterialLibAPI.getStack(Materials.Titanium, Shapes.bolt, (int) (12)))
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.bolt, 12))
             .itemOutputs(GregtechItemList.Energy_Core_HV.get(1))
             .fluidInputs(MaterialUtils.anyFluid(Materials.TantalumCarbide, 16 * INGOTS))
             .duration(90 * SECONDS)
@@ -961,7 +961,7 @@ public class RecipesMachinesTiered {
                 ItemList.Hatch_Input_Bus_EV.get(1),
                 ItemList.Sensor_LV.get(1),
                 ItemList.Robot_Arm_LV.get(2),
-                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.bolt, (int) (16)),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.bolt, 16),
                 new ItemStack(Blocks.chest))
             .circuit(17)
             .itemOutputs(GregtechItemList.ChiselBus_LV.get(1))
@@ -991,7 +991,7 @@ public class RecipesMachinesTiered {
                 ItemList.Hatch_Input_Bus_LuV.get(1),
                 ItemList.Sensor_HV.get(1),
                 ItemList.Robot_Arm_HV.get(2),
-                MaterialLibAPI.getStack(Materials.Titanium, Shapes.bolt, (int) (16)),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.bolt, 16),
                 new ItemStack(Blocks.chest))
             .circuit(17)
             .itemOutputs(GregtechItemList.ChiselBus_HV.get(1))
@@ -1116,7 +1116,7 @@ public class RecipesMachinesTiered {
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_HV, 'P', ItemList.Electric_Piston_HV, 'E',
                 ItemList.Electric_Motor_HV, 'C', Circuits.HV.getIngredient(), 'W',
                 OrePrefixes.cableGt01.ingredient(Materials.Gold), 'G',
-                MaterialLibAPI.getStack(Materials.Chrome, Shapes.gearGt, (int) (1)) });
+                MaterialLibAPI.getStack(Materials.Chrome, Shapes.gearGt, 1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1125,7 +1125,7 @@ public class RecipesMachinesTiered {
                 ItemList.Electric_Piston_HV.get(2),
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 1L),
                 Circuits.HV.get(1),
-                MaterialLibAPI.getStack(Materials.Chrome, Shapes.gearGt, (int) (2)))
+                MaterialLibAPI.getStack(Materials.Chrome, Shapes.gearGt, 2))
             .circuit(14)
             .itemOutputs(GregtechItemList.Generator_SemiFluid_HV.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1 * INGOTS))

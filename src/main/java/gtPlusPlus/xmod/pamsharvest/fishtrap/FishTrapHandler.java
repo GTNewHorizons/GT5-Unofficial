@@ -30,21 +30,21 @@ public class FishTrapHandler {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1))
                     .itemOutputs(
-                        MaterialLibAPI.getStack(Materials.MeatRaw, Shapes.dust, (int) (1)),
-                        MaterialLibAPI.getStack(Materials.Bone, Shapes.dustTiny, (int) (1)))
+                        MaterialLibAPI.getStack(Materials.MeatRaw, Shapes.dust, 1),
+                        MaterialLibAPI.getStack(Materials.Bone, Shapes.dustTiny, 1))
                     .outputChances(10000, 1000)
                     .duration(20 * SECONDS)
                     .eut(2)
                     .addTo(maceratorRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1))
-                    .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (48)))
+                    .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, 48))
                     .duration(19 * SECONDS + 4 * TICKS)
                     .eut(5)
                     .addTo(centrifugeRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1))
-                    .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.FishOil, FluidShapes.fluidLiquid, (int) (50)))
+                    .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.FishOil, FluidShapes.fluidLiquid, 50))
                     .duration(16 * TICKS)
                     .eut(4)
                     .addTo(fluidExtractionRecipes);
@@ -54,21 +54,21 @@ public class FishTrapHandler {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1))
                 .itemOutputs(
-                    MaterialLibAPI.getStack(Materials.MeatRaw, Shapes.dust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials.Bone, Shapes.dustTiny, (int) (1)))
+                    MaterialLibAPI.getStack(Materials.MeatRaw, Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.Bone, Shapes.dustTiny, 1))
                 .outputChances(10000, 1000)
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(maceratorRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (48)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, 48))
                 .duration(19 * SECONDS + 4 * TICKS)
                 .eut(5)
                 .addTo(centrifugeRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.FishOil, FluidShapes.fluidLiquid, (int) (50)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.FishOil, FluidShapes.fluidLiquid, 50))
                 .duration(16 * TICKS)
                 .eut(4)
                 .addTo(fluidExtractionRecipes);

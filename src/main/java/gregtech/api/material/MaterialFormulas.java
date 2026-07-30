@@ -21,19 +21,19 @@ public final class MaterialFormulas {
     private MaterialFormulas() {}
 
     /// The raw formula string for NEI search, or null when the material carries none.
-    public static @Nullable String forSearch(@Nullable Material ml) {
-        if (ml == null) return null;
+    public static @Nullable String forSearch(@Nullable Material material) {
+        if (material == null) return null;
 
-        String formula = ml.getProperty(GTMaterialProperties.FORMULA);
+        String formula = material.getProperty(GTMaterialProperties.FORMULA);
         if (formula == null) return null;
-        return Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.FORMULA_LOCALIZED))
-            ? StatCollector.translateToLocal(formulaKey(ml))
+        return Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.FORMULA_LOCALIZED))
+            ? StatCollector.translateToLocal(formulaKey(material))
             : formula;
     }
 
     /// The formula tooltip line to display, or null when the legacy renderer showed none.
-    public static @Nullable String forTooltip(@Nullable Material ml) {
-        String formula = forSearch(ml);
+    public static @Nullable String forTooltip(@Nullable Material material) {
+        String formula = forSearch(material);
         return GTUtility.isStringValid(formula) && !"?".equals(formula) ? formula : null;
     }
 
@@ -41,7 +41,7 @@ public final class MaterialFormulas {
     /// for a material's formula string, where `name` is [GTMaterialProperties#LEGACY_NAME] when present, else
     /// the MaterialLib registration name. A bartworks-origin material's own internal name (lowercased) resolves
     /// to the same key format, so one scheme serves every localized-formula material regardless of origin.
-    private static String formulaKey(Material ml) {
-        return MaterialUtils.localizedNameKey(ml) + ".ChemicalFormula";
+    private static String formulaKey(Material material) {
+        return MaterialUtils.localizedNameKey(material) + ".ChemicalFormula";
     }
 }

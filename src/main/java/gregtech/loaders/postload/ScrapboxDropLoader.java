@@ -59,8 +59,8 @@ public class ScrapboxDropLoader implements Runnable {
         GTModHandler.addScrapboxDrop(1.8F, ItemList.Circuit_Board_Basic.get(1L));
         GTModHandler.addScrapboxDrop(0.4F, ItemList.Circuit_Board_Advanced.get(1L));
         GTModHandler.addScrapboxDrop(0.2F, ItemList.Circuit_Board_Elite.get(1L));
-        GTModHandler.addScrapboxDrop(0.9F, MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, (int) (1)));
-        GTModHandler.addScrapboxDrop(0.8F, MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, (int) (1)));
+        GTModHandler.addScrapboxDrop(0.9F, MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1));
+        GTModHandler.addScrapboxDrop(0.8F, MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, 1));
         GTModHandler.addScrapboxDrop(0.8F, MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, (int) (1L)));
         GTModHandler.addScrapboxDrop(2.5F, MaterialLibAPI.getStack(Materials.Charcoal, Shapes.dust, (int) (1L)));
         GTModHandler.addScrapboxDrop(1.0F, MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (1L)));

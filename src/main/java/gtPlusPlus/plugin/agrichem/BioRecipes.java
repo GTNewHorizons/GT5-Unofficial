@@ -147,7 +147,7 @@ public class BioRecipes {
         // Sodium Carbonate
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.BrownAlgaeBiomass.get(40))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumCarbonate, Shapes.dust, (int) (20)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumCarbonate, Shapes.dust, 20))
             .fluidInputs(GTModHandler.getDistilledWater(2_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -201,7 +201,7 @@ public class BioRecipes {
         // Methanol Extraction
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.CelluloseFiber.get(3))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, (int) (250)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, 250))
             .duration(1 * SECONDS + 17 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidExtractionRecipes);
@@ -219,7 +219,7 @@ public class BioRecipes {
             .itemInputs(GregtechItemList.CellulosePulp.get(4))
             .circuit(16)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.AceticAcid, FluidShapes.fluidLiquid, (int) (500)),
+                MaterialLibAPI.getFluidStack(Materials.AceticAcid, FluidShapes.fluidLiquid, 500),
                 new FluidStack(GTPPFluids.PropionicAcid, 500))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 1_000))
             .duration(10 * SECONDS)
@@ -256,7 +256,7 @@ public class BioRecipes {
         // CO2
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.WoodPellet.get(1))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (70)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, 70))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidExtractionRecipes);
@@ -282,7 +282,7 @@ public class BioRecipes {
     private static void recipeWoodBricks() {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, (int) (50)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 50))
             .circuit(3)
             .itemOutputs(GregtechItemList.WoodBrick.get(1))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -304,9 +304,9 @@ public class BioRecipes {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Copper, Shapes.wireFine, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Tin, Shapes.screw, (int) (6)))
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 8),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.wireFine, 4),
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.screw, 6))
             .circuit(2)
             .itemOutputs(GregtechItemList.EmptyCatalystCarrier.get(1))
             .duration(5 * MINUTES)
@@ -319,8 +319,8 @@ public class BioRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(10),
-                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Silver, Shapes.dust, (int) (4)))
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Silver, Shapes.dust, 4))
             .circuit(4)
             .itemOutputs(GregtechItemList.GreenMetalCatalyst.get(10))
             .duration(20 * SECONDS)
@@ -333,9 +333,9 @@ public class BioRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.GreenMetalCatalyst.get(0))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, (int) (700)),
-                MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, (int) (700)))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.AceticAcid, FluidShapes.fluidLiquid, (int) (700)))
+                MaterialLibAPI.getFluidStack(Materials.Methanol, FluidShapes.fluidLiquid, 700),
+                MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 700))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.AceticAcid, FluidShapes.fluidLiquid, 700))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_MV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 1)
@@ -343,7 +343,7 @@ public class BioRecipes {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(new FluidStack(GTPPFluids.FermentationBase, 1_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.AceticAcid, FluidShapes.fluidLiquid, (int) (1_000)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.AceticAcid, FluidShapes.fluidLiquid, 1_000))
             .itemOutputs(GregtechItemList.Compost.get(2))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
@@ -355,8 +355,8 @@ public class BioRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.GreenMetalCatalyst.get(0))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, (int) (1_000)),
-                MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, (int) (1_000)),
+                MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 1_000),
                 GTModHandler.getDistilledWater(1_000))
             .fluidOutputs(new FluidStack(GTPPFluids.PropionicAcid, 1_000))
             .duration(10 * SECONDS)
@@ -369,7 +369,7 @@ public class BioRecipes {
         GTValues.RA.stdBuilder()
             .circuit(2)
             .fluidInputs(new FluidStack(GTPPFluids.FermentationBase, 40))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, (int) (4)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, 4))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(distilleryRecipes);
@@ -378,7 +378,7 @@ public class BioRecipes {
     private static void recipeGoldenBrownCelluloseFiber() {
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.GoldenBrownCelluloseFiber.get(1))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, (int) (100)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 100))
             .duration(3 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidExtractionRecipes);
@@ -398,10 +398,10 @@ public class BioRecipes {
         GTValues.RA.stdBuilder()
             .circuit(4)
             .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 3))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SaltWater, FluidShapes.fluidLiquid, (int) (1_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SaltWater, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, (int) (1_000)),
-                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (1_000)))
+                MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 1)
@@ -409,11 +409,11 @@ public class BioRecipes {
 
         // Na + H2O = NaOH + H
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, (int) (5)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 5))
             .circuit(5)
             .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 15))
             .fluidInputs(GTModHandler.getDistilledWater(5_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (5_000)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 5_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 1)
@@ -427,12 +427,11 @@ public class BioRecipes {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("fuelCoke", 1),
-                    MaterialLibAPI.getStack(Materials.SodiumCarbonate, Shapes.dust, (int) (6)),
+                    MaterialLibAPI.getStack(Materials.SodiumCarbonate, Shapes.dust, 6),
                     GregtechItemList.AluminiumPellet.get(5))
                 .circuit(18)
-                .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumAluminate, Shapes.dust, (int) (8)))
-                .fluidOutputs(
-                    MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumAluminate, Shapes.dust, 8))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, 1_000))
                 .duration(2 * MINUTES)
                 .eut(TierEU.RECIPE_MV)
                 .metadata(CHEMPLANT_CASING_TIER, 1)
@@ -441,12 +440,12 @@ public class BioRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.SodiumCarbonate, Shapes.dust, (int) (6)),
+                MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.SodiumCarbonate, Shapes.dust, 6),
                 GregtechItemList.AluminiumPellet.get(5))
             .circuit(18)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumAluminate, Shapes.dust, (int) (8)))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumAluminate, Shapes.dust, 8))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, 1_000))
             .duration(3 * MINUTES)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 1)
@@ -464,7 +463,7 @@ public class BioRecipes {
 
     private static void recipeAluminiumPellet() {
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Sapphire, Shapes.crushedPurified, (int) (5)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Sapphire, Shapes.crushedPurified, 5))
             .circuit(14)
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(3))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 10_000))
@@ -475,7 +474,7 @@ public class BioRecipes {
             .addTo(chemicalPlantRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.GreenSapphire, Shapes.crushedPurified, (int) (5)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.GreenSapphire, Shapes.crushedPurified, 5))
             .circuit(14)
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(3))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 10_000))
@@ -486,7 +485,7 @@ public class BioRecipes {
             .addTo(chemicalPlantRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Ruby, Shapes.crushedPurified, (int) (6)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ruby, Shapes.crushedPurified, 6))
             .circuit(14)
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(3))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 12_000))
@@ -497,7 +496,7 @@ public class BioRecipes {
             .addTo(chemicalPlantRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Grossular, Shapes.crushedPurified, (int) (20)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Grossular, Shapes.crushedPurified, 20))
             .circuit(14)
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(3))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 40_000))
@@ -508,7 +507,7 @@ public class BioRecipes {
             .addTo(chemicalPlantRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Pyrope, Shapes.crushedPurified, (int) (20)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Pyrope, Shapes.crushedPurified, 20))
             .circuit(14)
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(3))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 40_000))
@@ -519,7 +518,7 @@ public class BioRecipes {
             .addTo(chemicalPlantRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Sodalite, Shapes.crushedPurified, (int) (11)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Sodalite, Shapes.crushedPurified, 11))
             .circuit(14)
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(5))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 22_000))
@@ -530,7 +529,7 @@ public class BioRecipes {
             .addTo(chemicalPlantRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Spodumene, Shapes.crushedPurified, (int) (10)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Spodumene, Shapes.crushedPurified, 10))
             .circuit(14)
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(2))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 20_000))
@@ -541,7 +540,7 @@ public class BioRecipes {
             .addTo(chemicalPlantRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Bauxite, Shapes.crushedPurified, (int) (39)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Bauxite, Shapes.crushedPurified, 39))
             .circuit(14)
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(23))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 78_000))
@@ -552,7 +551,7 @@ public class BioRecipes {
             .addTo(chemicalPlantRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Lazurite, Shapes.crushedPurified, (int) (14)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Lazurite, Shapes.crushedPurified, 14))
             .circuit(14)
             .itemOutputs(GregtechItemList.CleanAluminiumMix.get(5))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 28_000))
@@ -573,36 +572,36 @@ public class BioRecipes {
     private static void recipeLithiumChloride() {
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.RockSalt, Shapes.dust, (int) (8)),
+                MaterialLibAPI.getStack(Materials.RockSalt, Shapes.dust, 8),
                 MaterialLibAPI.getStack(Materials.LithiumChloride, Shapes.dust, 10))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dustSmall, (int) (3)),
-                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dustSmall, (int) (3)),
-                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dustTiny, (int) (5)),
-                MaterialLibAPI.getStack(Materials.Potassium, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Potassium, Shapes.dustSmall, (int) (5)))
+                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dustSmall, 3),
+                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dustSmall, 3),
+                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dustTiny, 5),
+                MaterialLibAPI.getStack(Materials.Potassium, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Potassium, Shapes.dustSmall, 5))
             .outputChances(7500, 8000, 8500, 9000, 7500, 8500)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Air, FluidShapes.fluidGas, (int) (4_000)))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, (int) (500)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Air, FluidShapes.fluidGas, 4_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 500))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Potash, Shapes.dust, (int) (10)),
+                MaterialLibAPI.getStack(Materials.Potash, Shapes.dust, 10),
                 MaterialLibAPI.getStack(Materials.LithiumChloride, Shapes.dust, 16))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, (int) (3)),
-                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dustSmall, (int) (5)),
-                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dustSmall, (int) (5)),
-                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dustTiny, (int) (7)),
-                MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (2)))
+                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dustSmall, 5),
+                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dustSmall, 5),
+                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dustTiny, 7),
+                MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 2))
             .outputChances(7500, 8000, 8500, 9000, 9000, 9000)
             .fluidInputs(FluidRegistry.getFluidStack("ic2hotwater", 2_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, (int) (250)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 250))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_MV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -613,7 +612,7 @@ public class BioRecipes {
             .itemInputs(GregtechItemList.GreenAlgaeBiomass.get(10), GregtechItemList.BrownAlgaeBiomass.get(6))
             .circuit(7)
             .fluidInputs(GTModHandler.getDistilledWater(5_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (5_000)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 5_000))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 1)
@@ -623,7 +622,7 @@ public class BioRecipes {
             .itemInputs(GregtechItemList.GoldenBrownAlgaeBiomass.get(2), GregtechItemList.BrownAlgaeBiomass.get(10))
             .circuit(7)
             .fluidInputs(GTModHandler.getDistilledWater(5_000))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (5_000)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 5_000))
             .duration(6 * SECONDS)
             .eut(180)
             .metadata(CHEMPLANT_CASING_TIER, 3)
@@ -635,8 +634,8 @@ public class BioRecipes {
         GTValues.RA.stdBuilder()
             .circuit(9)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, (int) (600)),
-                MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (300)))
+                MaterialLibAPI.getFluidStack(Materials.Ammonia, FluidShapes.fluidGas, 600),
+                MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, 300))
             .fluidOutputs(new FluidStack(GTPPFluids.Urea, 300), GTModHandler.getDistilledWater(300))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -669,7 +668,7 @@ public class BioRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.RawBioResin.get(1))
             .circuit(3)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, (int) (200)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, 200))
             .fluidOutputs(new FluidStack(GTPPFluids.LiquidResin, 500))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -692,7 +691,7 @@ public class BioRecipes {
             .itemInputs(GregtechItemList.AlgaeBiomass.get(10))
             .circuit(12)
             .fluidInputs(GTModHandler.getDistilledWater(500))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (500)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, 500))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 1)
@@ -704,8 +703,8 @@ public class BioRecipes {
                 GregtechItemList.GoldenBrownCelluloseFiber.get(6),
                 GregtechItemList.RedCelluloseFiber.get(4))
             .circuit(13)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (2_000)))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, (int) (2_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, 2_000))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Ethylene, FluidShapes.fluidGas, 2_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 1)
@@ -717,10 +716,10 @@ public class BioRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.GreenMetalCatalyst.get(0))
             .circuit(19)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (6_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Methane, FluidShapes.fluidGas, 6_000))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, (int) (1_000)),
-                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (18_000)))
+                MaterialLibAPI.getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 18_000))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(CHEMPLANT_CASING_TIER, 2)
@@ -734,8 +733,8 @@ public class BioRecipes {
             .circuit(20)
             .fluidInputs(new FluidStack(GTPPFluids.Ethylbenzene, 100))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Styrene, FluidShapes.fluidLiquid, (int) (100)),
-                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (200)))
+                MaterialLibAPI.getFluidStack(Materials.Styrene, FluidShapes.fluidLiquid, 100),
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 200))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(CHEMPLANT_CASING_TIER, 2)

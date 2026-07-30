@@ -33,14 +33,14 @@ public class BreweryRecipes implements Runnable {
     public void run() {
         ItemStack[] brewingItems = new ItemStack[] { MaterialLibAPI.getStack(Materials.Talc, Shapes.dust, (int) (1L)),
             MaterialLibAPI.getStack(Materials.Soapstone, Shapes.dust, (int) (1L)),
-            MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, (int) (1)) };
+            MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1) };
 
         for (ItemStack item : brewingItems) {
             // creosote to lubricant recipes
             GTValues.RA.stdBuilder()
                 .itemInputs(item)
-                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (750)))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (750)))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 750))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 750))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(4)
                 .addTo(brewingRecipes);
@@ -48,8 +48,8 @@ public class BreweryRecipes implements Runnable {
             // seed oil to lubricant recipes
             GTValues.RA.stdBuilder()
                 .itemInputs(item)
-                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SeedOil, FluidShapes.fluidLiquid, (int) (750)))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (750)))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SeedOil, FluidShapes.fluidLiquid, 750))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 750))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(4)
                 .addTo(brewingRecipes);
@@ -58,37 +58,32 @@ public class BreweryRecipes implements Runnable {
             {
                 GTValues.RA.stdBuilder()
                     .itemInputs(item)
-                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oil, FluidShapes.fluidLiquid, (int) (750)))
-                    .fluidOutputs(
-                        MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (750)))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oil, FluidShapes.fluidLiquid, 750))
+                    .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
                     .addTo(brewingRecipes);
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(item)
-                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.OilLight, FluidShapes.fluidLiquid, (int) (750)))
-                    .fluidOutputs(
-                        MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (500)))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.OilLight, FluidShapes.fluidLiquid, 750))
+                    .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 500))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
                     .addTo(brewingRecipes);
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(item)
-                    .fluidInputs(
-                        MaterialLibAPI.getFluidStack(Materials.OilMedium, FluidShapes.fluidLiquid, (int) (750)))
-                    .fluidOutputs(
-                        MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (500)))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.OilMedium, FluidShapes.fluidLiquid, 750))
+                    .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 500))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
                     .addTo(brewingRecipes);
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(item)
-                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.OilHeavy, FluidShapes.fluidLiquid, (int) (500)))
-                    .fluidOutputs(
-                        MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (750)))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.OilHeavy, FluidShapes.fluidLiquid, 500))
+                    .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 750))
                     .duration(3 * SECONDS + 4 * TICKS)
                     .eut(4)
                     .addTo(brewingRecipes);
@@ -130,7 +125,7 @@ public class BreweryRecipes implements Runnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(MaterialLibAPI.getStack(Materials.Milk, Shapes.dust, (int) (1L)))
                     .fluidInputs(new FluidStack(tFluid, 750))
-                    .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, (int) (750)))
+                    .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
                     .addTo(brewingRecipes);
@@ -176,7 +171,7 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, (int) (1)))
+                    .itemInputs(MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, 1))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.thick", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -184,7 +179,7 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, (int) (1)))
+                    .itemInputs(MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.mundane", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -334,7 +329,7 @@ public class BreweryRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(Materials.Coffee, Shapes.dust, (int) (1L)))
-                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, (int) (750)))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, 750))
                 .fluidOutputs(getFluidStack("potion.latte", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(4)
@@ -342,7 +337,7 @@ public class BreweryRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(Materials.Cocoa, Shapes.dust, (int) (1L)))
-                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, (int) (750)))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, 750))
                 .fluidOutputs(getFluidStack("potion.darkchocolatemilk", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(4)
@@ -450,7 +445,7 @@ public class BreweryRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(Forestry.ID, "fertilizerBio", 4L, 0))
                 .fluidInputs(GTUtility.getWater(750))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Biomass, FluidShapes.fluidLiquid, (int) (750)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Biomass, FluidShapes.fluidLiquid, 750))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(4)
                 .addTo(brewingRecipes);
@@ -458,7 +453,7 @@ public class BreweryRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(Forestry.ID, "mulch", 16L, 0))
                 .fluidInputs(GTModHandler.getDistilledWater(750L))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Biomass, FluidShapes.fluidLiquid, (int) (750)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Biomass, FluidShapes.fluidLiquid, 750))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(4)
                 .addTo(brewingRecipes);
@@ -466,7 +461,7 @@ public class BreweryRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(Forestry.ID, "mulch", 8L, 0))
                 .fluidInputs(getFluidStack("juice", 500))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Biomass, FluidShapes.fluidLiquid, (int) (750)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Biomass, FluidShapes.fluidLiquid, 750))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(4)
                 .addTo(brewingRecipes);
@@ -544,7 +539,7 @@ public class BreweryRecipes implements Runnable {
         // long
         if (!aName.equals("health")) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, (int) (1)))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1))
                 .fluidInputs(getFluidStack("potion." + aName, 750))
                 .fluidOutputs(getFluidStack("potion." + aName + ".long", 750))
                 .duration(6 * SECONDS + 8 * TICKS)

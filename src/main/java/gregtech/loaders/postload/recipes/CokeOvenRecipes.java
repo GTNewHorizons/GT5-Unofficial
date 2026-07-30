@@ -30,7 +30,7 @@ public class CokeOvenRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get("gemCoal", 1))
             .itemOutputs(RailcraftToolItems.getCoalCoke(1))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (500)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 500))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(0)
             .addTo(cokeOvenRecipes);
@@ -38,7 +38,7 @@ public class CokeOvenRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get("blockCoal", 1))
             .itemOutputs(EnumCube.COKE_BLOCK.getItem(1))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (4_500)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 4_500))
             .duration(13 * MINUTES + 30 * SECONDS)
             .eut(0)
             .addTo(cokeOvenRecipes);
@@ -46,7 +46,7 @@ public class CokeOvenRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.cactus))
             .itemOutputs(GregtechItemList.CactusCharcoal.get(1))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (30)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 30))
             .duration(25 * SECONDS)
             .eut(0)
             .addTo(cokeOvenRecipes);
@@ -54,7 +54,7 @@ public class CokeOvenRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.CactusCharcoal.get(1))
             .itemOutputs(GregtechItemList.CactusCoke.get(1))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (30)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 30))
             .duration(25 * SECONDS)
             .eut(0)
             .addTo(cokeOvenRecipes);
@@ -62,7 +62,7 @@ public class CokeOvenRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.reeds))
             .itemOutputs(GregtechItemList.SugarCharcoal.get(1))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (30)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 30))
             .duration(25 * SECONDS)
             .eut(0)
             .addTo(cokeOvenRecipes);
@@ -70,7 +70,7 @@ public class CokeOvenRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.SugarCharcoal.get(1))
             .itemOutputs(GregtechItemList.SugarCoke.get(1))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (30)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 30))
             .duration(25 * SECONDS)
             .eut(0)
             .addTo(cokeOvenRecipes);
@@ -85,7 +85,7 @@ public class CokeOvenRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("logWood", 1))
             .itemOutputs(GTOreDictUnificator.get("gemCharcoal", 1))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (250)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, 250))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(0)
             .addTo(cokeOvenRecipes);

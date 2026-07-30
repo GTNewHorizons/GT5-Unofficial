@@ -81,11 +81,11 @@ public class RecipeRemover implements Runnable {
             GTModHandler.getMaceratorRecipeList(),
             GTModHandler.getIC2Item("plantBall", 1L));
         GTUtility.removeSimpleIC2MachineRecipe(
-            MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1),
             GTModHandler.getMaceratorRecipeList(),
             GTModHandler.getIC2Item("plantBall", 1L));
         GTUtility.removeSimpleIC2MachineRecipe(
-            MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, 1),
             GTModHandler.getMaceratorRecipeList(),
             GTModHandler.getIC2Item("plantBall", 1L));
         GTUtility.removeSimpleIC2MachineRecipe(

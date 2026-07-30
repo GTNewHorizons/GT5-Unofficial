@@ -129,8 +129,8 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
         // Check for lubricant and oxygen first, so we can compute costs ahead of time.
         // This will allow us to check costs without needing to actually try to deplete fluids
         // (wasting earlier fluids in the check if later fluids turn out to be insufficient).
-        FluidStack lubricant = MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (0));
-        FluidStack oxygen = MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (0));
+        FluidStack lubricant = MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, 0);
+        FluidStack oxygen = MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 0);
         for (FluidStack hatchFluid : tFluids) {
             if (hatchFluid.isFluidEqual(lubricant)) {
                 lubricant.amount = Math.max(lubricant.amount, hatchFluid.amount);
@@ -159,8 +159,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
                 // We checked beforehand, so both of these depletions should succeed.
                 // But check the return values anyway just to be safe.
                 if (boostEu) {
-                    if (!depleteInput(
-                        MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (4)))) {
+                    if (!depleteInput(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 4))) {
                         return SimpleCheckRecipeResult.ofFailure("no_oxygen");
                     }
                 }

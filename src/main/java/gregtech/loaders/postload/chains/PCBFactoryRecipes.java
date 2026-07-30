@@ -70,7 +70,7 @@ public class PCBFactoryRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get("frameGtInfinity", 1),
-                MaterialLibAPI.getStack(Materials.EnrichedHolmium, Shapes.plate, (int) (6)))
+                MaterialLibAPI.getStack(Materials.EnrichedHolmium, Shapes.plate, 6))
             .itemOutputs(ItemList.ReinforcedPhotolithographicFrameworkCasing.get(1))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -87,8 +87,8 @@ public class PCBFactoryRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Hypogen, PipeShapes.frameGt, 1),
-                MaterialLibAPI.getStack(Materials.Infinity, Shapes.rotor, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Thulium, Shapes.plate, (int) (6)))
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.rotor, 2),
+                MaterialLibAPI.getStack(Materials.Thulium, Shapes.plate, 6))
             .itemOutputs(ItemList.InfinityCooledCasing.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(10 * SECONDS)

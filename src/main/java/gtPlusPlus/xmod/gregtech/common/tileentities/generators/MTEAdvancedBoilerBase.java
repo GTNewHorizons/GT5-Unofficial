@@ -264,7 +264,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
                 || fuel.getDisplayName()
                     .toLowerCase()
                     .contains("coke")) {
-                tile.addStackToSlot(3, MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, (int) (1)));
+                tile.addStackToSlot(3, MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, 1));
             } else {
                 tile.addStackToSlot(3, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
             }

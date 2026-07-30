@@ -205,8 +205,8 @@ public class RecipeLoaderAgriculturalChem {
             .fluidInputs(new FluidStack(GTPPFluids.FermentationBase, 48_000))
             .fluidOutputs(
                 new FluidStack(GTPPFluids.Butanol, 18_000),
-                MaterialLibAPI.getFluidStack(Materials.Acetone, FluidShapes.fluidLiquid, (int) (9_000)),
-                MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, (int) (3_000)))
+                MaterialLibAPI.getFluidStack(Materials.Acetone, FluidShapes.fluidLiquid, 9_000),
+                MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, 3_000))
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .metadata(CHEMPLANT_CASING_TIER, 1)
@@ -218,12 +218,12 @@ public class RecipeLoaderAgriculturalChem {
         GTValues.RA.stdBuilder()
             .circuit(10)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Iron, Shapes.dustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Copper, Shapes.dustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Tin, Shapes.dustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Nickel, Shapes.dustTiny, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Lead, Shapes.dustTiny, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dustSmall, 1),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.dustSmall, 1),
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.dustSmall, 1),
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dustSmall, 1),
+                MaterialLibAPI.getStack(Materials.Nickel, Shapes.dustTiny, 1),
+                MaterialLibAPI.getStack(Materials.Lead, Shapes.dustTiny, 1))
             .outputChances(3000, 3000, 2000, 2000, 1000, 1000)
             .fluidInputs(new FluidStack(GTPPFluids.RedMud, 1_000))
             .fluidOutputs(GTUtility.getWater(500))

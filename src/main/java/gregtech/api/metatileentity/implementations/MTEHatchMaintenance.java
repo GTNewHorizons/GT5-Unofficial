@@ -92,8 +92,8 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
 
     public static ItemStack[] getAutoMaintenanceInputs() {
         if (sAutoMaintenanceInputs == null) sAutoMaintenanceInputs = new ItemStack[] { ItemList.Duct_Tape.get(4),
-            MaterialLibAPI.getStack(Materials.Lubricant, CellShapes.cell, (int) (2)),
-            MaterialLibAPI.getStack(Materials.Steel, Shapes.screw, (int) (4)), Circuits.HV.get(2) };
+            MaterialLibAPI.getStack(Materials.Lubricant, CellShapes.cell, 2),
+            MaterialLibAPI.getStack(Materials.Steel, Shapes.screw, 4), Circuits.HV.get(2) };
         return sAutoMaintenanceInputs;
     }
 

@@ -58,7 +58,7 @@ public class BeamlineRecipeLoader {
             MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, 1)
                 .getFluid()
                 .getName(),
-            MaterialLibAPI.getFluidStack(Materials.HotSuperCoolant, FluidShapes.fluidLiquid, (int) (1_000))
+            MaterialLibAPI.getFluidStack(Materials.HotSuperCoolant, FluidShapes.fluidLiquid, 1_000)
                 .getFluid());
 
         /*

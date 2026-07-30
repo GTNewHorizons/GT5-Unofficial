@@ -423,7 +423,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (correspondingCable == OrePrefixes.cableGt01) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
-                            MaterialLibAPI.getStack(Materials.Rubber, Shapes.ingot, (int) (2)),
+                            MaterialLibAPI.getStack(Materials.Rubber, Shapes.ingot, 2),
                             GTOreDictUnificator.get(OrePrefixes.wireGt01, material, 1L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cableGt01, material, 1L))
                         .duration(5 * SECONDS)
@@ -432,7 +432,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 } else if (correspondingCable == OrePrefixes.cableGt02) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
-                            MaterialLibAPI.getStack(Materials.Rubber, Shapes.ingot, (int) (2)),
+                            MaterialLibAPI.getStack(Materials.Rubber, Shapes.ingot, 2),
                             GTOreDictUnificator.get(OrePrefixes.wireGt02, material, 1L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cableGt02, material, 1L))
                         .duration(10 * SECONDS)
@@ -441,7 +441,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 } else if (correspondingCable == OrePrefixes.cableGt04) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
-                            MaterialLibAPI.getStack(Materials.Rubber, Shapes.ingot, (int) (4)),
+                            MaterialLibAPI.getStack(Materials.Rubber, Shapes.ingot, 4),
                             GTOreDictUnificator.get(OrePrefixes.wireGt04, material, 1L))
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cableGt04, material, 1L))
                         .duration(15 * SECONDS)

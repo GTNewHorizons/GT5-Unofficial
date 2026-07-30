@@ -40,10 +40,10 @@ import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 public class VoidMinerUtility {
 
     public static final FluidStack[] NOBLE_GASSES = {
-        MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, (int) (1)),
-        MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (1)),
-        MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, (int) (1)),
-        MaterialLibAPI.getFluidStack(Materials.Oganesson, FluidShapes.fluidLiquid, (int) (1)) };
+        MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, 1),
+        MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, 1),
+        MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, 1),
+        MaterialLibAPI.getFluidStack(Materials.Oganesson, FluidShapes.fluidLiquid, 1) };
     public static final int[] NOBLE_GASSES_MULTIPLIER = { 4, 8, 16, 64 };
 
     public static class DropMap {

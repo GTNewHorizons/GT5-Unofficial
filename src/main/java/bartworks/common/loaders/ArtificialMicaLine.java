@@ -47,8 +47,7 @@ public class ArtificialMicaLine {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 4))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 4))
             .fluidInputs(MaterialUtils.fluid(Materials.HydrofluoricAcidGT5U, 6_000))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.HexafluorosilicicAcid, FluidShapes.fluidLiquid, (int) (1_000)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HexafluorosilicicAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(UniversalChemical);
@@ -67,8 +66,7 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.RockSalt, Shapes.dust, 4))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Potassiumfluorosilicate, Shapes.dust, 9))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.HexafluorosilicicAcid, FluidShapes.fluidLiquid, (int) (1_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HexafluorosilicicAcid, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialUtils.fluid(Materials.HydrochloricAcidGT5U, 2_000))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_ULV)

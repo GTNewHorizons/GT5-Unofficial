@@ -181,7 +181,7 @@ public class RecipeLoader {
                     new Object[] { Circuits.UV.getIngredient(), 16L })
                 .fluidInputs(
                     MaterialUtils.anyFluid(Materials.Indalloy140, 3 * STACKS + 8 * INGOTS),
-                    MaterialLibAPI.getFluidStack(Materials.Honey, FluidShapes.fluidLiquid, (int) (20_000)))
+                    MaterialLibAPI.getFluidStack(Materials.Honey, FluidShapes.fluidLiquid, 20_000))
                 .itemOutputs(ExtremeIndustrialApiary.get(1))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(5 * MINUTES)
@@ -344,7 +344,7 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1))
                 .itemOutputs(MilkTea.get(1))
-                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, (int) (100)))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, 100))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);

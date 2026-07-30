@@ -42,9 +42,8 @@ public class GregtechAdvancedBoilers {
             GregtechItemList.BoilerChassis_Tier0.get(1),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "DSD", "BTB", "DSD", 'D',
-                MaterialLibAPI.getStack(Materials.Lead, Shapes.plateDouble, (int) (1)), 'S',
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 1L), 'B',
+            new Object[] { "DSD", "BTB", "DSD", 'D', MaterialLibAPI.getStack(Materials.Lead, Shapes.plateDouble, 1),
+                'S', GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 1L), 'B',
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Bronze, 1L), 'T',
                 getModItem(IronTanks.ID, "silverTank", 1, 0) });
         GTModHandler.addCraftingRecipe(
@@ -52,7 +51,7 @@ public class GregtechAdvancedBoilers {
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "DSD", "BTB", "DSD", 'D',
-                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plateDouble, (int) (1)), 'S',
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plateDouble, 1), 'S',
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1L), 'B',
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 1L), 'T',
                 getModItem(IronTanks.ID, "stainlesssteelTank", 1, 0) });
@@ -60,9 +59,8 @@ public class GregtechAdvancedBoilers {
             GregtechItemList.BoilerChassis_Tier2.get(1),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "DSD", "BTB", "DSD", 'D',
-                MaterialLibAPI.getStack(Materials.Titanium, Shapes.plateDouble, (int) (1)), 'S',
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1L), 'B',
+            new Object[] { "DSD", "BTB", "DSD", 'D', MaterialLibAPI.getStack(Materials.Titanium, Shapes.plateDouble, 1),
+                'S', GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1L), 'B',
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1L), 'T',
                 getModItem(IronTanks.ID, "titaniumTank", 1, 0) });
 

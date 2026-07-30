@@ -221,7 +221,7 @@ public class RecipesMachinesMulti {
                 ItemList.Hull_EV.get(1),
                 ItemList.Machine_IV_AlloySmelter.get(1),
                 MaterialLibAPI.getStack(Materials.TantalumCarbide, Shapes.gearGt, 16),
-                MaterialLibAPI.getStack(Materials.Titanium, Shapes.bolt, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.bolt, 64),
                 MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plate, 16))
             .circuit(6)
             .itemOutputs(GregtechItemList.Industrial_AlloySmelter.get(1))
@@ -431,7 +431,7 @@ public class RecipesMachinesMulti {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Potin, Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials.Potin, Shapes.stickLong, 3),
-                MaterialLibAPI.getStack(Materials.Chrome, Shapes.stickLong, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Chrome, Shapes.stickLong, 1),
                 MaterialLibAPI.getStack(Materials.Potin, PipeShapes.frameGt, 1))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Electrolyzer.get(1))
@@ -452,7 +452,7 @@ public class RecipesMachinesMulti {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, (int) (4)),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials.Tantalloy60, Shapes.stick, 2),
                 MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.stickLong, 2),
                 MaterialLibAPI.getStack(Materials.Tumbaga, PipeShapes.frameGt, 1))
@@ -493,9 +493,9 @@ public class RecipesMachinesMulti {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Palladium, Shapes.plate, (int) (5)),
-                MaterialLibAPI.getStack(Materials.Platinum, Shapes.stick, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Palladium, Shapes.stickLong, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Palladium, Shapes.plate, 5),
+                MaterialLibAPI.getStack(Materials.Platinum, Shapes.stick, 2),
+                MaterialLibAPI.getStack(Materials.Palladium, Shapes.stickLong, 1),
                 MaterialLibAPI.getStack(Materials.Inconel625, PipeShapes.frameGt, 1))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_MacerationStack.get(1))
@@ -549,8 +549,8 @@ public class RecipesMachinesMulti {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.BlueSteel, Shapes.plate, (int) (4)),
-                MaterialLibAPI.getStack(Materials.BlueSteel, Shapes.stick, (int) (4)),
+                MaterialLibAPI.getStack(Materials.BlueSteel, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.BlueSteel, Shapes.stick, 4),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlueSteel, 1))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_WireFactory.get(1))
@@ -628,9 +628,9 @@ public class RecipesMachinesMulti {
                 ItemList.Energy_LapotronicOrb.get(32),
                 GTOreDictUnificator.get(OrePrefixes.cableGt12, Materials.YttriumBariumCuprate, 32),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Platinum, 64),
-                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.plate, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Gadolinium, Shapes.dust, (int) (32)),
-                MaterialLibAPI.getStack(Materials.Samarium, Shapes.dust, (int) (16)),
+                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.plate, 64),
+                MaterialLibAPI.getStack(Materials.Gadolinium, Shapes.dust, 32),
+                MaterialLibAPI.getStack(Materials.Samarium, Shapes.dust, 16),
                 MaterialLibAPI.getStack(Materials.Arcanite, Shapes.gearGt, 8),
                 new Object[] { "circuitElite", 64 },
                 new Object[] { "circuitMaster", 32 },
@@ -684,7 +684,7 @@ public class RecipesMachinesMulti {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Steel, Shapes.wireFine, (int) (5)),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.wireFine, 5),
                 MaterialLibAPI.getStack(Materials.EglinSteel, PipeShapes.frameGt, 4))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_SifterGrate.get(1))
@@ -703,7 +703,7 @@ public class RecipesMachinesMulti {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.RedSteel, Shapes.plate, (int) (6)),
+                MaterialLibAPI.getStack(Materials.RedSteel, Shapes.plate, 6),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_ThermalCentrifuge.get(1))
@@ -843,8 +843,7 @@ public class RecipesMachinesMulti {
                 MaterialLibAPI.getStack(Materials.MaragingSteel250, Shapes.plate, 1), 'G',
                 MaterialLibAPI.getStack(Materials.MaragingSteel250, Shapes.gearGt, 1), 'C', "circuitData", 'B',
                 GregtechItemList.Casing_AdvancedVacuum.get(1), 'P',
-                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, (int) (1)), 'H',
-                ItemList.Hatch_Input_IV.get(1) });
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, 1), 'H', ItemList.Hatch_Input_IV.get(1) });
     }
 
     private static void volcanus() {
@@ -952,7 +951,7 @@ public class RecipesMachinesMulti {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Staballoy, Shapes.plate, 4),
-                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plate, (int) (2)),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plate, 2),
                 MaterialLibAPI.getStack(Materials.ZirconiumCarbide, PipeShapes.frameGt, 1))
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Multi_Use.get(1))
@@ -1030,7 +1029,7 @@ public class RecipesMachinesMulti {
                 ItemList.Casing_SolidSteel.get(2),
                 MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plate, 2),
                 MaterialLibAPI.getStack(Materials.TantalumCarbide, Shapes.plate, 4),
-                MaterialLibAPI.getStack(Materials.Titanium, Shapes.ring, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.ring, 8),
                 MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.stick, 4))
             .circuit(14)
             .itemOutputs(GregtechItemList.Casing_IndustrialAutoChisel.get(1))
@@ -1045,9 +1044,9 @@ public class RecipesMachinesMulti {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Machine_EV_RockBreaker.get(1),
-                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plate, (int) (8)),
-                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.ring, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plateDouble, (int) (8)),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plate, 8),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.ring, 4),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plateDouble, 8),
                 MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.screw, 8))
             .circuit(12)
             .itemOutputs(ItemList.Boldarnator.get(1))

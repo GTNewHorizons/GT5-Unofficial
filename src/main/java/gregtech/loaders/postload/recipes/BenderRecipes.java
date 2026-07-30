@@ -200,7 +200,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Titanium, Shapes.stick, (int) (8)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Titanium, Shapes.stick, 8))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)

@@ -73,7 +73,7 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
         excitedLiquid = Arrays.asList(
             Pair.of(MaterialUtils.molten(Materials.spatialFluid, 20L), ExcitedLiquidCoe[0]),
             Pair.of(
-                MaterialLibAPI.getFluidStack(Materials.AtomicSeparationCatalyst, FluidShapes.fluidMolten, (int) (20)),
+                MaterialLibAPI.getFluidStack(Materials.AtomicSeparationCatalyst, FluidShapes.fluidMolten, 20),
                 ExcitedLiquidCoe[1]),
             Pair.of(MaterialLibAPI.getFluidStack(Materials.Naquadah, FluidShapes.fluidMolten, 20), ExcitedLiquidCoe[2]),
             Pair.of(
