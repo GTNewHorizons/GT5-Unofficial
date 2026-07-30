@@ -179,6 +179,9 @@ public class MaterialParts {
     /// order.
     private static Map<String, List<Shape>> prefixShapes() {
         if (prefixToShapes == null) {
+            if (Shapes.dust == null) {
+                throw new IllegalStateException("Prefix-shape table consulted before MaterialSystem.init");
+            }
             Map<String, List<Shape>> map = new HashMap<>();
             collectShapes(map, Shapes.class);
             collectShapes(map, CellShapes.class);

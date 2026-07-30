@@ -11,6 +11,20 @@ import java.util.Set;
 /// a MaterialLib registry hit; membership in this set alone is the signal -- not whether MaterialLib
 /// currently resolves the name -- so bridged names assigned later by bartworks/gtPlusPlus still count from
 /// the moment they appear here.
+///
+/// This set and [LegacyNameDomainTable]'s are both applied to the same raw ore-dictionary name in
+/// `GTProxy#resolveCensusMaterial`, and they deliberately do not coincide. A name here is absent from the
+/// domain in four cases:
+///
+/// - retired spellings that name nothing today (`"AluminiumFluoride"`, `"Aluminiumhydroxide"` and
+/// `"Aluminiumoxide"`, whose live counterparts `Aluminiumfluoride`/`AluminiumHydroxide`/`Alumina` carry the
+/// domain rows) -- kept because a foreign mod's ore-dictionary entry may still use the old spelling, and this
+/// set's job is to keep such a name on the legacy path rather than let it take an unrelated registry hit,
+/// - the [gregtech.api.enums.materials.MaterialFacades] superconductor backings, which resolve through the
+/// registry and never through the domain,
+/// - names whose MaterialLib registration name had to be sanitized (`"Computation Base"` ->
+/// `"ComputationBase"`), where the domain is keyed by the legacy name and this set holds the sanitized one,
+/// - the many names retired outright, which resolve nowhere either way.
 public final class MaterialsDeclaredFieldsTable {
 
     public static final Set<String> NAMES = new HashSet<>(

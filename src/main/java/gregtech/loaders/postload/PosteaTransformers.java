@@ -2,7 +2,9 @@ package gregtech.loaders.postload;
 
 import static gregtech.api.enums.OrePrefixes.___placeholder___;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.function.IntFunction;
 
@@ -20,6 +22,7 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
@@ -52,6 +55,7 @@ public class PosteaTransformers implements Runnable {
 
     @Override
     public void run() {
+        validateCutoverTables();
         registerFrameboxTransformers();
         registerProgrammedCircuitTransformers();
         registerPotassiumHydroxideTransformer();
@@ -60,6 +64,47 @@ public class PosteaTransformers implements Runnable {
         registerIC2BlocksTransformer();
         registerMaterialLibCutoverTransformers();
     }
+
+    /// Resolves every generated cutover row once, here, so a row whose material or target shape stopped
+    /// resolving is one log line naming the row rather than a silent per-stack no-op at chunk load -- where the
+    /// legacy item is already gone, so FML deletes the stack instead of migrating it. Every row is expected to
+    /// resolve; a row that deliberately never cuts over belongs in its table's javadoc as such, so that what
+    /// shows up here reads as a regression.
+    private static void validateCutoverTables() {
+        List<String> unresolved = new ArrayList<>();
+
+        for (Entry entry : GtppItemCutoverTable.ENTRIES) {
+            if (resolveGtppCutoverStack(entry) == null) unresolved.add(entry.registryName());
+        }
+        for (GtppOreCutoverTable.Entry entry : GtppOreCutoverTable.ENTRIES) {
+            if (resolveGtppOreCutoverStack(entry) == null) unresolved.add(entry.registryName());
+        }
+        for (Map.Entry<Integer, LegacyPipeCutoverTable.Entry> row : LegacyPipeCutoverTable.entries()
+            .entrySet()) {
+            LegacyPipeCutoverTable.Entry entry = row.getValue();
+            if (MaterialLibAPI.getBlock(entry.shape()) == null || !entry.material()
+                .hasShape(entry.shape())) {
+                unresolved.add(
+                    "pipe MTE id " + row.getKey()
+                        + " ("
+                        + entry.material()
+                            .getName()
+                        + " "
+                        + entry.shape()
+                            .getName()
+                        + ")");
+            }
+        }
+
+        if (!unresolved.isEmpty()) {
+            GTMod.GT_FML_LOGGER.error(
+                "PosteaTransformers: {} cutover rows no longer resolve; saved stacks of these will be deleted rather than migrated: {}",
+                unresolved.size(),
+                unresolved.subList(0, Math.min(unresolved.size(), MAX_REPORTED_UNRESOLVED_ROWS)));
+        }
+    }
+
+    private static final int MAX_REPORTED_UNRESOLVED_ROWS = 50;
 
     /// Migrates saved [MetaGeneratedItemX32] stacks (`gt.metaitem.01/02/03`, damage < 32000) and
     /// [MetaGeneratedItem99] stacks (`gt.metaitem.99`, cell molten/cracked prefixes) whose prefix cut over to

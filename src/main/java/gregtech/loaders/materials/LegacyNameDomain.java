@@ -48,7 +48,10 @@ public final class LegacyNameDomain {
             Set<Material> set = new HashSet<>(LegacyNameDomainTable.DOMAIN.size() + 1);
             for (String mlName : LegacyNameDomainTable.DOMAIN.values()) {
                 Material material = MaterialLibAPI.getMaterial("gregtech", mlName);
-                if (material != null) set.add(material);
+                if (material == null) {
+                    throw new IllegalStateException("Legacy name domain row " + mlName + " no longer resolves");
+                }
+                set.add(material);
             }
             set.add(Materials.NULL);
             membership = set;

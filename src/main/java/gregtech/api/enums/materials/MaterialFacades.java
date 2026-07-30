@@ -71,6 +71,9 @@ public class MaterialFacades {
     public static List<Material> oreReRegistrationsOf(@Nullable Material material) {
         if (material == null) return Collections.emptyList();
         if (oreReRegistrations == null) {
+            if (Materials.Iron == null) {
+                throw new IllegalStateException("Ore re-registration table consulted before MaterialSystem.init");
+            }
             Map<Material, List<Material>> m = new HashMap<>();
             m.put(Materials.Iron, Collections.singletonList(AnyIron));
             m.put(Materials.PigIron, Collections.singletonList(AnyIron));
