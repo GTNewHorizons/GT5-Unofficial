@@ -8,7 +8,7 @@ import com.ruling_0.materiallib.api.Shape;
 /// excluding block-kind, fluid-container, and complex tool/armor prefixes. `milled` is the one hand-added
 /// entry: gtPlusPlus's `BaseItemMilledOre` built real per-material items even though the prefix holds no
 /// `MetaGeneratedItemX32` slot, so gtPlusPlus materials need a shape of their own for it.
-public class Materials2Shapes {
+public class Shapes {
 
     // spotless:off
     public static Shape bolt;
@@ -208,5 +208,5 @@ public class Materials2Shapes {
             .build();
     }
 
-    private Materials2Shapes() {}
+    private Shapes() {}
 }

@@ -45,7 +45,7 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidNames;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.AspectRefStack;
@@ -145,7 +145,7 @@ public final class MaterialDataDump {
     /// [gregtech.api.material.MaterialParts] reflects them: the constants are the only enumeration of them.
     private static List<Map<String, Object>> dumpDeclaredShapes() {
         List<Map<String, Object>> shapes = new ArrayList<>();
-        for (Class<?> declaring : new Class<?>[] { Materials2Shapes.class, Materials2CellShapes.class,
+        for (Class<?> declaring : new Class<?>[] { Shapes.class, Materials2CellShapes.class,
             Materials2BlockShapes.class, Materials2OreShapes.class, Materials2PipeShapes.class }) {
             for (java.lang.reflect.Field field : declaring.getFields()) {
                 if (field.getType() != Shape.class) continue;

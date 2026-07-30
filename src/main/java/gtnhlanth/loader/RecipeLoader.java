@@ -45,6 +45,7 @@ import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.dissolutionTankRecipes;
 import java.util.HashSet;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -67,7 +68,6 @@ import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -97,7 +97,7 @@ public class RecipeLoader {
                     .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 2 * INGOTS))
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
-                MaterialLibAPI.getStack(Materials.Mumetal, Materials2Shapes.plateDense, 8),
+                MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plateDense, 8),
                 Circuits.ZPM.get(4),
                 ItemList.Conveyor_Module_LuV.get(4),
                 GTUtility.copyAmount(2, LanthItemList.BEAMLINE_PIPE),
@@ -115,7 +115,7 @@ public class RecipeLoader {
                     .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 2 * INGOTS))
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
-                MaterialLibAPI.getStack(Materials.Mumetal, Materials2Shapes.plateDense, 8),
+                MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plateDense, 8),
                 ItemList.Casing_Coil_Superconductor.get(2),
                 Circuits.ZPM.get(8),
                 ItemList.Electric_Pump_LuV.get(2),
@@ -134,8 +134,8 @@ public class RecipeLoader {
                     .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 2 * INGOTS))
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
-                MaterialLibAPI.getStack(Materials.Mumetal, Materials2Shapes.plateDense, 8),
-                MaterialLibAPI.getStack(Materials.Lead, Materials2Shapes.plateDense, 4),
+                MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plateDense, 8),
+                MaterialLibAPI.getStack(Materials.Lead, Shapes.plateDense, 4),
                 Circuits.ZPM.get(4),
                 Circuits.UV.get(2),
                 GTUtility.copyAmount(2, LanthItemList.BEAMLINE_PIPE),
@@ -153,7 +153,7 @@ public class RecipeLoader {
                     .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 48 * INGOTS))
             .itemInputs(
                 ItemList.Hull_LuV.get(1),
-                MaterialLibAPI.getStack(Materials.Mumetal, Materials2Shapes.plateDense, 8),
+                MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plateDense, 8),
                 ItemList.Casing_Coil_Superconductor.get(12),
                 Circuits.ZPM.get(8),
                 Circuits.UV.get(8),
@@ -168,19 +168,19 @@ public class RecipeLoader {
         // Add .iCircuit(4) to this if it ever gets re-activated
         /*
          * //Permalloy GT_Values.RA.addMixerRecipe( MaterialLibAPI.getStack(Materials.Nickel,
-         * Materials2Shapes.dust, 4),
-         * MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.dust, 1),
-         * MaterialLibAPI.getStack(Materials.Molybdenum, Materials2Shapes.dust, 1), null, null,
-         * MaterialLibAPI.getStack(Materials.Permalloy, Materials2Shapes.dust, 6), 1920, 200 );
+         * Shapes.dust, 4),
+         * MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1),
+         * MaterialLibAPI.getStack(Materials.Molybdenum, Shapes.dust, 1), null, null,
+         * MaterialLibAPI.getStack(Materials.Permalloy, Shapes.dust, 6), 1920, 200 );
          */
         // Mu-metal
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Permalloy, Materials2Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Chrome, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.Permalloy, Shapes.dust, 9),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Chrome, Shapes.dust, 1))
             .circuit(2)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Mumetal, Materials2Shapes.ingot, 11))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Mumetal, Shapes.ingot, 11))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .specialValue(4500)
@@ -190,7 +190,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_RadiationProof.get(1L),
-                MaterialLibAPI.getStack(Materials.Mumetal, Materials2Shapes.plateDense, 6))
+                MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plateDense, 6))
             .circuit(6)
             .fluidInputs(
                 MaterialLibAPI
@@ -205,7 +205,7 @@ public class RecipeLoader {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Silver, Materials2BlockShapes.blockCasingAdvanced, 1),
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Silver, 12),
-                MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.plateDense, 6))
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.plateDense, 6))
             .circuit(6)
             .fluidInputs(
                 MaterialLibAPI
@@ -222,7 +222,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.plate, 6),
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Naquadah, 2),
                 ItemList.Electric_Pump_LuV.get(3L),
                 new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 3),
@@ -243,11 +243,11 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.plate, 6),
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Naquadah, 2),
                 ItemList.Electric_Pump_LuV.get(3L),
                 new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 3),
-                MaterialLibAPI.getStack(Materials.Fluorophlogopite, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Fluorophlogopite, Shapes.plate, 6),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tungsten, 1))
             .fluidInputs(
                 MaterialLibAPI
@@ -271,13 +271,13 @@ public class RecipeLoader {
                     .getFluidStack(Materials.Xenon, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tungsten, 1),
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.plate, 4),
-                MaterialLibAPI.getStack(Materials.Mumetal, Materials2Shapes.plate, 5),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plate, 5),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Backings.SuperconductorLuV, 4),
                 new Object[] { Circuits.ZPM.getIngredient(), 4 },
                 ItemList.Emitter_LuV.get(6),
-                MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.wireFine, 32),
-                MaterialLibAPI.getStack(Materials.Electrum, Materials2Shapes.plateDense, 6))
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.wireFine, 32),
+                MaterialLibAPI.getStack(Materials.Electrum, Shapes.plateDense, 6))
             .itemOutputs(new ItemStack(LanthItemList.ANTENNA_CASING_T1))
             .metadata(
                 GTRecipeConstants.RESEARCH_ITEM,
@@ -297,13 +297,13 @@ public class RecipeLoader {
                     .getFluidStack(Materials.Xenon, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenCarbide, 1),
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.plate, 4),
-                MaterialLibAPI.getStack(Materials.Mumetal, Materials2Shapes.plate, 5),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plate, 5),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Backings.SuperconductorZPM, 4),
                 new Object[] { Circuits.UV.getIngredient(), 4 },
                 ItemList.Emitter_ZPM.get(6),
-                MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.wireFine, 64),
-                MaterialLibAPI.getStack(Materials.Electrum, Materials2Shapes.plateDense, 6))
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.Electrum, Shapes.plateDense, 6))
             .itemOutputs(new ItemStack(LanthItemList.ANTENNA_CASING_T2))
             .metadata(GTRecipeConstants.RESEARCH_ITEM, new ItemStack(LanthItemList.ANTENNA_CASING_T1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 10 * SECONDS, TierEU.RECIPE_LuV))
@@ -315,7 +315,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Niobium, 1),
-                MaterialLibAPI.getStack(Materials.Niobium, Materials2Shapes.plate, 6))
+                MaterialLibAPI.getStack(Materials.Niobium, Shapes.plate, 6))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, 2_000))
             .itemOutputs(new ItemStack(LanthItemList.NIOBIUM_CAVITY_CASING, 1))
@@ -336,7 +336,7 @@ public class RecipeLoader {
                 new Object[] { Circuits.IV.getIngredient(), 4 },
                 ItemList.Robot_Arm_LuV.get(4),
                 ItemList.Conveyor_Module_LuV.get(2),
-                MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.wireFine, 32),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.wireFine, 32),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tungsten, 2))
             .itemOutputs(new ItemStack(LanthItemList.FOCUS_MANIPULATION_CASING))
             .metadata(GTRecipeConstants.RESEARCH_ITEM, new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK1)))
@@ -352,7 +352,7 @@ public class RecipeLoader {
             "MHM",
             "MCM",
             'M',
-            MaterialLibAPI.getStack(Materials.Mumetal, Materials2Shapes.plateDense, 1),
+            MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plateDense, 1),
             'H',
             ItemList.Hull_LuV.get(1),
             'C',
@@ -365,7 +365,7 @@ public class RecipeLoader {
             "R R",
             "MHM",
             'M',
-            MaterialLibAPI.getStack(Materials.Mumetal, Materials2Shapes.plateDense, 1),
+            MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plateDense, 1),
             'C',
             ItemList.Conveyor_Module_LuV.get(1),
             'R',
@@ -380,7 +380,7 @@ public class RecipeLoader {
             "McM",
             "RCR",
             'M',
-            MaterialLibAPI.getStack(Materials.Mumetal, Materials2Shapes.plateDense, 1),
+            MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plateDense, 1),
             'C',
             ItemList.Conveyor_Module_HV.get(1),
             'R',
@@ -399,7 +399,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1),
                 new Object[] { Circuits.IV.getIngredient(), 4 },
                 ItemList.Robot_Arm_LuV.get(4),
-                MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.wireFine, 16),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.wireFine, 16),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tungsten, 2))
             .itemOutputs(new ItemStack(LanthItemList.TARGET_RECEPTACLE_CASING))
             .metadata(GTRecipeConstants.RESEARCH_ITEM, ItemList.Circuit_Silicon_Wafer.get(1))
@@ -412,11 +412,11 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.TungstenSteel, 8),
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.plateDouble, 2),
-                MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.plateDouble, 2),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 6),
                 GTUtility.copyAmount(4, insulator),
                 ItemList.Electric_Pump_LuV.get(1),
-                MaterialLibAPI.getStack(Materials.Silver, Materials2Shapes.dust, 2))
+                MaterialLibAPI.getStack(Materials.Silver, Shapes.dust, 2))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.Silicone, Materials2FluidShapes.fluidMolten, 2 * INGOTS))
@@ -428,11 +428,11 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.TungstenSteel, 8),
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.plateDouble, 2),
-                MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.plate, 6),
-                MaterialLibAPI.getStack(Materials.Fluorophlogopite, Materials2Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.plateDouble, 2),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Fluorophlogopite, Shapes.plate, 4),
                 ItemList.Electric_Pump_LuV.get(1),
-                MaterialLibAPI.getStack(Materials.Silver, Materials2Shapes.dust, 2))
+                MaterialLibAPI.getStack(Materials.Silver, Shapes.dust, 2))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.Silicone, Materials2FluidShapes.fluidMolten, 2 * INGOTS))
@@ -444,8 +444,8 @@ public class RecipeLoader {
         // Mu-metal lattice
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Mumetal, Materials2Shapes.wireFine, 12),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.stick, 4))
+                MaterialLibAPI.getStack(Materials.Mumetal, Shapes.wireFine, 12),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stick, 4))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.SolderingAlloy, Materials2FluidShapes.fluidMolten, 1 * INGOTS))
@@ -470,10 +470,10 @@ public class RecipeLoader {
         // Beamline Pipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Mumetal, Materials2Shapes.plate, 4),
-                MaterialLibAPI.getStack(Materials.TungstenCarbide, Materials2Shapes.stickLong, 4),
-                MaterialLibAPI.getStack(Materials.TungstenCarbide, Materials2Shapes.stick, 8),
-                MaterialLibAPI.getStack(Materials.Osmiridium, Materials2Shapes.foil, 4))
+                MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.TungstenCarbide, Shapes.stickLong, 4),
+                MaterialLibAPI.getStack(Materials.TungstenCarbide, Shapes.stick, 8),
+                MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.foil, 4))
             .circuit(7)
             .fluidInputs(
                 MaterialLibAPI
@@ -496,7 +496,7 @@ public class RecipeLoader {
                 new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 2),
                 ItemList.Electric_Pump_LuV.get(1),
                 LanthItemList.BEAMLINE_PIPE,
-                MaterialLibAPI.getStack(Materials.Mumetal, Materials2Shapes.plate, 4))
+                MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plate, 4))
             .itemOutputs(LanthItemList.LUV_BEAMLINE_INPUT_HATCH)
             .metadata(GTRecipeConstants.RESEARCH_ITEM, ItemList.Hatch_Input_LuV.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 20 * SECONDS, TierEU.RECIPE_IV))
@@ -519,7 +519,7 @@ public class RecipeLoader {
                 ItemList.Electric_Motor_LuV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Backings.SuperconductorLuV, 8),
                 LanthItemList.BEAMLINE_PIPE,
-                MaterialLibAPI.getStack(Materials.Mumetal, Materials2Shapes.plate, 8)
+                MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plate, 8)
 
             )
             .itemOutputs(LanthItemList.LUV_BEAMLINE_OUTPUT_HATCH)
@@ -591,8 +591,8 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.dust, 2),
-                MaterialLibAPI.getStack(Materials.NetherQuartz, Materials2Shapes.plate, 1))
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.plate, 1))
             .itemOutputs(new ItemStack(LanthItemList.IRON_COATED_QUARTZ))
             .duration(10 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -616,7 +616,7 @@ public class RecipeLoader {
         /*
          * Unsure what was intended with this recipe? GT_Values.RA.stdBuilder() .itemInputs(new
          * ItemStack(LanthItemList.IRON_COATED_QUARTZ), MaterialLibAPI.getStack(Materials.Chrome,
-         * Materials2Shapes.dust, 1))
+         * Shapes.dust, 1))
          * .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas,
          * 1_000)) .itemOutputs(new
          * ItemStack(LanthItemList.maskMap.get(MaskList.BLANK2))) .outputChances(10000).requiresCleanRoom().duration(12
@@ -625,7 +625,7 @@ public class RecipeLoader {
 
         // Grow the first silicon
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Glass, Materials2Shapes.plate, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Glass, Shapes.plate, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Silane, Materials2FluidShapes.fluidGas, 4_000))
             .itemOutputs(new ItemStack(LanthItemList.SUBSTRATE_PRECURSOR))
@@ -653,11 +653,11 @@ public class RecipeLoader {
 
         /*
          * GT_Values.RA.stdBuilder().itemInputs(MaterialLibAPI.getStack(Materials.Silicon,
-         * Materials2Shapes.foil, 1))
+         * Shapes.foil, 1))
          * .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SiliconTetrachloride,
          * Materials2FluidShapes.fluidLiquid, 3_000), MaterialUtils.fluid(Materials.Ammonia, 4_000))
          * .fluidOutputs(MaterialUtils.fluid(Materials.HydrochloricAcidGT5U, 12_000))
-         * .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconNitride, Materials2Shapes.plate, 1))
+         * .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconNitride, Shapes.plate, 1))
          * .duration(GTRecipeBuilder.SECONDS *
          * 30) .eut(TierEU.RECIPE_EV) .addTo(GTRecipe.GTRecipe_Map.sPlasmaArcFurnaceRecipes);
          */
@@ -691,8 +691,8 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(LanthItemList.MASKED_MASK),
-                MaterialLibAPI.getStack(Materials.LithiumChloride, Materials2Shapes.dust, 2),
-                MaterialLibAPI.getStack(Materials.PotassiumHydroxideGT5U, Materials2Shapes.dust, 4))
+                MaterialLibAPI.getStack(Materials.LithiumChloride, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.PotassiumHydroxideGT5U, Shapes.dust, 4))
             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK2)))
             .duration(80 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -703,9 +703,9 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(LanthItemList.ETCHED_MASK_1),
-                MaterialLibAPI.getStack(Materials.Sodium, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Chrome, Materials2Shapes.plate, 1),
-                MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.plate, 2))
+                MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Chrome, Shapes.plate, 1),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.plate, 2))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, 1_000))
             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK3)))
@@ -717,9 +717,9 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(LanthItemList.ETCHED_MASK_1, 4),
-                MaterialLibAPI.getStack(Materials.Glass, Materials2Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.Glass, Shapes.plate, 2),
                 GregtechItemList.LithiumHydroxideDust.get(2),
-                MaterialLibAPI.getStack(Materials.Epoxid, Materials2Shapes.dust, 4))
+                MaterialLibAPI.getStack(Materials.Epoxid, Shapes.dust, 4))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, 2_000))
             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.CBLANK)))
@@ -743,7 +743,7 @@ public class RecipeLoader {
                         .itemInputs(
                             new ItemStack(LanthItemList.maskMap.get(MaskList.PIC)),
                             MaterialLibAPI
-                                .getStack(Materials.IndiumGalliumPhosphide, Materials2Shapes.dust, 2))
+                                .getStack(Materials.IndiumGalliumPhosphide, Shapes.dust, 2))
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(
                                 Materials.VanadiumGallium,
@@ -760,7 +760,7 @@ public class RecipeLoader {
                         .itemInputs(
                             new ItemStack(LanthItemList.maskMap.get(MaskList.HPIC)),
                             MaterialLibAPI
-                                .getStack(Materials.IndiumGalliumPhosphide, Materials2Shapes.dust, 8))
+                                .getStack(Materials.IndiumGalliumPhosphide, Shapes.dust, 8))
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(
                                 Materials.Naquadah,
@@ -778,7 +778,7 @@ public class RecipeLoader {
                         .itemInputs(
                             new ItemStack(LanthItemList.maskMap.get(MaskList.NPIC)),
                             MaterialLibAPI
-                                .getStack(Materials.IndiumGalliumPhosphide, Materials2Shapes.dust, 64))
+                                .getStack(Materials.IndiumGalliumPhosphide, Shapes.dust, 64))
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(
                                 Materials.Sunnarium,
@@ -795,7 +795,7 @@ public class RecipeLoader {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             new ItemStack(LanthItemList.maskMap.get(MaskList.QPIC)),
-                            MaterialLibAPI.getStack(Materials.Iodine, Materials2Shapes.dust, 64))
+                            MaterialLibAPI.getStack(Materials.Iodine, Shapes.dust, 64))
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(
                                 Materials.InfinityCatalyst,
@@ -830,7 +830,7 @@ public class RecipeLoader {
                         .itemInputs(
                             new ItemStack(LanthItemList.maskMap.get(MaskList.NCPU)),
                             MaterialLibAPI
-                                .getStack(Materials.IndiumGalliumPhosphide, Materials2Shapes.dust, 1))
+                                .getStack(Materials.IndiumGalliumPhosphide, Shapes.dust, 1))
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(Materials.Radon, Materials2FluidShapes.fluidGas, 50))
                         .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.PrNCPU)))
@@ -867,7 +867,7 @@ public class RecipeLoader {
                         new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
                         GTUtility.copyAmount(
                             0,
-                            MaterialLibAPI.getStack(Materials.EnderPearl, Materials2Shapes.lens, 1)))
+                            MaterialLibAPI.getStack(Materials.EnderPearl, Shapes.lens, 1)))
                     .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
                     .requiresCleanRoom()
                     .duration(120 * SECONDS)
@@ -881,7 +881,7 @@ public class RecipeLoader {
                         new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
                         GTUtility.copyAmount(
                             0,
-                            MaterialLibAPI.getStack(Materials.EnderEye, Materials2Shapes.lens, 1)))
+                            MaterialLibAPI.getStack(Materials.EnderEye, Shapes.lens, 1)))
                     .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
                     .requiresCleanRoom()
                     .duration(120 * SECONDS)
@@ -939,9 +939,9 @@ public class RecipeLoader {
         // ZrCl4
         // ZrO2 + 4HCl = ZrCl4 + 2H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Zirconia, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Zirconia, Shapes.dust, 3))
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.ZirconiumTetrachloride, Materials2Shapes.dust, 5))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.ZirconiumTetrachloride, Shapes.dust, 5))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 4_000))
@@ -952,7 +952,7 @@ public class RecipeLoader {
 
         // ZrCl4-H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.ZirconiumTetrachloride, Materials2Shapes.dust, 5))
+            .itemInputs(MaterialLibAPI.getStack(Materials.ZirconiumTetrachloride, Shapes.dust, 5))
             .circuit(1)
             .fluidInputs(GTUtility.getWater(1_000))
             .fluidOutputs(
@@ -967,11 +967,11 @@ public class RecipeLoader {
         // Zr
         // ZrCl4·H2O + 2Mg = Zr + 2MgCl2
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Magnesium, Materials2Shapes.dust, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Magnesium, Shapes.dust, 2))
             .circuit(2)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Zirconium, Materials2Shapes.ingotHot, 1),
-                MaterialLibAPI.getStack(Materials.Magnesiumchloride, Materials2Shapes.dust, 6))
+                MaterialLibAPI.getStack(Materials.Zirconium, Shapes.ingotHot, 1),
+                MaterialLibAPI.getStack(Materials.Magnesiumchloride, Shapes.dust, 6))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.ZirconiumTetrachlorideSolution,
@@ -986,9 +986,9 @@ public class RecipeLoader {
         // HfCl4
         // HfO2 + 4HCl = HfCl4 + 2H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Hafnia, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hafnia, Shapes.dust, 3))
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.HafniumTetrachloride, Materials2Shapes.dust, 5))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.HafniumTetrachloride, Shapes.dust, 5))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 4_000))
@@ -999,7 +999,7 @@ public class RecipeLoader {
 
         // HfCl4-H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.HafniumTetrachloride, Materials2Shapes.dust, 5))
+            .itemInputs(MaterialLibAPI.getStack(Materials.HafniumTetrachloride, Shapes.dust, 5))
             .circuit(1)
             .fluidInputs(GTUtility.getWater(1_000))
             .fluidOutputs(
@@ -1014,11 +1014,11 @@ public class RecipeLoader {
         // LP-Hf
         // HfCl4 + 2Mg = ??Hf?? + 2MgCl2
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Magnesium, Materials2Shapes.dust, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Magnesium, Shapes.dust, 2))
             .circuit(2)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.LowPurityHafnium, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Magnesiumchloride, Materials2Shapes.dust, 6))
+                MaterialLibAPI.getStack(Materials.LowPurityHafnium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Magnesiumchloride, Shapes.dust, 6))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.HafniumTetrachlorideSolution,
@@ -1032,9 +1032,9 @@ public class RecipeLoader {
         // HfI4
         // ??Hf?? + 4I = HfI4
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.LowPurityHafnium, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.LowPurityHafnium, Shapes.dust, 1))
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.HafniumIodide, Materials2Shapes.dust, 5))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.HafniumIodide, Shapes.dust, 5))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.Iodine, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
@@ -1044,9 +1044,9 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.LowPurityHafnium, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Iodine, Materials2Shapes.dust, 4))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.HafniumIodide, Materials2Shapes.dust, 5))
+                MaterialLibAPI.getStack(Materials.LowPurityHafnium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Iodine, Shapes.dust, 4))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.HafniumIodide, Shapes.dust, 5))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -1054,11 +1054,11 @@ public class RecipeLoader {
         // Hf
         // HfI4 = Hf + 4I
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.HafniumIodide, Materials2Shapes.dust, 5))
+            .itemInputs(MaterialLibAPI.getStack(Materials.HafniumIodide, Shapes.dust, 5))
             .circuit(12)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Hafnium, Materials2Shapes.ingotHot, 1),
-                MaterialLibAPI.getStack(Materials.HafniumRunoff, Materials2Shapes.dustTiny, 1))
+                MaterialLibAPI.getStack(Materials.Hafnium, Shapes.ingotHot, 1),
+                MaterialLibAPI.getStack(Materials.HafniumRunoff, Shapes.dustTiny, 1))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.Iodine, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
@@ -1069,11 +1069,11 @@ public class RecipeLoader {
 
         // Hf * 9
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.HafniumIodide, Materials2Shapes.dust, 45))
+            .itemInputs(MaterialLibAPI.getStack(Materials.HafniumIodide, Shapes.dust, 45))
             .circuit(13)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Hafnium, Materials2Shapes.ingotHot, 9),
-                MaterialLibAPI.getStack(Materials.HafniumRunoff, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.Hafnium, Shapes.ingotHot, 9),
+                MaterialLibAPI.getStack(Materials.HafniumRunoff, Shapes.dust, 1))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.Iodine, Materials2FluidShapes.fluidLiquid, (int) (36_000)))
@@ -1083,8 +1083,8 @@ public class RecipeLoader {
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Hafnium, Materials2Shapes.ingotHot, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Hafnium, Materials2Shapes.ingot, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Hafnium, Shapes.ingotHot, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Hafnium, Shapes.ingot, 1))
             .duration(26 * SECONDS + 14 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(vacuumFreezerRecipes);
@@ -1092,10 +1092,10 @@ public class RecipeLoader {
         // Zirconia-Hafnia
         // ??HfZr?? = HfO2 + ZrO2
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.HafniaZirconiaBlend, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.HafniaZirconiaBlend, Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Hafnia, Materials2Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials.Zirconia, Materials2Shapes.dust, 3))
+                MaterialLibAPI.getStack(Materials.Hafnia, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Zirconia, Shapes.dust, 3))
             .eut(TierEU.RECIPE_EV)
             .duration(30 * SECONDS)
             .addTo(centrifugeRecipes);
@@ -1135,12 +1135,12 @@ public class RecipeLoader {
         // SeaweedAsh
         GTModHandler.addSmeltingRecipe(
             GTModHandler.getModItem(PamsHarvestCraft.ID, "seaweedItem", 1),
-            MaterialLibAPI.getStack(Materials.SeaweedAsh, Materials2Shapes.dustSmall, 1));
+            MaterialLibAPI.getStack(Materials.SeaweedAsh, Shapes.dustSmall, 1));
 
         // SeaweedConcentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SeaweedAsh, Materials2Shapes.dust, 2))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Calcite, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SeaweedAsh, Shapes.dust, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.DilutedSulfuricAcid, Materials2FluidShapes.fluidLiquid, 1_200))
@@ -1156,7 +1156,7 @@ public class RecipeLoader {
         // Iodine
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Benzene, Materials2CellShapes.cell, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Iodine, Materials2Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Iodine, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SeaweedConcentrate,
@@ -1176,12 +1176,12 @@ public class RecipeLoader {
         // 2MnO2 + 2KOH + KClO3 = 2KMnO4 + H2O + KCl
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Pyrolusite, Materials2Shapes.dust, 6),
-                MaterialLibAPI.getStack(Materials.PotassiumHydroxideGT5U, Materials2Shapes.dust, 6),
-                MaterialLibAPI.getStack(Materials.PotassiumChlorate, Materials2Shapes.dust, 5))
+                MaterialLibAPI.getStack(Materials.Pyrolusite, Shapes.dust, 6),
+                MaterialLibAPI.getStack(Materials.PotassiumHydroxideGT5U, Shapes.dust, 6),
+                MaterialLibAPI.getStack(Materials.PotassiumChlorate, Shapes.dust, 5))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.PotassiumPermanganate, Materials2Shapes.dust, 12),
-                MaterialLibAPI.getStack(Materials.RockSalt, Materials2Shapes.dust, 2))
+                MaterialLibAPI.getStack(Materials.PotassiumPermanganate, Shapes.dust, 12),
+                MaterialLibAPI.getStack(Materials.RockSalt, Shapes.dust, 2))
             .fluidOutputs(GTUtility.getWater(1_000))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
@@ -1190,9 +1190,9 @@ public class RecipeLoader {
 
         // Mn + 2O = MnO2
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Manganese, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Manganese, Shapes.dust, 1))
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Pyrolusite, Materials2Shapes.dust, 3))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Pyrolusite, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 2_000))
             .duration(2 * SECONDS)
@@ -1201,11 +1201,11 @@ public class RecipeLoader {
 
         // 6KOH + 6Cl = KClO3 + 5KCl + 3H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.PotassiumHydroxideGT5U, Materials2Shapes.dust, 18))
+            .itemInputs(MaterialLibAPI.getStack(Materials.PotassiumHydroxideGT5U, Shapes.dust, 18))
             .circuit(3)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.RockSalt, Materials2Shapes.dust, 10),
-                MaterialLibAPI.getStack(Materials.PotassiumChlorate, Materials2Shapes.dust, 5))
+                MaterialLibAPI.getStack(Materials.RockSalt, Shapes.dust, 10),
+                MaterialLibAPI.getStack(Materials.PotassiumChlorate, Shapes.dust, 5))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 6_000))
             .fluidOutputs(GTUtility.getWater(3_000))
@@ -1218,7 +1218,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 2),
-                MaterialLibAPI.getStack(Materials.Salt, Materials2Shapes.dust, 4))
+                MaterialLibAPI.getStack(Materials.Salt, Shapes.dust, 4))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, Materials2CellShapes.cell, 2))
             .fluidInputs(
@@ -1237,12 +1237,12 @@ public class RecipeLoader {
 
         // La + 6HCl = LaCl3 + 3H
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Lanthanum, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Lanthanum, Shapes.dust, 1))
             .circuit(1)
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 3_000))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.LanthaniumChloride, Materials2Shapes.dust, 4))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.LanthaniumChloride, Shapes.dust, 4))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, 3_000))
             .duration(10 * SECONDS)
@@ -1255,8 +1255,8 @@ public class RecipeLoader {
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 6_000))
-            .itemInputs(MaterialLibAPI.getStack(Materials.LanthaniumChloride, Materials2Shapes.dust, 8))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.LanthanumOxide, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.LanthaniumChloride, Shapes.dust, 8))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.LanthanumOxide, Shapes.dust, 1))
             .duration(10 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
@@ -1266,17 +1266,17 @@ public class RecipeLoader {
             .circuit(2)
             .fluidInputs(FluidRegistry.getFluidStack("boricacid", 2_000))
             .fluidOutputs(new FluidStack(FluidRegistry.WATER, 3_000))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.BoronTrioxide, Materials2Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.BoronTrioxide, Shapes.dust, 1))
             .duration(15 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Boron, Materials2Shapes.dust, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Boron, Shapes.dust, 2))
             .circuit(2)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 3_000))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.BoronTrioxide, Materials2Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.BoronTrioxide, Shapes.dust, 1))
             .duration(30 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(UniversalChemical);
@@ -1292,7 +1292,7 @@ public class RecipeLoader {
                     Materials2FluidShapes.fluidLiquid,
                     (int) (2_000)))
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.BoronTrioxide, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.BoronTrioxide, Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 3))
             .itemOutputs(MaterialLibAPI.getStack(Materials.CarbonMonoxide, Materials2CellShapes.cell, 3))
             .duration(10 * GTRecipeBuilder.SECONDS)
@@ -1307,9 +1307,9 @@ public class RecipeLoader {
                     Materials2FluidShapes.fluidLiquid,
                     (int) (8_000)))
             .fluidOutputs(FluidRegistry.getFluidStack("boricacid", 1_000))
-            .itemInputs(MaterialLibAPI.getStack(Materials.LanthanumOxide, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.LanthanumOxide, Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.LanthanumHexaboride, Materials2Shapes.gemFlawless, 1))
+                MaterialLibAPI.getStack(Materials.LanthanumHexaboride, Shapes.gemFlawless, 1))
             .duration(60 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(autoclaveRecipes);
@@ -1319,7 +1319,7 @@ public class RecipeLoader {
         // Methanol
         // CH4O + CO + 3O =V2O5= H2C2O4 + H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.VanadiumPentoxide, Materials2Shapes.dustTiny, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.VanadiumPentoxide, Shapes.dustTiny, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Methanol, Materials2FluidShapes.fluidLiquid, 1_000),
                 MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, Materials2FluidShapes.fluidGas, 1_000),
@@ -1333,7 +1333,7 @@ public class RecipeLoader {
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.VanadiumPentoxide, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.VanadiumPentoxide, Shapes.dust, 1))
             .circuit(9)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Methanol, Materials2FluidShapes.fluidLiquid, 9_000),
@@ -1350,7 +1350,7 @@ public class RecipeLoader {
         // Ethanol
         // C2H6O + 5O =V2O5= H2C2O4 + 2H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.VanadiumPentoxide, Materials2Shapes.dustTiny, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.VanadiumPentoxide, Shapes.dustTiny, 1))
             .itemOutputs()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Ethanol, Materials2FluidShapes.fluidLiquid, 1_000),
@@ -1364,7 +1364,7 @@ public class RecipeLoader {
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.VanadiumPentoxide, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.VanadiumPentoxide, Shapes.dust, 1))
             .circuit(9)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Ethanol, Materials2FluidShapes.fluidLiquid, 9_000),
@@ -1380,9 +1380,9 @@ public class RecipeLoader {
         // Cerium Oxalate
         // 2CeCl3 + 3H2C2O4 = 6HCl + Ce2(C2O4)3
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.CeriumChloride, Materials2Shapes.dust, 8))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CeriumChloride, Shapes.dust, 8))
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.CeriumOxalate, Materials2Shapes.dust, 5))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.CeriumOxalate, Shapes.dust, 5))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.OxalicAcid, Materials2FluidShapes.fluidLiquid, (int) (3_000)))
@@ -1398,25 +1398,25 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, 700))
-            .itemInputs(MaterialLibAPI.getStack(Materials.Monazite, Materials2Shapes.crushed, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Monazite, Shapes.crushed, 2))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.MuddyMonaziteRareEarthSolution,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (400)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .eut(TierEU.RECIPE_EV)
             .duration(400)
             .metadata(COIL_HEAT, 800)
             .addTo(digesterRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Saltpeter, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Saltpeter, Shapes.dust, 1))
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.HafniaZirconiaBlend, Materials2Shapes.dustTiny, 4),
-                MaterialLibAPI.getStack(Materials.Thorianite, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Monazite, Materials2Shapes.dustTiny, 2))
+                MaterialLibAPI.getStack(Materials.HafniaZirconiaBlend, Shapes.dustTiny, 4),
+                MaterialLibAPI.getStack(Materials.Thorianite, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Monazite, Shapes.dustTiny, 2))
             .fluidInputs(
                 GTUtility.getWater(10_000),
                 MaterialLibAPI.getFluidStack(
@@ -1434,12 +1434,12 @@ public class RecipeLoader {
             .addTo(dissolutionTankRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Saltpeter, Materials2Shapes.dust, 9))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Saltpeter, Shapes.dust, 9))
             .circuit(9)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.HafniaZirconiaBlend, Materials2Shapes.dust, 4),
-                MaterialLibAPI.getStack(Materials.Thorianite, Materials2Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.Monazite, Materials2Shapes.dust, 2))
+                MaterialLibAPI.getStack(Materials.HafniaZirconiaBlend, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Thorianite, Shapes.dust, 9),
+                MaterialLibAPI.getStack(Materials.Monazite, Shapes.dust, 2))
             .fluidInputs(
                 GTUtility.getWater(90_000),
                 MaterialLibAPI.getFluidStack(
@@ -1463,18 +1463,18 @@ public class RecipeLoader {
                     Materials2FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.MonaziteSulfate, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Rutile, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.RedZircon, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Ilmenite, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.MonaziteSulfate, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Rutile, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.RedZircon, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Ilmenite, Shapes.dust, 1))
             .outputChances(90_00, 75_00, 20_00, 5_00, 20_00)
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(sifterRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.MonaziteSulfate, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.MonaziteSulfate, Shapes.dust, 1))
             .fluidInputs(GTUtility.getWater(6_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
@@ -1488,7 +1488,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .circuit(13)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.AcidicMonazitePowder, Materials2Shapes.dustTiny, 3))
+                MaterialLibAPI.getStack(Materials.AcidicMonazitePowder, Shapes.dustTiny, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedMonaziteSulfate,
@@ -1504,7 +1504,7 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .circuit(14)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.AcidicMonazitePowder, Materials2Shapes.dust, 3))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.AcidicMonazitePowder, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedMonaziteSulfate,
@@ -1519,19 +1519,19 @@ public class RecipeLoader {
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.AcidicMonazitePowder, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.AcidicMonazitePowder, Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.MonaziteRareEarthFiltrate, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.ThoriumPhosphateCake, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.MonaziteRareEarthFiltrate, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.ThoriumPhosphateCake, Shapes.dust, 1))
             .outputChances(9000, 7000)
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(sifterRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.ThoriumPhosphateCake, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.ThoriumPhosphateCake, Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.ThoriumPhosphateConcentrate, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.ThoriumPhosphateConcentrate, Shapes.dust, 1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1500)
@@ -1539,20 +1539,20 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.ThoriumPhosphateConcentrate, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.ThoriumPhosphateConcentrate, Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Thorium, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Phosphate, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Phosphate, Shapes.dust, 1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.MonaziteRareEarthFiltrate, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.MonaziteRareEarthFiltrate, Shapes.dust, 1))
             .itemOutputs(
                 MaterialLibAPI
-                    .getStack(Materials.NeutralizedMonaziteRareEarthFiltrate, Materials2Shapes.dust, 1))
+                    .getStack(Materials.NeutralizedMonaziteRareEarthFiltrate, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.AmmoniumNitrateSolution,
@@ -1565,21 +1565,21 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI
-                    .getStack(Materials.NeutralizedMonaziteRareEarthFiltrate, Materials2Shapes.dust, 1))
+                    .getStack(Materials.NeutralizedMonaziteRareEarthFiltrate, Shapes.dust, 1))
             .itemOutputs(
                 MaterialLibAPI
-                    .getStack(Materials.MonaziteRareEarthHydroxideConcentrate, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.UraniumFiltrate, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.UraniumFiltrate, Materials2Shapes.dust, 1))
+                    .getStack(Materials.MonaziteRareEarthHydroxideConcentrate, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.UraniumFiltrate, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.UraniumFiltrate, Shapes.dust, 1))
             .outputChances(9000, 5000, 4000)
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(sifterRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.UraniumFiltrate, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.UraniumFiltrate, Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.NeutralizedUraniumFiltrate, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.NeutralizedUraniumFiltrate, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.HydrofluoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 100))
@@ -1589,13 +1589,13 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.NeutralizedUraniumFiltrate, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.NeutralizedUraniumFiltrate, Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Uranium, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Uranium, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Uranium, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Uranium235, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Uranium235, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, 1))
             .outputChances(4500, 4000, 3000, 3000, 2000)
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -1604,10 +1604,10 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI
-                    .getStack(Materials.MonaziteRareEarthHydroxideConcentrate, Materials2Shapes.dust, 1))
+                    .getStack(Materials.MonaziteRareEarthHydroxideConcentrate, Shapes.dust, 1))
             .itemOutputs(
                 MaterialLibAPI
-                    .getStack(Materials.DriedMonaziteRareEarthConcentrate, Materials2Shapes.dust, 1))
+                    .getStack(Materials.DriedMonaziteRareEarthConcentrate, Shapes.dust, 1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -1616,7 +1616,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI
-                    .getStack(Materials.DriedMonaziteRareEarthConcentrate, Materials2Shapes.dust, 1))
+                    .getStack(Materials.DriedMonaziteRareEarthConcentrate, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, 500))
             .fluidOutputs(
@@ -1645,7 +1645,7 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.CeriumRichMixture, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CeriumRichMixture, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NitrogenatedMonaziteRareEarthConcentrate,
@@ -1666,7 +1666,7 @@ public class RecipeLoader {
                     Materials.NitricLeachedMonaziteMixture,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (1_000)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.CeriumDioxide, Materials2Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.CeriumDioxide, Shapes.dust, 1))
             .outputChances(11_11)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
@@ -1680,10 +1680,10 @@ public class RecipeLoader {
         // BEGIN Cerium
         // Cerium-rich mixture + 3HCl = CeCl3 + Monazite (to allow cerium processing without bastnazite/monazite)
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.CeriumRichMixture, Materials2Shapes.dust, 15))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CeriumRichMixture, Shapes.dust, 15))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.CeriumChloride, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Monazite, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.CeriumChloride, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Monazite, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 750))
@@ -1695,10 +1695,10 @@ public class RecipeLoader {
         // CeO2 + 3NH4Cl + H = 3NH3 + CeCl3 + 2H2O
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.CeriumDioxide, Materials2Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.CeriumDioxide, Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials.AmmoniumChloride, Materials2CellShapes.cell, 3))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.CeriumChloride, Materials2Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.CeriumChloride, Shapes.dust, 4),
                 MaterialLibAPI.getStack(Materials.Ammonia, Materials2CellShapes.cell, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, 1_000))
@@ -1710,9 +1710,9 @@ public class RecipeLoader {
         // Ce2(C2O4)3 + 3C = Ce2O3 + 9CO
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.CeriumOxalate, Materials2Shapes.dust, 5),
-                MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dust, 3))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.CeriumIIIOxide, Materials2Shapes.dust, 5))
+                MaterialLibAPI.getStack(Materials.CeriumOxalate, Shapes.dust, 5),
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 3))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.CeriumIIIOxide, Shapes.dust, 5))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, Materials2FluidShapes.fluidGas, 9_000))
             .duration(10 * SECONDS)
@@ -1725,7 +1725,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemOutputs(
                 MaterialLibAPI
-                    .getStack(Materials.CooledMonaziteRareEarthConcentrate, Materials2Shapes.dust, 1))
+                    .getStack(Materials.CooledMonaziteRareEarthConcentrate, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NitricMonaziteLeachedConcentrate,
@@ -1738,10 +1738,10 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI
-                    .getStack(Materials.CooledMonaziteRareEarthConcentrate, Materials2Shapes.dust, 1))
+                    .getStack(Materials.CooledMonaziteRareEarthConcentrate, Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.MonaziteRarerEarthSediment, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.EuropiumIIIOxide, Materials2Shapes.dust, 5))
+                MaterialLibAPI.getStack(Materials.MonaziteRarerEarthSediment, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.EuropiumIIIOxide, Shapes.dust, 5))
             .outputChances(9000, 500)
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -1750,17 +1750,17 @@ public class RecipeLoader {
         // 5Eu2O3 + Eu = 4EuO
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.EuropiumIIIOxide, Materials2Shapes.dust, 5),
-                MaterialLibAPI.getStack(Materials.Europium, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.EuropiumOxide, Materials2Shapes.dust, 6))
+                MaterialLibAPI.getStack(Materials.EuropiumIIIOxide, Shapes.dust, 5),
+                MaterialLibAPI.getStack(Materials.Europium, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.EuropiumOxide, Shapes.dust, 6))
             .duration(15 * SECONDS)
             .eut(8400)
             .addTo(UniversalChemical);
 
         // 4 EuO = 2 Eu + 2O2
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.EuropiumOxide, Materials2Shapes.dust, 2))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Europium, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.EuropiumOxide, Shapes.dust, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Europium, Shapes.dust, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 1_000))
             .duration(15 * SECONDS)
@@ -1770,21 +1770,21 @@ public class RecipeLoader {
         // EuS = Eu + S
         // TODO old recipe. for compat only. remove material and recipe half a year later, i.e. after September 2023.
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.EuropiumSulfide, Materials2Shapes.dust, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.EuropiumSulfide, Shapes.dust, 2))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Europium, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.Europium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1))
             .duration(30 * SECONDS)
             .eut(33_000)
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.MonaziteRarerEarthSediment, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.MonaziteRarerEarthSediment, Shapes.dust, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(
                     Materials.HeterogenousHalogenicMonaziteRareEarthMixture,
-                    Materials2Shapes.dust,
+                    Shapes.dust,
                     1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 1_000))
@@ -1795,13 +1795,13 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Salt, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Salt, Shapes.dust, 1),
                 MaterialLibAPI.getStack(
                     Materials.HeterogenousHalogenicMonaziteRareEarthMixture,
-                    Materials2Shapes.dust,
+                    Shapes.dust,
                     1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.SaturatedMonaziteRareEarth, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.SaturatedMonaziteRareEarth, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Acetone, Materials2FluidShapes.fluidLiquid, 1_000))
             .duration(10 * SECONDS)
@@ -1811,11 +1811,11 @@ public class RecipeLoader {
             .itemInputs(
                 MaterialLibAPI.getStack(
                     Materials.HeterogenousHalogenicMonaziteRareEarthMixture,
-                    Materials2Shapes.dust,
+                    Shapes.dust,
                     1),
-                MaterialLibAPI.getStack(Materials.SamariumOreConcentrate, Materials2Shapes.dust, 2))
+                MaterialLibAPI.getStack(Materials.SamariumOreConcentrate, Shapes.dust, 2))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.SaturatedMonaziteRareEarth, Materials2Shapes.dust, 3))
+                MaterialLibAPI.getStack(Materials.SaturatedMonaziteRareEarth, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Acetone, Materials2FluidShapes.fluidLiquid, 1_000))
             .duration(20 * SECONDS)
@@ -1824,8 +1824,8 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SaturatedMonaziteRareEarth, Materials2Shapes.dust, 4))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SamaricResidue, Materials2Shapes.dust, 3))
+                MaterialLibAPI.getStack(Materials.SaturatedMonaziteRareEarth, Shapes.dust, 4))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SamaricResidue, Shapes.dust, 3))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Chloromethane, Materials2FluidShapes.fluidGas, 400))
             .eut(TierEU.RECIPE_EV)
@@ -1833,10 +1833,10 @@ public class RecipeLoader {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SamaricResidue, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SamaricResidue, Shapes.dust, 3))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Samarium, Materials2Shapes.dust, 2),
-                MaterialLibAPI.getStack(Materials.Gadolinium, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.Samarium, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Gadolinium, Shapes.dust, 1))
             .outputChances(10000, 10000)
             .duration(6 * SECONDS + 13 * TICKS)
             .eut(TierEU.RECIPE_EV)
@@ -1846,13 +1846,13 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, 700))
-            .itemInputs(MaterialLibAPI.getStack(Materials.Bastnasite, Materials2Shapes.crushed, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Bastnasite, Shapes.crushed, 2))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.MuddyBastnasiteRareEarthSolution,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (400)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .eut(TierEU.RECIPE_EV)
             .duration(400)
             .metadata(COIL_HEAT, 800)
@@ -1901,13 +1901,13 @@ public class RecipeLoader {
                     Materials.ConditionedBastnasiteMud,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (1_000)))
-            .itemInputs(MaterialLibAPI.getStack(Materials.Saltpeter, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Saltpeter, Shapes.dust, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedBastnasiteMud,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (11_000)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Gangue, Materials2Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Gangue, Shapes.dust, 1))
             .eut(TierEU.RECIPE_EV)
             .duration(1000)
             .metadata(DISSOLUTION_TANK_RATIO, 10)
@@ -1915,10 +1915,10 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Rutile, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.RedZircon, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Ilmenite, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Rutile, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.RedZircon, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Ilmenite, Shapes.dust, 1))
             .outputChances(90_00, 75_00, 10_00, 5_00)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
@@ -1937,7 +1937,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.BastnasiteRareEarthOxides, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.BastnasiteRareEarthOxides, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.FilteredBastnasiteMud,
@@ -1950,10 +1950,10 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.BastnasiteRareEarthOxides, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.BastnasiteRareEarthOxides, Shapes.dust, 1))
             .itemOutputs(
                 MaterialLibAPI
-                    .getStack(Materials.AcidLeachedBastnasiteRareEarthOxides, Materials2Shapes.dust, 1))
+                    .getStack(Materials.AcidLeachedBastnasiteRareEarthOxides, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 500))
@@ -1964,9 +1964,9 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI
-                    .getStack(Materials.AcidLeachedBastnasiteRareEarthOxides, Materials2Shapes.dust, 1))
+                    .getStack(Materials.AcidLeachedBastnasiteRareEarthOxides, Shapes.dust, 1))
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.RoastedRareEarthOxides, Materials2Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.RoastedRareEarthOxides, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 1_000))
             .fluidOutputs(
@@ -1977,18 +1977,18 @@ public class RecipeLoader {
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.RoastedRareEarthOxides, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.RoastedRareEarthOxides, Shapes.dust, 1))
             .circuit(7)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.WetRareEarthOxides, Materials2Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.WetRareEarthOxides, Shapes.dust, 1))
             .fluidInputs(GTUtility.getWater(200))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.WetRareEarthOxides, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.WetRareEarthOxides, Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.CeriumOxidisedRareEarthOxides, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.CeriumOxidisedRareEarthOxides, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Fluorine, Materials2FluidShapes.fluidGas, 4_000))
             .fluidOutputs(
@@ -2000,10 +2000,10 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.CeriumOxidisedRareEarthOxides, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.CeriumOxidisedRareEarthOxides, Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.BastnasiteRarerEarthOxides, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.CeriumDioxide, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.BastnasiteRarerEarthOxides, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.CeriumDioxide, Shapes.dust, 1))
             .outputChances(100_00, 90_00)
             .eut(TierEU.RECIPE_HV)
             .duration(30 * SECONDS)
@@ -2011,7 +2011,7 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.BastnasiteRarerEarthOxides, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.BastnasiteRarerEarthOxides, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, 400))
             .fluidOutputs(
@@ -2041,8 +2041,8 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.NeodymiumRareEarthConcentrate, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.SamaricRareEarthConcentrate, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.NeodymiumRareEarthConcentrate, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.SamaricRareEarthConcentrate, Shapes.dust, 1))
             .outputChances(80_00, 50_00)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
@@ -2059,10 +2059,10 @@ public class RecipeLoader {
         // Nd RE
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.NeodymiumRareEarthConcentrate, Materials2Shapes.dust, 2))
+                MaterialLibAPI.getStack(Materials.NeodymiumRareEarthConcentrate, Shapes.dust, 2))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.LanthaniumChloride, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.NeodymiumOxide, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.LanthaniumChloride, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.NeodymiumOxide, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 2_000))
@@ -2073,10 +2073,10 @@ public class RecipeLoader {
         // Sm RE
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SamaricRareEarthConcentrate, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.SamaricRareEarthConcentrate, Shapes.dust, 1))
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.FluorinatedSamaricConcentrate, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.FluorinatedSamaricConcentrate, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.HydrofluoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 2_000))
@@ -2086,10 +2086,10 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SamaricRareEarthConcentrate, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.SamariumOreConcentrate, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.SamaricRareEarthConcentrate, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.SamariumOreConcentrate, Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.FluorinatedSamaricConcentrate, Materials2Shapes.dust, 2))
+                MaterialLibAPI.getStack(Materials.FluorinatedSamaricConcentrate, Shapes.dust, 2))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.HydrofluoricAcidGT5U, Materials2FluidShapes.fluidLiquid, 2_000))
@@ -2099,11 +2099,11 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.FluorinatedSamaricConcentrate, Materials2Shapes.dust, 8),
-                MaterialLibAPI.getStack(Materials.Calcium, Materials2Shapes.dust, 4))
+                MaterialLibAPI.getStack(Materials.FluorinatedSamaricConcentrate, Shapes.dust, 8),
+                MaterialLibAPI.getStack(Materials.Calcium, Shapes.dust, 4))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Holmium, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.SamariumTerbiumMixture, Materials2Shapes.dust, 4))
+                MaterialLibAPI.getStack(Materials.Holmium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.SamariumTerbiumMixture, Shapes.dust, 4))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.CalciumFluoride,
@@ -2116,11 +2116,11 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SamariumTerbiumMixture, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.AmmoniumNitrate, Materials2Shapes.dust, 9))
+                MaterialLibAPI.getStack(Materials.SamariumTerbiumMixture, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.AmmoniumNitrate, Shapes.dust, 9))
             .itemOutputs(
                 MaterialLibAPI
-                    .getStack(Materials.NitrogenatedSamariumTerbiumMixture, Materials2Shapes.dust, 1))
+                    .getStack(Materials.NitrogenatedSamariumTerbiumMixture, Shapes.dust, 1))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
@@ -2128,11 +2128,11 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI
-                    .getStack(Materials.NitrogenatedSamariumTerbiumMixture, Materials2Shapes.dust, 4),
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.dust, 1))
+                    .getStack(Materials.NitrogenatedSamariumTerbiumMixture, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.TerbiumNitrate, Materials2Shapes.dust, 2),
-                MaterialLibAPI.getStack(Materials.SamaricResidue, Materials2Shapes.dust, 2) // Potentially
+                MaterialLibAPI.getStack(Materials.TerbiumNitrate, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.SamaricResidue, Shapes.dust, 2) // Potentially
                                                                                                       // make
             // only Samarium
             )
@@ -2142,21 +2142,21 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SamariumOreConcentrate, Materials2Shapes.dust, 2),
-                MaterialLibAPI.getStack(Materials.Calcium, Materials2Shapes.dust, 3))
+                MaterialLibAPI.getStack(Materials.SamariumOreConcentrate, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Calcium, Shapes.dust, 3))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.DephosphatedSamariumConcentrate, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.TricalciumPhosphate, Materials2Shapes.dust, 5))
+                MaterialLibAPI.getStack(Materials.DephosphatedSamariumConcentrate, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.TricalciumPhosphate, Shapes.dust, 5))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.DephosphatedSamariumConcentrate, Materials2Shapes.dust, 6))
+                MaterialLibAPI.getStack(Materials.DephosphatedSamariumConcentrate, Shapes.dust, 6))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Samarium, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Thorianite, Materials2Shapes.dust, 2))
+                MaterialLibAPI.getStack(Materials.Samarium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Thorianite, Shapes.dust, 2))
             .outputChances(90_00, 80_00)
             .eut(TierEU.RECIPE_EV)
             .duration(10 * SECONDS)
@@ -2167,8 +2167,8 @@ public class RecipeLoader {
         // Lanthanum Part
         // Digester to produce Lanthanum Chloride Concentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Lanthanum, Materials2Shapes.crushed, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Lanthanum, Shapes.crushed, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
@@ -2181,8 +2181,8 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.LanthanumOreConcentrate, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.LanthanumOreConcentrate, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
@@ -2221,8 +2221,8 @@ public class RecipeLoader {
         // Praseodymium Part
         // Digester to produce Praseodymium Chloride Concentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Praseodymium, Materials2Shapes.crushed, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Praseodymium, Shapes.crushed, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
@@ -2236,8 +2236,8 @@ public class RecipeLoader {
             .addTo(digesterRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.PraseodymiumOreConcentrate, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.PraseodymiumOreConcentrate, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
@@ -2276,8 +2276,8 @@ public class RecipeLoader {
         // Cerium Part
         // Digester to produce Cerium Chloride Concentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Cerium, Materials2Shapes.crushed, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Cerium, Shapes.crushed, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
@@ -2290,8 +2290,8 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.CeriumRichMixture, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CeriumRichMixture, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
@@ -2330,8 +2330,8 @@ public class RecipeLoader {
         // Neodymium Part
         // Digester to produce Neodymium Chloride Concentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Neodymium, Materials2Shapes.crushed, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Neodymium, Shapes.crushed, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
@@ -2344,8 +2344,8 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.NeodymiumOreConcentrate, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NeodymiumOreConcentrate, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
@@ -2384,8 +2384,8 @@ public class RecipeLoader {
         // Promethium Part
         // Digester to produce Neodymium Chloride Concentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Promethium, Materials2Shapes.crushed, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Promethium, Shapes.crushed, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
@@ -2398,8 +2398,8 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.PromethiumOreConcentrate, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.PromethiumOreConcentrate, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
@@ -2417,8 +2417,8 @@ public class RecipeLoader {
         // Samarium Part
         // Digester to produce Samarium Chloride Concentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Samarium, Materials2Shapes.crushed, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Samarium, Shapes.crushed, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
@@ -2431,8 +2431,8 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SamariumOreConcentrate, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SamariumOreConcentrate, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
@@ -2471,8 +2471,8 @@ public class RecipeLoader {
         // Europium Part
         // Digester to produce Europium Chloride Concentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Europium, Materials2Shapes.crushed, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Europium, Shapes.crushed, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
@@ -2485,8 +2485,8 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.EuropiumOreConcentrate, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.EuropiumOreConcentrate, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
@@ -2525,8 +2525,8 @@ public class RecipeLoader {
         // Gadolinium Part
         // Digester to produce Gadolinium Chloride Concentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Gadolinium, Materials2Shapes.crushed, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Gadolinium, Shapes.crushed, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
@@ -2539,8 +2539,8 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.GadoliniumOreConcentrate, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.GadoliniumOreConcentrate, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
@@ -2579,8 +2579,8 @@ public class RecipeLoader {
         // Terbium Part
         // Digester to produce Terbium Chloride Concentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Terbium, Materials2Shapes.crushed, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Terbium, Shapes.crushed, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
@@ -2593,8 +2593,8 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.TerbiumOreConcentrate, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.TerbiumOreConcentrate, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
@@ -2633,8 +2633,8 @@ public class RecipeLoader {
         // Dysprosium Part
         // Digester to produce Dysprosium Chloride Concentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Dysprosium, Materials2Shapes.crushed, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Dysprosium, Shapes.crushed, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
@@ -2647,8 +2647,8 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.DysprosiumOreConcentrate, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.DysprosiumOreConcentrate, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
@@ -2687,8 +2687,8 @@ public class RecipeLoader {
         // Holmium Part
         // Digester to produce Holmium Chloride Concentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Holmium, Materials2Shapes.crushed, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Holmium, Shapes.crushed, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
@@ -2701,8 +2701,8 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.HolmiumOreConcentrate, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.HolmiumOreConcentrate, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
@@ -2741,8 +2741,8 @@ public class RecipeLoader {
         // Erbium Part
         // Digester to produce Erbium Chloride Concentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Erbium, Materials2Shapes.crushed, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Erbium, Shapes.crushed, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
@@ -2755,8 +2755,8 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.ErbiumOreConcentrate, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.ErbiumOreConcentrate, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
@@ -2795,8 +2795,8 @@ public class RecipeLoader {
         // Thulium Part
         // Digester to produce Thulium Chloride Concentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Thulium, Materials2Shapes.crushed, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Thulium, Shapes.crushed, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
@@ -2809,8 +2809,8 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.ThuliumOreConcentrate, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.ThuliumOreConcentrate, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
@@ -2849,8 +2849,8 @@ public class RecipeLoader {
         // Ytterbium Part
         // Digester to produce Ytterbium Chloride Concentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Ytterbium, Materials2Shapes.crushed, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ytterbium, Shapes.crushed, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
@@ -2863,8 +2863,8 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.YtterbiumOreConcentrate, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.YtterbiumOreConcentrate, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
@@ -2903,8 +2903,8 @@ public class RecipeLoader {
         // Lutetium Part
         // Digester to produce Lutetium Chloride Concentrate
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Lutetium, Materials2Shapes.crushed, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Lutetium, Shapes.crushed, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
             .fluidOutputs(
@@ -2917,8 +2917,8 @@ public class RecipeLoader {
             .duration(2 * SECONDS)
             .addTo(digesterRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.LutetiumOreConcentrate, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.LutetiumOreConcentrate, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 12_000))
             .fluidOutputs(
@@ -2961,7 +2961,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
-                MaterialLibAPI.getStack(Materials.Lanthanum, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Lanthanum, Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
@@ -2979,7 +2979,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
-                MaterialLibAPI.getStack(Materials.Praseodymium, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Praseodymium, Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
@@ -2997,7 +2997,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
-                MaterialLibAPI.getStack(Materials.Cerium, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Cerium, Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
@@ -3015,7 +3015,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
-                MaterialLibAPI.getStack(Materials.Neodymium, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Neodymium, Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
@@ -3033,7 +3033,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
-                MaterialLibAPI.getStack(Materials.Samarium, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Samarium, Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
@@ -3051,7 +3051,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
-                MaterialLibAPI.getStack(Materials.Europium, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Europium, Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
@@ -3069,7 +3069,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
-                MaterialLibAPI.getStack(Materials.Gadolinium, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Gadolinium, Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
@@ -3087,7 +3087,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
-                MaterialLibAPI.getStack(Materials.Terbium, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Terbium, Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
@@ -3105,7 +3105,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
-                MaterialLibAPI.getStack(Materials.Dysprosium, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Dysprosium, Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
@@ -3123,7 +3123,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
-                MaterialLibAPI.getStack(Materials.Holmium, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Holmium, Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
@@ -3141,7 +3141,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
-                MaterialLibAPI.getStack(Materials.Erbium, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Erbium, Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
@@ -3159,7 +3159,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
-                MaterialLibAPI.getStack(Materials.Thulium, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Thulium, Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
@@ -3177,7 +3177,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
-                MaterialLibAPI.getStack(Materials.Ytterbium, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Ytterbium, Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
@@ -3195,7 +3195,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
-                MaterialLibAPI.getStack(Materials.Lutetium, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))
             .fluidInputs(
                 MaterialLibAPI
@@ -4382,11 +4382,11 @@ public class RecipeLoader {
 
         // 16 SmOreDust + 200L NitricAcid =EV@10s= 800L MuddySamariumRareEarthSolution + 1 ?ThP?ConcentrateDust
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SamariumOreConcentrate, Materials2Shapes.dust, 16))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SamariumOreConcentrate, Shapes.dust, 16))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, 200))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.ThoriumPhosphateConcentrate, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.ThoriumPhosphateConcentrate, Shapes.dust, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.MuddySamariumRareEarthSolution,
@@ -4399,11 +4399,11 @@ public class RecipeLoader {
 
         // 1 CrushedSamariumOre = 3 SamariumOreConcentrate in process
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Samarium, Materials2Shapes.crushed, 8))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Samarium, Shapes.crushed, 8))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, 300))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.ThoriumPhosphateConcentrate, Materials2Shapes.dust, 3))
+                MaterialLibAPI.getStack(Materials.ThoriumPhosphateConcentrate, Shapes.dust, 3))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.MuddySamariumRareEarthSolution,
@@ -4419,8 +4419,8 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.CeriumDioxide, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.CeriumRichMixture, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.CeriumDioxide, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.CeriumRichMixture, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, 1_000),
                 MaterialLibAPI.getFluidStack(
@@ -4440,8 +4440,8 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .circuit(9)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.CeriumDioxide, Materials2Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.CeriumRichMixture, Materials2Shapes.dust, 9))
+                MaterialLibAPI.getStack(Materials.CeriumDioxide, Shapes.dust, 9),
+                MaterialLibAPI.getStack(Materials.CeriumRichMixture, Shapes.dust, 9))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, 9_000),
                 MaterialLibAPI.getFluidStack(
@@ -4467,7 +4467,7 @@ public class RecipeLoader {
                     Materials.MuddySamariumRareEarthSolution,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (1_000)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.CeriumDioxide, Materials2Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.CeriumDioxide, Shapes.dust, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SamariumRareEarthMud,
@@ -4489,8 +4489,8 @@ public class RecipeLoader {
                     Materials2FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.NeodymiumRareEarthConcentrate, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.NeodymiumRareEarthConcentrate, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.NeodymiumRareEarthConcentrate, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.NeodymiumRareEarthConcentrate, Shapes.dust, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedSamariumRareEarthSolution,
@@ -4510,8 +4510,8 @@ public class RecipeLoader {
                     Materials2FluidShapes.fluidLiquid,
                     (int) (9_000)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.NeodymiumRareEarthConcentrate, Materials2Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.NeodymiumRareEarthConcentrate, Materials2Shapes.dust, 9))
+                MaterialLibAPI.getStack(Materials.NeodymiumRareEarthConcentrate, Shapes.dust, 9),
+                MaterialLibAPI.getStack(Materials.NeodymiumRareEarthConcentrate, Shapes.dust, 9))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedSamariumRareEarthSolution,
@@ -4554,8 +4554,8 @@ public class RecipeLoader {
                 MaterialLibAPI
                     .getFluidStack(Materials.OxalicAcid, Materials2FluidShapes.fluidLiquid, (int) (3_000)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.SamariumIIIOxalate, Materials2Shapes.dust, 5),
-                MaterialLibAPI.getStack(Materials.DephosphatedSamariumConcentrate, Materials2Shapes.dust, 3))
+                MaterialLibAPI.getStack(Materials.SamariumIIIOxalate, Shapes.dust, 5),
+                MaterialLibAPI.getStack(Materials.DephosphatedSamariumConcentrate, Shapes.dust, 3))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.MuddySamariumRareEarthSolution,
@@ -4568,11 +4568,11 @@ public class RecipeLoader {
 
         // 5 ImpureSamariumOxalate + 6B HCL = 8 ImpureSamariumChloride + 6B CO
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SamariumIIIOxalate, Materials2Shapes.dust, 5))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SamariumIIIOxalate, Shapes.dust, 5))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 6_000))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SamariumIIIChloride, Materials2Shapes.dust, 8))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SamariumIIIChloride, Shapes.dust, 8))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, Materials2FluidShapes.fluidGas, 6_000))
             .eut(TierEU.RECIPE_EV / 2)
@@ -4588,11 +4588,11 @@ public class RecipeLoader {
         // 2 ImpureSamariumChloride + 1 NaCl =LV@5s= 3 SamariumChlorideSodiumChlorideBlend
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SamariumIIIChloride, Materials2Shapes.dust, 2),
-                MaterialLibAPI.getStack(Materials.Salt, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.SamariumIIIChloride, Shapes.dust, 2),
+                MaterialLibAPI.getStack(Materials.Salt, Shapes.dust, 1))
             .itemOutputs(
                 MaterialLibAPI
-                    .getStack(Materials.SamariumChlorideSodiumChlorideBlend, Materials2Shapes.dust, 3))
+                    .getStack(Materials.SamariumChlorideSodiumChlorideBlend, Shapes.dust, 3))
             .eut(TierEU.RECIPE_LV)
             .duration(5 * SECONDS)
             .addTo(mixerRecipes);
@@ -4602,12 +4602,12 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI
-                    .getStack(Materials.SamariumChlorideSodiumChlorideBlend, Materials2Shapes.dust, 6))
+                    .getStack(Materials.SamariumChlorideSodiumChlorideBlend, Shapes.dust, 6))
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Samarium, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Sodium, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.RarestEarthResidue, Materials2Shapes.dustTiny, 2))
+                MaterialLibAPI.getStack(Materials.Samarium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.RarestEarthResidue, Shapes.dustTiny, 2))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 4_000))
             .eut(TierEU.RECIPE_IV)
@@ -4616,12 +4616,12 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI
-                    .getStack(Materials.SamariumChlorideSodiumChlorideBlend, Materials2Shapes.dust, 54))
+                    .getStack(Materials.SamariumChlorideSodiumChlorideBlend, Shapes.dust, 54))
             .circuit(9)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Samarium, Materials2Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.Sodium, Materials2Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.RarestEarthResidue, Materials2Shapes.dust, 2))
+                MaterialLibAPI.getStack(Materials.Samarium, Shapes.dust, 9),
+                MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 9),
+                MaterialLibAPI.getStack(Materials.RarestEarthResidue, Shapes.dust, 2))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 36_000))
             .eut(TierEU.RECIPE_LuV)
@@ -4630,9 +4630,9 @@ public class RecipeLoader {
 
         // distill with LanthanumDust 36*144L moltenSmCl3 = 16*144L moltenSm + 27B Cl
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Lanthanum, Materials2Shapes.dust, 9))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Lanthanum, Shapes.dust, 9))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.ImpureLanthanumChloride, Materials2Shapes.dust, 36))
+                MaterialLibAPI.getStack(Materials.ImpureLanthanumChloride, Shapes.dust, 36))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SamariumIIIChloride,
@@ -4647,10 +4647,10 @@ public class RecipeLoader {
 
         // Centrifuge ImpureLanthanumChlorideDust
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.ImpureLanthanumChloride, Materials2Shapes.dust, 36))
+            .itemInputs(MaterialLibAPI.getStack(Materials.ImpureLanthanumChloride, Shapes.dust, 36))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.LanthaniumChloride, Materials2Shapes.dust, 36),
-                MaterialLibAPI.getStack(Materials.RarestEarthResidue, Materials2Shapes.dust, 5))
+                MaterialLibAPI.getStack(Materials.LanthaniumChloride, Shapes.dust, 36),
+                MaterialLibAPI.getStack(Materials.RarestEarthResidue, Shapes.dust, 5))
             .eut(TierEU.RECIPE_EV)
             .duration(5 * SECONDS)
             .addTo(centrifugeRecipes);
@@ -4662,7 +4662,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI
-                    .getStack(Materials.TelluriumMolybdenumOxideCatalyst, Materials2Shapes.dustTiny, 1))
+                    .getStack(Materials.TelluriumMolybdenumOxideCatalyst, Shapes.dustTiny, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Butane, Materials2FluidShapes.fluidGas, 1_000))
             .fluidOutputs(
@@ -4674,7 +4674,7 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.TelluriumMolybdenumOxideCatalyst, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.TelluriumMolybdenumOxideCatalyst, Shapes.dust, 1))
             .circuit(9)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Butane, Materials2FluidShapes.fluidGas, 9_000))
@@ -4688,10 +4688,10 @@ public class RecipeLoader {
         // Moly-Te-Oxide Catalyst
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.MolybdenumIVOxide, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.TelluriumIVOxide, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.MolybdenumIVOxide, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.TelluriumIVOxide, Shapes.dust, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.TelluriumMolybdenumOxideCatalyst, Materials2Shapes.dust, 2))
+                MaterialLibAPI.getStack(Materials.TelluriumMolybdenumOxideCatalyst, Shapes.dust, 2))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -4736,7 +4736,7 @@ public class RecipeLoader {
                 ItemList.Super_Tank_EV.get(2L),
                 ItemList.Electric_Motor_IV.get(4L),
                 ItemList.Electric_Pump_IV.get(4L),
-                MaterialLibAPI.getStack(Materials.Desh, Materials2Shapes.rotor, 4),
+                MaterialLibAPI.getStack(Materials.Desh, Shapes.rotor, 4),
                 Circuits.LuV.get(4))
             .circuit(1)
             .itemOutputs(LanthItemList.DIGESTER)
@@ -4755,7 +4755,7 @@ public class RecipeLoader {
                 ItemList.Super_Tank_HV.get(2L),
                 ItemList.Electric_Motor_EV.get(4L),
                 ItemList.Electric_Pump_EV.get(2L),
-                MaterialLibAPI.getStack(Materials.VibrantAlloy, Materials2Shapes.rotor, 4),
+                MaterialLibAPI.getStack(Materials.VibrantAlloy, Shapes.rotor, 4),
                 Circuits.EV.get(4))
             .circuit(2)
             .itemOutputs(LanthItemList.DISSOLUTION_TANK)
@@ -4801,79 +4801,79 @@ public class RecipeLoader {
          */
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Cerium, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Lutetium, Materials2Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials.Sapphire, Materials2Shapes.dust, 5))
+                MaterialLibAPI.getStack(Materials.Cerium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Sapphire, Shapes.dust, 5))
             .circuit(4)
             .itemOutputs(
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Materials2Shapes.dust, 9))
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Shapes.dust, 9))
             .eut(TierEU.RECIPE_UV)
             .duration(5 * SECONDS)
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Cerium, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Lutetium, Materials2Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials.GreenSapphire, Materials2Shapes.dust, 5))
+                MaterialLibAPI.getStack(Materials.Cerium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.GreenSapphire, Shapes.dust, 5))
             .circuit(4)
             .itemOutputs(
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Materials2Shapes.dust, 9))
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Shapes.dust, 9))
             .eut(TierEU.RECIPE_UV)
             .duration(5 * SECONDS)
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Cerium, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Lutetium, Materials2Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials.Alumina, Materials2Shapes.dust, 5))
+                MaterialLibAPI.getStack(Materials.Cerium, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 5))
             .circuit(4)
             .itemOutputs(
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Materials2Shapes.dust, 9))
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Shapes.dust, 9))
             .eut(TierEU.RECIPE_UV)
             .duration(5 * SECONDS)
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Cerium, Materials2Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.Lutetium, Materials2Shapes.dust, 27),
-                MaterialLibAPI.getStack(Materials.Sapphire, Materials2Shapes.dust, 45))
+                MaterialLibAPI.getStack(Materials.Cerium, Shapes.dust, 9),
+                MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dust, 27),
+                MaterialLibAPI.getStack(Materials.Sapphire, Shapes.dust, 45))
             .circuit(5)
             .itemOutputs(
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Materials2Shapes.dust, 64),
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Shapes.dust, 64),
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Materials2Shapes.dust, 17))
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Shapes.dust, 17))
             .eut(TierEU.RECIPE_UV)
             .duration(45 * SECONDS)
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Cerium, Materials2Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.Lutetium, Materials2Shapes.dust, 27),
-                MaterialLibAPI.getStack(Materials.GreenSapphire, Materials2Shapes.dust, 45))
+                MaterialLibAPI.getStack(Materials.Cerium, Shapes.dust, 9),
+                MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dust, 27),
+                MaterialLibAPI.getStack(Materials.GreenSapphire, Shapes.dust, 45))
             .circuit(5)
             .itemOutputs(
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Materials2Shapes.dust, 64),
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Shapes.dust, 64),
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Materials2Shapes.dust, 17))
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Shapes.dust, 17))
             .eut(TierEU.RECIPE_UV)
             .duration(45 * SECONDS)
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Cerium, Materials2Shapes.dust, 9),
-                MaterialLibAPI.getStack(Materials.Lutetium, Materials2Shapes.dust, 27),
-                MaterialLibAPI.getStack(Materials.Alumina, Materials2Shapes.dust, 45))
+                MaterialLibAPI.getStack(Materials.Cerium, Shapes.dust, 9),
+                MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dust, 27),
+                MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 45))
             .circuit(5)
             .itemOutputs(
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Materials2Shapes.dust, 64),
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Shapes.dust, 64),
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Materials2Shapes.dust, 17))
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Shapes.dust, 17))
             .eut(TierEU.RECIPE_UV)
             .duration(45 * SECONDS)
             .addTo(mixerRecipes);
@@ -4882,10 +4882,10 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Materials2Shapes.dust, 1))
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Shapes.dust, 1))
             .itemOutputs(
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, Materials2Shapes.gem, 1))
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, Shapes.gem, 1))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.Lutetium, Materials2FluidShapes.fluidMolten, 8 * INGOTS))
@@ -4898,17 +4898,17 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Materials2Shapes.dust, 1),
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Shapes.dust, 1),
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, Materials2Shapes.gem, 1))
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, Shapes.gem, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(
                     Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
-                    Materials2Shapes.gemExquisite,
+                    Shapes.gemExquisite,
                     1),
                 MaterialLibAPI.getStack(
                     Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
-                    Materials2Shapes.gemExquisite,
+                    Shapes.gemExquisite,
                     1))
             .fluidInputs(
                 MaterialLibAPI
@@ -4920,17 +4920,17 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Materials2Shapes.dust, 1),
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Shapes.dust, 1),
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, Materials2Shapes.gem, 1))
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, Shapes.gem, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(
                     Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
-                    Materials2Shapes.gemExquisite,
+                    Shapes.gemExquisite,
                     1),
                 MaterialLibAPI.getStack(
                     Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
-                    Materials2Shapes.gemExquisite,
+                    Shapes.gemExquisite,
                     1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Xenon, Materials2FluidShapes.fluidLiquid, (int) (25)))
@@ -4941,16 +4941,16 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Materials2Shapes.dust, 1))
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Shapes.dust, 1))
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(
                     Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
-                    Materials2Shapes.gemExquisite,
+                    Shapes.gemExquisite,
                     1),
                 MaterialLibAPI.getStack(
                     Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
-                    Materials2Shapes.gemExquisite,
+                    Shapes.gemExquisite,
                     1))
             .fluidInputs(
                 MaterialLibAPI
@@ -4962,17 +4962,17 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Materials2Shapes.dust, 1),
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumOxygenBlend, Shapes.dust, 1),
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, Materials2Shapes.gem, 1))
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, Shapes.gem, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(
                     Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
-                    Materials2Shapes.gemExquisite,
+                    Shapes.gemExquisite,
                     1),
                 MaterialLibAPI.getStack(
                     Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
-                    Materials2Shapes.gemExquisite,
+                    Shapes.gemExquisite,
                     2))
             .fluidInputs(
                 MaterialLibAPI
@@ -4986,11 +4986,11 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, Materials2Shapes.dust, 1))
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, Shapes.dust, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(
                     Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
-                    Materials2Shapes.gemExquisite,
+                    Shapes.gemExquisite,
                     1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
@@ -5006,16 +5006,16 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Magmatter, 1)),
-                MaterialLibAPI.getStack(Materials.Amalgatite, Materials2Shapes.gemFlawed, 3),
-                MaterialLibAPI.getStack(Materials.Amber, Materials2Shapes.gem, 64),
-                MaterialLibAPI.getStack(Materials.Topaz, Materials2Shapes.gem, 64),
+                MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemFlawed, 3),
+                MaterialLibAPI.getStack(Materials.Amber, Shapes.gem, 64),
+                MaterialLibAPI.getStack(Materials.Topaz, Shapes.gem, 64),
                 MaterialLibAPI
-                    .getStack(Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, Materials2Shapes.gem, 64),
-                MaterialLibAPI.getStack(Materials.Jade, Materials2Shapes.gem, 64))
+                    .getStack(Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG, Shapes.gem, 64),
+                MaterialLibAPI.getStack(Materials.Jade, Shapes.gem, 64))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.Protomatter, Materials2FluidShapes.fluidLiquid, 250_000))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Amalgatite, Materials2Shapes.gem, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gem, 1))
             .metadata(COIL_HEAT, 13500)
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
@@ -5028,7 +5028,7 @@ public class RecipeLoader {
                     GTUtility.copyAmount(0, itemStack),
                     MaterialLibAPI.getStack(
                         Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
-                        Materials2Shapes.gemExquisite,
+                        Shapes.gemExquisite,
                         1))
                 .itemOutputs(ItemList.Circuit_Chip_CrystalSoC2.get(16))
                 .requiresCleanRoom()
@@ -5044,7 +5044,7 @@ public class RecipeLoader {
                     GTUtility.copyAmount(0, itemStack),
                     MaterialLibAPI.getStack(
                         Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
-                        Materials2Shapes.gemExquisite,
+                        Shapes.gemExquisite,
                         1))
                 .itemOutputs(ItemList.Circuit_Chip_CrystalSoC.get(16))
                 .requiresCleanRoom()
@@ -5079,20 +5079,20 @@ public class RecipeLoader {
                     if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
 
                     if (tRecipe.mOutputs[i]
-                        .isItemEqual(MaterialLibAPI.getStack(Materials.Cerium, Materials2Shapes.dust, 1))) {
+                        .isItemEqual(MaterialLibAPI.getStack(Materials.Cerium, Shapes.dust, 1))) {
                         tRecipe.mOutputs[i] = GTUtility.copyAmount(
                             tRecipe.mOutputs[i].stackSize * 2,
-                            MaterialLibAPI.getStack(Materials.CeriumRichMixture, Materials2Shapes.dust, 1));
+                            MaterialLibAPI.getStack(Materials.CeriumRichMixture, Shapes.dust, 1));
                         modified = true;
                         GTLog.out.println(
                             "in the recipe of '" + recipe.mInputs[0].getDisplayName()
                                 + "', replacing Cerium dust by Cerium Rich Mixture dust");
                     } else if (tRecipe.mOutputs[i]
-                        .isItemEqual(MaterialLibAPI.getStack(Materials.Samarium, Materials2Shapes.dust, 1))) {
+                        .isItemEqual(MaterialLibAPI.getStack(Materials.Samarium, Shapes.dust, 1))) {
                             tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                 tRecipe.mOutputs[i].stackSize * 2,
                                 MaterialLibAPI
-                                    .getStack(Materials.SamariumOreConcentrate, Materials2Shapes.dust, 1));
+                                    .getStack(Materials.SamariumOreConcentrate, Shapes.dust, 1));
                             modified = true;
                             GTLog.out.println(
                                 "in the recipe of '" + recipe.mInputs[0].getDisplayName()
@@ -5142,21 +5142,21 @@ public class RecipeLoader {
                 for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                     if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
                     if (tRecipe.mOutputs[i]
-                        .isItemEqual(MaterialLibAPI.getStack(Materials.Cerium, Materials2Shapes.dust, 1))) {
+                        .isItemEqual(MaterialLibAPI.getStack(Materials.Cerium, Shapes.dust, 1))) {
                         tRecipe.mOutputs[i] = GTUtility.copyAmount(
                             tRecipe.mOutputs[i].stackSize * 2,
-                            MaterialLibAPI.getStack(Materials.CeriumRichMixture, Materials2Shapes.dust, 1));
+                            MaterialLibAPI.getStack(Materials.CeriumRichMixture, Shapes.dust, 1));
                         GTLog.out.println(
                             Tags.MODID + ": recipe with input: "
                                 + input.getDisplayName()
                                 + " get Cerium dust turned into Cerium Rich Mixture dust.");
                         modified = true;
                     } else if (tRecipe.mOutputs[i]
-                        .isItemEqual(MaterialLibAPI.getStack(Materials.Samarium, Materials2Shapes.dust, 1))) {
+                        .isItemEqual(MaterialLibAPI.getStack(Materials.Samarium, Shapes.dust, 1))) {
                             tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                 tRecipe.mOutputs[i].stackSize * 2,
                                 MaterialLibAPI
-                                    .getStack(Materials.SamariumOreConcentrate, Materials2Shapes.dust, 1));
+                                    .getStack(Materials.SamariumOreConcentrate, Shapes.dust, 1));
                             GTLog.out.println(
                                 Tags.MODID + ": recipe with input: "
                                     + input.getDisplayName()
@@ -5210,21 +5210,21 @@ public class RecipeLoader {
                 for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                     if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
                     if (tRecipe.mOutputs[i]
-                        .isItemEqual(MaterialLibAPI.getStack(Materials.Cerium, Materials2Shapes.dust, 1))) {
+                        .isItemEqual(MaterialLibAPI.getStack(Materials.Cerium, Shapes.dust, 1))) {
                         tRecipe.mOutputs[i] = GTUtility.copyAmount(
                             tRecipe.mOutputs[i].stackSize * 2,
-                            MaterialLibAPI.getStack(Materials.CeriumRichMixture, Materials2Shapes.dust, 1));
+                            MaterialLibAPI.getStack(Materials.CeriumRichMixture, Shapes.dust, 1));
                         GTLog.out.println(
                             Tags.MODID + ": recipe with input "
                                 + input.getDisplayName()
                                 + " get Cerium dust turned into Cerium Rich Mixture dust.");
                         modified = true;
                     } else if (tRecipe.mOutputs[i]
-                        .isItemEqual(MaterialLibAPI.getStack(Materials.Samarium, Materials2Shapes.dust, 1))) {
+                        .isItemEqual(MaterialLibAPI.getStack(Materials.Samarium, Shapes.dust, 1))) {
                             tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                 tRecipe.mOutputs[i].stackSize * 2,
                                 MaterialLibAPI
-                                    .getStack(Materials.SamariumOreConcentrate, Materials2Shapes.dust, 1));
+                                    .getStack(Materials.SamariumOreConcentrate, Shapes.dust, 1));
                             GTLog.out.println(
                                 Tags.MODID + ": recipe with input "
                                     + input.getDisplayName()
@@ -5275,34 +5275,34 @@ public class RecipeLoader {
                 for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                     if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
                     if (tRecipe.mOutputs[i].isItemEqual(
-                        MaterialLibAPI.getStack(Materials.Cerium, Materials2Shapes.dustTiny, 1))) {
+                        MaterialLibAPI.getStack(Materials.Cerium, Shapes.dustTiny, 1))) {
                         tRecipe.mOutputs[i] = GTUtility.copyAmount(
                             tRecipe.mOutputs[i].stackSize * 2,
                             MaterialLibAPI
-                                .getStack(Materials.CeriumRichMixture, Materials2Shapes.dustTiny, 1));
+                                .getStack(Materials.CeriumRichMixture, Shapes.dustTiny, 1));
                         GTLog.out.println(
                             Tags.MODID + ": recipe with input oredict: "
                                 + oreName
                                 + " get Cerium tiny dust turned into Cerium Rich Mixture tiny dust.");
                         modified = true;
                     } else if (tRecipe.mOutputs[i]
-                        .isItemEqual(MaterialLibAPI.getStack(Materials.Cerium, Materials2Shapes.dust, 1))) {
+                        .isItemEqual(MaterialLibAPI.getStack(Materials.Cerium, Shapes.dust, 1))) {
                             tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                 tRecipe.mOutputs[i].stackSize * 2,
                                 MaterialLibAPI
-                                    .getStack(Materials.CeriumRichMixture, Materials2Shapes.dust, 1));
+                                    .getStack(Materials.CeriumRichMixture, Shapes.dust, 1));
                             GTLog.out.println(
                                 Tags.MODID + ": recipe with input oredict: "
                                     + oreName
                                     + " get Cerium dust turned into Cerium Rich Mixture dust.");
                             modified = true;
                         } else if (tRecipe.mOutputs[i].isItemEqual(
-                            MaterialLibAPI.getStack(Materials.Cerium, Materials2Shapes.dustSmall, 1))) {
+                            MaterialLibAPI.getStack(Materials.Cerium, Shapes.dustSmall, 1))) {
                                 tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                     tRecipe.mOutputs[i].stackSize * 2,
                                     MaterialLibAPI.getStack(
                                         Materials.CeriumRichMixture,
-                                        Materials2Shapes.dustSmall,
+                                        Shapes.dustSmall,
                                         1));
                                 GTLog.out.println(
                                     Tags.MODID + ": recipe with input oredict: "
@@ -5310,12 +5310,12 @@ public class RecipeLoader {
                                         + " get Cerium small dust turned into Cerium Rich Mixture small dust.");
                                 modified = true;
                             } else if (tRecipe.mOutputs[i].isItemEqual(
-                                MaterialLibAPI.getStack(Materials.Samarium, Materials2Shapes.dustTiny, 1))) {
+                                MaterialLibAPI.getStack(Materials.Samarium, Shapes.dustTiny, 1))) {
                                     tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                         tRecipe.mOutputs[i].stackSize * 2,
                                         MaterialLibAPI.getStack(
                                             Materials.SamariumOreConcentrate,
-                                            Materials2Shapes.dustTiny,
+                                            Shapes.dustTiny,
                                             1));
                                     GTLog.out.println(
                                         Tags.MODID + ": recipe with input oredict: "
@@ -5323,12 +5323,12 @@ public class RecipeLoader {
                                             + " get Samarium dust turned into Samarium Ore Concentrate tiny dust.");
                                     modified = true;
                                 } else if (tRecipe.mOutputs[i].isItemEqual(
-                                    MaterialLibAPI.getStack(Materials.Samarium, Materials2Shapes.dust, 1))) {
+                                    MaterialLibAPI.getStack(Materials.Samarium, Shapes.dust, 1))) {
                                         tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                             tRecipe.mOutputs[i].stackSize * 2,
                                             MaterialLibAPI.getStack(
                                                 Materials.SamariumOreConcentrate,
-                                                Materials2Shapes.dust,
+                                                Shapes.dust,
                                                 1));
                                         GTLog.out.println(
                                             Tags.MODID + ": recipe with input oredict: "
@@ -5337,12 +5337,12 @@ public class RecipeLoader {
                                         modified = true;
                                     } else if (tRecipe.mOutputs[i].isItemEqual(
                                         MaterialLibAPI
-                                            .getStack(Materials.Samarium, Materials2Shapes.dustSmall, 1))) {
+                                            .getStack(Materials.Samarium, Shapes.dustSmall, 1))) {
                                                 tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                                     tRecipe.mOutputs[i].stackSize * 2,
                                                     MaterialLibAPI.getStack(
                                                         Materials.SamariumOreConcentrate,
-                                                        Materials2Shapes.dustSmall,
+                                                        Shapes.dustSmall,
                                                         1));
                                                 GTLog.out.println(
                                                     Tags.MODID + ": recipe with input oredict: "
@@ -5396,21 +5396,21 @@ public class RecipeLoader {
                 for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                     if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
                     if (tRecipe.mOutputs[i]
-                        .isItemEqual(MaterialLibAPI.getStack(Materials.Cerium, Materials2Shapes.dust, 1))) {
+                        .isItemEqual(MaterialLibAPI.getStack(Materials.Cerium, Shapes.dust, 1))) {
                         tRecipe.mOutputs[i] = GTUtility.copyAmount(
                             tRecipe.mOutputs[i].stackSize * 2,
-                            MaterialLibAPI.getStack(Materials.CeriumRichMixture, Materials2Shapes.dust, 1));
+                            MaterialLibAPI.getStack(Materials.CeriumRichMixture, Shapes.dust, 1));
                         GTLog.out.println(
                             Tags.MODID + ": recipe with input oredict: "
                                 + oreName
                                 + " get Cerium dust turned into Cerium Rich Mixture dust.");
                         modified = true;
                     } else if (tRecipe.mOutputs[i]
-                        .isItemEqual(MaterialLibAPI.getStack(Materials.Samarium, Materials2Shapes.dust, 1))) {
+                        .isItemEqual(MaterialLibAPI.getStack(Materials.Samarium, Shapes.dust, 1))) {
                             tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                 tRecipe.mOutputs[i].stackSize * 2,
                                 MaterialLibAPI
-                                    .getStack(Materials.SamariumOreConcentrate, Materials2Shapes.dust, 1));
+                                    .getStack(Materials.SamariumOreConcentrate, Shapes.dust, 1));
                             GTLog.out.println(
                                 Tags.MODID + ": recipe with input oredict: "
                                     + oreName
@@ -5467,23 +5467,23 @@ public class RecipeLoader {
                     for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                         if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
                         if (tRecipe.mOutputs[i].isItemEqual(
-                            MaterialLibAPI.getStack(Materials.Cerium, Materials2Shapes.dust, 1))) {
+                            MaterialLibAPI.getStack(Materials.Cerium, Shapes.dust, 1))) {
                             tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                 tRecipe.mOutputs[i].stackSize,
                                 MaterialLibAPI
-                                    .getStack(Materials.CeriumRichMixture, Materials2Shapes.dust, 1));
+                                    .getStack(Materials.CeriumRichMixture, Shapes.dust, 1));
                             GTLog.out.println(
                                 Tags.MODID + ": recipe with input oredict: "
                                     + oreName
                                     + " get Cerium dust turned into Cerium Rich Mixture dust.");
                             modified = true;
                         } else if (tRecipe.mOutputs[i].isItemEqual(
-                            MaterialLibAPI.getStack(Materials.Samarium, Materials2Shapes.dust, 1))) {
+                            MaterialLibAPI.getStack(Materials.Samarium, Shapes.dust, 1))) {
                                 tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                     tRecipe.mOutputs[i].stackSize,
                                     MaterialLibAPI.getStack(
                                         Materials.SamariumOreConcentrate,
-                                        Materials2Shapes.dust,
+                                        Shapes.dust,
                                         1));
                                 GTLog.out.println(
                                     Tags.MODID + ": recipe with input oredict: "
@@ -5538,20 +5538,20 @@ public class RecipeLoader {
                 for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                     if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
                     if (tRecipe.mOutputs[i]
-                        .isItemEqual(MaterialLibAPI.getStack(Materials.Cerium, Materials2Shapes.dust, 1))) {
+                        .isItemEqual(MaterialLibAPI.getStack(Materials.Cerium, Shapes.dust, 1))) {
                         tRecipe.mOutputs[i] = GTUtility.copyAmount(
                             tRecipe.mOutputs[i].stackSize,
-                            MaterialLibAPI.getStack(Materials.CeriumRichMixture, Materials2Shapes.dust, 1));
+                            MaterialLibAPI.getStack(Materials.CeriumRichMixture, Shapes.dust, 1));
                         GTLog.out.println(
                             Tags.MODID + ": recipe with input oredict: "
                                 + oreName
                                 + " get Cerium dust turned into Cerium Rich Mixture dust.");
                     } else if (tRecipe.mOutputs[i]
-                        .isItemEqual(MaterialLibAPI.getStack(Materials.Samarium, Materials2Shapes.dust, 1))) {
+                        .isItemEqual(MaterialLibAPI.getStack(Materials.Samarium, Shapes.dust, 1))) {
                             tRecipe.mOutputs[i] = GTUtility.copyAmount(
                                 tRecipe.mOutputs[i].stackSize,
                                 MaterialLibAPI
-                                    .getStack(Materials.SamariumOreConcentrate, Materials2Shapes.dust, 1));
+                                    .getStack(Materials.SamariumOreConcentrate, Shapes.dust, 1));
                             GTLog.out.println(
                                 Tags.MODID + ": recipe with input oredict: "
                                     + oreName
@@ -5613,12 +5613,12 @@ public class RecipeLoader {
                     if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
 
                     if (tRecipe.mOutputs[i]
-                        .isItemEqual(MaterialLibAPI.getStack(Materials.Cerium, Materials2Shapes.dust, 1))) {
+                        .isItemEqual(MaterialLibAPI.getStack(Materials.Cerium, Shapes.dust, 1))) {
                         tRecipe.mOutputs[i] = GTUtility.copyAmount(
                             tRecipe.mOutputs[i].stackSize,
                             MaterialLibAPI.getStack(
                                 Materials.CeriumRichMixture,
-                                Materials2Shapes.dust,
+                                Shapes.dust,
                                 tRecipe.mOutputs[i].stackSize));
                         GTLog.out.println(
                             Tags.MODID + ": recipe with input oredict: "
@@ -5724,23 +5724,23 @@ public class RecipeLoader {
 
         if (GTUtility.areStacksEqual(
             result,
-            MaterialLibAPI.getStack(Materials.Cerium, Materials2Shapes.dust, 1),
+            MaterialLibAPI.getStack(Materials.Cerium, Shapes.dust, 1),
             true)) {
             if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Cerium)) {
                 return;
             }
             GTLog.out.println("replacing crafting recipe of Cerium dust by Cerium Rich Mixture");
             mutableRecipe.gt5u$setRecipeOutputItem(
-                MaterialLibAPI.getStack(Materials.CeriumRichMixture, Materials2Shapes.dust, 2));
+                MaterialLibAPI.getStack(Materials.CeriumRichMixture, Shapes.dust, 2));
         } else if (GTUtility.areStacksEqual(
             result,
-            MaterialLibAPI.getStack(Materials.Samarium, Materials2Shapes.dust, 1),
+            MaterialLibAPI.getStack(Materials.Samarium, Shapes.dust, 1),
             true)) {
                 if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Samarium)) {
                     return;
                 }
                 mutableRecipe.gt5u$setRecipeOutputItem(
-                    MaterialLibAPI.getStack(Materials.SamariumOreConcentrate, Materials2Shapes.dust, 2));
+                    MaterialLibAPI.getStack(Materials.SamariumOreConcentrate, Shapes.dust, 2));
                 GTLog.out.println("replacing crafting recipe of Samarium dust by Samarium Ore Concentrate");
             }
     }

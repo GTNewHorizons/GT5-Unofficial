@@ -8,6 +8,7 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -26,7 +27,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -42,23 +42,23 @@ public class GTItemIterator implements Runnable {
     @Override
     public void run() {
         GTLog.out.println("GTMod: Scanning for certain kinds of compatible Machineblocks.");
-        ItemStack tStack2 = MaterialLibAPI.getStack(Materials.Bronze, Materials2Shapes.ingot, (int) (1));
+        ItemStack tStack2 = MaterialLibAPI.getStack(Materials.Bronze, Shapes.ingot, (int) (1));
         ItemStack tStack = GTModHandler
             .getRecipeOutput(tStack2, tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2, tStack2);
 
         if (null != tStack) {
             GTValues.RA.stdBuilder()
                 .itemInputs(tStack)
-                .itemOutputs(MaterialLibAPI.getStack(Materials.Bronze, Materials2Shapes.dust, (int) (8)))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.Bronze, Shapes.dust, (int) (8)))
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(maceratorRecipes);
 
             GTModHandler.addSmeltingRecipe(
                 tStack,
-                MaterialLibAPI.getStack(Materials.Bronze, Materials2Shapes.ingot, (int) (8)));
+                MaterialLibAPI.getStack(Materials.Bronze, Shapes.ingot, (int) (8)));
         }
-        tStack2 = MaterialLibAPI.getStack(Materials.Bronze, Materials2Shapes.plate, (int) (1));
+        tStack2 = MaterialLibAPI.getStack(Materials.Bronze, Shapes.plate, (int) (1));
         tStack = GTModHandler
             .getRecipeOutput(tStack2, tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2, tStack2);
 
@@ -67,13 +67,13 @@ public class GTItemIterator implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(tStack)
-                .itemOutputs(MaterialLibAPI.getStack(Materials.Bronze, Materials2Shapes.dust, (int) (8)))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.Bronze, Shapes.dust, (int) (8)))
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(maceratorRecipes);
             GTModHandler.addSmeltingRecipe(
                 tStack,
-                MaterialLibAPI.getStack(Materials.Bronze, Materials2Shapes.ingot, (int) (8)));
+                MaterialLibAPI.getStack(Materials.Bronze, Shapes.ingot, (int) (8)));
         }
 
         ItemStack tStack3 = new ItemStack(Blocks.glass, 1, 0);
@@ -93,15 +93,15 @@ public class GTItemIterator implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(tStack)
                 .itemOutputs(
-                    MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.dust, (int) (4)),
-                    MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.dust, (int) (1)))
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (4)),
+                    MaterialLibAPI.getStack(Materials.Gold, Shapes.dust, (int) (1)))
                 .outputChances(10000, 1000)
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(maceratorRecipes);
         }
 
-        tStack2 = MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.ingot, (int) (1));
+        tStack2 = MaterialLibAPI.getStack(Materials.Steel, Shapes.ingot, (int) (1));
         tStack3 = new ItemStack(Blocks.glass, 1, 0);
         tStack = GTModHandler.getRecipeOutput(
             tStack2,
@@ -117,8 +117,8 @@ public class GTItemIterator implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(tStack)
                 .itemOutputs(
-                    MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.dust, (int) (4)),
-                    MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.dust, (int) (1)))
+                    MaterialLibAPI.getStack(Materials.Steel, Shapes.dust, (int) (4)),
+                    MaterialLibAPI.getStack(Materials.Gold, Shapes.dust, (int) (1)))
                 .outputChances(10000, 1000)
                 .duration(20 * SECONDS)
                 .eut(2)

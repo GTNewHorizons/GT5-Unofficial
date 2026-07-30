@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingDirty;
 
 /// Dispatches [ProcessingDirty]'s `crushed`-prefix recipe generation for MaterialLib's cutover crushed-ore
@@ -13,6 +13,6 @@ public final class ConsumerDirty {
     private ConsumerDirty() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2Shapes.crushed, OrePrefixes.crushed, () -> ProcessingDirty.INSTANCE);
+        ShapeConsumerSupport.delegate(Shapes.crushed, OrePrefixes.crushed, () -> ProcessingDirty.INSTANCE);
     }
 }

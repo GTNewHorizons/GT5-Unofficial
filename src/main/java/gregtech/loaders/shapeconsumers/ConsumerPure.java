@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingPure;
 
 /// Dispatches [ProcessingPure]'s `crushedPurified`-prefix recipe generation for MaterialLib's cutover
@@ -14,6 +14,6 @@ public final class ConsumerPure {
 
     static void register() {
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.crushedPurified, OrePrefixes.crushedPurified, () -> ProcessingPure.INSTANCE);
+            .delegate(Shapes.crushedPurified, OrePrefixes.crushedPurified, () -> ProcessingPure.INSTANCE);
     }
 }

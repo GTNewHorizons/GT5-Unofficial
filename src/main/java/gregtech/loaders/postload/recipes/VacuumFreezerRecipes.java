@@ -9,6 +9,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -20,7 +21,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -328,10 +328,10 @@ public class VacuumFreezerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     MaterialLibAPI
-                        .getStack(Materials.SuperconductorUEVBase, Materials2Shapes.ingotHot, (int) (1)))
+                        .getStack(Materials.SuperconductorUEVBase, Shapes.ingotHot, (int) (1)))
                 .itemOutputs(
                     MaterialLibAPI
-                        .getStack(Materials.SuperconductorUEVBase, Materials2Shapes.ingot, (int) (1)))
+                        .getStack(Materials.SuperconductorUEVBase, Shapes.ingot, (int) (1)))
                 .duration(2 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UEV)
                 .addTo(vacuumFreezerRecipes);
@@ -339,10 +339,10 @@ public class VacuumFreezerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     MaterialLibAPI
-                        .getStack(Materials.SuperconductorUIVBase, Materials2Shapes.ingotHot, (int) (1)))
+                        .getStack(Materials.SuperconductorUIVBase, Shapes.ingotHot, (int) (1)))
                 .itemOutputs(
                     MaterialLibAPI
-                        .getStack(Materials.SuperconductorUIVBase, Materials2Shapes.ingot, (int) (1)))
+                        .getStack(Materials.SuperconductorUIVBase, Shapes.ingot, (int) (1)))
                 .duration(2 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
                 .addTo(vacuumFreezerRecipes);
@@ -350,10 +350,10 @@ public class VacuumFreezerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     MaterialLibAPI
-                        .getStack(Materials.SuperconductorUMVBase, Materials2Shapes.ingotHot, (int) (1)))
+                        .getStack(Materials.SuperconductorUMVBase, Shapes.ingotHot, (int) (1)))
                 .itemOutputs(
                     MaterialLibAPI
-                        .getStack(Materials.SuperconductorUMVBase, Materials2Shapes.ingot, (int) (1)))
+                        .getStack(Materials.SuperconductorUMVBase, Shapes.ingot, (int) (1)))
                 .duration(2 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UMV)
                 .addTo(vacuumFreezerRecipes);
@@ -388,9 +388,9 @@ public class VacuumFreezerRecipes implements Runnable {
         // hot transcendent metal ingot cooling
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.TranscendentMetal, Materials2Shapes.ingotHot, (int) (1)))
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.ingotHot, (int) (1)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.TranscendentMetal, Materials2Shapes.ingot, (int) (1)))
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.ingot, (int) (1)))
             .fluidInputs(
                 new FluidStack(FluidRegistry.getFluid("molten.titansteel"), 1 * INGOTS),
                 MaterialLibAPI
@@ -425,7 +425,7 @@ public class VacuumFreezerRecipes implements Runnable {
                     Materials.AtomicSeparationCatalyst,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Mellion, Materials2Shapes.ingot, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Mellion, Shapes.ingot, (int) (1)))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.Creon, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))

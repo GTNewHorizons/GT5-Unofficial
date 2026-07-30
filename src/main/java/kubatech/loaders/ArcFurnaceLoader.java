@@ -21,7 +21,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTOreDictUnificator;
 import kubatech.api.utils.ModUtils;
@@ -39,8 +39,8 @@ public class ArcFurnaceLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hatch_Input_Bus_IV.get(1),
-                MaterialLibAPI.getStack(Materials.Graphite, Materials2Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.plate, (int) (4)),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (4)),
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.plate, (int) (4)),
                 new Object[] { Circuits.IV.getIngredient(), 1L })
             .fluidInputs(
                 MaterialLibAPI

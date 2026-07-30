@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.List;
 
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -19,7 +20,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPPropolisType;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
@@ -83,7 +83,7 @@ public class GTPPPropolis extends Item {
             if (aProp.mMaterial == null) {
                 continue;
             }
-            ItemStack aOutput = MaterialLibAPI.getStack(aProp.mMaterial, Materials2Shapes.dust, 1);
+            ItemStack aOutput = MaterialLibAPI.getStack(aProp.mMaterial, Shapes.dust, 1);
             int tier = MaterialUtils.tier(aProp.mMaterial);
             GTValues.RA.stdBuilder()
                 .itemInputs(tDrop)

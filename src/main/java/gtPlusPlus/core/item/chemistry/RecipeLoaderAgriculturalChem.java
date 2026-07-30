@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -19,7 +20,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -220,12 +220,12 @@ public class RecipeLoaderAgriculturalChem {
         GTValues.RA.stdBuilder()
             .circuit(10)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.dustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.dustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.dustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Nickel, Materials2Shapes.dustTiny, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Lead, Materials2Shapes.dustTiny, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Nickel, Shapes.dustTiny, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Lead, Shapes.dustTiny, (int) (1)))
             .outputChances(3000, 3000, 2000, 2000, 1000, 1000)
             .fluidInputs(new FluidStack(GTPPFluids.RedMud, 1_000))
             .fluidOutputs(GTUtility.getWater(500))

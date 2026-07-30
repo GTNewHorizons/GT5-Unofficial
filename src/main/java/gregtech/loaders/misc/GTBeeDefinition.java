@@ -63,6 +63,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.function.Consumer;
 
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -96,7 +97,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -274,7 +274,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
     FERTILIZER(GTBranchDefinition.ORGANIC, "Fertilizer", true, new Color(0x7fcef5), new Color(0x654525), beeSpecies -> {
         beeSpecies.addProduct(GTModHandler.getModItem(ExtraBees.ID, "honeyComb", 1, 9), 0.15f);
         beeSpecies
-            .addSpecialty(MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dustTiny, (int) (1)), 0.2f);
+            .addSpecialty(MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, (int) (1)), 0.2f);
         beeSpecies.addSpecialty(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1), 0.2f);
         beeSpecies.addSpecialty(ItemList.FR_Fertilizer.get(1), 0.3f);
         beeSpecies.setHumidity(DAMP);
@@ -611,7 +611,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
     GLOWSTONE(GTBranchDefinition.RAREMETAL, "Glowstone", false, new Color(0xE5CA2A), new Color(0xFFBC5E),
         beeSpecies -> {
             beeSpecies.addSpecialty(
-                MaterialLibAPI.getStack(Materials.Glowstone, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, (int) (1)),
                 0.20f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setNocturnal();
@@ -621,10 +621,10 @@ public enum GTBeeDefinition implements IBeeDefinition {
     SUNNARIUM(GTBranchDefinition.RAREMETAL, "Sunnarium", false, new Color(0xFFBC5E), new Color(0xE5CA2A),
         beeSpecies -> {
             beeSpecies.addProduct(
-                MaterialLibAPI.getStack(Materials.Glowstone, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, (int) (1)),
                 0.30f);
             beeSpecies.addSpecialty(
-                MaterialLibAPI.getStack(Materials.Sunnarium, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Sunnarium, Shapes.dust, (int) (1)),
                 0.05f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setNocturnal();
@@ -701,7 +701,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.SALT), 0.35f);
         beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.LITHIUM), 0.05f);
         beeSpecies
-            .addSpecialty(MaterialLibAPI.getStack(Materials.Borax, Materials2Shapes.dust, (int) (1)), 0.1f);
+            .addSpecialty(MaterialLibAPI.getStack(Materials.Borax, Shapes.dust, (int) (1)), 0.1f);
         beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(WARM);
     }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER), dis -> {
@@ -1994,7 +1994,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.JUPITER), 0.35f);
         beeSpecies.addSpecialty(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "CallistoStoneDust", 1, 0), 0.05f);
         beeSpecies.addSpecialty(
-            MaterialLibAPI.getStack(Materials.CallistoIce, Materials2Shapes.dust, (int) (1)),
+            MaterialLibAPI.getStack(Materials.CallistoIce, Shapes.dust, (int) (1)),
             0.05f);
         beeSpecies.addSpecialty(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "IoStoneDust", 1, 0), 0.05f);
         beeSpecies.addSpecialty(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EuropaStoneDust", 1, 0), 0.05f);
@@ -2050,7 +2050,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.JUPITER), 0.25f);
         beeSpecies.addSpecialty(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "CallistoStoneDust", 1, 0), 0.10f);
         beeSpecies.addSpecialty(
-            MaterialLibAPI.getStack(Materials.CallistoIce, Materials2Shapes.dust, (int) (1)),
+            MaterialLibAPI.getStack(Materials.CallistoIce, Shapes.dust, (int) (1)),
             0.10f);
         beeSpecies.setHumidity(DAMP);
         beeSpecies.setTemperature(ICY);
@@ -2434,7 +2434,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
     KEVLAR(GTBranchDefinition.IC2, "Kevlar", false, new Color(0x2d542f), new Color(0xa2baa3), beeSpecies -> {
         beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.KEVLAR), 0.075f);
         beeSpecies.addSpecialty(
-            MaterialLibAPI.getStack(Materials.Kevlar, Materials2Shapes.nugget, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Kevlar, Shapes.nugget, (int) (1)),
             0.01f);
         beeSpecies.setHumidity(DAMP);
         beeSpecies.setTemperature(COLD);
@@ -2587,7 +2587,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         }),
     EUROPIUM(GTBranchDefinition.RAREMETAL, "Europium", false, new Color(0xDAA0E2), new Color(0xAB7EB1), beeSpecies -> {
         beeSpecies
-            .addProduct(MaterialLibAPI.getStack(Materials.EuropiumIIIOxide, Materials2Shapes.dust, 1), 0.10F);
+            .addProduct(MaterialLibAPI.getStack(Materials.EuropiumIIIOxide, Shapes.dust, 1), 0.10F);
         beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.EUROPIUM), 0.075f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(HOT);

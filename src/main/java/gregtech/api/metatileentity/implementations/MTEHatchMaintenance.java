@@ -44,7 +44,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.enums.materials2.Materials2CellShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -93,7 +93,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
     public static ItemStack[] getAutoMaintenanceInputs() {
         if (sAutoMaintenanceInputs == null) sAutoMaintenanceInputs = new ItemStack[] { ItemList.Duct_Tape.get(4),
             MaterialLibAPI.getStack(Materials.Lubricant, Materials2CellShapes.cell, (int) (2)),
-            MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.screw, (int) (4)), Circuits.HV.get(2) };
+            MaterialLibAPI.getStack(Materials.Steel, Shapes.screw, (int) (4)), Circuits.HV.get(2) };
         return sAutoMaintenanceInputs;
     }
 

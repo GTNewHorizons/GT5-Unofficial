@@ -49,89 +49,89 @@ public class Materials2Families {
             .build();
 
         dusts = MaterialLibAPI.newFamily("gregtech", "Dusts")
-            .generateShapes(Materials2Shapes.dust, Materials2Shapes.dustSmall, Materials2Shapes.dustTiny)
+            .generateShapes(Shapes.dust, Shapes.dustSmall, Shapes.dustTiny)
             .build();
         metals = MaterialLibAPI.newFamily("gregtech", "Metals")
             .generateShapes(
-                Materials2Shapes.bolt,
-                Materials2Shapes.dust,
-                Materials2Shapes.dustSmall,
-                Materials2Shapes.dustTiny,
-                Materials2Shapes.foil,
-                Materials2Shapes.ingot,
-                Materials2Shapes.ingotHot,
-                Materials2Shapes.itemCasing,
-                Materials2Shapes.nugget,
-                Materials2Shapes.plate,
-                Materials2Shapes.plateDense,
-                Materials2Shapes.plateDouble,
-                Materials2Shapes.plateSuperdense,
-                Materials2Shapes.ring,
-                Materials2Shapes.round,
-                Materials2Shapes.screw,
-                Materials2Shapes.spring,
-                Materials2Shapes.springSmall,
-                Materials2Shapes.stick,
-                Materials2Shapes.stickLong,
-                Materials2Shapes.wireFine)
+                Shapes.bolt,
+                Shapes.dust,
+                Shapes.dustSmall,
+                Shapes.dustTiny,
+                Shapes.foil,
+                Shapes.ingot,
+                Shapes.ingotHot,
+                Shapes.itemCasing,
+                Shapes.nugget,
+                Shapes.plate,
+                Shapes.plateDense,
+                Shapes.plateDouble,
+                Shapes.plateSuperdense,
+                Shapes.ring,
+                Shapes.round,
+                Shapes.screw,
+                Shapes.spring,
+                Shapes.springSmall,
+                Shapes.stick,
+                Shapes.stickLong,
+                Shapes.wireFine)
             .build();
         multiPlates = MaterialLibAPI.newFamily("gregtech", "MultiPlates")
             .generateShapes(
-                Materials2Shapes.plateTriple,
-                Materials2Shapes.plateQuadruple,
-                Materials2Shapes.plateQuintuple)
+                Shapes.plateTriple,
+                Shapes.plateQuadruple,
+                Shapes.plateQuintuple)
             .build();
         gems = MaterialLibAPI.newFamily("gregtech", "Gems")
             .generateShapes(
-                Materials2Shapes.bolt,
-                Materials2Shapes.dust,
-                Materials2Shapes.dustSmall,
-                Materials2Shapes.dustTiny,
-                Materials2Shapes.gem,
-                Materials2Shapes.itemCasing,
-                Materials2Shapes.lens,
-                Materials2Shapes.plate,
-                Materials2Shapes.screw,
-                Materials2Shapes.stick,
-                Materials2Shapes.stickLong)
+                Shapes.bolt,
+                Shapes.dust,
+                Shapes.dustSmall,
+                Shapes.dustTiny,
+                Shapes.gem,
+                Shapes.itemCasing,
+                Shapes.lens,
+                Shapes.plate,
+                Shapes.screw,
+                Shapes.stick,
+                Shapes.stickLong)
             .build();
         gemQualities = MaterialLibAPI.newFamily("gregtech", "GemQualities")
             .generateShapes(
-                Materials2Shapes.gemChipped,
-                Materials2Shapes.gemFlawed,
-                Materials2Shapes.gemFlawless,
-                Materials2Shapes.gemExquisite)
+                Shapes.gemChipped,
+                Shapes.gemFlawed,
+                Shapes.gemFlawless,
+                Shapes.gemExquisite)
             .build();
         ores = MaterialLibAPI.newFamily("gregtech", "Ores")
             .generateShapes(
-                Materials2Shapes.crushed,
-                Materials2Shapes.crushedCentrifuged,
-                Materials2Shapes.crushedPurified,
-                Materials2Shapes.dust,
-                Materials2Shapes.dustImpure,
-                Materials2Shapes.dustPure,
-                Materials2Shapes.dustSmall,
-                Materials2Shapes.dustTiny,
-                Materials2Shapes.rawOre,
+                Shapes.crushed,
+                Shapes.crushedCentrifuged,
+                Shapes.crushedPurified,
+                Shapes.dust,
+                Shapes.dustImpure,
+                Shapes.dustPure,
+                Shapes.dustSmall,
+                Shapes.dustTiny,
+                Shapes.rawOre,
                 Materials2OreShapes.ore,
                 Materials2OreShapes.oreSmall)
             .build();
         toolParts = MaterialLibAPI.newFamily("gregtech", "ToolParts")
             .generateShapes(
-                Materials2Shapes.toolHeadHammer,
-                Materials2Shapes.toolHeadSaw,
-                Materials2Shapes.toolHeadWrench,
-                Materials2Shapes.turbineBlade)
+                Shapes.toolHeadHammer,
+                Shapes.toolHeadSaw,
+                Shapes.toolHeadWrench,
+                Shapes.turbineBlade)
             .build();
         poweredToolParts = MaterialLibAPI.newFamily("gregtech", "PoweredToolParts")
             .generateShapes(
-                Materials2Shapes.toolHeadBuzzSaw,
-                Materials2Shapes.toolHeadChainsaw,
-                Materials2Shapes.toolHeadDrill,
-                Materials2Shapes.toolHeadFile)
+                Shapes.toolHeadBuzzSaw,
+                Shapes.toolHeadChainsaw,
+                Shapes.toolHeadDrill,
+                Shapes.toolHeadFile)
             .build();
         gears = MaterialLibAPI.newFamily("gregtech", "Gears")
-            .generateShapes(Materials2Shapes.gearGt, Materials2Shapes.gearGtSmall, Materials2Shapes.rotor)
+            .generateShapes(Shapes.gearGt, Shapes.gearGtSmall, Shapes.rotor)
             .build();
         liquids = MaterialLibAPI.newFamily("gregtech", "Liquids")
             .generateShapes(Materials2FluidShapes.fluidLiquid, Materials2CellShapes.cell)

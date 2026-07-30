@@ -14,7 +14,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.util.GTLog;
 
@@ -47,11 +47,11 @@ public final class LoaderSifterRecipes {
         Materials.Prasiolite, Materials.BArTiMaEuSNeK, Materials.Tiberium,
         Materials.Fluorspar, Materials.Orundum };
 
-    private static final Shape[] COMPRESSOR_SHAPES = { Materials2Shapes.gem, Materials2BlockShapes.block };
+    private static final Shape[] COMPRESSOR_SHAPES = { Shapes.gem, Materials2BlockShapes.block };
 
-    private static final Shape[] SIFTER_SHAPES = { Materials2Shapes.crushedPurified, Materials2Shapes.gemExquisite,
-        Materials2Shapes.gemFlawless, Materials2Shapes.gem, Materials2Shapes.gemFlawed, Materials2Shapes.gemChipped,
-        Materials2Shapes.dust };
+    private static final Shape[] SIFTER_SHAPES = { Shapes.crushedPurified, Shapes.gemExquisite,
+        Shapes.gemFlawless, Shapes.gem, Shapes.gemFlawed, Shapes.gemChipped,
+        Shapes.dust };
 
     private LoaderSifterRecipes() {}
 
@@ -92,7 +92,7 @@ public final class LoaderSifterRecipes {
 
     private static void registerCompressor(Material material) {
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.gem, 9))
+            .itemInputs(MaterialLibAPI.getStack(material, Shapes.gem, 9))
             .itemOutputs(MaterialLibAPI.getStack(material, Materials2BlockShapes.block, 1))
             .duration(15 * SECONDS)
             .eut(recipeEU(material, 2))
@@ -101,14 +101,14 @@ public final class LoaderSifterRecipes {
 
     private static void registerSifter(Material material) {
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.crushedPurified, 1))
+            .itemInputs(MaterialLibAPI.getStack(material, Shapes.crushedPurified, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(material, Materials2Shapes.gemExquisite, 1),
-                MaterialLibAPI.getStack(material, Materials2Shapes.gemFlawless, 1),
-                MaterialLibAPI.getStack(material, Materials2Shapes.gem, 1),
-                MaterialLibAPI.getStack(material, Materials2Shapes.gemFlawed, 1),
-                MaterialLibAPI.getStack(material, Materials2Shapes.gemChipped, 1),
-                MaterialLibAPI.getStack(material, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(material, Shapes.gemExquisite, 1),
+                MaterialLibAPI.getStack(material, Shapes.gemFlawless, 1),
+                MaterialLibAPI.getStack(material, Shapes.gem, 1),
+                MaterialLibAPI.getStack(material, Shapes.gemFlawed, 1),
+                MaterialLibAPI.getStack(material, Shapes.gemChipped, 1),
+                MaterialLibAPI.getStack(material, Shapes.dust, 1))
             .outputChances(200, 1000, 2500, 2000, 4000, 5000)
             .duration(40 * SECONDS)
             .eut(recipeEU(material, (int) (TierEU.RECIPE_LV / 2)))

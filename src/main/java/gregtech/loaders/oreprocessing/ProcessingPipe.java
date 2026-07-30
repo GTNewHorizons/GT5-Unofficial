@@ -15,7 +15,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
@@ -107,7 +107,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                     .itemInputs(
                         MaterialLibAPI.getStack(
                             Materials.Steel,
-                            Materials2Shapes.ring,
+                            Shapes.ring,
                             (int) (prefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.getMaterialAmount())),
                         GTOreDictUnificator.get(oreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true))
                     .itemOutputs(GTUtility.copyAmount(1, stack))

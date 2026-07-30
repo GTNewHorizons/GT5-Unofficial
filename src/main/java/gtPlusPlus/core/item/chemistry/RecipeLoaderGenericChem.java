@@ -14,6 +14,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -25,7 +26,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -79,7 +79,7 @@ public class RecipeLoaderGenericChem {
     private static void recipeSodiumEthoxide() {
         // C2H5OH + Na → C2H5ONa + H
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Sodium, Materials2Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, (int) (1)))
             .circuit(16)
             .itemOutputs(GregtechItemList.SodiumEthoxide.get(9))
             .fluidInputs(
@@ -98,7 +98,7 @@ public class RecipeLoaderGenericChem {
         // Ca(OH)2 + K2O + CO2 → CaCO3 + 2 KOH
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Potash, Materials2Shapes.dust, (int) (3)),
+                MaterialLibAPI.getStack(Materials.Potash, Shapes.dust, (int) (3)),
                 GregtechItemList.CalciumHydroxideDust.get(5))
             .circuit(18)
             .itemOutputs(GregtechItemList.CalciumCarbonateDust.get(5), GregtechItemList.PotassiumHydroxide.get(6))
@@ -144,7 +144,7 @@ public class RecipeLoaderGenericChem {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get("fuelCoke", 8),
-                MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dust, (int) (16)))
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, (int) (16)))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1))
             .fluidOutputs(new FluidStack(GTPPFluids.CarbonDisulfide, 4_000))
             .duration(10 * MINUTES)
@@ -155,7 +155,7 @@ public class RecipeLoaderGenericChem {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.BrownMetalCatalyst.get(0),
-                MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dust, (int) (4)))
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, (int) (4)))
             .circuit(20)
             .fluidInputs(new FluidStack(GTPPFluids.CoalGas, 1_000))
             .fluidOutputs(new FluidStack(GTPPFluids.CarbonDisulfide, 2_000))
@@ -172,7 +172,7 @@ public class RecipeLoaderGenericChem {
                 GregtechItemList.InfiniteMutationCatalyst.get(0),
                 ItemList.Circuit_Chip_Biocell.get(64),
                 ItemList.Gravistar.get(8),
-                MaterialLibAPI.getStack(Materials.InfinityCatalyst, Materials2Shapes.dust, (int) (2)))
+                MaterialLibAPI.getStack(Materials.InfinityCatalyst, Shapes.dust, (int) (2)))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.Tin, Materials2FluidShapes.fluidPlasma, (int) (18_000)),
@@ -201,7 +201,7 @@ public class RecipeLoaderGenericChem {
         ItemStack aluminaBallOutput = GregtechItemList.Milling_Ball_Alumina.get(8);
         ItemGenericChemBase.createMillingBallNBT(aluminaBallOutput);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Alumina, Materials2Shapes.dust, 64))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 64))
             .circuit(10)
             .itemOutputs(aluminaBallOutput)
             .fluidInputs(new FluidStack(GTPPFluids.Aniline, 4_000))
@@ -214,7 +214,7 @@ public class RecipeLoaderGenericChem {
         ItemStack soapstoneBallOutput = GregtechItemList.Milling_Ball_Soapstone.get(8);
         ItemGenericChemBase.createMillingBallNBT(soapstoneBallOutput);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Soapstone, Materials2Shapes.dust, (int) (32)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Soapstone, Shapes.dust, (int) (32)))
             .circuit(10)
             .itemOutputs(soapstoneBallOutput)
             .fluidInputs(new FluidStack(GTPPFluids.LiquidResin, 2_500))
@@ -271,8 +271,8 @@ public class RecipeLoaderGenericChem {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(10),
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.dust, (int) (2)))
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (2)),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.dust, (int) (2)))
             .circuit(4)
             .itemOutputs(GregtechItemList.RedMetalCatalyst.get(10))
             .duration(20 * SECONDS)
@@ -285,8 +285,8 @@ public class RecipeLoaderGenericChem {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(10),
-                MaterialLibAPI.getStack(Materials.Tungsten, Materials2Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Nickel, Materials2Shapes.dust, (int) (4)))
+                MaterialLibAPI.getStack(Materials.Tungsten, Shapes.dust, (int) (4)),
+                MaterialLibAPI.getStack(Materials.Nickel, Shapes.dust, (int) (4)))
             .circuit(12)
             .itemOutputs(GregtechItemList.YellowMetalCatalyst.get(10))
             .duration(1 * MINUTES)
@@ -299,8 +299,8 @@ public class RecipeLoaderGenericChem {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(10),
-                MaterialLibAPI.getStack(Materials.Cobalt, Materials2Shapes.dust, (int) (3)),
-                MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.dust, (int) (3)))
+                MaterialLibAPI.getStack(Materials.Cobalt, Shapes.dust, (int) (3)),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.dust, (int) (3)))
             .circuit(8)
             .itemOutputs(GregtechItemList.BlueMetalCatalyst.get(10))
             .duration(40 * SECONDS)
@@ -313,8 +313,8 @@ public class RecipeLoaderGenericChem {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(10),
-                MaterialLibAPI.getStack(Materials.Vanadium, Materials2Shapes.dust, (int) (5)),
-                MaterialLibAPI.getStack(Materials.Palladium, Materials2Shapes.dust, (int) (5)))
+                MaterialLibAPI.getStack(Materials.Vanadium, Shapes.dust, (int) (5)),
+                MaterialLibAPI.getStack(Materials.Palladium, Shapes.dust, (int) (5)))
             .circuit(8)
             .itemOutputs(GregtechItemList.OrangeMetalCatalyst.get(10))
             .duration(40 * SECONDS)
@@ -327,8 +327,8 @@ public class RecipeLoaderGenericChem {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(10),
-                MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.dust, (int) (6)),
-                MaterialLibAPI.getStack(Materials.Ruthenium, Materials2Shapes.dust, 6))
+                MaterialLibAPI.getStack(Materials.Iridium, Shapes.dust, (int) (6)),
+                MaterialLibAPI.getStack(Materials.Ruthenium, Shapes.dust, 6))
             .circuit(16)
             .itemOutputs(GregtechItemList.PurpleMetalCatalyst.get(10))
             .duration(2 * MINUTES)
@@ -341,8 +341,8 @@ public class RecipeLoaderGenericChem {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(10),
-                MaterialLibAPI.getStack(Materials.Nickel, Materials2Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.dust, (int) (4)))
+                MaterialLibAPI.getStack(Materials.Nickel, Shapes.dust, (int) (4)),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.dust, (int) (4)))
             .circuit(4)
             .itemOutputs(GregtechItemList.BrownMetalCatalyst.get(10))
             .duration(15 * SECONDS)
@@ -355,8 +355,8 @@ public class RecipeLoaderGenericChem {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(10),
-                MaterialLibAPI.getStack(Materials.Platinum, Materials2Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Rhodium, Materials2Shapes.dust, 4))
+                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, (int) (4)),
+                MaterialLibAPI.getStack(Materials.Rhodium, Shapes.dust, 4))
             .circuit(12)
             .itemOutputs(GregtechItemList.PinkMetalCatalyst.get(10))
             .duration(30 * SECONDS)
@@ -380,7 +380,7 @@ public class RecipeLoaderGenericChem {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(5),
-                MaterialLibAPI.getStack(Materials.Lapis, Materials2Shapes.dust, (int) (2)))
+                MaterialLibAPI.getStack(Materials.Lapis, Shapes.dust, (int) (2)))
             .circuit(12)
             .itemOutputs(GregtechItemList.SolidAcidCatalyst.get(5))
             .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.SolidAcidCatalystMixture, 1_000))
@@ -394,8 +394,8 @@ public class RecipeLoaderGenericChem {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(5),
-                MaterialLibAPI.getStack(Materials.Infinity, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Naquadria, Materials2Shapes.dust, (int) (10)))
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dust, (int) (10)))
             .circuit(12)
             .itemOutputs(GregtechItemList.InfiniteMutationCatalyst.get(5))
             .duration(5 * SECONDS)

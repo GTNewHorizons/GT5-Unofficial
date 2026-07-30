@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -16,7 +17,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -72,7 +72,7 @@ public class RecipeIC2 {
         // Shafts
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.EnergeticAlloy, Materials2Shapes.ingot, (int) (9)),
+                MaterialLibAPI.getStack(Materials.EnergeticAlloy, Shapes.ingot, (int) (9)),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.EnergeticAlloyShaft.get(1))
             .duration(2 * MINUTES + 8 * SECONDS)
@@ -89,7 +89,7 @@ public class RecipeIC2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.ingot, (int) (9)),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.ingot, (int) (9)),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.TungstenSteelShaft.get(1))
             .duration(4 * MINUTES + 16 * SECONDS)
@@ -106,7 +106,7 @@ public class RecipeIC2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.VibrantAlloy, Materials2Shapes.ingot, (int) (9)),
+                MaterialLibAPI.getStack(Materials.VibrantAlloy, Shapes.ingot, (int) (9)),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.VibrantAlloyShaft.get(1))
             .duration(8 * MINUTES + 32 * SECONDS)
@@ -123,7 +123,7 @@ public class RecipeIC2 {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.ingot, (int) (9)),
+                MaterialLibAPI.getStack(Materials.Iridium, Shapes.ingot, (int) (9)),
                 GregtechItemList.Shape_Extruder_WindmillShaft.get(0))
             .itemOutputs(GregtechItemList.IridiumShaft.get(1))
             .duration(17 * MINUTES + 4 * SECONDS)
@@ -168,8 +168,8 @@ public class RecipeIC2 {
                 Ic2Items.hazmatHelmet.copy(),
                 new ItemStack(Blocks.wool, 16, 4), // Yellow Wool
                 GTUtility.copyAmount(8, Ic2Items.coil),
-                MaterialLibAPI.getStack(Materials.Cobalt, Materials2Shapes.plate, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.gearGtSmall, (int) (4)))
+                MaterialLibAPI.getStack(Materials.Cobalt, Shapes.plate, (int) (4)),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.gearGtSmall, (int) (4)))
             .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Helmet.get(1))
             .fluidInputs(
@@ -185,8 +185,8 @@ public class RecipeIC2 {
                 Ic2Items.hazmatChestplate.copy(),
                 new ItemStack(Blocks.wool, 64, 4), // Yellow Wool
                 GTUtility.copyAmount(32, Ic2Items.coil),
-                MaterialLibAPI.getStack(Materials.Cobalt, Materials2Shapes.plate, (int) (16)),
-                MaterialLibAPI.getStack(Materials.SiliconCarbide, Materials2Shapes.gearGt, 8))
+                MaterialLibAPI.getStack(Materials.Cobalt, Shapes.plate, (int) (16)),
+                MaterialLibAPI.getStack(Materials.SiliconCarbide, Shapes.gearGt, 8))
             .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Chest.get(1))
             .fluidInputs(
@@ -202,8 +202,8 @@ public class RecipeIC2 {
                 Ic2Items.hazmatLeggings.copy(),
                 new ItemStack(Blocks.wool, 32, 4), // Yellow Wool
                 GTUtility.copyAmount(16, Ic2Items.coil),
-                MaterialLibAPI.getStack(Materials.Cobalt, Materials2Shapes.plate, (int) (8)),
-                MaterialLibAPI.getStack(Materials.SiliconCarbide, Materials2Shapes.gearGt, 4))
+                MaterialLibAPI.getStack(Materials.Cobalt, Shapes.plate, (int) (8)),
+                MaterialLibAPI.getStack(Materials.SiliconCarbide, Shapes.gearGt, 4))
             .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Legs.get(1))
             .fluidInputs(
@@ -219,8 +219,8 @@ public class RecipeIC2 {
                 Ic2Items.hazmatBoots.copy(),
                 new ItemStack(Blocks.wool, 16, 15), // Black Wool
                 GTUtility.copyAmount(6, Ic2Items.coil),
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.gearGtSmall, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Tumbaga, Materials2Shapes.gearGt, 4))
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.gearGtSmall, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.gearGt, 4))
             .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Boots.get(1))
             .fluidInputs(

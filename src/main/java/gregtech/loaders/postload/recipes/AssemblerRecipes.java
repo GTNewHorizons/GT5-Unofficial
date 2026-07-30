@@ -28,6 +28,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static kekztech.common.Blocks.lscLapotronicEnergyUnit;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -48,7 +49,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.objects.SubstituteFluidStack;
@@ -85,7 +85,7 @@ public class AssemblerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1),
                     GTOreDictUnificator.get("cellEmpty", 1L))
                 .circuit(1)
                 .itemOutputs(ItemList.Spray_Empty.get(1L))
@@ -95,8 +95,8 @@ public class AssemblerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.plateDouble, 1),
-                    MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.ring, 2))
+                    MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plateDouble, 1),
+                    MaterialLibAPI.getStack(Materials.Aluminium, Shapes.ring, 2))
                 .circuit(1)
                 .itemOutputs(ItemList.ThermosCan_Empty.get(1L))
                 .duration(40 * SECONDS)
@@ -105,7 +105,7 @@ public class AssemblerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.plateDouble, 4),
+                    MaterialLibAPI.getStack(Materials.Steel, Shapes.plateDouble, 4),
                     GTOreDictUnificator.get("ringAnyBronze", 4L))
                 .circuit(1)
                 .itemOutputs(ItemList.Large_Fluid_Cell_Steel.get(1L))
@@ -115,8 +115,8 @@ public class AssemblerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.plateDouble, 4),
-                    MaterialLibAPI.getStack(Materials.Platinum, Materials2Shapes.ring, 4))
+                    MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plateDouble, 4),
+                    MaterialLibAPI.getStack(Materials.Platinum, Shapes.ring, 4))
                 .circuit(1)
                 .itemOutputs(ItemList.Large_Fluid_Cell_TungstenSteel.get(1L))
                 .duration(10 * SECONDS)
@@ -125,8 +125,8 @@ public class AssemblerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.plateDouble, 4),
-                    MaterialLibAPI.getStack(Materials.Silver, Materials2Shapes.ring, 4))
+                    MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plateDouble, 4),
+                    MaterialLibAPI.getStack(Materials.Silver, Shapes.ring, 4))
                 .circuit(1)
                 .itemOutputs(ItemList.Large_Fluid_Cell_Aluminium.get(1L))
                 .duration(10 * SECONDS)
@@ -135,8 +135,8 @@ public class AssemblerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.plateDouble, 4),
-                    MaterialLibAPI.getStack(Materials.Electrum, Materials2Shapes.ring, 4))
+                    MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plateDouble, 4),
+                    MaterialLibAPI.getStack(Materials.Electrum, Shapes.ring, 4))
                 .circuit(1)
                 .itemOutputs(ItemList.Large_Fluid_Cell_StainlessSteel.get(1L))
                 .duration(10 * SECONDS)
@@ -145,8 +145,8 @@ public class AssemblerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.plateDouble, 4),
-                    MaterialLibAPI.getStack(Materials.RoseGold, Materials2Shapes.ring, 4))
+                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.plateDouble, 4),
+                    MaterialLibAPI.getStack(Materials.RoseGold, Shapes.ring, 4))
                 .circuit(1)
                 .itemOutputs(ItemList.Large_Fluid_Cell_Titanium.get(1L))
                 .duration(10 * SECONDS)
@@ -155,8 +155,8 @@ public class AssemblerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Chrome, Materials2Shapes.plateDouble, 4),
-                    MaterialLibAPI.getStack(Materials.Palladium, Materials2Shapes.ring, 4))
+                    MaterialLibAPI.getStack(Materials.Chrome, Shapes.plateDouble, 4),
+                    MaterialLibAPI.getStack(Materials.Palladium, Shapes.ring, 4))
                 .circuit(1)
                 .itemOutputs(ItemList.Large_Fluid_Cell_Chrome.get(1L))
                 .duration(10 * SECONDS)
@@ -165,8 +165,8 @@ public class AssemblerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.plateDouble, 4),
-                    MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.ring, 4))
+                    MaterialLibAPI.getStack(Materials.Iridium, Shapes.plateDouble, 4),
+                    MaterialLibAPI.getStack(Materials.Naquadah, Shapes.ring, 4))
                 .circuit(1)
                 .itemOutputs(ItemList.Large_Fluid_Cell_Iridium.get(1L))
                 .duration(10 * SECONDS)
@@ -175,8 +175,8 @@ public class AssemblerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.plateDouble, 4),
-                    MaterialLibAPI.getStack(Materials.ElectrumFlux, Materials2Shapes.ring, 4))
+                    MaterialLibAPI.getStack(Materials.Osmium, Shapes.plateDouble, 4),
+                    MaterialLibAPI.getStack(Materials.ElectrumFlux, Shapes.ring, 4))
                 .circuit(1)
                 .itemOutputs(ItemList.Large_Fluid_Cell_Osmium.get(1L))
                 .duration(10 * SECONDS)
@@ -185,8 +185,8 @@ public class AssemblerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.plateDouble, 4),
-                    MaterialLibAPI.getStack(Materials.Draconium, Materials2Shapes.ring, 4))
+                    MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plateDouble, 4),
+                    MaterialLibAPI.getStack(Materials.Draconium, Shapes.ring, 4))
                 .circuit(1)
                 .itemOutputs(ItemList.Large_Fluid_Cell_Neutronium.get(1L))
                 .duration(10 * SECONDS)
@@ -195,7 +195,7 @@ public class AssemblerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, 1),
+                    MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1),
                     ItemList.Large_Fluid_Cell_Aluminium.get(1))
                 .circuit(1)
                 .itemOutputs(ItemList.Spray_Color_Remover_Empty.get(1L))
@@ -205,8 +205,8 @@ public class AssemblerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Wood, Materials2Shapes.bolt, 1),
-                    MaterialLibAPI.getStack(Materials.Phosphorus, Materials2Shapes.dustSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Wood, Shapes.bolt, 1),
+                    MaterialLibAPI.getStack(Materials.Phosphorus, Shapes.dustSmall, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Tool_Matches.get(1L))
                 .duration(16 * TICKS)
@@ -214,8 +214,8 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Wood, Materials2Shapes.bolt, 1),
-                    MaterialLibAPI.getStack(Materials.TricalciumPhosphate, Materials2Shapes.dustSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Wood, Shapes.bolt, 1),
+                    MaterialLibAPI.getStack(Materials.TricalciumPhosphate, Shapes.dustSmall, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Tool_Matches.get(1L))
                 .duration(16 * TICKS)
@@ -223,8 +223,8 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Wood, Materials2Shapes.bolt, 4),
-                    MaterialLibAPI.getStack(Materials.Phosphorus, Materials2Shapes.dust, 1))
+                    MaterialLibAPI.getStack(Materials.Wood, Shapes.bolt, 4),
+                    MaterialLibAPI.getStack(Materials.Phosphorus, Shapes.dust, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Tool_Matches.get(4L))
                 .duration(3 * SECONDS + 4 * TICKS)
@@ -232,8 +232,8 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Wood, Materials2Shapes.bolt, 4),
-                    MaterialLibAPI.getStack(Materials.TricalciumPhosphate, Materials2Shapes.dust, 1))
+                    MaterialLibAPI.getStack(Materials.Wood, Shapes.bolt, 4),
+                    MaterialLibAPI.getStack(Materials.TricalciumPhosphate, Shapes.dust, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Tool_Matches.get(4L))
                 .duration(3 * SECONDS + 4 * TICKS)
@@ -242,7 +242,7 @@ public class AssemblerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Invar, Materials2Shapes.plate, 2),
+                    MaterialLibAPI.getStack(Materials.Invar, Shapes.plate, 2),
                     new ItemStack(Items.flint, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Tool_Lighter_Invar_Empty.get(1L))
@@ -252,7 +252,7 @@ public class AssemblerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Platinum, Materials2Shapes.plate, 2),
+                    MaterialLibAPI.getStack(Materials.Platinum, Shapes.plate, 2),
                     new ItemStack(Items.flint, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Tool_Lighter_Platinum_Empty.get(1L))
@@ -262,8 +262,8 @@ public class AssemblerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.plate, 1),
-                    MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.plate, 1))
+                    MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, 1),
+                    MaterialLibAPI.getStack(Materials.Iridium, Shapes.plate, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Upgrade_Lock.get(1L))
                 .duration(5 * MINUTES + 20 * SECONDS)
@@ -271,8 +271,8 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.plate, 1),
-                    MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.plate, 1))
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.plate, 1),
+                    MaterialLibAPI.getStack(Materials.Iridium, Shapes.plate, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Upgrade_Lock.get(1L))
                 .duration(5 * MINUTES + 20 * SECONDS)
@@ -280,8 +280,8 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.CastIron, Materials2Shapes.plate, 1),
-                    MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.plate, 1))
+                    MaterialLibAPI.getStack(Materials.CastIron, Shapes.plate, 1),
+                    MaterialLibAPI.getStack(Materials.Iridium, Shapes.plate, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Upgrade_Lock.get(1L))
                 .duration(5 * MINUTES + 20 * SECONDS)
@@ -291,7 +291,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemList.Sensor_EV.get(1L),
-                    MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.plate, 1))
+                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Cover_PlayerDetector.get(1L))
                 .duration(2 * MINUTES + 40 * SECONDS)
@@ -300,7 +300,7 @@ public class AssemblerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.plate, 1),
+                    MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, 1),
                     ItemList.Cover_Drain.get(1L))
                 .circuit(1)
                 .itemOutputs(ItemList.Cover_Shutter.get(1L))
@@ -309,7 +309,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.plate, 1),
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.plate, 1),
                     ItemList.Cover_Drain.get(1L))
                 .circuit(1)
                 .itemOutputs(ItemList.Cover_Shutter.get(1L))
@@ -318,7 +318,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.CastIron, Materials2Shapes.plate, 1),
+                    MaterialLibAPI.getStack(Materials.CastIron, Shapes.plate, 1),
                     ItemList.Cover_Drain.get(1L))
                 .circuit(1)
                 .itemOutputs(ItemList.Cover_Shutter.get(1L))
@@ -327,7 +327,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.plate, 2),
+                    MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, 2),
                     new ItemStack(Blocks.iron_bars, 2))
                 .circuit(1)
                 .itemOutputs(ItemList.Cover_Drain.get(1L))
@@ -336,7 +336,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.plate, 2),
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.plate, 2),
                     new ItemStack(Blocks.iron_bars, 2))
                 .circuit(1)
                 .itemOutputs(ItemList.Cover_Drain.get(1L))
@@ -345,7 +345,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.CastIron, Materials2Shapes.plate, 2),
+                    MaterialLibAPI.getStack(Materials.CastIron, Shapes.plate, 2),
                     new ItemStack(Blocks.iron_bars, 2))
                 .circuit(1)
                 .itemOutputs(ItemList.Cover_Drain.get(1L))
@@ -354,7 +354,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.plate, 1),
+                    MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, 1),
                     new ItemStack(Blocks.crafting_table, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Cover_Crafting.get(1L))
@@ -363,7 +363,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.plate, 1),
+                    MaterialLibAPI.getStack(Materials.Iron, Shapes.plate, 1),
                     new ItemStack(Blocks.crafting_table, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Cover_Crafting.get(1L))
@@ -372,7 +372,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.CastIron, Materials2Shapes.plate, 1),
+                    MaterialLibAPI.getStack(Materials.CastIron, Shapes.plate, 1),
                     new ItemStack(Blocks.crafting_table, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Cover_Crafting.get(1L))
@@ -398,7 +398,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemList.Emitter_EV.get(1L),
-                    MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.plate, 1))
+                    MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plate, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Cover_RedstoneTransmitter.get(1L))
                 .duration(2 * MINUTES + 40 * SECONDS)
@@ -407,7 +407,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemList.Sensor_EV.get(1L),
-                    MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.plate, 1))
+                    MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plate, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Cover_RedstoneReceiver.get(1L))
                 .duration(2 * MINUTES + 40 * SECONDS)
@@ -417,7 +417,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemList.Emitter_MV.get(1L),
-                    MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.plate, 1))
+                    MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.Cover_NeedsMaintainance.get(1L))
                 .duration(30 * SECONDS)
@@ -426,7 +426,7 @@ public class AssemblerRecipes implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.plate, 2),
+                    MaterialLibAPI.getStack(Materials.Tin, Shapes.plate, 2),
                     ItemList.Component_Filter.get(1L),
                     ItemList.Conveyor_Module_LV.get(1L))
                 .circuit(1)
@@ -436,7 +436,7 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.plate, 2),
+                    MaterialLibAPI.getStack(Materials.Tin, Shapes.plate, 2),
                     ItemList.Component_Filter.get(1L),
                     ItemList.Conveyor_Module_LV.get(1L))
                 .circuit(2)
@@ -448,7 +448,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("cableGt01Aluminium", 2L),
-                    MaterialLibAPI.getStack(Materials.BlueSteel, Materials2Shapes.plate, 2))
+                    MaterialLibAPI.getStack(Materials.BlueSteel, Shapes.plate, 2))
                 .itemOutputs(ItemList.BatteryHull_EV.get(1L))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -462,7 +462,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("cableGt01Platinum", 2L),
-                    MaterialLibAPI.getStack(Materials.RoseGold, Materials2Shapes.plate, 6))
+                    MaterialLibAPI.getStack(Materials.RoseGold, Shapes.plate, 6))
                 .itemOutputs(ItemList.BatteryHull_IV.get(1L))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -476,7 +476,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("cableGt01Naquadah", 2L),
-                    MaterialLibAPI.getStack(Materials.RedSteel, Materials2Shapes.plate, 18))
+                    MaterialLibAPI.getStack(Materials.RedSteel, Shapes.plate, 18))
                 .itemOutputs(ItemList.BatteryHull_LuV.get(1L))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -490,7 +490,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("cableGt01NaquadahAlloy", 2L),
-                    MaterialLibAPI.getStack(Materials.Europium, Materials2Shapes.plate, 6))
+                    MaterialLibAPI.getStack(Materials.Europium, Shapes.plate, 6))
                 .itemOutputs(ItemList.BatteryHull_ZPM.get(1L))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -504,7 +504,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("cableGt01ElectrumFlux", 2L),
-                    MaterialLibAPI.getStack(Materials.Americium, Materials2Shapes.plate, 18))
+                    MaterialLibAPI.getStack(Materials.Americium, Shapes.plate, 18))
                 .itemOutputs(ItemList.BatteryHull_UV.get(1L))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -518,7 +518,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("cableGt02ElectrumFlux", 2L),
-                    MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.plate, 24))
+                    MaterialLibAPI.getStack(Materials.Naquadah, Shapes.plate, 24))
                 .itemOutputs(ItemList.BatteryHull_UHV.get(1L))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -532,7 +532,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("cableGt04ElectrumFlux", 2L),
-                    MaterialLibAPI.getStack(Materials.NaquadahEnriched, Materials2Shapes.plate, 36))
+                    MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.plate, 36))
                 .itemOutputs(ItemList.BatteryHull_UEV.get(1L))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -546,7 +546,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("cableGt08ElectrumFlux", 2L),
-                    MaterialLibAPI.getStack(Materials.NaquadahAlloy, Materials2Shapes.plate, 48))
+                    MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.plate, 48))
                 .itemOutputs(ItemList.BatteryHull_UIV.get(1L))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -560,7 +560,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("wireGt16Superconductor", 2L),
-                    MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.plate, 56))
+                    MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 56))
                 .itemOutputs(ItemList.BatteryHull_UMV.get(1L))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -574,7 +574,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("wireGt16Superconductor", 2L),
-                    MaterialLibAPI.getStack(Materials.DraconiumAwakened, Materials2Shapes.plate, 64))
+                    MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.plate, 64))
                 .itemOutputs(ItemList.BatteryHull_UxV.get(1L))
                 .fluidInputs(
                     MaterialLibAPI
@@ -586,7 +586,7 @@ public class AssemblerRecipes implements Runnable {
             for (int i = 0; i < ItemList.WIRELESS_ENERGY_COVERS.length; i++) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        MaterialLibAPI.getStack(Materials.TranscendentMetal, Materials2Shapes.plateDense, 4),
+                        MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.plateDense, 4),
                         CustomItemList.Machine_Multi_Transformer.get(1),
                         GTOreDictUnificator.get("wireGt01Infinity", 2L),
                         ItemList.WIRELESS_ENERGY_HATCHES[i + 1].get(1))
@@ -607,7 +607,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     ItemList.Hull_HV.get(1L),
                     ItemList.Component_Filter.get(3L),
-                    MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.rotor, 1),
+                    MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.rotor, 1),
                     ItemList.Electric_Motor_HV.get(2L),
                     GTOreDictUnificator.get("circuitAdvanced", 1L))
                 .circuit(1)
@@ -653,7 +653,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get("frameGtBlackSteel", 1),
-                MaterialLibAPI.getStack(Materials.Plastic, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.Plastic, Shapes.dust, 1))
             .itemOutputs(ItemList.Block_Plascrete.get(1))
             .fluidInputs(
                 MaterialLibAPI
@@ -664,7 +664,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.plateDense, 16),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plateDense, 16),
                 GTOreDictUnificator.get("circuitData", 4),
                 ItemList.Electric_Motor_IV.get(16),
                 ItemList.Emitter_EV.get(4),
@@ -730,7 +730,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.PolyvinylChloride, Materials2Shapes.foil, 1),
+                MaterialLibAPI.getStack(Materials.PolyvinylChloride, Shapes.foil, 1),
                 ItemList.Paper_Printed_Pages.get(1))
             .itemOutputs(new ItemStack(Items.written_book, 1, 0))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, Materials2FluidShapes.fluidLiquid, 20))
@@ -740,7 +740,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.PolyvinylChloride, Materials2Shapes.foil, 1),
+                MaterialLibAPI.getStack(Materials.PolyvinylChloride, Shapes.foil, 1),
                 GTOreDictUnificator.get("platePaper", 3))
             .itemOutputs(new ItemStack(Items.book, 1, 0))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, Materials2FluidShapes.fluidLiquid, 20))
@@ -751,7 +751,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTModHandler.getIC2Item("carbonMesh", 4),
-                MaterialLibAPI.getStack(Materials.Zinc, Materials2Shapes.foil, 16))
+                MaterialLibAPI.getStack(Materials.Zinc, Shapes.foil, 16))
             .circuit(1)
             .itemOutputs(ItemList.Component_Filter.get(1))
             .duration(1 * MINUTES + 20 * SECONDS)
@@ -760,8 +760,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.wireFine, 64),
-                MaterialLibAPI.getStack(Materials.Zinc, Materials2Shapes.foil, 16))
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.wireFine, 64),
+                MaterialLibAPI.getStack(Materials.Zinc, Shapes.foil, 16))
             .circuit(1)
             .itemOutputs(ItemList.Component_Filter.get(1))
             .fluidInputs(
@@ -773,10 +773,10 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Graphite, Materials2Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 64),
                 ItemList.Circuit_Silicon_Wafer2.get(32))
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Graphene, Materials2Shapes.dust, 64))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Graphene, Shapes.dust, 64))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.AdvancedGlue, Materials2FluidShapes.fluidLiquid, 500))
             .duration(2 * MINUTES + 40 * SECONDS)
@@ -785,10 +785,10 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Graphite, Materials2Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 64),
                 ItemList.Circuit_Silicon_Wafer3.get(8))
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Graphene, Materials2Shapes.dust, 64))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Graphene, Shapes.dust, 64))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.AdvancedGlue, Materials2FluidShapes.fluidLiquid, 250))
             .duration(40 * SECONDS)
@@ -996,7 +996,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 4),
                 GTOreDictUnificator.get("circuitBasic", 4))
             .circuit(3)
             .itemOutputs(ItemList.Schematic.get(1L))
@@ -1006,7 +1006,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.plate, 3),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, 3),
                 GTOreDictUnificator.get("circuitGood", 2))
             .circuit(3)
             .itemOutputs(ItemList.Schematic.get(1L))
@@ -1016,7 +1016,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plate, 2),
                 GTOreDictUnificator.get("circuitAdvanced", 1))
             .circuit(3)
             .itemOutputs(ItemList.Schematic.get(1L))
@@ -1105,7 +1105,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_HV.get(1L),
-                MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.spring, 1),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.spring, 1),
                 ItemList.Circuit_Chip_LPIC.get(2L),
                 ItemList.HV_Coil.get(2L),
                 ItemList.Reactor_Coolant_He_1.get(1L),
@@ -1118,7 +1118,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_EV.get(1L),
-                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.spring, 1),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.spring, 1),
                 ItemList.Circuit_Chip_PIC.get(2L),
                 ItemList.EV_Coil.get(2L),
                 ItemList.Reactor_Coolant_He_1.get(1L),
@@ -1131,7 +1131,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_IV.get(1L),
-                MaterialLibAPI.getStack(Materials.Vanadiumtriindinid, Materials2Shapes.spring, 1),
+                MaterialLibAPI.getStack(Materials.Vanadiumtriindinid, Shapes.spring, 1),
                 ItemList.Circuit_Chip_HPIC.get(2L),
                 ItemList.IV_Coil.get(2L),
                 ItemList.Reactor_Coolant_He_3.get(1L),
@@ -1144,7 +1144,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_HV.get(1L),
-                MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.spring, 1),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.spring, 1),
                 ItemList.Circuit_Chip_LPIC.get(2L),
                 ItemList.HV_Coil.get(2L),
                 ItemList.Reactor_Coolant_NaK_1.get(1L),
@@ -1157,7 +1157,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_EV.get(1L),
-                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.spring, 1),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.spring, 1),
                 ItemList.Circuit_Chip_PIC.get(2L),
                 ItemList.EV_Coil.get(2L),
                 ItemList.Reactor_Coolant_NaK_1.get(1L),
@@ -1170,7 +1170,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_IV.get(1L),
-                MaterialLibAPI.getStack(Materials.Vanadiumtriindinid, Materials2Shapes.spring, 1),
+                MaterialLibAPI.getStack(Materials.Vanadiumtriindinid, Shapes.spring, 1),
                 ItemList.Circuit_Chip_HPIC.get(2L),
                 ItemList.IV_Coil.get(2L),
                 ItemList.Reactor_Coolant_NaK_3.get(1L),
@@ -1183,7 +1183,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get("pipeHugeSteel", 2L),
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 6),
                 GTOreDictUnificator.get("gearSteel", 2L))
             .circuit(2)
             .itemOutputs(ItemList.Long_Distance_Pipeline_Fluid.get(2L))
@@ -1196,7 +1196,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get("pipeHugeTin", 2L),
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 6),
                 GTOreDictUnificator.get("gearSteel", 2L))
             .circuit(2)
             .itemOutputs(ItemList.Long_Distance_Pipeline_Item.get(2L))
@@ -1209,7 +1209,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get("pipeLargeSteel", 2L),
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.plate, 9))
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 9))
             .circuit(24)
             .itemOutputs(ItemList.Long_Distance_Pipeline_Fluid_Pipe.get(64L))
             .fluidInputs(
@@ -1221,7 +1221,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get("pipeLargeTin", 2L),
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.plate, 9))
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 9))
             .circuit(24)
             .itemOutputs(ItemList.Long_Distance_Pipeline_Item_Pipe.get(64L))
             .fluidInputs(
@@ -1304,7 +1304,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 4),
                 GTOreDictUnificator.get("frameGtTungstenSteel", 1L),
                 ItemList.Robot_Arm_IV.get(2L))
             .circuit(3)
@@ -1337,7 +1337,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 ItemList.Hull_LV.get(1),
                 GTOreDictUnificator.get("pipeMediumBronze", 1),
-                MaterialLibAPI.getStack(Materials.Bronze, Materials2Shapes.rotor, 1),
+                MaterialLibAPI.getStack(Materials.Bronze, Shapes.rotor, 1),
                 ItemList.Electric_Motor_LV.get(1))
             .circuit(3)
             .itemOutputs(ItemList.Hatch_Muffler_LV.get(1))
@@ -1349,7 +1349,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 ItemList.Hull_MV.get(1),
                 GTOreDictUnificator.get("pipeMediumSteel", 1),
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.rotor, 1),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.rotor, 1),
                 ItemList.Electric_Motor_MV.get(1))
             .circuit(3)
             .itemOutputs(ItemList.Hatch_Muffler_MV.get(1))
@@ -1361,7 +1361,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 ItemList.Hull_HV.get(1),
                 GTOreDictUnificator.get("pipeLargeStainlessSteel", 1),
-                MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.rotor, 1),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.rotor, 1),
                 ItemList.Electric_Motor_HV.get(1))
             .circuit(3)
             .itemOutputs(ItemList.Hatch_Muffler_HV.get(1))
@@ -1374,7 +1374,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Hull_EV.get(1),
                 GTOreDictUnificator.get("pipeLargeTitanium", 1),
                 ItemList.Electric_Motor_EV.get(1),
-                MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.rotor, 1))
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.rotor, 1))
             .circuit(3)
             .itemOutputs(ItemList.Hatch_Muffler_EV.get(1))
             .duration(10 * SECONDS)
@@ -1386,7 +1386,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Hull_IV.get(1),
                 GTOreDictUnificator.get("pipeLargeTungstenSteel", 1),
                 ItemList.Electric_Motor_IV.get(1),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.rotor, 1))
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.rotor, 1))
             .circuit(3)
             .itemOutputs(ItemList.Hatch_Muffler_IV.get(1))
             .duration(10 * SECONDS)
@@ -1398,7 +1398,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Hull_LuV.get(1),
                 GTOreDictUnificator.get("pipeLargeEnderium", 1),
                 ItemList.Electric_Motor_LuV.get(1),
-                MaterialLibAPI.getStack(Materials.Enderium, Materials2Shapes.rotor, 1))
+                MaterialLibAPI.getStack(Materials.Enderium, Shapes.rotor, 1))
             .circuit(3)
             .itemOutputs(ItemList.Hatch_Muffler_LuV.get(1))
             .duration(10 * SECONDS)
@@ -1410,7 +1410,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Hull_ZPM.get(1),
                 GTOreDictUnificator.get("pipeLargeNaquadah", 1),
                 ItemList.Electric_Motor_ZPM.get(1),
-                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Materials2Shapes.rotor, 1))
+                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.rotor, 1))
             .circuit(3)
             .itemOutputs(ItemList.Hatch_Muffler_ZPM.get(1))
             .duration(10 * SECONDS)
@@ -1422,7 +1422,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Hull_UV.get(1),
                 GTOreDictUnificator.get("pipeLargeNetherStar", 1),
                 ItemList.Electric_Motor_UV.get(1),
-                MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.rotor, 1))
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.rotor, 1))
             .circuit(3)
             .itemOutputs(ItemList.Hatch_Muffler_UV.get(1))
             .duration(10 * SECONDS)
@@ -1434,7 +1434,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Hull_MAX.get(1),
                 GTOreDictUnificator.get("pipeLargeMysteriousCrystal", 1),
                 ItemList.Electric_Motor_UHV.get(1),
-                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Materials2Shapes.rotor, 1))
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.rotor, 1))
             .circuit(3)
             .itemOutputs(ItemList.Hatch_Muffler_MAX.get(1))
             .duration(10 * SECONDS)
@@ -1444,7 +1444,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Blocks.redstone_torch, 2, 32767),
-                MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1))
             .itemOutputs(new ItemStack(Items.repeater, 1, 0))
             .fluidInputs(
                 MaterialLibAPI
@@ -1472,8 +1472,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Tantalum, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Manganese, Materials2Shapes.foil, 1))
+                MaterialLibAPI.getStack(Materials.Tantalum, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Manganese, Shapes.foil, 1))
             .itemOutputs(ItemList.Battery_RE_ULV_Tantalum.get(8))
             .fluidInputs(
                 MaterialLibAPI
@@ -1572,7 +1572,7 @@ public class AssemblerRecipes implements Runnable {
         certusQuartzSeed.setTagCompound(certusQuartzTag);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.CertusQuartz, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.dust, 1),
                 new ItemStack(Blocks.sand, 1, 32767))
             .itemOutputs(certusQuartzSeed)
             .duration(3 * SECONDS + 4 * TICKS)
@@ -1585,7 +1585,7 @@ public class AssemblerRecipes implements Runnable {
         netherQuartzSeed.setTagCompound(netherQuartzTag);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.NetherQuartz, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.dust, 1),
                 new ItemStack(Blocks.sand, 1, 32767))
             .itemOutputs(netherQuartzSeed)
             .duration(3 * SECONDS + 4 * TICKS)
@@ -1678,7 +1678,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Rubber, Materials2Shapes.plate, 3),
+                MaterialLibAPI.getStack(Materials.Rubber, Shapes.plate, 3),
                 GTModHandler.getIC2Item("carbonMesh", 3))
             .circuit(1)
             .itemOutputs(ItemList.Duct_Tape.get(1))
@@ -1689,7 +1689,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.StyreneButadieneRubber, Materials2Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.StyreneButadieneRubber, Shapes.plate, 2),
                 GTModHandler.getIC2Item("carbonMesh", 2))
             .circuit(2)
             .itemOutputs(ItemList.Duct_Tape.get(1))
@@ -1700,7 +1700,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Silicone, Materials2Shapes.plate, 1),
+                MaterialLibAPI.getStack(Materials.Silicone, Shapes.plate, 1),
                 GTModHandler.getIC2Item("carbonMesh", 1))
             .circuit(3)
             .itemOutputs(ItemList.Duct_Tape.get(1))
@@ -1733,7 +1733,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get("platePaper", 3),
-                MaterialLibAPI.getStack(Materials.Paper, Materials2Shapes.plateQuadruple, 1))
+                MaterialLibAPI.getStack(Materials.Paper, Shapes.plateQuadruple, 1))
             .itemOutputs(new ItemStack(Items.book, 1, 0))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, Materials2FluidShapes.fluidLiquid, 20))
             .duration(1 * SECONDS + 12 * TICKS)
@@ -1749,7 +1749,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.itemCasing, 4))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Tin, Shapes.itemCasing, 4))
             .itemOutputs(ItemList.Cell_Universal_Fluid.get(1))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_ULV)
@@ -1815,7 +1815,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Food_Sliced_Bun.get(2),
-                MaterialLibAPI.getStack(Materials.MeatCooked, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.MeatCooked, Shapes.dust, 1))
             .itemOutputs(ItemList.Food_Burger_Meat.get(1))
             .duration(5 * SECONDS)
             .eut(4)
@@ -1824,7 +1824,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Food_Sliced_Buns.get(1),
-                MaterialLibAPI.getStack(Materials.MeatCooked, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.MeatCooked, Shapes.dust, 1))
             .itemOutputs(ItemList.Food_Burger_Meat.get(1))
             .duration(5 * SECONDS)
             .eut(4)
@@ -1861,7 +1861,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Food_Flat_Dough.get(1),
-                MaterialLibAPI.getStack(Materials.MeatCooked, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.MeatCooked, Shapes.dust, 1))
             .itemOutputs(ItemList.Food_Raw_Pizza_Meat.get(1))
             .duration(5 * SECONDS)
             .eut(4)
@@ -2255,8 +2255,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.IronMagnetic, Materials2Shapes.stick, 1),
-                MaterialLibAPI.getStack(Materials.Lead, Materials2Shapes.wireFine, 16))
+                MaterialLibAPI.getStack(Materials.IronMagnetic, Shapes.stick, 1),
+                MaterialLibAPI.getStack(Materials.Lead, Shapes.wireFine, 16))
             .circuit(1)
             .itemOutputs(ItemList.ULV_Coil.get(1))
             .duration(10 * SECONDS)
@@ -2265,8 +2265,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.IronMagnetic, Materials2Shapes.stick, 1),
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.wireFine, 16))
+                MaterialLibAPI.getStack(Materials.IronMagnetic, Shapes.stick, 1),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.wireFine, 16))
             .circuit(1)
             .itemOutputs(ItemList.LV_Coil.get(1))
             .duration(10 * SECONDS)
@@ -2275,8 +2275,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SteelMagnetic, Materials2Shapes.stick, 1),
-                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.wireFine, 16))
+                MaterialLibAPI.getStack(Materials.SteelMagnetic, Shapes.stick, 1),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.wireFine, 16))
             .circuit(1)
             .itemOutputs(ItemList.MV_Coil.get(1))
             .duration(10 * SECONDS)
@@ -2285,8 +2285,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SteelMagnetic, Materials2Shapes.stick, 1),
-                MaterialLibAPI.getStack(Materials.EnergeticAlloy, Materials2Shapes.wireFine, 16))
+                MaterialLibAPI.getStack(Materials.SteelMagnetic, Shapes.stick, 1),
+                MaterialLibAPI.getStack(Materials.EnergeticAlloy, Shapes.wireFine, 16))
             .circuit(1)
             .itemOutputs(ItemList.HV_Coil.get(1))
             .duration(10 * SECONDS)
@@ -2295,8 +2295,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.NeodymiumMagnetic, Materials2Shapes.stick, 1),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.wireFine, 16))
+                MaterialLibAPI.getStack(Materials.NeodymiumMagnetic, Shapes.stick, 1),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.wireFine, 16))
             .circuit(1)
             .itemOutputs(ItemList.EV_Coil.get(1))
             .duration(10 * SECONDS)
@@ -2305,8 +2305,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.NeodymiumMagnetic, Materials2Shapes.stick, 1),
-                MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.wireFine, 16))
+                MaterialLibAPI.getStack(Materials.NeodymiumMagnetic, Shapes.stick, 1),
+                MaterialLibAPI.getStack(Materials.Iridium, Shapes.wireFine, 16))
             .circuit(1)
             .itemOutputs(ItemList.IV_Coil.get(1))
             .duration(10 * SECONDS)
@@ -2315,7 +2315,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SamariumMagnetic, Materials2Shapes.stick, 1),
+                MaterialLibAPI.getStack(Materials.SamariumMagnetic, Shapes.stick, 1),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Ruridit, 16))
             .circuit(1)
             .itemOutputs(ItemList.LuV_Coil.get(1))
@@ -2325,8 +2325,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SamariumMagnetic, Materials2Shapes.stick, 1),
-                MaterialLibAPI.getStack(Materials.Europium, Materials2Shapes.wireFine, 16))
+                MaterialLibAPI.getStack(Materials.SamariumMagnetic, Shapes.stick, 1),
+                MaterialLibAPI.getStack(Materials.Europium, Shapes.wireFine, 16))
             .circuit(1)
             .itemOutputs(ItemList.ZPM_Coil.get(1))
             .duration(10 * SECONDS)
@@ -2335,8 +2335,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SamariumMagnetic, Materials2Shapes.stick, 1),
-                MaterialLibAPI.getStack(Materials.ElectrumFlux, Materials2Shapes.wireFine, 16))
+                MaterialLibAPI.getStack(Materials.SamariumMagnetic, Shapes.stick, 1),
+                MaterialLibAPI.getStack(Materials.ElectrumFlux, Shapes.wireFine, 16))
             .circuit(1)
             .itemOutputs(ItemList.UV_Coil.get(1))
             .duration(10 * SECONDS)
@@ -2345,8 +2345,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.SamariumMagnetic, Materials2Shapes.stick, 1),
-                MaterialLibAPI.getStack(Materials.Tritanium, Materials2Shapes.wireFine, 16))
+                MaterialLibAPI.getStack(Materials.SamariumMagnetic, Shapes.stick, 1),
+                MaterialLibAPI.getStack(Materials.Tritanium, Shapes.wireFine, 16))
             .circuit(1)
             .itemOutputs(ItemList.UHV_Coil.get(1))
             .duration(10 * SECONDS)
@@ -2355,8 +2355,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.TengamAttuned, Materials2Shapes.stick, 1),
-                MaterialLibAPI.getStack(Materials.CelestialTungsten, Materials2Shapes.wireFine, 16))
+                MaterialLibAPI.getStack(Materials.TengamAttuned, Shapes.stick, 1),
+                MaterialLibAPI.getStack(Materials.CelestialTungsten, Shapes.wireFine, 16))
             .circuit(1)
             .itemOutputs(ItemList.UEV_Coil.get(1))
             .duration(10 * SECONDS)
@@ -2365,8 +2365,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.TengamAttuned, Materials2Shapes.stick, 1),
-                MaterialLibAPI.getStack(Materials.Rhugnor, Materials2Shapes.wireFine, 16))
+                MaterialLibAPI.getStack(Materials.TengamAttuned, Shapes.stick, 1),
+                MaterialLibAPI.getStack(Materials.Rhugnor, Shapes.wireFine, 16))
             .circuit(1)
             .itemOutputs(ItemList.UIV_Coil.get(1))
             .duration(10 * SECONDS)
@@ -2375,8 +2375,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.TengamAttuned, Materials2Shapes.stick, 1),
-                MaterialLibAPI.getStack(Materials.Dragonblood, Materials2Shapes.wireFine, 16))
+                MaterialLibAPI.getStack(Materials.TengamAttuned, Shapes.stick, 1),
+                MaterialLibAPI.getStack(Materials.Dragonblood, Shapes.wireFine, 16))
             .circuit(1)
             .itemOutputs(ItemList.UMV_Coil.get(1))
             .duration(10 * SECONDS)
@@ -2385,8 +2385,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Magmatter, Materials2Shapes.stick, 1),
-                MaterialLibAPI.getStack(Materials.Universium, Materials2Shapes.wireFine, 16))
+                MaterialLibAPI.getStack(Materials.Magmatter, Shapes.stick, 1),
+                MaterialLibAPI.getStack(Materials.Universium, Shapes.wireFine, 16))
             .circuit(1)
             .itemOutputs(ItemList.UXV_Coil.get(1))
             .duration(10 * SECONDS)
@@ -2394,7 +2394,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Wood, Materials2Shapes.plate, 6))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Wood, Shapes.plate, 6))
             .circuit(2)
             .itemOutputs(GTOreDictUnificator.get("pipeLargeWood", 2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, Materials2FluidShapes.fluidLiquid, 10))
@@ -2403,7 +2403,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Wood, Materials2Shapes.plate, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Wood, Shapes.plate, 3))
             .circuit(4)
             .itemOutputs(GTOreDictUnificator.get("pipeMediumWood", 4))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, Materials2FluidShapes.fluidLiquid, 20))
@@ -2412,7 +2412,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Wood, Materials2Shapes.plate, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Wood, Shapes.plate, 1))
             .circuit(12)
             .itemOutputs(GTOreDictUnificator.get("pipeSmallWood", 6))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, Materials2FluidShapes.fluidLiquid, 60))
@@ -2422,9 +2422,9 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Iridium, Shapes.plate, 4),
                 GTOreDictUnificator.get("plateAlloyAdvanced", 4),
-                MaterialLibAPI.getStack(Materials.Diamond, Materials2Shapes.gemExquisite, 1))
+                MaterialLibAPI.getStack(Materials.Diamond, Shapes.gemExquisite, 1))
             .circuit(2)
             .itemOutputs(ItemList.Ingot_IridiumAlloy.get(1))
             .duration(60 * SECONDS)
@@ -2435,7 +2435,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get("frameGtSteel", 1),
                 ItemList.Electric_Motor_MV.get(1),
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.rotor, 1),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.rotor, 1),
                 new ItemStack(Blocks.iron_bars, 6))
             .circuit(1)
             .itemOutputs(ItemList.Casing_Grate.get(1))
@@ -2447,9 +2447,9 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 GTOreDictUnificator.get("frameGtIridium", 1),
                 ItemList.Electric_Motor_UV.get(1),
-                MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.rotor, 1),
+                MaterialLibAPI.getStack(Materials.Iridium, Shapes.rotor, 1),
                 ItemList.Component_Filter.get(8),
-                MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.stickLong, 8))
+                MaterialLibAPI.getStack(Materials.Iridium, Shapes.stickLong, 8))
             .itemOutputs(ItemList.Casing_Vent_T2.get(1))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -2464,8 +2464,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.plate, 2),
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.spring, 1))
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.spring, 1))
             .itemOutputs(new ItemStack(Blocks.light_weighted_pressure_plate, 1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
@@ -2473,8 +2473,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.plate, 2),
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.spring, 1))
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.spring, 1))
             .itemOutputs(new ItemStack(Blocks.heavy_weighted_pressure_plate, 1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
@@ -2489,7 +2489,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.stick, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.stick, 1))
             .circuit(1)
             .itemOutputs(ItemList.FenceIron.get(1L))
             .duration(5 * SECONDS)
@@ -2505,7 +2505,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.CastIron, Materials2Shapes.stick, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CastIron, Shapes.stick, 1))
             .circuit(1)
             .itemOutputs(ItemList.FenceIron.get(1L))
             .duration(5 * SECONDS)
@@ -2543,7 +2543,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.plate, 3),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 3),
                 ItemList.Component_Minecart_Wheels_Steel.get(2))
             .itemOutputs(new ItemStack(Items.minecart, 1))
             .duration(5 * SECONDS)
@@ -2552,8 +2552,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.stick, 1),
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.ring, 2))
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.stick, 1),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.ring, 2))
             .itemOutputs(ItemList.Component_Minecart_Wheels_Iron.get(1))
             .duration(5 * SECONDS)
             .eut(20)
@@ -2561,8 +2561,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.CastIron, Materials2Shapes.stick, 1),
-                MaterialLibAPI.getStack(Materials.CastIron, Materials2Shapes.ring, 2))
+                MaterialLibAPI.getStack(Materials.CastIron, Shapes.stick, 1),
+                MaterialLibAPI.getStack(Materials.CastIron, Shapes.ring, 2))
             .itemOutputs(ItemList.Component_Minecart_Wheels_Iron.get(1))
             .duration(4 * SECONDS)
             .eut(20)
@@ -2570,8 +2570,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.stick, 1),
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.ring, 2))
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, 1),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.ring, 2))
             .itemOutputs(ItemList.Component_Minecart_Wheels_Steel.get(1))
             .duration(3 * SECONDS)
             .eut(20)
@@ -2645,7 +2645,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.plate, 8))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.plate, 8))
             .circuit(8)
             .itemOutputs(GTModHandler.getIC2Item("machine", 1))
             .duration(1 * SECONDS + 5 * TICKS)
@@ -2653,7 +2653,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.CastIron, Materials2Shapes.plate, 8))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CastIron, Shapes.plate, 8))
             .circuit(8)
             .itemOutputs(ItemList.Casing_ULV.get(1))
             .duration(1 * SECONDS + 5 * TICKS)
@@ -2661,7 +2661,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.plate, 8))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 8))
             .circuit(8)
             .itemOutputs(ItemList.Casing_LV.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -2669,7 +2669,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.plate, 8))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, 8))
             .circuit(8)
             .itemOutputs(ItemList.Casing_MV.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -2677,7 +2677,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.plate, 8))
+            .itemInputs(MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plate, 8))
             .circuit(8)
             .itemOutputs(ItemList.Casing_HV.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -2685,7 +2685,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.plate, 8))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 8))
             .circuit(8)
             .itemOutputs(ItemList.Casing_EV.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -2693,7 +2693,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.plate, 8))
+            .itemInputs(MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, 8))
             .circuit(8)
             .itemOutputs(ItemList.Casing_IV.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -2709,7 +2709,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.plate, 8))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Iridium, Shapes.plate, 8))
             .circuit(8)
             .itemOutputs(ItemList.Casing_ZPM.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -2717,7 +2717,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.plate, 8))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Osmium, Shapes.plate, 8))
             .circuit(8)
             .itemOutputs(ItemList.Casing_UV.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -2725,7 +2725,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.plate, 8))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 8))
             .circuit(8)
             .itemOutputs(ItemList.Casing_MAX.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -2734,7 +2734,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Invar, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Invar, Shapes.plate, 6),
                 GTOreDictUnificator.get("frameGtInvar", 1))
             .itemOutputs(ItemList.Casing_HeatProof.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -2743,7 +2743,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 6),
                 GTOreDictUnificator.get("frameGtSteel", 1))
             .circuit(1)
             .itemOutputs(ItemList.Casing_SolidSteel.get(1))
@@ -2753,7 +2753,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, 6),
                 GTOreDictUnificator.get("frameGtAluminium", 1))
             .circuit(1)
             .itemOutputs(ItemList.Casing_FrostProof.get(1))
@@ -2763,7 +2763,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, 6),
                 GTOreDictUnificator.get("frameGtTungstenSteel", 1))
             .circuit(1)
             .itemOutputs(ItemList.Casing_RobustTungstenSteel.get(1))
@@ -2773,7 +2773,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plate, 6),
                 GTOreDictUnificator.get("frameGtStainlessSteel", 1))
             .circuit(1)
             .itemOutputs(ItemList.Casing_CleanStainlessSteel.get(1))
@@ -2783,8 +2783,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.plate, 4),
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 2),
                 GTOreDictUnificator.get("frameGtStainlessSteel", 1))
             .circuit(2)
             .itemOutputs(ItemList.FormingCore.get(1))
@@ -2794,7 +2794,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 6),
                 GTOreDictUnificator.get("frameGtTitanium", 1))
             .circuit(1)
             .itemOutputs(ItemList.Casing_StableTitanium.get(1))
@@ -2804,7 +2804,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Osmiridium, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.plate, 6),
                 GTOreDictUnificator.get("frameGtOsmiridium", 1))
             .itemOutputs(ItemList.Casing_MiningOsmiridium.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -2813,7 +2813,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 6),
                 GTOreDictUnificator.get("frameGtNeutronium", 1))
             .itemOutputs(ItemList.Casing_MiningNeutronium.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -2822,7 +2822,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.BlackPlutonium, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.BlackPlutonium, Shapes.plate, 6),
                 GTOreDictUnificator.get("frameGtBlackPlutonium", 1))
             .circuit(1)
             .itemOutputs(ItemList.Casing_MiningBlackPlutonium.get(1))
@@ -2832,8 +2832,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Netherite, Materials2Shapes.plate, 1),
-                MaterialLibAPI.getStack(Materials.HSSS, Materials2Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Netherite, Shapes.plate, 1),
+                MaterialLibAPI.getStack(Materials.HSSS, Shapes.plate, 4),
                 ItemList.Casing_LuV.get(1))
             .itemOutputs(ItemList.Casing_Fusion.get(1))
             .fluidInputs(
@@ -2844,8 +2844,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Netherite, Materials2Shapes.plate, 4),
-                MaterialLibAPI.getStack(Materials.Americium, Materials2Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Netherite, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Americium, Shapes.plate, 4),
                 ItemList.Casing_Fusion.get(1))
             .itemOutputs(ItemList.Casing_Fusion2.get(1))
             .fluidInputs(
@@ -2857,7 +2857,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Magnalium, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Magnalium, Shapes.plate, 6),
                 GTOreDictUnificator.get("frameGtBlueSteel", 1))
             .itemOutputs(ItemList.Casing_Turbine.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -2877,7 +2877,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plate, 6),
                 ItemList.Casing_Turbine.get(1))
             .itemOutputs(ItemList.Casing_Turbine1.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -2886,7 +2886,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 6),
                 ItemList.Casing_Turbine.get(1))
             .itemOutputs(ItemList.Casing_Turbine2.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -2895,7 +2895,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, 6),
                 ItemList.Casing_Turbine.get(1))
             .itemOutputs(ItemList.Casing_Turbine3.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -2915,7 +2915,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Iridium, Shapes.plate, 6),
                 GTOreDictUnificator.get("frameGtIridium", 1))
             .itemOutputs(ItemList.Casing_Advanced_Iridium.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -3035,7 +3035,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get("cableGt01Tin", 1),
-                MaterialLibAPI.getStack(Materials.BatteryAlloy, Materials2Shapes.plate, 1))
+                MaterialLibAPI.getStack(Materials.BatteryAlloy, Shapes.plate, 1))
             .itemOutputs(ItemList.Battery_Hull_LV.get(1))
             .fluidInputs(
                 MaterialLibAPI
@@ -3047,7 +3047,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new OreDictItemStack("cableGt01AnyCopper", 2),
-                MaterialLibAPI.getStack(Materials.BatteryAlloy, Materials2Shapes.plate, 3))
+                MaterialLibAPI.getStack(Materials.BatteryAlloy, Shapes.plate, 3))
             .itemOutputs(ItemList.Battery_Hull_MV.get(1))
             .fluidInputs(
                 MaterialLibAPI
@@ -3059,7 +3059,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get("cableGt01Gold", 4),
-                MaterialLibAPI.getStack(Materials.BatteryAlloy, Materials2Shapes.plate, 9))
+                MaterialLibAPI.getStack(Materials.BatteryAlloy, Shapes.plate, 9))
             .itemOutputs(ItemList.Battery_Hull_HV.get(1))
             .fluidInputs(
                 MaterialLibAPI
@@ -3117,7 +3117,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get("gearCobaltBrass", 1),
-                MaterialLibAPI.getStack(Materials.Diamond, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.Diamond, Shapes.dust, 1))
             .itemOutputs(ItemList.Component_Sawblade_Diamond.get(1))
             .duration(16 * SECONDS)
             .eut(20)
@@ -3125,7 +3125,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 1),
                 GTOreDictUnificator.get("stickWood", 1))
             .itemOutputs(new ItemStack(Blocks.redstone_torch, 1))
             .duration(1 * SECONDS)
@@ -3135,7 +3135,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get("stickWood", 1),
-                MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1))
             .itemOutputs(new ItemStack(Blocks.torch, 2))
             .duration(2 * SECONDS)
             .eut(20)
@@ -3144,7 +3144,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get("stickWood", 1),
-                MaterialLibAPI.getStack(Materials.TricalciumPhosphate, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.TricalciumPhosphate, Shapes.dust, 1))
             .itemOutputs(new ItemStack(Blocks.torch, 6))
             .duration(2 * SECONDS)
             .eut(20)
@@ -3159,8 +3159,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.plateDense, 8),
-                MaterialLibAPI.getStack(Materials.Netherite, Materials2Shapes.stickLong, 4))
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plateDense, 8),
+                MaterialLibAPI.getStack(Materials.Netherite, Shapes.stickLong, 4))
             .itemOutputs(ItemList.neutroniumHeatCapacitor.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -3169,8 +3169,8 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get("frameGtprismaticnaquadah", 1),
-                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Materials2Shapes.plate, 12),
-                MaterialLibAPI.getStack(Materials.prismaticnaquadah, Materials2Shapes.screw, 4))
+                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.plate, 12),
+                MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.screw, 4))
             .itemOutputs(ItemList.RadiantNaquadahAlloyCasing.get(4))
             .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 9 * INGOTS))
             .duration(10 * TICKS)
@@ -3187,7 +3187,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.plate, 1),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 1),
                 ItemList.NC_SensorKit.get(1),
                 ItemList.Emitter_EV.get(1),
                 getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 28))
@@ -3201,9 +3201,9 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         ItemStack[] plates = new ItemStack[] {
-            MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.plate, 1),
-            MaterialLibAPI.getStack(Materials.CastIron, Materials2Shapes.plate, 1),
-            MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.plate, 1) };
+            MaterialLibAPI.getStack(Materials.Iron, Shapes.plate, 1),
+            MaterialLibAPI.getStack(Materials.CastIron, Shapes.plate, 1),
+            MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, 1) };
 
         for (ItemStack tPlate : plates) {
             GTValues.RA.stdBuilder()
@@ -3255,8 +3255,8 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get("pipeHugeTranscendentMetal", 1),
-                MaterialLibAPI.getStack(Materials.SuperconductorUIVBase, Materials2Shapes.foil, 64),
-                MaterialLibAPI.getStack(Materials.Netherite, Materials2Shapes.plate, 32),
+                MaterialLibAPI.getStack(Materials.SuperconductorUIVBase, Shapes.foil, 64),
+                MaterialLibAPI.getStack(Materials.Netherite, Shapes.plate, 32),
                 ItemList.Electric_Pump_UIV.get(1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.PhononMedium, Materials2FluidShapes.fluidLiquid, 100))
@@ -3269,8 +3269,8 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 ItemList.Thermal_Superconductor.get(2),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(16),
-                MaterialLibAPI.getStack(Materials.SuperconductorUIVBase, Materials2Shapes.plate, 8),
-                MaterialLibAPI.getStack(Materials.SixPhasedCopper, Materials2Shapes.rotor, 3),
+                MaterialLibAPI.getStack(Materials.SuperconductorUIVBase, Shapes.plate, 8),
+                MaterialLibAPI.getStack(Materials.SixPhasedCopper, Shapes.rotor, 3),
                 ItemList.Field_Generator_UEV.get(1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.PhononMedium, Materials2FluidShapes.fluidLiquid, 500))
@@ -3282,7 +3282,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_UV.get(1),
-                MaterialLibAPI.getStack(Materials.Americium, Materials2Shapes.stick, 2),
+                MaterialLibAPI.getStack(Materials.Americium, Shapes.stick, 2),
                 ItemList.Field_Generator_UV.get(2),
                 GTOreDictUnificator.get("wireGt12Superconductor", 2),
                 GTOreDictUnificator.get("circuitSuperconductor", 2))
@@ -3294,7 +3294,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_MAX.get(1),
-                MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 4),
                 GTOreDictUnificator.get("wireGt16Bedrockium", 4))
             .itemOutputs(ItemRegistry.energyDistributor[9])
             .duration(5 * SECONDS)
@@ -3304,7 +3304,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_UIV.get(1),
-                MaterialLibAPI.getStack(Materials.BlackPlutonium, Materials2Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.BlackPlutonium, Shapes.plate, 4),
                 GTOreDictUnificator.get("wireGt16NetherStar", 4))
             .itemOutputs(ItemRegistry.energyDistributor[11])
             .duration(5 * SECONDS)
@@ -3314,7 +3314,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_UMV.get(1),
-                MaterialLibAPI.getStack(Materials.Infinity, Materials2Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.plate, 4),
                 GTOreDictUnificator.get("wireGt16Quantium", 4))
             .itemOutputs(ItemRegistry.energyDistributor[12])
             .duration(5 * SECONDS)
@@ -3338,7 +3338,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.GlassQuarkContainment.get(16L),
-                MaterialLibAPI.getStack(Materials.FleroviumGT5U, Materials2Shapes.stickLong, 64),
+                MaterialLibAPI.getStack(Materials.FleroviumGT5U, Shapes.stickLong, 64),
                 ItemList.Field_Generator_UMV.get(1L))
             .itemOutputs(ItemList.NaniteShieldingGlass.get(4L))
             .fluidInputs(
@@ -3352,7 +3352,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.MagneticAnchorCasing.get(1L),
                 ItemRefer.Field_Restriction_Coil_T4.get(1),
                 ItemList.NaquadriaSupersolid.get(16L),
-                MaterialLibAPI.getStack(Materials.prismaticnaquadah, Materials2Shapes.plateSuperdense, 2))
+                MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.plateSuperdense, 2))
             .itemOutputs(ItemList.FieldEnergyAbsorberCasing.get(2L))
             .fluidInputs(
                 MaterialLibAPI
@@ -3366,7 +3366,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get("frameGtSpaceTime", 1L),
                 GTUtility.copyAmount(8, ItemRegistry.energyDistributor[12]),
                 new ItemStack(lscLapotronicEnergyUnit, 1, 5),
-                MaterialLibAPI.getStack(Materials.Magmatter, Materials2Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Magmatter, Shapes.plate, 6),
                 GTOreDictUnificator.get("circuitCosmic", 1L))
             .itemOutputs(ItemList.LoadbearingDistributionCasing.get(1L))
             .fluidInputs(
@@ -3379,7 +3379,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get("blockGlass", 3),
-                MaterialLibAPI.getStack(Materials.Silver, Materials2Shapes.plateDouble, 3),
+                MaterialLibAPI.getStack(Materials.Silver, Shapes.plateDouble, 3),
                 GTOreDictUnificator.get("pipeSmallBronze", 1),
                 ItemList.Hull_Bronze_Bricks.get(1L))
             .itemOutputs(ItemList.Machine_Bronze_Boiler_Solar.get(1L))
@@ -3392,17 +3392,17 @@ public class AssemblerRecipes implements Runnable {
             GTOreDictUnificator.get("blockGlass", 1),
             GTOreDictUnificator.get("blockGlass", 1),
             GTOreDictUnificator.get("blockGlass", 1),
-            MaterialLibAPI.getStack(Materials.Silver, Materials2Shapes.plateDouble, 1),
-            MaterialLibAPI.getStack(Materials.Silver, Materials2Shapes.plateDouble, 1),
-            MaterialLibAPI.getStack(Materials.Silver, Materials2Shapes.plateDouble, 1),
+            MaterialLibAPI.getStack(Materials.Silver, Shapes.plateDouble, 1),
+            MaterialLibAPI.getStack(Materials.Silver, Shapes.plateDouble, 1),
+            MaterialLibAPI.getStack(Materials.Silver, Shapes.plateDouble, 1),
             GTOreDictUnificator.get("pipeSmallBronze", 1),
             ItemList.Hull_Bronze_Bricks.get(1L));
 
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.ReinforcedGlass.get(3L),
-                MaterialLibAPI.getStack(Materials.Silver, Materials2Shapes.plateTriple, 1),
-                MaterialLibAPI.getStack(Materials.CastIron, Materials2Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.Silver, Shapes.plateTriple, 1),
+                MaterialLibAPI.getStack(Materials.CastIron, Shapes.plate, 2),
                 GTOreDictUnificator.get("pipeSmallSteel", 1),
                 ItemList.Machine_Bronze_Boiler_Solar.get(1L))
             .itemOutputs(ItemList.Machine_HP_Solar.get(1L))
@@ -3412,8 +3412,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.itemCasing, 10),
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.stick, 2),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.itemCasing, 10),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.stick, 2),
                 new ItemStack(Blocks.chest, 1),
                 new OreDictItemStack("dyeRed", 4),
                 new OreDictItemStack("dyeOrange", 1))
@@ -3430,15 +3430,15 @@ public class AssemblerRecipes implements Runnable {
             ItemList.ReinforcedGlass.get(1L),
             ItemList.ReinforcedGlass.get(1L),
             ItemList.ReinforcedGlass.get(1L),
-            MaterialLibAPI.getStack(Materials.Silver, Materials2Shapes.plateTriple, 1),
-            MaterialLibAPI.getStack(Materials.CastIron, Materials2Shapes.plate, 1),
-            MaterialLibAPI.getStack(Materials.CastIron, Materials2Shapes.plate, 1),
+            MaterialLibAPI.getStack(Materials.Silver, Shapes.plateTriple, 1),
+            MaterialLibAPI.getStack(Materials.CastIron, Shapes.plate, 1),
+            MaterialLibAPI.getStack(Materials.CastIron, Shapes.plate, 1),
             GTOreDictUnificator.get("pipeSmallSteel", 1),
             ItemList.Machine_Bronze_Boiler_Solar.get(1L));
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.plate, 6),
-                MaterialLibAPI.getStack(Materials.Platinum, Materials2Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Platinum, Shapes.plate, 2),
                 ItemList.Casing_Chemically_Inert.get(1L))
             .fluidInputs(
                 MaterialLibAPI
@@ -3450,8 +3450,8 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.plate, 6),
-                MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.Iridium, Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Osmium, Shapes.plate, 2),
                 ItemList.Casing_Chemically_Inert.get(1L))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Naquadah, Materials2FluidShapes.fluidMolten, 9))
@@ -3462,8 +3462,8 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.plate, 6),
-                MaterialLibAPI.getStack(Materials.Netherite, Materials2Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.plate, 6),
+                MaterialLibAPI.getStack(Materials.Netherite, Shapes.plate, 2),
                 ItemList.Casing_Chemically_Inert.get(1L))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Quantium, Materials2FluidShapes.fluidMolten, 144))
@@ -3475,7 +3475,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.FluidRegulator_EV.get(2L),
-                MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 4),
                 ItemRegistry.acidGens[2],
                 GTOreDictUnificator.get("circuitElite", 2L))
             .itemOutputs(ItemList.Machine_Multi_Large_Neutralization_Engine.get(1L))
@@ -3501,8 +3501,8 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Casing_CleanStainlessSteel.get(4),
-                MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.stick, 4),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.itemCasing, 4),
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.stick, 4),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.itemCasing, 4),
                 new Object[] { Circuits.IV.getIngredient(), 1 })
             .fluidInputs(
                 MaterialLibAPI
@@ -4865,7 +4865,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("pipeMediumBronze", 4),
-                    MaterialLibAPI.getStack(Materials.Bronze, Materials2Shapes.plate, 4),
+                    MaterialLibAPI.getStack(Materials.Bronze, Shapes.plate, 4),
                     GTOreDictUnificator.get("frameGtBronze", 1))
                 .circuit(12)
                 .itemOutputs(ItemList.Casing_Pipe_Bronze.get(1))
@@ -4876,7 +4876,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("pipeMediumSteel", 4),
-                    MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.plate, 4),
+                    MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 4),
                     GTOreDictUnificator.get("frameGtSteel", 1))
                 .circuit(12)
                 .itemOutputs(ItemList.Casing_Pipe_Steel.get(1))
@@ -4887,7 +4887,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("pipeMediumTitanium", 4),
-                    MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.plate, 4),
+                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 4),
                     GTOreDictUnificator.get("frameGtTitanium", 1))
                 .circuit(12)
                 .itemOutputs(ItemList.Casing_Pipe_Titanium.get(1))
@@ -4898,7 +4898,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("pipeMediumTungstenSteel", 4),
-                    MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.plate, 4),
+                    MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, 4),
                     GTOreDictUnificator.get("frameGtTungstenSteel", 1))
                 .circuit(12)
                 .itemOutputs(ItemList.Casing_Pipe_TungstenSteel.get(1))
@@ -4909,7 +4909,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("pipeMediumPolytetrafluoroethylene", 4),
-                    MaterialLibAPI.getStack(Materials.Polytetrafluoroethylene, Materials2Shapes.plate, 4),
+                    MaterialLibAPI.getStack(Materials.Polytetrafluoroethylene, Shapes.plate, 4),
                     GTOreDictUnificator.get("frameGtPolytetrafluoroethylene", 1))
                 .circuit(12)
                 .itemOutputs(ItemList.Casing_Pipe_Polytetrafluoroethylene.get(1))
@@ -4920,7 +4920,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("pipeMediumPolybenzimidazole", 4),
-                    MaterialLibAPI.getStack(Materials.Polybenzimidazole, Materials2Shapes.plate, 4),
+                    MaterialLibAPI.getStack(Materials.Polybenzimidazole, Shapes.plate, 4),
                     GTOreDictUnificator.get("frameGtPolybenzimidazole", 1))
                 .circuit(12)
                 .itemOutputs(ItemList.Casing_Pipe_Polybenzimidazole.get(1))
@@ -4934,7 +4934,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("pipeMediumTin", 4),
-                    MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.plate, 4),
+                    MaterialLibAPI.getStack(Materials.Tin, Shapes.plate, 4),
                     GTOreDictUnificator.get("frameGtTin", 1))
                 .circuit(12)
                 .itemOutputs(ItemList.Casing_Item_Pipe_Tin.get(1))
@@ -4945,7 +4945,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("pipeMediumBrass", 4),
-                    MaterialLibAPI.getStack(Materials.Brass, Materials2Shapes.plate, 4),
+                    MaterialLibAPI.getStack(Materials.Brass, Shapes.plate, 4),
                     GTOreDictUnificator.get("frameGtBrass", 1))
                 .circuit(12)
                 .itemOutputs(ItemList.Casing_Item_Pipe_Brass.get(1))
@@ -4956,7 +4956,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("pipeMediumElectrum", 4),
-                    MaterialLibAPI.getStack(Materials.Electrum, Materials2Shapes.plate, 4),
+                    MaterialLibAPI.getStack(Materials.Electrum, Shapes.plate, 4),
                     GTOreDictUnificator.get("frameGtElectrum", 1))
                 .circuit(12)
                 .itemOutputs(ItemList.Casing_Item_Pipe_Electrum.get(1))
@@ -4967,7 +4967,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("pipeMediumPlatinum", 4),
-                    MaterialLibAPI.getStack(Materials.Platinum, Materials2Shapes.plate, 4),
+                    MaterialLibAPI.getStack(Materials.Platinum, Shapes.plate, 4),
                     GTOreDictUnificator.get("frameGtPlatinum", 1))
                 .circuit(12)
                 .itemOutputs(ItemList.Casing_Item_Pipe_Platinum.get(1))
@@ -4978,7 +4978,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("pipeMediumOsmium", 4),
-                    MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.plate, 4),
+                    MaterialLibAPI.getStack(Materials.Osmium, Shapes.plate, 4),
                     GTOreDictUnificator.get("frameGtOsmium", 1))
                 .circuit(12)
                 .itemOutputs(ItemList.Casing_Item_Pipe_Osmium.get(1))
@@ -4989,7 +4989,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("pipeMediumQuantium", 4),
-                    MaterialLibAPI.getStack(Materials.Quantium, Materials2Shapes.plate, 4),
+                    MaterialLibAPI.getStack(Materials.Quantium, Shapes.plate, 4),
                     GTOreDictUnificator.get("frameGtQuantium", 1))
                 .circuit(12)
                 .itemOutputs(ItemList.Casing_Item_Pipe_Quantium.get(1))
@@ -5000,7 +5000,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("pipeMediumElectrumFlux", 4),
-                    MaterialLibAPI.getStack(Materials.ElectrumFlux, Materials2Shapes.plate, 4),
+                    MaterialLibAPI.getStack(Materials.ElectrumFlux, Shapes.plate, 4),
                     GTOreDictUnificator.get("frameGtElectrumFlux", 1))
                 .circuit(12)
                 .itemOutputs(ItemList.Casing_Item_Pipe_Fluxed_Electrum.get(1))
@@ -5011,7 +5011,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTOreDictUnificator.get("pipeMediumBlackPlutonium", 4),
-                    MaterialLibAPI.getStack(Materials.BlackPlutonium, Materials2Shapes.plate, 4),
+                    MaterialLibAPI.getStack(Materials.BlackPlutonium, Shapes.plate, 4),
                     GTOreDictUnificator.get("frameGtBlackPlutonium", 1))
                 .circuit(12)
                 .itemOutputs(ItemList.Casing_Item_Pipe_Black_Plutonium.get(1))
@@ -5067,8 +5067,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.stick, 3),
-                MaterialLibAPI.getStack(Materials.Electrum, Materials2Shapes.stick, 3))
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, 3),
+                MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
             .circuit(8)
             .itemOutputs(ItemList.RC_Rail_HS.get(16))
             .fluidInputs(
@@ -5079,8 +5079,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.stick, 3),
-                MaterialLibAPI.getStack(Materials.Electrum, Materials2Shapes.stick, 3))
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, 3),
+                MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
             .circuit(9)
             .itemOutputs(ItemList.RC_Rail_HS.get(8))
             .fluidInputs(
@@ -5092,8 +5092,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.stick, 3),
-                MaterialLibAPI.getStack(Materials.Electrum, Materials2Shapes.stick, 3))
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, 3),
+                MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
             .circuit(9)
             .itemOutputs(ItemList.RC_Rail_HS.get(32))
             .fluidInputs(
@@ -5104,8 +5104,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.stick, 3),
-                MaterialLibAPI.getStack(Materials.Electrum, Materials2Shapes.stick, 3))
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, 3),
+                MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
             .circuit(9)
             .itemOutputs(ItemList.RC_Rail_HS.get(64))
             .fluidInputs(
@@ -5118,7 +5118,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.RC_Rail_Standard.get(3),
-                MaterialLibAPI.getStack(Materials.Electrum, Materials2Shapes.stick, 3))
+                MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
             .circuit(8)
             .itemOutputs(ItemList.RC_Rail_Adv.get(8))
             .fluidInputs(
@@ -5130,7 +5130,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.RC_Rail_Standard.get(3),
-                MaterialLibAPI.getStack(Materials.Electrum, Materials2Shapes.stick, 3))
+                MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
             .circuit(8)
             .itemOutputs(ItemList.RC_Rail_Adv.get(16))
             .fluidInputs(
@@ -5142,7 +5142,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.RC_Rail_Standard.get(3),
-                MaterialLibAPI.getStack(Materials.Electrum, Materials2Shapes.stick, 3))
+                MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
             .circuit(8)
             .itemOutputs(ItemList.RC_Rail_Adv.get(32))
             .fluidInputs(
@@ -5155,7 +5155,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.RC_Rail_Standard.get(3),
-                MaterialLibAPI.getStack(Materials.Electrum, Materials2Shapes.stick, 3))
+                MaterialLibAPI.getStack(Materials.Electrum, Shapes.stick, 3))
             .circuit(8)
             .itemOutputs(ItemList.RC_Rail_Adv.get(64))
             .fluidInputs(
@@ -5231,7 +5231,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.RC_Tie_Wood.get(1),
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.stick, 1))
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.stick, 1))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Wooden.get(8))
             .duration(6 * SECONDS + 13 * TICKS)
@@ -5241,7 +5241,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.RC_Tie_Wood.get(1),
-                MaterialLibAPI.getStack(Materials.CastIron, Materials2Shapes.stick, 1))
+                MaterialLibAPI.getStack(Materials.CastIron, Shapes.stick, 1))
             .circuit(11)
             .itemOutputs(ItemList.RC_Rail_Wooden.get(8))
             .duration(6 * SECONDS + 13 * TICKS)
@@ -5251,7 +5251,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.RC_Tie_Wood.get(1),
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.stick, 1))
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, 1))
             .circuit(11)
             .itemOutputs(ItemList.RC_Rail_Wooden.get(16))
             .duration(6 * SECONDS + 13 * TICKS)
@@ -5261,7 +5261,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.RC_Tie_Wood.get(1),
-                MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.stick, 1))
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.stick, 1))
             .circuit(11)
             .itemOutputs(ItemList.RC_Rail_Wooden.get(32))
             .duration(6 * SECONDS + 13 * TICKS)
@@ -5271,7 +5271,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.RC_Tie_Wood.get(1),
-                MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.stick, 1))
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.stick, 1))
             .circuit(11)
             .itemOutputs(ItemList.RC_Rail_Wooden.get(64))
             .duration(6 * SECONDS + 13 * TICKS)
@@ -5332,7 +5332,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    MaterialLibAPI.getStack(Materials.RedAlloy, Materials2Shapes.plate, 1))
+                    MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.plate, 1))
                 .circuit(22)
                 .itemOutputs(tRailWoodB)
                 .duration(10 * SECONDS)
@@ -5343,7 +5343,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 new ItemStack(Blocks.rail, 1, 0),
                 ItemList.RC_Rail_Adv.get(2),
-                MaterialLibAPI.getStack(Materials.RedAlloy, Materials2Shapes.plate, 1))
+                MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.plate, 1))
             .circuit(22)
             .itemOutputs(new ItemStack(Blocks.golden_rail, 16, 0))
             .duration(15 * SECONDS)
@@ -5379,7 +5379,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.copyAmount(2, tRailRe),
-                MaterialLibAPI.getStack(Materials.RedAlloy, Materials2Shapes.plate, 1))
+                MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.plate, 1))
             .circuit(22)
             .itemOutputs(tRailReB)
             .duration(15 * SECONDS)
@@ -5421,7 +5421,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.copyAmount(2, tRailHs),
-                MaterialLibAPI.getStack(Materials.RedAlloy, Materials2Shapes.plate, 1))
+                MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.plate, 1))
             .circuit(22)
             .itemOutputs(tRailHsB)
             .duration(15 * SECONDS)
@@ -5446,7 +5446,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.springSmall, 2))
+                    MaterialLibAPI.getStack(Materials.Steel, Shapes.springSmall, 2))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(2, tRailSS))
                 .duration(5 * SECONDS)
@@ -5456,7 +5456,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(4, tRailSS))
                 .duration(5 * SECONDS)
@@ -5466,7 +5466,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(8, tRailSS))
                 .duration(5 * SECONDS)
@@ -5476,7 +5476,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(16, tRailSS))
                 .duration(5 * SECONDS)
@@ -5486,7 +5486,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Iridium, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(32, tRailSS))
                 .duration(5 * SECONDS)
@@ -5496,7 +5496,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Osmium, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(64, tRailSS))
                 .duration(5 * SECONDS)
@@ -5521,7 +5521,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.gearGtSmall, 2))
+                    MaterialLibAPI.getStack(Materials.Steel, Shapes.gearGtSmall, 2))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(2, tRailSW))
                 .duration(5 * SECONDS)
@@ -5531,7 +5531,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(4, tRailSW))
                 .duration(5 * SECONDS)
@@ -5541,7 +5541,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(8, tRailSW))
                 .duration(5 * SECONDS)
@@ -5551,7 +5551,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(16, tRailSW))
                 .duration(5 * SECONDS)
@@ -5561,7 +5561,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Iridium, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(32, tRailSW))
                 .duration(5 * SECONDS)
@@ -5571,7 +5571,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Osmium, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(64, tRailSW))
                 .duration(5 * SECONDS)
@@ -5596,7 +5596,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.screw, 2))
+                    MaterialLibAPI.getStack(Materials.Steel, Shapes.screw, 2))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(2, tRailSJ))
                 .duration(5 * SECONDS)
@@ -5606,7 +5606,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.screw, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(4, tRailSJ))
                 .duration(5 * SECONDS)
@@ -5616,7 +5616,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.screw, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(8, tRailSJ))
                 .duration(5 * SECONDS)
@@ -5626,7 +5626,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.screw, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(16, tRailSJ))
                 .duration(5 * SECONDS)
@@ -5636,7 +5636,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.Iridium, Shapes.screw, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(32, tRailSJ))
                 .duration(5 * SECONDS)
@@ -5646,7 +5646,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailWood),
-                    MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.Osmium, Shapes.screw, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(64, tRailSJ))
                 .duration(5 * SECONDS)
@@ -5663,7 +5663,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.springSmall, 4))
+                    MaterialLibAPI.getStack(Materials.Steel, Shapes.springSmall, 4))
                 .circuit(1)
                 .itemOutputs(tRailNS)
                 .duration(10 * SECONDS)
@@ -5673,7 +5673,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.springSmall, 2))
+                    MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.springSmall, 2))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(2, tRailNS))
                 .duration(10 * SECONDS)
@@ -5683,7 +5683,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(4, tRailNS))
                 .duration(10 * SECONDS)
@@ -5693,7 +5693,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(8, tRailNS))
                 .duration(10 * SECONDS)
@@ -5703,7 +5703,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Iridium, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(16, tRailNS))
                 .duration(10 * SECONDS)
@@ -5713,7 +5713,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Osmium, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(32, tRailNS))
                 .duration(10 * SECONDS)
@@ -5723,7 +5723,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Neutronium, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(64, tRailNS))
                 .duration(10 * SECONDS)
@@ -5741,7 +5741,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.gearGtSmall, 4))
+                    MaterialLibAPI.getStack(Materials.Steel, Shapes.gearGtSmall, 4))
                 .circuit(1)
                 .itemOutputs(tRailNW)
                 .duration(10 * SECONDS)
@@ -5751,7 +5751,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.gearGtSmall, 2))
+                    MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.gearGtSmall, 2))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(2, tRailNW))
                 .duration(10 * SECONDS)
@@ -5761,7 +5761,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(4, tRailNW))
                 .duration(10 * SECONDS)
@@ -5771,7 +5771,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(8, tRailNW))
                 .duration(10 * SECONDS)
@@ -5781,7 +5781,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Iridium, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(16, tRailNW))
                 .duration(10 * SECONDS)
@@ -5791,7 +5791,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Osmium, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(32, tRailNW))
                 .duration(10 * SECONDS)
@@ -5801,7 +5801,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Neutronium, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(64, tRailNW))
                 .duration(10 * SECONDS)
@@ -5818,7 +5818,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.screw, 4))
+                    MaterialLibAPI.getStack(Materials.Steel, Shapes.screw, 4))
                 .circuit(1)
                 .itemOutputs(tRailNJ)
                 .duration(10 * SECONDS)
@@ -5828,7 +5828,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.screw, 2))
+                    MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.screw, 2))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(2, tRailNJ))
                 .duration(10 * SECONDS)
@@ -5838,7 +5838,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.screw, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(4, tRailNJ))
                 .duration(10 * SECONDS)
@@ -5848,7 +5848,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.screw, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(8, tRailNJ))
                 .duration(10 * SECONDS)
@@ -5858,7 +5858,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.Iridium, Shapes.screw, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(16, tRailNJ))
                 .duration(10 * SECONDS)
@@ -5868,7 +5868,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.Osmium, Shapes.screw, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(32, tRailNJ))
                 .duration(10 * SECONDS)
@@ -5878,7 +5878,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     new ItemStack(Blocks.rail, 2, 0),
-                    MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.Neutronium, Shapes.screw, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(64, tRailNJ))
                 .duration(10 * SECONDS)
@@ -5895,7 +5895,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.springSmall, 4))
+                    MaterialLibAPI.getStack(Materials.Steel, Shapes.springSmall, 4))
                 .circuit(1)
                 .itemOutputs(tRailRS)
                 .duration(15 * SECONDS)
@@ -5905,7 +5905,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.springSmall, 2))
+                    MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.springSmall, 2))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(2, tRailRS))
                 .duration(15 * SECONDS)
@@ -5915,7 +5915,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(4, tRailRS))
                 .duration(15 * SECONDS)
@@ -5925,7 +5925,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(8, tRailRS))
                 .duration(15 * SECONDS)
@@ -5935,7 +5935,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Iridium, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(16, tRailRS))
                 .duration(15 * SECONDS)
@@ -5945,7 +5945,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Osmium, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(32, tRailRS))
                 .duration(15 * SECONDS)
@@ -5955,7 +5955,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Neutronium, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(64, tRailRS))
                 .duration(15 * SECONDS)
@@ -5972,7 +5972,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.gearGtSmall, 4))
+                    MaterialLibAPI.getStack(Materials.Steel, Shapes.gearGtSmall, 4))
                 .circuit(1)
                 .itemOutputs(tRailRW)
                 .duration(15 * SECONDS)
@@ -5982,7 +5982,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.gearGtSmall, 2))
+                    MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.gearGtSmall, 2))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(2, tRailRW))
                 .duration(15 * SECONDS)
@@ -5992,7 +5992,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(4, tRailRW))
                 .duration(15 * SECONDS)
@@ -6002,7 +6002,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(8, tRailRW))
                 .duration(15 * SECONDS)
@@ -6012,7 +6012,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Iridium, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(16, tRailRW))
                 .duration(15 * SECONDS)
@@ -6022,7 +6022,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Osmium, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(32, tRailRW))
                 .duration(15 * SECONDS)
@@ -6032,7 +6032,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Neutronium, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(64, tRailRW))
                 .duration(15 * SECONDS)
@@ -6049,7 +6049,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.screw, 4))
+                    MaterialLibAPI.getStack(Materials.Steel, Shapes.screw, 4))
                 .circuit(1)
                 .itemOutputs(tRailRJ)
                 .duration(15 * SECONDS)
@@ -6059,7 +6059,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.screw, 2))
+                    MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.screw, 2))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(2, tRailRJ))
                 .duration(15 * SECONDS)
@@ -6069,7 +6069,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.screw, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(4, tRailRJ))
                 .duration(15 * SECONDS)
@@ -6079,7 +6079,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.screw, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(8, tRailRJ))
                 .duration(15 * SECONDS)
@@ -6089,7 +6089,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.Iridium, Shapes.screw, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(16, tRailRJ))
                 .duration(15 * SECONDS)
@@ -6099,7 +6099,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.Osmium, Shapes.screw, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(32, tRailRJ))
                 .duration(15 * SECONDS)
@@ -6109,7 +6109,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailRe),
-                    MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.Neutronium, Shapes.screw, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(64, tRailRJ))
                 .duration(15 * SECONDS)
@@ -6126,7 +6126,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailHs),
-                    MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.springSmall, 4))
+                    MaterialLibAPI.getStack(Materials.Steel, Shapes.springSmall, 4))
                 .circuit(1)
                 .itemOutputs(tRailSSw)
                 .duration(20 * SECONDS)
@@ -6136,7 +6136,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailHs),
-                    MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.springSmall, 2))
+                    MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.springSmall, 2))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(2, tRailSSw))
                 .duration(20 * SECONDS)
@@ -6146,7 +6146,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailHs),
-                    MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(4, tRailSSw))
                 .duration(20 * SECONDS)
@@ -6156,7 +6156,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailHs),
-                    MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(8, tRailSSw))
                 .duration(20 * SECONDS)
@@ -6166,7 +6166,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailHs),
-                    MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Iridium, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(16, tRailSSw))
                 .duration(20 * SECONDS)
@@ -6176,7 +6176,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailHs),
-                    MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Osmium, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(32, tRailSSw))
                 .duration(20 * SECONDS)
@@ -6186,7 +6186,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailHs),
-                    MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Neutronium, Shapes.springSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(64, tRailSSw))
                 .duration(20 * SECONDS)
@@ -6203,7 +6203,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailHs),
-                    MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.gearGtSmall, 4))
+                    MaterialLibAPI.getStack(Materials.Steel, Shapes.gearGtSmall, 4))
                 .circuit(1)
                 .itemOutputs(tRailSWy)
                 .duration(20 * SECONDS)
@@ -6213,7 +6213,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailHs),
-                    MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.gearGtSmall, 2))
+                    MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.gearGtSmall, 2))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(2, tRailSWy))
                 .duration(20 * SECONDS)
@@ -6223,7 +6223,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailHs),
-                    MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(4, tRailSWy))
                 .duration(20 * SECONDS)
@@ -6233,7 +6233,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailHs),
-                    MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(8, tRailSWy))
                 .duration(20 * SECONDS)
@@ -6243,7 +6243,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailHs),
-                    MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Iridium, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(16, tRailSWy))
                 .duration(20 * SECONDS)
@@ -6253,7 +6253,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailHs),
-                    MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Osmium, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(32, tRailSWy))
                 .duration(20 * SECONDS)
@@ -6263,7 +6263,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailHs),
-                    MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Neutronium, Shapes.gearGtSmall, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(64, tRailSWy))
                 .duration(20 * SECONDS)
@@ -6281,7 +6281,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailHs),
                     ItemList.RC_Bed_Stone.get(1),
-                    MaterialLibAPI.getStack(Materials.RedAlloy, Materials2Shapes.plate, 1))
+                    MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.plate, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(4, tRailSTt))
                 .duration(20 * SECONDS)
@@ -6292,7 +6292,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailHs),
                     ItemList.RC_Bed_Stone.get(1),
-                    MaterialLibAPI.getStack(Materials.ConductiveIron, Materials2Shapes.plate, 1))
+                    MaterialLibAPI.getStack(Materials.ConductiveIron, Shapes.plate, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(8, tRailSTt))
                 .duration(20 * SECONDS)
@@ -6303,7 +6303,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailHs),
                     ItemList.RC_Bed_Stone.get(1),
-                    MaterialLibAPI.getStack(Materials.VibrantAlloy, Materials2Shapes.plate, 1))
+                    MaterialLibAPI.getStack(Materials.VibrantAlloy, Shapes.plate, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(16, tRailSTt))
                 .duration(20 * SECONDS)
@@ -6314,7 +6314,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailHs),
                     ItemList.RC_Bed_Stone.get(1),
-                    MaterialLibAPI.getStack(Materials.CrystallineAlloy, Materials2Shapes.plate, 1))
+                    MaterialLibAPI.getStack(Materials.CrystallineAlloy, Shapes.plate, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(32, tRailSTt))
                 .duration(20 * SECONDS)
@@ -6325,7 +6325,7 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailHs),
                     ItemList.RC_Bed_Stone.get(1),
-                    MaterialLibAPI.getStack(Materials.MelodicAlloy, Materials2Shapes.plate, 1))
+                    MaterialLibAPI.getStack(Materials.MelodicAlloy, Shapes.plate, 1))
                 .circuit(1)
                 .itemOutputs(GTUtility.copyAmount(64, tRailSTt))
                 .duration(20 * SECONDS)
@@ -6342,7 +6342,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.springSmall, 4))
+                    MaterialLibAPI.getStack(Materials.Copper, Shapes.springSmall, 4))
                 .circuit(17)
                 .itemOutputs(tRailES)
                 .duration(20 * SECONDS)
@@ -6352,7 +6352,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.springSmall, 2))
+                    MaterialLibAPI.getStack(Materials.Gold, Shapes.springSmall, 2))
                 .circuit(17)
                 .itemOutputs(GTUtility.copyAmount(2, tRailES))
                 .duration(20 * SECONDS)
@@ -6362,7 +6362,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.Electrum, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Electrum, Shapes.springSmall, 1))
                 .circuit(17)
                 .itemOutputs(GTUtility.copyAmount(4, tRailES))
                 .duration(20 * SECONDS)
@@ -6372,7 +6372,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.springSmall, 1))
                 .circuit(17)
                 .itemOutputs(GTUtility.copyAmount(8, tRailES))
                 .duration(20 * SECONDS)
@@ -6382,7 +6382,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.Platinum, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Platinum, Shapes.springSmall, 1))
                 .circuit(17)
                 .itemOutputs(GTUtility.copyAmount(16, tRailES))
                 .duration(20 * SECONDS)
@@ -6392,7 +6392,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.VanadiumGallium, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.VanadiumGallium, Shapes.springSmall, 1))
                 .circuit(17)
                 .itemOutputs(GTUtility.copyAmount(32, tRailES))
                 .duration(20 * SECONDS)
@@ -6402,7 +6402,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.springSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Naquadah, Shapes.springSmall, 1))
                 .circuit(17)
                 .itemOutputs(GTUtility.copyAmount(64, tRailES))
                 .duration(20 * SECONDS)
@@ -6419,7 +6419,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.gearGtSmall, 4))
+                    MaterialLibAPI.getStack(Materials.Copper, Shapes.gearGtSmall, 4))
                 .circuit(17)
                 .itemOutputs(tRailEw)
                 .duration(20 * SECONDS)
@@ -6429,7 +6429,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.gearGtSmall, 2))
+                    MaterialLibAPI.getStack(Materials.Gold, Shapes.gearGtSmall, 2))
                 .circuit(17)
                 .itemOutputs(GTUtility.copyAmount(2, tRailEw))
                 .duration(20 * SECONDS)
@@ -6439,7 +6439,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.Electrum, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Electrum, Shapes.gearGtSmall, 1))
                 .circuit(17)
                 .itemOutputs(GTUtility.copyAmount(4, tRailEw))
                 .duration(20 * SECONDS)
@@ -6449,7 +6449,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.gearGtSmall, 1))
                 .circuit(17)
                 .itemOutputs(GTUtility.copyAmount(8, tRailEw))
                 .duration(20 * SECONDS)
@@ -6459,7 +6459,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.Platinum, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Platinum, Shapes.gearGtSmall, 1))
                 .circuit(17)
                 .itemOutputs(GTUtility.copyAmount(16, tRailEw))
                 .duration(20 * SECONDS)
@@ -6469,7 +6469,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.VanadiumGallium, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.VanadiumGallium, Shapes.gearGtSmall, 1))
                 .circuit(17)
                 .itemOutputs(GTUtility.copyAmount(32, tRailEw))
                 .duration(20 * SECONDS)
@@ -6479,7 +6479,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.gearGtSmall, 1))
+                    MaterialLibAPI.getStack(Materials.Naquadah, Shapes.gearGtSmall, 1))
                 .circuit(17)
                 .itemOutputs(GTUtility.copyAmount(64, tRailEw))
                 .duration(20 * SECONDS)
@@ -6496,7 +6496,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.screw, 4))
+                    MaterialLibAPI.getStack(Materials.Copper, Shapes.screw, 4))
                 .circuit(17)
                 .itemOutputs(tRailEJ)
                 .duration(20 * SECONDS)
@@ -6506,7 +6506,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.screw, 2))
+                    MaterialLibAPI.getStack(Materials.Gold, Shapes.screw, 2))
                 .circuit(17)
                 .itemOutputs(GTUtility.copyAmount(2, tRailEJ))
                 .duration(20 * SECONDS)
@@ -6516,7 +6516,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.Electrum, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.Electrum, Shapes.screw, 1))
                 .circuit(17)
                 .itemOutputs(GTUtility.copyAmount(4, tRailEJ))
                 .duration(20 * SECONDS)
@@ -6526,7 +6526,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.Titanium, Shapes.screw, 1))
                 .circuit(17)
                 .itemOutputs(GTUtility.copyAmount(8, tRailEJ))
                 .duration(20 * SECONDS)
@@ -6536,7 +6536,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.Platinum, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.Platinum, Shapes.screw, 1))
                 .circuit(17)
                 .itemOutputs(GTUtility.copyAmount(16, tRailEJ))
                 .duration(20 * SECONDS)
@@ -6546,7 +6546,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.VanadiumGallium, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.VanadiumGallium, Shapes.screw, 1))
                 .circuit(17)
                 .itemOutputs(GTUtility.copyAmount(32, tRailEJ))
                 .duration(20 * SECONDS)
@@ -6556,7 +6556,7 @@ public class AssemblerRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.copyAmount(2, tRailEl),
-                    MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.screw, 1))
+                    MaterialLibAPI.getStack(Materials.Naquadah, Shapes.screw, 1))
                 .circuit(17)
                 .itemOutputs(GTUtility.copyAmount(64, tRailEJ))
                 .duration(20 * SECONDS)
@@ -6637,7 +6637,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Board_Plastic_Advanced.get(1),
-                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.itemCasing, 2),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.itemCasing, 2),
                 getModItem(Railcraft.ID, "machine.alpha", 1L, 0),
                 getModItem(OpenComputers.ID, "item", 1L, 26))
             .circuit(1)
@@ -6651,7 +6651,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 new ItemStack(Blocks.piston, 1, 0),
                 ItemList.FR_Casing_Sturdy.get(1),
-                MaterialLibAPI.getStack(Materials.Lapis, Materials2Shapes.plate, 1))
+                MaterialLibAPI.getStack(Materials.Lapis, Shapes.plate, 1))
             .circuit(1)
             .itemOutputs(getModItem(NewHorizonsCoreMod.ID, "EngineCore", 1L, 0))
             .fluidInputs(
@@ -6664,7 +6664,7 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 new ItemStack(Blocks.piston, 1, 0),
                 ItemList.FR_Casing_Sturdy.get(1),
-                MaterialLibAPI.getStack(Materials.Lapis, Materials2Shapes.plate, 1))
+                MaterialLibAPI.getStack(Materials.Lapis, Shapes.plate, 1))
             .circuit(1)
             .itemOutputs(getModItem(NewHorizonsCoreMod.ID, "EngineCore", 1L, 0))
             .fluidInputs(
@@ -6676,7 +6676,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 getModItem(ExtraUtilities.ID, "trashcan", 1L, 0),
-                MaterialLibAPI.getStack(Materials.Obsidian, Materials2Shapes.plate, 4))
+                MaterialLibAPI.getStack(Materials.Obsidian, Shapes.plate, 4))
             .circuit(1)
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 1L, 11))
             .duration(10 * SECONDS)
@@ -6696,7 +6696,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 getModItem(NewHorizonsCoreMod.ID, "EngineCore", 1),
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.plate, 10))
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 10))
             .circuit(10)
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 1L, 8))
             .duration(10 * SECONDS)
@@ -6706,7 +6706,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 getModItem(NewHorizonsCoreMod.ID, "EngineCore", 1),
-                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.plate, 10))
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, 10))
             .circuit(10)
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 1L, 9))
             .duration(10 * SECONDS)
@@ -6715,8 +6715,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.plateDouble, 2),
-                MaterialLibAPI.getStack(Materials.Diamond, Materials2Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.plateDouble, 2),
+                MaterialLibAPI.getStack(Materials.Diamond, Shapes.plate, 4),
                 GTOreDictUnificator.get("gemEnderPearl", 1),
                 GTOreDictUnificator.get("plateDenseObsidian", 2))
             .circuit(1)
@@ -6751,7 +6751,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.plate, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 2))
             .circuit(20)
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 1L, 13))
             .duration(10 * SECONDS)
@@ -6760,7 +6760,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 2),
                 new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 2L, 14))
@@ -6777,7 +6777,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.plate, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, 2))
             .circuit(20)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 0))
             .duration(30 * SECONDS)
@@ -6786,7 +6786,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, 2),
                 new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 2L, 1))
@@ -6805,7 +6805,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.plate, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plate, 2))
             .circuit(20)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 3))
             .duration(10 * SECONDS)
@@ -6814,7 +6814,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plate, 2),
                 new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 2L, 4))
@@ -6833,7 +6833,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.plate, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 2))
             .circuit(20)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 6))
             .duration(30 * SECONDS)
@@ -6842,7 +6842,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.plate, 2),
                 new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 2L, 7))
@@ -6861,7 +6861,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.plate, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, 2))
             .circuit(20)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 9))
             .duration(10 * SECONDS)
@@ -6870,7 +6870,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, 2),
                 new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 2L, 10))
@@ -6889,7 +6889,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Palladium, Materials2Shapes.plate, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Palladium, Shapes.plate, 2))
             .circuit(20)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 12))
             .duration(30 * SECONDS)
@@ -6898,7 +6898,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Palladium, Materials2Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.Palladium, Shapes.plate, 2),
                 new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 2L, 13))
@@ -6917,7 +6917,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.plate, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Iridium, Shapes.plate, 2))
             .circuit(20)
             .itemOutputs(getModItem(Railcraft.ID, "machine.eta", 1L, 0))
             .duration(10 * SECONDS)
@@ -6926,7 +6926,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.Iridium, Shapes.plate, 2),
                 new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.eta", 2L, 1))
@@ -6945,7 +6945,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.plate, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Osmium, Shapes.plate, 2))
             .circuit(20)
             .itemOutputs(getModItem(Railcraft.ID, "machine.eta", 1L, 3))
             .duration(30 * SECONDS)
@@ -6954,7 +6954,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.Osmium, Shapes.plate, 2),
                 new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.eta", 2L, 4))
@@ -6973,7 +6973,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.plate, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 2))
             .circuit(20)
             .itemOutputs(getModItem(Railcraft.ID, "machine.eta", 1L, 6))
             .duration(10 * SECONDS)
@@ -6982,7 +6982,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 2),
                 new OreDictItemStack("paneGlass", 2))
             .circuit(21)
             .itemOutputs(getModItem(Railcraft.ID, "machine.eta", 2L, 7))
@@ -7003,7 +7003,7 @@ public class AssemblerRecipes implements Runnable {
         // Steam Boilers
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.itemCasing, 6))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.itemCasing, 6))
             .circuit(6)
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 1L, 3))
             .duration(20 * SECONDS)
@@ -7011,7 +7011,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.itemCasing, 6))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Steel, Shapes.itemCasing, 6))
             .circuit(6)
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 1L, 4))
             .duration(20 * SECONDS)
@@ -7056,7 +7056,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 getModItem(GalacticraftCore.ID, "item.heavyPlating", 1),
-                MaterialLibAPI.getStack(Materials.MeteoricIron, Materials2Shapes.plate, 2))
+                MaterialLibAPI.getStack(Materials.MeteoricIron, Shapes.plate, 2))
             .circuit(1)
             .itemOutputs(ItemList.Ingot_Heavy2.get(1))
             .fluidInputs(
@@ -7071,7 +7071,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 getModItem(GalacticraftMars.ID, "item.null", 1L, 3),
-                MaterialLibAPI.getStack(Materials.Desh, Materials2Shapes.plate, 4))
+                MaterialLibAPI.getStack(Materials.Desh, Shapes.plate, 4))
             .circuit(1)
             .itemOutputs(ItemList.Ingot_Heavy3.get(1))
             .fluidInputs(
@@ -7088,9 +7088,9 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 ItemList.Electric_Pump_EV.get(4),
                 ItemList.Field_Generator_EV.get(4),
-                MaterialLibAPI.getStack(Materials.Inconel690, Materials2Shapes.plate, 4),
-                MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.screw, 16),
-                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Materials2Shapes.ring, 16),
+                MaterialLibAPI.getStack(Materials.Inconel690, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.screw, 16),
+                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Shapes.ring, 16),
                 GTOreDictUnificator.get("cableGt01Aluminium", 2),
                 GTOreDictUnificator.get("pipeTinyPolytetrafluoroethylene", 4),
                 GTOreDictUnificator.get("circuitData", 4),

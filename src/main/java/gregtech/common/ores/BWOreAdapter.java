@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -33,7 +34,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.Materials2OreShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialProperties;
@@ -413,7 +413,7 @@ public final class BWOreAdapter implements IOreAdapter {
         switch (oreDropMode) {
             case Item -> {
                 drops.add(
-                    MaterialLibAPI.getStack(info.material, Materials2Shapes.rawOre, info.stoneType.isRich() ? 2 : 1));
+                    MaterialLibAPI.getStack(info.material, Shapes.rawOre, info.stoneType.isRich() ? 2 : 1));
             }
             case FortuneItem -> {
                 if (fortune > 0) {
@@ -425,11 +425,11 @@ public final class BWOreAdapter implements IOreAdapter {
                     int amount = (info.stoneType.isRich() ? 2 : 1) * (addedDrops + 1);
 
                     for (int i = 0; i < amount; i++) {
-                        drops.add(MaterialLibAPI.getStack(info.material, Materials2Shapes.rawOre, 1));
+                        drops.add(MaterialLibAPI.getStack(info.material, Shapes.rawOre, 1));
                     }
                 } else {
                     for (int i = 0; i < (info.stoneType.isRich() ? 2 : 1); i++) {
-                        drops.add(MaterialLibAPI.getStack(info.material, Materials2Shapes.rawOre, 1));
+                        drops.add(MaterialLibAPI.getStack(info.material, Shapes.rawOre, 1));
                     }
                 }
             }

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -22,7 +23,6 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials2.Materials2Backings;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLog;
@@ -117,7 +117,7 @@ public class CraftingRecipeLoader implements Runnable {
                     new Object[] { "ShS", "XZX", "SdS", 'X', "plateGold", 'S', "screwSteel", 'Z', "springSteel" });
             }
         }
-        tMat = MaterialLibAPI.getStack(Materials.Rubber, Materials2Shapes.ingot, 1);
+        tMat = MaterialLibAPI.getStack(Materials.Rubber, Shapes.ingot, 1);
         {
             ItemStack tStack;
             if (null != (tStack = GTModHandler.removeRecipe(tMat, tMat, tMat, tMat, tMat, tMat, null, null, null))) {
@@ -340,22 +340,22 @@ public class CraftingRecipeLoader implements Runnable {
             getModItem(IndustrialCraft2.ID, "itemArmorBronzeBoots", 1, 0),
             bits,
             new Object[] { "R R", "RhR", 'R',
-                MaterialLibAPI.getStack(Materials.Bronze, Materials2Shapes.plate, 1) });
+                MaterialLibAPI.getStack(Materials.Bronze, Shapes.plate, 1) });
         GTModHandler.addCraftingRecipe(
             getModItem(IndustrialCraft2.ID, "itemArmorBronzeChestplate", 1, 0),
             bits,
             new Object[] { "RhR", "RRR", "RRR", 'R',
-                MaterialLibAPI.getStack(Materials.Bronze, Materials2Shapes.plate, 1) });
+                MaterialLibAPI.getStack(Materials.Bronze, Shapes.plate, 1) });
         GTModHandler.addCraftingRecipe(
             getModItem(IndustrialCraft2.ID, "itemArmorBronzeLegs", 1, 0),
             bits,
             new Object[] { "RRR", "RhR", "R R", 'R',
-                MaterialLibAPI.getStack(Materials.Bronze, Materials2Shapes.plate, 1) });
+                MaterialLibAPI.getStack(Materials.Bronze, Shapes.plate, 1) });
         GTModHandler.addCraftingRecipe(
             getModItem(IndustrialCraft2.ID, "itemArmorBronzeHelmet", 1, 0),
             bits,
             new Object[] { "RRR", "RhR", 'R',
-                MaterialLibAPI.getStack(Materials.Bronze, Materials2Shapes.plate, 1) });
+                MaterialLibAPI.getStack(Materials.Bronze, Shapes.plate, 1) });
 
         GTLog.out.println("GTMod: Adding Wool and Color releated Recipes.");
         GTModHandler.addShapelessCraftingRecipe(
@@ -704,7 +704,7 @@ public class CraftingRecipeLoader implements Runnable {
             bits_no_remove_buffered,
             new Object[] { "k", "X", 'X', "plankWood" });
         GTModHandler.addCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.Rubber, Materials2Shapes.ring, 1),
+            MaterialLibAPI.getStack(Materials.Rubber, Shapes.ring, 1),
             bits_no_remove_buffered,
             new Object[] { "k", "X", 'X', "plateRubber" });
 
@@ -723,21 +723,21 @@ public class CraftingRecipeLoader implements Runnable {
         GTModHandler.removeRecipeByOutputDelayed(ItemList.Food_Baked_Bread.get(1L));
         GTModHandler.removeRecipeByOutputDelayed(new ItemStack(Items.cookie, 1));
         GTModHandler.removeRecipe(
-            MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.ingot, 1),
-            MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.ingot, 1),
-            MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.ingot, 1));
+            MaterialLibAPI.getStack(Materials.Copper, Shapes.ingot, 1),
+            MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, 1),
+            MaterialLibAPI.getStack(Materials.Copper, Shapes.ingot, 1));
         if (null != GTUtility.setStack(
             GTModHandler.getRecipeOutput(
                 true,
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.ingot, 1),
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.ingot, 1),
                 null,
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.ingot, 1),
-                MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.ingot, 1)),
-            MaterialLibAPI.getStack(Materials.Bronze, Materials2Shapes.ingot, 1))) {
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.ingot, 1),
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, 1)),
+            MaterialLibAPI.getStack(Materials.Bronze, Shapes.ingot, 1))) {
             GTLog.out.println("GTMod: Changed Forestrys Bronze Recipe");
         }
-        tStack = MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dust, 1);
+        tStack = MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 1);
 
         GTModHandler.addCraftingRecipe(
             GTModHandler.getRecipeOutput(
@@ -745,7 +745,7 @@ public class CraftingRecipeLoader implements Runnable {
                 new ItemStack(Blocks.sand, 1, 0),
                 null,
                 null,
-                MaterialLibAPI.getStack(Materials.Apatite, Materials2Shapes.gem, 1),
+                MaterialLibAPI.getStack(Materials.Apatite, Shapes.gem, 1),
                 null,
                 null,
                 new ItemStack(Blocks.sand, 1, 0),
@@ -758,7 +758,7 @@ public class CraftingRecipeLoader implements Runnable {
                 tStack,
                 tStack,
                 tStack,
-                MaterialLibAPI.getStack(Materials.Apatite, Materials2Shapes.gem, 1),
+                MaterialLibAPI.getStack(Materials.Apatite, Shapes.gem, 1),
                 tStack,
                 tStack,
                 tStack,
@@ -1062,25 +1062,25 @@ public class CraftingRecipeLoader implements Runnable {
             ItemList.Long_Distance_Pipeline_Fluid.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "GPG", "IwI", "GPG", 'G', GTOreDictUnificator.get("gearSteel", 1L), 'P',
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.plate, 1), 'I',
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 1), 'I',
                 GTOreDictUnificator.get("pipeHugeSteel", 1L) });
         GTModHandler.addCraftingRecipe(
             ItemList.Long_Distance_Pipeline_Item.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "GPG", "IwI", "GPG", 'G', GTOreDictUnificator.get("gearSteel", 1L), 'P',
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.plate, 1), 'I',
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 1), 'I',
                 GTOreDictUnificator.get("pipeHugeTin", 1L) });
         GTModHandler.addCraftingRecipe(
             ItemList.Long_Distance_Pipeline_Fluid_Pipe.get(32L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "PPP", "IwI", "PPP", 'P',
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.plate, 1), 'I',
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 1), 'I',
                 GTOreDictUnificator.get("pipeLargeSteel", 1L) });
         GTModHandler.addCraftingRecipe(
             ItemList.Long_Distance_Pipeline_Item_Pipe.get(32L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "PPP", "IwI", "PPP", 'P',
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.plate, 1), 'I',
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 1), 'I',
                 GTOreDictUnificator.get("pipeLargeTin", 1L) });
 
         GTModHandler.addCraftingRecipe(
@@ -1157,7 +1157,7 @@ public class CraftingRecipeLoader implements Runnable {
 
         GTLog.out.println("GTMod: Beginning to add regular Crafting Recipes.");
         GTModHandler.addCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.Wood, Materials2Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Wood, Shapes.stickLong, 2),
             bits_no_remove_buffered,
             new Object[] { "sLf", 'L', "logWood" });
 
@@ -1167,11 +1167,11 @@ public class CraftingRecipeLoader implements Runnable {
             new Object[] { "WWW", " S ", "S S", 'W', "plankWood", 'S', "stickWood" });
 
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.IronMagnetic, Materials2Shapes.stick, 1),
+            MaterialLibAPI.getStack(Materials.IronMagnetic, Shapes.stick, 1),
             bits_no_remove_buffered,
             new Object[] { "stickAnyIron", "dustRedstone", "dustRedstone", "dustRedstone", "dustRedstone" });
         GTModHandler.addCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.Paper, Materials2Shapes.ring, 1),
+            MaterialLibAPI.getStack(Materials.Paper, Shapes.ring, 1),
             bits_no_remove_buffered,
             new Object[] { "PPk", 'P', "platePaper" });
 
@@ -1220,74 +1220,74 @@ public class CraftingRecipeLoader implements Runnable {
             new Object[] { GTModHandler.getIC2Item("reactorPlating", 1L), "plateLead" });
         if (!MaterialUtils.blastFurnaceRequired(Materials.Steel)) {
             GTModHandler.addShapelessCraftingRecipe(
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.dust, 1),
                 bits_no_remove_buffered,
                 new Object[] { "dustIron", "dustCoal", "dustCoal" });
         }
 
         GTModHandler
-            .removeRecipeByOutputDelayed(MaterialLibAPI.getStack(Materials.Brass, Materials2Shapes.dust, 1));
+            .removeRecipeByOutputDelayed(MaterialLibAPI.getStack(Materials.Brass, Shapes.dust, 1));
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.Brass, Materials2Shapes.dust, 3),
+            MaterialLibAPI.getStack(Materials.Brass, Shapes.dust, 3),
             bits_no_remove_buffered,
             new Object[] { "dustAnyCopper", "dustAnyCopper", "dustAnyCopper", "dustZinc" });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.Brass, Materials2Shapes.dustSmall, 9),
+            MaterialLibAPI.getStack(Materials.Brass, Shapes.dustSmall, 9),
             bits_no_remove_buffered,
             new Object[] { "dustTetrahedrite", "dustTetrahedrite", "dustTetrahedrite", "dustZinc" });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.Bronze, Materials2Shapes.dust, 3),
+            MaterialLibAPI.getStack(Materials.Bronze, Shapes.dust, 3),
             bits_no_remove_buffered,
             new Object[] { "dustAnyCopper", "dustAnyCopper", "dustAnyCopper", "dustTin" });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.Bronze, Materials2Shapes.dustSmall, 9),
+            MaterialLibAPI.getStack(Materials.Bronze, Shapes.dustSmall, 9),
             bits_no_remove_buffered,
             new Object[] { "dustTetrahedrite", "dustTetrahedrite", "dustTetrahedrite", "dustTin" });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.Invar, Materials2Shapes.dustSmall, 9),
+            MaterialLibAPI.getStack(Materials.Invar, Shapes.dustSmall, 9),
             bits_no_remove_buffered,
             new Object[] { "dustIron", "dustIron", "dustNickel" });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.Cupronickel, Materials2Shapes.dustSmall, 6),
+            MaterialLibAPI.getStack(Materials.Cupronickel, Shapes.dustSmall, 6),
             bits_no_remove_buffered,
             new Object[] { "dustNickel", "dustAnyCopper" });
 
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.RoseGold, Materials2Shapes.dust, 4),
+            MaterialLibAPI.getStack(Materials.RoseGold, Shapes.dust, 4),
             bits_no_remove_buffered,
             new Object[] { "dustGold", "dustGold", "dustGold", "dustGold", "dustAnyCopper" });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.SterlingSilver, Materials2Shapes.dust, 4),
+            MaterialLibAPI.getStack(Materials.SterlingSilver, Shapes.dust, 4),
             bits_no_remove_buffered,
             new Object[] { "dustSilver", "dustSilver", "dustSilver", "dustSilver", "dustAnyCopper" });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.BlackBronze, Materials2Shapes.dust, 4),
+            MaterialLibAPI.getStack(Materials.BlackBronze, Shapes.dust, 4),
             bits_no_remove_buffered,
             new Object[] { "dustGold", "dustSilver", "dustAnyCopper", "dustAnyCopper", "dustAnyCopper" });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.BismuthBronze, Materials2Shapes.dust, 4),
+            MaterialLibAPI.getStack(Materials.BismuthBronze, Shapes.dust, 4),
             bits_no_remove_buffered,
             new Object[] { "dustBismuth", "dustZinc", "dustAnyCopper", "dustAnyCopper", "dustAnyCopper" });
 
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.CobaltBrass, Materials2Shapes.dust, 8),
+            MaterialLibAPI.getStack(Materials.CobaltBrass, Shapes.dust, 8),
             bits_no_remove_buffered,
             new Object[] { "dustBrass", "dustBrass", "dustBrass", "dustBrass", "dustBrass", "dustBrass", "dustBrass",
                 "dustTin", "dustCobalt" });
 
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.DamascusSteel, Materials2Shapes.dust, 2),
+            MaterialLibAPI.getStack(Materials.DamascusSteel, Shapes.dust, 2),
             bits_no_remove_buffered,
             new Object[] { "dustSteel", "dustSmallNickel", "dustSmallNickel", "dustSmallNickel", "dustTinyCoal",
                 "dustTinySilicon", "dustTinyManganese", "dustTinyChrome", "dustTinyMolybdenum" });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.DamascusSteel, Materials2Shapes.dust, 2),
+            MaterialLibAPI.getStack(Materials.DamascusSteel, Shapes.dust, 2),
             bits_no_remove_buffered,
             new Object[] { "dustSteel", "dustSmallManganese", "dustSmallManganese", "dustSmallChrome",
                 "dustSmallChrome", "dustTinyCoal", "dustTinySilicon", "dustTinyVanadium" });
 
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.RedstoneAlloy, Materials2Shapes.dust, 2),
+            MaterialLibAPI.getStack(Materials.RedstoneAlloy, Shapes.dust, 2),
             bits_no_remove_buffered,
             new Object[] { "dustRedstone", "dustSilicon", "dustCoal" });
         GTModHandler.addShapelessCraftingRecipe(
@@ -1295,40 +1295,40 @@ public class CraftingRecipeLoader implements Runnable {
             bits_no_remove_buffered,
             new Object[] { "dustClay", "dustFlint", "dustStone" });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.ConductiveIron, Materials2Shapes.dust, 2),
+            MaterialLibAPI.getStack(Materials.ConductiveIron, Shapes.dust, 2),
             bits_no_remove_buffered,
             new Object[] { "dustRedstoneAlloy", "dustIron", "dustSilver" });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.EnergeticAlloy, Materials2Shapes.dust, 2),
+            MaterialLibAPI.getStack(Materials.EnergeticAlloy, Shapes.dust, 2),
             bits_no_remove_buffered,
             new Object[] { "dustConductiveIron", "dustGold", "dustBlackSteel" });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.EnergeticSilver, Materials2Shapes.dust, 2),
+            MaterialLibAPI.getStack(Materials.EnergeticSilver, Shapes.dust, 2),
             bits_no_remove_buffered,
             new Object[] { "dustConductiveIron", "dustSilver", "dustBlackSteel" });
 
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.ElectricalSteel, Materials2Shapes.dust, 2),
+            MaterialLibAPI.getStack(Materials.ElectricalSteel, Shapes.dust, 2),
             bits_no_remove_buffered,
             new Object[] { "dustSteel", "dustCoal", "dustSilicon" });
 
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.Soularium, Materials2Shapes.dust, 2),
+            MaterialLibAPI.getStack(Materials.Soularium, Shapes.dust, 2),
             bits_no_remove_buffered,
             new Object[] { new ItemStack(Blocks.soul_sand, 1, 32767), "dustGold", "dustAsh" });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.DarkSteel, Materials2Shapes.dust, 2),
+            MaterialLibAPI.getStack(Materials.DarkSteel, Shapes.dust, 2),
             bits_no_remove_buffered,
             new Object[] { "dustElectricalSteel", "dustCoal", "dustObsidian" });
 
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.Manyullyn, Materials2Shapes.dust, 3),
+            MaterialLibAPI.getStack(Materials.Manyullyn, Shapes.dust, 3),
             bits_no_remove_buffered,
             new Object[] { "dustArdite", "dustArdite", "dustArdite", "dustArdite", "dustCobalt", "dustCobalt",
                 "dustCobalt", "dustCobalt" });
 
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.IronWood, Materials2Shapes.dust, 2),
+            MaterialLibAPI.getStack(Materials.IronWood, Shapes.dust, 2),
             bits_no_remove_buffered,
             new Object[] { "dustIron", "dustLiveRoot", "dustTinyGold" });
 
@@ -1347,12 +1347,12 @@ public class CraftingRecipeLoader implements Runnable {
             new Object[] { "dustCarbon", "dustCarbon", "dustCarbon", "dustSulfur", "dustSaltpeter", "dustSaltpeter" });
 
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.IndiumGalliumPhosphide, Materials2Shapes.dust, 3),
+            MaterialLibAPI.getStack(Materials.IndiumGalliumPhosphide, Shapes.dust, 3),
             bits_no_remove_buffered,
             new Object[] { "dustIndium", "dustGallium", "dustPhosphorus" });
 
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.Saltpeter, Materials2Shapes.dust, 5),
+            MaterialLibAPI.getStack(Materials.Saltpeter, Shapes.dust, 5),
             bits_no_remove_buffered,
             new Object[] { "dustPotassium", "cellNitrogen", "cellOxygen", "cellOxygen", "cellOxygen" });
         GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("carbonFiber", 1L));
@@ -1450,13 +1450,13 @@ public class CraftingRecipeLoader implements Runnable {
             GTModHandler.getIC2Item("powerunit", 1L),
             bits_no_remove_buffered,
             new Object[] { "BCA", "BIM", "BCA", 'C', "cableGt01Copper", 'B', "batteryBasic", 'A',
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.itemCasing, 1), 'I', "circuitBasic",
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.itemCasing, 1), 'I', "circuitBasic",
                 'M', GTModHandler.getIC2Item("elemotor", 1L) });
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("powerunitsmall", 1L),
             bits_no_remove_buffered,
             new Object[] { " CA", "BIM", " CA", 'C', "cableGt01Copper", 'B', "batteryBasic", 'A',
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.itemCasing, 1), 'I', "circuitBasic",
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.itemCasing, 1), 'I', "circuitBasic",
                 'M', GTModHandler.getIC2Item("elemotor", 1L) });
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("remote", 1L),
@@ -1468,13 +1468,13 @@ public class CraftingRecipeLoader implements Runnable {
             bits_no_remove_buffered,
             new Object[] { "PGP", "CBC", "WWW", 'W', "cableGt01Copper", 'G', "dustGlowstone", 'B', "batteryAdvanced",
                 'C', "circuitAdvanced", 'P',
-                MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.itemCasing, 1) });
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.itemCasing, 1) });
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("ovScanner", 1L),
             bits_no_remove_buffered,
             new Object[] { "PDP", "GCG", "WSW", 'W', "cableGt01Gold", 'G', "dustGlowstone", 'D', "batteryElite", 'C',
                 "circuitAdvanced", 'P',
-                MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.itemCasing, 1), 'S',
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.itemCasing, 1), 'S',
                 GTModHandler.getIC2Item("odScanner", 1L) });
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("staticBoots", 1L),
@@ -1588,7 +1588,7 @@ public class CraftingRecipeLoader implements Runnable {
                 new ItemStack(Blocks.glass, 1) });
 
         GTModHandler.removeRecipeDelayed(
-            tStack = MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dust, 1),
+            tStack = MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1),
             tStack,
             tStack,
             tStack,
@@ -1598,7 +1598,7 @@ public class CraftingRecipeLoader implements Runnable {
             tStack,
             tStack);
         GTModHandler.removeRecipeDelayed(
-            tStack = MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dust, 1),
+            tStack = MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1),
             tStack,
             tStack,
             tStack,
@@ -1705,7 +1705,7 @@ public class CraftingRecipeLoader implements Runnable {
         GTModHandler.removeRecipeByOutputDelayed(new ItemStack(Items.paper));
         GTModHandler.removeRecipeByOutputDelayed(new ItemStack(Items.sugar));
         GTModHandler.addCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.Paper, Materials2Shapes.dust, 2),
+            MaterialLibAPI.getStack(Materials.Paper, Shapes.dust, 2),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SSS", " m ", 'S', new ItemStack(Items.reeds) });
         GTModHandler.addCraftingRecipe(
@@ -1716,7 +1716,7 @@ public class CraftingRecipeLoader implements Runnable {
             GTOreDictUnificator.get("paperEmpty", 2),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { " C ", "SSS", " C ", 'S',
-                MaterialLibAPI.getStack(Materials.Paper, Materials2Shapes.dust, 1), 'C',
+                MaterialLibAPI.getStack(Materials.Paper, Shapes.dust, 1), 'C',
                 new ItemStack(Blocks.stone_slab) });
 
         GTLog.out.println("GTMod: Applying Recipes for Tools");
@@ -1774,15 +1774,15 @@ public class CraftingRecipeLoader implements Runnable {
         }
 
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.Fireclay, Materials2Shapes.dust, 2),
-            new Object[] { MaterialLibAPI.getStack(Materials.Brick, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Clay, Materials2Shapes.dust, 1) });
+            MaterialLibAPI.getStack(Materials.Fireclay, Shapes.dust, 2),
+            new Object[] { MaterialLibAPI.getStack(Materials.Brick, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Clay, Shapes.dust, 1) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_Advanced_Rhodium_Palladium.get(1L),
             bits,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
-                MaterialLibAPI.getStack(Materials.RhodiumPlatedPalladium, Materials2Shapes.plate, 1), 'F',
+                MaterialLibAPI.getStack(Materials.RhodiumPlatedPalladium, Shapes.plate, 1), 'F',
                 MaterialParts.craftIngredient(OrePrefixes.frameGt, Materials.Chrome) });
 
         if (Forestry.isModLoaded()) {
@@ -1809,7 +1809,7 @@ public class CraftingRecipeLoader implements Runnable {
             new Object[] { "RIR", "VBV", "CCC", 'R', ItemList.Circuit_Parts_Resistor.get(1), 'C',
                 GTOreDictUnificator.get("cableGt01RedAlloy", 1), 'V', ItemList.Circuit_Parts_Vacuum_Tube.get(1), 'B',
                 ItemList.Circuit_Board_Coated_Basic.get(1), 'I',
-                MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.itemCasing, 1) });
+                MaterialLibAPI.getStack(Materials.Steel, Shapes.itemCasing, 1) });
         GTModHandler.addShapelessCraftingRecipe(
             GTModHandler.getIC2Item("electronicCircuit", 1L),
             new Object[] { ItemList.Circuit_Integrated.getWildcard(1L) });

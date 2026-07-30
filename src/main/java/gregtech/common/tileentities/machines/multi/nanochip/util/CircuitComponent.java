@@ -7,6 +7,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import java.util.function.Supplier;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -16,7 +17,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.util.GTOreDictUnificator;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -40,7 +40,7 @@ public enum CircuitComponent {
     WireLumiium(
         2,
         "gt.circuitcomponent.wirelumiium",
-        () -> MaterialLibAPI.getStack(Materials.Lumiium, Materials2Shapes.wireFine, 1)),
+        () -> MaterialLibAPI.getStack(Materials.Lumiium, Shapes.wireFine, 1)),
     WireProtoHalkonite(
         3,
         "gt.circuitcomponent.wireprotohalkonite",
@@ -60,7 +60,7 @@ public enum CircuitComponent {
     WireHypogen(
         7,
         "gt.circuitcomponent.wirehypogen",
-        () -> MaterialLibAPI.getStack(Materials.Hypogen, Materials2Shapes.wireFine, 1)),
+        () -> MaterialLibAPI.getStack(Materials.Hypogen, Shapes.wireFine, 1)),
     WireMagMatter(
         8,
         "gt.circuitcomponent.wiremagmatter",
@@ -353,7 +353,7 @@ public enum CircuitComponent {
     FoilShirabon(
         1603,
         "gt.circuitcomponent.sheet.shirabon",
-        () -> MaterialLibAPI.getStack(Materials.Shirabon, Materials2Shapes.foil, 1)),
+        () -> MaterialLibAPI.getStack(Materials.Shirabon, Shapes.foil, 1)),
     FoilStyreneRubber(
         1604,
         "gt.circuitcomponent.sheet.styrenebutadienerubber",
@@ -399,7 +399,7 @@ public enum CircuitComponent {
     BoltChromaticGlass(
         1904,
         "gt.circuitcomponent.bolt.chromaticglass",
-        () -> MaterialLibAPI.getStack(Materials.ChromaticGlass, Materials2Shapes.bolt, 1)),
+        () -> MaterialLibAPI.getStack(Materials.ChromaticGlass, Shapes.bolt, 1)),
     BoltUMVSuperconductor(
         1905,
         "gt.circuitcomponent.bolt.umvsuperconductor",
@@ -407,11 +407,11 @@ public enum CircuitComponent {
     PlateMetastableOganesson(
         1906,
         "gt.circuitcomponent.plate.metastableoganesson",
-        () -> MaterialLibAPI.getStack(Materials.MetastableOganesson, Materials2Shapes.plate, 1)),
+        () -> MaterialLibAPI.getStack(Materials.MetastableOganesson, Shapes.plate, 1)),
     ScrewAstralTitanium(
         1907,
         "gt.circuitcomponent.screw.astraltitanium",
-        () -> MaterialLibAPI.getStack(Materials.AstralTitanium, Materials2Shapes.screw, 1)),
+        () -> MaterialLibAPI.getStack(Materials.AstralTitanium, Shapes.screw, 1)),
     CasingUEVSuperconductor(
         1908,
         "gt.circuitcomponent.casing.uevsuperconductor",
@@ -427,7 +427,7 @@ public enum CircuitComponent {
     PlateRhugnor(
         1911,
         "gt.circuitcomponent.plate.rhugnor",
-        () -> MaterialLibAPI.getStack(Materials.Rhugnor, Materials2Shapes.plate, 1)),
+        () -> MaterialLibAPI.getStack(Materials.Rhugnor, Shapes.plate, 1)),
     BoltWhiteDwarfMatter(
         1912,
         "gt.circuitcomponent.bolt.whitedwarfmatter",

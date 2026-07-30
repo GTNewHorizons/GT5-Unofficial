@@ -27,7 +27,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -80,8 +80,8 @@ public class ChemicalBathRecipes implements Runnable {
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Coal, Materials2Shapes.dust, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.HydratedCoal, Materials2Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.HydratedCoal, Shapes.dust, (int) (1)))
             .fluidInputs(GTUtility.getWater(125))
             .duration(12 * TICKS)
             .eut(4)
@@ -89,8 +89,8 @@ public class ChemicalBathRecipes implements Runnable {
 
         // paper creation recipes
         ItemStack[] paperSources = new ItemStack[] {
-            MaterialLibAPI.getStack(Materials.Wood, Materials2Shapes.dust, (int) (1)),
-            MaterialLibAPI.getStack(Materials.Paper, Materials2Shapes.dust, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Paper, Shapes.dust, (int) (1)),
             new ItemStack(Items.reeds, 1, 32767) };
         for (ItemStack paperSource : paperSources) {
             GTValues.RA.stdBuilder()
@@ -111,8 +111,8 @@ public class ChemicalBathRecipes implements Runnable {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Coal, Materials2Shapes.dust, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.HydratedCoal, Materials2Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.HydratedCoal, Shapes.dust, (int) (1)))
             .fluidInputs(GTModHandler.getDistilledWater(125))
             .duration(12 * TICKS)
             .eut(4)
@@ -381,7 +381,7 @@ public class ChemicalBathRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.WovenKevlar.get(1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Kevlar, Materials2Shapes.plate, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Kevlar, Shapes.plate, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.PolyurethaneResin,
@@ -392,8 +392,8 @@ public class ChemicalBathRecipes implements Runnable {
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.CubicZirconia, Materials2Shapes.gemExquisite, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Firestone, Materials2Shapes.gem, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CubicZirconia, Shapes.gemExquisite, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Firestone, Shapes.gem, (int) (1)))
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2hotcoolant"), 250))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -401,8 +401,8 @@ public class ChemicalBathRecipes implements Runnable {
 
         // Na + H2O = NaOH + H
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Sodium, Materials2Shapes.dust, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Materials2Shapes.dust, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 3))
             .fluidInputs(GTUtility.getWater(1_000))
             .fluidOutputs(
                 MaterialLibAPI
@@ -414,11 +414,11 @@ public class ChemicalBathRecipes implements Runnable {
         // Custom Sodium Persulfate Ore Processing Recipes
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Tantalite, Materials2Shapes.crushed, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Tantalite, Shapes.crushed, (int) (1)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Tantalite, Materials2Shapes.crushedPurified, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Tantalum, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Tantalite, Shapes.crushedPurified, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Tantalum, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1)))
             .outputChances(10000, 3000, 4000)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
@@ -429,11 +429,11 @@ public class ChemicalBathRecipes implements Runnable {
             .eut(TierEU.RECIPE_ULV)
             .addTo(chemicalBathRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Pyrolusite, Materials2Shapes.crushed, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Pyrolusite, Shapes.crushed, (int) (1)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Pyrolusite, Materials2Shapes.crushedPurified, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Manganese, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Pyrolusite, Shapes.crushedPurified, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Manganese, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1)))
             .outputChances(10000, 7000, 4000)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
@@ -444,11 +444,11 @@ public class ChemicalBathRecipes implements Runnable {
             .eut(TierEU.RECIPE_ULV)
             .addTo(chemicalBathRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Quartzite, Materials2Shapes.crushed, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Quartzite, Shapes.crushed, (int) (1)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Quartzite, Materials2Shapes.crushedPurified, (int) (1)),
-                MaterialLibAPI.getStack(Materials.CertusQuartz, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Quartzite, Shapes.crushedPurified, (int) (1)),
+                MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1)))
             .outputChances(10000, 3000, 4000)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
@@ -459,11 +459,11 @@ public class ChemicalBathRecipes implements Runnable {
             .eut(TierEU.RECIPE_ULV)
             .addTo(chemicalBathRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.CertusQuartz, Materials2Shapes.crushed, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.crushed, (int) (1)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.CertusQuartz, Materials2Shapes.crushedPurified, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Barium, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.crushedPurified, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Barium, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1)))
             .outputChances(10000, 7000, 4000)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
@@ -474,11 +474,11 @@ public class ChemicalBathRecipes implements Runnable {
             .eut(TierEU.RECIPE_ULV)
             .addTo(chemicalBathRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Bauxite, Materials2Shapes.crushed, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Bauxite, Shapes.crushed, (int) (1)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Bauxite, Materials2Shapes.crushedPurified, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Rutile, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Bauxite, Shapes.crushedPurified, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Rutile, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1)))
             .outputChances(10000, 5000, 4000)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
@@ -489,11 +489,11 @@ public class ChemicalBathRecipes implements Runnable {
             .eut(TierEU.RECIPE_ULV)
             .addTo(chemicalBathRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Thorium, Materials2Shapes.crushed, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Thorium, Shapes.crushed, (int) (1)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Thorium, Materials2Shapes.crushedPurified, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Uranium, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Thorium, Shapes.crushedPurified, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1)))
             .outputChances(10000, 3000, 4000)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
@@ -504,11 +504,11 @@ public class ChemicalBathRecipes implements Runnable {
             .eut(TierEU.RECIPE_ULV)
             .addTo(chemicalBathRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Stibnite, Materials2Shapes.crushed, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Stibnite, Shapes.crushed, (int) (1)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Stibnite, Materials2Shapes.crushedPurified, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Antimony, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Stibnite, Shapes.crushedPurified, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Antimony, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1)))
             .outputChances(10000, 5000, 4000)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(

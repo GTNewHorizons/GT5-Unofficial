@@ -20,6 +20,7 @@ import static gtnhlanth.common.beamline.Particle.TAU;
 import static gtnhlanth.common.beamline.Particle.TAUNEUTRINO;
 import static gtnhlanth.common.beamline.Particle.UPSILON;
 
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -31,7 +32,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.fluids.GTPPFluids;
@@ -166,7 +166,7 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Uranium, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.Deuterium, Materials2FluidShapes.fluidGas, (int) (400)))
@@ -187,9 +187,9 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 Particle.getBaseParticle(Particle.UNKNOWN, 8),
-                MaterialLibAPI.getStack(Materials.Plutonium238, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.Plutonium238, Shapes.dust, 1))
             .fluidInputs(new FluidStack(TFFluids.fluidEnder, 1000))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.RadioactiveMineralMix, Materials2Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.RadioactiveMineralMix, Shapes.dust, 1))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()

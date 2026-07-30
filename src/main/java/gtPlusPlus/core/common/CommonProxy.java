@@ -1,6 +1,7 @@
 package gtPlusPlus.core.common;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -27,7 +28,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import galaxyspace.core.entity.mob.EntityEvolvedColdBlaze;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.block.ModBlocks;
@@ -118,20 +118,20 @@ public class CommonProxy implements IFuelHandler {
         if (Mods.COFHCore.isModLoaded()) {
             EntityUtils.registerDropsForMob(
                 EntityBlaze.class,
-                MaterialLibAPI.getStack(Materials.Pyrotheum, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Pyrotheum, Shapes.dust, (int) (1)),
                 1,
                 10);
             EntityUtils.registerDropsForMob(
                 EntityBlaze.class,
-                MaterialLibAPI.getStack(Materials.Pyrotheum, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Pyrotheum, Shapes.dust, (int) (1)),
                 1,
                 10);
         }
 
         // GalaxySpace Support
         if (Mods.GalaxySpace.isModLoaded()) {
-            ItemStack aBlizz = MaterialLibAPI.getStack(Materials.Blizz, Materials2Shapes.dust, (int) (1));
-            ItemStack aCryo = MaterialLibAPI.getStack(Materials.Cryotheum, Materials2Shapes.dust, (int) (1));
+            ItemStack aBlizz = MaterialLibAPI.getStack(Materials.Blizz, Shapes.dust, (int) (1));
+            ItemStack aCryo = MaterialLibAPI.getStack(Materials.Cryotheum, Shapes.dust, (int) (1));
             EntityUtils.registerDropsForMob(
                 EntityEvolvedColdBlaze.class,
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Blizz, 1),

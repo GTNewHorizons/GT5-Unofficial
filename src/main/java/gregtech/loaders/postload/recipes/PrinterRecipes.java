@@ -14,7 +14,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -24,7 +24,7 @@ public class PrinterRecipes implements Runnable {
     @Override
     public void run() {
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Paper, Materials2Shapes.plateDouble, (int) (1L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Paper, Shapes.plateDouble, (int) (1L)))
             .itemOutputs(ItemList.Paper_Punch_Card_Empty.get(1L))
             .fluidInputs(getFluidStack("squidink", 36))
             .duration(5 * SECONDS)

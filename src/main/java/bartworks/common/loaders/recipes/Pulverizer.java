@@ -4,6 +4,7 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -11,7 +12,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Shapes;
 
 public class Pulverizer implements Runnable {
 
@@ -21,8 +21,8 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Materials2Shapes.dust, (int) (9)),
-                MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.dust, (int) (8)))
+                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Shapes.dust, (int) (9)),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.dust, (int) (8)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(maceratorRecipes);
@@ -30,8 +30,8 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 2))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Materials2Shapes.dust, (int) (9)),
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.dust, (int) (8)))
+                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Shapes.dust, (int) (9)),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.dust, (int) (8)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(maceratorRecipes);
@@ -39,8 +39,8 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 3))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Materials2Shapes.dust, (int) (9)),
-                MaterialLibAPI.getStack(Materials.RhodiumPlatedPalladium, Materials2Shapes.dust, 8))
+                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Shapes.dust, (int) (9)),
+                MaterialLibAPI.getStack(Materials.RhodiumPlatedPalladium, Shapes.dust, 8))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(maceratorRecipes);
@@ -48,8 +48,8 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 4))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Materials2Shapes.dust, (int) (9)),
-                MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.dust, (int) (8)))
+                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Shapes.dust, (int) (9)),
+                MaterialLibAPI.getStack(Materials.Iridium, Shapes.dust, (int) (8)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(maceratorRecipes);
@@ -57,8 +57,8 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 5))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Materials2Shapes.dust, (int) (9)),
-                MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.dust, (int) (8)))
+                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Shapes.dust, (int) (9)),
+                MaterialLibAPI.getStack(Materials.Osmium, Shapes.dust, (int) (8)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(maceratorRecipes);
@@ -66,8 +66,8 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 6))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Materials2Shapes.dust, (int) (9)),
-                MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.dust, (int) (8)))
+                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Shapes.dust, (int) (9)),
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.dust, (int) (8)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(maceratorRecipes);
@@ -75,8 +75,8 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 7))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Materials2Shapes.dust, (int) (9)),
-                MaterialLibAPI.getStack(Materials.Infinity, Materials2Shapes.dust, (int) (8)))
+                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Shapes.dust, (int) (9)),
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.dust, (int) (8)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(maceratorRecipes);
@@ -84,8 +84,8 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 8))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Materials2Shapes.dust, (int) (9)),
-                MaterialLibAPI.getStack(Materials.TranscendentMetal, Materials2Shapes.dust, (int) (8)))
+                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Shapes.dust, (int) (9)),
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.dust, (int) (8)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(maceratorRecipes);
@@ -95,8 +95,8 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 10))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Materials2Shapes.dust, (int) (9)),
-                MaterialLibAPI.getStack(Materials.Universium, Materials2Shapes.dust, (int) (8)))
+                MaterialLibAPI.getStack(Materials.BorosilicateGlass, Shapes.dust, (int) (9)),
+                MaterialLibAPI.getStack(Materials.Universium, Shapes.dust, (int) (8)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(maceratorRecipes);

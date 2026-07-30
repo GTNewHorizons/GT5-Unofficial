@@ -44,7 +44,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.items.BlockLongDistancePipe;
@@ -191,13 +191,13 @@ public class LoaderGTBlockFluid implements Runnable {
 
         // Tiered recipe materials actually appear to be set in MTEBasicMachineWithRecipe, making these
         // unused
-        ItemList.Rotor_LV.set(MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.rotor, (int) (1)));
-        ItemList.Rotor_MV.set(MaterialLibAPI.getStack(Materials.Bronze, Materials2Shapes.rotor, (int) (1)));
-        ItemList.Rotor_HV.set(MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.rotor, (int) (1)));
+        ItemList.Rotor_LV.set(MaterialLibAPI.getStack(Materials.Tin, Shapes.rotor, (int) (1)));
+        ItemList.Rotor_MV.set(MaterialLibAPI.getStack(Materials.Bronze, Shapes.rotor, (int) (1)));
+        ItemList.Rotor_HV.set(MaterialLibAPI.getStack(Materials.Steel, Shapes.rotor, (int) (1)));
         ItemList.Rotor_EV
-            .set(MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.rotor, (int) (1)));
+            .set(MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.rotor, (int) (1)));
         ItemList.Rotor_IV
-            .set(MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.rotor, (int) (1)));
+            .set(MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.rotor, (int) (1)));
 
         ItemList.VOLUMETRIC_FLASK.set(new ItemVolumetricFlask("Volumetric_Flask", "Volumetric flask", 1_000));
 
@@ -2707,7 +2707,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.gravel, 1, WILDCARD))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1)),
                 new ItemStack(Items.flint, 1))
             .outputChances(10000, 1000)
             .duration(20 * SECONDS)

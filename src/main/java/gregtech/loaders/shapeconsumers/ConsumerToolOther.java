@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingToolOther;
 
 /// Dispatches [ProcessingToolOther]'s `toolHeadHammer`-prefix recipe generation (a second, independent
@@ -13,6 +13,6 @@ public final class ConsumerToolOther {
 
     static void register() {
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.toolHeadHammer, OrePrefixes.toolHeadHammer, () -> ProcessingToolOther.INSTANCE);
+            .delegate(Shapes.toolHeadHammer, OrePrefixes.toolHeadHammer, () -> ProcessingToolOther.INSTANCE);
     }
 }

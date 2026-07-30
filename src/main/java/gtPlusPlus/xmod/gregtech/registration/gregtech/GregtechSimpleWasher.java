@@ -12,6 +12,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -21,7 +22,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Backings;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
@@ -159,15 +159,15 @@ public class GregtechSimpleWasher {
             if (ml.getProperty(GTMaterialProperties.GTPP_STATE) == null) {
                 continue;
             }
-            if (!ml.hasShape(Materials2Shapes.dust)) {
+            if (!ml.hasShape(Shapes.dust)) {
                 continue;
             }
-            dustClean = MaterialLibAPI.getStack(ml, Materials2Shapes.dust, 1);
-            if (ml.hasShape(Materials2Shapes.dustImpure)) {
-                addSimpleWashRecipe(MaterialLibAPI.getStack(ml, Materials2Shapes.dustImpure, 1), dustClean);
+            dustClean = MaterialLibAPI.getStack(ml, Shapes.dust, 1);
+            if (ml.hasShape(Shapes.dustImpure)) {
+                addSimpleWashRecipe(MaterialLibAPI.getStack(ml, Shapes.dustImpure, 1), dustClean);
             }
-            if (ml.hasShape(Materials2Shapes.dustPure)) {
-                addSimpleWashRecipe(MaterialLibAPI.getStack(ml, Materials2Shapes.dustPure, 1), dustClean);
+            if (ml.hasShape(Shapes.dustPure)) {
+                addSimpleWashRecipe(MaterialLibAPI.getStack(ml, Shapes.dustPure, 1), dustClean);
             }
         }
 
@@ -216,12 +216,12 @@ public class GregtechSimpleWasher {
             if (ml.getProperty(GTMaterialProperties.GTPP_STATE) == null) {
                 continue;
             }
-            if (!ml.hasShape(Materials2Shapes.crushed) || !ml.hasShape(Materials2Shapes.crushedPurified)) {
+            if (!ml.hasShape(Shapes.crushed) || !ml.hasShape(Shapes.crushedPurified)) {
                 continue;
             }
             addSimpleWashRecipe(
-                MaterialLibAPI.getStack(ml, Materials2Shapes.crushed, 1),
-                MaterialLibAPI.getStack(ml, Materials2Shapes.crushedPurified, 1));
+                MaterialLibAPI.getStack(ml, Shapes.crushed, 1),
+                MaterialLibAPI.getStack(ml, Shapes.crushedPurified, 1));
         }
 
         return simpleWasherRecipes.getAllRecipes()

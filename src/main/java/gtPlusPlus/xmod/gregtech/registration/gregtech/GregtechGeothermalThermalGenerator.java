@@ -4,6 +4,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Geothermal_Engine_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.Geothermal_Engine_IV;
 import static gregtech.api.enums.MetaTileEntityIDs.Geothermal_Engine_LuV;
 
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -12,7 +13,6 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.MTEGeothermalGenerator;
@@ -50,7 +50,7 @@ public class GregtechGeothermalThermalGenerator {
             new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
                 ItemList.Electric_Motor_EV, 'C', Circuits.ZPM.getIngredient(), 'W',
                 OrePrefixes.cableGt04.ingredient(Materials.Aluminium), 'G',
-                MaterialLibAPI.getStack(Materials.Tantalloy61, Materials2Shapes.gearGt, 1) });
+                MaterialLibAPI.getStack(Materials.Tantalloy61, Shapes.gearGt, 1) });
 
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Geothermal_Engine_IV.get(1L),
@@ -59,7 +59,7 @@ public class GregtechGeothermalThermalGenerator {
             new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_IV, 'P', ItemList.Electric_Piston_IV, 'E',
                 ItemList.Electric_Motor_IV, 'C', Circuits.UV.getIngredient(), 'W',
                 OrePrefixes.cableGt04.ingredient(Materials.Platinum), 'G',
-                MaterialLibAPI.getStack(Materials.Stellite, Materials2Shapes.gearGt, 1) });
+                MaterialLibAPI.getStack(Materials.Stellite, Shapes.gearGt, 1) });
 
         final ItemStack INGREDIENT_1 = ItemList.Electric_Piston_LuV.get(1);
         final ItemStack INGREDIENT_2 = ItemList.Electric_Motor_LuV.get(1);
@@ -69,6 +69,6 @@ public class GregtechGeothermalThermalGenerator {
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CEC", "GMG", "PWP", 'M', ItemList.Hull_LuV, 'P', INGREDIENT_1, 'E', INGREDIENT_2, 'C',
                 Circuits.UHV.getIngredient(), 'W', OrePrefixes.cableGt04.ingredient(Materials.Tungsten), 'G',
-                MaterialLibAPI.getStack(Materials.Zeron100, Materials2Shapes.gearGt, 1) });
+                MaterialLibAPI.getStack(Materials.Zeron100, Shapes.gearGt, 1) });
     }
 }

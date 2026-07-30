@@ -11,6 +11,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -28,7 +29,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -51,7 +51,7 @@ public class MachineRecipes implements Runnable {
 
         ItemStack hypogenFrameBox_8 = MaterialLibAPI
             .getStack(Materials.Hypogen, Materials2PipeShapes.frameGt, 8);
-        ItemStack hypogenScrew_32 = MaterialLibAPI.getStack(Materials.Hypogen, Materials2Shapes.screw, 32);
+        ItemStack hypogenScrew_32 = MaterialLibAPI.getStack(Materials.Hypogen, Shapes.screw, 32);
         Fluid hypogenFluid = MaterialUtils.legacyGtppFluidOf(Materials.Hypogen);
         Fluid celestialTungstenFluid = MaterialUtils.legacyGtppFluidOf(Materials.CelestialTungsten);
 
@@ -60,9 +60,9 @@ public class MachineRecipes implements Runnable {
         ItemStack highComputationStationT4_32 = ItemRefer.HiC_T4.get(32);
         ItemStack highComputationStationT5_32 = ItemRefer.HiC_T5.get(32);
         ItemStack metaStableOgScrew_64 = MaterialLibAPI
-            .getStack(Materials.MetastableOganesson, Materials2Shapes.screw, 64);
+            .getStack(Materials.MetastableOganesson, Shapes.screw, 64);
         ItemStack titaniumBetaCScrew_64 = MaterialLibAPI
-            .getStack(Materials.TanmolyiumBetaC, Materials2Shapes.screw, 64);
+            .getStack(Materials.TanmolyiumBetaC, Shapes.screw, 64);
 
         ItemStack voidMiner = ItemRegistry.voidminer[2];
 
@@ -86,7 +86,7 @@ public class MachineRecipes implements Runnable {
                 ItemList.Field_Generator_UV.get(16), new Object[] { Circuits.UHV.getIngredient(), 16 },
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyPlateTier7", 32),
                 ItemList.Circuit_Chip_PPIC.get(64),
-                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Materials2Shapes.screw, (int) (64)),
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.screw, (int) (64)),
                 ItemList.Electric_Motor_UV.get(32), ItemList.SpaceElevatorBaseCasing.get(8) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 40 * INGOTS),
                 MaterialUtils.fluid(Materials.UUMatter, 16_000),
@@ -131,10 +131,10 @@ public class MachineRecipes implements Runnable {
             (int) TierEU.RECIPE_UV,
             2,
             new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 8),
-                MaterialLibAPI.getStack(Materials.Palladium, Materials2Shapes.screw, (int) (32)),
-                MaterialLibAPI.getStack(Materials.Osmiridium, Materials2Shapes.plate, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Palladium, Shapes.screw, (int) (32)),
+                MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.plate, (int) (64)),
                 new Object[] { Circuits.UHV.getIngredient(), 4 }, ItemList.Electric_Piston_UV.get(2),
-                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Materials2Shapes.ring, (int) (8)), },
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.ring, (int) (8)), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 40 * INGOTS),
                 MaterialUtils.fluid(Materials.UUMatter, 2_000),
                 MaterialLibAPI.getFluidStack(
@@ -153,9 +153,9 @@ public class MachineRecipes implements Runnable {
             (int) TierEU.RECIPE_UV,
             2,
             new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 8),
-                MaterialLibAPI.getStack(Materials.Naquadria, Materials2Shapes.bolt, (int) (16)),
-                MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.stickLong, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Osmiridium, Materials2Shapes.plateDouble, (int) (8)), },
+                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.bolt, (int) (16)),
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.stickLong, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.plateDouble, (int) (8)), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 40 * INGOTS),
                 MaterialUtils.fluid(Materials.UUMatter, 1_000),
                 MaterialLibAPI.getFluidStack(
@@ -174,8 +174,8 @@ public class MachineRecipes implements Runnable {
             (int) TierEU.RECIPE_UV,
             2,
             new Object[] { new ItemStack(TTCasingsContainer.sBlockCasingsTT, 8, 0),
-                MaterialLibAPI.getStack(Materials.Palladium, Materials2Shapes.bolt, (int) (16)),
-                MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.plateDouble, (int) (8)), },
+                MaterialLibAPI.getStack(Materials.Palladium, Shapes.bolt, (int) (16)),
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plateDouble, (int) (8)), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 40 * INGOTS),
                 MaterialUtils.fluid(Materials.UUMatter, 8_000),
                 MaterialLibAPI.getFluidStack(
@@ -194,11 +194,11 @@ public class MachineRecipes implements Runnable {
             (int) TierEU.RECIPE_UV,
             2,
             new Object[] { ItemList.SpaceElevatorBaseCasing.get(1), ItemList.Electric_Motor_UV.get(4),
-                MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.ring, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.stick, (int) (4)),
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.ring, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.stick, (int) (4)),
                 new Object[] { Circuits.UV.getIngredient(), 1 },
-                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Materials2Shapes.screw, (int) (16)),
-                MaterialLibAPI.getStack(Materials.Osmiridium, Materials2Shapes.plate, (int) (16)), },
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.screw, (int) (16)),
+                MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.plate, (int) (16)), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 40 * INGOTS),
                 MaterialUtils.fluid(Materials.UUMatter, 8_000),
                 MaterialLibAPI.getFluidStack(
@@ -219,11 +219,11 @@ public class MachineRecipes implements Runnable {
             (int) TierEU.RECIPE_UHV,
             2,
             new Object[] { ItemList.SpaceElevatorBaseCasing.get(1), ItemList.Electric_Motor_UHV.get(4),
-                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Materials2Shapes.ring, (int) (8)),
-                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Materials2Shapes.stick, (int) (4)),
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.ring, (int) (8)),
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.stick, (int) (4)),
                 new Object[] { Circuits.UHV.getIngredient(), 1 },
-                MaterialLibAPI.getStack(Materials.Infinity, Materials2Shapes.screw, (int) (16)),
-                MaterialLibAPI.getStack(Materials.Osmiridium, Materials2Shapes.plate, (int) (16)), },
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.screw, (int) (16)),
+                MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.plate, (int) (16)), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 40 * INGOTS),
                 MaterialUtils.fluid(Materials.UUMatter, 8_000),
                 MaterialLibAPI.getFluidStack(
@@ -244,11 +244,11 @@ public class MachineRecipes implements Runnable {
             (int) TierEU.RECIPE_UHV,
             2,
             new Object[] { ItemList.SpaceElevatorBaseCasing.get(1), ItemList.Electric_Motor_UEV.get(4),
-                MaterialLibAPI.getStack(Materials.Infinity, Materials2Shapes.ring, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Infinity, Materials2Shapes.stick, (int) (4)),
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.ring, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.stick, (int) (4)),
                 new Object[] { Circuits.UEV.getIngredient(), 1 },
-                MaterialLibAPI.getStack(Materials.TranscendentMetal, Materials2Shapes.screw, (int) (16)),
-                MaterialLibAPI.getStack(Materials.Osmiridium, Materials2Shapes.plate, (int) (16)), },
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.screw, (int) (16)),
+                MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.plate, (int) (16)), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 20 * INGOTS),
                 MaterialUtils.fluid(Materials.UUMatter, 8_000),
                 MaterialLibAPI.getFluidStack(
@@ -268,10 +268,10 @@ public class MachineRecipes implements Runnable {
             (int) TierEU.RECIPE_UHV,
             2,
             new Object[] { ItemList.SpaceElevatorBaseCasing.get(1), ItemList.Electric_Motor_UIV.get(4),
-                MaterialLibAPI.getStack(Materials.TranscendentMetal, Materials2Shapes.ring, (int) (8)),
-                MaterialLibAPI.getStack(Materials.TranscendentMetal, Materials2Shapes.stick, (int) (4)),
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.ring, (int) (8)),
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.stick, (int) (4)),
                 new Object[] { Circuits.UIV.getIngredient(), 1 },
-                MaterialLibAPI.getStack(Materials.SpaceTime, Materials2Shapes.screw, (int) (16)),
+                MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.screw, (int) (16)),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.protohalkonite, 16), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 20 * INGOTS),
                 MaterialUtils.fluid(Materials.UUMatter, 8_000),
@@ -292,11 +292,11 @@ public class MachineRecipes implements Runnable {
             (int) TierEU.RECIPE_UHV,
             2,
             new Object[] { ItemList.SpaceElevatorBaseCasing.get(1), ItemList.Electric_Motor_UMV.get(4),
-                MaterialLibAPI.getStack(Materials.SpaceTime, Materials2Shapes.ring, (int) (8)),
-                MaterialLibAPI.getStack(Materials.SpaceTime, Materials2Shapes.stick, (int) (4)),
+                MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.ring, (int) (8)),
+                MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.stick, (int) (4)),
                 new Object[] { Circuits.UMV.getIngredient(), 1L },
-                MaterialLibAPI.getStack(Materials.Universium, Materials2Shapes.screw, (int) (16)),
-                MaterialLibAPI.getStack(Materials.Osmiridium, Materials2Shapes.plate, (int) (16)), },
+                MaterialLibAPI.getStack(Materials.Universium, Shapes.screw, (int) (16)),
+                MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.plate, (int) (16)), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 20 * INGOTS),
                 MaterialUtils.fluid(Materials.UUMatter, 8_000),
                 MaterialLibAPI.getFluidStack(
@@ -321,8 +321,8 @@ public class MachineRecipes implements Runnable {
                 CustomItemList.enderLinkFluidCover.get(2),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 4),
                 new Object[] { Circuits.UEV.getIngredient(), 4 }, ItemList.Electric_Pump_UEV.get(2),
-                MaterialLibAPI.getStack(Materials.Infinity, Materials2Shapes.gearGt, (int) (4)),
-                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Materials2Shapes.screw, (int) (32)), },
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.gearGt, (int) (4)),
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.screw, (int) (32)), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 9 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials.Infinity,
@@ -343,7 +343,7 @@ public class MachineRecipes implements Runnable {
                 CustomItemList.enderLinkFluidCover.get(8),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 4),
                 new Object[] { Circuits.UIV.getIngredient(), 16 }, ItemList.Electric_Pump_UIV.get(8),
-                MaterialLibAPI.getStack(Materials.SpaceTime, Materials2Shapes.gearGt, (int) (4)),
+                MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.gearGt, (int) (4)),
                 metaStableOgScrew_64, },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 32 * INGOTS),
                 MaterialUtils.fluid(Materials.protohalkonitebase, 16 * INGOTS) },
@@ -358,7 +358,7 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 8),
                 Circuits.UIV.get(16),
                 ItemList.Electric_Pump_UIV.get(8),
-                MaterialLibAPI.getStack(Materials.SpaceTime, Materials2Shapes.gearGt, (int) (8)),
+                MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.gearGt, (int) (8)),
                 metaStableOgScrew_64,
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.protohalkonite, 16))
             .itemOutputs(ItemList.SpaceElevatorModulePumpT2.get(1))
@@ -378,8 +378,8 @@ public class MachineRecipes implements Runnable {
                 CustomItemList.enderLinkFluidCover.get(32),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackDwarfMatter, 4),
                 new Object[] { Circuits.UMV.getIngredient(), 16 }, ItemList.Electric_Pump_UMV.get(8),
-                MaterialLibAPI.getStack(Materials.BlackDwarfMatter, Materials2Shapes.gearGt, (int) (4)),
-                MaterialLibAPI.getStack(Materials.WhiteDwarfMatter, Materials2Shapes.screw, (int) (64)) },
+                MaterialLibAPI.getStack(Materials.BlackDwarfMatter, Shapes.gearGt, (int) (4)),
+                MaterialLibAPI.getStack(Materials.WhiteDwarfMatter, Shapes.screw, (int) (64)) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 1 * STACKS),
                 MaterialLibAPI.getFluidStack(
                     Materials.Eternity,
@@ -396,9 +396,9 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackDwarfMatter, 8),
                 Circuits.UMV.get(16),
                 ItemList.Electric_Pump_UMV.get(8),
-                MaterialLibAPI.getStack(Materials.BlackDwarfMatter, Materials2Shapes.gearGt, (int) (8)),
-                MaterialLibAPI.getStack(Materials.WhiteDwarfMatter, Materials2Shapes.screw, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Eternity, Materials2Shapes.plateDouble, (int) (16)))
+                MaterialLibAPI.getStack(Materials.BlackDwarfMatter, Shapes.gearGt, (int) (8)),
+                MaterialLibAPI.getStack(Materials.WhiteDwarfMatter, Shapes.screw, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Eternity, Shapes.plateDouble, (int) (16)))
             .itemOutputs(ItemList.SpaceElevatorModulePumpT3.get(1))
             .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 1 * STACKS))
             .duration(2 * MINUTE)
@@ -415,12 +415,12 @@ public class MachineRecipes implements Runnable {
             new Object[] { ItemList.SpaceElevatorBaseCasing.get(1),
                 new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 10782),
                 new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 1187),
-                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Materials2Shapes.gearGt, (int) (8)),
-                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Materials2Shapes.gearGtSmall, (int) (16)),
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.gearGt, (int) (8)),
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.gearGtSmall, (int) (16)),
                 ItemList.Robot_Arm_UHV.get(8), ItemList.Conveyor_Module_UHV.get(16), highComputationStationT3_32,
                 new Object[] { Circuits.UV.getIngredient(), 16 },
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 8),
-                MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.screw, (int) (32)) },
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.screw, (int) (32)) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 9 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials.Naquadria,
@@ -442,7 +442,7 @@ public class MachineRecipes implements Runnable {
             new Object[] { ItemList.SpaceElevatorBaseCasing.get(1),
                 new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 10784),
                 new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 12091),
-                MaterialLibAPI.getStack(Materials.TranscendentMetal, Materials2Shapes.gearGt, (int) (8)),
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.gearGt, (int) (8)),
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.protohalkonite, 16),
                 ItemList.Robot_Arm_UIV.get(8), ItemList.Conveyor_Module_UIV.get(16), highComputationStationT4_32,
                 new Object[] { Circuits.UIV.getIngredient(), 16 }, hypogenFrameBox_8, hypogenScrew_32 },
@@ -473,7 +473,7 @@ public class MachineRecipes implements Runnable {
                 ItemList.Robot_Arm_UXV.get(8), ItemList.Conveyor_Module_UXV.get(16), highComputationStationT5_32,
                 new Object[] { Circuits.UXV.getIngredient(), 16 },
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Universium, 8),
-                MaterialLibAPI.getStack(Materials.Universium, Materials2Shapes.screw, (int) (32)) },
+                MaterialLibAPI.getStack(Materials.Universium, Shapes.screw, (int) (32)) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 36 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials.BlackDwarfMatter,
@@ -501,10 +501,10 @@ public class MachineRecipes implements Runnable {
         // 4,
         // new Object[] { CustomItemList.Machine_Multi_Research.get(4), ItemList.Sensor_UHV.get(4),
         // new Object[] { Circuits.UHV.getIngredient(), 16 },
-        // MaterialLibAPI.getStack(Materials.Infinity, Materials2Shapes.gearGt, (int) (4)),
+        // MaterialLibAPI.getStack(Materials.Infinity, Shapes.gearGt, (int) (4)),
         // GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 4),
-        // MaterialLibAPI.getStack(Materials.CosmicNeutronium, Materials2Shapes.wireFine, (int) (64)),
-        // MaterialLibAPI.getStack(Materials.CosmicNeutronium, Materials2Shapes.wireFine, (int) (64)),
+        // MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.wireFine, (int) (64)),
+        // MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.wireFine, (int) (64)),
         // metaStableOgScrew_64,
         // GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Backings.SuperconductorUHV, 32) },
         // new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 32 * INGOTS),
@@ -526,7 +526,7 @@ public class MachineRecipes implements Runnable {
         // new Object[] { new ItemStack(GameRegistry.findItem("miscutils", "blockProjectBench"), 4),
         // ItemList.Emitter_UV.get(2), ItemList.Sensor_UV.get(2),
         // new Object[] { Circuits.UV.getIngredient(), 16 },
-        // MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.gearGt, (int) (4)),
+        // MaterialLibAPI.getStack(Materials.Neutronium, Shapes.gearGt, (int) (4)),
         // GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
         // new ItemStack(GameRegistry.findItem("structurelib", "item.structurelib.constructableTrigger"), 64),
         // titaniumBetaCScrew_64, },
@@ -607,7 +607,7 @@ public class MachineRecipes implements Runnable {
         // LV
         RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.toolHeadDrill, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Titanium, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_LV.get(8),
                 ItemList.Field_Generator_LV.get(2),
                 Circuits.HV.get(4),
@@ -627,7 +627,7 @@ public class MachineRecipes implements Runnable {
         // MV
         RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.toolHeadDrill, (int) (8)),
+                MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_MV.get(8),
                 ItemList.Field_Generator_MV.get(2),
                 Circuits.EV.get(4),
@@ -647,7 +647,7 @@ public class MachineRecipes implements Runnable {
         // HV
         RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.toolHeadDrill, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Iridium, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_HV.get(8),
                 ItemList.Field_Generator_HV.get(2),
                 Circuits.IV.get(4),
@@ -672,7 +672,7 @@ public class MachineRecipes implements Runnable {
             1000000,
             4,
             new Object[] {
-                MaterialLibAPI.getStack(Materials.Trinium, Materials2Shapes.toolHeadDrill, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Trinium, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_EV.get(8), ItemList.Field_Generator_EV.get(2),
                 new Object[] { Circuits.LuV.getIngredient(), 4 }, new ItemStack(AsteroidsItems.basicItem, 32, 0),
                 new ItemStack(AsteroidsItems.basicItem, 4, 1), ItemList.Sensor_EV.get(8) },
@@ -692,7 +692,7 @@ public class MachineRecipes implements Runnable {
             1000000,
             8,
             new Object[] {
-                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Materials2Shapes.toolHeadDrill, (int) (8)),
+                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_IV.get(8), ItemList.Field_Generator_IV.get(2),
                 new Object[] { Circuits.ZPM.getIngredient(), 4 },
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyPlateTier4", 32),
@@ -713,7 +713,7 @@ public class MachineRecipes implements Runnable {
             (int) TierEU.RECIPE_UHV,
             4,
             new Object[] {
-                MaterialLibAPI.getStack(Materials.Naquadria, Materials2Shapes.toolHeadDrill, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_LuV.get(8), ItemList.Field_Generator_LuV.get(2),
                 new Object[] { Circuits.ZPM.getIngredient(), 4 },
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyPlateTier5", 32),
@@ -737,7 +737,7 @@ public class MachineRecipes implements Runnable {
             (int) TierEU.RECIPE_UHV,
             8,
             new Object[] {
-                MaterialLibAPI.getStack(Materials.Neutronium, Materials2Shapes.toolHeadDrill, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_ZPM.get(8), ItemList.Field_Generator_ZPM.get(2),
                 new Object[] { Circuits.UV.getIngredient(), 2 },
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyPlateTier6", 32),
@@ -762,7 +762,7 @@ public class MachineRecipes implements Runnable {
             4,
             new Object[] {
                 MaterialLibAPI
-                    .getStack(Materials.CosmicNeutronium, Materials2Shapes.toolHeadDrill, (int) (8)),
+                    .getStack(Materials.CosmicNeutronium, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_UV.get(8), ItemList.Field_Generator_UV.get(2),
                 new Object[] { Circuits.UHV.getIngredient(), 4 },
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyPlateTier7", 32),
@@ -786,7 +786,7 @@ public class MachineRecipes implements Runnable {
             4000000,
             8,
             new Object[] {
-                MaterialLibAPI.getStack(Materials.Infinity, Materials2Shapes.toolHeadDrill, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_UHV.get(8), ItemList.Field_Generator_UHV.get(2),
                 new Object[] { Circuits.UEV.getIngredient(), 4 },
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyPlateTier8", 32),
@@ -813,7 +813,7 @@ public class MachineRecipes implements Runnable {
             8,
             new Object[] {
                 MaterialLibAPI
-                    .getStack(Materials.CosmicNeutronium, Materials2Shapes.toolHeadDrill, (int) (8)),
+                    .getStack(Materials.CosmicNeutronium, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_UEV.get(8), ItemList.Field_Generator_UEV.get(2),
                 new Object[] { Circuits.UIV.getIngredient(), 4 }, GTUtility.copyAmount(32, t9Plate),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier4", 8),
@@ -837,7 +837,7 @@ public class MachineRecipes implements Runnable {
             4,
             new Object[] {
                 MaterialLibAPI
-                    .getStack(Materials.CosmicNeutronium, Materials2Shapes.toolHeadDrill, (int) (8)),
+                    .getStack(Materials.CosmicNeutronium, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_UIV.get(8), ItemList.Field_Generator_UIV.get(2),
                 new Object[] { Circuits.UMV.getIngredient(), 4 }, GTUtility.copyAmount(64, t9Plate),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier4", 16),
@@ -860,7 +860,7 @@ public class MachineRecipes implements Runnable {
             (int) TierEU.RECIPE_UEV,
             8,
             new Object[] {
-                MaterialLibAPI.getStack(Materials.SpaceTime, Materials2Shapes.toolHeadDrill, (int) (8)),
+                MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_UMV.get(8), ItemList.Field_Generator_UMV.get(2),
                 new Object[] { Circuits.UXV.getIngredient(), 4 }, GTUtility.copyAmount(64, t9Plate),
                 GTUtility.copyAmount(64, t9Plate),
@@ -881,7 +881,7 @@ public class MachineRecipes implements Runnable {
             16000000,
             4,
             new Object[] {
-                MaterialLibAPI.getStack(Materials.Eternity, Materials2Shapes.toolHeadDrill, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Eternity, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_UXV.get(8), ItemList.Field_Generator_UXV.get(2),
                 new Object[] { Circuits.MAX.getIngredient(), 4 }, GTUtility.copyAmount(64, t9Plate),
                 GTUtility.copyAmount(64, t9Plate), GTUtility.copyAmount(64, t9Plate), GTUtility.copyAmount(64, t9Plate),

@@ -37,6 +37,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -58,7 +59,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -949,7 +949,7 @@ public final class RecipeMaps {
                     .setOutputs(
                         aOutput1,
                         aOutput2,
-                        MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dust, (int) (aDustAmount)))
+                        MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (aDustAmount)))
                     .setDuration(aDuration * 2 / 3)
                     .setOutputChances(cokeChances);
             }
@@ -971,7 +971,7 @@ public final class RecipeMaps {
                 .setOutputs(
                     aOutput1,
                     aOutput2,
-                    MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dust, (int) (aDustAmount)))
+                    MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (aDustAmount)))
                 .setDuration(aDuration * 2 / 3)
                 .setOutputChances(cactusSugarCokeChances);
             coll.derive()
@@ -979,7 +979,7 @@ public final class RecipeMaps {
                 .setOutputs(
                     aOutput1,
                     aOutput2,
-                    MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dust, (int) (aDustAmount)))
+                    MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (aDustAmount)))
                 .setDuration(aDuration * 2 / 3)
                 .setOutputChances(cactusSugarCokeChances);
             if ((aInput1 == null || aInput1.stackSize <= 6) && (aInput2 == null || aInput2.stackSize <= 6)
@@ -1006,7 +1006,7 @@ public final class RecipeMaps {
                             aOutput1,
                             aOutput2,
                             MaterialLibAPI
-                                .getStack(Materials.Ash, Materials2Shapes.dust, (int) (aCoalAmount / 2)))
+                                .getStack(Materials.Ash, Shapes.dust, (int) (aCoalAmount / 2)))
                         .setDuration(aDuration * 20 / 3);
                 }
                 ItemStack cactusCokeBlock = GregtechItemList.BlockCactusCoke.get(aCoalAmount * 2L);
@@ -1017,7 +1017,7 @@ public final class RecipeMaps {
                         aOutput1,
                         aOutput2,
                         MaterialLibAPI
-                            .getStack(Materials.Ash, Materials2Shapes.dust, (int) (aCoalAmount * 2)))
+                            .getStack(Materials.Ash, Shapes.dust, (int) (aCoalAmount * 2)))
                     .setDuration(aDuration * 20 / 3);
                 coll.derive()
                     .setInputs(aInput1, aInput2, sugarCokeBlock)
@@ -1025,7 +1025,7 @@ public final class RecipeMaps {
                         aOutput1,
                         aOutput2,
                         MaterialLibAPI
-                            .getStack(Materials.Ash, Materials2Shapes.dust, (int) (aCoalAmount * 2)))
+                            .getStack(Materials.Ash, Shapes.dust, (int) (aCoalAmount * 2)))
                     .setDuration(aDuration * 20 / 3);
                 if (Thaumcraft.isModLoaded()) {
                     ItemStack alumentum = GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", aCoalAmount * 2L, 0);
@@ -1035,7 +1035,7 @@ public final class RecipeMaps {
                             aOutput1,
                             aOutput2,
                             MaterialLibAPI
-                                .getStack(Materials.Ash, Materials2Shapes.dust, (int) (aCoalAmount * 2)))
+                                .getStack(Materials.Ash, Shapes.dust, (int) (aCoalAmount * 2)))
                         .setDuration(aDuration * 20 / 3);
                 }
             }

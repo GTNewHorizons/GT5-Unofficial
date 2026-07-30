@@ -13,6 +13,7 @@ import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -24,7 +25,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -53,7 +53,7 @@ public class NaniteChain {
                 ItemList.Electric_Motor_UV.get(32),
                 new Object[] { Circuits.LuV.getIngredient(), 16 },
                 GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 32),
-                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Materials2Shapes.plateSuperdense, (int) (4)))
+                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.plateSuperdense, (int) (4)))
             .fluidInputs(
                 MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 32 * INGOTS),
                 MaterialLibAPI
@@ -75,9 +75,9 @@ public class NaniteChain {
                 new Object[] { Circuits.UV.getIngredient(), 16 },
                 ItemList.Robot_Arm_UV.get(16),
                 ItemList.Circuit_Chip_Stemcell.get(32),
-                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Materials2Shapes.ring, (int) (32)),
-                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Materials2Shapes.stick, (int) (16)),
-                MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dust, (int) (64)))
+                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.ring, (int) (32)),
+                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.stick, (int) (16)),
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (64)))
             .fluidInputs(
                 MaterialUtils.fluid(Materials.UUMatter, 10_000),
                 MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 32 * INGOTS))
@@ -199,7 +199,7 @@ public class NaniteChain {
                 aUMVTierLens,
                 GTUtility.copyAmount(
                     0,
-                    MaterialLibAPI.getStack(Materials.MagnetoResonatic, Materials2Shapes.lens, 1)), // Magneto
+                    MaterialLibAPI.getStack(Materials.MagnetoResonatic, Shapes.lens, 1)), // Magneto
                 // lens
                 GregtechItemList.Laser_Lens_Special.get(0), // Quantum Anomaly, couldn't find any better
                                                             // naming
@@ -225,7 +225,7 @@ public class NaniteChain {
                 aUMVTierLens,
                 GTUtility.copyAmount(
                     0,
-                    MaterialLibAPI.getStack(Materials.MagnetoResonatic, Materials2Shapes.lens, 1)), // Magneto
+                    MaterialLibAPI.getStack(Materials.MagnetoResonatic, Shapes.lens, 1)), // Magneto
                 // lens
                 GregtechItemList.Laser_Lens_Special.get(0), // Quantum Anomaly, couldn't find any better
                                                             // naming
@@ -251,7 +251,7 @@ public class NaniteChain {
                 aUMVTierLens,
                 GTUtility.copyAmount(
                     0,
-                    MaterialLibAPI.getStack(Materials.MagnetoResonatic, Materials2Shapes.lens, 1)), // Magneto
+                    MaterialLibAPI.getStack(Materials.MagnetoResonatic, Shapes.lens, 1)), // Magneto
                 // lens
                 // Quantum Anomaly, couldn't find any better naming.
                 GregtechItemList.Laser_Lens_Special.get(0),

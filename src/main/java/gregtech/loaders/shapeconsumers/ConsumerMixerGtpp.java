@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingMixerGtpp;
 
 /// Dispatches [ProcessingMixerGtpp]'s composite mixer recipe for every material [ProcessingMixerGtpp#isEligible]
@@ -15,7 +15,7 @@ public final class ConsumerMixerGtpp {
 
     static void register() {
         ShapeConsumerSupport.delegate(
-            Materials2Shapes.dust,
+            Shapes.dust,
             OrePrefixes.dust,
             ProcessingMixerGtpp::isEligible,
             () -> ProcessingMixerGtpp.INSTANCE);

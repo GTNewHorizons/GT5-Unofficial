@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -16,7 +17,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -26,8 +26,8 @@ public class Mixer implements Runnable {
     public void run() {
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Thorium232, Materials2Shapes.dust, 10),
-                MaterialLibAPI.getStack(Materials.Uranium235, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Thorium232, Shapes.dust, 10),
+                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (1)))
             .circuit(2)
             .itemOutputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials))
             .duration(20 * SECONDS)

@@ -49,7 +49,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -602,7 +602,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         HashMap<Integer, Integer> merged = new HashMap<>();
         for (ItemStack stack : aList) {
             if (doesVoidStone && GTUtility.areStacksEqual(
-                MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1)),
                 stack)) continue;
             int id = GTUtility.stackToInt(stack);
             if (id != 0) {

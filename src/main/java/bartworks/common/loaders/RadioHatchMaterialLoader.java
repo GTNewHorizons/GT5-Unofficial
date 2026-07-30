@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -16,7 +17,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
@@ -104,10 +104,10 @@ public class RadioHatchMaterialLoader {
 
             int level = (int) MaterialUtils.protons(material);
             if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.stick)) {
-                radioHatchMaterialAdder(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 1), level, 1);
+                radioHatchMaterialAdder(MaterialLibAPI.getStack(material, Shapes.stick, 1), level, 1);
             }
             if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.stickLong)) {
-                radioHatchMaterialAdder(MaterialLibAPI.getStack(material, Materials2Shapes.stickLong, 1), level, 2);
+                radioHatchMaterialAdder(MaterialLibAPI.getStack(material, Shapes.stickLong, 1), level, 2);
             }
         }
 

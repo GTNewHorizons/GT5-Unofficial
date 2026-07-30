@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -31,7 +32,6 @@ import gnu.trove.strategy.HashingStrategy;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialRefStack;
@@ -253,11 +253,11 @@ public class EyeOfHarmonyRecipe {
     }
 
     private ItemStack getStoneDustType(String key) {
-        ItemStack placeholder = MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1));
+        ItemStack placeholder = MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1));
         return switch (key) {
-            case "Ne" -> MaterialLibAPI.getStack(Materials.Netherrack, Materials2Shapes.dust, (int) (1));
+            case "Ne" -> MaterialLibAPI.getStack(Materials.Netherrack, Shapes.dust, (int) (1));
             case "ED", "VA", "EA" -> MaterialLibAPI
-                .getStack(Materials.Endstone, Materials2Shapes.dust, (int) (1));
+                .getStack(Materials.Endstone, Shapes.dust, (int) (1));
             case "Mo", "Ra" -> getModItem(NewHorizonsCoreMod.ID, "MoonStoneDust", 1, placeholder);
             case "De" -> getModItem(NewHorizonsCoreMod.ID, "DeimosStoneDust", 1, placeholder);
             case "Ma" -> getModItem(NewHorizonsCoreMod.ID, "MarsStoneDust", 1, placeholder);
@@ -478,9 +478,9 @@ public class EyeOfHarmonyRecipe {
     /// a usable bonus output -- the [GTMaterialProperties#COMPOSITION]-based port of the retired gtPlusPlus
     /// `Material#hasSolidForm`, which likewise required all four shapes present (not merely one).
     private static boolean hasSolidForm(com.ruling_0.materiallib.api.Material material) {
-        return material.hasShape(Materials2Shapes.dust) && material.hasShape(Materials2BlockShapes.block)
-            && material.hasShape(Materials2Shapes.dustTiny)
-            && material.hasShape(Materials2Shapes.dustSmall);
+        return material.hasShape(Shapes.dust) && material.hasShape(Materials2BlockShapes.block)
+            && material.hasShape(Shapes.dustTiny)
+            && material.hasShape(Shapes.dustSmall);
     }
 
     /// A breadth-first walk of `material`'s [GTMaterialProperties#COMPOSITION] tree, collecting every leaf

@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -39,7 +40,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -597,12 +597,12 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         // Lenses of werkstoff-origin materials, keyed by the legacy werkstoff id their colour was chosen for.
         for (int[] row : WERKSTOFF_LENS_COLORS) {
             Material material = Materials2WerkstoffIndex.get(row[0]);
-            if (material == null || !material.hasShape(Materials2Shapes.lens)) {
+            if (material == null || !material.hasShape(Shapes.lens)) {
                 GTLog.err.println("MTEIndustrialLaserEngraver: werkstoff " + row[0] + " no longer carries a lens");
                 continue;
             }
             lensColors.put(
-                getUniqueIdentifier(MaterialLibAPI.getStack(material, Materials2Shapes.lens, 1)),
+                getUniqueIdentifier(MaterialLibAPI.getStack(material, Shapes.lens, 1)),
                 Colors.values()[row[1]]);
         }
         lensColors.put("MU-metaitem.0132140", Colors.Purple);

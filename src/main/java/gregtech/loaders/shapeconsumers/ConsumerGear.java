@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingGear;
 
 /// Dispatches [ProcessingGear]'s `gearGt`/`gearGtSmall` recipe generation for MaterialLib's cutover gear
@@ -11,8 +11,8 @@ public final class ConsumerGear {
     private ConsumerGear() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2Shapes.gearGt, OrePrefixes.gearGt, () -> ProcessingGear.INSTANCE);
+        ShapeConsumerSupport.delegate(Shapes.gearGt, OrePrefixes.gearGt, () -> ProcessingGear.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.gearGtSmall, OrePrefixes.gearGtSmall, () -> ProcessingGear.INSTANCE);
+            .delegate(Shapes.gearGtSmall, OrePrefixes.gearGtSmall, () -> ProcessingGear.INSTANCE);
     }
 }

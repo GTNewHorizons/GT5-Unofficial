@@ -2,7 +2,7 @@ package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2OreShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingIceOre;
 
 /// Dispatches [ProcessingIceOre]'s `ore`/`rawOre` recipe generation (a second, independent registrator on
@@ -13,6 +13,6 @@ public final class ConsumerIceOre {
 
     static void register() {
         ShapeConsumerSupport.delegate(Materials2OreShapes.ore, OrePrefixes.ore, () -> ProcessingIceOre.INSTANCE);
-        ShapeConsumerSupport.delegate(Materials2Shapes.rawOre, OrePrefixes.rawOre, () -> ProcessingIceOre.INSTANCE);
+        ShapeConsumerSupport.delegate(Shapes.rawOre, OrePrefixes.rawOre, () -> ProcessingIceOre.INSTANCE);
     }
 }

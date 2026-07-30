@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -15,7 +16,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -34,17 +34,17 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
         if (aOreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Lithium, Materials2Shapes.plate, (int) (2)),
+                    MaterialLibAPI.getStack(Materials.Lithium, Shapes.plate, (int) (2)),
                     GTUtility.copyAmount(0L, aStack))
-                .itemOutputs(MaterialLibAPI.getStack(Materials.Lithium7, Materials2Shapes.plateDouble, 1))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.Lithium7, Shapes.plateDouble, 1))
                 .duration(4 * MINUTES)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(laserEngraverRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Lithium, Materials2Shapes.dust, (int) (3)),
+                    MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, (int) (3)),
                     GTUtility.copyAmount(0L, aStack))
-                .itemOutputs(MaterialLibAPI.getStack(Materials.Lithium7, Materials2Shapes.dust, 1))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.Lithium7, Shapes.dust, 1))
                 .duration(2 * MINUTES)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(laserEngraverRecipes);

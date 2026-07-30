@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -69,7 +70,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.Materials2IDIndex;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -497,11 +497,11 @@ public class GTMod {
         GTOreDictUnificator.addItemData(
             GTModHandler.getRecipeOutput(
                 null,
-                MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.ingot, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, (int) (1)),
                 null,
-                MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.ingot, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, (int) (1)),
                 null,
-                MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.ingot, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, (int) (1)),
                 null,
                 null,
                 null),

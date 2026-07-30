@@ -67,7 +67,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -84,7 +84,7 @@ public class RecipesGeneral {
             GregtechItemList.BlueprintBase.get(2),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PL ", "PL ", "LL ", 'P', new ItemStack(Items.paper), 'L',
-                MaterialLibAPI.getStack(Materials.Lazurite, Materials2Shapes.dust, (int) (1)) });
+                MaterialLibAPI.getStack(Materials.Lazurite, Shapes.dust, (int) (1)) });
 
         // Rainforest Oak Sapling
         GTModHandler.addCraftingRecipe(
@@ -94,7 +94,7 @@ public class RecipesGeneral {
 
         // Potin
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.Potin, Materials2Shapes.dust, 5),
+            MaterialLibAPI.getStack(Materials.Potin, Shapes.dust, 5),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "dustLead", "dustBronze", "dustTin", "dustLead", "dustBronze" });
 
@@ -104,7 +104,7 @@ public class RecipesGeneral {
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "dustGold", "dustGold", "dustCopper" });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.Tumbaga, Materials2Shapes.dust, 10),
+            MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.dust, 10),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { GregtechItemList.TumbagaMixDust.get(1), GregtechItemList.TumbagaMixDust.get(1),
                 GregtechItemList.TumbagaMixDust.get(1), "dustGold" });

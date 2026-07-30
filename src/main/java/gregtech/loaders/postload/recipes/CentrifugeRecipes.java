@@ -17,6 +17,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -30,7 +31,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.util.GTOreDictUnificator;
@@ -57,8 +57,8 @@ public class CentrifugeRecipes implements Runnable {
             .itemOutputs(
                 ItemList.IC2_Resin.get(1L),
                 ItemList.IC2_Plantball.get(1L),
-                MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Wood, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, (int) (1)))
             .outputChances(5000, 3750, 2500, 2500)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (60)))
@@ -67,10 +67,10 @@ public class CentrifugeRecipes implements Runnable {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.InfusedGold, Materials2Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.InfusedGold, Shapes.dust, (int) (1)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.dust, (int) (1)),
                 getModItem(Thaumcraft.ID, "ItemResource", 2L, 14))
             .outputChances(10000, 10000, 9000)
             .fluidInputs(
@@ -94,14 +94,14 @@ public class CentrifugeRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.PlatinumGroupSludge, Materials2Shapes.dust, (int) (3)))
+                MaterialLibAPI.getStack(Materials.PlatinumGroupSludge, Shapes.dust, (int) (3)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, (int) (3)),
-                MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.dust, (int) (3)),
-                MaterialLibAPI.getStack(Materials.Platinum, Materials2Shapes.dust, (int) (3)),
-                MaterialLibAPI.getStack(Materials.Palladium, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, (int) (3)),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.dust, (int) (3)),
+                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, (int) (3)),
+                MaterialLibAPI.getStack(Materials.Palladium, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Iridium, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Osmium, Shapes.dust, (int) (1)))
             .outputChances(10000, 10000, 10000, 9500, 9000, 8500)
             .duration(2 * MINUTES + 15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -109,12 +109,12 @@ public class CentrifugeRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Nickel, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Antimony, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Nickel, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Antimony, Shapes.dust, (int) (1)))
             .outputChances(10000, 4000, 2000, 2000, 2000, 2000)
             .fluidInputs(
                 MaterialLibAPI
@@ -440,8 +440,8 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.sand, 1, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Diamond, Materials2Shapes.dustTiny, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Diamond, Shapes.dustTiny, (int) (1)),
                 new ItemStack(Blocks.sand, 1))
             .outputChances(5000, 100, 5000)
             .duration(30 * SECONDS)
@@ -452,7 +452,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.dirt, 1, 32767))
             .itemOutputs(
                 ItemList.IC2_Plantball.get(1),
-                MaterialLibAPI.getStack(Materials.Clay, Materials2Shapes.dustTiny, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Clay, Shapes.dustTiny, (int) (1)),
                 new ItemStack(Blocks.sand, 1))
             .outputChances(1250, 5000, 5000)
             .duration(12 * SECONDS + 10 * TICKS)
@@ -463,7 +463,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.grass, 1, 32767))
             .itemOutputs(
                 ItemList.IC2_Plantball.get(1),
-                MaterialLibAPI.getStack(Materials.Clay, Materials2Shapes.dustTiny, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Clay, Shapes.dustTiny, (int) (1)),
                 new ItemStack(Blocks.sand, 1))
             .outputChances(2500, 5000, 5000)
             .duration(12 * SECONDS + 10 * TICKS)
@@ -475,7 +475,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemOutputs(
                 new ItemStack(Blocks.brown_mushroom, 1),
                 new ItemStack(Blocks.red_mushroom, 1),
-                MaterialLibAPI.getStack(Materials.Clay, Materials2Shapes.dustTiny, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Clay, Shapes.dustTiny, (int) (1)),
                 new ItemStack(Blocks.sand, 1))
             .outputChances(2500, 2500, 5000, 5000)
             .duration(32 * SECONDS + 10 * TICKS)
@@ -485,7 +485,7 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Resin.get(1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.RawRubber, Materials2Shapes.dust, (int) (3)),
+                MaterialLibAPI.getStack(Materials.RawRubber, Shapes.dust, (int) (3)),
                 ItemList.IC2_Plantball.get(1))
             .outputChances(10000, 1000)
             .fluidOutputs(
@@ -496,11 +496,11 @@ public class CentrifugeRecipes implements Runnable {
 
         if (!Mods.NuclearHorizons.isModLoaded()) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(Materials.Uranium, Materials2Shapes.dust, (int) (1)))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (1)))
                 .circuit(10)
                 .itemOutputs(
-                    MaterialLibAPI.getStack(Materials.Uranium235, Materials2Shapes.dust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials.Plutonium, Materials2Shapes.dust, (int) (1)))
+                    MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (1)))
                 .outputChances(1000, 500)
                 .duration(1 * MINUTES + 40 * SECONDS)
                 .eut((int) TierEU.RECIPE_HV)
@@ -509,8 +509,8 @@ public class CentrifugeRecipes implements Runnable {
             // Uranium Enrichment in Centrifuge by adding Fluorine (Uranium Hexafluoride)
 
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(Materials.Uranium, Materials2Shapes.dust, (int) (1)))
-                .itemOutputs(MaterialLibAPI.getStack(Materials.Uranium235, Materials2Shapes.dust, (int) (1)))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (1)))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (1)))
                 .outputChances(10000)
                 .fluidInputs(
                     MaterialLibAPI
@@ -520,10 +520,10 @@ public class CentrifugeRecipes implements Runnable {
                 .addTo(centrifugeRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(Materials.Plutonium, Materials2Shapes.dust, (int) (1)))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (1)))
                 .itemOutputs(
-                    MaterialLibAPI.getStack(Materials.Plutonium241, Materials2Shapes.dustTiny, (int) (1)),
-                    MaterialLibAPI.getStack(Materials.Uranium, Materials2Shapes.dustTiny, (int) (1)))
+                    MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dustTiny, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Uranium, Shapes.dustTiny, (int) (1)))
                 .outputChances(2000, 3000)
                 .duration(1 * MINUTES + 20 * SECONDS)
                 .eut(320)
@@ -531,20 +531,20 @@ public class CentrifugeRecipes implements Runnable {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.dust, (int) (9)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, (int) (9)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Naquadria, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dust, (int) (1)))
             .outputChances(5000, 1000)
             .duration(24 * MINUTES)
             .eut(320)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.NaquadahEnriched, Materials2Shapes.dust, (int) (4)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.dust, (int) (4)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Naquadria, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Naquadah, Shapes.dust, (int) (1)))
             .outputChances(2000, 3000)
             .duration(21 * MINUTES + 20 * SECONDS)
             .eut(640)
@@ -579,19 +579,19 @@ public class CentrifugeRecipes implements Runnable {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Glowstone, Materials2Shapes.dust, (int) (2)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, (int) (2)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.dust, (int) (1)))
             .duration(48 * SECONDS + 16 * TICKS)
             .eut(80)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Endstone, Materials2Shapes.dust, (int) (36)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Endstone, Shapes.dust, (int) (36)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Tungstate, Materials2Shapes.dust, (int) (3)),
-                MaterialLibAPI.getStack(Materials.Platinum, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Tungstate, Shapes.dust, (int) (3)),
+                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, (int) (1)),
                 new ItemStack(Blocks.sand, 36))
             .outputChances(3750, 2500, 9000)
             .fluidOutputs(
@@ -601,12 +601,12 @@ public class CentrifugeRecipes implements Runnable {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Netherrack, Materials2Shapes.dust, (int) (36)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Netherrack, Shapes.dust, (int) (36)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dust, (int) (9)),
-                MaterialLibAPI.getStack(Materials.Coal, Materials2Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, (int) (4)),
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, (int) (9)),
+                MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, (int) (4)),
+                MaterialLibAPI.getStack(Materials.Gold, Shapes.dust, (int) (1)))
             .outputChances(5625, 9900, 5625, 2500)
             .duration(4 * MINUTES + 48 * SECONDS)
             .eut(20)
@@ -615,12 +615,12 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .circuit(10)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Magnesia, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Quicklime, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Magnesia, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, (int) (1)),
                 GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Gold, 4),
-                MaterialLibAPI.getStack(Materials.Sapphire, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Tantalite, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Sapphire, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Tantalite, Shapes.dust, (int) (1)))
             .outputChances(5000, 1000, 1000, 250, 1250, 500)
             .fluidInputs(GTUtility.getLava(400))
             .duration(16 * SECONDS)
@@ -630,12 +630,12 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .circuit(20)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, (int) (5)),
-                MaterialLibAPI.getStack(Materials.Magnesia, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Quicklime, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, (int) (5)),
+                MaterialLibAPI.getStack(Materials.Magnesia, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, (int) (1)),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1),
-                MaterialLibAPI.getStack(Materials.Sapphire, Materials2Shapes.dust, (int) (3)),
-                MaterialLibAPI.getStack(Materials.Tantalite, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Sapphire, Shapes.dust, (int) (3)),
+                MaterialLibAPI.getStack(Materials.Tantalite, Shapes.dust, (int) (1)))
             .outputChances(9000, 9000, 9000, 1000, 3750, 4500)
             .fluidInputs(GTUtility.getLava(3_600))
             .duration(2 * MINUTES + 24 * SECONDS)
@@ -645,8 +645,8 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.soul_sand, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Saltpeter, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Coal, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Saltpeter, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, (int) (1)),
                 new ItemStack(Blocks.sand, 1))
             .outputChances(1000, 700, 9000)
             .fluidOutputs(
@@ -658,12 +658,12 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .circuit(10)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.nugget, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.nugget, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Silver, Materials2Shapes.nugget, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Phosphorus, Materials2Shapes.dustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Scheelite, Materials2Shapes.dustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Bauxite, Materials2Shapes.dustSmall, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.nugget, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.nugget, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Silver, Shapes.nugget, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Phosphorus, Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Scheelite, Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Bauxite, Shapes.dustSmall, (int) (1)))
             .outputChances(2000, 1000, 250, 50, 250, 500)
             .fluidInputs(getFluidStack("ic2pahoehoelava", 100))
             .duration(2 * SECONDS)
@@ -673,12 +673,12 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .circuit(20)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.ingot, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.ingot, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Silver, Materials2Shapes.ingot, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Phosphorus, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Scheelite, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Bauxite, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.ingot, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Tin, Shapes.ingot, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Silver, Shapes.ingot, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Phosphorus, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Scheelite, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Bauxite, Shapes.dust, (int) (1)))
             .outputChances(8000, 4000, 1000, 450, 2250, 4500)
             .fluidInputs(getFluidStack("ic2pahoehoelava", 3_600))
             .duration(16 * SECONDS + 8 * TICKS)
@@ -689,12 +689,12 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 45))
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.BasalticMineralSand, Materials2Shapes.dustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Olivine, Materials2Shapes.dustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Obsidian, Materials2Shapes.dustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Basalt, Materials2Shapes.dustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Flint, Materials2Shapes.dustSmall, (int) (1)),
-                MaterialLibAPI.getStack(Materials.RareEarth, Materials2Shapes.dustSmall, (int) (1)))
+                MaterialLibAPI.getStack(Materials.BasalticMineralSand, Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Olivine, Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Obsidian, Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Basalt, Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Flint, Shapes.dustSmall, (int) (1)),
+                MaterialLibAPI.getStack(Materials.RareEarth, Shapes.dustSmall, (int) (1)))
             .outputChances(2000, 2000, 2000, 2000, 2000, 2000)
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(20)
@@ -704,12 +704,12 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 36L, 45))
             .circuit(2)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.BasalticMineralSand, Materials2Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Olivine, Materials2Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Obsidian, Materials2Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Basalt, Materials2Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Flint, Materials2Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.RareEarth, Materials2Shapes.dust, (int) (2)))
+                MaterialLibAPI.getStack(Materials.BasalticMineralSand, Shapes.dust, (int) (2)),
+                MaterialLibAPI.getStack(Materials.Olivine, Shapes.dust, (int) (2)),
+                MaterialLibAPI.getStack(Materials.Obsidian, Shapes.dust, (int) (2)),
+                MaterialLibAPI.getStack(Materials.Basalt, Shapes.dust, (int) (2)),
+                MaterialLibAPI.getStack(Materials.Flint, Shapes.dust, (int) (2)),
+                MaterialLibAPI.getStack(Materials.RareEarth, Shapes.dust, (int) (2)))
             .outputChances(9000, 9000, 9000, 9000, 9000, 9000)
             .duration(25 * SECONDS + 18 * TICKS)
             .eut(80)
@@ -718,14 +718,14 @@ public class CentrifugeRecipes implements Runnable {
         // Ash centrifuge recipes
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dust, (int) (36)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (36)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Quicklime, Materials2Shapes.dust, (int) (18)),
-                MaterialLibAPI.getStack(Materials.Potash, Materials2Shapes.dust, (int) (9)),
-                MaterialLibAPI.getStack(Materials.Magnesia, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.PhosphorousPentoxide, Materials2Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.SodaAsh, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.BandedIron, Materials2Shapes.dust, (int) (4)))
+                MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, (int) (18)),
+                MaterialLibAPI.getStack(Materials.Potash, Shapes.dust, (int) (9)),
+                MaterialLibAPI.getStack(Materials.Magnesia, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.PhosphorousPentoxide, Shapes.dust, (int) (2)),
+                MaterialLibAPI.getStack(Materials.SodaAsh, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.BandedIron, Shapes.dust, (int) (4)))
             .outputChances(6400, 6000, 4500, 10000, 10000, 10000)
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_LV)
@@ -734,28 +734,28 @@ public class CentrifugeRecipes implements Runnable {
         // Stone Dust and Metal Mixture centrifuge recipes
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (36)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (36)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Quartzite, Materials2Shapes.dust, (int) (9)),
-                MaterialLibAPI.getStack(Materials.PotassiumFeldspar, Materials2Shapes.dust, (int) (9)),
-                MaterialLibAPI.getStack(Materials.Marble, Materials2Shapes.dust, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Biotite, Materials2Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.MetalMixture, Materials2Shapes.dust, (int) (3)),
-                MaterialLibAPI.getStack(Materials.Sodalite, Materials2Shapes.dust, (int) (2)))
+                MaterialLibAPI.getStack(Materials.Quartzite, Shapes.dust, (int) (9)),
+                MaterialLibAPI.getStack(Materials.PotassiumFeldspar, Shapes.dust, (int) (9)),
+                MaterialLibAPI.getStack(Materials.Marble, Shapes.dust, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Biotite, Shapes.dust, (int) (4)),
+                MaterialLibAPI.getStack(Materials.MetalMixture, Shapes.dust, (int) (3)),
+                MaterialLibAPI.getStack(Materials.Sodalite, Shapes.dust, (int) (2)))
             .outputChances(10000, 10000, 10000, 10000, 10000, 10000)
             .duration(7 * MINUTES + 12 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.MetalMixture, Materials2Shapes.dust, (int) (36)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.MetalMixture, Shapes.dust, (int) (36)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.BandedIron, Materials2Shapes.dust, (int) (9)),
-                MaterialLibAPI.getStack(Materials.Bauxite, Materials2Shapes.dust, (int) (9)),
-                MaterialLibAPI.getStack(Materials.Pyrolusite, Materials2Shapes.dust, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Barite, Materials2Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.Chromite, Materials2Shapes.dust, (int) (3)),
-                MaterialLibAPI.getStack(Materials.Ilmenite, Materials2Shapes.dust, (int) (2)))
+                MaterialLibAPI.getStack(Materials.BandedIron, Shapes.dust, (int) (9)),
+                MaterialLibAPI.getStack(Materials.Bauxite, Shapes.dust, (int) (9)),
+                MaterialLibAPI.getStack(Materials.Pyrolusite, Shapes.dust, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Barite, Shapes.dust, (int) (4)),
+                MaterialLibAPI.getStack(Materials.Chromite, Shapes.dust, (int) (3)),
+                MaterialLibAPI.getStack(Materials.Ilmenite, Shapes.dust, (int) (2)))
             .outputChances(10000, 10000, 10000, 10000, 10000, 10000)
             .duration(10 * MINUTES + 56 * SECONDS + 5 * TICKS)
             .eut((int) TierEU.RECIPE_EV)
@@ -780,10 +780,10 @@ public class CentrifugeRecipes implements Runnable {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.DarkAsh, Materials2Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.DarkAsh, Shapes.dust, (int) (1)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (1)))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
@@ -798,9 +798,9 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.gunpowder, 6))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Saltpeter, Materials2Shapes.dust, (int) (2)),
-                MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Charcoal, Materials2Shapes.dust, (int) (3)))
+                MaterialLibAPI.getStack(Materials.Saltpeter, Shapes.dust, (int) (2)),
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Charcoal, Shapes.dust, (int) (3)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(centrifugeRecipes);
@@ -811,7 +811,7 @@ public class CentrifugeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(combs, 1, 144))
                 .circuit(1)
-                .itemOutputs(MaterialLibAPI.getStack(Materials.InfusedAir, Materials2Shapes.gem, (int) (1)))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.InfusedAir, Shapes.gem, (int) (1)))
                 .duration(51 * SECONDS + 4 * TICKS)
                 .eut(12)
                 .addTo(centrifugeRecipes);
@@ -821,7 +821,7 @@ public class CentrifugeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(combs, 1, 146))
                 .circuit(1)
-                .itemOutputs(MaterialLibAPI.getStack(Materials.InfusedFire, Materials2Shapes.gem, (int) (1)))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.InfusedFire, Shapes.gem, (int) (1)))
                 .duration(51 * SECONDS + 4 * TICKS)
                 .eut(12)
                 .addTo(centrifugeRecipes);
@@ -831,7 +831,7 @@ public class CentrifugeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(combs, 1, 147))
                 .circuit(1)
-                .itemOutputs(MaterialLibAPI.getStack(Materials.InfusedWater, Materials2Shapes.gem, (int) (1)))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.InfusedWater, Shapes.gem, (int) (1)))
                 .duration(51 * SECONDS + 4 * TICKS)
                 .eut(12)
                 .addTo(centrifugeRecipes);
@@ -841,7 +841,7 @@ public class CentrifugeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(combs, 1, 145))
                 .circuit(1)
-                .itemOutputs(MaterialLibAPI.getStack(Materials.InfusedEarth, Materials2Shapes.gem, (int) (1)))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.InfusedEarth, Shapes.gem, (int) (1)))
                 .duration(51 * SECONDS + 4 * TICKS)
                 .eut(12)
                 .addTo(centrifugeRecipes);
@@ -851,7 +851,7 @@ public class CentrifugeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(combs, 1, 148))
                 .circuit(1)
-                .itemOutputs(MaterialLibAPI.getStack(Materials.InfusedOrder, Materials2Shapes.gem, (int) (1)))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.InfusedOrder, Shapes.gem, (int) (1)))
                 .duration(51 * SECONDS + 4 * TICKS)
                 .eut(12)
                 .addTo(centrifugeRecipes);
@@ -862,7 +862,7 @@ public class CentrifugeRecipes implements Runnable {
                 .itemInputs(new ItemStack(combs, 1, 149))
                 .circuit(1)
                 .itemOutputs(
-                    MaterialLibAPI.getStack(Materials.InfusedEntropy, Materials2Shapes.gem, (int) (1)))
+                    MaterialLibAPI.getStack(Materials.InfusedEntropy, Shapes.gem, (int) (1)))
                 .duration(51 * SECONDS + 4 * TICKS)
                 .eut(12)
                 .addTo(centrifugeRecipes);
@@ -939,10 +939,10 @@ public class CentrifugeRecipes implements Runnable {
         // Endereye recycling
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.EnderEye, Materials2Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.EnderEye, Shapes.dust, (int) (1)))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1),
-                MaterialLibAPI.getStack(Materials.EnderPearl, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.EnderPearl, Shapes.dust, (int) (1)))
             .duration(32 * SECONDS + 4 * TICKS)
             .eut(10)
             .addTo(centrifugeRecipes);
@@ -950,10 +950,10 @@ public class CentrifugeRecipes implements Runnable {
         // Realgar recycling
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Realgar, Materials2Shapes.dust, (int) (2)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Realgar, Shapes.dust, (int) (2)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Arsenic, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Arsenic, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, (int) (1)))
             .duration(21 * SECONDS + 4 * TICKS)
             .eut(10)
             .addTo(centrifugeRecipes);
@@ -961,12 +961,12 @@ public class CentrifugeRecipes implements Runnable {
         // Cryotheum recycling
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Cryotheum, Materials2Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Cryotheum, Shapes.dust, (int) (1)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Saltpeter, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Lapis, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Snow, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Blizz, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Saltpeter, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Lapis, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Snow, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Blizz, Shapes.dust, (int) (1)))
             .duration(41 * SECONDS + 16 * TICKS)
             .eut(20)
             .addTo(centrifugeRecipes);
@@ -974,12 +974,12 @@ public class CentrifugeRecipes implements Runnable {
         // Pyrotheum recycling
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Pyrotheum, Materials2Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Pyrotheum, Shapes.dust, (int) (1)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Coal, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, (int) (1)),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1),
-                MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, (int) (1)))
             .duration(43 * SECONDS + 16 * TICKS)
             .eut(20)
             .addTo(centrifugeRecipes);
@@ -1020,27 +1020,27 @@ public class CentrifugeRecipes implements Runnable {
         // Shijima and Churitsu recycling
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Shijima, Materials2Shapes.dust, (int) (27)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Shijima, Shapes.dust, (int) (27)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.NetherStar, Materials2Shapes.dust, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Terbium, Materials2Shapes.dust, (int) (7)),
-                MaterialLibAPI.getStack(Materials.Technetium, Materials2Shapes.dust, 4),
-                MaterialLibAPI.getStack(Materials.Unstable, Materials2Shapes.dust, (int) (4)),
-                MaterialLibAPI.getStack(Materials.FleroviumGT5U, Materials2Shapes.dust, (int) (3)),
-                MaterialLibAPI.getStack(Materials.InfinityCatalyst, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.NetherStar, Shapes.dust, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Terbium, Shapes.dust, (int) (7)),
+                MaterialLibAPI.getStack(Materials.Technetium, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Unstable, Shapes.dust, (int) (4)),
+                MaterialLibAPI.getStack(Materials.FleroviumGT5U, Shapes.dust, (int) (3)),
+                MaterialLibAPI.getStack(Materials.InfinityCatalyst, Shapes.dust, (int) (1)))
             .duration(60 * SECONDS)
             .eut(122880)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Churitsu, Materials2Shapes.dust, (int) (27)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Churitsu, Shapes.dust, (int) (27)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.TinAlloy, Materials2Shapes.dust, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Ruridit, Materials2Shapes.dust, 7),
-                MaterialLibAPI.getStack(Materials.TriniumNaquadahAlloy, Materials2Shapes.dust, 4),
-                MaterialLibAPI.getStack(Materials.AdamantiumAlloy, Materials2Shapes.dust, 4),
-                MaterialLibAPI.getStack(Materials.Californium, Materials2Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials.Quantum, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.TinAlloy, Shapes.dust, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Ruridit, Shapes.dust, 7),
+                MaterialLibAPI.getStack(Materials.TriniumNaquadahAlloy, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.AdamantiumAlloy, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Californium, Shapes.dust, 3),
+                MaterialLibAPI.getStack(Materials.Quantum, Shapes.dust, 1))
             .duration(60 * SECONDS)
             .eut(122880)
             .addTo(centrifugeRecipes);

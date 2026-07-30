@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -18,7 +19,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2PipeMaterials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -201,15 +201,15 @@ public class GregtechConduits {
     /// is one. [gregtech.loaders.oreprocessing.ProcessingWire] owns wire-to-cable for the materials that have
     /// cables.
     public static void generateWireRecipes(Material material) {
-        boolean hasIngot = material.hasShape(Materials2Shapes.ingot);
-        boolean hasStick = material.hasShape(Materials2Shapes.stick);
-        boolean hasFineWire = material.hasShape(Materials2Shapes.wireFine);
+        boolean hasIngot = material.hasShape(Shapes.ingot);
+        boolean hasStick = material.hasShape(Shapes.stick);
+        boolean hasFineWire = material.hasShape(Shapes.wireFine);
 
         if (hasIngot && hasFineWire) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 1))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1))
                 .circuit(3)
-                .itemOutputs(MaterialLibAPI.getStack(material, Materials2Shapes.wireFine, 8))
+                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.wireFine, 8))
                 .duration(5 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
@@ -217,9 +217,9 @@ public class GregtechConduits {
 
         if (hasStick && hasFineWire) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 1))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.stick, 1))
                 .circuit(3)
-                .itemOutputs(MaterialLibAPI.getStack(material, Materials2Shapes.wireFine, 4))
+                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.wireFine, 4))
                 .duration(2 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(wiremillRecipes);
@@ -235,53 +235,53 @@ public class GregtechConduits {
         ItemStack wire16 = MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt16, 1);
 
         // Adds manual crafting recipe
-        if (material.hasShape(Materials2Shapes.plate) && MaterialUtils.voltageMultiplier(material) < 7680) {
+        if (material.hasShape(Shapes.plate) && MaterialUtils.voltageMultiplier(material) < 7680) {
             GTModHandler.addCraftingRecipe(
                 wire01,
                 GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "Px ", "   ", "   ", 'P',
-                    MaterialLibAPI.getStack(material, Materials2Shapes.plate, 1) });
+                    MaterialLibAPI.getStack(material, Shapes.plate, 1) });
         }
 
         // Wire mill
         if (hasIngot) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 1))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1))
                 .circuit(1)
                 .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt01, 2))
                 .duration(5 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 1))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1))
                 .circuit(2)
                 .itemOutputs(wire02)
                 .duration(7 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 2))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 2))
                 .circuit(4)
                 .itemOutputs(wire04)
                 .duration(10 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 4))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 4))
                 .circuit(8)
                 .itemOutputs(wire08)
                 .duration(12 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 6))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 6))
                 .circuit(12)
                 .itemOutputs(wire12)
                 .duration(15 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 8))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 8))
                 .circuit(16)
                 .itemOutputs(wire16)
                 .duration(17 * SECONDS + 10 * TICKS)
@@ -291,42 +291,42 @@ public class GregtechConduits {
 
         if (hasStick) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 1))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.stick, 1))
                 .circuit(1)
                 .itemOutputs(wire01)
                 .duration(2 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 2))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.stick, 2))
                 .circuit(2)
                 .itemOutputs(wire02)
                 .duration(5 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 4))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.stick, 4))
                 .circuit(4)
                 .itemOutputs(wire04)
                 .duration(7 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 8))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.stick, 8))
                 .circuit(8)
                 .itemOutputs(wire08)
                 .duration(10 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 12))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.stick, 12))
                 .circuit(12)
                 .itemOutputs(wire12)
                 .duration(12 * SECONDS + 10 * TICKS)
                 .eut(4)
                 .addTo(wiremillRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(material, Materials2Shapes.stick, 16))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.stick, 16))
                 .circuit(16)
                 .itemOutputs(wire16)
                 .duration(15 * SECONDS)
@@ -338,7 +338,7 @@ public class GregtechConduits {
             GTValues.RA.stdBuilder()
                 .itemInputs(wire01)
                 .circuit(1)
-                .itemOutputs(MaterialLibAPI.getStack(material, Materials2Shapes.wireFine, 4))
+                .itemOutputs(MaterialLibAPI.getStack(material, Shapes.wireFine, 4))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(wiremillRecipes);
@@ -348,7 +348,7 @@ public class GregtechConduits {
         if (hasIngot) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(material, Materials2Shapes.ingot, 1),
+                    MaterialLibAPI.getStack(material, Shapes.ingot, 1),
                     ItemList.Shape_Extruder_Wire.get(0))
                 .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.wireGt01, 2))
                 .duration(9 * SECONDS + 16 * TICKS)
