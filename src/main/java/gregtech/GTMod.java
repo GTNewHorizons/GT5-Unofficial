@@ -70,7 +70,7 @@ import gregtech.api.enums.Materials2;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
-import gregtech.api.enums.materials2.Materials2IDIndex;
+import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -320,7 +320,7 @@ public class GTMod {
             tRunnable.run();
         }
 
-        Materials2IDIndex.init();
+        LegacyMaterialIDIndex.init();
         LegacyWerkstoffIndex.init();
 
         GTPreLoad.getConfiguration(event.getModConfigurationDirectory());

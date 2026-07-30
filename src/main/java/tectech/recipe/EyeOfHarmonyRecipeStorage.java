@@ -23,7 +23,7 @@ import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
-import gregtech.api.enums.materials2.Materials2IDIndex;
+import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -147,7 +147,7 @@ public class EyeOfHarmonyRecipeStorage {
 
         final HashSet<com.ruling_0.materiallib.api.Material> validMaterialSet = new HashSet<>();
         for (int id = 0; id < 1000; id++) {
-            com.ruling_0.materiallib.api.Material material = Materials2IDIndex.get(id);
+            com.ruling_0.materiallib.api.Material material = LegacyMaterialIDIndex.get(id);
             if (material == null) continue;
 
             ItemStack normalOre = GTOreDictUnificator.get(OrePrefixes.ore, material, 1);

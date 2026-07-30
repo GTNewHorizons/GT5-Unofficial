@@ -35,7 +35,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
-import gregtech.api.enums.materials2.Materials2IDIndex;
+import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
@@ -179,7 +179,7 @@ public final class GTOreAdapter implements IOreAdapter {
     private ImmutableBlockMeta resolveLegacyMeta(int meta, boolean natural) {
         try (OreInfo info = OreInfo.getNewInfo()) {
             info.stoneType = GTUtility.getIndexSafe(LEGACY_STONES, (meta % 16000) / 1000);
-            info.material = Materials2IDIndex.get(meta % 1000);
+            info.material = LegacyMaterialIDIndex.get(meta % 1000);
             info.isSmall = meta >= 16000;
             info.isNatural = true;
 

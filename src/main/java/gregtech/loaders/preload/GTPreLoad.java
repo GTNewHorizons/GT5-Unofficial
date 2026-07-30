@@ -37,7 +37,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.MaterialFacades;
-import gregtech.api.enums.materials2.Materials2IDIndex;
+import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.material.MaterialUtils;
@@ -279,9 +279,9 @@ public class GTPreLoad {
                                 if (mIt == 2) tags = prefixes2;
                                 if (mIt == 3) tags = prefixes3;
                                 if (tags == null) tags = GTValues.emptyStringArray;
-                                final Material mlMaterial = Materials2IDIndex.get(material);
+                                final Material mlMaterial = LegacyMaterialIDIndex.get(material);
                                 // a parent-mod-gated material whose parent mod is absent never generates items,
-                                // so its slot must not be re-enabled here even though Materials2IDIndex lists it
+                                // so its slot must not be re-enabled here even though LegacyMaterialIDIndex lists it
                                 if (mlMaterial != null && Materials2ParentMods.hasParentMod(mlMaterial)) {
                                     final String tag;
                                     if (tags.length > prefix) {

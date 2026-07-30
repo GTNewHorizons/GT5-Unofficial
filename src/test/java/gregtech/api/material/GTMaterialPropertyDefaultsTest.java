@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import org.junit.jupiter.api.Test;
 
@@ -101,7 +102,7 @@ public class GTMaterialPropertyDefaultsTest {
     }
 
     /// `OLD_SUB_ID` must stay default-free: absence is meaningful for it, and
-    /// [gregtech.api.enums.materials2.Materials2IDIndex] and
+    /// [LegacyMaterialIDIndex] and
     /// [LegacyWerkstoffIndex] both branch on the property being unset. A
     /// default would make those tests unconditionally true. [MaterialUtils#oldSubId]'s `-1` is its own sentinel.
     @Test

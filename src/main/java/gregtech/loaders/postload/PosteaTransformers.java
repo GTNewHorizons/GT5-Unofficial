@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.function.IntFunction;
 
 import gregtech.api.enums.materials2.BlockShapes;
+import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
@@ -29,7 +30,6 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.OreShapes;
 import gregtech.api.enums.materials2.Materials2PipeMaterials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
@@ -380,7 +380,7 @@ public class PosteaTransformers implements Runnable {
             "gregtech:bw.sheetmetal",
             OrePrefixes.sheetmetal,
             PosteaTransformers::werkstoffMaterialAt);
-        registerPartCutoverTransformer("gregtech:gt.sheetmetal", OrePrefixes.sheetmetal, Materials2IDIndex::get);
+        registerPartCutoverTransformer("gregtech:gt.sheetmetal", OrePrefixes.sheetmetal, LegacyMaterialIDIndex::get);
     }
 
     /// The MaterialLib material a legacy bartworks werkstoff id resolves to, or null when the id is unknown
@@ -466,7 +466,7 @@ public class PosteaTransformers implements Runnable {
             int id = tag.getInteger("mID");
             // Legacy per-material framebox IDs start at 4096; the offset is the index in the material list
             int indexInMaterialList = id - 4096;
-            Material material = Materials2IDIndex.get(indexInMaterialList);
+            Material material = LegacyMaterialIDIndex.get(indexInMaterialList);
             if (material == null) {
                 // Do not modify this TE, so return null
                 return null;
@@ -495,7 +495,7 @@ public class PosteaTransformers implements Runnable {
             if (!LegacyMetalItemsTable.contains(indexInMaterialList)) {
                 return false;
             }
-            Material material = Materials2IDIndex.get(indexInMaterialList);
+            Material material = LegacyMaterialIDIndex.get(indexInMaterialList);
             if (material == null) {
                 return false;
             }

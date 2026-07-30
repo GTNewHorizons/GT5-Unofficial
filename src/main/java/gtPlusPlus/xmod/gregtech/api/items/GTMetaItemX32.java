@@ -16,7 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2IDIndex;
+import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.material.MaterialUtils;
@@ -129,7 +129,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
     public ItemStack getContainerItem(final ItemStack aStack) {
         final int aDamage = aStack.getItemDamage();
         if (MetaGeneratedItem.isMaterialItem(aDamage)) {
-            final Material aMaterial = Materials2IDIndex.get(aDamage % 1000);
+            final Material aMaterial = LegacyMaterialIDIndex.get(aDamage % 1000);
             if ((aMaterial != null) && (aMaterial != Materials.Empty)
                 && (aMaterial != Materials.NULL)) {
                 final OrePrefixes aPrefix = this.mGeneratedPrefixList[aDamage / 1000];

@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
@@ -356,7 +357,7 @@ public class MaterialUtils {
     /// selector), from [GTMaterialProperties#OLD_SUB_ID], or -1 if unset. Callers reading block-form
     /// metadata (frame tiers, worldgen) use this accessor.
     /// `-1` is this accessor's own sentinel, not a [GTMaterialProperties#OLD_SUB_ID] default: absence is
-    /// meaningful for that key, and [gregtech.api.enums.materials2.Materials2IDIndex] and
+    /// meaningful for that key, and [LegacyMaterialIDIndex] and
     /// [Materials2WerkstoffIndex#generatesPrefix] both branch on it.
     public static int oldSubId(@Nullable Material material) {
         if (material == null) return -1;

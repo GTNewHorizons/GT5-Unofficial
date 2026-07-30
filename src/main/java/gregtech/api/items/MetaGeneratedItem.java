@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
+import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,7 +39,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
-import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.interfaces.IFoodStat;
@@ -129,9 +129,9 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     /// The [Material] whose generated items occupy a material id slot, or null when the slot is empty or the
     /// material's parent mod is absent ([Materials2ParentMods#hasParentMod]): an absent-parent material never
     /// generates items, so item-facing readers treat its slot as vacant even though
-    /// [gregtech.api.enums.materials2.Materials2IDIndex] lists the material.
+    /// [LegacyMaterialIDIndex] lists the material.
     public static @Nullable Material generatedMaterial(int id) {
-        Material material = Materials2IDIndex.get(id);
+        Material material = LegacyMaterialIDIndex.get(id);
         return material != null && Materials2ParentMods.hasParentMod(material) ? material : null;
     }
 

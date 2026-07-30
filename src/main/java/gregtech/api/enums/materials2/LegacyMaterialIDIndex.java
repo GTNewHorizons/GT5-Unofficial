@@ -16,12 +16,12 @@ import gregtech.api.material.GTMaterialProperties;
 /// legacy material set. Populated at the start of GT's preInit -- listing the registry requires MaterialLib to
 /// have resolved it, which happens only after every MaterialRegistrationEvent handler (including
 /// [Materials]'s registration) has completed.
-public class Materials2IDIndex {
+public class LegacyMaterialIDIndex {
 
     private static final Material[] INDEX = new Material[1000];
     private static int size;
 
-    private Materials2IDIndex() {}
+    private LegacyMaterialIDIndex() {}
 
     public static void init() {
         for (Material material : MaterialLibAPI.getMaterials()) {
@@ -42,7 +42,7 @@ public class Materials2IDIndex {
             INDEX[id] = material;
             size++;
         }
-        GTMod.GT_FML_LOGGER.info("Materials2IDIndex populated {} id slots", size);
+        GTMod.GT_FML_LOGGER.info("LegacyMaterialIDIndex populated {} id slots", size);
     }
 
     /// The material occupying a legacy id slot; null for an empty slot or an out-of-range id.
