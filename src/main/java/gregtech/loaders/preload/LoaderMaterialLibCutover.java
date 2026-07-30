@@ -11,7 +11,7 @@ import com.ruling_0.materiallib.api.ShapeBlock;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
-import gregtech.api.enums.materials2.Materials2IDIndex;
+import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -28,7 +28,7 @@ import gregtech.api.util.GTOreDictUnificator;
 /// materials, because the generic loop cannot reach their full material sets: the pipe-family legacy items
 /// were meta tile entities, never generated items, so `OrePrefixes#doGenerateItem` cannot gate them, and
 /// their material sets (superconductor markers included) live only in the MaterialLib registry; `sheetmetal`
-/// additionally serves bartworks-backed materials, which have no legacy sub-id for the [Materials2IDIndex]
+/// additionally serves bartworks-backed materials, which have no legacy sub-id for the [LegacyMaterialIDIndex]
 /// spine. Each
 /// `set` call makes the shape stack the prefix's unification target and adds the material association that
 /// drives the auto-generated recycling recipes.
@@ -44,7 +44,7 @@ public class LoaderMaterialLibCutover implements Runnable {
             Shape shape = MaterialParts.shape(prefix);
             if (shape == null) continue;
             for (int id = 0; id < 1000; id++) {
-                Material material = Materials2IDIndex.get(id);
+                Material material = LegacyMaterialIDIndex.get(id);
                 if (material == null || !prefix.doGenerateItem(material)) continue;
                 ItemStack stack = MaterialParts.stack(prefix, material, 1);
                 if (stack == null) continue;

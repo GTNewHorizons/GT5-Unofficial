@@ -473,6 +473,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
@@ -506,7 +507,6 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TieredItems;
-import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.MetaBaseItem;
@@ -3955,7 +3955,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         int aDamage = aItemEntity.getEntityItem()
             .getItemDamage();
         if (isMaterialItem(aDamage) && (!aItemEntity.worldObj.isRemote)) {
-            Material aMaterial = Materials2IDIndex.get(aDamage % 1000);
+            Material aMaterial = LegacyMaterialIDIndex.get(aDamage % 1000);
             if ((aMaterial != null) && (aMaterial != Materials.Empty)
                 && (aMaterial != Materials.NULL)) {
                 int tX = MathHelper.floor_double(aItemEntity.posX);
@@ -4015,7 +4015,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             final int damage = oldItemStack.getItemDamage();
 
             if (isMaterialItem(damage)) {
-                final Material oldMaterial = Materials2IDIndex.get(damage % 1000);
+                final Material oldMaterial = LegacyMaterialIDIndex.get(damage % 1000);
                 final OrePrefixes oldPrefix = this.mGeneratedPrefixList[(damage / 1000)];
                 final ItemStack newItemStack = getCauldronWashingResult(oldPrefix, oldMaterial, oldItemStack.stackSize);
 
@@ -4081,7 +4081,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         super.addAdditionalToolTips(aList, aStack, aPlayer);
         int aDamage = aStack.getItemDamage();
         if (isMaterialItem(aDamage)) {
-            Material aMaterial = Materials2IDIndex.get(aDamage % 1000);
+            Material aMaterial = LegacyMaterialIDIndex.get(aDamage % 1000);
             if ((aMaterial != null) && (aMaterial != Materials.Empty)
                 && (aMaterial != Materials.NULL)) {
                 OrePrefixes aPrefix = this.mGeneratedPrefixList[(aDamage / 1000)];

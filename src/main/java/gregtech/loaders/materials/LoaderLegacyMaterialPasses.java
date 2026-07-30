@@ -9,8 +9,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.common.config.Gregtech;
@@ -97,7 +97,7 @@ public final class LoaderLegacyMaterialPasses {
     private static void addHarvestLevelNerfs() {
         if (!GTMod.proxy.mChangeHarvestLevels) return;
         for (int id = 0; id < GTMod.proxy.mHarvestLevel.length; id++) {
-            Material material = Materials2IDIndex.get(id);
+            Material material = LegacyMaterialIDIndex.get(id);
             if (material == null) continue;
             int toolQuality = MaterialUtils.toolQuality(material);
             if (toolQuality > 0) GTMod.proxy.mHarvestLevel[id] = toolQuality;

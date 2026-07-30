@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +22,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialRenderers;
@@ -115,7 +115,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
         if (!isMaterialItem(getDamage(aStack))) {
             return MaterialUtils.rgba(Materials.NULL);
         }
-        Material tMaterial = Materials2IDIndex.get(getDamage(aStack) % 1000);
+        Material tMaterial = LegacyMaterialIDIndex.get(getDamage(aStack) % 1000);
         short[] rgba = MaterialUtils.rgba(tMaterial);
         return rgba != null ? rgba : MaterialUtils.rgba(Materials.NULL);
     }
@@ -172,7 +172,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     public ItemStack getContainerItem(ItemStack aStack) {
         int aDamage = aStack.getItemDamage();
         if (isMaterialItem(aDamage)) {
-            Material aMaterial = Materials2IDIndex.get(aDamage % 1000);
+            Material aMaterial = LegacyMaterialIDIndex.get(aDamage % 1000);
             if (aMaterial != null && aMaterial != Materials.Empty && aMaterial != Materials.NULL) {
                 OrePrefixes aPrefix = getOrePrefix(aDamage);
                 if (aPrefix != null) return GTUtility.copyAmount(1, aPrefix.mContainerItem);
