@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import gregtech.api.enums.MaterialSystem;
 import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
@@ -36,7 +37,7 @@ import gregtech.api.material.MaterialRef;
 /// derives no recycling from a material that has no dust or ingot to recycle into.
 ///
 /// [#registerBackingMaterials] registers them during material registration (from
-/// [gregtech.api.enums.Materials2#init]) and assigns the fields from the same builders;
+/// [MaterialSystem#init]) and assigns the fields from the same builders;
 /// `SuperconductorUHV` in particular must bind by builder reference, since its backing's registry name is
 /// `Superconductor`, not `SuperconductorUHV`.
 public class MaterialFacades {

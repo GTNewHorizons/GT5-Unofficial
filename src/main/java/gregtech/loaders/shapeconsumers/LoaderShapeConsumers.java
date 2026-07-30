@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 /// Registers every `Consumer*` in this package. Called from `GTMod`'s handler for
-/// `com.ruling_0.materiallib.api.MaterialRegistrationEvent`, after `gregtech.api.enums.Materials2#init` has
+/// `com.ruling_0.materiallib.api.MaterialRegistrationEvent`, after `gregtech.api.enums.MaterialSystem#init` has
 /// declared every shape they target -- most consumers dispatch later, during MaterialLib's postInit (see
 /// [ShapeConsumerSupport#delegate]), but must be registered during MaterialLib's preInit like everything else
 /// `MaterialRegistrationEvent` drives. `ConsumerStackSizeClamp` dispatches at init instead, since it does not

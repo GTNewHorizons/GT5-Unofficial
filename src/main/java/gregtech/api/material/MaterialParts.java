@@ -44,7 +44,7 @@ import gregtech.api.util.GTOreDictUnificator;
 /// The membership checks below read [Material#hasShape], which tests the material's *declared* shape
 /// instances by identity, while [MaterialLibAPI#getStack] canonicalizes first. The two can only disagree for
 /// a material declared with a foreign mod's same-named shape alias; every material here is declared with
-/// gregtech's own `Materials2*Shapes` constants. `ShapeItem#getServedMaterials` is the canonical-safe
+/// gregtech's own `MaterialSystem*Shapes` constants. `ShapeItem#getServedMaterials` is the canonical-safe
 /// alternative when iterating a shape's materials rather than testing one material.
 public class MaterialParts {
 

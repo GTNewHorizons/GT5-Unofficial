@@ -27,7 +27,7 @@ public class MaterialArcSmeltHelper {
     private static Map<Material, Map<Material, Material>> table() {
         if (table == null) {
             if (Materials.Copper == null || MaterialFacades.AnyCopper == null) {
-                throw new IllegalStateException("Gas-arc table consulted before Materials2.init");
+                throw new IllegalStateException("Gas-arc table consulted before MaterialSystem.init");
             }
             Map<Material, Map<Material, Material>> rows = new LinkedHashMap<>();
             rows.put(

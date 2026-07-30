@@ -25,7 +25,7 @@ public class MaterialParentMods {
     private static Map<Material, Mods> table() {
         if (table == null) {
             if (Materials.HSLA == null) {
-                throw new IllegalStateException("Parent-mod table consulted before Materials2.init");
+                throw new IllegalStateException("Parent-mod table consulted before MaterialSystem.init");
             }
             table = Map.of(Materials.HSLA, Mods.RotaryCraft);
         }
