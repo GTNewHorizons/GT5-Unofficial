@@ -4,7 +4,7 @@ import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.CellShapes;
-import gregtech.api.enums.materials2.Materials2Families;
+import gregtech.api.enums.materials2.Families;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.OreShapes;
 import gregtech.api.enums.materials2.Materials2PipeMaterials;
@@ -34,7 +34,7 @@ public class Materials2 {
         OreShapes.init();
         Shapes.init();
         Materials2PipeShapes.init();
-        Materials2Families.init();
+        Families.init();
         Materials.init();
         MaterialFacades.registerBackingMaterials();
         RecognitionMaterials.registerBackingMaterials();
