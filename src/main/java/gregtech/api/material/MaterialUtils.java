@@ -32,7 +32,7 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials2.MaterialFluidNames;
-import gregtech.api.enums.materials2.Materials2Textures;
+import gregtech.api.enums.materials2.MaterialTextures;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.MaterialStack;
 import gregtech.common.config.Client;
@@ -47,7 +47,7 @@ import gregtech.common.config.Client;
 /// the defaults a constant cannot express.
 ///
 /// Computation lives in the purpose-built classes this delegates to -- [MaterialAtomics], [MaterialFormulas],
-/// [Materials2Textures] -- which are implementation detail; this is the surface callers use.
+/// [MaterialTextures] -- which are implementation detail; this is the surface callers use.
 public class MaterialUtils {
 
     private MaterialUtils() {}
@@ -391,10 +391,10 @@ public class MaterialUtils {
             (short) (moltenArgb & 0xFF), (short) ((moltenArgb >>> 24) & 0xFF) };
     }
 
-    /// The texture set for a material, resolved via [Materials2Textures#iconSetOf]. Null when `material`
+    /// The texture set for a material, resolved via [MaterialTextures#iconSetOf]. Null when `material`
     /// is null.
     public static @Nullable TextureSet iconSet(@Nullable Material material) {
-        return material == null ? null : Materials2Textures.iconSetOf(material);
+        return material == null ? null : MaterialTextures.iconSetOf(material);
     }
 
     /// Whether a material requires a blast furnace to smelt -- [GTMaterialProperties#BLAST_REQUIRED],
