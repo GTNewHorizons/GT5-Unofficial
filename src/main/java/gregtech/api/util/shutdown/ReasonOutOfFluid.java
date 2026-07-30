@@ -13,13 +13,14 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.util.GTUtility;
-
 public class ReasonOutOfFluid implements ShutDownReason {
 
     private FluidStack requiredFluid;
 
-    ReasonOutOfFluid(@NotNull FluidStack requiredFluid) {
+    /// `requiredFluid` is null only for the registry sample and for the instance [#newInstance] hands back, both of
+    /// which are filled in by [#readFromNBT] or [#decode] before anything reads them. Resolving a placeholder stack
+    /// instead would drag [FluidRegistry] into [ShutDownReasonRegistry]'s class init.
+    ReasonOutOfFluid(FluidStack requiredFluid) {
         this.requiredFluid = requiredFluid;
     }
 
@@ -52,7 +53,7 @@ public class ReasonOutOfFluid implements ShutDownReason {
     @NotNull
     @Override
     public ShutDownReason newInstance() {
-        return new ReasonOutOfFluid(GTUtility.getWater(0));
+        return new ReasonOutOfFluid(null);
     }
 
     @Override
