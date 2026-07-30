@@ -29,7 +29,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2IDIndex;
-import gregtech.api.enums.materials2.Materials2OreShapes;
+import gregtech.api.enums.materials2.OreShapes;
 import gregtech.api.enums.materials2.Materials2PipeMaterials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
@@ -123,7 +123,7 @@ public class PosteaTransformers implements Runnable {
     }
 
     /// Migrates saved legacy `BlockBaseOre` placed/inventory stacks into the equivalent MaterialLib
-    /// [gregtech.api.enums.materials2.Materials2OreShapes#ore] stack, resolved through
+    /// [OreShapes#ore] stack, resolved through
     /// [GtppOreCutoverTable]'s (unlocalized name, registry name) rows the same way
     /// [gregtech.common.ores.GTOreAdapter#getBlock] resolves it live. Unlike every gtpp part/block row
     /// (one distinct registered instance per material, no meta multiplexing), so a single item + block
@@ -155,8 +155,8 @@ public class PosteaTransformers implements Runnable {
 
     private static ItemStack resolveGtppOreCutoverStack(GtppOreCutoverTable.Entry entry) {
         Material ml = MaterialLibAPI.getMaterial("gregtech", entry.unlocalizedName());
-        if (ml == null || !ml.hasShape(Materials2OreShapes.ore)) return null;
-        return MaterialLibAPI.getStack(ml, Materials2OreShapes.ore, 1);
+        if (ml == null || !ml.hasShape(OreShapes.ore)) return null;
+        return MaterialLibAPI.getStack(ml, OreShapes.ore, 1);
     }
 
     /// Migrates saved placed blocks and inventory stacks of a gtPlusPlus per-material frame block

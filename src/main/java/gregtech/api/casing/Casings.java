@@ -1130,7 +1130,7 @@ public enum Casings implements ICasing {
     /// enum already uses. `ICasing#asElement()`'s default implementation wraps both calls in
     /// `StructureUtility.lazy(...)`, so they run at first structure check (long after MaterialLib registration),
     /// not at class-init, making this safe under the class-init trap that bit the ore/block shape declarations
-    /// (see `Materials2OreShapes`'s javadoc): this method touches `MaterialParts`/MaterialLib only from that lazy call,
+    /// (see `OreShapes`'s javadoc): this method touches `MaterialParts`/MaterialLib only from that lazy call,
     /// never eagerly.
     ///
     /// Verified against the three call sites that reference these eight constants directly (`asElement()`, not

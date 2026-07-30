@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.enums.materials2.OreShapes;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
@@ -20,7 +21,6 @@ import com.ruling_0.materiallib.api.Shape;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2CellShapes;
-import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.objects.ItemData;
@@ -183,7 +183,7 @@ public class MaterialParts {
             collectShapes(map, Shapes.class);
             collectShapes(map, Materials2CellShapes.class);
             collectShapes(map, Materials2BlockShapes.class);
-            collectShapes(map, Materials2OreShapes.class);
+            collectShapes(map, OreShapes.class);
             collectShapes(map, Materials2PipeShapes.class);
             for (Map.Entry<String, List<Shape>> entry : map.entrySet()) {
                 String prefix = entry.getKey();
