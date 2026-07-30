@@ -11,6 +11,7 @@ import static gregtech.api.util.GTRecipeConstants.UniversalArcFurnace;
 
 import java.util.Set;
 
+import gregtech.api.enums.materials2.MaterialFluidNames;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -28,7 +29,7 @@ import gregtech.api.util.GTUtility;
 /// [#PREFIXES] shape the material carries, a macerator recipe into the best-fitting dust size, a universal arc
 /// furnace recipe into ingot or nugget, and a fluid extractor recipe into the material's own fluid.
 ///
-/// [#materialFluid] resolves the fluid extractor output by name ([gregtech.api.enums.materials2.Materials2FluidNames]
+/// [#materialFluid] resolves the fluid extractor output by name ([MaterialFluidNames]
 /// ->
 /// [FluidNames#legacyGtppFluidName]) rather than through [MaterialParts]'s state-specific accessors, which cannot
 /// resolve

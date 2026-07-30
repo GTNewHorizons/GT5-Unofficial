@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import gregtech.api.enums.materials2.MaterialFluidNames;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.Item;
@@ -46,10 +47,10 @@ import gregtech.common.items.ItemIntegratedCircuit;
 /// Both shapes need a material's molten fluid, which [MaterialParts]'s state-specific accessors
 /// (`molten`/`gas`/`fluid`)
 /// cannot resolve for a gtPlusPlus-only material: those read a per-state
-/// [gregtech.api.enums.materials2.Materials2FluidNames]
+/// [MaterialFluidNames]
 /// slot or a [com.ruling_0.materiallib.api.Shape], and a gtPlusPlus-only material carries neither.
 /// [#materialFluid] resolves it instead through [MaterialUtils#legacyGtppFluid]'s name-priority lookup over the same
-/// [gregtech.api.enums.materials2.Materials2FluidNames] data, exactly as gtpp's own `Material#getFluidStack` did (a
+/// [MaterialFluidNames] data, exactly as gtpp's own `Material#getFluidStack` did (a
 /// null result
 /// here reproduces a null there, which is why some [#SINGLE_DUST] members -- carrying `BLAST_REQUIRED` but no
 /// fluid gtpp ever wired up -- correctly register nothing rather than needing a hand-picked exclusion list).
