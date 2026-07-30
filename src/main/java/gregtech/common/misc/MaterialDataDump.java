@@ -66,7 +66,7 @@ import gregtech.common.blocks.BlockMetal;
 import gregtech.common.fluid.GTFluid;
 
 /// Dumps `OrePrefixes` and bartworks-origin materials, plus the resolved MaterialLib registry view of the
-/// `Materials2` port, to JSON, for consumption by the material unification tooling.
+/// `MaterialSystem` port, to JSON, for consumption by the material unification tooling.
 ///
 /// Triggered from `GTMod`'s `FMLLoadCompleteEvent` handler when the `gt.dumpMaterialData` system property is
 /// set, so a headless server run can produce the dumps non-interactively.

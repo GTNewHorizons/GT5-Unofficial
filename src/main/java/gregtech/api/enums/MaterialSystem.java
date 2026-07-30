@@ -13,15 +13,7 @@ import gregtech.api.enums.materials2.ShapeData;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.loaders.materials.RecognitionMaterials;
 
-/// Holds the MaterialLib-backed shapes, families, and materials for GregTech.
-///
-/// Populated from [#init()], which runs inside `GTMod`'s handler for
-/// `com.ruling_0.materiallib.api.MaterialRegistrationEvent`.
-public class Materials2 {
-
-    // spotless:off
-
-    // spotless:on
+public class MaterialSystem {
 
     // Shapes and families come first because the material tables pass them as objects.
     // RecognitionMaterials must follow Materials: one of its names (`Ammonium`) already belongs to a

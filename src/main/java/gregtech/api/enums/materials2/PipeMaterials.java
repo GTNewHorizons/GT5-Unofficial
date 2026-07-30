@@ -5,6 +5,7 @@ import com.ruling_0.materiallib.api.MaterialEdit;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
+import gregtech.api.enums.MaterialSystem;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TierEU;
 
@@ -19,7 +20,7 @@ import gregtech.api.enums.TierEU;
 /// value.
 ///
 /// Rows reference [Materials] and [MaterialFacades] fields, so [#init] must run after those are
-/// assigned; [gregtech.api.enums.Materials2#init] orders it so.
+/// assigned; [MaterialSystem#init] orders it so.
 public class PipeMaterials {
 
     /// Fluid capacities (small, medium, large) of the wooden fluid pipes.

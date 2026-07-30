@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 
+import gregtech.api.enums.MaterialSystem;
 import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
@@ -66,7 +67,6 @@ import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials2;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
@@ -304,7 +304,7 @@ public class GTMod {
 
     @SubscribeEvent
     public void materialRegistration(MaterialRegistrationEvent event) {
-        Materials2.init();
+        MaterialSystem.init();
         OrePrefixes.copyDataFromShapes();
         LoaderShapeConsumers.register();
     }
