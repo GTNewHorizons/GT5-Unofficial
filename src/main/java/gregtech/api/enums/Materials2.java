@@ -9,6 +9,7 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2PipeMaterials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.Materials2ShapeData;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.loaders.materials.RecognitionMaterials;
 
@@ -38,5 +39,6 @@ public class Materials2 {
         Materials2Backings.registerBackingMaterials();
         RecognitionMaterials.registerBackingMaterials();
         Materials2PipeMaterials.init();
+        Materials2ShapeData.init();
     }
 }

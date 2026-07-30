@@ -38,8 +38,14 @@ import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.materials2.Materials2BlockShapes;
+import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidNames;
+import gregtech.api.enums.materials2.Materials2OreShapes;
+import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.AspectRefStack;
@@ -128,8 +134,38 @@ public final class MaterialDataDump {
 
         Map<String, Object> root = new LinkedHashMap<>();
         root.put("prefixes", prefixes);
+        root.put("shapes", dumpDeclaredShapes());
         root.put("textureSlots", dumpTextureSlots());
         return root;
+    }
+
+    /// Every [Shape] GregTech declares, with the oredict prefixes it serves -- the inverse of the prefix rows
+    /// above, and the join `scripts/mu/gen_shape_data.py` uses to decide which prefix's per-form data belongs on
+    /// which shape. Reflected over the declaration classes for the same reason
+    /// [gregtech.api.material.MaterialParts] reflects them: the constants are the only enumeration of them.
+    private static List<Map<String, Object>> dumpDeclaredShapes() {
+        List<Map<String, Object>> shapes = new ArrayList<>();
+        for (Class<?> declaring : new Class<?>[] { Materials2Shapes.class, Materials2CellShapes.class,
+            Materials2BlockShapes.class, Materials2OreShapes.class, Materials2PipeShapes.class }) {
+            for (java.lang.reflect.Field field : declaring.getFields()) {
+                if (field.getType() != Shape.class) continue;
+                Shape shape;
+                try {
+                    shape = (Shape) field.get(null);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+                if (shape == null) continue;
+                Map<String, Object> json = new LinkedHashMap<>();
+                json.put("name", shape.getName());
+                json.put("field", field.getName());
+                json.put("declaringClass", declaring.getSimpleName());
+                json.put("oreDicts", shape.getOreDicts());
+                json.put("variants", shape.getVariants());
+                shapes.add(json);
+            }
+        }
+        return shapes;
     }
 
     private static Map<String, Object> dumpOrePrefix(OrePrefixes prefix) {
@@ -146,8 +182,22 @@ public final class MaterialDataDump {
         json.put("isContainer", prefix.isContainer());
         json.put("isRecyclable", prefix.isRecyclable());
         json.put("isEnchantable", prefix.isEnchantable());
+        json.put("skipActiveUnification", prefix.skipActiveUnification());
+        json.put("heatDamage", prefix.mHeatDamage);
+        json.put("aspects", dumpAspects(prefix));
         json.put("secondaryMaterial", dumpMaterialStack(prefix.mSecondaryMaterial));
         return json;
+    }
+
+    private static List<Map<String, Object>> dumpAspects(OrePrefixes prefix) {
+        List<Map<String, Object>> aspects = new ArrayList<>();
+        for (TC_AspectStack aspect : prefix.mAspects) {
+            Map<String, Object> json = new LinkedHashMap<>();
+            json.put("aspect", aspect.mAspect.name());
+            json.put("amount", aspect.mAmount);
+            aspects.add(json);
+        }
+        return aspects;
     }
 
     /// Keyed by [MaterialIconRegistry.IconType] ordinal -- the per-slot suffixes live on
