@@ -33,8 +33,8 @@ public class ProcessingMixerGtpp implements IOreRecipeRegistrator {
 
     private ProcessingMixerGtpp() {}
 
-    /// The exact materials the retired `RecipeGenDustGeneration` mixer generator reached -- see
-    /// [LegacyGTPPComposites]'s class javadoc for the construction paths that determined this set.
+    /// The frozen set of materials that get a mixer recipe -- see [LegacyGTPPComposites]'s class javadoc for
+    /// how this differs from the blast smelter's own eligibility over the same table.
     // spotless:off
     private static final Set<Material> ELIGIBLE = Set.of(
         Materials.Arcanite, Materials.BabbitAlloy, Materials.BlackMetal,

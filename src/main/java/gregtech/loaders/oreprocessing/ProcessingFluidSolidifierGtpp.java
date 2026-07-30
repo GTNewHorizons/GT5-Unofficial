@@ -16,9 +16,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialUtils;
 
-/// Reproduces the retired gtPlusPlus `RecipeGenFluids` for every material in [#ELIGIBLE]: the mold-plus-fluid
-/// solidifier recipes for every shape the material carries (ingot, plate, nugget, gear, small gear, block, rod,
-/// long rod, bolt, screw, ring, rotor).
+/// The mold-plus-fluid solidifier recipes for every shape a material in [#ELIGIBLE] carries (ingot, plate,
+/// nugget, gear, small gear, block, rod, long rod, bolt, screw, ring, rotor).
 ///
 /// [#materialFluid] resolves the input fluid by name ([MaterialFluidNames] ->
 /// [FluidNames#legacyGtppFluidName]) rather than through [gregtech.api.material.MaterialUtils]'s state-specific
@@ -31,11 +30,8 @@ public class ProcessingFluidSolidifierGtpp {
 
     private ProcessingFluidSolidifierGtpp() {}
 
-    /// Every material the retired `RecipeGenFluids` reached: `MaterialGenerator#generate` (any
-    /// `generateEverything` value), `#generateOreMaterialWithAllExcessComponents`, `#generateDusts`, or
-    /// `#generateNuclearMaterial`/`#generateNuclearDusts` (all of which construct it unconditionally) --
-    /// excluding a `PURE_GAS`/`PURE_LIQUID`-state material reached only through `generate`, since it returns
-    /// before constructing this generator for those two states (`Bromine`, `Krypton`).
+    /// The frozen set of materials this pass covers -- nuclear materials included. Notably excludes the
+    /// pure-gas and pure-liquid materials (`Bromine`, `Krypton`).
     // spotless:off
     private static final Set<Material> ELIGIBLE = Set.of(
         Materials.Selenium, Materials.Iodine, Materials.Rhenium,

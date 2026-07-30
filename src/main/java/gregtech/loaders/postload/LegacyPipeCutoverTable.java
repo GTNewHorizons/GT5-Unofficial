@@ -11,10 +11,8 @@ import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.PipeShapes;
 
-/// The retired per-material pipe-family MTE ids, mapped to the MaterialLib shape and material each id's
-/// wire/cable/fluid-pipe/item-pipe served, for [PosteaTransformers]' save migration. Rows reproduce the id
-/// layout of the deleted registrations (GregTech's pipe MTE loader, gtPlusPlus `GregtechConduits`,
-/// goodgenerator `CrackRecipeAdder`):
+/// The frozen per-material pipe-family MTE ids, mapped to the MaterialLib shape and material each id's
+/// wire/cable/fluid-pipe/item-pipe served, for [PosteaTransformers]' save migration. The id layout is:
 ///
 /// - wire/cable rows occupy startId+0..5 as wireGt01..16 and +6..11 as cableGt01..16 (wire-only rows just
 /// the first six),

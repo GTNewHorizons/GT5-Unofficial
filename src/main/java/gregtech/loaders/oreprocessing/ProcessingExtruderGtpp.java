@@ -14,10 +14,10 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialUtils;
 
-/// Reproduces the retired gtPlusPlus `RecipeGenExtruder` for every material in [#ELIGIBLE]: the block-to-ingot
-/// extruder decompression recipe. The block/plate/ring/gear/small-gear/rod/bolt/rotor extruder recipes
-/// formerly generated alongside it are covered by the canonical autogen (`ProcessingShaping`, dispatched by
-/// `gregtech.loaders.shapeconsumers`), which does not itself provide this `block -> ingot` direction.
+/// The block-to-ingot extruder decompression recipe, for every material in [#ELIGIBLE]. Only that direction:
+/// the block/plate/ring/gear/small-gear/rod/bolt/rotor extruder recipes come from the canonical autogen
+/// (`ProcessingShaping`, dispatched by `gregtech.loaders.shapeconsumers`), which does not itself provide
+/// `block -> ingot`.
 ///
 /// [#run] is called from `CompatHandler#startLoadingGregAPIBasedRecipes` -- see
 /// [ProcessingDustGeneration]'s class javadoc for why that timing matters.
@@ -25,12 +25,8 @@ public class ProcessingExtruderGtpp {
 
     private ProcessingExtruderGtpp() {}
 
-    /// Every material the retired `RecipeGenExtruder` reached: `MaterialGenerator#generate` (any
-    /// `generateEverything` value), `#generateOreMaterialWithAllExcessComponents`, or
-    /// `#generateNuclearMaterial`/`#generateNuclearDusts` (which construct it unconditionally, independent of
-    /// `generatePlates`/`disableOptionalRecipes`) -- excluding a `PURE_GAS`/`PURE_LIQUID`-state material
-    /// reached only through `generate`, since it returns before constructing this generator for those two
-    /// states (`Bromine`, `Krypton`; the state check does not gate `generateNuclearMaterial`).
+    /// The frozen set of materials this pass covers -- nuclear materials included. Notably excludes the
+    /// pure-gas and pure-liquid materials (`Bromine`, `Krypton`).
     // spotless:off
     private static final Set<Material> ELIGIBLE = Set.of(
         Materials.Selenium, Materials.Iodine, Materials.Rhenium,

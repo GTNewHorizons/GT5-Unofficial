@@ -164,6 +164,7 @@ import ic2.api.recipe.RecipeOutput;
         + "required-after:modularui@[1.1.12,);"
         + "required-after:appliedenergistics2@[rv3-beta-258,);"
         + "required-after:materiallib;"
+        + "required-after:postea;"
         + "after:dreamcraft;"
         + "after:Forestry;"
         + "after:PFAAGeologica;"

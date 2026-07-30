@@ -460,7 +460,7 @@ public final class GTOreAdapter implements IOreAdapter {
     /// The harvest level for a MaterialLib ore/small-ore material, porting legacy `GTBlockOre#getHarvestLevel`'s
     /// formula. `bonus` is the small-ore harvest-level discount (`-1`, matching legacy) or `0` for big ore.
     ///
-    /// A gtpp material takes the flat formula the retired legacy `BlockBaseOre` used for every material
+    /// A gtpp material takes the flat formula every gtpp ore block uses
     /// (`Math.min(Math.max(material.vTier, 1), 6)` via its `BasicBlock` mining-level constructor argument),
     /// which never varied by ore size and so ignores `bonus`. No gtpp material generates `oreSmall`, so the
     /// small-ore hook never reaches this branch anyway.

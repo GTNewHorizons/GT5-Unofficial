@@ -5,8 +5,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.StandardProperties;
 import com.ruling_0.materiallib.api.TextureSet;
 
-// One-time output of scripts/mu/gen_shapes.py (RETIRED for this file, see its module docstring);
-// hand-maintained from here -- edit this file directly.
+// Hand-maintained -- edit this file directly.
 /// The shape groups a material joins. A family carries the shapes every member generates, so a member declares
 /// only its own exceptions: [Materials] adds a shape the family does not carry with `generateShape`
 /// and drops one it does with `removeShape`.

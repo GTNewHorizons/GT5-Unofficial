@@ -464,8 +464,7 @@ public class EyeOfHarmonyRecipe {
     private static final double GTPP_SECONDARY_MULTIPLIER = (1.0 / 9.0);
 
     /// Whether a material carries every shape the gtpp bonus-byproduct algorithm below requires to consider it
-    /// a usable bonus output -- the [GTMaterialProperties#COMPOSITION]-based port of the retired gtPlusPlus
-    /// `Material#hasSolidForm`, which likewise required all four shapes present (not merely one).
+    /// a usable bonus output. All four shapes must be present, not merely one.
     private static boolean hasSolidForm(com.ruling_0.materiallib.api.Material material) {
         return material.hasShape(Shapes.dust) && material.hasShape(BlockShapes.block)
             && material.hasShape(Shapes.dustTiny)
@@ -473,10 +472,8 @@ public class EyeOfHarmonyRecipe {
     }
 
     /// A breadth-first walk of `material`'s [GTMaterialProperties#COMPOSITION] tree, collecting every leaf
-    /// (a material with no composition of its own) -- the [com.ruling_0.materiallib.api.Material]-based port of
-    /// the retired gtPlusPlus `MaterialUtils#getCompoundMaterialsRecursively`, which walked the equivalent
-    /// legacy composite tree the same way. A composition entry that fails to resolve is dropped rather than
-    /// descended into.
+    /// (a material with no composition of its own). A composition entry that fails to resolve is dropped
+    /// rather than descended into.
     private static ArrayList<com.ruling_0.materiallib.api.Material> compoundMaterialsRecursively(
         com.ruling_0.materiallib.api.Material material) {
         ArrayList<com.ruling_0.materiallib.api.Material> resultList = new ArrayList<>();
@@ -507,7 +504,6 @@ public class EyeOfHarmonyRecipe {
         if (material == null) return;
         outputMap.add(material, 2 * mainMultiplier * probability);
 
-        // Copied from the retired src/main/java/gtPlusPlus/core/material/Material.java
         com.ruling_0.materiallib.api.Material bonusA = null; // Ni
         com.ruling_0.materiallib.api.Material bonusB = null; // Tin
 

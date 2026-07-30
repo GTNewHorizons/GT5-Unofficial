@@ -573,7 +573,7 @@ public final class MaterialDataDump {
     /// The still-icon texture path each legacy fluid name registered, captured while `gt.dumpMaterialData`
     /// made every material's legacy fluid builder actually construct (see [GTFluid#DUMP_TEXTURES] and its
     /// `GTProxy`/`LoaderGTBlockFluid` dump-mode bypasses of the skip-when-already-wired checks) -- ground
-    /// truth for [Materials2FluidShapes]'s per-material icon path override.
+    /// truth for [gregtech.api.enums.materials.FluidShapes]'s per-material icon path override.
     private static Map<String, String> dumpFluidTextures() {
         return new TreeMap<>(GTFluid.DUMP_TEXTURES);
     }

@@ -9,10 +9,13 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.TierEU;
 
 /// The pipe-family stat tables: one declared row per material carrying wires/cables, fluid pipes, or item
-/// pipes, applied as [PipeProperties] values through [MaterialLibAPI#editMaterial]. The values
-/// reproduce the literals the retired per-material pipe MTE registrations received (GregTech's own pipe
-/// loader, [gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits], and goodgenerator's
-/// [goodgenerator.util.CrackRecipeAdder]).
+/// pipes, applied as [PipeProperties] values through [MaterialLibAPI#editMaterial]. The values are exact
+/// literals, not derived: each row pins the stats its material's pipes have always had.
+///
+/// Editing rather than declaring is deliberate here (unlike [ShapeData]'s declare-path): every target key
+/// comes off a live [Material] field, so [MaterialLibAPI#editMaterial]'s silently-skipped-edit hazard --
+/// naming a material that does not exist -- cannot arise, and the late edit queue is what lets a row's
+/// `generateShape` win over a builder-time `removeShape`.
 ///
 /// The wooden and High Pressure fluid pipes exist in three sizes whose capacities follow no base-value
 /// formula, so they carry per-size capacity constants here instead of a [PipeProperties#BASE_PIPE_FLOW]
@@ -430,10 +433,8 @@ public class PipeMaterials {
     }
 
     // spotless:off
-    /// Bartworks-backed frame and sheetmetal membership: every material whose retired
-    /// [gregtech.api.material.GTMaterialProperties#WERKSTOFF_PREFIXES] carried a `frameGt` entry also carried a
-    /// `sheetmetal` entry -- the two sets are identical for bartworks-backed materials, so one declared list
-    /// serves both shapes.
+    /// Bartworks-backed frame and sheetmetal membership. The two sets are identical for bartworks-backed
+    /// materials, so one declared list serves both shapes.
     public static Material[] werkstoffFrameAndSheetmetalMaterials() {
         return new Material[] {
             Materials.Ruthenium, Materials.Rhodium, Materials.RhodiumPlatedPalladium,

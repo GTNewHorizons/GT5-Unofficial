@@ -26,9 +26,8 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 
-/// Reproduces the retired gtPlusPlus `RecipeGenPlasma` for every material in [#ELIGIBLE]: the plasma-cell
-/// plasma-turbine fuel recipe and the plasma-cell-to-cell vacuum freezer cooldown recipe, for whichever
-/// material in [#ELIGIBLE] carries a plasma fluid.
+/// The plasma-cell plasma-turbine fuel recipe and the plasma-cell-to-cell vacuum freezer cooldown recipe,
+/// for whichever material in [#ELIGIBLE] carries a plasma fluid.
 ///
 /// [#materialPlasma] resolves the plasma fluid by name ([MaterialFluidNames]'s `plasma`
 /// slot)

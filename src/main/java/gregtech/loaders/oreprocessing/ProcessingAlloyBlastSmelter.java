@@ -32,16 +32,13 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.ItemIntegratedCircuit;
 
-/// Alloy blast smelter recipes that turn a solid material into its molten fluid, ported from the retired
-/// gtPlusPlus `RecipeGenBlastSmelter`/`RecipeGenBlastSmelterGTNH`.
+/// Alloy blast smelter recipes that turn a solid material into its molten fluid, in two shapes:
 ///
-/// - [#generateComposites] reproduces a [LegacyGTPPComposites] entry's component dusts (or, for a
-/// non-solid component, its fluid) combining into the output's molten fluid, mirroring the ratio the retired
-/// mixer-recipe generator also read from the same `Material#getComposites`/`vSmallestRatio` fields -- see
-/// [LegacyGTPPComposites]'s class javadoc for how [#COMPOSITE]'s eligibility differs from the mixer's own.
-/// - [#generateSingleDust] reproduces a material's own dust blasting directly into its own molten fluid, the
-/// retired generator's other recipe shape (`if (Material#requiresBlastFurnace())`, unconditional on composite
-/// status).
+/// - [#generateComposites] combines a [LegacyGTPPComposites] entry's component dusts (or, for a non-solid
+/// component, its fluid) into the output's molten fluid at that table's ratio -- see [LegacyGTPPComposites]'s
+/// class javadoc for how [#COMPOSITE]'s eligibility differs from the mixer's own over the same table.
+/// - [#generateSingleDust] blasts a material's own dust directly into its own molten fluid, independent of
+/// composite status.
 ///
 /// Both shapes need a material's molten fluid, which [MaterialParts]'s state-specific accessors
 /// (`molten`/`gas`/`fluid`)
@@ -63,11 +60,8 @@ public class ProcessingAlloyBlastSmelter {
 
     private ProcessingAlloyBlastSmelter() {}
 
-    /// The exact materials the retired `RecipeGenBlastSmelter` registered a composite recipe for -- every
-    /// material reachable through `MaterialGenerator.generate`'s `generateBlastSmelterRecipes` parameter left
-    /// enabled (or `generateOreMaterialWithAllExcessComponents`, which does not take that parameter) whose
-    /// `Material#getComposites` held more than one part. See [LegacyGTPPComposites]'s class javadoc for how
-    /// this differs from the mixer's own eligibility over the same table.
+    /// The frozen set of materials that get a composite recipe. See [LegacyGTPPComposites]'s class javadoc for
+    /// how this differs from the mixer's own eligibility over the same table.
     // spotless:off
     private static final Set<Material> COMPOSITE = Set.of(
         Materials.AbyssalAlloy, Materials.AncientGranite, Materials.Arcanite,
@@ -104,12 +98,8 @@ public class ProcessingAlloyBlastSmelter {
         }
     }
 
-    /// The exact materials the retired `RecipeGenBlastSmelter` reached with `generateBlastSmelterRecipes` left
-    /// enabled through `MaterialGenerator.generate` (or via `generateOreMaterialWithAllExcessComponents`, which
-    /// does not take that parameter), minus the generator's own material blacklist (`ThoriumHexafluoride`,
-    /// `ThoriumTetrafluoride`, `BloodSteel`, `LiFBeF2ThF4UF4`, `LiFBeF2ZrF4UF4`, `LiFBeF2ZrF4U235`, `Nitinol60` --
-    /// none but `BloodSteel`/`Nitinol60` reach this dispatch anyway). Membership here does not by itself mean a
-    /// recipe gets registered -- see [#generateSingleDust]'s runtime gate and [#materialFluid]'s javadoc.
+    /// The frozen set of materials that get a single-dust recipe. Membership does not by itself mean a recipe
+    /// gets registered -- see [#generateSingleDust]'s runtime gate and [#materialFluid]'s javadoc.
     // spotless:off
     private static final Set<Material> SINGLE_DUST = Set.of(
         Materials.AbyssalAlloy, Materials.AdvancedNitinol, Materials.Arcanite,
@@ -328,9 +318,9 @@ public class ProcessingAlloyBlastSmelter {
         return Item.getIdFromItem(item) + "#" + stack.getItemDamage() + "#" + stack.stackSize;
     }
 
-    /// Rounds to the nearest half, then truncates toward zero -- the retired `MathUtils#roundToClosestInt`'s
-    /// exact (non-standard) rounding, reproduced here because [#generateFromExistingBlastFurnaceRecipes]'s
-    /// duration must match it bit-for-bit.
+    /// Rounds to the nearest half, then truncates toward zero. This non-standard rounding is what
+    /// [#generateFromExistingBlastFurnaceRecipes]'s durations are pinned to, so it must not be replaced with
+    /// ordinary rounding.
     private static int roundToClosestInt(double value) {
         return (int) (Math.round(value * 2) / 2.0);
     }

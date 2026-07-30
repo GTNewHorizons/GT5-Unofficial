@@ -31,8 +31,7 @@ public class RadioHatchCompat {
 
     /// Ensures every radioactive material's `stick`/`stickLong` item is reachable under its legacy oredict
     /// name, for radio hatch machinery that still looks materials up that way. A material MaterialLib never
-    /// generates a rod shape for is skipped -- unlike the retired gtPlusPlus `BaseItemRod`/`BaseItemRodLong`,
-    /// nothing here can mint a rod item from scratch.
+    /// generates a rod shape for is skipped: nothing here can mint a rod item from scratch.
     public static void run() {
         DebugLog.log("Starting Generation of missing GT++ rods/longrods");
 

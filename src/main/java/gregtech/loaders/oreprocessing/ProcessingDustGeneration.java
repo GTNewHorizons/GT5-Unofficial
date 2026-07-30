@@ -20,13 +20,11 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
-/// Reproduces gtPlusPlus's retired `RecipeGenDustGeneration` in full: crafting-table dust-size conversions, the
-/// four packager dust/dustSmall/dustTiny conversions, and the dust -> ingot furnace/alloy-smelter/blast-furnace
-/// recipe, for every material in [#ELIGIBLE].
+/// Crafting-table dust-size conversions, the four packager dust/dustSmall/dustTiny conversions, and the
+/// dust -> ingot furnace/alloy-smelter/blast-furnace recipe, for every material in [#ELIGIBLE].
 ///
-/// [#run] is called from `CompatHandler#startLoadingGregAPIBasedRecipes`, the exact drain point the retired
-/// generator's own `run()` used (queued through `MaterialGenerator#mRecipeMapsToGenerate`). The late dispatch
-/// is deliberate: several of these materials' stacks only resolve once the rest of gtPlusPlus's postInit has
+/// [#run] is called from `CompatHandler#startLoadingGregAPIBasedRecipes`. The late dispatch is deliberate: several of
+/// these materials' stacks only resolve once the rest of gtPlusPlus's postInit has
 /// run, so dispatching any earlier -- MaterialLib's own postInit, or a `ShapeConsumerSupport` shape consumer
 /// -- silently drops or misresolves recipes. This is a plain static pass rather than a
 /// [gregtech.api.interfaces.IOreRecipeRegistrator] for that reason. See [#stackOf] for how a stack resolves.
@@ -34,11 +32,7 @@ public class ProcessingDustGeneration {
 
     private ProcessingDustGeneration() {}
 
-    /// The exact materials the retired `RecipeGenDustGeneration` reached: every material passed to
-    /// `MaterialGenerator.generate`, `generateNuclearMaterial`/`generateNuclearDusts`,
-    /// `generateOreMaterialWithAllExcessComponents`, or `ItemUtils.generateSpecialUseDusts` (the latter reached
-    /// from `MaterialUtils.generateSpecialDustAndAssignToAMaterial` and the direct `ModItems` special-dust
-    /// sites).
+    /// The frozen set of materials this pass covers.
     // spotless:off
     private static final Set<Material> ELIGIBLE = Set.of(
         // MaterialsElements / MaterialsElements.STANDALONE
@@ -193,10 +187,9 @@ public class ProcessingDustGeneration {
     /// falling back to the ore dictionary's unification target otherwise. [GTOreDictUnificator#get] alone is
     /// not enough -- a material with no legacy sub-id never enters the unificator's generated-item pass, so
     /// for those it keeps returning a legacy item even after the shape exists. Public: every
-    /// `gregtech.loaders.oreprocessing` pass ported from a retired gtPlusPlus generator resolves stacks this
-    /// same way, so they share this one instead of each declaring their own copy, and outside consumers use it
-    /// wherever the oredict fallback matters (e.g. `ore`, whose retired `Material#getOre` never consulted a
-    /// MaterialLib shape at all).
+    /// gtPlusPlus-originated pass in `gregtech.loaders.oreprocessing` resolves stacks this same way, so they
+    /// share this one instead of each declaring their own copy, and outside consumers use it wherever the
+    /// oredict fallback matters (notably `ore`, which has no MaterialLib shape to fall back from).
     public static ItemStack stackOf(OrePrefixes prefix, Material material, long amount) {
         ItemStack cutover = MaterialParts.stack(prefix, material, amount);
         return cutover != null ? cutover : GTOreDictUnificator.get(prefix, material, amount);

@@ -22,7 +22,7 @@ import gregtech.common.config.Client;
 /// renderer, and localized formulas re-resolve on language switch. The line is inserted directly below the
 /// display name, matching the legacy position (the formula was the first `addInformation` line on generated
 /// material items).
-public class Materials2FormulaTooltip {
+public class MaterialFormulaTooltip {
 
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent event) {

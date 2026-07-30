@@ -161,7 +161,7 @@ public class ScannerHandlerLoader {
         Material material = tData.mMaterial.mMaterial;
         if (LegacyNameDomain.contains(material)) return getElementScanResult(material);
         // A reconstructed werkstoff element has no legacy counterpart left; the cell-bearing ones are exactly
-        // the population whose retired facades carried mElement (CellLoader's element branch).
+        // the population carrying an element.
         List<String> werkstoffPrefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
         if (werkstoffPrefixes == null || !werkstoffPrefixes.contains(OrePrefixes.cell.name())) return null;
         return getElementScanResult(material);

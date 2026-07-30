@@ -31,10 +31,8 @@ public class GTMaterialProperties {
         .of("gregtech", "autoVacuumFreezerRecipes", true);
     public static final Property<Boolean> BLAST_REQUIRED = Property.of("gregtech", "blastRequired", false);
     public static final Property<Integer> BLAST_TEMP = Property.of("gregtech", "blastTemp", 0);
-    /// The Kelvin boiling point, present only for materials sourced from `gtpp-materials.json` (gtPlusPlus's
-    /// `Material.boilingPointC`, converted with the same formula `Material`'s own `MathUtils#celsiusToKelvin`
-    /// used). GregTech's own dump never carried a boiling point, so unlike [#MELTING_POINT] this has no
-    /// gt-materials.json-sourced counterpart.
+    /// The Kelvin boiling point, carried only by the gtPlusPlus-originated materials: unlike
+    /// [#MELTING_POINT], no gregtech-originated material declares one.
     public static final Property<Integer> BOILING_POINT = Property.of("gregtech", "boilingPoint");
     public static final Property<Integer> BYPRODUCT_MULTIPLIER = Property.of("gregtech", "byProductMultiplier", 1);
     public static final Property<Boolean> CAN_BE_CRACKED = Property.of("gregtech", "canBeCracked", false);
@@ -59,7 +57,7 @@ public class GTMaterialProperties {
     /// The single chemical-formula display string [MaterialFormulas] resolves, whichever origin it came from:
     /// a werkstoff-backed material carries its own bartworks formula-tooltip string (it beat any same-name
     /// gtpp value), a gregtech-dumped material the value declared in
-    /// [gregtech.api.enums.materials.Materials2Formulas] (which also beat any same-name gtpp value), and a
+    /// [MaterialFormulas] (which also beat any same-name gtpp value), and a
     /// remaining gtpp material its `Material#vChemicalFormula` as displayed (the legacy renderer's
     /// `StringUtils#sanitizeStringKeepBrackets` cleanup baked in).
     public static final Property<String> FORMULA = Property.of("gregtech", "formula");

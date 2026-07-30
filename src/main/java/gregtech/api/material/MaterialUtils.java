@@ -120,11 +120,11 @@ public class MaterialUtils {
     }
 
     /// The raw [Fluid] for a material's liquid slot, for presence gates and callers building their own
-    /// stacks. A [#recordSlotFluid]-stored LIQUID fluid takes precedence; otherwise resolved from
-    /// [MaterialFluidNames]'s `fluid()` slot by Forge fluid name -- NOT from a
-    /// [FluidShapes#fluidLiquid] shape lookup, since a material whose fluid is a vanilla or
-    /// foreign Forge fluid (`Water` -> `water`, `Milk` -> `milk`) carries the slot without any ML fluid
-    /// shape, which a shape-based lookup would miss.
+    /// stacks. A [#recordSlotFluid]-stored LIQUID fluid takes precedence; otherwise the material must declare
+    /// a [MaterialFluidNames] `fluid()` slot and MaterialLib must have registered a fluid for one of the
+    /// liquid-state shapes. A vanilla fluid is not reachable here at all: `Water` and `Milk` are not part of
+    /// the material system and have no slot row, so they resolve through [gregtech.api.util.GTUtility#getWater]
+    /// and `FluidRegistry` instead.
     public static @Nullable Fluid fluidOf(@Nullable Material material) {
         return resolveSlotFluid(material, FluidState.LIQUID, FluidNames::fluid);
     }
@@ -190,10 +190,8 @@ public class MaterialUtils {
     }
 
     /// A gtPlusPlus-only material's registered plasma fluid, from [GTMaterialProperties#GTPP_PLASMA_NAME] --
-    /// never from this class's own [MaterialFluidNames]-based [#plasmaOf], so this is
-    /// null for
-    /// every gtPlusPlus-originated material outside the small set that property actually carries -- exactly
-    /// mirroring the retired `Material#getPlasma`.
+    /// never from this class's own [MaterialFluidNames]-based [#plasmaOf], so it is null for every
+    /// gtPlusPlus-originated material outside the small set that property carries.
     public static @Nullable Fluid legacyGtppPlasmaOf(@Nullable Material material) {
         if (material == null) return null;
         String name = material.getProperty(GTMaterialProperties.GTPP_PLASMA_NAME);
@@ -357,7 +355,7 @@ public class MaterialUtils {
     /// metadata (frame tiers, worldgen) use this accessor.
     /// `-1` is this accessor's own sentinel, not a [GTMaterialProperties#OLD_SUB_ID] default: absence is
     /// meaningful for that key, and [LegacyMaterialIDIndex] and
-    /// [Materials2WerkstoffIndex#generatesPrefix] both branch on it.
+    /// [gregtech.api.enums.materials.LegacyWerkstoffIndex#generatesPrefix] both branch on it.
     public static int oldSubId(@Nullable Material material) {
         if (material == null) return -1;
         Integer id = material.getProperty(GTMaterialProperties.OLD_SUB_ID);

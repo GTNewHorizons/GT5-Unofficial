@@ -23,16 +23,15 @@ import gregtech.api.enums.materials.LegacyGTPPComposites.Component;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialUtils;
 
-/// Reproduces the retired gtPlusPlus `RecipeGenMaterialProcessing` for every material in [#ELIGIBLE] that
-/// carries a [LegacyGTPPComposites] entry: a centrifuge (2-6 parts) or chemical-dehydrator (7-9 parts)
-/// recipe decomposing the material's dust back into its composite parts, each part a cell when
-/// [ProcessingOreMachine#gtppState] resolves it to anything but `SOLID`, else a dust.
+/// Decomposition recipes for every material in [#ELIGIBLE] that carries a [LegacyGTPPComposites] entry: a
+/// centrifuge (2-6 parts) or chemical-dehydrator (7-9 parts) recipe turning the material's dust back into its
+/// composite parts, each part a cell when [ProcessingOreMachine#gtppState] resolves it to anything but
+/// `SOLID`, else a dust.
 ///
 /// This reuses the same [LegacyGTPPComposites] ratio table [ProcessingMixerGtpp] and
-/// [ProcessingAlloyBlastSmelter] read, but is not restricted to either of their own eligibility -- the retired
-/// generator's `material.getMaterialComposites().length > 1` gate is membership in this table alone, checked
-/// here at runtime rather than pre-filtered into [#ELIGIBLE] itself, since [#ELIGIBLE] must still cover
-/// materials the retired generator constructed unconditionally regardless of composite count.
+/// [ProcessingAlloyBlastSmelter] read, but is bound by neither of their eligibility sets: the composite gate
+/// here is membership in that table alone, checked at runtime rather than pre-filtered into [#ELIGIBLE],
+/// which must stay a superset.
 ///
 /// [#run] is called from `CompatHandler#startLoadingGregAPIBasedRecipes` -- see
 /// [ProcessingDustGeneration]'s class javadoc for why that timing matters.
@@ -40,13 +39,8 @@ public class ProcessingMaterialDecompositionGtpp {
 
     private ProcessingMaterialDecompositionGtpp() {}
 
-    /// Every material the retired `RecipeGenMaterialProcessing` reached: `MaterialGenerator#generate` (any
-    /// `generateEverything` value), `#generateOreMaterialWithAllExcessComponents`, or `#generateDusts` (all of
-    /// which construct it with `disableOptional=false`, the only value any call site ever passes) --
-    /// excluding a `PURE_GAS`/`PURE_LIQUID`-state material reached only through `generate`, since it returns
-    /// before constructing this generator for those two states (`Bromine`, `Krypton`). No
-    /// `generateNuclearMaterial` call ever passes `disableOptionalRecipes=false`, the only path that would
-    /// have added a nuclear material here too.
+    /// The frozen set of materials eligible for a decomposition recipe. Notably excludes the pure-gas and
+    /// pure-liquid materials (`Bromine`, `Krypton`) and every nuclear material.
     // spotless:off
     private static final Set<Material> ELIGIBLE = Set.of(
         Materials.Selenium, Materials.Iodine, Materials.Rhenium,
@@ -75,16 +69,10 @@ public class ProcessingMaterialDecompositionGtpp {
         Materials.AncientGranite, Materials.Runite, Materials.EglinSteelBaseCompound);
     // spotless:on
 
-    /// `HG1223`'s composites, in the order the retired generator's own `Material#getComposites` carried them
-    /// (cell parts before dust parts is coincidental -- the retired generator preserves declaration order and
-    /// this is that order, not a separate grouping step) -- not [GTMaterialProperties#COMPOSITION]'s own list
-    /// order, which differs (`Mercury, Barium, Calcium, Copper, Oxygen`). `HG1223` has no
-    /// [LegacyGTPPComposites] entry: `generate(matInfo, false)` dispatches it, so its
-    /// `RecipeGenDustGeneration` mixer block (that table's own source) never ran for it, but the retired
-    /// `RecipeGenMaterialProcessing` reads composition directly and unconditionally, so it still emitted this
-    /// material's decomposition recipe. Sourced here rather than by widening [LegacyGTPPComposites], which
-    /// [ProcessingMixerGtpp] and [ProcessingAlloyBlastSmelter] also read and whose own eligibility this material
-    /// does not belong to.
+    /// `HG1223`'s composites, in the frozen order its decomposition recipe lays out its output slots -- not
+    /// [GTMaterialProperties#COMPOSITION]'s own list order, which differs (`Mercury, Barium, Calcium, Copper,
+    /// Oxygen`). Held here rather than in [LegacyGTPPComposites] because [ProcessingMixerGtpp] and
+    /// [ProcessingAlloyBlastSmelter] read that table too and this material belongs to neither's eligibility.
     private static final Map<Material, List<Component>> COMPOSITION_FALLBACK = Map.of(
         Materials.HG1223,
         List.of(
