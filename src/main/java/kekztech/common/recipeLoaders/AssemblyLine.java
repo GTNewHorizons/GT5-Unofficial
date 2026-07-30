@@ -12,6 +12,7 @@ import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
@@ -23,7 +24,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -52,11 +52,11 @@ public class AssemblyLine implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Enderium,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (10 * INGOTS)),
                 MaterialLibAPI.getFluidStack(
                     Materials.Polybenzimidazole,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (11 * INGOTS)))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 6))
             .eut(TierEU.RECIPE_LuV)
@@ -80,11 +80,11 @@ public class AssemblyLine implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.CrystallineAlloy,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (20 * INGOTS)),
                 MaterialLibAPI.getFluidStack(
                     Materials.Polybenzimidazole,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (14 * INGOTS)))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 7))
             .duration(30 * SECONDS)
@@ -109,7 +109,7 @@ public class AssemblyLine implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.CrystallinePinkSlime,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (30 * INGOTS)),
                 MaterialUtils.molten(Materials.RadoxPoly, 20 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 8))
@@ -136,7 +136,7 @@ public class AssemblyLine implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.MelodicAlloy,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (40 * INGOTS)),
                 MaterialUtils.molten(Materials.RadoxPoly, 24 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 9))
@@ -163,7 +163,7 @@ public class AssemblyLine implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.StellarAlloy,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (50 * INGOTS)),
                 MaterialUtils.molten(Materials.RadoxPoly, 32 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 10))

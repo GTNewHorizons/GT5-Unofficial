@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.transcendentPlasmaMixerRecipes;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -9,7 +10,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
@@ -32,16 +32,16 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .circuit(1)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Helium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Helium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Iron, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Iron, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Calcium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Calcium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Niobium, Materials2FluidShapes.fluidPlasma, (int) (1_000)))
+                    .getFluidStack(Materials.Niobium, FluidShapes.fluidPlasma, (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.ExcitedDTCC, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.ExcitedDTCC, FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(100)
             .eut(CRUDE_EU_PER_L)
             .addTo(transcendentPlasmaMixerRecipes);
@@ -50,24 +50,24 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .circuit(2)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Helium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Helium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Iron, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Iron, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Calcium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Calcium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Niobium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Niobium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Radon, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Radon, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Nickel, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Nickel, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Boron, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Boron, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Sulfur, Materials2FluidShapes.fluidPlasma, (int) (1_000)))
+                    .getFluidStack(Materials.Sulfur, FluidShapes.fluidPlasma, (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.ExcitedDTPC, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.ExcitedDTPC, FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(100)
             .eut(PROSAIC_EU_PER_L)
             .addTo(transcendentPlasmaMixerRecipes);
@@ -76,32 +76,32 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .circuit(3)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Helium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Helium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Iron, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Iron, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Calcium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Calcium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Niobium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Niobium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Radon, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Radon, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Nickel, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Nickel, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Boron, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Boron, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Sulfur, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Sulfur, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Nitrogen, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Nitrogen, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Zinc, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Zinc, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Silver, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Silver, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Titanium, Materials2FluidShapes.fluidPlasma, (int) (1_000)))
+                    .getFluidStack(Materials.Titanium, FluidShapes.fluidPlasma, (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.ExcitedDTRC, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.ExcitedDTRC, FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(100)
             .eut(RESPLENDENT_EU_PER_L)
             .addTo(transcendentPlasmaMixerRecipes);
@@ -110,39 +110,39 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .circuit(4)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Helium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Helium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Iron, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Iron, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Calcium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Calcium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Niobium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Niobium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Radon, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Radon, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Nickel, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Nickel, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Boron, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Boron, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Sulfur, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Sulfur, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Nitrogen, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Nitrogen, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Zinc, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Zinc, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Silver, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Silver, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Titanium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Titanium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Americium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Americium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Bismuth, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Bismuth, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
-                MaterialLibAPI.getFluidStack(Materials.Tin, Materials2FluidShapes.fluidPlasma, (int) (1_000)))
+                    .getFluidStack(Materials.Oxygen, FluidShapes.fluidPlasma, (int) (1_000)),
+                MaterialLibAPI.getFluidStack(Materials.Tin, FluidShapes.fluidPlasma, (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.ExcitedDTEC, FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(100)
             .eut(EXOTIC_EU_PER_L)
             .addTo(transcendentPlasmaMixerRecipes);
@@ -151,47 +151,47 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .circuit(5)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Helium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Helium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Iron, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Iron, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Calcium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Calcium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Niobium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Niobium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Radon, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Radon, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Nickel, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Nickel, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Boron, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Boron, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Sulfur, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Sulfur, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Nitrogen, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Nitrogen, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Zinc, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Zinc, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Silver, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Silver, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Titanium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Titanium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Americium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Americium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Bismuth, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Bismuth, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
-                MaterialLibAPI.getFluidStack(Materials.Tin, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Oxygen, FluidShapes.fluidPlasma, (int) (1_000)),
+                MaterialLibAPI.getFluidStack(Materials.Tin, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lead, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Lead, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Thorium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Thorium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Naquadria, Materials2FluidShapes.fluidPlasma, (int) (100L)),
+                    .getFluidStack(Materials.Naquadria, FluidShapes.fluidPlasma, (int) (100L)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.RawStarMatter, Materials2FluidShapes.fluidLiquid, (int) (25L)))
+                    .getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, (int) (25L)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.ExcitedDTSC, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.ExcitedDTSC, FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(100)
             .eut(STELLAR_EU_PER_HALF_L)
             .metadata(GTRecipeConstants.EU_MULTIPLIER, 20)
@@ -201,19 +201,19 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .circuit(24)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.RawStarMatter, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
+                    .getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.SpaceTime, Materials2FluidShapes.fluidMolten, (int) (1_000)),
+                    .getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.spatialFluid, Materials2FluidShapes.fluidMolten, (int) (1_000)),
+                    .getFluidStack(Materials.spatialFluid, FluidShapes.fluidMolten, (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.DimensionallyTranscendentResidue,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.PrimordialMatter,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(100)
             .eut(PRIMORDIAL_MATTER)
@@ -224,17 +224,17 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .fluidInputs(
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Fermium), 1_000),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Thorium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Thorium, FluidShapes.fluidPlasma, (int) (1_000)),
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.CelestialTungsten), 1_000),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Calcium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Calcium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.DimensionallyTranscendentResidue,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Creon, Materials2FluidShapes.fluidPlasma, (int) (5_000)))
+                    .getFluidStack(Materials.Creon, FluidShapes.fluidPlasma, (int) (5_000)))
             .duration(100)
             .eut(TierEU.RECIPE_UMV)
             .addTo(transcendentPlasmaMixerRecipes);
@@ -244,19 +244,19 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DimensionallyTranscendentResidue,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
-                MaterialLibAPI.getFluidStack(Materials.Tin, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                MaterialLibAPI.getFluidStack(Materials.Tin, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Antimony, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Antimony, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lead, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Lead, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.RawStarMatter, Materials2FluidShapes.fluidLiquid, (int) (25)))
+                    .getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, (int) (25)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.InactiveCosmicSolder,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (4_000)))
             .duration(100)
             .eut(INACTIVE_COSMIC_SOLDER)
@@ -266,51 +266,51 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .circuit(24)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Infinity, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Infinity, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Neutronium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Neutronium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.FleroviumGT5U, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.FleroviumGT5U, FluidShapes.fluidPlasma, (int) (1_000)),
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.ChromaticGlass), 1_000),
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Hypogen), 1_000),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Ichorium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Ichorium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.SixPhasedCopper,
-                    Materials2FluidShapes.fluidPlasma,
+                    FluidShapes.fluidPlasma,
                     (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.DraconiumAwakened,
-                    Materials2FluidShapes.fluidPlasma,
+                    FluidShapes.fluidPlasma,
                     (int) (1_000)),
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Dragonblood), 1_000),
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Rhugnor), 1_000),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Draconium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Draconium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Creon, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Creon, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Tritanium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Tritanium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.CosmicNeutronium,
-                    Materials2FluidShapes.fluidPlasma,
+                    FluidShapes.fluidPlasma,
                     (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Bedrockium, Materials2FluidShapes.fluidPlasma, (int) (1_000)),
+                    .getFluidStack(Materials.Bedrockium, FluidShapes.fluidPlasma, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.ExcitedDTCC, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
+                    .getFluidStack(Materials.ExcitedDTCC, FluidShapes.fluidLiquid, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.ExcitedDTPC, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
+                    .getFluidStack(Materials.ExcitedDTPC, FluidShapes.fluidLiquid, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.ExcitedDTRC, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
+                    .getFluidStack(Materials.ExcitedDTRC, FluidShapes.fluidLiquid, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.ExcitedDTEC, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
+                    .getFluidStack(Materials.ExcitedDTEC, FluidShapes.fluidLiquid, (int) (1_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.ExcitedDTSC, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.ExcitedDTSC, FluidShapes.fluidLiquid, (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.sgcrystalslurry,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(100 * GTRecipeBuilder.TICKS)
             // 1 Trillion EU/t

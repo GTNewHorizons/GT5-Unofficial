@@ -5,6 +5,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
@@ -19,7 +20,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.CellShapes;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -62,7 +62,7 @@ public class Assembler implements Runnable {
             .itemOutputs(ItemRegistry.dehp)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.HSSE, Materials2FluidShapes.fluidMolten, (int) (32 * INGOTS)))
+                    .getFluidStack(Materials.HSSE, FluidShapes.fluidMolten, (int) (32 * INGOTS)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -87,7 +87,7 @@ public class Assembler implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SolderingAlloy,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (2 * INGOTS)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -129,7 +129,7 @@ public class Assembler implements Runnable {
             .itemOutputs(ItemList.Casing_RadiationProof.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Concrete, Materials2FluidShapes.fluidMolten, (int) (9 * INGOTS)))
+                    .getFluidStack(Materials.Concrete, FluidShapes.fluidMolten, (int) (9 * INGOTS)))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -143,7 +143,7 @@ public class Assembler implements Runnable {
             .itemOutputs(ItemList.Casing_AdvancedRadiationProof.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lead, Materials2FluidShapes.fluidMolten, (int) (6 * INGOTS)))
+                    .getFluidStack(Materials.Lead, FluidShapes.fluidMolten, (int) (6 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);

@@ -11,8 +11,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -51,12 +51,12 @@ public class RecipesSeleniumProcessing {
             .fluidInputs(
                 MaterialUtils.legacyGtppFluid(Materials.SeleniousAcid, 750),
                 MaterialLibAPI
-                    .getFluidStack(Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, (int) (8_000)))
+                    .getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (8_000)))
             .fluidOutputs(
                 MaterialUtils.legacyGtppFluid(Materials.Selenium, 2 * INGOTS + 1 * QUARTER_INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedSulfuricAcid,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (12_000)))
             .eut(TierEU.RECIPE_IV)
             .duration(5 * MINUTES)

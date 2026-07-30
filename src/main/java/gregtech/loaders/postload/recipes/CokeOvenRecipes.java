@@ -4,6 +4,7 @@ import static gregtech.api.recipe.RecipeMaps.cokeOvenRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -12,7 +13,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
@@ -32,7 +32,7 @@ public class CokeOvenRecipes implements Runnable {
             .itemOutputs(RailcraftToolItems.getCoalCoke(1))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Creosote, Materials2FluidShapes.fluidLiquid, (int) (500)))
+                    .getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (500)))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(0)
             .addTo(cokeOvenRecipes);
@@ -42,7 +42,7 @@ public class CokeOvenRecipes implements Runnable {
             .itemOutputs(EnumCube.COKE_BLOCK.getItem(1))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Creosote, Materials2FluidShapes.fluidLiquid, (int) (4_500)))
+                    .getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (4_500)))
             .duration(13 * MINUTES + 30 * SECONDS)
             .eut(0)
             .addTo(cokeOvenRecipes);
@@ -52,7 +52,7 @@ public class CokeOvenRecipes implements Runnable {
             .itemOutputs(GregtechItemList.CactusCharcoal.get(1))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Creosote, Materials2FluidShapes.fluidLiquid, (int) (30)))
+                    .getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (30)))
             .duration(25 * SECONDS)
             .eut(0)
             .addTo(cokeOvenRecipes);
@@ -62,7 +62,7 @@ public class CokeOvenRecipes implements Runnable {
             .itemOutputs(GregtechItemList.CactusCoke.get(1))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Creosote, Materials2FluidShapes.fluidLiquid, (int) (30)))
+                    .getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (30)))
             .duration(25 * SECONDS)
             .eut(0)
             .addTo(cokeOvenRecipes);
@@ -72,7 +72,7 @@ public class CokeOvenRecipes implements Runnable {
             .itemOutputs(GregtechItemList.SugarCharcoal.get(1))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Creosote, Materials2FluidShapes.fluidLiquid, (int) (30)))
+                    .getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (30)))
             .duration(25 * SECONDS)
             .eut(0)
             .addTo(cokeOvenRecipes);
@@ -82,7 +82,7 @@ public class CokeOvenRecipes implements Runnable {
             .itemOutputs(GregtechItemList.SugarCoke.get(1))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Creosote, Materials2FluidShapes.fluidLiquid, (int) (30)))
+                    .getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (30)))
             .duration(25 * SECONDS)
             .eut(0)
             .addTo(cokeOvenRecipes);
@@ -99,7 +99,7 @@ public class CokeOvenRecipes implements Runnable {
             .itemOutputs(GTOreDictUnificator.get("gemCharcoal", 1))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Creosote, Materials2FluidShapes.fluidLiquid, (int) (250)))
+                    .getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (250)))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(0)
             .addTo(cokeOvenRecipes);

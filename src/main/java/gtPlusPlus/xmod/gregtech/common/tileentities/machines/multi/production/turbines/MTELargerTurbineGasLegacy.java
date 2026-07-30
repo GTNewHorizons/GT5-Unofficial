@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
@@ -33,7 +33,7 @@ public class MTELargerTurbineGasLegacy extends MTELargerTurbineBaseLegacy {
 
     static {
         BLACKLIST.add(
-            MaterialLibAPI.getFluidStack(Materials.Benzene, Materials2FluidShapes.fluidLiquid, (int) (0))
+            MaterialLibAPI.getFluidStack(Materials.Benzene, FluidShapes.fluidLiquid, (int) (0))
                 .getFluid());
     }
 

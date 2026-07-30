@@ -36,6 +36,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
@@ -58,7 +59,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -1438,7 +1438,7 @@ public final class RecipeMaps {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.Lubricant,
-                        Materials2FluidShapes.fluidLiquid,
+                        FluidShapes.fluidLiquid,
                         (int) (clamp(aDuration * aEUt / 1280, 1, 250))))
                 .duration(aDuration)
                 .build()

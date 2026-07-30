@@ -96,7 +96,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -182,7 +182,7 @@ public class RecipeLoader {
                 .fluidInputs(
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 3 * STACKS + 8 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials.Honey, Materials2FluidShapes.fluidLiquid, (int) (20_000)))
+                        .getFluidStack(Materials.Honey, FluidShapes.fluidLiquid, (int) (20_000)))
                 .itemOutputs(ExtremeIndustrialApiary.get(1))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(5 * MINUTES)
@@ -347,7 +347,7 @@ public class RecipeLoader {
                 .itemOutputs(MilkTea.get(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (100)))
+                        .getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, (int) (100)))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);

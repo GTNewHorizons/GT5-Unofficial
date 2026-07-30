@@ -20,7 +20,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -212,7 +212,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             .itemOutputs(slabOutput)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (1)))
+                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (1)))
             .duration(25 * TICKS)
             .eut(4)
             .addTo(cutterRecipes);

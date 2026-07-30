@@ -27,7 +27,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeBuilder;
@@ -241,35 +241,35 @@ public class CrackRecipeAdder {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Pipe_Tiny.get(0))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (1 * HALF_INGOTS)))
+                MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (1 * HALF_INGOTS)))
             .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.pipeTiny, 1))
             .duration(MaterialUtils.mass(material) * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidSolidifierRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Pipe_Small.get(0))
-            .fluidInputs(MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.pipeSmall, 1))
             .duration(MaterialUtils.mass(material) * 2 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidSolidifierRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Pipe_Medium.get(0))
-            .fluidInputs(MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (3 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (3 * INGOTS)))
             .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.pipeMedium, 1))
             .duration(MaterialUtils.mass(material) * 6 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidSolidifierRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Pipe_Large.get(0))
-            .fluidInputs(MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (6 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (6 * INGOTS)))
             .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.pipeLarge, 1))
             .duration(MaterialUtils.mass(material) * 12 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidSolidifierRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Pipe_Huge.get(0))
-            .fluidInputs(MaterialLibAPI.getFluidStack(material, Materials2FluidShapes.fluidMolten, (int) (1728)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (1728)))
             .itemOutputs(MaterialLibAPI.getStack(material, Materials2PipeShapes.pipeHuge, 1))
             .duration(MaterialUtils.mass(material) * 24 * TICKS)
             .eut(TierEU.RECIPE_LV)

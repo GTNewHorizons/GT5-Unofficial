@@ -11,6 +11,7 @@ import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator.sapling_Rainforest;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
@@ -23,7 +24,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.BlockShapes;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -290,7 +290,7 @@ public class CompressorRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.protohalkonitebase,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     1 * STACKS))
             .itemOutputs(GTOreDictUnificator.get("plateSuperdensehotprotohalkonite", 1))
             // Require stabilized black hole
@@ -304,7 +304,7 @@ public class CompressorRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.protohalkonitebase,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     32 * INGOTS))
             .itemOutputs(GTOreDictUnificator.get("plateSuperdensehotprotohalkonite", 1))
             // Require stabilized black hole
@@ -319,7 +319,7 @@ public class CompressorRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.protohalkonitebase,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     32 * INGOTS))
             .itemOutputs(GTOreDictUnificator.get("plateSuperdensehotprotohalkonite", 1))
             // Require stabilized black hole
@@ -333,7 +333,7 @@ public class CompressorRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.CosmicNeutronium,
-                    Materials2FluidShapes.fluidPlasma,
+                    FluidShapes.fluidPlasma,
                     (int) (64 * INGOTS)))
             .itemOutputs(ItemList.PseudoStar.get(4L))
             // Require stabilized black hole

@@ -9,6 +9,7 @@ import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
@@ -18,7 +19,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -154,7 +154,7 @@ public class CircuitAssemblerRecipes implements Runnable {
             .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, 0))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Glass, Materials2FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+                    .getFluidStack(Materials.Glass, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(10 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(circuitAssemblerRecipes);
@@ -170,7 +170,7 @@ public class CircuitAssemblerRecipes implements Runnable {
             .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, 3))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Glass, Materials2FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+                    .getFluidStack(Materials.Glass, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(10 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(circuitAssemblerRecipes);
@@ -202,7 +202,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.Glass,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (4 * INGOTS)))
                 .duration(10 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)

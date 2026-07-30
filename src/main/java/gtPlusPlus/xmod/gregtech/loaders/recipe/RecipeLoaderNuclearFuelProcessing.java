@@ -22,7 +22,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.CellShapes;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -40,7 +40,7 @@ public class RecipeLoaderNuclearFuelProcessing {
                 MaterialUtils.legacyGtppFluid(Materials.BerylliumFluoride, 150),
                 MaterialUtils.legacyGtppFluid(Materials.ZirconiumTetrafluoride, 60),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Uranium235, Materials2FluidShapes.fluidMolten, (int) (240)))
+                    .getFluidStack(Materials.Uranium235, FluidShapes.fluidMolten, (int) (240)))
             .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.LFTRFuel1, 1000))
             .duration(30 * MINUTES)
             .eut(TierEU.RECIPE_EV)
@@ -234,7 +234,7 @@ public class RecipeLoaderNuclearFuelProcessing {
                 MaterialLibAPI.getStack(Materials.StableMoltenSaltBase, CellShapes.cellMolten, 1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (2_000)))
+                    .getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (2_000)))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2))
             .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.LFTRFuelBase, 3000))
             .duration(2 * MINUTES + 30 * SECONDS)

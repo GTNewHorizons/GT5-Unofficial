@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -59,7 +60,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
@@ -506,7 +506,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                             ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
                             : MaterialLibAPI.getFluidStack(
                                 Materials.SuperCoolant,
-                                Materials2FluidShapes.fluidLiquid,
+                                FluidShapes.fluidLiquid,
                                 COOLANT_CONSUMED_PER_SEC);
                         if (!drain(compatMode.coolantHatch, tFluid, true)) {
                             stopMachine(ShutDownReasonRegistry.outOfFluid(tFluid));
@@ -518,7 +518,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     FluidStack tFluid = mCoolingTower.isTier1 ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
                         : MaterialLibAPI.getFluidStack(
                             Materials.SuperCoolant,
-                            Materials2FluidShapes.fluidLiquid,
+                            FluidShapes.fluidLiquid,
                             COOLANT_CONSUMED_PER_SEC);
                     if (!mCoolingTower.drain(mCoolingTower.mCoolantInputHatch, tFluid, true)) {
                         stopMachine(ShutDownReasonRegistry.outOfFluid(tFluid));

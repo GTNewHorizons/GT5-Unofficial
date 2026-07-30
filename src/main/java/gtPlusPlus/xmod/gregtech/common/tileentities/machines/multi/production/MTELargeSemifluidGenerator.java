@@ -29,7 +29,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -130,9 +130,9 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
         // This will allow us to check costs without needing to actually try to deplete fluids
         // (wasting earlier fluids in the check if later fluids turn out to be insufficient).
         FluidStack lubricant = MaterialLibAPI
-            .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (0));
+            .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (0));
         FluidStack oxygen = MaterialLibAPI
-            .getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (0));
+            .getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (0));
         for (FluidStack hatchFluid : tFluids) {
             if (hatchFluid.isFluidEqual(lubricant)) {
                 lubricant.amount = Math.max(lubricant.amount, hatchFluid.amount);
@@ -163,7 +163,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
                 if (boostEu) {
                     if (!depleteInput(
                         MaterialLibAPI
-                            .getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (4)))) {
+                            .getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (4)))) {
                         return SimpleCheckRecipeResult.ofFailure("no_oxygen");
                     }
                 }
@@ -172,7 +172,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
                     if (!depleteInput(
                         MaterialLibAPI.getFluidStack(
                             Materials.Lubricant,
-                            Materials2FluidShapes.fluidLiquid,
+                            FluidShapes.fluidLiquid,
                             (int) (lubricantCost)))) {
                         return SimpleCheckRecipeResult.ofFailure("no_lubricant");
                     }

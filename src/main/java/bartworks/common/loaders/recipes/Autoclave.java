@@ -13,7 +13,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 
 public class Autoclave implements Runnable {
@@ -22,12 +22,12 @@ public class Autoclave implements Runnable {
     public void run() {
         Material[] gasSterilizers = { Materials.Ammonia, Materials.Chlorine };
         for (Material used : gasSterilizers) {
-            addSterilizerRecipes(MaterialLibAPI.getFluidStack(used, Materials2FluidShapes.fluidGas, 8));
+            addSterilizerRecipes(MaterialLibAPI.getFluidStack(used, FluidShapes.fluidGas, 8));
         }
 
         Material[] liquidSterilizers = { Materials.Ethanol, Materials.Methanol };
         for (Material used : liquidSterilizers) {
-            addSterilizerRecipes(MaterialLibAPI.getFluidStack(used, Materials2FluidShapes.fluidLiquid, 16));
+            addSterilizerRecipes(MaterialLibAPI.getFluidStack(used, FluidShapes.fluidLiquid, 16));
         }
     }
 

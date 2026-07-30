@@ -53,6 +53,7 @@ import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.TripleCompress
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generateWireRecipes;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -66,7 +67,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -130,7 +130,7 @@ public class RecipesGeneral {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.BorosilicateGlass,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (4000)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -143,7 +143,7 @@ public class RecipesGeneral {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.BorosilicateGlass,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (16000)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -193,7 +193,7 @@ public class RecipesGeneral {
             .itemOutputs(GregtechItemList.MagicFeather.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Silver, Materials2FluidShapes.fluidMolten, (int) (32 * INGOTS)))
+                    .getFluidStack(Materials.Silver, FluidShapes.fluidMolten, (int) (32 * INGOTS)))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);

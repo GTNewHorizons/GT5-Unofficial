@@ -18,7 +18,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
@@ -60,7 +60,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 .outputChances(4000)
                 .fluidOutputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.OilHeavy, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
+                        .getFluidStack(Materials.OilHeavy, FluidShapes.fluidLiquid, (int) (2_000)))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(centrifugeRecipes);

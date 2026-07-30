@@ -17,7 +17,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
@@ -106,7 +106,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials.Lubricant,
-                            Materials2FluidShapes.fluidLiquid,
+                            FluidShapes.fluidLiquid,
                             (int) (Math.max(
                                 1,
                                 Math.min(

@@ -8,6 +8,7 @@ import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraftforge.fluids.FluidStack;
@@ -18,7 +19,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -35,7 +35,7 @@ public class BauxiteRefineChain {
             .fluidInputs(GTUtility.getWater(5_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.BauxiteSlurry, Materials2FluidShapes.fluidLiquid, (int) (8_000)))
+                    .getFluidStack(Materials.BauxiteSlurry, FluidShapes.fluidLiquid, (int) (8_000)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -49,7 +49,7 @@ public class BauxiteRefineChain {
             .fluidInputs(GTUtility.getWater(5_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.BauxiteSlurry, Materials2FluidShapes.fluidLiquid, (int) (8_000)))
+                    .getFluidStack(Materials.BauxiteSlurry, FluidShapes.fluidLiquid, (int) (8_000)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
@@ -57,10 +57,10 @@ public class BauxiteRefineChain {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.BauxiteSlurry, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
+                    .getFluidStack(Materials.BauxiteSlurry, FluidShapes.fluidLiquid, (int) (2_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.HeadedBauxiteSlurry, Materials2FluidShapes.fluidLiquid, 2_000))
+                    .getFluidStack(Materials.HeadedBauxiteSlurry, FluidShapes.fluidLiquid, 2_000))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(fluidHeaterRecipes);
@@ -75,12 +75,12 @@ public class BauxiteRefineChain {
                 MaterialLibAPI.getStack(Materials.BauxiteSlag, Shapes.dust, (int) (16)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (5_000)),
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (5_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.HeadedBauxiteSlurry, Materials2FluidShapes.fluidLiquid, 8_000))
+                    .getFluidStack(Materials.HeadedBauxiteSlurry, FluidShapes.fluidLiquid, 8_000))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SluiceJuice, Materials2FluidShapes.fluidLiquid, (int) (5_000)))
+                    .getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, (int) (5_000)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -107,7 +107,7 @@ public class BauxiteRefineChain {
             .outputChances(10000, 3000)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (1_000)))
             .fluidOutputs(new FluidStack(ItemList.sGreenVitriol, 2_000))
             .duration(21 * SECONDS)
             .eut(1000)
@@ -121,7 +121,7 @@ public class BauxiteRefineChain {
             .outputChances(10000, 6000)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (1_000)))
             .fluidOutputs(new FluidStack(ItemList.sGreenVitriol, 2_000))
             .duration(21 * SECONDS)
             .eut(1000)
@@ -152,12 +152,12 @@ public class BauxiteRefineChain {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.HydrochloricAcidGT5U,
-                        Materials2FluidShapes.fluidLiquid,
+                        FluidShapes.fluidLiquid,
                         1_000))
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.SapphireJuice,
-                        Materials2FluidShapes.fluidLiquid,
+                        FluidShapes.fluidLiquid,
                         (int) (1_000)))
                 .duration(2 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
@@ -171,12 +171,12 @@ public class BauxiteRefineChain {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.HydrochloricAcidGT5U,
-                        Materials2FluidShapes.fluidLiquid,
+                        FluidShapes.fluidLiquid,
                         1_000))
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.GreenSapphireJuice,
-                        Materials2FluidShapes.fluidLiquid,
+                        FluidShapes.fluidLiquid,
                         (int) (1_000)))
                 .duration(2 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
@@ -190,11 +190,11 @@ public class BauxiteRefineChain {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.HydrochloricAcidGT5U,
-                        Materials2FluidShapes.fluidLiquid,
+                        FluidShapes.fluidLiquid,
                         1_000))
                 .fluidOutputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.RubyJuice, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                        .getFluidStack(Materials.RubyJuice, FluidShapes.fluidLiquid, (int) (1_000)))
                 .duration(2 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(mixerRecipes);
@@ -207,12 +207,12 @@ public class BauxiteRefineChain {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.HydrochloricAcidGT5U,
-                        Materials2FluidShapes.fluidLiquid,
+                        FluidShapes.fluidLiquid,
                         9_000))
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.SapphireJuice,
-                        Materials2FluidShapes.fluidLiquid,
+                        FluidShapes.fluidLiquid,
                         (int) (9_000)))
                 .duration(3 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
@@ -226,12 +226,12 @@ public class BauxiteRefineChain {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.HydrochloricAcidGT5U,
-                        Materials2FluidShapes.fluidLiquid,
+                        FluidShapes.fluidLiquid,
                         9_000))
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.GreenSapphireJuice,
-                        Materials2FluidShapes.fluidLiquid,
+                        FluidShapes.fluidLiquid,
                         (int) (9_000)))
                 .duration(3 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
@@ -245,11 +245,11 @@ public class BauxiteRefineChain {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.HydrochloricAcidGT5U,
-                        Materials2FluidShapes.fluidLiquid,
+                        FluidShapes.fluidLiquid,
                         9_000))
                 .fluidOutputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.RubyJuice, Materials2FluidShapes.fluidLiquid, (int) (9_000)))
+                        .getFluidStack(Materials.RubyJuice, FluidShapes.fluidLiquid, (int) (9_000)))
                 .duration(3 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(mixerRecipes);
@@ -265,10 +265,10 @@ public class BauxiteRefineChain {
             .outputChances(10000, 300, 200, 200)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SapphireJuice, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.SapphireJuice, FluidShapes.fluidLiquid, (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 1_000))
+                    .getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(100)
             .addTo(centrifugeRecipes);
@@ -285,11 +285,11 @@ public class BauxiteRefineChain {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.GreenSapphireJuice,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 1_000))
+                    .getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(100)
             .addTo(centrifugeRecipes);
@@ -305,10 +305,10 @@ public class BauxiteRefineChain {
             .outputChances(10000, 5000, 300, 200, 200)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.RubyJuice, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.RubyJuice, FluidShapes.fluidLiquid, (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 1_000))
+                    .getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(100)
             .addTo(centrifugeRecipes);
@@ -325,10 +325,10 @@ public class BauxiteRefineChain {
             .outputChances(5000, 4000, 300, 300, 300, 200)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                    .getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, (int) (10)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SluiceJuice, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                    .getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, (int) (10)))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
@@ -345,10 +345,10 @@ public class BauxiteRefineChain {
             .outputChances(5000, 4000, 300, 300, 200, 200)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                    .getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, (int) (10)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SluiceJuice, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                    .getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, (int) (10)))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
@@ -365,10 +365,10 @@ public class BauxiteRefineChain {
             .outputChances(5000, 4000, 300, 300, 300, 200)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                    .getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, (int) (10)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SluiceJuice, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                    .getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, (int) (10)))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
@@ -385,10 +385,10 @@ public class BauxiteRefineChain {
             .outputChances(5000, 4000, 300, 300, 200, 600)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                    .getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, (int) (10)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SluiceJuice, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                    .getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, (int) (10)))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
@@ -405,10 +405,10 @@ public class BauxiteRefineChain {
             .outputChances(5000, 1000, 300, 300, 200, 200)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                    .getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, (int) (10)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SluiceJuice, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                    .getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, (int) (10)))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
@@ -425,10 +425,10 @@ public class BauxiteRefineChain {
             .outputChances(5000, 4000, 300, 300, 300, 200)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                    .getFluidStack(Materials.NitricAcid, FluidShapes.fluidLiquid, (int) (10)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SluiceJuice, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                    .getFluidStack(Materials.SluiceJuice, FluidShapes.fluidLiquid, (int) (10)))
             .duration(2 * SECONDS + 5 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);

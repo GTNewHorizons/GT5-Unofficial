@@ -8,6 +8,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Items;
@@ -19,7 +20,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -206,9 +206,9 @@ public class RecipeLoaderAgriculturalChem {
             .fluidOutputs(
                 new FluidStack(GTPPFluids.Butanol, 18_000),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Acetone, Materials2FluidShapes.fluidLiquid, (int) (9_000)),
+                    .getFluidStack(Materials.Acetone, FluidShapes.fluidLiquid, (int) (9_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Ethanol, Materials2FluidShapes.fluidLiquid, (int) (3_000)))
+                    .getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, (int) (3_000)))
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .metadata(CHEMPLANT_CASING_TIER, 1)

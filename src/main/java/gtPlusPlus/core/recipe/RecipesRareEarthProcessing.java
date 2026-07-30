@@ -9,6 +9,7 @@ import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,7 +21,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.CellShapes;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -45,7 +45,7 @@ public class RecipesRareEarthProcessing {
             .itemInputs(MaterialLibAPI.getStack(Materials.Salt, Shapes.dust, (int) (16)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SaltWater, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
+                    .getFluidStack(Materials.SaltWater, FluidShapes.fluidLiquid, (int) (2_000)))
             .fluidOutputs(new FluidStack(mBrine, 4_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -93,7 +93,7 @@ public class RecipesRareEarthProcessing {
                 MaterialLibAPI.getStack(Materials.RareEarthI, Shapes.crushed, 2))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalBathRecipes);

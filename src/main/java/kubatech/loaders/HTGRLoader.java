@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
@@ -27,7 +28,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
@@ -416,7 +416,7 @@ public class HTGRLoader {
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.screw, (int) (8)),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Lead, Materials2FluidShapes.fluidMolten, (int) (1152)))
+                MaterialLibAPI.getFluidStack(Materials.Lead, FluidShapes.fluidMolten, (int) (1152)))
             .itemOutputs(ItemList.Casing_Beryllium_Integrated_Reactor.get(1L))
             .duration(GTRecipeBuilder.SECONDS * 30)
             .eut(TierEU.RECIPE_EV)
@@ -428,7 +428,7 @@ public class HTGRLoader {
                 MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.screw, (int) (4)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Beryllium, Materials2FluidShapes.fluidMolten, (int) (144)))
+                    .getFluidStack(Materials.Beryllium, FluidShapes.fluidMolten, (int) (144)))
             .itemOutputs(ItemList.Beryllium_Shielding_Plate.get(1L))
             .duration(GTRecipeBuilder.SECONDS * 30)
             .eut(TierEU.RECIPE_EV)

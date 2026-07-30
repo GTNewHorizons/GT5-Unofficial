@@ -12,6 +12,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.LNG_BASIC_OUTPUT;
 import static gregtech.api.util.GTRecipeConstants.NFR_COIL_TIER;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraftforge.fluids.FluidStack;
@@ -21,7 +22,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 
 public class FuelRecipeLoader {
@@ -30,77 +30,77 @@ public class FuelRecipeLoader {
         FluidStack[] inputs = new FluidStack[] {
             MaterialLibAPI.getFluidStack(
                 Materials.UraniumBasedLiquidFuelExcitedState,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (1)),
             MaterialLibAPI.getFluidStack(
                 Materials.ThoriumBasedLiquidFuelExcitedState,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (1)),
             MaterialLibAPI.getFluidStack(
                 Materials.PlutoniumBasedLiquidFuelExcitedState,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (1)),
             MaterialLibAPI.getFluidStack(
                 Materials.NaquadahBasedLiquidFuelMkI,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (1)),
             MaterialLibAPI.getFluidStack(
                 Materials.NaquadahBasedLiquidFuelMkII,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (1)),
             MaterialLibAPI.getFluidStack(
                 Materials.NaquadahBasedLiquidFuelMkIII,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (1)),
             MaterialLibAPI.getFluidStack(
                 Materials.NaquadahBasedLiquidFuelMkIV,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (1)),
             MaterialLibAPI.getFluidStack(
                 Materials.NaquadahBasedLiquidFuelMkV,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (1)),
             MaterialLibAPI.getFluidStack(
                 Materials.NaquadahBasedLiquidFuelMkVI,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (1)) };
 
         FluidStack[] outputs = new FluidStack[] {
             MaterialLibAPI.getFluidStack(
                 Materials.UraniumBasedLiquidFuelDepleted,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (1)),
             MaterialLibAPI.getFluidStack(
                 Materials.ThoriumBasedLiquidFuelDepleted,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (1)),
             MaterialLibAPI.getFluidStack(
                 Materials.PlutoniumBasedLiquidFuelDepleted,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (1)),
             MaterialLibAPI.getFluidStack(
                 Materials.NaquadahBasedLiquidFuelMkIDepleted,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (1)),
             MaterialLibAPI.getFluidStack(
                 Materials.NaquadahBasedLiquidFuelMkIIDepleted,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (1)),
             MaterialLibAPI.getFluidStack(
                 Materials.NaquadahBasedLiquidFuelMkIIIDepleted,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (1)),
             MaterialLibAPI.getFluidStack(
                 Materials.NaquadahBasedLiquidFuelMkIVDepleted,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (1)),
             MaterialLibAPI.getFluidStack(
                 Materials.NaquadahBasedLiquidFuelMkVDepleted,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (1)),
             MaterialLibAPI.getFluidStack(
                 Materials.NaquadahBasedLiquidFuelMkVIDepleted,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (1)) };
         for (int i = 0; i < 9; i++) {
             GTValues.RA.stdBuilder()
@@ -122,16 +122,16 @@ public class FuelRecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.HeavyNaquadahFuel,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (800)),
                 MaterialLibAPI.getFluidStack(
                     Materials.LightNaquadahFuel,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkIII,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (100)))
             .duration(5 * SECONDS)
             .eut(1_100_000)
@@ -148,16 +148,16 @@ public class FuelRecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.HeavyNaquadahFuel,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (800)),
                 MaterialLibAPI.getFluidStack(
                     Materials.LightNaquadahFuel,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkIII,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (200)))
             .duration(5 * SECONDS)
             .eut(2_100_000)
@@ -174,14 +174,14 @@ public class FuelRecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkIII,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (2_000)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Praseodymium, Materials2FluidShapes.fluidMolten, 1 * STACKS))
+                    .getFluidStack(Materials.Praseodymium, FluidShapes.fluidMolten, 1 * STACKS))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkIV,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (250)))
             .duration(8 * SECONDS)
             .eut(46_000_000)
@@ -198,13 +198,13 @@ public class FuelRecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkIII,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (2_000)),
                 MaterialUtils.legacyGtppFluid(Materials.Hypogen, 240))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkIV,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (500)))
             .duration(8 * SECONDS)
             .eut(75_000_000)
@@ -221,18 +221,18 @@ public class FuelRecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.HeavyNaquadahFuel,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (4_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.LightNaquadahFuel,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (5_000)),
                 MaterialUtils.legacyGtppFluid(Materials.Hypogen, 120),
                 MaterialUtils.legacyGtppFluid(Materials.ChromaticGlass, 45 * INGOTS))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkIV,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (250)))
             .duration(2 * TICKS)
             .eut(350_000_000)
@@ -247,13 +247,13 @@ public class FuelRecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkIV,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (2_000)),
                 MaterialUtils.fluid(Materials.HeavyRadox, 250))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkV,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (500)))
             .duration(10 * SECONDS)
             .eut(100_000_000)
@@ -268,16 +268,16 @@ public class FuelRecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkIV,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (2_000)),
                 MaterialUtils.fluid(Materials.HeavyRadox, 250),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Mellion, Materials2FluidShapes.fluidMolten, 2 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Creon, Materials2FluidShapes.fluidMolten, 2 * INGOTS))
+                    .getFluidStack(Materials.Mellion, FluidShapes.fluidMolten, 2 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Creon, FluidShapes.fluidMolten, 2 * INGOTS))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkV,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (750)))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(300_000_000)
@@ -292,16 +292,16 @@ public class FuelRecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkV,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (2_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.Shirabon,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (2 * INGOTS + 1 * HALF_INGOTS)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkVI,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (750)))
             .duration(12 * SECONDS)
             .eut(320_000_000)
@@ -316,17 +316,17 @@ public class FuelRecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkV,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (2_000)),
                 MaterialLibAPI.getFluidStack(
                     Materials.Shirabon,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (2 * INGOTS + 1 * HALF_INGOTS)),
-                MaterialLibAPI.getFluidStack(Materials.RawStarMatter, Materials2FluidShapes.fluidLiquid, 60))
+                MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, 60))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkVI,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_250)))
             .duration(3 * SECONDS)
             .eut(TierEU.RECIPE_UXV)

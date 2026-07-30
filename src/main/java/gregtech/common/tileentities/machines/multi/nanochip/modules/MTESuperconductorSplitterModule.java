@@ -22,7 +22,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HatchElement;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -154,7 +154,7 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
         if (ticker % 20 == 0) {
             FluidStack fluidToBeDrained = MaterialLibAPI.getFluidStack(
                 Materials.SuperCoolant,
-                Materials2FluidShapes.fluidLiquid,
+                FluidShapes.fluidLiquid,
                 (int) (COOLANT_CONSUMED_PER_SEC));
             if (!drain(coolantInputHatch, fluidToBeDrained, true)) {
                 stopMachine(ShutDownReasonRegistry.outOfFluid(fluidToBeDrained));

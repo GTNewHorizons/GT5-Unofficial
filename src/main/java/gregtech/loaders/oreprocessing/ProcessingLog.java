@@ -3,6 +3,7 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -14,7 +15,6 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -72,7 +72,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
                                     Materials.Lubricant,
-                                    Materials2FluidShapes.fluidLiquid,
+                                    FluidShapes.fluidLiquid,
                                     (int) (1)))
                             .duration(10 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
@@ -141,7 +141,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(
                                 Materials.Lubricant,
-                                Materials2FluidShapes.fluidLiquid,
+                                FluidShapes.fluidLiquid,
                                 (int) (1)))
                         .duration(10 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)

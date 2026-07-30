@@ -16,6 +16,7 @@ import static kubatech.api.gui.KubaTechUITextures.SLOT_FUSION_CRAFTER;
 
 import java.util.Arrays;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
@@ -32,7 +33,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
@@ -62,7 +62,7 @@ public class DEFCRecipes {
                 MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.dust, (int) (64)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Radon, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Radon, FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (8)))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 288))
             .eut(TierEU.RECIPE_UHV)
@@ -77,7 +77,7 @@ public class DEFCRecipes {
                 MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.plateDense, (int) (6)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Void, Materials2FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+                    .getFluidStack(Materials.Void, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .itemOutputs(kubatech.api.enums.ItemList.DEFCCasingBase.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(30 * SECONDS)
@@ -88,7 +88,7 @@ public class DEFCRecipes {
                 MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.plateDense, (int) (6)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Void, Materials2FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+                    .getFluidStack(Materials.Void, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .itemOutputs(kubatech.api.enums.ItemList.DEFCCasingT1.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(30 * SECONDS)
@@ -100,7 +100,7 @@ public class DEFCRecipes {
                 GTModHandler.getModItem(DraconicEvolution.ID, "draconicCore", 1, 0))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Void, Materials2FluidShapes.fluidMolten, (int) (16 * INGOTS)))
+                    .getFluidStack(Materials.Void, FluidShapes.fluidMolten, (int) (16 * INGOTS)))
             .itemOutputs(kubatech.api.enums.ItemList.DEFCCasingT2.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(30 * SECONDS)
@@ -112,7 +112,7 @@ public class DEFCRecipes {
                 GTModHandler.getModItem(DraconicEvolution.ID, "wyvernCore", 2, 0))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Void, Materials2FluidShapes.fluidMolten, (int) (32 * INGOTS)))
+                    .getFluidStack(Materials.Void, FluidShapes.fluidMolten, (int) (32 * INGOTS)))
             .itemOutputs(kubatech.api.enums.ItemList.DEFCCasingT3.get(1))
             .eut(TierEU.RECIPE_UHV)
             .duration(30 * SECONDS)
@@ -124,7 +124,7 @@ public class DEFCRecipes {
                 GTModHandler.getModItem(DraconicEvolution.ID, "awakenedCore", 3, 0))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Void, Materials2FluidShapes.fluidMolten, (int) (1 * STACKS)))
+                    .getFluidStack(Materials.Void, FluidShapes.fluidMolten, (int) (1 * STACKS)))
             .itemOutputs(kubatech.api.enums.ItemList.DEFCCasingT4.get(1))
             .eut(TierEU.RECIPE_UEV)
             .duration(30 * SECONDS)
@@ -136,7 +136,7 @@ public class DEFCRecipes {
                 GTModHandler.getModItem(DraconicEvolution.ID, "chaoticCore", 4, 0))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Void, Materials2FluidShapes.fluidMolten, (int) (18432)))
+                    .getFluidStack(Materials.Void, FluidShapes.fluidMolten, (int) (18432)))
             .itemOutputs(kubatech.api.enums.ItemList.DEFCCasingT5.get(1))
             .eut(TierEU.RECIPE_UIV)
             .duration(30 * SECONDS)
@@ -193,7 +193,7 @@ public class DEFCRecipes {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Sunnarium,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (10 * INGOTS)))
             .itemOutputs(GTModHandler.getModItem(DraconicEvolution.ID, "draconicCore", 1, 0))
             .eut(TierEU.RECIPE_UV)
@@ -212,7 +212,7 @@ public class DEFCRecipes {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Neutronium,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (10 * INGOTS)))
             .itemOutputs(GTModHandler.getModItem(DraconicEvolution.ID, "wyvernCore", 1, 0))
             .eut(TierEU.RECIPE_UHV)
@@ -232,7 +232,7 @@ public class DEFCRecipes {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.Infinity,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (10 * INGOTS)))
                 .itemOutputs(GTModHandler.getModItem(DraconicEvolution.ID, "awakenedCore", 1, 0))
                 .eut(TierEU.RECIPE_UEV)
@@ -251,7 +251,7 @@ public class DEFCRecipes {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.Infinity,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (10 * INGOTS)))
                 .itemOutputs(GTModHandler.getModItem(DraconicEvolution.ID, "awakenedCore", 1, 0))
                 .eut(TierEU.RECIPE_UEV)
@@ -271,7 +271,7 @@ public class DEFCRecipes {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.SpaceTime,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (10 * INGOTS)))
             .itemOutputs(GTModHandler.getModItem(DraconicEvolution.ID, "chaoticCore", 1, 0))
             .eut(24_000_000)
@@ -318,7 +318,7 @@ public class DEFCRecipes {
             .circuit(1)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Radon, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Radon, FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 288))
             .eut(TierEU.RECIPE_UHV)
             .duration(4200)
@@ -333,7 +333,7 @@ public class DEFCRecipes {
                 .circuit(1)
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Radon, Materials2FluidShapes.fluidPlasma, (int) (72)))
+                        .getFluidStack(Materials.Radon, FluidShapes.fluidPlasma, (int) (72)))
                 .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(3600)
@@ -347,7 +347,7 @@ public class DEFCRecipes {
                 MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.dust, (int) (64)),
                 GTPPCombType.DRAGONBLOOD.getStackForType(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Radon, Materials2FluidShapes.fluidPlasma, (int) (216)))
+                MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidPlasma, (int) (216)))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
             .eut(TierEU.RECIPE_UHV)
             .duration(2800)
@@ -362,7 +362,7 @@ public class DEFCRecipes {
                     GTPPCombType.DRAGONBLOOD.getStackForType(1))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Radon, Materials2FluidShapes.fluidPlasma, (int) (108)))
+                        .getFluidStack(Materials.Radon, FluidShapes.fluidPlasma, (int) (108)))
                 .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 648))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(2400)

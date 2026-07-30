@@ -12,6 +12,7 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.NO_GAS;
 import static gregtech.api.util.GTRecipeConstants.NO_GAS_CIRCUIT_CONFIG;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
@@ -23,7 +24,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -43,7 +43,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DilutedSulfuricAcid,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_500)))
             .duration(10 * SECONDS)
             .eut((int) TierEU.RECIPE_HV)
@@ -64,7 +64,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .outputChances(10000, 2222)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -81,7 +81,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .outputChances(10000, 2222)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -97,7 +97,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .outputChances(10000, 2222)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -113,7 +113,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .outputChances(10000, 2222)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -129,7 +129,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .outputChances(10000, 2222)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -145,7 +145,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .outputChances(10000, 2222)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -161,7 +161,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .outputChances(10000, 2222)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -177,7 +177,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .outputChances(10000, 2222)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -193,7 +193,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .outputChances(10000, 2222)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (3_000)))
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (3_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -209,7 +209,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .outputChances(10000, 2222)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -225,7 +225,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .outputChances(10000, 2222)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -241,7 +241,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .outputChances(10000, 2222)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -257,7 +257,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .outputChances(10000, 2222)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -273,7 +273,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .outputChances(10000, 2222)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -289,7 +289,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .outputChances(10000, 2222)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -305,7 +305,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .outputChances(10000, 2222)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -321,7 +321,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .outputChances(10000, 2222)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -337,7 +337,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .outputChances(10000, 2222)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -353,7 +353,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .outputChances(10000, 1111)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonMonoxide, Materials2FluidShapes.fluidGas, (int) (2_000)))
+                    .getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, (int) (2_000)))
             .duration(4 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -371,7 +371,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.CarbonDioxide,
-                        Materials2FluidShapes.fluidGas,
+                        FluidShapes.fluidGas,
                         (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
@@ -390,7 +390,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.CarbonDioxide,
-                        Materials2FluidShapes.fluidGas,
+                        FluidShapes.fluidGas,
                         (int) (3_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
@@ -408,7 +408,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.CarbonDioxide,
-                        Materials2FluidShapes.fluidGas,
+                        FluidShapes.fluidGas,
                         (int) (3_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
@@ -426,7 +426,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.CarbonDioxide,
-                        Materials2FluidShapes.fluidGas,
+                        FluidShapes.fluidGas,
                         (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
@@ -444,7 +444,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.CarbonDioxide,
-                        Materials2FluidShapes.fluidGas,
+                        FluidShapes.fluidGas,
                         (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
@@ -462,7 +462,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.CarbonDioxide,
-                        Materials2FluidShapes.fluidGas,
+                        FluidShapes.fluidGas,
                         (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
@@ -480,7 +480,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.CarbonDioxide,
-                        Materials2FluidShapes.fluidGas,
+                        FluidShapes.fluidGas,
                         (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
@@ -498,7 +498,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.CarbonDioxide,
-                        Materials2FluidShapes.fluidGas,
+                        FluidShapes.fluidGas,
                         (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
@@ -516,7 +516,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.CarbonDioxide,
-                        Materials2FluidShapes.fluidGas,
+                        FluidShapes.fluidGas,
                         (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
@@ -534,7 +534,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.CarbonDioxide,
-                        Materials2FluidShapes.fluidGas,
+                        FluidShapes.fluidGas,
                         (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
@@ -552,7 +552,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.CarbonDioxide,
-                        Materials2FluidShapes.fluidGas,
+                        FluidShapes.fluidGas,
                         (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
@@ -570,7 +570,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.CarbonDioxide,
-                        Materials2FluidShapes.fluidGas,
+                        FluidShapes.fluidGas,
                         (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
@@ -588,7 +588,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.CarbonDioxide,
-                        Materials2FluidShapes.fluidGas,
+                        FluidShapes.fluidGas,
                         (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
@@ -606,7 +606,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.CarbonDioxide,
-                        Materials2FluidShapes.fluidGas,
+                        FluidShapes.fluidGas,
                         (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
@@ -624,7 +624,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.CarbonDioxide,
-                        Materials2FluidShapes.fluidGas,
+                        FluidShapes.fluidGas,
                         (int) (1_000)))
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
@@ -705,7 +705,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.CalciumDisilicide, Shapes.dust, (int) (3)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (2_000)))
+                    .getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (2_000)))
             .duration(15 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1273)
@@ -765,7 +765,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemOutputs(MaterialLibAPI.getStack(Materials.CacliumCarbide, Shapes.dust, 3))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.CarbonMonoxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(30 * SECONDS)
             .eut((int) TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 2573)
@@ -802,11 +802,11 @@ public class BlastFurnaceRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials.Ferrosilite, Shapes.dust, (int) (5)))
                 .fluidInputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (3_000)))
+                        .getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (3_000)))
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.SulfurDioxide,
-                        Materials2FluidShapes.fluidGas,
+                        FluidShapes.fluidGas,
                         (int) (2_000)))
                 .duration(6 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
@@ -820,10 +820,10 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.RoastedCopper, Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials.RoastedAntimony, Shapes.dustTiny, (int) (3)))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (3_000)))
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (3_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SulfurDioxide, Materials2FluidShapes.fluidGas, (int) (2_000)))
+                    .getFluidStack(Materials.SulfurDioxide, FluidShapes.fluidGas, (int) (2_000)))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -835,10 +835,10 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (1)))
             .outputChances(10000, 1111)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (3_000)))
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (3_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SulfurDioxide, Materials2FluidShapes.fluidGas, (int) (2_000)))
+                    .getFluidStack(Materials.SulfurDioxide, FluidShapes.fluidGas, (int) (2_000)))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -850,10 +850,10 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (1)))
             .outputChances(10000, 1111)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (3_000)))
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (3_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SulfurDioxide, Materials2FluidShapes.fluidGas, (int) (2_000)))
+                    .getFluidStack(Materials.SulfurDioxide, FluidShapes.fluidGas, (int) (2_000)))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -865,10 +865,10 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (1)))
             .outputChances(10000, 1111)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (3_000)))
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (3_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SulfurDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.SulfurDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -879,10 +879,10 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.RoastedCobalt, Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials.RoastedArsenic, Shapes.dust, (int) (1)))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (3_000)))
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (3_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SulfurDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.SulfurDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -894,10 +894,10 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (1)))
             .outputChances(10000, 1111)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (3_000)))
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (3_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SulfurDioxide, Materials2FluidShapes.fluidGas, (int) (1_500)))
+                    .getFluidStack(Materials.SulfurDioxide, FluidShapes.fluidGas, (int) (1_500)))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -909,10 +909,10 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (1)))
             .outputChances(10000, 1111)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (3_000)))
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (3_000)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SulfurDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)))
+                    .getFluidStack(Materials.SulfurDioxide, FluidShapes.fluidGas, (int) (1_000)))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
@@ -926,7 +926,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.ingotHot, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Tungsten, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Tungsten, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.CelestialTungsten, 1 * HALF_INGOTS))
             .duration(3 * MINUTES)
             .eut(TierEU.RECIPE_UIV)
@@ -941,7 +941,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemOutputs(MaterialLibAPI.getStack(Materials.RhodiumChloride, Shapes.dust, (int) (4)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, (int) (3_000)))
+                    .getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, (int) (3_000)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 573)
@@ -955,11 +955,11 @@ public class BlastFurnaceRecipes implements Runnable {
             .circuit(2)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Mellion, Materials2FluidShapes.fluidMolten, (int) (48 * INGOTS)))
+                    .getFluidStack(Materials.Mellion, FluidShapes.fluidMolten, (int) (48 * INGOTS)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.PhononCrystalSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)))
             .duration(300 * SECONDS)
             .eut((int) TierEU.RECIPE_UIV)
@@ -974,11 +974,11 @@ public class BlastFurnaceRecipes implements Runnable {
             .circuit(2)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.PhononMedium, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                    .getFluidStack(Materials.PhononMedium, FluidShapes.fluidLiquid, (int) (10)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.PhononCrystalSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (3_000)))
             .duration(200 * SECONDS)
             .eut((int) TierEU.RECIPE_UXV)
@@ -991,7 +991,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .itemOutputs(ItemList.Harmonic_Compound.get(2))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Creon, Materials2FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Creon, FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
             .duration(30 * SECONDS)
             .eut((int) TierEU.RECIPE_UMV)
             .metadata(COIL_HEAT, 14000)

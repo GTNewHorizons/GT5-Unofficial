@@ -9,6 +9,7 @@ import static gregtech.api.util.GTRecipeConstants.NANITE_TIERS;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,7 +24,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -104,7 +104,7 @@ public class BECMetaMaterialRecipes implements Runnable {
                     MaterialUtils.legacyGtppFluid(Materials.ChromaticGlass, condensateAmounts[t] * INGOTS),
                     MaterialLibAPI.getFluidStack(
                         Materials.TranscendentMetal,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (condensateAmounts[t] * INGOTS)) };
                 addBecAndAal(
                     outputs[t].get(1),
@@ -224,7 +224,7 @@ public class BECMetaMaterialRecipes implements Runnable {
                     MaterialUtils.legacyGtppFluid(Materials.ChromaticGlass, chromaticAmts[t] * INGOTS),
                     MaterialLibAPI.getFluidStack(
                         Materials.dimensionallyshiftedsuperfluid,
-                        Materials2FluidShapes.fluidLiquid,
+                        FluidShapes.fluidLiquid,
                         dimShiftedAmts[t] * 1_000) };
                 addBecAndAal(
                     outputs[t].get(1),
@@ -261,11 +261,11 @@ public class BECMetaMaterialRecipes implements Runnable {
                     MaterialUtils.legacyGtppFluid(Materials.ChromaticGlass, chromatic4TierAmts[t] * INGOTS),
                     MaterialLibAPI.getFluidStack(
                         Materials.Infinity,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (infinity4TierAmts[t] * INGOTS)),
                     MaterialLibAPI.getFluidStack(
                         Materials.TranscendentMetal,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (INGOTS)) };
                 addBecAndAal(
                     outputs[t].get(1),
@@ -304,11 +304,11 @@ public class BECMetaMaterialRecipes implements Runnable {
                     MaterialUtils.legacyGtppFluid(Materials.ChromaticGlass, chromatic4TierAmts[t] * INGOTS),
                     MaterialLibAPI.getFluidStack(
                         Materials.Infinity,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (infinity4TierAmts[t] * INGOTS)),
                     MaterialLibAPI.getFluidStack(
                         Materials.TranscendentMetal,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (INGOTS)) };
                 addBecAndAal(
                     outputs[t].get(1),
@@ -349,11 +349,11 @@ public class BECMetaMaterialRecipes implements Runnable {
                     MaterialUtils.legacyGtppFluid(Materials.ChromaticGlass, chromatic4TierAmts[t] * INGOTS),
                     MaterialLibAPI.getFluidStack(
                         Materials.Infinity,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (infinity4TierAmts[t] * INGOTS)),
                     MaterialLibAPI.getFluidStack(
                         Materials.TranscendentMetal,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (INGOTS)) };
                 addBecAndAal(
                     outputs[t].get(1),
@@ -398,11 +398,11 @@ public class BECMetaMaterialRecipes implements Runnable {
                     MaterialUtils.legacyGtppFluid(Materials.ChromaticGlass, chromatic4TierAmts[t] * INGOTS),
                     MaterialLibAPI.getFluidStack(
                         Materials.Infinity,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (infinity4TierAmts[t] * INGOTS)),
                     MaterialLibAPI.getFluidStack(
                         Materials.TranscendentMetal,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (INGOTS)) };
                 addBecAndAal(
                     outputs[t].get(1),

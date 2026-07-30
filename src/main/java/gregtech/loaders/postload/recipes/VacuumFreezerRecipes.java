@@ -8,6 +8,7 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -20,7 +21,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.CellShapes;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -373,12 +373,12 @@ public class VacuumFreezerRecipes implements Runnable {
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.Boron,
-                        Materials2FluidShapes.fluidPlasma,
+                        FluidShapes.fluidPlasma,
                         (int) (1 * INGOTS)))
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.Boron,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (1 * INGOTS)))
                 .duration(1 * SECONDS)
                 .eut(12)
@@ -394,7 +394,7 @@ public class VacuumFreezerRecipes implements Runnable {
             .fluidInputs(
                 new FluidStack(FluidRegistry.getFluid("molten.titansteel"), 1 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);
@@ -423,12 +423,12 @@ public class VacuumFreezerRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.AtomicSeparationCatalyst,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Mellion, Shapes.ingot, (int) (1)))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Creon, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Creon, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);
@@ -445,7 +445,7 @@ public class VacuumFreezerRecipes implements Runnable {
                     .fluid(Materials.dimensionallyshiftedsuperfluid, (long) partFraction * multiplier / 4),
                 MaterialLibAPI.getFluidStack(
                     Materials.SuperCoolant,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (partFraction * multiplier * 4)))
             .duration((int) (multiplier * (SECONDS * partFraction / (float) INGOTS)))
             .eut(TierEU.RECIPE_UIV)

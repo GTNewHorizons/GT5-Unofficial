@@ -19,7 +19,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -86,7 +86,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials.Lubricant,
-                            Materials2FluidShapes.fluidLiquid,
+                            FluidShapes.fluidLiquid,
                             (int) (Math.max(
                                 1,
                                 Math.min(
@@ -151,7 +151,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(
                                 Materials.Lubricant,
-                                Materials2FluidShapes.fluidLiquid,
+                                FluidShapes.fluidLiquid,
                                 (int) (Math.max(
                                     1,
                                     Math.min(

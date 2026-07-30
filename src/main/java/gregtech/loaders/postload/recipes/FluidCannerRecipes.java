@@ -7,7 +7,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 
 public class FluidCannerRecipes implements Runnable {
@@ -19,7 +19,7 @@ public class FluidCannerRecipes implements Runnable {
             .itemOutputs(ItemList.IC2_ReBattery.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Redstone, Materials2FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+                    .getFluidStack(Materials.Redstone, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(4)
             .eut(1)
             .addTo(cannerRecipes);
@@ -29,7 +29,7 @@ public class FluidCannerRecipes implements Runnable {
             .itemOutputs(ItemList.Battery_SU_LV_Mercury.getWithCharge(1, Integer.MAX_VALUE))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Mercury, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.Mercury, FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(16)
             .eut(1)
             .addTo(cannerRecipes);
@@ -39,7 +39,7 @@ public class FluidCannerRecipes implements Runnable {
             .itemOutputs(ItemList.Battery_SU_MV_Mercury.getWithCharge(1, Integer.MAX_VALUE))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Mercury, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.Mercury, FluidShapes.fluidLiquid, (int) (4_000)))
             .duration(64)
             .eut(1)
             .addTo(cannerRecipes);
@@ -49,7 +49,7 @@ public class FluidCannerRecipes implements Runnable {
             .itemOutputs(ItemList.Battery_SU_HV_Mercury.getWithCharge(1, Integer.MAX_VALUE))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Mercury, Materials2FluidShapes.fluidLiquid, (int) (16_000)))
+                    .getFluidStack(Materials.Mercury, FluidShapes.fluidLiquid, (int) (16_000)))
             .duration(258)
             .eut(1)
             .addTo(cannerRecipes);
@@ -59,7 +59,7 @@ public class FluidCannerRecipes implements Runnable {
             .itemOutputs(ItemList.Battery_SU_LV_SulfuricAcid.getWithCharge(1, Integer.MAX_VALUE))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(16)
             .eut(1)
             .addTo(cannerRecipes);
@@ -69,7 +69,7 @@ public class FluidCannerRecipes implements Runnable {
             .itemOutputs(ItemList.Battery_SU_MV_SulfuricAcid.getWithCharge(1, Integer.MAX_VALUE))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (4_000)))
             .duration(64)
             .eut(1)
             .addTo(cannerRecipes);
@@ -79,7 +79,7 @@ public class FluidCannerRecipes implements Runnable {
             .itemOutputs(ItemList.Battery_SU_HV_SulfuricAcid.getWithCharge(1, Integer.MAX_VALUE))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, (int) (16_000)))
+                    .getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (16_000)))
             .duration(258)
             .eut(1)
             .addTo(cannerRecipes);
@@ -89,7 +89,7 @@ public class FluidCannerRecipes implements Runnable {
             .itemOutputs(ItemList.Bottle_Empty.get(1))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.FierySteel, Materials2FluidShapes.fluidLiquid, (int) (250)))
+                    .getFluidStack(Materials.FierySteel, FluidShapes.fluidLiquid, (int) (250)))
             .duration(4)
             .eut(1)
             .addTo(cannerRecipes);
@@ -98,7 +98,7 @@ public class FluidCannerRecipes implements Runnable {
             .itemInputs(ItemList.Spray_Color_Remover_Empty.get(1))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Acetone, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.Acetone, FluidShapes.fluidLiquid, (int) (4_000)))
             .itemOutputs(ItemList.Spray_Color_Remover.get(1))
             .duration(74)
             .eut(1)
@@ -109,7 +109,7 @@ public class FluidCannerRecipes implements Runnable {
             .itemOutputs(ItemList.Spray_Color_Remover_Empty.get(1))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Acetone, Materials2FluidShapes.fluidLiquid, (int) (4_000)))
+                    .getFluidStack(Materials.Acetone, FluidShapes.fluidLiquid, (int) (4_000)))
             .duration(74)
             .eut(1)
             .addTo(cannerRecipes);

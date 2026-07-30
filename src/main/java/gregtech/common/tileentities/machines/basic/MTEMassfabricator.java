@@ -38,7 +38,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -201,7 +201,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
     public boolean isFluidInputAllowed(FluidStack aFluid) {
         return aFluid.isFluidEqual(
             MaterialLibAPI
-                .getFluidStack(Materials.UUAmplifier, Materials2FluidShapes.fluidLiquid, (int) (1)));
+                .getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, (int) (1)));
     }
 
     @Override
@@ -213,7 +213,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
         return aFluid != null && aFluid.amount >= sUUAperUUM
             && aFluid.isFluidEqual(
                 MaterialLibAPI
-                    .getFluidStack(Materials.UUAmplifier, Materials2FluidShapes.fluidLiquid, (int) (1)));
+                    .getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, (int) (1)));
     }
 
     @ParametersAreNonnullByDefault

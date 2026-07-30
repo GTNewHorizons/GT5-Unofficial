@@ -20,6 +20,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
@@ -30,7 +31,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -75,7 +75,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Neutronium,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (1 * HALF_INGOTS)))
             .duration(1)
             .eut(TierEU.RECIPE_UEV)
@@ -87,7 +87,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Neutronium,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (1 * HALF_INGOTS)))
             .duration(1)
             .eut(TierEU.RECIPE_UEV)
@@ -99,7 +99,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Neutronium,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (1 * HALF_INGOTS)))
             .duration(1)
             .eut(TierEU.RECIPE_UEV)
@@ -114,7 +114,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.RawStarMatter,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1 * STACKS)))
             .fluidOutputs(
                 MaterialUtils.molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, 16 * INGOTS))
@@ -139,7 +139,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.RawStarMatter,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (2 * STACKS)))
             .fluidOutputs(
                 MaterialUtils.molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, 36 * INGOTS))
@@ -159,7 +159,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.PhononCrystalSolution,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (500)))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemFlawed, (int) (1)))
             .duration(20 * SECONDS)

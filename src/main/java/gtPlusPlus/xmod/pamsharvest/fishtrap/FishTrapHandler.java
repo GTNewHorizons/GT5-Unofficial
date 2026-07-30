@@ -9,8 +9,8 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -40,7 +40,7 @@ public class FishTrapHandler {
                     .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1))
                     .fluidOutputs(
                         MaterialLibAPI
-                            .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (48)))
+                            .getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (48)))
                     .duration(19 * SECONDS + 4 * TICKS)
                     .eut(5)
                     .addTo(centrifugeRecipes);
@@ -48,7 +48,7 @@ public class FishTrapHandler {
                     .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1))
                     .fluidOutputs(
                         MaterialLibAPI
-                            .getFluidStack(Materials.FishOil, Materials2FluidShapes.fluidLiquid, (int) (50)))
+                            .getFluidStack(Materials.FishOil, FluidShapes.fluidLiquid, (int) (50)))
                     .duration(16 * TICKS)
                     .eut(4)
                     .addTo(fluidExtractionRecipes);
@@ -68,7 +68,7 @@ public class FishTrapHandler {
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1))
                 .fluidOutputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (48)))
+                        .getFluidStack(Materials.Methane, FluidShapes.fluidGas, (int) (48)))
                 .duration(19 * SECONDS + 4 * TICKS)
                 .eut(5)
                 .addTo(centrifugeRecipes);
@@ -76,7 +76,7 @@ public class FishTrapHandler {
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1))
                 .fluidOutputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials.FishOil, Materials2FluidShapes.fluidLiquid, (int) (50)))
+                        .getFluidStack(Materials.FishOil, FluidShapes.fluidLiquid, (int) (50)))
                 .duration(16 * TICKS)
                 .eut(4)
                 .addTo(fluidExtractionRecipes);

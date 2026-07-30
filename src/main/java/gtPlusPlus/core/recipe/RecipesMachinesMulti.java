@@ -16,6 +16,7 @@ import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
@@ -31,7 +32,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -98,7 +98,7 @@ public class RecipesMachinesMulti {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.TungstenSteel,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (8 * INGOTS)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -114,7 +114,7 @@ public class RecipesMachinesMulti {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.TungstenSteel,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (2 * INGOTS)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -250,9 +250,9 @@ public class RecipesMachinesMulti {
                 MaterialUtils.legacyGtppFluid(Materials.WatertightSteel, 32 * INGOTS),
                 MaterialUtils.legacyGtppFluid(Materials.BabbitAlloy, 16 * INGOTS),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Bronze, Materials2FluidShapes.fluidMolten, (int) (64 * INGOTS)),
+                    .getFluidStack(Materials.Bronze, FluidShapes.fluidMolten, (int) (64 * INGOTS)),
                 MaterialLibAPI
-                    .getFluidStack(Materials.Kanthal, Materials2FluidShapes.fluidMolten, (int) (16 * INGOTS)))
+                    .getFluidStack(Materials.Kanthal, FluidShapes.fluidMolten, (int) (16 * INGOTS)))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .metadata(CHEMPLANT_CASING_TIER, 5)
@@ -665,7 +665,7 @@ public class RecipesMachinesMulti {
                 MaterialUtils.legacyGtppFluid(Materials.Tumbaga, 4 * STACKS + 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(
                     Materials.Nichrome,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (16 * INGOTS)))
             .itemOutputs(new ItemStack(ModBlocks.blockCasings3Misc, 32, 15))
             .eut(TierEU.RECIPE_LuV)
@@ -1094,7 +1094,7 @@ public class RecipesMachinesMulti {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Aluminium,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (8 * INGOTS)))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)

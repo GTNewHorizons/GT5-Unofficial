@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -36,7 +37,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -170,7 +170,7 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
                         if (!super.depleteInput(
                             MaterialLibAPI.getFluidStack(
                                 Materials.Oxygen,
-                                Materials2FluidShapes.fluidGas,
+                                FluidShapes.fluidGas,
                                 (int) (OXYGEN_PER_SEC)))) {
                             super.mEUt = 0;
                             super.mEfficiency = 0;

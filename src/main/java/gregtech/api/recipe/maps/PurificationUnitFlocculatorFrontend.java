@@ -16,7 +16,7 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
@@ -73,7 +73,7 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
             GTUtility.getFluidDisplayStack(
                 MaterialLibAPI.getFluidStack(
                     Materials.FlocculationWasteLiquid,
-                    Materials2FluidShapes.fluidLiquid,
+                    FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 false))) {
                     currentTip.add(StatCollector.translateToLocal("GT5U.nei.purified_water.grade_3.2"));

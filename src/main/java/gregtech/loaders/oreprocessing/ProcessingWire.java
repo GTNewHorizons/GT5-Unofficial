@@ -16,6 +16,7 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
 import java.util.ArrayList;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
@@ -29,7 +30,6 @@ import appeng.core.Api;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
@@ -296,7 +296,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
                                     Materials.Rubber,
-                                    Materials2FluidShapes.fluidMolten,
+                                    FluidShapes.fluidMolten,
                                     (int) ((long) costMultiplier * INGOTS)))
                             .duration(5 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
@@ -308,7 +308,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
                                     Materials.StyreneButadieneRubber,
-                                    Materials2FluidShapes.fluidMolten,
+                                    FluidShapes.fluidMolten,
                                     (int) ((long) costMultiplier * 3 * QUARTER_INGOTS)))
                             .duration(5 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
@@ -340,7 +340,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
                                     Materials.Rubber,
-                                    Materials2FluidShapes.fluidMolten,
+                                    FluidShapes.fluidMolten,
                                     (int) ((long) costMultiplier * INGOTS)))
                             .duration(5 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
@@ -352,7 +352,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
                                     Materials.StyreneButadieneRubber,
-                                    Materials2FluidShapes.fluidMolten,
+                                    FluidShapes.fluidMolten,
                                     (int) ((long) costMultiplier * 3 * QUARTER_INGOTS)))
                             .duration(5 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
@@ -470,7 +470,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials.Rubber,
-                            Materials2FluidShapes.fluidMolten,
+                            FluidShapes.fluidMolten,
                             (int) (costMultiplier * INGOTS)))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_ULV)
@@ -483,7 +483,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials.StyreneButadieneRubber,
-                            Materials2FluidShapes.fluidMolten,
+                            FluidShapes.fluidMolten,
                             (int) (costMultiplier * 3 * QUARTER_INGOTS)))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_ULV)
@@ -507,7 +507,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials.Rubber,
-                            Materials2FluidShapes.fluidMolten,
+                            FluidShapes.fluidMolten,
                             (int) (costMultiplier * INGOTS)))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_ULV)
@@ -520,7 +520,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
                             Materials.StyreneButadieneRubber,
-                            Materials2FluidShapes.fluidMolten,
+                            FluidShapes.fluidMolten,
                             (int) (costMultiplier * 3 * QUARTER_INGOTS)))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_ULV)

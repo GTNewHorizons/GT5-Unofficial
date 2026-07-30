@@ -21,7 +21,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
@@ -49,7 +49,7 @@ public class RecipesMachines {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.Tantalum,
-                    Materials2FluidShapes.fluidMolten,
+                    FluidShapes.fluidMolten,
                     (int) (16 * INGOTS)))
             .duration(3 * MINUTES)
             .eut(TierEU.RECIPE_IV)
@@ -66,7 +66,7 @@ public class RecipesMachines {
             .itemOutputs(new ItemStack(ModBlocks.blockCircuitProgrammer))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Iron, Materials2FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+                    .getFluidStack(Materials.Iron, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -81,7 +81,7 @@ public class RecipesMachines {
             .itemOutputs(new ItemStack(ModBlocks.blockDecayablesChest))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials.Lead, Materials2FluidShapes.fluidMolten, (int) (16 * INGOTS)))
+                    .getFluidStack(Materials.Lead, FluidShapes.fluidMolten, (int) (16 * INGOTS)))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(assemblerRecipes);

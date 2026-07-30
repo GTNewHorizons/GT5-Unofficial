@@ -25,6 +25,7 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
@@ -37,7 +38,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.MaterialStack;
@@ -347,7 +347,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(
                                 Materials.Void,
-                                Materials2FluidShapes.fluidMolten,
+                                FluidShapes.fluidMolten,
                                 (int) (1 * QUARTER_INGOTS)))
                         .duration(1 * MINUTES)
                         .eut(24)
@@ -377,7 +377,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .fluidOutputs(
                                 MaterialLibAPI.getFluidStack(
                                     Materials.OilHeavy,
-                                    Materials2FluidShapes.fluidLiquid,
+                                    FluidShapes.fluidLiquid,
                                     (int) (1_000)))
                             .duration(33 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
@@ -551,7 +551,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(
                                 Materials.Void,
-                                Materials2FluidShapes.fluidMolten,
+                                FluidShapes.fluidMolten,
                                 (int) (1 * QUARTER_INGOTS)))
                         .duration(1 * MINUTES)
                         .eut(24)
@@ -722,7 +722,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.Void,
-                        Materials2FluidShapes.fluidMolten,
+                        FluidShapes.fluidMolten,
                         (int) (1 * QUARTER_INGOTS)))
                 .duration(1 * MINUTES)
                 .eut(24)
