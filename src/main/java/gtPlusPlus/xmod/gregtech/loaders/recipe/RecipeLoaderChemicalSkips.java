@@ -31,7 +31,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.material.MaterialUtils;
@@ -623,7 +623,7 @@ public class RecipeLoaderChemicalSkips {
                 GregtechItemList.EmptyCatalystCarrier.get(1),
                 MaterialLibAPI.getStack(Materials.Indalloy140, Shapes.dust, 64),
                 MaterialLibAPI
-                    .getStack(Materials.EthylCyanoacrylateSuperGlue, Materials2CellShapes.cellMolten, 64),
+                    .getStack(Materials.EthylCyanoacrylateSuperGlue, CellShapes.cellMolten, 64),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 64))
             .circuit(10)
             .itemOutputs(GregtechItemList.AdhesionPromoterCatalyst.get(1))

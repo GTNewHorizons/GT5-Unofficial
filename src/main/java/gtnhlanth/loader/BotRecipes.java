@@ -23,7 +23,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -43,7 +43,7 @@ public class BotRecipes {
                 MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, 5),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.CarbonDioxide, Materials2CellShapes.cell, 1),
+                MaterialLibAPI.getStack(Materials.CarbonDioxide, CellShapes.cell, 1),
                 MaterialLibAPI.getStack(Materials.CalciumChloride, Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI
@@ -157,19 +157,19 @@ public class BotRecipes {
         // 2Cl + CO = COCl2
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.CarbonMonoxide, Materials2CellShapes.cell, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CarbonMonoxide, CellShapes.cell, 1))
             .circuit(12)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Phosgene, Materials2CellShapes.cell, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Phosgene, CellShapes.cell, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, Materials2FluidShapes.fluidGas, 2_000))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalReactorRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, Materials2CellShapes.cell, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cell, 2))
             .circuit(12)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Phosgene, Materials2CellShapes.cell, 1),
+                MaterialLibAPI.getStack(Materials.Phosgene, CellShapes.cell, 1),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, Materials2FluidShapes.fluidGas, 1_000))
@@ -178,16 +178,16 @@ public class BotRecipes {
             .addTo(chemicalReactorRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.CarbonMonoxide, Materials2CellShapes.cell, 1),
-                MaterialLibAPI.getStack(Materials.Chlorine, Materials2CellShapes.cell, 2))
+                MaterialLibAPI.getStack(Materials.CarbonMonoxide, CellShapes.cell, 1),
+                MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cell, 2))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Phosgene, Materials2CellShapes.cell, 1),
+                MaterialLibAPI.getStack(Materials.Phosgene, CellShapes.cell, 1),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 2))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(chemicalReactorRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, Materials2CellShapes.cell, 2))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cell, 2))
             .circuit(2)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 2))
             .fluidInputs(
@@ -216,7 +216,7 @@ public class BotRecipes {
         // NH4Cl = HCl + NH3
         GTValues.RA.stdBuilder()
             .itemInputs(cells)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Ammonia, Materials2CellShapes.cell, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cell, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.AmmoniumChloride,

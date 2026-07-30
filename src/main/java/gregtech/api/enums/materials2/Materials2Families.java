@@ -134,13 +134,13 @@ public class Materials2Families {
             .generateShapes(Shapes.gearGt, Shapes.gearGtSmall, Shapes.rotor)
             .build();
         liquids = MaterialLibAPI.newFamily("gregtech", "Liquids")
-            .generateShapes(Materials2FluidShapes.fluidLiquid, Materials2CellShapes.cell)
+            .generateShapes(Materials2FluidShapes.fluidLiquid, CellShapes.cell)
             .build();
         gases = MaterialLibAPI.newFamily("gregtech", "Gases")
-            .generateShapes(Materials2FluidShapes.fluidGas, Materials2CellShapes.cell)
+            .generateShapes(Materials2FluidShapes.fluidGas, CellShapes.cell)
             .build();
         moltens = MaterialLibAPI.newFamily("gregtech", "Moltens")
-            .generateShapes(Materials2FluidShapes.fluidMolten, Materials2CellShapes.cellMolten)
+            .generateShapes(Materials2FluidShapes.fluidMolten, CellShapes.cellMolten)
             .build();
         plasmas = MaterialLibAPI.newFamily("gregtech", "Plasmas")
             .generateShape(Materials2FluidShapes.fluidPlasma)

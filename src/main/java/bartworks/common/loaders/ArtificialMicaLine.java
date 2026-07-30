@@ -19,7 +19,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
@@ -46,7 +46,7 @@ public class ArtificialMicaLine {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 4))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, Materials2CellShapes.cell, 4))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 4))
             .fluidInputs(MaterialUtils.fluid(Materials.HydrofluoricAcidGT5U, 6_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
@@ -86,7 +86,7 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Potassium, Shapes.dust, 2),
-                MaterialLibAPI.getStack(Materials.CarbonDioxide, Materials2CellShapes.cell, 1))
+                MaterialLibAPI.getStack(Materials.CarbonDioxide, CellShapes.cell, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.PotassiumCarbonate, Shapes.dust, 6),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
@@ -100,7 +100,7 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Potash, Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials.CarbonDioxide, Materials2CellShapes.cell, 1))
+                MaterialLibAPI.getStack(Materials.CarbonDioxide, CellShapes.cell, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.PotassiumCarbonate, Shapes.dust, 6),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))

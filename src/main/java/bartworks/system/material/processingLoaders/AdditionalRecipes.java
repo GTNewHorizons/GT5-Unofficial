@@ -70,7 +70,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
@@ -89,7 +89,7 @@ public class AdditionalRecipes {
             ItemStack Detergent = ItemList.DetergentPowder.get(1);
             ItemStack DNAFlask = ItemList.EmptyDNAFlask.get(1);
             ItemStack EthanolCell = MaterialLibAPI
-                .getStack(Materials.Ethanol, Materials2CellShapes.cell, (int) (1));
+                .getStack(Materials.Ethanol, CellShapes.cell, (int) (1));
             GTValues.RA.stdBuilder()
                 .itemInputs(BioCultureEnum.getPetriDish(culture.bioCulture), DNAFlask, Detergent, EthanolCell)
                 .itemOutputs(

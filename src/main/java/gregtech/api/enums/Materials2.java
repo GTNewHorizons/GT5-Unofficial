@@ -3,7 +3,7 @@ package gregtech.api.enums;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
-import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2Families;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.OreShapes;
@@ -29,7 +29,7 @@ public class Materials2 {
     // because its rows reference the material fields the passes above assign.
     public static void init() {
         Materials2FluidShapes.init();
-        Materials2CellShapes.init();
+        CellShapes.init();
         Materials2BlockShapes.init();
         OreShapes.init();
         Shapes.init();

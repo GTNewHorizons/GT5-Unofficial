@@ -20,7 +20,7 @@ import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
-import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.objects.ItemData;
@@ -62,11 +62,11 @@ public class MaterialParts {
     /// cell item rather than `cellMolten`.
     public static @Nullable ItemStack cell(@Nullable Material material, long amount) {
         if (material == null) return null;
-        if (material.hasShape(Materials2CellShapes.cell)) {
-            return MaterialLibAPI.getStack(material, Materials2CellShapes.cell, (int) amount);
+        if (material.hasShape(CellShapes.cell)) {
+            return MaterialLibAPI.getStack(material, CellShapes.cell, (int) amount);
         }
-        if (material.hasShape(Materials2CellShapes.cellMolten)) {
-            return MaterialLibAPI.getStack(material, Materials2CellShapes.cellMolten, (int) amount);
+        if (material.hasShape(CellShapes.cellMolten)) {
+            return MaterialLibAPI.getStack(material, CellShapes.cellMolten, (int) amount);
         }
         return null;
     }
@@ -181,7 +181,7 @@ public class MaterialParts {
         if (prefixToShapes == null) {
             Map<String, List<Shape>> map = new HashMap<>();
             collectShapes(map, Shapes.class);
-            collectShapes(map, Materials2CellShapes.class);
+            collectShapes(map, CellShapes.class);
             collectShapes(map, Materials2BlockShapes.class);
             collectShapes(map, OreShapes.class);
             collectShapes(map, Materials2PipeShapes.class);

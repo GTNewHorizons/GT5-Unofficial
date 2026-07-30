@@ -19,7 +19,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.MaterialUtils;
@@ -56,8 +56,8 @@ public class RecipesRareEarthProcessing {
             .itemInputs(ItemList.Cell_Empty.get(2L))
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Chlorine, Materials2CellShapes.cell, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Hydrogen, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, (int) (1)),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxideGT5U, 1L))
             .fluidInputs(new FluidStack(mBrine, 2_000))
             .duration(30 * SECONDS)
@@ -67,11 +67,11 @@ public class RecipesRareEarthProcessing {
         // Generate Special Laser Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Chlorine, Materials2CellShapes.cell, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Hydrogen, Materials2CellShapes.cell, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, (int) (1)))
             .circuit(2)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.HydrogenChlorideMix, Materials2CellShapes.cellMolten, 2))
+                MaterialLibAPI.getStack(Materials.HydrogenChlorideMix, CellShapes.cellMolten, 2))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);

@@ -18,7 +18,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.TieredItems;
-import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -107,7 +107,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hatch_Input_HV.get(64),
-                MaterialLibAPI.getStack(Materials.LiquidAir, Materials2CellShapes.cell, (int) (1)))
+                MaterialLibAPI.getStack(Materials.LiquidAir, CellShapes.cell, (int) (1)))
             .circuit(17)
             .itemOutputs(ItemRegistry.compressedHatch.copy())
             .duration(15 * SECONDS)

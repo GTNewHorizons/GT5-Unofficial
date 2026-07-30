@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.CellShapes;
 import gregtech.loaders.oreprocessing.ProcessingCell;
 
 /// Dispatches [ProcessingCell]'s `cell`/`cellPlasma` recipe generation for MaterialLib's cutover cell shapes.
@@ -13,10 +13,10 @@ public final class ConsumerCell {
     private ConsumerCell() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2CellShapes.cell, OrePrefixes.cell, () -> ProcessingCell.INSTANCE);
+        ShapeConsumerSupport.delegate(CellShapes.cell, OrePrefixes.cell, () -> ProcessingCell.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2CellShapes.cellPlasma, OrePrefixes.cellPlasma, () -> ProcessingCell.INSTANCE);
+            .delegate(CellShapes.cellPlasma, OrePrefixes.cellPlasma, () -> ProcessingCell.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2CellShapes.cellPlasmaLight, OrePrefixes.cellPlasma, () -> ProcessingCell.INSTANCE);
+            .delegate(CellShapes.cellPlasmaLight, OrePrefixes.cellPlasma, () -> ProcessingCell.INSTANCE);
     }
 }

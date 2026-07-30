@@ -29,7 +29,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.material.MaterialUtils;
@@ -988,8 +988,8 @@ public class RecipesMachinesCustom {
         // Research on Gas Sparging
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Helium, Materials2CellShapes.cell, (int) (8)),
-                MaterialLibAPI.getStack(Materials.Fluorine, Materials2CellShapes.cell, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Helium, CellShapes.cell, (int) (8)),
+                MaterialLibAPI.getStack(Materials.Fluorine, CellShapes.cell, (int) (8)),
                 MaterialLibAPI.getStack(Materials.HS188A, Shapes.ingot, 8),
                 ItemList.Distillation_Tower.get(1))
             .circuit(8)
