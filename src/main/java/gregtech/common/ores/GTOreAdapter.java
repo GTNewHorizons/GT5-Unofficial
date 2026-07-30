@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.OreShapes;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -35,7 +36,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.Materials2IDIndex;
-import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
@@ -49,8 +49,8 @@ import gregtech.loaders.materials.LegacyNameDomain;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 
 /// The [IOreAdapter] for GT's own materials and for gtPlusPlus': worldgen, mining, prospecting, and the void
-/// miner place and read [Materials2OreShapes] blocks through this singleton (via [OreManager], never
-/// `Materials2OreShapes` or MaterialLib directly), preserving the same public surface the legacy
+/// miner place and read [OreShapes] blocks through this singleton (via [OreManager], never
+/// `OreShapes` or MaterialLib directly), preserving the same public surface the legacy
 /// `GTBlockOre`-backed adapter had.
 ///
 /// One class serves both families because [#isGtFamily] and [#isGtppFamily] are complementary on the sign of
@@ -278,7 +278,7 @@ public final class GTOreAdapter implements IOreAdapter {
         }
     }
 
-    /// Materials2OreShapes' 4 config-gated stone types (see legacy `GTOreAdapter#init`'s array literals) are
+    /// OreShapes' 4 config-gated stone types (see legacy `GTOreAdapter#init`'s array literals) are
     /// declared unconditionally as MaterialLib variants -- their availability is a runtime toggle, not a
     /// save-identity concern -- so this config gate moved here instead, alongside [StoneType#isEnabled]'s
     /// mod-loaded gate.
@@ -299,7 +299,7 @@ public final class GTOreAdapter implements IOreAdapter {
     }
 
     private static boolean isOreShape(Shape shape) {
-        return shape == Materials2OreShapes.ore || shape == Materials2OreShapes.oreSmall;
+        return shape == OreShapes.ore || shape == OreShapes.oreSmall;
     }
 
     /// Serves both ore families, so this answers for either. `OreManager`'s adapter list tried GT before
@@ -321,7 +321,7 @@ public final class GTOreAdapter implements IOreAdapter {
         if (!isValidForStone(mlMat, stoneType2)) return false;
         if (stoneType2.getCategory() == StoneCategory.Ice && info.isSmall) return false;
 
-        return mlMat.hasShape(info.isSmall ? Materials2OreShapes.oreSmall : Materials2OreShapes.ore);
+        return mlMat.hasShape(info.isSmall ? OreShapes.oreSmall : OreShapes.ore);
     }
 
     /// The MaterialLib [Material] backing an [OreInfo] this adapter is handed, or null when `material` is not a
@@ -367,7 +367,7 @@ public final class GTOreAdapter implements IOreAdapter {
         if (info.stoneType != null && info.stoneType != StoneType.Stone) return false;
         if (info.isSmall) return false;
 
-        return info.material.hasShape(Materials2OreShapes.ore);
+        return info.material.hasShape(OreShapes.ore);
     }
 
     /// Whether a material may generate ore on `stoneType`: an ice-ore material only on ice-category stone,
@@ -386,13 +386,13 @@ public final class GTOreAdapter implements IOreAdapter {
         Material material = blockInfo.material();
         // A werkstoff-origin material is still in the legacy name domain (LegacyNameDomain#contains), so that gate
         // alone would not exclude it here; defer explicitly to BWOreAdapter, which owns werkstoff ore
-        // behavior (see Materials2OreShapes#isWerkstoff).
+        // behavior (see OreShapes#isWerkstoff).
         if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) return null;
 
         // gtpp ore carries neither a stone variant beyond Stone nor a small-ore shape, so it resolves without
         // consulting the variant at all.
         if (isGtppFamily(material)) {
-            if (blockInfo.shape() != Materials2OreShapes.ore) return null;
+            if (blockInfo.shape() != OreShapes.ore) return null;
 
             OreInfo gtppInfo = OreInfo.getNewInfo();
 
@@ -405,14 +405,14 @@ public final class GTOreAdapter implements IOreAdapter {
 
         if (!isGtFamily(material)) return null;
 
-        StoneType stoneType = Materials2OreShapes.stoneTypeOf(blockInfo.variant());
+        StoneType stoneType = OreShapes.stoneTypeOf(blockInfo.variant());
         if (stoneType == null) return null;
 
         OreInfo info = OreInfo.getNewInfo();
 
         info.material = material;
         info.stoneType = stoneType;
-        info.isSmall = blockInfo.shape() == Materials2OreShapes.oreSmall;
+        info.isSmall = blockInfo.shape() == OreShapes.oreSmall;
         info.isNatural = true;
 
         return info;
@@ -437,7 +437,7 @@ public final class GTOreAdapter implements IOreAdapter {
     /// variants, so it resolves through the variant overload of [MaterialLibAPI#getStack].
     private static @Nullable ItemStack gtppOreStack(Material material) {
         return MaterialLibAPI
-            .getStack(material, Materials2OreShapes.ore, Materials2OreShapes.variantOf(StoneType.Stone.name()), 1);
+            .getStack(material, OreShapes.ore, OreShapes.variantOf(StoneType.Stone.name()), 1);
     }
 
     private ImmutableBlockMeta getGtBlock(OreInfo info) {
@@ -450,10 +450,10 @@ public final class GTOreAdapter implements IOreAdapter {
         if (stoneType.getCategory() == StoneCategory.Ice && info.isSmall) return null;
         if (!isValidForStone(mlMat, stoneType)) return null;
 
-        Shape shape = info.isSmall ? Materials2OreShapes.oreSmall : Materials2OreShapes.ore;
+        Shape shape = info.isSmall ? OreShapes.oreSmall : OreShapes.ore;
         if (!mlMat.hasShape(shape)) return null;
 
-        ItemStack stack = MaterialLibAPI.getStack(mlMat, shape, Materials2OreShapes.variantOf(stoneType.name()), 1);
+        ItemStack stack = MaterialLibAPI.getStack(mlMat, shape, OreShapes.variantOf(stoneType.name()), 1);
         if (stack == null) return null;
 
         return new BlockMeta(Block.getBlockFromItem(stack.getItem()), stack.getItemDamage());
@@ -478,8 +478,8 @@ public final class GTOreAdapter implements IOreAdapter {
         return GTUtility.clamp(harvestLevel + bonus, 0, GTMod.proxy.mMaxHarvestLevel);
     }
 
-    /// The drops for one MaterialLib ore/small-ore block, called from [Materials2OreShapes]' drop hooks. `variant`
-    /// resolves back to a [StoneType] via [Materials2OreShapes#stoneTypeOf]. See [#getOreDrops] for the shared
+    /// The drops for one MaterialLib ore/small-ore block, called from [OreShapes]' drop hooks. `variant`
+    /// resolves back to a [StoneType] via [OreShapes#stoneTypeOf]. See [#getOreDrops] for the shared
     /// drop-policy implementation.
     /// A gtpp material takes the gtpp drop formulas whichever family [#supports] would answer for. The shape
     /// hooks own in-world mining, and gtpp ore behavior belongs to the material even where a legacy name would
@@ -498,7 +498,7 @@ public final class GTOreAdapter implements IOreAdapter {
             }
         }
 
-        StoneType stoneType = Materials2OreShapes.stoneTypeOf(variant);
+        StoneType stoneType = OreShapes.stoneTypeOf(variant);
         if (mlMaterial == null || stoneType == null) return List.of();
 
         try (OreInfo info = OreInfo.getNewInfo()) {

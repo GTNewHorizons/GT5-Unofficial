@@ -113,8 +113,8 @@ public class Materials2Families {
                 Shapes.dustSmall,
                 Shapes.dustTiny,
                 Shapes.rawOre,
-                Materials2OreShapes.ore,
-                Materials2OreShapes.oreSmall)
+                OreShapes.ore,
+                OreShapes.oreSmall)
             .build();
         toolParts = MaterialLibAPI.newFamily("gregtech", "ToolParts")
             .generateShapes(

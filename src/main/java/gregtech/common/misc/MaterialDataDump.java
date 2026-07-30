@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import gregtech.api.enums.materials2.OreShapes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
@@ -43,7 +44,6 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidNames;
-import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
@@ -146,7 +146,7 @@ public final class MaterialDataDump {
     private static List<Map<String, Object>> dumpDeclaredShapes() {
         List<Map<String, Object>> shapes = new ArrayList<>();
         for (Class<?> declaring : new Class<?>[] { Shapes.class, Materials2CellShapes.class,
-            Materials2BlockShapes.class, Materials2OreShapes.class, Materials2PipeShapes.class }) {
+            Materials2BlockShapes.class, OreShapes.class, Materials2PipeShapes.class }) {
             for (java.lang.reflect.Field field : declaring.getFields()) {
                 if (field.getType() != Shape.class) continue;
                 Shape shape;

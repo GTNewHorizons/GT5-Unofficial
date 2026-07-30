@@ -30,7 +30,7 @@ import gregtech.common.ores.GTOreAdapter;
 /// from the live [StoneType] enum, and [#stoneTypeOf] resolves a variant back to its [StoneType] lazily,
 /// called only from behavior hooks that run during real gameplay, long after every mod's preInit (and
 /// `Materials.init`) has finished.
-public class Materials2OreShapes {
+public class OreShapes {
 
     // spotless:off
     public static Shape ore;
@@ -195,5 +195,5 @@ public class Materials2OreShapes {
         return null;
     }
 
-    private Materials2OreShapes() {}
+    private OreShapes() {}
 }

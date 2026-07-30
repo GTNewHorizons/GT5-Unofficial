@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2OreShapes;
+import gregtech.api.enums.materials2.OreShapes;
 import gregtech.loaders.oreprocessing.ProcessingOre;
 
 /// Dispatches [ProcessingOre]'s `ore`-prefix recipe generation for MaterialLib's cutover ore shape. Of the
@@ -13,6 +13,6 @@ public final class ConsumerOre {
     private ConsumerOre() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2OreShapes.ore, OrePrefixes.ore, () -> ProcessingOre.INSTANCE);
+        ShapeConsumerSupport.delegate(OreShapes.ore, OrePrefixes.ore, () -> ProcessingOre.INSTANCE);
     }
 }

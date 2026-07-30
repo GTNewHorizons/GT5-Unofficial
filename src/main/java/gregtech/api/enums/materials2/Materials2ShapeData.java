@@ -471,7 +471,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.METALLUM, 1L)));
-        Materials2OreShapes.ore.setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.ORE)
+        OreShapes.ore.setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.ORE)
             .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(ORE))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Ore")
@@ -479,7 +479,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Stone, M * 1))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.TERRA, 1L)));
-        Materials2OreShapes.oreSmall.setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.ORE_SMALL)
+        OreShapes.oreSmall.setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.ORE_SMALL)
             .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(ORE))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Small %s Ore")

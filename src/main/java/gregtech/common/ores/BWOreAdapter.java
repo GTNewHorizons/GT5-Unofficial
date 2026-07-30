@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.OreShapes;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -33,7 +34,6 @@ import codechicken.nei.api.API;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.StoneType;
-import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialProperties;
@@ -49,7 +49,7 @@ import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 /// own ores. A legacy `bw.blockores*`/`bw.blockoresTE` meta resolves to its MaterialLib material through
 /// [Materials2WerkstoffIndex]; a meta with no entry there (unknown to MaterialLib) is left unresolved.
 ///
-/// BW only ever generated ore on two [StoneType]s, both of which already have a [Materials2OreShapes] variant
+/// BW only ever generated ore on two [StoneType]s, both of which already have a [OreShapes] variant
 /// declared for GT's own ores: `StoneType.Stone` -> variant `"stone"` (index 0) and `StoneType.Moon` -> variant
 /// `"moon"` (index 7). No new ore variants were needed for the BW cutover; BW ore/small-ore joins the exact same
 /// `ore`/`oreSmall` shapes GT ore uses.
@@ -63,7 +63,7 @@ import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 /// [#getBlock]), keeping that legacy path alive.
 ///
 /// Legacy `isNatural` distinguished a "world-generated" ore meta from a "player-placeable" one purely for the
-/// fortune-multiplier drop rule in [#getBigOreDrops]; [Materials2OreShapes]' shape space has no natural axis
+/// fortune-multiplier drop rule in [#getBigOreDrops]; [OreShapes]' shape space has no natural axis
 /// (mirroring [GTOreAdapter]'s own collapse of the same distinction), so both legacy natural and non-natural
 /// metas of the same (material, stone, size) collapse onto the same MaterialLib block, which always behaves as
 /// the natural case (fortune applies) once cut over.
@@ -242,7 +242,7 @@ public final class BWOreAdapter implements IOreAdapter {
     }
 
     private static boolean isOreShape(Shape shape) {
-        return shape == Materials2OreShapes.ore || shape == Materials2OreShapes.oreSmall;
+        return shape == OreShapes.ore || shape == OreShapes.oreSmall;
     }
 
     private static boolean isWerkstoffMaterial(Material material) {
@@ -258,7 +258,7 @@ public final class BWOreAdapter implements IOreAdapter {
         if (!(stone instanceof StoneType stoneType)) return false;
         if (!legacyOres.containsKey(stoneType)) return false;
 
-        Shape shape = info.isSmall ? Materials2OreShapes.oreSmall : Materials2OreShapes.ore;
+        Shape shape = info.isSmall ? OreShapes.oreSmall : OreShapes.ore;
         return material.hasShape(shape);
     }
 
@@ -280,13 +280,13 @@ public final class BWOreAdapter implements IOreAdapter {
         if (blockInfo == null || !isOreShape(blockInfo.shape()) || !isWerkstoffMaterial(blockInfo.material()))
             return null;
 
-        StoneType stoneType = Materials2OreShapes.stoneTypeOf(blockInfo.variant());
+        StoneType stoneType = OreShapes.stoneTypeOf(blockInfo.variant());
         if (stoneType == null) return null;
 
         OreInfo info = OreInfo.getNewInfo();
         info.material = blockInfo.material();
         info.stoneType = stoneType;
-        info.isSmall = blockInfo.shape() == Materials2OreShapes.oreSmall;
+        info.isSmall = blockInfo.shape() == OreShapes.oreSmall;
         info.isNatural = true;
 
         return info;
@@ -299,10 +299,10 @@ public final class BWOreAdapter implements IOreAdapter {
         if (!isWerkstoffMaterial(info.material)) return null;
         Material material = info.material;
 
-        Shape shape = info.isSmall ? Materials2OreShapes.oreSmall : Materials2OreShapes.ore;
+        Shape shape = info.isSmall ? OreShapes.oreSmall : OreShapes.ore;
 
         if (material.hasShape(shape)) {
-            String variant = Materials2OreShapes.variantOf(stoneType.name());
+            String variant = OreShapes.variantOf(stoneType.name());
             ItemStack stack = MaterialLibAPI.getStack(material, shape, variant, 1);
             if (stack != null) {
                 return new BlockMeta(Block.getBlockFromItem(stack.getItem()), stack.getItemDamage());
@@ -324,11 +324,11 @@ public final class BWOreAdapter implements IOreAdapter {
         return GTUtility.clamp(3 + bonus, 0, GTMod.proxy.mMaxHarvestLevel);
     }
 
-    /// The drops for one MaterialLib werkstoff ore/small-ore block, called from [Materials2OreShapes]' drop hooks
+    /// The drops for one MaterialLib werkstoff ore/small-ore block, called from [OreShapes]' drop hooks
     /// when the material is werkstoff-backed. See [GTOreAdapter#shapeDrops] for the GT-material equivalent.
     public List<ItemStack> shapeDrops(Material mlMaterial, String variant, int fortune, boolean isSilkTouch,
         boolean isSmall) {
-        StoneType stoneType = Materials2OreShapes.stoneTypeOf(variant);
+        StoneType stoneType = OreShapes.stoneTypeOf(variant);
         if (mlMaterial == null || stoneType == null) return List.of();
 
         try (OreInfo info = OreInfo.getNewInfo()) {
