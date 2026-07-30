@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import gregtech.api.enums.materials2.MaterialParentMods;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.launchwrapper.Launch;
@@ -39,7 +40,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLanguageManager;
@@ -282,7 +282,7 @@ public class GTPreLoad {
                                 final Material mlMaterial = LegacyMaterialIDIndex.get(material);
                                 // a parent-mod-gated material whose parent mod is absent never generates items,
                                 // so its slot must not be re-enabled here even though LegacyMaterialIDIndex lists it
-                                if (mlMaterial != null && Materials2ParentMods.hasParentMod(mlMaterial)) {
+                                if (mlMaterial != null && MaterialParentMods.hasParentMod(mlMaterial)) {
                                     final String tag;
                                     if (tags.length > prefix) {
                                         tag = tags[prefix] + MaterialUtils.internalName(mlMaterial);

@@ -3,6 +3,7 @@ package gregtech.common.blocks;
 import static gregtech.api.enums.Mods.NotEnoughItems;
 
 import gregtech.api.enums.materials2.BlockShapes;
+import gregtech.api.enums.materials2.MaterialParentMods;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -13,7 +14,6 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -44,7 +44,7 @@ public class BlockMetal extends BlockStorage {
         mHideBlocks = mNEIisLoaded;
 
         for (int i = 0; i < aMats.length; i++) {
-            if (MaterialUtils.oldSubId(aMats[i]) > 0 && Materials2ParentMods.hasParentMod(aMats[i])) {
+            if (MaterialUtils.oldSubId(aMats[i]) > 0 && MaterialParentMods.hasParentMod(aMats[i])) {
                 Material material = aMats[i];
                 ItemStack cutover = MaterialParts.stack(aPrefix, material, 1);
                 ItemStack canonicalStack = cutover != null ? cutover : new ItemStack(this, 1, i);

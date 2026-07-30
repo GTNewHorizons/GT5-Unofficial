@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import gregtech.api.enums.materials2.MaterialParentMods;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
@@ -15,7 +16,6 @@ import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
-import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.material.MaterialUtils;
 
 public class AssemblyLineServer {
@@ -24,13 +24,13 @@ public class AssemblyLineServer {
 
     /// The material-name token substituted into a generated item or ore block's server-side name, or null
     /// when the id slot never yielded items -- empty, or its material's parent mod absent
-    /// (`Materials2ParentMods#hasParentMod`), which left the slot without items or names. These tokens feed
+    /// (`MaterialParentMods#hasParentMod`), which left the slot without items or names. These tokens feed
     /// assembly-line data packets, so they must be byte-identical to the legacy internal name;
     /// [MaterialUtils#internalName] resolves exactly that string, including the LEGACY_NAME divergents.
     private static @Nullable String generatedMaterialName(int id) {
         Material material = LegacyMaterialIDIndex.get(id);
         if (material == null) return null;
-        if (!Materials2ParentMods.hasParentMod(material)) return null;
+        if (!MaterialParentMods.hasParentMod(material)) return null;
         return MaterialUtils.internalName(material);
     }
 
