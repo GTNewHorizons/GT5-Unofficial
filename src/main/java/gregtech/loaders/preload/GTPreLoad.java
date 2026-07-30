@@ -36,7 +36,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Backings;
+import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials2IDIndex;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2ParentMods;
@@ -133,7 +133,7 @@ public class GTPreLoad {
                     MaterialUtils.localizedNameKey(material),
                     MaterialUtils.localName(material)));
 
-        for (Material superconductor : Materials2Backings.getSuperconductorMarkers()) {
+        for (Material superconductor : MaterialFacades.getSuperconductorMarkers()) {
             GTLanguageManager.addStringLocalization(
                 "Material." + MaterialUtils.internalName(superconductor)
                     .toLowerCase(),

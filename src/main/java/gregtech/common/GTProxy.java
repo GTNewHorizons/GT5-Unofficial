@@ -41,6 +41,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -130,7 +131,6 @@ import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
-import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.fluid.GTFluidFactory;
@@ -1721,7 +1721,7 @@ public class GTProxy implements IFuelHandler {
                                     aPrefix.add(GTUtility.copyAmount(1, aEvent.Ore));
                                 }
                                 if (aMaterial != null) {
-                                    for (Material tReRegisteredMaterial : Materials2Backings
+                                    for (Material tReRegisteredMaterial : MaterialFacades
                                         .oreReRegistrationsOf(aMaterial)) {
                                         GTOreDictUnificator.registerOre(aPrefix, tReRegisteredMaterial, aEvent.Ore);
                                     }
@@ -1785,13 +1785,13 @@ public class GTProxy implements IFuelHandler {
                                             if (aMaterial == Materials.Tin) {
                                                 GTOreDictUnificator
                                                     .registerOre(OreDictNames.craftingWireTin, aEvent.Ore);
-                                            } else if (aMaterial == Materials2Backings.AnyCopper) {
+                                            } else if (aMaterial == MaterialFacades.AnyCopper) {
                                                 GTOreDictUnificator
                                                     .registerOre(OreDictNames.craftingWireCopper, aEvent.Ore);
                                             } else if (aMaterial == Materials.Gold) {
                                                 GTOreDictUnificator
                                                     .registerOre(OreDictNames.craftingWireGold, aEvent.Ore);
-                                            } else if (aMaterial == Materials2Backings.AnyIron) {
+                                            } else if (aMaterial == MaterialFacades.AnyIron) {
                                                 GTOreDictUnificator
                                                     .registerOre(OreDictNames.craftingWireIron, aEvent.Ore);
                                             }

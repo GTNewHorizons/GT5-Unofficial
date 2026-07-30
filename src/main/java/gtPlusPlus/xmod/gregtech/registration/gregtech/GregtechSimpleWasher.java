@@ -21,7 +21,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Backings;
+import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
@@ -132,8 +132,8 @@ public class GregtechSimpleWasher {
             if (ml == Materials.Platinum || ml == Materials.Osmium
                 || ml == Materials.Iridium
                 || ml == Materials.Palladium
-                || ml == Materials2Backings.AnyCopper
-                || ml == Materials2Backings.AnyIron) {
+                || ml == MaterialFacades.AnyCopper
+                || ml == MaterialFacades.AnyIron) {
                 continue;
             }
 

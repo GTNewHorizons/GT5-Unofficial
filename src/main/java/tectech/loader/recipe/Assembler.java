@@ -23,7 +23,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Backings;
+import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.SubstituteFluidStack;
@@ -114,7 +114,7 @@ public class Assembler implements Runnable {
                 MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.rotor, 2),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.StainlessSteel, 16),
                 MaterialLibAPI.getStack(Materials.Copper, Shapes.plate, 16),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Backings.SuperconductorIV, 1))
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, MaterialFacades.SuperconductorIV, 1))
             .itemOutputs(CustomItemList.eM_Computer_Vent.get(1))
             .fluidInputs(
                 MaterialLibAPI
@@ -182,7 +182,7 @@ public class Assembler implements Runnable {
         // Tesla Primary Coils T1
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials2Backings.SuperconductorMV, 8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt02, MaterialFacades.SuperconductorMV, 8),
                 BaseRecipeLoader.getNHCoreModItem("MicaInsulatorFoil", 12))
             .itemOutputs(CustomItemList.tM_TeslaPrimary_1.get(1))
             .fluidInputs(
@@ -194,7 +194,7 @@ public class Assembler implements Runnable {
         // Tesla Primary Coils T2
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials2Backings.SuperconductorHV, 8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt02, MaterialFacades.SuperconductorHV, 8),
                 BaseRecipeLoader.getNHCoreModItem("MicaInsulatorFoil", 16))
             .itemOutputs(CustomItemList.tM_TeslaPrimary_2.get(1))
             .fluidInputs(
@@ -205,7 +205,7 @@ public class Assembler implements Runnable {
         // Tesla Primary Coils T3
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials2Backings.SuperconductorEV, 8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt02, MaterialFacades.SuperconductorEV, 8),
                 BaseRecipeLoader.getNHCoreModItem("MicaInsulatorFoil", 20))
             .itemOutputs(CustomItemList.tM_TeslaPrimary_3.get(1))
             .fluidInputs(
@@ -217,7 +217,7 @@ public class Assembler implements Runnable {
         // Tesla Primary Coils T4
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials2Backings.SuperconductorIV, 8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt02, MaterialFacades.SuperconductorIV, 8),
                 BaseRecipeLoader.getNHCoreModItem("MicaInsulatorFoil", 24))
             .itemOutputs(CustomItemList.tM_TeslaPrimary_4.get(1))
             .fluidInputs(
@@ -229,7 +229,7 @@ public class Assembler implements Runnable {
         // Tesla Primary Coils T5
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials2Backings.SuperconductorLuV, 8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt02, MaterialFacades.SuperconductorLuV, 8),
                 BaseRecipeLoader.getNHCoreModItem("MicaInsulatorFoil", 28))
             .itemOutputs(CustomItemList.tM_TeslaPrimary_5.get(1))
             .fluidInputs(
@@ -240,7 +240,7 @@ public class Assembler implements Runnable {
         // Tesla Primary Coils T6
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials2Backings.SuperconductorZPM, 8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt02, MaterialFacades.SuperconductorZPM, 8),
                 BaseRecipeLoader.getNHCoreModItem("MicaInsulatorFoil", 32))
             .itemOutputs(CustomItemList.tM_TeslaPrimary_6.get(1))
             .fluidInputs(
@@ -337,7 +337,7 @@ public class Assembler implements Runnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         ItemList.Hatch_Dynamo_UHV.get(1),
-                        GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Backings.SuperconductorUHV, 2),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialFacades.SuperconductorUHV, 2),
                         MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 2))
                     .itemOutputs(CustomItemList.eM_dynamoMulti4_UHV.get(1))
                     .fluidInputs(
@@ -493,7 +493,7 @@ public class Assembler implements Runnable {
                     .itemInputs(
                         ItemList.Transformer_UEV_UHV.get(1),
                         CustomItemList.eM_dynamoMulti4_UHV.get(1),
-                        GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Backings.SuperconductorUHV, 2),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt08, MaterialFacades.SuperconductorUHV, 2),
                         MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 4))
                     .itemOutputs(CustomItemList.eM_dynamoMulti16_UHV.get(1))
                     .fluidInputs(
@@ -657,7 +657,7 @@ public class Assembler implements Runnable {
                     .itemInputs(
                         ItemList.WetTransformer_UEV_UHV.get(1),
                         CustomItemList.eM_dynamoMulti16_UHV.get(1),
-                        GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials2Backings.SuperconductorUHV, 2),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt12, MaterialFacades.SuperconductorUHV, 2),
                         MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 6))
                     .itemOutputs(CustomItemList.eM_dynamoMulti64_UHV.get(1))
                     .fluidInputs(
@@ -758,7 +758,7 @@ public class Assembler implements Runnable {
                     .itemInputs(
                         ItemList.WetTransformer_UEV_UHV.get(4),
                         CustomItemList.eM_dynamoMulti64_UHV.get(1),
-                        GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Backings.SuperconductorUHV, 2),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt16, MaterialFacades.SuperconductorUHV, 2),
                         MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 8))
                     .itemOutputs(CustomItemList.eM_dynamoMulti256_UHV.get(1))
                     .fluidInputs(
@@ -917,7 +917,7 @@ public class Assembler implements Runnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         ItemList.Hatch_Energy_UHV.get(1),
-                        GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials2Backings.SuperconductorUHV, 2),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialFacades.SuperconductorUHV, 2),
                         MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 2))
                     .itemOutputs(CustomItemList.eM_energyMulti4_UHV.get(1))
                     .fluidInputs(
@@ -1073,7 +1073,7 @@ public class Assembler implements Runnable {
                     .itemInputs(
                         ItemList.Transformer_UEV_UHV.get(1),
                         CustomItemList.eM_energyMulti4_UHV.get(1),
-                        GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials2Backings.SuperconductorUHV, 2),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt08, MaterialFacades.SuperconductorUHV, 2),
                         MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 4))
                     .itemOutputs(CustomItemList.eM_energyMulti16_UHV.get(1))
                     .fluidInputs(
@@ -1237,7 +1237,7 @@ public class Assembler implements Runnable {
                     .itemInputs(
                         ItemList.WetTransformer_UEV_UHV.get(1),
                         CustomItemList.eM_energyMulti16_UHV.get(1),
-                        GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials2Backings.SuperconductorUHV, 2),
+                        GTOreDictUnificator.get(OrePrefixes.wireGt12, MaterialFacades.SuperconductorUHV, 2),
                         MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, 6))
                     .itemOutputs(CustomItemList.eM_energyMulti64_UHV.get(1))
                     .fluidInputs(
@@ -2693,7 +2693,7 @@ public class Assembler implements Runnable {
         // Tesla Winding Components Ultimate (ADD BLOOD VARIANT)
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Backings.SuperconductorLuV, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, MaterialFacades.SuperconductorLuV, 4),
                 MaterialLibAPI.getStack(Materials.NickelZincFerrite, Shapes.ring, 8))
             .itemOutputs(CustomItemList.teslaComponent.getWithDamage(1, 1))
             .fluidInputs(
@@ -2894,7 +2894,7 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.WetTransformer_ZPM_LuV.get(1),
                 BaseRecipeLoader.getNHCoreModItem("HighEnergyFlowCircuit", 1),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Backings.SuperconductorLuV, 16),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, MaterialFacades.SuperconductorLuV, 16),
                 ItemList.valueOf("Circuit_Chip_UHPIC")
                     .get(2))
             .itemOutputs(CustomItemList.Machine_Multi_Transformer.get(1))
@@ -2956,7 +2956,7 @@ public class Assembler implements Runnable {
                 Circuits.ZPM.get(1),
                 MaterialLibAPI.getStack(Materials.Cobalt, Shapes.wireFine, 64),
                 MaterialLibAPI.getStack(Materials.Electrum, Shapes.wireFine, 64),
-                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials2Backings.SuperconductorLuV, 4))
+                GTOreDictUnificator.get(OrePrefixes.wireGt02, MaterialFacades.SuperconductorLuV, 4))
             .itemOutputs(CustomItemList.eM_Computer_Bus.get(1))
             .fluidInputs(
                 MaterialLibAPI

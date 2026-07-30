@@ -50,6 +50,7 @@ import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import java.util.Arrays;
 import java.util.List;
 
+import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
@@ -68,7 +69,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -449,7 +449,7 @@ public class RecipesGregTech {
             .metadata(SCANNING, new Scanning(50 * SECONDS, TierEU.RECIPE_UV))
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.AdvancedNitinol, Shapes.plate, 16),
-                GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials2Backings.SuperconductorUHV, 32),
+                GTOreDictUnificator.get(OrePrefixes.wireGt12, MaterialFacades.SuperconductorUHV, 32),
                 MaterialLibAPI.getStack(Materials.Titansteel, Shapes.gearGt, 4),
                 GregtechItemList.DehydratorCoilWireZPM.get(64))
             .fluidInputs(
@@ -540,7 +540,7 @@ public class RecipesGregTech {
                 ItemList.StableBosonContainmentUnit.get(2),
                 MaterialLibAPI.getStack(Materials.AbyssalAlloy, Shapes.plate, 16),
                 Circuits.UHV.get(8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Backings.SuperconductorUHV, 32),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, MaterialFacades.SuperconductorUHV, 32),
                 MaterialLibAPI.getStack(Materials.AstralTitanium, Shapes.bolt, 8),
                 MaterialLibAPI.getStack(Materials.Titansteel, Shapes.screw, 8))
             .fluidInputs(

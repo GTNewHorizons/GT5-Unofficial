@@ -17,6 +17,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 
+import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Items;
@@ -30,7 +31,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
@@ -467,7 +467,7 @@ public class RecipeLoaderGlueLine {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Backings.SuperconductorUHV, 2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, MaterialFacades.SuperconductorUHV, 2),
                 MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, (int) (56)))
             .itemOutputs(ItemList.BatteryHull_UMV.get(1))
             .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.EthylCyanoacrylateSuperGlue, 9216))
@@ -476,7 +476,7 @@ public class RecipeLoaderGlueLine {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials2Backings.SuperconductorUHV, 2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, MaterialFacades.SuperconductorUHV, 2),
                 MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.plate, (int) (64)))
             .itemOutputs(ItemList.BatteryHull_UxV.get(1))
             .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.EthylCyanoacrylateSuperGlue, 18432))

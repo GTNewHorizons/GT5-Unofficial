@@ -11,6 +11,7 @@ import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
+import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
@@ -25,7 +26,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -144,7 +144,7 @@ public class AssemblyLineRecipes implements Runnable {
                     GTOreDictUnificator.get("pipeSmallNiobiumTitanium", 2),
                     MaterialLibAPI.getStack(Materials.HSSS, Shapes.plate, (int) (2)),
                     MaterialLibAPI.getStack(Materials.HSSS, Shapes.screw, (int) (8)),
-                    new Object[] { OrePrefixes.ring.ingredient(Materials2Backings.AnySyntheticRubber), 4 },
+                    new Object[] { OrePrefixes.ring.ingredient(MaterialFacades.AnySyntheticRubber), 4 },
                     MaterialLibAPI.getStack(Materials.HSSS, Shapes.rotor, (int) (2)),
                     GTOreDictUnificator.get("cableGt01YttriumBariumCuprate", 2))
                 .fluidInputs(
@@ -165,7 +165,7 @@ public class AssemblyLineRecipes implements Runnable {
                     GTOreDictUnificator.get("pipeMediumEnderium", 2),
                     MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.plate, (int) (2)),
                     MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.screw, (int) (8)),
-                    new Object[] { OrePrefixes.ring.ingredient(Materials2Backings.AnySyntheticRubber), 8 },
+                    new Object[] { OrePrefixes.ring.ingredient(MaterialFacades.AnySyntheticRubber), 8 },
                     MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.rotor, (int) (2)),
                     GTOreDictUnificator.get("cableGt04VanadiumGallium", 2))
                 .fluidInputs(
@@ -186,7 +186,7 @@ public class AssemblyLineRecipes implements Runnable {
                     GTOreDictUnificator.get("pipeLargeNaquadah", 2),
                     MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plate, (int) (2)),
                     MaterialLibAPI.getStack(Materials.Neutronium, Shapes.screw, (int) (8)),
-                    new Object[] { OrePrefixes.ring.ingredient(Materials2Backings.AnySyntheticRubber), 16 },
+                    new Object[] { OrePrefixes.ring.ingredient(MaterialFacades.AnySyntheticRubber), 16 },
                     MaterialLibAPI.getStack(Materials.Neutronium, Shapes.rotor, (int) (2)),
                     GTOreDictUnificator.get("cableGt04NaquadahAlloy", 2))
                 .itemOutputs(ItemList.Electric_Pump_UV.get(1))
@@ -215,7 +215,7 @@ public class AssemblyLineRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials.HSSS, Shapes.ring, (int) (4)),
                     MaterialLibAPI.getStack(Materials.HSSS, Shapes.round, (int) (32)),
                     GTOreDictUnificator.get("cableGt01YttriumBariumCuprate", 2),
-                    new Object[] { OrePrefixes.plate.ingredient(Materials2Backings.AnySyntheticRubber), 10 })
+                    new Object[] { OrePrefixes.plate.ingredient(MaterialFacades.AnySyntheticRubber), 10 })
                 .itemOutputs(ItemList.Conveyor_Module_LuV.get(1))
                 .fluidInputs(
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 1 * INGOTS),
@@ -235,7 +235,7 @@ public class AssemblyLineRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.ring, (int) (4)),
                     MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.round, (int) (32)),
                     GTOreDictUnificator.get("cableGt04VanadiumGallium", 2),
-                    new Object[] { OrePrefixes.plate.ingredient(Materials2Backings.AnySyntheticRubber), 20 })
+                    new Object[] { OrePrefixes.plate.ingredient(MaterialFacades.AnySyntheticRubber), 20 })
                 .itemOutputs(ItemList.Conveyor_Module_ZPM.get(1))
                 .fluidInputs(
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 2 * INGOTS),
@@ -255,7 +255,7 @@ public class AssemblyLineRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials.Neutronium, Shapes.ring, (int) (4)),
                     MaterialLibAPI.getStack(Materials.Neutronium, Shapes.round, (int) (32)),
                     GTOreDictUnificator.get("cableGt04NaquadahAlloy", 2),
-                    new Object[] { OrePrefixes.plate.ingredient(Materials2Backings.AnySyntheticRubber), 40 })
+                    new Object[] { OrePrefixes.plate.ingredient(MaterialFacades.AnySyntheticRubber), 40 })
                 .itemOutputs(ItemList.Conveyor_Module_UV.get(1))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(

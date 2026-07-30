@@ -52,7 +52,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Backings;
+import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
@@ -74,7 +74,7 @@ public class RecipeLoader2 {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 1),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlueAlloy, 1),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Backings.SuperconductorHV, 32),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, MaterialFacades.SuperconductorHV, 32),
                 MaterialLibAPI.getStack(Materials.Beryllium, Shapes.plate, 32),
                 Circuits.IV.get(1))
             .itemOutputs(ItemRefer.Speeding_Pipe.get(1))
