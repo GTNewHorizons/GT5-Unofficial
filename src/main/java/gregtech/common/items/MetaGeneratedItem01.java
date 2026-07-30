@@ -474,6 +474,7 @@ import java.util.List;
 import java.util.Map;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -506,7 +507,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials2IDIndex;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.MetaBaseItem;
@@ -692,7 +692,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     1,
                     0.1F,
                     EnumAction.eat,
-                    MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.foil, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Gold, Shapes.foil, (int) (1)),
                     true,
                     false,
                     false,

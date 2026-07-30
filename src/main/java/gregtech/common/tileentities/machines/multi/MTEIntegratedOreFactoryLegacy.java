@@ -50,7 +50,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -723,7 +723,7 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
             int tID = GTUtility.stackToInt(stack);
             if (sVoidStone) {
                 if (GTUtility.areStacksEqual(
-                    MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1)),
                     stack)) {
                     continue;
                 }

@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingCrushedOre;
 
 /// Dispatches [ProcessingCrushedOre]'s `crushedCentrifuged`/`crushedPurified` recipe generation for
@@ -12,11 +12,11 @@ public final class ConsumerCrushedOre {
 
     static void register() {
         ShapeConsumerSupport.delegate(
-            Materials2Shapes.crushedCentrifuged,
+            Shapes.crushedCentrifuged,
             OrePrefixes.crushedCentrifuged,
             () -> ProcessingCrushedOre.INSTANCE);
         ShapeConsumerSupport.delegate(
-            Materials2Shapes.crushedPurified,
+            Shapes.crushedPurified,
             OrePrefixes.crushedPurified,
             () -> ProcessingCrushedOre.INSTANCE);
     }

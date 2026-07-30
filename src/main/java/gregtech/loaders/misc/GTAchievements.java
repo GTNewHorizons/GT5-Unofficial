@@ -6,6 +6,7 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -31,7 +32,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
@@ -136,28 +136,28 @@ public class GTAchievements {
             "crushed",
             0,
             6,
-            MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.crushed, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Tin, Shapes.crushed, (int) (1)),
             "tools",
             false);
         registerAchievement(
             "cleandust",
             0,
             10,
-            MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, (int) (1)),
             "crushed",
             false);
         registerAchievement(
             "washing",
             -2,
             6,
-            MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.crushedPurified, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Iron, Shapes.crushedPurified, (int) (1)),
             "crushed",
             false);
         registerAchievement(
             "spinit",
             -4,
             6,
-            MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.crushedCentrifuged, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Redstone, Shapes.crushedCentrifuged, (int) (1)),
             "crushed",
             false);
 
@@ -166,7 +166,7 @@ public class GTAchievements {
             "newmetal",
             -4,
             10,
-            MaterialLibAPI.getStack(Materials.Lutetium, Materials2Shapes.dust, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dust, (int) (1)),
             "newfuel",
             false);
         registerAchievement("reflect", -2, 9, ItemList.Neutron_Reflector.get(1), "newfuel", false);
@@ -175,7 +175,7 @@ public class GTAchievements {
             "bronze",
             2,
             0,
-            MaterialLibAPI.getStack(Materials.Bronze, Materials2Shapes.dust, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Bronze, Shapes.dust, (int) (1)),
             "gettingstartedwithgt",
             false);
         registerAchievement(
@@ -228,7 +228,7 @@ public class GTAchievements {
             "steel",
             4,
             0,
-            MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Steel, Shapes.ingot, (int) (1)),
             "bronze",
             false);
         registerAchievement("highpressure", 4, 2, ItemList.Machine_Steel_Boiler.get(1), "steel", false);
@@ -244,7 +244,7 @@ public class GTAchievements {
             "complexalloys",
             6,
             3,
-            MaterialLibAPI.getStack(Materials.BlueSteel, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.BlueSteel, Shapes.ingot, (int) (1)),
             "cheapermac",
             false);
 
@@ -252,7 +252,7 @@ public class GTAchievements {
             "magneticiron",
             4,
             -2,
-            MaterialLibAPI.getStack(Materials.IronMagnetic, Materials2Shapes.stick, (int) (1)),
+            MaterialLibAPI.getStack(Materials.IronMagnetic, Shapes.stick, (int) (1)),
             "steel",
             false);
         registerAchievement("lvmotor", 4, -6, ItemList.Electric_Motor_LV.get(1), "magneticiron", false);
@@ -277,7 +277,7 @@ public class GTAchievements {
             "gtaluminium",
             8,
             0,
-            MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Aluminium, Shapes.ingot, (int) (1)),
             "steel",
             false);
         registerAchievement("highpowersmelt", 8, 2, ItemList.Machine_Multi_Furnace.get(1), "gtaluminium", false);
@@ -290,7 +290,7 @@ public class GTAchievements {
             "titan",
             14,
             0,
-            MaterialLibAPI.getStack(Materials.Titanium, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Titanium, Shapes.ingot, (int) (1)),
             "upgrade",
             false);
         registerAchievement("magic", 14, 3, ItemList.MagicEnergyConverter_LV.get(1), "titan", false);
@@ -304,14 +304,14 @@ public class GTAchievements {
             "tungsten",
             16,
             2,
-            MaterialLibAPI.getStack(Materials.Tungsten, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Tungsten, Shapes.ingot, (int) (1)),
             "upgrade2",
             false);
         registerAchievement(
             "osmium",
             16,
             -2,
-            MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Osmium, Shapes.ingot, (int) (1)),
             "upgrade2",
             false);
         registerAchievement("hightech", 15, -3, ItemList.Field_Generator_LV.get(1), "osmium", false);
@@ -325,7 +325,7 @@ public class GTAchievements {
             "tungstensteel",
             16,
             4,
-            MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.ingot, (int) (1)),
             "tungsten",
             false);
         registerAchievement("upgrade3", 15, 5, ItemList.Casing_Coil_TungstenSteel.get(1), "tungstensteel", false);
@@ -333,7 +333,7 @@ public class GTAchievements {
             "hssg",
             13,
             5,
-            MaterialLibAPI.getStack(Materials.HSSG, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.HSSG, Shapes.ingot, (int) (1)),
             "upgrade3",
             false);
         registerAchievement("upgrade4", 11, 5, ItemList.Casing_Coil_HSSG.get(1), "hssg", false);
@@ -341,7 +341,7 @@ public class GTAchievements {
             "stargatematerial",
             11,
             7,
-            MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Naquadah, Shapes.ingot, (int) (1)),
             "upgrade4",
             false);
         registerAchievement("conducting", 14, 6, ItemList.Casing_Coil_Superconductor.get(1), "upgrade3", false);
@@ -357,7 +357,7 @@ public class GTAchievements {
             "alienmetallurgy",
             9,
             7,
-            MaterialLibAPI.getStack(Materials.NaquadahAlloy, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.ingot, (int) (1)),
             "upgrade5",
             false);
         registerAchievement("over9000", 7, 7, ItemList.Casing_Coil_NaquadahAlloy.get(1), "alienmetallurgy", false);
@@ -365,7 +365,7 @@ public class GTAchievements {
             "finalpreparations",
             7,
             9,
-            MaterialLibAPI.getStack(Materials.Naquadria, Materials2Shapes.ingot, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Naquadria, Shapes.ingot, (int) (1)),
             "over9000",
             false);
         registerAchievement("denseaspossible", 6, 10, ItemList.FusionComputer_UV.get(1), "finalpreparations", false);

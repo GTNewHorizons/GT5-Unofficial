@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -40,7 +41,6 @@ import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -400,9 +400,9 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     private void tryUseModerator() {
         startRecipeProcessing();
         for (ItemStack input : getStoredInputs()) {
-            if (input.isItemEqual(MaterialLibAPI.getStack(Materials.Graphite, Materials2Shapes.dust, 1))
+            if (input.isItemEqual(MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, 1))
                 || input
-                    .isItemEqual(MaterialLibAPI.getStack(Materials.Beryllium, Materials2Shapes.dust, 1))) {
+                    .isItemEqual(MaterialLibAPI.getStack(Materials.Beryllium, Shapes.dust, 1))) {
                 int consume = Math.min(this.eV / 10000000, input.stackSize);
                 depleteInput(GTUtility.copyAmount(consume, input));
                 this.eV -= 10000000 * consume;

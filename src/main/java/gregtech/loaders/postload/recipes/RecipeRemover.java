@@ -15,7 +15,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -75,17 +75,17 @@ public class RecipeRemover implements Runnable {
         GTUtility.removeSimpleIC2MachineRecipe(
             new ItemStack(Blocks.cobblestone),
             GTModHandler.getMaceratorRecipeList(),
-            MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1L)));
+            MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1L)));
         GTUtility.removeSimpleIC2MachineRecipe(
             GTOreDictUnificator.get(OrePrefixes.gem, Materials.Lapis, 1L),
             GTModHandler.getMaceratorRecipeList(),
             GTModHandler.getIC2Item("plantBall", 1L));
         GTUtility.removeSimpleIC2MachineRecipe(
-            MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, (int) (1)),
             GTModHandler.getMaceratorRecipeList(),
             GTModHandler.getIC2Item("plantBall", 1L));
         GTUtility.removeSimpleIC2MachineRecipe(
-            MaterialLibAPI.getStack(Materials.Glowstone, Materials2Shapes.dust, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, (int) (1)),
             GTModHandler.getMaceratorRecipeList(),
             GTModHandler.getIC2Item("plantBall", 1L));
         GTUtility.removeSimpleIC2MachineRecipe(

@@ -11,6 +11,7 @@ import static gregtech.api.recipe.RecipeMaps.ultraHugeNaquadahReactorFuels;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -22,7 +23,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLog;
@@ -47,8 +47,8 @@ public class FuelLoader implements Runnable {
         ItemList.sRocketFuel = GTFluidFactory.of("rocket_fuel", "Rocket Fuel", FluidState.LIQUID, 295);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.NaquadahEnriched, Materials2Shapes.bolt, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.bolt, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.bolt, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Shapes.bolt, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 50_000)
@@ -56,8 +56,8 @@ public class FuelLoader implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Materials2Shapes.stick, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.stick, (int) (1)))
+                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.stick, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Shapes.stick, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 250_000)
@@ -65,24 +65,24 @@ public class FuelLoader implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Materials2Shapes.stickLong, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.stickLong, (int) (1)))
+                MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.stickLong, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Shapes.stickLong, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 500_000)
             .addTo(hugeNaquadahReactorFuels);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Naquadria, Materials2Shapes.bolt, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.bolt, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Naquadria, Shapes.bolt, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Shapes.bolt, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 250_000)
             .addTo(extremeNaquadahReactorFuels);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Naquadria, Materials2Shapes.stick, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Materials2Shapes.stick, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Naquadria, Shapes.stick, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Naquadah, Shapes.stick, (int) (1)))
             .duration(0)
             .eut(0)
             .metadata(FUEL_VALUE, 1_000_000)

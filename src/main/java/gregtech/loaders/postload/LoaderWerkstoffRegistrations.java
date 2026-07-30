@@ -3,6 +3,7 @@ package gregtech.loaders.postload;
 import java.util.List;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
@@ -14,7 +15,6 @@ import bartworks.util.BWColorUtil;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
@@ -46,7 +46,7 @@ public class LoaderWerkstoffRegistrations {
         }
         GTOreDictUnificator.registerOre(
             "craftingIndustrialDiamond",
-            MaterialLibAPI.getStack(Materials.CubicZirconia, Materials2Shapes.gemExquisite, 1));
+            MaterialLibAPI.getStack(Materials.CubicZirconia, Shapes.gemExquisite, 1));
         BWOreAdapter.INSTANCE.registerOredict();
     }
 
@@ -56,12 +56,12 @@ public class LoaderWerkstoffRegistrations {
     /// registration owns those materials' lenses and blocks.
     private static void registerAdditionalOreDict(Material material) {
         if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
-            && material.hasShape(Materials2Shapes.lens)) {
+            && material.hasShape(Shapes.lens)) {
             short[] rgba = MaterialUtils.rgba(material);
             if (rgba != null) {
                 OreDictionary.registerOre(
                     "craftingLens" + BWColorUtil.getDyeFromColor(rgba).mName.replace(" ", ""),
-                    MaterialLibAPI.getStack(material, Materials2Shapes.lens, 1));
+                    MaterialLibAPI.getStack(material, Shapes.lens, 1));
             }
         }
         if (material.hasShape(Materials2BlockShapes.block)

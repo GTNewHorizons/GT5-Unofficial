@@ -7,6 +7,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import java.util.Arrays;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -18,7 +19,6 @@ import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTRecipeBuilder;
 import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
 
@@ -28,13 +28,13 @@ public class Centrifuge implements Runnable {
     @Override
     public void run() {
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Thorium, Materials2Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, (int) (1)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Thorium, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Thorium, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Thorium232, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Thorium232, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Thorium232, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Thorium, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Thorium232, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Thorium232, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Thorium232, Shapes.dust, 1))
             .outputChances(800, 375, 22, 22, 5)
             .duration(8 * MINUTES + 20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -61,7 +61,7 @@ public class Centrifuge implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 6))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Lead, Materials2Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Lead, Shapes.dust, (int) (1)))
             .outputChances(300)
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)

@@ -11,7 +11,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class FishTrapHandler {
@@ -30,8 +30,8 @@ public class FishTrapHandler {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1))
                     .itemOutputs(
-                        MaterialLibAPI.getStack(Materials.MeatRaw, Materials2Shapes.dust, (int) (1)),
-                        MaterialLibAPI.getStack(Materials.Bone, Materials2Shapes.dustTiny, (int) (1)))
+                        MaterialLibAPI.getStack(Materials.MeatRaw, Shapes.dust, (int) (1)),
+                        MaterialLibAPI.getStack(Materials.Bone, Shapes.dustTiny, (int) (1)))
                     .outputChances(10000, 1000)
                     .duration(20 * SECONDS)
                     .eut(2)
@@ -58,8 +58,8 @@ public class FishTrapHandler {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1))
                 .itemOutputs(
-                    MaterialLibAPI.getStack(Materials.MeatRaw, Materials2Shapes.dust, (int) (1)),
-                    MaterialLibAPI.getStack(Materials.Bone, Materials2Shapes.dustTiny, (int) (1)))
+                    MaterialLibAPI.getStack(Materials.MeatRaw, Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Bone, Shapes.dustTiny, (int) (1)))
                 .outputChances(10000, 1000)
                 .duration(20 * SECONDS)
                 .eut(2)

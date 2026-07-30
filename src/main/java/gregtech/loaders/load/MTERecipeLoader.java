@@ -16,6 +16,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -38,7 +39,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.util.GTLog;
@@ -1578,9 +1578,9 @@ public class MTERecipeLoader implements Runnable {
             ItemList.IndustrialCentrifuge.get(1),
             BUFFERED,
             new Object[] { "ABA", "CDC", "EFE", 'A', "circuitData", 'B', "pipeHugeStainlessSteel", 'C',
-                MaterialLibAPI.getStack(Materials.MaragingSteel250, Materials2Shapes.plate, 1), 'D',
+                MaterialLibAPI.getStack(Materials.MaragingSteel250, Shapes.plate, 1), 'D',
                 ItemList.Machine_EV_Centrifuge, 'E',
-                MaterialLibAPI.getStack(Materials.Inconel792, Materials2Shapes.plate, 1), 'F',
+                MaterialLibAPI.getStack(Materials.Inconel792, Shapes.plate, 1), 'F',
                 ItemList.Casing_EV });
 
         // Amazon Warehousing Depot
@@ -1602,18 +1602,18 @@ public class MTERecipeLoader implements Runnable {
             ItemList.IndustrialElectrolyzer.get(1),
             BUFFERED,
             new Object[] { "PCP", "HMH", "PRP", 'P',
-                MaterialLibAPI.getStack(Materials.Stellite, Materials2Shapes.plate, 1), 'C', "circuitElite",
+                MaterialLibAPI.getStack(Materials.Stellite, Shapes.plate, 1), 'C', "circuitElite",
                 'H', ItemList.Casing_IV, 'M', ItemList.Machine_IV_Electrolyzer, 'R',
-                MaterialLibAPI.getStack(Materials.Stellite, Materials2Shapes.rotor, 1) });
+                MaterialLibAPI.getStack(Materials.Stellite, Shapes.rotor, 1) });
 
         // Industrial Mixer
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialMixer.get(1),
             BUFFERED,
             new Object[] { "PCP", "ZMZ", "PCP", 'P',
-                MaterialLibAPI.getStack(Materials.MaragingSteel300, Materials2Shapes.plate, 1), 'C',
+                MaterialLibAPI.getStack(Materials.MaragingSteel300, Shapes.plate, 1), 'C',
                 "circuitElite", 'Z',
-                MaterialLibAPI.getStack(Materials.MaragingSteel250, Materials2Shapes.plate, 1), 'M',
+                MaterialLibAPI.getStack(Materials.MaragingSteel250, Shapes.plate, 1), 'M',
                 ItemList.Machine_IV_Mixer });
 
         // Mixer casing, move if there is a better place for it
@@ -1621,8 +1621,8 @@ public class MTERecipeLoader implements Runnable {
             ItemList.CasingMixer.get(1),
             BUFFERED,
             new Object[] { "PhP", "SFS", "PwP", 'P',
-                MaterialLibAPI.getStack(Materials.MaragingSteel300, Materials2Shapes.plate, 1), 'S',
-                MaterialLibAPI.getStack(Materials.MaragingSteel250, Materials2Shapes.plate, 1), 'F',
+                MaterialLibAPI.getStack(Materials.MaragingSteel300, Shapes.plate, 1), 'S',
+                MaterialLibAPI.getStack(Materials.MaragingSteel250, Shapes.plate, 1), 'F',
                 "frameGtPolytetrafluoroethylene" });
 
         // Forming Core
@@ -1639,7 +1639,7 @@ public class MTERecipeLoader implements Runnable {
                 ItemList.Field_Generator_EV.get(2),
                 ItemList.Robot_Arm_IV.get(4),
                 GregtechItemList.Energy_Core_EV.get(2),
-                MaterialLibAPI.getStack(Materials.Tungsten, Materials2Shapes.plate, 8),
+                MaterialLibAPI.getStack(Materials.Tungsten, Shapes.plate, 8),
                 GTOreDictUnificator.get("circuitElite", 8))
             .itemOutputs(ItemList.IndustrialArcFurnace.get(1))
             .duration(1 * MINUTES)
@@ -1655,8 +1655,8 @@ public class MTERecipeLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get("frameGtRoseGold", 1),
-                MaterialLibAPI.getStack(Materials.RoseGold, Materials2Shapes.plate, 4),
-                MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.plate, 2))
+                MaterialLibAPI.getStack(Materials.RoseGold, Shapes.plate, 4),
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plate, 2))
             .circuit(1)
             .itemOutputs(ItemList.AlgaeCasing.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -1667,7 +1667,7 @@ public class MTERecipeLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemRefer.Radiation_Protection_Plate.get(2),
-                MaterialLibAPI.getStack(Materials.prismaticnaquadah, Materials2Shapes.plate, 2),
+                MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.plate, 2),
                 GTOreDictUnificator.get("frameGtNaquadah", 1))
             .circuit(1)
             .itemOutputs(ItemList.NaquadahReactorCasing.get(1))

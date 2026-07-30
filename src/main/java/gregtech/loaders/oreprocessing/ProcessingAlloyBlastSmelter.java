@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -22,7 +23,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.materials2.Materials2GtppComposites;
 import gregtech.api.enums.materials2.Materials2GtppComposites.Component;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
@@ -137,7 +137,7 @@ public class ProcessingAlloyBlastSmelter {
     public static void generateSingleDust() {
         for (Material material : SINGLE_DUST) {
             if (!Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.BLAST_REQUIRED))) continue;
-            ItemStack dust = MaterialLibAPI.getStack(material, Materials2Shapes.dust, 1);
+            ItemStack dust = MaterialLibAPI.getStack(material, Shapes.dust, 1);
             FluidStack fluidOutput = MaterialUtils.legacyGtppFluid(material, 144);
             if (fluidOutput == null) continue;
 
@@ -170,9 +170,9 @@ public class ProcessingAlloyBlastSmelter {
                 component.material()
                     .getProperty(GTMaterialProperties.GTPP_STATE))
                 && component.material()
-                    .hasShape(Materials2Shapes.dust);
+                    .hasShape(Shapes.dust);
             if (solid) {
-                items[i] = MaterialLibAPI.getStack(component.material(), Materials2Shapes.dust, parts);
+                items[i] = MaterialLibAPI.getStack(component.material(), Shapes.dust, parts);
             } else if (parts > 0 && parts <= 100) {
                 componentFluid = MaterialUtils.legacyGtppFluid(component.material(), parts * 1000L);
             }

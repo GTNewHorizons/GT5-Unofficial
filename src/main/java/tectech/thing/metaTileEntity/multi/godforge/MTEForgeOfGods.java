@@ -71,7 +71,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -405,7 +405,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                         ItemStack itemToAbsorb = STELLAR_FUEL;
                         if (data.isUpgradeActive(END) && data.getInternalBattery() != 0) {
                             itemToAbsorb = MaterialLibAPI
-                                .getStack(Materials.GravitonShard, Materials2Shapes.gem, (int) (1));
+                                .getStack(Materials.GravitonShard, Shapes.gem, (int) (1));
                         }
 
                         int invLength = inputBus.getSizeInventory();
@@ -957,7 +957,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     private void ejectGravitonShards() {
         if (mOutputBusses.size() == 1) {
             ItemStack shard = MaterialLibAPI
-                .getStack(Materials.GravitonShard, Materials2Shapes.gem, (int) (1));
+                .getStack(Materials.GravitonShard, Shapes.gem, (int) (1));
 
             shard.stackSize = data.getGravitonShardsAvailable();
 

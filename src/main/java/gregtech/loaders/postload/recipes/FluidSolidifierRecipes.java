@@ -13,6 +13,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -29,7 +30,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -184,7 +184,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Boron, Materials2Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Boron, Shapes.dust, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.Boron, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
@@ -280,7 +280,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.nugget, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Copper, Shapes.nugget, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.AnnealedCopper,
@@ -292,7 +292,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Ingot.get(0L))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.ingot, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Copper, Shapes.ingot, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.AnnealedCopper,
@@ -316,7 +316,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.nugget, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.nugget, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.CastIron,

@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -19,7 +20,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -32,7 +32,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 0),
-                MaterialLibAPI.getStack(Materials.Lapis, Materials2Shapes.plate, (int) (9)),
+                MaterialLibAPI.getStack(Materials.Lapis, Shapes.plate, (int) (9)),
                 Circuits.HV.get(2))
             .circuit(17)
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[0], 1, 1))
@@ -55,9 +55,9 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.OilDrill4.get(1),
                 TieredItems.ZPM.getPipeLarge(8),
-                MaterialLibAPI.getStack(Materials.Incoloy903, Materials2Shapes.gearGt, 32),
+                MaterialLibAPI.getStack(Materials.Incoloy903, Shapes.gearGt, 32),
                 MaterialLibAPI
-                    .getStack(Materials.Polytetrafluoroethylene, Materials2Shapes.plateDense, (int) (16)),
+                    .getStack(Materials.Polytetrafluoroethylene, Shapes.plateDense, (int) (16)),
                 ItemList.Field_Generator_IV.get(1))
             .itemOutputs(ItemRegistry.dehp)
             .fluidInputs(
@@ -69,7 +69,7 @@ public class Assembler implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.AnnealedCopper, Materials2Shapes.wireFine, (int) (64L)))
+                MaterialLibAPI.getStack(Materials.AnnealedCopper, Shapes.wireFine, (int) (64L)))
             .circuit(17)
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[2], 1, 1))
             .fluidInputs(MaterialUtils.molten(Materials.Plastic, 8 * INGOTS))
@@ -80,7 +80,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 Circuits.MV.get(1),
-                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.plate, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, (int) (1)),
                 ItemList.Circuit_Board_Plastic.get(1L),
                 ItemList.Battery_RE_LV_Lithium.get(1L))
             .itemOutputs(new ItemStack(ItemRegistry.CIRCUIT_PROGRAMMER))
@@ -124,7 +124,7 @@ public class Assembler implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Lead, Materials2Shapes.plateDense, (int) (6)),
+                MaterialLibAPI.getStack(Materials.Lead, Shapes.plateDense, (int) (6)),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1))
             .itemOutputs(ItemList.Casing_RadiationProof.get(1))
             .fluidInputs(
@@ -138,8 +138,8 @@ public class Assembler implements Runnable {
             .itemInputs(
                 ItemList.Casing_RadiationProof.get(1),
                 ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.get(4),
-                MaterialLibAPI.getStack(Materials.Europium, Materials2Shapes.foil, (int) (6)),
-                MaterialLibAPI.getStack(Materials.Europium, Materials2Shapes.screw, (int) (24)))
+                MaterialLibAPI.getStack(Materials.Europium, Shapes.foil, (int) (6)),
+                MaterialLibAPI.getStack(Materials.Europium, Shapes.screw, (int) (24)))
             .itemOutputs(ItemList.Casing_AdvancedRadiationProof.get(1))
             .fluidInputs(
                 MaterialLibAPI

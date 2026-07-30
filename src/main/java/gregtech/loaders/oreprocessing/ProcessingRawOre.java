@@ -8,6 +8,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -18,7 +19,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
@@ -136,7 +136,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                         .itemInputs(
                             oreStack,
                             MaterialLibAPI
-                                .getStack(Materials.Calcite, Materials2Shapes.dust, (int) (multiplier)))
+                                .getStack(Materials.Calcite, Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
                             GTUtility.mul(3 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
@@ -149,7 +149,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                         .itemInputs(
                             oreStack,
                             MaterialLibAPI
-                                .getStack(Materials.Quicklime, Materials2Shapes.dust, (int) (multiplier)))
+                                .getStack(Materials.Quicklime, Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
                             GTUtility.mul(3 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
@@ -165,7 +165,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                         .itemInputs(
                             oreStack,
                             MaterialLibAPI
-                                .getStack(Materials.Calcite, Materials2Shapes.dust, (int) (multiplier)))
+                                .getStack(Materials.Calcite, Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
                             GTUtility.mul(2 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
@@ -178,7 +178,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                         .itemInputs(
                             oreStack,
                             MaterialLibAPI
-                                .getStack(Materials.Quicklime, Materials2Shapes.dust, (int) (multiplier)))
+                                .getStack(Materials.Quicklime, Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
                             GTUtility.mul(2 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))

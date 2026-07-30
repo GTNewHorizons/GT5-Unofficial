@@ -31,7 +31,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -61,9 +61,9 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
 
         // Manual Add due to werkstoff material system disconnected from autogeneration
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.LanthanumHexaboride, Materials2Shapes.dust, 4))
+            .itemInputs(MaterialLibAPI.getStack(Materials.LanthanumHexaboride, Shapes.dust, 4))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.LanthanumHexaboride, Materials2Shapes.gem, 3),
+                MaterialLibAPI.getStack(Materials.LanthanumHexaboride, Shapes.gem, 3),
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 12L))
             .duration(1 * TICKS)
             .eut(TierEU.RECIPE_UEV)
@@ -125,7 +125,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         // Infinity Catalyst
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.InfinityCatalyst, Materials2Shapes.dust, (int) (64)))
+                MaterialLibAPI.getStack(Materials.InfinityCatalyst, Shapes.dust, (int) (64)))
             .itemOutputs(getModItem(Avaritia.ID, "Resource", 1L, 5))
             .duration(1)
             .eut(TierEU.RECIPE_UIV)
@@ -151,17 +151,17 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Magmatter, 1)),
-                MaterialLibAPI.getStack(Materials.Amalgatite, Materials2Shapes.gemChipped, (int) (3)),
+                MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemChipped, (int) (3)),
                 GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.FoolsRuby, 64),
-                MaterialLibAPI.getStack(Materials.Amethyst, Materials2Shapes.gemFlawless, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Fluorspar, Materials2Shapes.gemFlawless, 64),
-                MaterialLibAPI.getStack(Materials.Tanzanite, Materials2Shapes.gemFlawless, (int) (64)))
+                MaterialLibAPI.getStack(Materials.Amethyst, Shapes.gemFlawless, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Fluorspar, Shapes.gemFlawless, 64),
+                MaterialLibAPI.getStack(Materials.Tanzanite, Shapes.gemFlawless, (int) (64)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.PhononCrystalSolution,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (500)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Amalgatite, Materials2Shapes.gemFlawed, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemFlawed, (int) (1)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(electricImplosionCompressorRecipes);

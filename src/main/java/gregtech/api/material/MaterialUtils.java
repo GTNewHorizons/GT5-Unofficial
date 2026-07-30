@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -31,7 +32,6 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials2.Materials2FluidNames;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2Textures;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.MaterialStack;
@@ -77,8 +77,8 @@ public class MaterialUtils {
     public static @Nullable ItemStack compositionDust(MaterialRefStack entry) {
         Material material = entry.material()
             .resolve();
-        if (material == null || !material.hasShape(Materials2Shapes.dust)) return null;
-        return MaterialLibAPI.getStack(material, Materials2Shapes.dust, (int) entry.amount());
+        if (material == null || !material.hasShape(Shapes.dust)) return null;
+        return MaterialLibAPI.getStack(material, Shapes.dust, (int) entry.amount());
     }
 
     /// The gas [FluidStack] a [GTMaterialProperties#COMPOSITION] entry contributes when its material has no

@@ -29,6 +29,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -52,7 +53,6 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -113,7 +113,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private int maxFluidUse = 200;
 
     private final static ItemStack FRANCIUM_HYDROXIDE_DUST = MaterialLibAPI
-        .getStack(Materials.FranciumHydroxide, Materials2Shapes.dust, 1);
+        .getStack(Materials.FranciumHydroxide, Shapes.dust, 1);
     private final static ItemStack CAESIUM_HYDROXIDE_DUST = GTOreDictUnificator
         .get(OrePrefixes.dust, Materials.CaesiumHydroxideGT5U, 1);
     private final static ItemStack POTASSIUM_HYDROXIDE_DUST = GTOreDictUnificator

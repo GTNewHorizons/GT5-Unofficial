@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingDust;
 
 /// Dispatches [ProcessingDust]'s recipe generation for MaterialLib's cutover dust-family shapes. `dustRefined`
@@ -12,11 +12,11 @@ public final class ConsumerDust {
     private ConsumerDust() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2Shapes.dust, OrePrefixes.dust, () -> ProcessingDust.INSTANCE);
-        ShapeConsumerSupport.delegate(Materials2Shapes.dustPure, OrePrefixes.dustPure, () -> ProcessingDust.INSTANCE);
+        ShapeConsumerSupport.delegate(Shapes.dust, OrePrefixes.dust, () -> ProcessingDust.INSTANCE);
+        ShapeConsumerSupport.delegate(Shapes.dustPure, OrePrefixes.dustPure, () -> ProcessingDust.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.dustImpure, OrePrefixes.dustImpure, () -> ProcessingDust.INSTANCE);
-        ShapeConsumerSupport.delegate(Materials2Shapes.dustSmall, OrePrefixes.dustSmall, () -> ProcessingDust.INSTANCE);
-        ShapeConsumerSupport.delegate(Materials2Shapes.dustTiny, OrePrefixes.dustTiny, () -> ProcessingDust.INSTANCE);
+            .delegate(Shapes.dustImpure, OrePrefixes.dustImpure, () -> ProcessingDust.INSTANCE);
+        ShapeConsumerSupport.delegate(Shapes.dustSmall, OrePrefixes.dustSmall, () -> ProcessingDust.INSTANCE);
+        ShapeConsumerSupport.delegate(Shapes.dustTiny, OrePrefixes.dustTiny, () -> ProcessingDust.INSTANCE);
     }
 }

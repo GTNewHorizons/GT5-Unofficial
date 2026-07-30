@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -11,7 +12,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialAtomics;
 import gregtech.api.material.MaterialRefStack;
@@ -46,7 +46,7 @@ public final class LoaderChemicalRecipes {
                         + " no longer declares HAS_CHEMICAL_RECIPE");
                 continue;
             }
-            if (!material.hasShape(Materials2Shapes.dust)) {
+            if (!material.hasShape(Shapes.dust)) {
                 GTLog.err.println(
                     "LoaderChemicalRecipes: declared carrier " + material.getName() + " no longer carries dust");
                 continue;
@@ -63,7 +63,7 @@ public final class LoaderChemicalRecipes {
         }
         long totalAmount = 0;
         for (MaterialRefStack entry : composition) totalAmount += entry.amount();
-        ItemStack output = MaterialLibAPI.getStack(material, Materials2Shapes.dust, (int) totalAmount);
+        ItemStack output = MaterialLibAPI.getStack(material, Shapes.dust, (int) totalAmount);
 
         List<ItemStack> itemInputs = new ArrayList<>();
         FluidStack fluidInput = null;

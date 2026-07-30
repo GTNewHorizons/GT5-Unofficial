@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -44,7 +45,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.GTMaterialProperties;
@@ -322,7 +322,7 @@ public class GTPostLoad {
             b -> b.sideBlocks(Blocks.water)
                 .anywhereBlocks(Blocks.lava)
                 .inputItem(
-                    MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, (int) (1)),
                     true)
                 .circuit(1)
                 .outputItem(new ItemStack(Blocks.obsidian, 1))
@@ -332,7 +332,7 @@ public class GTPostLoad {
             b -> b.sideBlocks(Blocks.water)
                 .anywhereBlocks(Blocks.lava)
                 .inputItem(
-                    MaterialLibAPI.getStack(Materials.Glowstone, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, (int) (1)),
                     true)
                 .circuit(6)
                 .outputItem(new ItemStack(Blocks.netherrack, 1))
@@ -456,26 +456,26 @@ public class GTPostLoad {
     public static void addSolidFakeLargeBoilerFuels() {
         RecipeMaps.largeBoilerFakeFuels.getBackend()
             .addSolidRecipes(
-                MaterialLibAPI.getStack(Materials.Charcoal, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Charcoal, Shapes.dust, (int) (1)),
                 GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1),
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Charcoal, 1),
-                MaterialLibAPI.getStack(Materials.Coal, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, (int) (1)),
                 GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1),
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Coal, 1),
-                MaterialLibAPI.getStack(Materials.Coal, Materials2Shapes.crushed, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Lignite, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Lignite, Materials2Shapes.gem, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Coal, Shapes.crushed, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Lignite, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Lignite, Shapes.gem, (int) (1)),
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Lignite, 1),
-                MaterialLibAPI.getStack(Materials.Lignite, Materials2Shapes.crushed, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Lignite, Shapes.crushed, (int) (1)),
                 GTOreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1),
                 GTOreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 1),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
                 GTOreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 1),
-                MaterialLibAPI.getStack(Materials.Wood, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Sodium, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Lithium, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Caesium, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Caesium, Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, (int) (1)),
                 GTOreDictUnificator.get(ItemList.Block_SSFUEL.get(1)),
                 GTOreDictUnificator.get(ItemList.Block_MSSFUEL.get(1)),
                 GTOreDictUnificator.get(OrePrefixes.rod, Materials.Blaze, 1));

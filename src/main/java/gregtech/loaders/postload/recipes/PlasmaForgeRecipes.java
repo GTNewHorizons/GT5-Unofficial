@@ -12,6 +12,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,7 +24,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -272,20 +272,20 @@ public class PlasmaForgeRecipes implements Runnable {
             .itemInputs(
                 // this is very gross
                 GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Magmatter, 1)),
-                MaterialLibAPI.getStack(Materials.Eternity, Materials2Shapes.round, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Magmatter, Materials2Shapes.round, 64),
-                MaterialLibAPI.getStack(Materials.Hexanite, Materials2Shapes.round, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Ruby, Materials2Shapes.gemExquisite, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Jasper, Materials2Shapes.gemExquisite, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Sapphire, Materials2Shapes.gemExquisite, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Opal, Materials2Shapes.gemExquisite, (int) (64)))
+                MaterialLibAPI.getStack(Materials.Eternity, Shapes.round, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Magmatter, Shapes.round, 64),
+                MaterialLibAPI.getStack(Materials.Hexanite, Shapes.round, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Ruby, Shapes.gemExquisite, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Jasper, Shapes.gemExquisite, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Sapphire, Shapes.gemExquisite, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Opal, Shapes.gemExquisite, (int) (64)))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.sgcrystalslurry, Materials2FluidShapes.fluidLiquid, 5_000),
                 MaterialLibAPI
                     .getFluidStack(Materials.ExcitedDTSC, Materials2FluidShapes.fluidLiquid, (int) (72_000)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Amalgatite, Materials2Shapes.gemChipped, (int) (64)))
+                MaterialLibAPI.getStack(Materials.Amalgatite, Shapes.gemChipped, (int) (64)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DimensionallyTranscendentResidue,

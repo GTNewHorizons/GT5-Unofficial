@@ -17,7 +17,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -522,7 +522,7 @@ public final class ModItems {
                 50000,
                 new String[] { StringUtils.superscript("238Np"),
                     "Result: Plutonium 238 (" + StringUtils.superscript("238Pu") + ")" },
-                MaterialLibAPI.getStack(Materials.Plutonium238, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Plutonium238, Shapes.dust, 1),
                 5,
                 GTRecipeConstants.DecayType.BetaMinus));
 
@@ -533,7 +533,7 @@ public final class ModItems {
                 25000,
                 new String[] { StringUtils.superscript("238Np"),
                     "Result: Plutonium 239 (" + StringUtils.superscript("239Pu") + ")" },
-                MaterialLibAPI.getStack(Materials.Plutonium, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (1)),
                 5,
                 GTRecipeConstants.DecayType.BetaMinus));
 
@@ -562,7 +562,7 @@ public final class ModItems {
                 32000,
                 new String[] { StringUtils.superscript("233Pa"),
                     "Result: Uranium 233 (" + StringUtils.superscript("233U") + ")" },
-                MaterialLibAPI.getStack(Materials.Uranium233, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.Uranium233, Shapes.dust, 1),
                 6,
                 GTRecipeConstants.DecayType.BetaMinus));
     }

@@ -17,7 +17,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
@@ -34,11 +34,11 @@ public class AssemblyLine implements Runnable {
             .itemInputs(
                 ItemList.OreDrill4.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 4L),
-                MaterialLibAPI.getStack(Materials.Europium, Materials2Shapes.plate, (int) (3)),
+                MaterialLibAPI.getStack(Materials.Europium, Shapes.plate, (int) (3)),
                 ItemList.Electric_Motor_LuV.get(9L),
                 ItemList.Sensor_LuV.get(9L),
                 ItemList.Field_Generator_LuV.get(9L),
-                MaterialLibAPI.getStack(Materials.Europium, Materials2Shapes.screw, (int) (36L)))
+                MaterialLibAPI.getStack(Materials.Europium, Shapes.screw, (int) (36L)))
             .fluidInputs(
                 MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 10 * INGOTS),
                 MaterialLibAPI
@@ -59,7 +59,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_LuV.get(1L),
                 ItemList.Emitter_LuV.get(1L),
                 ItemList.Sensor_LuV.get(1L),
-                MaterialLibAPI.getStack(Materials.RhodiumPlatedPalladium, Materials2Shapes.plate, 8))
+                MaterialLibAPI.getStack(Materials.RhodiumPlatedPalladium, Shapes.plate, 8))
             .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 10 * INGOTS))
             .itemOutputs(ItemRegistry.cal.copy())
             .eut(TierEU.RECIPE_ZPM)
@@ -74,10 +74,10 @@ public class AssemblyLine implements Runnable {
                 ItemList.ReinforcedPhotolithographicFrameworkCasing.get(4L),
                 ItemList.Casing_Coil_Superconductor.get(16L),
                 new Object[] { Circuits.UHV.getIngredient(), 2L },
-                MaterialLibAPI.getStack(Materials.DamascusSteel, Materials2Shapes.foil, (int) (16)),
+                MaterialLibAPI.getStack(Materials.DamascusSteel, Shapes.foil, (int) (16)),
                 ItemList.Electric_Pump_UV.get(1L),
                 ItemList.Sensor_UV.get(4L),
-                MaterialLibAPI.getStack(Materials.Infinity, Materials2Shapes.wireFine, (int) (32)))
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.wireFine, (int) (32)))
             .fluidInputs(
                 MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 32 * INGOTS),
                 MaterialLibAPI
@@ -98,7 +98,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.FluidRegulator_ZPM.get(1L),
                 ItemList.Electric_Pump_ZPM.get(1L),
                 ItemList.Sensor_ZPM.get(4L),
-                MaterialLibAPI.getStack(Materials.Holmium, Materials2Shapes.wireFine, (int) (32)))
+                MaterialLibAPI.getStack(Materials.Holmium, Shapes.wireFine, (int) (32)))
             .fluidInputs(
                 MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(

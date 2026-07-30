@@ -22,6 +22,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import java.util.List;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,7 +46,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -72,8 +72,8 @@ public class CircuitPartsItem extends Item {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.MagnetoResonatic, Materials2Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.CircuitCompoundMK3, Materials2Shapes.dust, 4))
+                MaterialLibAPI.getStack(Materials.MagnetoResonatic, Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials.CircuitCompoundMK3, Shapes.dust, 4))
             .itemOutputs(ItemList.RawImprintBoard.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)

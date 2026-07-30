@@ -11,7 +11,7 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import kekztech.common.Blocks;
@@ -26,10 +26,10 @@ public class Crafting implements Runnable {
         GTModHandler.addCraftingRecipe(
             TileEntities.tfft.getStackForm(1),
             new Object[] { "ESE", "FTF", "CVC", 'E',
-                MaterialLibAPI.getStack(Materials.EnderEye, Materials2Shapes.screw, (int) (1)), 'S',
+                MaterialLibAPI.getStack(Materials.EnderEye, Shapes.screw, (int) (1)), 'S',
                 ItemList.Cover_Screen.get(1), 'F', ItemList.Field_Generator_LV.get(1), 'T',
                 new ItemStack(Blocks.tfftStorageField, 1), 'C', "circuitData", 'V',
-                MaterialLibAPI.getStack(Materials.VibrantAlloy, Materials2Shapes.rotor, (int) (1)), });
+                MaterialLibAPI.getStack(Materials.VibrantAlloy, Shapes.rotor, (int) (1)), });
 
         // SOFC Controller mk1
         final Object[] mk1_recipe = { "CCC", "PHP", "FBL", 'C', Circuits.HV.getIngredient(), 'P',

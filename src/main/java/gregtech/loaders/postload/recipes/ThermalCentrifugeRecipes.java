@@ -13,7 +13,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class ThermalCentrifugeRecipes implements Runnable {
@@ -24,28 +24,28 @@ public class ThermalCentrifugeRecipes implements Runnable {
             .itemInputs(getIC2Item("RTGPellets", 1))
             .itemOutputs(
                 getIC2Item("Plutonium", 3),
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.dust, (int) (54)))
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (54)))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherQuartz, 2))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Lithium, Materials2Shapes.dustTiny, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Lithium, Shapes.dustTiny, (int) (1)))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Clay, Materials2Shapes.dust, (int) (4)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Materials2Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Clay, Shapes.dust, (int) (4)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, (int) (1)))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.cobblestone, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1)))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);

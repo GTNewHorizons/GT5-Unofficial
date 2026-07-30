@@ -26,6 +26,7 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -42,7 +43,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
@@ -548,7 +548,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         GTUtility.copyAmount(1, stack),
-                        MaterialLibAPI.getStack(Materials.Glass, Materials2Shapes.dust, (int) (3)))
+                        MaterialLibAPI.getStack(Materials.Glass, Shapes.dust, (int) (3)))
                     .itemOutputs(ItemList.ReinforcedGlass.get(4L))
                     .duration(20 * SECONDS)
                     .eut(4)
@@ -564,7 +564,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 RA.stdBuilder()
                     .itemInputs(
                         GTUtility.copyAmount(1, stack),
-                        MaterialLibAPI.getStack(Materials.Glass, Materials2Shapes.dust, (int) (3)))
+                        MaterialLibAPI.getStack(Materials.Glass, Shapes.dust, (int) (3)))
                     .itemOutputs(ItemList.ReinforcedGlass.get(4L))
                     .duration(20 * SECONDS)
                     .eut(4)

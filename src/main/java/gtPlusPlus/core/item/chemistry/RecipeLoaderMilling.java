@@ -11,6 +11,7 @@ import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,7 +24,6 @@ import biomesoplenty.api.content.BOPCItems;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -44,13 +44,13 @@ public class RecipeLoaderMilling {
         GTValues.RA.stdBuilder()
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Zinc, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Zinc, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Zinc, Materials2Shapes.dust, (int) (52)),
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.dust, (int) (56)),
-                MaterialLibAPI.getStack(Materials.Indium, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Germanium, Materials2Shapes.dust, 15))
+                MaterialLibAPI.getStack(Materials.Zinc, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Zinc, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Zinc, Shapes.dust, (int) (52)),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (56)),
+                MaterialLibAPI.getStack(Materials.Indium, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Germanium, Shapes.dust, 15))
             .fluidInputs(new FluidStack(GTPPFluids.SphaleriteFlotationFroth, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), GTUtility.getWater(2_000))
             .eut(TierEU.RECIPE_LuV)
@@ -61,13 +61,13 @@ public class RecipeLoaderMilling {
         GTValues.RA.stdBuilder()
             .circuit(1)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.dust, (int) (52)),
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.dust, (int) (56)),
-                MaterialLibAPI.getStack(Materials.Cadmium, Materials2Shapes.dust, (int) (50)),
-                MaterialLibAPI.getStack(Materials.Indium, Materials2Shapes.dust, (int) (10)))
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.dust, (int) (52)),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (56)),
+                MaterialLibAPI.getStack(Materials.Cadmium, Shapes.dust, (int) (50)),
+                MaterialLibAPI.getStack(Materials.Indium, Shapes.dust, (int) (10)))
             .fluidInputs(new FluidStack(GTPPFluids.ChalcopyriteFlotationFroth, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), GTUtility.getWater(2_000))
             .eut(TierEU.RECIPE_IV)
@@ -77,13 +77,13 @@ public class RecipeLoaderMilling {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Nickel, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Nickel, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Nickel, Materials2Shapes.dust, (int) (22)),
-                MaterialLibAPI.getStack(Materials.Cobalt, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Cobalt, Materials2Shapes.dust, (int) (56)),
-                MaterialLibAPI.getStack(Materials.Rhodium, Materials2Shapes.dust, 32),
-                MaterialLibAPI.getStack(Materials.Ruthenium, Materials2Shapes.dust, 16))
+                MaterialLibAPI.getStack(Materials.Nickel, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Nickel, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Nickel, Shapes.dust, (int) (22)),
+                MaterialLibAPI.getStack(Materials.Cobalt, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Cobalt, Shapes.dust, (int) (56)),
+                MaterialLibAPI.getStack(Materials.Rhodium, Shapes.dust, 32),
+                MaterialLibAPI.getStack(Materials.Ruthenium, Shapes.dust, 16))
             .fluidInputs(new FluidStack(GTPPFluids.NickelFlotationFroth, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), GTUtility.getWater(2_000))
             .eut(TierEU.RECIPE_IV)
@@ -93,11 +93,11 @@ public class RecipeLoaderMilling {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.PlatinumMetallicPowder, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.PlatinumMetallicPowder, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.Rhodium, Materials2Shapes.dust, 60),
-                MaterialLibAPI.getStack(Materials.Selenium, Materials2Shapes.dust, 40),
-                MaterialLibAPI.getStack(Materials.Tellurium, Materials2Shapes.dust, (int) (10)))
+                MaterialLibAPI.getStack(Materials.PlatinumMetallicPowder, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.PlatinumMetallicPowder, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Rhodium, Shapes.dust, 60),
+                MaterialLibAPI.getStack(Materials.Selenium, Shapes.dust, 40),
+                MaterialLibAPI.getStack(Materials.Tellurium, Shapes.dust, (int) (10)))
             .fluidInputs(new FluidStack(GTPPFluids.PlatinumFlotationFroth, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), GTUtility.getWater(2_000))
             .eut(TierEU.RECIPE_LuV)
@@ -107,13 +107,13 @@ public class RecipeLoaderMilling {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.dust, (int) (22)),
-                MaterialLibAPI.getStack(Materials.Nickel, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Nickel, Materials2Shapes.dust, (int) (36)),
-                MaterialLibAPI.getStack(Materials.Platinum, Materials2Shapes.dust, (int) (20)),
-                MaterialLibAPI.getStack(Materials.Hafnium, Materials2Shapes.dust, 10))
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (22)),
+                MaterialLibAPI.getStack(Materials.Nickel, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Nickel, Shapes.dust, (int) (36)),
+                MaterialLibAPI.getStack(Materials.Platinum, Shapes.dust, (int) (20)),
+                MaterialLibAPI.getStack(Materials.Hafnium, Shapes.dust, 10))
             .fluidInputs(new FluidStack(GTPPFluids.PentlanditeFlotationFroth, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), GTUtility.getWater(2_000))
             .eut(TierEU.RECIPE_LuV)
@@ -123,14 +123,14 @@ public class RecipeLoaderMilling {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, (int) (44)),
-                MaterialLibAPI.getStack(Materials.Chrome, Materials2Shapes.dust, (int) (60)),
-                MaterialLibAPI.getStack(Materials.Firestone, Materials2Shapes.dust, (int) (45)),
-                MaterialLibAPI.getStack(Materials.Dysprosium, Materials2Shapes.dust, (int) (16)))
+                MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, (int) (44)),
+                MaterialLibAPI.getStack(Materials.Chrome, Shapes.dust, (int) (60)),
+                MaterialLibAPI.getStack(Materials.Firestone, Shapes.dust, (int) (45)),
+                MaterialLibAPI.getStack(Materials.Dysprosium, Shapes.dust, (int) (16)))
             .fluidInputs(new FluidStack(GTPPFluids.RedstoneFlotationFroth, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), GTUtility.getWater(2_000))
             .eut(TierEU.RECIPE_IV)
@@ -140,13 +140,13 @@ public class RecipeLoaderMilling {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Manganese, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Manganese, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Manganese, Materials2Shapes.dust, (int) (22)),
-                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.dust, (int) (26)),
-                MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.dust, (int) (30)),
-                MaterialLibAPI.getStack(Materials.Strontium, Materials2Shapes.dust, (int) (20)))
+                MaterialLibAPI.getStack(Materials.Manganese, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Manganese, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Manganese, Shapes.dust, (int) (22)),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.dust, (int) (26)),
+                MaterialLibAPI.getStack(Materials.Osmium, Shapes.dust, (int) (30)),
+                MaterialLibAPI.getStack(Materials.Strontium, Shapes.dust, (int) (20)))
             .fluidInputs(new FluidStack(GTPPFluids.SpessartineFlotationFroth, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), GTUtility.getWater(2_000))
             .eut(TierEU.RECIPE_LuV)
@@ -156,13 +156,13 @@ public class RecipeLoaderMilling {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Calcium, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Calcium, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Calcium, Materials2Shapes.dust, (int) (52)),
-                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.dust, (int) (46)),
-                MaterialLibAPI.getStack(Materials.Tungsten, Materials2Shapes.dust, (int) (60)),
-                MaterialLibAPI.getStack(Materials.Thallium, Materials2Shapes.dust, 15))
+                MaterialLibAPI.getStack(Materials.Calcium, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Calcium, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Calcium, Shapes.dust, (int) (52)),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.dust, (int) (46)),
+                MaterialLibAPI.getStack(Materials.Tungsten, Shapes.dust, (int) (60)),
+                MaterialLibAPI.getStack(Materials.Thallium, Shapes.dust, 15))
             .fluidInputs(new FluidStack(GTPPFluids.GrossularFlotationFroth, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), GTUtility.getWater(2_000))
             .eut(TierEU.RECIPE_LuV)
@@ -172,13 +172,13 @@ public class RecipeLoaderMilling {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Aluminium, Materials2Shapes.dust, (int) (22)),
-                MaterialLibAPI.getStack(Materials.Magnesium, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Magnesium, Materials2Shapes.dust, (int) (11)),
-                MaterialLibAPI.getStack(Materials.Yttrium, Materials2Shapes.dust, (int) (25)),
-                MaterialLibAPI.getStack(Materials.Ytterbium, Materials2Shapes.dust, (int) (15)))
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Aluminium, Shapes.dust, (int) (22)),
+                MaterialLibAPI.getStack(Materials.Magnesium, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Magnesium, Shapes.dust, (int) (11)),
+                MaterialLibAPI.getStack(Materials.Yttrium, Shapes.dust, (int) (25)),
+                MaterialLibAPI.getStack(Materials.Ytterbium, Shapes.dust, (int) (15)))
             .fluidInputs(new FluidStack(GTPPFluids.AlmandineFlotationFroth, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), GTUtility.getWater(2_000))
             .eut(TierEU.RECIPE_LuV)
@@ -188,12 +188,12 @@ public class RecipeLoaderMilling {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Magnesium, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Magnesium, Materials2Shapes.dust, (int) (46)),
-                MaterialLibAPI.getStack(Materials.Manganese, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Manganese, Materials2Shapes.dust, (int) (6)),
-                MaterialLibAPI.getStack(Materials.Borax, Materials2Shapes.dust, (int) (60)),
-                MaterialLibAPI.getStack(Materials.Rhenium, Materials2Shapes.dust, 20))
+                MaterialLibAPI.getStack(Materials.Magnesium, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Magnesium, Shapes.dust, (int) (46)),
+                MaterialLibAPI.getStack(Materials.Manganese, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Manganese, Shapes.dust, (int) (6)),
+                MaterialLibAPI.getStack(Materials.Borax, Shapes.dust, (int) (60)),
+                MaterialLibAPI.getStack(Materials.Rhenium, Shapes.dust, 20))
             .fluidInputs(new FluidStack(GTPPFluids.PyropeFlotationFroth, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), GTUtility.getWater(2_000))
             .eut(TierEU.RECIPE_EV)
@@ -203,10 +203,10 @@ public class RecipeLoaderMilling {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Erbium, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Lanthanum, Materials2Shapes.dust, (int) (32)),
-                MaterialLibAPI.getStack(Materials.Lutetium, Materials2Shapes.dust, (int) (16)),
-                MaterialLibAPI.getStack(Materials.Europium, Materials2Shapes.dust, (int) (8)))
+                MaterialLibAPI.getStack(Materials.Erbium, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Lanthanum, Shapes.dust, (int) (32)),
+                MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dust, (int) (16)),
+                MaterialLibAPI.getStack(Materials.Europium, Shapes.dust, (int) (8)))
             .fluidInputs(new FluidStack(GTPPFluids.MonaziteFlotationFroth, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.RedMud, 2_000), GTUtility.getWater(2_000))
             .eut(TierEU.RECIPE_UV)
@@ -217,15 +217,15 @@ public class RecipeLoaderMilling {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dust, (int) (64)),
-                MaterialLibAPI.getStack(Materials.Antimony, Materials2Shapes.dust, (int) (55)),
-                MaterialLibAPI.getStack(Materials.CertusQuartz, Materials2Shapes.dust, (int) (40)),
-                MaterialLibAPI.getStack(Materials.NetherQuartz, Materials2Shapes.dust, (int) (40)),
-                MaterialLibAPI.getStack(Materials.Ardite, Materials2Shapes.dust, (int) (32)),
-                MaterialLibAPI.getStack(Materials.Cobalt, Materials2Shapes.dust, (int) (32)))
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Antimony, Shapes.dust, (int) (55)),
+                MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.dust, (int) (40)),
+                MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.dust, (int) (40)),
+                MaterialLibAPI.getStack(Materials.Ardite, Shapes.dust, (int) (32)),
+                MaterialLibAPI.getStack(Materials.Cobalt, Shapes.dust, (int) (32)))
             .fluidInputs(new FluidStack(GTPPFluids.NetherrackFlotationFroth, 3_000))
             .fluidOutputs(MaterialUtils.fluid(Materials.poornetherwaste, 16_000))
             .eut((int) TierEU.RECIPE_LuV)
@@ -430,8 +430,8 @@ public class RecipeLoaderMilling {
             .itemInputs(GregtechItemList.CrushedPineMaterials.get(64))
             .circuit(16)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dustTiny, (int) (5)),
-                MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dustTiny, (int) (5)),
+                MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, (int) (5)),
+                MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, (int) (5)),
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 5),
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 5))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 5_000))
@@ -445,8 +445,8 @@ public class RecipeLoaderMilling {
             .itemInputs(GregtechItemList.CrushedPineMaterials.get(64))
             .circuit(18)
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dustTiny, (int) (5)),
-                MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dustTiny, (int) (5)),
+                MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, (int) (5)),
+                MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, (int) (5)),
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 5),
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 5))
             .fluidInputs(FluidRegistry.getFluidStack("ic2superheatedsteam", 5_000))

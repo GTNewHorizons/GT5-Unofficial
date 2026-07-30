@@ -20,7 +20,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -157,7 +157,7 @@ public class PyrolyseRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(logWood16)
             .circuit(11)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dust, 4))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 4))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.OilHeavy, Materials2FluidShapes.fluidLiquid, (int) (200)))
@@ -292,7 +292,7 @@ public class PyrolyseRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 23))
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Charcoal, Materials2Shapes.dust, 12))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Charcoal, Shapes.dust, 12))
             .fluidOutputs(GTUtility.getWater(1_500))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
@@ -301,7 +301,7 @@ public class PyrolyseRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 23))
             .circuit(2)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Charcoal, Materials2Shapes.dust, 12))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Charcoal, Shapes.dust, 12))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Nitrogen, Materials2FluidShapes.fluidGas, (int) (500)))
             .fluidOutputs(GTUtility.getWater(1_500))
@@ -310,7 +310,7 @@ public class PyrolyseRecipes implements Runnable {
             .addTo(pyrolyseRecipes, industrialCokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Wood, Materials2Shapes.dust, 10))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 10))
             .circuit(10)
             .fluidInputs(new FluidStack(FluidLoader.Kerogen, 1_000))
             .fluidOutputs(

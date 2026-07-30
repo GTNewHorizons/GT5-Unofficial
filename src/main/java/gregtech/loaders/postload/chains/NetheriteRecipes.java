@@ -39,6 +39,7 @@ import static gregtech.api.util.GTRecipeConstants.DISSOLUTION_TANK_RATIO;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.dissolutionTankRecipes;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -51,7 +52,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
@@ -73,7 +73,7 @@ public class NetheriteRecipes {
             GTValues.RA.stdBuilder() // Prismarine
                 .itemInputs(
                     GregtechItemList.RedAlgaeBiomass.get(32),
-                    MaterialLibAPI.getStack(Materials.CertusQuartz, Materials2Shapes.dust, (int) (32)))
+                    MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.dust, (int) (32)))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.Grade1PurifiedWater,
@@ -106,7 +106,7 @@ public class NetheriteRecipes {
                     new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 4000),
                     new FluidStack(GTPPFluids.HydrogenPeroxide, 4000))
                 .itemOutputs(
-                    MaterialLibAPI.getStack(Materials.CertusQuartz, Materials2Shapes.dust, (int) (4)))
+                    MaterialLibAPI.getStack(Materials.CertusQuartz, Shapes.dust, (int) (4)))
                 .fluidOutputs(
                     MaterialLibAPI
                         .getFluidStack(Materials.prismarinesolution, Materials2FluidShapes.fluidLiquid, 8000))
@@ -124,7 +124,7 @@ public class NetheriteRecipes {
                         6000),
                     new FluidStack(GTPPFluids.HydrogenPeroxide, 2000))
                 .itemOutputs(
-                    MaterialLibAPI.getStack(Materials.NetherQuartz, Materials2Shapes.dust, (int) (1)))
+                    MaterialLibAPI.getStack(Materials.NetherQuartz, Shapes.dust, (int) (1)))
                 .fluidOutputs(
                     MaterialLibAPI
                         .getFluidStack(Materials.prismarinesolution, Materials2FluidShapes.fluidLiquid, 8000))
@@ -175,8 +175,8 @@ public class NetheriteRecipes {
                 .addTo(chemicalBathRecipes);
 
             GTValues.RA.stdBuilder() // Strontium Hydroxide
-                .itemInputs(MaterialLibAPI.getStack(Materials.Strontium, Materials2Shapes.dust, (int) (1)))
-                .itemOutputs(MaterialLibAPI.getStack(Materials.StrontiumHydroxide, Materials2Shapes.dust, 3))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Strontium, Shapes.dust, (int) (1)))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.StrontiumHydroxide, Shapes.dust, 3))
                 .fluidInputs(
                     MaterialLibAPI
                         .getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (1000)),
@@ -187,7 +187,7 @@ public class NetheriteRecipes {
                 .addTo(multiblockChemicalReactorRecipes);
 
             GTValues.RA.stdBuilder() // Precipitation
-                .itemInputs(MaterialLibAPI.getStack(Materials.StrontiumHydroxide, Materials2Shapes.dust, 42))
+                .itemInputs(MaterialLibAPI.getStack(Materials.StrontiumHydroxide, Shapes.dust, 42))
                 .itemOutputs(ItemList.Prismarine_Precipitate.get(8))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -207,7 +207,7 @@ public class NetheriteRecipes {
             GTValues.RA.stdBuilder() // Crystallization
                 .itemInputs(
                     ItemList.Prismarine_Precipitate.get(1),
-                    MaterialLibAPI.getStack(Materials.MagnetoResonatic, Materials2Shapes.lens, 0))
+                    MaterialLibAPI.getStack(Materials.MagnetoResonatic, Shapes.lens, 0))
                 .itemOutputs(ItemList.Prismatic_Crystal.get(1))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
@@ -254,7 +254,7 @@ public class NetheriteRecipes {
         {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.NaquadahEnriched, Materials2Shapes.dust, (int) (32)))
+                    MaterialLibAPI.getStack(Materials.NaquadahEnriched, Shapes.dust, (int) (32)))
                 .circuit(2)
                 .fluidInputs(
                     MaterialLibAPI
@@ -270,7 +270,7 @@ public class NetheriteRecipes {
                 .itemInputs(
                     MetaItemCraftingComponent.getInstance()
                         .getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 4),
-                    MaterialLibAPI.getStack(Materials.Mica, Materials2Shapes.dust, (int) (32)))
+                    MaterialLibAPI.getStack(Materials.Mica, Shapes.dust, (int) (32)))
                 .fluidInputs(
                     MaterialLibAPI
                         .getFluidStack(Materials.prismaticnaquadah, Materials2FluidShapes.fluidMolten, 576))
@@ -287,7 +287,7 @@ public class NetheriteRecipes {
                 .itemInputs(
                     MetaItemCraftingComponent.getInstance()
                         .getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 4),
-                    MaterialLibAPI.getStack(Materials.RawFluorophlogopite, Materials2Shapes.dust, 24))
+                    MaterialLibAPI.getStack(Materials.RawFluorophlogopite, Shapes.dust, 24))
                 .fluidInputs(
                     MaterialLibAPI
                         .getFluidStack(Materials.prismaticnaquadah, Materials2FluidShapes.fluidMolten, 576))
@@ -302,8 +302,8 @@ public class NetheriteRecipes {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.TungstenCarbide, Materials2Shapes.foil, (int) (16)),
-                    MaterialLibAPI.getStack(Materials.Lead, Materials2Shapes.foil, (int) (16)))
+                    MaterialLibAPI.getStack(Materials.TungstenCarbide, Shapes.foil, (int) (16)),
+                    MaterialLibAPI.getStack(Materials.Lead, Shapes.foil, (int) (16)))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
                         Materials.prismaticnaquadahcompositeslurry,
@@ -316,7 +316,7 @@ public class NetheriteRecipes {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials.Netherite, Materials2Shapes.foil, (int) (4)),
+                    MaterialLibAPI.getStack(Materials.Netherite, Shapes.foil, (int) (4)),
                     ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.get(16))
                 .fluidInputs(
                     MaterialLibAPI
@@ -549,21 +549,21 @@ public class NetheriteRecipes {
     }
 
     private static void addNetheriteParts() {
-        addNetheritePartRecipe(Materials2Shapes.ingot, 1, 1);
-        addNetheritePartRecipe(Materials2Shapes.plate, 1, 1);
-        addNetheritePartRecipe(Materials2Shapes.plateDouble, 1, 2);
-        addNetheritePartRecipe(Materials2Shapes.plateDense, 1, 9);
-        addNetheritePartRecipe(Materials2Shapes.stick, 2, 1);
-        addNetheritePartRecipe(Materials2Shapes.round, 9, 1);
-        addNetheritePartRecipe(Materials2Shapes.bolt, 8, 1);
-        addNetheritePartRecipe(Materials2Shapes.screw, 8, 1);
-        addNetheritePartRecipe(Materials2Shapes.ring, 4, 1);
-        addNetheritePartRecipe(Materials2Shapes.foil, 4, 1);
-        addNetheritePartRecipe(Materials2Shapes.itemCasing, 2, 1);
-        addNetheritePartRecipe(Materials2Shapes.gearGtSmall, 1, 1);
-        addNetheritePartRecipe(Materials2Shapes.rotor, 1, 5);
-        addNetheritePartRecipe(Materials2Shapes.stickLong, 1, 1);
-        addNetheritePartRecipe(Materials2Shapes.gearGt, 1, 4);
+        addNetheritePartRecipe(Shapes.ingot, 1, 1);
+        addNetheritePartRecipe(Shapes.plate, 1, 1);
+        addNetheritePartRecipe(Shapes.plateDouble, 1, 2);
+        addNetheritePartRecipe(Shapes.plateDense, 1, 9);
+        addNetheritePartRecipe(Shapes.stick, 2, 1);
+        addNetheritePartRecipe(Shapes.round, 9, 1);
+        addNetheritePartRecipe(Shapes.bolt, 8, 1);
+        addNetheritePartRecipe(Shapes.screw, 8, 1);
+        addNetheritePartRecipe(Shapes.ring, 4, 1);
+        addNetheritePartRecipe(Shapes.foil, 4, 1);
+        addNetheritePartRecipe(Shapes.itemCasing, 2, 1);
+        addNetheritePartRecipe(Shapes.gearGtSmall, 1, 1);
+        addNetheritePartRecipe(Shapes.rotor, 1, 5);
+        addNetheritePartRecipe(Shapes.stickLong, 1, 1);
+        addNetheritePartRecipe(Shapes.gearGt, 1, 4);
         if (EtFuturumRequiem.isModLoaded()) {
             addNetheritePartRecipe(
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.InfusedGold, 1),
@@ -572,7 +572,7 @@ public class NetheriteRecipes {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Netherite, Materials2Shapes.stick, (int) (4)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Netherite, Shapes.stick, (int) (4)))
             .circuit(4)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 1))
             .duration(3 * SECONDS + 4 * TICKS)
@@ -580,26 +580,26 @@ public class NetheriteRecipes {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Netherite, Materials2Shapes.plate, (int) (64)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Netherite, Shapes.plate, (int) (64)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Netherite, Materials2Shapes.plateSuperdense, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Netherite, Shapes.plateSuperdense, (int) (1)))
             .duration(500 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(COMPRESSION_TIER, 1)
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Netherite, Materials2Shapes.dust, (int) (2)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Netherite, Shapes.dust, (int) (2)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.InfusedGold, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.InfusedGold, Shapes.dust, (int) (1)),
                 ItemList.Netherite_Nanoparticles.get(1))
             .duration(23 * SECONDS + 8 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Netherite, Materials2Shapes.ingot, (int) (1)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Netherite, Materials2Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Netherite, Shapes.ingot, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Netherite, Shapes.dust, (int) (1)))
             .duration(4 * SECONDS + 18 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(maceratorRecipes);
@@ -616,9 +616,9 @@ public class NetheriteRecipes {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.InfusedGold, Materials2Shapes.plateDense, (int) (8)),
+                MaterialLibAPI.getStack(Materials.InfusedGold, Shapes.plateDense, (int) (8)),
                 ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(36))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Netherite, Materials2Shapes.plateDense, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Netherite, Shapes.plateDense, (int) (1)))
             .fluidInputs(new FluidStack(GTPPFluids.Pyrotheum, 128_000))
             .duration(180 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)

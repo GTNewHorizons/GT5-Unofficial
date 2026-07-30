@@ -9,6 +9,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,7 +21,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
@@ -150,7 +150,7 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.SluiceSand, Materials2Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.SluiceSand, Shapes.dust, 1))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.SluiceJuice, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
@@ -211,7 +211,7 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Salt, Materials2Shapes.dust, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Salt, Shapes.dust, 2))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.SaltWater, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
@@ -499,7 +499,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Wood, Materials2Shapes.dustSmall, (int) (2L)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Wood, Shapes.dustSmall, (int) (2L)))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.Biomass, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
@@ -571,7 +571,7 @@ public class DistilleryRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemOutputs(
                 MaterialLibAPI
-                    .getStack(Materials.DiphenylmethaneDiisocyanate, Materials2Shapes.dust, (int) (29L)))
+                    .getStack(Materials.DiphenylmethaneDiisocyanate, Shapes.dust, (int) (29L)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.DiphenylmethaneDiisocyanateMixture,
@@ -586,7 +586,7 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .circuit(2)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Charcoal, Materials2Shapes.dustSmall, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Charcoal, Shapes.dustSmall, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.CharcoalByproducts,
@@ -646,7 +646,7 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .circuit(3)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Charcoal, Materials2Shapes.dustSmall, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Charcoal, Shapes.dustSmall, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.CharcoalByproducts,
@@ -666,7 +666,7 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .circuit(4)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Charcoal, Materials2Shapes.dustSmall, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Charcoal, Shapes.dustSmall, 1))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.CharcoalByproducts,
@@ -897,7 +897,7 @@ public class DistilleryRecipes implements Runnable {
                     Materials.Dimethylbenzene,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (100)) },
-            MaterialLibAPI.getStack(Materials.Charcoal, Materials2Shapes.dustSmall, 1),
+            MaterialLibAPI.getStack(Materials.Charcoal, Shapes.dustSmall, 1),
             40,
             256);
 
@@ -1053,7 +1053,7 @@ public class DistilleryRecipes implements Runnable {
                     .getFluidStack(Materials.Acetone, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
                 MaterialLibAPI
                     .getFluidStack(Materials.CarbonDioxide, Materials2FluidShapes.fluidGas, (int) (1_000)) },
-            MaterialLibAPI.getStack(Materials.Quicklime, Materials2Shapes.dust, 2),
+            MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, 2),
             80,
             480);
 
@@ -1122,21 +1122,21 @@ public class DistilleryRecipes implements Runnable {
             MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidSteamCracked1, 1_000),
             new FluidStack[] { MaterialLibAPI
                 .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (1_000)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dust, 1),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 1),
             120,
             120);
         addUniversalDistillationRecipe(
             MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidSteamCracked2, 1_000),
             new FluidStack[] { MaterialLibAPI
                 .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (1_000)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dust, 1),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 1),
             120,
             120);
         addUniversalDistillationRecipe(
             MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidSteamCracked3, 1_000),
             new FluidStack[] { MaterialLibAPI
                 .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (1_000)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dust, 1),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 1),
             120,
             120);
 
@@ -1173,7 +1173,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (250)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (1_250)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustSmall, 1),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustSmall, 1),
             120,
             120);
         addUniversalDistillationRecipe(
@@ -1182,14 +1182,14 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (125)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (1_375)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustTiny, 6),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustTiny, 6),
             120,
             120);
         addUniversalDistillationRecipe(
             MaterialLibAPI.getFluidStack(Materials.Ethane, Materials2FluidShapes.fluidSteamCracked3, 1_000),
             new FluidStack[] { MaterialLibAPI
                 .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (1_500)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustSmall, 2),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustSmall, 2),
             120,
             120);
 
@@ -1226,7 +1226,7 @@ public class DistilleryRecipes implements Runnable {
                     .getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (1_000)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (500)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustSmall, 2),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustSmall, 2),
             120,
             120);
         addUniversalDistillationRecipe(
@@ -1235,14 +1235,14 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (750)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (750)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustSmall, 3),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustSmall, 3),
             180,
             120);
         addUniversalDistillationRecipe(
             MaterialLibAPI.getFluidStack(Materials.Propene, Materials2FluidShapes.fluidSteamCracked3, 1_000),
             new FluidStack[] { MaterialLibAPI
                 .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (1_500)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustSmall, 6),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustSmall, 6),
             180,
             120);
 
@@ -1278,7 +1278,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (750)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (1_250)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustTiny, 2),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustTiny, 2),
             120,
             120);
         addUniversalDistillationRecipe(
@@ -1287,7 +1287,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (500)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (1_500)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustSmall, 1),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustSmall, 1),
             120,
             120);
         addUniversalDistillationRecipe(
@@ -1296,7 +1296,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (250)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (1_750)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustTiny, 4),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustTiny, 4),
             120,
             120);
 
@@ -1343,7 +1343,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (188)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (188)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustSmall, 3),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustSmall, 3),
             120,
             120);
         addUniversalDistillationRecipe(
@@ -1355,7 +1355,7 @@ public class DistilleryRecipes implements Runnable {
                     .getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (1_125)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (188)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustSmall, 3),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustSmall, 3),
             120,
             120);
         addUniversalDistillationRecipe(
@@ -1366,7 +1366,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (188)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (1_125)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dust, 1),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 1),
             120,
             120);
 
@@ -1409,7 +1409,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (500)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (250)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustSmall, 1),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustSmall, 1),
             120,
             120);
         addUniversalDistillationRecipe(
@@ -1420,7 +1420,7 @@ public class DistilleryRecipes implements Runnable {
                     .getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (1_300)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (400)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustSmall, 1),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustSmall, 1),
             192,
             120);
         addUniversalDistillationRecipe(
@@ -1430,7 +1430,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (313)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (1_500)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustSmall, 6),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustSmall, 6),
             120,
             120);
 
@@ -1468,7 +1468,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (125)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (1_063)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustTiny, 2),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustTiny, 2),
             120,
             120);
         addUniversalDistillationRecipe(
@@ -1479,7 +1479,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (750)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (438)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustTiny, 2),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustTiny, 2),
             120,
             120);
         addUniversalDistillationRecipe(
@@ -1490,7 +1490,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (125)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (2_000)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustTiny, 11),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustTiny, 11),
             120,
             120);
 
@@ -1535,7 +1535,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (100)),
                 MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (500)),
                 MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, (int) (50)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustTiny, 1),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustTiny, 1),
             120,
             120);
         addUniversalDistillationRecipe(
@@ -1546,7 +1546,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (200)),
                 MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (600)),
                 MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, (int) (70)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustTiny, 1),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustTiny, 1),
             120,
             120);
         addUniversalDistillationRecipe(
@@ -1557,7 +1557,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (300)),
                 MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (700)),
                 MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, (int) (100)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustTiny, 1),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustTiny, 1),
             120,
             120);
 
@@ -1615,7 +1615,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (200)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (200)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustTiny, 1),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustTiny, 1),
             120,
             120);
         addUniversalDistillationRecipe(
@@ -1638,7 +1638,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (350)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (350)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustTiny, 2),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustTiny, 2),
             120,
             120);
         addUniversalDistillationRecipe(
@@ -1660,7 +1660,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (500)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (500)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustTiny, 3),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustTiny, 3),
             120,
             120);
 
@@ -1730,7 +1730,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethane, Materials2FluidShapes.fluidGas, (int) (10)),
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (50)),
                 MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (50)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustTiny, 1),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustTiny, 1),
             120,
             120);
         addUniversalDistillationRecipe(
@@ -1753,7 +1753,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (150)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (150)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustTiny, 2),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustTiny, 2),
             120,
             120);
         addUniversalDistillationRecipe(
@@ -1776,7 +1776,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (250)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (250)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustTiny, 3),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustTiny, 3),
             120,
             120);
 
@@ -1846,7 +1846,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethane, Materials2FluidShapes.fluidGas, (int) (5)),
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (50)),
                 MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (50)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustTiny, 1),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustTiny, 1),
             120,
             120);
         addUniversalDistillationRecipe(
@@ -1868,7 +1868,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethane, Materials2FluidShapes.fluidGas, (int) (7)),
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (75)),
                 MaterialLibAPI.getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (75)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustTiny, 2),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustTiny, 2),
             120,
             120);
         addUniversalDistillationRecipe(
@@ -1891,7 +1891,7 @@ public class DistilleryRecipes implements Runnable {
                 MaterialLibAPI.getFluidStack(Materials.Ethylene, Materials2FluidShapes.fluidGas, (int) (150)),
                 MaterialLibAPI
                     .getFluidStack(Materials.Methane, Materials2FluidShapes.fluidGas, (int) (150)) },
-            MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dustTiny, 3),
+            MaterialLibAPI.getStack(Materials.Carbon, Shapes.dustTiny, 3),
             120,
             120);
     }

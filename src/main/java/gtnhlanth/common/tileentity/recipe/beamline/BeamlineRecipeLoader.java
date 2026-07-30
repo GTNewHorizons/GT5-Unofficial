@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -21,7 +22,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTUtility;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.item.MaskList;
@@ -66,7 +66,7 @@ public class BeamlineRecipeLoader {
          * ELECTRON
          */
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Tungsten, Materials2Shapes.stick, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Tungsten, Shapes.stick, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -80,7 +80,7 @@ public class BeamlineRecipeLoader {
             .addTo(sourceChamberRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.LanthanumHexaboride, Materials2Shapes.stickLong, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.LanthanumHexaboride, Shapes.stickLong, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -97,7 +97,7 @@ public class BeamlineRecipeLoader {
          * NEUTRON
          */
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Californium, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Californium, Shapes.dust, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -111,7 +111,7 @@ public class BeamlineRecipeLoader {
             .addTo(sourceChamberRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Beryllium, Materials2Shapes.stickLong, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Beryllium, Shapes.stickLong, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -128,8 +128,8 @@ public class BeamlineRecipeLoader {
          * ALPHA
          */
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Uranium, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Thorium234, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Thorium234, Shapes.dust, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -164,8 +164,8 @@ public class BeamlineRecipeLoader {
          * OMEGA
          */
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Unstable, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Unstable, Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 1))
             .outputChances(500)
             .metadata(
                 SOURCE_CHAMBER_METADATA,
@@ -255,7 +255,7 @@ public class BeamlineRecipeLoader {
                 focusItem,
                 MaterialLibAPI.getStack(
                     Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
-                    Materials2Shapes.gemExquisite,
+                    Shapes.gemExquisite,
                     1))
             .itemOutputs(GTUtility.copyAmountUnsafe(64, ItemList.Circuit_Chip_CrystalSoC.get(1)))
             .metadata(
@@ -276,7 +276,7 @@ public class BeamlineRecipeLoader {
                 focusItem,
                 MaterialLibAPI.getStack(
                     Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
-                    Materials2Shapes.gemExquisite,
+                    Shapes.gemExquisite,
                     1))
             .itemOutputs(GTUtility.copyAmountUnsafe(64, ItemList.Circuit_Chip_CrystalSoC2.get(1)))
             .metadata(
@@ -299,7 +299,7 @@ public class BeamlineRecipeLoader {
                 focusItem,
                 MaterialLibAPI.getStack(
                     Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
-                    Materials2Shapes.gemExquisite,
+                    Shapes.gemExquisite,
                     1))
             .itemOutputs(GTUtility.copyAmountUnsafe(64, ItemList.Circuit_Chip_CrystalSoC2.get(1)))
             .metadata(

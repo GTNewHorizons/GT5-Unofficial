@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -37,7 +38,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.MaterialStack;
@@ -369,7 +369,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     case "MeatRaw":
                         GTModHandler.addSmeltingRecipe(
                             GTUtility.copyAmount(1, stack),
-                            MaterialLibAPI.getStack(Materials.MeatCooked, Materials2Shapes.dust, (int) (1)));
+                            MaterialLibAPI.getStack(Materials.MeatCooked, Shapes.dust, (int) (1)));
                         break;
                     case "Oilsands":
                         GTValues.RA.stdBuilder()
@@ -386,7 +386,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     case "HydratedCoal":
                         GTModHandler.addSmeltingRecipe(
                             GTUtility.copyAmount(1, stack),
-                            MaterialLibAPI.getStack(Materials.Coal, Materials2Shapes.dust, (int) (1)));
+                            MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, (int) (1)));
                         break;
                     case "Diamond": {
                         GTValues.RA.stdBuilder()
@@ -488,7 +488,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemOutputs(
                                 GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
                                 MaterialLibAPI
-                                    .getStack(Materials.Gold, Materials2Shapes.dustSmall, (int) (1)),
+                                    .getStack(Materials.Gold, Shapes.dustSmall, (int) (1)),
                                 GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Gold, 1L))
                             .outputChances(10000, 4000, 2000)
                             .duration(20 * SECONDS)
@@ -501,8 +501,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemOutputs(
                                 GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
                                 MaterialLibAPI
-                                    .getStack(Materials.Iron, Materials2Shapes.dustSmall, (int) (1)),
-                                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.nugget, (int) (1)))
+                                    .getStack(Materials.Iron, Shapes.dustSmall, (int) (1)),
+                                MaterialLibAPI.getStack(Materials.Iron, Shapes.nugget, (int) (1)))
                             .outputChances(10000, 4000, 2000)
                             .duration(20 * SECONDS)
                             .eut(24)
@@ -514,9 +514,9 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .itemOutputs(
                                 GTOreDictUnificator.get(OrePrefixes.dust, material, 1L),
                                 MaterialLibAPI
-                                    .getStack(Materials.Neodymium, Materials2Shapes.dustSmall, (int) (1)),
+                                    .getStack(Materials.Neodymium, Shapes.dustSmall, (int) (1)),
                                 MaterialLibAPI
-                                    .getStack(Materials.Neodymium, Materials2Shapes.nugget, (int) (1)))
+                                    .getStack(Materials.Neodymium, Shapes.nugget, (int) (1)))
                             .outputChances(10000, 4000, 2000)
                             .duration(20 * SECONDS)
                             .eut(24)

@@ -15,13 +15,13 @@ package bwcrossmod.GTpp.loader;
 
 import java.util.HashSet;
 
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.util.log.DebugLog;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 
@@ -41,16 +41,16 @@ public class RadioHatchCompat {
 
             String name = MaterialUtils.internalName(mats);
 
-            if (mats.hasShape(Materials2Shapes.stick) && OreDictionary.getOres("stick" + name)
+            if (mats.hasShape(Shapes.stick) && OreDictionary.getOres("stick" + name)
                 .isEmpty()) {
-                OreDictionary.registerOre("stick" + name, MaterialLibAPI.getStack(mats, Materials2Shapes.stick, 1));
+                OreDictionary.registerOre("stick" + name, MaterialLibAPI.getStack(mats, Shapes.stick, 1));
                 DebugLog.log("Generate: stick" + name);
             }
 
-            if (mats.hasShape(Materials2Shapes.stickLong) && OreDictionary.getOres("stickLong" + name)
+            if (mats.hasShape(Shapes.stickLong) && OreDictionary.getOres("stickLong" + name)
                 .isEmpty()) {
                 OreDictionary
-                    .registerOre("stickLong" + name, MaterialLibAPI.getStack(mats, Materials2Shapes.stickLong, 1));
+                    .registerOre("stickLong" + name, MaterialLibAPI.getStack(mats, Shapes.stickLong, 1));
                 DebugLog.log("Generate: stickLong" + name);
             }
         }

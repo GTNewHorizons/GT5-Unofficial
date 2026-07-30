@@ -56,6 +56,7 @@ import static gregtech.common.items.IDMetaTool01.WRENCH_LV;
 import static gregtech.common.items.IDMetaTool01.WRENCH_MV;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -67,7 +68,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.ToolDictNames;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.tools.ItemNetworkAnalyzer;
@@ -645,15 +645,15 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
 
     private void initCraftingShapelessRecipes() {
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.Coal, Materials2Shapes.dust, 1),
+            MaterialLibAPI.getStack(Materials.Coal, Shapes.dust, 1),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.coal, 1) });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.Clay, Materials2Shapes.dust, 1),
+            MaterialLibAPI.getStack(Materials.Clay, Shapes.dust, 1),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Blocks.clay, 1) });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(Materials.Wheat, Materials2Shapes.dust, 1),
+            MaterialLibAPI.getStack(Materials.Wheat, Shapes.dust, 1),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.wheat, 1) });
         GTModHandler.addShapelessCraftingRecipe(

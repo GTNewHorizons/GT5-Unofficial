@@ -12,7 +12,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.util.GTUtility;
 
 public class NeutronActivatorLoader {
@@ -36,7 +36,7 @@ public class NeutronActivatorLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility
-                    .copyAmount(0, MaterialLibAPI.getStack(Materials.Tungsten, Materials2Shapes.plate, 1)))
+                    .copyAmount(0, MaterialLibAPI.getStack(Materials.Tungsten, Shapes.plate, 1)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.UraniumBasedLiquidFuel,
@@ -54,7 +54,7 @@ public class NeutronActivatorLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility
-                    .copyAmount(0, MaterialLibAPI.getStack(Materials.Tritanium, Materials2Shapes.plate, 1)))
+                    .copyAmount(0, MaterialLibAPI.getStack(Materials.Tritanium, Shapes.plate, 1)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.PlutoniumBasedLiquidFuel,

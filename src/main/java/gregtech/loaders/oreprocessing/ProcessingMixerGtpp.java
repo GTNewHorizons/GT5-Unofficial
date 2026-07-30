@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -15,7 +16,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2GtppComposites;
 import gregtech.api.enums.materials2.Materials2GtppComposites.Component;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeBuilder;
@@ -67,11 +67,11 @@ public class ProcessingMixerGtpp implements IOreRecipeRegistrator {
         for (int i = 0; i < composites.size(); i++) {
             Component component = composites.get(i);
             if (!component.material()
-                .hasShape(Materials2Shapes.dust)) return;
-            inputs[i] = MaterialLibAPI.getStack(component.material(), Materials2Shapes.dust, component.parts());
+                .hasShape(Shapes.dust)) return;
+            inputs[i] = MaterialLibAPI.getStack(component.material(), Shapes.dust, component.parts());
             total += component.parts();
         }
-        ItemStack output = MaterialLibAPI.getStack(material, Materials2Shapes.dust, total);
+        ItemStack output = MaterialLibAPI.getStack(material, Shapes.dust, total);
 
         int circuit = circuitFor(material, composites.size());
         GTRecipeBuilder builder = GTValues.RA.stdBuilder()

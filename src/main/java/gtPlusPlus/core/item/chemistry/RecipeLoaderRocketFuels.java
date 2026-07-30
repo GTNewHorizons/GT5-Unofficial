@@ -21,7 +21,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -75,9 +75,9 @@ public class RecipeLoaderRocketFuels {
         // 2HNO3 + Cu = N2O4 + H2O + CuO
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Copper, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Copper, Shapes.dust, (int) (1)),
                 GregtechItemList.OrangeMetalCatalyst.get(0))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.CupricOxide, Materials2Shapes.dust, (int) (2)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.CupricOxide, Shapes.dust, (int) (2)))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.NitricAcid, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
@@ -106,7 +106,7 @@ public class RecipeLoaderRocketFuels {
     private static void createMonomethylhydrazine() {
         // C + 2H + N2H4 = CH6N2
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dust, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (1)))
             .circuit(21)
             .fluidInputs(
                 MaterialLibAPI
@@ -175,8 +175,8 @@ public class RecipeLoaderRocketFuels {
     private static void createFormaldehydeCatalyst() {
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.dust, (int) (16)),
-                MaterialLibAPI.getStack(Materials.Vanadium, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (16)),
+                MaterialLibAPI.getStack(Materials.Vanadium, Shapes.dust, (int) (1)))
             .circuit(18)
             .itemOutputs(GregtechItemList.FormaldehydeCatalystDust.get(4))
             .duration(8 * SECONDS)

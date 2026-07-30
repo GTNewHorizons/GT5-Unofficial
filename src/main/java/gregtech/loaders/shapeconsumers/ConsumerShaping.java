@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingShaping;
 
 /// Dispatches [ProcessingShaping]'s `ingot`/`dust` recipe generation (extruder/mold recipe ladder, a second,
@@ -13,7 +13,7 @@ public final class ConsumerShaping {
     private ConsumerShaping() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2Shapes.ingot, OrePrefixes.ingot, () -> ProcessingShaping.INSTANCE);
-        ShapeConsumerSupport.delegate(Materials2Shapes.dust, OrePrefixes.dust, () -> ProcessingShaping.INSTANCE);
+        ShapeConsumerSupport.delegate(Shapes.ingot, OrePrefixes.ingot, () -> ProcessingShaping.INSTANCE);
+        ShapeConsumerSupport.delegate(Shapes.dust, OrePrefixes.dust, () -> ProcessingShaping.INSTANCE);
     }
 }

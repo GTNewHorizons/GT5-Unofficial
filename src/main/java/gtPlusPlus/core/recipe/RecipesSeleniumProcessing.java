@@ -15,7 +15,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -29,7 +29,7 @@ public class RecipesSeleniumProcessing {
 
         // Liquify the Dried Dioxide
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SeleniumDioxide, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SeleniumDioxide, Shapes.dust, 1))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 500))
             .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.SeleniumDioxide, 1_000))
             .duration(24 * SECONDS)
@@ -48,7 +48,7 @@ public class RecipesSeleniumProcessing {
 
         // Make Selenium
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Carbon, Materials2Shapes.dust, 16))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 16))
             .circuit(14)
             .fluidInputs(
                 MaterialUtils.legacyGtppFluid(Materials.SeleniousAcid, 750),
@@ -72,7 +72,7 @@ public class RecipesSeleniumProcessing {
             .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Copper, 1))
             .itemOutputs(
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Copper, 1),
-                MaterialLibAPI.getStack(Materials.SeleniumDioxide, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.SeleniumDioxide, Shapes.dust, 1))
             .outputChances(100_00, 3_00)
             .fluidInputs(GTModHandler.getHotWater(1_000))
             .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.SeleniumDioxide, 20))
@@ -85,7 +85,7 @@ public class RecipesSeleniumProcessing {
             .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Tetrahedrite, 1))
             .itemOutputs(
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Tetrahedrite, 1),
-                MaterialLibAPI.getStack(Materials.SeleniumDioxide, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.SeleniumDioxide, Shapes.dust, 1))
             .outputChances(100_00, 2_50)
             .fluidInputs(GTModHandler.getHotWater(1_000))
             .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.SeleniumDioxide, 10))
@@ -98,7 +98,7 @@ public class RecipesSeleniumProcessing {
             .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Chalcopyrite, 1))
             .itemOutputs(
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Chalcopyrite, 1),
-                MaterialLibAPI.getStack(Materials.SeleniumDioxide, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.SeleniumDioxide, Shapes.dust, 1))
             .outputChances(100_00, 2_50)
             .fluidInputs(GTModHandler.getHotWater(1_000))
             .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.SeleniumDioxide, 10))
@@ -111,7 +111,7 @@ public class RecipesSeleniumProcessing {
             .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Malachite, 1))
             .itemOutputs(
                 ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Malachite, 1),
-                MaterialLibAPI.getStack(Materials.SeleniumDioxide, Materials2Shapes.dust, 1))
+                MaterialLibAPI.getStack(Materials.SeleniumDioxide, Shapes.dust, 1))
             .outputChances(100_00, 2_50)
             .fluidInputs(GTModHandler.getHotWater(1_000))
             .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.SeleniumDioxide, 10))

@@ -13,6 +13,7 @@ import static gregtech.api.util.GTRecipeConstants.LNG_BASIC_OUTPUT;
 import static gregtech.api.util.GTRecipeConstants.NFR_COIL_TIER;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -21,7 +22,6 @@ import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 
 public class FuelRecipeLoader {
@@ -115,8 +115,8 @@ public class FuelRecipeLoader {
         // MK III Naquadah Fuel
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.ExtremelyUnstableNaquadah, Materials2Shapes.dust, 4),
-                MaterialLibAPI.getStack(Materials.Tiberium, Materials2Shapes.dust, 27),
+                MaterialLibAPI.getStack(Materials.ExtremelyUnstableNaquadah, Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials.Tiberium, Shapes.dust, 27),
                 ItemRefer.High_Density_Uranium.get(2),
                 ItemRefer.High_Density_Plutonium.get(1))
             .fluidInputs(
@@ -141,8 +141,8 @@ public class FuelRecipeLoader {
         // Alternative higher tier recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.ExtremelyUnstableNaquadah, Materials2Shapes.dust, 8),
-                MaterialLibAPI.getStack(Materials.ChromaticGlass, Materials2Shapes.dust, 9),
+                MaterialLibAPI.getStack(Materials.ExtremelyUnstableNaquadah, Shapes.dust, 8),
+                MaterialLibAPI.getStack(Materials.ChromaticGlass, Shapes.dust, 9),
                 ItemRefer.High_Density_Uranium.get(2),
                 ItemRefer.High_Density_Plutonium.get(1))
             .fluidInputs(
@@ -167,10 +167,10 @@ public class FuelRecipeLoader {
         // MK IV Naquadah Fuel
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.ExtremelyUnstableNaquadah, Materials2Shapes.dust, 27),
-                MaterialLibAPI.getStack(Materials.NetherStar, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.DraconiumAwakened, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.Orundum, Materials2Shapes.dust, 32))
+                MaterialLibAPI.getStack(Materials.ExtremelyUnstableNaquadah, Shapes.dust, 27),
+                MaterialLibAPI.getStack(Materials.NetherStar, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Orundum, Shapes.dust, 32))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkIII,
@@ -191,10 +191,10 @@ public class FuelRecipeLoader {
         // Alternate higher tier recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.ExtremelyUnstableNaquadah, Materials2Shapes.dust, 27),
-                MaterialLibAPI.getStack(Materials.Bedrockium, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.DraconiumAwakened, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.Orundum, Materials2Shapes.dust, 64))
+                MaterialLibAPI.getStack(Materials.ExtremelyUnstableNaquadah, Shapes.dust, 27),
+                MaterialLibAPI.getStack(Materials.Bedrockium, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.DraconiumAwakened, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Orundum, Shapes.dust, 64))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkIII,
@@ -214,8 +214,8 @@ public class FuelRecipeLoader {
         // One-step recipe to allow easier scaling for MK VI
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.ExtremelyUnstableNaquadah, Materials2Shapes.dust, 54),
-                MaterialLibAPI.getStack(Materials.Orundum, Materials2Shapes.dust, 32),
+                MaterialLibAPI.getStack(Materials.ExtremelyUnstableNaquadah, Shapes.dust, 54),
+                MaterialLibAPI.getStack(Materials.Orundum, Shapes.dust, 32),
                 ItemRefer.High_Density_Uranium.get(10),
                 ItemRefer.High_Density_Plutonium.get(5))
             .fluidInputs(
@@ -242,8 +242,8 @@ public class FuelRecipeLoader {
         // MK V Naquadah Fuel
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Infinity, Materials2Shapes.dust, 8),
-                MaterialLibAPI.getStack(Materials.AtomicSeparationCatalyst, Materials2Shapes.dust, 32))
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.dust, 8),
+                MaterialLibAPI.getStack(Materials.AtomicSeparationCatalyst, Shapes.dust, 32))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkIV,
@@ -263,8 +263,8 @@ public class FuelRecipeLoader {
         // Alternate higher tier recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.TranscendentMetal, Materials2Shapes.dust, 16),
-                MaterialLibAPI.getStack(Materials.AtomicSeparationCatalyst, Materials2Shapes.dust, 48))
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.dust, 16),
+                MaterialLibAPI.getStack(Materials.AtomicSeparationCatalyst, Shapes.dust, 48))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkIV,
@@ -287,8 +287,8 @@ public class FuelRecipeLoader {
         // MK VI Naquadah Fuel
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.AstralTitanium, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.Tritanium, Materials2Shapes.dust, 32))
+                MaterialLibAPI.getStack(Materials.AstralTitanium, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Tritanium, Shapes.dust, 32))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkV,
@@ -311,8 +311,8 @@ public class FuelRecipeLoader {
         // Alternate higher tier recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.CelestialTungsten, Materials2Shapes.dust, 64),
-                MaterialLibAPI.getStack(Materials.Tritanium, Materials2Shapes.dust, 48))
+                MaterialLibAPI.getStack(Materials.CelestialTungsten, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Tritanium, Shapes.dust, 48))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
                     Materials.NaquadahBasedLiquidFuelMkV,

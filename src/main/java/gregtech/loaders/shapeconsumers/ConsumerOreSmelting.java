@@ -1,7 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingOreSmelting;
 
 /// Dispatches [ProcessingOreSmelting]'s recipe generation for MaterialLib's cutover crushed-ore and dust
@@ -13,19 +13,19 @@ public final class ConsumerOreSmelting {
 
     static void register() {
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.crushed, OrePrefixes.crushed, () -> ProcessingOreSmelting.INSTANCE);
+            .delegate(Shapes.crushed, OrePrefixes.crushed, () -> ProcessingOreSmelting.INSTANCE);
         ShapeConsumerSupport.delegate(
-            Materials2Shapes.crushedPurified,
+            Shapes.crushedPurified,
             OrePrefixes.crushedPurified,
             () -> ProcessingOreSmelting.INSTANCE);
         ShapeConsumerSupport.delegate(
-            Materials2Shapes.crushedCentrifuged,
+            Shapes.crushedCentrifuged,
             OrePrefixes.crushedCentrifuged,
             () -> ProcessingOreSmelting.INSTANCE);
-        ShapeConsumerSupport.delegate(Materials2Shapes.dust, OrePrefixes.dust, () -> ProcessingOreSmelting.INSTANCE);
+        ShapeConsumerSupport.delegate(Shapes.dust, OrePrefixes.dust, () -> ProcessingOreSmelting.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.dustImpure, OrePrefixes.dustImpure, () -> ProcessingOreSmelting.INSTANCE);
+            .delegate(Shapes.dustImpure, OrePrefixes.dustImpure, () -> ProcessingOreSmelting.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.dustPure, OrePrefixes.dustPure, () -> ProcessingOreSmelting.INSTANCE);
+            .delegate(Shapes.dustPure, OrePrefixes.dustPure, () -> ProcessingOreSmelting.INSTANCE);
     }
 }

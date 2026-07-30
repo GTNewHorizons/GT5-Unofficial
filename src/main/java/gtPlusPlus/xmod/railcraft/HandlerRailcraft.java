@@ -12,6 +12,7 @@ import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -21,7 +22,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.item.base.BaseItemBurnable;
@@ -137,7 +137,7 @@ public class HandlerRailcraft {
         GTValues.RA.stdBuilder()
             .itemInputs(coke)
             .circuit(5)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dustSmall, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dustSmall, (int) (1)))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 100))
             .fluidOutputs(
                 MaterialLibAPI
@@ -149,7 +149,7 @@ public class HandlerRailcraft {
         GTValues.RA.stdBuilder()
             .itemInputs(coke)
             .circuit(6)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dustSmall, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dustSmall, (int) (1)))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 100))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.WoodGas, Materials2FluidShapes.fluidGas, (int) (300)))
@@ -160,7 +160,7 @@ public class HandlerRailcraft {
         // Fluid Extracting the Charcoals for Wood Tar
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, (int) (1)))
             .outputChances(1000)
             .fluidOutputs(
                 MaterialLibAPI
@@ -174,7 +174,7 @@ public class HandlerRailcraft {
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal)
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dustTiny, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (500)))
             .fluidOutputs(
@@ -188,7 +188,7 @@ public class HandlerRailcraft {
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal)
             .circuit(2)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dustTiny, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, (int) (1)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (2_000)))
             .fluidOutputs(

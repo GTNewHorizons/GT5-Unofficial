@@ -3,13 +3,13 @@ package gregtech.loaders.oreprocessing;
 import java.util.Set;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Shapes;
 
 /// Replays the missed dust-prefix oreDict notification for `InfusedAir`/`InfusedFire`/`InfusedEarth`/
 /// `InfusedWater`, restoring the [ProcessingDust] recipes (implosion compressor, autoclave, magic fuels) that
@@ -35,7 +35,7 @@ public final class ProcessingInfusedStonesGtpp {
     public static void run() {
         if (ProcessingDust.INSTANCE == null) return;
         for (Material material : MATERIALS) {
-            ItemStack dust = MaterialLibAPI.getStack(material, Materials2Shapes.dust, 1);
+            ItemStack dust = MaterialLibAPI.getStack(material, Shapes.dust, 1);
             ProcessingDust.INSTANCE
                 .registerOre(OrePrefixes.dust, material, OrePrefixes.dust.oreDictName(material), "gregtech", dust);
         }
