@@ -540,10 +540,10 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
 
         if (this.mEfficiency == this.getMaxEfficiency(null) && this.mHeatLevel >= 30000) {
             if (mColdSalt == null) {
-                mColdSalt = MaterialUtils.legacyGtppFluidOf(Materials.SolarSaltCold);
+                mColdSalt = MaterialUtils.anyFluidOf(Materials.SolarSaltCold);
             }
             if (mHotSalt == null) {
-                mHotSalt = MaterialUtils.legacyGtppFluidOf(Materials.SolarSaltHot);
+                mHotSalt = MaterialUtils.anyFluidOf(Materials.SolarSaltHot);
             }
             ArrayList<FluidStack> aFluids = this.getStoredFluids();
             for (FluidStack aFluid : aFluids) {

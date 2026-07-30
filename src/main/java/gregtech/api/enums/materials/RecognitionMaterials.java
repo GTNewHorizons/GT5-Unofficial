@@ -1,4 +1,4 @@
-package gregtech.loaders.materials;
+package gregtech.api.enums.materials;
 
 import java.util.EnumSet;
 import java.util.LinkedHashMap;

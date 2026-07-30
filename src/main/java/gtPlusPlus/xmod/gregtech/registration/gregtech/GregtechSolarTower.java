@@ -33,8 +33,8 @@ public class GregtechSolarTower {
 
         // NEI recipe
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.SolarSaltCold, 1000))
-            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.SolarSaltHot, 1000))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.SolarSaltCold, 1000))
+            .fluidOutputs(MaterialUtils.anyFluid(Materials.SolarSaltHot, 1000))
             .duration(0)
             .eut(0)
             .addTo(GTPPRecipeMaps.solarTowerRecipes);

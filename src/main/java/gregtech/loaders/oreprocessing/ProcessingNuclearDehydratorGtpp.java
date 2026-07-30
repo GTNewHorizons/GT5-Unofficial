@@ -51,7 +51,7 @@ public class ProcessingNuclearDehydratorGtpp {
     private static void generate(Material material) {
         ItemStack dust = ProcessingDustGeneration.stackOf(OrePrefixes.dust, material, 1L);
         if (dust == null) return;
-        FluidStack fluid = MaterialUtils.legacyGtppFluid(material, INGOTS);
+        FluidStack fluid = MaterialUtils.anyFluid(material, INGOTS);
         if (fluid == null) return;
 
         long voltage = MaterialUtils.voltageMultiplier(material);

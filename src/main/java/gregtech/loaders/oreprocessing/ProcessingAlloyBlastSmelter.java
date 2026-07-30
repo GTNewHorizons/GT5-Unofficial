@@ -45,7 +45,7 @@ import gregtech.common.items.ItemIntegratedCircuit;
 /// cannot resolve for a gtPlusPlus-only material: those read a per-state
 /// [MaterialFluidNames]
 /// slot or a [com.ruling_0.materiallib.api.Shape], and a gtPlusPlus-only material carries neither.
-/// [#materialFluid] resolves it instead through [MaterialUtils#legacyGtppFluid]'s name-priority lookup over the same
+/// [#materialFluid] resolves it instead through [MaterialUtils#anyFluid]'s name-priority lookup over the same
 /// [MaterialFluidNames] data, exactly as gtpp's own `Material#getFluidStack` did (a
 /// null result
 /// here reproduces a null there, which is why some [#SINGLE_DUST] members -- carrying `BLAST_REQUIRED` but no
@@ -128,7 +128,7 @@ public class ProcessingAlloyBlastSmelter {
         for (Material material : SINGLE_DUST) {
             if (!Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.BLAST_REQUIRED))) continue;
             ItemStack dust = MaterialLibAPI.getStack(material, Shapes.dust, 1);
-            FluidStack fluidOutput = MaterialUtils.legacyGtppFluid(material, 144);
+            FluidStack fluidOutput = MaterialUtils.anyFluid(material, 144);
             if (fluidOutput == null) continue;
 
             int tier = Math.max(1, MaterialUtils.tier(material));
@@ -164,7 +164,7 @@ public class ProcessingAlloyBlastSmelter {
             if (solid) {
                 items[i] = MaterialLibAPI.getStack(component.material(), Shapes.dust, parts);
             } else if (parts > 0 && parts <= 100) {
-                componentFluid = MaterialUtils.legacyGtppFluid(component.material(), parts * 1000L);
+                componentFluid = MaterialUtils.anyFluid(component.material(), parts * 1000L);
             }
         }
 
@@ -178,13 +178,13 @@ public class ProcessingAlloyBlastSmelter {
         if (count < 9) builder.circuit(count);
         if (componentFluid != null) builder.fluidInputs(componentFluid);
         boolean ebf = Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.BLAST_REQUIRED));
-        builder.fluidOutputs(MaterialUtils.legacyGtppFluid(material, 144L * totalParts))
+        builder.fluidOutputs(MaterialUtils.anyFluid(material, 144L * totalParts))
             .eut(ebf ? voltage : voltage / 2)
             .duration(duration)
             .addTo(alloyBlastSmelterRecipes);
     }
 
-    /// A material's single registered fluid -- see [MaterialUtils#legacyGtppFluid].
+    /// A material's single registered fluid -- see [MaterialUtils#anyFluid].
 
     private static Map<String, FluidStack> ingotToFluid;
     private static Map<String, String> hotToCold;

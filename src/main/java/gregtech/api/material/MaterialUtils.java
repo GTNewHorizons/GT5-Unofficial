@@ -53,7 +53,7 @@ public class MaterialUtils {
     private MaterialUtils() {}
 
     /// The MaterialLib material whose [#internalName] is `name`, or null on a miss. Deliberately wider than
-    /// [gregtech.loaders.materials.LegacyNameDomain#lookup], whose frozen table does not cover every material
+    /// [gregtech.api.material.LegacyNameDomain#lookup], whose frozen table does not cover every material
     /// whose registration name MaterialLib had to sanitize.
     public static @Nullable Material byLegacyName(@Nullable String name) {
         if (name == null) return null;
@@ -159,18 +159,18 @@ public class MaterialUtils {
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
     }
 
-    /// A gtPlusPlus-originated material's single fluid, whichever state backs it. Unlike
-    /// [#molten]/[#fluid]/[#gas], which each answer for one state, this takes the first the material has, so
-    /// callers porting a gtPlusPlus recipe do not have to know which state the material ended up in. Null when
-    /// the material has no fluid at all.
-    public static @Nullable FluidStack legacyGtppFluid(@Nullable Material material, long amount) {
-        Fluid fluid = legacyGtppFluidOf(material);
+    /// A material's fluid, whichever state backs it. Unlike [#molten]/[#fluid]/[#gas], which each answer for
+    /// one state, this takes the first state the material has, for the call sites that only need "this
+    /// material's fluid". Null when the material has no fluid at all.
+    public static @Nullable FluidStack anyFluid(@Nullable Material material, long amount) {
+        Fluid fluid = anyFluidOf(material);
         return fluid == null ? null : new FluidStack(fluid, (int) amount);
     }
 
-    /// The shapes [#legacyGtppFluidOf] tries, in the order the legacy gtPlusPlus fluid name was derived:
-    /// molten first, then liquid, then gas.
-    private static final Shape[] GTPP_FLUID_SHAPES = { FluidShapes.fluidMolten, FluidShapes.fluidLiquid,
+    /// The shapes [#anyFluidOf] tries. The order is fixed -- molten, then liquid, then gas -- because it is
+    /// the order [FluidNames#legacyGtppFluidName] derives a material's single fluid name in, and the two must
+    /// pick the same fluid.
+    private static final Shape[] ANY_FLUID_SHAPES = { FluidShapes.fluidMolten, FluidShapes.fluidLiquid,
         FluidShapes.fluidGas };
 
     /// Materials whose fluid is registered directly by name rather than through a shape of their own, so no
@@ -178,10 +178,10 @@ public class MaterialUtils {
     private static final Map<String, String> UNDECLARED_FLUID_NAMES = Map
         .of("ZirconiumTetrafluoride", "zirconiumtetrafluoride");
 
-    /// [#legacyGtppFluid]'s raw [Fluid], for a bare fluid read with no stack size.
-    public static @Nullable Fluid legacyGtppFluidOf(@Nullable Material material) {
+    /// [#anyFluid]'s raw [Fluid], for a bare fluid read with no stack size.
+    public static @Nullable Fluid anyFluidOf(@Nullable Material material) {
         if (material == null) return null;
-        for (Shape shape : GTPP_FLUID_SHAPES) {
+        for (Shape shape : ANY_FLUID_SHAPES) {
             Fluid fluid = MaterialLibAPI.getFluid(material, shape);
             if (fluid != null) return fluid;
         }
@@ -189,9 +189,9 @@ public class MaterialUtils {
         return name == null ? null : FluidRegistry.getFluid(name);
     }
 
-    /// A gtPlusPlus-only material's registered plasma fluid, from [GTMaterialProperties#GTPP_PLASMA_NAME] --
-    /// never from this class's own [MaterialFluidNames]-based [#plasmaOf], so it is null for every
-    /// gtPlusPlus-originated material outside the small set that property carries.
+    /// A gtPlusPlus-originated material's registered plasma fluid, from
+    /// [GTMaterialProperties#GTPP_PLASMA_NAME] -- never from this class's own [MaterialFluidNames]-based
+    /// [#plasmaOf], so it is null for every material outside the small set that property carries.
     public static @Nullable Fluid legacyGtppPlasmaOf(@Nullable Material material) {
         if (material == null) return null;
         String name = material.getProperty(GTMaterialProperties.GTPP_PLASMA_NAME);

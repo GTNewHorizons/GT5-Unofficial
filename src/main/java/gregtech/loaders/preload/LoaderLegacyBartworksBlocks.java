@@ -22,6 +22,10 @@ import gregtech.common.ores.BWOreAdapter;
 /// The storage, casing and ore blocks the bartworks werkstoff materials were placed as. Their MaterialLib
 /// shapes supersede them, but the blocks stay registered: a saved world still holds them, and the Postea
 /// migration and the ore adapters address them by their original registration names and metadata.
+///
+/// This loader is permanent despite its name. Beyond the save-compatibility requirement, eight multiblock
+/// casings in [gregtech.api.casing.Casings] resolve out of [#casings]/[#casingsAdvanced] and are matched by
+/// block identity in structure definitions, so those blocks cannot be superseded by a shape at all.
 public class LoaderLegacyBartworksBlocks {
 
     public static Block storageBlocks;

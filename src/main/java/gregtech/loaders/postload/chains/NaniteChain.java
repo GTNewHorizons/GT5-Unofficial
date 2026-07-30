@@ -55,7 +55,7 @@ public class NaniteChain {
                 GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Naquadah, 32),
                 MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.plateSuperdense, (int) (4)))
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 32 * INGOTS),
+                MaterialUtils.anyFluid(Materials.Indalloy140, 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (32 * INGOTS)),
                 MaterialLibAPI.getFluidStack(Materials.Osmiridium, FluidShapes.fluidMolten, (int) (16 * INGOTS)))
             .itemOutputs(ItemList.NanoForge.get(1))
@@ -76,7 +76,7 @@ public class NaniteChain {
                 MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (64)))
             .fluidInputs(
                 MaterialUtils.fluid(Materials.UUMatter, 10_000),
-                MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 32 * INGOTS))
+                MaterialUtils.anyFluid(Materials.Indalloy140, 32 * INGOTS))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 2))
             .eut(TierEU.RECIPE_UV)
             .duration(50 * SECONDS)

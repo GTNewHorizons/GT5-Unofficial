@@ -17,13 +17,13 @@ import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.OreInfo;
-import gregtech.loaders.materials.LegacyNameDomain;
 import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
 
 /// Unification entries for the materials that originated in the bartworks werkstoff pools. A werkstoff-origin

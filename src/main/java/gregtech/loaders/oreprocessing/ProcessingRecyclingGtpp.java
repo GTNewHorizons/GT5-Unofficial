@@ -165,7 +165,7 @@ public class ProcessingRecyclingGtpp {
     private static void registerFluidExtraction(Material material, ItemStack input, long materialAmount) {
         int fluidAmount = (int) ((materialAmount * INGOTS) / (M * input.stackSize));
         int duration = (int) Math.max(1L, (24 * materialAmount) / M);
-        FluidStack fluidOutput = MaterialUtils.legacyGtppFluid(material, fluidAmount);
+        FluidStack fluidOutput = MaterialUtils.anyFluid(material, fluidAmount);
         if (fluidOutput == null) return;
 
         long powerUsage = Math.max(8L, MaterialUtils.voltageMultiplier(material));

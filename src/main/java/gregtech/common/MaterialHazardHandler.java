@@ -1,4 +1,4 @@
-package bartworks.system.material;
+package gregtech.common;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -15,12 +15,13 @@ import gregtech.api.hazards.HazardProtection;
 import gregtech.api.material.GTMaterialProperties;
 import ic2.core.IC2Potion;
 
-/// Applies the toxic/radioactive carry hazards of hazardous materials to MaterialLib items.
-/// Toxic/radioactive werkstoff items share a single MaterialLib shape item class across all materials, so
-/// poisoning/irradiating the carrier of an item without the matching hazmat suit cannot be a per-item update
-/// override; a player-tick inventory scan reads the canonical
-/// [GTMaterialProperties#TOXIC]/[GTMaterialProperties#IS_RADIOACTIVE] properties instead.
-public class WerkstoffHazardHandler {
+/// Poisons or irradiates a player carrying an item made of a [GTMaterialProperties#TOXIC] or
+/// [GTMaterialProperties#IS_RADIOACTIVE] material without the matching hazmat suit.
+///
+/// Every MaterialLib item of a given shape shares one [ShapeItem] instance across all materials, so this
+/// cannot be a per-item update override; it is a player-tick inventory scan reading the material properties
+/// instead.
+public class MaterialHazardHandler {
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {

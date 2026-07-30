@@ -21,10 +21,10 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.loaders.materials.RecognitionMaterials;
 
 public class LoaderGTOreDictionary implements Runnable {
 

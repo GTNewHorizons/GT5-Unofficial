@@ -40,6 +40,7 @@ import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.MaterialParentMods;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLanguageManager;
@@ -55,7 +56,6 @@ import gregtech.common.config.OPStuff;
 import gregtech.common.config.Worldgen;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.long_distance.MTELongDistancePipelineBase;
-import gregtech.loaders.materials.LegacyNameDomain;
 
 public class GTPreLoad {
 

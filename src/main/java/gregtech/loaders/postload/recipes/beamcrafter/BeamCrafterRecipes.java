@@ -112,7 +112,7 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.AdvancedNitinol, 9216))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.AdvancedNitinol, 9216))
             .itemInputs(ItemList.Superconducting_Magnet_Solenoid_UHV.get(4), ItemList.Field_Generator_UV.get(4))
             .itemOutputs(ItemList.ATLASCasing.get(4))
             .metadata(
@@ -128,7 +128,7 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.AbyssalAlloy, 9216))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.AbyssalAlloy, 9216))
             .itemInputs(ItemList.Superconducting_Magnet_Solenoid_UEV.get(4), ItemList.Field_Generator_UHV.get(4))
             .itemOutputs(ItemList.ALICECasing.get(4))
             .metadata(
@@ -144,7 +144,7 @@ public class BeamCrafterRecipes implements Runnable {
             .addTo(beamcrafterRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.Quantum, 9216))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.Quantum, 9216))
             .itemInputs(ItemList.Superconducting_Magnet_Solenoid_UIV.get(4), ItemList.Field_Generator_UEV.get(4))
             .itemOutputs(ItemList.LHCbCasing.get(4))
             .metadata(

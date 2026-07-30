@@ -133,6 +133,7 @@ import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.IToolStats;
@@ -144,6 +145,7 @@ import gregtech.api.items.armor.ArmorKeybinds;
 import gregtech.api.material.AspectRefStack;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.net.GTPacketMusicSystemData;
@@ -189,9 +191,7 @@ import gregtech.common.recipes.CALImprintRecipe;
 import gregtech.common.recipes.MacerationStackConversionRecipe;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.worldgen.HEEIslandScanner;
-import gregtech.loaders.materials.LegacyNameDomain;
-import gregtech.loaders.materials.MaterialsDeclaredFieldsTable;
-import gregtech.loaders.materials.RecognitionMaterials;
+import gregtech.loaders.materials.DeclaredMaterialNameTable;
 import gregtech.nei.GTNEIDefaultHandler;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -824,7 +824,7 @@ public class GTProxy implements IFuelHandler {
 
     /// Registers oredict entries other mods (or Forge itself) already registered before this proxy was
     /// constructed. Split out of the constructor and called explicitly from GT's preInit, after
-    /// {@link gregtech.loaders.materials.LoaderLegacyMaterialPasses#run}: the proxy is constructed during FML's
+    /// {@link gregtech.loaders.materials.LoaderGTMaterialPasses#run}: the proxy is constructed during FML's
     /// mod-construction phase, before {@link #registerOre}'s `Materials` data can resolve.
     public void catchUpPreExistingOreDictEntries() {
         for (String tOreName : OreDictionary.getOreNames()) {
@@ -2011,7 +2011,7 @@ public class GTProxy implements IFuelHandler {
     /// [#isCensusMarker], that marker's own backing; otherwise resolved ML-registry-first, by the same raw
     /// name [#registerOre] already stripped the prefix down to (`tName`), falling back to `aMaterial` (the
     /// [LegacyNameDomain#lookup] result; a null resolves to the `NULL` placeholder material) when the registry
-    /// has nothing under that exact name, or when `tName` is one [MaterialsDeclaredFieldsTable] freezes.
+    /// has nothing under that exact name, or when `tName` is one [DeclaredMaterialNameTable] freezes.
     ///
     /// That declared-name check keeps this in lockstep with [#registerOre]'s own upstream `aMaterial`
     /// resolution: a declared name returns exactly what [LegacyNameDomain#lookup] resolved it to rather than
@@ -2055,10 +2055,10 @@ public class GTProxy implements IFuelHandler {
             .isEmpty() ? null : ml;
     }
 
-    /// Whether `name` is in the frozen domain [MaterialsDeclaredFieldsTable] backs. See
+    /// Whether `name` is in the frozen domain [DeclaredMaterialNameTable] backs. See
     /// [#resolveCensusMaterial] for how this steers between `aMaterial` and a direct MaterialLib registry hit.
     private static boolean hasDeclaredMaterialsField(String name) {
-        return MaterialsDeclaredFieldsTable.NAMES.contains(name);
+        return DeclaredMaterialNameTable.NAMES.contains(name);
     }
 
     /// Unifies a foreign ore-dictionary entry whose name resolves to a recognition marker rather than to a

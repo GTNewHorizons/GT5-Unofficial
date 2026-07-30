@@ -50,6 +50,7 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.CustomGlyphs;
@@ -60,7 +61,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTShapedRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GlassTier;
-import gregtech.loaders.materials.LegacyNameDomain;
 
 public class BWUtil {
 

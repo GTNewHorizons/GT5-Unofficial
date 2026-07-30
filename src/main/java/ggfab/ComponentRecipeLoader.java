@@ -35,7 +35,7 @@ class ComponentRecipeLoader implements Runnable {
                 new Object[] { Circuits.EV.getIngredient(), 8 },
                 ItemList.Automation_ChestBuffer_LuV.get(1L))
             .fluidInputs(
-                MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 9 * INGOTS),
+                MaterialUtils.anyFluid(Materials.Indalloy140, 9 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (2_000)))
             .itemOutputs(GGItemList.AdvAssLine.get(1L))
             .eut(TierEU.RECIPE_LuV)

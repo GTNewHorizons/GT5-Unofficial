@@ -37,7 +37,7 @@ public class RecipesRareEarthProcessing {
         // avoiding two competing registrations under the same name.
         FluidStack mBrine = FluidRegistry.getFluidStack("brine", 1_000);
         if (mBrine == null) {
-            mBrine = MaterialUtils.legacyGtppFluid(Materials.Brine, 1_000);
+            mBrine = MaterialUtils.anyFluid(Materials.Brine, 1_000);
         }
 
         // Add Process for creating Brine
@@ -75,7 +75,7 @@ public class RecipesRareEarthProcessing {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.Laser_Lens_WoodsGlass.get(0))
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.HydrogenChlorideMix, 4_000))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.HydrogenChlorideMix, 4_000))
             .fluidOutputs(new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride, 4_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)

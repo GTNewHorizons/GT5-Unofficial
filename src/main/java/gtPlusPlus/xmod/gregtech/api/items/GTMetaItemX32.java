@@ -12,16 +12,12 @@ import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 /**
@@ -52,36 +48,6 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
     public GTMetaItemX32(final String aUnlocalized, final OrePrefixes... aGeneratedPrefixList) {
         super(aUnlocalized, (short) 32000, (short) 766);
         this.mGeneratedPrefixList = Arrays.copyOf(aGeneratedPrefixList, 32);
-
-        for (int i = 0; i < 32000; i++) {
-            final OrePrefixes tPrefix = this.mGeneratedPrefixList[i / 1000];
-            if (tPrefix == null) {
-                continue;
-            }
-            final Material tMaterial = MetaGeneratedItem.generatedMaterial(i % 1000);
-            if (tMaterial == null) {
-                continue;
-            }
-            if (this.doesMaterialAllowGeneration(tPrefix, tMaterial)) {
-                final ItemStack tStack = new ItemStack(this, 1, i);
-                GTLanguageManager.addStringLocalization(
-                    this.getUnlocalizedName(tStack) + ".name",
-                    this.getDefaultLocalization(tPrefix, tMaterial, i));
-                GTLanguageManager.addStringLocalization(
-                    this.getUnlocalizedName(tStack) + ".tooltip",
-                    MaterialUtils.chemicalTooltip(tMaterial, tPrefix.getMaterialAmount() / GTValues.M, false));
-                if (tPrefix.isUnifiable()) {
-                    GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
-                } else {
-                    GTOreDictUnificator.registerOre(tPrefix.oreDictName(tMaterial), tStack);
-                }
-                if (((tPrefix == OrePrefixes.stick) || (tPrefix == OrePrefixes.wireFine))
-                    && ((tMaterial == Materials.Lead) || (tMaterial == Materials.Tin)
-                        || (tMaterial == Materials.SolderingAlloy))) {
-                    GregTechAPI.sSolderingMetalList.add(tStack);
-                }
-            }
-        }
     }
 
     /* ---------- OVERRIDEABLE FUNCTIONS ---------- */

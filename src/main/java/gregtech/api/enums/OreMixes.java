@@ -56,12 +56,12 @@ import com.ruling_0.materiallib.api.Material;
 
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.OreMixBuilder;
 import gregtech.common.WorldgenGTOreLayer;
-import gregtech.loaders.materials.RecognitionMaterials;
 import gtneioreplugin.util.DimensionHelper;
 
 public enum OreMixes {

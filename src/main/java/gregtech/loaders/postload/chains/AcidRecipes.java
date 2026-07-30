@@ -127,7 +127,7 @@ public class AcidRecipes {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.StagnantWasteWater, FluidShapes.fluidLiquid, (int) (6000)),
-                MaterialUtils.legacyGtppFluid(Materials.HydrogenCyanide, 4000))
+                MaterialUtils.anyFluid(Materials.HydrogenCyanide, 4000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.ActivatedWasteWater, FluidShapes.fluidLiquid, (int) (2000)),
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, (int) (8000)))

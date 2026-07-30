@@ -170,7 +170,7 @@ public class RecipeLoaderGenericChem {
                 MaterialLibAPI.getFluidStack(Materials.Tin, FluidShapes.fluidPlasma, (int) (18_000)),
                 MaterialLibAPI.getFluidStack(Materials.Bismuth, FluidShapes.fluidPlasma, (int) (18_000)),
                 new FluidStack(TFFluids.fluidCryotheum, 4_000))
-            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 4 * STACKS + 24 * INGOTS))
+            .fluidOutputs(MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 4 * STACKS + 24 * INGOTS))
             .duration(13 * MINUTES + 20 * SECONDS)
             .eut(3842160)
             .metadata(CHEMPLANT_CASING_TIER, 7)
@@ -371,7 +371,7 @@ public class RecipeLoaderGenericChem {
                 MaterialLibAPI.getStack(Materials.Lapis, Shapes.dust, (int) (2)))
             .circuit(12)
             .itemOutputs(GregtechItemList.SolidAcidCatalyst.get(5))
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.SolidAcidCatalystMixture, 1_000))
+            .fluidInputs(MaterialUtils.anyFluid(Materials.SolidAcidCatalystMixture, 1_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
