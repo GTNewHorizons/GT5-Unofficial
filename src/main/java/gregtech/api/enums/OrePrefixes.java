@@ -39,7 +39,7 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.TCAspects.TC_AspectStack;
-import gregtech.api.enums.materials2.Materials2ParentMods;
+import gregtech.api.enums.materials2.MaterialParentMods;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.interfaces.ISubTagContainer;
@@ -2435,7 +2435,7 @@ public class OrePrefixes {
 
     /// Whether this prefix generates an item for `material`. The sub-ID, parent-mod, and generation-group
     /// clauses are computed from MaterialLib state: [MaterialUtils#oldSubId] for the block-form metadata index,
-    /// [Materials2ParentMods#hasParentMod], and the overlap between the material's
+    /// [MaterialParentMods#hasParentMod], and the overlap between the material's
     /// [GTMaterialProperties#GENERATION_FLAGS] and the groups this prefix accepts. The
     /// [#mGeneratedItems]/[#mNotGeneratedItems]/[#mDisabledItems] membership checks
     /// read the [Material] directly, as those collections are ML-keyed. [#mCondition] evaluates against a
@@ -2443,7 +2443,7 @@ public class OrePrefixes {
     /// MaterialLib FLAGS directly.
     public boolean doGenerateItem(@Nullable Material material) {
         if (MaterialUtils.oldSubId(material) == -1) return false;
-        if (!Materials2ParentMods.hasParentMod(material)) return false;
+        if (!MaterialParentMods.hasParentMod(material)) return false;
 
         EnumSet<GTMaterialGenerationFlag> flags = material.getProperty(GTMaterialProperties.GENERATION_FLAGS);
         if (flags == null) flags = EnumSet.noneOf(GTMaterialGenerationFlag.class);

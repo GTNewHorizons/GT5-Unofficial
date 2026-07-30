@@ -10,11 +10,11 @@ import gregtech.api.enums.Mods;
 /// The parent-mod availability gate for the `BlockMetal` storage-block materials as declared rows:
 /// material -> the [Mods] entry whose absence disables the material. The data declares exactly one row --
 /// `HSLA` is disabled when RotaryCraft is absent -- so every other material passes unconditionally.
-public class Materials2ParentMods {
+public class MaterialParentMods {
 
     private static Map<Material, Mods> table;
 
-    private Materials2ParentMods() {}
+    private MaterialParentMods() {}
 
     /// Whether `material`'s parent mod is present (or it has none).
     public static boolean hasParentMod(Material material) {
