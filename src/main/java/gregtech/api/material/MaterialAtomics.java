@@ -32,7 +32,7 @@ public final class MaterialAtomics {
 
     private static long compute(Material ml, ToLongFunction<Element> value) {
         String elementName = ml.getProperty(GTMaterialProperties.ELEMENT);
-        if (elementName != null) return value.applyAsLong(Element.valueOf(elementName));
+        if (elementName != null) return value.applyAsLong(Element.get(elementName));
         List<MaterialRefStack> composition = ml.getProperty(GTMaterialProperties.COMPOSITION);
         if (composition == null || composition.isEmpty()) return value.applyAsLong(Element.Tc);
         long totalAmount = 0;

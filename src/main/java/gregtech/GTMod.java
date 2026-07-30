@@ -72,6 +72,7 @@ import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.material.MaterialDeclarationValidator;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuiTheme;
@@ -322,6 +323,8 @@ public class GTMod {
 
         LegacyMaterialIDIndex.init();
         LegacyWerkstoffIndex.init();
+        MaterialDeclarationValidator.validate();
+        LegacyNameDomainTable.verifyResolvable();
 
         GTPreLoad.getConfiguration(event.getModConfigurationDirectory());
         GTPreLoad.createLogFiles(
@@ -643,7 +646,6 @@ public class GTMod {
         GregTechAPI.sFullLoadFinished = true;
 
         if (Boolean.getBoolean("gt.dumpMaterialData")) {
-            LegacyNameDomainTable.verifyResolvable();
             MaterialDataDump.writeAll(new File(Launch.minecraftHome, "material-dump"));
             gregtech.common.misc.MaterialGateDump.write();
         }

@@ -807,10 +807,10 @@ public class MaterialUtils {
         Map<String, Long> merged = new LinkedHashMap<>();
         long components = 0;
         for (MaterialRefStack entry : composition) {
-            components += entry.amount();
             Material component = entry.material()
                 .resolve();
             if (component == null) continue;
+            components += entry.amount();
             for (AspectRefStack aspect : aspects(component)) {
                 if (aspect.amount() == 0) continue;
                 merged.merge(aspect.name(), (long) aspect.amount(), Long::sum);
