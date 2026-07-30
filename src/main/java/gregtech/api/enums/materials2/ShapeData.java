@@ -35,9 +35,9 @@ import gregtech.api.objects.MaterialStack;
 /// shape declarations and before shapes resolve, while the shapes are still mutable.
 ///
 /// A value equal to the [GTShapeProperties] key's default is omitted.
-public final class Materials2ShapeData {
+public final class ShapeData {
 
-    private Materials2ShapeData() {}
+    private ShapeData() {}
 
     public static void init() {
         BlockShapes.block.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 9)

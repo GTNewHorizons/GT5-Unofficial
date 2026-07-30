@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.ShapeData;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
@@ -72,7 +73,7 @@ import it.unimi.dsi.fastutil.objects.ObjectSet;
 ///
 /// - **A shape owns the data.** For the 88 prefixes a shape serves, the per-form values below --
 /// [#getMaterialAmount], [#getTextureIndex], [#mSecondaryMaterial], the behaviour flags -- are declared on
-/// the shape (see [gregtech.api.enums.materials2.Materials2ShapeData]) and copied here at load by
+/// the shape (see [ShapeData]) and copied here at load by
 /// [#copyDataFromShapes]. The 220 prefixes no shape serves -- tool and armor forms, containers, the ore
 /// stone variants, and the foreign-mod marker names -- declare their own.
 /// - **A prefix owns the names.** Prefix names and the [#VALUES] ordinals are frozen by saved data: a type
@@ -1887,7 +1888,7 @@ public class OrePrefixes {
     }
 
     /// Copies the per-form data of every prefix a [Shape] serves off that shape, making the shape the one
-    /// declaration of it (see [gregtech.api.enums.materials2.Materials2ShapeData]). The 220 prefixes no shape
+    /// declaration of it (see [ShapeData]). The 220 prefixes no shape
     /// serves -- tool and armor forms, containers, the ore stone variants, the foreign-mod marker names -- keep
     /// the values their own builder declared.
     ///
@@ -1904,7 +1905,7 @@ public class OrePrefixes {
     ///
     /// Until this runs, a shape-backed prefix holds the [OrePrefixBuilder] defaults, and nothing distinguishes
     /// those from real values. `GTMod` therefore calls it inside its `MaterialRegistrationEvent` handler, the
-    /// moment [gregtech.api.enums.materials2.Materials2ShapeData] has declared them and before any consumer or
+    /// moment [ShapeData] has declared them and before any consumer or
     /// loader can read a prefix -- MaterialLib fires that event from its own preInit, ahead of GregTech's. The
     /// shapes have not resolved yet, which is deliberate: this copies GregTech's own declarations for its own
     /// shapes, and waiting for resolution would leave the prefixes empty through every

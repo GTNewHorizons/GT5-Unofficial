@@ -1,11 +1,12 @@
 package gregtech.api.enums;
 
+import gregtech.api.enums.materials2.ShapeData;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Gregtech;
 
 /// The configured stack ceilings for the bulk item forms, clamped to a usable range.
 ///
-/// Read by both form namespaces: [gregtech.api.enums.materials2.Materials2ShapeData] for the shapes and
+/// Read by both form namespaces: [ShapeData] for the shapes and
 /// [OrePrefixes] for the prefixes no shape serves.
 public class StackSizeLimits {
 
