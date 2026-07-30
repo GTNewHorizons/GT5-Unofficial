@@ -14,8 +14,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2GtppComposites;
-import gregtech.api.enums.materials2.Materials2GtppComposites.Component;
+import gregtech.api.enums.materials2.LegacyGTPPComposites;
+import gregtech.api.enums.materials2.LegacyGTPPComposites.Component;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeBuilder;
@@ -23,10 +23,10 @@ import gregtech.api.util.GTRecipeBuilder;
 /// Reproduces gtPlusPlus's `RecipeGenDustGeneration` mixer-recipe generation (ratio of component dusts ->
 /// alloy dust) for every material in [#ELIGIBLE]. Dispatched once per eligible material by
 /// [gregtech.loaders.shapeconsumers.ConsumerMixerGtpp]. Ratio data is shared with
-/// [ProcessingAlloyBlastSmelter] through [Materials2GtppComposites], but eligibility is this class's own: some
+/// [ProcessingAlloyBlastSmelter] through [LegacyGTPPComposites], but eligibility is this class's own: some
 /// table entries never reached the legacy mixer block (they are alloy-blast-smelter-only), and some materials
 /// the mixer block reached are excluded from the alloy blast smelter, so table membership alone cannot gate
-/// either consumer's dispatch -- see [Materials2GtppComposites]'s class javadoc.
+/// either consumer's dispatch -- see [LegacyGTPPComposites]'s class javadoc.
 public class ProcessingMixerGtpp implements IOreRecipeRegistrator {
 
     public static final ProcessingMixerGtpp INSTANCE = new ProcessingMixerGtpp();
@@ -34,7 +34,7 @@ public class ProcessingMixerGtpp implements IOreRecipeRegistrator {
     private ProcessingMixerGtpp() {}
 
     /// The exact materials the retired `RecipeGenDustGeneration` mixer generator reached -- see
-    /// [Materials2GtppComposites]'s class javadoc for the construction paths that determined this set.
+    /// [LegacyGTPPComposites]'s class javadoc for the construction paths that determined this set.
     // spotless:off
     private static final Set<Material> ELIGIBLE = Set.of(
         Materials.Arcanite, Materials.BabbitAlloy, Materials.BlackMetal,
@@ -57,7 +57,7 @@ public class ProcessingMixerGtpp implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        List<Component> composites = Materials2GtppComposites.composites(material);
+        List<Component> composites = LegacyGTPPComposites.composites(material);
         if (composites.isEmpty()) return;
 
         // A composite whose component is a gas or liquid has no mixer recipe: the table is shared with

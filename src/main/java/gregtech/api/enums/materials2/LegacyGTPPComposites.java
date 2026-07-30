@@ -43,14 +43,14 @@ import com.ruling_0.materiallib.api.Material;
 /// `Zeron100` are blast-smelter-eligible entries the mixer generator's own (undocumented, not reproduced here)
 /// filtering never reached. See [gregtech.loaders.oreprocessing.ProcessingAlloyBlastSmelter] for the blast
 /// smelter's own declared eligibility.
-public final class Materials2GtppComposites {
+public final class LegacyGTPPComposites {
 
     @Desugar
     public record Component(Material material, int parts) {}
 
     private static final Map<Material, List<Component>> TABLE = new LinkedHashMap<>();
 
-    private Materials2GtppComposites() {}
+    private LegacyGTPPComposites() {}
 
     public static boolean has(Material material) {
         return TABLE.containsKey(material);
