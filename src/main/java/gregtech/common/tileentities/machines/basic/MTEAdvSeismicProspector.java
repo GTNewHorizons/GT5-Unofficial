@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -21,7 +22,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -101,7 +101,7 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
 
             if (!ready && (GTUtility.consumeItems(aPlayer, aStack, Item.getItemFromBlock(Blocks.tnt), 16)
                 || GTUtility.consumeItems(aPlayer, aStack, Ic2Items.industrialTnt.getItem(), 8)
-                || GTUtility.consumeItems(aPlayer, aStack, Materials2Materials.Glyceryl, 4)
+                || GTUtility.consumeItems(aPlayer, aStack, Materials.Glyceryl, 4)
                 || GTUtility.consumeItems(aPlayer, aStack, ItemList.Block_Powderbarrel.getItem(), 2))) {
 
                 this.ready = true;

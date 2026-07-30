@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,7 +40,6 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.ITexture;
@@ -84,12 +84,12 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
                 new String[][] { { "   ", " f ", "   " }, { "   ", " f ", "   " }, { "   ", " f ", "   " },
                     { " f ", "fcf", " f " }, { " f ", "fcf", " f " }, { " f ", "fcf", " f " },
                     { "b~b", "bcb", "bbb" } }))
-        .addElement('f', GTStructureUtility.ofFrame(Materials2Materials.TungstenSteel))
+        .addElement('f', GTStructureUtility.ofFrame(Materials.TungstenSteel))
         .addElement(
             'c',
             StructureUtility.ofBlock(
                 LoaderLegacyBartworksBlocks.casingsAdvanced,
-                Materials2WerkstoffIndex.idOf(Materials2Materials.RhodiumPlatedPalladium)))
+                Materials2WerkstoffIndex.idOf(Materials.RhodiumPlatedPalladium)))
         .addElement(
             'b',
             GTStructureUtility.buildHatchAdder(TileEntityPlanetaryGasSiphonLegacy.class)

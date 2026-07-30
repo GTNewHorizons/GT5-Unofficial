@@ -9,6 +9,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -19,7 +20,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -38,7 +38,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (material == Materials2Materials.Ichorium || material == Materials2Materials.NetherQuartz) {
+        if (material == Materials.Ichorium || material == Materials.NetherQuartz) {
             return;
         }
 
@@ -46,8 +46,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV
             && GTOreDictUnificator.get(OrePrefixes.plate, material, 1L) != null) {
 
-            if (material == Materials2Materials.Livingrock || material == Materials2Materials.Livingwood
-                || material == Materials2Materials.Dreamwood) {
+            if (material == Materials.Livingrock || material == Materials.Livingwood
+                || material == Materials.Dreamwood) {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
@@ -85,7 +85,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 9L))
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
-                            Materials2Materials.Lubricant,
+                            Materials.Lubricant,
                             Materials2FluidShapes.fluidLiquid,
                             (int) (Math.max(
                                 1,
@@ -102,7 +102,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 9L))
                     .fluidInputs(
                         MaterialUtils.fluid(
-                            Materials2Materials.dimensionallyshiftedsuperfluid,
+                            Materials.dimensionallyshiftedsuperfluid,
                             Math.max(
                                 1,
                                 Math.min(
@@ -114,8 +114,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
             }
 
-            else if (material != Materials2Materials.Clay && material != Materials2Materials.Basalt
-                && material != Materials2Materials.Obsidian) {
+            else if (material != Materials.Clay && material != Materials.Basalt
+                && material != Materials.Obsidian) {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
@@ -150,7 +150,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 9L))
                         .fluidInputs(
                             MaterialLibAPI.getFluidStack(
-                                Materials2Materials.Lubricant,
+                                Materials.Lubricant,
                                 Materials2FluidShapes.fluidLiquid,
                                 (int) (Math.max(
                                     1,
@@ -166,7 +166,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 9L))
                         .fluidInputs(
                             MaterialUtils.fluid(
-                                Materials2Materials.dimensionallyshiftedsuperfluid,
+                                Materials.dimensionallyshiftedsuperfluid,
                                 Math.max(
                                     1,
                                     Math.min(
@@ -195,8 +195,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (MaterialUtils.hasMolten(material)) {
-            if (!(material == Materials2Materials.AnnealedCopper || material == Materials2Materials.CastIron
-                || material == Materials2Materials.Obsidian)) {
+            if (!(material == Materials.AnnealedCopper || material == Materials.CastIron
+                || material == Materials.Obsidian)) {
                 if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
 
                     GTValues.RA.stdBuilder()
@@ -223,7 +223,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(hammerRecipes);
         }
 
-        if (ingot != null && !OrePrefixes.block.isIgnored(material) && material != Materials2Materials.Obsidian) {
+        if (ingot != null && !OrePrefixes.block.isIgnored(material) && material != Materials.Obsidian) {
             // 9 ingots -> 1 block
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, material, 9L))

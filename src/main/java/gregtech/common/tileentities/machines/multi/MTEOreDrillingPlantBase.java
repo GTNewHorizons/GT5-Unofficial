@@ -35,7 +35,7 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -951,7 +951,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             && itemData.mPrefix != OrePrefixes.gemExquisite
             && itemData.mPrefix != OrePrefixes.gemFlawed
             && itemData.mPrefix != OrePrefixes.gemFlawless
-            && itemData.mMaterial.mMaterial != Materials2Materials.Oilsands
+            && itemData.mMaterial.mMaterial != Materials.Oilsands
             && !MaterialUtils.hasFlag(itemData.mMaterial.mMaterial, GTMaterialFlag.ICE_ORE);
     }
 

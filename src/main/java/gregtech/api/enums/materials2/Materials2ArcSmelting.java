@@ -26,16 +26,16 @@ public class Materials2ArcSmelting {
 
     private static Map<Material, Map<Material, Material>> table() {
         if (table == null) {
-            if (Materials2Materials.Copper == null || Materials2Backings.AnyCopper == null) {
+            if (Materials.Copper == null || Materials2Backings.AnyCopper == null) {
                 throw new IllegalStateException("Gas-arc table consulted before Materials2.init");
             }
             Map<Material, Map<Material, Material>> rows = new LinkedHashMap<>();
             rows.put(
-                Materials2Materials.Copper,
-                Map.of(Materials2Materials.Oxygen, Materials2Materials.AnnealedCopper));
+                Materials.Copper,
+                Map.of(Materials.Oxygen, Materials.AnnealedCopper));
             rows.put(
                 Materials2Backings.AnyCopper,
-                Map.of(Materials2Materials.Oxygen, Materials2Materials.AnnealedCopper));
+                Map.of(Materials.Oxygen, Materials.AnnealedCopper));
             table = rows;
         }
         return table;

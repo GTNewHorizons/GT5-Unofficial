@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -49,7 +50,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -101,7 +101,7 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
         .addElement('g', chainAllGlasses())
         .addElement('x', ofBlock(GregTechAPI.sBlockCasings2, 3))
         .addElement('p', ofBlock(GregTechAPI.sBlockCasings2, 15))
-        .addElement('t', ofFrame(Materials2Materials.TungstenSteel))
+        .addElement('t', ofFrame(Materials.TungstenSteel))
         .addElement(
             'E',
             buildHatchAdder(MTEIntegratedOreFactoryLegacy.class).atLeast(Energy, Maintenance)
@@ -305,7 +305,7 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
                 tWater += fluid.amount;
             } else if (fluid != null && fluid.equals(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (1)))) {
+                    .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (1)))) {
                         tLube += fluid.amount;
                     }
         }
@@ -360,7 +360,7 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
         depleteInput(GTModHandler.getDistilledWater(finalParallel * 200L));
         depleteInput(
             MaterialLibAPI.getFluidStack(
-                Materials2Materials.Lubricant,
+                Materials.Lubricant,
                 Materials2FluidShapes.fluidLiquid,
                 (int) (finalParallel * 2)));
 
@@ -725,7 +725,7 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
             int tID = GTUtility.stackToInt(stack);
             if (sVoidStone) {
                 if (GTUtility.areStacksEqual(
-                    MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1)),
                     stack)) {
                     continue;
                 }

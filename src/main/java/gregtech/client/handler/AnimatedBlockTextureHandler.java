@@ -17,7 +17,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 
 /// Angelica pauses an animated block icon's frame advance while it is off-screen. [#ANIMATED]'s storage-block
@@ -30,8 +30,8 @@ public class AnimatedBlockTextureHandler implements IResourceManagerReloadListen
     /// entry of its own despite sharing the same animation: it declares the same texture set as `Hypogen`
     /// (`CUSTOM/hypogen`), so both materials' `block`/`frameGt` icons resolve to the same stitched sprite --
     /// forcing `Hypogen`'s instance already advances `Dragonblood`'s.
-    private static final Material[] ANIMATED = { Materials2Materials.AstralTitanium,
-        Materials2Materials.CelestialTungsten, Materials2Materials.ChromaticGlass, Materials2Materials.Hypogen };
+    private static final Material[] ANIMATED = { Materials.AstralTitanium,
+        Materials.CelestialTungsten, Materials.ChromaticGlass, Materials.Hypogen };
 
     private IIcon[] icons;
 

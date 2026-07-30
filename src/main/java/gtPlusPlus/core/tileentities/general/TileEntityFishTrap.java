@@ -18,7 +18,7 @@ import net.minecraftforge.common.FishingHooks;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.inventories.InventoryFishTrap;
@@ -128,7 +128,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
         } else if (lootWeight == 100) {
             final int rareLoot = MathUtils.randInt(1, 10);
             if (rareLoot <= 4) {
-                loot = MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.nugget, (int) (1));
+                loot = MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.nugget, (int) (1));
             } else if (rareLoot <= 7) {
                 loot = new ItemStack(Items.gold_nugget);
             } else if (rareLoot <= 9) {

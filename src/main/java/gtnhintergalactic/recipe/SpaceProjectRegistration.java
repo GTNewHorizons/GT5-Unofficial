@@ -5,12 +5,12 @@ import static gregtech.api.enums.Mods.SuperSolarPanels;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MaterialUtils;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.base.SPRequirements;
@@ -55,7 +55,7 @@ public class SpaceProjectRegistration implements Runnable {
                 CustomItemList.Machine_Multi_Computer.get(1),
                 ItemList.Sensor_UHV.get(1),
                 ItemList.Emitter_UHV.get(1))
-            .setUpgradeFluidsCost(MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 30 * INGOTS));
+            .setUpgradeFluidsCost(MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 30 * INGOTS));
         ISpaceProject.ISP_Upgrade improvedComputation = new SPUpgrade().setUpgradeName("ImprovedComputation")
             .setUpgradeUnlocalizedName("ig.sp.upgrade.improvedcomputation")
             .setUpgradeTotalStages(20)
@@ -70,7 +70,7 @@ public class SpaceProjectRegistration implements Runnable {
                 CustomItemList.Machine_Multi_Computer.get(16),
                 ItemList.Sensor_UEV.get(1),
                 ItemList.Emitter_UEV.get(1))
-            .setUpgradeFluidsCost(MaterialUtils.legacyGtppFluid(Materials2Materials.MutatedLivingSolder, 10 * INGOTS));
+            .setUpgradeFluidsCost(MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 10 * INGOTS));
         ISpaceProject asteroidOutpost = new ProjectAsteroidOutpost().setProjectName("AsteroidOutpost")
             .setProjectUnlocalizedName("ig.spaceproject.asteroidoutpost")
             .setProjectUpgrades(reinforcedStructure, improvedComputation)
@@ -87,7 +87,7 @@ public class SpaceProjectRegistration implements Runnable {
                 ItemList.Block_NeutroniumPlate.get(16),
                 ItemList.Sensor_UV.get(1),
                 ItemList.Emitter_UV.get(1))
-            .setProjectFluidsCost(MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 20 * INGOTS));
+            .setProjectFluidsCost(MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 20 * INGOTS));
 
         SpaceProjectManager.addProject(asteroidOutpost);
     }
@@ -108,7 +108,7 @@ public class SpaceProjectRegistration implements Runnable {
                 ItemList.Block_NeutroniumPlate.get(4),
                 ItemList.Sensor_UV.get(2),
                 ItemList.Emitter_UV.get(2))
-            .setProjectFluidsCost(MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 20 * INGOTS));
+            .setProjectFluidsCost(MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 20 * INGOTS));
 
         SpaceProjectManager.addProject(planetScan);
     }

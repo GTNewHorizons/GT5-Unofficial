@@ -591,7 +591,7 @@ public class Gregtech {
     @Config.LangKey("GT5U.gui.config.gregtech.void_miners")
     public static class VoidMiners {
 
-        @Config.Comment("List of GregTech material names to adjust weight. Example line: \"Aluminium : 0.3\". Intervening whitespace will be ignored. Use the debug options to get valid names. Use weight <= 0 to disable an ore entirely. Anything not specified in the list will have weight 1. See: gregtech.api.enums.materials2.Materials2Materials")
+        @Config.Comment("List of GregTech material names to adjust weight. Example line: \"Aluminium : 0.3\". Intervening whitespace will be ignored. Use the debug options to get valid names. Use weight <= 0 to disable an ore entirely. Anything not specified in the list will have weight 1. See: gregtech.api.enums.materials2.Materials")
         @Config.Name("Deep Dark GT Ore Weights")
         public String[] gregtechWeightsDD;
 
@@ -599,7 +599,7 @@ public class Gregtech {
         @Config.Name("Deep Dark BW Ore Weights")
         public String[] bartworksWeightsDD;
 
-        @Config.Comment("List of GT++ material names to adjust weight. Example line: \"Cerite : 0.3\". Intervening whitespace will be ignored. Use the debug options to get valid names. Use weight <= 0 to disable an ore entirely. Anything not specified in the list will have weight 1. See: gregtech.api.enums.materials2.Materials2Materials")
+        @Config.Comment("List of GT++ material names to adjust weight. Example line: \"Cerite : 0.3\". Intervening whitespace will be ignored. Use the debug options to get valid names. Use weight <= 0 to disable an ore entirely. Anything not specified in the list will have weight 1. See: gregtech.api.enums.materials2.Materials")
         @Config.Name("Deep Dark GT++ Ore Weights")
         public String[] gtppWeightsDD;
     }

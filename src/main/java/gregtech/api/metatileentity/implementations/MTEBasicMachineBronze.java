@@ -11,6 +11,7 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.Arrays;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,7 +33,6 @@ import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.TieredVariant;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.material.MaterialUtils;
@@ -156,7 +156,7 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
     public FluidTankInfo[] getTankInfo(ForgeDirection side) {
         int steamAmount = (int) getBaseMetaTileEntity().getStoredSteam() * 2;
         int steamCapacity = (int) getBaseMetaTileEntity().getSteamCapacity() * 2;
-        FluidStack steam = MaterialUtils.gas(Materials2Materials.Steam, steamAmount);
+        FluidStack steam = MaterialUtils.gas(Materials.Steam, steamAmount);
         return new FluidTankInfo[] { new FluidTankInfo(steam, steamCapacity) };
     }
 

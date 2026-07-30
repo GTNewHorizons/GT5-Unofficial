@@ -28,6 +28,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -67,7 +68,6 @@ import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.internal.IGTCraftingRecipe;
@@ -219,7 +219,7 @@ public class GTModHandler {
     public static FluidStack getLiquidDNA(long aAmount) {
         if (Gendustry.isModLoaded()) return FluidRegistry.getFluidStack("liquiddna", (int) aAmount);
         else return MaterialLibAPI
-            .getFluidStack(Materials2Materials.Biomass, Materials2FluidShapes.fluidLiquid, (int) (aAmount));
+            .getFluidStack(Materials.Biomass, Materials2FluidShapes.fluidLiquid, (int) (aAmount));
     }
 
     /**
@@ -245,7 +245,7 @@ public class GTModHandler {
      */
     public static boolean isSteam(FluidStack aFluid) {
         if (aFluid == null) return false;
-        return aFluid.isFluidEqual(MaterialUtils.gas(Materials2Materials.Steam, 1));
+        return aFluid.isFluidEqual(MaterialUtils.gas(Materials.Steam, 1));
     }
 
     /**
@@ -269,7 +269,7 @@ public class GTModHandler {
      */
     @Deprecated
     public static FluidStack getSteam(long aAmount) {
-        return MaterialUtils.gas(Materials2Materials.Steam, aAmount);
+        return MaterialUtils.gas(Materials.Steam, aAmount);
     }
 
     /**
@@ -280,7 +280,7 @@ public class GTModHandler {
     @Deprecated
     public static FluidStack getMilk(long aAmount) {
         return MaterialLibAPI
-            .getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (aAmount));
+            .getFluidStack(Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (aAmount));
     }
 
     /**
@@ -493,7 +493,7 @@ public class GTModHandler {
         ItemStack input2 = OrePrefixes.ingot.contains(aOutput) ? ItemList.Shape_Mold_Ingot.get(0)
             : OrePrefixes.block.contains(aOutput) ? ItemList.Shape_Mold_Block.get(0)
                 : OrePrefixes.nugget.contains(aOutput) ? ItemList.Shape_Mold_Nugget.get(0) : null;
-        if (MaterialParts.isPartOf(aInput, Materials2Materials.Graphite)) {
+        if (MaterialParts.isPartOf(aInput, Materials.Graphite)) {
             return false;
         }
         if ((input2 == null) && ((OrePrefixes.ingot.contains(aInput)) || (OrePrefixes.dust.contains(aInput))
@@ -697,32 +697,32 @@ public class GTModHandler {
                 };
 
                 case WIRE -> switch (machineTier) {
-                    case  0 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials2Materials.Lead);
-                    case  1 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials2Materials.Tin);
+                    case  0 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Lead);
+                    case  1 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Tin);
                     case  2 -> OrePrefixes.cableGt01.ingredient(Materials2Backings.AnyCopper);
-                    case  3 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials2Materials.Gold);
-                    case  4 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials2Materials.Aluminium);
-                    case  5 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials2Materials.Platinum);
-                    case  6 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials2Materials.NiobiumTitanium);
-                    case  7 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials2Materials.Naquadah);
-                    case  8 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.NaquadahAlloy);
+                    case  3 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Gold);
+                    case  4 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Aluminium);
+                    case  5 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Platinum);
+                    case  6 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.NiobiumTitanium);
+                    case  7 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Naquadah);
+                    case  8 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.NaquadahAlloy);
                     default -> MaterialParts.namedIngredient(OrePrefixes.wireGt01, Materials2Backings.SuperconductorUHV);
                 };
 
                 case WIRE4 -> switch (machineTier) {
-                    case  0 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.Lead);
-                    case  1 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.Tin);
+                    case  0 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.Lead);
+                    case  1 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.Tin);
                     case  2 -> OrePrefixes.cableGt04.ingredient(Materials2Backings.AnyCopper);
-                    case  3 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.Gold);
-                    case  4 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.Aluminium);
-                    case  5 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.Platinum);
-                    case  6 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.NiobiumTitanium);
-                    case  7 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials2Materials.Naquadah);
+                    case  3 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.Gold);
+                    case  4 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.Aluminium);
+                    case  5 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.Platinum);
+                    case  6 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.NiobiumTitanium);
+                    case  7 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.Naquadah);
                     case  8 -> MaterialParts.namedIngredient(OrePrefixes.wireGt01, Materials2Backings.SuperconductorUHV);
                     default -> MaterialParts.namedIngredient(OrePrefixes.wireGt04, Materials2Backings.SuperconductorUHV);
                 };
 
-                case STICK_DISTILLATION -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials2Materials.Blaze);
+                case STICK_DISTILLATION -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials.Blaze);
 
                 case GLASS -> switch (machineTier) {
                     case 0, 1, 2, 3    -> new ItemStack(Blocks.glass, 1, WILDCARD);
@@ -731,22 +731,22 @@ public class GTModHandler {
                 };
 
                 case PLATE -> switch (machineTier) {
-                    case 0, 1 -> MaterialParts.craftIngredient(OrePrefixes.plate, Materials2Materials.Steel);
-                    case 2    -> MaterialParts.craftIngredient(OrePrefixes.plate, Materials2Materials.Aluminium);
-                    case 3    -> MaterialParts.craftIngredient(OrePrefixes.plate, Materials2Materials.StainlessSteel);
-                    case 4    -> MaterialParts.craftIngredient(OrePrefixes.plate, Materials2Materials.Titanium);
-                    case 5    -> MaterialParts.craftIngredient(OrePrefixes.plate, Materials2Materials.TungstenSteel);
-                    case 6    -> MaterialParts.craftIngredient(OrePrefixes.plate, Materials2Materials.HSSG);
-                    case 7    -> MaterialParts.craftIngredient(OrePrefixes.plate, Materials2Materials.HSSE);
-                    default   -> MaterialParts.craftIngredient(OrePrefixes.plate, Materials2Materials.Neutronium);
+                    case 0, 1 -> MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Steel);
+                    case 2    -> MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Aluminium);
+                    case 3    -> MaterialParts.craftIngredient(OrePrefixes.plate, Materials.StainlessSteel);
+                    case 4    -> MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Titanium);
+                    case 5    -> MaterialParts.craftIngredient(OrePrefixes.plate, Materials.TungstenSteel);
+                    case 6    -> MaterialParts.craftIngredient(OrePrefixes.plate, Materials.HSSG);
+                    case 7    -> MaterialParts.craftIngredient(OrePrefixes.plate, Materials.HSSE);
+                    default   -> MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Neutronium);
                 };
 
                 case PIPE -> switch (machineTier) {
-                    case 0, 1 -> MaterialParts.craftIngredient(OrePrefixes.pipeMedium, Materials2Materials.Bronze);
-                    case 2    -> MaterialParts.craftIngredient(OrePrefixes.pipeMedium, Materials2Materials.Steel);
-                    case 3    -> MaterialParts.craftIngredient(OrePrefixes.pipeMedium, Materials2Materials.StainlessSteel);
-                    case 4    -> MaterialParts.craftIngredient(OrePrefixes.pipeMedium, Materials2Materials.Titanium);
-                    case 5    -> MaterialParts.craftIngredient(OrePrefixes.pipeMedium, Materials2Materials.TungstenSteel);
+                    case 0, 1 -> MaterialParts.craftIngredient(OrePrefixes.pipeMedium, Materials.Bronze);
+                    case 2    -> MaterialParts.craftIngredient(OrePrefixes.pipeMedium, Materials.Steel);
+                    case 3    -> MaterialParts.craftIngredient(OrePrefixes.pipeMedium, Materials.StainlessSteel);
+                    case 4    -> MaterialParts.craftIngredient(OrePrefixes.pipeMedium, Materials.Titanium);
+                    case 5    -> MaterialParts.craftIngredient(OrePrefixes.pipeMedium, Materials.TungstenSteel);
                     case 6    -> TieredItems.ZPM.getPipeSmallIngredient();
                     case 7    -> TieredItems.ZPM.getPipeMediumIngredient();
                     case 8    -> TieredItems.ZPM.getPipeLargeIngredient();
@@ -755,55 +755,55 @@ public class GTModHandler {
 
                 case COIL_HEATING -> switch (machineTier) {
                     case 0, 1 -> OrePrefixes.wireGt02.ingredient(Materials2Backings.AnyCopper);
-                    case 2    -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials2Materials.Cupronickel);
-                    case 3    -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials2Materials.Kanthal);
-                    case 4    -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials2Materials.Nichrome);
-                    case 5    -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials2Materials.TPVAlloy);
-                    case 6    -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials2Materials.HSSG);
-                    case 7    -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials2Materials.Naquadah);
-                    case 8    -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials2Materials.NaquadahAlloy);
-                    case 9    -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials2Materials.NaquadahAlloy);
-                    default   -> MaterialParts.craftIngredient(OrePrefixes.wireGt08, Materials2Materials.NaquadahAlloy);
+                    case 2    -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials.Cupronickel);
+                    case 3    -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials.Kanthal);
+                    case 4    -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials.Nichrome);
+                    case 5    -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials.TPVAlloy);
+                    case 6    -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials.HSSG);
+                    case 7    -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials.Naquadah);
+                    case 8    -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials.NaquadahAlloy);
+                    case 9    -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.NaquadahAlloy);
+                    default   -> MaterialParts.craftIngredient(OrePrefixes.wireGt08, Materials.NaquadahAlloy);
                 };
 
                 case COIL_HEATING_DOUBLE -> switch (machineTier) {
                     case 0, 1 -> OrePrefixes.wireGt04.ingredient(Materials2Backings.AnyCopper);
-                    case 2    -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials2Materials.Cupronickel);
-                    case 3    -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials2Materials.Kanthal);
-                    case 4    -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials2Materials.Nichrome);
-                    case 5    -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials2Materials.TPVAlloy);
-                    case 6    -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials2Materials.HSSG);
-                    case 7    -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials2Materials.Naquadah);
-                    case 8    -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials2Materials.NaquadahAlloy);
-                    case 9    -> MaterialParts.craftIngredient(OrePrefixes.wireGt08, Materials2Materials.NaquadahAlloy);
-                    default   -> MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials2Materials.NaquadahAlloy);
+                    case 2    -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.Cupronickel);
+                    case 3    -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.Kanthal);
+                    case 4    -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.Nichrome);
+                    case 5    -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.TPVAlloy);
+                    case 6    -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.HSSG);
+                    case 7    -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.Naquadah);
+                    case 8    -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.NaquadahAlloy);
+                    case 9    -> MaterialParts.craftIngredient(OrePrefixes.wireGt08, Materials.NaquadahAlloy);
+                    default   -> MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials.NaquadahAlloy);
                 };
 
                 case STICK_MAGNETIC -> switch (machineTier) {
-                    case 0, 1       -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials2Materials.IronMagnetic);
-                    case 2, 3       -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials2Materials.SteelMagnetic);
-                    case 4, 5       -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials2Materials.NeodymiumMagnetic);
-                    case 6, 7, 8, 9 -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials2Materials.SamariumMagnetic);
-                    default         -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials2Materials.TengamAttuned);
+                    case 0, 1       -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials.IronMagnetic);
+                    case 2, 3       -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials.SteelMagnetic);
+                    case 4, 5       -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials.NeodymiumMagnetic);
+                    case 6, 7, 8, 9 -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials.SamariumMagnetic);
+                    default         -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials.TengamAttuned);
                 };
 
                 case STICK_ELECTROMAGNETIC -> switch (machineTier) {
                     case 0, 1 -> OrePrefixes.stick.ingredient(Materials2Backings.AnyIron);
-                    case 2, 3 -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials2Materials.Steel);
-                    case 4    -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials2Materials.Neodymium);
-                    default   -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials2Materials.VanadiumGallium);
+                    case 2, 3 -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials.Steel);
+                    case 4    -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials.Neodymium);
+                    default   -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials.VanadiumGallium);
                 };
 
                 case COIL_ELECTRIC -> switch (machineTier) {
-                    case 0  -> MaterialParts.craftIngredient(OrePrefixes.wireGt01, Materials2Materials.Lead);
-                    case 1  -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials2Materials.Tin);
+                    case 0  -> MaterialParts.craftIngredient(OrePrefixes.wireGt01, Materials.Lead);
+                    case 1  -> MaterialParts.craftIngredient(OrePrefixes.wireGt02, Materials.Tin);
                     case 2  -> OrePrefixes.wireGt02.ingredient(Materials2Backings.AnyCopper);
                     case 3  -> OrePrefixes.wireGt04.ingredient(Materials2Backings.AnyCopper);
-                    case 4  -> MaterialParts.craftIngredient(OrePrefixes.wireGt08, Materials2Materials.AnnealedCopper);
-                    case 5  -> MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials2Materials.AnnealedCopper);
-                    case 6  -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials2Materials.YttriumBariumCuprate);
-                    case 7  -> MaterialParts.craftIngredient(OrePrefixes.wireGt08, Materials2Materials.Iridium);
-                    default -> MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials2Materials.Osmium);
+                    case 4  -> MaterialParts.craftIngredient(OrePrefixes.wireGt08, Materials.AnnealedCopper);
+                    case 5  -> MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials.AnnealedCopper);
+                    case 6  -> MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.YttriumBariumCuprate);
+                    case 7  -> MaterialParts.craftIngredient(OrePrefixes.wireGt08, Materials.Iridium);
+                    default -> MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials.Osmium);
                 };
 
                 case ROBOT_ARM -> switch (machineTier) {
@@ -943,14 +943,14 @@ public class GTModHandler {
                 };
 
                 case ROTOR -> switch (machineTier) {
-                    case 0, 1 -> MaterialParts.craftIngredient(OrePrefixes.rotor, Materials2Materials.Tin);
-                    case 2    -> MaterialParts.craftIngredient(OrePrefixes.rotor, Materials2Materials.Bronze);
-                    case 3    -> MaterialParts.craftIngredient(OrePrefixes.rotor, Materials2Materials.Steel);
-                    case 4    -> MaterialParts.craftIngredient(OrePrefixes.rotor, Materials2Materials.StainlessSteel);
-                    case 5    -> MaterialParts.craftIngredient(OrePrefixes.rotor, Materials2Materials.TungstenSteel);
-                    case 6    -> MaterialParts.craftIngredient(OrePrefixes.rotor, Materials2Materials.RhodiumPlatedPalladium);
-                    case 7    -> MaterialParts.craftIngredient(OrePrefixes.rotor, Materials2Materials.Iridium);
-                    default   -> MaterialParts.craftIngredient(OrePrefixes.rotor, Materials2Materials.Osmium);
+                    case 0, 1 -> MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Tin);
+                    case 2    -> MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Bronze);
+                    case 3    -> MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Steel);
+                    case 4    -> MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.StainlessSteel);
+                    case 5    -> MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.TungstenSteel);
+                    case 6    -> MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.RhodiumPlatedPalladium);
+                    case 7    -> MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Iridium);
+                    default   -> MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Osmium);
                 };
 
                 default -> throw new IllegalArgumentException("MISSING TIER MAPPING FOR: " + aRecipe[i] + " AT TIER " + machineTier);
@@ -1098,10 +1098,10 @@ public class GTModHandler {
             } else if (in instanceof ItemData) {
                 String tString = in.toString();
                 switch (tString) {
-                    case "plankWood" -> tItemDataMap.put(chr, new ItemData(Materials2Materials.Wood, M));
-                    case "stoneNetherrack" -> tItemDataMap.put(chr, new ItemData(Materials2Materials.Netherrack, M));
-                    case "stoneObsidian" -> tItemDataMap.put(chr, new ItemData(Materials2Materials.Obsidian, M));
-                    case "stoneEndstone" -> tItemDataMap.put(chr, new ItemData(Materials2Materials.Endstone, M));
+                    case "plankWood" -> tItemDataMap.put(chr, new ItemData(Materials.Wood, M));
+                    case "stoneNetherrack" -> tItemDataMap.put(chr, new ItemData(Materials.Netherrack, M));
+                    case "stoneObsidian" -> tItemDataMap.put(chr, new ItemData(Materials.Obsidian, M));
+                    case "stoneEndstone" -> tItemDataMap.put(chr, new ItemData(Materials.Endstone, M));
                     default -> tItemDataMap.put(chr, (ItemData) in);
                 }
                 ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
@@ -1110,17 +1110,17 @@ public class GTModHandler {
                 in = aRecipe[idx + 1] = in.toString();
             } else if (in instanceof String) {
                 if (in.equals(OreDictNames.craftingChest.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials2Materials.Wood, M * 8));
+                    tItemDataMap.put(chr, new ItemData(Materials.Wood, M * 8));
                 else if (in.equals(OreDictNames.craftingBook.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials2Materials.Paper, M * 3));
+                    tItemDataMap.put(chr, new ItemData(Materials.Paper, M * 3));
                 else if (in.equals(OreDictNames.craftingPiston.toString())) tItemDataMap
-                    .put(chr, new ItemData(Materials2Materials.Stone, M * 4, Materials2Materials.Wood, M * 3));
+                    .put(chr, new ItemData(Materials.Stone, M * 4, Materials.Wood, M * 3));
                 else if (in.equals(OreDictNames.craftingFurnace.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials2Materials.Stone, M * 8));
+                    tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 8));
                 else if (in.equals(OreDictNames.craftingIndustrialDiamond.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials2Materials.Diamond, M));
+                    tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
                 else if (in.equals(OreDictNames.craftingAnvil.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials2Materials.Iron, M * 10));
+                    tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
                 ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
                 if (tStack == null) tRemoveRecipe = false;
                 else tItemStackMap.put(chr, tStack);

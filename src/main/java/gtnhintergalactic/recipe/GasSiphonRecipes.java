@@ -3,12 +3,12 @@ package gtnhintergalactic.recipe;
 import java.util.HashMap;
 import java.util.Map;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MaterialUtils;
 
 /**
@@ -33,16 +33,16 @@ public class GasSiphonRecipes {
             .addFluid(
                 1,
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (15_000)))
+                    .getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (15_000)))
             .addFluid(
                 2,
-                MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int) (500)))
+                MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, (int) (500)))
             .addFluid(
                 3,
-                MaterialLibAPI.getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.fluidGas, (int) (300)))
+                MaterialLibAPI.getFluidStack(Materials.Nitrogen, Materials2FluidShapes.fluidGas, (int) (300)))
             .addFluid(
                 4,
-                MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (200)))
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (200)))
             .build();
 
         // T5 (-> 0.5 to 2A of LuV)
@@ -50,17 +50,17 @@ public class GasSiphonRecipes {
             .addFluid(
                 1,
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (18_000)))
+                    .getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (18_000)))
             .addFluid(
                 2,
-                MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int) (800)))
+                MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, (int) (800)))
             .addFluid(
                 3,
-                MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (500)))
+                MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int) (500)))
             .addFluid(
                 4,
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.LiquidOxygen, Materials2FluidShapes.fluidGas, (int) (150)))
+                    .getFluidStack(Materials.LiquidOxygen, Materials2FluidShapes.fluidGas, (int) (150)))
             .build();
 
         // T5 (-> 0.5 to 2A of LuV)
@@ -68,17 +68,17 @@ public class GasSiphonRecipes {
             .addFluid(
                 1,
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Deuterium, Materials2FluidShapes.fluidGas, (int) (5_000)))
+                    .getFluidStack(Materials.Deuterium, Materials2FluidShapes.fluidGas, (int) (5_000)))
             .addFluid(
                 2,
-                MaterialLibAPI.getFluidStack(Materials2Materials.Neon, Materials2FluidShapes.fluidLiquid, (int) (450)))
+                MaterialLibAPI.getFluidStack(Materials.Neon, Materials2FluidShapes.fluidLiquid, (int) (450)))
             .addFluid(
                 3,
-                MaterialLibAPI.getFluidStack(Materials2Materials.Argon, Materials2FluidShapes.fluidGas, (int) (250)))
+                MaterialLibAPI.getFluidStack(Materials.Argon, Materials2FluidShapes.fluidGas, (int) (250)))
             .addFluid(
                 4,
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (100)))
+                    .getFluidStack(Materials.Krypton, Materials2FluidShapes.fluidLiquid, (int) (100)))
             .build();
 
         // T6 (-> 0.5 to 2A of ZPM)
@@ -86,14 +86,14 @@ public class GasSiphonRecipes {
             .addFluid(
                 1,
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Tritium, Materials2FluidShapes.fluidGas, (int) (3_000)))
-            .addFluid(2, MaterialUtils.gas(Materials2Materials.Helium3, 500))
+                    .getFluidStack(Materials.Tritium, Materials2FluidShapes.fluidGas, (int) (3_000)))
+            .addFluid(2, MaterialUtils.gas(Materials.Helium3, 500))
             .addFluid(
                 3,
-                MaterialLibAPI.getFluidStack(Materials2Materials.Ammonia, Materials2FluidShapes.fluidGas, (int) (400)))
+                MaterialLibAPI.getFluidStack(Materials.Ammonia, Materials2FluidShapes.fluidGas, (int) (400)))
             .addFluid(
                 4,
-                MaterialLibAPI.getFluidStack(Materials2Materials.Xenon, Materials2FluidShapes.fluidLiquid, (int) (350)))
+                MaterialLibAPI.getFluidStack(Materials.Xenon, Materials2FluidShapes.fluidLiquid, (int) (350)))
             .build();
     }
 
@@ -106,13 +106,13 @@ public class GasSiphonRecipes {
      * <p>
      * Usage:
      * new GasSiphonRecipe("planet.jupiter", 3)
-     * .addFluid(1, MaterialLibAPI.getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas,
+     * .addFluid(1, MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas,
      * (int) (15_000)))
-     * .addFluid(2, MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int)
+     * .addFluid(2, MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, (int)
      * (500)))
-     * .addFluid(3, MaterialLibAPI.getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.fluidGas,
+     * .addFluid(3, MaterialLibAPI.getFluidStack(Materials.Nitrogen, Materials2FluidShapes.fluidGas,
      * (int) (300)))
-     * .addFluid(4, MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, (int)
+     * .addFluid(4, MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, (int)
      * (200)))
      * .build();
      * <p>

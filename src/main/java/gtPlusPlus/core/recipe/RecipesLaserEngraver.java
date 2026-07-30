@@ -5,6 +5,7 @@ import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -14,7 +15,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GTOreDictUnificator;
@@ -34,17 +34,17 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
         if (aOreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials2Materials.Lithium, Materials2Shapes.plate, (int) (2)),
+                    MaterialLibAPI.getStack(Materials.Lithium, Materials2Shapes.plate, (int) (2)),
                     GTUtility.copyAmount(0L, aStack))
-                .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Lithium7, Materials2Shapes.plateDouble, 1))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.Lithium7, Materials2Shapes.plateDouble, 1))
                 .duration(4 * MINUTES)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(laserEngraverRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    MaterialLibAPI.getStack(Materials2Materials.Lithium, Materials2Shapes.dust, (int) (3)),
+                    MaterialLibAPI.getStack(Materials.Lithium, Materials2Shapes.dust, (int) (3)),
                     GTUtility.copyAmount(0L, aStack))
-                .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Lithium7, Materials2Shapes.dust, 1))
+                .itemOutputs(MaterialLibAPI.getStack(Materials.Lithium7, Materials2Shapes.dust, 1))
                 .duration(2 * MINUTES)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(laserEngraverRecipes);
@@ -57,15 +57,15 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
             ItemStack coilWire4 = GregtechItemList.DehydratorCoilWireZPM.get(1);
 
             // Wires to Laser
-            ItemStack wireT1a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials2Materials.Aluminium, 1);
-            ItemStack wireT1b = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials2Materials.Nichrome, 1);
-            ItemStack wireT2a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials2Materials.Osmium, 1);
-            ItemStack wireT2b = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials2Materials.Platinum, 1);
-            ItemStack wireT3a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials2Materials.VanadiumGallium, 1);
+            ItemStack wireT1a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Aluminium, 1);
+            ItemStack wireT1b = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Nichrome, 1);
+            ItemStack wireT2a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Osmium, 1);
+            ItemStack wireT2b = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Platinum, 1);
+            ItemStack wireT3a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.VanadiumGallium, 1);
             ItemStack wireT3b = GTOreDictUnificator
-                .get(OrePrefixes.wireGt02, Materials2Materials.YttriumBariumCuprate, 1);
-            ItemStack wireT3c = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials2Materials.NiobiumTitanium, 1);
-            ItemStack wireT4a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials2Materials.Naquadah, 1);
+                .get(OrePrefixes.wireGt02, Materials.YttriumBariumCuprate, 1);
+            ItemStack wireT3c = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 1);
+            ItemStack wireT4a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Naquadah, 1);
 
             // T1
             GTValues.RA.stdBuilder()

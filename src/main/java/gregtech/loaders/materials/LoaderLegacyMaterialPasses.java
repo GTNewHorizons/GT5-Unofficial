@@ -9,8 +9,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2IDIndex;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.common.config.Gregtech;
@@ -63,29 +63,29 @@ public final class LoaderLegacyMaterialPasses {
             .collect(Collectors.toSet());
 
         OrePrefixes.ingotHot.mDisabledItems.addAll(mlHotIngots);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.Reinforced);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.ConductiveIron);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.FierySteel);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.ElectricalSteel);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.EndSteel);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.Soularium);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.EnergeticSilver);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.Cheese);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.Calcium);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.FleroviumGT5U);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.Cobalt);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.RedstoneAlloy);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.Ardite);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.DarkSteel);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.BlackSteel);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.EnergeticAlloy);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.PulsatingIron);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.CrudeSteel);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.Netherite);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.hotprotohalkonite);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.protohalkonite);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.hotexohalkonite);
-        OrePrefixes.ingotHot.disableComponent(Materials2Materials.exohalkonite);
+        OrePrefixes.ingotHot.disableComponent(Materials.Reinforced);
+        OrePrefixes.ingotHot.disableComponent(Materials.ConductiveIron);
+        OrePrefixes.ingotHot.disableComponent(Materials.FierySteel);
+        OrePrefixes.ingotHot.disableComponent(Materials.ElectricalSteel);
+        OrePrefixes.ingotHot.disableComponent(Materials.EndSteel);
+        OrePrefixes.ingotHot.disableComponent(Materials.Soularium);
+        OrePrefixes.ingotHot.disableComponent(Materials.EnergeticSilver);
+        OrePrefixes.ingotHot.disableComponent(Materials.Cheese);
+        OrePrefixes.ingotHot.disableComponent(Materials.Calcium);
+        OrePrefixes.ingotHot.disableComponent(Materials.FleroviumGT5U);
+        OrePrefixes.ingotHot.disableComponent(Materials.Cobalt);
+        OrePrefixes.ingotHot.disableComponent(Materials.RedstoneAlloy);
+        OrePrefixes.ingotHot.disableComponent(Materials.Ardite);
+        OrePrefixes.ingotHot.disableComponent(Materials.DarkSteel);
+        OrePrefixes.ingotHot.disableComponent(Materials.BlackSteel);
+        OrePrefixes.ingotHot.disableComponent(Materials.EnergeticAlloy);
+        OrePrefixes.ingotHot.disableComponent(Materials.PulsatingIron);
+        OrePrefixes.ingotHot.disableComponent(Materials.CrudeSteel);
+        OrePrefixes.ingotHot.disableComponent(Materials.Netherite);
+        OrePrefixes.ingotHot.disableComponent(Materials.hotprotohalkonite);
+        OrePrefixes.ingotHot.disableComponent(Materials.protohalkonite);
+        OrePrefixes.ingotHot.disableComponent(Materials.hotexohalkonite);
+        OrePrefixes.ingotHot.disableComponent(Materials.exohalkonite);
     }
 
     private static void addHarvestLevels() {

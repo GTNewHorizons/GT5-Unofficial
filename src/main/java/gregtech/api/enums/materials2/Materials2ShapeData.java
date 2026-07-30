@@ -113,7 +113,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials2Materials.Tin, M * 2));
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         Materials2CellShapes.cellHydroCracked1.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Lightly Hydro-Cracked %s Cell")
@@ -121,7 +121,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true)
-            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials2Materials.Tin, M * 2));
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         Materials2CellShapes.cellHydroCracked2.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Moderately Hydro-Cracked %s Cell")
@@ -129,7 +129,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true)
-            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials2Materials.Tin, M * 2));
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         Materials2CellShapes.cellHydroCracked3.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Severely Hydro-Cracked %s Cell")
@@ -137,7 +137,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true)
-            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials2Materials.Tin, M * 2));
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         Materials2CellShapes.cellMolten.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL_PLASMA)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(TOOL_HEAD))
@@ -147,7 +147,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.HEAT_DAMAGE, 3.0F)
-            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials2Materials.Tin, M * 2));
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         Materials2CellShapes.cellPlasma.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL_PLASMA)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(PLASMA))
@@ -157,7 +157,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.HEAT_DAMAGE, 6.0F)
-            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials2Materials.Tin, M * 2));
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         Materials2CellShapes.cellPlasmaLight // from prefix cellPlasma
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL_PLASMA)
@@ -168,7 +168,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.HEAT_DAMAGE, 6.0F)
-            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials2Materials.Tin, M * 2));
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         Materials2CellShapes.cellSteamCracked1.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Lightly Steam-Cracked %s Cell")
@@ -176,7 +176,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true)
-            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials2Materials.Tin, M * 2));
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         Materials2CellShapes.cellSteamCracked2.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Moderately Steam-Cracked %s Cell")
@@ -184,7 +184,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true)
-            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials2Materials.Tin, M * 2));
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         Materials2CellShapes.cellSteamCracked3.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Severely Steam-Cracked %s Cell")
@@ -192,14 +192,14 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true)
-            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials2Materials.Tin, M * 2));
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         Materials2Shapes.crushed.setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CRUSHED)
             .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(ORE))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Crushed %s Ore")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
-            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials2Materials.Stone, M * 1))
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Stone, M * 1))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.PERFODIO, 1L)));
         Materials2Shapes.crushedCentrifuged
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CRUSHED_CENTRIFUGED)
@@ -391,7 +391,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
-            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials2Materials.Steel, M / 4 * 5))
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Steel, M / 4 * 5))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         Materials2PipeShapes.itemPipeRestrictiveLarge // from prefix pipeRestrictiveLarge
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 6)
@@ -401,7 +401,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
-            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials2Materials.Steel, M / 4 * 4))
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Steel, M / 4 * 4))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         Materials2PipeShapes.itemPipeRestrictiveMedium // from prefix pipeRestrictiveMedium
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 3)
@@ -411,7 +411,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
-            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials2Materials.Steel, M / 4 * 3))
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Steel, M / 4 * 3))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         Materials2PipeShapes.itemPipeRestrictiveSmall // from prefix pipeRestrictiveSmall
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
@@ -421,7 +421,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
-            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials2Materials.Steel, M / 4 * 2))
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Steel, M / 4 * 2))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         Materials2PipeShapes.itemPipeRestrictiveTiny // from prefix pipeRestrictiveTiny
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 2)
@@ -431,7 +431,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
-            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials2Materials.Steel, M / 4))
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Steel, M / 4))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         Materials2PipeShapes.itemPipeSmall // from prefix pipeSmall
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
@@ -477,7 +477,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Ore")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
-            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials2Materials.Stone, M * 1))
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Stone, M * 1))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.TERRA, 1L)));
         Materials2OreShapes.oreSmall.setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.ORE_SMALL)
             .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
@@ -485,7 +485,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Small %s Ore")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
-            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials2Materials.Stone, M * 2))
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Stone, M * 2))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.TERRA, 1L)));
         Materials2PipeShapes.pipeHuge.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 12)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_HUGE)
@@ -605,7 +605,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Raw %s Ore")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
-            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials2Materials.Stone, M * 1));
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Stone, M * 1));
         Materials2Shapes.ring.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 4)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.RING)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL))
@@ -687,7 +687,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(
                 GTShapeProperties.SECONDARY_MATERIAL,
-                new MaterialStack(Materials2Materials.Steel, M * 4 + M / 4 * 2))
+                new MaterialStack(Materials.Steel, M * 4 + M / 4 * 2))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.INSTRUMENTUM, 2L)));
         Materials2Shapes.toolHeadDrill.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 4)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.TOOL_HEAD_DRILL)
@@ -730,7 +730,7 @@ public final class Materials2ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(
                 GTShapeProperties.SECONDARY_MATERIAL,
-                new MaterialStack(Materials2Materials.Steel, M / 4 + M / 8 * 2))
+                new MaterialStack(Materials.Steel, M / 4 + M / 8 * 2))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.INSTRUMENTUM, 2L)));
         Materials2Shapes.turbineBlade.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 6)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.TURBINE_BLADE)

@@ -13,7 +13,7 @@ public interface IOreRecipeRegistrator {
      * before.
      *
      * @param prefix   always != null
-     * @param material always != null, and can be == Materials2Materials.NULL if the Prefix is Self Referencing or not
+     * @param material always != null, and can be == Materials.NULL if the Prefix is Self Referencing or not
      *                 Material based!
      * @param stack    always != null
      */

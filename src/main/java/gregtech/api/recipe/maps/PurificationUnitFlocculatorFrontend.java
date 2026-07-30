@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -16,7 +17,6 @@ import com.gtnewhorizons.modularui.api.math.Size;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
@@ -62,7 +62,7 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
         GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         if (stack.isItemEqual(
             GTUtility
-                .getFluidDisplayStack(MaterialUtils.fluid(Materials2Materials.PolyaluminiumChloride, 1_000), false))) {
+                .getFluidDisplayStack(MaterialUtils.fluid(Materials.PolyaluminiumChloride, 1_000), false))) {
             currentTip.add(StatCollector.translateToLocal("GT5U.nei.purified_water.grade_3.0"));
             currentTip.add(
                 StatCollector.translateToLocalFormatted(
@@ -72,7 +72,7 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
         } else if (stack.isItemEqual(
             GTUtility.getFluidDisplayStack(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.FlocculationWasteLiquid,
+                    Materials.FlocculationWasteLiquid,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (1_000)),
                 false))) {

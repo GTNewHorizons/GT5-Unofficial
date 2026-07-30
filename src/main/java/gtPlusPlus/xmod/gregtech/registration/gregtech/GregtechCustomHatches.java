@@ -49,10 +49,10 @@ import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Output_UHV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Output_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.Hatch_SuperBus_Output_ZPM;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.GTAuthors;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.material.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -139,7 +139,7 @@ public class GregtechCustomHatches {
         // Steam Hatch
         GregtechItemList.Hatch_Input_Steam.set(
             new MTEHatchCustomFluidBase(
-                MaterialUtils.gas(Materials2Materials.Steam, 1)
+                MaterialUtils.gas(Materials.Steam, 1)
                     .getFluid(), // Fluid to restrict hatch to
                 64000, // Capacity
                 Hatch_Input_Steam.ID, // ID
@@ -150,7 +150,7 @@ public class GregtechCustomHatches {
         // Debug Steam Hatch
         GregtechItemList.Hatch_Input_Debug_Steam.set(
             new MTEHatchCustomFluidBaseDebug(
-                MaterialUtils.gas(Materials2Materials.Steam, 1)
+                MaterialUtils.gas(Materials.Steam, 1)
                     .getFluid(), // Fluid to restrict hatch
                 Hatch_Input_Debug_Steam.ID, // ID
                 "hatch.steam.input.debug", // unlocal name

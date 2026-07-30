@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -8,7 +9,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -45,28 +45,28 @@ public class SmelterRecipes implements Runnable {
         GTModHandler.addSmeltingRecipe(new ItemStack(Items.slime_ball, 1), ItemList.IC2_Resin.get(1L));
 
         GTModHandler.addSmeltingRecipe(
-            GTOreDictUnificator.get(OrePrefixes.ore, Materials2Materials.Graphite, 1L),
-            MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1L)));
+            GTOreDictUnificator.get(OrePrefixes.ore, Materials.Graphite, 1L),
+            MaterialLibAPI.getStack(Materials.Graphite, Materials2Shapes.dust, (int) (1L)));
 
         GTModHandler.addSmeltingRecipe(
-            GTOreDictUnificator.get(OrePrefixes.oreBlackgranite, Materials2Materials.Graphite, 1L),
-            MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1L)));
+            GTOreDictUnificator.get(OrePrefixes.oreBlackgranite, Materials.Graphite, 1L),
+            MaterialLibAPI.getStack(Materials.Graphite, Materials2Shapes.dust, (int) (1L)));
 
         GTModHandler.addSmeltingRecipe(
-            GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials2Materials.Graphite, 1L),
-            MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1L)));
+            GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Graphite, 1L),
+            MaterialLibAPI.getStack(Materials.Graphite, Materials2Shapes.dust, (int) (1L)));
 
         GTModHandler.addSmeltingRecipe(
-            GTOreDictUnificator.get(OrePrefixes.oreNetherrack, Materials2Materials.Graphite, 1L),
-            MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1L)));
+            GTOreDictUnificator.get(OrePrefixes.oreNetherrack, Materials.Graphite, 1L),
+            MaterialLibAPI.getStack(Materials.Graphite, Materials2Shapes.dust, (int) (1L)));
 
         GTModHandler.addSmeltingRecipe(
-            MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.nugget, (int) (1L)),
-            MaterialLibAPI.getStack(Materials2Materials.CastIron, Materials2Shapes.nugget, (int) (1L)));
+            MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.nugget, (int) (1L)),
+            MaterialLibAPI.getStack(Materials.CastIron, Materials2Shapes.nugget, (int) (1L)));
 
         GTModHandler.addSmeltingRecipe(
-            GTOreDictUnificator.get(OrePrefixes.oreRedgranite, Materials2Materials.Graphite, 1L),
-            MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, (int) (1L)));
+            GTOreDictUnificator.get(OrePrefixes.oreRedgranite, Materials.Graphite, 1L),
+            MaterialLibAPI.getStack(Materials.Graphite, Materials2Shapes.dust, (int) (1L)));
 
         GameRegistry.addSmelting(ItemList.CompressedFireclay.get(1), ItemList.Firebrick.get(1), 0);
     }

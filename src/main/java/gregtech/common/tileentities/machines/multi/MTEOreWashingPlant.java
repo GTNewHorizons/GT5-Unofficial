@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -40,7 +41,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -83,7 +83,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
         .<MTEOreWashingPlant>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
         .addElement('A', Casings.SteelGearBoxCasing.asElement())
-        .addElement('B', ofFrame(Materials2Materials.Steel))
+        .addElement('B', ofFrame(Materials.Steel))
         .addElement(
             'C',
             buildHatchAdder(MTEOreWashingPlant.class)

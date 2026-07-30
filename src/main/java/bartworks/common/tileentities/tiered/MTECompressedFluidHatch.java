@@ -13,12 +13,12 @@
 
 package bartworks.common.tileentities.tiered;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -49,11 +49,11 @@ public class MTECompressedFluidHatch extends MTEHatchInput {
     public boolean isFluidInputAllowed(FluidStack aFluid) {
         return GTUtility.areFluidsEqual(
             aFluid,
-            MaterialLibAPI.getFluidStack(Materials2Materials.LiquidAir, Materials2FluidShapes.fluidLiquid, 1))
-            || GTUtility.areFluidsEqual(aFluid, MaterialUtils.fluid(Materials2Materials.nethersemifluid, 1))
+            MaterialLibAPI.getFluidStack(Materials.LiquidAir, Materials2FluidShapes.fluidLiquid, 1))
+            || GTUtility.areFluidsEqual(aFluid, MaterialUtils.fluid(Materials.nethersemifluid, 1))
             || GTUtility.areFluidsEqual(
                 aFluid,
-                MaterialLibAPI.getFluidStack(Materials2Materials.ToxicAir, Materials2FluidShapes.fluidGas, 1));
+                MaterialLibAPI.getFluidStack(Materials.ToxicAir, Materials2FluidShapes.fluidGas, 1));
     }
 
     @Override

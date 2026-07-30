@@ -1,5 +1,6 @@
 package gtPlusPlus.core.handler;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -7,7 +8,6 @@ import com.github.bsideup.jabel.Desugar;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -79,13 +79,13 @@ public class BookHandler {
         GTModHandler.addShapelessCraftingRecipe(
             new ItemStack(ModItems.itemCustomBook, 1, 1),
             new ItemStack[] { new ItemStack(Items.writable_book),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials2Materials.Tin, 1) });
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tin, 1) });
 
         // Nuclear Manual
         GTModHandler.addShapelessCraftingRecipe(
             new ItemStack(ModItems.itemCustomBook, 1, 4),
             new ItemStack[] { new ItemStack(Items.writable_book),
-                MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.dust, (int) (1)) });
+                MaterialLibAPI.getStack(Materials.Uranium, Materials2Shapes.dust, (int) (1)) });
 
         for (int meta : mBookMap.keySet()) {
             ItemStack bookstack = new ItemStack(ModItems.itemCustomBook, 1, meta);

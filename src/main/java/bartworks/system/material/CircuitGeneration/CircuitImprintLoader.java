@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -35,7 +36,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -467,7 +467,7 @@ public class CircuitImprintLoader {
         ItemStack imprintSupportingBoard = CircuitPartsItem.getCircuitParts()
             .getStack(3);
         ItemStack exquisitePrasiolite = MaterialLibAPI
-            .getStack(Materials2Materials.Prasiolite, Materials2Shapes.gemExquisite, 1);
+            .getStack(Materials.Prasiolite, Materials2Shapes.gemExquisite, 1);
         long bitmask = GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.KEEPNBT
             | GTModHandler.RecipeBits.BUFFERED;
         for (int i = 0; i < circuitImprints.size(); i++) {

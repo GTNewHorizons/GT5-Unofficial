@@ -7,6 +7,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -15,7 +16,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
@@ -50,7 +50,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
 
         if ((!MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM))
             && GTOreDictUnificator.get(OrePrefixes.ingot, MaterialUtils.smeltInto(material), 1L) != null
-            && material != Materials2Materials.Aluminium) {
+            && material != Materials.Aluminium) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(9, stack), ItemList.Shape_Mold_Ingot.get(0L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MaterialUtils.smeltInto(material), 1L))
@@ -61,7 +61,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         }
 
         if (MaterialUtils.hasMolten(material)) {
-            if (!(material == Materials2Materials.AnnealedCopper || material == Materials2Materials.CastIron)) {
+            if (!(material == Materials.AnnealedCopper || material == Materials.CastIron)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nugget, material, 1L))

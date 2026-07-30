@@ -473,6 +473,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -505,7 +506,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials2.Materials2Backings;
 import gregtech.api.enums.materials2.Materials2IDIndex;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.ITexture;
@@ -636,7 +636,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 IDMetaItem01.Credit_Greg_Cupronickel.ID,
                 "gt.item.credit.cupronickel.name",
                 "gt.item.credit.cupronickel.tooltip",
-                new ItemData(Materials2Materials.Cupronickel, 907200L)));
+                new ItemData(Materials.Cupronickel, 907200L)));
         ItemList.Credit_Greg_Silver.set(
             addItemWithLocalizationKeys(
                 IDMetaItem01.Credit_Greg_Silver.ID,
@@ -673,26 +673,26 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 IDMetaItem01.Coin_Gold_Ancient.ID,
                 "gt.item.coin.gold_ancient.name",
                 "gt.item.coin.gold_ancient.tooltip",
-                new ItemData(Materials2Materials.Gold, 907200L),
+                new ItemData(Materials.Gold, 907200L),
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 8L)));
         ItemList.Coin_Doge.set(
             addItemWithLocalizationKeys(
                 IDMetaItem01.Coin_Doge.ID,
                 "gt.item.coin.doge.name",
                 "gt.item.coin.doge.tooltip",
-                new ItemData(Materials2Materials.Brass, 907200L),
+                new ItemData(Materials.Brass, 907200L),
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
         ItemList.Coin_Chocolate.set(
             addItemWithLocalizationKeys(
                 IDMetaItem01.Coin_Chocolate.ID,
                 "gt.item.coin.chocolate.name",
                 "gt.item.coin.chocolate.tooltip",
-                new ItemData(Materials2Materials.Gold, OrePrefixes.foil.getMaterialAmount()),
+                new ItemData(Materials.Gold, OrePrefixes.foil.getMaterialAmount()),
                 new GTFoodStat(
                     1,
                     0.1F,
                     EnumAction.eat,
-                    MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.foil, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Gold, Materials2Shapes.foil, (int) (1)),
                     true,
                     false,
                     false,
@@ -760,8 +760,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.Component_Minecart_Wheels_Steel.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { " h ", "RSR", " w ", 'R', OrePrefixes.ring.ingredient(Materials2Materials.Steel), 'S',
-                OrePrefixes.stick.ingredient(Materials2Materials.Steel) });
+            new Object[] { " h ", "RSR", " w ", 'R', OrePrefixes.ring.ingredient(Materials.Steel), 'S',
+                OrePrefixes.stick.ingredient(Materials.Steel) });
 
         ItemList.CompressedFireclay.set(
             addItemWithLocalizationKeys(
@@ -770,13 +770,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.compressed_fireclay.tooltip"));
         GTOreDictUnificator.addItemDataFromInputs(
             ItemList.CompressedFireclay.get(1),
-            GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.Fireclay, 1));
+            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Fireclay, 1));
 
         ItemList.Firebrick
             .set(addItemWithLocalizationKeys(Firebrick.ID, "gt.item.firebrick.name", "gt.item.firebrick.tooltip"));
         GTOreDictUnificator.addItemDataFromInputs(
             ItemList.Firebrick.get(1),
-            GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.Fireclay, 1));
+            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Fireclay, 1));
 
         ItemList.Shape_Empty.set(
             addItemWithLocalizationKeys(
@@ -1099,7 +1099,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Fuel_Can_Plastic_Empty.ID,
                 "gt.item.fuel_can.plastic.empty.name",
                 "gt.item.fuel_can.plastic.empty.tooltip",
-                new ItemData(Materials2Materials.Plastic, OrePrefixes.plate.getMaterialAmount()),
+                new ItemData(Materials.Plastic, OrePrefixes.plate.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L)));
         ItemList.Fuel_Can_Plastic_Filled.set(
@@ -1107,7 +1107,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Fuel_Can_Plastic_Filled.ID,
                 "gt.item.fuel_can.plastic.filled.name",
                 "gt.item.fuel_can.plastic.filled.tooltip",
-                new ItemData(Materials2Materials.Plastic, OrePrefixes.plate.getMaterialAmount()),
+                new ItemData(Materials.Plastic, OrePrefixes.plate.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L)));
 
@@ -1117,9 +1117,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.spray.empty.name",
                 "gt.item.spray.empty.tooltip",
                 new ItemData(
-                    Materials2Materials.Tin,
+                    Materials.Tin,
                     OrePrefixes.plate.getMaterialAmount() * 2L,
-                    Materials2Materials.Redstone,
+                    Materials.Redstone,
                     OrePrefixes.dust.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
@@ -1130,7 +1130,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.thermos_can.empty.name",
                 "gt.item.thermos_can.empty.tooltip",
                 new ItemData(
-                    Materials2Materials.Aluminium,
+                    Materials.Aluminium,
                     OrePrefixes.plateDouble.getMaterialAmount() + 2L * OrePrefixes.ring.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
@@ -1142,9 +1142,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.large_fluid_cell.steel.name",
                 "gt.item.large_fluid_cell.steel.tooltip",
                 new ItemData(
-                    Materials2Materials.Steel,
+                    Materials.Steel,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
-                    new MaterialStack(Materials2Materials.Bronze, OrePrefixes.ring.getMaterialAmount() * 4L)),
+                    new MaterialStack(Materials.Bronze, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L)));
 
@@ -1154,9 +1154,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.large_fluid_cell.tungstensteel.name",
                 "gt.item.large_fluid_cell.tungstensteel.tooltip",
                 new ItemData(
-                    Materials2Materials.TungstenSteel,
+                    Materials.TungstenSteel,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
-                    new MaterialStack(Materials2Materials.Platinum, OrePrefixes.ring.getMaterialAmount() * 4L)),
+                    new MaterialStack(Materials.Platinum, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 9L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 7L)));
 
@@ -1166,9 +1166,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.large_fluid_cell.aluminium.name",
                 "gt.item.large_fluid_cell.aluminium.tooltip",
                 new ItemData(
-                    Materials2Materials.Aluminium,
+                    Materials.Aluminium,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
-                    new MaterialStack(Materials2Materials.Silver, OrePrefixes.ring.getMaterialAmount() * 4L)),
+                    new MaterialStack(Materials.Silver, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 5L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 3L)));
 
@@ -1178,9 +1178,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.large_fluid_cell.stainless_steel.name",
                 "gt.item.large_fluid_cell.stainless_steel.tooltip",
                 new ItemData(
-                    Materials2Materials.StainlessSteel,
+                    Materials.StainlessSteel,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
-                    new MaterialStack(Materials2Materials.Electrum, OrePrefixes.ring.getMaterialAmount() * 4L)),
+                    new MaterialStack(Materials.Electrum, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 6L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 4L)));
 
@@ -1190,9 +1190,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.large_fluid_cell.titanium.name",
                 "gt.item.large_fluid_cell.titanium.tooltip",
                 new ItemData(
-                    Materials2Materials.Titanium,
+                    Materials.Titanium,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
-                    new MaterialStack(Materials2Materials.RoseGold, OrePrefixes.ring.getMaterialAmount() * 4L)),
+                    new MaterialStack(Materials.RoseGold, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 7L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 5L)));
 
@@ -1202,9 +1202,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.large_fluid_cell.chrome.name",
                 "gt.item.large_fluid_cell.chrome.tooltip",
                 new ItemData(
-                    Materials2Materials.Chrome,
+                    Materials.Chrome,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
-                    new MaterialStack(Materials2Materials.Palladium, OrePrefixes.ring.getMaterialAmount() * 4L)),
+                    new MaterialStack(Materials.Palladium, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 6L)));
 
@@ -1214,9 +1214,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.large_fluid_cell.iridium.name",
                 "gt.item.large_fluid_cell.iridium.tooltip",
                 new ItemData(
-                    Materials2Materials.Iridium,
+                    Materials.Iridium,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
-                    new MaterialStack(Materials2Materials.Naquadah, OrePrefixes.ring.getMaterialAmount() * 4L)),
+                    new MaterialStack(Materials.Naquadah, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 10L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 8L)));
 
@@ -1226,9 +1226,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.large_fluid_cell.osmium.name",
                 "gt.item.large_fluid_cell.osmium.tooltip",
                 new ItemData(
-                    Materials2Materials.Osmium,
+                    Materials.Osmium,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
-                    new MaterialStack(Materials2Materials.ElectrumFlux, OrePrefixes.ring.getMaterialAmount() * 4L)),
+                    new MaterialStack(Materials.ElectrumFlux, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 11L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 9L)));
 
@@ -1238,9 +1238,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.large_fluid_cell.neutronium.name",
                 "gt.item.large_fluid_cell.neutronium.tooltip",
                 new ItemData(
-                    Materials2Materials.Neutronium,
+                    Materials.Neutronium,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
-                    new MaterialStack(Materials2Materials.Draconium, OrePrefixes.ring.getMaterialAmount() * 4L)),
+                    new MaterialStack(Materials.Draconium, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 12L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 10L)));
 
@@ -1286,9 +1286,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.spray_can.solvent.empty.name",
                 "gt.item.spray_can.solvent.empty.tooltip",
                 new ItemData(
-                    Materials2Materials.Aluminium,
+                    Materials.Aluminium,
                     OrePrefixes.plateDouble.getMaterialAmount() * 4L,
-                    Materials2Materials.Redstone,
+                    Materials.Redstone,
                     OrePrefixes.dust.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
@@ -1333,7 +1333,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Tool_Lighter_Invar_Empty.ID,
                 "gt.item.lighter.invar.empty.name",
                 "gt.item.lighter.invar.empty.tooltip",
-                new ItemData(Materials2Materials.Invar, OrePrefixes.plate.getMaterialAmount() * 2L),
+                new ItemData(Materials.Invar, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)));
         ItemList.Tool_Lighter_Invar_Used.set(
@@ -1341,7 +1341,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Tool_Lighter_Invar_Used.ID,
                 "gt.item.lighter.invar.used.name",
                 "gt.item.lighter.invar.used.tooltip",
-                new ItemData(Materials2Materials.Invar, OrePrefixes.plate.getMaterialAmount() * 2L),
+                new ItemData(Materials.Invar, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1L),
                 SubTag.INVISIBLE));
@@ -1350,7 +1350,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Tool_Lighter_Invar_Full.ID,
                 "gt.item.lighter.invar.full.name",
                 "gt.item.lighter.invar.full.tooltip",
-                new ItemData(Materials2Materials.Invar, OrePrefixes.plate.getMaterialAmount() * 2L),
+                new ItemData(Materials.Invar, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2L)));
 
@@ -1359,7 +1359,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Tool_Lighter_Platinum_Empty.ID,
                 "gt.item.lighter.platinum.empty.name",
                 "gt.item.lighter.platinum.empty.tooltip",
-                new ItemData(Materials2Materials.Platinum, OrePrefixes.plate.getMaterialAmount() * 2L),
+                new ItemData(Materials.Platinum, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)));
@@ -1368,7 +1368,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Tool_Lighter_Platinum_Used.ID,
                 "gt.item.lighter.platinum.used.name",
                 "gt.item.lighter.platinum.used.tooltip",
-                new ItemData(Materials2Materials.Platinum, OrePrefixes.plate.getMaterialAmount() * 2L),
+                new ItemData(Materials.Platinum, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1L),
@@ -1378,7 +1378,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Tool_Lighter_Platinum_Full.ID,
                 "gt.item.lighter.platinum.full.name",
                 "gt.item.lighter.platinum.full.tooltip",
-                new ItemData(Materials2Materials.Platinum, OrePrefixes.plate.getMaterialAmount() * 2L),
+                new ItemData(Materials.Platinum, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2L)));
@@ -1412,7 +1412,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Paper_Printed_Pages.ID,
                 "gt.item.paper.printed_pages.name",
                 "gt.item.paper.printed_pages.tooltip",
-                new ItemData(Materials2Materials.Paper, 10886400L),
+                new ItemData(Materials.Paper, 10886400L),
                 new BehaviourPrintedPages(),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 2L)));
         ItemList.Paper_Magic_Empty.set(
@@ -1421,7 +1421,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.paper.magic.empty.name",
                 "",
                 SubTag.INVISIBLE,
-                new ItemData(Materials2Materials.Paper, 3628800L),
+                new ItemData(Materials.Paper, 3628800L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 1L)));
         ItemList.Paper_Magic_Page.set(
@@ -1430,7 +1430,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.paper.magic.page.name",
                 "",
                 SubTag.INVISIBLE,
-                new ItemData(Materials2Materials.Paper, 3628800L),
+                new ItemData(Materials.Paper, 3628800L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 2L)));
         ItemList.Paper_Magic_Pages.set(
@@ -1439,7 +1439,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.paper.magic.pages.name",
                 "",
                 SubTag.INVISIBLE,
-                new ItemData(Materials2Materials.Paper, 10886400L),
+                new ItemData(Materials.Paper, 10886400L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 4L)));
         ItemList.Paper_Punch_Card_Empty.set(
@@ -1448,7 +1448,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.paper.punch_card.empty.name",
                 "",
                 SubTag.INVISIBLE,
-                new ItemData(Materials2Materials.Paper, 7257600L),
+                new ItemData(Materials.Paper, 7257600L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L)));
         ItemList.Paper_Punch_Card_Encoded.set(
             addItemWithLocalizationKeys(
@@ -1456,14 +1456,14 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.paper.punch_card.encoded.name",
                 "",
                 SubTag.INVISIBLE,
-                new ItemData(Materials2Materials.Paper, 7257600L),
+                new ItemData(Materials.Paper, 7257600L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 2L)));
         ItemList.Book_Written_01.set(
             addItemWithLocalizationKeys(
                 Book_Written_01.ID,
                 "gt.item.book.written.01.name",
                 "",
-                new ItemData(Materials2Materials.Paper, 10886400L),
+                new ItemData(Materials.Paper, 10886400L),
                 "bookWritten",
                 OreDictNames.craftingBook,
                 new BehaviourWrittenBook(),
@@ -1473,7 +1473,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Book_Written_02.ID,
                 "gt.item.book.written.02.name",
                 "",
-                new ItemData(Materials2Materials.Paper, 10886400L),
+                new ItemData(Materials.Paper, 10886400L),
                 "bookWritten",
                 OreDictNames.craftingBook,
                 new BehaviourWrittenBook(),
@@ -1483,7 +1483,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Book_Written_03.ID,
                 "gt.item.book.written.03.name",
                 "",
-                new ItemData(Materials2Materials.Paper, 10886400L),
+                new ItemData(Materials.Paper, 10886400L),
                 "bookWritten",
                 OreDictNames.craftingBook,
                 new BehaviourWrittenBook(),
@@ -1494,14 +1494,14 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Schematic.ID,
                 "gt.item.schematic.empty.name",
                 "gt.item.schematic.empty.tooltip",
-                new ItemData(Materials2Materials.Steel, 7257600L),
+                new ItemData(Materials.Steel, 7257600L),
                 new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 1L)));
         ItemList.Schematic_Crafting.set(
             addItemWithLocalizationKeys(
                 Schematic_Crafting.ID,
                 "gt.item.schematic.crafting.name",
                 "gt.item.schematic.crafting.tooltip",
-                new ItemData(Materials2Materials.Steel, 7257600L),
+                new ItemData(Materials.Steel, 7257600L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 1L)));
         ItemList.Schematic_1by1.set(
@@ -1509,7 +1509,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Schematic_1by1.ID,
                 "gt.item.schematic.1x1.name",
                 "gt.item.schematic.1x1.tooltip",
-                new ItemData(Materials2Materials.Steel, 7257600L),
+                new ItemData(Materials.Steel, 7257600L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 1L)));
         ItemList.Schematic_2by2.set(
@@ -1517,7 +1517,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Schematic_2by2.ID,
                 "gt.item.schematic.2x2.name",
                 "gt.item.schematic.2x2.tooltip",
-                new ItemData(Materials2Materials.Steel, 7257600L),
+                new ItemData(Materials.Steel, 7257600L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 1L)));
         ItemList.Schematic_3by3.set(
@@ -1525,7 +1525,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Schematic_3by3.ID,
                 "gt.item.schematic.3x3.name",
                 "gt.item.schematic.3x3.tooltip",
-                new ItemData(Materials2Materials.Steel, 7257600L),
+                new ItemData(Materials.Steel, 7257600L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 1L)));
         ItemList.Schematic_Dust.set(
@@ -1533,7 +1533,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Schematic_Dust.ID,
                 "gt.item.schematic.dust.name",
                 "gt.item.schematic.dust.tooltip",
-                new ItemData(Materials2Materials.Steel, 7257600L),
+                new ItemData(Materials.Steel, 7257600L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 1L)));
         ItemList.Schematic_Dust_Small.set(
@@ -1541,7 +1541,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Schematic_Dust_Small.ID,
                 "gt.item.schematic.dust_small.name",
                 "gt.item.schematic.dust_small.tooltip",
-                new ItemData(Materials2Materials.Steel, 7257600L),
+                new ItemData(Materials.Steel, 7257600L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 1L)));
 
@@ -1550,7 +1550,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Battery_Hull_LV.ID,
                 "gt.item.battery_hull.lv.name",
                 "gt.item.battery_hull.lv.tooltip",
-                new ItemData(Materials2Materials.BatteryAlloy, OrePrefixes.plate.getMaterialAmount()),
+                new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)));
@@ -1559,7 +1559,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Battery_Hull_MV.ID,
                 "gt.item.battery_hull.mv.name",
                 "gt.item.battery_hull.mv.tooltip",
-                new ItemData(Materials2Materials.BatteryAlloy, OrePrefixes.plate.getMaterialAmount() * 3L),
+                new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.getMaterialAmount() * 3L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)));
@@ -1568,7 +1568,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Battery_Hull_HV.ID,
                 "gt.item.battery_hull.hv.name",
                 "gt.item.battery_hull.hv.tooltip",
-                new ItemData(Materials2Materials.BatteryAlloy, OrePrefixes.plate.getMaterialAmount() * 9L),
+                new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.getMaterialAmount() * 9L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)));
@@ -3333,7 +3333,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Component_Filter.ID,
                 "gt.item.component.filter.name",
                 "",
-                new ItemData(Materials2Materials.Zinc, OrePrefixes.foil.getMaterialAmount() * 16L),
+                new ItemData(Materials.Zinc, OrePrefixes.foil.getMaterialAmount() * 16L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L),
@@ -3742,7 +3742,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_EV.ID,
                 "gt.item.battery_hull.ev.name",
                 "gt.item.battery_hull.ev.tooltip",
-                new ItemData(Materials2Materials.BlueSteel, OrePrefixes.plate.getMaterialAmount() * 2L),
+                new ItemData(Materials.BlueSteel, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 8L)));
@@ -3751,7 +3751,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_IV.ID,
                 "gt.item.battery_hull.iv.name",
                 "gt.item.battery_hull.iv.tooltip",
-                new ItemData(Materials2Materials.RoseGold, OrePrefixes.plate.getMaterialAmount() * 6L),
+                new ItemData(Materials.RoseGold, OrePrefixes.plate.getMaterialAmount() * 6L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 16L)));
@@ -3760,7 +3760,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_LuV.ID,
                 "gt.item.battery_hull.luv.name",
                 "gt.item.battery_hull.luv.tooltip",
-                new ItemData(Materials2Materials.RedSteel, OrePrefixes.plate.getMaterialAmount() * 18L),
+                new ItemData(Materials.RedSteel, OrePrefixes.plate.getMaterialAmount() * 18L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 32L)));
@@ -3769,7 +3769,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_ZPM.ID,
                 "gt.item.battery_hull.zpm.name",
                 "gt.item.battery_hull.zpm.tooltip",
-                new ItemData(Materials2Materials.Europium, OrePrefixes.plate.getMaterialAmount() * 6L),
+                new ItemData(Materials.Europium, OrePrefixes.plate.getMaterialAmount() * 6L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 64L)));
@@ -3778,7 +3778,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_UV.ID,
                 "gt.item.battery_hull.uv.name",
                 "gt.item.battery_hull.uv.tooltip",
-                new ItemData(Materials2Materials.Americium, OrePrefixes.plate.getMaterialAmount() * 18L),
+                new ItemData(Materials.Americium, OrePrefixes.plate.getMaterialAmount() * 18L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 128L)));
@@ -3787,7 +3787,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_UHV.ID,
                 "gt.item.battery_hull.uhv.name",
                 "gt.item.battery_hull.uhv.tooltip",
-                new ItemData(Materials2Materials.Naquadah, OrePrefixes.plate.getMaterialAmount() * 24L),
+                new ItemData(Materials.Naquadah, OrePrefixes.plate.getMaterialAmount() * 24L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 256L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 256L)));
@@ -3796,7 +3796,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_UEV.ID,
                 "gt.item.battery_hull.uev.name",
                 "gt.item.battery_hull.uev.tooltip",
-                new ItemData(Materials2Materials.NaquadahEnriched, OrePrefixes.plate.getMaterialAmount() * 36L),
+                new ItemData(Materials.NaquadahEnriched, OrePrefixes.plate.getMaterialAmount() * 36L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 512L)));
@@ -3805,7 +3805,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_UIV.ID,
                 "gt.item.battery_hull.uiv.name",
                 "gt.item.battery_hull.uiv.tooltip",
-                new ItemData(Materials2Materials.NaquadahAlloy, OrePrefixes.plate.getMaterialAmount() * 48L),
+                new ItemData(Materials.NaquadahAlloy, OrePrefixes.plate.getMaterialAmount() * 48L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1024L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1024L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1024L)));
@@ -3814,7 +3814,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_UMV.ID,
                 "gt.item.battery_hull.umv.name",
                 "gt.item.battery_hull.umv.tooltip",
-                new ItemData(Materials2Materials.Neutronium, OrePrefixes.plate.getMaterialAmount() * 56L),
+                new ItemData(Materials.Neutronium, OrePrefixes.plate.getMaterialAmount() * 56L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2048L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2048L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2048L)));
@@ -3823,7 +3823,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 BatteryHull_UxV.ID,
                 "gt.item.battery_hull.uxv.name",
                 "gt.item.battery_hull.uxv.tooltip",
-                new ItemData(Materials2Materials.DraconiumAwakened, OrePrefixes.plate.getMaterialAmount() * 64L),
+                new ItemData(Materials.DraconiumAwakened, OrePrefixes.plate.getMaterialAmount() * 64L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4096L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4096L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 4096L)));
@@ -3956,8 +3956,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .getItemDamage();
         if (isMaterialItem(aDamage) && (!aItemEntity.worldObj.isRemote)) {
             Material aMaterial = Materials2IDIndex.get(aDamage % 1000);
-            if ((aMaterial != null) && (aMaterial != Materials2Materials.Empty)
-                && (aMaterial != Materials2Materials.NULL)) {
+            if ((aMaterial != null) && (aMaterial != Materials.Empty)
+                && (aMaterial != Materials.NULL)) {
                 int tX = MathHelper.floor_double(aItemEntity.posX);
                 int tY = MathHelper.floor_double(aItemEntity.posY);
                 int tZ = MathHelper.floor_double(aItemEntity.posZ);
@@ -3989,7 +3989,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
                     }
-                } else if (aPrefix == OrePrefixes.dust && aMaterial == Materials2Materials.Wheat) {
+                } else if (aPrefix == OrePrefixes.dust && aMaterial == Materials.Wheat) {
                     Block tBlock = aItemEntity.worldObj.getBlock(tX, tY, tZ);
                     int tMetaData = aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                     if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
@@ -4040,8 +4040,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
      */
     public static ItemStack getCauldronWashingResult(final OrePrefixes oldPrefix, final Material oldMaterial,
         final int stackSize) {
-        if ((oldMaterial != null) && (oldMaterial != Materials2Materials.Empty)
-            && (oldMaterial != Materials2Materials.NULL)) {
+        if ((oldMaterial != null) && (oldMaterial != Materials.Empty)
+            && (oldMaterial != Materials.NULL)) {
             switch (oldPrefix.getName()) {
                 case "dustImpure":
                 case "dustPure":
@@ -4050,7 +4050,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 case "crushed":
                     return GTOreDictUnificator.get(OrePrefixes.crushedPurified, oldMaterial, stackSize);
                 case "dust":
-                    if (oldMaterial == Materials2Materials.Wheat) {
+                    if (oldMaterial == Materials.Wheat) {
                         return ItemList.Food_Dough.get(stackSize);
                     }
             }
@@ -4082,13 +4082,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         int aDamage = aStack.getItemDamage();
         if (isMaterialItem(aDamage)) {
             Material aMaterial = Materials2IDIndex.get(aDamage % 1000);
-            if ((aMaterial != null) && (aMaterial != Materials2Materials.Empty)
-                && (aMaterial != Materials2Materials.NULL)) {
+            if ((aMaterial != null) && (aMaterial != Materials.Empty)
+                && (aMaterial != Materials.NULL)) {
                 OrePrefixes aPrefix = this.mGeneratedPrefixList[(aDamage / 1000)];
                 if ((aPrefix == OrePrefixes.dustImpure) || (aPrefix == OrePrefixes.dustPure)) {
                     aList.add(GTUtility.translate("GT5U.tooltip.purify.1"));
                 }
-                if (aPrefix == OrePrefixes.dust && aMaterial == Materials2Materials.Wheat) {
+                if (aPrefix == OrePrefixes.dust && aMaterial == Materials.Wheat) {
                     aList.add(GTUtility.translate("GT5U.tooltip.flour.cauldron"));
                 }
             }
@@ -4143,7 +4143,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     private void setBurnValues() {
-        setBurnValue(17000 + MaterialUtils.oldSubId(Materials2Materials.Wood), 1600);
+        setBurnValue(17000 + MaterialUtils.oldSubId(Materials.Wood), 1600);
     }
 
     private void setAllFluidContainerStats() {
@@ -4165,7 +4165,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
     private void oredictBlacklistEntries() {
         GTOreDictUnificator
-            .addToBlacklist(new ItemStack(this, 1, 17000 + MaterialUtils.oldSubId(Materials2Materials.Wood)));
+            .addToBlacklist(new ItemStack(this, 1, 17000 + MaterialUtils.oldSubId(Materials.Wood)));
     }
 
     private void registerCovers() {
@@ -4190,7 +4190,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 .build());
 
         CoverRegistry.registerDecorativeCover(
-            new ItemStack(this, 1, 17000 + MaterialUtils.oldSubId(Materials2Materials.Wood)),
+            new ItemStack(this, 1, 17000 + MaterialUtils.oldSubId(Materials.Wood)),
             TextureFactory.of(COVER_WOOD_PLATE));
 
         CoverRegistry.registerCover(
@@ -4628,13 +4628,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     private void craftingShapedRecipes() {
-        ItemStack tStack = new ItemStack(this, 1, 17000 + MaterialUtils.oldSubId(Materials2Materials.Wood));
+        ItemStack tStack = new ItemStack(this, 1, 17000 + MaterialUtils.oldSubId(Materials.Wood));
         tStack.setStackDisplayName(GTUtility.translate("gt.item.sengir_planks.name"));
         GTUtility.ItemNBT.addEnchantment(tStack, Enchantment.smite, 10);
         GTModHandler.addCraftingRecipe(
             tStack,
             GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { "XXX", "XDX", "XXX", 'X', OrePrefixes.gem.ingredient(Materials2Materials.NetherStar), 'D',
+            new Object[] { "XXX", "XDX", "XXX", 'X', OrePrefixes.gem.ingredient(Materials.NetherStar), 'D',
                 new ItemStack(Blocks.dragon_egg, 1, 32767) });
 
         GTModHandler.addCraftingRecipe(
@@ -4642,20 +4642,20 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "hXS", aTextShape, "fXd", 'P', ItemList.Shape_Extruder_Block, 'X',
-                OrePrefixes.plate.ingredient(Materials2Materials.StainlessSteel), 'S',
-                OrePrefixes.screw.ingredient(Materials2Materials.StainlessSteel) });
+                OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'S',
+                OrePrefixes.screw.ingredient(Materials.StainlessSteel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Shape_Slicer_Stripes.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
                 | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Block, 'X',
-                OrePrefixes.plate.ingredient(Materials2Materials.StainlessSteel), 'S',
-                OrePrefixes.screw.ingredient(Materials2Materials.StainlessSteel) });
+                OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'S',
+                OrePrefixes.screw.ingredient(Materials.StainlessSteel) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Fuel_Can_Plastic_Empty.get(7L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { " PP", "P P", "PPP", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Plastic) });
+            new Object[] { " PP", "P P", "PPP", 'P', OrePrefixes.plate.ingredient(Materials.Plastic) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_1by1.get(1L),
@@ -4681,141 +4681,141 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Hull_LV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { "Cf ", "Ph ", "Ps ", 'P', OrePrefixes.plate.ingredient(Materials2Materials.BatteryAlloy),
+            new Object[] { "Cf ", "Ph ", "Ps ", 'P', OrePrefixes.plate.ingredient(Materials.BatteryAlloy),
                 'C', OreDictNames.craftingWireTin });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Motor_LV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.ingredient(Materials2Materials.IronMagnetic),
+            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.ingredient(Materials.IronMagnetic),
                 'R', OrePrefixes.stick.ingredient(Materials2Backings.AnyIron), 'W',
                 OrePrefixes.wireGt01.ingredient(Materials2Backings.AnyCopper), 'C',
-                OrePrefixes.cableGt01.ingredient(Materials2Materials.Tin) });
+                OrePrefixes.cableGt01.ingredient(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Motor_LV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.ingredient(Materials2Materials.SteelMagnetic),
-                'R', OrePrefixes.stick.ingredient(Materials2Materials.Steel), 'W',
+            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.ingredient(Materials.SteelMagnetic),
+                'R', OrePrefixes.stick.ingredient(Materials.Steel), 'W',
                 OrePrefixes.wireGt01.ingredient(Materials2Backings.AnyCopper), 'C',
-                OrePrefixes.cableGt01.ingredient(Materials2Materials.Tin) });
+                OrePrefixes.cableGt01.ingredient(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Motor_MV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.ingredient(Materials2Materials.SteelMagnetic),
-                'R', OrePrefixes.stick.ingredient(Materials2Materials.Aluminium), 'W',
-                OrePrefixes.wireGt02.ingredient(Materials2Materials.Cupronickel), 'C',
+            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.ingredient(Materials.SteelMagnetic),
+                'R', OrePrefixes.stick.ingredient(Materials.Aluminium), 'W',
+                OrePrefixes.wireGt02.ingredient(Materials.Cupronickel), 'C',
                 OrePrefixes.cableGt01.ingredient(Materials2Backings.AnyCopper) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Motor_HV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.ingredient(Materials2Materials.SteelMagnetic),
-                'R', OrePrefixes.stick.ingredient(Materials2Materials.StainlessSteel), 'W',
-                OrePrefixes.wireGt04.ingredient(Materials2Materials.Electrum), 'C',
-                OrePrefixes.cableGt02.ingredient(Materials2Materials.Silver) });
+            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.ingredient(Materials.SteelMagnetic),
+                'R', OrePrefixes.stick.ingredient(Materials.StainlessSteel), 'W',
+                OrePrefixes.wireGt04.ingredient(Materials.Electrum), 'C',
+                OrePrefixes.cableGt02.ingredient(Materials.Silver) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Motor_EV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "CWR", "WIW", "RWC", 'I',
-                OrePrefixes.stick.ingredient(Materials2Materials.NeodymiumMagnetic), 'R',
-                OrePrefixes.stick.ingredient(Materials2Materials.Titanium), 'W',
-                OrePrefixes.wireGt04.ingredient(Materials2Materials.BlackSteel), 'C',
-                OrePrefixes.cableGt02.ingredient(Materials2Materials.Aluminium) });
+                OrePrefixes.stick.ingredient(Materials.NeodymiumMagnetic), 'R',
+                OrePrefixes.stick.ingredient(Materials.Titanium), 'W',
+                OrePrefixes.wireGt04.ingredient(Materials.BlackSteel), 'C',
+                OrePrefixes.cableGt02.ingredient(Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Motor_IV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "CWR", "WIW", "RWC", 'I',
-                OrePrefixes.stick.ingredient(Materials2Materials.NeodymiumMagnetic), 'R',
-                OrePrefixes.stick.ingredient(Materials2Materials.TungstenSteel), 'W',
-                OrePrefixes.wireGt04.ingredient(Materials2Materials.Graphene), 'C',
-                OrePrefixes.cableGt02.ingredient(Materials2Materials.Tungsten) });
+                OrePrefixes.stick.ingredient(Materials.NeodymiumMagnetic), 'R',
+                OrePrefixes.stick.ingredient(Materials.TungstenSteel), 'W',
+                OrePrefixes.wireGt04.ingredient(Materials.Graphene), 'C',
+                OrePrefixes.cableGt02.ingredient(Materials.Tungsten) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Piston_LV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "PPP", "CSS", "CMG", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Steel), 'S',
-                OrePrefixes.stick.ingredient(Materials2Materials.Steel), 'G',
-                OrePrefixes.gearGtSmall.ingredient(Materials2Materials.Steel), 'M', ItemList.Electric_Motor_LV, 'C',
-                OrePrefixes.cableGt01.ingredient(Materials2Materials.Tin) });
+            new Object[] { "PPP", "CSS", "CMG", 'P', OrePrefixes.plate.ingredient(Materials.Steel), 'S',
+                OrePrefixes.stick.ingredient(Materials.Steel), 'G',
+                OrePrefixes.gearGtSmall.ingredient(Materials.Steel), 'M', ItemList.Electric_Motor_LV, 'C',
+                OrePrefixes.cableGt01.ingredient(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Piston_MV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "PPP", "CSS", "CMG", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Aluminium), 'S',
-                OrePrefixes.stick.ingredient(Materials2Materials.Aluminium), 'G',
-                OrePrefixes.gearGtSmall.ingredient(Materials2Materials.Aluminium), 'M', ItemList.Electric_Motor_MV, 'C',
+            new Object[] { "PPP", "CSS", "CMG", 'P', OrePrefixes.plate.ingredient(Materials.Aluminium), 'S',
+                OrePrefixes.stick.ingredient(Materials.Aluminium), 'G',
+                OrePrefixes.gearGtSmall.ingredient(Materials.Aluminium), 'M', ItemList.Electric_Motor_MV, 'C',
                 OrePrefixes.cableGt01.ingredient(Materials2Backings.AnyCopper) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Piston_HV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "PPP", "CSS", "CMG", 'P', OrePrefixes.plate.ingredient(Materials2Materials.StainlessSteel),
-                'S', OrePrefixes.stick.ingredient(Materials2Materials.StainlessSteel), 'G',
-                OrePrefixes.gearGtSmall.ingredient(Materials2Materials.StainlessSteel), 'M', ItemList.Electric_Motor_HV,
-                'C', OrePrefixes.cableGt01.ingredient(Materials2Materials.Gold) });
+            new Object[] { "PPP", "CSS", "CMG", 'P', OrePrefixes.plate.ingredient(Materials.StainlessSteel),
+                'S', OrePrefixes.stick.ingredient(Materials.StainlessSteel), 'G',
+                OrePrefixes.gearGtSmall.ingredient(Materials.StainlessSteel), 'M', ItemList.Electric_Motor_HV,
+                'C', OrePrefixes.cableGt01.ingredient(Materials.Gold) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Piston_EV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "PPP", "CSS", "CMG", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Titanium), 'S',
-                OrePrefixes.stick.ingredient(Materials2Materials.Titanium), 'G',
-                OrePrefixes.gearGtSmall.ingredient(Materials2Materials.Titanium), 'M', ItemList.Electric_Motor_EV, 'C',
-                OrePrefixes.cableGt01.ingredient(Materials2Materials.Aluminium) });
+            new Object[] { "PPP", "CSS", "CMG", 'P', OrePrefixes.plate.ingredient(Materials.Titanium), 'S',
+                OrePrefixes.stick.ingredient(Materials.Titanium), 'G',
+                OrePrefixes.gearGtSmall.ingredient(Materials.Titanium), 'M', ItemList.Electric_Motor_EV, 'C',
+                OrePrefixes.cableGt01.ingredient(Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Piston_IV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "PPP", "CSS", "CMG", 'P', OrePrefixes.plate.ingredient(Materials2Materials.TungstenSteel),
-                'S', OrePrefixes.stick.ingredient(Materials2Materials.TungstenSteel), 'G',
-                OrePrefixes.gearGtSmall.ingredient(Materials2Materials.TungstenSteel), 'M', ItemList.Electric_Motor_IV,
-                'C', OrePrefixes.cableGt01.ingredient(Materials2Materials.Tungsten) });
+            new Object[] { "PPP", "CSS", "CMG", 'P', OrePrefixes.plate.ingredient(Materials.TungstenSteel),
+                'S', OrePrefixes.stick.ingredient(Materials.TungstenSteel), 'G',
+                OrePrefixes.gearGtSmall.ingredient(Materials.TungstenSteel), 'M', ItemList.Electric_Motor_IV,
+                'C', OrePrefixes.cableGt01.ingredient(Materials.Tungsten) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Pump_LV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SXO", "dPw", "OMW", 'M', ItemList.Electric_Motor_LV, 'O',
                 OrePrefixes.ring.ingredient(Materials2Backings.AnyRubber), 'X',
-                OrePrefixes.rotor.ingredient(Materials2Materials.Tin), 'S',
-                OrePrefixes.screw.ingredient(Materials2Materials.Tin), 'W',
-                OrePrefixes.cableGt01.ingredient(Materials2Materials.Tin), 'P',
-                OrePrefixes.pipeMedium.ingredient(Materials2Materials.Bronze) });
+                OrePrefixes.rotor.ingredient(Materials.Tin), 'S',
+                OrePrefixes.screw.ingredient(Materials.Tin), 'W',
+                OrePrefixes.cableGt01.ingredient(Materials.Tin), 'P',
+                OrePrefixes.pipeMedium.ingredient(Materials.Bronze) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Pump_MV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SXO", "dPw", "OMW", 'M', ItemList.Electric_Motor_MV, 'O',
                 OrePrefixes.ring.ingredient(Materials2Backings.AnyRubber), 'X',
-                OrePrefixes.rotor.ingredient(Materials2Materials.Bronze), 'S',
-                OrePrefixes.screw.ingredient(Materials2Materials.Bronze), 'W',
+                OrePrefixes.rotor.ingredient(Materials.Bronze), 'S',
+                OrePrefixes.screw.ingredient(Materials.Bronze), 'W',
                 OrePrefixes.cableGt01.ingredient(Materials2Backings.AnyCopper), 'P',
-                OrePrefixes.pipeMedium.ingredient(Materials2Materials.Steel) });
+                OrePrefixes.pipeMedium.ingredient(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Pump_HV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SXO", "dPw", "OMW", 'M', ItemList.Electric_Motor_HV, 'O',
                 OrePrefixes.ring.ingredient(Materials2Backings.AnyRubber), 'X',
-                OrePrefixes.rotor.ingredient(Materials2Materials.Steel), 'S',
-                OrePrefixes.screw.ingredient(Materials2Materials.Steel), 'W',
-                OrePrefixes.cableGt01.ingredient(Materials2Materials.Gold), 'P',
-                OrePrefixes.pipeMedium.ingredient(Materials2Materials.StainlessSteel) });
+                OrePrefixes.rotor.ingredient(Materials.Steel), 'S',
+                OrePrefixes.screw.ingredient(Materials.Steel), 'W',
+                OrePrefixes.cableGt01.ingredient(Materials.Gold), 'P',
+                OrePrefixes.pipeMedium.ingredient(Materials.StainlessSteel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Pump_EV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SXO", "dPw", "OMW", 'M', ItemList.Electric_Motor_EV, 'O',
                 OrePrefixes.ring.ingredient(Materials2Backings.AnyRubber), 'X',
-                OrePrefixes.rotor.ingredient(Materials2Materials.StainlessSteel), 'S',
-                OrePrefixes.screw.ingredient(Materials2Materials.StainlessSteel), 'W',
-                OrePrefixes.cableGt01.ingredient(Materials2Materials.Aluminium), 'P',
-                OrePrefixes.pipeMedium.ingredient(Materials2Materials.Titanium) });
+                OrePrefixes.rotor.ingredient(Materials.StainlessSteel), 'S',
+                OrePrefixes.screw.ingredient(Materials.StainlessSteel), 'W',
+                OrePrefixes.cableGt01.ingredient(Materials.Aluminium), 'P',
+                OrePrefixes.pipeMedium.ingredient(Materials.Titanium) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Pump_IV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SXO", "dPw", "OMW", 'M', ItemList.Electric_Motor_IV, 'O',
                 OrePrefixes.ring.ingredient(Materials2Backings.AnySyntheticRubber), 'X',
-                OrePrefixes.rotor.ingredient(Materials2Materials.TungstenSteel), 'S',
-                OrePrefixes.screw.ingredient(Materials2Materials.TungstenSteel), 'W',
-                OrePrefixes.cableGt01.ingredient(Materials2Materials.Tungsten), 'P',
-                OrePrefixes.pipeMedium.ingredient(Materials2Materials.TungstenSteel) });
+                OrePrefixes.rotor.ingredient(Materials.TungstenSteel), 'S',
+                OrePrefixes.screw.ingredient(Materials.TungstenSteel), 'W',
+                OrePrefixes.cableGt01.ingredient(Materials.Tungsten), 'P',
+                OrePrefixes.pipeMedium.ingredient(Materials.TungstenSteel) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Conveyor_Module_LV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "RRR", "MCM", "RRR", 'M', ItemList.Electric_Motor_LV, 'C',
-                OrePrefixes.cableGt01.ingredient(Materials2Materials.Tin), 'R',
+                OrePrefixes.cableGt01.ingredient(Materials.Tin), 'R',
                 OrePrefixes.plate.ingredient(Materials2Backings.AnyRubber) });
         GTModHandler.addCraftingRecipe(
             ItemList.Conveyor_Module_MV.get(1L),
@@ -4827,161 +4827,161 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.Conveyor_Module_HV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "RRR", "MCM", "RRR", 'M', ItemList.Electric_Motor_HV, 'C',
-                OrePrefixes.cableGt01.ingredient(Materials2Materials.Gold), 'R',
+                OrePrefixes.cableGt01.ingredient(Materials.Gold), 'R',
                 OrePrefixes.plate.ingredient(Materials2Backings.AnyRubber) });
         GTModHandler.addCraftingRecipe(
             ItemList.Conveyor_Module_EV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "RRR", "MCM", "RRR", 'M', ItemList.Electric_Motor_EV, 'C',
-                OrePrefixes.cableGt01.ingredient(Materials2Materials.Aluminium), 'R',
+                OrePrefixes.cableGt01.ingredient(Materials.Aluminium), 'R',
                 OrePrefixes.plate.ingredient(Materials2Backings.AnyRubber) });
         GTModHandler.addCraftingRecipe(
             ItemList.Conveyor_Module_IV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "RRR", "MCM", "RRR", 'M', ItemList.Electric_Motor_IV, 'C',
-                OrePrefixes.cableGt01.ingredient(Materials2Materials.Tungsten), 'R',
+                OrePrefixes.cableGt01.ingredient(Materials.Tungsten), 'R',
                 OrePrefixes.plate.ingredient(Materials2Backings.AnySyntheticRubber) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Robot_Arm_LV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.ingredient(Materials2Materials.Steel), 'M',
+            new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.ingredient(Materials.Steel), 'M',
                 ItemList.Electric_Motor_LV, 'P', ItemList.Electric_Piston_LV, 'E', Circuits.LV.getIngredient(), 'C',
-                OrePrefixes.cableGt01.ingredient(Materials2Materials.Tin) });
+                OrePrefixes.cableGt01.ingredient(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
             ItemList.Robot_Arm_MV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.ingredient(Materials2Materials.Aluminium), 'M',
+            new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.ingredient(Materials.Aluminium), 'M',
                 ItemList.Electric_Motor_MV, 'P', ItemList.Electric_Piston_MV, 'E', Circuits.MV.getIngredient(), 'C',
                 OrePrefixes.cableGt01.ingredient(Materials2Backings.AnyCopper) });
         GTModHandler.addCraftingRecipe(
             ItemList.Robot_Arm_HV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.ingredient(Materials2Materials.StainlessSteel),
+            new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.ingredient(Materials.StainlessSteel),
                 'M', ItemList.Electric_Motor_HV, 'P', ItemList.Electric_Piston_HV, 'E', Circuits.HV.getIngredient(),
-                'C', OrePrefixes.cableGt01.ingredient(Materials2Materials.Gold) });
+                'C', OrePrefixes.cableGt01.ingredient(Materials.Gold) });
         GTModHandler.addCraftingRecipe(
             ItemList.Robot_Arm_EV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.ingredient(Materials2Materials.Titanium), 'M',
+            new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.ingredient(Materials.Titanium), 'M',
                 ItemList.Electric_Motor_EV, 'P', ItemList.Electric_Piston_EV, 'E', Circuits.EV.getIngredient(), 'C',
-                OrePrefixes.cableGt01.ingredient(Materials2Materials.Aluminium) });
+                OrePrefixes.cableGt01.ingredient(Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
             ItemList.Robot_Arm_IV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.ingredient(Materials2Materials.TungstenSteel),
+            new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.ingredient(Materials.TungstenSteel),
                 'M', ItemList.Electric_Motor_IV, 'P', ItemList.Electric_Piston_IV, 'E', Circuits.IV.getIngredient(),
-                'C', OrePrefixes.cableGt01.ingredient(Materials2Materials.Tungsten) });
+                'C', OrePrefixes.cableGt01.ingredient(Materials.Tungsten) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Emitter_LV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "SSC", "WQS", "CWS", 'Q', OrePrefixes.gem.ingredient(Materials2Materials.CertusQuartz), 'S',
-                OrePrefixes.stick.ingredient(Materials2Materials.Brass), 'C', Circuits.LV.getIngredient(), 'W',
-                OrePrefixes.cableGt01.ingredient(Materials2Materials.Tin) });
+            new Object[] { "SSC", "WQS", "CWS", 'Q', OrePrefixes.gem.ingredient(Materials.CertusQuartz), 'S',
+                OrePrefixes.stick.ingredient(Materials.Brass), 'C', Circuits.LV.getIngredient(), 'W',
+                OrePrefixes.cableGt01.ingredient(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
             ItemList.Emitter_MV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "SSC", "WQS", "CWS", 'Q', OrePrefixes.gem.ingredient(Materials2Materials.EnderPearl), 'S',
-                OrePrefixes.stick.ingredient(Materials2Materials.Electrum), 'C', Circuits.MV.getIngredient(), 'W',
+            new Object[] { "SSC", "WQS", "CWS", 'Q', OrePrefixes.gem.ingredient(Materials.EnderPearl), 'S',
+                OrePrefixes.stick.ingredient(Materials.Electrum), 'C', Circuits.MV.getIngredient(), 'W',
                 OrePrefixes.cableGt01.ingredient(Materials2Backings.AnyCopper) });
         GTModHandler.addCraftingRecipe(
             ItemList.Emitter_HV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "SSC", "WQS", "CWS", 'Q', OrePrefixes.gem.ingredient(Materials2Materials.EnderEye), 'S',
-                OrePrefixes.stick.ingredient(Materials2Materials.Chrome), 'C', Circuits.HV.getIngredient(), 'W',
-                OrePrefixes.cableGt01.ingredient(Materials2Materials.Gold) });
+            new Object[] { "SSC", "WQS", "CWS", 'Q', OrePrefixes.gem.ingredient(Materials.EnderEye), 'S',
+                OrePrefixes.stick.ingredient(Materials.Chrome), 'C', Circuits.HV.getIngredient(), 'W',
+                OrePrefixes.cableGt01.ingredient(Materials.Gold) });
         GTModHandler.addCraftingRecipe(
             ItemList.Emitter_EV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SSC", "WQS", "CWS", 'Q', ItemList.QuantumEye, 'S',
-                OrePrefixes.stick.ingredient(Materials2Materials.Platinum), 'C', Circuits.EV.getIngredient(), 'W',
-                OrePrefixes.cableGt01.ingredient(Materials2Materials.Aluminium) });
+                OrePrefixes.stick.ingredient(Materials.Platinum), 'C', Circuits.EV.getIngredient(), 'W',
+                OrePrefixes.cableGt01.ingredient(Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
             ItemList.Emitter_IV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SSC", "WQS", "CWS", 'Q', ItemList.QuantumStar, 'S',
-                OrePrefixes.stick.ingredient(Materials2Materials.Iridium), 'C', Circuits.IV.getIngredient(), 'W',
-                OrePrefixes.cableGt01.ingredient(Materials2Materials.Tungsten) });
+                OrePrefixes.stick.ingredient(Materials.Iridium), 'C', Circuits.IV.getIngredient(), 'W',
+                OrePrefixes.cableGt01.ingredient(Materials.Tungsten) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Sensor_LV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "P Q", "PS ", "CPP", 'Q', OrePrefixes.gem.ingredient(Materials2Materials.CertusQuartz), 'S',
-                OrePrefixes.stick.ingredient(Materials2Materials.Brass), 'P',
-                OrePrefixes.plate.ingredient(Materials2Materials.Steel), 'C', Circuits.LV.getIngredient() });
+            new Object[] { "P Q", "PS ", "CPP", 'Q', OrePrefixes.gem.ingredient(Materials.CertusQuartz), 'S',
+                OrePrefixes.stick.ingredient(Materials.Brass), 'P',
+                OrePrefixes.plate.ingredient(Materials.Steel), 'C', Circuits.LV.getIngredient() });
         GTModHandler.addCraftingRecipe(
             ItemList.Sensor_MV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "P Q", "PS ", "CPP", 'Q', OrePrefixes.gemFlawless.ingredient(Materials2Materials.Emerald),
-                'S', OrePrefixes.stick.ingredient(Materials2Materials.Electrum), 'P',
-                OrePrefixes.plate.ingredient(Materials2Materials.Aluminium), 'C', Circuits.MV.getIngredient() });
+            new Object[] { "P Q", "PS ", "CPP", 'Q', OrePrefixes.gemFlawless.ingredient(Materials.Emerald),
+                'S', OrePrefixes.stick.ingredient(Materials.Electrum), 'P',
+                OrePrefixes.plate.ingredient(Materials.Aluminium), 'C', Circuits.MV.getIngredient() });
         GTModHandler.addCraftingRecipe(
             ItemList.Sensor_HV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "P Q", "PS ", "CPP", 'Q', OrePrefixes.gem.ingredient(Materials2Materials.EnderEye), 'S',
-                OrePrefixes.stick.ingredient(Materials2Materials.Chrome), 'P',
-                OrePrefixes.plate.ingredient(Materials2Materials.StainlessSteel), 'C', Circuits.HV.getIngredient() });
+            new Object[] { "P Q", "PS ", "CPP", 'Q', OrePrefixes.gem.ingredient(Materials.EnderEye), 'S',
+                OrePrefixes.stick.ingredient(Materials.Chrome), 'P',
+                OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'C', Circuits.HV.getIngredient() });
         GTModHandler.addCraftingRecipe(
             ItemList.Sensor_EV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "P Q", "PS ", "CPP", 'Q', ItemList.QuantumEye, 'S',
-                OrePrefixes.stick.ingredient(Materials2Materials.Platinum), 'P',
-                OrePrefixes.plate.ingredient(Materials2Materials.Titanium), 'C', Circuits.EV.getIngredient() });
+                OrePrefixes.stick.ingredient(Materials.Platinum), 'P',
+                OrePrefixes.plate.ingredient(Materials.Titanium), 'C', Circuits.EV.getIngredient() });
         GTModHandler.addCraftingRecipe(
             ItemList.Sensor_IV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "P Q", "PS ", "CPP", 'Q', ItemList.QuantumStar, 'S',
-                OrePrefixes.stick.ingredient(Materials2Materials.Iridium), 'P',
-                OrePrefixes.plate.ingredient(Materials2Materials.TungstenSteel), 'C', Circuits.IV.getIngredient() });
+                OrePrefixes.stick.ingredient(Materials.Iridium), 'P',
+                OrePrefixes.plate.ingredient(Materials.TungstenSteel), 'C', Circuits.IV.getIngredient() });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Component_Sawblade_Diamond.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { " D ", "DGD", " D ", 'D', OrePrefixes.dustSmall.ingredient(Materials2Materials.Diamond), 'G',
-                OrePrefixes.gearGt.ingredient(Materials2Materials.CobaltBrass) });
+            new Object[] { " D ", "DGD", " D ", 'D', OrePrefixes.dustSmall.ingredient(Materials.Diamond), 'G',
+                OrePrefixes.gearGt.ingredient(Materials.CobaltBrass) });
         GTModHandler.addCraftingRecipe(
             ItemList.Component_Grinder_Diamond.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "DSD", "SIS", "DSD", 'I', OrePrefixes.gem.ingredient(Materials2Materials.Diamond), 'D',
-                OrePrefixes.dust.ingredient(Materials2Materials.Diamond), 'S',
-                OrePrefixes.plateDouble.ingredient(Materials2Materials.Steel) });
+            new Object[] { "DSD", "SIS", "DSD", 'I', OrePrefixes.gem.ingredient(Materials.Diamond), 'D',
+                OrePrefixes.dust.ingredient(Materials.Diamond), 'S',
+                OrePrefixes.plateDouble.ingredient(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Component_Grinder_Tungsten.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "TST", "SIS", "TST", 'I', OreDictNames.craftingIndustrialDiamond, 'T',
-                OrePrefixes.plate.ingredient(Materials2Materials.Tungsten), 'S',
-                OrePrefixes.plateDouble.ingredient(Materials2Materials.Steel) });
+                OrePrefixes.plate.ingredient(Materials.Tungsten), 'S',
+                OrePrefixes.plateDouble.ingredient(Materials.Steel) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Cover_Screen.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "AGA", "RPB", "ALA", 'A', OrePrefixes.plate.ingredient(Materials2Materials.Aluminium), 'L',
-                OrePrefixes.dust.ingredient(Materials2Materials.Glowstone), 'R', Dyes.dyeRed, 'G', Dyes.dyeLime, 'B',
-                Dyes.dyeBlue, 'P', OrePrefixes.plate.ingredient(Materials2Materials.Glass) });
+            new Object[] { "AGA", "RPB", "ALA", 'A', OrePrefixes.plate.ingredient(Materials.Aluminium), 'L',
+                OrePrefixes.dust.ingredient(Materials.Glowstone), 'R', Dyes.dyeRed, 'G', Dyes.dyeLime, 'B',
+                Dyes.dyeBlue, 'P', OrePrefixes.plate.ingredient(Materials.Glass) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Tool_Scanner.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "EPR", "CSC", "PBP", 'C', Circuits.HV.getIngredient(), 'P',
-                OrePrefixes.plate.ingredient(Materials2Materials.Aluminium), 'E', ItemList.Emitter_MV, 'R',
+                OrePrefixes.plate.ingredient(Materials.Aluminium), 'E', ItemList.Emitter_MV, 'R',
                 ItemList.Sensor_MV, 'S', ItemList.Cover_Screen, 'B', ItemList.Battery_RE_MV_Lithium });
 
         GTModHandler.addCraftingRecipe(
             ItemList.ItemFilter_Export.get(1L),
-            new Object[] { "SPS", "dIC", "SPS", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Tin), 'S',
-                OrePrefixes.screw.ingredient(Materials2Materials.Iron), 'I', ItemList.Component_Filter, 'C',
+            new Object[] { "SPS", "dIC", "SPS", 'P', OrePrefixes.plate.ingredient(Materials.Tin), 'S',
+                OrePrefixes.screw.ingredient(Materials.Iron), 'I', ItemList.Component_Filter, 'C',
                 ItemList.Conveyor_Module_LV });
         GTModHandler.addCraftingRecipe(
             ItemList.ItemFilter_Import.get(1L),
-            new Object[] { "SPS", "CId", "SPS", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Tin), 'S',
-                OrePrefixes.screw.ingredient(Materials2Materials.Iron), 'I', ItemList.Component_Filter, 'C',
+            new Object[] { "SPS", "CId", "SPS", 'P', OrePrefixes.plate.ingredient(Materials.Tin), 'S',
+                OrePrefixes.screw.ingredient(Materials.Iron), 'I', ItemList.Component_Filter, 'C',
                 ItemList.Conveyor_Module_LV });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Tool_Cover_Copy_Paste.get(1L),
             GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "PSP", "PCP", "PBP", 'P', OrePrefixes.plate.ingredient(Materials2Materials.Aluminium), 'S',
+            new Object[] { "PSP", "PCP", "PBP", 'P', OrePrefixes.plate.ingredient(Materials.Aluminium), 'S',
                 ItemList.Tool_DataStick.get(1L), 'C', ItemList.Cover_Screen.get(1L), 'B',
                 ItemList.Battery_RE_MV_Lithium.get(1L) });
     }
@@ -4990,10 +4990,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Coin_Chocolate.get(1L),
-            new Object[] { OrePrefixes.dust.ingredient(Materials2Materials.Cocoa),
-                OrePrefixes.dust.ingredient(Materials2Materials.Milk),
-                OrePrefixes.dust.ingredient(Materials2Materials.Sugar),
-                OrePrefixes.foil.ingredient(Materials2Materials.Gold) });
+            new Object[] { OrePrefixes.dust.ingredient(Materials.Cocoa),
+                OrePrefixes.dust.ingredient(Materials.Milk),
+                OrePrefixes.dust.ingredient(Materials.Sugar),
+                OrePrefixes.foil.ingredient(Materials.Gold) });
 
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Credit_Copper.get(8L),
@@ -5314,7 +5314,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     public boolean shouldBurn(ItemStack itemStack) {
         ItemData data = GTOreDictUnificator.getAssociation(itemStack);
         if (data == null || data.mMaterial == null
-            || data.mMaterial.mMaterial != Materials2Materials.Firestone
+            || data.mMaterial.mMaterial != Materials.Firestone
             || data.mPrefix == null) {
             return false;
         }

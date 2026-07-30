@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -22,7 +22,7 @@ public class RecipesBatteries {
             quad,
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "BWB", "CTC", "BWB", 'B', single, 'W',
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials2Materials.Gold, 1), 'C', "circuitAdvanced",
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Gold, 1), 'C', "circuitAdvanced",
                 'T', ItemList.Transformer_EV_HV.get(1) });
     }
 }

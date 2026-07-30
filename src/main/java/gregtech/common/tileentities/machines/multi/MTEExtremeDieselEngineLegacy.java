@@ -17,7 +17,7 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -129,7 +129,7 @@ public class MTEExtremeDieselEngineLegacy extends MTEDieselEngineLegacy {
 
     @Override
     protected Material getBooster() {
-        return Materials2Materials.LiquidOxygen;
+        return Materials.LiquidOxygen;
     }
 
     @Override

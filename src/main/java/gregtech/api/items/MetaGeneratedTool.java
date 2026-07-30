@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -55,7 +56,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.material.GTMaterialProperties;
@@ -74,7 +74,7 @@ import mrtjp.projectred.api.IScrewdriver;
 /**
  * This is an example on how you can create a Tool ItemStack, in this case a Bismuth Wrench:
  * GT_MetaGenerated_Tool.sInstances.get("gt.metatool.01").getToolWithStats(MetaGeneratedTool01.WRENCH, 1,
- * Materials2Materials.Bismuth, Materials2Materials.Bismuth, null);
+ * Materials.Bismuth, Materials.Bismuth, null);
  */
 @Optional.InterfaceList(
     value = { @Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = Mods.ModIDs.FORESTRY),
@@ -117,7 +117,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     /// which covers both what [#getToolWithStats(int, int, com.ruling_0.materiallib.api.Material,
     /// com.ruling_0.materiallib.api.Material, long[])] writes ([MaterialUtils#internalName] strings) and the legacy
     /// internal name strings older saves contain (byte-identical for every ported material). Falls back to
-    /// [Materials2Materials#NULL] on a missing/unresolvable name.
+    /// [Materials#NULL] on a missing/unresolvable name.
     public static com.ruling_0.materiallib.api.Material getPrimaryMaterialML(ItemStack aStack) {
         return resolveMaterialML(aStack, "PrimaryMaterial");
     }
@@ -136,7 +136,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 if (material != null) return material;
             }
         }
-        return Materials2Materials.NULL;
+        return Materials.NULL;
     }
 
     /// The `"Material." + internalName` lang key for a MaterialLib material, resolved directly off
@@ -494,7 +494,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 ItemStack tStack = new ItemStack(this, 1, i);
                 isItemStackUsable(tStack);
                 aList.add(tStack);
-                aList.add(getToolWithStats(i, 1, Materials2Materials.Neutronium, Materials2Materials.Neutronium, null));
+                aList.add(getToolWithStats(i, 1, Materials.Neutronium, Materials.Neutronium, null));
             }
         }
     }

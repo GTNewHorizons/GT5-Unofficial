@@ -7,6 +7,7 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import java.util.Set;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -14,7 +15,6 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -42,49 +42,49 @@ public class ProcessingDustGeneration {
     // spotless:off
     private static final Set<Material> ELIGIBLE = Set.of(
         // MaterialsElements / MaterialsElements.STANDALONE
-        Materials2Materials.Selenium, Materials2Materials.Bromine, Materials2Materials.Krypton,
-        Materials2Materials.Iodine, Materials2Materials.Rhenium, Materials2Materials.Thallium,
-        Materials2Materials.Germanium, Materials2Materials.Technetium, Materials2Materials.Polonium,
-        Materials2Materials.Radium, Materials2Materials.Protactinium, Materials2Materials.Curium,
-        Materials2Materials.Neptunium, Materials2Materials.Fermium, Materials2Materials.Lithium7,
-        Materials2Materials.Uranium232, Materials2Materials.Uranium233, Materials2Materials.Plutonium238,
-        Materials2Materials.AdvancedNitinol, Materials2Materials.AstralTitanium, Materials2Materials.CelestialTungsten,
-        Materials2Materials.Hypogen, Materials2Materials.ChromaticGlass, Materials2Materials.BlackMetal,
-        Materials2Materials.AncientGranite, Materials2Materials.Runite, Materials2Materials.Dragonblood,
-        Materials2Materials.Rhugnor, Materials2Materials.InfusedAir, Materials2Materials.InfusedFire,
-        Materials2Materials.InfusedEarth, Materials2Materials.InfusedWater,
+        Materials.Selenium, Materials.Bromine, Materials.Krypton,
+        Materials.Iodine, Materials.Rhenium, Materials.Thallium,
+        Materials.Germanium, Materials.Technetium, Materials.Polonium,
+        Materials.Radium, Materials.Protactinium, Materials.Curium,
+        Materials.Neptunium, Materials.Fermium, Materials.Lithium7,
+        Materials.Uranium232, Materials.Uranium233, Materials.Plutonium238,
+        Materials.AdvancedNitinol, Materials.AstralTitanium, Materials.CelestialTungsten,
+        Materials.Hypogen, Materials.ChromaticGlass, Materials.BlackMetal,
+        Materials.AncientGranite, Materials.Runite, Materials.Dragonblood,
+        Materials.Rhugnor, Materials.InfusedAir, Materials.InfusedFire,
+        Materials.InfusedEarth, Materials.InfusedWater,
         // MaterialsAlloy
-        Materials2Materials.SiliconCarbide, Materials2Materials.ZirconiumCarbide, Materials2Materials.TantalumCarbide,
-        Materials2Materials.NiobiumCarbide, Materials2Materials.TungstenTitaniumCarbide, Materials2Materials.EnergyCrystal,
-        Materials2Materials.BloodSteel, Materials2Materials.Zeron100, Materials2Materials.Tumbaga,
-        Materials2Materials.Potin, Materials2Materials.Staballoy, Materials2Materials.Tantalloy60,
-        Materials2Materials.Tantalloy61, Materials2Materials.Inconel625, Materials2Materials.Inconel690,
-        Materials2Materials.Inconel792, Materials2Materials.EglinSteel, Materials2Materials.MaragingSteel250,
-        Materials2Materials.MaragingSteel300, Materials2Materials.MaragingSteel350, Materials2Materials.WatertightSteel,
-        Materials2Materials.Nitinol60, Materials2Materials.Stellite, Materials2Materials.Talonite,
-        Materials2Materials.HastelloyW, Materials2Materials.HastelloyX, Materials2Materials.HastelloyC276,
-        Materials2Materials.HastelloyN, Materials2Materials.Incoloy020, Materials2Materials.IncoloyDS,
-        Materials2Materials.IncoloyMA956, Materials2Materials.Grisium, Materials2Materials.HG1223,
-        Materials2Materials.TriniumTitaniumAlloy, Materials2Materials.TriniumNaquadahAlloy, Materials2Materials.TriniumNaquadahCarbonite,
-        Materials2Materials.ArceusAlloy2B, Materials2Materials.HeLiCoPtEr, Materials2Materials.LafiumCompound,
-        Materials2Materials.CinobiteA243, Materials2Materials.Pikyonium64B, Materials2Materials.AbyssalAlloy,
-        Materials2Materials.Laurenium, Materials2Materials.Botmium, Materials2Materials.HS188A,
-        Materials2Materials.Titansteel, Materials2Materials.Arcanite, Materials2Materials.Octiron,
-        Materials2Materials.BabbitAlloy, Materials2Materials.BlackTitanium, Materials2Materials.Indalloy140,
-        Materials2Materials.Quantum,
+        Materials.SiliconCarbide, Materials.ZirconiumCarbide, Materials.TantalumCarbide,
+        Materials.NiobiumCarbide, Materials.TungstenTitaniumCarbide, Materials.EnergyCrystal,
+        Materials.BloodSteel, Materials.Zeron100, Materials.Tumbaga,
+        Materials.Potin, Materials.Staballoy, Materials.Tantalloy60,
+        Materials.Tantalloy61, Materials.Inconel625, Materials.Inconel690,
+        Materials.Inconel792, Materials.EglinSteel, Materials.MaragingSteel250,
+        Materials.MaragingSteel300, Materials.MaragingSteel350, Materials.WatertightSteel,
+        Materials.Nitinol60, Materials.Stellite, Materials.Talonite,
+        Materials.HastelloyW, Materials.HastelloyX, Materials.HastelloyC276,
+        Materials.HastelloyN, Materials.Incoloy020, Materials.IncoloyDS,
+        Materials.IncoloyMA956, Materials.Grisium, Materials.HG1223,
+        Materials.TriniumTitaniumAlloy, Materials.TriniumNaquadahAlloy, Materials.TriniumNaquadahCarbonite,
+        Materials.ArceusAlloy2B, Materials.HeLiCoPtEr, Materials.LafiumCompound,
+        Materials.CinobiteA243, Materials.Pikyonium64B, Materials.AbyssalAlloy,
+        Materials.Laurenium, Materials.Botmium, Materials.HS188A,
+        Materials.Titansteel, Materials.Arcanite, Materials.Octiron,
+        Materials.BabbitAlloy, Materials.BlackTitanium, Materials.Indalloy140,
+        Materials.Quantum,
         // MaterialsFluorides
-        Materials2Materials.AmmoniumBifluoride, Materials2Materials.BerylliumHydroxide, Materials2Materials.BerylliumFluoride,
-        Materials2Materials.LithiumFluoride, Materials2Materials.ThoriumTetrafluoride, Materials2Materials.ThoriumHexafluoride,
-        Materials2Materials.UraniumTetrafluoride, Materials2Materials.UraniumHexafluoride, Materials2Materials.ZirconiumTetrafluoride,
-        Materials2Materials.NeptuniumHexafluoride, Materials2Materials.TechnetiumHexafluoride, Materials2Materials.SeleniumHexafluoride,
-        Materials2Materials.SodiumFluoride,
+        Materials.AmmoniumBifluoride, Materials.BerylliumHydroxide, Materials.BerylliumFluoride,
+        Materials.LithiumFluoride, Materials.ThoriumTetrafluoride, Materials.ThoriumHexafluoride,
+        Materials.UraniumTetrafluoride, Materials.UraniumHexafluoride, Materials.ZirconiumTetrafluoride,
+        Materials.NeptuniumHexafluoride, Materials.TechnetiumHexafluoride, Materials.SeleniumHexafluoride,
+        Materials.SodiumFluoride,
         // MaterialsNuclides
-        Materials2Materials.LFTRFuel1, Materials2Materials.LFTRFuel2, Materials2Materials.LFTRFuel3,
+        Materials.LFTRFuel1, Materials.LFTRFuel2, Materials.LFTRFuel3,
         // MaterialMisc / RecipesSeleniumProcessing
-        Materials2Materials.PotassiumNitrate, Materials2Materials.SodiumNitrate, Materials2Materials.StrontiumOxide,
-        Materials2Materials.StrontiumHydroxide, Materials2Materials.CyanoaceticAcid, Materials2Materials.SodiumCyanide,
-        Materials2Materials.CopperIISulfate, Materials2Materials.CopperIISulfatePentahydrate, Materials2Materials.SeleniumDioxide,
-        Materials2Materials.WoodsGlass);
+        Materials.PotassiumNitrate, Materials.SodiumNitrate, Materials.StrontiumOxide,
+        Materials.StrontiumHydroxide, Materials.CyanoaceticAcid, Materials.SodiumCyanide,
+        Materials.CopperIISulfate, Materials.CopperIISulfatePentahydrate, Materials.SeleniumDioxide,
+        Materials.WoodsGlass);
     // spotless:on
 
     public static void run() {

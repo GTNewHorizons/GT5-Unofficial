@@ -2,6 +2,7 @@ package gregtech.common.blocks;
 
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,7 +22,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.MaterialParts;
@@ -65,7 +65,7 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
     public String getLocalizedName(int meta) {
         Material material = materials.get(meta);
 
-        if (material == null) material = Materials2Materials.NULL;
+        if (material == null) material = Materials.NULL;
 
         return OrePrefixes.sheetmetal.getLocalizedNameForItem(MaterialUtils.internalName(material));
     }

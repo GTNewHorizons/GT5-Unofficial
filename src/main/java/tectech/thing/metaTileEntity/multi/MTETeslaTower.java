@@ -28,6 +28,7 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -51,7 +52,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -197,7 +197,7 @@ public class MTETeslaTower extends TTMultiblockBase
                 .hint(1)
                 .casingIndex(BlockGTCasingsTT.textureOffset + 16 + 6)
                 .buildAndChain(TTCasingsContainer.sBlockCasingsBA0, 6))
-        .addElement('F', ofFrame(Materials2Materials.Titanium))
+        .addElement('F', ofFrame(Materials.Titanium))
         .build();
     // endregion
 
@@ -414,7 +414,7 @@ public class MTETeslaTower extends TTMultiblockBase
             if (fluidHatch.mFluid != null) {
                 if (fluidHatch.mFluid.isFluidEqual(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidPlasma, (int) (1)))
+                        .getFluidStack(Materials.Helium, Materials2FluidShapes.fluidPlasma, (int) (1)))
                     && fluidHatch.mFluid.amount >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM) {
                     fluidHatch.mFluid.amount = fluidHatch.mFluid.amount
                         - ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM;
@@ -423,7 +423,7 @@ public class MTETeslaTower extends TTMultiblockBase
                     return;
                 } else if (fluidHatch.mFluid.isFluidEqual(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.fluidPlasma, (int) (1)))
+                        .getFluidStack(Materials.Nitrogen, Materials2FluidShapes.fluidPlasma, (int) (1)))
                     && fluidHatch.mFluid.amount
                         >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN) {
                             fluidHatch.mFluid.amount = fluidHatch.mFluid.amount
@@ -434,7 +434,7 @@ public class MTETeslaTower extends TTMultiblockBase
                         } else
                     if (fluidHatch.mFluid.isFluidEqual(
                         MaterialLibAPI
-                            .getFluidStack(Materials2Materials.Radon, Materials2FluidShapes.fluidPlasma, (int) (1)))
+                            .getFluidStack(Materials.Radon, Materials2FluidShapes.fluidPlasma, (int) (1)))
                         && fluidHatch.mFluid.amount
                             >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON) {
                                 fluidHatch.mFluid.amount = fluidHatch.mFluid.amount

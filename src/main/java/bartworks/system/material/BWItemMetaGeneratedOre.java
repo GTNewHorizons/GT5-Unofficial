@@ -2,6 +2,7 @@ package bartworks.system.material;
 
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -11,7 +12,6 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.MaterialFormulas;
 import gregtech.api.material.MaterialUtils;
@@ -53,7 +53,7 @@ public class BWItemMetaGeneratedOre extends ItemBlock {
 
         if (material == null) {
             return blockOre.getPrefix()
-                .getLocalizedNameForItem(MaterialUtils.internalName(Materials2Materials.NULL));
+                .getLocalizedNameForItem(MaterialUtils.internalName(Materials.NULL));
         }
 
         return blockOre.getPrefix()

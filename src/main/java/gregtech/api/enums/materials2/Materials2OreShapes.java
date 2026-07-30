@@ -24,12 +24,12 @@ import gregtech.common.ores.GTOreAdapter;
 /// legacy small ore never generates on ice stone (`GTOreAdapter#supports`), so those two combinations are
 /// permanently unreachable and were dropped rather than declared and left forever empty.
 ///
-/// [#init] runs before `Materials2Materials#init` populates every field that class-of-interest data depends
-/// on (block shapes must resolve before `Materials2Materials#init` references `ore`/`oreSmall`), so
+/// [#init] runs before `Materials#init` populates every field that class-of-interest data depends
+/// on (block shapes must resolve before `Materials#init` references `ore`/`oreSmall`), so
 /// [#STONE_TYPE_NAMES]/[#SMALL_ORE_EXCLUDED]/[#KNOWN_VARIANT_BASES] are plain string data rather than derived
 /// from the live [StoneType] enum, and [#stoneTypeOf] resolves a variant back to its [StoneType] lazily,
 /// called only from behavior hooks that run during real gameplay, long after every mod's preInit (and
-/// `Materials2Materials.init`) has finished.
+/// `Materials.init`) has finished.
 public class Materials2OreShapes {
 
     // spotless:off

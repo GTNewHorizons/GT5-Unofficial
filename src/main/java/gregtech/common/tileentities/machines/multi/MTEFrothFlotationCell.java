@@ -16,6 +16,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 import java.util.Objects;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -40,7 +41,6 @@ import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -94,8 +94,8 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
                 .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.InconelReinforcedCasing.asElement())))
         .addElement('D', Casings.FlotationCellCasings.asElement())
         .addElement('E', Casings.InconelReinforcedCasing.asElement())
-        .addElement('A', ofFrame(Materials2Materials.Inconel690))
-        .addElement('B', ofFrame(Materials2Materials.Staballoy))
+        .addElement('A', ofFrame(Materials.Inconel690))
+        .addElement('B', ofFrame(Materials.Staballoy))
         .addElement('W', ofChain(ofAnyWater(false), isAir()))
         .build();
 

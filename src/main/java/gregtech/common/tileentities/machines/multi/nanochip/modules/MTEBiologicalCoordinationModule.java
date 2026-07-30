@@ -11,6 +11,7 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,7 +21,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -57,7 +57,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
         // Nanochip Reinforcement Casing
         .addElement('B', Casings.NanochipReinforcementCasing.asElement())
         // Tritanium Frame Box
-        .addElement('C', ofFrame(Materials2Materials.Tritanium))
+        .addElement('C', ofFrame(Materials.Tritanium))
         // Circuit Complex Glass
         .addElement('D', Casings.NanochipComplexGlass.asElement())
         .build();
@@ -165,12 +165,12 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
         if (baseMulti.wetwareT3Active) {
             fakeFluids.add(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.GrowthMediumSterilized,
+                    Materials.GrowthMediumSterilized,
                     Materials2FluidShapes.fluidLiquid,
                     Integer.MAX_VALUE));
         }
         if (baseMulti.bioT3Active) {
-            fakeFluids.add(MaterialUtils.fluid(Materials2Materials.BiohMediumSterilized, Integer.MAX_VALUE));
+            fakeFluids.add(MaterialUtils.fluid(Materials.BiohMediumSterilized, Integer.MAX_VALUE));
         }
         FluidStack[] inputFluids = fakeFluids.toArray(new FluidStack[] {});
         this.fluidInputs = inputFluids;
@@ -191,11 +191,11 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
             if (baseMulti.wetwareT3Active && stack.getFluid()
                 .equals(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.GrowthMediumSterilized, Materials2FluidShapes.fluidLiquid, 1)
+                        .getFluidStack(Materials.GrowthMediumSterilized, Materials2FluidShapes.fluidLiquid, 1)
                         .getFluid()))
                 fluidInputs[i] = null;
             if (baseMulti.bioT3Active && stack.getFluid()
-                .equals(MaterialUtils.fluidOf(Materials2Materials.BiohMediumSterilized))) fluidInputs[i] = null;
+                .equals(MaterialUtils.fluidOf(Materials.BiohMediumSterilized))) fluidInputs[i] = null;
         }
         transformedRecipe.setFluidInputs(ArrayExt.removeNullFluids(fluidInputs));
         return transformedRecipe;

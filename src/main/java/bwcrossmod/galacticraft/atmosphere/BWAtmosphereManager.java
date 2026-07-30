@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import gregtech.api.enums.materials2.Materials;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -25,7 +26,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.loaders.materials.LegacyNameDomain;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
@@ -87,7 +87,7 @@ public final class BWAtmosphereManager {
         if (IAtmosphericGas.CO2.equals(gas)) {
             BWAtmosphereManager.addGasToWorld(
                 worldID,
-                Materials2Materials.CarbonDioxide,
+                Materials.CarbonDioxide,
                 BWAtmosphereManager.COEFFICIENT_ARRAY[aMaxNumber - 1][aNumber]);
             return true;
         }

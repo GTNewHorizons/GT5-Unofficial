@@ -38,7 +38,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -113,7 +113,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
         .addElement('B', ofBlock(GregTechAPI.sBlockGlass1, 1))
         // UV Backlight sterilizer casing
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings9, 13))
-        .addElement('D', ofFrame(Materials2Materials.StellarAlloy))
+        .addElement('D', ofFrame(Materials.StellarAlloy))
         // Lens housing bus
         .addElement(
             'L',

@@ -39,7 +39,7 @@ import goodgenerator.loader.Loaders;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
@@ -246,7 +246,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
                             .build(),
                         onElementPass(MTENeutronActivator::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
                 .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 6))
-                .addElement('F', ofFrame(Materials2Materials.Steel))
+                .addElement('F', ofFrame(Materials.Steel))
                 .addElement('G', chainAllGlasses())
                 .addElement('P', ofBlock(Loaders.speedingPipe, 0))
                 .addElement(
@@ -400,9 +400,9 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     private void tryUseModerator() {
         startRecipeProcessing();
         for (ItemStack input : getStoredInputs()) {
-            if (input.isItemEqual(MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.dust, 1))
+            if (input.isItemEqual(MaterialLibAPI.getStack(Materials.Graphite, Materials2Shapes.dust, 1))
                 || input
-                    .isItemEqual(MaterialLibAPI.getStack(Materials2Materials.Beryllium, Materials2Shapes.dust, 1))) {
+                    .isItemEqual(MaterialLibAPI.getStack(Materials.Beryllium, Materials2Shapes.dust, 1))) {
                 int consume = Math.min(this.eV / 10000000, input.stackSize);
                 depleteInput(GTUtility.copyAmount(consume, input));
                 this.eV -= 10000000 * consume;

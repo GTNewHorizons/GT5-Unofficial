@@ -5,6 +5,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import java.util.HashSet;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemMultiTexture;
@@ -20,7 +21,6 @@ import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -212,14 +212,14 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             .itemOutputs(slabOutput)
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (1)))
+                    .getFluidStack(Materials.Lubricant, Materials2FluidShapes.fluidLiquid, (int) (1)))
             .duration(25 * TICKS)
             .eut(4)
             .addTo(cutterRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, plankInput))
             .itemOutputs(slabOutput)
-            .fluidInputs(MaterialUtils.fluid(Materials2Materials.dimensionallyshiftedsuperfluid, 1))
+            .fluidInputs(MaterialUtils.fluid(Materials.dimensionallyshiftedsuperfluid, 1))
             .duration(10 * TICKS)
             .eut(4)
             .addTo(cutterRecipes);

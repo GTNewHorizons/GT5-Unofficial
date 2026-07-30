@@ -13,7 +13,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -39,17 +39,17 @@ public class GregtechRocketFuelGenerator {
             BITS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.LargeCombustionEngine.get(1), 'P',
                 ItemList.Electric_Piston_IV, 'E', ItemList.Field_Generator_EV, 'C', Circuits.LuV.getIngredient(), 'W',
-                OrePrefixes.cableGt08.ingredient(Materials2Materials.Platinum), 'G',
-                MaterialLibAPI.getStack(Materials2Materials.MaragingSteel350, Materials2Shapes.gearGt, 1) });
+                OrePrefixes.cableGt08.ingredient(Materials.Platinum), 'G',
+                MaterialLibAPI.getStack(Materials.MaragingSteel350, Materials2Shapes.gearGt, 1) });
 
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_RocketEngine.get(1L),
             BITS,
             new Object[] { "PhP", "RFR", "PWP", 'R',
-                OrePrefixes.pipeMedium.ingredient(Materials2Materials.TungstenSteel), 'F',
+                OrePrefixes.pipeMedium.ingredient(Materials.TungstenSteel), 'F',
                 ItemList.Casing_RobustTungstenSteel, 'P',
-                MaterialLibAPI.getStack(Materials2Materials.Nitinol60, Materials2Shapes.gearGt, 1), 'W',
-                OrePrefixes.stickLong.ingredient(Materials2Materials.TungstenSteel) });
+                MaterialLibAPI.getStack(Materials.Nitinol60, Materials2Shapes.gearGt, 1), 'W',
+                OrePrefixes.stickLong.ingredient(Materials.TungstenSteel) });
 
         GregtechItemList.Rocket_Engine_EV.set(
             new MTERocketFuelGenerator(
@@ -75,8 +75,8 @@ public class GregtechRocketFuelGenerator {
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
                 ItemList.Electric_Motor_EV, 'C', Circuits.IV.getIngredient(), 'W',
-                OrePrefixes.cableGt02.ingredient(Materials2Materials.Aluminium), 'G',
-                MaterialLibAPI.getStack(Materials2Materials.Tantalloy61, Materials2Shapes.gearGt, 1) });
+                OrePrefixes.cableGt02.ingredient(Materials.Aluminium), 'G',
+                MaterialLibAPI.getStack(Materials.Tantalloy61, Materials2Shapes.gearGt, 1) });
 
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Rocket_Engine_IV.get(1L),
@@ -84,8 +84,8 @@ public class GregtechRocketFuelGenerator {
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_IV, 'P', ItemList.Electric_Piston_IV, 'E',
                 ItemList.Electric_Motor_IV, 'C', Circuits.LuV.getIngredient(), 'W',
-                OrePrefixes.cableGt02.ingredient(Materials2Materials.Platinum), 'G',
-                MaterialLibAPI.getStack(Materials2Materials.Stellite, Materials2Shapes.gearGt, 1) });
+                OrePrefixes.cableGt02.ingredient(Materials.Platinum), 'G',
+                MaterialLibAPI.getStack(Materials.Stellite, Materials2Shapes.gearGt, 1) });
         final ItemStack INGREDIENT_1 = ItemList.Electric_Piston_LuV.get(1);
         final ItemStack INGREDIENT_2 = ItemList.Electric_Motor_LuV.get(1);
         GTModHandler.addCraftingRecipe(
@@ -93,7 +93,7 @@ public class GregtechRocketFuelGenerator {
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_LuV, 'P', INGREDIENT_1, 'E', INGREDIENT_2, 'C',
-                Circuits.ZPM.getIngredient(), 'W', OrePrefixes.cableGt02.ingredient(Materials2Materials.Tungsten), 'G',
-                MaterialLibAPI.getStack(Materials2Materials.Zeron100, Materials2Shapes.gearGt, 1) });
+                Circuits.ZPM.getIngredient(), 'W', OrePrefixes.cableGt02.ingredient(Materials.Tungsten), 'G',
+                MaterialLibAPI.getStack(Materials.Zeron100, Materials2Shapes.gearGt, 1) });
     }
 }

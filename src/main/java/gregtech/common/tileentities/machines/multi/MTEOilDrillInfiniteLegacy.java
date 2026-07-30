@@ -3,12 +3,12 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.VN;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.material.MaterialUtils;
@@ -48,7 +48,7 @@ public class MTEOilDrillInfiniteLegacy extends MTEOilDrillBase {
 
     @Override
     protected Material getFrameMaterial() {
-        return Materials2Materials.Neutronium;
+        return Materials.Neutronium;
     }
 
     @Override

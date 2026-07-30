@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeSet;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -68,7 +69,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolboxSlot;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.hazards.Hazard;
@@ -216,21 +216,21 @@ public class GTClient extends GTProxy {
     /// the
     /// generated-item, fluid-display and electrode renderers.
     private static void registerMaterialItemRenderers() {
-        registerMaterialItemRenderer(Materials2Materials.TranscendentMetal, new TranscendentMetalRenderer());
-        registerMaterialItemRenderer(Materials2Materials.GaiaSpirit, new GaiaSpiritRenderer());
-        registerMaterialItemRenderer(Materials2Materials.Infinity, new InfinityRenderer());
-        registerMaterialItemRenderer(Materials2Materials.CosmicNeutronium, new CosmicNeutroniumRenderer());
-        registerMaterialItemRenderer(Materials2Materials.Universium, new UniversiumRenderer());
-        registerMaterialItemRenderer(Materials2Materials.Eternity, new InfinityRenderer());
-        registerMaterialItemRenderer(Materials2Materials.Magmatter, new InfinityRenderer());
-        registerMaterialItemRenderer(Materials2Materials.SixPhasedCopper, new GlitchEffectRenderer());
-        registerMaterialItemRenderer(Materials2Materials.GravitonShard, new InfinityRenderer());
-        registerMaterialItemRenderer(Materials2Materials.exohalkonite, new InfinityRenderer());
-        registerMaterialItemRenderer(Materials2Materials.hotexohalkonite, new InfinityRenderer());
+        registerMaterialItemRenderer(Materials.TranscendentMetal, new TranscendentMetalRenderer());
+        registerMaterialItemRenderer(Materials.GaiaSpirit, new GaiaSpiritRenderer());
+        registerMaterialItemRenderer(Materials.Infinity, new InfinityRenderer());
+        registerMaterialItemRenderer(Materials.CosmicNeutronium, new CosmicNeutroniumRenderer());
+        registerMaterialItemRenderer(Materials.Universium, new UniversiumRenderer());
+        registerMaterialItemRenderer(Materials.Eternity, new InfinityRenderer());
+        registerMaterialItemRenderer(Materials.Magmatter, new InfinityRenderer());
+        registerMaterialItemRenderer(Materials.SixPhasedCopper, new GlitchEffectRenderer());
+        registerMaterialItemRenderer(Materials.GravitonShard, new InfinityRenderer());
+        registerMaterialItemRenderer(Materials.exohalkonite, new InfinityRenderer());
+        registerMaterialItemRenderer(Materials.hotexohalkonite, new InfinityRenderer());
         registerMaterialItemRenderer(
-            Materials2Materials.prismaticnaquadah,
-            new RainbowOverlayRenderer(MaterialUtils.rgba(Materials2Materials.prismaticnaquadah)));
-        registerMaterialItemRenderer(Materials2Materials.Amalgatite, new InfinityRenderer());
+            Materials.prismaticnaquadah,
+            new RainbowOverlayRenderer(MaterialUtils.rgba(Materials.prismaticnaquadah)));
+        registerMaterialItemRenderer(Materials.Amalgatite, new InfinityRenderer());
     }
 
     private static void registerMaterialItemRenderer(Material material, GeneratedMaterialRenderer renderer) {

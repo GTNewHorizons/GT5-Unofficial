@@ -12,8 +12,8 @@ import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.util.GTLog;
@@ -40,12 +40,12 @@ import gregtech.api.util.GTLog;
 /// otherwise have.
 public final class LoaderSifterRecipes {
 
-    private static final Material[] CARRIERS = { Materials2Materials.RockSalt, Materials2Materials.Bismutite,
-        Materials2Materials.FluorBuergerite, Materials2Materials.ChromoAluminoPovondraite,
-        Materials2Materials.VanadioOxyDravite, Materials2Materials.Olenite, Materials2Materials.RedZircon,
-        Materials2Materials.Fayalite, Materials2Materials.Forsterite, Materials2Materials.Hedenbergite,
-        Materials2Materials.Prasiolite, Materials2Materials.BArTiMaEuSNeK, Materials2Materials.Tiberium,
-        Materials2Materials.Fluorspar, Materials2Materials.Orundum };
+    private static final Material[] CARRIERS = { Materials.RockSalt, Materials.Bismutite,
+        Materials.FluorBuergerite, Materials.ChromoAluminoPovondraite,
+        Materials.VanadioOxyDravite, Materials.Olenite, Materials.RedZircon,
+        Materials.Fayalite, Materials.Forsterite, Materials.Hedenbergite,
+        Materials.Prasiolite, Materials.BArTiMaEuSNeK, Materials.Tiberium,
+        Materials.Fluorspar, Materials.Orundum };
 
     private static final Shape[] COMPRESSOR_SHAPES = { Materials2Shapes.gem, Materials2BlockShapes.block };
 

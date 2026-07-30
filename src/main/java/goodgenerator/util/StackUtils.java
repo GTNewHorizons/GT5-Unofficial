@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -16,7 +17,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import appeng.api.AEApi;
 import appeng.api.storage.data.IAEFluidStack;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTUtility;
 
 public class StackUtils {
@@ -92,54 +92,54 @@ public class StackUtils {
         switch (aTier) {
             case 0: // ULV
                 return MaterialLibAPI
-                    .getFluidStack(Materials2Materials.RedAlloy, Materials2FluidShapes.fluidMolten, aAmount);
+                    .getFluidStack(Materials.RedAlloy, Materials2FluidShapes.fluidMolten, aAmount);
             case 1: // LV
                 return MaterialLibAPI
-                    .getFluidStack(Materials2Materials.TinAlloy, Materials2FluidShapes.fluidMolten, aAmount);
+                    .getFluidStack(Materials.TinAlloy, Materials2FluidShapes.fluidMolten, aAmount);
             case 2: // MV
                 return MaterialLibAPI
-                    .getFluidStack(Materials2Materials.RoseGold, Materials2FluidShapes.fluidMolten, aAmount);
+                    .getFluidStack(Materials.RoseGold, Materials2FluidShapes.fluidMolten, aAmount);
             case 3: // HV
                 return MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Zircaloy4, Materials2FluidShapes.fluidMolten, (int) (aAmount));
+                    .getFluidStack(Materials.Zircaloy4, Materials2FluidShapes.fluidMolten, (int) (aAmount));
             case 4: // EV
                 return MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Incoloy903, Materials2FluidShapes.fluidMolten, (int) (aAmount));
+                    .getFluidStack(Materials.Incoloy903, Materials2FluidShapes.fluidMolten, (int) (aAmount));
             case 5: // IV
                 return MaterialLibAPI.getFluidStack(
-                    Materials2Materials.TanmolyiumBetaC,
+                    Materials.TanmolyiumBetaC,
                     Materials2FluidShapes.fluidMolten,
                     (int) (aAmount));
             case 6: // LuV
                 return MaterialLibAPI
-                    .getFluidStack(Materials2Materials.ArtheriumSn, Materials2FluidShapes.fluidMolten, (int) (aAmount));
+                    .getFluidStack(Materials.ArtheriumSn, Materials2FluidShapes.fluidMolten, (int) (aAmount));
             case 7: // ZPM
                 return MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Dalisenite, Materials2FluidShapes.fluidMolten, (int) (aAmount));
+                    .getFluidStack(Materials.Dalisenite, Materials2FluidShapes.fluidMolten, (int) (aAmount));
             case 8: // UV
                 return MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Tairitsu, Materials2FluidShapes.fluidMolten, (int) (aAmount));
+                    .getFluidStack(Materials.Tairitsu, Materials2FluidShapes.fluidMolten, (int) (aAmount));
             case 9: // UHV
                 return MaterialLibAPI.getFluidStack(
-                    Materials2Materials.PreciousMetalsAlloy,
+                    Materials.PreciousMetalsAlloy,
                     Materials2FluidShapes.fluidMolten,
                     (int) (aAmount));
             case 10: // UEV
                 return MaterialLibAPI.getFluidStack(
-                    Materials2Materials.EnrichedNaquadahAlloy,
+                    Materials.EnrichedNaquadahAlloy,
                     Materials2FluidShapes.fluidMolten,
                     (int) (aAmount));
             case 11: // UIV
                 return MaterialLibAPI.getFluidStack(
-                    Materials2Materials.MetastableOganesson,
+                    Materials.MetastableOganesson,
                     Materials2FluidShapes.fluidMolten,
                     (int) (aAmount));
             case 12: // UMV
                 return MaterialLibAPI
-                    .getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.fluidMolten, aAmount);
+                    .getFluidStack(Materials.SpaceTime, Materials2FluidShapes.fluidMolten, aAmount);
             default:
                 return MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Shirabon, Materials2FluidShapes.fluidMolten, (int) (aAmount));
+                    .getFluidStack(Materials.Shirabon, Materials2FluidShapes.fluidMolten, (int) (aAmount));
         }
     }
 

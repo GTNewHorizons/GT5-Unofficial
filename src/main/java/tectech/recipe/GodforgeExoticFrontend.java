@@ -21,7 +21,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import codechicken.nei.PositionedStack;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
@@ -51,7 +51,7 @@ public class GodforgeExoticFrontend extends RecipeMapFrontend {
     public void prepareRecipe(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         if (neiCachedRecipe.mRecipe.mFluidOutputs[0].equals(
             MaterialLibAPI.getFluidStack(
-                Materials2Materials.QuarkGluonPlasma,
+                Materials.QuarkGluonPlasma,
                 Materials2FluidShapes.fluidLiquid,
                 (int) (1_000)))) {
             neiCachedRecipe.mInputs.set(0, new PositionedStack(quarkGluonItemsForNEI, 48, 23, true));

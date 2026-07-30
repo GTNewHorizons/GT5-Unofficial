@@ -11,6 +11,7 @@ import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -22,7 +23,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -41,7 +41,7 @@ public class PlasmaForgeRecipes implements Runnable {
         {
             // Dimensionally Shifted Superfluid
 
-            Fluid celestialTungstenPlasma = MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.CelestialTungsten);
+            Fluid celestialTungstenPlasma = MaterialUtils.legacyGtppPlasmaOf(Materials.CelestialTungsten);
 
             // Tier 5
             // Best recipe, unlocks with Stellar Catalyst.
@@ -50,31 +50,31 @@ public class PlasmaForgeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.stablebaryonicmatter,
+                        Materials.stablebaryonicmatter,
                         Materials2FluidShapes.fluidLiquid,
                         8_000),
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.MetastableOganesson,
+                        Materials.MetastableOganesson,
                         Materials2FluidShapes.fluidMolten,
                         (int) (4 * INGOTS)),
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Grade8PurifiedWater,
+                        Materials.Grade8PurifiedWater,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (12_800)),
                     new FluidStack(celestialTungstenPlasma, 1 * STACKS + 32 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.HeavyRadox, Materials2FluidShapes.fluidLiquid, 32_000),
+                        .getFluidStack(Materials.HeavyRadox, Materials2FluidShapes.fluidLiquid, 32_000),
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.ExcitedDTSC,
+                        Materials.ExcitedDTSC,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (2_000)))
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.dimensionallyshiftedsuperfluid,
+                        Materials.dimensionallyshiftedsuperfluid,
                         Materials2FluidShapes.fluidLiquid,
                         360_000),
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.DimensionallyTranscendentResidue,
+                        Materials.DimensionallyTranscendentResidue,
                         Materials2FluidShapes.fluidLiquid,
                         4_000))
                 .duration(7 * SECONDS + 10 * TICKS)
@@ -89,31 +89,31 @@ public class PlasmaForgeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.stablebaryonicmatter,
+                        Materials.stablebaryonicmatter,
                         Materials2FluidShapes.fluidLiquid,
                         2_000),
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.MetastableOganesson,
+                        Materials.MetastableOganesson,
                         Materials2FluidShapes.fluidMolten,
                         (int) (2 * INGOTS)),
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Grade8PurifiedWater,
+                        Materials.Grade8PurifiedWater,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (3_200)),
                     new FluidStack(celestialTungstenPlasma, 48 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.HeavyRadox, Materials2FluidShapes.fluidLiquid, 4_000),
+                        .getFluidStack(Materials.HeavyRadox, Materials2FluidShapes.fluidLiquid, 4_000),
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.ExcitedDTEC,
+                        Materials.ExcitedDTEC,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (2_000)))
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.dimensionallyshiftedsuperfluid,
+                        Materials.dimensionallyshiftedsuperfluid,
                         Materials2FluidShapes.fluidLiquid,
                         90_000),
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.DimensionallyTranscendentResidue,
+                        Materials.DimensionallyTranscendentResidue,
                         Materials2FluidShapes.fluidLiquid,
                         2_000))
                 .duration(30 * SECONDS)
@@ -129,31 +129,31 @@ public class PlasmaForgeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.stablebaryonicmatter,
+                        Materials.stablebaryonicmatter,
                         Materials2FluidShapes.fluidLiquid,
                         1_000),
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.MetastableOganesson,
+                        Materials.MetastableOganesson,
                         Materials2FluidShapes.fluidMolten,
                         (int) (1 * INGOTS)),
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Grade8PurifiedWater,
+                        Materials.Grade8PurifiedWater,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (1_600)),
                     new FluidStack(celestialTungstenPlasma, 24 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.SuperHeavyRadox, Materials2FluidShapes.fluidLiquid, 2_000),
+                        .getFluidStack(Materials.SuperHeavyRadox, Materials2FluidShapes.fluidLiquid, 2_000),
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.ExcitedDTRC,
+                        Materials.ExcitedDTRC,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (2_000)))
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.dimensionallyshiftedsuperfluid,
+                        Materials.dimensionallyshiftedsuperfluid,
                         Materials2FluidShapes.fluidLiquid,
                         30_000),
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.DimensionallyTranscendentResidue,
+                        Materials.DimensionallyTranscendentResidue,
                         Materials2FluidShapes.fluidLiquid,
                         1_000))
                 .duration(30 * SECONDS)
@@ -166,31 +166,31 @@ public class PlasmaForgeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.stablebaryonicmatter,
+                        Materials.stablebaryonicmatter,
                         Materials2FluidShapes.fluidLiquid,
                         250),
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.MetastableOganesson,
+                        Materials.MetastableOganesson,
                         Materials2FluidShapes.fluidMolten,
                         (int) (1 * INGOTS)),
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Grade8PurifiedWater,
+                        Materials.Grade8PurifiedWater,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (400)),
                     new FluidStack(celestialTungstenPlasma, 24 * INGOTS),
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.SuperHeavyRadox, Materials2FluidShapes.fluidLiquid, 2_000),
+                        .getFluidStack(Materials.SuperHeavyRadox, Materials2FluidShapes.fluidLiquid, 2_000),
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.ExcitedDTPC,
+                        Materials.ExcitedDTPC,
                         Materials2FluidShapes.fluidLiquid,
                         (int) (1_000)))
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.dimensionallyshiftedsuperfluid,
+                        Materials.dimensionallyshiftedsuperfluid,
                         Materials2FluidShapes.fluidLiquid,
                         7_500),
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.DimensionallyTranscendentResidue,
+                        Materials.DimensionallyTranscendentResidue,
                         Materials2FluidShapes.fluidLiquid,
                         250))
                 .duration(30 * SECONDS)
@@ -207,11 +207,11 @@ public class PlasmaForgeRecipes implements Runnable {
                 ItemList.Field_Generator_UMV.get(64))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.ExcitedDTEC,
+                    Materials.ExcitedDTEC,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (100_000_000)),
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.SpaceTime,
+                    Materials.SpaceTime,
                     Materials2FluidShapes.fluidMolten,
                     (int) (18 * STACKS)))
             .itemOutputs(ItemList.GigaChad.get(1))
@@ -228,13 +228,13 @@ public class PlasmaForgeRecipes implements Runnable {
                 new ItemStack(huiCircuit, 0, 4))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.ExcitedDTRC, Materials2FluidShapes.fluidLiquid, (int) (92)),
+                    .getFluidStack(Materials.ExcitedDTRC, Materials2FluidShapes.fluidLiquid, (int) (92)),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Duranium, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Duranium, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .itemOutputs(GregtechItemList.Laser_Lens_Special.get(1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.DimensionallyTranscendentResidue,
+                    Materials.DimensionallyTranscendentResidue,
                     Materials2FluidShapes.fluidLiquid,
                     46))
             .duration(60 * SECONDS)
@@ -247,18 +247,18 @@ public class PlasmaForgeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(Avaritia.ID, "Singularity", 8, 5))
                 .fluidInputs(
-                    MaterialUtils.legacyGtppFluid(Materials2Materials.CelestialTungsten, 1 * STACKS + 8 * INGOTS),
-                    MaterialUtils.legacyGtppFluid(Materials2Materials.AstralTitanium, 4 * STACKS + 32 * INGOTS),
-                    MaterialUtils.legacyGtppFluid(Materials2Materials.Hypogen, 36 * INGOTS),
-                    MaterialUtils.legacyGtppFluid(Materials2Materials.ChromaticGlass, 9 * STACKS),
-                    MaterialUtils.legacyGtppFluid(Materials2Materials.Rhugnor, 18 * INGOTS),
+                    MaterialUtils.legacyGtppFluid(Materials.CelestialTungsten, 1 * STACKS + 8 * INGOTS),
+                    MaterialUtils.legacyGtppFluid(Materials.AstralTitanium, 4 * STACKS + 32 * INGOTS),
+                    MaterialUtils.legacyGtppFluid(Materials.Hypogen, 36 * INGOTS),
+                    MaterialUtils.legacyGtppFluid(Materials.ChromaticGlass, 9 * STACKS),
+                    MaterialUtils.legacyGtppFluid(Materials.Rhugnor, 18 * INGOTS),
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Mellion,
+                        Materials.Mellion,
                         Materials2FluidShapes.fluidMolten,
                         (int) (1 * STACKS + 8 * INGOTS)))
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.SixPhasedCopper,
+                        Materials.SixPhasedCopper,
                         Materials2FluidShapes.fluidMolten,
                         (int) (1 * STACKS + 8 * INGOTS)))
                 .duration(60 * SECONDS)
@@ -271,24 +271,24 @@ public class PlasmaForgeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 // this is very gross
-                GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Magmatter, 1)),
-                MaterialLibAPI.getStack(Materials2Materials.Eternity, Materials2Shapes.round, (int) (64)),
-                MaterialLibAPI.getStack(Materials2Materials.Magmatter, Materials2Shapes.round, 64),
-                MaterialLibAPI.getStack(Materials2Materials.Hexanite, Materials2Shapes.round, (int) (64)),
-                MaterialLibAPI.getStack(Materials2Materials.Ruby, Materials2Shapes.gemExquisite, (int) (64)),
-                MaterialLibAPI.getStack(Materials2Materials.Jasper, Materials2Shapes.gemExquisite, (int) (64)),
-                MaterialLibAPI.getStack(Materials2Materials.Sapphire, Materials2Shapes.gemExquisite, (int) (64)),
-                MaterialLibAPI.getStack(Materials2Materials.Opal, Materials2Shapes.gemExquisite, (int) (64)))
+                GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Magmatter, 1)),
+                MaterialLibAPI.getStack(Materials.Eternity, Materials2Shapes.round, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Magmatter, Materials2Shapes.round, 64),
+                MaterialLibAPI.getStack(Materials.Hexanite, Materials2Shapes.round, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Ruby, Materials2Shapes.gemExquisite, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Jasper, Materials2Shapes.gemExquisite, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Sapphire, Materials2Shapes.gemExquisite, (int) (64)),
+                MaterialLibAPI.getStack(Materials.Opal, Materials2Shapes.gemExquisite, (int) (64)))
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.sgcrystalslurry, Materials2FluidShapes.fluidLiquid, 5_000),
+                    .getFluidStack(Materials.sgcrystalslurry, Materials2FluidShapes.fluidLiquid, 5_000),
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.ExcitedDTSC, Materials2FluidShapes.fluidLiquid, (int) (72_000)))
+                    .getFluidStack(Materials.ExcitedDTSC, Materials2FluidShapes.fluidLiquid, (int) (72_000)))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Amalgatite, Materials2Shapes.gemChipped, (int) (64)))
+                MaterialLibAPI.getStack(Materials.Amalgatite, Materials2Shapes.gemChipped, (int) (64)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.DimensionallyTranscendentResidue,
+                    Materials.DimensionallyTranscendentResidue,
                     Materials2FluidShapes.fluidLiquid,
                     144_000))
             .duration(420 * SECONDS)

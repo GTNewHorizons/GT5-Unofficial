@@ -20,6 +20,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -33,7 +34,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -84,7 +84,7 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
                     onElementPass(MTENeutroniumCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 6))))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 8))
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings10, 7))
-        .addElement('E', ofFrame(Materials2Materials.NaquadahAlloy))
+        .addElement('E', ofFrame(Materials.NaquadahAlloy))
         .build();
 
     public MTENeutroniumCompressor(final int aID, final String aName, final String aNameRegional) {

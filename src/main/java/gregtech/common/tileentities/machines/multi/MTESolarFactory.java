@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -43,7 +44,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -169,8 +169,8 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
                 .casingIndex(CASING_T3_INDEX)
                 .hint(1)
                 .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 7))))
-        .addElement('E', ofFrame(Materials2Materials.DamascusSteel))
-        .addElement('F', ofFrame(Materials2Materials.Tungsten))
+        .addElement('E', ofFrame(Materials.DamascusSteel))
+        .addElement('F', ofFrame(Materials.Tungsten))
         // G for Glass ^-^
         .addElement('G', chainAllGlasses())
         // Black plutonium item pipe

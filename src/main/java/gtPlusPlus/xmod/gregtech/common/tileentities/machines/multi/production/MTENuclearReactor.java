@@ -31,7 +31,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -387,7 +387,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
                 FluidStack aFuelFluid = null;
                 for (FluidStack aFluidInput : recipe.mFluidInputs) {
                     if (!aFluidInput.getFluid()
-                        .equals(MaterialUtils.legacyGtppFluidOf(Materials2Materials.LithiumTetrafluoroberyllateLFTB))) {
+                        .equals(MaterialUtils.legacyGtppFluidOf(Materials.LithiumTetrafluoroberyllateLFTB))) {
                         aFuelFluid = aFluidInput;
                         break;
                     }
@@ -398,7 +398,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
                             mFuelRemaining += fluidStack.amount;
                         } else if (fluidStack.getFluid()
                             .equals(
-                                MaterialUtils.legacyGtppFluidOf(Materials2Materials.LithiumTetrafluoroberyllateLFTB))) {
+                                MaterialUtils.legacyGtppFluidOf(Materials.LithiumTetrafluoroberyllateLFTB))) {
                                     li2bef4 += fluidStack.amount;
                                 }
                     }
@@ -508,7 +508,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             // Try output some Uranium-233
             if (MathUtils.randInt(1, 300) == 1) {
                 this.addOutputPartial(
-                    MaterialUtils.legacyGtppFluid(Materials2Materials.Uranium233, MathUtils.randInt(1, 10)));
+                    MaterialUtils.legacyGtppFluid(Materials.Uranium233, MathUtils.randInt(1, 10)));
             }
         }
         return super.onRunningTick(aStack);

@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -38,7 +39,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -140,7 +140,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.AlgaeCasing.asElement())))
                 .addElement('C', Casings.FilterMachineCasing.asElement())
-                .addElement('D', ofFrame(Materials2Materials.StainlessSteel))
+                .addElement('D', ofFrame(Materials.StainlessSteel))
                 .addElement('E', ofChain(ofAnyWater(false), isAir()))
                 .build();
         }

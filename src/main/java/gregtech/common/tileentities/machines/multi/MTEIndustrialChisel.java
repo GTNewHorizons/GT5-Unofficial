@@ -17,6 +17,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -33,7 +34,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -132,7 +132,7 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
                 .addElement('C', Casings.SteelGearBoxCasing.asElement())
                 .addElement('D', Casings.SteelPipeCasing.asElement())
                 .addElement('E', Casings.CupronickelCoilBlock.asElement())
-                .addElement('F', ofFrame(Materials2Materials.Steel))
+                .addElement('F', ofFrame(Materials.Steel))
                 .addElement(
                     'H',
                     buildHatchAdder(MTEIndustrialChisel.class)

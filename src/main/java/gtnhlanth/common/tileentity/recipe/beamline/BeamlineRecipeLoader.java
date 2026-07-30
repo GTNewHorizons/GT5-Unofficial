@@ -10,6 +10,7 @@ import static gtnhlanth.common.beamline.Particle.PHOTON;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -20,7 +21,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTUtility;
 import gtnhlanth.common.beamline.Particle;
@@ -42,31 +42,31 @@ public class BeamlineRecipeLoader {
          */
 
         coolantMap.put(
-            MaterialLibAPI.getFluidStack(Materials2Materials.LiquidNitrogen, Materials2FluidShapes.fluidGas, 1)
+            MaterialLibAPI.getFluidStack(Materials.LiquidNitrogen, Materials2FluidShapes.fluidGas, 1)
                 .getFluid()
                 .getName(),
-            MaterialLibAPI.getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.fluidGas, 1)
+            MaterialLibAPI.getFluidStack(Materials.Nitrogen, Materials2FluidShapes.fluidGas, 1)
                 .getFluid());
         coolantMap.put(
-            MaterialLibAPI.getFluidStack(Materials2Materials.LiquidOxygen, Materials2FluidShapes.fluidGas, 1)
+            MaterialLibAPI.getFluidStack(Materials.LiquidOxygen, Materials2FluidShapes.fluidGas, 1)
                 .getFluid()
                 .getName(),
-            MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.fluidGas, 1)
+            MaterialLibAPI.getFluidStack(Materials.Oxygen, Materials2FluidShapes.fluidGas, 1)
                 .getFluid());
         coolantMap.put("ic2coolant", FluidRegistry.getFluid("ic2hotcoolant"));
         coolantMap.put(
-            MaterialLibAPI.getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, 1)
+            MaterialLibAPI.getFluidStack(Materials.SuperCoolant, Materials2FluidShapes.fluidLiquid, 1)
                 .getFluid()
                 .getName(),
             MaterialLibAPI
-                .getFluidStack(Materials2Materials.HotSuperCoolant, Materials2FluidShapes.fluidLiquid, (int) (1_000))
+                .getFluidStack(Materials.HotSuperCoolant, Materials2FluidShapes.fluidLiquid, (int) (1_000))
                 .getFluid());
 
         /*
          * ELECTRON
          */
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.stick, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Tungsten, Materials2Shapes.stick, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -80,7 +80,7 @@ public class BeamlineRecipeLoader {
             .addTo(sourceChamberRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.LanthanumHexaboride, Materials2Shapes.stickLong, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.LanthanumHexaboride, Materials2Shapes.stickLong, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -97,7 +97,7 @@ public class BeamlineRecipeLoader {
          * NEUTRON
          */
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Californium, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Californium, Materials2Shapes.dust, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -111,7 +111,7 @@ public class BeamlineRecipeLoader {
             .addTo(sourceChamberRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Beryllium, Materials2Shapes.stickLong, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Beryllium, Materials2Shapes.stickLong, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -128,8 +128,8 @@ public class BeamlineRecipeLoader {
          * ALPHA
          */
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Thorium234, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Uranium, Materials2Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Thorium234, Materials2Shapes.dust, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -147,7 +147,7 @@ public class BeamlineRecipeLoader {
          */
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, 1000))
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, 1000))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -164,8 +164,8 @@ public class BeamlineRecipeLoader {
          * OMEGA
          */
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Unstable, Materials2Shapes.dust, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Unstable, Materials2Shapes.dust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dust, 1))
             .outputChances(500)
             .metadata(
                 SOURCE_CHAMBER_METADATA,
@@ -254,7 +254,7 @@ public class BeamlineRecipeLoader {
             .itemInputs(
                 focusItem,
                 MaterialLibAPI.getStack(
-                    Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
+                    Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
                     Materials2Shapes.gemExquisite,
                     1))
             .itemOutputs(GTUtility.copyAmountUnsafe(64, ItemList.Circuit_Chip_CrystalSoC.get(1)))
@@ -275,7 +275,7 @@ public class BeamlineRecipeLoader {
             .itemInputs(
                 focusItem,
                 MaterialLibAPI.getStack(
-                    Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
+                    Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
                     Materials2Shapes.gemExquisite,
                     1))
             .itemOutputs(GTUtility.copyAmountUnsafe(64, ItemList.Circuit_Chip_CrystalSoC2.get(1)))
@@ -298,7 +298,7 @@ public class BeamlineRecipeLoader {
             .itemInputs(
                 focusItem,
                 MaterialLibAPI.getStack(
-                    Materials2Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
+                    Materials.CeriumdopedLutetiumAluminiumGarnetCeLuAG,
                     Materials2Shapes.gemExquisite,
                     1))
             .itemOutputs(GTUtility.copyAmountUnsafe(64, ItemList.Circuit_Chip_CrystalSoC2.get(1)))

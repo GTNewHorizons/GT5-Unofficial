@@ -20,6 +20,7 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Locale;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -43,7 +44,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.fluid.GTFluidFactory;
@@ -191,13 +191,13 @@ public class LoaderGTBlockFluid implements Runnable {
 
         // Tiered recipe materials actually appear to be set in MTEBasicMachineWithRecipe, making these
         // unused
-        ItemList.Rotor_LV.set(MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.rotor, (int) (1)));
-        ItemList.Rotor_MV.set(MaterialLibAPI.getStack(Materials2Materials.Bronze, Materials2Shapes.rotor, (int) (1)));
-        ItemList.Rotor_HV.set(MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.rotor, (int) (1)));
+        ItemList.Rotor_LV.set(MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.rotor, (int) (1)));
+        ItemList.Rotor_MV.set(MaterialLibAPI.getStack(Materials.Bronze, Materials2Shapes.rotor, (int) (1)));
+        ItemList.Rotor_HV.set(MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.rotor, (int) (1)));
         ItemList.Rotor_EV
-            .set(MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.rotor, (int) (1)));
+            .set(MaterialLibAPI.getStack(Materials.StainlessSteel, Materials2Shapes.rotor, (int) (1)));
         ItemList.Rotor_IV
-            .set(MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.rotor, (int) (1)));
+            .set(MaterialLibAPI.getStack(Materials.TungstenSteel, Materials2Shapes.rotor, (int) (1)));
 
         ItemList.VOLUMETRIC_FLASK.set(new ItemVolumetricFlask("Volumetric_Flask", "Volumetric flask", 1_000));
 
@@ -776,136 +776,136 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GregTechAPI.sBlockMetal1 = new BlockMetal(
             "gt.blockmetal1",
-            new Material[] { Materials2Materials.Adamantium, Materials2Materials.Aluminium,
-                Materials2Materials.Americium, Materials2Materials.AnnealedCopper, Materials2Materials.Antimony,
-                Materials2Materials.Arsenic, Materials2Materials.AstralSilver, Materials2Materials.BatteryAlloy,
-                Materials2Materials.Beryllium, Materials2Materials.Bismuth, Materials2Materials.BismuthBronze,
-                Materials2Materials.BlackBronze, Materials2Materials.BlackSteel, Materials2Materials.BlueAlloy,
-                Materials2Materials.BlueSteel, Materials2Materials.Brass },
+            new Material[] { Materials.Adamantium, Materials.Aluminium,
+                Materials.Americium, Materials.AnnealedCopper, Materials.Antimony,
+                Materials.Arsenic, Materials.AstralSilver, Materials.BatteryAlloy,
+                Materials.Beryllium, Materials.Bismuth, Materials.BismuthBronze,
+                Materials.BlackBronze, Materials.BlackSteel, Materials.BlueAlloy,
+                Materials.BlueSteel, Materials.Brass },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS1);
 
         GregTechAPI.sBlockMetal2 = new BlockMetal(
             "gt.blockmetal2",
-            new Material[] { Materials2Materials.Bronze, Materials2Materials.Caesium, Materials2Materials.Cerium,
-                Materials2Materials.Chrome, Materials2Materials.ChromiumDioxide, Materials2Materials.Cobalt,
-                Materials2Materials.CobaltBrass, Materials2Materials.Copper, Materials2Materials.Cupronickel,
-                Materials2Materials.DamascusSteel, Materials2Materials.DarkIron, Materials2Materials.DeepIron,
-                Materials2Materials.Desh, Materials2Materials.Duranium, Materials2Materials.Dysprosium,
-                Materials2Materials.Electrum },
+            new Material[] { Materials.Bronze, Materials.Caesium, Materials.Cerium,
+                Materials.Chrome, Materials.ChromiumDioxide, Materials.Cobalt,
+                Materials.CobaltBrass, Materials.Copper, Materials.Cupronickel,
+                Materials.DamascusSteel, Materials.DarkIron, Materials.DeepIron,
+                Materials.Desh, Materials.Duranium, Materials.Dysprosium,
+                Materials.Electrum },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS2);
 
         GregTechAPI.sBlockMetal3 = new BlockMetal(
             "gt.blockmetal3",
-            new Material[] { Materials2Materials.ElectrumFlux, Materials2Materials.Enderium, Materials2Materials.Erbium,
-                Materials2Materials.Europium, Materials2Materials.FierySteel, Materials2Materials.Gadolinium,
-                Materials2Materials.Gallium, Materials2Materials.Holmium, Materials2Materials.HSLA,
-                Materials2Materials.Indium, Materials2Materials.InfusedGold, Materials2Materials.Invar,
-                Materials2Materials.Iridium, Materials2Materials.IronMagnetic, Materials2Materials.IronWood,
-                Materials2Materials.Kanthal },
+            new Material[] { Materials.ElectrumFlux, Materials.Enderium, Materials.Erbium,
+                Materials.Europium, Materials.FierySteel, Materials.Gadolinium,
+                Materials.Gallium, Materials.Holmium, Materials.HSLA,
+                Materials.Indium, Materials.InfusedGold, Materials.Invar,
+                Materials.Iridium, Materials.IronMagnetic, Materials.IronWood,
+                Materials.Kanthal },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS3);
 
         GregTechAPI.sBlockMetal4 = new BlockMetal(
             "gt.blockmetal4",
-            new Material[] { Materials2Materials.Knightmetal, Materials2Materials.Lanthanum, Materials2Materials.Lead,
-                Materials2Materials.Lutetium, Materials2Materials.Magnalium, Materials2Materials.Magnesium,
-                Materials2Materials.Manganese, Materials2Materials.MeteoricIron, Materials2Materials.MeteoricSteel,
-                Materials2Materials.Trinium, Materials2Materials.Mithril, Materials2Materials.Molybdenum,
-                Materials2Materials.Naquadah, Materials2Materials.NaquadahAlloy, Materials2Materials.NaquadahEnriched,
-                Materials2Materials.Naquadria },
+            new Material[] { Materials.Knightmetal, Materials.Lanthanum, Materials.Lead,
+                Materials.Lutetium, Materials.Magnalium, Materials.Magnesium,
+                Materials.Manganese, Materials.MeteoricIron, Materials.MeteoricSteel,
+                Materials.Trinium, Materials.Mithril, Materials.Molybdenum,
+                Materials.Naquadah, Materials.NaquadahAlloy, Materials.NaquadahEnriched,
+                Materials.Naquadria },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS4);
 
         GregTechAPI.sBlockMetal5 = new BlockMetal(
             "gt.blockmetal5",
-            new Material[] { Materials2Materials.Neodymium, Materials2Materials.NeodymiumMagnetic,
-                Materials2Materials.Neutronium, Materials2Materials.Nichrome, Materials2Materials.Nickel,
-                Materials2Materials.Niobium, Materials2Materials.NiobiumNitride, Materials2Materials.NiobiumTitanium,
-                Materials2Materials.Osmiridium, Materials2Materials.Osmium, Materials2Materials.Palladium,
-                Materials2Materials.PigIron, Materials2Materials.Platinum, Materials2Materials.Plutonium,
-                Materials2Materials.Plutonium241, Materials2Materials.Praseodymium },
+            new Material[] { Materials.Neodymium, Materials.NeodymiumMagnetic,
+                Materials.Neutronium, Materials.Nichrome, Materials.Nickel,
+                Materials.Niobium, Materials.NiobiumNitride, Materials.NiobiumTitanium,
+                Materials.Osmiridium, Materials.Osmium, Materials.Palladium,
+                Materials.PigIron, Materials.Platinum, Materials.Plutonium,
+                Materials.Plutonium241, Materials.Praseodymium },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS5);
 
         GregTechAPI.sBlockMetal6 = new BlockMetal(
             "gt.blockmetal6",
-            new Material[] { Materials2Materials.Promethium, Materials2Materials.RedAlloy, Materials2Materials.RedSteel,
-                Materials2Materials.RoseGold, Materials2Materials.Rubidium, Materials2Materials.Samarium,
-                Materials2Materials.Scandium, Materials2Materials.ShadowIron, Materials2Materials.ShadowSteel,
-                Materials2Materials.Silicon, Materials2Materials.Silver, Materials2Materials.SolderingAlloy,
-                Materials2Materials.StainlessSteel, Materials2Materials.Steel, Materials2Materials.SteelMagnetic,
-                Materials2Materials.SterlingSilver },
+            new Material[] { Materials.Promethium, Materials.RedAlloy, Materials.RedSteel,
+                Materials.RoseGold, Materials.Rubidium, Materials.Samarium,
+                Materials.Scandium, Materials.ShadowIron, Materials.ShadowSteel,
+                Materials.Silicon, Materials.Silver, Materials.SolderingAlloy,
+                Materials.StainlessSteel, Materials.Steel, Materials.SteelMagnetic,
+                Materials.SterlingSilver },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS6);
 
         GregTechAPI.sBlockMetal7 = new BlockMetal(
             "gt.blockmetal7",
-            new Material[] { Materials2Materials.Sunnarium, Materials2Materials.Tantalum, Materials2Materials.Tellurium,
-                Materials2Materials.Terbium, Materials2Materials.Thaumium, Materials2Materials.Thorium,
-                Materials2Materials.Thulium, Materials2Materials.Tin, Materials2Materials.TinAlloy,
-                Materials2Materials.Titanium, Materials2Materials.Tritanium, Materials2Materials.Tungsten,
-                Materials2Materials.TungstenSteel, Materials2Materials.Ultimet, Materials2Materials.Uranium,
-                Materials2Materials.Uranium235 },
+            new Material[] { Materials.Sunnarium, Materials.Tantalum, Materials.Tellurium,
+                Materials.Terbium, Materials.Thaumium, Materials.Thorium,
+                Materials.Thulium, Materials.Tin, Materials.TinAlloy,
+                Materials.Titanium, Materials.Tritanium, Materials.Tungsten,
+                Materials.TungstenSteel, Materials.Ultimet, Materials.Uranium,
+                Materials.Uranium235 },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS7);
 
         GregTechAPI.sBlockMetal8 = new BlockMetal(
             "gt.blockmetal8",
-            new Material[] { Materials2Materials.Vanadium, Materials2Materials.VanadiumGallium,
-                Materials2Materials.CastIron, Materials2Materials.Ytterbium, Materials2Materials.Yttrium,
-                Materials2Materials.YttriumBariumCuprate, Materials2Materials.Zinc, Materials2Materials.TungstenCarbide,
-                Materials2Materials.VanadiumSteel, Materials2Materials.HSSG, Materials2Materials.HSSE,
-                Materials2Materials.HSSS, Materials2Materials.Steeleaf, Materials2Materials.Ichorium,
-                Materials2Materials.Firestone, Materials2Materials.Shadow },
+            new Material[] { Materials.Vanadium, Materials.VanadiumGallium,
+                Materials.CastIron, Materials.Ytterbium, Materials.Yttrium,
+                Materials.YttriumBariumCuprate, Materials.Zinc, Materials.TungstenCarbide,
+                Materials.VanadiumSteel, Materials.HSSG, Materials.HSSE,
+                Materials.HSSS, Materials.Steeleaf, Materials.Ichorium,
+                Materials.Firestone, Materials.Shadow },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS8);
 
         GregTechAPI.sBlockGem1 = new BlockMetal(
             "gt.blockgem1",
-            new Material[] { Materials2Materials.InfusedAir, Materials2Materials.Amber, Materials2Materials.Amethyst,
-                Materials2Materials.InfusedWater, Materials2Materials.BlueTopaz, Materials2Materials.CertusQuartz,
-                Materials2Materials.Dilithium, Materials2Materials.EnderEye, Materials2Materials.EnderPearl,
-                Materials2Materials.FoolsRuby, Materials2Materials.Force, Materials2Materials.Forcicium,
-                Materials2Materials.Forcillium, Materials2Materials.GreenSapphire, Materials2Materials.InfusedFire,
-                Materials2Materials.Jasper },
+            new Material[] { Materials.InfusedAir, Materials.Amber, Materials.Amethyst,
+                Materials.InfusedWater, Materials.BlueTopaz, Materials.CertusQuartz,
+                Materials.Dilithium, Materials.EnderEye, Materials.EnderPearl,
+                Materials.FoolsRuby, Materials.Force, Materials.Forcicium,
+                Materials.Forcillium, Materials.GreenSapphire, Materials.InfusedFire,
+                Materials.Jasper },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS9);
 
         GregTechAPI.sBlockGem2 = new BlockMetal(
             "gt.blockgem2",
-            new Material[] { Materials2Materials.Lazurite, Materials2Materials.Lignite, Materials2Materials.Monazite,
-                Materials2Materials.Niter, Materials2Materials.Olivine, Materials2Materials.Opal,
-                Materials2Materials.InfusedOrder, Materials2Materials.InfusedEntropy,
-                Materials2Materials.TricalciumPhosphate, Materials2Materials.Quartzite, Materials2Materials.GarnetRed,
-                Materials2Materials.Ruby, Materials2Materials.Sapphire, Materials2Materials.Sodalite,
-                Materials2Materials.Tanzanite, Materials2Materials.InfusedEarth },
+            new Material[] { Materials.Lazurite, Materials.Lignite, Materials.Monazite,
+                Materials.Niter, Materials.Olivine, Materials.Opal,
+                Materials.InfusedOrder, Materials.InfusedEntropy,
+                Materials.TricalciumPhosphate, Materials.Quartzite, Materials.GarnetRed,
+                Materials.Ruby, Materials.Sapphire, Materials.Sodalite,
+                Materials.Tanzanite, Materials.InfusedEarth },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS10);
 
         GregTechAPI.sBlockGem3 = new BlockMetal(
             "gt.blockgem3",
-            new Material[] { Materials2Materials.Topaz, Materials2Materials.Vinteum, Materials2Materials.GarnetYellow,
-                Materials2Materials.NetherStar, Materials2Materials.Charcoal, Materials2Materials.Blaze },
+            new Material[] { Materials.Topaz, Materials.Vinteum, Materials.GarnetYellow,
+                Materials.NetherStar, Materials.Charcoal, Materials.Blaze },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS11);
 
         GregTechAPI.sBlockMetal9 = new BlockMetal(
             "gt.blockmetal9",
-            new Material[] { Materials2Materials.Cryolite, Materials2Materials.SiliconSolarGrade,
-                Materials2Materials.NickelAluminide, Materials2Materials.SpaceTime,
-                Materials2Materials.TranscendentMetal, Materials2Materials.Oriharukon,
-                Materials2Materials.WhiteDwarfMatter, Materials2Materials.BlackDwarfMatter,
-                Materials2Materials.Universium, Materials2Materials.Eternity, Materials2Materials.Magmatter,
-                Materials2Materials.SixPhasedCopper, Materials2Materials.HellishMetal,
-                Materials2Materials.MagnetohydrodynamicallyConstrainedStarMatter, Materials2Materials.Hexanite },
+            new Material[] { Materials.Cryolite, Materials.SiliconSolarGrade,
+                Materials.NickelAluminide, Materials.SpaceTime,
+                Materials.TranscendentMetal, Materials.Oriharukon,
+                Materials.WhiteDwarfMatter, Materials.BlackDwarfMatter,
+                Materials.Universium, Materials.Eternity, Materials.Magmatter,
+                Materials.SixPhasedCopper, Materials.HellishMetal,
+                Materials.MagnetohydrodynamicallyConstrainedStarMatter, Materials.Hexanite },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
 
         GregTechAPI.sBlockMetal10 = new BlockMetal(
             "gt.blockmetal10",
-            new Material[] { Materials2Materials.Shijima, Materials2Materials.Churitsu },
+            new Material[] { Materials.Shijima, Materials.Churitsu },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS13);
 
@@ -957,196 +957,196 @@ public class LoaderGTBlockFluid implements Runnable {
         Fluid constructionFoamFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("CFCell", 1L), true)
             .getFluid();
         MaterialUtils.recordSlotFluid(
-            Materials2Materials.ConstructionFoam,
+            Materials.ConstructionFoam,
             MaterialUtils.FluidState.LIQUID,
             constructionFoamFluid);
         // UUMatter is GT-owned but its fluid is IC2's, resolved from the filled cell at runtime (no static
         // LEGACY_FLUIDS name to port). Bind MaterialUtils' slot store from the resolved IC2 fluid directly.
         Fluid uuMatterFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("uuMatterCell", 1L), true)
             .getFluid();
-        MaterialUtils.recordSlotFluid(Materials2Materials.UUMatter, MaterialUtils.FluidState.LIQUID, uuMatterFluid);
+        MaterialUtils.recordSlotFluid(Materials.UUMatter, MaterialUtils.FluidState.LIQUID, uuMatterFluid);
 
         GTFluidFactory.builder("Air")
             .withDefaultLocalName("Air")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Air)
-            .addLocalizedName(Materials2Materials.Air)
+            .configureMaterials(Materials.Air)
+            .addLocalizedName(Materials.Air)
             .registerContainers(ItemList.Cell_Air.get(1L), ItemList.Cell_Empty.get(1L), 2000);
         GTFluidFactory.builder("LiquidOxygen")
             .withDefaultLocalName("Liquid Oxygen")
             .withStateAndTemperature(GAS, 60)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.LiquidOxygen)
-            .addLocalizedName(Materials2Materials.LiquidOxygen)
+            .configureMaterials(Materials.LiquidOxygen)
+            .addLocalizedName(Materials.LiquidOxygen)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.LiquidOxygen, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.LiquidOxygen, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("LiquidNitrogen")
             .withDefaultLocalName("Liquid Nitrogen")
             .withStateAndTemperature(GAS, 77)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.LiquidNitrogen)
-            .addLocalizedName(Materials2Materials.LiquidNitrogen)
+            .configureMaterials(Materials.LiquidNitrogen)
+            .addLocalizedName(Materials.LiquidNitrogen)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.LiquidNitrogen, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.LiquidNitrogen, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("LiquidAir")
             .withDefaultLocalName("Liquid Air")
             .withStateAndTemperature(LIQUID, 77)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.LiquidAir)
-            .addLocalizedName(Materials2Materials.LiquidAir)
+            .configureMaterials(Materials.LiquidAir)
+            .addLocalizedName(Materials.LiquidAir)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.LiquidAir, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.LiquidAir, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Oxygen")
             .withDefaultLocalName("Oxygen")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Oxygen)
-            .addLocalizedName(Materials2Materials.Oxygen)
+            .configureMaterials(Materials.Oxygen)
+            .addLocalizedName(Materials.Oxygen)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Oxygen, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Oxygen, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Hydrogen")
             .withDefaultLocalName("Hydrogen")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Hydrogen)
-            .addLocalizedName(Materials2Materials.Hydrogen)
+            .configureMaterials(Materials.Hydrogen)
+            .addLocalizedName(Materials.Hydrogen)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Hydrogen, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Hydrogen, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Deuterium")
             .withDefaultLocalName("Deuterium")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Deuterium)
-            .addLocalizedName(Materials2Materials.Deuterium)
+            .configureMaterials(Materials.Deuterium)
+            .addLocalizedName(Materials.Deuterium)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Deuterium, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Deuterium, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Tritium")
             .withDefaultLocalName("Tritium")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Tritium)
-            .addLocalizedName(Materials2Materials.Tritium)
+            .configureMaterials(Materials.Tritium)
+            .addLocalizedName(Materials.Tritium)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Tritium, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Tritium, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Helium")
             .withDefaultLocalName("Helium")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Helium)
-            .addLocalizedName(Materials2Materials.Helium)
+            .configureMaterials(Materials.Helium)
+            .addLocalizedName(Materials.Helium)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Helium, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Helium, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Argon")
             .withDefaultLocalName("Argon")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Argon)
-            .addLocalizedName(Materials2Materials.Argon)
+            .configureMaterials(Materials.Argon)
+            .addLocalizedName(Materials.Argon)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Argon, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Argon, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Radon")
             .withDefaultLocalName("Radon")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Radon)
-            .addLocalizedName(Materials2Materials.Radon)
+            .configureMaterials(Materials.Radon)
+            .addLocalizedName(Materials.Radon)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Radon, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Radon, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("Fluorine")
             .withDefaultLocalName("Fluorine")
             .withStateAndTemperature(GAS, 53)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Fluorine)
-            .addLocalizedName(Materials2Materials.Fluorine)
+            .configureMaterials(Materials.Fluorine)
+            .addLocalizedName(Materials.Fluorine)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Fluorine, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Fluorine, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Titaniumtetrachloride")
             .withDefaultLocalName("Titaniumtetrachloride")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Titaniumtetrachloride)
-            .addLocalizedName(Materials2Materials.Titaniumtetrachloride)
+            .configureMaterials(Materials.Titaniumtetrachloride)
+            .addLocalizedName(Materials.Titaniumtetrachloride)
             .registerBContainers(
                 MaterialLibAPI
-                    .getStack(Materials2Materials.Titaniumtetrachloride, Materials2CellShapes.cell, (int) (1)),
+                    .getStack(Materials.Titaniumtetrachloride, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Helium-3")
             .withDefaultLocalName("Helium-3")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Helium3)
-            .addLocalizedName(Materials2Materials.Helium3)
+            .configureMaterials(Materials.Helium3)
+            .addLocalizedName(Materials.Helium3)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Helium3, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Helium3, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Methane")
             .withTextureName("methane")
             .withDefaultLocalName("Methane")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Methane)
-            .addLocalizedName(Materials2Materials.Methane)
+            .configureMaterials(Materials.Methane)
+            .addLocalizedName(Materials.Methane)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Methane, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Methane, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Nitrogen")
             .withDefaultLocalName("Nitrogen")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Nitrogen)
-            .addLocalizedName(Materials2Materials.Nitrogen)
+            .configureMaterials(Materials.Nitrogen)
+            .addLocalizedName(Materials.Nitrogen)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Nitrogen, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Nitrogen, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("NitrogenDioxide")
             .withDefaultLocalName("Nitrogen Dioxide")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.NitrogenDioxide)
-            .addLocalizedName(Materials2Materials.NitrogenDioxide)
-            .addLocalizedName(Materials2Materials.NitrogenDioxide)
+            .configureMaterials(Materials.NitrogenDioxide)
+            .addLocalizedName(Materials.NitrogenDioxide)
+            .addLocalizedName(Materials.NitrogenDioxide)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.NitrogenDioxide, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.NitrogenDioxide, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Steam")
             .withDefaultLocalName("Steam")
             .withStateAndTemperature(GAS, 375)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Water)
-            .addLocalizedName(Materials2Materials.Water)
+            .configureMaterials(Materials.Water)
+            .addLocalizedName(Materials.Water)
             .registerBContainers(
                 GTModHandler.getIC2Item("steamCell", 1),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L));
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L));
 
-        // The dedicated Steam material carries no LEGACY_FLUIDS gas row (see Materials2Materials.Steam), so
+        // The dedicated Steam material carries no LEGACY_FLUIDS gas row (see Materials.Steam), so
         // point MaterialUtils' gas slot at the "steam" Forge fluid registered above -- the same fluid
         // configureMaterials
         // wired to Water -- read directly from the fluid registry since Steam has no property-based route to
         // it.
         Fluid steamFluid = FluidRegistry.getFluid("steam");
-        MaterialUtils.recordSlotFluid(Materials2Materials.Steam, MaterialUtils.FluidState.GAS, steamFluid);
+        MaterialUtils.recordSlotFluid(Materials.Steam, MaterialUtils.FluidState.GAS, steamFluid);
 
         // Water carries no LEGACY_FLUIDS liquid row of its own; record its fluid->material entry here against
         // the vanilla "water" fluid so the getFluidDisplayStack reverse lookup resolves it.
-        MaterialUtils.recordFluidMaterial(FluidRegistry.getFluid("water"), Materials2Materials.Water);
+        MaterialUtils.recordFluidMaterial(FluidRegistry.getFluid("water"), Materials.Water);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
             .itemOutputs(GTModHandler.getIC2Item("steamCell", 1))
-            .fluidInputs(MaterialUtils.gas(Materials2Materials.Steam, 1_000))
+            .fluidInputs(MaterialUtils.gas(Materials.Steam, 1_000))
             .duration(16 * TICKS)
             .eut(1)
             .addTo(cannerRecipes);
@@ -1158,374 +1158,374 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Very Heavy Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.OilExtraHeavy)
-            .addLocalizedName(Materials2Materials.OilExtraHeavy)
+            .configureMaterials(Materials.OilExtraHeavy)
+            .addLocalizedName(Materials.OilExtraHeavy)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.OilExtraHeavy, Materials2CellShapes.cell, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
+                MaterialLibAPI.getStack(Materials.OilExtraHeavy, Materials2CellShapes.cell, (int) (1)),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
             .asFluid();
         ItemList.sEpichlorhydrin = GTFluidFactory.builder("liquid_epichlorhydrin")
             .withDefaultLocalName("Epichlorohydrin")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Epichlorohydrin)
-            .addLocalizedName(Materials2Materials.Epichlorohydrin)
+            .configureMaterials(Materials.Epichlorohydrin)
+            .addLocalizedName(Materials.Epichlorohydrin)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Epichlorohydrin, Materials2CellShapes.cell, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
+                MaterialLibAPI.getStack(Materials.Epichlorohydrin, Materials2CellShapes.cell, (int) (1)),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
             .asFluid();
         ItemList.sDrillingFluid = GTFluidFactory.of("liquid_drillingfluid", "Drilling Fluid", LIQUID, 295);
         ItemList.sToluene = GTFluidFactory.builder("liquid_toluene")
             .withDefaultLocalName("Toluene")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Toluene)
-            .addLocalizedName(Materials2Materials.Toluene)
+            .configureMaterials(Materials.Toluene)
+            .addLocalizedName(Materials.Toluene)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Toluene, Materials2CellShapes.cell, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
+                MaterialLibAPI.getStack(Materials.Toluene, Materials2CellShapes.cell, (int) (1)),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
             .asFluid();
         ItemList.sNitrationMixture = GTFluidFactory.builder("liquid_nitrationmixture")
             .withDefaultLocalName("Nitration Mixture")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.NitrationMixture)
-            .addLocalizedName(Materials2Materials.NitrationMixture)
+            .configureMaterials(Materials.NitrationMixture)
+            .addLocalizedName(Materials.NitrationMixture)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.NitrationMixture, Materials2CellShapes.cell, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1L))
+                MaterialLibAPI.getStack(Materials.NitrationMixture, Materials2CellShapes.cell, (int) (1)),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
             .asFluid();
 
         GTFluidFactory.builder("liquid_heavy_oil")
             .withDefaultLocalName("Heavy Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.OilHeavy)
-            .addLocalizedName(Materials2Materials.OilHeavy)
+            .configureMaterials(Materials.OilHeavy)
+            .addLocalizedName(Materials.OilHeavy)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.OilHeavy, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.OilHeavy, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("liquid_medium_oil")
             .withDefaultLocalName("Raw Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.OilMedium)
-            .addLocalizedName(Materials2Materials.OilMedium)
+            .configureMaterials(Materials.OilMedium)
+            .addLocalizedName(Materials.OilMedium)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.OilMedium, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.OilMedium, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("liquid_light_oil")
             .withDefaultLocalName("Light Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.OilLight)
-            .addLocalizedName(Materials2Materials.OilLight)
+            .configureMaterials(Materials.OilLight)
+            .addLocalizedName(Materials.OilLight)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.OilLight, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.OilLight, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("gas_natural_gas")
             .withDefaultLocalName("Natural Gas")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.NatruralGas)
-            .addLocalizedName(Materials2Materials.NatruralGas)
+            .configureMaterials(Materials.NatruralGas)
+            .addLocalizedName(Materials.NatruralGas)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.NatruralGas, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.NatruralGas, 1L),
                 ItemList.Cell_Empty.get(1L));
         ItemList.sHydricSulfur = GTFluidFactory.builder("liquid_hydricsulfur")
             .withDefaultLocalName("Hydrogen Sulfide")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.HydricSulfide)
-            .addLocalizedName(Materials2Materials.HydricSulfide)
+            .configureMaterials(Materials.HydricSulfide)
+            .addLocalizedName(Materials.HydricSulfide)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.HydricSulfide, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.HydricSulfide, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L))
             .asFluid();
         GTFluidFactory.builder("gas_sulfuricgas")
             .withDefaultLocalName("Sulfuric Gas")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.SulfuricGas)
-            .addLocalizedName(Materials2Materials.SulfuricGas)
+            .configureMaterials(Materials.SulfuricGas)
+            .addLocalizedName(Materials.SulfuricGas)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.SulfuricGas, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.SulfuricGas, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("gas_gas")
             .withDefaultLocalName("Refinery Gas")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Gas)
-            .addLocalizedName(Materials2Materials.Gas)
+            .configureMaterials(Materials.Gas)
+            .addLocalizedName(Materials.Gas)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Gas, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Gas, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("liquid_sulfuricnaphtha")
             .withDefaultLocalName("Sulfuric Naphtha")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.SulfuricNaphtha)
-            .addLocalizedName(Materials2Materials.SulfuricNaphtha)
+            .configureMaterials(Materials.SulfuricNaphtha)
+            .addLocalizedName(Materials.SulfuricNaphtha)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.SulfuricNaphtha, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.SulfuricNaphtha, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("liquid_sufluriclight_fuel")
             .withDefaultLocalName("Sulfuric Light Fuel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.SulfuricLightFuel)
-            .addLocalizedName(Materials2Materials.SulfuricLightFuel)
+            .configureMaterials(Materials.SulfuricLightFuel)
+            .addLocalizedName(Materials.SulfuricLightFuel)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.SulfuricLightFuel, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.SulfuricLightFuel, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("liquid_sulfuricheavy_fuel")
             .withDefaultLocalName("Sulfuric Heavy Fuel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.SulfuricHeavyFuel)
-            .addLocalizedName(Materials2Materials.SulfuricHeavyFuel)
+            .configureMaterials(Materials.SulfuricHeavyFuel)
+            .addLocalizedName(Materials.SulfuricHeavyFuel)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.SulfuricHeavyFuel, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.SulfuricHeavyFuel, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("liquid_naphtha")
             .withDefaultLocalName("Naphtha")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Naphtha)
-            .addLocalizedName(Materials2Materials.Naphtha)
+            .configureMaterials(Materials.Naphtha)
+            .addLocalizedName(Materials.Naphtha)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Naphtha, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Naphtha, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("liquid_light_fuel")
             .withDefaultLocalName("Light Fuel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.LightFuel)
-            .addLocalizedName(Materials2Materials.LightFuel)
+            .configureMaterials(Materials.LightFuel)
+            .addLocalizedName(Materials.LightFuel)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.LightFuel, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.LightFuel, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("liquid_heavy_fuel")
             .withDefaultLocalName("Heavy Fuel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.HeavyFuel)
-            .addLocalizedName(Materials2Materials.HeavyFuel)
+            .configureMaterials(Materials.HeavyFuel)
+            .addLocalizedName(Materials.HeavyFuel)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.HeavyFuel, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.HeavyFuel, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("liquid_lpg")
             .withDefaultLocalName("LPG")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.LPG)
-            .addLocalizedName(Materials2Materials.LPG)
+            .configureMaterials(Materials.LPG)
+            .addLocalizedName(Materials.LPG)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.LPG, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.LPG, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("charcoal_byproducts")
             .withTextureName("molten.autogenerated")
             .withDefaultLocalName("Charcoal Byproducts")
-            .withColorRGBA(MaterialUtils.rgba(Materials2Materials.CharcoalByproducts))
+            .withColorRGBA(MaterialUtils.rgba(Materials.CharcoalByproducts))
             .withStateAndTemperature(GAS, 775)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.CharcoalByproducts)
-            .addLocalizedName(Materials2Materials.CharcoalByproducts)
+            .configureMaterials(Materials.CharcoalByproducts)
+            .addLocalizedName(Materials.CharcoalByproducts)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.CharcoalByproducts, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.CharcoalByproducts, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("molten.bisphenol_a")
             .withTextureName("molten.autogenerated")
             .withDefaultLocalName("Molten Bisphenol A")
-            .withColorRGBA(MaterialUtils.rgba(Materials2Materials.BisphenolA))
+            .withColorRGBA(MaterialUtils.rgba(Materials.BisphenolA))
             .withStateAndTemperature(LIQUID, 432)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.BisphenolA)
-            .addLocalizedName(Materials2Materials.BisphenolA)
+            .configureMaterials(Materials.BisphenolA)
+            .addLocalizedName(Materials.BisphenolA)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.BisphenolA, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.BisphenolA, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("UUAmplifier")
             .withDefaultLocalName("UU Amplifier")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.UUAmplifier)
-            .addLocalizedName(Materials2Materials.UUAmplifier)
+            .configureMaterials(Materials.UUAmplifier)
+            .addLocalizedName(Materials.UUAmplifier)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.UUAmplifier, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.UUAmplifier, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Chlorine")
             .withDefaultLocalName("Chlorine")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Chlorine)
-            .addLocalizedName(Materials2Materials.Chlorine)
+            .configureMaterials(Materials.Chlorine)
+            .addLocalizedName(Materials.Chlorine)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Chlorine, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Chlorine, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Mercury")
             .withDefaultLocalName("Mercury")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Mercury)
-            .addLocalizedName(Materials2Materials.Mercury)
+            .configureMaterials(Materials.Mercury)
+            .addLocalizedName(Materials.Mercury)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Mercury, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Mercury, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("NitroFuel")
             .withDefaultLocalName("Cetane-Boosted Diesel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.NitroFuel)
-            .addLocalizedName(Materials2Materials.NitroFuel)
+            .configureMaterials(Materials.NitroFuel)
+            .addLocalizedName(Materials.NitroFuel)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.NitroFuel, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.NitroFuel, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("SodiumPersulfate")
             .withDefaultLocalName("Sodium Persulfate")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.SodiumPersulfate)
-            .addLocalizedName(Materials2Materials.SodiumPersulfate)
+            .configureMaterials(Materials.SodiumPersulfate)
+            .addLocalizedName(Materials.SodiumPersulfate)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.SodiumPersulfate, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.SodiumPersulfate, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Glyceryl")
             .withDefaultLocalName("Glyceryl Trinitrate")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Glyceryl)
-            .addLocalizedName(Materials2Materials.Glyceryl)
+            .configureMaterials(Materials.Glyceryl)
+            .addLocalizedName(Materials.Glyceryl)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Glyceryl, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Glyceryl, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("lubricant")
             .withDefaultLocalName("Lubricant")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Lubricant)
-            .addLocalizedName(Materials2Materials.Lubricant)
+            .configureMaterials(Materials.Lubricant)
+            .addLocalizedName(Materials.Lubricant)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Lubricant, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Lubricant, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("creosote")
             .withDefaultLocalName("Creosote Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Creosote)
-            .addLocalizedName(Materials2Materials.Creosote)
+            .configureMaterials(Materials.Creosote)
+            .addLocalizedName(Materials.Creosote)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Creosote, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Creosote, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("seedoil")
             .withDefaultLocalName("Seed Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.SeedOil)
-            .addLocalizedName(Materials2Materials.SeedOil)
+            .configureMaterials(Materials.SeedOil)
+            .addLocalizedName(Materials.SeedOil)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.SeedOil, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.SeedOil, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("fishoil")
             .withDefaultLocalName("Fish Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.FishOil)
-            .addLocalizedName(Materials2Materials.FishOil)
+            .configureMaterials(Materials.FishOil)
+            .addLocalizedName(Materials.FishOil)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.FishOil, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.FishOil, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("oil")
             .withDefaultLocalName("Oil")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Oil)
-            .addLocalizedName(Materials2Materials.Oil)
+            .configureMaterials(Materials.Oil)
+            .addLocalizedName(Materials.Oil)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Oil, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Oil, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("fuel")
             .withDefaultLocalName("Diesel")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Fuel)
-            .addLocalizedName(Materials2Materials.Fuel)
+            .configureMaterials(Materials.Fuel)
+            .addLocalizedName(Materials.Fuel)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Fuel, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Fuel, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("for.honey")
             .withDefaultLocalName("Honey")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Honey)
-            .addLocalizedName(Materials2Materials.Honey)
+            .configureMaterials(Materials.Honey)
+            .addLocalizedName(Materials.Honey)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Honey, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Honey, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("biomass")
             .withDefaultLocalName("Biomass")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Biomass)
-            .addLocalizedName(Materials2Materials.Biomass)
+            .configureMaterials(Materials.Biomass)
+            .addLocalizedName(Materials.Biomass)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Biomass, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Biomass, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("bioethanol")
             .withDefaultLocalName("Bio Ethanol")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Ethanol)
-            .addLocalizedName(Materials2Materials.Ethanol)
+            .configureMaterials(Materials.Ethanol)
+            .addLocalizedName(Materials.Ethanol)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Ethanol, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Ethanol, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("sulfuricacid")
             .withDefaultLocalName("Sulfuric Acid")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.SulfuricAcid)
-            .addLocalizedName(Materials2Materials.SulfuricAcid)
+            .configureMaterials(Materials.SulfuricAcid)
+            .addLocalizedName(Materials.SulfuricAcid)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.SulfuricAcid, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.SulfuricAcid, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("milk")
             .withDefaultLocalName("Milk")
             .withStateAndTemperature(LIQUID, 290)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Milk)
-            .addLocalizedName(Materials2Materials.Milk)
+            .configureMaterials(Materials.Milk)
+            .addLocalizedName(Materials.Milk)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Milk, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Milk, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("mcguffium")
             .withDefaultLocalName("Mc Guffium 239")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.McGuffium239)
-            .addLocalizedName(Materials2Materials.McGuffium239)
+            .configureMaterials(Materials.McGuffium239)
+            .addLocalizedName(Materials.McGuffium239)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.McGuffium239, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.McGuffium239, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("refinedGlue")
             .withDefaultLocalName("Refined Glue")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Glue)
-            .addLocalizedName(Materials2Materials.Glue)
+            .configureMaterials(Materials.Glue)
+            .addLocalizedName(Materials.Glue)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Glue, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Glue, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("hotfryingoil")
             .withDefaultLocalName("Hot Frying Oil")
             .withStateAndTemperature(LIQUID, 400)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.FryingOilHot)
-            .addLocalizedName(Materials2Materials.FryingOilHot)
+            .configureMaterials(Materials.FryingOilHot)
+            .addLocalizedName(Materials.FryingOilHot)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.FryingOilHot, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.FryingOilHot, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         // region NewHorizonsCoreMod fluids
@@ -1535,28 +1535,28 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Sodium Potassium")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.SodiumPotassium)
-            .addLocalizedName(Materials2Materials.SodiumPotassium)
+            .configureMaterials(Materials.SodiumPotassium)
+            .addLocalizedName(Materials.SodiumPotassium)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.SodiumPotassium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.SodiumPotassium, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Pollution")
             .withDefaultLocalName("Pollution")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Pollution)
-            .addLocalizedName(Materials2Materials.Pollution)
+            .configureMaterials(Materials.Pollution)
+            .addLocalizedName(Materials.Pollution)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Pollution, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Pollution, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("EnrichedBacterialSludge")
             .withDefaultLocalName("Enriched Bacterial Sludge")
             .withStateAndTemperature(LIQUID, 300)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.EnrichedBacterialSludge)
-            .addLocalizedName(Materials2Materials.EnrichedBacterialSludge)
+            .configureMaterials(Materials.EnrichedBacterialSludge)
+            .addLocalizedName(Materials.EnrichedBacterialSludge)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.EnrichedBacterialSludge, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.EnrichedBacterialSludge, 1L),
                 ItemList.Cell_Empty.get(1L))
             .asFluid()
             .setLuminosity(15);
@@ -1564,10 +1564,10 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Fermented Bacterial Sludge")
             .withStateAndTemperature(LIQUID, 300)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.FermentedBacterialSludge)
-            .addLocalizedName(Materials2Materials.FermentedBacterialSludge)
+            .configureMaterials(Materials.FermentedBacterialSludge)
+            .addLocalizedName(Materials.FermentedBacterialSludge)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.FermentedBacterialSludge, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.FermentedBacterialSludge, 1L),
                 ItemList.Cell_Empty.get(1L))
             .asFluid()
             .setLuminosity(8);
@@ -1577,264 +1577,264 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Dimensionally Transcendent Residue")
             .withStateAndTemperature(LIQUID, 2000000000)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.DimensionallyTranscendentResidue)
-            .addLocalizedName(Materials2Materials.DimensionallyTranscendentResidue)
+            .configureMaterials(Materials.DimensionallyTranscendentResidue)
+            .addLocalizedName(Materials.DimensionallyTranscendentResidue)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.DimensionallyTranscendentResidue, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.DimensionallyTranscendentResidue, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTCC")
             .withDefaultLocalName("Excited Dimensionally Transcendent Crude Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.ExcitedDTCC)
-            .addLocalizedName(Materials2Materials.ExcitedDTCC)
+            .configureMaterials(Materials.ExcitedDTCC)
+            .addLocalizedName(Materials.ExcitedDTCC)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.ExcitedDTCC, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.ExcitedDTCC, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTPC")
             .withDefaultLocalName("Excited Dimensionally Transcendent Prosaic Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.ExcitedDTPC)
-            .addLocalizedName(Materials2Materials.ExcitedDTPC)
+            .configureMaterials(Materials.ExcitedDTPC)
+            .addLocalizedName(Materials.ExcitedDTPC)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.ExcitedDTPC, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.ExcitedDTPC, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTRC")
             .withDefaultLocalName("Excited Dimensionally Transcendent Resplendent Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.ExcitedDTRC)
-            .addLocalizedName(Materials2Materials.ExcitedDTRC)
+            .configureMaterials(Materials.ExcitedDTRC)
+            .addLocalizedName(Materials.ExcitedDTRC)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.ExcitedDTRC, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.ExcitedDTRC, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTEC")
             .withDefaultLocalName("Excited Dimensionally Transcendent Exotic Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.ExcitedDTEC)
-            .addLocalizedName(Materials2Materials.ExcitedDTEC)
+            .configureMaterials(Materials.ExcitedDTEC)
+            .addLocalizedName(Materials.ExcitedDTEC)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.ExcitedDTEC, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.ExcitedDTEC, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("ExcitedDTSC")
             .withDefaultLocalName("Excited Dimensionally Transcendent Stellar Catalyst")
             .withStateAndTemperature(LIQUID, 500000000)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.ExcitedDTSC)
-            .addLocalizedName(Materials2Materials.ExcitedDTSC)
+            .configureMaterials(Materials.ExcitedDTSC)
+            .addLocalizedName(Materials.ExcitedDTSC)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.ExcitedDTSC, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.ExcitedDTSC, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
-        GTFluidFactory.builder(MaterialUtils.internalName(Materials2Materials.RawStarMatter))
-            .withDefaultLocalName(MaterialUtils.localName(Materials2Materials.RawStarMatter))
+        GTFluidFactory.builder(MaterialUtils.internalName(Materials.RawStarMatter))
+            .withDefaultLocalName(MaterialUtils.localName(Materials.RawStarMatter))
             .withStateAndTemperature(LIQUID, 10_000_000)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.RawStarMatter)
-            .addLocalizedName(Materials2Materials.RawStarMatter)
+            .configureMaterials(Materials.RawStarMatter)
+            .addLocalizedName(Materials.RawStarMatter)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.RawStarMatter, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.RawStarMatter, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
-        GTFluidFactory.builder(MaterialUtils.internalName(Materials2Materials.spatialFluid))
-            .withDefaultLocalName(MaterialUtils.localName(Materials2Materials.spatialFluid))
+        GTFluidFactory.builder(MaterialUtils.internalName(Materials.spatialFluid))
+            .withDefaultLocalName(MaterialUtils.localName(Materials.spatialFluid))
             .withStateAndTemperature(MOLTEN, 0)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.spatialFluid)
-            .addLocalizedName(Materials2Materials.spatialFluid)
+            .configureMaterials(Materials.spatialFluid)
+            .addLocalizedName(Materials.spatialFluid)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.spatialFluid, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.spatialFluid, 1L),
                 ItemList.Cell_Empty.get(1L));
 
-        GTFluidFactory.builder(MaterialUtils.internalName(Materials2Materials.temporalFluid))
-            .withDefaultLocalName(MaterialUtils.localName(Materials2Materials.temporalFluid))
+        GTFluidFactory.builder(MaterialUtils.internalName(Materials.temporalFluid))
+            .withDefaultLocalName(MaterialUtils.localName(Materials.temporalFluid))
             .withStateAndTemperature(MOLTEN, 0)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.temporalFluid)
-            .addLocalizedName(Materials2Materials.temporalFluid)
+            .configureMaterials(Materials.temporalFluid)
+            .addLocalizedName(Materials.temporalFluid)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.temporalFluid, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.temporalFluid, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("PrimordialMatter")
-            .withDefaultLocalName(MaterialUtils.localName(Materials2Materials.PrimordialMatter))
+            .withDefaultLocalName(MaterialUtils.localName(Materials.PrimordialMatter))
             .withStateAndTemperature(LIQUID, 2_000_000_000)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.PrimordialMatter)
-            .addLocalizedName(Materials2Materials.PrimordialMatter)
+            .configureMaterials(Materials.PrimordialMatter)
+            .addLocalizedName(Materials.PrimordialMatter)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.PrimordialMatter, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.PrimordialMatter, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("QuarkGluonPlasma")
-            .withDefaultLocalName(MaterialUtils.localName(Materials2Materials.QuarkGluonPlasma))
+            .withDefaultLocalName(MaterialUtils.localName(Materials.QuarkGluonPlasma))
             .withStateAndTemperature(LIQUID, 2_000_000_000)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.QuarkGluonPlasma)
-            .addLocalizedName(Materials2Materials.QuarkGluonPlasma)
+            .configureMaterials(Materials.QuarkGluonPlasma)
+            .addLocalizedName(Materials.QuarkGluonPlasma)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.QuarkGluonPlasma, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.QuarkGluonPlasma, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("PhononMedium")
-            .withDefaultLocalName(MaterialUtils.localName(Materials2Materials.PhononMedium))
+            .withDefaultLocalName(MaterialUtils.localName(Materials.PhononMedium))
             .withStateAndTemperature(LIQUID, 500)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.PhononMedium)
-            .addLocalizedName(Materials2Materials.PhononMedium)
+            .configureMaterials(Materials.PhononMedium)
+            .addLocalizedName(Materials.PhononMedium)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.PhononMedium, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.PhononMedium, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("PhononCrystalSolution")
-            .withDefaultLocalName(MaterialUtils.localName(Materials2Materials.PhononCrystalSolution))
+            .withDefaultLocalName(MaterialUtils.localName(Materials.PhononCrystalSolution))
             .withStateAndTemperature(LIQUID, 500)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.PhononCrystalSolution)
-            .addLocalizedName(Materials2Materials.PhononCrystalSolution)
+            .configureMaterials(Materials.PhononCrystalSolution)
+            .addLocalizedName(Materials.PhononCrystalSolution)
             .registerBContainers(
                 MaterialLibAPI
-                    .getStack(Materials2Materials.PhononCrystalSolution, Materials2CellShapes.cell, (int) (1)),
+                    .getStack(Materials.PhononCrystalSolution, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("antimatter")
-            .withDefaultLocalName(MaterialUtils.localName(Materials2Materials.Antimatter))
+            .withDefaultLocalName(MaterialUtils.localName(Materials.Antimatter))
             .withStateAndTemperature(LIQUID, 1000000)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Antimatter)
-            .addLocalizedName(Materials2Materials.Antimatter)
+            .configureMaterials(Materials.Antimatter)
+            .addLocalizedName(Materials.Antimatter)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Antimatter, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Antimatter, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("protomatter")
-            .withDefaultLocalName(MaterialUtils.localName(Materials2Materials.Protomatter))
+            .withDefaultLocalName(MaterialUtils.localName(Materials.Protomatter))
             .withStateAndTemperature(LIQUID, 1)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Protomatter)
-            .addLocalizedName(Materials2Materials.Protomatter)
+            .configureMaterials(Materials.Protomatter)
+            .addLocalizedName(Materials.Protomatter)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Protomatter, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Protomatter, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("plasma.infinity")
             .withDefaultLocalName("Infinity Plasma")
             .withStateAndTemperature(PLASMA, 10000)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Infinity)
-            .addLocalizedName(Materials2Materials.Infinity)
+            .configureMaterials(Materials.Infinity)
+            .addLocalizedName(Materials.Infinity)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2CellShapes.cellPlasma, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Infinity, Materials2CellShapes.cellPlasma, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("plasma.bedrockium")
             .withDefaultLocalName("Bedrockium Plasma")
             .withStateAndTemperature(PLASMA, 10000)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Bedrockium)
-            .addLocalizedName(Materials2Materials.Bedrockium)
+            .configureMaterials(Materials.Bedrockium)
+            .addLocalizedName(Materials.Bedrockium)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Bedrockium, Materials2CellShapes.cellPlasma, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Bedrockium, Materials2CellShapes.cellPlasma, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("plasma.cosmicneutronium")
             .withDefaultLocalName("Cosmic Neutronium Plasma")
             .withStateAndTemperature(PLASMA, 10000)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.CosmicNeutronium)
-            .addLocalizedName(Materials2Materials.CosmicNeutronium)
+            .configureMaterials(Materials.CosmicNeutronium)
+            .addLocalizedName(Materials.CosmicNeutronium)
             .registerBContainers(
                 MaterialLibAPI
-                    .getStack(Materials2Materials.CosmicNeutronium, Materials2CellShapes.cellPlasma, (int) (1)),
+                    .getStack(Materials.CosmicNeutronium, Materials2CellShapes.cellPlasma, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("molten.cosmicneutronium")
             .withDefaultLocalName("Molten Cosmic Neutronium")
             .withStateAndTemperature(MOLTEN, 9900)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.CosmicNeutronium)
-            .addLocalizedName(Materials2Materials.CosmicNeutronium)
+            .configureMaterials(Materials.CosmicNeutronium)
+            .addLocalizedName(Materials.CosmicNeutronium)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials2Materials.CosmicNeutronium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.CosmicNeutronium, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("plasma.ichorium")
             .withDefaultLocalName("Ichorium Plasma")
             .withStateAndTemperature(PLASMA, 9000)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Ichorium)
-            .addLocalizedName(Materials2Materials.Ichorium)
+            .configureMaterials(Materials.Ichorium)
+            .addLocalizedName(Materials.Ichorium)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Ichorium, Materials2CellShapes.cellPlasma, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Ichorium, Materials2CellShapes.cellPlasma, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("molten.ichorium")
             .withDefaultLocalName("Molten Ichorium")
             .withStateAndTemperature(MOLTEN, 9000)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Ichorium)
-            .addLocalizedName(Materials2Materials.Ichorium)
+            .configureMaterials(Materials.Ichorium)
+            .addLocalizedName(Materials.Ichorium)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials2Materials.Ichorium, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Ichorium, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("InactiveCosmicSolder")
-            .withDefaultLocalName(MaterialUtils.localName(Materials2Materials.InactiveCosmicSolder))
+            .withDefaultLocalName(MaterialUtils.localName(Materials.InactiveCosmicSolder))
             .withStateAndTemperature(LIQUID, 1_000_000)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.InactiveCosmicSolder)
-            .addLocalizedName(Materials2Materials.InactiveCosmicSolder)
+            .configureMaterials(Materials.InactiveCosmicSolder)
+            .addLocalizedName(Materials.InactiveCosmicSolder)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.InactiveCosmicSolder, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.InactiveCosmicSolder, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("BoundlessCosmicSolder")
-            .withDefaultLocalName(MaterialUtils.localName(Materials2Materials.BoundlessCosmicSolder))
+            .withDefaultLocalName(MaterialUtils.localName(Materials.BoundlessCosmicSolder))
             .withStateAndTemperature(LIQUID, 1_000_000)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.BoundlessCosmicSolder)
-            .addLocalizedName(Materials2Materials.BoundlessCosmicSolder)
+            .configureMaterials(Materials.BoundlessCosmicSolder)
+            .addLocalizedName(Materials.BoundlessCosmicSolder)
             .registerBContainers(
                 MaterialLibAPI
-                    .getStack(Materials2Materials.BoundlessCosmicSolder, Materials2CellShapes.cell, (int) (1)),
+                    .getStack(Materials.BoundlessCosmicSolder, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("ComputationBase")
-            .withDefaultLocalName(MaterialUtils.localName(Materials2Materials.ComputationBase))
+            .withDefaultLocalName(MaterialUtils.localName(Materials.ComputationBase))
             .withStateAndTemperature(MOLTEN, 100_000_000)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.ComputationBase)
-            .addLocalizedName(Materials2Materials.ComputationBase)
+            .configureMaterials(Materials.ComputationBase)
+            .addLocalizedName(Materials.ComputationBase)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.ComputationBase, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.ComputationBase, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("fieryblood")
             .withDefaultLocalName("Fiery Blood")
             .withStateAndTemperature(LIQUID, 6400)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.FierySteel)
-            .addLocalizedName(Materials2Materials.FierySteel)
+            .configureMaterials(Materials.FierySteel)
+            .addLocalizedName(Materials.FierySteel)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials2Materials.FierySteel, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.FierySteel, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("holywater")
             .withDefaultLocalName("Holy Water")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.HolyWater)
-            .addLocalizedName(Materials2Materials.HolyWater)
+            .configureMaterials(Materials.HolyWater)
+            .addLocalizedName(Materials.HolyWater)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.HolyWater, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.HolyWater, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
         if (ItemList.TF_Vial_FieryBlood.get(1L) != null) {
             FluidContainerRegistry.registerFluidContainer(
                 new FluidContainerRegistry.FluidContainerData(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.FierySteel, Materials2FluidShapes.fluidLiquid, (int) (250)),
+                        .getFluidStack(Materials.FierySteel, Materials2FluidShapes.fluidLiquid, (int) (250)),
                     ItemList.TF_Vial_FieryBlood.get(1L),
                     ItemList.Bottle_Empty.get(1L)));
         }
@@ -1842,34 +1842,34 @@ public class LoaderGTBlockFluid implements Runnable {
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
-                GTOreDictUnificator.get(OrePrefixes.bucket, Materials2Materials.Milk, 1L),
-                GTOreDictUnificator.get(OrePrefixes.bucket, Materials2Materials.Empty, 1L)));
+                    .getFluidStack(Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (1_000)),
+                GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Milk, 1L),
+                GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Empty, 1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (250)),
+                MaterialLibAPI.getFluidStack(Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (250)),
                 ItemList.Bottle_Milk.get(1L),
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.HolyWater, Materials2FluidShapes.fluidLiquid, (int) (250)),
+                    .getFluidStack(Materials.HolyWater, Materials2FluidShapes.fluidLiquid, (int) (250)),
                 ItemList.Bottle_Holy_Water.get(1L),
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.McGuffium239, Materials2FluidShapes.fluidLiquid, (int) (250)),
+                    .getFluidStack(Materials.McGuffium239, Materials2FluidShapes.fluidLiquid, (int) (250)),
                 ItemList.McGuffium_239.get(1L),
                 ItemList.Bottle_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Fuel, Materials2FluidShapes.fluidLiquid, 100),
+                MaterialLibAPI.getFluidStack(Materials.Fuel, Materials2FluidShapes.fluidLiquid, 100),
                 ItemList.Tool_Lighter_Invar_Full.get(1L),
                 ItemList.Tool_Lighter_Invar_Empty.get(1L)));
         FluidContainerRegistry.registerFluidContainer(
             new FluidContainerRegistry.FluidContainerData(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Fuel, Materials2FluidShapes.fluidLiquid, 1_000),
+                MaterialLibAPI.getFluidStack(Materials.Fuel, Materials2FluidShapes.fluidLiquid, 1_000),
                 ItemList.Tool_Lighter_Platinum_Full.get(1L),
                 ItemList.Tool_Lighter_Platinum_Empty.get(1L)));
 
@@ -1905,116 +1905,116 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Crushed Ice")
             .withStateAndTemperature(SLURRY, 270)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Ice)
-            .addLocalizedName(Materials2Materials.Ice)
+            .configureMaterials(Materials.Ice)
+            .addLocalizedName(Materials.Ice)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Ice, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Ice, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder("molten.glass")
             .withDefaultLocalName("Molten Glass")
             .withStateAndTemperature(MOLTEN, 1500)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Glass)
-            .addLocalizedName(Materials2Materials.Glass)
+            .configureMaterials(Materials.Glass)
+            .addLocalizedName(Materials.Glass)
             .registerContainers(
-                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials2Materials.Glass, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Glass, 1L),
                 ItemList.Cell_Empty.get(1L),
                 1 * INGOTS);
         GTFluidFactory.builder("molten.redstone")
             .withDefaultLocalName("Molten Redstone")
             .withStateAndTemperature(MOLTEN, 500)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Redstone)
-            .addLocalizedName(Materials2Materials.Redstone)
+            .configureMaterials(Materials.Redstone)
+            .addLocalizedName(Materials.Redstone)
             .registerContainers(
-                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials2Materials.Redstone, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Redstone, 1L),
                 ItemList.Cell_Empty.get(1L),
                 1 * INGOTS);
         GTFluidFactory.builder("molten.blaze")
             .withDefaultLocalName("Molten Blaze")
             .withStateAndTemperature(MOLTEN, 6400)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Blaze)
-            .addLocalizedName(Materials2Materials.Blaze)
+            .configureMaterials(Materials.Blaze)
+            .addLocalizedName(Materials.Blaze)
             .registerContainers(
-                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials2Materials.Blaze, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Blaze, 1L),
                 ItemList.Cell_Empty.get(1L),
                 1 * INGOTS);
         GTFluidFactory.builder("wet.concrete")
             .withDefaultLocalName("Wet Concrete")
             .withStateAndTemperature(MOLTEN, 300)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Concrete)
-            .addLocalizedName(Materials2Materials.Concrete)
+            .configureMaterials(Materials.Concrete)
+            .addLocalizedName(Materials.Concrete)
             .registerContainers(
-                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials2Materials.Concrete, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Concrete, 1L),
                 ItemList.Cell_Empty.get(1L),
                 1 * INGOTS);
         GTFluidFactory.builder("molten.granitered")
             .withDefaultLocalName("Molten Red Granite")
             .withTextureName("molten.autogenerated")
-            .withColorRGBA(MaterialUtils.rgba(Materials2Materials.GraniteRed))
+            .withColorRGBA(MaterialUtils.rgba(Materials.GraniteRed))
             .withStateAndTemperature(MOLTEN, 1520)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.GraniteRed)
-            .addLocalizedName(Materials2Materials.GraniteRed)
+            .configureMaterials(Materials.GraniteRed)
+            .addLocalizedName(Materials.GraniteRed)
             .registerContainers(
-                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials2Materials.GraniteRed, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.GraniteRed, 1L),
                 ItemList.Cell_Empty.get(1L),
                 1 * INGOTS);
         GTFluidFactory.builder("molten.graniteblack")
             .withTextureName("molten.autogenerated")
             .withDefaultLocalName("Molten Black Granite")
-            .withColorRGBA(MaterialUtils.rgba(Materials2Materials.GraniteBlack))
+            .withColorRGBA(MaterialUtils.rgba(Materials.GraniteBlack))
             .withStateAndTemperature(MOLTEN, 1520)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.GraniteBlack)
-            .addLocalizedName(Materials2Materials.GraniteBlack)
+            .configureMaterials(Materials.GraniteBlack)
+            .addLocalizedName(Materials.GraniteBlack)
             .registerContainers(
-                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials2Materials.GraniteBlack, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.GraniteBlack, 1L),
                 ItemList.Cell_Empty.get(1L),
                 1 * INGOTS);
 
         GTFluidFactory.builder("activatednetherite")
-            .withDefaultLocalName(MaterialUtils.localName(Materials2Materials.activatednetherite))
+            .withDefaultLocalName(MaterialUtils.localName(Materials.activatednetherite))
             .withTextureName("molten.autogenerated")
-            .withColorRGBA(MaterialUtils.rgba(Materials2Materials.activatednetherite))
+            .withColorRGBA(MaterialUtils.rgba(Materials.activatednetherite))
             .withStateAndTemperature(MOLTEN, 50_000_000)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.activatednetherite)
-            .addLocalizedName(Materials2Materials.activatednetherite)
+            .configureMaterials(Materials.activatednetherite)
+            .addLocalizedName(Materials.activatednetherite)
             .registerBContainers(
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.activatednetherite, 1L),
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.activatednetherite, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         GTFluidFactory.builder(
-            MaterialUtils.internalName(Materials2Materials.CarbonDioxide)
+            MaterialUtils.internalName(Materials.CarbonDioxide)
                 .toLowerCase(Locale.ENGLISH))
-            .withDefaultLocalName(MaterialUtils.localName(Materials2Materials.CarbonDioxide))
+            .withDefaultLocalName(MaterialUtils.localName(Materials.CarbonDioxide))
             .withTextureName("carbondioxide")
-            .withStateAndTemperature(GAS, MaterialUtils.gasTemperature(Materials2Materials.CarbonDioxide))
+            .withStateAndTemperature(GAS, MaterialUtils.gasTemperature(Materials.CarbonDioxide))
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.CarbonDioxide)
-            .addLocalizedName(Materials2Materials.CarbonDioxide)
+            .configureMaterials(Materials.CarbonDioxide)
+            .addLocalizedName(Materials.CarbonDioxide)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.CarbonDioxide, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.CarbonDioxide, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         ResourceLocation stillTexture = new ResourceLocation(GregTech.ID, "fluids/fluid.ammonia.still");
         ResourceLocation flowTexture = new ResourceLocation(GregTech.ID, "fluids/fluid.ammonia.flow");
 
         GTFluidFactory.builder(
-            MaterialUtils.internalName(Materials2Materials.Ammonia)
+            MaterialUtils.internalName(Materials.Ammonia)
                 .toLowerCase(Locale.ENGLISH))
-            .withDefaultLocalName(MaterialUtils.localName(Materials2Materials.Ammonia))
+            .withDefaultLocalName(MaterialUtils.localName(Materials.Ammonia))
             .withTextures(stillTexture, flowTexture)
-            .withStateAndTemperature(GAS, MaterialUtils.gasTemperature(Materials2Materials.Ammonia))
+            .withStateAndTemperature(GAS, MaterialUtils.gasTemperature(Materials.Ammonia))
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Ammonia)
-            .addLocalizedName(Materials2Materials.Ammonia)
+            .configureMaterials(Materials.Ammonia)
+            .addLocalizedName(Materials.Ammonia)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Ammonia, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Ammonia, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         // Autogenerate fluids for the legacy-named material set, iterated through the MaterialLib registry.
@@ -2431,8 +2431,8 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Vinegar")
             .withStateAndTemperature(LIQUID, 295)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Vinegar)
-            .addLocalizedName(Materials2Materials.Vinegar)
+            .configureMaterials(Materials.Vinegar)
+            .addLocalizedName(Materials.Vinegar)
             .registerPContainers(ItemList.Bottle_Vinegar.get(1L), ItemList.Bottle_Empty.get(1L));
         GTFluidFactory.builder("potion.potatojuice")
             .withDefaultLocalName("Potato Juice")
@@ -2691,10 +2691,10 @@ public class LoaderGTBlockFluid implements Runnable {
             .withDefaultLocalName("Liquid Sodium")
             .withStateAndTemperature(LIQUID, 495)
             .buildAndRegister()
-            .configureMaterials(Materials2Materials.Sodium)
-            .addLocalizedName(Materials2Materials.Sodium)
+            .configureMaterials(Materials.Sodium)
+            .addLocalizedName(Materials.Sodium)
             .registerBContainers(
-                MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2CellShapes.cell, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Sodium, Materials2CellShapes.cell, (int) (1)),
                 ItemList.Cell_Empty.get(1L));
 
         if (!GTValues.D1) {
@@ -2707,7 +2707,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.gravel, 1, WILDCARD))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1)),
                 new ItemStack(Items.flint, 1))
             .outputChances(10000, 1000)
             .duration(20 * SECONDS)
@@ -2716,92 +2716,92 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GTOreDictUnificator.set(
             OrePrefixes.ingot,
-            Materials2Materials.FierySteel,
+            Materials.FierySteel,
             GTModHandler.getModItem(TwilightForest.ID, "item.fieryIngot", 1L, 0));
         GTOreDictUnificator.set(
             OrePrefixes.ingot,
-            Materials2Materials.Knightmetal,
+            Materials.Knightmetal,
             GTModHandler.getModItem(TwilightForest.ID, "item.knightMetal", 1L, 0));
         GTOreDictUnificator.set(
             OrePrefixes.ingot,
-            Materials2Materials.Steeleaf,
+            Materials.Steeleaf,
             GTModHandler.getModItem(TwilightForest.ID, "item.steeleafIngot", 1L, 0));
         GTOreDictUnificator.set(
             OrePrefixes.ingot,
-            Materials2Materials.IronWood,
+            Materials.IronWood,
             GTModHandler.getModItem(TwilightForest.ID, "item.ironwoodIngot", 1L, 0));
         GTOreDictUnificator.set(
             OrePrefixes.gem,
-            Materials2Materials.InfusedAir,
+            Materials.InfusedAir,
             GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 0));
         GTOreDictUnificator.set(
             OrePrefixes.gem,
-            Materials2Materials.InfusedFire,
+            Materials.InfusedFire,
             GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 1));
         GTOreDictUnificator.set(
             OrePrefixes.gem,
-            Materials2Materials.InfusedWater,
+            Materials.InfusedWater,
             GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 2));
         GTOreDictUnificator.set(
             OrePrefixes.gem,
-            Materials2Materials.InfusedEarth,
+            Materials.InfusedEarth,
             GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 3));
         GTOreDictUnificator.set(
             OrePrefixes.gem,
-            Materials2Materials.InfusedOrder,
+            Materials.InfusedOrder,
             GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 4));
         GTOreDictUnificator.set(
             OrePrefixes.gem,
-            Materials2Materials.InfusedEntropy,
+            Materials.InfusedEntropy,
             GTModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 5));
         GTOreDictUnificator.set(
             OrePrefixes.nugget,
-            Materials2Materials.Mercury,
+            Materials.Mercury,
             GTModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 5));
         GTOreDictUnificator.set(
             OrePrefixes.nugget,
-            Materials2Materials.Thaumium,
+            Materials.Thaumium,
             GTModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 6));
         GTOreDictUnificator.set(
             OrePrefixes.ingot,
-            Materials2Materials.Thaumium,
+            Materials.Thaumium,
             GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 2));
         GTOreDictUnificator.set(
             OrePrefixes.gem,
-            Materials2Materials.Mercury,
+            Materials.Mercury,
             GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 3));
         GTOreDictUnificator.set(
             OrePrefixes.gem,
-            Materials2Materials.Amber,
+            Materials.Amber,
             GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 6));
         GTOreDictUnificator.set(
             OrePrefixes.gem,
-            Materials2Materials.Firestone,
+            Materials.Firestone,
             GTModHandler.getModItem(Railcraft.ID, "firestone.raw", 1L));
 
         GTOreDictUnificator.set(
             OrePrefixes.nugget,
-            Materials2Materials.Void,
+            Materials.Void,
             GTModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 7));
         GTOreDictUnificator.set(
             OrePrefixes.ingot,
-            Materials2Materials.Void,
+            Materials.Void,
             GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 16));
 
         // Special secondary oredict for Sodium Hydroxide
         GTOreDictUnificator.registerOre(
             "dustSodiumHydroxide",
-            GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.SodiumHydroxideGT5U, 1L));
+            GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxideGT5U, 1L));
         GTOreDictUnificator.registerOre(
             "dustSmallSodiumHydroxide",
-            GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials2Materials.SodiumHydroxideGT5U, 1L));
+            GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.SodiumHydroxideGT5U, 1L));
         GTOreDictUnificator.registerOre(
             "dustTinySodiumHydroxide",
-            GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.SodiumHydroxideGT5U, 1L));
+            GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxideGT5U, 1L));
 
         GTOreDictUnificator.set(
             OrePrefixes.dust,
-            Materials2Materials.Cocoa,
+            Materials.Cocoa,
             GTModHandler.getModItem(PamsHarvestCraft.ID, "cocoapowderItem", 1L, 0));
 
         GregTechAPI.sSolenoidCoilCasings = new BlockCyclotronCoils();

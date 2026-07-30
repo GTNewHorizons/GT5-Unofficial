@@ -8,6 +8,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -25,7 +26,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
@@ -185,7 +185,7 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
         return this.mDebug || (sInterDimensionalTeleportAllowed && (this.hasBlock || mFluid != null
             && mFluid.isFluidEqual(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.fluidPlasma, (int) (1)))
+                    .getFluidStack(Materials.Nitrogen, Materials2FluidShapes.fluidPlasma, (int) (1)))
             && mFluid.amount >= 1000));
     }
 
@@ -198,7 +198,7 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (mFluid == null) {
             mFluid = MaterialLibAPI
-                .getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.fluidPlasma, (int) (0));
+                .getFluidStack(Materials.Nitrogen, Materials2FluidShapes.fluidPlasma, (int) (0));
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (getBaseMetaTileEntity().isServerSide()) {
@@ -214,7 +214,7 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
                         && this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId
                         && mFluid.isFluidEqual(
                             MaterialLibAPI.getFluidStack(
-                                Materials2Materials.Nitrogen,
+                                Materials.Nitrogen,
                                 Materials2FluidShapes.fluidPlasma,
                                 (int) (1)))) {
                         mFluid.amount--;

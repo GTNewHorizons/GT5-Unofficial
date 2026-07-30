@@ -7,6 +7,7 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -17,7 +18,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
@@ -53,14 +53,14 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 .duration(2 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(RecipeMaps.fluidExtractionRecipes);
-        } else if (material == Materials2Materials.Oilsands) {
+        } else if (material == Materials.Oilsands) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .itemOutputs(new ItemStack(net.minecraft.init.Blocks.sand, 1, 0))
                 .outputChances(4000)
                 .fluidOutputs(
                     MaterialLibAPI
-                        .getFluidStack(Materials2Materials.OilHeavy, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
+                        .getFluidStack(Materials.OilHeavy, Materials2FluidShapes.fluidLiquid, (int) (2_000)))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(centrifugeRecipes);
@@ -136,10 +136,10 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                         .itemInputs(
                             oreStack,
                             MaterialLibAPI
-                                .getStack(Materials2Materials.Calcite, Materials2Shapes.dust, (int) (multiplier)))
+                                .getStack(Materials.Calcite, Materials2Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
                             GTUtility.mul(3 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.DarkAsh, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -149,10 +149,10 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                         .itemInputs(
                             oreStack,
                             MaterialLibAPI
-                                .getStack(Materials2Materials.Quicklime, Materials2Shapes.dust, (int) (multiplier)))
+                                .getStack(Materials.Quicklime, Materials2Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
                             GTUtility.mul(3 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.DarkAsh, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -165,10 +165,10 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                         .itemInputs(
                             oreStack,
                             MaterialLibAPI
-                                .getStack(Materials2Materials.Calcite, Materials2Shapes.dust, (int) (multiplier)))
+                                .getStack(Materials.Calcite, Materials2Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
                             GTUtility.mul(2 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.DarkAsh, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -178,10 +178,10 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                         .itemInputs(
                             oreStack,
                             MaterialLibAPI
-                                .getStack(Materials2Materials.Quicklime, Materials2Shapes.dust, (int) (multiplier)))
+                                .getStack(Materials.Quicklime, Materials2Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
                             GTUtility.mul(2 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
-                            GTOreDictUnificator.get(OrePrefixes.dust, Materials2Materials.DarkAsh, 1L))
+                            GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
                         .outputChances(10000, 2500)
                         .duration(tSmeltInto.stackSize * 25 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -221,7 +221,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                     GTUtility.mul(2, tCrushed),
                     MaterialUtils.hasFlag(material, GTMaterialFlag.PULVERIZING_CINNABAR) ? GTOreDictUnificator.get(
                         OrePrefixes.crystal,
-                        Materials2Materials.Cinnabar,
+                        Materials.Cinnabar,
                         GTOreDictUnificator
                             .get(OrePrefixes.gem, tPrimaryByMaterial, GTUtility.copyAmount(1, tPrimaryByProduct), 1L),
                         1L)

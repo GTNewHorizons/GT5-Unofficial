@@ -2,6 +2,7 @@ package gtnhintergalactic.item;
 
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -11,7 +12,6 @@ import net.minecraft.util.IIcon;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gtnhintergalactic.GTNHIntergalactic;
 
 /**
@@ -81,19 +81,19 @@ public class ItemMiningDrones extends Item {
      */
     public enum DroneMaterials {
 
-        LV(Materials2Materials.Steel),
-        MV(Materials2Materials.Steel),
-        HV(Materials2Materials.Titanium),
-        EV(Materials2Materials.Titanium),
-        IV(Materials2Materials.TungstenSteel),
-        LuV(Materials2Materials.TungstenSteel),
-        ZPM(Materials2Materials.Naquadah),
-        UV(Materials2Materials.Naquadah),
-        UHV(Materials2Materials.NaquadahAlloy),
-        UEV(Materials2Materials.Neutronium),
-        UIV(Materials2Materials.CosmicNeutronium),
-        UMV(Materials2Materials.Infinity),
-        UXV(Materials2Materials.TranscendentMetal);
+        LV(Materials.Steel),
+        MV(Materials.Steel),
+        HV(Materials.Titanium),
+        EV(Materials.Titanium),
+        IV(Materials.TungstenSteel),
+        LuV(Materials.TungstenSteel),
+        ZPM(Materials.Naquadah),
+        UV(Materials.Naquadah),
+        UHV(Materials.NaquadahAlloy),
+        UEV(Materials.Neutronium),
+        UIV(Materials.CosmicNeutronium),
+        UMV(Materials.Infinity),
+        UXV(Materials.TranscendentMetal);
 
         /** Material for this drone tier */
         private final Material mat;

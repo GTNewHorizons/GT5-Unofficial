@@ -13,6 +13,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -24,7 +25,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -105,7 +105,7 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
                         " DDD "
                     }})
                 //spotless:on
-                .addElement('A', ofFrame(Materials2Materials.Potin))
+                .addElement('A', ofFrame(Materials.Potin))
                 .addElement('B', Casings.BrassItemPipeCasing.asElement())
                 .addElement('C', Casings.TinItemPipeCasing.asElement())
                 .addElement(

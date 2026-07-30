@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,7 +24,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
@@ -363,10 +363,10 @@ public class GTRecipeConstants {
             }
 
             // Generate recipe with plasma
-            for (Material mat : new Material[] { Materials2Materials.Argon, Materials2Materials.Nitrogen }) {
+            for (Material mat : new Material[] { Materials.Argon, Materials.Nitrogen }) {
                 int tPlasmaAmount = (int) Math.max(1L, baseDuration / (MaterialUtils.mass(mat) * 16L));
                 GTRecipeBuilder plasmaBuilder = builder.copy()
-                    .duration(Math.max(1, mat == Materials2Materials.Nitrogen ? baseDuration / 4 : baseDuration / 24))
+                    .duration(Math.max(1, mat == Materials.Nitrogen ? baseDuration / 4 : baseDuration / 24))
                     .fluidInputs(MaterialUtils.plasma(mat, tPlasmaAmount))
                     .circuit(11)
                     .fluidOutputs(MaterialUtils.gas(mat, tPlasmaAmount));
@@ -465,7 +465,7 @@ public class GTRecipeConstants {
                             ArrayUtils.addAll(
                                 builder.fluidInputs,
                                 MaterialLibAPI.getFluidStack(
-                                    Materials2Materials.Grade1PurifiedWater,
+                                    Materials.Grade1PurifiedWater,
                                     Materials2FluidShapes.fluidLiquid,
                                     (int) (100))))
                         .duration(halfBoostedRecipeTime)
@@ -475,7 +475,7 @@ public class GTRecipeConstants {
                             ArrayUtils.addAll(
                                 builder.fluidInputs,
                                 MaterialLibAPI.getFluidStack(
-                                    Materials2Materials.Grade2PurifiedWater,
+                                    Materials.Grade2PurifiedWater,
                                     Materials2FluidShapes.fluidLiquid,
                                     (int) (100))))
                         .duration(boostedRecipeTime)
@@ -489,7 +489,7 @@ public class GTRecipeConstants {
                             ArrayUtils.addAll(
                                 builder.fluidInputs,
                                 MaterialLibAPI.getFluidStack(
-                                    Materials2Materials.Grade3PurifiedWater,
+                                    Materials.Grade3PurifiedWater,
                                     Materials2FluidShapes.fluidLiquid,
                                     (int) (100))))
                         .duration(recipeTime)
@@ -499,7 +499,7 @@ public class GTRecipeConstants {
                             ArrayUtils.addAll(
                                 builder.fluidInputs,
                                 MaterialLibAPI.getFluidStack(
-                                    Materials2Materials.Grade4PurifiedWater,
+                                    Materials.Grade4PurifiedWater,
                                     Materials2FluidShapes.fluidLiquid,
                                     (int) (100))))
                         .duration(boostedRecipeTime)
@@ -513,7 +513,7 @@ public class GTRecipeConstants {
                             ArrayUtils.addAll(
                                 builder.fluidInputs,
                                 MaterialLibAPI.getFluidStack(
-                                    Materials2Materials.Grade5PurifiedWater,
+                                    Materials.Grade5PurifiedWater,
                                     Materials2FluidShapes.fluidLiquid,
                                     (int) (100))))
                         .duration(recipeTime)
@@ -523,7 +523,7 @@ public class GTRecipeConstants {
                             ArrayUtils.addAll(
                                 builder.fluidInputs,
                                 MaterialLibAPI.getFluidStack(
-                                    Materials2Materials.Grade6PurifiedWater,
+                                    Materials.Grade6PurifiedWater,
                                     Materials2FluidShapes.fluidLiquid,
                                     (int) (100))))
                         .duration(boostedRecipeTime)
@@ -538,7 +538,7 @@ public class GTRecipeConstants {
                             ArrayUtils.addAll(
                                 builder.fluidInputs,
                                 MaterialLibAPI.getFluidStack(
-                                    Materials2Materials.Grade1PurifiedWater,
+                                    Materials.Grade1PurifiedWater,
                                     Materials2FluidShapes.fluidLiquid,
                                     (int) (32000))))
                         .duration(recipeTime)
@@ -548,7 +548,7 @@ public class GTRecipeConstants {
                             ArrayUtils.addAll(
                                 builder.fluidInputs,
                                 MaterialLibAPI.getFluidStack(
-                                    Materials2Materials.Grade2PurifiedWater,
+                                    Materials.Grade2PurifiedWater,
                                     Materials2FluidShapes.fluidLiquid,
                                     (int) (32000))))
                         .duration(halfBoostedRecipeTime)
@@ -558,7 +558,7 @@ public class GTRecipeConstants {
                             ArrayUtils.addAll(
                                 builder.fluidInputs,
                                 MaterialLibAPI.getFluidStack(
-                                    Materials2Materials.Grade3PurifiedWater,
+                                    Materials.Grade3PurifiedWater,
                                     Materials2FluidShapes.fluidLiquid,
                                     (int) (32000))))
                         .duration(boostedRecipeTime)
@@ -572,7 +572,7 @@ public class GTRecipeConstants {
                             ArrayUtils.addAll(
                                 builder.fluidInputs,
                                 MaterialLibAPI.getFluidStack(
-                                    Materials2Materials.Grade4PurifiedWater,
+                                    Materials.Grade4PurifiedWater,
                                     Materials2FluidShapes.fluidLiquid,
                                     (int) (32000))))
                         .duration(recipeTime)
@@ -582,7 +582,7 @@ public class GTRecipeConstants {
                             ArrayUtils.addAll(
                                 builder.fluidInputs,
                                 MaterialLibAPI.getFluidStack(
-                                    Materials2Materials.Grade5PurifiedWater,
+                                    Materials.Grade5PurifiedWater,
                                     Materials2FluidShapes.fluidLiquid,
                                     (int) (32000))))
                         .duration(boostedRecipeTime)
@@ -596,7 +596,7 @@ public class GTRecipeConstants {
                             ArrayUtils.addAll(
                                 builder.fluidInputs,
                                 MaterialLibAPI.getFluidStack(
-                                    Materials2Materials.Grade6PurifiedWater,
+                                    Materials.Grade6PurifiedWater,
                                     Materials2FluidShapes.fluidLiquid,
                                     (int) (32000))))
                         .duration(recipeTime)
@@ -606,7 +606,7 @@ public class GTRecipeConstants {
                             ArrayUtils.addAll(
                                 builder.fluidInputs,
                                 MaterialLibAPI.getFluidStack(
-                                    Materials2Materials.Grade7PurifiedWater,
+                                    Materials.Grade7PurifiedWater,
                                     Materials2FluidShapes.fluidLiquid,
                                     (int) (32000))))
                         .duration(halfBoostedRecipeTime)
@@ -616,7 +616,7 @@ public class GTRecipeConstants {
                             ArrayUtils.addAll(
                                 builder.fluidInputs,
                                 MaterialLibAPI.getFluidStack(
-                                    Materials2Materials.Grade8PurifiedWater,
+                                    Materials.Grade8PurifiedWater,
                                     Materials2FluidShapes.fluidLiquid,
                                     (int) (32000))))
                         .duration(boostedRecipeTime)

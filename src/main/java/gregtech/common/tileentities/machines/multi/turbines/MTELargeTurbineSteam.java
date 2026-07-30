@@ -9,6 +9,7 @@ import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.ArrayList;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -19,7 +20,6 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -54,7 +54,7 @@ public class MTELargeTurbineSteam extends MTELargeTurbineBase {
 
     @Override
     public Material getFrameMaterial() {
-        return Materials2Materials.Iron;
+        return Materials.Iron;
     }
 
     @Override

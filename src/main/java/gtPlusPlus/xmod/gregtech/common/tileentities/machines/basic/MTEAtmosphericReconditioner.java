@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -25,7 +26,6 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -392,7 +392,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             } else if (rotorStack.getItem() instanceof MetaGeneratedTool01) {
                 Material t1 = MetaGeneratedTool.getPrimaryMaterialML(rotorStack);
                 Material t2 = MetaGeneratedTool.getSecondaryMaterialML(rotorStack);
-                if (t1 == Materials2Materials.NULL && t2 == Materials2Materials.NULL) {
+                if (t1 == Materials.NULL && t2 == Materials.NULL) {
                     creativeRotor = true;
                 }
             } else {
@@ -592,7 +592,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             if (rotorStack.getItem() instanceof MetaGeneratedTool01) {
                 Material t1 = MetaGeneratedTool.getPrimaryMaterialML(rotorStack);
                 Material t2 = MetaGeneratedTool.getSecondaryMaterialML(rotorStack);
-                if (t1 == Materials2Materials.NULL && t2 == Materials2Materials.NULL) {
+                if (t1 == Materials.NULL && t2 == Materials.NULL) {
                     creativeRotor = true;
                 }
             }
@@ -708,22 +708,22 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 .getToolWithStats(
                     IDMetaTool01.TURBINE_SMALL.ID,
                     1,
-                    Materials2Materials.Iron,
-                    Materials2Materials.Iron,
+                    Materials.Iron,
+                    Materials.Iron,
                     null);
             sGregTurbines[1] = MetaGeneratedTool.sInstances.get("gt.metatool.01")
                 .getToolWithStats(
                     IDMetaTool01.TURBINE_SMALL.ID,
                     1,
-                    Materials2Materials.Bronze,
-                    Materials2Materials.Bronze,
+                    Materials.Bronze,
+                    Materials.Bronze,
                     null);
             sGregTurbines[2] = MetaGeneratedTool.sInstances.get("gt.metatool.01")
                 .getToolWithStats(
                     IDMetaTool01.TURBINE_SMALL.ID,
                     1,
-                    Materials2Materials.Steel,
-                    Materials2Materials.Steel,
+                    Materials.Steel,
+                    Materials.Steel,
                     null);
         } else {
             return sGregTurbines[aTier];

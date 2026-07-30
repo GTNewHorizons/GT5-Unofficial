@@ -10,6 +10,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,7 +26,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -103,7 +103,7 @@ public class ScannerHandlerLoader {
         @Nonnull ItemStack aInput, @Nullable ItemStack aSpecialSlot, @Nullable FluidStack aFluid) {
         // must have at enough honey to start
         if (aFluid == null
-            || !aFluid.containsFluid(MaterialUtils.fluid(Materials2Materials.Honey, FORESTRY_SCAN_HONEY_USAGE)))
+            || !aFluid.containsFluid(MaterialUtils.fluid(Materials.Honey, FORESTRY_SCAN_HONEY_USAGE)))
             return null;
         try {
             IIndividual tIndividual = AlleleManager.alleleRegistry.getIndividual(aInput);
@@ -171,7 +171,7 @@ public class ScannerHandlerLoader {
     /// The elemental-scanner result for a MaterialLib material, keyed on [GTMaterialProperties#ELEMENT]. Magic
     /// carries a real element but is excluded from scanning.
     public static @Nullable GTScannerResult getElementScanResult(Material material) {
-        if (material == Materials2Materials.Magic) return null;
+        if (material == Materials.Magic) return null;
         Element element = MaterialUtils.element(material);
         if (element == null || element == Element._NULL) return null;
         if (element.mIsIsotope) return null;

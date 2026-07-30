@@ -3,6 +3,7 @@ package gregtech.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipe;
@@ -28,19 +28,19 @@ public class GTParallelHelperTest {
     @BeforeAll
     static void setup() {
         machine = new MockIVoidableMachine();
-        ItemStack rubberDust = MaterialParts.stack(OrePrefixes.dust, Materials2Materials.RawRubber, 1);
-        ItemStack sulfurDust = MaterialParts.stack(OrePrefixes.dust, Materials2Materials.Sulfur, 1);
+        ItemStack rubberDust = MaterialParts.stack(OrePrefixes.dust, Materials.RawRubber, 1);
+        ItemStack sulfurDust = MaterialParts.stack(OrePrefixes.dust, Materials.Sulfur, 1);
         rubberRecipe = new GTRecipe(
             new ItemStack[] { rubberDust.copy(), sulfurDust.copy() },
-            new ItemStack[] { MaterialParts.stack(OrePrefixes.dust, Materials2Materials.Rubber, 1),
-                MaterialParts.stack(OrePrefixes.dustTiny, Materials2Materials.Rubber, 1) },
+            new ItemStack[] { MaterialParts.stack(OrePrefixes.dust, Materials.Rubber, 1),
+                MaterialParts.stack(OrePrefixes.dustTiny, Materials.Rubber, 1) },
             null,
             null,
             new int[] { 10000, 6667 },
             null,
             null,
             null,
-            new FluidStack[] { MaterialUtils.molten(Materials2Materials.Rubber, 1_000) },
+            new FluidStack[] { MaterialUtils.molten(Materials.Rubber, 1_000) },
             1,
             1,
             0);

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -42,7 +43,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -111,8 +111,8 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
     // Point at which the heating point of the cycle is reached
     public static final long HEATING_POINT = 10000;
 
-    private static final Material plasmaMaterial = Materials2Materials.Helium;
-    private static final Material coolantMaterial = Materials2Materials.SuperCoolant;
+    private static final Material plasmaMaterial = Materials.Helium;
+    private static final Material coolantMaterial = Materials.SuperCoolant;
 
     private MTEHatchInput plasmaInputHatch;
     private MTEHatchInput coolantInputHatch;
@@ -169,7 +169,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             }
         }))
         // Superconductor Base ZPM frame box
-        .addElement('G', ofFrame(Materials2Materials.Tetranaquadahdiindiumhexaplatiumosminid))
+        .addElement('G', ofFrame(Materials.Tetranaquadahdiindiumhexaplatiumosminid))
         // Coolant input hatch
         .addElement(
             'K',
@@ -394,7 +394,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             FluidStack insertedWater = currentRecipe.mFluidInputs[0];
             // Multiply by 60 since that's the water:steam ratio in GTNH
             long steamAmount = insertedWater.amount * 60L;
-            addOutputPartial(MaterialUtils.gas(Materials2Materials.Steam, steamAmount));
+            addOutputPartial(MaterialUtils.gas(Materials.Steam, steamAmount));
         }
     }
 

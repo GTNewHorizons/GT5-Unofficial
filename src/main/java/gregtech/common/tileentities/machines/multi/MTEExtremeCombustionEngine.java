@@ -17,6 +17,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -37,7 +38,6 @@ import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -110,7 +110,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
         .addElement('E', Casings.ChemicallyInertMachineCasing.asElement())
         .addElement('F', Casings.PTFEPipeCasing.asElement())
         .addElement('G', Casings.ExtremeEngineIntakeCasing.asElement())
-        .addElement('H', ofFrame(Materials2Materials.Polytetrafluoroethylene))
+        .addElement('H', ofFrame(Materials.Polytetrafluoroethylene))
         .addElement('I', Dynamo.newAny(Casings.RobustTungstenSteelMachineCasing.textureId, 3))
         .build();
 
@@ -208,7 +208,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
     }
 
     protected Material getBooster() {
-        return Materials2Materials.LiquidOxygen;
+        return Materials.LiquidOxygen;
     }
 
     protected int getEfficiencyIncrease() {
@@ -367,7 +367,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
                 // Deplete Lubricant. 1000L should = 1 hour of runtime (if baseEU = 2048)
                 if ((mRuntime % 72 == 0 || mRuntime == 0) && !depleteInput(
                     MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Lubricant,
+                        Materials.Lubricant,
                         Materials2FluidShapes.fluidLiquid,
                         (int) ((boostEu ? 2 : 1) * getAdditiveFactor()))))
                     return SimpleCheckRecipeResult.ofFailure("no_lubricant");

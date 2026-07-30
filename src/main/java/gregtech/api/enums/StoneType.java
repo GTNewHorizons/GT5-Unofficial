@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
@@ -39,7 +40,6 @@ import galacticgreg.api.enums.DimensionDef.DimNames;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IStoneCategory;
@@ -54,35 +54,35 @@ public enum StoneType implements IStoneType {
     Stone(new StoneBuilder()
         .setCobble(() -> Blocks.cobblestone, 0)
         .setMainStone(() -> Blocks.stone, 0)
-        .setDust(Materials2Materials.Stone)),
+        .setDust(Materials.Stone)),
     Netherrack(new StoneBuilder()
         .setPrefix(OrePrefixes.oreNetherrack)
         .setStoneNoCobble(() -> Blocks.netherrack, 0)
-        .setDust(Materials2Materials.Netherrack)),
+        .setDust(Materials.Netherrack)),
     Endstone(new StoneBuilder()
         .setPrefix(OrePrefixes.oreEndstone)
         .setStoneNoCobble(() -> Blocks.end_stone, 0)
-        .setDust(Materials2Materials.Endstone)),
+        .setDust(Materials.Endstone)),
     BlackGranite(new StoneBuilder()
         .setPrefix(OrePrefixes.oreBlackgranite)
         .setCobble(() -> GregTechAPI.sBlockGranites, 1)
         .setMainStone(() -> GregTechAPI.sBlockGranites, 0)
-        .setDust(Materials2Materials.GraniteBlack)),
+        .setDust(Materials.GraniteBlack)),
     RedGranite(new StoneBuilder()
         .setPrefix(OrePrefixes.oreRedgranite)
         .setCobble(() -> GregTechAPI.sBlockGranites, 9)
         .setMainStone(() -> GregTechAPI.sBlockGranites, 8)
-        .setDust(Materials2Materials.GraniteRed)),
+        .setDust(Materials.GraniteRed)),
     Marble(new StoneBuilder()
         .setPrefix(OrePrefixes.oreMarble)
         .setCobble(() -> GregTechAPI.sBlockStones, 1)
         .setMainStone(() -> GregTechAPI.sBlockStones, 0)
-        .setDust(Materials2Materials.Marble)),
+        .setDust(Materials.Marble)),
     Basalt(new StoneBuilder()
         .setPrefix(OrePrefixes.oreBasalt)
         .setCobble(() -> GregTechAPI.sBlockStones, 9)
         .setMainStone(() -> GregTechAPI.sBlockStones, 8)
-        .setDust(Materials2Materials.Basalt)),
+        .setDust(Materials.Basalt)),
     Moon(new StoneBuilder()
         .setPrefix(OrePrefixes.oreMoon)
         .setStoneNoCobble(GalacticraftCore, "tile.moonBlock", 4)
@@ -134,30 +134,30 @@ public enum StoneType implements IStoneType {
         .setStoneNoCobble(() -> Blocks.obsidian, 0)
         .addOtherStone(GalacticraftAmunRa, "tile.baseFalling", 1)
         .addAllowedDimensions(DimNames.HORUS)
-        .setDust(Materials2Materials.Obsidian)),
+        .setDust(Materials.Obsidian)),
     AnubisAndMaahes(new StoneBuilder()
         .setPrefix(OrePrefixes.oreAnubisAndMaahes)
         .setCobble(GalacticraftAmunRa, "tile.baseBlockRock", 0)
         .setMainStone(GalacticraftAmunRa, "tile.baseBlockRock", 1)
-        .setDust(Materials2Materials.Basalt)),
+        .setDust(Materials.Basalt)),
     PackedIce(new StoneBuilder()
         .setPrefix(OrePrefixes.orePackedIce)
         .setStoneNoCobble(() -> Blocks.packed_ice, 0)
-        .setDust(Materials2Materials.Ice)
+        .setDust(Materials.Ice)
         .setCategory(StoneCategory.Ice)
         .addAllowedDimensions(DimNames.ASTEROIDS, DimNames.KUIPERBELT, DimNames.MEHENBELT)),
     SethIce(new StoneBuilder()
         .setPrefix(OrePrefixes.oreSethIce)
         .setStoneNoCobble(() -> Blocks.packed_ice, 0)
         .addOtherStone(Mods.Minecraft, () -> Blocks.ice, 0)
-        .setDust(Materials2Materials.Ice)
+        .setDust(Materials.Ice)
         .setCategory(StoneCategory.Stone)
         .addAllowedDimensions(DimNames.SETH)),
     SethClay(new StoneBuilder()
         .setPrefix(OrePrefixes.oreSethClay)
         .setStoneNoCobble(() -> Blocks.hardened_clay, WILDCARD)
         .addOtherStone(Mods.Minecraft, () -> Blocks.clay, 0)
-        .setDust(Materials2Materials.Clay)
+        .setDust(Materials.Clay)
         .setCategory(StoneCategory.Stone)
         .addAllowedDimensions(DimNames.SETH)),
 
@@ -178,7 +178,7 @@ public enum StoneType implements IStoneType {
     BlueIce(new StoneBuilder()
         .setPrefix(OrePrefixes.oreBlueIce)
         .setStoneNoCobble(Mods.EtFuturumRequiem, "blue_ice", 0)
-        .setDust(Materials2Materials.Ice)
+        .setDust(Materials.Ice)
         .setCategory(StoneCategory.Ice)
         .addAllowedDimensions(DimNames.ASTEROIDS, DimNames.KUIPERBELT, DimNames.MEHENBELT)),
 
@@ -443,10 +443,10 @@ public enum StoneType implements IStoneType {
 
         public LazyItem pureDust = new LazyItem(
             Mods.GregTech,
-            () -> MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.dust, (int) (1)));
+            () -> MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1)));
         public LazyItem impureDust = new LazyItem(
             Mods.GregTech,
-            () -> MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.dustImpure, (int) (1)));
+            () -> MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dustImpure, (int) (1)));
 
         public StoneCategory category = StoneCategory.Stone;
         public HashSet<String> allowedDimensions = null;

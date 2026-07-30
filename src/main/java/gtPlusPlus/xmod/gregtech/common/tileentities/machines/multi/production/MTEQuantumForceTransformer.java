@@ -52,7 +52,7 @@ import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -92,8 +92,8 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     protected int mMaxParallel = 0;
     private boolean mFluidMode = false, doFermium = false, doNeptunium = false;
     private boolean renderDisabled = false;
-    private static final Fluid mNeptunium = MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Neptunium);
-    private static final Fluid mFermium = MaterialUtils.legacyGtppPlasmaOf(Materials2Materials.Fermium);
+    private static final Fluid mNeptunium = MaterialUtils.legacyGtppPlasmaOf(Materials.Neptunium);
+    private static final Fluid mFermium = MaterialUtils.legacyGtppPlasmaOf(Materials.Fermium);
     private static final String MAIN_PIECE = "main";
     private final ArrayList<MTEHatchBulkCatalystHousing> catalystHousings = new ArrayList<>();
     // spotless:off

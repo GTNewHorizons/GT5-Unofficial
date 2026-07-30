@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
@@ -20,7 +21,6 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent;
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTLog;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -47,8 +47,8 @@ public class AchievementHandler {
                 .getToolWithStats(
                     MetaGeneratedGregtechTools.ANGLE_GRINDER,
                     1,
-                    Materials2Materials.Osmium,
-                    Materials2Materials.Osmium,
+                    Materials.Osmium,
+                    Materials.Osmium,
                     null),
             "",
             true);
@@ -74,35 +74,35 @@ public class AchievementHandler {
             "dust.potin",
             0,
             2,
-            MaterialLibAPI.getStack(Materials2Materials.Potin, Materials2Shapes.dust, 1),
+            MaterialLibAPI.getStack(Materials.Potin, Materials2Shapes.dust, 1),
             aBaseAchievementName,
             false);
         this.registerAchievement(
             "dust.eglin",
             0,
             4,
-            MaterialLibAPI.getStack(Materials2Materials.EglinSteel, Materials2Shapes.dust, 1),
+            MaterialLibAPI.getStack(Materials.EglinSteel, Materials2Shapes.dust, 1),
             "dust.potin",
             false);
         this.registerAchievement(
             "dust.staballoy",
             0,
             6,
-            MaterialLibAPI.getStack(Materials2Materials.Staballoy, Materials2Shapes.dust, 1),
+            MaterialLibAPI.getStack(Materials.Staballoy, Materials2Shapes.dust, 1),
             "dust.eglin",
             false);
         this.registerAchievement(
             "dust.quantum",
             0,
             8,
-            MaterialLibAPI.getStack(Materials2Materials.Quantum, Materials2Shapes.dust, 1),
+            MaterialLibAPI.getStack(Materials.Quantum, Materials2Shapes.dust, 1),
             "dust.staballoy",
             true);
         this.registerAchievement(
             "dust.hypogen",
             0,
             10,
-            MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2Shapes.dust, 1),
+            MaterialLibAPI.getStack(Materials.Hypogen, Materials2Shapes.dust, 1),
             "dust.quantum",
             true);
 

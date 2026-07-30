@@ -322,7 +322,7 @@ import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
@@ -430,7 +430,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             addItemWithLocalizationKeys(
                 Circuit_Parts_GlassFiber.ID,
                 "gt.item.circuit_part.glass_fiber.name",
-                MaterialUtils.chemicalFormula(Materials2Materials.BorosilicateGlass),
+                MaterialUtils.chemicalFormula(Materials.BorosilicateGlass),
                 o));
         ItemList.Circuit_Parts_PetriDish.set(
             addItemWithLocalizationKeys(
@@ -2251,7 +2251,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         if (data == null || data.mMaterial == null || data.mPrefix == null) {
             return false;
         }
-        return data.mMaterial.mMaterial == Materials2Materials.Firestone && data.mPrefix == OrePrefixes.rawOre;
+        return data.mMaterial.mMaterial == Materials.Firestone && data.mPrefix == OrePrefixes.rawOre;
     }
 
     @Override

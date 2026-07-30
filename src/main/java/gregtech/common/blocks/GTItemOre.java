@@ -2,6 +2,7 @@ package gregtech.common.blocks;
 
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -11,7 +12,6 @@ import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MaterialUtils;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
@@ -51,7 +51,7 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
     public String getItemStackDisplayName(ItemStack stack) {
         com.ruling_0.materiallib.api.Material mat = blockOre.getMaterial(stack.getItemDamage());
 
-        String matName = mat == null ? MaterialUtils.internalName(Materials2Materials.NULL)
+        String matName = mat == null ? MaterialUtils.internalName(Materials.NULL)
             : MaterialUtils.internalName(mat);
 
         boolean small = blockOre.isSmallOre(stack.getItemDamage());
@@ -64,7 +64,7 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
         com.ruling_0.materiallib.api.Material mat = blockOre.getMaterial(stack.getItemDamage());
 
         if (mat == null) {
-            MaterialUtils.addTooltips(Materials2Materials.NULL, desc);
+            MaterialUtils.addTooltips(Materials.NULL, desc);
         } else {
             MaterialUtils.addTooltips(mat, desc);
         }
@@ -76,6 +76,6 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
         int metadata = itemStack.getItemDamage();
         int matId = blockOre.getMaterialIndex(metadata);
 
-        return matId == MaterialUtils.oldSubId(Materials2Materials.Firestone);
+        return matId == MaterialUtils.oldSubId(Materials.Firestone);
     }
 }

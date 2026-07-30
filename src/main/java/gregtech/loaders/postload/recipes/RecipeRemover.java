@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.ExtraTrees;
 import java.util.Iterator;
 import java.util.Map;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -14,7 +15,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -75,17 +75,17 @@ public class RecipeRemover implements Runnable {
         GTUtility.removeSimpleIC2MachineRecipe(
             new ItemStack(Blocks.cobblestone),
             GTModHandler.getMaceratorRecipeList(),
-            MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.dust, (int) (1L)));
+            MaterialLibAPI.getStack(Materials.Stone, Materials2Shapes.dust, (int) (1L)));
         GTUtility.removeSimpleIC2MachineRecipe(
-            GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.Lapis, 1L),
+            GTOreDictUnificator.get(OrePrefixes.gem, Materials.Lapis, 1L),
             GTModHandler.getMaceratorRecipeList(),
             GTModHandler.getIC2Item("plantBall", 1L));
         GTUtility.removeSimpleIC2MachineRecipe(
-            MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.dust, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, (int) (1)),
             GTModHandler.getMaceratorRecipeList(),
             GTModHandler.getIC2Item("plantBall", 1L));
         GTUtility.removeSimpleIC2MachineRecipe(
-            MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.dust, (int) (1)),
+            MaterialLibAPI.getStack(Materials.Glowstone, Materials2Shapes.dust, (int) (1)),
             GTModHandler.getMaceratorRecipeList(),
             GTModHandler.getIC2Item("plantBall", 1L));
         GTUtility.removeSimpleIC2MachineRecipe(
@@ -141,15 +141,15 @@ public class RecipeRemover implements Runnable {
     }
 
     public void removeSmelting() {
-        GTModHandler.removeFurnaceSmelting(GTOreDictUnificator.get(OrePrefixes.ore, Materials2Materials.Graphite, 1L));
+        GTModHandler.removeFurnaceSmelting(GTOreDictUnificator.get(OrePrefixes.ore, Materials.Graphite, 1L));
         GTModHandler.removeFurnaceSmelting(
-            GTOreDictUnificator.get(OrePrefixes.oreBlackgranite, Materials2Materials.Graphite, 1L));
+            GTOreDictUnificator.get(OrePrefixes.oreBlackgranite, Materials.Graphite, 1L));
         GTModHandler
-            .removeFurnaceSmelting(GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials2Materials.Graphite, 1L));
+            .removeFurnaceSmelting(GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Graphite, 1L));
         GTModHandler.removeFurnaceSmelting(
-            GTOreDictUnificator.get(OrePrefixes.oreNetherrack, Materials2Materials.Graphite, 1L));
+            GTOreDictUnificator.get(OrePrefixes.oreNetherrack, Materials.Graphite, 1L));
         GTModHandler.removeFurnaceSmelting(
-            GTOreDictUnificator.get(OrePrefixes.oreRedgranite, Materials2Materials.Graphite, 1L));
+            GTOreDictUnificator.get(OrePrefixes.oreRedgranite, Materials.Graphite, 1L));
         GTModHandler.removeFurnaceSmelting(ItemList.IC2_Resin.get(1L));
     }
 }

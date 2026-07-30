@@ -24,7 +24,7 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -409,7 +409,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
     private static boolean containsTin(ItemStack[] stacks) {
         for (ItemStack stack : stacks) {
-            if (MaterialParts.isPartOf(stack, Materials2Materials.Tin)) return true;
+            if (MaterialParts.isPartOf(stack, Materials.Tin)) return true;
         }
         return false;
     }

@@ -11,7 +11,7 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2ParentMods;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.material.MaterialParts;
@@ -66,7 +66,7 @@ public class BlockMetal extends BlockStorage {
     public String getLocalizedName(int meta) {
         Material material = GTDataUtils.getIndexSafe(mMats, meta);
 
-        if (material == null) material = Materials2Materials.NULL;
+        if (material == null) material = Materials.NULL;
 
         return OrePrefixes.block.getLocalizedNameForItem(MaterialUtils.internalName(material));
     }

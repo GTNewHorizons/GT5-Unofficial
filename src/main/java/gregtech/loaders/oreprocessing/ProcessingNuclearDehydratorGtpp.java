@@ -7,6 +7,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import java.util.Set;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -16,7 +17,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.MaterialUtils;
 
 /// Reproduces the retired gtPlusPlus `MaterialGenerator#generateNuclearDusts`'s chemical-dehydrator recipe (a
@@ -37,12 +37,12 @@ public class ProcessingNuclearDehydratorGtpp {
     /// retired call order, so gtpp itself never actually registered a recipe for it.
     // spotless:off
     private static final Set<Material> ELIGIBLE = Set.of(
-        Materials2Materials.AmmoniumBifluoride, Materials2Materials.BerylliumHydroxide,
-        Materials2Materials.BerylliumFluoride, Materials2Materials.LithiumFluoride,
-        Materials2Materials.ThoriumTetrafluoride, Materials2Materials.ThoriumHexafluoride,
-        Materials2Materials.NeptuniumHexafluoride, Materials2Materials.TechnetiumHexafluoride,
-        Materials2Materials.SeleniumHexafluoride, Materials2Materials.LFTRFuel1, Materials2Materials.LFTRFuel2,
-        Materials2Materials.LFTRFuel3);
+        Materials.AmmoniumBifluoride, Materials.BerylliumHydroxide,
+        Materials.BerylliumFluoride, Materials.LithiumFluoride,
+        Materials.ThoriumTetrafluoride, Materials.ThoriumHexafluoride,
+        Materials.NeptuniumHexafluoride, Materials.TechnetiumHexafluoride,
+        Materials.SeleniumHexafluoride, Materials.LFTRFuel1, Materials.LFTRFuel2,
+        Materials.LFTRFuel3);
     // spotless:on
 
     public static void run() {
@@ -71,21 +71,21 @@ public class ProcessingNuclearDehydratorGtpp {
     /// `FluoriteF`'s acid-leach byproduct recipe -- not membership-driven like [#ELIGIBLE], since gtpp
     /// hand-wrote this one recipe rather than deriving it from the material's own fluid.
     private static void generateFluorite() {
-        ItemStack input = ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials2Materials.FluoriteF, 37L);
+        ItemStack input = ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials.FluoriteF, 37L);
         if (input == null) return;
 
         GTValues.RA.stdBuilder()
             .itemInputs(input)
             .itemOutputs(
-                ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials2Materials.Gypsum, 15L),
-                ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials2Materials.Silver, 1L),
-                ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials2Materials.Gold, 2L),
-                ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials2Materials.Tin, 1L),
-                ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials2Materials.Copper, 2L))
+                ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials.Gypsum, 15L),
+                ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials.Silver, 1L),
+                ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials.Gold, 2L),
+                ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials.Tin, 1L),
+                ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials.Copper, 2L))
             .outputChances(10000, 1000, 1000, 3000, 2000)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, 8000))
-            .fluidOutputs(MaterialUtils.fluid(Materials2Materials.HydrofluoricAcidGT5U, 16000))
+                MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, Materials2FluidShapes.fluidLiquid, 8000))
+            .fluidOutputs(MaterialUtils.fluid(Materials.HydrofluoricAcidGT5U, 16000))
             .eut(RECIPE_HV / 2)
             .duration(10 * MINUTES)
             .addTo(chemicalDehydratorRecipes);

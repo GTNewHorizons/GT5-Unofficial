@@ -37,7 +37,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -171,7 +171,7 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
 
                         if (!super.depleteInput(
                             MaterialLibAPI.getFluidStack(
-                                Materials2Materials.Oxygen,
+                                Materials.Oxygen,
                                 Materials2FluidShapes.fluidGas,
                                 (int) (OXYGEN_PER_SEC)))) {
                             super.mEUt = 0;

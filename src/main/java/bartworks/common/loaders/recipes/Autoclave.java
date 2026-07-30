@@ -14,18 +14,18 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 
 public class Autoclave implements Runnable {
 
     @Override
     public void run() {
-        Material[] gasSterilizers = { Materials2Materials.Ammonia, Materials2Materials.Chlorine };
+        Material[] gasSterilizers = { Materials.Ammonia, Materials.Chlorine };
         for (Material used : gasSterilizers) {
             addSterilizerRecipes(MaterialLibAPI.getFluidStack(used, Materials2FluidShapes.fluidGas, 8));
         }
 
-        Material[] liquidSterilizers = { Materials2Materials.Ethanol, Materials2Materials.Methanol };
+        Material[] liquidSterilizers = { Materials.Ethanol, Materials.Methanol };
         for (Material used : liquidSterilizers) {
             addSterilizerRecipes(MaterialLibAPI.getFluidStack(used, Materials2FluidShapes.fluidLiquid, 16));
         }

@@ -11,6 +11,7 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -18,7 +19,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -49,7 +49,7 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
         .<MTECuttingChamberModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, CUTTING_STRUCTURE)
         // Neutronium Frame Box
-        .addElement('A', ofFrame(Materials2Materials.Neutronium))
+        .addElement('A', ofFrame(Materials.Neutronium))
         // Nanochip Mesh Interface Casing
         .addElement('B', Casings.NanochipMeshInterfaceCasing.asElement())
         // Nanochip Reinforcement Casing

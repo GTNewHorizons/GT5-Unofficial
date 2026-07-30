@@ -52,7 +52,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
@@ -232,7 +232,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             lazy(
                 t -> ofBlock(
                     Block.getBlockFromItem(
-                        MaterialLibAPI.getStack(Materials2Materials.Pikyonium64B, Materials2PipeShapes.frameGt, 1)
+                        MaterialLibAPI.getStack(Materials.Pikyonium64B, Materials2PipeShapes.frameGt, 1)
                             .getItem()),
                     0))) // t1 frame, Pikyonium
         .addElement(
@@ -240,15 +240,15 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             lazy(
                 t -> Mods.Avaritia.isModLoaded() ? ofBlock(LudicrousBlocks.resource_block, 0)
                     : ofBlock(GregTechAPI.sBlockMetal5, 2))) // t2 block, Cosmic Neutronium. fallback included for dev
-        .addElement('d', ofFrame(Materials2Materials.Neutronium)) // t2 frame, Neutronium
+        .addElement('d', ofFrame(Materials.Neutronium)) // t2 frame, Neutronium
         .addElement(
             'e',
             lazy(
                 t -> Mods.Avaritia.isModLoaded() ? ofBlock(LudicrousBlocks.resource_block, 1)
                     : ofBlock(GregTechAPI.sBlockMetal5, 3))) // t3 block, Infinity. fallback included for dev
-        .addElement('f', ofFrame(Materials2Materials.Infinity)) // t3 frame, Infinity
+        .addElement('f', ofFrame(Materials.Infinity)) // t3 frame, Infinity
         .addElement('g', ofBlock(GregTechAPI.sBlockMetal9, 6)) // t4 block, WDM.
-        .addElement('h', lazy(t -> ofFrame(Materials2Materials.SpaceTime))) // t4 frame
+        .addElement('h', lazy(t -> ofFrame(Materials.SpaceTime))) // t4 frame
         .build();
 
     public MTESpinmatron(final int aID, final String aName, final String aNameRegional) {
@@ -701,7 +701,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     private boolean checkFluid(int amount) {
         // checks for fluid in hatch, does not drain it.
         final FluidStack tFluid = tier2Fluid ? MaterialLibAPI
-            .getFluidStack(Materials2Materials.BiocatalyzedPropulsionFluid, Materials2FluidShapes.fluidLiquid, amount)
+            .getFluidStack(Materials.BiocatalyzedPropulsionFluid, Materials2FluidShapes.fluidLiquid, amount)
             : new FluidStack(GTPPFluids.Kerosene, amount);
 
         return this.depleteInput(tFluid, true);
@@ -756,7 +756,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         if (ticker % 21 == 0) {
 
             FluidStack tFluid = tier2Fluid ? MaterialLibAPI.getFluidStack(
-                Materials2Materials.BiocatalyzedPropulsionFluid,
+                Materials.BiocatalyzedPropulsionFluid,
                 Materials2FluidShapes.fluidLiquid,
                 amountToDrain) : new FluidStack(GTPPFluids.Kerosene, amountToDrain); // gets fluid to drain
             for (MTEHatchInput mInputHatch : mInputHatches) {

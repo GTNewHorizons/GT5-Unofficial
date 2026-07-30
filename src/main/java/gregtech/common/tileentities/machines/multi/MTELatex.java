@@ -49,7 +49,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -150,16 +150,16 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
                 .casingIndex(CASING_INDEX)
                 .hint(1)
                 .buildAndChain(onElementPass(MTELatex::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 0))))
-        .addElement('D', ofFrame(Materials2Materials.PolyvinylChloride))
+        .addElement('D', ofFrame(Materials.PolyvinylChloride))
         .build();
 
     private int itemPipeTier = -1;
     private double discount = 0.0625 * itemPipeTier;
     private int base_parallel = 8;
     private static final FluidStack[] valid_rubbers = {
-        MaterialLibAPI.getFluidStack(Materials2Materials.Rubber, Materials2FluidShapes.fluidMolten, (int) (1)),
-        MaterialUtils.molten(Materials2Materials.Silicone, 1L), MaterialLibAPI
-            .getFluidStack(Materials2Materials.StyreneButadieneRubber, Materials2FluidShapes.fluidMolten, (int) (1)) };
+        MaterialLibAPI.getFluidStack(Materials.Rubber, Materials2FluidShapes.fluidMolten, (int) (1)),
+        MaterialUtils.molten(Materials.Silicone, 1L), MaterialLibAPI
+            .getFluidStack(Materials.StyreneButadieneRubber, Materials2FluidShapes.fluidMolten, (int) (1)) };
 
     @Override
     protected ProcessingLogic createProcessingLogic() {

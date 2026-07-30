@@ -17,6 +17,7 @@ import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import java.nio.DoubleBuffer;
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -46,7 +47,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -204,8 +204,8 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
                         { "BCCDDDDD ", "CD     C ", "CDB    C ", "CDCCCCCC " },
                         { "  DBBBBB ", " DDAAAADB", " DDAAAADB", " DDDDDDDB" } })
                 .addElement('A', chainAllGlasses())
-                .addElement('B', ofFrame(Materials2Materials.TantalumCarbide))
-                .addElement('C', ofSheetMetal(Materials2Materials.BlackSteel))
+                .addElement('B', ofFrame(Materials.TantalumCarbide))
+                .addElement('C', ofSheetMetal(Materials.BlackSteel))
                 .addElement(
                     'D',
                     buildHatchAdder(MTEIndustrialCuttingMachine.class)

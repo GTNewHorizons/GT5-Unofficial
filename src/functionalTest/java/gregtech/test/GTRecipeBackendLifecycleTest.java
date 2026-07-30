@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -27,7 +28,6 @@ import com.ruling_0.materiallib.api.Material;
 import goodgenerator.api.recipe.ExtremeHeatExchangerBackend;
 import goodgenerator.api.recipe.ExtremeHeatExchangerRecipe;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.maps.FormingPressBackend;
@@ -207,8 +207,8 @@ class GTRecipeBackendLifecycleTest {
             .minInputs(0, 1)
             .useSpecialSlot()
             .build();
-        GTRecipe recipe = addReplicatorRecipe(map, Materials2Materials.Iron);
-        ItemStack ironOrb = elementalScanOrb(Materials2Materials.Iron);
+        GTRecipe recipe = addReplicatorRecipe(map, Materials.Iron);
+        ItemStack ironOrb = elementalScanOrb(Materials.Iron);
 
         assertSame(
             recipe,
@@ -223,7 +223,7 @@ class GTRecipeBackendLifecycleTest {
                 .specialSlot(ironOrb)
                 .find());
 
-        GTRecipe secondRecipe = addReplicatorRecipe(map, Materials2Materials.Iron);
+        GTRecipe secondRecipe = addReplicatorRecipe(map, Materials.Iron);
         map.getBackend()
             .reInit();
         assertSame(

@@ -5,6 +5,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.Set;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -14,7 +15,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTModHandler;
 
 /// Reproduces the retired gtPlusPlus `RecipeGenOre`'s crafting-table recipes for every material in [#ELIGIBLE]:
@@ -41,23 +41,23 @@ public class ProcessingOreCrafting {
     /// by `disableOptional`.
     // spotless:off
     private static final Set<Material> ELIGIBLE = Set.of(
-        Materials2Materials.AgarditeCd, Materials2Materials.AgarditeLa, Materials2Materials.AgarditeNd,
-        Materials2Materials.AgarditeY, Materials2Materials.Alburnite, Materials2Materials.AncientGranite,
-        Materials2Materials.BariteRa, Materials2Materials.Cerite, Materials2Materials.Comancheite,
-        Materials2Materials.Crocoite, Materials2Materials.CryoliteF, Materials2Materials.DemicheleiteBr,
-        Materials2Materials.Florencite, Materials2Materials.Fluorcaphite, Materials2Materials.FluoriteF,
-        Materials2Materials.GadoliniteCe, Materials2Materials.GadoliniteY, Materials2Materials.Geikielite,
-        Materials2Materials.Greenockite, Materials2Materials.Hibonite, Materials2Materials.Honeaite,
-        Materials2Materials.Irarsite, Materials2Materials.Kashinite, Materials2Materials.Koboldite,
-        Materials2Materials.Lafossaite, Materials2Materials.LanthaniteCe, Materials2Materials.LanthaniteLa,
-        Materials2Materials.LanthaniteNd, Materials2Materials.Lautarite, Materials2Materials.Lepersonnite,
-        Materials2Materials.Miessiite, Materials2Materials.Nichromite, Materials2Materials.Perroudite,
-        Materials2Materials.Polycrase, Materials2Materials.RadioactiveMineralMix, Materials2Materials.RareEarthI,
-        Materials2Materials.RareEarthII, Materials2Materials.RareEarthIII, Materials2Materials.Runite,
-        Materials2Materials.SamarskiteY, Materials2Materials.SamarskiteYb, Materials2Materials.Titanite,
-        Materials2Materials.Xenotime, Materials2Materials.Yttriaite, Materials2Materials.Yttrialite,
-        Materials2Materials.Yttrocerite, Materials2Materials.Zimbabweite, Materials2Materials.Zircon,
-        Materials2Materials.Zirconolite, Materials2Materials.Zircophyllite, Materials2Materials.Zirkelite);
+        Materials.AgarditeCd, Materials.AgarditeLa, Materials.AgarditeNd,
+        Materials.AgarditeY, Materials.Alburnite, Materials.AncientGranite,
+        Materials.BariteRa, Materials.Cerite, Materials.Comancheite,
+        Materials.Crocoite, Materials.CryoliteF, Materials.DemicheleiteBr,
+        Materials.Florencite, Materials.Fluorcaphite, Materials.FluoriteF,
+        Materials.GadoliniteCe, Materials.GadoliniteY, Materials.Geikielite,
+        Materials.Greenockite, Materials.Hibonite, Materials.Honeaite,
+        Materials.Irarsite, Materials.Kashinite, Materials.Koboldite,
+        Materials.Lafossaite, Materials.LanthaniteCe, Materials.LanthaniteLa,
+        Materials.LanthaniteNd, Materials.Lautarite, Materials.Lepersonnite,
+        Materials.Miessiite, Materials.Nichromite, Materials.Perroudite,
+        Materials.Polycrase, Materials.RadioactiveMineralMix, Materials.RareEarthI,
+        Materials.RareEarthII, Materials.RareEarthIII, Materials.Runite,
+        Materials.SamarskiteY, Materials.SamarskiteYb, Materials.Titanite,
+        Materials.Xenotime, Materials.Yttriaite, Materials.Yttrialite,
+        Materials.Yttrocerite, Materials.Zimbabweite, Materials.Zircon,
+        Materials.Zirconolite, Materials.Zircophyllite, Materials.Zirkelite);
     // spotless:on
 
     public static void run() {
@@ -123,14 +123,14 @@ public class ProcessingOreCrafting {
 
     private static void generateFluoriteChemicalBath() {
         GTValues.RA.stdBuilder()
-            .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, Materials2Materials.FluoriteF, 1L))
+            .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, Materials.FluoriteF, 1L))
             .itemOutputs(
-                ProcessingDustGeneration.stackOf(OrePrefixes.crushedPurified, Materials2Materials.FluoriteF, 4L),
-                ProcessingDustGeneration.stackOf(OrePrefixes.dustImpure, Materials2Materials.FluoriteF, 2L),
-                ProcessingDustGeneration.stackOf(OrePrefixes.dustPure, Materials2Materials.FluoriteF, 1L))
+                ProcessingDustGeneration.stackOf(OrePrefixes.crushedPurified, Materials.FluoriteF, 4L),
+                ProcessingDustGeneration.stackOf(OrePrefixes.dustImpure, Materials.FluoriteF, 2L),
+                ProcessingDustGeneration.stackOf(OrePrefixes.dustPure, Materials.FluoriteF, 1L))
             .outputChances(10000, 5000, 1000)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, 1000))
+                MaterialLibAPI.getFluidStack(Materials.Hydrogen, Materials2FluidShapes.fluidGas, 1000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(chemicalBathRecipes);

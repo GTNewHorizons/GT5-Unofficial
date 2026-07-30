@@ -14,6 +14,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.loaders.misc.GTBees.combs;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -25,7 +26,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
@@ -39,10 +39,10 @@ public class FluidExtractorRecipes implements Runnable {
     public void run() {
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials2Materials.GraniteBlack, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.GraniteBlack, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.GraniteBlack,
+                    Materials.GraniteBlack,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(6 * SECONDS + 8 * TICKS)
@@ -51,10 +51,10 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials2Materials.GraniteRed, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stone, Materials.GraniteRed, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.GraniteRed,
+                    Materials.GraniteRed,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(6 * SECONDS + 8 * TICKS)
@@ -80,7 +80,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.fish, 1, 0))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.FishOil, Materials2FluidShapes.fluidLiquid, (int) (40L)))
+                    .getFluidStack(Materials.FishOil, Materials2FluidShapes.fluidLiquid, (int) (40L)))
             .duration(16 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
@@ -89,7 +89,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.fish, 1, 1))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.FishOil, Materials2FluidShapes.fluidLiquid, (int) (60L)))
+                    .getFluidStack(Materials.FishOil, Materials2FluidShapes.fluidLiquid, (int) (60L)))
             .duration(16 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
@@ -98,7 +98,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.fish, 1, 2))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.FishOil, Materials2FluidShapes.fluidLiquid, (int) (70L)))
+                    .getFluidStack(Materials.FishOil, Materials2FluidShapes.fluidLiquid, (int) (70L)))
             .duration(16 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
@@ -107,36 +107,36 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.fish, 1, 3))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.FishOil, Materials2FluidShapes.fluidLiquid, (int) (30L)))
+                    .getFluidStack(Materials.FishOil, Materials2FluidShapes.fluidLiquid, (int) (30L)))
             .duration(16 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.coal, 1, 1))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (1L)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dust, (int) (1L)))
             .outputChances(1000)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.WoodTar, Materials2FluidShapes.fluidLiquid, (int) (100L)))
+                    .getFluidStack(Materials.WoodTar, Materials2FluidShapes.fluidLiquid, (int) (100L)))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (1L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Wood, Materials2Shapes.dust, (int) (1L)))
             .itemOutputs(ItemList.IC2_Plantball.get(1L))
             .outputChances(100)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Creosote, Materials2FluidShapes.fluidLiquid, (int) (5L)))
+                    .getFluidStack(Materials.Creosote, Materials2FluidShapes.fluidLiquid, (int) (5L)))
             .duration(16 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.HydratedCoal, Materials2Shapes.dust, (int) (1L)))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.dust, (int) (1L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.HydratedCoal, Materials2Shapes.dust, (int) (1L)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Coal, Materials2Shapes.dust, (int) (1L)))
             .outputChances(10000)
             .fluidOutputs(GTUtility.getWater(100L))
             .duration(1 * SECONDS + 12 * TICKS)
@@ -144,18 +144,18 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.Mercury, 1L))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Mercury, 1L))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Mercury, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
+                    .getFluidStack(Materials.Mercury, Materials2FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Monazite, Materials2Shapes.dust, (int) (1L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Monazite, Materials2Shapes.dust, (int) (1L)))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.fluidGas, (int) (200L)))
+                MaterialLibAPI.getFluidStack(Materials.Helium, Materials2FluidShapes.fluidGas, (int) (200L)))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(fluidExtractionRecipes);
@@ -164,7 +164,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(ItemList.ReinforcedGlass.get(1L))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.ReinforcedGlass,
+                    Materials.ReinforcedGlass,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(5 * SECONDS)
@@ -175,7 +175,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(NewHorizonsCoreMod.ID, "ReinforcedGlassPlate", 1L, 0))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.ReinforcedGlass,
+                    Materials.ReinforcedGlass,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * HALF_INGOTS)))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -186,7 +186,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(NewHorizonsCoreMod.ID, "ReinforcedGlassLense", 1L, 0))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.ReinforcedGlass, Materials2FluidShapes.fluidMolten, (int) (54)))
+                    .getFluidStack(Materials.ReinforcedGlass, Materials2FluidShapes.fluidMolten, (int) (54)))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(fluidExtractionRecipes);
@@ -195,7 +195,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(ItemList.Long_Distance_Pipeline_Fluid.get(1L))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Steel, Materials2FluidShapes.fluidMolten, (int) (19 * INGOTS)))
+                    .getFluidStack(Materials.Steel, Materials2FluidShapes.fluidMolten, (int) (19 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(90)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -203,11 +203,11 @@ public class FluidExtractorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Long_Distance_Pipeline_Item.get(1L))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.ingot, (int) (7L)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Steel, Materials2Shapes.ingot, (int) (7L)))
             .outputChances(10000)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Tin, Materials2FluidShapes.fluidMolten, (int) (12 * INGOTS)))
+                    .getFluidStack(Materials.Tin, Materials2FluidShapes.fluidMolten, (int) (12 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(90)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -216,7 +216,7 @@ public class FluidExtractorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Long_Distance_Pipeline_Fluid_Pipe.get(4L))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Steel, Materials2FluidShapes.fluidMolten, (int) (189)))
+                MaterialLibAPI.getFluidStack(Materials.Steel, Materials2FluidShapes.fluidMolten, (int) (189)))
             .duration(2 * SECONDS)
             .eut(90)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -224,20 +224,20 @@ public class FluidExtractorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Long_Distance_Pipeline_Item_Pipe.get(16L))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.ingot, (int) (3L)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Tin, Materials2Shapes.ingot, (int) (3L)))
             .outputChances(10000)
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Steel, Materials2FluidShapes.fluidMolten, (int) (324)))
+                MaterialLibAPI.getFluidStack(Materials.Steel, Materials2FluidShapes.fluidMolten, (int) (324)))
             .duration(20 * SECONDS)
             .eut(90)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Quartzite, Materials2Shapes.dust, (int) (1L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Quartzite, Materials2Shapes.dust, (int) (1L)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Glass,
+                    Materials.Glass,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * HALF_INGOTS)))
             .duration(30 * SECONDS)
@@ -248,7 +248,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 0))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Iron, Materials2FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+                    .getFluidStack(Materials.Iron, Materials2FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -258,7 +258,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 1))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Iron, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Iron, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -266,11 +266,11 @@ public class FluidExtractorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 2))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.nugget, (int) (6)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Iron, Materials2Shapes.nugget, (int) (6)))
             .outputChances(10000)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Bronze, Materials2FluidShapes.fluidMolten, (int) (1728)))
+                    .getFluidStack(Materials.Bronze, Materials2FluidShapes.fluidMolten, (int) (1728)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -280,7 +280,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 13))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Steel, Materials2FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+                    .getFluidStack(Materials.Steel, Materials2FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(90)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -290,7 +290,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 14))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Steel, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Steel, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(90)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -300,7 +300,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 15))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Steel, Materials2FluidShapes.fluidMolten, (int) (1836)))
+                    .getFluidStack(Materials.Steel, Materials2FluidShapes.fluidMolten, (int) (1836)))
             .duration(20 * SECONDS)
             .eut(90)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -310,7 +310,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 0))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Aluminium,
+                    Materials.Aluminium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (2 * INGOTS)))
             .duration(25 * SECONDS)
@@ -322,7 +322,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Aluminium,
+                    Materials.Aluminium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(25 * SECONDS)
@@ -332,11 +332,11 @@ public class FluidExtractorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 2))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.dust, (int) (12L)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Ash, Materials2Shapes.dust, (int) (12L)))
             .outputChances(10000)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Aluminium, Materials2FluidShapes.fluidMolten, (int) (108L)))
+                    .getFluidStack(Materials.Aluminium, Materials2FluidShapes.fluidMolten, (int) (108L)))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -346,7 +346,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 3))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.StainlessSteel,
+                    Materials.StainlessSteel,
                     Materials2FluidShapes.fluidMolten,
                     (int) (2 * INGOTS)))
             .duration(30 * SECONDS)
@@ -358,7 +358,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 4))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.StainlessSteel,
+                    Materials.StainlessSteel,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(30 * SECONDS)
@@ -370,7 +370,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 5))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.StainlessSteel, Materials2FluidShapes.fluidMolten, (int) (1836)))
+                    .getFluidStack(Materials.StainlessSteel, Materials2FluidShapes.fluidMolten, (int) (1836)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -380,7 +380,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 6))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Titanium, Materials2FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+                    .getFluidStack(Materials.Titanium, Materials2FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(35 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -390,7 +390,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 7))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Titanium, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Titanium, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(35 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -400,7 +400,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 8))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Titanium, Materials2FluidShapes.fluidMolten, (int) (1836)))
+                    .getFluidStack(Materials.Titanium, Materials2FluidShapes.fluidMolten, (int) (1836)))
             .duration(35 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -410,7 +410,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 9))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.TungstenSteel,
+                    Materials.TungstenSteel,
                     Materials2FluidShapes.fluidMolten,
                     (int) (2 * INGOTS)))
             .duration(40 * SECONDS)
@@ -422,7 +422,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 10))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.TungstenSteel,
+                    Materials.TungstenSteel,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(40 * SECONDS)
@@ -434,7 +434,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 11))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.TungstenSteel, Materials2FluidShapes.fluidMolten, (int) (1836)))
+                    .getFluidStack(Materials.TungstenSteel, Materials2FluidShapes.fluidMolten, (int) (1836)))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -444,7 +444,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 12))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Palladium,
+                    Materials.Palladium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (2 * INGOTS)))
             .duration(45 * SECONDS)
@@ -456,7 +456,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 13))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Palladium,
+                    Materials.Palladium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(45 * SECONDS)
@@ -466,11 +466,11 @@ public class FluidExtractorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 14))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Chrome, Materials2Shapes.nugget, (int) (6L)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Chrome, Materials2Shapes.nugget, (int) (6L)))
             .outputChances(10000)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.NiobiumTitanium,
+                    Materials.NiobiumTitanium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1728)))
             .duration(45 * SECONDS)
@@ -482,7 +482,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 0))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Iridium, Materials2FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+                    .getFluidStack(Materials.Iridium, Materials2FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -492,7 +492,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 1))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Iridium, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Iridium, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -500,11 +500,11 @@ public class FluidExtractorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 2))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.nugget, (int) (6L)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Iridium, Materials2Shapes.nugget, (int) (6L)))
             .outputChances(10000)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Enderium, Materials2FluidShapes.fluidMolten, (int) (1728)))
+                    .getFluidStack(Materials.Enderium, Materials2FluidShapes.fluidMolten, (int) (1728)))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -514,7 +514,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 3))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Osmium, Materials2FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+                    .getFluidStack(Materials.Osmium, Materials2FluidShapes.fluidMolten, (int) (2 * INGOTS)))
             .duration(55 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -524,7 +524,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 4))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Osmium, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                    .getFluidStack(Materials.Osmium, Materials2FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(55 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -532,11 +532,11 @@ public class FluidExtractorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 5))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.nugget, (int) (6L)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Osmium, Materials2Shapes.nugget, (int) (6L)))
             .outputChances(10000)
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Naquadah, Materials2FluidShapes.fluidMolten, (int) (1728)))
+                    .getFluidStack(Materials.Naquadah, Materials2FluidShapes.fluidMolten, (int) (1728)))
             .duration(55 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -546,7 +546,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 6))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Neutronium,
+                    Materials.Neutronium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (2 * INGOTS)))
             .duration(60 * SECONDS)
@@ -558,7 +558,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 7))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Neutronium,
+                    Materials.Neutronium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * INGOTS)))
             .duration(60 * SECONDS)
@@ -570,7 +570,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 8))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Neutronium, Materials2FluidShapes.fluidMolten, (int) (1836)))
+                    .getFluidStack(Materials.Neutronium, Materials2FluidShapes.fluidMolten, (int) (1836)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .recipeCategory(RecipeCategories.fluidExtractorRecycling)
@@ -580,7 +580,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.wheat_seeds, 1, 32767))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.SeedOil, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                    .getFluidStack(Materials.SeedOil, Materials2FluidShapes.fluidLiquid, (int) (10)))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(2)
             .addTo(fluidExtractionRecipes);
@@ -589,7 +589,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.melon_seeds, 1, 32767))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.SeedOil, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                    .getFluidStack(Materials.SeedOil, Materials2FluidShapes.fluidLiquid, (int) (10)))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(2)
             .addTo(fluidExtractionRecipes);
@@ -598,7 +598,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(new ItemStack(Items.pumpkin_seeds, 1, 32767))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.SeedOil, Materials2FluidShapes.fluidLiquid, (int) (10)))
+                    .getFluidStack(Materials.SeedOil, Materials2FluidShapes.fluidLiquid, (int) (10)))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(2)
             .addTo(fluidExtractionRecipes);
@@ -618,7 +618,7 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Ice, Materials2Shapes.dust, (int) (1L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Ice, Materials2Shapes.dust, (int) (1L)))
             .fluidOutputs(GTUtility.getIceSolid(1000L))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
@@ -626,7 +626,7 @@ public class FluidExtractorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Forestry.ID, "phosphor", 1L))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Phosphorus, Materials2Shapes.dust, (int) (1L)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Phosphorus, Materials2Shapes.dust, (int) (1L)))
             .outputChances(1000)
             .fluidOutputs(GTUtility.getLava(800L))
             .duration(12 * SECONDS + 16 * TICKS)
@@ -637,7 +637,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(GTModHandler.getModItem(TinkerConstruct.ID, "oreBerries", 1L, 0))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Iron, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Iron, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidExtractionRecipes);
@@ -646,7 +646,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(GTModHandler.getModItem(TinkerConstruct.ID, "oreBerries", 1L, 1))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Gold, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Gold, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidExtractionRecipes);
@@ -655,7 +655,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(GTModHandler.getModItem(TinkerConstruct.ID, "oreBerries", 1L, 2))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Copper, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Copper, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidExtractionRecipes);
@@ -664,7 +664,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(GTModHandler.getModItem(TinkerConstruct.ID, "oreBerries", 1L, 3))
             .fluidOutputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Tin, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
+                    .getFluidStack(Materials.Tin, Materials2FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidExtractionRecipes);
@@ -673,7 +673,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(GTModHandler.getModItem(TinkerConstruct.ID, "oreBerries", 1L, 4))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.Aluminium,
+                    Materials.Aluminium,
                     Materials2FluidShapes.fluidMolten,
                     (int) (1 * NUGGETS)))
             .duration(2 * SECONDS)

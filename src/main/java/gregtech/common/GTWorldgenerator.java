@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
@@ -35,7 +36,6 @@ import galacticgreg.api.enums.DimensionDef;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.events.VeinGenerateEvent;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.net.GTPacketSendOregenPattern;
@@ -60,10 +60,10 @@ public class GTWorldgenerator implements IWorldGenerator {
             .weight(0)
             .density(255)
             .size(16)
-            .primary(Materials2Materials.Aluminium)
-            .secondary(Materials2Materials.Aluminium)
-            .inBetween(Materials2Materials.Aluminium)
-            .sporadic(Materials2Materials.Aluminium));
+            .primary(Materials.Aluminium)
+            .secondary(Materials.Aluminium)
+            .inBetween(Materials.Aluminium)
+            .sporadic(Materials.Aluminium));
 
     /**
      * Caches the resolved layer and placement so all chunks of an oreseed use the same vein geometry.

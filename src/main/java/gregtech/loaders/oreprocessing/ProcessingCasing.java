@@ -10,7 +10,7 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
@@ -31,7 +31,7 @@ public class ProcessingCasing implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        OrePrefixes outer = material == Materials2Materials.Wood ? OrePrefixes.plank : OrePrefixes.plateDouble;
+        OrePrefixes outer = material == Materials.Wood ? OrePrefixes.plank : OrePrefixes.plateDouble;
 
         if (GTOreDictUnificator.get(OrePrefixes.plate, material, 1L) == null
             || GTOreDictUnificator.get(OrePrefixes.screw, material, 1L) == null

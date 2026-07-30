@@ -15,7 +15,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2CellShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -26,8 +26,8 @@ public class Mixer implements Runnable {
     public void run() {
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials2Materials.Thorium232, Materials2Shapes.dust, 10),
-                MaterialLibAPI.getStack(Materials2Materials.Uranium235, Materials2Shapes.dust, (int) (1)))
+                MaterialLibAPI.getStack(Materials.Thorium232, Materials2Shapes.dust, 10),
+                MaterialLibAPI.getStack(Materials.Uranium235, Materials2Shapes.dust, (int) (1)))
             .circuit(2)
             .itemOutputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials))
             .duration(20 * SECONDS)
@@ -36,9 +36,9 @@ public class Mixer implements Runnable {
 
         if (Gendustry.isModLoaded()) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Radon, Materials2CellShapes.cell, (int) (1L)))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Radon, Materials2CellShapes.cell, (int) (1L)))
                 .circuit(17)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
                 .fluidInputs(GTModHandler.getLiquidDNA(1_000))
                 .fluidOutputs(new FluidStack(FluidLoader.BioLabFluidMaterials[0], 2_000))
                 .duration(25 * SECONDS)

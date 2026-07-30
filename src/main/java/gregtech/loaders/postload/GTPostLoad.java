@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -43,7 +44,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialGenerationFlag;
@@ -276,7 +276,7 @@ public class GTPostLoad {
         if (!MTEMassfabricator.sRequiresUUA) {
 
             MTEMassfabricator.nonUUARecipe = GTValues.RA.stdBuilder()
-                .fluidOutputs(MaterialUtils.fluid(Materials2Materials.UUMatter, 1L))
+                .fluidOutputs(MaterialUtils.fluid(Materials.UUMatter, 1L))
                 .duration(MTEMassfabricator.sDurationMultiplier)
                 .eut(MTEMassfabricator.BASE_EUT)
                 .ignoreCollision()
@@ -292,10 +292,10 @@ public class GTPostLoad {
             .circuit(1)
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.UUAmplifier,
+                    Materials.UUAmplifier,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (MTEMassfabricator.sUUAperUUM)))
-            .fluidOutputs(MaterialUtils.fluid(Materials2Materials.UUMatter, 1L))
+            .fluidOutputs(MaterialUtils.fluid(Materials.UUMatter, 1L))
             .duration(MTEMassfabricator.sDurationMultiplier / MTEMassfabricator.sUUASpeedBonus)
             .eut(MTEMassfabricator.BASE_EUT)
             .ignoreCollision()
@@ -322,7 +322,7 @@ public class GTPostLoad {
             b -> b.sideBlocks(Blocks.water)
                 .anywhereBlocks(Blocks.lava)
                 .inputItem(
-                    MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Redstone, Materials2Shapes.dust, (int) (1)),
                     true)
                 .circuit(1)
                 .outputItem(new ItemStack(Blocks.obsidian, 1))
@@ -332,7 +332,7 @@ public class GTPostLoad {
             b -> b.sideBlocks(Blocks.water)
                 .anywhereBlocks(Blocks.lava)
                 .inputItem(
-                    MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Glowstone, Materials2Shapes.dust, (int) (1)),
                     true)
                 .circuit(6)
                 .outputItem(new ItemStack(Blocks.netherrack, 1))
@@ -344,7 +344,7 @@ public class GTPostLoad {
                     .bottomBlock(Blocks.soul_sand)
                     .inputItem(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "blue_ice", 0, 0), false)
                     .circuit(1)
-                    .outputItem(GTOreDictUnificator.get(OrePrefixes.stone, Materials2Materials.Basalt, 1L))
+                    .outputItem(GTOreDictUnificator.get(OrePrefixes.stone, Materials.Basalt, 1L))
                     .duration(16 * TICKS));
 
             MTERockBreaker.addRockBreakerRecipe(
@@ -385,7 +385,7 @@ public class GTPostLoad {
                 } else {
                     // if there is no fluid for some reason, add a cell recipe, with cell input.
                     replicatorRecipeBuilder
-                        .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials2Materials.Empty, 1))
+                        .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
                         .itemOutputs(cellItem);
                 }
                 replicatorRecipeBuilder.special(scannerResult.output)
@@ -456,29 +456,29 @@ public class GTPostLoad {
     public static void addSolidFakeLargeBoilerFuels() {
         RecipeMaps.largeBoilerFakeFuels.getBackend()
             .addSolidRecipes(
-                MaterialLibAPI.getStack(Materials2Materials.Charcoal, Materials2Shapes.dust, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.Charcoal, 1),
-                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.Charcoal, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.dust, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials2Materials.Coal, 1),
-                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.Coal, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.crushed, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Lignite, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Lignite, Materials2Shapes.gem, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.block, Materials2Materials.Lignite, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Lignite, Materials2Shapes.crushed, (int) (1)),
-                GTOreDictUnificator.get(OrePrefixes.log, Materials2Materials.Wood, 1),
-                GTOreDictUnificator.get(OrePrefixes.plank, Materials2Materials.Wood, 1),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials2Materials.Wood, 1),
-                GTOreDictUnificator.get(OrePrefixes.slab, Materials2Materials.Wood, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Sodium, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Lithium, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Caesium, Materials2Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials2Materials.Sulfur, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Charcoal, Materials2Shapes.dust, (int) (1)),
+                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials.Charcoal, 1),
+                MaterialLibAPI.getStack(Materials.Coal, Materials2Shapes.dust, (int) (1)),
+                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials.Coal, 1),
+                MaterialLibAPI.getStack(Materials.Coal, Materials2Shapes.crushed, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Lignite, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Lignite, Materials2Shapes.gem, (int) (1)),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials.Lignite, 1),
+                MaterialLibAPI.getStack(Materials.Lignite, Materials2Shapes.crushed, (int) (1)),
+                GTOreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1),
+                GTOreDictUnificator.get(OrePrefixes.plank, Materials.Wood, 1),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                GTOreDictUnificator.get(OrePrefixes.slab, Materials.Wood, 1),
+                MaterialLibAPI.getStack(Materials.Wood, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Sodium, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Lithium, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Caesium, Materials2Shapes.dust, (int) (1)),
+                MaterialLibAPI.getStack(Materials.Sulfur, Materials2Shapes.dust, (int) (1)),
                 GTOreDictUnificator.get(ItemList.Block_SSFUEL.get(1)),
                 GTOreDictUnificator.get(ItemList.Block_MSSFUEL.get(1)),
-                GTOreDictUnificator.get(OrePrefixes.rod, Materials2Materials.Blaze, 1));
+                GTOreDictUnificator.get(OrePrefixes.rod, Materials.Blaze, 1));
         if (Thaumcraft.isModLoaded()) {
             RecipeMaps.largeBoilerFakeFuels.getBackend()
                 .addSolidRecipe(GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1));

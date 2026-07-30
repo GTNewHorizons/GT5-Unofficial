@@ -11,6 +11,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_ZPM;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -20,7 +21,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Backings;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.enums.materials2.Materials2WerkstoffIndex;
 import gregtech.api.material.GTMaterialFlag;
@@ -129,9 +129,9 @@ public class GregtechSimpleWasher {
             if (MaterialUtils.hasFlag(ml, GTMaterialFlag.NO_ORE_PROCESSING)) {
                 continue;
             }
-            if (ml == Materials2Materials.Platinum || ml == Materials2Materials.Osmium
-                || ml == Materials2Materials.Iridium
-                || ml == Materials2Materials.Palladium
+            if (ml == Materials.Platinum || ml == Materials.Osmium
+                || ml == Materials.Iridium
+                || ml == Materials.Palladium
                 || ml == Materials2Backings.AnyCopper
                 || ml == Materials2Backings.AnyIron) {
                 continue;

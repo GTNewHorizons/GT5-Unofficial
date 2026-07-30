@@ -13,6 +13,7 @@ import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -25,7 +26,6 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.structure.error.StructureError;
@@ -83,8 +83,8 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
                 .addElement('C', Casings.AdvancedIridiumPlatedMachineCasing.asElement())
                 .addElement('D', Casings.PBIPipeCasing.asElement())
                 .addElement('F', Casings.AdvancedComputerCasing.asElement())
-                .addElement('G', ofFrame(Materials2Materials.Neutronium))
-                .addElement('H', ofSheetMetal(Materials2Materials.Infinity))
+                .addElement('G', ofFrame(Materials.Neutronium))
+                .addElement('H', ofSheetMetal(Materials.Infinity))
                 .build();
         }
         return (IStructureDefinition<MTEDrillerBase>) (IStructureDefinition<?>) STRUCTURE_DEFINITION;
@@ -204,7 +204,7 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
 
     @Override
     protected Material getFrameMaterial() {
-        return Materials2Materials.Neutronium;
+        return Materials.Neutronium;
     }
 
     @Override

@@ -20,7 +20,7 @@ import detrav.items.DetravMetaGeneratedTool01;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 
@@ -39,7 +39,7 @@ public class ProcessingDetravToolProspector implements gregtech.api.interfaces.I
         if (!aPrefix.doGenerateItem(material)) return;
         if (DetravScannerMod.DEBUG_ENABLED) return;
 
-        Material steel = Materials2Materials.Steel;
+        Material steel = Materials.Steel;
         GTModHandler.addCraftingRecipe(
             DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(ProspectorScannerLV.ID, 1, material, steel, null),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,

@@ -1,5 +1,6 @@
 package gregtech.common;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -8,7 +9,6 @@ import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTUtility;
 
 public class OreDictEventContainer {
@@ -49,7 +49,7 @@ public class OreDictEventContainer {
             ore.mPrefix.processRecognitionOre(ore.mRecognitionMarker, ore.mEvent.Name, ore.mModID, tStack);
         } else {
             ore.mPrefix.processOre(
-                ore.mMaterial == null ? Materials2Materials.NULL : ore.mMaterial,
+                ore.mMaterial == null ? Materials.NULL : ore.mMaterial,
                 ore.mEvent.Name,
                 ore.mModID,
                 tStack);

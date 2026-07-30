@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,7 +25,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
@@ -176,16 +176,16 @@ public class BaseItemMetaFood extends ItemFood {
             GTOreDictUnificator.addItemData(
                 new ItemStack(this, 1, aMetaID),
                 new ItemData(
-                    Materials2Materials.MeatRaw,
+                    Materials.MeatRaw,
                     GTValues.M,
-                    new MaterialStack(Materials2Materials.Bone, GTValues.M / 9)));
+                    new MaterialStack(Materials.Bone, GTValues.M / 9)));
         } else if (aOreDictNames.contains("listAllmeatcooked")) {
             GTOreDictUnificator.addItemData(
                 new ItemStack(this, 1, aMetaID),
                 new ItemData(
-                    Materials2Materials.MeatCooked,
+                    Materials.MeatCooked,
                     GTValues.M,
-                    new MaterialStack(Materials2Materials.Bone, GTValues.M / 9)));
+                    new MaterialStack(Materials.Bone, GTValues.M / 9)));
         }
         return new ItemStack(this, 1, aMetaID);
     }

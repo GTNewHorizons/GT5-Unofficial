@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -47,7 +48,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -326,7 +326,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     .addShape(STRUCTURE_PIECE_TIER4_RENDER, STRUCTURE_PIECE_TIER4_STRUCT)
                     .addShape(STRUCTURE_PIECE_TIER4_AIR_RENDER, STRUCTURE_PIECE_TIER4_STRUCT_AIR)
                     //spotless:on
-        .addElement('F', ofFrame(Materials2Materials.StellarAlloy))
+        .addElement('F', ofFrame(Materials.StellarAlloy))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 10))
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings2, 5))
         .addElement(
@@ -338,9 +338,9 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 .buildAndChain(GregTechAPI.sBlockCasings8, 10))
         .addElement('J', ofBlock(GregTechAPI.sBlockCasings13, 5))
         .addElement('K', ofBlock(GregTechAPI.sBlockCasings13, 7))
-        .addElement('M', ofFrame(Materials2Materials.Magmatter))
-        .addElement('N', ofFrame(Materials2Materials.BlackDwarfMatter))
-        .addElement('O', ofFrame(Materials2Materials.WhiteDwarfMatter))
+        .addElement('M', ofFrame(Materials.Magmatter))
+        .addElement('N', ofFrame(Materials.BlackDwarfMatter))
+        .addElement('O', ofFrame(Materials.WhiteDwarfMatter))
         .addElement('P', ofBlock(GregTechAPI.sBlockCasings13, 8))
         .addElement('Q', ofBlock(GregTechAPI.sBlockCasings13, 9))
         .addElement(
@@ -493,7 +493,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                         for (MTEHatchInput hatch : filterValidMTEs(mInputHatches)) {
                             FluidStack drained = hatch.drain(
                                 ForgeDirection.UNKNOWN,
-                                MaterialUtils.molten(Materials2Materials.Magmatter, Integer.MAX_VALUE),
+                                MaterialUtils.molten(Materials.Magmatter, Integer.MAX_VALUE),
                                 true);
                             if (drained == null) {
                                 continue;
@@ -606,7 +606,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             return;
         }
 
-        if (aStack.isItemEqual(GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Eternity, 1))) {
+        if (aStack.isItemEqual(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 1))) {
             // tier 4
             casingAmount = 0;
             if (!checkPiece(STRUCTURE_PIECE_TIER4_BASE, 20, 33, 0, errors)) return;
@@ -625,17 +625,17 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         } else {
             if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1, errors)) return;
 
-            if (aStack.isItemEqual(GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Carbon, 1))) {
+            if (aStack.isItemEqual(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1))) {
                 mSpecialTier = 1;
             }
 
-            if (aStack.isItemEqual(GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Neutronium, 1))
+            if (aStack.isItemEqual(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 1))
                 && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4, errors)) {
                 mSpecialTier = 2;
             }
 
             if (aStack
-                .isItemEqual(GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.TranscendentMetal, 1))
+                .isItemEqual(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 1))
                 && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4, errors)
                 && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4, errors)) {
                 mSpecialTier = 3;

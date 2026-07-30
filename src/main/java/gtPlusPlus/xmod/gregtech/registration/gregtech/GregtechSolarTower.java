@@ -4,7 +4,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Industrial_Solar_Tower;
 import static gregtech.api.enums.MetaTileEntityIDs.Solar_Tower_Reflector;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.MaterialUtils;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -33,8 +33,8 @@ public class GregtechSolarTower {
 
         // NEI recipe
         GTValues.RA.stdBuilder()
-            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.SolarSaltCold, 1000))
-            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials2Materials.SolarSaltHot, 1000))
+            .fluidInputs(MaterialUtils.legacyGtppFluid(Materials.SolarSaltCold, 1000))
+            .fluidOutputs(MaterialUtils.legacyGtppFluid(Materials.SolarSaltHot, 1000))
             .duration(0)
             .eut(0)
             .addTo(GTPPRecipeMaps.solarTowerRecipes);

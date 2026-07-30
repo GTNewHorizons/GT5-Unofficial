@@ -27,6 +27,7 @@ import java.util.Optional;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -55,7 +56,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -126,9 +126,9 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
         .addElement('D', Casings.FrostProofMachineCasing.asElement())
         .addElement('E', Casings.TungstensteelPipeCasing.asElement())
         .addElement('F', Casings.RobustTungstenSteelMachineCasing.asElement())
-        .addElement('G', ofFrame(Materials2Materials.CallistoIce))
+        .addElement('G', ofFrame(Materials.CallistoIce))
         .addElement('H', Casings.TungstenSteelReinforcedBlock.asElement())
-        .addElement('I', ofSheetMetal(Materials2Materials.Ledox))
+        .addElement('I', ofSheetMetal(Materials.Ledox))
         .addElement(
             'J',
             ofBlocksTiered(
@@ -390,9 +390,9 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
 
     private static final int BOOSTER_DRAIN = 20;
     private static final List<BoosterFluid> BOOSTER_FLUIDS = ImmutableList.of(
-        new BoosterFluid(Materials2Materials.Infinity, 1, BOOSTER_DRAIN),
-        new BoosterFluid(Materials2Materials.SpaceTime, 2, BOOSTER_DRAIN),
-        new BoosterFluid(Materials2Materials.Eternity, 3, BOOSTER_DRAIN));
+        new BoosterFluid(Materials.Infinity, 1, BOOSTER_DRAIN),
+        new BoosterFluid(Materials.SpaceTime, 2, BOOSTER_DRAIN),
+        new BoosterFluid(Materials.Eternity, 3, BOOSTER_DRAIN));
 
     // without cryotheum, max speed up takes 5 minutes of running to reach max speed (50%)
     // with cryotheum, it takes 1 minute.

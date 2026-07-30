@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -13,7 +14,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
-import gregtech.api.enums.materials2.Materials2Materials;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class FermenterRecipes implements Runnable {
@@ -24,10 +24,10 @@ public class FermenterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Biomass, Materials2FluidShapes.fluidLiquid, (int) (100)))
+                    .getFluidStack(Materials.Biomass, Materials2FluidShapes.fluidLiquid, (int) (100)))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.FermentedBiomass,
+                    Materials.FermentedBiomass,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (100)))
             .duration(7 * SECONDS + 10 * TICKS)
@@ -38,7 +38,7 @@ public class FermenterRecipes implements Runnable {
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 100))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
-                    Materials2Materials.FermentedBiomass,
+                    Materials.FermentedBiomass,
                     Materials2FluidShapes.fluidLiquid,
                     (int) (100)))
             .duration(7 * SECONDS + 10 * TICKS)
@@ -47,7 +47,7 @@ public class FermenterRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (50)))
+                MaterialLibAPI.getFluidStack(Materials.Milk, Materials2FluidShapes.fluidLiquid, (int) (50)))
             .fluidOutputs(getFluidStack("potion.mundane", 25))
             .duration(51 * SECONDS + 4 * TICKS)
             .eut(2)

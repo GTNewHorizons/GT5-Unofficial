@@ -5,6 +5,7 @@ import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -12,7 +13,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialAtomics;
@@ -33,15 +33,15 @@ import gregtech.api.util.GTUtility;
 /// composition's entry count.
 public final class LoaderMixerRecipes {
 
-    private static final Material[] CARRIERS = { Materials2Materials.CircuitCompoundMK3,
-        Materials2Materials.MagnetoResonatic, Materials2Materials.RhodiumPlatedPalladium, Materials2Materials.Ruridit,
-        Materials2Materials.HighDurabilityCompoundSteel, Materials2Materials.RawAdemicSteel,
-        Materials2Materials.GraphiteUraniumMixture, Materials2Materials.UraniumCarbideThoriumMixture,
-        Materials2Materials.PlutoniumOxideUraniumMixture, Materials2Materials.Zircaloy4, Materials2Materials.Zircaloy2,
-        Materials2Materials.Incoloy903, Materials2Materials.AdamantiumAlloy, Materials2Materials.MARM200Steel,
-        Materials2Materials.ArtheriumSn, Materials2Materials.TanmolyiumBetaC, Materials2Materials.Dalisenite,
-        Materials2Materials.Hikarium, Materials2Materials.Tairitsu, Materials2Materials.PreciousMetalsAlloy,
-        Materials2Materials.EnrichedNaquadahAlloy, Materials2Materials.Permalloy };
+    private static final Material[] CARRIERS = { Materials.CircuitCompoundMK3,
+        Materials.MagnetoResonatic, Materials.RhodiumPlatedPalladium, Materials.Ruridit,
+        Materials.HighDurabilityCompoundSteel, Materials.RawAdemicSteel,
+        Materials.GraphiteUraniumMixture, Materials.UraniumCarbideThoriumMixture,
+        Materials.PlutoniumOxideUraniumMixture, Materials.Zircaloy4, Materials.Zircaloy2,
+        Materials.Incoloy903, Materials.AdamantiumAlloy, Materials.MARM200Steel,
+        Materials.ArtheriumSn, Materials.TanmolyiumBetaC, Materials.Dalisenite,
+        Materials.Hikarium, Materials.Tairitsu, Materials.PreciousMetalsAlloy,
+        Materials.EnrichedNaquadahAlloy, Materials.Permalloy };
 
     private LoaderMixerRecipes() {}
 
