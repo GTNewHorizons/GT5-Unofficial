@@ -2,6 +2,7 @@ package gregtech.api.recipe.maps;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -138,31 +139,35 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
             .orElse(null);
     }
 
-    public static double getBurntimeRatio(double fuelValue) {
+    public static int getBurntimeRatio(double fuelValueTicks, int divider) {
+        // 10 in this formula is 10 seconds of burn time in steel boiler, or 16000 Burn Time value
+        return new BigDecimal(formatNumber(((fuelValueTicks/divider * Math.max(1, 1 + Math.log(fuelValueTicks / divider / 10) * 0.025))))).multiply(new BigDecimal(20)).intValue();
+    }
+
+    private static double getBurntimeRatio(double fuelValue) {
         // 10 in this formula is 10 seconds of burn time in steel boiler, or 16000 Burn Time value
         return fuelValue * Math.max(1, 1 + Math.log(fuelValue / 10) * 0.025);
     }
 
     private GTRecipe addRecipe(GTRecipe recipe, double baseBurnTime, boolean isAllowedInSteelBoiler,
         boolean isHighTierAllowed) {
-        // Some recipes will have a burn time like 15.9999999 and % always rounds down
-        double floatErrorCorrection = 0.0001;
+        BigDecimal ticksDecimal = new BigDecimal("20");
+        // the initial non modified time is now stored in ticks
+        BigDecimal correctedBurnTime = new BigDecimal(new BigDecimal(formatNumber(getBurntimeRatio(baseBurnTime))).multiply(ticksDecimal).intValue());
 
-        double bronzeBurnTime = getBurntimeRatio(baseBurnTime) * 2 + floatErrorCorrection;
-        bronzeBurnTime -= bronzeBurnTime % 0.05;
-        double steelBurnTime = getBurntimeRatio(baseBurnTime) + floatErrorCorrection;
-        steelBurnTime -= steelBurnTime % 0.05;
-        double titaniumBurnTime = getBurntimeRatio(baseBurnTime) * 0.3 + floatErrorCorrection;
-        titaniumBurnTime -= titaniumBurnTime % 0.05;
-        double tungstensteelBurnTime = getBurntimeRatio(baseBurnTime) * 0.15 + floatErrorCorrection;
-        tungstensteelBurnTime -= tungstensteelBurnTime % 0.05;
+        BigDecimal bronzeBurnTime = correctedBurnTime.multiply(new BigDecimal("2")).divide(ticksDecimal);
+        BigDecimal steelBurnTime = correctedBurnTime.divide(ticksDecimal);
+        BigDecimal titaniumBurnTime = correctedBurnTime.multiply(new BigDecimal("0.3")).divide(ticksDecimal);
+        titaniumBurnTime = titaniumBurnTime.subtract(titaniumBurnTime.remainder(new BigDecimal("0.05")));
+        BigDecimal tungstensteelBurnTime = correctedBurnTime.multiply(new BigDecimal("0.15")).divide(ticksDecimal);
+        tungstensteelBurnTime = tungstensteelBurnTime.subtract(tungstensteelBurnTime.remainder(new BigDecimal("0.05")));
 
         FluidStack foundFluid = GTUtility.getFluidForFilledItem(recipe.getRepresentativeInput(0), true);
         if (foundFluid != null) {
             // Removes item, adds fluid for NEI and sets mDuration in ticks for usage in LargeBoilerBase
             recipe.setFluidInputs(foundFluid);
             recipe.mInputs = new ItemStack[0];
-            recipe.mDuration = (int) (steelBurnTime * 20);
+            recipe.mDuration = correctedBurnTime.intValue();
         }
         recipe.setNeiDesc(
             StatCollector.translateToLocal("GT5U.nei.large_boiler.burn_time"),

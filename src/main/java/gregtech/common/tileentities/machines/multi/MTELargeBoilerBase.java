@@ -16,6 +16,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -336,6 +337,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                         this.excessFuel += (int) (fuelValue % 80);
                         burnTime += this.excessFuel / 80;
                         this.excessFuel %= 80;
+                        burnTime = LargeBoilerFuelBackend.getBurntimeRatio(burnTime, 20);
                         setupBoilerRecipe(burnTime, getEfficiencyIncrease(), false);
                         tInput.stackSize -= 1;
                         updateSlots();
