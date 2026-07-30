@@ -7,7 +7,7 @@ import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Families;
 import gregtech.api.enums.materials2.OreShapes;
-import gregtech.api.enums.materials2.Materials2PipeMaterials;
+import gregtech.api.enums.materials2.PipeMaterials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2ShapeData;
 import gregtech.api.enums.materials2.Shapes;
@@ -25,7 +25,7 @@ public class Materials2 {
 
     // Shapes and families come first because the material tables pass them as objects.
     // RecognitionMaterials must follow Materials: one of its names (`Ammonium`) already belongs to a
-    // real material, and it binds that rather than registering a duplicate. Materials2PipeMaterials runs last
+    // real material, and it binds that rather than registering a duplicate. PipeMaterials runs last
     // because its rows reference the material fields the passes above assign.
     public static void init() {
         FluidShapes.init();
@@ -38,7 +38,7 @@ public class Materials2 {
         Materials.init();
         MaterialFacades.registerBackingMaterials();
         RecognitionMaterials.registerBackingMaterials();
-        Materials2PipeMaterials.init();
+        PipeMaterials.init();
         Materials2ShapeData.init();
     }
 }

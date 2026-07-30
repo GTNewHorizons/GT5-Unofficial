@@ -4,6 +4,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.materials2.Materials2PipeShapes;
+import gregtech.api.enums.materials2.PipeMaterials;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.metatileentity.implementations.MTEFrame;
@@ -16,7 +17,7 @@ import gregtech.common.blocks.PipeShapeBlock;
 /// pipes ([MTEItemPipe]), and the frame box ([MTEFrame]). Each instance derives its material and stats from
 /// its host block's metadata instead of carrying them per registration. The material membership of each
 /// shape is declared at material registration; the frame set's authoritative source is
-/// [gregtech.api.enums.materials2.Materials2PipeMaterials#frameMaterials].
+/// [PipeMaterials#frameMaterials].
 public final class LoaderPipeShapeEntities implements Runnable {
 
     @Override

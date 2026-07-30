@@ -15,6 +15,7 @@ import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.BlastFurnaceWithGas;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
+import gregtech.api.enums.materials2.PipeMaterials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -196,7 +197,7 @@ public class CrackRecipeAdder {
     }
 
     /// `material` must carry `ingot` and the `pipeTiny`..`pipeHuge` ladder -- see
-    /// [gregtech.api.enums.materials2.Materials2PipeMaterials] for which materials do.
+    /// [PipeMaterials] for which materials do.
     public static void registerPipe(Material material) {
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -277,7 +278,7 @@ public class CrackRecipeAdder {
     }
 
     /// `material` must carry `ingot`, `stick` and the `wireGt01`..`wireGt16` ladder -- see
-    /// [gregtech.api.enums.materials2.Materials2PipeMaterials] for which materials do.
+    /// [PipeMaterials] for which materials do.
     public static void registerWire(Material material) {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1))

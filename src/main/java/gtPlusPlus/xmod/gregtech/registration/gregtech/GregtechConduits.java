@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import gregtech.api.enums.materials2.PipeMaterials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -17,7 +18,6 @@ import com.ruling_0.materiallib.api.Shape;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2PipeMaterials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -180,10 +180,10 @@ public class GregtechConduits {
         }
     }
 
-    /// Whether `material` carries the whole `wireGt01`..`wireGt16` ladder [Materials2PipeMaterials] grants as
+    /// Whether `material` carries the whole `wireGt01`..`wireGt16` ladder [PipeMaterials] grants as
     /// one unit -- the precondition every wire block in [#generateWireRecipes] shares.
     private static boolean hasWireLadder(Material material) {
-        for (Shape shape : Materials2PipeMaterials.wireShapes()) {
+        for (Shape shape : PipeMaterials.wireShapes()) {
             if (!material.hasShape(shape)) return false;
         }
         return true;
@@ -195,7 +195,7 @@ public class GregtechConduits {
     ///
     /// Fine wire is drawn straight from the ingot and the rod, so those two recipes depend only on
     /// `ingot`/`stick`/`wireFine`; most callers carry none of the wire ladder and reach only those two.
-    /// Everything else needs the ladder, whose membership comes from [Materials2PipeMaterials]: it grants
+    /// Everything else needs the ladder, whose membership comes from [PipeMaterials]: it grants
     /// `wireGt01`..`wireGt16` together, so [#hasWireLadder] covers every wire size below it. Cables are absent
     /// by the same table -- it grants `cableGt01`..`cableGt16` only to its `WireCable` rows, and no caller here
     /// is one. [gregtech.loaders.oreprocessing.ProcessingWire] owns wire-to-cable for the materials that have

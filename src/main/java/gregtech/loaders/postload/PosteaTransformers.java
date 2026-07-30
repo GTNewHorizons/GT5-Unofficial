@@ -10,6 +10,7 @@ import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.PipeMaterials;
 import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -31,7 +32,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.OreShapes;
-import gregtech.api.enums.materials2.Materials2PipeMaterials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.MaterialParts;
@@ -164,12 +164,12 @@ public class PosteaTransformers implements Runnable {
     /// alongside `gtPlusPlus.core.block.base.BlockBaseModular`'s `BlockTypes.FRAME` construction) into the
     /// equivalent MaterialLib `frameGt` shape stack. Unlike every metadata-keyed legacy part, the material is
     /// fixed by which registry name is being migrated rather than by a damage value, so each of
-    /// [Materials2PipeMaterials#gtppFrameMaterials]'s materials gets its own registration instead of sharing
+    /// [PipeMaterials#gtppFrameMaterials]'s materials gets its own registration instead of sharing
     /// one metadata-keyed handler. `addSimpleReplacement`'s block+meta overload registers a matching item
     /// replacement automatically, so no separate item-side call is needed. A material whose frame shape did
     /// not generate is left on its legacy slot.
     private static void registerGtppFrameCutoverTransformers() {
-        Material[] materials = Materials2PipeMaterials.gtppFrameMaterials();
+        Material[] materials = PipeMaterials.gtppFrameMaterials();
         int count = 0;
         for (Material material : materials) {
             if (!material.hasShape(Materials2PipeShapes.frameGt)) continue;

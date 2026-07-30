@@ -54,7 +54,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolModes;
-import gregtech.api.enums.materials2.Materials2PipeMaterials;
+import gregtech.api.enums.materials2.PipeMaterials;
 import gregtech.api.enums.materials2.Materials2PipeProperties;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -896,10 +896,10 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         Material material = shapeMaterial();
         if (material == null) return 0;
         if (material == Materials.Wood) {
-            return bespokeCapacity(Materials2PipeMaterials.WOOD_FLUID_PIPE_CAPACITY);
+            return bespokeCapacity(PipeMaterials.WOOD_FLUID_PIPE_CAPACITY);
         }
         if (material == Materials.Redstone) {
-            return bespokeCapacity(Materials2PipeMaterials.HIGH_PRESSURE_FLUID_PIPE_CAPACITY);
+            return bespokeCapacity(PipeMaterials.HIGH_PRESSURE_FLUID_PIPE_CAPACITY);
         }
         Integer base = material.getProperty(Materials2PipeProperties.BASE_PIPE_FLOW);
         if (base == null) return 0;
