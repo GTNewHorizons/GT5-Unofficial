@@ -2,9 +2,8 @@ package gregtech.api.material;
 
 import com.github.bsideup.jabel.Desugar;
 
-/// A legacy fluid name and its temperature in Kelvin, as registered with Forge's fluid registry, plus the
-/// still-icon texture path its `GTFluid` registered (captured by the dump, see
-/// `gregtech.common.fluid.GTFluid#DUMP_TEXTURES`), or null if the dump never captured one (an other-mod-owned
-/// or texture-set-driven fluid).
+/// A fluid's frozen Forge registry name and its temperature in Kelvin, plus the still-icon texture path it
+/// registers with. The texture is null for a fluid whose icon comes from elsewhere -- another mod's
+/// registration, or a texture set.
 @Desugar
 public record FluidRef(String name, int temperature, String texture) {}

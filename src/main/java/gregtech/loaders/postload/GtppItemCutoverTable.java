@@ -3,17 +3,16 @@ package gregtech.loaders.postload;
 import gregtech.api.enums.OrePrefixes;
 
 /// The gtPlusPlus item-cutover Postea migration table: one row per legacy
-/// `miscutils:item*`/`miscutils:block*`-registered gtPlusPlus per-material part whose prefix has cut
-/// over to a MaterialLib shape, read from the pinned `gtpp-materials.json` dump's `generatedParts`.
-/// `frameGt` is not covered by this table; a handful of `cell` rows for materials whose legacy cell
-/// already resolved to a non-`miscutils:` item by dump time are hand-migrated in
-/// [PosteaTransformers] instead, since this table can only see registry names the dump captured.
-/// [PosteaTransformers] migrates each row's legacy stack to `MaterialParts.stack(prefix, MaterialLibAPI.getMaterial(
-/// "gregtech", materialName), 1)` (`cell` rows through `MaterialParts.cell` instead, for its `cellMolten`
-/// fallback) in a single loop. A `block` row resolves null
-/// (leaving the legacy slot canonical), same as every other prefix here, exactly when the row's material has
-/// no `BlockShapes#block` shape; it additionally gets a `BlockReplacementManager` handler alongside
-/// the `ItemStackReplacementManager` one, since a storage block is placeable.
+/// `miscutils:item*`/`miscutils:block*`-registered gtPlusPlus per-material part whose prefix has cut over to a
+/// MaterialLib shape. [PosteaTransformers] migrates each row's legacy stack to
+/// `MaterialParts.stack(prefix, MaterialLibAPI.getMaterial("gregtech", materialName), 1)` (`cell` rows through
+/// `MaterialParts.cell` instead, for its `cellMolten` fallback) in a single loop; a `block` row additionally
+/// gets a `BlockReplacementManager` handler, since a storage block is placeable.
+///
+/// `frameGt` is out of this table -- see [GtppFrameCutoverTable] -- as are five `cell` rows whose legacy item
+/// was never a `miscutils:` registration, hand-migrated in [PosteaTransformers] instead.
+///
+/// Frozen: a row leaving this table orphans that item in every world that holds one.
 public final class GtppItemCutoverTable {
 
     public record Entry(OrePrefixes prefix, String materialName, String registryName) {}

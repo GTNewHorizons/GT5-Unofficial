@@ -1,8 +1,6 @@
 package gregtech.api.items;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,7 +11,6 @@ import net.minecraft.util.IIcon;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.github.bsideup.jabel.Desugar;
 import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.relauncher.Side;
@@ -48,23 +45,6 @@ import gregtech.common.render.items.GeneratedMaterialRenderer;
  */
 public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
 
-    /// A legacy item variant actually created by a [MetaGeneratedItemX32] constructor: `metaItemName` is the
-    /// unlocalized name passed to that constructor (e.g. `metaitem.01`), `damage` its meta value. Ground truth
-    /// for which (prefix, material) pairs had a real legacy item, as opposed to [OrePrefixes#doGenerateItem]
-    /// capability bits alone -- a prefix only ever had an item if it also held a constructor slot, and those
-    /// bits can drift between construction time and a later dump.
-    @Desugar
-    public record LegacyVariant(String metaItemName, String prefixName, String materialName, int damage) {}
-
-    /// Set via the `gt.dumpMaterialData` system property (see `gregtech.common.misc.MaterialDataDump`). While
-    /// active, the constructor below no longer skips prefixes cut over to a MaterialLib shape, so every legacy
-    /// variant it would have created pre-cutover is still constructed and recorded into [#DUMP_VARIANTS]. This
-    /// re-registers oredict/unificator entries for cutover prefixes, which is acceptable only because a
-    /// dump-triggering run is a throwaway server used solely to produce `legacy-variants.json`.
-    public static final boolean DUMP_MODE = Boolean.getBoolean("gt.dumpMaterialData");
-
-    public static final List<LegacyVariant> DUMP_VARIANTS = DUMP_MODE ? new ArrayList<>() : Collections.emptyList();
-
     protected final OrePrefixes[] mGeneratedPrefixList;
 
     /**
@@ -83,12 +63,8 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
             if (tPrefix == OrePrefixes.___placeholder___) continue;
             Material tMaterial = generatedMaterial(i % 1000);
             if (tMaterial == null) continue;
-            if (!DUMP_MODE && MaterialParts.isCutOver(tPrefix, tMaterial)) continue;
+            if (MaterialParts.isCutOver(tPrefix, tMaterial)) continue;
             if (doesMaterialAllowGeneration(tPrefix, tMaterial)) {
-                if (DUMP_MODE) {
-                    DUMP_VARIANTS.add(
-                        new LegacyVariant(aUnlocalized, tPrefix.getName(), MaterialUtils.internalName(tMaterial), i));
-                }
                 ItemStack tStack = new ItemStack(this, 1, i);
                 if (tPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
