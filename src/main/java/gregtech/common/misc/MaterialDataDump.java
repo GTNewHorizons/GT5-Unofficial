@@ -173,7 +173,13 @@ public final class MaterialDataDump {
         json.put("name", prefix.getName());
         json.put("localNameFormat", prefix.getMaterialPrefix() + "%s" + prefix.getMaterialPostfix());
         json.put("materialAmount", prefix.getMaterialAmount());
-        json.put("generationBits", prefix.getMaterialGenerationBits());
+        json.put(
+            "generationFlags",
+            prefix.getGenerationFlags()
+                .stream()
+                .map(Enum::name)
+                .sorted()
+                .toList());
         json.put("textureIndex", prefix.getTextureIndex());
         json.put("defaultStackSize", prefix.getDefaultStackSize());
         json.put("isUnifiable", prefix.isUnifiable());

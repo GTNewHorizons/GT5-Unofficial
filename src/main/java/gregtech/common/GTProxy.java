@@ -1703,15 +1703,6 @@ public class GTProxy implements IFuelHandler {
                 if (aPrefix.skipActiveUnification()) {
                     GTOreDictUnificator.addToBlacklist(aEvent.Ore);
                 }
-                if (aPrefix != aPrefix.mPrefixInto) {
-                    String tNewName = aEvent.Name.replaceFirst(aPrefix.toString(), aPrefix.mPrefixInto.toString());
-                    if (!GTOreDictUnificator.isRegisteringOres()) {
-                        GTLog.ore.println(
-                            tModToName + " uses a depricated Prefix, and is getting re-registered as " + tNewName);
-                    }
-                    GTOreDictUnificator.registerOre(tNewName, aEvent.Ore);
-                    return;
-                }
                 tName = aEvent.Name.replaceFirst(aPrefix.toString(), "");
                 if (!tName.isEmpty()) {
                     char firstChar = tName.charAt(0);
