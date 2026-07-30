@@ -24,7 +24,7 @@ import com.ruling_0.materiallib.api.TextureSet;
 /// family allowed to declare a property: family property lookup takes the first family in `modid:name` order,
 /// and `gregtech:All` sorts ahead of every other, so a second property-carrying family would silently win or
 /// lose by name.
-public class Materials2Families {
+public class Families {
 
     // spotless:off
     public static Family all;
@@ -147,5 +147,5 @@ public class Materials2Families {
             .build();
     }
 
-    private Materials2Families() {}
+    private Families() {}
 }
