@@ -31,7 +31,7 @@ import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2PipeProperties;
+import gregtech.api.enums.materials2.PipeProperties;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.NodeList;
 import gregtech.api.graphs.PowerNode;
@@ -78,7 +78,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     public int mTransferredAmperage = 0;
 
     /// The shape-scoped constructor: identity comes from the hosting [PipeShapeBlock], and material and
-    /// stats resolve from the host block's metadata and [Materials2PipeProperties] through [PipeStats].
+    /// stats resolve from the host block's metadata and [PipeProperties] through [PipeStats].
     public MTECable(int aID, String aName, PipeShapeBlock shape) {
         super(aID, aName, 0, false, shape, shape.getSizeIndex());
         prefixKey = shape.getPrefixKey();
@@ -702,21 +702,21 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     public long getCableLoss() {
         Material material = shapeMaterial();
         if (material == null) return 0;
-        Integer baseLoss = material.getProperty(Materials2PipeProperties.BASE_CABLE_LOSS);
+        Integer baseLoss = material.getProperty(PipeProperties.BASE_CABLE_LOSS);
         int cableLoss = baseLoss == null ? 0 : baseLoss;
         if (mInsulated) return PipeStats.cableLoss(cableLoss);
-        return PipeStats.wireLoss(material.getProperty(Materials2PipeProperties.WIRE_LOSS), cableLoss);
+        return PipeStats.wireLoss(material.getProperty(PipeProperties.WIRE_LOSS), cableLoss);
     }
 
     public long getAmperage() {
         Material material = shapeMaterial();
-        Integer baseAmperage = material == null ? null : material.getProperty(Materials2PipeProperties.BASE_CABLE_AMP);
+        Integer baseAmperage = material == null ? null : material.getProperty(PipeProperties.BASE_CABLE_AMP);
         return baseAmperage == null ? 0 : PipeStats.wireAmperage(baseAmperage, getShapeSizeIndex());
     }
 
     public long getVoltage() {
         Material material = shapeMaterial();
-        Long voltage = material == null ? null : material.getProperty(Materials2PipeProperties.BASE_CABLE_VOLT);
+        Long voltage = material == null ? null : material.getProperty(PipeProperties.BASE_CABLE_VOLT);
         return voltage == null ? 0 : voltage;
     }
 
@@ -727,7 +727,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     public boolean canShock() {
         if (mInsulated) return false;
         Material material = shapeMaterial();
-        return material == null || !Boolean.TRUE.equals(material.getProperty(Materials2PipeProperties.NO_SHOCK));
+        return material == null || !Boolean.TRUE.equals(material.getProperty(PipeProperties.NO_SHOCK));
     }
 
     @Override

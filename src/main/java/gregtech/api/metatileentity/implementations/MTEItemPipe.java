@@ -29,7 +29,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials2.Materials2PipeProperties;
+import gregtech.api.enums.materials2.PipeProperties;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityItemPipe;
@@ -61,7 +61,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     private NBTTagList pendingInventory;
 
     /// The shape-scoped constructor: identity comes from the hosting [PipeShapeBlock], and material, stats,
-    /// and inventory size resolve from the host block's metadata and [Materials2PipeProperties] through
+    /// and inventory size resolve from the host block's metadata and [PipeProperties] through
     /// [PipeStats]. The inventory starts empty and is sized on the first material resolution.
     public MTEItemPipe(int aID, String aName, PipeShapeBlock shape) {
         super(aID, aName, 0, false, shape, shape.getSizeIndex());
@@ -100,7 +100,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     /// The huge-pipe slot count of the resolved material, or 0 while unresolved.
     private int hugeSlots() {
         Material material = shapeMaterial();
-        Integer slots = material == null ? null : material.getProperty(Materials2PipeProperties.BASE_ITEM_PIPE_SLOTS);
+        Integer slots = material == null ? null : material.getProperty(PipeProperties.BASE_ITEM_PIPE_SLOTS);
         return slots == null ? 0 : slots;
     }
 
@@ -108,7 +108,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     /// the world, and applying an inventory NBT list stashed before the material was resolvable.
     @Override
     protected void onShapeMaterialResolved(Material material) {
-        Integer baseSlots = material.getProperty(Materials2PipeProperties.BASE_ITEM_PIPE_SLOTS);
+        Integer baseSlots = material.getProperty(PipeProperties.BASE_ITEM_PIPE_SLOTS);
         int slots = baseSlots == null ? 0 : PipeStats.itemPipeSlots(baseSlots, getShapeSizeIndex());
         if (mInventory.length != slots) {
             ItemStack[] resized = new ItemStack[slots];

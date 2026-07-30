@@ -55,7 +55,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolModes;
 import gregtech.api.enums.materials2.PipeMaterials;
-import gregtech.api.enums.materials2.Materials2PipeProperties;
+import gregtech.api.enums.materials2.PipeProperties;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -125,7 +125,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     private final String mPrefixKey;
 
     /// The shape-scoped constructor: identity comes from the hosting [PipeShapeBlock], and material and
-    /// stats resolve from the host block's metadata and [Materials2PipeProperties] through [PipeStats].
+    /// stats resolve from the host block's metadata and [PipeProperties] through [PipeStats].
     public MTEFluidPipe(int aID, String aName, PipeShapeBlock shape) {
         super(aID, aName, 0, false, shape, shape.getSizeIndex());
         mPrefixKey = shape.getPrefixKey();
@@ -901,7 +901,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         if (material == Materials.Redstone) {
             return bespokeCapacity(PipeMaterials.HIGH_PRESSURE_FLUID_PIPE_CAPACITY);
         }
-        Integer base = material.getProperty(Materials2PipeProperties.BASE_PIPE_FLOW);
+        Integer base = material.getProperty(PipeProperties.BASE_PIPE_FLOW);
         if (base == null) return 0;
         return switch (mPipeAmount) {
             case PipeStats.QUADRUPLE_PIPE_AMOUNT -> PipeStats.quadrupleFluidPipeCapacity(base);
@@ -920,13 +920,13 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     public int getHeatResistance() {
         Material material = shapeMaterial();
         if (material == null) return 0;
-        Integer heatResistance = material.getProperty(Materials2PipeProperties.PIPE_HEAT_RESISTANCE);
+        Integer heatResistance = material.getProperty(PipeProperties.PIPE_HEAT_RESISTANCE);
         return heatResistance == null ? 0 : heatResistance;
     }
 
     public boolean isGasProof() {
         Material material = shapeMaterial();
-        return material == null || material.getProperty(Materials2PipeProperties.PIPE_GAS_PROOF);
+        return material == null || material.getProperty(PipeProperties.PIPE_GAS_PROOF);
     }
 
     @Override

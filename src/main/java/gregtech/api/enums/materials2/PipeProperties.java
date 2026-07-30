@@ -5,7 +5,7 @@ import com.ruling_0.materiallib.api.Property;
 /// Typed property keys for the base stats of the wire/cable, fluid pipe, and item pipe families. Each key
 /// holds a material's base value; per-size values derive from it through the transforms in
 /// [gregtech.api.material.PipeStats]. The values themselves are set by [PipeMaterials].
-public class Materials2PipeProperties {
+public class PipeProperties {
 
     /// Base amperage of the 1x wire and cable; thicker sizes multiply it.
     public static final Property<Integer> BASE_CABLE_AMP = Property.of("gregtech", "baseCableAmp");
@@ -31,5 +31,5 @@ public class Materials2PipeProperties {
     /// The material generates no tiny or small item pipes.
     public static final Property<Boolean> NO_SMALL_ITEM_PIPES = Property.of("gregtech", "noSmallItemPipes");
 
-    private Materials2PipeProperties() {}
+    private PipeProperties() {}
 }

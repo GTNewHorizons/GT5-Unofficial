@@ -9,13 +9,13 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.TierEU;
 
 /// The pipe-family stat tables: one declared row per material carrying wires/cables, fluid pipes, or item
-/// pipes, applied as [Materials2PipeProperties] values through [MaterialLibAPI#editMaterial]. The values
+/// pipes, applied as [PipeProperties] values through [MaterialLibAPI#editMaterial]. The values
 /// reproduce the literals the retired per-material pipe MTE registrations received (GregTech's own pipe
 /// loader, [gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits], and goodgenerator's
 /// [goodgenerator.util.CrackRecipeAdder]).
 ///
 /// The wooden and High Pressure fluid pipes exist in three sizes whose capacities follow no base-value
-/// formula, so they carry per-size capacity constants here instead of a [Materials2PipeProperties#BASE_PIPE_FLOW]
+/// formula, so they carry per-size capacity constants here instead of a [PipeProperties#BASE_PIPE_FLOW]
 /// value.
 ///
 /// Rows reference [Materials] and [MaterialFacades] fields, so [#init] must run after those are
@@ -127,29 +127,29 @@ public class PipeMaterials {
         // spotless:on
 
         for (WireCable row : wireCables) {
-            edit(row.material()).setProperty(Materials2PipeProperties.BASE_CABLE_AMP, row.amperage())
-                .setProperty(Materials2PipeProperties.BASE_CABLE_VOLT, row.voltage())
-                .setProperty(Materials2PipeProperties.BASE_CABLE_LOSS, row.cableLoss())
+            edit(row.material()).setProperty(PipeProperties.BASE_CABLE_AMP, row.amperage())
+                .setProperty(PipeProperties.BASE_CABLE_VOLT, row.voltage())
+                .setProperty(PipeProperties.BASE_CABLE_LOSS, row.cableLoss())
                 .generateShapes(wireShapes())
                 .generateShapes(cableShapes());
         }
         // These wires break the twice-cable-loss default: the two redstone alloys pair lossless cables with
         // lossy wires, and CrackRecipeAdder.registerWire derives cable loss as a quarter of wire loss.
-        edit(Materials.RedAlloy).setProperty(Materials2PipeProperties.WIRE_LOSS, 1);
-        edit(Materials.RedstoneAlloy).setProperty(Materials2PipeProperties.WIRE_LOSS, 2);
-        edit(Materials.Signalium).setProperty(Materials2PipeProperties.WIRE_LOSS, 32);
-        edit(Materials.Lumiium).setProperty(Materials2PipeProperties.WIRE_LOSS, 64);
+        edit(Materials.RedAlloy).setProperty(PipeProperties.WIRE_LOSS, 1);
+        edit(Materials.RedstoneAlloy).setProperty(PipeProperties.WIRE_LOSS, 2);
+        edit(Materials.Signalium).setProperty(PipeProperties.WIRE_LOSS, 32);
+        edit(Materials.Lumiium).setProperty(PipeProperties.WIRE_LOSS, 64);
 
         for (WireOnly[] rows : new WireOnly[][] { wireOnly, superconductorBases, superconductorMarkers }) {
             for (WireOnly row : rows) {
                 MaterialEdit edit = edit(row.material())
-                    .setProperty(Materials2PipeProperties.BASE_CABLE_AMP, row.amperage())
-                    .setProperty(Materials2PipeProperties.BASE_CABLE_VOLT, row.voltage())
-                    .setProperty(Materials2PipeProperties.WIRE_LOSS, row.wireLoss())
-                    .setProperty(Materials2PipeProperties.NO_CABLE, true)
+                    .setProperty(PipeProperties.BASE_CABLE_AMP, row.amperage())
+                    .setProperty(PipeProperties.BASE_CABLE_VOLT, row.voltage())
+                    .setProperty(PipeProperties.WIRE_LOSS, row.wireLoss())
+                    .setProperty(PipeProperties.NO_CABLE, true)
                     .generateShapes(wireShapes());
                 if (!row.shock()) {
-                    edit.setProperty(Materials2PipeProperties.NO_SHOCK, true);
+                    edit.setProperty(PipeProperties.NO_SHOCK, true);
                 }
             }
         }
@@ -217,8 +217,8 @@ public class PipeMaterials {
 
         for (FluidPipe row : fluidPipes) {
             MaterialEdit edit = edit(row.material())
-                .setProperty(Materials2PipeProperties.BASE_PIPE_FLOW, row.baseCapacity())
-                .setProperty(Materials2PipeProperties.PIPE_HEAT_RESISTANCE, row.heatResistance());
+                .setProperty(PipeProperties.BASE_PIPE_FLOW, row.baseCapacity())
+                .setProperty(PipeProperties.PIPE_HEAT_RESISTANCE, row.heatResistance());
             // These two rows exist only with their parent mod (Void pipes with Thaumcraft, DarkSteel with
             // EnderIO); the properties themselves stay unconditional.
             if (row.material() == Materials.Void && !Mods.Thaumcraft.isModLoaded()) continue;
@@ -234,15 +234,15 @@ public class PipeMaterials {
         }
 
         edit(Materials.Wood)
-            .setProperty(Materials2PipeProperties.PIPE_HEAT_RESISTANCE, WOOD_FLUID_PIPE_HEAT_RESISTANCE)
-            .setProperty(Materials2PipeProperties.PIPE_GAS_PROOF, false)
+            .setProperty(PipeProperties.PIPE_HEAT_RESISTANCE, WOOD_FLUID_PIPE_HEAT_RESISTANCE)
+            .setProperty(PipeProperties.PIPE_GAS_PROOF, false)
             .generateShapes(
                 Materials2PipeShapes.pipeSmall,
                 Materials2PipeShapes.pipeMedium,
                 Materials2PipeShapes.pipeLarge);
-        edit(Materials.Clay).setProperty(Materials2PipeProperties.PIPE_GAS_PROOF, false);
+        edit(Materials.Clay).setProperty(PipeProperties.PIPE_GAS_PROOF, false);
         edit(Materials.Redstone)
-            .setProperty(Materials2PipeProperties.PIPE_HEAT_RESISTANCE, HIGH_PRESSURE_FLUID_PIPE_HEAT_RESISTANCE)
+            .setProperty(PipeProperties.PIPE_HEAT_RESISTANCE, HIGH_PRESSURE_FLUID_PIPE_HEAT_RESISTANCE)
             .generateShapes(
                 Materials2PipeShapes.pipeSmall,
                 Materials2PipeShapes.pipeMedium,
@@ -270,7 +270,7 @@ public class PipeMaterials {
 
         for (ItemPipe row : itemPipes) {
             MaterialEdit edit = edit(row.material())
-                .setProperty(Materials2PipeProperties.BASE_ITEM_PIPE_SLOTS, row.hugeSlots())
+                .setProperty(PipeProperties.BASE_ITEM_PIPE_SLOTS, row.hugeSlots())
                 .generateShapes(
                     Materials2PipeShapes.itemPipeMedium,
                     Materials2PipeShapes.itemPipeLarge,
@@ -285,7 +285,7 @@ public class PipeMaterials {
                     Materials2PipeShapes.itemPipeRestrictiveTiny,
                     Materials2PipeShapes.itemPipeRestrictiveSmall);
             } else {
-                edit.setProperty(Materials2PipeProperties.NO_SMALL_ITEM_PIPES, true);
+                edit.setProperty(PipeProperties.NO_SMALL_ITEM_PIPES, true);
             }
         }
     }
