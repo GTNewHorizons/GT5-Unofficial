@@ -9,13 +9,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialAtomics;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLog;
@@ -53,6 +53,11 @@ public final class LoaderMixerRecipes {
                         + " no longer declares HAS_MIXER_RECIPE");
                 continue;
             }
+            if (!material.hasShape(Materials2Shapes.dust)) {
+                GTLog.err
+                    .println("LoaderMixerRecipes: declared carrier " + material.getName() + " no longer carries dust");
+                continue;
+            }
             registerMixer(material);
         }
     }
@@ -65,8 +70,7 @@ public final class LoaderMixerRecipes {
         }
         long totalAmount = 0;
         for (MaterialRefStack entry : composition) totalAmount += entry.amount();
-        ItemStack output = MaterialParts.stack(Materials2Shapes.dust, material, totalAmount);
-        if (output == null) return;
+        ItemStack output = MaterialLibAPI.getStack(material, Materials2Shapes.dust, (int) totalAmount);
 
         List<ItemStack> itemInputs = new ArrayList<>();
         FluidStack fluidInput = null;

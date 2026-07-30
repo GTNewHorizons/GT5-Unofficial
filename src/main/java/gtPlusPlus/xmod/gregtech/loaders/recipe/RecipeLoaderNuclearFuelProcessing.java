@@ -19,10 +19,10 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -72,11 +72,11 @@ public class RecipeLoaderNuclearFuelProcessing {
 
         // Reactor Blanket step 1 - Fluorination
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.cell(Materials2Materials.Fluorine, 6))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Fluorine, Materials2CellShapes.cell, 6))
             .circuit(17)
             .itemOutputs(
                 ItemList.Cell_Empty.get(5),
-                MaterialParts.cell(Materials2Materials.LithiumFluoride, 1),
+                MaterialLibAPI.getStack(Materials2Materials.LithiumFluoride, Materials2CellShapes.cellMolten, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Protactinium, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Protactinium, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Protactinium, Materials2Shapes.dust, 1),
@@ -90,12 +90,12 @@ public class RecipeLoaderNuclearFuelProcessing {
             .eut(TierEU.RECIPE_IV)
             .addTo(reactorProcessingUnitRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.cell(Materials2Materials.Fluorine, 6))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Fluorine, Materials2CellShapes.cell, 6))
             .circuit(18)
             .itemOutputs(
                 ItemList.Cell_Empty.get(4),
-                MaterialParts.cell(Materials2Materials.LithiumFluoride, 1),
-                MaterialParts.cell(Materials2Materials.BerylliumFluoride, 1),
+                MaterialLibAPI.getStack(Materials2Materials.LithiumFluoride, Materials2CellShapes.cellMolten, 1),
+                MaterialLibAPI.getStack(Materials2Materials.BerylliumFluoride, Materials2CellShapes.cellMolten, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Protactinium, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Protactinium, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Protactinium, Materials2Shapes.dust, 1),
@@ -111,11 +111,11 @@ public class RecipeLoaderNuclearFuelProcessing {
             .addTo(reactorProcessingUnitRecipes);
         // Reactor Blanket step 1 - Fluorination
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.cell(Materials2Materials.Fluorine, 6))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Fluorine, Materials2CellShapes.cell, 6))
             .circuit(7)
             .itemOutputs(
                 ItemList.Cell_Empty.get(4),
-                MaterialParts.cell(Materials2Materials.LithiumFluoride, 2),
+                MaterialLibAPI.getStack(Materials2Materials.LithiumFluoride, Materials2CellShapes.cellMolten, 2),
                 MaterialLibAPI.getStack(Materials2Materials.Protactinium, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Protactinium, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Protactinium, Materials2Shapes.dust, 1),
@@ -129,12 +129,12 @@ public class RecipeLoaderNuclearFuelProcessing {
             .eut(TierEU.RECIPE_IV)
             .addTo(reactorProcessingUnitRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.cell(Materials2Materials.Fluorine, 6))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Fluorine, Materials2CellShapes.cell, 6))
             .circuit(8)
             .itemOutputs(
                 ItemList.Cell_Empty.get(2),
-                MaterialParts.cell(Materials2Materials.LithiumFluoride, 2),
-                MaterialParts.cell(Materials2Materials.BerylliumFluoride, 2),
+                MaterialLibAPI.getStack(Materials2Materials.LithiumFluoride, Materials2CellShapes.cellMolten, 2),
+                MaterialLibAPI.getStack(Materials2Materials.BerylliumFluoride, Materials2CellShapes.cellMolten, 2),
                 MaterialLibAPI.getStack(Materials2Materials.Protactinium, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Protactinium, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Protactinium, Materials2Shapes.dust, 1),
@@ -150,11 +150,11 @@ public class RecipeLoaderNuclearFuelProcessing {
 
         // Reactor Blanket step 2 - Sorption + Cold Trap
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.cell(Materials2Materials.SodiumFluoride, 4))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.SodiumFluoride, Materials2CellShapes.cellMolten, 4))
             .circuit(8)
             .itemOutputs(
-                MaterialParts.cell(Materials2Materials.Fluorine, 2),
-                MaterialParts.cell(Materials2Materials.UraniumHexafluoride, 2),
+                MaterialLibAPI.getStack(Materials2Materials.Fluorine, Materials2CellShapes.cell, 2),
+                MaterialLibAPI.getStack(Materials2Materials.UraniumHexafluoride, Materials2CellShapes.cellMolten, 2),
                 MaterialLibAPI.getStack(Materials2Materials.Uranium233, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Uranium233, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Uranium233, Materials2Shapes.dust, 1))
@@ -168,9 +168,13 @@ public class RecipeLoaderNuclearFuelProcessing {
         // LiBeF2UF4FP + F2 = LiFBeF2 & UF6F2FP
         // Reactor Core step 1 - Process Burnt Salt
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.cell(Materials2Materials.Fluorine, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Fluorine, Materials2CellShapes.cell, 1))
             .circuit(1)
-            .itemOutputs(MaterialParts.cell(Materials2Materials.PhosphorousUraniumHexafluoridePUF6, 1))
+            .itemOutputs(
+                MaterialLibAPI.getStack(
+                    Materials2Materials.PhosphorousUraniumHexafluoridePUF6,
+                    Materials2CellShapes.cellMolten,
+                    1))
             .outputChances(10000)
             .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.UraniumDepletedMoltenSaltUSalt, 1000))
             .fluidOutputs(new FluidStack(GTPPFluids.ImpureMoltenSaltBase, 1000))
@@ -180,11 +184,14 @@ public class RecipeLoaderNuclearFuelProcessing {
         // LiBeF2UF4FP + F2 = LiFBeF2 & UF6F2FP
         // Reactor Core step 1 - Process Burnt Salt
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.cell(Materials2Materials.Fluorine, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Fluorine, Materials2CellShapes.cell, 3))
             .circuit(1)
             .itemOutputs(
                 ItemList.Cell_Empty.get(1),
-                MaterialParts.cell(Materials2Materials.PhosphorousUraniumHexafluoridePUF6, 2))
+                MaterialLibAPI.getStack(
+                    Materials2Materials.PhosphorousUraniumHexafluoridePUF6,
+                    Materials2CellShapes.cellMolten,
+                    2))
             .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.HeliumSpargedUSalt, 1000))
             .fluidOutputs(new FluidStack(GTPPFluids.ImpureMoltenSaltBase, 2000))
             .duration(60 * MINUTES)
@@ -193,11 +200,11 @@ public class RecipeLoaderNuclearFuelProcessing {
 
         // Reactor Core step 2A - Sorption + Cold Trap
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.cell(Materials2Materials.SodiumFluoride, 3))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.SodiumFluoride, Materials2CellShapes.cellMolten, 3))
             .circuit(8)
             .itemOutputs(
-                MaterialParts.cell(Materials2Materials.Fluorine, 1),
-                MaterialParts.cell(Materials2Materials.UraniumHexafluoride, 2),
+                MaterialLibAPI.getStack(Materials2Materials.Fluorine, Materials2CellShapes.cell, 1),
+                MaterialLibAPI.getStack(Materials2Materials.UraniumHexafluoride, Materials2CellShapes.cellMolten, 2),
                 MaterialLibAPI.getStack(Materials2Materials.Phosphorus, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Phosphorus, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.Phosphorus, Materials2Shapes.dust, 1),
@@ -223,8 +230,8 @@ public class RecipeLoaderNuclearFuelProcessing {
         // UF6 + LiFBeF2 + H2 -> LiFBeF2UF4 + HF
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.cell(Materials2Materials.UraniumHexafluoride, 1),
-                MaterialParts.cell(Materials2Materials.StableMoltenSaltBase, 1))
+                MaterialLibAPI.getStack(Materials2Materials.UraniumHexafluoride, Materials2CellShapes.cellMolten, 1),
+                MaterialLibAPI.getStack(Materials2Materials.StableMoltenSaltBase, Materials2CellShapes.cellMolten, 1))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.fluidGas, (int) (2_000)))

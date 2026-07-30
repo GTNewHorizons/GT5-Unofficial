@@ -31,7 +31,6 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.util.GTOreDictUnificator;
@@ -1037,10 +1036,10 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Churitsu, Materials2Shapes.dust, (int) (27)))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.TinAlloy, Materials2Shapes.dust, (int) (8)),
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Ruridit, 7),
+                MaterialLibAPI.getStack(Materials2Materials.Ruridit, Materials2Shapes.dust, 7),
                 MaterialLibAPI.getStack(Materials2Materials.TriniumNaquadahAlloy, Materials2Shapes.dust, 4),
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.AdamantiumAlloy, 4),
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Californium, 3),
+                MaterialLibAPI.getStack(Materials2Materials.AdamantiumAlloy, Materials2Shapes.dust, 4),
+                MaterialLibAPI.getStack(Materials2Materials.Californium, Materials2Shapes.dust, 3),
                 MaterialLibAPI.getStack(Materials2Materials.Quantum, Materials2Shapes.dust, 1))
             .duration(60 * SECONDS)
             .eut(122880)

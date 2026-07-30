@@ -45,15 +45,14 @@ public class BlockMetal extends BlockStorage {
         for (int i = 0; i < aMats.length; i++) {
             if (MaterialUtils.oldSubId(aMats[i]) > 0 && Materials2ParentMods.hasParentMod(aMats[i])) {
                 Material material = aMats[i];
-                boolean cutOver = MaterialParts.isCutOver(aPrefix, material);
-                ItemStack canonicalStack = cutOver ? MaterialParts.stack(aPrefix, material, 1)
-                    : new ItemStack(this, 1, i);
+                ItemStack cutover = MaterialParts.stack(aPrefix, material, 1);
+                ItemStack canonicalStack = cutover != null ? cutover : new ItemStack(this, 1, i);
                 if (aPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(aPrefix, material, canonicalStack);
                 } else {
                     GTOreDictUnificator.registerOre(aPrefix, material, canonicalStack);
                 }
-                if (cutOver && mNEIisLoaded) {
+                if (cutover != null && mNEIisLoaded) {
                     codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i));
                 }
             }

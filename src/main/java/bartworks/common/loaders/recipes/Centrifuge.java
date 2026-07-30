@@ -19,7 +19,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTRecipeBuilder;
 import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
 
@@ -33,9 +32,9 @@ public class Centrifuge implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (1)),
                 MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.dust, (int) (1)),
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Thorium232, 1),
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Thorium232, 1),
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.Thorium232, 1))
+                MaterialLibAPI.getStack(Materials2Materials.Thorium232, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials2Materials.Thorium232, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials2Materials.Thorium232, Materials2Shapes.dust, 1))
             .outputChances(800, 375, 22, 22, 5)
             .duration(8 * MINUTES + 20 * SECONDS)
             .eut(TierEU.RECIPE_EV)

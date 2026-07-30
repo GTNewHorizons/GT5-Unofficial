@@ -46,7 +46,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -73,8 +72,8 @@ public class CircuitPartsItem extends Item {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.MagnetoResonatic, 1),
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.CircuitCompoundMK3, 4))
+                MaterialLibAPI.getStack(Materials2Materials.MagnetoResonatic, Materials2Shapes.dust, 1),
+                MaterialLibAPI.getStack(Materials2Materials.CircuitCompoundMK3, Materials2Shapes.dust, 4))
             .itemOutputs(ItemList.RawImprintBoard.get(1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)

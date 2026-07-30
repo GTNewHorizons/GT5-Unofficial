@@ -111,6 +111,11 @@ public class GregtechSimpleWasher {
                 .getStackForm(1L));
     }
 
+    /// Washes each impure and purified dust back to its clean dust, across the three material domains the
+    /// legacy loop covered: the gregtech-named materials through the ore dictionary, the werkstoff part set
+    /// through [#werkstoffStack], and the gtPlusPlus materials through their MaterialLib shapes. The gtpp loop
+    /// tests the ore shapes itself because [GTMaterialProperties#GTPP_STATE] marks a gtPlusPlus-family
+    /// material, not an ore material -- most of them carry no dust at all.
     private static boolean generateDirtyDustRecipes() {
         int mRecipeCount = 0;
         // Generate Recipe Map for the Dust Washer.
@@ -154,11 +159,16 @@ public class GregtechSimpleWasher {
             if (ml.getProperty(GTMaterialProperties.GTPP_STATE) == null) {
                 continue;
             }
-            dustClean = MaterialParts.stack(Materials2Shapes.dust, ml, 1L);
-            dustDirty = MaterialParts.stack(Materials2Shapes.dustImpure, ml, 1L);
-            dustPure = MaterialParts.stack(Materials2Shapes.dustPure, ml, 1L);
-            addSimpleWashRecipe(dustDirty, dustClean);
-            addSimpleWashRecipe(dustPure, dustClean);
+            if (!ml.hasShape(Materials2Shapes.dust)) {
+                continue;
+            }
+            dustClean = MaterialLibAPI.getStack(ml, Materials2Shapes.dust, 1);
+            if (ml.hasShape(Materials2Shapes.dustImpure)) {
+                addSimpleWashRecipe(MaterialLibAPI.getStack(ml, Materials2Shapes.dustImpure, 1), dustClean);
+            }
+            if (ml.hasShape(Materials2Shapes.dustPure)) {
+                addSimpleWashRecipe(MaterialLibAPI.getStack(ml, Materials2Shapes.dustPure, 1), dustClean);
+            }
         }
 
         return simpleWasherRecipes.getAllRecipes()
@@ -173,6 +183,8 @@ public class GregtechSimpleWasher {
             : null;
     }
 
+    /// Washes each crushed ore to its purified form, across the same three material domains
+    /// [#generateDirtyDustRecipes] covers and with the same gtpp shape test.
     private static boolean generateDirtyCrushedRecipes() {
         int mRecipeCount = simpleWasherRecipes.getAllRecipes()
             .size();
@@ -204,9 +216,12 @@ public class GregtechSimpleWasher {
             if (ml.getProperty(GTMaterialProperties.GTPP_STATE) == null) {
                 continue;
             }
-            crushedClean = MaterialParts.stack(Materials2Shapes.crushedPurified, ml, 1L);
-            crushedDirty = MaterialParts.stack(Materials2Shapes.crushed, ml, 1L);
-            addSimpleWashRecipe(crushedDirty, crushedClean);
+            if (!ml.hasShape(Materials2Shapes.crushed) || !ml.hasShape(Materials2Shapes.crushedPurified)) {
+                continue;
+            }
+            addSimpleWashRecipe(
+                MaterialLibAPI.getStack(ml, Materials2Shapes.crushed, 1),
+                MaterialLibAPI.getStack(ml, Materials2Shapes.crushedPurified, 1));
         }
 
         return simpleWasherRecipes.getAllRecipes()

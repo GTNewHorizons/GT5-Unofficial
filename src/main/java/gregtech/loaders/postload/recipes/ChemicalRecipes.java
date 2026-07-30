@@ -37,7 +37,6 @@ import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
@@ -4744,7 +4743,7 @@ public class ChemicalRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Silicon, Materials2Shapes.dust, 2),
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.CalciumChloride, 3))
+                MaterialLibAPI.getStack(Materials2Materials.CalciumChloride, Materials2Shapes.dust, 3))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.HydrochloricAcidGT5U, Materials2FluidShapes.fluidLiquid, 2_000))
@@ -4761,7 +4760,7 @@ public class ChemicalRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.SiliconSolarGrade, Materials2Shapes.dust, 1),
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.ZincChloride, 6))
+                MaterialLibAPI.getStack(Materials2Materials.ZincChloride, Materials2Shapes.dust, 6))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.SiliconTetrachloride, Materials2FluidShapes.fluidLiquid, 1_000))
@@ -7753,7 +7752,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.CalciumChloride, 1),
+                MaterialLibAPI.getStack(Materials2Materials.CalciumChloride, Materials2Shapes.dust, 1),
                 MaterialLibAPI.getStack(Materials2Materials.pPhenylenediamine, Materials2Shapes.dust, 9),
                 MaterialLibAPI.getStack(Materials2Materials.TerephthaloylChloride, Materials2Shapes.dust, 9))
             .circuit(1)
@@ -7773,7 +7772,7 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.CalciumChloride, 7),
+                MaterialLibAPI.getStack(Materials2Materials.CalciumChloride, Materials2Shapes.dust, 7),
                 MaterialLibAPI.getStack(Materials2Materials.pPhenylenediamine, Materials2Shapes.dust, 63),
                 MaterialLibAPI.getStack(Materials2Materials.TerephthaloylChloride, Materials2Shapes.dust, 63))
             .circuit(9)
@@ -7896,7 +7895,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(
                 GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials2Materials.Magmatter, 1)),
                 MaterialLibAPI.getStack(Materials2Materials.Amalgatite, Materials2Shapes.gem, 3),
-                MaterialParts.stack(Materials2Shapes.gemFlawed, Materials2Materials.Bismutite, 64),
+                MaterialLibAPI.getStack(Materials2Materials.Bismutite, Materials2Shapes.gemFlawed, 64),
                 MaterialLibAPI.getStack(Materials2Materials.GarnetYellow, Materials2Shapes.gemFlawed, 64),
                 MaterialLibAPI.getStack(Materials2Materials.GreenSapphire, Materials2Shapes.gemFlawed, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Olivine, Materials2Shapes.gemFlawed, 64))

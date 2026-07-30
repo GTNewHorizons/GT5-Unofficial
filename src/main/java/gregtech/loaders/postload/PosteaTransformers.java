@@ -155,7 +155,8 @@ public class PosteaTransformers implements Runnable {
 
     private static ItemStack resolveGtppOreCutoverStack(GtppOreCutoverTable.Entry entry) {
         Material ml = MaterialLibAPI.getMaterial("gregtech", entry.unlocalizedName());
-        return MaterialParts.stack(Materials2OreShapes.ore, ml, 1);
+        if (ml == null || !ml.hasShape(Materials2OreShapes.ore)) return null;
+        return MaterialLibAPI.getStack(ml, Materials2OreShapes.ore, 1);
     }
 
     /// Migrates saved placed blocks and inventory stacks of a gtPlusPlus per-material frame block
@@ -166,13 +167,13 @@ public class PosteaTransformers implements Runnable {
     /// [Materials2PipeMaterials#gtppFrameMaterials]'s materials gets its own registration instead of sharing
     /// one metadata-keyed handler. `addSimpleReplacement`'s block+meta overload registers a matching item
     /// replacement automatically, so no separate item-side call is needed. A material whose frame shape did
-    /// not generate (`MaterialParts.stack` returns null) is left on its legacy slot.
+    /// not generate is left on its legacy slot.
     private static void registerGtppFrameCutoverTransformers() {
         Material[] materials = Materials2PipeMaterials.gtppFrameMaterials();
         int count = 0;
         for (Material material : materials) {
-            ItemStack cutover = MaterialParts.stack(Materials2PipeShapes.frameGt, material, 1);
-            if (cutover == null) continue;
+            if (!material.hasShape(Materials2PipeShapes.frameGt)) continue;
+            ItemStack cutover = MaterialLibAPI.getStack(material, Materials2PipeShapes.frameGt, 1);
             String legacyId = "miscutils:blockFrameGt" + material.getName();
             Block mlBlock = Block.getBlockFromItem(cutover.getItem());
             BlockReplacementManager.addSimpleReplacement(legacyId, 0, mlBlock, cutover.getItemDamage());
@@ -186,7 +187,7 @@ public class PosteaTransformers implements Runnable {
     /// resolved through [GtppItemCutoverTable]'s pinned (prefix, material, registry name) rows -- the
     /// gtPlusPlus counterpart of [#registerWerkstoffItemCutoverTransformers], differing only in that each row
     /// is its own registered item/block rather than a damage variant of a shared meta-item, so no damage
-    /// read/branch is needed. `cell` rows resolve through [MaterialParts#cellStack] instead of plain
+    /// read/branch is needed. `cell` rows resolve through [MaterialParts#cell] instead of plain
     /// [MaterialParts#stack], since a
     /// row's material may have claimed `cellMolten` rather than `cell` -- see that method's javadoc.
     /// `frameGt` is out of the table and migrates separately. `block` rows additionally get a
@@ -232,7 +233,7 @@ public class PosteaTransformers implements Runnable {
     /// the oredict `cell<Name>` slot before gtpp's `Material` construction ever runs, so their dump never
     /// captured the miscutils registry name at all). [GtppItemCutoverTable] is generated purely from that dump
     /// and so cannot include a row for them; they are migrated by hand instead, to the same fallback
-    /// [MaterialParts#cellStack] every other gtpp cell resolves through.
+    /// [MaterialParts#cell] every other gtpp cell resolves through.
     private static void registerGtppCarryoverCellTransformers() {
         registerGtppCarryoverCellTransformer("Iodine");
         registerGtppCarryoverCellTransformer("ThoriumTetrafluoride");
@@ -356,8 +357,9 @@ public class PosteaTransformers implements Runnable {
     private static void registerStorageBlockCutoverTransformer(String originalId, Block legacyBlock) {
         BlockMetal metal = (BlockMetal) legacyBlock;
         for (int meta = 0; meta < metal.mMats.length; meta++) {
-            ItemStack cutover = MaterialParts.stack(Materials2BlockShapes.block, metal.mMats[meta], 1);
-            if (cutover == null) continue;
+            Material material = metal.mMats[meta];
+            if (material == null || !material.hasShape(Materials2BlockShapes.block)) continue;
+            ItemStack cutover = MaterialLibAPI.getStack(material, Materials2BlockShapes.block, 1);
             Block mlBlock = Block.getBlockFromItem(cutover.getItem());
             BlockReplacementManager.addSimpleReplacement(originalId, meta, mlBlock, cutover.getItemDamage());
         }
@@ -522,12 +524,12 @@ public class PosteaTransformers implements Runnable {
         // For players updating from dailies
         ItemStackReplacementManager.addSimpleReplacement(
             "dreamcraft:PotassiumHydroxideDust",
-            MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.PotassiumHydroxideGT5U, 1),
+            MaterialLibAPI.getStack(Materials2Materials.PotassiumHydroxideGT5U, Materials2Shapes.dust, 1),
             true);
         // For players updating directly from 2.8.4 or before
         ItemStackReplacementManager.addSimpleReplacement(
             "dreamcraft:item.PotassiumHydroxideDust",
-            MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.PotassiumHydroxideGT5U, 1),
+            MaterialLibAPI.getStack(Materials2Materials.PotassiumHydroxideGT5U, Materials2Shapes.dust, 1),
             true); // FML Warning suppression in coremod
     }
 

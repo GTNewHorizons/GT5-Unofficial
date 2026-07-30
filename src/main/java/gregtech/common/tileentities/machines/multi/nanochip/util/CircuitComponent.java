@@ -18,7 +18,6 @@ import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2PipeShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.items.CircuitComponentFakeItem;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTOreDictUnificator;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -41,7 +40,7 @@ public enum CircuitComponent {
     WireLumiium(
         2,
         "gt.circuitcomponent.wirelumiium",
-        () -> MaterialParts.stack(Materials2Shapes.wireFine, Materials2Materials.Lumiium, 1)),
+        () -> MaterialLibAPI.getStack(Materials2Materials.Lumiium, Materials2Shapes.wireFine, 1)),
     WireProtoHalkonite(
         3,
         "gt.circuitcomponent.wireprotohalkonite",
@@ -321,11 +320,11 @@ public enum CircuitComponent {
     FrameboxCelestialTungsten(
         1402,
         "gt.circuitcomponent.frame.celestialtungsten",
-        () -> MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.CelestialTungsten, 1)),
+        () -> MaterialLibAPI.getStack(Materials2Materials.CelestialTungsten, Materials2PipeShapes.frameGt, 1)),
     FrameboxHypogen(
         1403,
         "gt.circuitcomponent.frame.hypogen",
-        () -> MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.Hypogen, 1)),
+        () -> MaterialLibAPI.getStack(Materials2Materials.Hypogen, Materials2PipeShapes.frameGt, 1)),
     FrameboxMagMatter(
         1404,
         "gt.circuitcomponent.frame.magmatter",
@@ -354,7 +353,7 @@ public enum CircuitComponent {
     FoilShirabon(
         1603,
         "gt.circuitcomponent.sheet.shirabon",
-        () -> MaterialParts.stack(Materials2Shapes.foil, Materials2Materials.Shirabon, 1)),
+        () -> MaterialLibAPI.getStack(Materials2Materials.Shirabon, Materials2Shapes.foil, 1)),
     FoilStyreneRubber(
         1604,
         "gt.circuitcomponent.sheet.styrenebutadienerubber",
@@ -408,7 +407,7 @@ public enum CircuitComponent {
     PlateMetastableOganesson(
         1906,
         "gt.circuitcomponent.plate.metastableoganesson",
-        () -> MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.MetastableOganesson, 1)),
+        () -> MaterialLibAPI.getStack(Materials2Materials.MetastableOganesson, Materials2Shapes.plate, 1)),
     ScrewAstralTitanium(
         1907,
         "gt.circuitcomponent.screw.astraltitanium",

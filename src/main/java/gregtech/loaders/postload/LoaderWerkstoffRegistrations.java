@@ -46,7 +46,7 @@ public class LoaderWerkstoffRegistrations {
         }
         GTOreDictUnificator.registerOre(
             "craftingIndustrialDiamond",
-            MaterialParts.stack(Materials2Shapes.gemExquisite, Materials2Materials.CubicZirconia, 1));
+            MaterialLibAPI.getStack(Materials2Materials.CubicZirconia, Materials2Shapes.gemExquisite, 1));
         BWOreAdapter.INSTANCE.registerOredict();
     }
 
@@ -55,19 +55,21 @@ public class LoaderWerkstoffRegistrations {
     /// storage block joins the name-keyed block group. A merged declaration is excluded: gregtech's own part
     /// registration owns those materials' lenses and blocks.
     private static void registerAdditionalOreDict(Material material) {
-        if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)) {
-            ItemStack lens = MaterialParts.stack(Materials2Shapes.lens, material, 1);
+        if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
+            && material.hasShape(Materials2Shapes.lens)) {
             short[] rgba = MaterialUtils.rgba(material);
-            if (lens != null && rgba != null) {
-                OreDictionary
-                    .registerOre("craftingLens" + BWColorUtil.getDyeFromColor(rgba).mName.replace(" ", ""), lens);
+            if (rgba != null) {
+                OreDictionary.registerOre(
+                    "craftingLens" + BWColorUtil.getDyeFromColor(rgba).mName.replace(" ", ""),
+                    MaterialLibAPI.getStack(material, Materials2Shapes.lens, 1));
             }
         }
-        if (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
-            || Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.ingot)) {
-            ItemStack block = MaterialParts.stack(Materials2BlockShapes.block, material, 1);
-            if (block != null)
-                GTOreDictUnificator.registerOre(OrePrefixes.block + MaterialUtils.internalName(material), block);
+        if (material.hasShape(Materials2BlockShapes.block)
+            && (Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
+                || Materials2WerkstoffIndex.generatesPrefix(material, OrePrefixes.ingot))) {
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.block + MaterialUtils.internalName(material),
+                MaterialLibAPI.getStack(material, Materials2BlockShapes.block, 1));
         }
     }
 

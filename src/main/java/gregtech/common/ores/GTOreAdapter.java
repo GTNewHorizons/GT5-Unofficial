@@ -38,7 +38,6 @@ import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -434,7 +433,7 @@ public final class GTOreAdapter implements IOreAdapter {
     }
 
     /// The `ore` stack for a gtpp material at its sole [StoneType#Stone] variant. That shape carries per-stone
-    /// variants, so it cannot resolve through the plain [gregtech.api.material.MaterialParts#stack] overload.
+    /// variants, so it resolves through the variant overload of [MaterialLibAPI#getStack].
     private static @Nullable ItemStack gtppOreStack(Material material) {
         return MaterialLibAPI
             .getStack(material, Materials2OreShapes.ore, Materials2OreShapes.variantOf(StoneType.Stone.name()), 1);
@@ -660,11 +659,14 @@ public final class GTOreAdapter implements IOreAdapter {
     /// rich, so GT's `isRich() ? 2 : 1` is always 1 here, and its block modes resolve the same `Stone` variant
     /// [#gtppOreStack] does. They stay written out rather than delegated, so the coincidence is not mistaken
     /// for a shared rule.
+    ///
+    /// The `rawOre` lookups are unguarded: [#supportsGtpp] has already established `ore`, and the two shapes
+    /// are declared together throughout [gregtech.api.enums.materials2.Materials2Materials].
     private ArrayList<ItemStack> gtppBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo info, int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
 
         switch (oreDropMode) {
-            case Item -> drops.add(MaterialParts.stack(Materials2Shapes.rawOre, info.material, 1));
+            case Item -> drops.add(MaterialLibAPI.getStack(info.material, Materials2Shapes.rawOre, 1));
             case FortuneItem -> {
                 if (fortune > 0) {
                     if (fortune > 3) fortune = 3;
@@ -672,10 +674,10 @@ public final class GTOreAdapter implements IOreAdapter {
                     long amount = (long) random.nextInt(fortune) + 1;
 
                     for (int i = 0; i < amount; i++) {
-                        drops.add(MaterialParts.stack(Materials2Shapes.rawOre, info.material, 1));
+                        drops.add(MaterialLibAPI.getStack(info.material, Materials2Shapes.rawOre, 1));
                     }
                 } else {
-                    drops.add(MaterialParts.stack(Materials2Shapes.rawOre, info.material, 1));
+                    drops.add(MaterialLibAPI.getStack(info.material, Materials2Shapes.rawOre, 1));
                 }
             }
             case UnifiedBlock, PerDimBlock, Block -> drops.add(gtppOreStack(info.material));

@@ -63,7 +63,6 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -233,7 +232,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             lazy(
                 t -> ofBlock(
                     Block.getBlockFromItem(
-                        MaterialParts.stack(Materials2PipeShapes.frameGt, Materials2Materials.Pikyonium64B, 1)
+                        MaterialLibAPI.getStack(Materials2Materials.Pikyonium64B, Materials2PipeShapes.frameGt, 1)
                             .getItem()),
                     0))) // t1 frame, Pikyonium
         .addElement(

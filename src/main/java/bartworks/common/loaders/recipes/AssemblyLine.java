@@ -18,7 +18,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
@@ -60,7 +59,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_LuV.get(1L),
                 ItemList.Emitter_LuV.get(1L),
                 ItemList.Sensor_LuV.get(1L),
-                MaterialParts.stack(Materials2Shapes.plate, Materials2Materials.RhodiumPlatedPalladium, 8))
+                MaterialLibAPI.getStack(Materials2Materials.RhodiumPlatedPalladium, Materials2Shapes.plate, 8))
             .fluidInputs(MaterialUtils.legacyGtppFluid(Materials2Materials.Indalloy140, 10 * INGOTS))
             .itemOutputs(ItemRegistry.cal.copy())
             .eut(TierEU.RECIPE_ZPM)

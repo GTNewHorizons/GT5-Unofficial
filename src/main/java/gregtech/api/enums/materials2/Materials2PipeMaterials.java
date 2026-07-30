@@ -155,7 +155,9 @@ public class Materials2PipeMaterials {
         }
     }
 
-    private static Shape[] wireShapes() {
+    /// The wire sizes this table grants as one unit: a material carrying any of them carries all six. Public
+    /// so a consumer can state that unit as its own precondition instead of re-listing the sizes.
+    public static Shape[] wireShapes() {
         return new Shape[] { Materials2PipeShapes.wireGt01, Materials2PipeShapes.wireGt02,
             Materials2PipeShapes.wireGt04, Materials2PipeShapes.wireGt08, Materials2PipeShapes.wireGt12,
             Materials2PipeShapes.wireGt16 };

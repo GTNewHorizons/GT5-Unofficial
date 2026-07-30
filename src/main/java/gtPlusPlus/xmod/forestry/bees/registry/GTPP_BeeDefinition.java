@@ -20,6 +20,7 @@ import net.minecraftforge.common.BiomeDictionary;
 import org.apache.commons.lang3.text.WordUtils;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeType;
@@ -38,7 +39,6 @@ import forestry.core.genetics.alleles.EnumAllele.Lifespan;
 import forestry.core.genetics.alleles.EnumAllele.Tolerance;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.items.CombType;
@@ -130,8 +130,8 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
     }
 
     private static Block blockOf(Material material) {
-        ItemStack stack = MaterialParts.stack(Materials2BlockShapes.block, material, 1);
-        Block block = stack == null ? null : Block.getBlockFromItem(stack.getItem());
+        ItemStack stack = MaterialLibAPI.getStack(material, Materials2BlockShapes.block, 1);
+        Block block = Block.getBlockFromItem(stack.getItem());
         return block != null ? block : Blocks.lit_furnace;
     }
 

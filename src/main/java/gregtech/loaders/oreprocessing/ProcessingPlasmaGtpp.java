@@ -21,6 +21,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidNames;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.material.FluidNames;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -33,7 +34,7 @@ import gregtech.api.util.GTUtility;
 /// slot)
 /// rather than through [MaterialParts]'s state-specific accessors, which cannot resolve a gtPlusPlus-only material's
 /// fluid -- see [ProcessingAlloyBlastSmelter]'s class javadoc for the same resolution. The cooldown recipe's
-/// cell output resolves through [ProcessingOreMachine#cellStack] rather than a plain `cell` shape lookup: every
+/// cell output resolves through [MaterialParts#cell] rather than a plain `cell` shape lookup: every
 /// material here carries a molten fluid, so its single cell-eligible shape is `cellMolten`, not `cell`.
 ///
 /// [#run] is called from `CompatHandler#startLoadingGregAPIBasedRecipes` -- see
@@ -142,7 +143,7 @@ public class ProcessingPlasmaGtpp {
         if (materialPlasma(material, 1) == null) return;
 
         ItemStack plasmaCell = ProcessingDustGeneration.stackOf(OrePrefixes.cellPlasma, material, 1L);
-        ItemStack cell = ProcessingOreMachine.cellStack(material, 1L);
+        ItemStack cell = MaterialParts.cell(material, 1L);
         if (plasmaCell == null) return;
 
         ItemStack containerItem = GTUtility.getFluidForFilledItem(plasmaCell, true) == null

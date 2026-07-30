@@ -32,7 +32,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -62,9 +61,9 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
 
         // Manual Add due to werkstoff material system disconnected from autogeneration
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialParts.stack(Materials2Shapes.dust, Materials2Materials.LanthanumHexaboride, 4))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.LanthanumHexaboride, Materials2Shapes.dust, 4))
             .itemOutputs(
-                MaterialParts.stack(Materials2Shapes.gem, Materials2Materials.LanthanumHexaboride, 3),
+                MaterialLibAPI.getStack(Materials2Materials.LanthanumHexaboride, Materials2Shapes.gem, 3),
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials2Materials.DarkAsh, 12L))
             .duration(1 * TICKS)
             .eut(TierEU.RECIPE_UEV)
@@ -155,7 +154,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.Amalgatite, Materials2Shapes.gemChipped, (int) (3)),
                 GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials2Materials.FoolsRuby, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Amethyst, Materials2Shapes.gemFlawless, (int) (64)),
-                MaterialParts.stack(Materials2Shapes.gemFlawless, Materials2Materials.Fluorspar, 64),
+                MaterialLibAPI.getStack(Materials2Materials.Fluorspar, Materials2Shapes.gemFlawless, 64),
                 MaterialLibAPI.getStack(Materials2Materials.Tanzanite, Materials2Shapes.gemFlawless, (int) (64)))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(

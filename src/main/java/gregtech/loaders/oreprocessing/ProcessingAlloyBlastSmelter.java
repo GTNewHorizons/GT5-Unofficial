@@ -16,6 +16,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.materials2.Materials2GtppComposites;
@@ -23,7 +24,6 @@ import gregtech.api.enums.materials2.Materials2GtppComposites.Component;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
@@ -130,15 +130,14 @@ public class ProcessingAlloyBlastSmelter {
         Materials2Materials.TungstenTitaniumCarbide, Materials2Materials.WatertightSteel, Materials2Materials.Zeron100);
     // spotless:on
 
-    /// Registers [#SINGLE_DUST]'s recipes, each gated at runtime on `BLAST_REQUIRED`, the material's dust
-    /// resolving, and [#materialFluid] resolving its molten fluid -- any failing means gtpp itself never
-    /// registered this recipe either, so the material is silently skipped rather than excluded up front. Call
-    /// once, at the same point as [#generateComposites] and before [#generateFromExistingBlastFurnaceRecipes].
+    /// Registers [#SINGLE_DUST]'s recipes, each gated at runtime on `BLAST_REQUIRED` and on [#materialFluid]
+    /// resolving its molten fluid -- either failing means gtpp itself never registered this recipe either, so
+    /// the material is silently skipped rather than excluded up front. Call once, at the same point as
+    /// [#generateComposites] and before [#generateFromExistingBlastFurnaceRecipes].
     public static void generateSingleDust() {
         for (Material material : SINGLE_DUST) {
             if (!Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.BLAST_REQUIRED))) continue;
-            ItemStack dust = MaterialParts.stack(Materials2Shapes.dust, material, 1);
-            if (dust == null) continue;
+            ItemStack dust = MaterialLibAPI.getStack(material, Materials2Shapes.dust, 1);
             FluidStack fluidOutput = MaterialUtils.legacyGtppFluid(material, 144);
             if (fluidOutput == null) continue;
 
@@ -169,10 +168,11 @@ public class ProcessingAlloyBlastSmelter {
             int parts = component.parts();
             boolean solid = "SOLID".equals(
                 component.material()
-                    .getProperty(GTMaterialProperties.GTPP_STATE));
-            ItemStack dust = solid ? MaterialParts.stack(Materials2Shapes.dust, component.material(), parts) : null;
-            if (dust != null) {
-                items[i] = dust;
+                    .getProperty(GTMaterialProperties.GTPP_STATE))
+                && component.material()
+                    .hasShape(Materials2Shapes.dust);
+            if (solid) {
+                items[i] = MaterialLibAPI.getStack(component.material(), Materials2Shapes.dust, parts);
             } else if (parts > 0 && parts <= 100) {
                 componentFluid = MaterialUtils.legacyGtppFluid(component.material(), parts * 1000L);
             }
