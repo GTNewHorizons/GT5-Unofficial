@@ -141,7 +141,11 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
 
     public static int getBurntimeRatio(double fuelValueTicks, int divider) {
         // 10 in this formula is 10 seconds of burn time in steel boiler, or 16000 Burn Time value
-        return new BigDecimal(formatNumber(((fuelValueTicks/divider * Math.max(1, 1 + Math.log(fuelValueTicks / divider / 10) * 0.025))))).multiply(new BigDecimal(20)).intValue();
+        return new BigDecimal(
+            formatNumber(
+                ((fuelValueTicks / divider * Math.max(1, 1 + Math.log(fuelValueTicks / divider / 10) * 0.025)))))
+                    .multiply(new BigDecimal(20))
+                    .intValue();
     }
 
     private static double getBurntimeRatio(double fuelValue) {
@@ -153,13 +157,18 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
         boolean isHighTierAllowed) {
         BigDecimal ticksDecimal = new BigDecimal("20");
         // the initial non modified time is now stored in ticks
-        BigDecimal correctedBurnTime = new BigDecimal(new BigDecimal(formatNumber(getBurntimeRatio(baseBurnTime))).multiply(ticksDecimal).intValue());
+        BigDecimal correctedBurnTime = new BigDecimal(
+            new BigDecimal(formatNumber(getBurntimeRatio(baseBurnTime))).multiply(ticksDecimal)
+                .intValue());
 
-        BigDecimal bronzeBurnTime = correctedBurnTime.multiply(new BigDecimal("2")).divide(ticksDecimal);
+        BigDecimal bronzeBurnTime = correctedBurnTime.multiply(new BigDecimal("2"))
+            .divide(ticksDecimal);
         BigDecimal steelBurnTime = correctedBurnTime.divide(ticksDecimal);
-        BigDecimal titaniumBurnTime = correctedBurnTime.multiply(new BigDecimal("0.3")).divide(ticksDecimal);
+        BigDecimal titaniumBurnTime = correctedBurnTime.multiply(new BigDecimal("0.3"))
+            .divide(ticksDecimal);
         titaniumBurnTime = titaniumBurnTime.subtract(titaniumBurnTime.remainder(new BigDecimal("0.05")));
-        BigDecimal tungstensteelBurnTime = correctedBurnTime.multiply(new BigDecimal("0.15")).divide(ticksDecimal);
+        BigDecimal tungstensteelBurnTime = correctedBurnTime.multiply(new BigDecimal("0.15"))
+            .divide(ticksDecimal);
         tungstensteelBurnTime = tungstensteelBurnTime.subtract(tungstensteelBurnTime.remainder(new BigDecimal("0.05")));
 
         FluidStack foundFluid = GTUtility.getFluidForFilledItem(recipe.getRepresentativeInput(0), true);
