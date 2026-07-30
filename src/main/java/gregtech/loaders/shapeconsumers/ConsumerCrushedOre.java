@@ -11,13 +11,9 @@ public final class ConsumerCrushedOre {
     private ConsumerCrushedOre() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(
-            Shapes.crushedCentrifuged,
-            OrePrefixes.crushedCentrifuged,
-            () -> ProcessingCrushedOre.INSTANCE);
-        ShapeConsumerSupport.delegate(
-            Shapes.crushedPurified,
-            OrePrefixes.crushedPurified,
-            () -> ProcessingCrushedOre.INSTANCE);
+        ShapeConsumerSupport
+            .delegate(Shapes.crushedCentrifuged, OrePrefixes.crushedCentrifuged, () -> ProcessingCrushedOre.INSTANCE);
+        ShapeConsumerSupport
+            .delegate(Shapes.crushedPurified, OrePrefixes.crushedPurified, () -> ProcessingCrushedOre.INSTANCE);
     }
 }

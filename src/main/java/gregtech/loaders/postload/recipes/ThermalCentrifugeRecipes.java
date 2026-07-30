@@ -4,7 +4,6 @@ import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GTModHandler.getIC2Item;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -13,6 +12,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -22,9 +22,7 @@ public class ThermalCentrifugeRecipes implements Runnable {
     public void run() {
         GTValues.RA.stdBuilder()
             .itemInputs(getIC2Item("RTGPellets", 1))
-            .itemOutputs(
-                getIC2Item("Plutonium", 3),
-                MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (54)))
+            .itemOutputs(getIC2Item("Plutonium", 3), MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, (int) (54)))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(thermalCentrifugeRecipes);

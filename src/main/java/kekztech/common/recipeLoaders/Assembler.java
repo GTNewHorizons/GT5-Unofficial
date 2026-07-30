@@ -6,8 +6,6 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -18,6 +16,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -41,10 +41,8 @@ public class Assembler implements Runnable {
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.Polytetrafluoroethylene,
-                    FluidShapes.fluidMolten,
-                    (int) (1 * INGOTS)))
+                MaterialLibAPI
+                    .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -71,9 +69,7 @@ public class Assembler implements Runnable {
                 ItemList.FluidRegulator_LV.get(1))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Glass, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -117,9 +113,7 @@ public class Assembler implements Runnable {
                 ItemList.FluidRegulator_EV.get(1))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 4))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Epoxid, FluidShapes.fluidMolten, (int) (6 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Epoxid, FluidShapes.fluidMolten, (int) (6 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -134,9 +128,7 @@ public class Assembler implements Runnable {
                 ItemList.FluidRegulator_IV.get(1))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 5))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Epoxid, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Epoxid, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -269,9 +261,7 @@ public class Assembler implements Runnable {
                 ItemList.Electric_Motor_HV.get(1L))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.yszUnit, 1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (4_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (4_000)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -280,19 +270,14 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicPlate.getMetaID(), 8),
-                GTOreDictUnificator.get(
-                    OrePrefixes.frameGt,
-                    Materials.Gadolinium,
-                    new ItemStack(ErrorItem.getInstance(), 1),
-                    1),
+                GTOreDictUnificator
+                    .get(OrePrefixes.frameGt, Materials.Gadolinium, new ItemStack(ErrorItem.getInstance(), 1), 1),
                 GTOreDictUnificator
                     .get(OrePrefixes.rotor, Materials.Desh, new ItemStack(ErrorItem.getInstance(), 1), 1),
                 ItemList.Electric_Motor_IV.get(1L))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.gdcUnit, 1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (16_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, (int) (16_000)))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);

@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import gregtech.api.enums.materials2.FluidShapes;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -36,6 +35,7 @@ import goodgenerator.blocks.structures.AntimatterStructures;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -124,8 +124,8 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
 
         while (i < inputFluids.size()) {
             FluidStack inputFluid = inputFluids.get(i);
-            if (inputFluid.isFluidEqual(
-                MaterialLibAPI.getFluidStack(Materials.Antimatter, FluidShapes.fluidLiquid, 1))) {
+            if (inputFluid
+                .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Antimatter, FluidShapes.fluidLiquid, 1))) {
                 containedAntimatter += inputFluid.amount;
             } else {
                 catalystFluid = inputFluid.copy();
@@ -153,23 +153,15 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     public void createEU(long antimatter, FluidStack catalyst) {
         Float modifier = null;
 
-        if (catalyst.isFluidEqual(
-            MaterialLibAPI.getFluidStack(Materials.Copper, FluidShapes.fluidMolten, 1))) {
+        if (catalyst.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Copper, FluidShapes.fluidMolten, 1))) {
             modifier = 1.0F;
         } else if (catalyst.isFluidEqual(
-            MaterialLibAPI.getFluidStack(
-                Materials.SuperconductorUIVBase,
-                FluidShapes.fluidMolten,
-                (int) (1)))) {
-                    modifier = 1.02F;
-                } else
-            if (catalyst.isFluidEqual(
-                MaterialLibAPI.getFluidStack(
-                    Materials.SuperconductorUMVBase,
-                    FluidShapes.fluidMolten,
-                    (int) (1)))) {
-                        modifier = 1.03F;
-                    }
+            MaterialLibAPI.getFluidStack(Materials.SuperconductorUIVBase, FluidShapes.fluidMolten, (int) (1)))) {
+                modifier = 1.02F;
+            } else if (catalyst.isFluidEqual(
+                MaterialLibAPI.getFluidStack(Materials.SuperconductorUMVBase, FluidShapes.fluidMolten, (int) (1)))) {
+                    modifier = 1.03F;
+                }
         long catalystCount = catalyst.amount;
         long generatedEU = 0;
 

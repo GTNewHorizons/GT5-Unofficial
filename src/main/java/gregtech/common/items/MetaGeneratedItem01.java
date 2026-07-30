@@ -473,10 +473,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
-import gregtech.api.enums.materials2.MaterialFacades;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.item.EntityItem;
@@ -507,6 +503,10 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TieredItems;
+import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
+import gregtech.api.enums.materials2.MaterialFacades;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.MetaBaseItem;
@@ -3956,8 +3956,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .getItemDamage();
         if (isMaterialItem(aDamage) && (!aItemEntity.worldObj.isRemote)) {
             Material aMaterial = LegacyMaterialIDIndex.get(aDamage % 1000);
-            if ((aMaterial != null) && (aMaterial != Materials.Empty)
-                && (aMaterial != Materials.NULL)) {
+            if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials.NULL)) {
                 int tX = MathHelper.floor_double(aItemEntity.posX);
                 int tY = MathHelper.floor_double(aItemEntity.posY);
                 int tZ = MathHelper.floor_double(aItemEntity.posZ);
@@ -4040,8 +4039,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
      */
     public static ItemStack getCauldronWashingResult(final OrePrefixes oldPrefix, final Material oldMaterial,
         final int stackSize) {
-        if ((oldMaterial != null) && (oldMaterial != Materials.Empty)
-            && (oldMaterial != Materials.NULL)) {
+        if ((oldMaterial != null) && (oldMaterial != Materials.Empty) && (oldMaterial != Materials.NULL)) {
             switch (oldPrefix.getName()) {
                 case "dustImpure":
                 case "dustPure":
@@ -4082,8 +4080,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         int aDamage = aStack.getItemDamage();
         if (isMaterialItem(aDamage)) {
             Material aMaterial = LegacyMaterialIDIndex.get(aDamage % 1000);
-            if ((aMaterial != null) && (aMaterial != Materials.Empty)
-                && (aMaterial != Materials.NULL)) {
+            if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials.NULL)) {
                 OrePrefixes aPrefix = this.mGeneratedPrefixList[(aDamage / 1000)];
                 if ((aPrefix == OrePrefixes.dustImpure) || (aPrefix == OrePrefixes.dustPure)) {
                     aList.add(GTUtility.translate("GT5U.tooltip.purify.1"));
@@ -4164,8 +4161,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     private void oredictBlacklistEntries() {
-        GTOreDictUnificator
-            .addToBlacklist(new ItemStack(this, 1, 17000 + MaterialUtils.oldSubId(Materials.Wood)));
+        GTOreDictUnificator.addToBlacklist(new ItemStack(this, 1, 17000 + MaterialUtils.oldSubId(Materials.Wood)));
     }
 
     private void registerCovers() {
@@ -4681,50 +4677,48 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Hull_LV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { "Cf ", "Ph ", "Ps ", 'P', OrePrefixes.plate.ingredient(Materials.BatteryAlloy),
-                'C', OreDictNames.craftingWireTin });
+            new Object[] { "Cf ", "Ph ", "Ps ", 'P', OrePrefixes.plate.ingredient(Materials.BatteryAlloy), 'C',
+                OreDictNames.craftingWireTin });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Motor_LV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.ingredient(Materials.IronMagnetic),
-                'R', OrePrefixes.stick.ingredient(MaterialFacades.AnyIron), 'W',
+            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.ingredient(Materials.IronMagnetic), 'R',
+                OrePrefixes.stick.ingredient(MaterialFacades.AnyIron), 'W',
                 OrePrefixes.wireGt01.ingredient(MaterialFacades.AnyCopper), 'C',
                 OrePrefixes.cableGt01.ingredient(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Motor_LV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.ingredient(Materials.SteelMagnetic),
-                'R', OrePrefixes.stick.ingredient(Materials.Steel), 'W',
+            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.ingredient(Materials.SteelMagnetic), 'R',
+                OrePrefixes.stick.ingredient(Materials.Steel), 'W',
                 OrePrefixes.wireGt01.ingredient(MaterialFacades.AnyCopper), 'C',
                 OrePrefixes.cableGt01.ingredient(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Motor_MV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.ingredient(Materials.SteelMagnetic),
-                'R', OrePrefixes.stick.ingredient(Materials.Aluminium), 'W',
+            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.ingredient(Materials.SteelMagnetic), 'R',
+                OrePrefixes.stick.ingredient(Materials.Aluminium), 'W',
                 OrePrefixes.wireGt02.ingredient(Materials.Cupronickel), 'C',
                 OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Motor_HV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.ingredient(Materials.SteelMagnetic),
-                'R', OrePrefixes.stick.ingredient(Materials.StainlessSteel), 'W',
+            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.ingredient(Materials.SteelMagnetic), 'R',
+                OrePrefixes.stick.ingredient(Materials.StainlessSteel), 'W',
                 OrePrefixes.wireGt04.ingredient(Materials.Electrum), 'C',
                 OrePrefixes.cableGt02.ingredient(Materials.Silver) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Motor_EV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CWR", "WIW", "RWC", 'I',
-                OrePrefixes.stick.ingredient(Materials.NeodymiumMagnetic), 'R',
+            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.ingredient(Materials.NeodymiumMagnetic), 'R',
                 OrePrefixes.stick.ingredient(Materials.Titanium), 'W',
                 OrePrefixes.wireGt04.ingredient(Materials.BlackSteel), 'C',
                 OrePrefixes.cableGt02.ingredient(Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Motor_IV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CWR", "WIW", "RWC", 'I',
-                OrePrefixes.stick.ingredient(Materials.NeodymiumMagnetic), 'R',
+            new Object[] { "CWR", "WIW", "RWC", 'I', OrePrefixes.stick.ingredient(Materials.NeodymiumMagnetic), 'R',
                 OrePrefixes.stick.ingredient(Materials.TungstenSteel), 'W',
                 OrePrefixes.wireGt04.ingredient(Materials.Graphene), 'C',
                 OrePrefixes.cableGt02.ingredient(Materials.Tungsten) });
@@ -4733,9 +4727,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.Electric_Piston_LV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "PPP", "CSS", "CMG", 'P', OrePrefixes.plate.ingredient(Materials.Steel), 'S',
-                OrePrefixes.stick.ingredient(Materials.Steel), 'G',
-                OrePrefixes.gearGtSmall.ingredient(Materials.Steel), 'M', ItemList.Electric_Motor_LV, 'C',
-                OrePrefixes.cableGt01.ingredient(Materials.Tin) });
+                OrePrefixes.stick.ingredient(Materials.Steel), 'G', OrePrefixes.gearGtSmall.ingredient(Materials.Steel),
+                'M', ItemList.Electric_Motor_LV, 'C', OrePrefixes.cableGt01.ingredient(Materials.Tin) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Piston_MV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
@@ -4746,10 +4739,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Piston_HV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "PPP", "CSS", "CMG", 'P', OrePrefixes.plate.ingredient(Materials.StainlessSteel),
-                'S', OrePrefixes.stick.ingredient(Materials.StainlessSteel), 'G',
-                OrePrefixes.gearGtSmall.ingredient(Materials.StainlessSteel), 'M', ItemList.Electric_Motor_HV,
-                'C', OrePrefixes.cableGt01.ingredient(Materials.Gold) });
+            new Object[] { "PPP", "CSS", "CMG", 'P', OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'S',
+                OrePrefixes.stick.ingredient(Materials.StainlessSteel), 'G',
+                OrePrefixes.gearGtSmall.ingredient(Materials.StainlessSteel), 'M', ItemList.Electric_Motor_HV, 'C',
+                OrePrefixes.cableGt01.ingredient(Materials.Gold) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Piston_EV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
@@ -4760,18 +4753,17 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Piston_IV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "PPP", "CSS", "CMG", 'P', OrePrefixes.plate.ingredient(Materials.TungstenSteel),
-                'S', OrePrefixes.stick.ingredient(Materials.TungstenSteel), 'G',
-                OrePrefixes.gearGtSmall.ingredient(Materials.TungstenSteel), 'M', ItemList.Electric_Motor_IV,
-                'C', OrePrefixes.cableGt01.ingredient(Materials.Tungsten) });
+            new Object[] { "PPP", "CSS", "CMG", 'P', OrePrefixes.plate.ingredient(Materials.TungstenSteel), 'S',
+                OrePrefixes.stick.ingredient(Materials.TungstenSteel), 'G',
+                OrePrefixes.gearGtSmall.ingredient(Materials.TungstenSteel), 'M', ItemList.Electric_Motor_IV, 'C',
+                OrePrefixes.cableGt01.ingredient(Materials.Tungsten) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Pump_LV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SXO", "dPw", "OMW", 'M', ItemList.Electric_Motor_LV, 'O',
                 OrePrefixes.ring.ingredient(MaterialFacades.AnyRubber), 'X',
-                OrePrefixes.rotor.ingredient(Materials.Tin), 'S',
-                OrePrefixes.screw.ingredient(Materials.Tin), 'W',
+                OrePrefixes.rotor.ingredient(Materials.Tin), 'S', OrePrefixes.screw.ingredient(Materials.Tin), 'W',
                 OrePrefixes.cableGt01.ingredient(Materials.Tin), 'P',
                 OrePrefixes.pipeMedium.ingredient(Materials.Bronze) });
         GTModHandler.addCraftingRecipe(
@@ -4779,17 +4771,15 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SXO", "dPw", "OMW", 'M', ItemList.Electric_Motor_MV, 'O',
                 OrePrefixes.ring.ingredient(MaterialFacades.AnyRubber), 'X',
-                OrePrefixes.rotor.ingredient(Materials.Bronze), 'S',
-                OrePrefixes.screw.ingredient(Materials.Bronze), 'W',
-                OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper), 'P',
+                OrePrefixes.rotor.ingredient(Materials.Bronze), 'S', OrePrefixes.screw.ingredient(Materials.Bronze),
+                'W', OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper), 'P',
                 OrePrefixes.pipeMedium.ingredient(Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Electric_Pump_HV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "SXO", "dPw", "OMW", 'M', ItemList.Electric_Motor_HV, 'O',
                 OrePrefixes.ring.ingredient(MaterialFacades.AnyRubber), 'X',
-                OrePrefixes.rotor.ingredient(Materials.Steel), 'S',
-                OrePrefixes.screw.ingredient(Materials.Steel), 'W',
+                OrePrefixes.rotor.ingredient(Materials.Steel), 'S', OrePrefixes.screw.ingredient(Materials.Steel), 'W',
                 OrePrefixes.cableGt01.ingredient(Materials.Gold), 'P',
                 OrePrefixes.pipeMedium.ingredient(Materials.StainlessSteel) });
         GTModHandler.addCraftingRecipe(
@@ -4857,9 +4847,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         GTModHandler.addCraftingRecipe(
             ItemList.Robot_Arm_HV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.ingredient(Materials.StainlessSteel),
-                'M', ItemList.Electric_Motor_HV, 'P', ItemList.Electric_Piston_HV, 'E', Circuits.HV.getIngredient(),
-                'C', OrePrefixes.cableGt01.ingredient(Materials.Gold) });
+            new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.ingredient(Materials.StainlessSteel), 'M',
+                ItemList.Electric_Motor_HV, 'P', ItemList.Electric_Piston_HV, 'E', Circuits.HV.getIngredient(), 'C',
+                OrePrefixes.cableGt01.ingredient(Materials.Gold) });
         GTModHandler.addCraftingRecipe(
             ItemList.Robot_Arm_EV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
@@ -4869,9 +4859,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         GTModHandler.addCraftingRecipe(
             ItemList.Robot_Arm_IV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.ingredient(Materials.TungstenSteel),
-                'M', ItemList.Electric_Motor_IV, 'P', ItemList.Electric_Piston_IV, 'E', Circuits.IV.getIngredient(),
-                'C', OrePrefixes.cableGt01.ingredient(Materials.Tungsten) });
+            new Object[] { "CCC", "MSM", "PES", 'S', OrePrefixes.stick.ingredient(Materials.TungstenSteel), 'M',
+                ItemList.Electric_Motor_IV, 'P', ItemList.Electric_Piston_IV, 'E', Circuits.IV.getIngredient(), 'C',
+                OrePrefixes.cableGt01.ingredient(Materials.Tungsten) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Emitter_LV.get(1L),
@@ -4908,13 +4898,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.Sensor_LV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "P Q", "PS ", "CPP", 'Q', OrePrefixes.gem.ingredient(Materials.CertusQuartz), 'S',
-                OrePrefixes.stick.ingredient(Materials.Brass), 'P',
-                OrePrefixes.plate.ingredient(Materials.Steel), 'C', Circuits.LV.getIngredient() });
+                OrePrefixes.stick.ingredient(Materials.Brass), 'P', OrePrefixes.plate.ingredient(Materials.Steel), 'C',
+                Circuits.LV.getIngredient() });
         GTModHandler.addCraftingRecipe(
             ItemList.Sensor_MV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "P Q", "PS ", "CPP", 'Q', OrePrefixes.gemFlawless.ingredient(Materials.Emerald),
-                'S', OrePrefixes.stick.ingredient(Materials.Electrum), 'P',
+            new Object[] { "P Q", "PS ", "CPP", 'Q', OrePrefixes.gemFlawless.ingredient(Materials.Emerald), 'S',
+                OrePrefixes.stick.ingredient(Materials.Electrum), 'P',
                 OrePrefixes.plate.ingredient(Materials.Aluminium), 'C', Circuits.MV.getIngredient() });
         GTModHandler.addCraftingRecipe(
             ItemList.Sensor_HV.get(1L),
@@ -4926,8 +4916,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.Sensor_EV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "P Q", "PS ", "CPP", 'Q', ItemList.QuantumEye, 'S',
-                OrePrefixes.stick.ingredient(Materials.Platinum), 'P',
-                OrePrefixes.plate.ingredient(Materials.Titanium), 'C', Circuits.EV.getIngredient() });
+                OrePrefixes.stick.ingredient(Materials.Platinum), 'P', OrePrefixes.plate.ingredient(Materials.Titanium),
+                'C', Circuits.EV.getIngredient() });
         GTModHandler.addCraftingRecipe(
             ItemList.Sensor_IV.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
@@ -4964,8 +4954,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.Tool_Scanner.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "EPR", "CSC", "PBP", 'C', Circuits.HV.getIngredient(), 'P',
-                OrePrefixes.plate.ingredient(Materials.Aluminium), 'E', ItemList.Emitter_MV, 'R',
-                ItemList.Sensor_MV, 'S', ItemList.Cover_Screen, 'B', ItemList.Battery_RE_MV_Lithium });
+                OrePrefixes.plate.ingredient(Materials.Aluminium), 'E', ItemList.Emitter_MV, 'R', ItemList.Sensor_MV,
+                'S', ItemList.Cover_Screen, 'B', ItemList.Battery_RE_MV_Lithium });
 
         GTModHandler.addCraftingRecipe(
             ItemList.ItemFilter_Export.get(1L),
@@ -4990,10 +4980,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Coin_Chocolate.get(1L),
-            new Object[] { OrePrefixes.dust.ingredient(Materials.Cocoa),
-                OrePrefixes.dust.ingredient(Materials.Milk),
-                OrePrefixes.dust.ingredient(Materials.Sugar),
-                OrePrefixes.foil.ingredient(Materials.Gold) });
+            new Object[] { OrePrefixes.dust.ingredient(Materials.Cocoa), OrePrefixes.dust.ingredient(Materials.Milk),
+                OrePrefixes.dust.ingredient(Materials.Sugar), OrePrefixes.foil.ingredient(Materials.Gold) });
 
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Credit_Copper.get(8L),

@@ -1,6 +1,5 @@
 package gtPlusPlus.core.entity.monster;
 
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityIronGolem;
@@ -14,6 +13,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 
 public class EntityStaballoyConstruct extends EntityIronGolem {
 
@@ -76,9 +76,7 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
         }
 
         if (ingots > 0) {
-            this.entityDropItem(
-                MaterialLibAPI.getStack(Materials.Staballoy, Shapes.ingot, ingots),
-                0.0f);
+            this.entityDropItem(MaterialLibAPI.getStack(Materials.Staballoy, Shapes.ingot, ingots), 0.0f);
         }
     }
 

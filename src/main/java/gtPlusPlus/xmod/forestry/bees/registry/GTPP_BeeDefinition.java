@@ -12,8 +12,6 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.function.Consumer;
 
-import gregtech.api.enums.materials2.BlockShapes;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -39,6 +37,8 @@ import forestry.apiculture.genetics.alleles.AlleleEffect;
 import forestry.core.genetics.alleles.AlleleHelper;
 import forestry.core.genetics.alleles.EnumAllele.Lifespan;
 import forestry.core.genetics.alleles.EnumAllele.Tolerance;
+import gregtech.api.enums.materials2.BlockShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.items.CombType;

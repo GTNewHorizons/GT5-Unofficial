@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -28,6 +27,7 @@ import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TieredVariant;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IOutputBus;

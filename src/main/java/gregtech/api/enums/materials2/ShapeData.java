@@ -201,16 +201,14 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Stone, M * 1))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.PERFODIO, 1L)));
-        Shapes.crushedCentrifuged
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CRUSHED_CENTRIFUGED)
+        Shapes.crushedCentrifuged.setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CRUSHED_CENTRIFUGED)
             .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(ORE))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Centrifuged %s Ore")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.PERFODIO, 1L)));
-        Shapes.crushedPurified
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CRUSHED_PURIFIED)
+        Shapes.crushedPurified.setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CRUSHED_PURIFIED)
             .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(ORE))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Purified %s Ore")
@@ -685,9 +683,7 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(
-                GTShapeProperties.SECONDARY_MATERIAL,
-                new MaterialStack(Materials.Steel, M * 4 + M / 4 * 2))
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Steel, M * 4 + M / 4 * 2))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.INSTRUMENTUM, 2L)));
         Shapes.toolHeadDrill.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 4)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.TOOL_HEAD_DRILL)
@@ -728,9 +724,7 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
-            .setProperty(
-                GTShapeProperties.SECONDARY_MATERIAL,
-                new MaterialStack(Materials.Steel, M / 4 + M / 8 * 2))
+            .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Steel, M / 4 + M / 8 * 2))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.INSTRUMENTUM, 2L)));
         Shapes.turbineBlade.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 6)
             .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.TURBINE_BLADE)

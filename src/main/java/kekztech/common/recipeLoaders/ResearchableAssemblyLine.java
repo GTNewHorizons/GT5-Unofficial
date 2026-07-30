@@ -3,8 +3,6 @@ package kekztech.common.recipeLoaders;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 
-import gregtech.api.enums.materials2.MaterialFacades;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -16,6 +14,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.MaterialFacades;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -43,10 +43,7 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_DiodeASMD.get(64),
                 GTOreDictUnificator.get(OrePrefixes.wireGt02, MaterialFacades.SuperconductorUHV, 64) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 32 * INGOTS),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Naquadria,
-                    FluidShapes.fluidMolten,
-                    (int) (1 * STACKS)),
+                MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (1 * STACKS)),
                 GTModHandler.getIC2Coolant(32_000) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
             4000,
@@ -68,16 +65,9 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_DiodeXSMD.get(64),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialFacades.SuperconductorUEV, 64) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 1 * STACKS),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Quantium, FluidShapes.fluidMolten, (int) (2 * STACKS)),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Naquadria,
-                    FluidShapes.fluidMolten,
-                    (int) (2 * STACKS)),
-                MaterialLibAPI.getFluidStack(
-                    Materials.SuperCoolant,
-                    FluidShapes.fluidLiquid,
-                    (int) (64_000)) },
+                MaterialLibAPI.getFluidStack(Materials.Quantium, FluidShapes.fluidMolten, (int) (2 * STACKS)),
+                MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (2 * STACKS)),
+                MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, (int) (64_000)) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 8),
             250 * 20,
             (int) TierEU.RECIPE_UEV);
@@ -99,12 +89,8 @@ public class ResearchableAssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt08, MaterialFacades.SuperconductorUIV, 64) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 2 * STACKS),
                 MaterialUtils.legacyGtppFluid(Materials.CelestialTungsten, 2 * STACKS),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Quantium, FluidShapes.fluidMolten, (int) (2 * STACKS)),
-                MaterialLibAPI.getFluidStack(
-                    Materials.SuperCoolant,
-                    FluidShapes.fluidLiquid,
-                    (int) (128_000)) },
+                MaterialLibAPI.getFluidStack(Materials.Quantium, FluidShapes.fluidMolten, (int) (2 * STACKS)),
+                MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, (int) (128_000)) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 9),
             300 * 20,
             (int) TierEU.RECIPE_UIV);
@@ -127,10 +113,7 @@ public class ResearchableAssemblyLine implements Runnable {
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 4 * STACKS),
                 new FluidStack(FluidRegistry.getFluid("molten.astraltitanium"), 4 * STACKS),
                 MaterialUtils.legacyGtppFluid(Materials.CelestialTungsten, 4 * STACKS),
-                MaterialLibAPI.getFluidStack(
-                    Materials.SuperCoolant,
-                    FluidShapes.fluidLiquid,
-                    (int) (256_000)) },
+                MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, (int) (256_000)) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 10),
             360 * 20,
             (int) TierEU.RECIPE_UMV);

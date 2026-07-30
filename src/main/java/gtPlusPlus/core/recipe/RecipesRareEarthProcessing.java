@@ -9,8 +9,6 @@ import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -21,7 +19,9 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.CellShapes;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.CombType;
@@ -43,9 +43,7 @@ public class RecipesRareEarthProcessing {
         // Add Process for creating Brine
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Salt, Shapes.dust, (int) (16)))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.SaltWater, FluidShapes.fluidLiquid, (int) (2_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SaltWater, FluidShapes.fluidLiquid, (int) (2_000)))
             .fluidOutputs(new FluidStack(mBrine, 4_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -70,8 +68,7 @@ public class RecipesRareEarthProcessing {
                 MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cell, (int) (1)),
                 MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, (int) (1)))
             .circuit(2)
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.HydrogenChlorideMix, CellShapes.cellMolten, 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.HydrogenChlorideMix, CellShapes.cellMolten, 2))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
@@ -91,9 +88,7 @@ public class RecipesRareEarthProcessing {
                 MaterialLibAPI.getStack(Materials.RareEarthI, Shapes.crushed, 2),
                 MaterialLibAPI.getStack(Materials.RareEarthI, Shapes.crushed, 2),
                 MaterialLibAPI.getStack(Materials.RareEarthI, Shapes.crushed, 2))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (1_000)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, (int) (1_000)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalBathRecipes);

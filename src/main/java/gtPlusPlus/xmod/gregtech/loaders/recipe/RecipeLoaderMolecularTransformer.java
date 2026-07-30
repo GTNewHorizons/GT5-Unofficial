@@ -107,8 +107,7 @@ public class RecipeLoaderMolecularTransformer {
             if (GalaxySpace.isModLoaded()) {
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(
-                        MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, (int) (1)))
+                    .itemInputs(MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, (int) (1)))
                     .itemOutputs(GTModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_EV)

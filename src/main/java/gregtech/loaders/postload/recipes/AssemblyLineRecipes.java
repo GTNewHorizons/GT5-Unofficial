@@ -11,10 +11,6 @@ import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.MaterialFacades;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -27,6 +23,10 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.MaterialFacades;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -73,8 +73,7 @@ public class AssemblyLineRecipes implements Runnable {
                     GTOreDictUnificator.get("cableGt01YttriumBariumCuprate", 2))
                 .fluidInputs(
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 1 * INGOTS),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (250)))
+                    MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (250)))
                 .itemOutputs(ItemList.Electric_Motor_LuV.get(1))
                 .eut(TierEU.RECIPE_IV)
                 .duration(30 * SECONDS)
@@ -95,8 +94,7 @@ public class AssemblyLineRecipes implements Runnable {
                     GTOreDictUnificator.get("cableGt04VanadiumGallium", 2))
                 .fluidInputs(
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 2 * INGOTS),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (750)))
+                    MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (750)))
                 .itemOutputs(ItemList.Electric_Motor_ZPM.get(1))
                 .eut(TierEU.RECIPE_LuV)
                 .duration(30 * SECONDS)
@@ -107,8 +105,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .metadata(RESEARCH_ITEM, ItemList.Electric_Motor_ZPM.get(1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
-                    MaterialLibAPI
-                        .getStack(Materials.SamariumMagnetic, Shapes.stickLong, (int) (2)),
+                    MaterialLibAPI.getStack(Materials.SamariumMagnetic, Shapes.stickLong, (int) (2)),
                     MaterialLibAPI.getStack(Materials.Neutronium, Shapes.stickLong, (int) (4)),
                     MaterialLibAPI.getStack(Materials.Neutronium, Shapes.ring, (int) (4)),
                     MaterialLibAPI.getStack(Materials.Neutronium, Shapes.round, (int) (16)),
@@ -120,13 +117,9 @@ public class AssemblyLineRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials.Americium, Shapes.wireFine, (int) (64)),
                     GTOreDictUnificator.get("cableGt04NaquadahAlloy", 2))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Naquadria,
-                        FluidShapes.fluidMolten,
-                        (int) (9 * INGOTS)),
+                    MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (9 * INGOTS)),
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 9 * INGOTS),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (2_000)))
+                    MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (2_000)))
                 .itemOutputs(ItemList.Electric_Motor_UV.get(1))
                 .eut(TierEU.RECIPE_ZPM)
                 .duration(30 * SECONDS)
@@ -149,8 +142,7 @@ public class AssemblyLineRecipes implements Runnable {
                     GTOreDictUnificator.get("cableGt01YttriumBariumCuprate", 2))
                 .fluidInputs(
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 1 * INGOTS),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (250)))
+                    MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (250)))
                 .itemOutputs(ItemList.Electric_Pump_LuV.get(1))
                 .eut(TierEU.RECIPE_IV)
                 .duration(600)
@@ -170,8 +162,7 @@ public class AssemblyLineRecipes implements Runnable {
                     GTOreDictUnificator.get("cableGt04VanadiumGallium", 2))
                 .fluidInputs(
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 2 * INGOTS),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (750)))
+                    MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (750)))
                 .itemOutputs(ItemList.Electric_Pump_ZPM.get(1))
                 .eut(TierEU.RECIPE_LuV)
                 .duration(30 * SECONDS)
@@ -191,13 +182,9 @@ public class AssemblyLineRecipes implements Runnable {
                     GTOreDictUnificator.get("cableGt04NaquadahAlloy", 2))
                 .itemOutputs(ItemList.Electric_Pump_UV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Naquadria,
-                        FluidShapes.fluidMolten,
-                        (int) (9 * INGOTS)),
+                    MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (9 * INGOTS)),
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 9 * INGOTS),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (2_000)))
+                    MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (2_000)))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -219,8 +206,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Conveyor_Module_LuV.get(1))
                 .fluidInputs(
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 1 * INGOTS),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (250)))
+                    MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (250)))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_IV)
                 .addTo(AssemblyLine);
@@ -239,8 +225,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Conveyor_Module_ZPM.get(1))
                 .fluidInputs(
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 2 * INGOTS),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (750)))
+                    MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (750)))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
@@ -258,13 +243,9 @@ public class AssemblyLineRecipes implements Runnable {
                     new Object[] { OrePrefixes.plate.ingredient(MaterialFacades.AnySyntheticRubber), 40 })
                 .itemOutputs(ItemList.Conveyor_Module_UV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Naquadria,
-                        FluidShapes.fluidMolten,
-                        (int) (9 * INGOTS)),
+                    MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (9 * INGOTS)),
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 9 * INGOTS),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (2_000)))
+                    MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (2_000)))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -288,8 +269,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Electric_Piston_LuV.get(1))
                 .fluidInputs(
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 1 * INGOTS),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (250)))
+                    MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (250)))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_IV)
                 .addTo(AssemblyLine);
@@ -310,8 +290,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Electric_Piston_ZPM.get(1))
                 .fluidInputs(
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 2 * INGOTS),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (750)))
+                    MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (750)))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
@@ -331,13 +310,9 @@ public class AssemblyLineRecipes implements Runnable {
                     GTOreDictUnificator.get("cableGt04NaquadahAlloy", 4))
                 .itemOutputs(ItemList.Electric_Piston_UV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Naquadria,
-                        FluidShapes.fluidMolten,
-                        (int) (9 * INGOTS)),
+                    MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (9 * INGOTS)),
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 9 * INGOTS),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (2_000)))
+                    MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (2_000)))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -362,8 +337,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Robot_Arm_LuV.get(1))
                 .fluidInputs(
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 4 * INGOTS),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (250)))
+                    MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (250)))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_IV)
                 .addTo(AssemblyLine);
@@ -385,8 +359,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.Robot_Arm_ZPM.get(1))
                 .fluidInputs(
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 8 * INGOTS),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (750)))
+                    MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (750)))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
@@ -407,13 +380,9 @@ public class AssemblyLineRecipes implements Runnable {
                     GTOreDictUnificator.get("cableGt04NaquadahAlloy", 6))
                 .itemOutputs(ItemList.Robot_Arm_UV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Naquadria,
-                        FluidShapes.fluidMolten,
-                        (int) (9 * INGOTS)),
+                    MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (9 * INGOTS)),
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 16 * INGOTS),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (2_000)))
+                    MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (2_000)))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -477,10 +446,7 @@ public class AssemblyLineRecipes implements Runnable {
                     GTOreDictUnificator.get("cableGt04NaquadahAlloy", 7))
                 .itemOutputs(ItemList.Emitter_UV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Naquadria,
-                        FluidShapes.fluidMolten,
-                        (int) (9 * INGOTS)),
+                    MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (9 * INGOTS)),
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 16 * INGOTS))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
@@ -545,10 +511,7 @@ public class AssemblyLineRecipes implements Runnable {
                     GTOreDictUnificator.get("cableGt04NaquadahAlloy", 7))
                 .itemOutputs(ItemList.Sensor_UV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Naquadria,
-                        FluidShapes.fluidMolten,
-                        (int) (9 * INGOTS)),
+                    MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (9 * INGOTS)),
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 16 * INGOTS))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
@@ -618,10 +581,7 @@ public class AssemblyLineRecipes implements Runnable {
                     GTOreDictUnificator.get("cableGt04NaquadahAlloy", 8))
                 .itemOutputs(ItemList.Field_Generator_UV.get(1))
                 .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Naquadria,
-                        FluidShapes.fluidMolten,
-                        (int) (9 * INGOTS)),
+                    MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (9 * INGOTS)),
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 16 * INGOTS))
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_ZPM)
@@ -800,10 +760,8 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.FusionComputer_LuV.get(1))
                 .fluidInputs(
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 20 * INGOTS),
-                    MaterialLibAPI.getFluidStack(
-                        Materials.VanadiumGallium,
-                        FluidShapes.fluidMolten,
-                        (int) (8 * INGOTS)))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.VanadiumGallium, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
                 .duration(50 * SECONDS)
                 .eut((int) TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
@@ -825,10 +783,8 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.FusionComputer_ZPMV.get(1))
                 .fluidInputs(
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 20 * INGOTS),
-                    MaterialLibAPI.getFluidStack(
-                        Materials.NiobiumTitanium,
-                        FluidShapes.fluidMolten,
-                        (int) (8 * INGOTS)))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.NiobiumTitanium, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
                 .duration(50 * SECONDS)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(AssemblyLine);
@@ -850,10 +806,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .itemOutputs(ItemList.FusionComputer_UV.get(1))
                 .fluidInputs(
                     MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 20 * INGOTS),
-                    MaterialLibAPI.getFluidStack(
-                        Materials.ElectrumFlux,
-                        FluidShapes.fluidMolten,
-                        (int) (8 * INGOTS)))
+                    MaterialLibAPI.getFluidStack(Materials.ElectrumFlux, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
                 .duration(50 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(AssemblyLine);
@@ -928,10 +881,7 @@ public class AssemblyLineRecipes implements Runnable {
             .itemOutputs(ItemList.IntegratedOreFactory.get(1))
             .fluidInputs(
                 MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 20 * INGOTS),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Naquadria,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (10 * INGOTS)))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(AssemblyLine);
@@ -1016,8 +966,7 @@ public class AssemblyLineRecipes implements Runnable {
                 ItemList.SpaceElevatorMotorT3.get(64))
             .itemOutputs(ItemList.TierdDrone3.get(1))
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.ExcitedDTCC, FluidShapes.fluidLiquid, (int) (8_000)),
+                MaterialLibAPI.getFluidStack(Materials.ExcitedDTCC, FluidShapes.fluidLiquid, (int) (8_000)),
                 MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 8_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
@@ -1042,8 +991,7 @@ public class AssemblyLineRecipes implements Runnable {
             .fluidInputs(
                 new FluidStack(TFFluids.fluidCryotheum, 256_000),
                 MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 10 * INGOTS),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (16_000)))
+                MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (16_000)))
             .itemOutputs(ItemList.EndothermicFridge.get(1))
             .eut(TierEU.RECIPE_ZPM / 2)
             .duration(1 * MINUTES)
@@ -1068,8 +1016,7 @@ public class AssemblyLineRecipes implements Runnable {
             .fluidInputs(
                 new FluidStack(GTPPFluids.Pyrotheum, 256_000),
                 MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 10 * INGOTS),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (16_000)))
+                MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (16_000)))
             .itemOutputs(ItemList.ExothermicHearth.get(1))
             .eut(TierEU.RECIPE_ZPM / 2)
             .duration(1 * MINUTES)
@@ -1089,11 +1036,9 @@ public class AssemblyLineRecipes implements Runnable {
                 ItemList.Machine_IV_Distillery.get(2),
                 GTOreDictUnificator.get("wireGt02SuperconductorLuV", 16))
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (16_000)),
+                MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (16_000)),
                 MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 10 * INGOTS),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Naquadah, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Naquadah, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .itemOutputs(ItemList.MegaDistillationTower.get(1))
             .eut(TierEU.RECIPE_LuV / 2)
             .duration(1 * MINUTES)
@@ -1113,11 +1058,9 @@ public class AssemblyLineRecipes implements Runnable {
                 ItemList.Machine_IV_ChemicalReactor.get(2),
                 GTOreDictUnificator.get("wireGt02SuperconductorLuV", 16))
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (16_000)),
+                MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (16_000)),
                 MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 10 * INGOTS),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Naquadah, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Naquadah, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .itemOutputs(ItemList.MegaChemicalReactor.get(1))
             .eut(TierEU.RECIPE_LuV / 2)
             .duration(1 * MINUTES)
@@ -1137,11 +1080,9 @@ public class AssemblyLineRecipes implements Runnable {
                 ItemList.Casing_Coil_Naquadah.get(8),
                 GTOreDictUnificator.get("wireGt02SuperconductorLuV", 16))
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (16_000)),
+                MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (16_000)),
                 MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 10 * INGOTS),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Naquadah, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Naquadah, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .itemOutputs(ItemList.MegaOilCracker.get(1))
             .eut(TierEU.RECIPE_LuV / 2)
             .duration(1 * MINUTES)

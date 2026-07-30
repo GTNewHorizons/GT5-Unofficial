@@ -16,10 +16,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import gregtech.api.enums.materials2.BlockShapes;
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -32,6 +28,10 @@ import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.BlockShapes;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialRefStack;
@@ -50,44 +50,34 @@ public class EyeOfHarmonyRecipe {
 
     static final FluidStackLong[] SPECIAL_FLUIDS = new FluidStackLong[] {
         new FluidStackLong(
-            MaterialLibAPI
-                .getFluidStack(Materials.WhiteDwarfMatter, FluidShapes.fluidMolten, (int) (1_152)),
+            MaterialLibAPI.getFluidStack(Materials.WhiteDwarfMatter, FluidShapes.fluidMolten, (int) (1_152)),
             1_152),
         new FluidStackLong(
-            MaterialLibAPI
-                .getFluidStack(Materials.WhiteDwarfMatter, FluidShapes.fluidMolten, (int) (1_152)),
+            MaterialLibAPI.getFluidStack(Materials.WhiteDwarfMatter, FluidShapes.fluidMolten, (int) (1_152)),
             1_152),
         new FluidStackLong(
-            MaterialLibAPI
-                .getFluidStack(Materials.WhiteDwarfMatter, FluidShapes.fluidMolten, (int) (4_608)),
+            MaterialLibAPI.getFluidStack(Materials.WhiteDwarfMatter, FluidShapes.fluidMolten, (int) (4_608)),
             4_608),
         new FluidStackLong(
-            MaterialLibAPI
-                .getFluidStack(Materials.WhiteDwarfMatter, FluidShapes.fluidMolten, (int) (18_432)),
+            MaterialLibAPI.getFluidStack(Materials.WhiteDwarfMatter, FluidShapes.fluidMolten, (int) (18_432)),
             18_432),
         new FluidStackLong(
-            MaterialLibAPI
-                .getFluidStack(Materials.BlackDwarfMatter, FluidShapes.fluidMolten, (int) (1_152)),
+            MaterialLibAPI.getFluidStack(Materials.BlackDwarfMatter, FluidShapes.fluidMolten, (int) (1_152)),
             1_152),
         new FluidStackLong(
-            MaterialLibAPI
-                .getFluidStack(Materials.BlackDwarfMatter, FluidShapes.fluidMolten, (int) (4_608)),
+            MaterialLibAPI.getFluidStack(Materials.BlackDwarfMatter, FluidShapes.fluidMolten, (int) (4_608)),
             4_608),
         new FluidStackLong(
-            MaterialLibAPI
-                .getFluidStack(Materials.BlackDwarfMatter, FluidShapes.fluidMolten, (int) (18_432)),
+            MaterialLibAPI.getFluidStack(Materials.BlackDwarfMatter, FluidShapes.fluidMolten, (int) (18_432)),
             18_432),
         new FluidStackLong(
-            MaterialLibAPI
-                .getFluidStack(Materials.Universium, FluidShapes.fluidMolten, (int) (1_152)),
+            MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, (int) (1_152)),
             1_152),
         new FluidStackLong(
-            MaterialLibAPI
-                .getFluidStack(Materials.Universium, FluidShapes.fluidMolten, (int) (4_608)),
+            MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, (int) (4_608)),
             4_608),
         new FluidStackLong(
-            MaterialLibAPI
-                .getFluidStack(Materials.Universium, FluidShapes.fluidMolten, (int) (18_432)),
+            MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, (int) (18_432)),
             18_432) };
 
     HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<>() {
@@ -256,8 +246,7 @@ public class EyeOfHarmonyRecipe {
         ItemStack placeholder = MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, (int) (1));
         return switch (key) {
             case "Ne" -> MaterialLibAPI.getStack(Materials.Netherrack, Shapes.dust, (int) (1));
-            case "ED", "VA", "EA" -> MaterialLibAPI
-                .getStack(Materials.Endstone, Shapes.dust, (int) (1));
+            case "ED", "VA", "EA" -> MaterialLibAPI.getStack(Materials.Endstone, Shapes.dust, (int) (1));
             case "Mo", "Ra" -> getModItem(NewHorizonsCoreMod.ID, "MoonStoneDust", 1, placeholder);
             case "De" -> getModItem(NewHorizonsCoreMod.ID, "DeimosStoneDust", 1, placeholder);
             case "Ma" -> getModItem(NewHorizonsCoreMod.ID, "MarsStoneDust", 1, placeholder);
@@ -408,8 +397,8 @@ public class EyeOfHarmonyRecipe {
             outputMap.add(Materials.Gold, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_IRON))
             outputMap.add(Materials.Iron, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
-        if (MaterialUtils.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)) outputMap
-            .add(Materials.Neodymium, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
+        if (MaterialUtils.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM))
+            outputMap.add(Materials.Neodymium, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
 
         List<com.ruling_0.materiallib.api.Material> byProducts = MaterialUtils.oreByProducts(material);
 

@@ -11,9 +11,6 @@ import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator.sapling_Rainforest;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -24,6 +21,9 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.BlockShapes;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -285,13 +285,9 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Infinity, Shapes.plateSuperdense, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Infinity, Shapes.plateSuperdense, (int) (1)))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.protohalkonitebase,
-                    FluidShapes.fluidLiquid,
-                    1 * STACKS))
+                MaterialLibAPI.getFluidStack(Materials.protohalkonitebase, FluidShapes.fluidLiquid, 1 * STACKS))
             .itemOutputs(GTOreDictUnificator.get("plateSuperdensehotprotohalkonite", 1))
             // Require stabilized black hole
             .metadata(COMPRESSION_TIER, 2)
@@ -302,10 +298,7 @@ public class CompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Creon, Shapes.plateSuperdense, (int) (1)))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.protohalkonitebase,
-                    FluidShapes.fluidLiquid,
-                    32 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.protohalkonitebase, FluidShapes.fluidLiquid, 32 * INGOTS))
             .itemOutputs(GTOreDictUnificator.get("plateSuperdensehotprotohalkonite", 1))
             // Require stabilized black hole
             .metadata(COMPRESSION_TIER, 2)
@@ -314,13 +307,9 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Mellion, Shapes.plateSuperdense, (int) (1)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Mellion, Shapes.plateSuperdense, (int) (1)))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.protohalkonitebase,
-                    FluidShapes.fluidLiquid,
-                    32 * INGOTS))
+                MaterialLibAPI.getFluidStack(Materials.protohalkonitebase, FluidShapes.fluidLiquid, 32 * INGOTS))
             .itemOutputs(GTOreDictUnificator.get("plateSuperdensehotprotohalkonite", 1))
             // Require stabilized black hole
             .metadata(COMPRESSION_TIER, 2)
@@ -331,10 +320,7 @@ public class CompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.NuclearStar.get(64L))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.CosmicNeutronium,
-                    FluidShapes.fluidPlasma,
-                    (int) (64 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.CosmicNeutronium, FluidShapes.fluidPlasma, (int) (64 * INGOTS)))
             .itemOutputs(ItemList.PseudoStar.get(4L))
             // Require stabilized black hole
             .metadata(COMPRESSION_TIER, 2)

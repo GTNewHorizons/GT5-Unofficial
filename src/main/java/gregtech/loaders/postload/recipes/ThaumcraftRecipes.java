@@ -7,8 +7,6 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import java.util.Arrays;
 import java.util.Collections;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -20,6 +18,8 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -708,21 +708,19 @@ public class ThaumcraftRecipes implements Runnable {
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 20L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L)),
             null,
-            new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey,
-                GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
-                    tKey,
-                    ItemList.Hull_LV.get(1L),
-                    new ItemStack[] { new ItemStack(Blocks.beacon), Circuits.MV.get(1),
-                        MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, (int) (1L)),
-                        ItemList.Sensor_MV.get(1L), Circuits.MV.get(1),
-                        MaterialLibAPI.getStack(Materials.Thaumium, Shapes.plate, (int) (1L)),
-                        ItemList.Sensor_MV.get(1L) },
-                    ItemList.MagicEnergyConverter_LV.get(1L),
-                    5,
-                    Arrays.asList(
-                        new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 32L),
-                        new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
-                        new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L))) });
+            new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey, GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
+                tKey,
+                ItemList.Hull_LV.get(1L),
+                new ItemStack[] { new ItemStack(Blocks.beacon), Circuits.MV.get(1),
+                    MaterialLibAPI.getStack(Materials.Aluminium, Shapes.plate, (int) (1L)), ItemList.Sensor_MV.get(1L),
+                    Circuits.MV.get(1), MaterialLibAPI.getStack(Materials.Thaumium, Shapes.plate, (int) (1L)),
+                    ItemList.Sensor_MV.get(1L) },
+                ItemList.MagicEnergyConverter_LV.get(1L),
+                5,
+                Arrays.asList(
+                    new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 32L),
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L))) });
 
         tKey = "GT_MAGICENERGY2";
         GTLanguageManager.addStringLocalization(
@@ -752,8 +750,7 @@ public class ThaumcraftRecipes implements Runnable {
                     new ItemStack[] { new ItemStack(Blocks.beacon), Circuits.HV.get(1),
                         MaterialLibAPI.getStack(Materials.Thaumium, Shapes.plateDouble, (int) (1L)),
                         ItemList.Sensor_HV.get(1L), Circuits.HV.get(1),
-                        MaterialLibAPI
-                            .getStack(Materials.StainlessSteel, Shapes.plateDouble, (int) (1L)),
+                        MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plateDouble, (int) (1L)),
                         ItemList.Sensor_HV.get(1L) },
                     ItemList.MagicEnergyConverter_MV.get(1L),
                     6,
@@ -820,22 +817,20 @@ public class ThaumcraftRecipes implements Runnable {
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 20L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L)),
             null,
-            new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey,
-                GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
-                    tKey,
-                    ItemList.Hull_LV.get(1L),
-                    new ItemStack[] { ItemList.MagicEnergyConverter_LV.get(1L), Circuits.MV.get(1),
-                        MaterialLibAPI.getStack(Materials.Thaumium, Shapes.plate, (int) (1L)),
-                        ItemList.Sensor_MV.get(1L) },
-                    ItemList.MagicEnergyAbsorber_LV.get(1L),
-                    6,
-                    Arrays.asList(
-                        new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 32L),
-                        new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
-                        new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L),
-                        new TCAspects.TC_AspectStack(TCAspects.VACUOS, 16L),
-                        new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 32L),
-                        new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 4L))) });
+            new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey, GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
+                tKey,
+                ItemList.Hull_LV.get(1L),
+                new ItemStack[] { ItemList.MagicEnergyConverter_LV.get(1L), Circuits.MV.get(1),
+                    MaterialLibAPI.getStack(Materials.Thaumium, Shapes.plate, (int) (1L)), ItemList.Sensor_MV.get(1L) },
+                ItemList.MagicEnergyAbsorber_LV.get(1L),
+                6,
+                Arrays.asList(
+                    new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 32L),
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L),
+                    new TCAspects.TC_AspectStack(TCAspects.VACUOS, 16L),
+                    new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 32L),
+                    new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 4L))) });
 
         tKey = "GT_MAGICABSORB2";
         GTLanguageManager
@@ -857,23 +852,21 @@ public class ThaumcraftRecipes implements Runnable {
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 20L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L)),
             null,
-            new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey,
-                GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
-                    tKey,
-                    ItemList.Hull_MV.get(1L),
-                    new ItemStack[] { ItemList.MagicEnergyConverter_MV.get(1L), Circuits.HV.get(1),
-                        MaterialLibAPI.getStack(Materials.Thaumium, Shapes.plate, (int) (1L)),
-                        ItemList.Sensor_HV.get(1L), Circuits.HV.get(1),
-                        MaterialLibAPI.getStack(Materials.Thaumium, Shapes.plate, (int) (1L)) },
-                    ItemList.MagicEnergyAbsorber_MV.get(1L),
-                    6,
-                    Arrays.asList(
-                        new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 64L),
-                        new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
-                        new TCAspects.TC_AspectStack(TCAspects.MACHINA, 64L),
-                        new TCAspects.TC_AspectStack(TCAspects.VACUOS, 32L),
-                        new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 64L),
-                        new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 8L))),
+            new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey, GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
+                tKey,
+                ItemList.Hull_MV.get(1L),
+                new ItemStack[] { ItemList.MagicEnergyConverter_MV.get(1L), Circuits.HV.get(1),
+                    MaterialLibAPI.getStack(Materials.Thaumium, Shapes.plate, (int) (1L)), ItemList.Sensor_HV.get(1L),
+                    Circuits.HV.get(1), MaterialLibAPI.getStack(Materials.Thaumium, Shapes.plate, (int) (1L)) },
+                ItemList.MagicEnergyAbsorber_MV.get(1L),
+                6,
+                Arrays.asList(
+                    new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 64L),
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 64L),
+                    new TCAspects.TC_AspectStack(TCAspects.VACUOS, 32L),
+                    new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 64L),
+                    new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 8L))),
                 GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
                     tKey,
                     ItemList.Hull_HV.get(1L),
@@ -898,8 +891,7 @@ public class ThaumcraftRecipes implements Runnable {
                         MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, (int) (1)),
                         ItemList.Field_Generator_HV.get(1L), Circuits.IV.get(1),
                         MaterialLibAPI.getStack(Materials.Void, Shapes.plate, (int) (1)),
-                        MaterialLibAPI
-                            .getStack(Materials.TungstenSteel, Shapes.plate, (int) (1)), },
+                        MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, (int) (1)), },
                     ItemList.MagicEnergyAbsorber_EV.get(1L),
                     10,
                     Arrays.asList(

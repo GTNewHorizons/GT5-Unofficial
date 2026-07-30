@@ -11,8 +11,6 @@ import static gregtech.api.util.GTRecipeConstants.UniversalArcFurnace;
 
 import java.util.Set;
 
-import gregtech.api.enums.materials2.MaterialFluidNames;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -20,6 +18,7 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;

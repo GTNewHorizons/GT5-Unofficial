@@ -2,12 +2,12 @@ package gregtech.api.enums;
 
 import java.text.MessageFormat;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import com.ruling_0.materiallib.api.Material;
 
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;

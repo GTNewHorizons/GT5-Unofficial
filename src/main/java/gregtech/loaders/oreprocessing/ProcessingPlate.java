@@ -25,9 +25,6 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -43,6 +40,9 @@ import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
@@ -211,9 +211,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 2L))
                 .circuit(2)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, (int) (10)))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, (int) (10)))
                 .duration(3 * SECONDS + 4 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -263,9 +261,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 3L))
                 .circuit(3)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, (int) (20)))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, (int) (20)))
                 .duration(4 * SECONDS + 16 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -317,9 +313,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 4L))
                 .circuit(4)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, (int) (30)))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, (int) (30)))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -358,9 +352,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 5L))
                 .circuit(5)
                 .itemOutputs(GTUtility.copyAmount(1, stack))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, (int) (40)))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glue, FluidShapes.fluidLiquid, (int) (40)))
                 .duration(8 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);

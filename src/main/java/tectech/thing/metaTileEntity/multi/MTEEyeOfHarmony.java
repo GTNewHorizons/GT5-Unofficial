@@ -32,8 +32,6 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -62,6 +60,8 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -1413,8 +1413,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         if (failedParallelAmount > 0) {
             // 2^Tier spacetime released upon recipe failure.
             outputFluidToAENetwork(
-                MaterialLibAPI
-                    .getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, (int) (1)),
+                MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, (int) (1)),
                 (long) ((successChance * MOLTEN_SPACETIME_PER_FAILURE_TIER
                     * GTUtility.powInt(SPACETIME_FAILURE_BASE, currentRecipeRocketTier + 1)) * failedParallelAmount));
             if (parallelAmount == 1) {
@@ -1604,8 +1603,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
                         YELLOW + formatNumber(starMatterOutput.amount * 20.0 / currentMaxProgresstime) + RESET));
 
                 FluidStackLong stellarPlasmaOutput = new FluidStackLong(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, (int) (0)),
+                    MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, (int) (0)),
                     (long) (stellarPlasma.amount * yield * successChance * parallelAmount));
                 str.add(
                     IGregTechDeviceInformation.encode(

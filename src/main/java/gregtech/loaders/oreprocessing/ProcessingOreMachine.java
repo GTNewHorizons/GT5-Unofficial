@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -30,6 +29,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialRefStack;
@@ -90,8 +90,7 @@ public class ProcessingOreMachine {
     /// Every material the retired `RecipeGenOre` reached through `MaterialGenerator
     /// #generateOreMaterialWithAllExcessComponents` (`disableOptional=true`) -- everything in [#generate]
     /// except the electrolyzer/chemical-dehydrator branch.
-    private static final Set<Material> ELIGIBLE_NO_OPTIONAL = Set
-        .of(Materials.AncientGranite, Materials.Runite);
+    private static final Set<Material> ELIGIBLE_NO_OPTIONAL = Set.of(Materials.AncientGranite, Materials.Runite);
 
     private static final Material mStone = Materials.Stone;
 

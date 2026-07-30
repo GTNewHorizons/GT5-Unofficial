@@ -13,9 +13,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -28,6 +25,9 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
@@ -179,11 +179,8 @@ public class HTGRLoader {
                 MaterialLibAPI.getStack(Materials.Indium, Shapes.dust, (int) (1)))
             .metadata(
                 FUEL,
-                new Pair[] { Pair
-                    .of(MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (2)), 1),
-                    Pair.of(
-                        MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (3)),
-                        2) })
+                new Pair[] { Pair.of(MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (2)), 1),
+                    Pair.of(MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (3)), 2) })
             .metadata(
                 SHELL,
                 new ItemStack[] { MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (1)),
@@ -207,8 +204,7 @@ public class HTGRLoader {
             .outputChances(10000, 10000, 2000, 10000)
             .metadata(
                 FUEL,
-                new Pair[] { Pair
-                    .of(MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (5)), 3) })
+                new Pair[] { Pair.of(MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (5)), 3) })
             .metadata(
                 SHELL,
                 new ItemStack[] { MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (1)),
@@ -229,8 +225,7 @@ public class HTGRLoader {
                 MaterialLibAPI.getStack(Materials.Lead, Shapes.dust, (int) (4)))
             .metadata(
                 FUEL,
-                new Pair[] { Pair
-                    .of(MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (5)), 2) })
+                new Pair[] { Pair.of(MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (5)), 2) })
             .metadata(
                 SHELL,
                 new ItemStack[] { MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (1)),
@@ -252,8 +247,7 @@ public class HTGRLoader {
                 MaterialLibAPI.getStack(Materials.Lead, Shapes.dust, (int) (1)))
             .metadata(
                 FUEL,
-                new Pair[] { Pair
-                    .of(MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (1)), 0) })
+                new Pair[] { Pair.of(MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (1)), 0) })
             .metadata(
                 SHELL,
                 new ItemStack[] { MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (1)),
@@ -276,9 +270,7 @@ public class HTGRLoader {
                 MaterialLibAPI.getStack(Materials.Lead, Shapes.dust, (int) (2)))
             .metadata(
                 FUEL,
-                new Pair[] { Pair.of(
-                    MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (3)),
-                    0) })
+                new Pair[] { Pair.of(MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (3)), 0) })
             .metadata(
                 SHELL,
                 new ItemStack[] { MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (1)),
@@ -299,9 +291,7 @@ public class HTGRLoader {
                 MaterialLibAPI.getStack(Materials.Lead, Shapes.dust, (int) (3)))
             .metadata(
                 FUEL,
-                new Pair[] { Pair.of(
-                    MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (3)),
-                    0) })
+                new Pair[] { Pair.of(MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (3)), 0) })
             .metadata(
                 SHELL,
                 new ItemStack[] { MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (1)),
@@ -323,8 +313,7 @@ public class HTGRLoader {
                 MaterialLibAPI.getStack(Materials.Lead, Shapes.dust, (int) (3)))
             .metadata(
                 FUEL,
-                new Pair[] { Pair
-                    .of(MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (3)), 0) })
+                new Pair[] { Pair.of(MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (3)), 0) })
             .metadata(
                 SHELL,
                 new ItemStack[] { MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (1)),
@@ -346,8 +335,7 @@ public class HTGRLoader {
                 MaterialLibAPI.getStack(Materials.Lead, Shapes.dust, (int) (3)))
             .metadata(
                 FUEL,
-                new Pair[] { Pair
-                    .of(MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (3)), 0) })
+                new Pair[] { Pair.of(MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (3)), 0) })
             .metadata(
                 SHELL,
                 new ItemStack[] { MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (1)),
@@ -369,11 +357,8 @@ public class HTGRLoader {
                 MaterialLibAPI.getStack(Materials.Lead, Shapes.dust, (int) (3)))
             .metadata(
                 FUEL,
-                new Pair[] { Pair
-                    .of(MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (3)), 1),
-                    Pair.of(
-                        MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (3)),
-                        2) })
+                new Pair[] { Pair.of(MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (3)), 1),
+                    Pair.of(MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (3)), 2) })
             .metadata(
                 SHELL,
                 new ItemStack[] { MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (1)),
@@ -415,8 +400,7 @@ public class HTGRLoader {
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.plate, (int) (6)),
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.screw, (int) (8)),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Lead, FluidShapes.fluidMolten, (int) (1152)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Lead, FluidShapes.fluidMolten, (int) (1152)))
             .itemOutputs(ItemList.Casing_Beryllium_Integrated_Reactor.get(1L))
             .duration(GTRecipeBuilder.SECONDS * 30)
             .eut(TierEU.RECIPE_EV)
@@ -426,9 +410,7 @@ public class HTGRLoader {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Beryllium, Shapes.plateDense, (int) (1)),
                 MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.screw, (int) (4)))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Beryllium, FluidShapes.fluidMolten, (int) (144)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Beryllium, FluidShapes.fluidMolten, (int) (144)))
             .itemOutputs(ItemList.Beryllium_Shielding_Plate.get(1L))
             .duration(GTRecipeBuilder.SECONDS * 30)
             .eut(TierEU.RECIPE_EV)
@@ -443,9 +425,7 @@ public class HTGRLoader {
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 4),
-                ItemList.Shape_Mold_Ring.get(0))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Alumina, Shapes.dust, 4), ItemList.Shape_Mold_Ring.get(0))
             .itemOutputs(ItemList.Alumina_Support_Ring_Raw.get(1L))
             .duration(GTRecipeBuilder.SECONDS * 25)
             .eut(TierEU.RECIPE_IV)

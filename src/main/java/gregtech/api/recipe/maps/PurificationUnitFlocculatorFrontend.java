@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -17,6 +16,7 @@ import com.gtnewhorizons.modularui.api.math.Size;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
@@ -61,8 +61,7 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
         GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         if (stack.isItemEqual(
-            GTUtility
-                .getFluidDisplayStack(MaterialUtils.fluid(Materials.PolyaluminiumChloride, 1_000), false))) {
+            GTUtility.getFluidDisplayStack(MaterialUtils.fluid(Materials.PolyaluminiumChloride, 1_000), false))) {
             currentTip.add(StatCollector.translateToLocal("GT5U.nei.purified_water.grade_3.0"));
             currentTip.add(
                 StatCollector.translateToLocalFormatted(
@@ -71,10 +70,7 @@ public class PurificationUnitFlocculatorFrontend extends PurificationUnitRecipeM
                     MTEPurificationUnitFlocculation.INPUT_CHEMICAL_PER_LEVEL));
         } else if (stack.isItemEqual(
             GTUtility.getFluidDisplayStack(
-                MaterialLibAPI.getFluidStack(
-                    Materials.FlocculationWasteLiquid,
-                    FluidShapes.fluidLiquid,
-                    (int) (1_000)),
+                MaterialLibAPI.getFluidStack(Materials.FlocculationWasteLiquid, FluidShapes.fluidLiquid, (int) (1_000)),
                 false))) {
                     currentTip.add(StatCollector.translateToLocal("GT5U.nei.purified_water.grade_3.2"));
                 }

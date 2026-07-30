@@ -3,7 +3,6 @@ package gregtech.client.handler;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.enums.materials2.BlockShapes;
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
@@ -17,6 +16,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.materials2.BlockShapes;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.PipeShapes;
 
@@ -30,8 +30,8 @@ public class AnimatedBlockTextureHandler implements IResourceManagerReloadListen
     /// entry of its own despite sharing the same animation: it declares the same texture set as `Hypogen`
     /// (`CUSTOM/hypogen`), so both materials' `block`/`frameGt` icons resolve to the same stitched sprite --
     /// forcing `Hypogen`'s instance already advances `Dragonblood`'s.
-    private static final Material[] ANIMATED = { Materials.AstralTitanium,
-        Materials.CelestialTungsten, Materials.ChromaticGlass, Materials.Hypogen };
+    private static final Material[] ANIMATED = { Materials.AstralTitanium, Materials.CelestialTungsten,
+        Materials.ChromaticGlass, Materials.Hypogen };
 
     private IIcon[] icons;
 

@@ -2,8 +2,6 @@ package gregtech.common.blocks;
 
 import static gregtech.api.enums.Mods.NotEnoughItems;
 
-import gregtech.api.enums.materials2.BlockShapes;
-import gregtech.api.enums.materials2.MaterialParentMods;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -13,6 +11,7 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.MaterialParentMods;
 import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.material.MaterialParts;

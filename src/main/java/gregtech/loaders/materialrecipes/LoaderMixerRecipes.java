@@ -5,8 +5,6 @@ import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -14,6 +12,8 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialAtomics;
 import gregtech.api.material.MaterialRefStack;
@@ -33,14 +33,12 @@ import gregtech.api.util.GTUtility;
 /// composition's entry count.
 public final class LoaderMixerRecipes {
 
-    private static final Material[] CARRIERS = { Materials.CircuitCompoundMK3,
-        Materials.MagnetoResonatic, Materials.RhodiumPlatedPalladium, Materials.Ruridit,
-        Materials.HighDurabilityCompoundSteel, Materials.RawAdemicSteel,
-        Materials.GraphiteUraniumMixture, Materials.UraniumCarbideThoriumMixture,
-        Materials.PlutoniumOxideUraniumMixture, Materials.Zircaloy4, Materials.Zircaloy2,
-        Materials.Incoloy903, Materials.AdamantiumAlloy, Materials.MARM200Steel,
-        Materials.ArtheriumSn, Materials.TanmolyiumBetaC, Materials.Dalisenite,
-        Materials.Hikarium, Materials.Tairitsu, Materials.PreciousMetalsAlloy,
+    private static final Material[] CARRIERS = { Materials.CircuitCompoundMK3, Materials.MagnetoResonatic,
+        Materials.RhodiumPlatedPalladium, Materials.Ruridit, Materials.HighDurabilityCompoundSteel,
+        Materials.RawAdemicSteel, Materials.GraphiteUraniumMixture, Materials.UraniumCarbideThoriumMixture,
+        Materials.PlutoniumOxideUraniumMixture, Materials.Zircaloy4, Materials.Zircaloy2, Materials.Incoloy903,
+        Materials.AdamantiumAlloy, Materials.MARM200Steel, Materials.ArtheriumSn, Materials.TanmolyiumBetaC,
+        Materials.Dalisenite, Materials.Hikarium, Materials.Tairitsu, Materials.PreciousMetalsAlloy,
         Materials.EnrichedNaquadahAlloy, Materials.Permalloy };
 
     private LoaderMixerRecipes() {}

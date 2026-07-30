@@ -17,7 +17,6 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.List;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -38,6 +37,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -234,8 +234,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
         if (!result.wasSuccessful()) return result;
         // Look for ozone, blow up if more than max allowed
         for (FluidStack fluid : this.storedFluids) {
-            if (fluid.isFluidEqual(
-                MaterialLibAPI.getFluidStack(Materials.Ozone, FluidShapes.fluidGas, (int) (1)))) {
+            if (fluid.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Ozone, FluidShapes.fluidGas, (int) (1)))) {
                 if (fluid.amount > MAX_OZONE_GAS_FOR_EXPLOSION) {
                     this.explodeMultiblock();
                 }

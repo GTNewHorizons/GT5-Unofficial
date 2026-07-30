@@ -10,8 +10,6 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -27,6 +25,8 @@ import galacticgreg.api.enums.DimensionDef;
 import galacticgreg.api.enums.DimensionDef.DimNames;
 import gregtech.GTMod;
 import gregtech.api.enums.StoneType;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.DiscreteDistribution;
 import gregtech.api.util.GTUtility;

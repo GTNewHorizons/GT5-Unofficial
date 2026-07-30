@@ -4,8 +4,6 @@ import java.util.EnumSet;
 import java.util.List;
 
 import com.ruling_0.materiallib.api.Property;
-import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
-import gregtech.api.enums.materials2.PipeMaterials;
 
 /// Typed property keys GregTech attaches to MaterialLib materials; values referencing other materials use
 /// [MaterialRef] because registration order is unspecified.

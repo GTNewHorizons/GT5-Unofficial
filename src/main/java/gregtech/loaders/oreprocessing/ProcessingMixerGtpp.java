@@ -5,8 +5,6 @@ import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import java.util.List;
 import java.util.Set;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -16,6 +14,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.LegacyGTPPComposites;
 import gregtech.api.enums.materials2.LegacyGTPPComposites.Component;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeBuilder;

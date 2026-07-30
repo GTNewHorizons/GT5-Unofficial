@@ -11,8 +11,6 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -21,6 +19,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -164,10 +164,8 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
         final List<FluidStack> fakeFluids = new ArrayList<>(getStoredFluids());
         if (baseMulti.wetwareT3Active) {
             fakeFluids.add(
-                MaterialLibAPI.getFluidStack(
-                    Materials.GrowthMediumSterilized,
-                    FluidShapes.fluidLiquid,
-                    Integer.MAX_VALUE));
+                MaterialLibAPI
+                    .getFluidStack(Materials.GrowthMediumSterilized, FluidShapes.fluidLiquid, Integer.MAX_VALUE));
         }
         if (baseMulti.bioT3Active) {
             fakeFluids.add(MaterialUtils.fluid(Materials.BiohMediumSterilized, Integer.MAX_VALUE));
@@ -190,8 +188,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
             if (stack == null) continue;
             if (baseMulti.wetwareT3Active && stack.getFluid()
                 .equals(
-                    MaterialLibAPI
-                        .getFluidStack(Materials.GrowthMediumSterilized, FluidShapes.fluidLiquid, 1)
+                    MaterialLibAPI.getFluidStack(Materials.GrowthMediumSterilized, FluidShapes.fluidLiquid, 1)
                         .getFluid()))
                 fluidInputs[i] = null;
             if (baseMulti.bioT3Active && stack.getFluid()

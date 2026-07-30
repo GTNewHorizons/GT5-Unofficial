@@ -1,6 +1,5 @@
 package gregtech.api.enums;
 
-import gregtech.api.enums.materials2.ShapeData;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Gregtech;
 

@@ -1,11 +1,11 @@
 package gregtech.api.enums;
 
 import gregtech.api.enums.materials2.BlockShapes;
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.CellShapes;
 import gregtech.api.enums.materials2.Families;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.MaterialFacades;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.OreShapes;
 import gregtech.api.enums.materials2.PipeMaterials;
 import gregtech.api.enums.materials2.PipeShapes;

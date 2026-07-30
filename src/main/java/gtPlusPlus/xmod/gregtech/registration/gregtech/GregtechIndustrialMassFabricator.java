@@ -41,9 +41,7 @@ public class GregtechIndustrialMassFabricator {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Scrap.get(9L))
             .circuit(9)
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, (int) (1)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, (int) (1)))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockMassFabricatorRecipes);
@@ -52,9 +50,7 @@ public class GregtechIndustrialMassFabricator {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Scrapbox.get(1L))
             .circuit(19)
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, (int) (1)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, (int) (1)))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockMassFabricatorRecipes);
@@ -64,9 +60,7 @@ public class GregtechIndustrialMassFabricator {
             .itemInputs(ItemList.IC2_Scrap.get(9L))
             .circuit(10)
             .fluidInputs(MaterialUtils.fluid(Materials.UUMatter, 1L))
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, (int) (10)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, (int) (10)))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockMassFabricatorRecipes);
@@ -76,9 +70,7 @@ public class GregtechIndustrialMassFabricator {
             .itemInputs(ItemList.IC2_Scrapbox.get(1L))
             .circuit(20)
             .fluidInputs(MaterialUtils.fluid(Materials.UUMatter, 1L))
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, (int) (10)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, (int) (10)))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockMassFabricatorRecipes);
@@ -95,10 +87,7 @@ public class GregtechIndustrialMassFabricator {
         GTValues.RA.stdBuilder()
             .circuit(2)
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.UUAmplifier,
-                    FluidShapes.fluidLiquid,
-                    (int) (1 * NUGGETS)))
+                MaterialLibAPI.getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, (int) (1 * NUGGETS)))
             .fluidOutputs(MaterialUtils.fluid(Materials.UUMatter, 1 * NUGGETS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV / 2)
@@ -115,9 +104,7 @@ public class GregtechIndustrialMassFabricator {
         // Advanced UUM
         GTValues.RA.stdBuilder()
             .circuit(4)
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, (int) (256)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, (int) (256)))
             .fluidOutputs(MaterialUtils.fluid(Materials.UUMatter, 256))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_ZPM / 2)

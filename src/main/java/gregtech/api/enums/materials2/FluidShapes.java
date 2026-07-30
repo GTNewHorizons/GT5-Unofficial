@@ -37,22 +37,10 @@ public class FluidShapes {
     // spotless:on
 
     public static void init() {
-        fluidLiquid = fluidShape(
-            "fluidLiquid",
-            "%s",
-            legacySlot(FluidNames::fluid),
-            FluidShapes::liquidAttrs);
+        fluidLiquid = fluidShape("fluidLiquid", "%s", legacySlot(FluidNames::fluid), FluidShapes::liquidAttrs);
         fluidGas = fluidShape("fluidGas", "%s", legacySlot(FluidNames::gas), FluidShapes::gasAttrs);
-        fluidPlasma = fluidShape(
-            "fluidPlasma",
-            "%s Plasma",
-            legacySlot(FluidNames::plasma),
-            FluidShapes::plasmaAttrs);
-        fluidMolten = fluidShape(
-            "fluidMolten",
-            "Molten %s",
-            legacySlot(FluidNames::molten),
-            FluidShapes::moltenAttrs);
+        fluidPlasma = fluidShape("fluidPlasma", "%s Plasma", legacySlot(FluidNames::plasma), FluidShapes::plasmaAttrs);
+        fluidMolten = fluidShape("fluidMolten", "Molten %s", legacySlot(FluidNames::molten), FluidShapes::moltenAttrs);
 
         fluidHydroCracked1 = fluidShape(
             "fluidHydroCracked1",

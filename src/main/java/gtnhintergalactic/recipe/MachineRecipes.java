@@ -10,10 +10,6 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.MaterialFacades;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -28,7 +24,11 @@ import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.MaterialFacades;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.PipeShapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -49,8 +49,7 @@ public class MachineRecipes implements Runnable {
         // exit early if not in pack
         if (!NewHorizonsCoreMod.isModLoaded() || !GalacticraftCore.isModLoaded()) return;
 
-        ItemStack hypogenFrameBox_8 = MaterialLibAPI
-            .getStack(Materials.Hypogen, PipeShapes.frameGt, 8);
+        ItemStack hypogenFrameBox_8 = MaterialLibAPI.getStack(Materials.Hypogen, PipeShapes.frameGt, 8);
         ItemStack hypogenScrew_32 = MaterialLibAPI.getStack(Materials.Hypogen, Shapes.screw, 32);
         Fluid hypogenFluid = MaterialUtils.legacyGtppFluidOf(Materials.Hypogen);
         Fluid celestialTungstenFluid = MaterialUtils.legacyGtppFluidOf(Materials.CelestialTungsten);
@@ -59,10 +58,8 @@ public class MachineRecipes implements Runnable {
         ItemStack highComputationStationT3_32 = ItemRefer.HiC_T3.get(32);
         ItemStack highComputationStationT4_32 = ItemRefer.HiC_T4.get(32);
         ItemStack highComputationStationT5_32 = ItemRefer.HiC_T5.get(32);
-        ItemStack metaStableOgScrew_64 = MaterialLibAPI
-            .getStack(Materials.MetastableOganesson, Shapes.screw, 64);
-        ItemStack titaniumBetaCScrew_64 = MaterialLibAPI
-            .getStack(Materials.TanmolyiumBetaC, Shapes.screw, 64);
+        ItemStack metaStableOgScrew_64 = MaterialLibAPI.getStack(Materials.MetastableOganesson, Shapes.screw, 64);
+        ItemStack titaniumBetaCScrew_64 = MaterialLibAPI.getStack(Materials.TanmolyiumBetaC, Shapes.screw, 64);
 
         ItemStack voidMiner = ItemRegistry.voidminer[2];
 
@@ -90,12 +87,8 @@ public class MachineRecipes implements Runnable {
                 ItemList.Electric_Motor_UV.get(32), ItemList.SpaceElevatorBaseCasing.get(8) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 40 * INGOTS),
                 MaterialUtils.fluid(Materials.UUMatter, 16_000),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (32_000)),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Neutronium,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)) },
+                MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (32_000)),
+                MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, (int) (10 * INGOTS)) },
             ItemList.SpaceElevatorController.get(1),
             5 * MINUTE,
             (int) TierEU.RECIPE_UHV);
@@ -137,10 +130,7 @@ public class MachineRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.ring, (int) (8)), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 40 * INGOTS),
                 MaterialUtils.fluid(Materials.UUMatter, 2_000),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Iridium,
-                    FluidShapes.fluidMolten,
-                    (int) (8 * INGOTS)) },
+                MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, (int) (8 * INGOTS)) },
             ItemList.SpaceElevatorBaseCasing.get(8),
             1 * MINUTE,
             (int) TierEU.RECIPE_UV);
@@ -158,10 +148,7 @@ public class MachineRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.plateDouble, (int) (8)), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 40 * INGOTS),
                 MaterialUtils.fluid(Materials.UUMatter, 1_000),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Iridium,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)) },
+                MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, (int) (10 * INGOTS)) },
             ItemList.SpaceElevatorSupportStructure.get(8),
             1 * MINUTE,
             (int) TierEU.RECIPE_UV);
@@ -178,10 +165,7 @@ public class MachineRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plateDouble, (int) (8)), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 40 * INGOTS),
                 MaterialUtils.fluid(Materials.UUMatter, 8_000),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Concrete,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)) },
+                MaterialLibAPI.getFluidStack(Materials.Concrete, FluidShapes.fluidMolten, (int) (10 * INGOTS)) },
             ItemList.SpaceElevatorInternalStructure.get(8),
             1 * MINUTE,
             (int) TierEU.RECIPE_UV);
@@ -201,12 +185,8 @@ public class MachineRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.plate, (int) (16)), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 40 * INGOTS),
                 MaterialUtils.fluid(Materials.UUMatter, 8_000),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Naquadria,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (16_000)) },
+                MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (10 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (16_000)) },
             ItemList.SpaceElevatorMotorT1.get(1),
             1 * MINUTE,
             (int) TierEU.RECIPE_UV);
@@ -226,12 +206,8 @@ public class MachineRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.plate, (int) (16)), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 40 * INGOTS),
                 MaterialUtils.fluid(Materials.UUMatter, 8_000),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Naquadria,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (16_000)) },
+                MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (10 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (16_000)) },
             ItemList.SpaceElevatorMotorT2.get(1),
             1 * MINUTE,
             (int) TierEU.RECIPE_UHV);
@@ -251,10 +227,7 @@ public class MachineRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.plate, (int) (16)), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 20 * INGOTS),
                 MaterialUtils.fluid(Materials.UUMatter, 8_000),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Naquadria,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (10 * INGOTS)),
                 MaterialUtils.fluid(Materials.dimensionallyshiftedsuperfluid, 24_000) },
             ItemList.SpaceElevatorMotorT3.get(1),
             1 * MINUTE,
@@ -275,10 +248,7 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.protohalkonite, 16), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 20 * INGOTS),
                 MaterialUtils.fluid(Materials.UUMatter, 8_000),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Naquadria,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (10 * INGOTS)),
                 MaterialUtils.fluid(Materials.dimensionallyshiftedsuperfluid, 24_000) },
             ItemList.SpaceElevatorMotorT4.get(1),
             1 * MINUTE,
@@ -299,10 +269,7 @@ public class MachineRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.plate, (int) (16)), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 20 * INGOTS),
                 MaterialUtils.fluid(Materials.UUMatter, 8_000),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Naquadria,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (10 * INGOTS)),
                 MaterialUtils.fluid(Materials.dimensionallyshiftedsuperfluid, 24_000) },
             ItemList.SpaceElevatorMotorT5.get(1),
             1 * MINUTE,
@@ -324,10 +291,7 @@ public class MachineRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.gearGt, (int) (4)),
                 MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.screw, (int) (32)), },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 9 * INGOTS),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Infinity,
-                    FluidShapes.fluidMolten,
-                    (int) (4 * INGOTS)) },
+                MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, (int) (4 * INGOTS)) },
             ItemList.SpaceElevatorModulePumpT1.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UEV);
@@ -343,8 +307,7 @@ public class MachineRecipes implements Runnable {
                 CustomItemList.enderLinkFluidCover.get(8),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 4),
                 new Object[] { Circuits.UIV.getIngredient(), 16 }, ItemList.Electric_Pump_UIV.get(8),
-                MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.gearGt, (int) (4)),
-                metaStableOgScrew_64, },
+                MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.gearGt, (int) (4)), metaStableOgScrew_64, },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 32 * INGOTS),
                 MaterialUtils.fluid(Materials.protohalkonitebase, 16 * INGOTS) },
             ItemList.SpaceElevatorModulePumpT2.get(1),
@@ -381,10 +344,7 @@ public class MachineRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.BlackDwarfMatter, Shapes.gearGt, (int) (4)),
                 MaterialLibAPI.getStack(Materials.WhiteDwarfMatter, Shapes.screw, (int) (64)) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 1 * STACKS),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Eternity,
-                    FluidShapes.fluidMolten,
-                    (int) (16 * INGOTS)) },
+                MaterialLibAPI.getFluidStack(Materials.Eternity, FluidShapes.fluidMolten, (int) (16 * INGOTS)) },
             ItemList.SpaceElevatorModulePumpT3.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UMV);
@@ -422,12 +382,8 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 8),
                 MaterialLibAPI.getStack(Materials.Neutronium, Shapes.screw, (int) (32)) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 9 * INGOTS),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Naquadria,
-                    FluidShapes.fluidMolten,
-                    (int) (9 * INGOTS)),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (16_000)) },
+                MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (9 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (16_000)) },
             ItemList.SpaceElevatorModuleAssemblerT1.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UEV);
@@ -447,8 +403,7 @@ public class MachineRecipes implements Runnable {
                 ItemList.Robot_Arm_UIV.get(8), ItemList.Conveyor_Module_UIV.get(16), highComputationStationT4_32,
                 new Object[] { Circuits.UIV.getIngredient(), 16 }, hypogenFrameBox_8, hypogenScrew_32 },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 9 * INGOTS),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, (int) (9 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, (int) (9 * INGOTS)),
                 MaterialUtils.fluid(Materials.UUMatter, 16_000) },
             ItemList.SpaceElevatorModuleAssemblerT2.get(1),
             2 * MINUTE,
@@ -464,8 +419,7 @@ public class MachineRecipes implements Runnable {
             new Object[] { ItemList.SpaceElevatorBaseCasing.get(1),
                 new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 10786),
                 new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 12093),
-                GTOreDictUnificator
-                    .get(OrePrefixes.gearGt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 8),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 8),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Magmatter, 8),
                 GTOreDictUnificator
                     .get(OrePrefixes.gearGtSmall, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 16),
@@ -475,18 +429,9 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Universium, 8),
                 MaterialLibAPI.getStack(Materials.Universium, Shapes.screw, (int) (32)) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 36 * INGOTS),
-                MaterialLibAPI.getFluidStack(
-                    Materials.BlackDwarfMatter,
-                    FluidShapes.fluidMolten,
-                    (int) (9 * INGOTS)),
-                MaterialLibAPI.getFluidStack(
-                    Materials.WhiteDwarfMatter,
-                    FluidShapes.fluidMolten,
-                    (int) (9 * INGOTS)),
-                MaterialLibAPI.getFluidStack(
-                    Materials.SpaceTime,
-                    FluidShapes.fluidMolten,
-                    (int) (9 * INGOTS)) },
+                MaterialLibAPI.getFluidStack(Materials.BlackDwarfMatter, FluidShapes.fluidMolten, (int) (9 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.WhiteDwarfMatter, FluidShapes.fluidMolten, (int) (9 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, (int) (9 * INGOTS)) },
             ItemList.SpaceElevatorModuleAssemblerT3.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UXV);
@@ -549,12 +494,8 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialFacades.SuperconductorUV, 32),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 16) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 20 * INGOTS),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Naquadria,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (8_000)) },
+                MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (10 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (8_000)) },
             ItemList.SpaceElevatorModuleMinerT1.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UHV);
@@ -571,12 +512,8 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialFacades.SuperconductorUHV, 32),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 16) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 20 * INGOTS),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Naquadria,
-                    FluidShapes.fluidMolten,
-                    (int) (20 * INGOTS)),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (16_000)) },
+                MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (20 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (16_000)) },
             ItemList.SpaceElevatorModuleMinerT2.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UEV);
@@ -593,10 +530,7 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialFacades.SuperconductorUEV, 32),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 16) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 20 * INGOTS),
-                MaterialLibAPI.getFluidStack(
-                    Materials.TranscendentMetal,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, (int) (10 * INGOTS)),
                 MaterialUtils.fluid(Materials.UUMatter, 2_000) },
             ItemList.SpaceElevatorModuleMinerT3.get(1),
             2 * MINUTE,
@@ -616,10 +550,7 @@ public class MachineRecipes implements Runnable {
                 ItemList.Sensor_LV.get(8))
             .itemOutputs(ItemList.MiningDroneLV.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.SolderingAlloy,
-                    FluidShapes.fluidMolten,
-                    (int) (5 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (5 * INGOTS)))
             .duration(1 * MINUTE)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -636,10 +567,7 @@ public class MachineRecipes implements Runnable {
                 ItemList.Sensor_MV.get(8))
             .itemOutputs(ItemList.MiningDroneMV.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.SolderingAlloy,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (10 * INGOTS)))
             .duration(1 * MINUTE)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -656,10 +584,7 @@ public class MachineRecipes implements Runnable {
                 ItemList.Sensor_HV.get(8))
             .itemOutputs(ItemList.MiningDroneHV.get(1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.SolderingAlloy,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (10 * INGOTS)))
             .duration(1 * MINUTE)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -671,14 +596,12 @@ public class MachineRecipes implements Runnable {
             128,
             1000000,
             4,
-            new Object[] {
-                MaterialLibAPI.getStack(Materials.Trinium, Shapes.toolHeadDrill, (int) (8)),
+            new Object[] { MaterialLibAPI.getStack(Materials.Trinium, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_EV.get(8), ItemList.Field_Generator_EV.get(2),
                 new Object[] { Circuits.LuV.getIngredient(), 4 }, new ItemStack(AsteroidsItems.basicItem, 32, 0),
                 new ItemStack(AsteroidsItems.basicItem, 4, 1), ItemList.Sensor_EV.get(8) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 5 * INGOTS),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, (int) (5 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, (int) (5 * INGOTS)),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 16_000) },
             ItemList.MiningDroneEV.get(1),
             1 * MINUTE,
@@ -691,15 +614,13 @@ public class MachineRecipes implements Runnable {
             128,
             1000000,
             8,
-            new Object[] {
-                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.toolHeadDrill, (int) (8)),
+            new Object[] { MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_IV.get(8), ItemList.Field_Generator_IV.get(2),
                 new Object[] { Circuits.ZPM.getIngredient(), 4 },
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyPlateTier4", 32),
                 new ItemStack(AsteroidsItems.basicItem, 4, 1), ItemList.Sensor_IV.get(8) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 10 * INGOTS),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, (int) (10 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, (int) (10 * INGOTS)),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 32_000) },
             ItemList.MiningDroneIV.get(1),
             1 * MINUTE,
@@ -712,18 +633,14 @@ public class MachineRecipes implements Runnable {
             256,
             (int) TierEU.RECIPE_UHV,
             4,
-            new Object[] {
-                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.toolHeadDrill, (int) (8)),
+            new Object[] { MaterialLibAPI.getStack(Materials.Naquadria, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_LuV.get(8), ItemList.Field_Generator_LuV.get(2),
                 new Object[] { Circuits.ZPM.getIngredient(), 4 },
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyPlateTier5", 32),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier3", 4),
                 ItemList.Sensor_LuV.get(8) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 20 * INGOTS),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Osmiridium,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Osmiridium, FluidShapes.fluidMolten, (int) (10 * INGOTS)),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 64_000) },
             ItemList.MiningDroneLuV.get(1),
             1 * MINUTE,
@@ -736,18 +653,14 @@ public class MachineRecipes implements Runnable {
             256,
             (int) TierEU.RECIPE_UHV,
             8,
-            new Object[] {
-                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.toolHeadDrill, (int) (8)),
+            new Object[] { MaterialLibAPI.getStack(Materials.Neutronium, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_ZPM.get(8), ItemList.Field_Generator_ZPM.get(2),
                 new Object[] { Circuits.UV.getIngredient(), 2 },
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyPlateTier6", 32),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier3", 4),
                 ItemList.Sensor_ZPM.get(8) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 20 * INGOTS),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Osmiridium,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Osmiridium, FluidShapes.fluidMolten, (int) (10 * INGOTS)),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 128_000) },
             ItemList.MiningDroneZPM.get(1),
             1 * MINUTE,
@@ -760,19 +673,14 @@ public class MachineRecipes implements Runnable {
             512,
             4000000,
             4,
-            new Object[] {
-                MaterialLibAPI
-                    .getStack(Materials.CosmicNeutronium, Shapes.toolHeadDrill, (int) (8)),
+            new Object[] { MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_UV.get(8), ItemList.Field_Generator_UV.get(2),
                 new Object[] { Circuits.UHV.getIngredient(), 4 },
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyPlateTier7", 32),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier4", 4),
                 ItemList.Sensor_UV.get(8) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.Indalloy140, 20 * INGOTS),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Naquadria,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (10 * INGOTS)),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 256_000) },
             ItemList.MiningDroneUV.get(1),
             1 * MINUTE,
@@ -785,18 +693,14 @@ public class MachineRecipes implements Runnable {
             512,
             4000000,
             8,
-            new Object[] {
-                MaterialLibAPI.getStack(Materials.Infinity, Shapes.toolHeadDrill, (int) (8)),
+            new Object[] { MaterialLibAPI.getStack(Materials.Infinity, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_UHV.get(8), ItemList.Field_Generator_UHV.get(2),
                 new Object[] { Circuits.UEV.getIngredient(), 4 },
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyPlateTier8", 32),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier4", 4),
                 ItemList.Sensor_UHV.get(8) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 20 * INGOTS),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Neutronium,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, (int) (10 * INGOTS)),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 512_000) },
             ItemList.MiningDroneUHV.get(1),
             1 * MINUTE,
@@ -811,18 +715,13 @@ public class MachineRecipes implements Runnable {
             512,
             4000000,
             8,
-            new Object[] {
-                MaterialLibAPI
-                    .getStack(Materials.CosmicNeutronium, Shapes.toolHeadDrill, (int) (8)),
+            new Object[] { MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_UEV.get(8), ItemList.Field_Generator_UEV.get(2),
                 new Object[] { Circuits.UIV.getIngredient(), 4 }, GTUtility.copyAmount(32, t9Plate),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier4", 8),
                 ItemList.Sensor_UEV.get(8) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 20 * INGOTS),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Quantium,
-                    FluidShapes.fluidMolten,
-                    (int) (10 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Quantium, FluidShapes.fluidMolten, (int) (10 * INGOTS)),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 512_000) },
             ItemList.MiningDroneUEV.get(1),
             1 * MINUTE,
@@ -835,18 +734,13 @@ public class MachineRecipes implements Runnable {
             512,
             (int) TierEU.RECIPE_UEV,
             4,
-            new Object[] {
-                MaterialLibAPI
-                    .getStack(Materials.CosmicNeutronium, Shapes.toolHeadDrill, (int) (8)),
+            new Object[] { MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_UIV.get(8), ItemList.Field_Generator_UIV.get(2),
                 new Object[] { Circuits.UMV.getIngredient(), 4 }, GTUtility.copyAmount(64, t9Plate),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier4", 16),
                 ItemList.Sensor_UIV.get(8) },
             new FluidStack[] { MaterialUtils.legacyGtppFluid(Materials.MutatedLivingSolder, 40 * INGOTS),
-                MaterialLibAPI.getFluidStack(
-                    Materials.Quantium,
-                    FluidShapes.fluidMolten,
-                    (int) (20 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Quantium, FluidShapes.fluidMolten, (int) (20 * INGOTS)),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 512_000) },
             ItemList.MiningDroneUIV.get(1),
             1 * MINUTE,
@@ -859,8 +753,7 @@ public class MachineRecipes implements Runnable {
             512,
             (int) TierEU.RECIPE_UEV,
             8,
-            new Object[] {
-                MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.toolHeadDrill, (int) (8)),
+            new Object[] { MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_UMV.get(8), ItemList.Field_Generator_UMV.get(2),
                 new Object[] { Circuits.UXV.getIngredient(), 4 }, GTUtility.copyAmount(64, t9Plate),
                 GTUtility.copyAmount(64, t9Plate),
@@ -880,15 +773,14 @@ public class MachineRecipes implements Runnable {
             512,
             16000000,
             4,
-            new Object[] {
-                MaterialLibAPI.getStack(Materials.Eternity, Shapes.toolHeadDrill, (int) (8)),
+            new Object[] { MaterialLibAPI.getStack(Materials.Eternity, Shapes.toolHeadDrill, (int) (8)),
                 ItemList.Robot_Arm_UXV.get(8), ItemList.Field_Generator_UXV.get(2),
                 new Object[] { Circuits.MAX.getIngredient(), 4 }, GTUtility.copyAmount(64, t9Plate),
                 GTUtility.copyAmount(64, t9Plate), GTUtility.copyAmount(64, t9Plate), GTUtility.copyAmount(64, t9Plate),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier4", 64),
                 ItemList.Sensor_UXV.get(8) },
-            new FluidStack[] { MaterialUtils.molten(Materials.spatialFluid, 4 * INGOTS), MaterialLibAPI
-                .getFluidStack(Materials.Universium, FluidShapes.fluidMolten, (int) (4 * INGOTS)),
+            new FluidStack[] { MaterialUtils.molten(Materials.spatialFluid, 4 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, (int) (4 * INGOTS)),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 512_000) },
             ItemList.MiningDroneUXV.get(1),
             1 * MINUTE,

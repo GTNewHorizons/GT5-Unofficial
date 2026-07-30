@@ -199,9 +199,8 @@ public class MTEMassfabricator extends MTEBasicMachine {
 
     @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
-        return aFluid.isFluidEqual(
-            MaterialLibAPI
-                .getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, (int) (1)));
+        return aFluid
+            .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, (int) (1)));
     }
 
     @Override
@@ -211,9 +210,8 @@ public class MTEMassfabricator extends MTEBasicMachine {
 
     private boolean containsUUA(FluidStack aFluid) {
         return aFluid != null && aFluid.amount >= sUUAperUUM
-            && aFluid.isFluidEqual(
-                MaterialLibAPI
-                    .getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, (int) (1)));
+            && aFluid
+                .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, (int) (1)));
     }
 
     @ParametersAreNonnullByDefault

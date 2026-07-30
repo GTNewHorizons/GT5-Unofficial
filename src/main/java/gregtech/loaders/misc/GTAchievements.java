@@ -5,8 +5,6 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
-import gregtech.api.enums.materials2.MaterialFacades;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -30,7 +28,9 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.MaterialFacades;
 import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
@@ -73,48 +73,32 @@ public class GTAchievements {
             "tools",
             0,
             4,
-            MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                IDMetaTool01.HARDHAMMER.ID,
-                1,
-                Materials.Iron,
-                Materials.Wood,
-                null),
+            MetaGeneratedTool01.INSTANCE
+                .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, Materials.Iron, Materials.Wood, null),
             "gettingstartedwithgt",
             false);
         registerAchievement(
             "driltime",
             2,
             4,
-            MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                IDMetaTool01.DRILL_LV.ID,
-                1,
-                Materials.BlueSteel,
-                Materials.StainlessSteel,
-                null),
+            MetaGeneratedTool01.INSTANCE
+                .getToolWithStats(IDMetaTool01.DRILL_LV.ID, 1, Materials.BlueSteel, Materials.StainlessSteel, null),
             "tools",
             false);
         registerAchievement(
             "brrrr",
             2,
             6,
-            MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                IDMetaTool01.CHAINSAW_LV.ID,
-                1,
-                Materials.BlueSteel,
-                Materials.StainlessSteel,
-                null),
+            MetaGeneratedTool01.INSTANCE
+                .getToolWithStats(IDMetaTool01.CHAINSAW_LV.ID, 1, Materials.BlueSteel, Materials.StainlessSteel, null),
             "driltime",
             false);
         registerAchievement(
             "highpowerdrill",
             3,
             5,
-            MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                IDMetaTool01.DRILL_HV.ID,
-                1,
-                Materials.TungstenSteel,
-                Materials.TungstenSteel,
-                null),
+            MetaGeneratedTool01.INSTANCE
+                .getToolWithStats(IDMetaTool01.DRILL_HV.ID, 1, Materials.TungstenSteel, Materials.TungstenSteel, null),
             "driltime",
             false);
         registerAchievement(

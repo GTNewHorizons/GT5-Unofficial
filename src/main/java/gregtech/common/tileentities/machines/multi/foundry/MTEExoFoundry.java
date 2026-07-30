@@ -30,7 +30,6 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -70,6 +69,7 @@ import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -710,8 +710,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
                 if (foundryData.hypercoolerPresent) {
                     currentCoolingFluid = findCoolingFluid();
-                    if (currentCoolingFluid == null || (currentCoolingFluid.material == Materials.Eternity
-                        && !foundryData.allowEternity)) {
+                    if (currentCoolingFluid == null
+                        || (currentCoolingFluid.material == Materials.Eternity && !foundryData.allowEternity)) {
                         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
                     }
                     additionalOverclocks = currentCoolingFluid.grantedOC;

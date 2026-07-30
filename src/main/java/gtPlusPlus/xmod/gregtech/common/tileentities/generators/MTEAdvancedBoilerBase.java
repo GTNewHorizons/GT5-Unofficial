@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -16,6 +14,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -264,9 +264,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
                 || fuel.getDisplayName()
                     .toLowerCase()
                     .contains("coke")) {
-                tile.addStackToSlot(
-                    3,
-                    MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, (int) (1)));
+                tile.addStackToSlot(3, MaterialLibAPI.getStack(Materials.Ash, Shapes.dustTiny, (int) (1)));
             } else {
                 tile.addStackToSlot(3, GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
             }

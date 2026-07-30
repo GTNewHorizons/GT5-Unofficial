@@ -14,8 +14,7 @@ public final class ConsumerDust {
     static void register() {
         ShapeConsumerSupport.delegate(Shapes.dust, OrePrefixes.dust, () -> ProcessingDust.INSTANCE);
         ShapeConsumerSupport.delegate(Shapes.dustPure, OrePrefixes.dustPure, () -> ProcessingDust.INSTANCE);
-        ShapeConsumerSupport
-            .delegate(Shapes.dustImpure, OrePrefixes.dustImpure, () -> ProcessingDust.INSTANCE);
+        ShapeConsumerSupport.delegate(Shapes.dustImpure, OrePrefixes.dustImpure, () -> ProcessingDust.INSTANCE);
         ShapeConsumerSupport.delegate(Shapes.dustSmall, OrePrefixes.dustSmall, () -> ProcessingDust.INSTANCE);
         ShapeConsumerSupport.delegate(Shapes.dustTiny, OrePrefixes.dustTiny, () -> ProcessingDust.INSTANCE);
     }

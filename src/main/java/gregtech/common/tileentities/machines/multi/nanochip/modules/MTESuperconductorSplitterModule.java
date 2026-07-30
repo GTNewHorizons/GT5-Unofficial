@@ -152,10 +152,8 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
         }
 
         if (ticker % 20 == 0) {
-            FluidStack fluidToBeDrained = MaterialLibAPI.getFluidStack(
-                Materials.SuperCoolant,
-                FluidShapes.fluidLiquid,
-                (int) (COOLANT_CONSUMED_PER_SEC));
+            FluidStack fluidToBeDrained = MaterialLibAPI
+                .getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, (int) (COOLANT_CONSUMED_PER_SEC));
             if (!drain(coolantInputHatch, fluidToBeDrained, true)) {
                 stopMachine(ShutDownReasonRegistry.outOfFluid(fluidToBeDrained));
                 return false;

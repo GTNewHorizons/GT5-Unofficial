@@ -2,8 +2,6 @@ package gtPlusPlus.core.handler.events;
 
 import java.util.ArrayList;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -18,6 +16,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ReflectionUtil;
 import gtPlusPlus.core.util.math.MathUtils;

@@ -17,7 +17,6 @@ import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 import java.util.List;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -35,6 +34,7 @@ import detrav.items.tools.DetravProspector;
 import detrav.items.tools.DetravToolElectricProspector;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TCAspects;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.material.MaterialUtils;
@@ -295,69 +295,17 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         ItemStack dStack;
         if (NewHorizonsCoreMod.isModLoaded()) {
             // Materials at tiers
+            list.add(getToolWithStats(ProspectorScannerLV.ID, 1, Materials.Steel, Materials.Steel, null));
+            list.add(getToolWithStats(ProspectorScannerLV.ID, 1, Materials.Bronze, Materials.Steel, null));
+            list.add(getToolWithStats(ProspectorScannerMV.ID, 1, Materials.Manyullyn, Materials.Aluminium, null));
             list.add(
-                getToolWithStats(
-                    ProspectorScannerLV.ID,
-                    1,
-                    Materials.Steel,
-                    Materials.Steel,
-                    null));
+                getToolWithStats(ProspectorScannerHV.ID, 1, Materials.DamascusSteel, Materials.DamascusSteel, null));
+            list.add(getToolWithStats(ProspectorScannerEV.ID, 1, Materials.Titanium, Materials.Titanium, null));
             list.add(
-                getToolWithStats(
-                    ProspectorScannerLV.ID,
-                    1,
-                    Materials.Bronze,
-                    Materials.Steel,
-                    null));
-            list.add(
-                getToolWithStats(
-                    ProspectorScannerMV.ID,
-                    1,
-                    Materials.Manyullyn,
-                    Materials.Aluminium,
-                    null));
-            list.add(
-                getToolWithStats(
-                    ProspectorScannerHV.ID,
-                    1,
-                    Materials.DamascusSteel,
-                    Materials.DamascusSteel,
-                    null));
-            list.add(
-                getToolWithStats(
-                    ProspectorScannerEV.ID,
-                    1,
-                    Materials.Titanium,
-                    Materials.Titanium,
-                    null));
-            list.add(
-                getToolWithStats(
-                    ProspectorScannerIV.ID,
-                    1,
-                    Materials.TungstenSteel,
-                    Materials.TungstenSteel,
-                    null));
-            list.add(
-                getToolWithStats(
-                    ProspectorScannerLuV.ID,
-                    1,
-                    Materials.Iridium,
-                    Materials.Iridium,
-                    null));
-            list.add(
-                getToolWithStats(
-                    ProspectorScannerLuV.ID,
-                    1,
-                    Materials.Osmium,
-                    Materials.Osmium,
-                    null));
-            list.add(
-                getToolWithStats(
-                    ProspectorScannerZPM.ID,
-                    1,
-                    Materials.Neutronium,
-                    Materials.Neutronium,
-                    null));
+                getToolWithStats(ProspectorScannerIV.ID, 1, Materials.TungstenSteel, Materials.TungstenSteel, null));
+            list.add(getToolWithStats(ProspectorScannerLuV.ID, 1, Materials.Iridium, Materials.Iridium, null));
+            list.add(getToolWithStats(ProspectorScannerLuV.ID, 1, Materials.Osmium, Materials.Osmium, null));
+            list.add(getToolWithStats(ProspectorScannerZPM.ID, 1, Materials.Neutronium, Materials.Neutronium, null));
             list.add(
                 getToolWithStats(
                     ProspectorScannerUV.ID,
@@ -365,13 +313,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
                     Materials.InfinityCatalyst,
                     Materials.InfinityCatalyst,
                     null));
-            list.add(
-                getToolWithStats(
-                    ProspectorScannerUHV.ID,
-                    1,
-                    Materials.Infinity,
-                    Materials.Infinity,
-                    null));
+            list.add(getToolWithStats(ProspectorScannerUHV.ID, 1, Materials.Infinity, Materials.Infinity, null));
 
             // electric prospector scanners:
             dStack = getToolWithStats(
@@ -394,24 +336,15 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         }
 
         // Steel for comparison
-        list.add(
-            getToolWithStats(ProspectorScannerLV.ID, 1, Materials.Steel, Materials.Steel, null));
-        list.add(
-            getToolWithStats(ProspectorScannerMV.ID, 1, Materials.Steel, Materials.Steel, null));
-        list.add(
-            getToolWithStats(ProspectorScannerHV.ID, 1, Materials.Steel, Materials.Steel, null));
-        list.add(
-            getToolWithStats(ProspectorScannerEV.ID, 1, Materials.Steel, Materials.Steel, null));
-        list.add(
-            getToolWithStats(ProspectorScannerIV.ID, 1, Materials.Steel, Materials.Steel, null));
-        list.add(
-            getToolWithStats(ProspectorScannerLuV.ID, 1, Materials.Steel, Materials.Steel, null));
-        list.add(
-            getToolWithStats(ProspectorScannerZPM.ID, 1, Materials.Steel, Materials.Steel, null));
-        list.add(
-            getToolWithStats(ProspectorScannerUV.ID, 1, Materials.Steel, Materials.Steel, null));
-        list.add(
-            getToolWithStats(ProspectorScannerUHV.ID, 1, Materials.Steel, Materials.Steel, null));
+        list.add(getToolWithStats(ProspectorScannerLV.ID, 1, Materials.Steel, Materials.Steel, null));
+        list.add(getToolWithStats(ProspectorScannerMV.ID, 1, Materials.Steel, Materials.Steel, null));
+        list.add(getToolWithStats(ProspectorScannerHV.ID, 1, Materials.Steel, Materials.Steel, null));
+        list.add(getToolWithStats(ProspectorScannerEV.ID, 1, Materials.Steel, Materials.Steel, null));
+        list.add(getToolWithStats(ProspectorScannerIV.ID, 1, Materials.Steel, Materials.Steel, null));
+        list.add(getToolWithStats(ProspectorScannerLuV.ID, 1, Materials.Steel, Materials.Steel, null));
+        list.add(getToolWithStats(ProspectorScannerZPM.ID, 1, Materials.Steel, Materials.Steel, null));
+        list.add(getToolWithStats(ProspectorScannerUV.ID, 1, Materials.Steel, Materials.Steel, null));
+        list.add(getToolWithStats(ProspectorScannerUHV.ID, 1, Materials.Steel, Materials.Steel, null));
 
         // Electric Scanners
         dStack = getToolWithStats(

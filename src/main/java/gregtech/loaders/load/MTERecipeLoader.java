@@ -15,10 +15,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.MaterialFacades;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -39,6 +35,10 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.TieredItems;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.MaterialFacades;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.util.GTLog;
@@ -1579,9 +1579,8 @@ public class MTERecipeLoader implements Runnable {
             BUFFERED,
             new Object[] { "ABA", "CDC", "EFE", 'A', "circuitData", 'B', "pipeHugeStainlessSteel", 'C',
                 MaterialLibAPI.getStack(Materials.MaragingSteel250, Shapes.plate, 1), 'D',
-                ItemList.Machine_EV_Centrifuge, 'E',
-                MaterialLibAPI.getStack(Materials.Inconel792, Shapes.plate, 1), 'F',
-                ItemList.Casing_EV });
+                ItemList.Machine_EV_Centrifuge, 'E', MaterialLibAPI.getStack(Materials.Inconel792, Shapes.plate, 1),
+                'F', ItemList.Casing_EV });
 
         // Amazon Warehousing Depot
         GTModHandler.addCraftingRecipe(
@@ -1601,9 +1600,8 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.IndustrialElectrolyzer.get(1),
             BUFFERED,
-            new Object[] { "PCP", "HMH", "PRP", 'P',
-                MaterialLibAPI.getStack(Materials.Stellite, Shapes.plate, 1), 'C', "circuitElite",
-                'H', ItemList.Casing_IV, 'M', ItemList.Machine_IV_Electrolyzer, 'R',
+            new Object[] { "PCP", "HMH", "PRP", 'P', MaterialLibAPI.getStack(Materials.Stellite, Shapes.plate, 1), 'C',
+                "circuitElite", 'H', ItemList.Casing_IV, 'M', ItemList.Machine_IV_Electrolyzer, 'R',
                 MaterialLibAPI.getStack(Materials.Stellite, Shapes.rotor, 1) });
 
         // Industrial Mixer
@@ -1611,10 +1609,8 @@ public class MTERecipeLoader implements Runnable {
             ItemList.IndustrialMixer.get(1),
             BUFFERED,
             new Object[] { "PCP", "ZMZ", "PCP", 'P',
-                MaterialLibAPI.getStack(Materials.MaragingSteel300, Shapes.plate, 1), 'C',
-                "circuitElite", 'Z',
-                MaterialLibAPI.getStack(Materials.MaragingSteel250, Shapes.plate, 1), 'M',
-                ItemList.Machine_IV_Mixer });
+                MaterialLibAPI.getStack(Materials.MaragingSteel300, Shapes.plate, 1), 'C', "circuitElite", 'Z',
+                MaterialLibAPI.getStack(Materials.MaragingSteel250, Shapes.plate, 1), 'M', ItemList.Machine_IV_Mixer });
 
         // Mixer casing, move if there is a better place for it
         GTModHandler.addCraftingRecipe(
@@ -1671,9 +1667,7 @@ public class MTERecipeLoader implements Runnable {
                 GTOreDictUnificator.get("frameGtNaquadah", 1))
             .circuit(1)
             .itemOutputs(ItemList.NaquadahReactorCasing.get(1))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.NaquadahEnriched, FluidShapes.fluidMolten, 4 * INGOTS))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.NaquadahEnriched, FluidShapes.fluidMolten, 4 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -2302,8 +2296,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Casing_Turbine2.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
-                MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Titanium), 'F',
-                ItemList.Casing_Turbine });
+                MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Titanium), 'F', ItemList.Casing_Turbine });
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_Turbine3.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -2313,16 +2306,14 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_Pipe_Bronze.get(1L),
             GTModHandler.RecipeBits.BITS,
-            new Object[] { "PIP", "IFI", "PIP", 'P',
-                MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Bronze), 'F',
-                MaterialParts.craftIngredient(OrePrefixes.frameGt, Materials.Bronze), 'I',
+            new Object[] { "PIP", "IFI", "PIP", 'P', MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Bronze),
+                'F', MaterialParts.craftIngredient(OrePrefixes.frameGt, Materials.Bronze), 'I',
                 MaterialParts.craftIngredient(OrePrefixes.pipeMedium, Materials.Bronze) });
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_Pipe_Steel.get(1L),
             GTModHandler.RecipeBits.BITS,
-            new Object[] { "PIP", "IFI", "PIP", 'P',
-                MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Steel), 'F',
-                MaterialParts.craftIngredient(OrePrefixes.frameGt, Materials.Steel), 'I',
+            new Object[] { "PIP", "IFI", "PIP", 'P', MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Steel),
+                'F', MaterialParts.craftIngredient(OrePrefixes.frameGt, Materials.Steel), 'I',
                 MaterialParts.craftIngredient(OrePrefixes.pipeMedium, Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_Pipe_Titanium.get(1L),
@@ -2370,9 +2361,8 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Casing_Grate.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "PVP", "PFP", aTextPlateMotor, 'P', new ItemStack(Blocks.iron_bars, 1), 'F',
-                MaterialParts.craftIngredient(OrePrefixes.frameGt, Materials.Steel), 'M',
-                ItemList.Electric_Motor_MV, 'V',
-                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Steel) });
+                MaterialParts.craftIngredient(OrePrefixes.frameGt, Materials.Steel), 'M', ItemList.Electric_Motor_MV,
+                'V', MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_Assembler.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -2382,37 +2372,32 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_Firebox_Bronze.get(1L),
             GTModHandler.RecipeBits.BITS,
-            new Object[] { "PSP", "SFS", "PSP", 'P',
-                MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Bronze), 'F',
-                MaterialParts.craftIngredient(OrePrefixes.frameGt, Materials.Bronze), 'S',
+            new Object[] { "PSP", "SFS", "PSP", 'P', MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Bronze),
+                'F', MaterialParts.craftIngredient(OrePrefixes.frameGt, Materials.Bronze), 'S',
                 MaterialParts.craftIngredient(OrePrefixes.stick, Materials.Bronze) });
         GTModHandler.addCraftingRecipe(
             ItemList.WoodenCasing.get(1L),
             GTModHandler.RecipeBits.BITS,
-            new Object[] { "PSP", "PFP", "PSP", 'F',
-                MaterialParts.craftIngredient(OrePrefixes.gear, Materials.Wood), 'P',
-                MaterialParts.craftIngredient(OrePrefixes.frameGt, Materials.Wood), 'S',
+            new Object[] { "PSP", "PFP", "PSP", 'F', MaterialParts.craftIngredient(OrePrefixes.gear, Materials.Wood),
+                'P', MaterialParts.craftIngredient(OrePrefixes.frameGt, Materials.Wood), 'S',
                 MaterialParts.craftIngredient(OrePrefixes.screw, Materials.Wood) });
         GTModHandler.addCraftingRecipe(
             ItemList.Hatch_Output_ULV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "ASA", "AFA", "APA", 'S', GTModHandler.getModItem(BuildCraftFactory.ID, "tankBlock", 1L, 0),
-                'F', ItemList.Hull_ULV.get(1L), 'A',
-                MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Rubber), 'P',
-                MaterialParts.craftIngredient(OrePrefixes.ring, Materials.Rubber) });
+                'F', ItemList.Hull_ULV.get(1L), 'A', MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Rubber),
+                'P', MaterialParts.craftIngredient(OrePrefixes.ring, Materials.Rubber) });
         GTModHandler.addCraftingRecipe(
             ItemList.Hatch_Input_ULV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "ASA", "AFA", "APA", 'S', GTModHandler.getModItem(BuildCraftFactory.ID, "tankBlock", 1L, 0),
-                'F', ItemList.Hull_ULV.get(1L), 'A',
-                MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Rubber), 'P',
-                MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Rubber) });
+                'F', ItemList.Hull_ULV.get(1L), 'A', MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Rubber),
+                'P', MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Rubber) });
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_Firebox_Steel.get(1L),
             GTModHandler.RecipeBits.BITS,
-            new Object[] { "PSP", "SFS", "PSP", 'P',
-                MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Steel), 'F',
-                MaterialParts.craftIngredient(OrePrefixes.frameGt, Materials.Steel), 'S',
+            new Object[] { "PSP", "SFS", "PSP", 'P', MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Steel),
+                'F', MaterialParts.craftIngredient(OrePrefixes.frameGt, Materials.Steel), 'S',
                 MaterialParts.craftIngredient(OrePrefixes.stick, Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_Firebox_Titanium.get(1L),
@@ -2687,41 +2672,36 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Hatch_Dynamo_ULV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "XOL", "SMP", "XOL", 'M', ItemList.Hull_ULV, 'S',
-                MaterialParts.craftIngredient(OrePrefixes.spring, Materials.Lead), 'X',
-                Circuits.ULV.getIngredient(), 'O', ItemList.ULV_Coil, 'L',
-                MaterialParts.craftIngredient(OrePrefixes.cell, Materials.Lubricant), 'P',
+                MaterialParts.craftIngredient(OrePrefixes.spring, Materials.Lead), 'X', Circuits.ULV.getIngredient(),
+                'O', ItemList.ULV_Coil, 'L', MaterialParts.craftIngredient(OrePrefixes.cell, Materials.Lubricant), 'P',
                 MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Lead) });
         GTModHandler.addCraftingRecipe(
             ItemList.Hatch_Dynamo_LV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "XOL", "SMP", "XOL", 'M', ItemList.Hull_LV, 'S',
-                MaterialParts.craftIngredient(OrePrefixes.spring, Materials.Tin), 'X',
-                Circuits.LV.getIngredient(), 'O', ItemList.LV_Coil, 'L',
-                MaterialParts.craftIngredient(OrePrefixes.cell, Materials.Lubricant), 'P',
+                MaterialParts.craftIngredient(OrePrefixes.spring, Materials.Tin), 'X', Circuits.LV.getIngredient(), 'O',
+                ItemList.LV_Coil, 'L', MaterialParts.craftIngredient(OrePrefixes.cell, Materials.Lubricant), 'P',
                 ItemList.Electric_Pump_LV });
         GTModHandler.addCraftingRecipe(
             ItemList.Hatch_Dynamo_MV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "XOL", "SMP", "XOL", 'M', ItemList.Hull_MV, 'S',
-                MaterialParts.craftIngredient(OrePrefixes.spring, Materials.Copper), 'X',
-                ItemList.Circuit_Chip_ULPIC, 'O', ItemList.MV_Coil, 'L',
-                MaterialParts.craftIngredient(OrePrefixes.cell, Materials.Lubricant), 'P',
+                MaterialParts.craftIngredient(OrePrefixes.spring, Materials.Copper), 'X', ItemList.Circuit_Chip_ULPIC,
+                'O', ItemList.MV_Coil, 'L', MaterialParts.craftIngredient(OrePrefixes.cell, Materials.Lubricant), 'P',
                 ItemList.Electric_Pump_MV });
         GTModHandler.addCraftingRecipe(
             ItemList.Hatch_Energy_ULV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "COL", "XMP", "COL", 'M', ItemList.Hull_ULV, 'C',
-                MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Lead), 'X',
-                Circuits.ULV.getIngredient(), 'O', ItemList.ULV_Coil, 'L',
-                MaterialParts.craftIngredient(OrePrefixes.cell, Materials.Lubricant), 'P',
+                MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Lead), 'X', Circuits.ULV.getIngredient(),
+                'O', ItemList.ULV_Coil, 'L', MaterialParts.craftIngredient(OrePrefixes.cell, Materials.Lubricant), 'P',
                 MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Lead) });
         GTModHandler.addCraftingRecipe(
             ItemList.Hatch_Energy_LV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "COL", "XMP", "COL", 'M', ItemList.Hull_LV, 'C',
-                MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Tin), 'X',
-                Circuits.LV.getIngredient(), 'O', ItemList.LV_Coil, 'L',
-                MaterialParts.craftIngredient(OrePrefixes.cell, Materials.Lubricant), 'P',
+                MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Tin), 'X', Circuits.LV.getIngredient(),
+                'O', ItemList.LV_Coil, 'L', MaterialParts.craftIngredient(OrePrefixes.cell, Materials.Lubricant), 'P',
                 ItemList.Electric_Pump_LV });
         GTModHandler.addCraftingRecipe(
             ItemList.Hatch_Energy_MV.get(1L),
@@ -2729,8 +2709,7 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "XOL", "CMP", "XOL", 'M', ItemList.Hull_MV, 'C',
                 MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Copper), 'X',
                 ItemList.Circuit_Chip_ULPIC, 'O', ItemList.MV_Coil, 'L',
-                MaterialParts.craftIngredient(OrePrefixes.cell, Materials.Lubricant), 'P',
-                ItemList.Electric_Pump_MV });
+                MaterialParts.craftIngredient(OrePrefixes.cell, Materials.Lubricant), 'P', ItemList.Electric_Pump_MV });
         GTModHandler.addCraftingRecipe(
             ItemList.Hatch_Maintenance.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -2763,15 +2742,13 @@ public class MTERecipeLoader implements Runnable {
             GTModHandler.RecipeBits.BITS,
             new Object[] { "MX ", "PR ", 'M', ItemList.Hull_LV, 'P',
                 MaterialParts.craftIngredient(OrePrefixes.pipeMedium, Materials.Bronze), 'R',
-                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Bronze), 'X',
-                ItemList.Electric_Motor_LV });
+                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Bronze), 'X', ItemList.Electric_Motor_LV });
         GTModHandler.addCraftingRecipe(
             ItemList.Hatch_Muffler_MV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "MX ", "PR ", 'M', ItemList.Hull_MV, 'P',
                 MaterialParts.craftIngredient(OrePrefixes.pipeMedium, Materials.Steel), 'R',
-                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Steel), 'X',
-                ItemList.Electric_Motor_MV });
+                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Steel), 'X', ItemList.Electric_Motor_MV });
 
         // recycling data for the other mufflers, recipes are in assembler
         GTOreDictUnificator.addItemDataFromInputs(
@@ -2866,8 +2843,7 @@ public class MTERecipeLoader implements Runnable {
             GTModHandler.RecipeBits.BITS,
             new Object[] { "DXD", "XMX", "PXP", 'M', ItemList.Hull_Bronze, 'X',
                 MaterialParts.craftIngredient(OrePrefixes.pipeSmall, Materials.Bronze), 'P',
-                OreDictNames.craftingPiston, 'D',
-                MaterialParts.craftIngredient(OrePrefixes.gem, Materials.Diamond) });
+                OreDictNames.craftingPiston, 'D', MaterialParts.craftIngredient(OrePrefixes.gem, Materials.Diamond) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_HP_Macerator.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -2932,14 +2908,12 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_1by1_ULV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_ULV, 'W',
-                MaterialParts.craftIngredient(OrePrefixes.wireGt01, Materials.Lead), 'T',
-                OreDictNames.craftingChest });
+                MaterialParts.craftIngredient(OrePrefixes.wireGt01, Materials.Lead), 'T', OreDictNames.craftingChest });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_1by1_LV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_LV, 'W',
-                MaterialParts.craftIngredient(OrePrefixes.wireGt01, Materials.Tin), 'T',
-                OreDictNames.craftingChest });
+                MaterialParts.craftIngredient(OrePrefixes.wireGt01, Materials.Tin), 'T', OreDictNames.craftingChest });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_1by1_MV.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -2949,8 +2923,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_1by1_HV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_HV, 'W',
-                MaterialParts.craftIngredient(OrePrefixes.wireGt01, Materials.Gold), 'T',
-                OreDictNames.craftingChest });
+                MaterialParts.craftIngredient(OrePrefixes.wireGt01, Materials.Gold), 'T', OreDictNames.craftingChest });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_1by1_EV.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -2992,14 +2965,12 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_2by2_ULV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_ULV, 'W',
-                MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.Lead), 'T',
-                OreDictNames.craftingChest });
+                MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.Lead), 'T', OreDictNames.craftingChest });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_2by2_LV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_LV, 'W',
-                MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.Tin), 'T',
-                OreDictNames.craftingChest });
+                MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.Tin), 'T', OreDictNames.craftingChest });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_2by2_MV.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -3009,8 +2980,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_2by2_HV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_HV, 'W',
-                MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.Gold), 'T',
-                OreDictNames.craftingChest });
+                MaterialParts.craftIngredient(OrePrefixes.wireGt04, Materials.Gold), 'T', OreDictNames.craftingChest });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_2by2_EV.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -3052,14 +3022,12 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_3by3_ULV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_ULV, 'W',
-                MaterialParts.craftIngredient(OrePrefixes.wireGt08, Materials.Lead), 'T',
-                OreDictNames.craftingChest });
+                MaterialParts.craftIngredient(OrePrefixes.wireGt08, Materials.Lead), 'T', OreDictNames.craftingChest });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_3by3_LV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_LV, 'W',
-                MaterialParts.craftIngredient(OrePrefixes.wireGt08, Materials.Tin), 'T',
-                OreDictNames.craftingChest });
+                MaterialParts.craftIngredient(OrePrefixes.wireGt08, Materials.Tin), 'T', OreDictNames.craftingChest });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_3by3_MV.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -3069,8 +3037,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_3by3_HV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_HV, 'W',
-                MaterialParts.craftIngredient(OrePrefixes.wireGt08, Materials.Gold), 'T',
-                OreDictNames.craftingChest });
+                MaterialParts.craftIngredient(OrePrefixes.wireGt08, Materials.Gold), 'T', OreDictNames.craftingChest });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_3by3_EV.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -3112,14 +3079,12 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_4by4_ULV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_ULV, 'W',
-                MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials.Lead), 'T',
-                OreDictNames.craftingChest });
+                MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials.Lead), 'T', OreDictNames.craftingChest });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_4by4_LV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_LV, 'W',
-                MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials.Tin), 'T',
-                OreDictNames.craftingChest });
+                MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials.Tin), 'T', OreDictNames.craftingChest });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_4by4_MV.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -3129,8 +3094,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Buffer_4by4_HV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, 'M', ItemList.Hull_HV, 'W',
-                MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials.Gold), 'T',
-                OreDictNames.craftingChest });
+                MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials.Gold), 'T', OreDictNames.craftingChest });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Buffer_4by4_EV.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -3172,14 +3136,14 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Charger_4by4_ULV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_ULV, 'W',
-                MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials.Lead), 'T',
-                OreDictNames.craftingChest, 'B', ItemList.Battery_RE_ULV_Tantalum, 'C', Circuits.ULV.getIngredient() });
+                MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials.Lead), 'T', OreDictNames.craftingChest,
+                'B', ItemList.Battery_RE_ULV_Tantalum, 'C', Circuits.ULV.getIngredient() });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Charger_4by4_LV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_LV, 'W',
-                MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials.Tin), 'T',
-                OreDictNames.craftingChest, 'B', ItemList.Battery_RE_LV_Lithium, 'C', Circuits.LV.getIngredient() });
+                MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials.Tin), 'T', OreDictNames.craftingChest,
+                'B', ItemList.Battery_RE_LV_Lithium, 'C', Circuits.LV.getIngredient() });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Charger_4by4_MV.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -3190,8 +3154,8 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Battery_Charger_4by4_HV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { aTextWireChest, aTextWireHull, "BCB", 'M', ItemList.Hull_HV, 'W',
-                MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials.Gold), 'T',
-                OreDictNames.craftingChest, 'B', ItemList.Battery_RE_HV_Lithium, 'C', Circuits.HV.getIngredient() });
+                MaterialParts.craftIngredient(OrePrefixes.wireGt16, Materials.Gold), 'T', OreDictNames.craftingChest,
+                'B', ItemList.Battery_RE_HV_Lithium, 'C', Circuits.HV.getIngredient() });
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Charger_4by4_EV.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -3310,8 +3274,7 @@ public class MTERecipeLoader implements Runnable {
             GTModHandler.RecipeBits.BITS,
             new Object[] { "BCB", "RMV", aTextWireCoil, 'M', ItemList.Hull_LV, 'R', ItemList.Robot_Arm_LV, 'V',
                 ItemList.Conveyor_Module_LV, 'C', Circuits.LV.getIngredient(), 'W',
-                MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Tin), 'B',
-                OreDictNames.craftingChest });
+                MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Tin), 'B', OreDictNames.craftingChest });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_MV_Boxinator.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -3496,23 +3459,20 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_LV_Miner.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "EEE", aTextWireHull, "CSC", 'M', ItemList.Hull_LV, 'E', ItemList.Electric_Motor_LV, 'C',
-                Circuits.LV.getIngredient(), 'W',
-                MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Tin), 'S',
-                ItemList.Sensor_LV });
+                Circuits.LV.getIngredient(), 'W', MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Tin),
+                'S', ItemList.Sensor_LV });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_MV_Miner.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "PEP", aTextWireHull, "CSC", 'M', ItemList.Hull_MV, 'E', ItemList.Electric_Motor_MV, 'P',
                 ItemList.Electric_Piston_MV, 'C', Circuits.MV.getIngredient(), 'W',
-                MaterialParts.craftIngredient(OrePrefixes.cableGt02, Materials.Copper), 'S',
-                ItemList.Sensor_MV });
+                MaterialParts.craftIngredient(OrePrefixes.cableGt02, Materials.Copper), 'S', ItemList.Sensor_MV });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_HV_Miner.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "RPR", aTextWireHull, "CSC", 'M', ItemList.Hull_HV, 'E', ItemList.Electric_Motor_HV, 'P',
                 ItemList.Electric_Piston_HV, 'R', ItemList.Robot_Arm_HV, 'C', Circuits.HV.getIngredient(), 'W',
-                MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.Gold), 'S',
-                ItemList.Sensor_HV });
+                MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.Gold), 'S', ItemList.Sensor_HV });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Multi_BlastFurnace.get(1L),
@@ -3589,29 +3549,26 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Generator_Gas_Turbine_LV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "CRC", "RMR", aTextMotorWire, 'M', ItemList.Hull_LV, 'E', ItemList.Electric_Motor_LV, 'R',
-                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Tin), 'C',
-                Circuits.LV.getIngredient(), 'W',
+                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Tin), 'C', Circuits.LV.getIngredient(), 'W',
                 MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Tin) });
         GTModHandler.addCraftingRecipe(
             ItemList.Generator_Gas_Turbine_MV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "CRC", "RMR", aTextMotorWire, 'M', ItemList.Hull_MV, 'E', ItemList.Electric_Motor_MV, 'R',
-                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Bronze), 'C',
-                Circuits.MV.getIngredient(), 'W', OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper) });
+                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Bronze), 'C', Circuits.MV.getIngredient(),
+                'W', OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper) });
         GTModHandler.addCraftingRecipe(
             ItemList.Generator_Gas_Turbine_HV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "CRC", "RMR", aTextMotorWire, 'M', ItemList.Hull_HV, 'E', ItemList.Electric_Motor_HV, 'R',
-                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Steel), 'C',
-                Circuits.HV.getIngredient(), 'W',
-                MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Gold) });
+                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Steel), 'C', Circuits.HV.getIngredient(),
+                'W', MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Gold) });
         GTModHandler.addCraftingRecipe(
             ItemList.Generator_Gas_Turbine_EV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "CRC", "RMR", aTextMotorWire, 'M', ItemList.Hull_EV, 'E', ItemList.Electric_Motor_EV, 'R',
-                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Titanium), 'C',
-                Circuits.EV.getIngredient(), 'W',
-                MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Aluminium) });
+                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Titanium), 'C', Circuits.EV.getIngredient(),
+                'W', MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Aluminium) });
         GTModHandler.addCraftingRecipe(
             ItemList.Generator_Gas_Turbine_IV.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -3624,24 +3581,22 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Generator_Steam_Turbine_LV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "PCP", "RMR", aTextMotorWire, 'M', ItemList.Hull_LV, 'E', ItemList.Electric_Motor_LV, 'R',
-                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Tin), 'C',
-                Circuits.LV.getIngredient(), 'W',
+                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Tin), 'C', Circuits.LV.getIngredient(), 'W',
                 MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Tin), 'P',
                 MaterialParts.craftIngredient(OrePrefixes.pipeMedium, Materials.Bronze) });
         GTModHandler.addCraftingRecipe(
             ItemList.Generator_Steam_Turbine_MV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "PCP", "RMR", aTextMotorWire, 'M', ItemList.Hull_MV, 'E', ItemList.Electric_Motor_MV, 'R',
-                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Bronze), 'C',
-                Circuits.MV.getIngredient(), 'W', OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper), 'P',
+                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Bronze), 'C', Circuits.MV.getIngredient(),
+                'W', OrePrefixes.cableGt01.ingredient(MaterialFacades.AnyCopper), 'P',
                 MaterialParts.craftIngredient(OrePrefixes.pipeMedium, Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Generator_Steam_Turbine_HV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "PCP", "RMR", aTextMotorWire, 'M', ItemList.Hull_HV, 'E', ItemList.Electric_Motor_HV, 'R',
-                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Steel), 'C',
-                Circuits.HV.getIngredient(), 'W',
-                MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Gold), 'P',
+                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Steel), 'C', Circuits.HV.getIngredient(),
+                'W', MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Gold), 'P',
                 MaterialParts.craftIngredient(OrePrefixes.pipeMedium, Materials.StainlessSteel) });
 
         if (!Thaumcraft.isModLoaded()) {
@@ -3732,9 +3687,8 @@ public class MTERecipeLoader implements Runnable {
             ItemList.SteamTurbine.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_HV, 'B',
-                MaterialParts.craftIngredient(OrePrefixes.pipeLarge, Materials.Steel), 'C',
-                Circuits.HV.getIngredient(), 'P',
-                MaterialParts.craftIngredient(OrePrefixes.gearGt, Materials.Steel) });
+                MaterialParts.craftIngredient(OrePrefixes.pipeLarge, Materials.Steel), 'C', Circuits.HV.getIngredient(),
+                'P', MaterialParts.craftIngredient(OrePrefixes.gearGt, Materials.Steel) });
         GTModHandler.addCraftingRecipe(
             ItemList.GasTurbine.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -3753,8 +3707,8 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Pump_MV.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "CPC", aTextPlateMotor, "BPB", 'M', ItemList.Hull_MV, 'B',
-                MaterialParts.craftIngredient(OrePrefixes.pipeLarge, Materials.Steel), 'C',
-                Circuits.MV.getIngredient(), 'P', ItemList.Electric_Pump_MV });
+                MaterialParts.craftIngredient(OrePrefixes.pipeLarge, Materials.Steel), 'C', Circuits.MV.getIngredient(),
+                'P', ItemList.Electric_Pump_MV });
         GTModHandler.addCraftingRecipe(
             ItemList.Pump_HV.get(1L),
             GTModHandler.RecipeBits.BITS,
@@ -3814,9 +3768,8 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Charcoal_Pile.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "EXE", "EME", "hCw", 'M', ItemList.Hull_HP_Bricks, 'E',
-                OrePrefixes.plate.ingredient(MaterialFacades.AnyBronze), 'C',
-                new ItemStack(Items.flint_and_steel, 1), 'X',
-                MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Steel), });
+                OrePrefixes.plate.ingredient(MaterialFacades.AnyBronze), 'C', new ItemStack(Items.flint_and_steel, 1),
+                'X', MaterialParts.craftIngredient(OrePrefixes.rotor, Materials.Steel), });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Seismic_Prospector_Adv_LV.get(1L),
@@ -3851,8 +3804,8 @@ public class MTERecipeLoader implements Runnable {
             ItemList.ConcreteBackfiller1.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "WPW", "EME", "CQC", 'M', ItemList.Hull_MV, 'W',
-                MaterialParts.craftIngredient(OrePrefixes.frameGt, Materials.Steel), 'E',
-                Circuits.MV.getIngredient(), 'C', ItemList.Electric_Motor_MV, 'P',
+                MaterialParts.craftIngredient(OrePrefixes.frameGt, Materials.Steel), 'E', Circuits.MV.getIngredient(),
+                'C', ItemList.Electric_Motor_MV, 'P',
                 MaterialParts.craftIngredient(OrePrefixes.pipeLarge, Materials.Steel), 'Q',
                 ItemList.Electric_Pump_MV });
         GTModHandler.addCraftingRecipe(
@@ -4011,8 +3964,8 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_Multi_Large_Neutralization_Engine.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "PCP", "FAF", "PCP", 'P',
-                MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Titanium), 'C',
-                Circuits.IV.getIngredient(), 'F', ItemList.FluidRegulator_EV.get(1L), 'A', ItemRegistry.acidGens[2] });
+                MaterialParts.craftIngredient(OrePrefixes.plate, Materials.Titanium), 'C', Circuits.IV.getIngredient(),
+                'F', ItemList.FluidRegulator_EV.get(1L), 'A', ItemRegistry.acidGens[2] });
     }
 
     private static void registerShapelessCraftingRecipes() {

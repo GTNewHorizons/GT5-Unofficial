@@ -35,9 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -65,7 +62,10 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.PipeShapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -140,11 +140,9 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         .addElement('L', ofBlock(GregTechAPI.sBlockCasings2, 13)) // Steel Pipe Casing
         .addElement('M', ofBlock(GregTechAPI.sBlockCasings2, 14)) // Titanium Pipe Casing
         .addElement('N', ofBlock(GregTechAPI.sBlockCasings2, 15)) // Tungstensteel Pipe Casing
-        .addElement(
-            'P',
-            ofBlock(MaterialLibAPI.getBlock(PipeShapes.frameGt), Materials.Tungsten.getIndex())) // Tungsten
-                                                                                                                     // Frame
-                                                                                                                     // Box
+        .addElement('P', ofBlock(MaterialLibAPI.getBlock(PipeShapes.frameGt), Materials.Tungsten.getIndex())) // Tungsten
+                                                                                                              // Frame
+                                                                                                              // Box
         .addElement(
             'e',
             buildHatchAdder(MTEHighTempGasCooledReactor.class)
@@ -586,8 +584,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 this.startRecipeProcessing();
                 FluidStack fluidStack = this.getInputFromHatch(
                     heliumInputHatch,
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int) (1)));
+                    MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int) (1)));
                 if (fluidStack != null) {
                     int toget = Math
                         .min(MTEHighTempGasCooledReactor.HELIUM_NEEDED - this.heliumSupply, fluidStack.amount);
@@ -1104,27 +1101,27 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         public static final int MATERIALS_PER_FUEL = sHTGR_Bases.length;
         static final int USABLE_FUEL_INDEX = 4;
         static final int BURNED_OUT_FUEL_INDEX = 5;
-        public static final Fuel_[] sHTGR_Fuel = { new Fuel_(
-            "Thorium",
-            "Thorium",
-            MaterialLibAPI.getStack(Materials.Thorium232, Shapes.dust, 64),
-            MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (4)),
-            GTValues.NF,
-            new ItemStack[] { MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dust, (int) (1)),
-                MaterialLibAPI.getStack(Materials.Thorium232, Shapes.dust, 1) },
-            new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 9900 / 4, 162 / 4 },
-            "Multiplies coolant by 1"),
+        public static final Fuel_[] sHTGR_Fuel = {
+            new Fuel_(
+                "Thorium",
+                "Thorium",
+                MaterialLibAPI.getStack(Materials.Thorium232, Shapes.dust, 64),
+                MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (4)),
+                GTValues.NF,
+                new ItemStack[] { MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Lutetium, Shapes.dust, (int) (1)),
+                    MaterialLibAPI.getStack(Materials.Thorium232, Shapes.dust, 1) },
+                new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 9900 / 4, 162 / 4 },
+                "Multiplies coolant by 1"),
             new Fuel_(
                 "Uranium",
                 "Uranium",
                 MaterialLibAPI.getStack(Materials.Uranium, Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials.Uranium235, Shapes.dust, (int) (8)),
                 FluidRegistry.getFluidStack("krypton", 4),
-                new ItemStack[] {
-                    MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, (int) (1)),
+                new ItemStack[] { MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, (int) (1)),
                     MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (1)),
                     MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (1)),
                     MaterialLibAPI.getStack(Materials.Lead, Shapes.dust, (int) (1)),
@@ -1137,8 +1134,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 MaterialLibAPI.getStack(Materials.Plutonium, Shapes.dust, (int) (64)),
                 MaterialLibAPI.getStack(Materials.Plutonium241, Shapes.dust, (int) (4)),
                 FluidRegistry.getFluidStack("xenon", 4),
-                new ItemStack[] {
-                    MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, (int) (1)),
+                new ItemStack[] { MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, (int) (1)),
                     MaterialLibAPI.getStack(Materials.Graphite, Shapes.dust, (int) (1)),
                     MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, (int) (1)),
                     MaterialLibAPI.getStack(Materials.Lead, Shapes.dust, (int) (1)),

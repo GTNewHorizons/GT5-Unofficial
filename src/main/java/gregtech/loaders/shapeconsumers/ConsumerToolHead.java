@@ -13,21 +13,16 @@ public final class ConsumerToolHead {
     static void register() {
         ShapeConsumerSupport
             .delegate(Shapes.toolHeadBuzzSaw, OrePrefixes.toolHeadBuzzSaw, () -> ProcessingToolHead.INSTANCE);
-        ShapeConsumerSupport.delegate(
-            Shapes.toolHeadChainsaw,
-            OrePrefixes.toolHeadChainsaw,
-            () -> ProcessingToolHead.INSTANCE);
+        ShapeConsumerSupport
+            .delegate(Shapes.toolHeadChainsaw, OrePrefixes.toolHeadChainsaw, () -> ProcessingToolHead.INSTANCE);
         ShapeConsumerSupport
             .delegate(Shapes.toolHeadDrill, OrePrefixes.toolHeadDrill, () -> ProcessingToolHead.INSTANCE);
-        ShapeConsumerSupport
-            .delegate(Shapes.toolHeadFile, OrePrefixes.toolHeadFile, () -> ProcessingToolHead.INSTANCE);
-        ShapeConsumerSupport
-            .delegate(Shapes.toolHeadSaw, OrePrefixes.toolHeadSaw, () -> ProcessingToolHead.INSTANCE);
+        ShapeConsumerSupport.delegate(Shapes.toolHeadFile, OrePrefixes.toolHeadFile, () -> ProcessingToolHead.INSTANCE);
+        ShapeConsumerSupport.delegate(Shapes.toolHeadSaw, OrePrefixes.toolHeadSaw, () -> ProcessingToolHead.INSTANCE);
         ShapeConsumerSupport
             .delegate(Shapes.toolHeadWrench, OrePrefixes.toolHeadWrench, () -> ProcessingToolHead.INSTANCE);
         ShapeConsumerSupport
             .delegate(Shapes.toolHeadHammer, OrePrefixes.toolHeadHammer, () -> ProcessingToolHead.INSTANCE);
-        ShapeConsumerSupport
-            .delegate(Shapes.turbineBlade, OrePrefixes.turbineBlade, () -> ProcessingToolHead.INSTANCE);
+        ShapeConsumerSupport.delegate(Shapes.turbineBlade, OrePrefixes.turbineBlade, () -> ProcessingToolHead.INSTANCE);
     }
 }

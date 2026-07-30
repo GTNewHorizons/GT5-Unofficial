@@ -9,9 +9,6 @@ import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -19,6 +16,9 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -152,9 +152,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Copper, Shapes.wireFine, (int) (2)),
                 MaterialLibAPI.getStack(Materials.AnnealedCopper, Shapes.stickLong, (int) (2)))
             .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, 0))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Glass, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(10 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(circuitAssemblerRecipes);
@@ -168,9 +166,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Copper, Shapes.wireFine, (int) (2)),
                 MaterialLibAPI.getStack(Materials.CastIron, Shapes.stickLong, (int) (2)))
             .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, 3))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Glass, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
             .duration(10 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(circuitAssemblerRecipes);
@@ -199,11 +195,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials.Copper, Shapes.wireFine, (int) (2)),
                     rodMaterials[metaid])
                 .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, metaid))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.Glass,
-                        FluidShapes.fluidMolten,
-                        (int) (4 * INGOTS)))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
                 .duration(10 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(circuitAssemblerRecipes);

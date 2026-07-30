@@ -5,8 +5,6 @@ import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -16,6 +14,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -62,8 +62,7 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
             ItemStack wireT2a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Osmium, 1);
             ItemStack wireT2b = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Platinum, 1);
             ItemStack wireT3a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.VanadiumGallium, 1);
-            ItemStack wireT3b = GTOreDictUnificator
-                .get(OrePrefixes.wireGt02, Materials.YttriumBariumCuprate, 1);
+            ItemStack wireT3b = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.YttriumBariumCuprate, 1);
             ItemStack wireT3c = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 1);
             ItemStack wireT4a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Naquadah, 1);
 

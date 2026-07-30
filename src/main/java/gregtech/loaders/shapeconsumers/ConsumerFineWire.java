@@ -11,7 +11,6 @@ public final class ConsumerFineWire {
     private ConsumerFineWire() {}
 
     static void register() {
-        ShapeConsumerSupport
-            .delegate(Shapes.wireFine, OrePrefixes.wireFine, () -> ProcessingFineWire.INSTANCE);
+        ShapeConsumerSupport.delegate(Shapes.wireFine, OrePrefixes.wireFine, () -> ProcessingFineWire.INSTANCE);
     }
 }

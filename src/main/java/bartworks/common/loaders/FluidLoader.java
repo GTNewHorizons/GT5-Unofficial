@@ -20,8 +20,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.awt.Color;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -42,6 +40,8 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.items.MetaGeneratedItem98;

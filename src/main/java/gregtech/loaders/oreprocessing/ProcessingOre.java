@@ -9,8 +9,6 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import java.util.ArrayList;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -22,6 +20,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MaterialUtils;
@@ -82,10 +82,8 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                 .itemOutputs(new ItemStack(Blocks.sand, 1, 0))
                 .outputChances(tIsRich ? 2000 : 4000)
                 .fluidOutputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.OilHeavy,
-                        FluidShapes.fluidLiquid,
-                        (int) (tIsRich ? 4000 : 2000)))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.OilHeavy, FluidShapes.fluidLiquid, (int) (tIsRich ? 4000 : 2000)))
                 .duration(tIsRich ? 30 * SECONDS : 15 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(centrifugeRecipes);
@@ -162,8 +160,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             oreStack,
-                            MaterialLibAPI
-                                .getStack(Materials.Calcite, Shapes.dust, (int) (multiplier)))
+                            MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
                             GTUtility.mul(multiplier * 3 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
@@ -175,8 +172,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             oreStack,
-                            MaterialLibAPI
-                                .getStack(Materials.Quicklime, Shapes.dust, (int) (multiplier)))
+                            MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
                             GTUtility.mul(multiplier * 3 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
@@ -191,8 +187,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             oreStack,
-                            MaterialLibAPI
-                                .getStack(Materials.Calcite, Shapes.dust, (int) (multiplier)))
+                            MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
                             GTUtility.mul(multiplier * 2 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
@@ -204,8 +199,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             oreStack,
-                            MaterialLibAPI
-                                .getStack(Materials.Quicklime, Shapes.dust, (int) (multiplier)))
+                            MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, (int) (multiplier)))
                         .itemOutputs(
                             GTUtility.mul(multiplier * 2 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))

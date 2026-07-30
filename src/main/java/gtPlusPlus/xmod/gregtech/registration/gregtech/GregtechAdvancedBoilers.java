@@ -52,8 +52,8 @@ public class GregtechAdvancedBoilers {
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "DSD", "BTB", "DSD", 'D',
-                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plateDouble, (int) (1)),
-                'S', GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1L), 'B',
+                MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.plateDouble, (int) (1)), 'S',
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1L), 'B',
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 1L), 'T',
                 getModItem(IronTanks.ID, "stainlesssteelTank", 1, 0) });
         GTModHandler.addCraftingRecipe(

@@ -18,8 +18,7 @@ public final class ConsumerWire {
     private ConsumerWire() {}
 
     static void register() {
-        ShapeConsumerSupport
-            .delegate(PipeShapes.wireGt01, OrePrefixes.wireGt01, () -> ProcessingWire.INSTANCE);
+        ShapeConsumerSupport.delegate(PipeShapes.wireGt01, OrePrefixes.wireGt01, () -> ProcessingWire.INSTANCE);
         delegateThick(PipeShapes.wireGt02, OrePrefixes.wireGt02);
         delegateThick(PipeShapes.wireGt04, OrePrefixes.wireGt04);
         delegateThick(PipeShapes.wireGt08, OrePrefixes.wireGt08);

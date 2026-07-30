@@ -4,8 +4,6 @@ import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
@@ -14,6 +12,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.util.GTUtility;
 
 public class ProcessingSlab implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -30,11 +30,7 @@ public class ProcessingSlab implements gregtech.api.interfaces.IOreRecipeRegistr
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(3, stack))
                     .itemOutputs(ItemList.RC_Tie_Wood.get(3L))
-                    .fluidInputs(
-                        MaterialLibAPI.getFluidStack(
-                            Materials.Creosote,
-                            FluidShapes.fluidLiquid,
-                            (int) (300)))
+                    .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Creosote, FluidShapes.fluidLiquid, (int) (300)))
                     .duration(10 * SECONDS)
                     .eut(4)
                     .addTo(chemicalBathRecipes);

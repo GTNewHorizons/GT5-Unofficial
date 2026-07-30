@@ -2,10 +2,6 @@ package gregtech.loaders.postload;
 
 import java.util.List;
 
-import gregtech.api.enums.materials2.BlockShapes;
-import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
@@ -16,6 +12,10 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import bartworks.util.BWColorUtil;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
+import gregtech.api.enums.materials2.BlockShapes;
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -55,8 +55,7 @@ public class LoaderWerkstoffRegistrations {
     /// storage block joins the name-keyed block group. A merged declaration is excluded: gregtech's own part
     /// registration owns those materials' lenses and blocks.
     private static void registerAdditionalOreDict(Material material) {
-        if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
-            && material.hasShape(Shapes.lens)) {
+        if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.gem) && material.hasShape(Shapes.lens)) {
             short[] rgba = MaterialUtils.rgba(material);
             if (rgba != null) {
                 OreDictionary.registerOre(
@@ -64,9 +63,8 @@ public class LoaderWerkstoffRegistrations {
                     MaterialLibAPI.getStack(material, Shapes.lens, 1));
             }
         }
-        if (material.hasShape(BlockShapes.block)
-            && (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
-                || LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.ingot))) {
+        if (material.hasShape(BlockShapes.block) && (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.gem)
+            || LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.ingot))) {
             GTOreDictUnificator.registerOre(
                 OrePrefixes.block + MaterialUtils.internalName(material),
                 MaterialLibAPI.getStack(material, BlockShapes.block, 1));
@@ -92,8 +90,7 @@ public class LoaderWerkstoffRegistrations {
         else if (MaterialUtils.hasSubTag(material, SubTag.MAGICAL.mName)) handle = Materials.Thaumium;
         else {
             int durability = MaterialUtils.durability(material);
-            handle = durability > 5120 ? Materials.TungstenSteel
-                : durability > 1280 ? Materials.Steel : Materials.Wood;
+            handle = durability > 5120 ? Materials.TungstenSteel : durability > 1280 ? Materials.Steel : Materials.Wood;
         }
         MaterialUtils.recordHandleMaterial(material, handle);
     }

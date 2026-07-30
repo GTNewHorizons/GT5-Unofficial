@@ -13,7 +13,6 @@ public final class ConsumerFrame {
     private ConsumerFrame() {}
 
     static void register() {
-        ShapeConsumerSupport
-            .delegate(PipeShapes.frameGt, OrePrefixes.frameGt, () -> ProcessingFrame.INSTANCE);
+        ShapeConsumerSupport.delegate(PipeShapes.frameGt, OrePrefixes.frameGt, () -> ProcessingFrame.INSTANCE);
     }
 }

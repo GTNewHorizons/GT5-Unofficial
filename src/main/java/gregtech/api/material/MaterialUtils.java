@@ -10,9 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -32,8 +29,10 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.materials2.FluidShapes;
 import gregtech.api.enums.materials2.MaterialFluidNames;
 import gregtech.api.enums.materials2.MaterialTextures;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.MaterialStack;
 import gregtech.common.config.Client;
@@ -171,8 +170,8 @@ public class MaterialUtils {
 
     /// The shapes [#legacyGtppFluidOf] tries, in the order the legacy gtPlusPlus fluid name was derived:
     /// molten first, then liquid, then gas.
-    private static final Shape[] GTPP_FLUID_SHAPES = { FluidShapes.fluidMolten,
-        FluidShapes.fluidLiquid, FluidShapes.fluidGas };
+    private static final Shape[] GTPP_FLUID_SHAPES = { FluidShapes.fluidMolten, FluidShapes.fluidLiquid,
+        FluidShapes.fluidGas };
 
     /// Materials whose fluid is registered directly by name rather than through a shape of their own, so no
     /// shape lookup can reach it.

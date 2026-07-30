@@ -4,7 +4,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.materials2.PipeShapes;
-import gregtech.api.enums.materials2.PipeMaterials;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.metatileentity.implementations.MTEFrame;

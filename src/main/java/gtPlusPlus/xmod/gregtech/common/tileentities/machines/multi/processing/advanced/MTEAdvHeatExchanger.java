@@ -299,7 +299,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                         // steam
                     } else {
                         addOutputPartial(MaterialUtils.gas(Materials.Steam, tGeneratedEU)); // Generate
-                                                                                                      // regular steam
+                                                                                            // regular steam
                     }
                 } else {
                     GTLog.writeExplosionLog(this, "had no more Distilled water!");

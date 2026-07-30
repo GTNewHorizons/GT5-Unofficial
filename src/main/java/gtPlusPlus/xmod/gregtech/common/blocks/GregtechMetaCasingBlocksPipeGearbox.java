@@ -2,13 +2,13 @@ package gtPlusPlus.xmod.gregtech.common.blocks;
 
 import java.util.HashMap;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.MaterialUtils;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -34,8 +34,7 @@ public class GregtechMetaCasingBlocksPipeGearbox extends GregtechMetaCasingBlock
         sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MaterialUtils.rgba(Materials.Inconel690)));
         sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MaterialUtils.rgba(Materials.Stellite)));
         sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MaterialUtils.rgba(Materials.Nitinol60)));
-        sMaterialMapping
-            .put(aMappingID++, MathUtils.getRgbAsHex(MaterialUtils.rgba(Materials.LafiumCompound)));
+        sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MaterialUtils.rgba(Materials.LafiumCompound)));
         sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MaterialUtils.rgba(Materials.CinobiteA243)));
         sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MaterialUtils.rgba(Materials.Titansteel)));
         sMaterialMapping.put(aMappingID++, MathUtils.getRgbAsHex(MaterialUtils.rgba(Materials.AbyssalAlloy)));

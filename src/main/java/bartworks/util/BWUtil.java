@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Items;
@@ -48,6 +47,7 @@ import bartworks.API.BorosilicateGlass;
 import bartworks.MainMod;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
@@ -167,8 +167,9 @@ public class BWUtil {
         // TODO: Implement this method properly by giving materials actual radiation values
         // TODO: instead of using the material's atomic number.
 
-        return (int) (MaterialUtils.protons(materials) == 43L ? materials == Materials.NaquadahEnriched ? 140
-            : materials == Materials.Naquadria ? 150 : materials == Materials.Naquadah ? 130 : 43
+        return (int) (MaterialUtils.protons(materials) == 43L
+            ? materials == Materials.NaquadahEnriched ? 140
+                : materials == Materials.Naquadria ? 150 : materials == Materials.Naquadah ? 130 : 43
             : MaterialUtils.protons(materials));
     }
 
@@ -559,8 +560,8 @@ public class BWUtil {
                     tItemDataMap.put(chr, new ItemData(Materials.Wood, M * 8));
                 else if (in.equals(OreDictNames.craftingBook.toString()))
                     tItemDataMap.put(chr, new ItemData(Materials.Paper, M * 3));
-                else if (in.equals(OreDictNames.craftingPiston.toString())) tItemDataMap
-                    .put(chr, new ItemData(Materials.Stone, M * 4, Materials.Wood, M * 3));
+                else if (in.equals(OreDictNames.craftingPiston.toString()))
+                    tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 4, Materials.Wood, M * 3));
                 else if (in.equals(OreDictNames.craftingFurnace.toString()))
                     tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 8));
                 else if (in.equals(OreDictNames.craftingIndustrialDiamond.toString()))

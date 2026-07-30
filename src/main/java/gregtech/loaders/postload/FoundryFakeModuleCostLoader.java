@@ -2,7 +2,6 @@ package gregtech.loaders.postload;
 
 import static gregtech.api.util.GTRecipeConstants.FOUNDRY_MODULE;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
@@ -12,6 +11,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.BlockShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -35,8 +35,7 @@ public class FoundryFakeModuleCostLoader {
                 ItemList.Primary_Casing_ExoFoundry.get(36),
                 ItemList.Radiator_Fluid_Solidifier.get(32),
                 MaterialLibAPI.getStack(Materials.PreciousMetalsAlloy, BlockShapes.blockCasing, 8),
-                MaterialLibAPI
-                    .getStack(Materials.PreciousMetalsAlloy, BlockShapes.blockCasingAdvanced, 4),
+                MaterialLibAPI.getStack(Materials.PreciousMetalsAlloy, BlockShapes.blockCasingAdvanced, 4),
                 MaterialLibAPI.getStack(Materials.PreciousMetalsAlloy, BlockShapes.sheetmetal, 8),
                 GTOreDictUnificator.get(OrePrefixes.sheetmetal, Materials.Erbium, 8),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Erbium, 28))
@@ -55,8 +54,7 @@ public class FoundryFakeModuleCostLoader {
                 CustomItemList.EOH_Reinforced_Temporal_Casing.get(48),
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.WhiteDwarfMatter, 28),
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.BlackDwarfMatter, 28),
-                GTOreDictUnificator
-                    .get(OrePrefixes.block, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 4),
+                GTOreDictUnificator.get(OrePrefixes.block, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 4),
                 GTOreDictUnificator
                     .get(OrePrefixes.frameGt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 40),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Universium, 16),
@@ -146,8 +144,7 @@ public class FoundryFakeModuleCostLoader {
                 ItemList.InfinityCooledCasing.get(20),
                 GregtechItemList.Casing_AdvancedVacuum.get(19),
                 GTOreDictUnificator.get(OrePrefixes.sheetmetal, Materials.CallistoIce, 64),
-                GTOreDictUnificator
-                    .get(OrePrefixes.sheetmetal, Materials.Longasssuperconductornameforuhvwire, 16),
+                GTOreDictUnificator.get(OrePrefixes.sheetmetal, Materials.Longasssuperconductornameforuhvwire, 16),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.InfinityCatalyst, 48),
                 ItemList.Hatch_Input_LV.get(1))
             .itemOutputs(ItemList.Hypercooler_ExoFoundry.get(1))

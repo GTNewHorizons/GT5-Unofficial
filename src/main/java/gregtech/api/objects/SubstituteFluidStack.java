@@ -16,8 +16,8 @@ import gregtech.api.material.MaterialUtils;
 
 public class SubstituteFluidStack {
 
-    public static final Material[] solderingMats = new Material[] { Materials.SolderingAlloy,
-        Materials.Tin, Materials.Lead };
+    public static final Material[] solderingMats = new Material[] { Materials.SolderingAlloy, Materials.Tin,
+        Materials.Lead };
     public final List<FluidStack> fluidStacks;
 
     /**

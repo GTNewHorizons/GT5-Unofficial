@@ -5,7 +5,6 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.NotEnoughItems;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -17,6 +16,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -305,28 +305,19 @@ public final class ModItems {
             .registerOre("catalystChlorination");
 
         // Milled Ore Processing
-        GregtechItemList.MilledSphalerite
-            .set(BaseItemMilledOre.generate(Materials.Sphalerite, TierEU.RECIPE_LuV));
-        GregtechItemList.MilledChalcopyrite
-            .set(BaseItemMilledOre.generate(Materials.Chalcopyrite, TierEU.RECIPE_IV));
+        GregtechItemList.MilledSphalerite.set(BaseItemMilledOre.generate(Materials.Sphalerite, TierEU.RECIPE_LuV));
+        GregtechItemList.MilledChalcopyrite.set(BaseItemMilledOre.generate(Materials.Chalcopyrite, TierEU.RECIPE_IV));
         GregtechItemList.MilledNickel.set(BaseItemMilledOre.generate(Materials.Nickel, TierEU.RECIPE_IV));
-        GregtechItemList.MilledPlatinum
-            .set(BaseItemMilledOre.generate(Materials.Platinum, TierEU.RECIPE_LuV));
-        GregtechItemList.MilledPentlandite
-            .set(BaseItemMilledOre.generate(Materials.Pentlandite, TierEU.RECIPE_LuV));
+        GregtechItemList.MilledPlatinum.set(BaseItemMilledOre.generate(Materials.Platinum, TierEU.RECIPE_LuV));
+        GregtechItemList.MilledPentlandite.set(BaseItemMilledOre.generate(Materials.Pentlandite, TierEU.RECIPE_LuV));
         GregtechItemList.MilledRedstone.set(BaseItemMilledOre.generate(Materials.Redstone, TierEU.RECIPE_IV));
-        GregtechItemList.MilledSpessartine
-            .set(BaseItemMilledOre.generate(Materials.Spessartine, TierEU.RECIPE_LuV));
-        GregtechItemList.MilledGrossular
-            .set(BaseItemMilledOre.generate(Materials.Grossular, TierEU.RECIPE_LuV));
-        GregtechItemList.MilledAlmandine
-            .set(BaseItemMilledOre.generate(Materials.Almandine, TierEU.RECIPE_LuV));
+        GregtechItemList.MilledSpessartine.set(BaseItemMilledOre.generate(Materials.Spessartine, TierEU.RECIPE_LuV));
+        GregtechItemList.MilledGrossular.set(BaseItemMilledOre.generate(Materials.Grossular, TierEU.RECIPE_LuV));
+        GregtechItemList.MilledAlmandine.set(BaseItemMilledOre.generate(Materials.Almandine, TierEU.RECIPE_LuV));
         GregtechItemList.MilledPyrope.set(BaseItemMilledOre.generate(Materials.Pyrope, TierEU.RECIPE_EV));
-        GregtechItemList.MilledMonazite
-            .set(BaseItemMilledOre.generate(Materials.Monazite, TierEU.RECIPE_ZPM));
+        GregtechItemList.MilledMonazite.set(BaseItemMilledOre.generate(Materials.Monazite, TierEU.RECIPE_ZPM));
         GregtechItemList.MilledNetherite.set(
-            BaseItemMilledOre
-                .generate(Materials.Netherrack, TierEU.RECIPE_IV, new ItemStack(Blocks.netherrack, 256)));
+            BaseItemMilledOre.generate(Materials.Netherrack, TierEU.RECIPE_IV, new ItemStack(Blocks.netherrack, 256)));
 
         // These items stay registered for save/item-ID stability (BaseOreComponent's oredict skip already
         // defers the milled<Material> oredict name to MaterialLib once cut over), so only their NEI visibility

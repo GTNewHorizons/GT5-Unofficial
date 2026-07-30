@@ -9,8 +9,6 @@ import static gregtech.api.util.GTRecipeConstants.NANITE_TIERS;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -24,6 +22,8 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -48,17 +48,15 @@ public class BECMetaMaterialRecipes implements Runnable {
         Materials.MagnetohydrodynamicallyConstrainedStarMatter };
     private static final Material[] black3Tier = { Materials.Tairitsu, Materials.TranscendentMetal,
         Materials.BlackDwarfMatter };
-    private static final Material[] gray3Tier = { Materials.Churitsu, Materials.SpaceTime,
-        Materials.Eternity };
-    private static final Material[] white3Tier = { Materials.Shijima, Materials.WhiteDwarfMatter,
-        Materials.Magmatter };
+    private static final Material[] gray3Tier = { Materials.Churitsu, Materials.SpaceTime, Materials.Eternity };
+    private static final Material[] white3Tier = { Materials.Shijima, Materials.WhiteDwarfMatter, Materials.Magmatter };
 
-    private static final Material[] black4Tier = { Materials.Tairitsu, Materials.Hypogen,
-        Materials.Shirabon, Materials.SpaceTime };
+    private static final Material[] black4Tier = { Materials.Tairitsu, Materials.Hypogen, Materials.Shirabon,
+        Materials.SpaceTime };
     private static final Material[] gray4Tier = { Materials.Churitsu, Materials.WhiteDwarfMatter,
         Materials.BlackDwarfMatter, Materials.MagnetohydrodynamicallyConstrainedStarMatter };
-    private static final Material[] white4Tier = { Materials.Shijima, Materials.protohalkonite,
-        Materials.Hexanite, Materials.Eternity };
+    private static final Material[] white4Tier = { Materials.Shijima, Materials.protohalkonite, Materials.Hexanite,
+        Materials.Eternity };
 
     private static final int[] chromatic4TierAmts = { 8, 12, 16, 24 };
     private static final int[] infinity4TierAmts = { 4, 6, 8, 12 };
@@ -263,10 +261,8 @@ public class BECMetaMaterialRecipes implements Runnable {
                         Materials.Infinity,
                         FluidShapes.fluidMolten,
                         (int) (infinity4TierAmts[t] * INGOTS)),
-                    MaterialLibAPI.getFluidStack(
-                        Materials.TranscendentMetal,
-                        FluidShapes.fluidMolten,
-                        (int) (INGOTS)) };
+                    MaterialLibAPI
+                        .getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, (int) (INGOTS)) };
                 addBecAndAal(
                     outputs[t].get(1),
                     inputs,
@@ -306,10 +302,8 @@ public class BECMetaMaterialRecipes implements Runnable {
                         Materials.Infinity,
                         FluidShapes.fluidMolten,
                         (int) (infinity4TierAmts[t] * INGOTS)),
-                    MaterialLibAPI.getFluidStack(
-                        Materials.TranscendentMetal,
-                        FluidShapes.fluidMolten,
-                        (int) (INGOTS)) };
+                    MaterialLibAPI
+                        .getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, (int) (INGOTS)) };
                 addBecAndAal(
                     outputs[t].get(1),
                     inputs,
@@ -351,10 +345,8 @@ public class BECMetaMaterialRecipes implements Runnable {
                         Materials.Infinity,
                         FluidShapes.fluidMolten,
                         (int) (infinity4TierAmts[t] * INGOTS)),
-                    MaterialLibAPI.getFluidStack(
-                        Materials.TranscendentMetal,
-                        FluidShapes.fluidMolten,
-                        (int) (INGOTS)) };
+                    MaterialLibAPI
+                        .getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, (int) (INGOTS)) };
                 addBecAndAal(
                     outputs[t].get(1),
                     inputs,
@@ -400,10 +392,8 @@ public class BECMetaMaterialRecipes implements Runnable {
                         Materials.Infinity,
                         FluidShapes.fluidMolten,
                         (int) (infinity4TierAmts[t] * INGOTS)),
-                    MaterialLibAPI.getFluidStack(
-                        Materials.TranscendentMetal,
-                        FluidShapes.fluidMolten,
-                        (int) (INGOTS)) };
+                    MaterialLibAPI
+                        .getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, (int) (INGOTS)) };
                 addBecAndAal(
                     outputs[t].get(1),
                     inputs,

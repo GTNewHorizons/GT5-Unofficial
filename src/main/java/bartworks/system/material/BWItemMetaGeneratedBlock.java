@@ -16,7 +16,6 @@ package bartworks.system.material;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -27,6 +26,7 @@ import com.ruling_0.materiallib.api.Material;
 import bartworks.common.items.BWItemBlocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;

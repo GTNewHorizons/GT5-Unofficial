@@ -6,8 +6,6 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
-import gregtech.api.enums.materials2.PipeMaterials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -18,7 +16,9 @@ import com.ruling_0.materiallib.api.Shape;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.PipeMaterials;
 import gregtech.api.enums.materials2.PipeShapes;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -239,8 +239,7 @@ public class GregtechConduits {
             GTModHandler.addCraftingRecipe(
                 wire01,
                 GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "Px ", "   ", "   ", 'P',
-                    MaterialLibAPI.getStack(material, Shapes.plate, 1) });
+                new Object[] { "Px ", "   ", "   ", 'P', MaterialLibAPI.getStack(material, Shapes.plate, 1) });
         }
 
         // Wire mill
@@ -347,9 +346,7 @@ public class GregtechConduits {
         // Extruder
         if (hasIngot) {
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    MaterialLibAPI.getStack(material, Shapes.ingot, 1),
-                    ItemList.Shape_Extruder_Wire.get(0))
+                .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1), ItemList.Shape_Extruder_Wire.get(0))
                 .itemOutputs(MaterialLibAPI.getStack(material, PipeShapes.wireGt01, 2))
                 .duration(9 * SECONDS + 16 * TICKS)
                 .eut(96)

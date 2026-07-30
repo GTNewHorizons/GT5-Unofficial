@@ -20,7 +20,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.GLASS;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -34,6 +33,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -157,9 +157,7 @@ public class BioRecipeLoader {
 
         GTValues.RA.stdBuilder()
             .special(BioCultureEnum.getPetriDish(BioCultureLoader.anaerobicOil))
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.FermentedBiomass, FluidShapes.fluidLiquid, 10_000))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.FermentedBiomass, FluidShapes.fluidLiquid, 10_000))
             .fluidOutputs(new FluidStack(FluidLoader.fulvicAcid, 1_000))
             .metadata(GLASS, 3)
             .duration(2 * MINUTES + 17 * SECONDS + 8 * TICKS)

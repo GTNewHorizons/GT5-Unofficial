@@ -26,8 +26,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.ShapeData;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
@@ -41,6 +39,7 @@ import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.materials2.MaterialParentMods;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.interfaces.ISubTagContainer;

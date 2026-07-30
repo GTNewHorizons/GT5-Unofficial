@@ -11,7 +11,6 @@ import java.util.Objects;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,6 +24,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.material.MaterialUtils;
@@ -310,8 +310,7 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
 
         // Register IC2 steam cell and Railcraft steam cell as synonyms.
         // There is no steam material, so we'll use Water.cellMolten instead.
-        GTOreDictUnificator
-            .add(OrePrefixes.cellMolten, Materials.Water, GTModHandler.getIC2Item("steamCell", 1L));
+        GTOreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, GTModHandler.getIC2Item("steamCell", 1L));
         GTOreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, FluidCell.STEAM.getNoCopy());
     }
 

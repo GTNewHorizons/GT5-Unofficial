@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import gregtech.api.enums.materials2.LegacyMaterialIDIndex;
-import gregtech.api.enums.materials2.LegacyWerkstoffIndex;
 import org.junit.jupiter.api.Test;
 
 import com.ruling_0.materiallib.api.Property;

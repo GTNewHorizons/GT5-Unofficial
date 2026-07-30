@@ -1,11 +1,11 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -32,8 +32,7 @@ public class ProcessingItem implements gregtech.api.interfaces.IOreRecipeRegistr
                 case "itemMagnesium":
                     GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Magnesium, 3628800L));
                 case "itemPhosphorite":
-                    GTOreDictUnificator
-                        .addItemData(stack, new ItemData(Materials.TricalciumPhosphate, 3628800L));
+                    GTOreDictUnificator.addItemData(stack, new ItemData(Materials.TricalciumPhosphate, 3628800L));
                 case "itemSulfur":
                     GTOreDictUnificator.addItemData(stack, new ItemData(Materials.Sulfur, 3628800L));
                 case "itemAluminum":

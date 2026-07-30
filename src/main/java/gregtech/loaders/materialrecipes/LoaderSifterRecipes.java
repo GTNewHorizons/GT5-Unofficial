@@ -40,18 +40,15 @@ import gregtech.api.util.GTLog;
 /// otherwise have.
 public final class LoaderSifterRecipes {
 
-    private static final Material[] CARRIERS = { Materials.RockSalt, Materials.Bismutite,
-        Materials.FluorBuergerite, Materials.ChromoAluminoPovondraite,
-        Materials.VanadioOxyDravite, Materials.Olenite, Materials.RedZircon,
-        Materials.Fayalite, Materials.Forsterite, Materials.Hedenbergite,
-        Materials.Prasiolite, Materials.BArTiMaEuSNeK, Materials.Tiberium,
-        Materials.Fluorspar, Materials.Orundum };
+    private static final Material[] CARRIERS = { Materials.RockSalt, Materials.Bismutite, Materials.FluorBuergerite,
+        Materials.ChromoAluminoPovondraite, Materials.VanadioOxyDravite, Materials.Olenite, Materials.RedZircon,
+        Materials.Fayalite, Materials.Forsterite, Materials.Hedenbergite, Materials.Prasiolite, Materials.BArTiMaEuSNeK,
+        Materials.Tiberium, Materials.Fluorspar, Materials.Orundum };
 
     private static final Shape[] COMPRESSOR_SHAPES = { Shapes.gem, BlockShapes.block };
 
-    private static final Shape[] SIFTER_SHAPES = { Shapes.crushedPurified, Shapes.gemExquisite,
-        Shapes.gemFlawless, Shapes.gem, Shapes.gemFlawed, Shapes.gemChipped,
-        Shapes.dust };
+    private static final Shape[] SIFTER_SHAPES = { Shapes.crushedPurified, Shapes.gemExquisite, Shapes.gemFlawless,
+        Shapes.gem, Shapes.gemFlawed, Shapes.gemChipped, Shapes.dust };
 
     private LoaderSifterRecipes() {}
 

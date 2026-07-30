@@ -15,13 +15,13 @@ package bwcrossmod.GTpp.loader;
 
 import java.util.HashSet;
 
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.util.log.DebugLog;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 
@@ -49,8 +49,7 @@ public class RadioHatchCompat {
 
             if (mats.hasShape(Shapes.stickLong) && OreDictionary.getOres("stickLong" + name)
                 .isEmpty()) {
-                OreDictionary
-                    .registerOre("stickLong" + name, MaterialLibAPI.getStack(mats, Shapes.stickLong, 1));
+                OreDictionary.registerOre("stickLong" + name, MaterialLibAPI.getStack(mats, Shapes.stickLong, 1));
                 DebugLog.log("Generate: stickLong" + name);
             }
         }

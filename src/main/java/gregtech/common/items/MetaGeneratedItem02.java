@@ -183,8 +183,6 @@ import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Tea;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Tea;
 import static gregtech.common.items.IDMetaItem02.Vajra_Core;
 
-import gregtech.api.enums.materials2.Materials;
-import gregtech.api.enums.materials2.Shapes;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.Entity;
@@ -209,6 +207,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials;
+import gregtech.api.enums.materials2.Shapes;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
@@ -2657,8 +2657,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
         RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.dust, (int) (8)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.dust, (int) (8)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(maceratorRecipes);

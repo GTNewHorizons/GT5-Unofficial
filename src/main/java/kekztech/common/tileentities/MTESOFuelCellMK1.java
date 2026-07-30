@@ -22,8 +22,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.enums.materials2.FluidShapes;
-import gregtech.api.enums.materials2.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -37,6 +35,8 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.FluidShapes;
+import gregtech.api.enums.materials2.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -168,10 +168,8 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
                     if (super.depleteInput(liquid)) {
 
                         if (!super.depleteInput(
-                            MaterialLibAPI.getFluidStack(
-                                Materials.Oxygen,
-                                FluidShapes.fluidGas,
-                                (int) (OXYGEN_PER_SEC)))) {
+                            MaterialLibAPI
+                                .getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (OXYGEN_PER_SEC)))) {
                             super.mEUt = 0;
                             super.mEfficiency = 0;
                             return CheckRecipeResultRegistry.NO_FUEL_FOUND;

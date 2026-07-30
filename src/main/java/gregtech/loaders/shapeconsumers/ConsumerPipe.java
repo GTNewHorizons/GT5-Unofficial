@@ -29,16 +29,11 @@ public final class ConsumerPipe {
         fluid(PipeShapes.pipeQuadruple, OrePrefixes.pipeQuadruple);
         fluid(PipeShapes.pipeNonuple, OrePrefixes.pipeNonuple);
 
-        ShapeConsumerSupport
-            .delegate(PipeShapes.itemPipeTiny, OrePrefixes.pipeTiny, () -> ProcessingPipe.INSTANCE);
-        ShapeConsumerSupport
-            .delegate(PipeShapes.itemPipeSmall, OrePrefixes.pipeSmall, () -> ProcessingPipe.INSTANCE);
-        ShapeConsumerSupport
-            .delegate(PipeShapes.itemPipeMedium, OrePrefixes.pipeMedium, () -> ProcessingPipe.INSTANCE);
-        ShapeConsumerSupport
-            .delegate(PipeShapes.itemPipeLarge, OrePrefixes.pipeLarge, () -> ProcessingPipe.INSTANCE);
-        ShapeConsumerSupport
-            .delegate(PipeShapes.itemPipeHuge, OrePrefixes.pipeHuge, () -> ProcessingPipe.INSTANCE);
+        ShapeConsumerSupport.delegate(PipeShapes.itemPipeTiny, OrePrefixes.pipeTiny, () -> ProcessingPipe.INSTANCE);
+        ShapeConsumerSupport.delegate(PipeShapes.itemPipeSmall, OrePrefixes.pipeSmall, () -> ProcessingPipe.INSTANCE);
+        ShapeConsumerSupport.delegate(PipeShapes.itemPipeMedium, OrePrefixes.pipeMedium, () -> ProcessingPipe.INSTANCE);
+        ShapeConsumerSupport.delegate(PipeShapes.itemPipeLarge, OrePrefixes.pipeLarge, () -> ProcessingPipe.INSTANCE);
+        ShapeConsumerSupport.delegate(PipeShapes.itemPipeHuge, OrePrefixes.pipeHuge, () -> ProcessingPipe.INSTANCE);
         ShapeConsumerSupport.delegate(
             PipeShapes.itemPipeRestrictiveTiny,
             OrePrefixes.pipeRestrictiveTiny,
@@ -62,10 +57,7 @@ public final class ConsumerPipe {
     }
 
     private static void fluid(Shape shape, OrePrefixes prefix) {
-        ShapeConsumerSupport.delegate(
-            shape,
-            prefix,
-            material -> material != Materials.Redstone,
-            () -> ProcessingPipe.INSTANCE);
+        ShapeConsumerSupport
+            .delegate(shape, prefix, material -> material != Materials.Redstone, () -> ProcessingPipe.INSTANCE);
     }
 }
