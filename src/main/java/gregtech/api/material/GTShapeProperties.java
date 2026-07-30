@@ -6,12 +6,13 @@ import java.util.Set;
 import com.ruling_0.materiallib.api.Property;
 
 import gregtech.api.enums.TCAspects.TC_AspectStack;
+import gregtech.api.enums.materials2.ShapeData;
 import gregtech.api.objects.MaterialStack;
 
 /// Typed property keys GregTech attaches to MaterialLib shapes, holding the per-form data a form knows about
 /// itself independently of the material taking it: a plate is one ingot of whatever it is made of.
 ///
-/// [gregtech.api.enums.materials2.Materials2ShapeData] declares the values, and every shape-backed
+/// [ShapeData] declares the values, and every shape-backed
 /// [gregtech.api.enums.OrePrefixes] takes them from here at load, so this is the only place the 88 of them
 /// are written. The 220 prefixes no shape serves declare their own on the prefix.
 ///
