@@ -220,6 +220,15 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         mWorkUpdate = mInventoryChanged = false;
     }
 
+    @Override
+    public void onUnload() {
+        if (canAccessData()) {
+            onCoverUnload();
+            mMetaTileEntity.onUnload();
+        }
+        super.onUnload();
+    }
+
     public void updateConnections() {
         if (mConnections == mMetaTileEntity.mConnections) {
             return;
