@@ -2,6 +2,7 @@ package gregtech.common.blocks;
 
 import java.util.List;
 
+import gregtech.api.util.client.DynamicLangManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -52,6 +53,8 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
 
                 if (material == null) continue;
                 if (!material.generatesPrefix(OrePrefixes.sheetmetal)) continue;
+
+                DynamicLangManager.addStack(new ItemStack(this, 1, i));
 
                 OreDictionary.registerOre(
                     OrePrefixes.sheetmetal.get(material.getInternalName())

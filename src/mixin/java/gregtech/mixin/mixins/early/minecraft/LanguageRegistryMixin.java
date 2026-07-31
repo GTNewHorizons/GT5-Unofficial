@@ -2,6 +2,7 @@ package gregtech.mixin.mixins.early.minecraft;
 
 import java.util.Map;
 
+import gregtech.api.util.client.DynamicLangManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -34,5 +35,6 @@ public class LanguageRegistryMixin {
         GTLanguageManager.LOCALE = LocaleUtility.getLocaleFromName(lang);
         GTInflectionManager.loadInflectionJson(lang);
         GTLanguageManager.reloadLanguage(field_135032_a);
+        DynamicLangManager.reload(field_135032_a);
     }
 }
