@@ -11,6 +11,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import gregtech.GT_Version;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialUtils;
 import vexatos.tgregworks.TGregworks;
 import vexatos.tgregworks.item.ItemTGregPart;
@@ -52,6 +53,9 @@ public class MaterialsInjector {
                 continue;
             }
             if (MaterialUtils.durability(material) == 0) continue;
+            // Hafnium and Zirconium pass the durability gate only through the default the gtPlusPlus side of
+            // their declaration carries, not a bartworks-declared tool stat, so they stay out of the registry.
+            if (material == Materials.Hafnium || material == Materials.Zirconium) continue;
             registerParts(material);
         }
 
