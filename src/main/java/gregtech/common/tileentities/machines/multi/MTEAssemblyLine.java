@@ -298,6 +298,11 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             int currentParallel = (int) GTRecipe.RecipeAssemblyLine
                 .maxParallelCalculatedByInputItems(mInputBusses, Integer.MAX_VALUE, itemConsumptions, inputsFromME);
 
+            if (currentParallel <= 0) {
+                if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
+                continue;
+            }
+
             if (GTValues.D1) {
                 GT_FML_LOGGER.info("All Items accepted");
             }
