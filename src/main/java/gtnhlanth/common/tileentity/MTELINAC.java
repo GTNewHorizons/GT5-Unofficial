@@ -32,7 +32,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.StructureLib;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
