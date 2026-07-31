@@ -212,11 +212,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), "Front center casing", 1)
             .addEnergyHatch("1+", "Any front bottom casing", 4)
             .addMaintenanceHatch("1", "Any front bottom casing", 4)
-            .addInputBus(
-                "2",
-                "2nd top center casing from front (masks) and back (wafers)",
-                2,
-                3)
+            .addInputBus("2", "2nd top center casing from front (masks) and back (wafers)", 2, 3)
             .addOutputBus("1", "Back center casing", 5)
             .addAir("Interior of the structure")
             .addStructureInfo("")
