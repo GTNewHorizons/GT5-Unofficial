@@ -66,36 +66,54 @@ public class PipeMaterials {
             new WireCable(Materials.Cupronickel, 3, 4, TierEU.MV),
             new WireCable(Materials.Copper, 2, 1, TierEU.MV),
             new WireCable(Materials.AnnealedCopper, 1, 1, TierEU.MV),
+            new WireCable(Materials.ElectricalSteel, 1, 3, TierEU.MV),
             new WireCable(Materials.Kanthal, 3, 5, TierEU.HV),
             new WireCable(Materials.Gold, 2, 3, TierEU.HV),
             new WireCable(Materials.Electrum, 1, 2, TierEU.HV),
             new WireCable(Materials.Silver, 1, 1, TierEU.HV),
             new WireCable(Materials.BlueAlloy, 1, 2, TierEU.HV),
+            new WireCable(Materials.EnergeticAlloy, 1, 4, TierEU.HV),
             new WireCable(Materials.Nichrome, 4, 6, TierEU.EV),
             new WireCable(Materials.Steel, 3, 2, TierEU.EV),
             new WireCable(Materials.BlackSteel, 1, 4, TierEU.EV),
             new WireCable(Materials.Titanium, 2, 4, TierEU.EV),
             new WireCable(Materials.Aluminium, 1, 1, TierEU.EV),
             new WireCable(Materials.TPVAlloy, 1, 6, TierEU.EV),
+            new WireCable(Materials.VibrantAlloy, 3, 6, TierEU.EV),
             new WireCable(Materials.Platinum, 1, 2, TierEU.IV),
             new WireCable(Materials.TungstenSteel, 4, 4, TierEU.IV),
             new WireCable(Materials.Tungsten, 2, 6, TierEU.IV),
+            new WireCable(Materials.EndSteel, 3, 6, TierEU.IV),
             new WireCable(Materials.Osmium, 2, 4, TierEU.LuV),
             new WireCable(Materials.HSSG, 2, 4, TierEU.LuV),
             new WireCable(Materials.NiobiumTitanium, 2, 4, TierEU.LuV),
             new WireCable(Materials.VanadiumGallium, 4, 4, TierEU.LuV),
             new WireCable(Materials.YttriumBariumCuprate, 3, 6, TierEU.LuV),
+            new WireCable(Materials.MelodicAlloy, 2, 4, TierEU.LuV),
+            new WireCable(Materials.HSSE, 4, 6, TierEU.LuV),
             new WireCable(Materials.Naquadah, 2, 2, TierEU.ZPM),
             new WireCable(Materials.Signalium, 8, 12, TierEU.ZPM),
+            new WireCable(Materials.Trinium, 3, 6, TierEU.ZPM),
+            new WireCable(Materials.Osmiridium, 1, 16, TierEU.ZPM),
             new WireCable(Materials.NaquadahAlloy, 4, 6, TierEU.UV),
             new WireCable(Materials.Duranium, 2, 4, TierEU.UV),
             new WireCable(Materials.Lumiium, 16, 8, TierEU.UV),
+            new WireCable(Materials.StellarAlloy, 12, 12, TierEU.UV),
+            new WireCable(Materials.ElectrumFlux, 3, 6, TierEU.UV),
+            new WireCable(Materials.Bedrockium, 6, 3, TierEU.UHV),
+            new WireCable(Materials.HSSS, 4, 8, TierEU.UHV),
+            new WireCable(Materials.Draconium, 32, 8, TierEU.UEV),
+            new WireCable(Materials.NetherStar, 16, 4, TierEU.UIV),
+            new WireCable(Materials.Quantium, 32, 4, TierEU.UMV),
         };
 
         WireOnly[] wireOnly = {
             new WireOnly(Materials.Graphene, 2, 1, TierEU.IV, false),
             new WireOnly(Materials.Ichorium, 8, 12, TierEU.UHV, false),
             new WireOnly(Materials.Hypogen, 0, 8, TierEU.UIV, false),
+            new WireOnly(Materials.BlackPlutonium, 8, 8, TierEU.UXV, true),
+            new WireOnly(Materials.DraconiumAwakened, 64, 8, TierEU.MAX, true),
+            new WireOnly(Materials.Infinity, 0, 8192, TierEU.MAX, false),
             new WireOnly(Materials.SpaceTime, 0, 1_000_000, TierEU.MAX, false),
         };
 
@@ -141,6 +159,8 @@ public class PipeMaterials {
         edit(Materials.RedstoneAlloy).setProperty(PipeProperties.WIRE_LOSS, 2);
         edit(Materials.Signalium).setProperty(PipeProperties.WIRE_LOSS, 32);
         edit(Materials.Lumiium).setProperty(PipeProperties.WIRE_LOSS, 64);
+        edit(Materials.Bedrockium).setProperty(PipeProperties.WIRE_LOSS, 48);
+        edit(Materials.Quantium).setProperty(PipeProperties.WIRE_LOSS, 128);
 
         for (WireOnly[] rows : new WireOnly[][] { wireOnly, superconductorBases, superconductorMarkers }) {
             for (WireOnly row : rows) {
