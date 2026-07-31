@@ -1,10 +1,13 @@
 package gregtech.api.util.client;
 
-import net.minecraft.item.ItemStack;
-
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import net.minecraft.item.ItemStack;
+
+import cpw.mods.fml.relauncher.ReflectionHelper;
 
 /**
  * Handles dynamic key generation for material auto name fusion.
@@ -14,13 +17,29 @@ import java.util.Map;
  * at runtime.
  */
 public class DynamicLangManager {
-    private static List<ItemStack> dynamicStacks = new ArrayList<>();
+
+    private static final Map<String, String> mcLangMap;
+
+    static {
+        Field fieldStringTranslateLanguageList = ReflectionHelper
+            .findField(net.minecraft.util.StringTranslate.class, "languageList", "field_74816_c");
+        Field fieldStringTranslateInstance = ReflectionHelper
+            .findField(net.minecraft.util.StringTranslate.class, "instance", "field_74817_a");
+        try {
+            // noinspection unchecked
+            mcLangMap = (Map<String, String>) fieldStringTranslateLanguageList
+                .get(fieldStringTranslateInstance.get(null));
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private static final List<ItemStack> dynamicStacks = new ArrayList<>();
 
     public static void addStack(ItemStack stack) {
         dynamicStacks.add(stack);
     }
 
-    public static void reload(Map<String, String> mcLangMap) {
+    public static void reload() {
         for (ItemStack stack : dynamicStacks) {
             mcLangMap.put(stack.getUnlocalizedName() + ".name", stack.getDisplayName());
         }
