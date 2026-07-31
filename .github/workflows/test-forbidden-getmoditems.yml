@@ -17,3 +17,8 @@ jobs:
         run: |
           ! grep -E -r 'getModItem\(.*(BartWorks|GalactiGreg|GGFab|GoodGenerator|GregTech|GTNHIntergalactic|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)\.ID' src/main/java || exit 1
           ! grep -E -r 'getModItem\(".*", .*)' src/main/java || exit 1
+      - name: Detect forbidden GameRegistry.findItem calls
+        shell: bash
+        run: |
+          ! grep -E -r 'findItem\(.*(BartWorks|GalactiGreg|GGFab|GoodGenerator|GregTech|GTNHIntergalactic|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)\.ID' src/main/java || exit 1
+          ! grep -E -r 'findItem\(".*", .*)' src/main/java || exit 1
