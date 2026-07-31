@@ -26,7 +26,6 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 
 import gregtech.api.modularui2.GTGuis;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter;
 import gtnhlanth.common.beamline.Particle;
@@ -126,7 +125,9 @@ public class MTEBeamCrafterGui extends MTEMultiBlockBaseGui<MTEBeamCrafter> {
             .childPadding(10);
 
         mainColumn.child(
-            IKey.dynamic(() -> GTUtility.translate("gt.blockmachines.multimachine.beamcrafting.beamcrafter.dumpbuffer"))
+            IKey.dynamic(
+                () -> StatCollector
+                    .translateToLocal("gt.blockmachines.multimachine.beamcrafting.beamcrafter.dumpbuffer"))
                 .asWidget()
                 .textAlign(Alignment.CENTER));
 

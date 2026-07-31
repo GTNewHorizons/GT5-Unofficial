@@ -239,7 +239,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
             .addInfo("You can find more information about this machine in the Thaumonomicon")
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginVariableStructureBlock(5, 9, 5, 5, 5, 5, true)
+            .beginVariableStructureBlock(5, 5, 5, 5, 5, 9, true)
             .addController("Front center, 3rd layer")
             .addCasing("24-84", "Magic Casing", false)
             .addCasing("12-28", "Essentia Diffusion Cell", true)
@@ -252,6 +252,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
             .addInputAny("1+", "Any magic casing", 1)
             .addMiscHatch("1+", "Essentia Output Hatch", "Any magic casing", 1)
             .addAir("Interior of the structure")
+            .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .toolTipFinisher();
         return tt;

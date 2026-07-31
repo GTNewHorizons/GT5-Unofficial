@@ -231,7 +231,7 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.NANOCHIP;
     }
 

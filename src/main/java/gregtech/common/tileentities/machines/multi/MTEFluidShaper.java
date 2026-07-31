@@ -181,7 +181,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
             .addStaticEuEffInfo(0.8f)
             .addGlassEnergyLimitInfo()
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
-            .beginVariableStructureBlock(9, 33, 5, 5, 5, 5, true)
+            .beginVariableStructureBlock(5, 5, 5, 5, 9, 33, true)
             .addController("Front bottom center")
             .addCasingInfoRange("Solidifier Casing", 91, 211, false)
             .addCasingInfoRange("Solidifier Radiator", 13, 73, false)

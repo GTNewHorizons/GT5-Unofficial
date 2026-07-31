@@ -60,14 +60,15 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
             .addInfo("Performs 4/4 overclock")
             .addInfo(createParallelText())
             .addSupportAny()
-            .beginStructureBlock(47, 47, 7, false)
+            .beginStructureBlock(47, 7, 47, false)
+            .addController("Middle center, 4th layer")
             .addCasing("1662-1695", "Fusion Machine Casing Mk-III", false)
             .addCasing("560", "Compact Fusion Coil Mk-II Prototype", false)
             .addCasing("128", "Infinity Catalyst Frame Box", false)
             .addCasing("63-93", "Neutronium Reinforced Borosilicate Glass Block", false)
-            .addEnergyHatch("1-32", "Specified casings (UHV+)", 2)
-            .addInputHatch("1+", "Specified casings", 1)
-            .addOutputHatch("1+", "Specified casings", 1)
+            .addEnergyHatch("1-32", "Specific casings on each curve (UHV+)", 2)
+            .addInputHatch("1+", "Specific glass on each side", 1)
+            .addOutputHatch("1+", "Specific glass on each side", 1)
             .addStructureInfo("")
             .addStructureFooter("Supports crafting input buffers")
             .toolTipFinisher();
@@ -112,6 +113,16 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
     @Override
     public int getGlassMeta() {
         return 6;
+    }
+
+    @Override
+    public Block getGlassBlock2() {
+        return ItemRegistry.bw_realglas2;
+    }
+
+    @Override
+    public int getGlassMeta2() {
+        return 1;
     }
 
     @Override

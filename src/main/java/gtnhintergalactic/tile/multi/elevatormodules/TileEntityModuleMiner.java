@@ -148,38 +148,38 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
 
     // TODO: REMOVE AFTER 2.9
     /** Name of the distance setting */
-    private static final INameFunction<TileEntityModuleMiner> DISTANCE_SETTING_NAME = (base, p) -> GTUtility
-        .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.0"); // Distance
+    private static final INameFunction<TileEntityModuleMiner> DISTANCE_SETTING_NAME = (base, p) -> StatCollector
+        .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.cfgi.0"); // Distance
     /** Status of the distance setting */
     private static final IStatusFunction<TileEntityModuleMiner> DISTANCE_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 200, MAX_DISTANCE);
     /** Name of the parallel setting */
-    private static final INameFunction<TileEntityModuleMiner> PARALLEL_SETTING_NAME = (base, p) -> GTUtility
-        .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.1"); // Max parallels
+    private static final INameFunction<TileEntityModuleMiner> PARALLEL_SETTING_NAME = (base, p) -> StatCollector
+        .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.cfgi.1"); // Max parallels
     /** Status of the parallel setting */
     private static final IStatusFunction<TileEntityModuleMiner> PARALLEL_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getMaxParallels());
     /** Name of the overdrive setting */
-    private static final INameFunction<TileEntityModuleMiner> OVERDRIVE_SETTING_NAME = (base, p) -> GTUtility
-        .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.2"); // Overdrive
+    private static final INameFunction<TileEntityModuleMiner> OVERDRIVE_SETTING_NAME = (base, p) -> StatCollector
+        .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.cfgi.2"); // Overdrive
     /** Status of the overdrive setting */
     private static final IStatusFunction<TileEntityModuleMiner> OVERDRIVE_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 1.5, 2);
     /** Name of the mode setting */
-    private static final INameFunction<TileEntityModuleMiner> MODE_SETTING_NAME = (base, p) -> GTUtility
-        .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.4"); // Mode
+    private static final INameFunction<TileEntityModuleMiner> MODE_SETTING_NAME = (base, p) -> StatCollector
+        .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.cfgi.4"); // Mode
     /** Status of the mode setting */
     private static final IStatusFunction<TileEntityModuleMiner> MODE_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 1.1, 1.1);
     /** Name of the mode setting */
-    private static final INameFunction<TileEntityModuleMiner> RANGE_SETTING_NAME = (base, p) -> GTUtility
-        .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.5"); // Range
+    private static final INameFunction<TileEntityModuleMiner> RANGE_SETTING_NAME = (base, p) -> StatCollector
+        .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.cfgi.5"); // Range
     /** Status of the mode setting */
     private static final IStatusFunction<TileEntityModuleMiner> RANGE_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 50, 150);
     /** Name of the step setting */
-    private static final INameFunction<TileEntityModuleMiner> STEP_SETTING_NAME = (base, p) -> GTUtility
-        .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.6"); // Step
+    private static final INameFunction<TileEntityModuleMiner> STEP_SETTING_NAME = (base, p) -> StatCollector
+        .translateToLocal("gt.blockmachines.multimachine.project.ig.miner.cfgi.6"); // Step
     /** Status of the step setting */
     private static final IStatusFunction<TileEntityModuleMiner> STEP_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 10, 20);
@@ -1014,7 +1014,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t1.desc5"))
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT1"))
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc6"))
-                .beginStructureBlock(2, 1, 5, false)
+                .beginStructureBlock(1, 5, 2, false)
                 .addController("Front center, 4th layer")
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
                 .addMiscHatch(
@@ -1118,7 +1118,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t2.desc5"))
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT2"))
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc6"))
-                .beginStructureBlock(2, 1, 5, false)
+                .beginStructureBlock(1, 5, 2, false)
                 .addController("Front center, 4th layer")
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
                 .addMiscHatch(
@@ -1222,7 +1222,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t3.desc5"))
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT3"))
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc6"))
-                .beginStructureBlock(2, 1, 5, false)
+                .beginStructureBlock(1, 5, 2, false)
                 .addController("Front center, 4th layer")
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
                 .addMiscHatch(

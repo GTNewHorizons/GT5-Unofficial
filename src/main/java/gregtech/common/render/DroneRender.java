@@ -25,20 +25,20 @@ public class DroneRender {
     }
 
     public static void renderDrone(double x, double y, double z, float timeSinceLastTick, int level) {
-        if (level <= 0 || level >= DroneTextures.length) return;
+        if (level <= 0 || level > DroneTextures.length) return;
         Minecraft mc = Minecraft.getMinecraft();
         mc.getTextureManager()
             .bindTexture(DroneTextures[level - 1]);
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
 
-        float time = mc.theWorld.getTotalWorldTime() + timeSinceLastTick;
-        GL11.glTranslated(0, Math.sin(time / 10.0) * 0.15, 0);
+        double time = mc.theWorld.getTotalWorldTime() + (double) timeSinceLastTick;
+        GL11.glTranslated(0, Math.sin(time * 0.1) * 0.15, 0);
 
         Drone.renderAll();
 
         final double bladeOffset = 0.845;
-        float rotation = time * 80f % 360f;
+        double rotation = time * 80.0 % 360.0;
         renderBlade(rotation, -bladeOffset, -bladeOffset);
         renderBlade(-rotation, -bladeOffset, bladeOffset);
         renderBlade(-rotation, bladeOffset, -bladeOffset);
@@ -46,7 +46,7 @@ public class DroneRender {
         GL11.glPopMatrix();
     }
 
-    private static void renderBlade(float rotation, double offsetX, double offsetZ) {
+    private static void renderBlade(double rotation, double offsetX, double offsetZ) {
         GL11.glPushMatrix();
         GL11.glTranslated(offsetX, 1.265, offsetZ);
         GL11.glRotated(rotation, 0, 1, 0);

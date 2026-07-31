@@ -161,6 +161,11 @@ public class MTETypeFilter extends MTESpecialFilter {
     }
 
     @Override
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return index == FILTER_SLOT_INDEX;
+    }
+
+    @Override
     protected boolean isStackAllowed(ItemStack aStack) {
         if (this.mPrefix == OrePrefixes.ore) {
             ItemData data = GTOreDictUnificator.getItemData(aStack);

@@ -19,6 +19,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.client.iconContainers.blocks.GTBlockIconContainer;
 import gregtech.client.iconContainers.blocks.GTCustomAlphaBlockIconContainer;
+import gregtech.client.iconContainers.blocks.GTCustomAlphaFallbackBlockIconContainer;
 import gregtech.client.iconContainers.blocks.GTCustomBlockIconContainer;
 import gregtech.client.iconContainers.blocks.GTCustomOptionalBlockIconContainer;
 import gregtech.client.iconContainers.blocks.GTOptionalBlockIconContainer;
@@ -2042,6 +2043,18 @@ public class Textures {
             GLASS_TINTED_INDUSTRIAL_LIGHT_GRAY = create("GLASS_TINTED_INDUSTRIAL_LIGHT_GRAY"),
             GLASS_TINTED_INDUSTRIAL_GRAY = create("GLASS_TINTED_INDUSTRIAL_GRAY"),
             GLASS_TINTED_INDUSTRIAL_BLACK = create("GLASS_TINTED_INDUSTRIAL_BLACK"),
+            GLASS_TINTED_INDUSTRIAL_BROWN = create("GLASS_TINTED_INDUSTRIAL_BROWN"),
+            GLASS_TINTED_INDUSTRIAL_RED = create("GLASS_TINTED_INDUSTRIAL_RED"),
+            GLASS_TINTED_INDUSTRIAL_ORANGE = create("GLASS_TINTED_INDUSTRIAL_ORANGE"),
+            GLASS_TINTED_INDUSTRIAL_YELLOW = create("GLASS_TINTED_INDUSTRIAL_YELLOW"),
+            GLASS_TINTED_INDUSTRIAL_LIME = create("GLASS_TINTED_INDUSTRIAL_LIME"),
+            GLASS_TINTED_INDUSTRIAL_GREEN = create("GLASS_TINTED_INDUSTRIAL_GREEN"),
+            GLASS_TINTED_INDUSTRIAL_CYAN = create("GLASS_TINTED_INDUSTRIAL_CYAN"),
+            GLASS_TINTED_INDUSTRIAL_LIGHT_BLUE = create("GLASS_TINTED_INDUSTRIAL_LIGHT_BLUE"),
+            GLASS_TINTED_INDUSTRIAL_BLUE = create("GLASS_TINTED_INDUSTRIAL_BLUE"),
+            GLASS_TINTED_INDUSTRIAL_PURPLE = create("GLASS_TINTED_INDUSTRIAL_PURPLE"),
+            GLASS_TINTED_INDUSTRIAL_MAGENTA = create("GLASS_TINTED_INDUSTRIAL_MAGENTA"),
+            GLASS_TINTED_INDUSTRIAL_PINK = create("GLASS_TINTED_INDUSTRIAL_PINK"),
             MACHINE_CASING_INDUSTRIAL_WATER_PLANT = create("MACHINE_CASING_INDUSTRIAL_WATER_PLANT"),
             WATER_PLANT_CONCRETE_CASING = create("WATER_PLANT_CONCRETE_CASING"),
             MACHINE_CASING_FLOCCULATION = create("MACHINE_CASING_FLOCCULATION"),
@@ -2695,6 +2708,20 @@ public class Textures {
         }
 
         /**
+         * Registers a Custom Alpha-blended Block {@link IIconContainer} (to be rendered in pass 1) whose icon and
+         * _OVERLAY textures are both optional, delegating to the given fallback container when neither exists
+         *
+         * @param aIconName The unique {@code [<modid>:]path/name} icon identifier<br>
+         *                  (see: {@link IIconRegister#registerIcon}).
+         * @param fallback  The {@link IIconContainer} to delegate to when no texture exists for this icon.
+         * @return The {@link IIconContainer} instance
+         */
+        public static @NotNull IIconContainer customAlphaFallback(@NotNull String aIconName,
+            @NotNull IIconContainer fallback) {
+            return GTCustomAlphaFallbackBlockIconContainer.create(aIconName, fallback);
+        }
+
+        /**
          * Registers a Block {@link IIconContainer} for a {@link TextureSet}
          *
          * @param setName The name of the TextureSet
@@ -2748,6 +2775,7 @@ public class Textures {
         public static void cleanup() {
             GTTextureSetBlockIconContainer.cleanup();
             GTCustomBlockIconContainer.cleanup();
+            GTCustomAlphaFallbackBlockIconContainer.cleanup();
         }
     }
 

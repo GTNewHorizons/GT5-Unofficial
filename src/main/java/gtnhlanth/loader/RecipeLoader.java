@@ -8,6 +8,7 @@ import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
@@ -22,8 +23,10 @@ import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
+import static gregtech.api.recipe.RecipeMaps.simpleWasherRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
+import static gregtech.api.recipe.RecipeMaps.vacuumFurnaceRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -37,9 +40,6 @@ import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gregtech.api.util.GTRecipeConstants.WaferEngravingRecipes;
 import static gregtech.common.items.MetaGeneratedItem01.registerCauldronCleaningFor;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.vacuumFurnaceRecipes;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.digesterRecipes;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.dissolutionTankRecipes;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.CeriumChlorideConcentrate;
@@ -856,9 +856,9 @@ public class RecipeLoader {
                                 new ItemStack(LanthItemList.maskMap.get(maskIngredient)),
                                 GTUtility.copyAmount(0, lens))
                             .fluidInputs(
-                                // damage * 4 (chips per recipe) * 50 (L per chip normally) * 3 / 4 (75% of the
+                                // max uses * 4 (chips per recipe) * 50 (L per chip normally) * 3 / 4 (75% of the
                                 // cost)
-                                Materials.BioMediumSterilized.getFluid((mask.getDamage() + 1) * 4L * 50 * 3 / 4))
+                                Materials.BioMediumSterilized.getFluid(mask.getMaxUses() * 4 * 1L * 50 * 3 / 4))
                             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(mask)))
                             .requiresCleanRoom()
                             .duration(120 * SECONDS)
@@ -4084,20 +4084,21 @@ public class RecipeLoader {
         removeCeriumDehydrator();
         removeCeriumChemicalBath();
 
-        // For Cauldron Wash
-        GTLog.out.println(Tags.MODID + ": processing cauldron washing recipes to replace cerium sources");
-        registerCauldronCleaningFor(Materials.Cerium, WerkstoffMaterialPool.CeriumRichMixture.getBridgeMaterial());
-        registerCauldronCleaningFor(
-            Materials.Samarium,
-            WerkstoffMaterialPool.SamariumOreConcentrate.getBridgeMaterial());
-        GTLog.out.println(Tags.MODID + ": processing cauldron washing recipes done!");
-
         // For Crafting Table
         GTLog.out.println(Tags.MODID + ": processing crafting recipes to replace cerium sources");
         CraftingManager.getInstance()
             .getRecipeList()
             .forEach(RecipeLoader::replaceInCraftTable);
         GTLog.out.println(Tags.MODID + ": processing crafting recipes done!");
+    }
+
+    public static void registerCauldronRemaps() {
+        GTLog.out.println(Tags.MODID + ": processing cauldron washing recipes to replace cerium sources");
+        registerCauldronCleaningFor(Materials.Cerium, WerkstoffMaterialPool.CeriumRichMixture.getBridgeMaterial());
+        registerCauldronCleaningFor(
+            Materials.Samarium,
+            WerkstoffMaterialPool.SamariumOreConcentrate.getBridgeMaterial());
+        GTLog.out.println(Tags.MODID + ": processing cauldron washing recipes done!");
     }
 
     public static void replaceInCraftTable(Object obj) {

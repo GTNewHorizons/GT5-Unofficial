@@ -51,7 +51,7 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .itemOutputs(material.getIngot(1))
                     .fluidInputs(material.getFluidStack(144))
                     .duration(3 * SECONDS)
-                    .eut(material.vVoltageMultiplier)
+                    .eut(material.voltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
             }
 
@@ -62,7 +62,7 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .itemOutputs(material.getPlate(1))
                     .fluidInputs(material.getFluidStack(144))
                     .duration(3 * SECONDS)
-                    .eut(material.vVoltageMultiplier)
+                    .eut(material.voltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
             }
 
@@ -73,7 +73,7 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .itemOutputs(material.getNugget(1))
                     .fluidInputs(material.getFluidStack(16))
                     .duration(3 * SECONDS)
-                    .eut(material.vVoltageMultiplier)
+                    .eut(material.voltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
             }
 
@@ -84,7 +84,7 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .itemOutputs(material.getGear(1))
                     .fluidInputs(material.getFluidStack(576))
                     .duration(12 * SECONDS)
-                    .eut(material.vVoltageMultiplier)
+                    .eut(material.voltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
             }
 
@@ -95,7 +95,7 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .itemOutputs(material.getGearSmall(1))
                     .fluidInputs(material.getFluidStack(144))
                     .duration(3 * SECONDS)
-                    .eut(material.vVoltageMultiplier)
+                    .eut(material.voltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
             }
 
@@ -106,7 +106,7 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .itemOutputs(material.getBlock(1))
                     .fluidInputs(material.getFluidStack(144 * 9))
                     .duration(25 * SECONDS)
-                    .eut(material.vVoltageMultiplier)
+                    .eut(material.voltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
             }
 
@@ -117,7 +117,7 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .itemOutputs(material.getRod(1))
                     .fluidInputs(material.getFluidStack(72))
                     .duration(15 * SECONDS)
-                    .eut(material.vVoltageMultiplier)
+                    .eut(material.voltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
             }
 
@@ -128,7 +128,7 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .itemOutputs(material.getLongRod(1))
                     .fluidInputs(material.getFluidStack(144))
                     .duration(30 * SECONDS)
-                    .eut(material.vVoltageMultiplier)
+                    .eut(material.voltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
             }
 
@@ -139,7 +139,7 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .itemOutputs(material.getBolt(1))
                     .fluidInputs(material.getFluidStack(18))
                     .duration(5 * SECONDS)
-                    .eut(material.vVoltageMultiplier)
+                    .eut(material.voltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
             }
 
@@ -150,7 +150,7 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .itemOutputs(material.getScrew(1))
                     .fluidInputs(material.getFluidStack(18))
                     .duration(5 * SECONDS)
-                    .eut(material.vVoltageMultiplier)
+                    .eut(material.voltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
             }
 
@@ -161,7 +161,7 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .itemOutputs(material.getRing(1))
                     .fluidInputs(material.getFluidStack(36))
                     .duration(10 * SECONDS)
-                    .eut(material.vVoltageMultiplier)
+                    .eut(material.voltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
             }
 
@@ -172,7 +172,7 @@ public class RecipeGenFluids extends RecipeGenBase {
                     .itemOutputs(material.getRotor(1))
                     .fluidInputs(material.getFluidStack(612))
                     .duration(10 * SECONDS)
-                    .eut(material.vVoltageMultiplier)
+                    .eut(material.voltageMultiplier)
                     .addTo(fluidSolidifierRecipes);
             }
         }

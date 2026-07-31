@@ -138,7 +138,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
             .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.wait_power", waitPower))
             .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.intake_warning2"))
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 10, 5, false)
+            .beginStructureBlock(10, 5, 5, false)
             .addController("Front left, 2nd layer")
             .addCasing("30-33", "Robust Tungstensteel Machine Casing", false)
             .addCasing("32", "PTFE Frame Box", false)
@@ -351,8 +351,8 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
                     fuelConsumption = tLiquid.amount = getNominalOutput() / fuelValue;
                 }
 
-                // Deplete that amount
-                if (!depleteInput(tLiquid)) return CheckRecipeResultRegistry.NO_FUEL_FOUND;
+                // Deplete that amount, try next fuel if this one is insufficient
+                if (!depleteInput(tLiquid)) continue;
                 boostEu = depleteInput(getBooster().getGas(2L * getAdditiveFactor()));
 
                 // Check to prevent burning HOG without consuming it, if not boosted

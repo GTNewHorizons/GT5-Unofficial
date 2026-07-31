@@ -34,9 +34,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
-import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.implementation.items.GTItemSink;
@@ -160,20 +158,18 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public void onFirstTick(IGregTechTileEntity baseMetaTileEntity) {}
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
+    public void onClientSoundStateChanged() {}
+
+    @Override
     public void onPreTick(IGregTechTileEntity baseMetaTileEntity, long tick) {}
 
     @Override
-    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
-        if (baseMetaTileEntity.isClientSide() && GTMod.clientProxy()
-            .changeDetected() == 4) {
-            /*
-             * Client tick counter that is set to 5 on hiding pipes and covers. It triggers a texture update next client
-             * tick when reaching 4, with provision for 3 more update tasks, spreading client change detection related
-             * work and network traffic on different ticks, until it reaches 0.
-             */
-            baseMetaTileEntity.issueTextureUpdate();
-        }
-    }
+    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {}
 
     public void onTickFail(IGregTechTileEntity baseMetaTileEntity, long tick) {}
 
@@ -640,6 +636,15 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return false;
     }
 
+    /**
+     * A public method to verify if this MTE has a Mui2 GUI. Returning false indicates that do not try to open a Mui2
+     * GUI
+     * of this.
+     */
+    public boolean hasMui2Gui() {
+        return useMui2() || forceUseMui2();
+    }
+
     @Override
     public final String getGuiId() {
         return mName;
@@ -648,7 +653,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     /**
      * Specifies theme of this GUI. {@link GTGuiThemes} lists all the themes you can use.
      */
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.STANDARD;
     }
 
@@ -669,15 +674,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @SideOnly(Side.CLIENT)
     @Override
     public ModularScreen createScreen(PosGuiData data, ModularPanel mainPanel) {
-        return new GTModularScreen(mainPanel, getColoredTheme());
-    }
-
-    public final GTGuiTheme getColoredTheme() {
-        GTGuiTheme baseTheme = getGuiTheme();
-        if (baseTheme != GTGuiThemes.STANDARD) return baseTheme;
-        byte color = this.getBaseMetaTileEntity()
-            .getColorization();
-        Dyes dye = Dyes.get(color);
-        return dye.mui2Theme.get();
+        return new GTModularScreen(mainPanel, getGuiTheme());
     }
 }
