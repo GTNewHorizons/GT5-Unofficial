@@ -67,25 +67,27 @@ public class Godforge implements Runnable {
     public static final List<ItemStack> magmatterSpaceFluidItemsForNEI = new ArrayList<>();
     public static final List<ItemStack> magmatterItemsForNEI = new ArrayList<>();
 
+    /// The molten fluid of each dust's material, index-aligned with `items`: every caller pairs the result
+    /// positionally with a same-index plasma output, so an entry the material has no molten fluid for must be
+    /// a null slot rather than a missing one.
+    ///
     /// Resolves each dust `ItemStack` back to its unified material via [GTOreDictUnificator#getAssociation]
     /// rather than parsing an OreDictionary name (`"dustIron"` -> `"Iron"`), so this does not depend on the
     /// item having exactly one registered OreDictionary id in a particular order -- true for both legacy and
     /// MaterialLib-cutover dust items, since both go through `addAssociation` on unification.
     private FluidStack[] convertToFluid(ItemStack[] items) {
-        List<FluidStack> molten = new ArrayList<>();
+        FluidStack[] molten = new FluidStack[items.length];
 
-        for (ItemStack itemStack : items) {
-            ItemData association = GTOreDictUnificator.getAssociation(itemStack);
-            Material material = association == null || association.mMaterial == null
-                || association.mMaterial.mMaterial == null ? null : association.mMaterial.mMaterial;
-            if (material == null || !LegacyNameDomain.contains(material)) {
-                GTLog.err.println("Godforge.convertToFluid: no unification data for " + itemStack + ", skipping");
+        for (int i = 0; i < items.length; i++) {
+            ItemData association = GTOreDictUnificator.getAssociation(items[i]);
+            if (association == null) {
+                GTLog.err.println("Godforge.convertToFluid: no unification data for " + items[i]);
                 continue;
             }
-            molten.add(MaterialUtils.molten(material, 1 * INGOTS));
+            molten[i] = MaterialUtils.molten(association.mMaterial.mMaterial, 1 * INGOTS);
         }
 
-        return molten.toArray(new FluidStack[0]);
+        return molten;
     }
 
     @Override
