@@ -244,18 +244,6 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         Map<Fluid, FluidStack> fluidsFromME = getStoredFluidsFromME();
 
         for (RecipeAssemblyLine tRecipe : availableRecipes) {
-            // Recipe tier is limited to hatch tier + 1.
-            if (tRecipe.mEUt > averageVoltage * 4) {
-                result = CheckRecipeResultRegistry.insufficientPower(tRecipe.mEUt);
-                continue;
-            }
-
-            // Insufficient power check.
-            if (tRecipe.mEUt > maxAmp * averageVoltage) {
-                result = CheckRecipeResultRegistry.insufficientPower(tRecipe.mEUt);
-                continue;
-            }
-
             // So here we check against the recipe found on the data stick.
             // If we run into missing buses/hatches or bad inputs, we go to the next data stick.
             // This check only happens if we have a valid up-to-date data stick.
@@ -270,6 +258,43 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                         tRecipe.mFluidInputs.length);
                 }
                 if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
+                continue;
+            }
+
+            // Check Inputs align
+            int[] itemConsumptions = GTRecipe.RecipeAssemblyLine.getItemConsumptionAmountArray(mInputBusses, tRecipe);
+            if (itemConsumptions == null || itemConsumptions.length == 0) {
+                if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
+                continue;
+            }
+
+            int currentParallel = (int) RecipeAssemblyLine
+                .maxParallelCalculatedByInputItems(mInputBusses, Integer.MAX_VALUE, itemConsumptions, inputsFromME);
+
+            // Check Fluid Inputs align
+            if (tRecipe.mFluidInputs.length > 0) {
+                currentParallel = (int) RecipeAssemblyLine.maxParallelCalculatedByInputFluids(
+                    mInputHatches,
+                    currentParallel,
+                    tRecipe.mFluidInputs,
+                    fluidsFromME);
+                if (currentParallel <= 0) {
+                    if (result == CheckRecipeResultRegistry.NO_DATA_STICKS)
+                        result = CheckRecipeResultRegistry.NO_RECIPE;
+                    continue;
+                }
+                tFluids = tRecipe.mFluidInputs;
+            }
+
+            // Recipe tier is limited to hatch tier + 1.
+            if (tRecipe.mEUt > averageVoltage * 4) {
+                result = CheckRecipeResultRegistry.insufficientPower(tRecipe.mEUt);
+                continue;
+            }
+
+            // Insufficient power check.
+            if (tRecipe.mEUt > maxAmp * averageVoltage) {
+                result = CheckRecipeResultRegistry.insufficientPower(tRecipe.mEUt);
                 continue;
             }
 
@@ -300,17 +325,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 }
             }
 
-            // Check Inputs allign
-            int[] itemConsumptions = GTRecipe.RecipeAssemblyLine.getItemConsumptionAmountArray(mInputBusses, tRecipe);
-            if (itemConsumptions == null || itemConsumptions.length == 0) {
-                if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
-                continue;
-            }
-
-            int currentParallel = maxParallel;
-
-            currentParallel = (int) GTRecipe.RecipeAssemblyLine
-                .maxParallelCalculatedByInputItems(mInputBusses, currentParallel, itemConsumptions, inputsFromME);
+            currentParallel = Math.min(currentParallel, maxParallel);
 
             if (currentParallel <= 0) {
                 if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
@@ -321,21 +336,6 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
 
             if (GTValues.D1) {
                 GT_FML_LOGGER.info("All Items accepted");
-            }
-
-            // Check Fluid Inputs allign
-            if (tRecipe.mFluidInputs.length > 0) {
-                currentParallel = (int) RecipeAssemblyLine.maxParallelCalculatedByInputFluids(
-                    mInputHatches,
-                    currentParallel,
-                    tRecipe.mFluidInputs,
-                    fluidsFromME);
-                if (currentParallel <= 0) {
-                    if (result == CheckRecipeResultRegistry.NO_DATA_STICKS)
-                        result = CheckRecipeResultRegistry.NO_RECIPE;
-                    continue;
-                }
-                tFluids = tRecipe.mFluidInputs;
             }
 
             if (GTValues.D1) {
