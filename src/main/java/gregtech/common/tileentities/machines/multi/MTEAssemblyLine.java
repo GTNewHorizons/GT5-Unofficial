@@ -261,43 +261,6 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 continue;
             }
 
-            // Check Inputs align
-            int[] itemConsumptions = GTRecipe.RecipeAssemblyLine.getItemConsumptionAmountArray(mInputBusses, tRecipe);
-            if (itemConsumptions == null || itemConsumptions.length == 0) {
-                if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
-                continue;
-            }
-
-            int currentParallel = (int) RecipeAssemblyLine
-                .maxParallelCalculatedByInputItems(mInputBusses, Integer.MAX_VALUE, itemConsumptions, inputsFromME);
-
-            // Check Fluid Inputs align
-            if (tRecipe.mFluidInputs.length > 0) {
-                currentParallel = (int) RecipeAssemblyLine.maxParallelCalculatedByInputFluids(
-                    mInputHatches,
-                    currentParallel,
-                    tRecipe.mFluidInputs,
-                    fluidsFromME);
-                if (currentParallel <= 0) {
-                    if (result == CheckRecipeResultRegistry.NO_DATA_STICKS)
-                        result = CheckRecipeResultRegistry.NO_RECIPE;
-                    continue;
-                }
-                tFluids = tRecipe.mFluidInputs;
-            }
-
-            // Recipe tier is limited to hatch tier + 1.
-            if (tRecipe.mEUt > averageVoltage * 4) {
-                result = CheckRecipeResultRegistry.insufficientPower(tRecipe.mEUt);
-                continue;
-            }
-
-            // Insufficient power check.
-            if (tRecipe.mEUt > maxAmp * averageVoltage) {
-                result = CheckRecipeResultRegistry.insufficientPower(tRecipe.mEUt);
-                continue;
-            }
-
             int originalMaxParallel = 1;
             maxParallel = originalMaxParallel;
             OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(tRecipe.mEUt)
@@ -325,27 +288,58 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
                 }
             }
 
-            currentParallel = Math.min(currentParallel, maxParallel);
-
-            if (currentParallel <= 0) {
+            // Check Inputs allign
+            int[] itemConsumptions = GTRecipe.RecipeAssemblyLine.getItemConsumptionAmountArray(mInputBusses, tRecipe);
+            if (itemConsumptions == null || itemConsumptions.length == 0) {
                 if (result == CheckRecipeResultRegistry.NO_DATA_STICKS) result = CheckRecipeResultRegistry.NO_RECIPE;
                 continue;
             }
 
-            tStacks = itemConsumptions;
+            int currentParallel = (int) GTRecipe.RecipeAssemblyLine
+                .maxParallelCalculatedByInputItems(mInputBusses, Integer.MAX_VALUE, itemConsumptions, inputsFromME);
 
             if (GTValues.D1) {
                 GT_FML_LOGGER.info("All Items accepted");
+            }
+
+            // Check Fluid Inputs allign
+            if (tRecipe.mFluidInputs.length > 0) {
+                currentParallel = (int) RecipeAssemblyLine.maxParallelCalculatedByInputFluids(
+                    mInputHatches,
+                    currentParallel,
+                    tRecipe.mFluidInputs,
+                    fluidsFromME);
+                if (currentParallel <= 0) {
+                    if (result == CheckRecipeResultRegistry.NO_DATA_STICKS)
+                        result = CheckRecipeResultRegistry.NO_RECIPE;
+                    continue;
+                }
             }
 
             if (GTValues.D1) {
                 GT_FML_LOGGER.info("All fluids accepted");
             }
 
+            // Recipe tier is limited to hatch tier + 1.
+            if (tRecipe.mEUt > averageVoltage * 4) {
+                result = CheckRecipeResultRegistry.insufficientPower(tRecipe.mEUt);
+                continue;
+            }
+
+            // Insufficient power check.
+            if (tRecipe.mEUt > maxAmp * averageVoltage) {
+                result = CheckRecipeResultRegistry.insufficientPower(tRecipe.mEUt);
+                continue;
+            }
+
             if (GTValues.D1) {
                 GT_FML_LOGGER.info("Check overclock");
             }
 
+            tStacks = itemConsumptions;
+            tFluids = tRecipe.mFluidInputs;
+
+            currentParallel = Math.min(currentParallel, maxParallel);
             int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallelBeforeBatchMode);
 
             calculator.setCurrentParallel(currentParallelBeforeBatchMode)
