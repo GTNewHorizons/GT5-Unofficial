@@ -14,7 +14,6 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.api.util.GTInflectionManager;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.client.DynamicLangManager;
 import gregtech.mixin.hooks.MixinsVariablesHelper;
 
 @Mixin(value = LanguageRegistry.class)
