@@ -210,7 +210,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester>
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("40-54", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
             .addCasing("16", Casings.HeatProofMachineCasing.getLocalizedName(), false)
-            .addCasing("16", StatCollector.translateToLocal("gt.mbtt.structure.heating_coil"), false)
+            .addCasing("16", StatCollector.translateToLocal("GT5U.MBTT.Tiers.Coil"), false)
             .addCasing("9", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.any_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.digester.structure.any_casing"), 1)
