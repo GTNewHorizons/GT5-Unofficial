@@ -30037,6 +30037,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 628000)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
             .setProperty(GTMaterialProperties.RADIATION_LEVEL, 5)
+            .setProperty(GTMaterialProperties.PROTONS, 32L)
             .setProperty(GTMaterialProperties.FORMULA, "LiFBeF₂ZrF₄U")
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
             .build();
@@ -30055,6 +30056,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 408000)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
             .setProperty(GTMaterialProperties.RADIATION_LEVEL, 5)
+            .setProperty(GTMaterialProperties.PROTONS, 21L)
             .setProperty(GTMaterialProperties.FORMULA, "LiFBeF₂ZrF₄UF₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
             .build();
@@ -30073,6 +30075,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 548000)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
             .setProperty(GTMaterialProperties.RADIATION_LEVEL, 5)
+            .setProperty(GTMaterialProperties.PROTONS, 27L)
             .setProperty(GTMaterialProperties.FORMULA, "LiFBeF₂ThF₄UF₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
             .build();
@@ -30454,6 +30457,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 510000)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
             .setProperty(GTMaterialProperties.RADIATION_LEVEL, 1)
+            .setProperty(GTMaterialProperties.PROTONS, 51L)
             .setProperty(GTMaterialProperties.FORMULA, "NpF₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "GAS")
             .build();
@@ -31455,6 +31459,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 232000)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
             .setProperty(GTMaterialProperties.RADIATION_LEVEL, 1)
+            .setProperty(GTMaterialProperties.PROTONS, 26L)
             .setProperty(GTMaterialProperties.FORMULA, "TcF₆")
             .setProperty(GTMaterialProperties.GTPP_STATE, "GAS")
             .build();
@@ -31840,6 +31845,7 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 502000)
             .setProperty(GTMaterialProperties.IS_RADIOACTIVE, true)
             .setProperty(GTMaterialProperties.RADIATION_LEVEL, 1)
+            .setProperty(GTMaterialProperties.PROTONS, 50L)
             .setProperty(GTMaterialProperties.FORMULA, "(U)F₄")
             .setProperty(GTMaterialProperties.GTPP_STATE, "LIQUID")
             .build();

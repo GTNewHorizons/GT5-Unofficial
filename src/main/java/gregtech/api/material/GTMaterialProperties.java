@@ -126,6 +126,11 @@ public class GTMaterialProperties {
     public static final Property<Float> PLASMA_MULTIPLIER = Property.of("gregtech", "plasmaMultiplier");
     public static final Property<Integer> PROCESSING_MATERIAL_TIER_EU = Property
         .of("gregtech", "processingMaterialTierEU", 0);
+    /// A declared proton count that replaces the [MaterialAtomics] composition formula for this material.
+    /// Radiation hatch sievert output reads protons verbatim, so materials whose recipes were balanced against
+    /// a differently derived count carry the balanced value here. Composition sums over components still use
+    /// their computed values.
+    public static final Property<Long> PROTONS = Property.of("gregtech", "protons");
     /// The radiation level a radioactive material's carried items/blocks inflict, unifying the legacy
     /// `Material.vRadiationLevel` with bartworks' equivalent (which carried no scalar level of its own -- see
     /// [#IS_RADIOACTIVE]). Elided when `0`.
