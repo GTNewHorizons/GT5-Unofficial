@@ -80,8 +80,7 @@ public class PositionedStructureError implements StructureError {
                 IKey.str(text)
                     .color(TEXT_COLOR)
                     .alignment(multiLine ? Alignment.TopLeft : Alignment.CenterLeft)
-                    .asWidget()
-                    .expanded());
+                    .asWidget());
     }
 
     @Override
