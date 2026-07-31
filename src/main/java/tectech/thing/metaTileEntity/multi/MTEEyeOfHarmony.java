@@ -38,7 +38,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
@@ -50,6 +49,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -80,6 +80,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
+import gregtech.common.tileentities.machines.RecipeCheckReason;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.plugin.block.ModBlocks;
@@ -900,8 +901,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         animationsEnabled = !animationsEnabled;
-        aPlayer.addChatMessage(
-            new ChatComponentText("Animations are now " + (animationsEnabled ? "enabled" : "disabled") + "."));
+        GTUtility.sendChatTrans(aPlayer, "GT5U.machines.animations." + (animationsEnabled ? "enabled" : "disabled"));
     }
 
     @Override
@@ -926,11 +926,10 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
                     astralArrayAmount = 0;
                 }
                 if (originalAmount - astralArrayAmount > 0) {
-                    GTUtility.sendChatToPlayer(
+                    GTUtility.sendChatTrans(
                         aPlayer,
-                        StatCollector.translateToLocalFormatted(
-                            "eoh.rightclick.wirecutter.2",
-                            formatNumber(originalAmount - astralArrayAmount)));
+                        "eoh.rightclick.wirecutter.2",
+                        new ChatComponentNumber(originalAmount - astralArrayAmount));
                 }
             }
         }
@@ -1148,11 +1147,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
 
     private EyeOfHarmonyRecipe currentRecipe;
 
-    // Counter for lag prevention.
-    private long lagPreventer = 0;
-
-    // Check for recipe every recipeCheckInterval ticks.
-    private static final long RECIPE_CHECK_INTERVAL = 3 * 20;
+    private boolean shouldDrainHatches = true;
+    private boolean justDrainedHatches = false;
     private long currentCircuitMultiplier = 0;
     private long astralArrayAmount = 0;
     private long parallelAmount = 1;
@@ -1163,6 +1159,14 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
     private FluidStackLong starMatter;
 
     @Override
+    public void scheduleRecipeCheck(RecipeCheckReason reason) {
+        super.scheduleRecipeCheck(reason);
+        // Input hatch sends a recipe check schedule
+        // we will reschedule again when the fluids are drained from the hatches
+        shouldDrainHatches = true;
+    }
+
+    @Override
     @NotNull
     protected CheckRecipeResult checkProcessing_EM() {
         ItemStack controllerStack = getControllerSlot();
@@ -1170,20 +1174,20 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             return SimpleCheckRecipeResult.ofFailure("no_planet_block");
         }
 
-        lagPreventer++;
-        if (lagPreventer < RECIPE_CHECK_INTERVAL) {
-            lagPreventer = 0;
-            // No item in multi gui slot.
-
-            currentRecipe = TecTech.eyeOfHarmonyRecipeStorage.recipeLookUp(controllerStack);
-            if (currentRecipe == null) {
-                return CheckRecipeResultRegistry.NO_RECIPE;
-            }
-            CheckRecipeResult result = processRecipe(currentRecipe);
-            if (!result.wasSuccessful()) currentRecipe = null;
-            return result;
+        // Delay recipe-check until hatches are drained
+        if (!justDrainedHatches) {
+            return checkRecipeResult;
         }
-        return CheckRecipeResultRegistry.NO_RECIPE;
+
+        justDrainedHatches = false;
+
+        currentRecipe = TecTech.eyeOfHarmonyRecipeStorage.recipeLookUp(controllerStack);
+        if (currentRecipe == null) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+        CheckRecipeResult result = processRecipe(currentRecipe);
+        if (!result.wasSuccessful()) currentRecipe = null;
+        return result;
     }
 
     private long getHydrogenStored() {
@@ -1484,6 +1488,9 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
 
         // Do other stuff from TT superclasses. E.g. outputting fluids.
         super.outputAfterRecipe_EM();
+
+        // Schedule drain after output
+        shouldDrainHatches = true;
     }
 
     @Override
@@ -1496,8 +1503,11 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         }
 
         if (!recipeRunning && mMachine) {
-            if ((aTick % TICKS_BETWEEN_HATCH_DRAIN) == 0) {
+            if ((aTick % TICKS_BETWEEN_HATCH_DRAIN) == 0 && shouldDrainHatches) {
                 drainFluidFromHatchesAndStoreInternally();
+                scheduleRecipeCheckImmediate();
+                shouldDrainHatches = false;
+                justDrainedHatches = true;
             }
         }
     }

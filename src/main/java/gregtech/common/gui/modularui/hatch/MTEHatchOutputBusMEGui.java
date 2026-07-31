@@ -62,8 +62,7 @@ public class MTEHatchOutputBusMEGui extends MTEHatchBaseGui<MTEHatchOutputBusME>
         mainRow.child(
             new ToggleButton().value(isChecking)
                 .overlay(GuiTextures.SEARCH)
-                .addTooltipLine(StatCollector.translateToLocal("GT5U.hatch.outputme.toggle_checking"))
-                .setEnabledIf(t -> isCaching.getBoolValue()));
+                .addTooltipLine(StatCollector.translateToLocal("GT5U.hatch.outputme.toggle_checking")));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
     }

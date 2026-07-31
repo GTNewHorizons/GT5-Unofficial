@@ -152,6 +152,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchObjectHolder) {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eHolders.add((MTEHatchObjectHolder) aMetaTileEntity);
         }
@@ -250,7 +251,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.5"))
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.6"))
             .addSupportAny()
-            .beginStructureBlock(7, 3, 7, false)
+            .beginStructureBlock(3, 7, 7, false)
             .addController("Front center")
             .addCasing("52-58", "Computer Casing", false)
             .addCasing("23", "Advanced Computer Casing", false)

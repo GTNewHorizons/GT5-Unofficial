@@ -775,6 +775,28 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return result;
     }
 
+    @Override
+    protected boolean shouldCheckRecipeThisTick(long aTick) {
+        // Recipe checks are purely event-driven: hatches and config changes push via scheduleRecipeCheck(reason)
+        // instead of being polled on a periodic timer.
+        if (recipeCheckImmediately) {
+            // An immediate push (new inputs, drained output, user/structure change) always runs, and covers any
+            // pending throttled push too.
+            recipeCheckImmediately = false;
+            recipeCheckThrottled = false;
+            return true;
+        }
+        if (recipeCheckThrottled && mTotalRunTime >= recipeCheckCooldownUntil) {
+            // A throttleable push (ME restock, power trickle) runs once the post-failure cooldown has expired.
+            recipeCheckThrottled = false;
+            return true;
+        }
+        if (doPeriodicChecks) {
+            return CommonValues.RECIPE_AT == aTick % 20;
+        }
+        return false;
+    }
+
     @NotNull
     @Override
     public final CheckRecipeResult checkProcessing() {
@@ -908,6 +930,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     if (getEUVar() > maxEUStore()) {
                         setEUVar(maxEUStore());
                     }
+
+                    scheduleRecipeCheckImmediate();
                 } else {
                     maxEUinputMin = 0;
                     maxEUinputMax = 0;
@@ -980,8 +1004,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                             } // else {//failed to consume power/resources - inside on running tick
                               // stopMachine();
                               // }
-                        } else if (CommonValues.RECIPE_AT == Tick || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
-                            if (aBaseMetaTileEntity.isAllowedToWork()) {
+                        } else if (aBaseMetaTileEntity.isAllowedToWork()) {
+                            if (aBaseMetaTileEntity.hasWorkJustBeenEnabled()
+                                || aBaseMetaTileEntity.hasInventoryBeenModified()
+                                || shouldCheckRecipeThisTick(aTick)) {
                                 if (checkRecipe()) {
                                     mEfficiency = Math.max(
                                         0,
@@ -993,7 +1019,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                     afterRecipeCheckFailed();
                                 }
                                 updateSlots();
-                            } // else notAllowedToWork_stopMachine_EM(); //it is already stopped here
+                            }
                         }
                     } else if (aBaseMetaTileEntity.isAllowedToWork()) { // not repaired
                         stopMachine(ShutDownReasonRegistry.NO_REPAIR);
@@ -1016,8 +1042,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
             boolean active = aBaseMetaTileEntity.isActive() && mPollution > 0;
             setMufflersIfChanged(active);
-        } else {
-            doActivitySound(getActivitySoundLoop());
         }
     }
 
@@ -1650,6 +1674,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
+        addIfSmartInput(aMetaTileEntity);
         if (aMetaTileEntity instanceof MTEHatchOutput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
@@ -1782,6 +1807,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchUncertainty hatch) {
+            addIfSmartInput(hatch);
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return eUncertainHatches.add(hatch);
@@ -1841,6 +1867,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             return false;
         }
         if (aMetaTileEntity instanceof MTEHatchDataInput hatch) {
+            addIfSmartInput(hatch);
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return eInputData.add(hatch);

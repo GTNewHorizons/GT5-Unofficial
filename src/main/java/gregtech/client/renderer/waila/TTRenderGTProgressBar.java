@@ -20,7 +20,11 @@ public class TTRenderGTProgressBar implements IWailaVariableWidthTooltipRenderer
 
     @Override
     public Dimension getSize(String[] params, IWailaCommonAccessor accessor) {
-        return new Dimension(width, 12);
+        int height = 12;
+        if (!Boolean.parseBoolean(params[2])) {
+            height += 10;
+        }
+        return new Dimension(width, height);
     }
 
     @Override
@@ -36,6 +40,8 @@ public class TTRenderGTProgressBar implements IWailaVariableWidthTooltipRenderer
             -1);
         int progresstime = Integer.parseInt(params[0]);
         int maxProgresstime = Integer.parseInt(params[1]);
+        boolean isAllowedToWork = Boolean.parseBoolean(params[2]);
+
         double ratio = maxProgresstime != 0 ? (double) progresstime / maxProgresstime : 0.0;
         ratio = Math.clamp(ratio, 0.0, 1.0);
         int progress = (int) ((maxStringW - 1) * ratio);
@@ -53,6 +59,14 @@ public class TTRenderGTProgressBar implements IWailaVariableWidthTooltipRenderer
             2,
             OverlayConfig.fontcolor,
             true);
+        if (!isAllowedToWork) {
+            DisplayUtil.drawString(
+                StatCollector.translateToLocal("GT5U.waila.machine.working_disabled"),
+                0,
+                14,
+                OverlayConfig.fontcolor,
+                true);
+        }
     }
 
     public static void drawThickBeveledBox(int x1, int y1, int x2, int y2, int thickness, int topleftcolor,

@@ -811,6 +811,11 @@ public class Material implements IOreMaterial {
         return this.usesBlastFurnace;
     }
 
+    @Override
+    public ItemStack getPart(OrePrefixes prefix, int amount) {
+        return getComponentByPrefix(prefix, amount);
+    }
+
     public final ItemStack getComponentByPrefix(OrePrefixes aPrefix, int stacksize) {
         String aKey = aPrefix.getName();
         Map<String, ItemStack> g = mComponentMap.get(this.unlocalizedName);
@@ -1622,7 +1627,8 @@ public class Material implements IOreMaterial {
             }
         }
         if (Client.tooltip.showRadioactiveText && this.isRadioactive) {
-            list.add(StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip_Radioactive", this.radiationLevel));
+            list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Radioactive"));
+            list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_HazmatWarning"));
         }
     }
 }

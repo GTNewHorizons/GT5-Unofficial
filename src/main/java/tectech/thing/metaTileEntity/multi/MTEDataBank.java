@@ -126,7 +126,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                                                                                            // toggle
                                                                                            // wireless mode
             .addSupportAny()
-            .beginStructureBlock(3, 5, 3, false)
+            .beginStructureBlock(5, 3, 3, false)
             .addController("Front center, 2nd layer")
             .addCasing("18", "Computer Heat Vent", false)
             .addCasing("3-16", "Computer Casing", false)

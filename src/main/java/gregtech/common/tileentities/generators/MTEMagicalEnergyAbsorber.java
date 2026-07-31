@@ -58,6 +58,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.config.MachineStats;
@@ -197,7 +198,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
             .translateToLocal(sAllowMultipleEggs ? KEY + ".dragon_egg.shared" : KEY + ".dragon_egg.exclusive");
         List<String> description = new ArrayList<>(
             Arrays.asList(
-                GTUtility.translateMultiline(
+                GTSplit.splitLocalizedFormatted(
                     KEY,
                     dragonEgg,
                     sEnergyPerEndercrystal,
@@ -208,7 +209,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
         if (Thaumcraft.isModLoaded()) {
             description.addAll(
                 Arrays.asList(
-                    GTUtility.translateMultiline(
+                    GTSplit.splitLocalizedFormatted(
                         KEY + ".thaumcraft",
                         mMaxVisPerDrain,
                         sEnergyPerEssentia * getEfficiency() / 100)));
