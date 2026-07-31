@@ -72,7 +72,7 @@ dependencies {
     compileOnlyApi("ganymedes01.etfuturum:Et-Futurum-Requiem:2.6.2.21-GTNH-daily") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Backhand:1.8.11:dev") { transitive = false }
 
-    compileOnly("com.github.GTNewHorizons:TinkersGregworks:GTNH-1.0.27-mu.5+ec957e8349:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:TinkersGregworks:GTNH-1.0.27-mu.7+96f4afb333:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:ThaumicBases:1.9.18:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:EnderCore:0.5.14:dev") { transitive = false }
     compileOnly('com.github.GTNewHorizons:VisualProspecting:1.5.33:dev') { transitive = false }
