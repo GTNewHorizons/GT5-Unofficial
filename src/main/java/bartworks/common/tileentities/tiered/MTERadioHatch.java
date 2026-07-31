@@ -15,7 +15,6 @@ package bartworks.common.tileentities.tiered;
 
 import static bartworks.common.loaders.RadioHatchMaterialLoader.getRadioHatchMaterialFromInput;
 import static bartworks.common.loaders.RadioHatchMaterialLoader.getRadioHatchMaterialList;
-import static gregtech.api.enums.GTValues.ticksBetweenSounds;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -50,8 +49,9 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTERadioHatchGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 
-public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
+public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable, ISmartInputHatch {
 
     public int sievert;
     private long timer = 1;
@@ -154,6 +154,8 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
             return;
         }
 
+        int oldSievert = this.sievert;
+
         if (this.mass > 0) {
             ++this.timer;
             if (this.decayTime == 0 || this.decayTime > 0 && this.timer % this.decayTime == 0) {
@@ -167,11 +169,6 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
                 }
                 this.timer = 1;
             }
-        }
-
-        if (myMetaTileEntity.mTickTimer > myMetaTileEntity.mLastSoundTick + ticksBetweenSounds && this.sievert > 0) {
-            this.sendLoopStart((byte) 1);
-            myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
         }
 
         if (this.mass == 0) {
@@ -239,6 +236,8 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
                 }
             }
         }
+
+        if (oldSievert != this.sievert) notifyWatchers();
     }
 
     @Override

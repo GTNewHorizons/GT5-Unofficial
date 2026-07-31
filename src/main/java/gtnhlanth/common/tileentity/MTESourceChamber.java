@@ -9,7 +9,6 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
@@ -88,6 +87,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                 buildHatchAdder(MTESourceChamber.class).atLeast(BeamlineOutput)
                     .casingIndex(ShieldedAccCasingTextureID)
                     .hint(4)
+                    .exclusive()
                     .build())
             .addElement(
                 'i',
@@ -97,7 +97,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                     .build())
             .addElement(
                 'o',
-                buildHatchAdder(MTESourceChamber.class).atLeast(OutputBus, OutputHatch)
+                buildHatchAdder(MTESourceChamber.class).atLeast(OutputBus)
                     .casingIndex(ShieldedAccCasingTextureID)
                     .hint(2)
                     .build())
@@ -154,7 +154,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info10"))
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info11"))
-            .beginStructureBlock(6, 5, 5, true)
+            .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom center")
             .addCasing("56", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
             .addCasing("52", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), false)

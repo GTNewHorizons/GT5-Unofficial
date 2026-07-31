@@ -160,7 +160,7 @@ public class ItemUtils {
         final String materialName = material.getUnlocalizedName();
         final String unlocalizedName = StringUtils.sanitizeString(materialName);
         final int Colour = material.getRgbAsHex();
-        final String aChemForm = material.vChemicalFormula;
+        final String aChemForm = material.chemicalFormula;
         final boolean isChemFormvalid = (aChemForm != null && !aChemForm.isEmpty());
         Item[] output = null;
         if (!onlyLargeDust) {

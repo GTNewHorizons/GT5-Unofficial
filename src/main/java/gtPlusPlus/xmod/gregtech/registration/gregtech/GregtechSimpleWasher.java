@@ -8,8 +8,8 @@ import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_LuV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_ZPM;
+import static gregtech.api.recipe.RecipeMaps.simpleWasherRecipes;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
 
 import net.minecraft.item.ItemStack;
 

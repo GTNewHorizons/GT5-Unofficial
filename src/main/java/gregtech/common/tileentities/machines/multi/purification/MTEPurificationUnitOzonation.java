@@ -167,7 +167,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Purification Unit")
+        tt.addMachineType("Purification Unit, OPU")
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.BOLD
@@ -203,7 +203,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "sulfur, iron and manganese, creating insoluble oxide compounds which are then filtered out.")
-            .beginStructureBlock(5, 9, 10, true)
+            .beginStructureBlock(9, 10, 5, true)
             .addController("Front bottom center")
             .addCasing(MIN_CASING + "-99", "Inert Filtration Casing", false)
             .addCasing("27", "Reactive Gas Containment Casing", false)

@@ -211,7 +211,7 @@ public class MTEHatchCokeOven extends MTEHatch {
         controllers.add(controller);
     }
 
-    /** Sets the next active controller. */
+    /** Sets the next active controller and removes dead controllers. */
     private boolean nextActiveController() {
         if (controllerIndex >= controllers.size()) {
             controllerIndex = 0;
@@ -220,8 +220,9 @@ public class MTEHatchCokeOven extends MTEHatch {
 
         activeController = controllers.get(controllerIndex);
 
-        if (activeController == null) {
+        if (activeController == null || !activeController.isValid()) {
             controllers.remove(controllerIndex);
+            activeController = null;
             return true;
         }
 

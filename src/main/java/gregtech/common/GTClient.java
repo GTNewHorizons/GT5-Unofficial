@@ -29,6 +29,7 @@ import net.minecraft.util.MovementInput;
 import net.minecraft.util.MovementInputFromOptions;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -78,6 +79,7 @@ import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.CommonBaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.net.GTPacketClientPreference;
 import gregtech.api.net.cape.GTPacketSetCape;
@@ -96,10 +98,13 @@ import gregtech.client.GTPowerfailRenderer;
 import gregtech.client.GTWorkAreaRenderer;
 import gregtech.client.SeekingOggCodec;
 import gregtech.client.handler.CondensateAnimationTickHandler;
+import gregtech.client.renderer.entity.RenderDrone;
 import gregtech.client.renderer.entity.RenderPowderBarrel;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
+import gregtech.common.data.drone.CameraViewportClientManager;
+import gregtech.common.entity.EntityDrone;
 import gregtech.common.entity.EntityPowderBarrelPrimed;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.toolbox.ToolboxUtil;
@@ -181,6 +186,7 @@ public class GTClient extends GTProxy {
             .getResourcePackRepository().rprMetadataSerializer
                 .registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
         mPreference = new GTClientPreference();
+        cameraViewportManager = new CameraViewportClientManager();
         Materials.initClient();
 
         ClientCommandHandler.instance.registerCommand(new GTPowerfailCommandClient());
@@ -261,6 +267,7 @@ public class GTClient extends GTProxy {
             .register(new CondensateAnimationTickHandler());
 
         RenderManager.instance.entityRenderMap.put(EntityPowderBarrelPrimed.class, new RenderPowderBarrel());
+        RenderManager.instance.entityRenderMap.put(EntityDrone.class, new RenderDrone());
         // spotless:on
     }
 
@@ -410,6 +417,9 @@ public class GTClient extends GTProxy {
                 hideThings = newHideValue;
                 changeDetected = 5;
             }
+            if (changeDetected >= 1 && changeDetected <= 4) {
+                refreshTileEntityTextures(4 - changeDetected);
+            }
             heldItemForcesFullBlockBB = shouldHeldItemForceFullBlockBB();
 
             // Animation related bits need to cease when game is paused in singleplayer.
@@ -495,6 +505,32 @@ public class GTClient extends GTProxy {
 
     public boolean shouldHideThings() {
         return hideThings;
+    }
+
+    /** Re-issues a texture update on every loaded GT tile after the pipe/cover hiding state changes. */
+    private static void refreshTileEntityTextures(int quarter) {
+        final Minecraft mc = Minecraft.getMinecraft();
+        if (mc.theWorld == null || mc.thePlayer == null) return;
+
+        final int radius = mc.gameSettings.renderDistanceChunks;
+        final int centerX = MathHelper.floor_double(mc.thePlayer.posX) >> 4;
+        final int centerZ = MathHelper.floor_double(mc.thePlayer.posZ) >> 4;
+
+        final int span = 2 * radius + 1;
+        final int from = centerX - radius + (span * quarter) / 4;
+        final int to = centerX - radius + (span * (quarter + 1)) / 4;
+
+        for (int cx = from; cx < to; cx++) {
+            for (int cz = centerZ - radius; cz <= centerZ + radius; cz++) {
+                final Chunk chunk = mc.theWorld.getChunkFromChunkCoords(cx, cz);
+                if (chunk == null || !chunk.isChunkLoaded) continue;
+                for (Object tile : chunk.chunkTileEntityMap.values()) {
+                    if (tile instanceof CommonBaseMetaTileEntity gtTile) {
+                        gtTile.issueTextureUpdate();
+                    }
+                }
+            }
+        }
     }
 
     /**

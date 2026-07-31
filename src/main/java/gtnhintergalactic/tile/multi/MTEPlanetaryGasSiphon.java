@@ -76,6 +76,7 @@ import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
  *
  * @author glowredman
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPlanetaryGasSiphon>
     implements IChunkLoader, ISurvivalConstructable {
 
@@ -226,18 +227,15 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
             tt.addInfo(EnumChatFormatting.ITALIC + TooltipUtil.siphonLoreText);
         }
         tt.addInfo(
-            "Every coil tier gives a " + EnumChatFormatting.GREEN
-                + "+"
-                + (int) (SPEED_PER_COIL * 100)
-                + "%"
-                + EnumChatFormatting.GRAY
-                + " speed bonus per coil tier");
+            StatCollector.translateToLocalFormatted(
+                "gt.blockmachines.multimachine.ig.siphon.desc0",
+                (int) (SPEED_PER_COIL * 100)));
         tt.addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc1"))
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc2"))
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc3"))
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc4"))
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc5"))
-            .beginStructureBlock(13, 13, 23, false)
+            .beginStructureBlock(13, 23, 13, false)
             .addController(StatCollector.translateToLocal("ig.siphon.structure.ControllerPos"))
             .addCasing("184", StatCollector.translateToLocal("ig.siphon.structure.SiphonCasing"), false)
             .addCasing("93", StatCollector.translateToLocal("ig.siphon.structure.FrameTungstensteel"), false)
