@@ -12,9 +12,10 @@ import cpw.mods.fml.relauncher.ReflectionHelper;
 /**
  * Handles dynamic key generation for material auto name fusion.
  *
- * The main use case is so that we only need to translate material and the form separately, and they are glued together
- * during runtime. However since the mc lang system expects a static lang key for item, we need to generate the names
- * at runtime.
+ * The main use case is so that we only need to translate material and the form separately,
+ * and they are glued together during runtime. However, a static lang key is convenient for
+ * many purposes, and we can make it safe to transmit {@link ItemStack#getUnlocalizedName}
+ * from server to client.
  */
 public class DynamicLangManager {
 
@@ -33,6 +34,7 @@ public class DynamicLangManager {
             throw new RuntimeException(e);
         }
     }
+
     private static final List<ItemStack> dynamicStacks = new ArrayList<>();
 
     public static void addStack(ItemStack stack) {
