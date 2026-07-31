@@ -15,7 +15,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -28,7 +27,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.TAE;
+import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -48,9 +47,14 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelter> implements ISurvivalConstructable {
 
-    private static Item circuit;
-    private int mCasing;
+    private int casingAmount;
+    private static final String[][] structure = {
+        { "AAA", "AAA", "AAA" },
+        { "BBB", "B-B", "BBB" },
+        { "BBB", "B-B", "BBB" },
+        { "A~A", "AAA", "AAA" }};
     private static IStructureDefinition<MTEAlloyBlastSmelter> STRUCTURE_DEFINITION = null;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
 
     public MTEAlloyBlastSmelter(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -105,18 +109,16 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEAlloyBlastSmelter>builder()
                 .addShape(
-                    mName,
-                    transpose(
-                        new String[][] { { "CCC", "CCC", "CCC" }, { "HHH", "H-H", "HHH" }, { "HHH", "H-H", "HHH" },
-                            { "C~C", "CCC", "CCC" }, }))
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(structure))
                 .addElement(
-                    'C',
+                    'A',
                     buildHatchAdder(MTEAlloyBlastSmelter.class)
                         .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance, Energy, Muffler)
-                        .casingIndex(TAE.GTPP_INDEX(15))
+                        .casingIndex(Casings.BlastSmelterCasing.textureId)
                         .hint(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 15))))
-                .addElement('H', ofBlock(ModBlocks.blockCasingsMisc, 14))
+                        .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.BlastSmelterCasing.asElement())))
+                .addElement('B', ofBlock(ModBlocks.blockCasingsMisc, 14))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -124,20 +126,20 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(mName, stackSize, hintsOnly, 1, 3, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 3, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece(mName, stackSize, 1, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        mCasing = 0;
-        if (!checkPiece(mName, 1, 3, 0, errors)) return;
-        checkCasingMin(errors, mCasing, 3);
+        casingAmount = 0;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 3, 0, errors)) return;
+        checkCasingMin(errors, casingAmount, 3);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
@@ -172,7 +174,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
 
     @Override
     protected int getCasingTextureId() {
-        return TAE.GTPP_INDEX(15);
+        return Casings.BlastSmelterCasing.textureId;
     }
 
     @Override
@@ -181,31 +183,12 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
     }
 
     @Override
-    public boolean isCorrectMachinePart(final ItemStack aStack) {
-        if (!getBaseMetaTileEntity().isServerSide()) {
-            return false;
-        }
-
-        if (circuit == null) {
-            circuit = GTUtility.getIntegratedCircuit(0)
-                .getItem();
-        }
-
-        if (aStack == null) {
-            return true;
-        } else if (aStack.getItem() == circuit) {
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
+            @NotNull
             @Override
-            protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (GTUtility.getTier(getAverageInputVoltage()) < GTUtility.getTier(recipe.mEUt))
                     return CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
                 return super.validateRecipe(recipe);
