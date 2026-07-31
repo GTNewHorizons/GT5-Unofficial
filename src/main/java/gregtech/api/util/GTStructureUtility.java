@@ -203,12 +203,6 @@ public class GTStructureUtility {
     public static <T> IStructureElement<T> ofSheetMetal(Materials material) {
         if (material == null) throw new IllegalArgumentException("material for sheet metal can not be null!");
         return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalGT, material.mMetaItemSubID)) {
-
-            @Override
-            public @Nullable List<String> getDescription(T context) {
-                return Collections.singletonList(OrePrefixes.sheetmetal.getLocalizedNameForItem(material));
-            }
-
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI.hintParticleTinted(
@@ -227,12 +221,6 @@ public class GTStructureUtility {
     public static <T> IStructureElement<T> ofSheetMetal(Werkstoff werkstoff) {
         if (werkstoff == null) throw new IllegalArgumentException("werkstoff for sheet metal can not be null!");
         return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalBW, werkstoff.getmID())) {
-
-            @Override
-            public @Nullable List<String> getDescription(T context) {
-                return Collections.singletonList(OrePrefixes.sheetmetal.getLocalizedNameForItem(werkstoff));
-            }
-
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI
