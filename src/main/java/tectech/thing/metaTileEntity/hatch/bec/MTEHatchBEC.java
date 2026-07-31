@@ -102,6 +102,15 @@ public class MTEHatchBEC extends MTEBaseFactoryHatch implements BECFactoryElemen
     }
 
     @Override
+    public void onUnload() {
+        super.onUnload();
+
+        if (GTUtility.isServer()) {
+            BECFactoryGrid.INSTANCE.removeElement(this);
+        }
+    }
+
+    @Override
     public void onFacingChange() {
         super.onFacingChange();
 

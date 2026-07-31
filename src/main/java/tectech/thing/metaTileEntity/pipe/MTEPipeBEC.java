@@ -190,6 +190,15 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
     }
 
     @Override
+    public void onUnload() {
+        super.onUnload();
+
+        if (GTUtility.isServer()) {
+            BECFactoryGrid.INSTANCE.removeElement(this);
+        }
+    }
+
+    @Override
     public void onColorChangeServer(byte aColor) {
         IGregTechTileEntity base = getBaseMetaTileEntity();
 

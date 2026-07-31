@@ -253,6 +253,15 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     }
 
     @Override
+    public void onUnload() {
+        super.onUnload();
+
+        if (GTUtility.isServer() && connectsToNetwork()) {
+            BECFactoryGrid.INSTANCE.removeElement(this);
+        }
+    }
+
+    @Override
     public String[] getInfoData() {
         List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
