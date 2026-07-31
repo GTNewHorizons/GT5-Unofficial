@@ -267,6 +267,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchOutput hatch) {
+            addIfSmartInput(aMetaTileEntity);
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             coolantOutputHatch = hatch;
@@ -298,6 +299,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchOutput hatch) {
+            addIfSmartInput(aMetaTileEntity);
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             steamOutputHatch = hatch;

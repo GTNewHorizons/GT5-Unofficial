@@ -183,7 +183,8 @@ import ic2.api.recipe.RecipeOutput;
         + "after:UndergroundBiomes;"
         + "after:TConstruct;"
         + "after:Translocator;"
-        + "after:gendustry;")
+        + "after:gendustry;"
+        + "before:computronics;")
 public class GTMod {
 
     static {
