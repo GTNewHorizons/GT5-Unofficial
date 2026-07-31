@@ -87,6 +87,7 @@ public abstract class StandardFactoryGrid<TSelf extends StandardFactoryGrid<TSel
                     .isEmpty()) {
                     network.onNetworkRemoved();
                     networks.remove(network);
+                    vertices.remove(element);
                 }
             }
             return;
