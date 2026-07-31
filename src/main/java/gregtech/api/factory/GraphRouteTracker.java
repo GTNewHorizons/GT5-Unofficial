@@ -31,6 +31,11 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
         networkChanged = true;
     }
 
+    public void clear() {
+        edges.clear();
+        notableElements.clear();
+    }
+
     public void onElementAdded(TElement element) {
         if (!notableType.isAssignableFrom(element.getClass())) return;
 
