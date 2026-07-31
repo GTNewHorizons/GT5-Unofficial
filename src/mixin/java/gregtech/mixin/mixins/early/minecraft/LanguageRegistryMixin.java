@@ -2,7 +2,6 @@ package gregtech.mixin.mixins.early.minecraft;
 
 import java.util.Map;
 
-import gregtech.api.util.client.DynamicLangManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,6 +14,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.api.util.GTInflectionManager;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.client.DynamicLangManager;
 import gregtech.mixin.hooks.MixinsVariablesHelper;
 
 @Mixin(value = LanguageRegistry.class)

@@ -2,7 +2,6 @@ package gregtech.common.blocks;
 
 import java.util.List;
 
-import gregtech.api.util.client.DynamicLangManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -31,6 +30,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.client.DynamicLangManager;
 import gregtech.common.render.GTRendererBlock;
 import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
