@@ -90,7 +90,6 @@ import bartworks.system.material.processingLoaders.AdditionalRecipes;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import bartworks.system.material.werkstoff_loaders.recipe.AspectLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.BlockLoader;
-import bartworks.system.material.werkstoff_loaders.recipe.CasingLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.CellLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.CraftingMaterialLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.CrushedLoader;
@@ -104,7 +103,6 @@ import bartworks.system.material.werkstoff_loaders.recipe.SimpleMetalLoader;
 import bartworks.system.material.werkstoff_loaders.recipe.ToolLoader;
 import bartworks.system.material.werkstoff_loaders.registration.AssociationLoader;
 import bartworks.system.material.werkstoff_loaders.registration.BridgeMaterialsLoader;
-import bartworks.system.material.werkstoff_loaders.registration.CasingRegistrator;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.BWColorUtil;
 import bartworks.util.log.DebugLog;
@@ -1617,8 +1615,6 @@ public class WerkstoffLoader {
     public static HashBiMap<Werkstoff, Fluid> fluids = HashBiMap.create();
     public static HashBiMap<Werkstoff, Fluid> molten = HashBiMap.create();
     public static Block BWBlocks;
-    public static Block BWBlockCasings;
-    public static Block BWBlockCasingsAdvanced;
     public static boolean registered;
     public static final HashSet<OrePrefixes> ENABLED_ORE_PREFIXES = new HashSet<>();
 
@@ -1657,10 +1653,10 @@ public class WerkstoffLoader {
             return new ItemStack(WerkstoffLoader.BWBlocks, amount, werkstoff.getmID());
         }
         if (orePrefixes == OrePrefixes.blockCasing) {
-            return new ItemStack(WerkstoffLoader.BWBlockCasings, amount, werkstoff.getmID());
+            return new ItemStack(GregTechAPI.sBlockBoltedBW, amount, werkstoff.getmID());
         }
         if (orePrefixes == OrePrefixes.blockCasingAdvanced) {
-            return new ItemStack(WerkstoffLoader.BWBlockCasingsAdvanced, amount, werkstoff.getmID());
+            return new ItemStack(GregTechAPI.sBlockReboltedBW, amount, werkstoff.getmID());
         }
         if (orePrefixes == OrePrefixes.sheetmetal) {
             return new ItemStack(GregTechAPI.sBlockSheetmetalBW, amount, werkstoff.getmID());
@@ -1727,9 +1723,9 @@ public class WerkstoffLoader {
             }
 
             IWerkstoffRunnable[] werkstoffRunnables = { new ToolLoader(), new DustLoader(), new GemLoader(),
-                new SimpleMetalLoader(), new CasingLoader(), new AspectLoader(), new RawOreLoader(),
-                new CrushedLoader(), new CraftingMaterialLoader(), new CellLoader(), new MoltenCellLoader(),
-                new MultipleMetalLoader(), new MetalLoader(), new BlockLoader() };
+                new SimpleMetalLoader(), new AspectLoader(), new RawOreLoader(), new CrushedLoader(),
+                new CraftingMaterialLoader(), new CellLoader(), new MoltenCellLoader(), new MultipleMetalLoader(),
+                new MetalLoader(), new BlockLoader() };
 
             long timepreone = 0;
             int pos = 0;
@@ -1987,10 +1983,6 @@ public class WerkstoffLoader {
 
     static void gameRegistryHandler() {
         GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedWerkstoffBlock.class, "bw.werkstoffblockTE");
-        GameRegistry.registerTileEntity(BWTileEntityMetaGeneratedBlocksCasing.class, "bw.werkstoffblockcasingTE");
-        GameRegistry.registerTileEntity(
-            BWTileEntityMetaGeneratedBlocksCasingAdvanced.class,
-            "bw.werkstoffblockscasingadvancedTE");
 
         BWOreAdapter.INSTANCE.init();
 
@@ -1998,31 +1990,12 @@ public class WerkstoffLoader {
             Material.iron,
             BWTileEntityMetaGeneratedWerkstoffBlock.class,
             "bw.werkstoffblocks");
-        WerkstoffLoader.BWBlockCasings = new BWMetaGeneratedBlocksCasing(
-            Material.iron,
-            BWTileEntityMetaGeneratedBlocksCasing.class,
-            "bw.werkstoffblockscasing",
-            OrePrefixes.blockCasing);
-        WerkstoffLoader.BWBlockCasingsAdvanced = new BWMetaGeneratedBlocksCasing(
-            Material.iron,
-            BWTileEntityMetaGeneratedBlocksCasingAdvanced.class,
-            "bw.werkstoffblockscasingadvanced",
-            OrePrefixes.blockCasingAdvanced);
 
         GameRegistry.registerBlock(WerkstoffLoader.BWBlocks, BWItemMetaGeneratedBlock.class, "bw.werkstoffblocks.01");
-        GameRegistry.registerBlock(
-            WerkstoffLoader.BWBlockCasings,
-            BWItemMetaGeneratedBlock.class,
-            "bw.werkstoffblockscasing.01");
-        GameRegistry.registerBlock(
-            WerkstoffLoader.BWBlockCasingsAdvanced,
-            BWItemMetaGeneratedBlock.class,
-            "bw.werkstoffblockscasingadvanced.01");
     }
 
     private static void runGTItemDataRegistrator() {
-        IWerkstoffRunnable[] registrations = { new BridgeMaterialsLoader(), new AssociationLoader(),
-            new CasingRegistrator() };
+        IWerkstoffRunnable[] registrations = { new BridgeMaterialsLoader(), new AssociationLoader() };
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             for (IWerkstoffRunnable registration : registrations) {
                 registration.run(werkstoff);

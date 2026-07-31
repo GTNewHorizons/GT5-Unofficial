@@ -694,6 +694,20 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
 
     @Override
     public boolean generatesPrefix(OrePrefixes prefix) {
+        if (prefix == OrePrefixes.blockCasing || prefix == OrePrefixes.blockCasingAdvanced) {
+            if (!hasItemType(OrePrefixes.blockCasing)) return false;
+
+            // For wood bolted/rebolted casings
+            if (Werkstoff.Types.BIOLOGICAL.equals(getType())) return true;
+
+            if (!doesOreDictedItemExists(OrePrefixes.plate)) return false;
+            if (!doesOreDictedItemExists(OrePrefixes.screw)) return false;
+            if (!doesOreDictedItemExists(OrePrefixes.plateDouble)) return false;
+            if (!doesOreDictedItemExists(OrePrefixes.gearGt)) return false;
+            if (!doesOreDictedItemExists(OrePrefixes.gearGtSmall)) return false;
+
+            return true;
+        }
         return hasItemType(prefix);
     }
 

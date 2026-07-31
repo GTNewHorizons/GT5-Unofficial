@@ -12,6 +12,7 @@ import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofReboltedCasing;
 import static gtnhintergalactic.recipe.GasSiphonRecipes.calculateEUt;
 
 import java.util.List;
@@ -159,7 +160,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
                     "             ", "             ", "             ", "             ", "             ",
                     "             ", "             " } })
         .addElement('B', ofFrame(Materials.TungstenSteel))
-        .addElement('D', ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, 88))
+        .addElement('D', ofReboltedCasing(WerkstoffLoader.RhodiumPlatedPalladium))
         .addElement(
             'C',
             ofChain(

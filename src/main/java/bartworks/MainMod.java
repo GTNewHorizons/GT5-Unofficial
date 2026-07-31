@@ -126,10 +126,19 @@ public final class MainMod {
         GameRegistry.registerBlock(ItemRegistry.bw_glasses[0], BWItemBlocks.class, "BW_TieredGlass");
         GameRegistry.registerBlock(ItemRegistry.bw_glasses[1], BWItemBlocks.class, "BW_ExtraGlass");
 
+        // Deprecated stuff for Postea to reference
         GameRegistry.registerBlock(ItemRegistry.bw_deprecatedglass, BWItemBlocks.class, "BW_GlasBlocks");
         GameRegistry.registerBlock(ItemRegistry.bw_deprecatedglass2, BWItemBlocks.class, "BW_GlasBlocks2");
+        GameRegistry
+            .registerBlock(ItemRegistry.bw_deprecatedBoltedCasing, BWItemBlocks.class, "bw.werkstoffblockscasing.01");
+        GameRegistry.registerBlock(
+            ItemRegistry.bw_deprecatedReboltedCasing,
+            BWItemBlocks.class,
+            "bw.werkstoffblockscasingadvanced.01");
         codechicken.nei.api.API.hideItem(new ItemStack(ItemRegistry.bw_deprecatedglass));
         codechicken.nei.api.API.hideItem(new ItemStack(ItemRegistry.bw_deprecatedglass2));
+        codechicken.nei.api.API.hideItem(new ItemStack(ItemRegistry.bw_deprecatedBoltedCasing));
+        codechicken.nei.api.API.hideItem(new ItemStack(ItemRegistry.bw_deprecatedReboltedCasing));
 
         if (DEBUG) {
             try {

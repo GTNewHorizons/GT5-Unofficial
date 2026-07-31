@@ -2391,6 +2391,7 @@ public class OrePrefixes {
         .container()
         .materialAmount(M * 9)
         .defaultStackSize(OTHER_STACK_SIZE)
+        .textureIndex(OrePrefixTextureID.BLOCK_BOLTED_CASING)
         .build();
 
     public static final OrePrefixes blockCasingAdvanced = new OrePrefixBuilder("blockCasingAdvanced")
@@ -2403,6 +2404,7 @@ public class OrePrefixes {
         .container()
         .materialAmount(M * 9)
         .defaultStackSize(OTHER_STACK_SIZE)
+        .textureIndex(OrePrefixTextureID.BLOCK_REBOLTED_CASING)
         .build();
 
     public static final OrePrefixes capsuleMolten = new OrePrefixBuilder("capsuleMolten")

@@ -17,7 +17,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import bartworks.API.BorosilicateGlass;
-import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
@@ -655,21 +654,21 @@ public enum Casings implements ICasing {
     // ------------------ Bartworks Casings -----------------
 
     BoltedOsmiridiumCasing
-        (() -> WerkstoffLoader.BWBlockCasings, 32083,32083),
+        (() -> GregTechAPI.sBlockBoltedBW, 32083,32083),
     ReboltedOsmiridiumCasing
-        (() -> WerkstoffLoader.BWBlockCasingsAdvanced, 32083, 32083),
+        (() -> GregTechAPI.sBlockReboltedBW, 32083, 32083),
     BoltedNaquadahCasing
-        (() -> WerkstoffLoader.BWBlockCasings, 32090,32090),
+        (() -> GregTechAPI.sBlockBoltedBW, 32090,32090),
     ReboltedNaquadahCasing
-        (() -> WerkstoffLoader.BWBlockCasingsAdvanced, 32090,32090),
+        (() -> GregTechAPI.sBlockReboltedBW, 32090,32090),
     BoltedNaquadahAlloyCasing
-        (() -> WerkstoffLoader.BWBlockCasings, 32091,32091),
+        (() -> GregTechAPI.sBlockBoltedBW, 32091,32091),
     ReboltedNaquadahAlloyCasing
-        (() -> WerkstoffLoader.BWBlockCasingsAdvanced, 32091, 32091),
+        (() -> GregTechAPI.sBlockReboltedBW, 32091, 32091),
     BoltedIridiumCasing
-        (() -> WerkstoffLoader.BWBlockCasings, 31850,31850),
+        (() -> GregTechAPI.sBlockBoltedBW, 31850,31850),
     ReboltedIridiumCasing
-        (() -> WerkstoffLoader.BWBlockCasingsAdvanced, 31850, 31850),
+        (() -> GregTechAPI.sBlockReboltedBW, 31850, 31850),
 
     // ------------------ GT++ Casings -----------------
 

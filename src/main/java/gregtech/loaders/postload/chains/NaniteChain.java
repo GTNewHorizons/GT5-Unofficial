@@ -86,7 +86,7 @@ public class NaniteChain {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 aUVTierLens,
-                new ItemStack(WerkstoffLoader.BWBlockCasingsAdvanced, 8, 31776),
+                GTOreDictUnificator.get(OrePrefixes.blockCasingAdvanced, Materials.Carbon, 8),
                 ItemList.Circuit_Chip_SoC.get(64))
             .itemOutputs(Materials.Carbon.getNanite(64))
             .fluidInputs(Materials.UUMatter.getFluid(200_000))

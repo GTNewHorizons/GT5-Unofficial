@@ -54,6 +54,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.blocks.BlockBoltedCasing;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings11;
@@ -82,6 +83,7 @@ import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.blocks.BlockOresLegacy;
 import gregtech.common.blocks.BlockPad;
+import gregtech.common.blocks.BlockReboltedCasing;
 import gregtech.common.blocks.BlockReinforced;
 import gregtech.common.blocks.BlockRenderer;
 import gregtech.common.blocks.BlockSheetMetal;
@@ -890,6 +892,16 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GregTechAPI.sBlockSheetmetalBW = new BlockSheetMetal(
             "bw.sheetmetal",
+            meta -> Werkstoff.werkstoffHashMap.get((short) meta),
+            Short.MAX_VALUE);
+
+        GregTechAPI.sBlockBoltedBW = new BlockBoltedCasing(
+            "bw.boltedCasing",
+            meta -> Werkstoff.werkstoffHashMap.get((short) meta),
+            Short.MAX_VALUE);
+
+        GregTechAPI.sBlockReboltedBW = new BlockReboltedCasing(
+            "bw.reboltedCasing",
             meta -> Werkstoff.werkstoffHashMap.get((short) meta),
             Short.MAX_VALUE);
 

@@ -118,9 +118,9 @@ public class MaterialIconRegistry {
         PIPE_NONUPLE("/pipeNonuple", TextureType.BLOCK),
 
         SHEETMETAL("/sheetmetal", TextureType.BLOCK),
+        BOLTED_CASING("/blockCasing", TextureType.BLOCK),
+        REBOLTED_CASING("/blockCasingAdvanced", TextureType.BLOCK),
 
-        VOID_16("/void", TextureType.BLOCK),
-        VOID_17("/void", TextureType.BLOCK),
         VOID_18("/void", TextureType.BLOCK),
         VOID_19("/void", TextureType.BLOCK),
         VOID_20("/void", TextureType.BLOCK),

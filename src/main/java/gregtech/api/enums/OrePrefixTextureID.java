@@ -65,6 +65,8 @@ public class OrePrefixTextureID {
     public static final int PIPE_QUADRUPLE = 84;
     public static final int PIPE_NONUPLE = 85;
     public static final int BLOCK_SHEETMETAL = 86;
+    public static final int BLOCK_BOLTED_CASING = 87;
+    public static final int BLOCK_REBOLTED_CASING = 88;
     public static final int TURBINE_BLADE = 100;
     public static final int COMB = 101;
     public static final int PLATE_SUPERDENSE = 125;

@@ -16,8 +16,6 @@ GT_LESU_CASING.0.name=LESU Casing
 bw.blockores.01.name=Ore
 bw.blockores.02.name=Small Ore
 bw.werkstoffblocks.01.name=Block
-bw.werkstoffblockscasing.01.name=Bolted Casing
-bw.werkstoffblockscasingadvanced.01.name=Rebolted Casing
 
 GT5U.gui.text.recipe_result.no_imprint=Missing imprint
 GT5U.gui.text.recipe_result.not_enough_length=Multiblock Too Short
