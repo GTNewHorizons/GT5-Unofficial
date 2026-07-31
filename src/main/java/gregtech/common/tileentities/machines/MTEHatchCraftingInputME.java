@@ -702,6 +702,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
 
     @Override
     public String getNameSuffix() {
+        if (hasCustomName()) return "";
+
         StringBuilder suffix = new StringBuilder();
 
         IGregTechTileEntity base = getBaseMetaTileEntity();

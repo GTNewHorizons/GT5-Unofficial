@@ -50,6 +50,7 @@ import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IParametrized {
 
     private MTEHatchBEC inputHatch;
