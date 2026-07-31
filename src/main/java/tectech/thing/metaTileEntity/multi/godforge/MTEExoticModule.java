@@ -33,7 +33,6 @@ import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.utils.fluid.FluidTanksHandler;
 import com.cleanroommc.modularui.utils.fluid.IFluidTanksHandler;
-import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
@@ -44,7 +43,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
@@ -351,13 +349,13 @@ public class MTEExoticModule extends MTEBaseModule {
 
         for (ItemStack itemStack : items) {
             ItemData association = GTOreDictUnificator.getAssociation(itemStack);
-            Material material = association == null || association.mMaterial == null
-                || association.mMaterial.mMaterial == null ? null : association.mMaterial.mMaterial;
-            if (material == null || !LegacyNameDomain.contains(material)) {
-                GTLog.err.println("MTEExoticModule.convertItemToPlasma: no unification data for " + itemStack);
+            FluidStack plasma = association == null ? null
+                : MaterialUtils.plasma(association.mMaterial.mMaterial, INGOTS * multiplier * itemStack.stackSize);
+            if (plasma == null) {
+                GTLog.err.println("MTEExoticModule.convertItemToPlasma: no plasma for " + itemStack);
                 continue;
             }
-            plasmas.add(MaterialUtils.plasma(material, (int) (INGOTS * multiplier * itemStack.stackSize)));
+            plasmas.add(plasma);
         }
 
         return plasmas.toArray(new FluidStack[0]);
