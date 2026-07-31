@@ -368,8 +368,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
         }
 
         buildPiece(STRUCTURE_PIECE_END, stackSize, hintsOnly, 3, 6, -(lLength + 2));
-
-        StructureLib.addClientSideChatMessages("Length: " + (11 + lLength) + " blocks.");
     }
 
     @Override
