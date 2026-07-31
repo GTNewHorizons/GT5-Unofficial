@@ -1,10 +1,10 @@
 package gregtech.api.util.client;
 
-import net.minecraft.item.ItemStack;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import net.minecraft.item.ItemStack;
 
 /**
  * Handles dynamic key generation for material auto name fusion.
@@ -14,6 +14,7 @@ import java.util.Map;
  * at runtime.
  */
 public class DynamicLangManager {
+
     private static List<ItemStack> dynamicStacks = new ArrayList<>();
 
     public static void addStack(ItemStack stack) {
