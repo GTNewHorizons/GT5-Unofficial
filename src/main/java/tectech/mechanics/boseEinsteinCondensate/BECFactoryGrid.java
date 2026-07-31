@@ -1,14 +1,8 @@
 package tectech.mechanics.boseEinsteinCondensate;
 
-import net.minecraftforge.event.world.WorldEvent;
-
-import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.GTMod;
 import gregtech.api.factory.standard.StandardFactoryGrid;
 
-@EventBusSubscriber
 public class BECFactoryGrid extends StandardFactoryGrid<BECFactoryGrid, BECFactoryElement, BECFactoryNetwork> {
 
     public static final BECFactoryGrid INSTANCE = new BECFactoryGrid();
@@ -18,11 +12,7 @@ public class BECFactoryGrid extends StandardFactoryGrid<BECFactoryGrid, BECFacto
         return new BECFactoryNetwork();
     }
 
-    @SubscribeEvent
-    public static void onServerClosed(WorldEvent.Unload event) {
-        if (event.world.provider.dimensionId != 0) return;
-        if (event.world.isRemote) return;
-
+    public static void onServerClosed() {
         if (!INSTANCE.networks.isEmpty()) {
             GTMod.GT_FML_LOGGER.warn(
                 "BECFactoryGrid had networks that weren't removed before the server stopped: this could indicate a memory leak.");
