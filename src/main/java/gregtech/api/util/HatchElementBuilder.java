@@ -409,7 +409,8 @@ public class HatchElementBuilder<T> {
     public HatchElementBuilder<T> hatchClass(Class<? extends IMetaTileEntity> clazz) {
         mDescriptionNames = () -> Collections.singletonList(clazz.getSimpleName());
         return hatchItemFilter(c -> is -> clazz.isInstance(ItemMachines.getMetaTileEntity(is)))
-            .cacheHint(() -> StatCollector.translateToLocalFormatted("gt.hatch_element_of_class", clazz.getSimpleName()))
+            .cacheHint(
+                () -> StatCollector.translateToLocalFormatted("gt.hatch_element_of_class", clazz.getSimpleName()))
             .shouldSkip(
                 (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> clazz
                     .isInstance(t.getMetaTileEntity()));
