@@ -37,7 +37,6 @@ public class MissingMappingsHandler {
         .remapItem("miscutils:BerylliumHydroxide", GameRegistry.findItem(GTPlusPlus.ID, "itemCellBerylliumHydroxide"))
         .remapItem("miscutils:Bromine", GameRegistry.findItem(GTPlusPlus.ID, "itemCellBromine"))
         .remapItem("miscutils:Krypton", GameRegistry.findItem(GTPlusPlus.ID, "itemCellKrypton"))
-        .remapItem("miscutils:itemCellZirconiumTetrafluoride", GameRegistry.findItem(GTPlusPlus.ID, "ZirconiumTetrafluoride"))
         .remapItem("miscutils:Li2BeF4", GameRegistry.findItem(GTPlusPlus.ID, "itemCellLithiumTetrafluoroberyllate"))
         .remapItem("gregtech:gt.gt.fakecircuitcomponent", GameRegistry.findItem("gregtech", "gt.fakecircuitcomponent"))
 

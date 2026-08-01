@@ -56,7 +56,6 @@ import gtPlusPlus.core.item.tool.misc.ItemGregtechPump;
 import gtPlusPlus.core.item.wearable.WearableLoader;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.plugin.agrichem.item.algae.ItemAgrichemBase;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -74,14 +73,6 @@ public final class ModItems {
         MetaGeneratedGregtechItems.INSTANCE.generateMetaItems();
         WearableLoader.run();
         ItemsFoods.load();
-
-        // Zirconium Tetrafluoride's fluid is registered directly by name rather than through a material
-        // declaration, so MaterialUtils#anyFluidOf falls back to its pinned Forge fluid name for it.
-        FluidUtils.generateFluidNoPrefix(
-            "ZirconiumTetrafluoride",
-            "Zirconium Tetrafluoride",
-            500,
-            new short[] { 170, 170, 140, 100 });
 
         Item[] tumbagaMix = ItemUtils
             .generateSpecialUseDusts("MixTumbaga", "Tumbaga Mix", "Au2Cu", Utils.rgbtoHexValue(255, 150, 80));
