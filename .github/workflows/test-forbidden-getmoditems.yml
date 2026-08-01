@@ -15,22 +15,39 @@ jobs:
       - name: Detect forbidden getModItem calls
         shell: bash
         run: |
-          ! grep -E -r 'getModItem\(.*(BartWorks|GalactiGreg|GGFab|GoodGenerator|GregTech|GTNHIntergalactic|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)\.ID' src/main/java || exit 1
+          ! grep -E -r 'getModItem\(.*(BartWorks|GalactiGreg|GGFab|GoodGenerator|GregTech|GTNHIntergalactic|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)' src/main/java || exit 1
+          ! grep -E -r 'getModItem\(Mods\..*(BartWorks|GalactiGreg|GGFab|GoodGenerator|GregTech|GTNHIntergalactic|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)' src/main/java || exit 1
+          ! grep -E -r 'getModItem\(Mods\.ModIDs\..*(BART_WORKS|GALACTI_GREG|G_G_FAB|GOOD_GENERATOR|GREG_TECH|G_T_N_H_INTERGALACTIC|G_T_N_H_LANTHANIDES|GT_PLUS_PLUS|KEKZ_TECH|KUBA_TECH|TECTECH|N_E_I_ORE_PLUGIN)' src/main/java || exit 1
+          ! grep -E -r 'getModItem\(ModIDs\..*(BART_WORKS|GALACTI_GREG|G_G_FAB|GOOD_GENERATOR|GREG_TECH|G_T_N_H_INTERGALACTIC|G_T_N_H_LANTHANIDES|GT_PLUS_PLUS|KEKZ_TECH|KUBA_TECH|TECTECH|N_E_I_ORE_PLUGIN)' src/main/java || exit 1
+          ! grep -E -r 'getModItem\(.*(BART_WORKS|GALACTI_GREG|G_G_FAB|GOOD_GENERATOR|GREG_TECH|G_T_N_H_INTERGALACTIC|G_T_N_H_LANTHANIDES|GT_PLUS_PLUS|KEKZ_TECH|KUBA_TECH|TECTECH|N_E_I_ORE_PLUGIN)' src/main/java || exit 1
           ! grep -E -r 'getModItem\(".*", .*)' src/main/java || exit 1
       - name: Detect forbidden GameRegistry.findItem calls
         shell: bash
         run: |
-          ! grep -E -r 'findItem\(.*(BartWorks|GalactiGreg|GGFab|GoodGenerator|GregTech|GTNHIntergalactic|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)\.ID' src/main/java || exit 1
+          ! grep -E -r 'findItem\(.*(BartWorks|GalactiGreg|GGFab|GoodGenerator|GregTech|GTNHIntergalactic|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)' src/main/java || exit 1
+          ! grep -E -r 'findItem\(Mods\..*(BartWorks|GalactiGreg|GGFab|GoodGenerator|GregTech|GTNHIntergalactic|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)' src/main/java || exit 1
+          ! grep -E -r 'findItem\(Mods\.ModIDs\..*(BART_WORKS|GALACTI_GREG|G_G_FAB|GOOD_GENERATOR|GREG_TECH|G_T_N_H_INTERGALACTIC|G_T_N_H_LANTHANIDES|GT_PLUS_PLUS|KEKZ_TECH|KUBA_TECH|TECTECH|N_E_I_ORE_PLUGIN)' src/main/java || exit 1
+          ! grep -E -r 'findItem\(ModIDs\..*(BART_WORKS|GALACTI_GREG|G_G_FAB|GOOD_GENERATOR|GREG_TECH|G_T_N_H_INTERGALACTIC|G_T_N_H_LANTHANIDES|GT_PLUS_PLUS|KEKZ_TECH|KUBA_TECH|TECTECH|N_E_I_ORE_PLUGIN)' src/main/java || exit 1
+          ! grep -E -r 'findItem\(.*(BART_WORKS|GALACTI_GREG|G_G_FAB|GOOD_GENERATOR|GREG_TECH|G_T_N_H_INTERGALACTIC|G_T_N_H_LANTHANIDES|GT_PLUS_PLUS|KEKZ_TECH|KUBA_TECH|TECTECH|N_E_I_ORE_PLUGIN)' src/main/java || exit 1
+
           ! grep -E -r 'findItem\(".*", .*)' src/main/java || exit 1
 
       - name: Detect forbidden GameRegistry.findItemStack calls
         shell: bash
         run: |
-          ! grep -E -r 'findItemStack\(.*(BartWorks|GalactiGreg|GGFab|GoodGenerator|GregTech|GTNHIntergalactic|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)\.ID' src/main/java || exit 1
+          ! grep -E -r 'findItemStack\(.*(BartWorks|GalactiGreg|GGFab|GoodGenerator|GregTech|GTNHIntergalactic|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)' src/main/java || exit 1
+          ! grep -E -r 'findItemStack\(Mods\..*(BartWorks|GalactiGreg|GGFab|GoodGenerator|GregTech|GTNHIntergalactic|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)' src/main/java || exit 1
+          ! grep -E -r 'findItemStack\(Mods\.ModIDs\..*(BART_WORKS|GALACTI_GREG|G_G_FAB|GOOD_GENERATOR|GREG_TECH|G_T_N_H_INTERGALACTIC|G_T_N_H_LANTHANIDES|GT_PLUS_PLUS|KEKZ_TECH|KUBA_TECH|TECTECH|N_E_I_ORE_PLUGIN)' src/main/java || exit 1
+          ! grep -E -r 'findItemStack\(ModIDs\..*(BART_WORKS|GALACTI_GREG|G_G_FAB|GOOD_GENERATOR|GREG_TECH|G_T_N_H_INTERGALACTIC|G_T_N_H_LANTHANIDES|GT_PLUS_PLUS|KEKZ_TECH|KUBA_TECH|TECTECH|N_E_I_ORE_PLUGIN)' src/main/java || exit 1
+          ! grep -E -r 'findItemStack\(.*(BART_WORKS|GALACTI_GREG|G_G_FAB|GOOD_GENERATOR|GREG_TECH|G_T_N_H_INTERGALACTIC|G_T_N_H_LANTHANIDES|GT_PLUS_PLUS|KEKZ_TECH|KUBA_TECH|TECTECH|N_E_I_ORE_PLUGIN)' src/main/java || exit 1
           ! grep -E -r 'findItemStack\(".*", .*)' src/main/java || exit 1
 
       - name: Detect forbidden GameRegistry.findBlock calls
         shell: bash
         run: |
-          ! grep -E -r 'findBlock\(.*(BartWorks|GalactiGreg|GGFab|GoodGenerator|GregTech|GTNHIntergalactic|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)\.ID' src/main/java || exit 1
+          ! grep -E -r 'findBlock\(.*(BartWorks|GalactiGreg|GGFab|GoodGenerator|GregTech|GTNHIntergalactic|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)' src/main/java || exit 1
+          ! grep -E -r 'findBlock\(Mods\..*(BartWorks|GalactiGreg|GGFab|GoodGenerator|GregTech|GTNHIntergalactic|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)' src/main/java || exit 1
+          ! grep -E -r 'findBlock\(Mods\.ModIDs\..*(BART_WORKS|GALACTI_GREG|G_G_FAB|GOOD_GENERATOR|GREG_TECH|G_T_N_H_INTERGALACTIC|G_T_N_H_LANTHANIDES|GT_PLUS_PLUS|KEKZ_TECH|KUBA_TECH|TECTECH|N_E_I_ORE_PLUGIN)' src/main/java || exit 1
+          ! grep -E -r 'findBlock\(ModIDs\..*(BART_WORKS|GALACTI_GREG|G_G_FAB|GOOD_GENERATOR|GREG_TECH|G_T_N_H_INTERGALACTIC|G_T_N_H_LANTHANIDES|GT_PLUS_PLUS|KEKZ_TECH|KUBA_TECH|TECTECH|N_E_I_ORE_PLUGIN)' src/main/java || exit 1
+          ! grep -E -r 'findBlock\(.*(BART_WORKS|GALACTI_GREG|G_G_FAB|GOOD_GENERATOR|GREG_TECH|G_T_N_H_INTERGALACTIC|G_T_N_H_LANTHANIDES|GT_PLUS_PLUS|KEKZ_TECH|KUBA_TECH|TECTECH|N_E_I_ORE_PLUGIN)' src/main/java || exit 1
           ! grep -E -r 'findBlock\(".*", .*)' src/main/java || exit 1
