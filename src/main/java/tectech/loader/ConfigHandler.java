@@ -4,7 +4,7 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 
 import gregtech.api.enums.Mods;
 
-@Config(modid = Mods.ModIDs.TECTECH, filename = "tectech")
+@Config(modid = Mods.ModIDs.TECTECH, filename = Mods.ModIDs.TECTECH)
 @Config.LangKeyPattern(pattern = "GT5U.gui.config.%cat.%field", fullyQualified = true)
 @Config.RequiresMcRestart
 public class ConfigHandler {
