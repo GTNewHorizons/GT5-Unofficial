@@ -31,8 +31,8 @@ public class MissingMappingsHandler {
     private static final Remapper REMAPPER = new Remapper()
         // Block remappings
         .remapBlock("dreamcraft:gt.blockcasingsNH", GregTechAPI.sBlockCasingsNH)
-        .remapBlock("miscutils:oreCryolite", GameRegistry.findBlock(GTPlusPlus.ID, "oreCryoliteF"))
-        .remapBlock("miscutils:oreFluorite", GameRegistry.findBlock(GTPlusPlus.ID, "oreFluoriteF"))
+        .remapBlock("miscutils:oreCryolite", CRYOLITE.getOreBlock(1))
+        .remapBlock("miscutils:oreFluorite", FLUORITE.getOreBlock(1))
         .remapBlock("EMT:EMT_GTBLOCK_CASEING", BlockLoader.defcCasingBlock)
         .remapBlock("GalaxySpace:spaceelevatorparts", GregTechAPI.sBlockCasingsSE)
         .remapBlock("GalaxySpace:spaceelevatormotors", GregTechAPI.sBlockCasingsSEMotor)
