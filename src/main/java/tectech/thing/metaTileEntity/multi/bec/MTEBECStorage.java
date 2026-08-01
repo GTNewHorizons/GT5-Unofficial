@@ -219,6 +219,10 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         return sum;
     }
 
+    public void refreshContentForHatch() {
+        contentsChanged = true;
+    }
+
     @Override
     public void stopMachine(@Nonnull ShutDownReason reason) {
         super.stopMachine(reason);
@@ -393,7 +397,9 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                 if (imte instanceof MTEHatchCondensateDetector hatch) {
                     hatch.updateTexture(texture);
                     hatch.updateCraftingIcon(self.getMachineCraftingIcon());
+                    hatch.bindBECStorage(self);
                     self.condensateDetectors.add(hatch);
+                    self.contentsChanged = true;
                     return true;
                 } else {
                     return false;
