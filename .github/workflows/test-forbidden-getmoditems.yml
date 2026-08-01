@@ -22,3 +22,15 @@ jobs:
         run: |
           ! grep -E -r 'findItem\(.*(BartWorks|GalactiGreg|GGFab|GoodGenerator|GregTech|GTNHIntergalactic|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)\.ID' src/main/java || exit 1
           ! grep -E -r 'findItem\(".*", .*)' src/main/java || exit 1
+
+      - name: Detect forbidden GameRegistry.findItemStack calls
+        shell: bash
+        run: |
+          ! grep -E -r 'findItemStack\(.*(BartWorks|GalactiGreg|GGFab|GoodGenerator|GregTech|GTNHIntergalactic|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)\.ID' src/main/java || exit 1
+          ! grep -E -r 'findItemStack\(".*", .*)' src/main/java || exit 1
+
+      - name: Detect forbidden GameRegistry.findBlock calls
+        shell: bash
+        run: |
+          ! grep -E -r 'findBlock\(.*(BartWorks|GalactiGreg|GGFab|GoodGenerator|GregTech|GTNHIntergalactic|GTNHLanthanides|GTPlusPlus|KekzTech|KubaTech|TecTech|NEIOrePlugin)\.ID' src/main/java || exit 1
+          ! grep -E -r 'findBlock\(".*", .*)' src/main/java || exit 1
