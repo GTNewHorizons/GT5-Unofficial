@@ -658,12 +658,6 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     }
 
     @Override
-    public void explodeMultiblock() {
-        // TODO Auto-generated method stub
-        super.explodeMultiblock();
-    }
-
-    @Override
     public void doExplosion(long aExplosionPower) {
         // TODO Auto-generated method stub
         super.doExplosion(aExplosionPower);

@@ -369,12 +369,6 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     @Override
-    public void onDisableWorking() {
-        super.onDisableWorking();
-        // destroyRenderBlock();
-    }
-
-    @Override
     public void onStructureChange() {
         super.onStructureChange();
         if (!checkStructure(false, this.getBaseMetaTileEntity())) {

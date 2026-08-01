@@ -269,11 +269,6 @@ public class BaseItemMetaFood extends ItemFood {
     }
 
     @Override
-    public boolean shouldRotateAroundWhenRendering() {
-        return super.shouldRotateAroundWhenRendering();
-    }
-
-    @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean adv) {
         try {
             String aTooltip = mTooltipMap.get(getMetaKey(stack));
