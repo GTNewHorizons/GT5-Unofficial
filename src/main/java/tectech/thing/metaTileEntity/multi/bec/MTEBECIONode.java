@@ -23,6 +23,7 @@ import java.util.List;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -205,7 +206,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         StructureWrapperTooltipBuilder<MTEBECIONode> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("BEC I/O Node, Input Bus, Output Bus")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-ionode"));
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode"));
 
         tt.beginStructureBlock(7, 23, 13, false)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.controller-pos"))

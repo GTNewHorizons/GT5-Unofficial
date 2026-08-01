@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -145,7 +146,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
         StructureWrapperTooltipBuilder<MTEBECDiode> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("BEC Diode, Storage Bus")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-diode"))
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-diode"))
             .addSupportAny();
 
         tt.beginStructureBlock(17, 11, 11, true)

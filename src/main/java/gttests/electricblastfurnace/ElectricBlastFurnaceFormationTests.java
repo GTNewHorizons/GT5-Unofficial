@@ -3,6 +3,7 @@ package gttests.electricblastfurnace;
 import static com.gtnewhorizons.horizonqa.api.TestPos.at;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -22,7 +23,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTRecipeBuilder;
 
-@GameTestHolder(value = "gregtech", templatePrefix = "multiblock/electric_blast_furnace")
+@GameTestHolder(value = Mods.ModIDs.GREG_TECH, templatePrefix = "multiblock/electric_blast_furnace")
 public class ElectricBlastFurnaceFormationTests {
 
     private static final TestPos CONTROLLER = at(1, 0, 0);

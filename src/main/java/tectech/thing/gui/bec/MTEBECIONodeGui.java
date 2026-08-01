@@ -9,6 +9,7 @@ import static tectech.thing.metaTileEntity.multi.bec.MTEBECIONode.SPEED_DIVISOR_
 import java.util.Collections;
 import java.util.function.Function;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
@@ -137,17 +138,17 @@ public class MTEBECIONodeGui extends MTEBECMultiblockBaseGui<MTEBECIONode> {
                     case MIN_PARALLEL_PARAMETER -> textFieldWidget.tooltip(
                         t -> t.addStringLines(
                             MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                                new ResourceLocation("gregtech", "bec-ionode/min-parallels"),
+                                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode/min-parallels"),
                                 Collections.emptyMap())));
                     case MAX_PARALLEL_PARAMETER -> textFieldWidget.tooltip(
                         t -> t.addStringLines(
                             MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                                new ResourceLocation("gregtech", "bec-ionode/max-parallels"),
+                                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode/max-parallels"),
                                 Collections.emptyMap())));
                     case SPEED_DIVISOR_PARAMETER -> textFieldWidget.tooltip(
                         t -> t.addStringLines(
                             MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                                new ResourceLocation("gregtech", "bec-ionode/speed-divisor"),
+                                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode/speed-divisor"),
                                 Collections.emptyMap())));
                     default -> {}
                 }

@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
@@ -139,7 +140,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
         StructureWrapperTooltipBuilder<MTEBECAssembler> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("BEC Assembler, Observation Array")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-assembler"))
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-assembler"))
             .addSupportAny();
 
         tt.beginStructureBlock(61, 31, 31, true)

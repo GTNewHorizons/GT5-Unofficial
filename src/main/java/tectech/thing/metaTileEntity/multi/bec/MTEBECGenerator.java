@@ -14,6 +14,7 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 
 import java.util.Arrays;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
@@ -90,7 +91,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         StructureWrapperTooltipBuilder<MTEBECGenerator> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("BEC Generator, Condensate Entangler, Input Hatch")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-generator"))
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-generator"))
             .addSupportAny();
 
         tt.beginStructureBlock(19, 19, 34, true)

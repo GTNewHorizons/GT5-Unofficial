@@ -3,6 +3,7 @@ package gregtech.crossmod.chunkapi;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.S23PacketBlockChange;
@@ -90,7 +91,7 @@ public class ClientMetaManager implements DataManager.PacketDataManager, DataMan
 
     @Override
     public String domain() {
-        return "gregtech";
+        return Mods.ModIDs.GREG_TECH;
     }
 
     @Override

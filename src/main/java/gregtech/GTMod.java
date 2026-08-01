@@ -141,7 +141,7 @@ import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
 @Mod(
-    modid = "gregtech",
+    modid = Mods.ModIDs.GREG_TECH,
     name = "GregTech",
     version = GT_Version.VERSION,
     guiFactory = "gregtech.client.GTGuiFactory",
@@ -214,10 +214,10 @@ public class GTMod {
 
     public static final int NBT_VERSION = calculateTotalGTVersion(VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
 
-    @Mod.Instance("gregtech")
+    @Mod.Instance(Mods.ModIDs.GREG_TECH)
     public static GTMod GT;
 
-    @SidedProxy(modId = "gregtech", clientSide = "gregtech.common.GTClient", serverSide = "gregtech.common.GTProxy")
+    @SidedProxy(modId = Mods.ModIDs.GREG_TECH, clientSide = "gregtech.common.GTClient", serverSide = "gregtech.common.GTProxy")
     public static GTProxy proxy;
     /** Field renamed, reference {@link gregtech.GTMod#proxy} instead */
     @SuppressWarnings("DeprecatedIsStillUsed")

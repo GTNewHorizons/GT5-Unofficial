@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -143,7 +144,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         StructureWrapperTooltipBuilder<MTEBECStorage> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("BEC Storage, Entangled Condensate Storage")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-storage"))
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-storage"))
             .addSupportAny();
 
         tt.beginStructureBlock(45, 17, 45, true)

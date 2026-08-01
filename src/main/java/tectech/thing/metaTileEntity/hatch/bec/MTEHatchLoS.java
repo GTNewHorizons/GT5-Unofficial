@@ -9,6 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -76,7 +77,7 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
         if (tooltip == null) {
             tooltip = new Lazy<>(
                 () -> MarkdownTooltipLoader.STANDARD
-                    .loadStandardPath(new ResourceLocation("gregtech", "los-connector"), Map.of("range", SCAN_DIST)));
+                    .loadStandardPath(new ResourceLocation(Mods.ModIDs.GREG_TECH, "los-connector"), Map.of("range", SCAN_DIST)));
         }
         return ArrayUtils.addAll(
             super.getDescription(),

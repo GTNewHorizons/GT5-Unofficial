@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
@@ -43,7 +44,7 @@ public final class GTMiscCommand extends GTBaseCommand {
 
     @Override
     public String getCommandName() {
-        return "gregtech";
+        return Mods.ModIDs.GREG_TECH;
     }
 
     @Override
