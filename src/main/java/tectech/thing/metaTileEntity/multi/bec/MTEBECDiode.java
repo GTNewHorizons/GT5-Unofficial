@@ -152,7 +152,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-diode.controller-pos"))
             .addCasing("148", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
             .addCasing("92", ConflictInducementCasing.getLocalizedName(), false)
-            .addCasing("0-90", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("83-90", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
             .addCasing("84", FineStructureConstantManipulator.getLocalizedName(), false)
             .addCasing("70", ElectromagneticWaveguide.getLocalizedName(), false)
             .addCasing("68", PeaceEnforcementCasing.getLocalizedName(), false)

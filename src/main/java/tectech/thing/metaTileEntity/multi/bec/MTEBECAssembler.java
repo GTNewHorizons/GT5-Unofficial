@@ -146,7 +146,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.controller-pos"))
             .addCasing("1700", FineStructureConstantManipulator.getLocalizedName(), false)
             .addCasing("1515", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
-            .addCasing("0-1458", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("1444-1458", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
             .addCasing("838", ConflictInducementCasing.getLocalizedName(), false)
             .addCasing("790", PeaceEnforcementCasing.getLocalizedName(), false)
             .addCasing("664", ElectromagneticWaveguide.getLocalizedName(), false)
