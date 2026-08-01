@@ -76,9 +76,8 @@ public class EIGNormalMode extends EIGMode {
         ttVars.put("maxFertilizerUsagePerSeed", this.getMaxFertilizerUsagePerSeed());
         ttVars.put("fertilizerBonus", String.format("%.0f%%", this.getFertilizerBoost() * 100));
 
-        return builder.addMarkdown(
-            new ResourceLocation("gregtech", "extreme-industrial-greenhouse-normal-mode"),
-            ttVars);
+        return builder
+            .addMarkdown(new ResourceLocation("gregtech", "extreme-industrial-greenhouse-normal-mode"), ttVars);
     }
 
     @Override
