@@ -1784,7 +1784,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     /**
      * Returns the amount that is actually drained
-     * @param aLiquid The liquid to drain, will not be modified.
+     * 
+     * @param aLiquid  The liquid to drain, will not be modified.
      * @param simulate Whether to perform the draining
      * @return The amount that is drained
      */
