@@ -370,30 +370,6 @@ kubatech.multiblock.ExtremeIndustrialGreenhouse.fertilized_dirt=Fertilized Dirt 
 kubatech.multiblock.ExtremeIndustrialGreenhouse.purple_lamp=Purple Lamp (ProjectRed Illumination, regular or inverted)
 kubatech.multiblock.ExtremeIndustrialGreenhouse.footer=The dirt is tilled and the water is spawned for free once formed
 
-kubatech.multiblock.EIGNormalMode.header=§6Normal Crops:
-kubatech.multiblock.EIGNormalMode.desc1=Minimal voltage tier: %s
-kubatech.multiblock.EIGNormalMode.desc2=Starting with %s slot
-kubatech.multiblock.EIGNormalMode.desc3=Every tier past %s, slots are multiplied by %s
-kubatech.multiblock.EIGNormalMode.desc4=Every slot adds %s seed to the total seed capacity
-kubatech.multiblock.EIGNormalMode.desc5=Base process time: 5 sec
-kubatech.multiblock.EIGNormalMode.desc6=Process time is divided by number of tiers past %s (Minimum 1 sec)
-kubatech.multiblock.EIGNormalMode.desc7=All crops are grown at the end of the operation
-kubatech.multiblock.EIGNormalMode.desc8=Does not drop seeds
-kubatech.multiblock.EIGNormalMode.desc9=Can consume up to %s fertilizer per seed per cycle
-kubatech.multiblock.EIGNormalMode.desc10=Boost per fertilizer: %s
-
-kubatech.multiblock.EIGIC2Mode.deprecated=§cDEPRECATED§r
-kubatech.multiblock.EIGIC2Mode.header=§6IC2 Crops:
-kubatech.multiblock.EIGIC2Mode.desc1=Minimal voltage tier: %s
-kubatech.multiblock.EIGIC2Mode.desc2=Minimal glass tier: %s
-kubatech.multiblock.EIGIC2Mode.desc3=Starting with %s slot
-kubatech.multiblock.EIGIC2Mode.desc4=Every tier past %s, slots are multiplied by %s
-kubatech.multiblock.EIGIC2Mode.desc5=Every slot adds %s seed to the total seed capacity
-kubatech.multiblock.EIGIC2Mode.desc6=Process time: 5 sec
-kubatech.multiblock.EIGIC2Mode.desc7=All crops are accelerated by x%s times
-kubatech.multiblock.EIGIC2Mode.desc8=Can consume up to %s fertilizer per seed per cycle
-kubatech.multiblock.EIGIC2Mode.desc9=Boost per fertilizer: %s
-kubatech.multiblock.EIGIC2Mode.desc10=Weed-EX 9000 consumption is multiplied by %s
 
 kubatech.multiblock.MegaIndustrialApiary.machine_type=Mega Apiary, Mapiary
 kubatech.multiblock.MegaIndustrialApiary.dirt_or_grass=Dirt or Grass

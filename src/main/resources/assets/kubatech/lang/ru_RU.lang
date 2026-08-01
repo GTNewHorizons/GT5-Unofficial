@@ -221,30 +221,6 @@ kubatech.multiblock.ExtremeIndustrialGreenhouse.fertilized_dirt=Удобренн
 kubatech.multiblock.ExtremeIndustrialGreenhouse.purple_lamp=Фиолетовая лампа (ProjectRed Illumination, обычная или инвертированная)
 kubatech.multiblock.ExtremeIndustrialGreenhouse.footer=Земля вспахивается, а вода появляется бесплатно после формирования структуры
 
-kubatech.multiblock.EIGNormalMode.header=§6Обычные семена:
-kubatech.multiblock.EIGNormalMode.desc1=Минимальный тир вольтажа: %s
-kubatech.multiblock.EIGNormalMode.desc2=Начиная с %s слота
-kubatech.multiblock.EIGNormalMode.desc3=На каждом тире после %s, слоты умножаются на %s
-kubatech.multiblock.EIGNormalMode.desc4=Каждый слот добавляет %s семени к общей вместимости семян
-kubatech.multiblock.EIGNormalMode.desc5=Длительность процесса: 5 сек
-kubatech.multiblock.EIGNormalMode.desc6=Время процесса делится на количество тиров после %s (Минимум 1 сек)
-kubatech.multiblock.EIGNormalMode.desc7=Все культуры выращиваются в конце операции
-kubatech.multiblock.EIGNormalMode.desc8=Не сбрасывает семена
-kubatech.multiblock.EIGNormalMode.desc9=Может потреблять до %s удобрений на семя за цикл
-kubatech.multiblock.EIGNormalMode.desc10=Прирост за удобрение: %s
-
-kubatech.multiblock.EIGIC2Mode.deprecated=§cУСТАРЕЛО§r
-kubatech.multiblock.EIGIC2Mode.header=§6IC2 Культуры:
-kubatech.multiblock.EIGIC2Mode.desc1=Минимальный тир вольтажа: %s
-kubatech.multiblock.EIGIC2Mode.desc2=Минимальный тир стекла: %s
-kubatech.multiblock.EIGIC2Mode.desc3=Начиная с %s слота
-kubatech.multiblock.EIGIC2Mode.desc4=На каждом тире после %s, слоты умножаются на %s
-kubatech.multiblock.EIGIC2Mode.desc5=Каждый слот добавляет %s семя к общей вместимости семян
-kubatech.multiblock.EIGIC2Mode.desc6=Длительность процесса: 5 сек
-kubatech.multiblock.EIGIC2Mode.desc7=Все посевы ускорены в x%s раза
-kubatech.multiblock.EIGIC2Mode.desc8=Может потреблять до %s удобрений на семя за цикл
-kubatech.multiblock.EIGIC2Mode.desc9=Прирост за удобрение: %s
-kubatech.multiblock.EIGIC2Mode.desc10=Потребление Гербицида 9000 умножается на %s
 
 kubatech.multiblock.MegaIndustrialApiary.machine_type=Мега пасека, Mapiary
 kubatech.multiblock.MegaIndustrialApiary.dirt_or_grass=Земля или трава
