@@ -13,6 +13,7 @@ import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -32,6 +33,11 @@ import gregtech.api.util.GTOreDictUnificator;
 /// spine. Each
 /// `set` call makes the shape stack the prefix's unification target and adds the material association that
 /// drives the auto-generated recycling recipes.
+///
+/// A material whose legacy name MaterialLib cannot accept as a registration name carries it as
+/// [GTMaterialProperties#LEGACY_NAME] and registers its stacks under the sanitized name instead, so its
+/// legacy-named entries get a pass of their own. [OrePrefixes#oreDictName] builds the legacy name, so that is
+/// the name every [GTOreDictUnificator] lookup asks for.
 ///
 /// The High Pressure (Redstone) fluid pipes additionally register under the tier-keyed
 /// `pipeSmallUltimate`..`pipeLargeUltimate` names ([TieredItems#ZPM]'s ingredient names), the identity every
@@ -63,6 +69,7 @@ public class LoaderMaterialLibCutover implements Runnable {
         }
 
         unifyMembershipDriven();
+        registerLegacyNamedMaterials();
         registerHighPressureNames();
     }
 
@@ -87,6 +94,21 @@ public class LoaderMaterialLibCutover implements Runnable {
                         GTOreDictUnificator
                             .registerOre(prefix.oreDictName(MaterialUtils.internalName(material)), stack);
                     }
+                }
+            }
+        }
+    }
+
+    private static void registerLegacyNamedMaterials() {
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            if (material.getProperty(GTMaterialProperties.LEGACY_NAME) == null) continue;
+            for (OrePrefixes prefix : OrePrefixes.VALUES) {
+                ItemStack stack = MaterialParts.stack(prefix, material, 1);
+                if (stack == null) continue;
+                if (prefix.isUnifiable()) {
+                    GTOreDictUnificator.set(prefix, material, stack);
+                } else {
+                    GTOreDictUnificator.registerOre(prefix.oreDictName(material), stack);
                 }
             }
         }
