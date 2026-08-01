@@ -22,6 +22,7 @@ package kubatech.loaders.item.kubaitem;
 
 import java.util.List;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -69,7 +70,7 @@ public class ItemProxy {
 
     public ItemProxy(String unlocalizedName, String texture) {
         this.unlocalizedName = "kubaitem." + unlocalizedName;
-        texturepath = Tags.MODID + ":" + texture;
+        texturepath = Mods.ModIDs.KUBA_TECH + ":" + texture;
     }
 
     public ItemProxy(String unlocalizedNameAndTexture) {

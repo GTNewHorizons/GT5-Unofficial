@@ -25,6 +25,7 @@ import static net.minecraft.client.renderer.entity.RenderManager.renderPosX;
 import static net.minecraft.client.renderer.entity.RenderManager.renderPosY;
 import static net.minecraft.client.renderer.entity.RenderManager.renderPosZ;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
@@ -56,7 +57,7 @@ import kubatech.config.Config;
 @SideOnly(Side.CLIENT)
 public class EntityRenderer extends EntityFX {
 
-    private static final Logger LOG = LogManager.getLogger(Tags.MODID + "[Entity Renderer]");
+    private static final Logger LOG = LogManager.getLogger(Mods.ModIDs.KUBA_TECH + "[Entity Renderer]");
     private Vector3f verticalAxis;
     private Vector3f horizontalAxis;
     private EntityLiving entityToRender = null;

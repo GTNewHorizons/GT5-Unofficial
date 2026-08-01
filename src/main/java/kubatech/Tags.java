@@ -23,8 +23,6 @@ package kubatech;
 import gregtech.GT_Version;
 
 public class Tags {
-
-    public static final String MODID = "kubatech";
     public static final String MODNAME = "KubaTech";
     public static final String VERSION = GT_Version.VERSION;
 }

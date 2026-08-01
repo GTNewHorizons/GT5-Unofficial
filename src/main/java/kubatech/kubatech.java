@@ -24,6 +24,7 @@ import static kubatech.api.enums.ItemList.LegendaryRedTea;
 
 import java.util.List;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -50,7 +51,7 @@ import kubatech.network.LoadConfigPacket;
 
 @SuppressWarnings("unused")
 @Mod(
-    modid = Tags.MODID,
+    modid = Mods.ModIDs.KUBA_TECH,
     version = Tags.VERSION,
     name = Tags.MODNAME,
     acceptedMinecraftVersions = "[1.7.10]",
@@ -71,10 +72,10 @@ import kubatech.network.LoadConfigPacket;
         + "after: dreamcraft; ")
 public class kubatech {
 
-    @Mod.Instance(Tags.MODID)
+    @Mod.Instance(Mods.ModIDs.KUBA_TECH)
     public static kubatech instance;
-    public static final SimpleNetworkWrapper NETWORK = new SimpleNetworkWrapper(Tags.MODID);
-    public static final CreativeTabs KT = new CreativeTabs(Tags.MODID) {
+    public static final SimpleNetworkWrapper NETWORK = new SimpleNetworkWrapper(Mods.ModIDs.KUBA_TECH);
+    public static final CreativeTabs KT = new CreativeTabs(Mods.ModIDs.KUBA_TECH) {
 
         private ItemStack iconItemStack = null;
 
@@ -111,9 +112,9 @@ public class kubatech {
         NETWORK.registerMessage(new CustomTileEntityPacket.Handler(), CustomTileEntityPacket.class, 1, Side.CLIENT);
     }
 
-    private static final Logger LOG = LogManager.getLogger(Tags.MODID);
+    private static final Logger LOG = LogManager.getLogger(Mods.ModIDs.KUBA_TECH);
 
-    @SidedProxy(clientSide = Tags.MODID + ".ClientProxy", serverSide = Tags.MODID + ".CommonProxy")
+    @SidedProxy(clientSide = Mods.ModIDs.KUBA_TECH + ".ClientProxy", serverSide = Mods.ModIDs.KUBA_TECH + ".CommonProxy")
     public static CommonProxy proxy;
 
     @Mod.EventHandler

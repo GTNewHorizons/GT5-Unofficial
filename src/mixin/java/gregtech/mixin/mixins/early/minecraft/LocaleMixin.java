@@ -2,6 +2,7 @@ package gregtech.mixin.mixins.early.minecraft;
 
 import java.util.regex.Matcher;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.resources.Locale;
 import net.minecraft.util.ResourceLocation;
 
@@ -37,7 +38,7 @@ public class LocaleMixin {
         require = 1)
     private String gt5u$replaceAll(Matcher matcher, String replace) {
         if (MixinsVariablesHelper.currentlyTranslating != null
-            && MixinsVariablesHelper.currentlyTranslating.equals(Tags.MODID)
+            && MixinsVariablesHelper.currentlyTranslating.equals(Mods.ModIDs.KUBA_TECH)
             && matcher.find()) {
             return matcher.replaceFirst(matcher.group());
         }

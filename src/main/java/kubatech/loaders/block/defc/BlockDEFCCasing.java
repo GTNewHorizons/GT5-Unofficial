@@ -3,6 +3,7 @@ package kubatech.loaders.block.defc;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedText;
 import static kubatech.kubatech.KT;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
@@ -50,7 +51,7 @@ public class BlockDEFCCasing extends BlockCasingsAbstract {
     public void registerBlockIcons(IIconRegister aIconRegister) {
         texture = new IIcon[6];
         for (int i = 0; i < texture.length; i++) {
-            texture[i] = aIconRegister.registerIcon(Tags.MODID + ":casing/defc_" + i);
+            texture[i] = aIconRegister.registerIcon(Mods.ModIDs.KUBA_TECH + ":casing/defc_" + i);
         }
     }
 }

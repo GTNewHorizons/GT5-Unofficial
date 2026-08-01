@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -89,7 +90,7 @@ public class CommandHandler extends CommandBase {
 
     @Override
     public String getCommandName() {
-        return "kubatech";
+        return Mods.ModIDs.KUBA_TECH;
     }
 
     @Override

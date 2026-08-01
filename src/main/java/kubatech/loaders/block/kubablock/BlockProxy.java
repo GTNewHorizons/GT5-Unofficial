@@ -24,6 +24,7 @@ import static kubatech.loaders.block.kubablock.KubaBlock.defaultTileEntityUI;
 
 import java.util.List;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -48,13 +49,13 @@ public class BlockProxy {
 
     public BlockProxy(String unlocalizedName, String texture) {
         this.unlocalizedName = "kubablock." + unlocalizedName;
-        sideTexturePath = topBottomTexturePath = Tags.MODID + ":" + texture;
+        sideTexturePath = topBottomTexturePath = Mods.ModIDs.KUBA_TECH + ":" + texture;
     }
 
     public BlockProxy(String unlocalizedName, String sideTexture, String topBottomTexture) {
         this.unlocalizedName = "kubablock." + unlocalizedName;
-        sideTexturePath = Tags.MODID + ":" + sideTexture;
-        topBottomTexturePath = Tags.MODID + ":" + topBottomTexture;
+        sideTexturePath = Mods.ModIDs.KUBA_TECH + ":" + sideTexture;
+        topBottomTexturePath = Mods.ModIDs.KUBA_TECH + ":" + topBottomTexture;
     }
 
     public void itemInit(int ID) {}
