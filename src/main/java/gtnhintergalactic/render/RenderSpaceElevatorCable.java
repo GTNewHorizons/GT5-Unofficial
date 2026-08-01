@@ -3,6 +3,7 @@ package gtnhintergalactic.render;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -175,7 +176,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
             final float glowMaxV = Math.lerp(minV, maxV, 9f / 16f);
 
             cableProgram = new ShaderProgram(
-                "gtnhintergalactic",
+                Mods.ModIDs.G_T_N_H_INTERGALACTIC,
                 "shaders/spacecable.vert.glsl",
                 "shaders/spacecable.frag.glsl");
             cableProgram.use();
