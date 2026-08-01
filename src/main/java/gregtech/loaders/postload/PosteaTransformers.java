@@ -4,6 +4,7 @@ import static gregtech.api.enums.OrePrefixes.___placeholder___;
 
 import java.util.Arrays;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
@@ -102,7 +103,7 @@ public class PosteaTransformers implements Runnable {
             if (!GregTechAPI.sGeneratedMaterials[indexInMaterialList].hasMetalItems()) {
                 return false;
             }
-            Item frameItem = GameRegistry.findItem(Mods.GregTech, "gt.blockframes");
+            Item frameItem = Item.getItemFromBlock(GregTechAPI.sBlockFrames);
             int itemId = Item.getIdFromItem(frameItem);
             // Change this item into the correct frame item (make sure to keep amount)
             tag.setInteger("id", itemId);
@@ -115,11 +116,11 @@ public class PosteaTransformers implements Runnable {
     private void registerProgrammedCircuitTransformers() {
         ItemStackReplacementManager.addSimpleReplacement(
             "miscutils:item.BioRecipeSelector",
-            GameRegistry.findItem(Mods.GregTech, "gt.integrated_circuit"),
+            ItemList.Circuit_Integrated.getItem(),
             true);
         ItemStackReplacementManager.addSimpleReplacement(
             "miscutils:item.T3RecipeSelector",
-            GameRegistry.findItem(Mods.GregTech, "gt.integrated_circuit"),
+            ItemList.Circuit_Integrated.getItem(),
             true);
     }
 
