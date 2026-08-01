@@ -425,7 +425,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc13"))
             .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc14"))
             .addInfo(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.desc15"))
-            .beginVariableStructureBlock(5, 5, 5, 5, 4, 50, false)
+            .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addEnergyHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addDynamoHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)

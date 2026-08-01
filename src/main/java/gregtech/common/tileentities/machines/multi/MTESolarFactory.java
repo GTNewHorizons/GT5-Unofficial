@@ -420,7 +420,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addInfo(GREEN + "  Supports Laser energy hatches")
             .addInfo("  ZPM-UV Solar Panels can be made without the previous panel, but at a higher cost")
             .addInfo("  Bonus per increased wafer tier is raised to 50%")
-            .beginStructureBlock(8, 9, 10, false)
+            .beginStructureBlock(9, 10, 8, false)
             .addController("Front bottom center")
             .addEnergyHatch("1+", "Any machine casing", 1)
             .addMaintenanceHatch("1+", "Any machine casing", 1)

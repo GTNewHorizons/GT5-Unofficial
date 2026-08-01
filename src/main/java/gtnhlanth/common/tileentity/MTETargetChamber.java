@@ -199,7 +199,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info5"))
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info6"))
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info7"))
-            .beginStructureBlock(6, 5, 5, true)
+            .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom center")
             .addCasing("34", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), false)
             .addCasing("27-29", Casings.GrateMachineCasing.getLocalizedName(), false)
@@ -210,10 +210,9 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addCasing("1", LanthItemList.TARGET_HOLDER.getLocalizedName(), false)
             .addCasing("1", LanthItemList.FOCUS_HOLDER.getLocalizedName(), false)
             .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), "Front center casing", 1)
-            .addInputBus("1", "Mask input bus, Top center casing 2nd block from front", 2)
             .addEnergyHatch("1+", "Any front bottom casing", 4)
             .addMaintenanceHatch("1", "Any front bottom casing", 4)
-            .addInputBus("1", "Top center casing 2nd block from back", 3)
+            .addInputBus("2", "2nd top center casing from front (masks) and back (wafers)", 2, 3)
             .addOutputBus("1", "Back center casing", 5)
             .addAir("Interior of the structure")
             .addStructureInfo("")
@@ -299,8 +298,11 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         int inputParticle = inputInfo.getParticleId();
         float inputFocus = inputInfo.getFocus();
 
-        if (inputEnergy < metadata.minEnergy || inputEnergy > metadata.maxEnergy)
-            return CheckRecipeResultRegistry.NO_RECIPE;
+        if (inputEnergy < metadata.minEnergy) {
+            return CheckRecipeResultRegistry.LOW_ENERGY;
+        } else if (inputEnergy > metadata.maxEnergy) {
+            return CheckRecipeResultRegistry.HIGH_ENERGY;
+        }
         if (inputFocus < metadata.minFocus) return CheckRecipeResultRegistry.NO_RECIPE;
         if (inputParticle != metadata.particleID) return CheckRecipeResultRegistry.NO_RECIPE;
 

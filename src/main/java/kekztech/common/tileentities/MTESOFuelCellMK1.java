@@ -117,7 +117,7 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
                 StatCollector
                     .translateToLocalFormatted("kekztech.multiblock.SOFuelCellMK1.desc4", EU_PER_TICK, STEAM_PER_SEC))
             .addInfo(StatCollector.translateToLocalFormatted("kekztech.multiblock.SOFuelCell.desc5", OXYGEN_PER_SEC))
-            .beginStructureBlock(5, 3, 3, false)
+            .beginStructureBlock(3, 3, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("12-31", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
             .addCasing("6", Casings.ReinforcedGlass.getLocalizedName(), false)

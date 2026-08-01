@@ -147,7 +147,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("gt.multiblock.HeatExchanger.throttle1"))
             .addInfo(StatCollector.translateToLocal("gt.multiblock.HeatExchanger.throttle2"))
-            .beginStructureBlock(3, 3, 4, false)
+            .beginStructureBlock(3, 4, 3, false)
             .addController("Front bottom center")
             .addCasing("20-28", "Stable Titanium Machine Casing", false)
             .addCasing("2", "Titanium Pipe Casing", false)
@@ -334,6 +334,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchOutput) {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             mOutputColdFluidHatch = (MTEHatchOutput) aMetaTileEntity;
             return true;
@@ -346,6 +347,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchInput) {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             ((MTEHatchInput) aMetaTileEntity).mRecipeMap = getRecipeMap();
             mInputHotFluidHatch = (MTEHatchInput) aMetaTileEntity;

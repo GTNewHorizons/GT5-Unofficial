@@ -351,7 +351,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
             .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc5"))
             .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc6"))
             .addInfo(StatCollector.translateToLocal("kekztech.multiblock.TankTFFT.desc7"))
-            .beginVariableStructureBlock(5, 15, 5, 5, 5, 5, false)
+            .beginVariableStructureBlock(5, 5, 5, 5, 5, 15, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
             .addEnergyHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)

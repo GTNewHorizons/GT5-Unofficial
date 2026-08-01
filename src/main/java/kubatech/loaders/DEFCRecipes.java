@@ -60,7 +60,7 @@ public class DEFCRecipes {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 8L))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 288))
             .eut(TierEU.RECIPE_UHV)
-            .duration(14_000)
+            .duration(2100 * SECONDS)
             .addTo(mixerRecipes);
 
         // Casings
@@ -282,7 +282,7 @@ public class DEFCRecipes {
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 288))
             .eut(TierEU.RECIPE_UHV)
             .duration(4200)
-            .metadata(DEFC_CASING_TIER, 3)
+            .metadata(DEFC_CASING_TIER, 2)
             .addTo(fusionCraftingRecipes);
 
         if (Witchery.isModLoaded()) {
@@ -295,7 +295,7 @@ public class DEFCRecipes {
                 .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(3600)
-                .metadata(DEFC_CASING_TIER, 3)
+                .metadata(DEFC_CASING_TIER, 2)
                 .addTo(fusionCraftingRecipes);
         }
 
@@ -308,7 +308,7 @@ public class DEFCRecipes {
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
             .eut(TierEU.RECIPE_UHV)
             .duration(2800)
-            .metadata(DEFC_CASING_TIER, 3)
+            .metadata(DEFC_CASING_TIER, 2)
             .addTo(fusionCraftingRecipes);
 
         if (Witchery.isModLoaded()) {
@@ -321,7 +321,7 @@ public class DEFCRecipes {
                 .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 648))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(2400)
-                .metadata(DEFC_CASING_TIER, 3)
+                .metadata(DEFC_CASING_TIER, 2)
                 .addTo(fusionCraftingRecipes);
         }
     }
