@@ -14,7 +14,6 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 
 public class FireProtectionBauble extends BaseBauble {
 
-
     public FireProtectionBauble() {
         super(BaubleType.RING);
         String aUnlocalName = "GTPP.bauble.fireprotection.0.name";

@@ -152,7 +152,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtnhlanth.Tags;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
 import gtnhlanth.common.register.LanthItemList;
@@ -4051,12 +4050,16 @@ public class RecipeLoader {
                 for (int oreDictID : oreDict) {
                     String oreName = OreDictionary.getOreName(oreDictID);
                     if (oreName.equals("dustTin")) {
-                        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": chem bath recipe with tin dust detected, removing it.");
+                        GTLog.out.println(
+                            Mods.ModIDs.G_T_N_H_LANTHANIDES
+                                + ": chem bath recipe with tin dust detected, removing it.");
                         remove.add(recipe);
                         break;
                     }
                     if (oreName.equals("dustRutile")) {
-                        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": chem bath recipe with rutile dust detected, removing it.");
+                        GTLog.out.println(
+                            Mods.ModIDs.G_T_N_H_LANTHANIDES
+                                + ": chem bath recipe with rutile dust detected, removing it.");
                         remove.add(recipe);
                         break;
                     }
