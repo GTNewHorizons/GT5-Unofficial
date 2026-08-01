@@ -14,7 +14,9 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
+import static gtPlusPlus.core.fluids.GTPPFluids.Formaldehyde;
 import static gtPlusPlus.core.material.MaterialMisc.SODIUM_NITRATE;
+import static gtPlusPlus.core.util.minecraft.FluidUtils.getFilledCellFromFluidName;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import java.util.Locale;
@@ -3791,10 +3793,8 @@ public class ChemicalRecipes implements Runnable {
         // 4CH2O + C2H4O =NaOH= C5H12O4 + CO
 
         GTValues.RA.stdBuilder()
-            .itemInputs( // very poor way of looking for it, but getModItem on GT++ within GT5U jar
-                         // is prohibited now,
-                // and i don't feel like reworking GT++ cell registration for now
-                GameRegistry.findItemStack(GTPlusPlus.ID, "Formaldehyde", 4),
+            .itemInputs(
+                getFilledCellFromFluidName(Formaldehyde, 4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Pentaerythritol, 21),
