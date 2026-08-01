@@ -199,7 +199,6 @@ public class MTEAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTEAllo
         return RecipeMaps.alloyBlastSmelterRecipes;
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
     public boolean supportsInputSeparation() {
         return true;
