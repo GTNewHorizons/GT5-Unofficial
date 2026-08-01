@@ -219,7 +219,7 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
                     || solidFuelOverride(mInventory[getInputSlot()]))) {
                 long tFuelValue = getFuelValue(mInventory[getInputSlot()]);
                 if (tFuelValue <= 0) tFuelValue = getFuelValue(mInventory[getInputSlot()], true);
-                // System.out.println(" tFuelValue : " + tFuelValue );
+
                 if (tFuelValue > 0) {
                     ItemStack tEmptyContainer = getEmptyContainer(mInventory[getInputSlot()]);
                     if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), tEmptyContainer)) {

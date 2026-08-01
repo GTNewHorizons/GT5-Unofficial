@@ -31,7 +31,7 @@ public class WirelessNetworkManager {
         try {
             GlobalEnergyWorldSavedData.INSTANCE.markDirty();
         } catch (Exception exception) {
-            System.out.println("COULD NOT MARK GLOBAL ENERGY AS DIRTY IN ADD EU");
+            GT_FML_LOGGER.error("COULD NOT MARK GLOBAL ENERGY AS DIRTY IN ADD EU");
             GT_FML_LOGGER.error(exception);
         }
 
@@ -83,7 +83,7 @@ public class WirelessNetworkManager {
         try {
             GlobalEnergyWorldSavedData.INSTANCE.markDirty();
         } catch (Exception exception) {
-            System.out.println("COULD NOT MARK GLOBAL ENERGY AS DIRTY IN SET EU");
+            GT_FML_LOGGER.error("COULD NOT MARK GLOBAL ENERGY AS DIRTY IN SET EU");
             GT_FML_LOGGER.error(exception);
         }
 

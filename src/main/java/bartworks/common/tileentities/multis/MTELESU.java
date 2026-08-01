@@ -410,7 +410,7 @@ public class MTELESU extends MTEMultiBlockBase {
             .setActive(true);
 
         long finishedTime = System.nanoTime();
-        // System.out.println("LESU LookUp: "+((finishedTime - startingTime) / 1000000)+"ms");
+
         if (finishedTime - startingTime > 5000000) MainMod.LOGGER.warn(
             "LESU LookUp took longer than 5ms!(" + (finishedTime - startingTime)
                 + "ns / "

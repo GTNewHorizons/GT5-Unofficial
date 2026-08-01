@@ -23,6 +23,7 @@ import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 import com.gtnewhorizon.gtnhlib.client.renderer.vao.VertexBufferType;
 
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
+import tectech.TecTech;
 
 public class BlackholeRenderer extends TileEntitySpecialRenderer {
 
@@ -60,7 +61,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
             u_Stability = blackholeProgram.getUniformLocation("u_Stability");
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            TecTech.LOGGER.info(e.getMessage());
             return;
         }
 
@@ -83,7 +84,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
             u_LaserModelMatrix = laserProgram.getUniformLocation("u_ModelMatrix");
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            TecTech.LOGGER.info(e.getMessage());
             return;
         }
 

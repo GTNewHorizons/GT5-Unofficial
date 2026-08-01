@@ -84,7 +84,7 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
                 }
             }
         } catch (IOException | ClassNotFoundException exception) {
-            System.out.println(GlobalEnergyNBTTag + " FAILED");
+            GT_FML_LOGGER.error(GlobalEnergyNBTTag + " FAILED");
             GT_FML_LOGGER.error(exception);
         }
         try {
@@ -103,7 +103,7 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
                 }
             }
         } catch (IOException | ClassNotFoundException exception) {
-            System.out.println(GlobalEnergyTeamNBTTag + " FAILED");
+            GT_FML_LOGGER.error("{} FAILED", GlobalEnergyTeamNBTTag);
             GT_FML_LOGGER.error(exception);
         }
     }
@@ -119,7 +119,7 @@ public class GlobalEnergyWorldSavedData extends WorldSavedData {
             byte[] data = byteArrayOutputStream.toByteArray();
             nbtTagCompound.setByteArray(GlobalEnergyNBTTag, data);
         } catch (IOException exception) {
-            System.out.println(GlobalEnergyNBTTag + " SAVE FAILED");
+            GT_FML_LOGGER.error("{} SAVE FAILED", GlobalEnergyNBTTag);
             GT_FML_LOGGER.error(exception);
         }
     }

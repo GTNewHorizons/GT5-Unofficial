@@ -18,6 +18,8 @@ import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 public class GTRenderUtil {
 
     public static void colorGTItem(ItemStack aStack) {
@@ -26,7 +28,7 @@ public class GTRenderUtil {
             short[] tModulation = aItem.getRGBa(aStack);
             GL11.glColor4f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F, 1);
         } else {
-            System.out.println("WARNING: " + aStack.getDisplayName() + " does not have an associated GT colour.");
+            GT_FML_LOGGER.warn("WARNING: {} does not have an associated GT colour.", aStack.getDisplayName());
         }
     }
 

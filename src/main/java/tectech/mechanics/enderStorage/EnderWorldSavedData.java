@@ -58,7 +58,7 @@ public class EnderWorldSavedData extends WorldSavedData {
                         EnderLiquidTagLink = (Map<EnderLinkTag, EnderFluidContainer>) objectStream.readObject();
                     }
                 } catch (IOException | ClassNotFoundException e) {
-                    System.out.println("ENDER_LIQUID_TAG_LINK LOAD FAILED");
+                    TecTech.LOGGER.error("ENDER_LIQUID_TAG_LINK LOAD FAILED");
                     TecTech.LOGGER.error(e);
                 }
 
@@ -69,7 +69,7 @@ public class EnderWorldSavedData extends WorldSavedData {
                         EnderLiquidTankLink = (Map<EnderLinkTank, EnderLinkTag>) objectStream.readObject();
                     }
                 } catch (IOException | ClassNotFoundException e) {
-                    System.out.println("ENDER_LIQUID_TANK_LINK LOAD FAILED");
+                    TecTech.LOGGER.error("ENDER_LIQUID_TANK_LINK LOAD FAILED");
                     TecTech.LOGGER.error(e);
                 }
                 break;
