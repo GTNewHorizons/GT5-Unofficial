@@ -84,7 +84,6 @@ import static kubatech.api.enums.ItemList.WhiteTeaLeaf;
 import static kubatech.api.enums.ItemList.YellowTea;
 import static kubatech.api.enums.ItemList.YellowTeaLeaf;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

@@ -29,12 +29,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTUtility.ItemId;
 import kubatech.api.enums.ItemList;
 import kubatech.loaders.item.kubaitem.items.ItemTeaUltimate;

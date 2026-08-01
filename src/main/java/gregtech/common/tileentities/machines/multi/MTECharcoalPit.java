@@ -12,7 +12,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
@@ -26,6 +25,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.Textures;

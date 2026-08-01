@@ -1,6 +1,5 @@
 package gregtech.loaders.postload;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gtPlusPlus.core.material.MaterialMisc.AMMONIUM;
 import static gtPlusPlus.core.material.MaterialsOres.CRYOLITE;
 import static gtPlusPlus.core.material.nuclear.MaterialsFluorides.BERYLLIUM_HYDROXIDE;
