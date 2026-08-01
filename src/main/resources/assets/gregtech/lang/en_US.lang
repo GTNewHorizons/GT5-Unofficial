@@ -260,10 +260,10 @@ gt.blockmachines.itempipe.rounting_value=Routing Value: %s
 
 Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver=Absorption range: %s blocks
 
-gt.hatch_element_or= or
-gt.hatch_element_of_type=of type
-gt.hatch_element_of_class=of class
-gt.hatch_element_of_id=of id
+gt.hatch_element_or= or 
+gt.hatch_element_of_type=of type 
+gt.hatch_element_of_class=of class %s
+gt.hatch_element_of_id=of id %s
 
 # Basic Machine
 gt.blockmachines.basicmachine.accelerator.tier.01.name=Basic World Accelerator
