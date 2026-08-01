@@ -84,6 +84,7 @@ import static kubatech.api.enums.ItemList.WhiteTeaLeaf;
 import static kubatech.api.enums.ItemList.YellowTea;
 import static kubatech.api.enums.ItemList.YellowTeaLeaf;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -222,7 +223,7 @@ public class RecipeLoader {
         // TEA LINE //
         if (PamsHarvestCraft.isModLoaded()) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GameRegistry.findItemStack("harvestcraft", "tealeafItem", 1))
+                .itemInputs(GTModHandler.getModItem(PamsHarvestCraft.ID, "tealeafItem", 1))
                 .itemOutputs(TeaLeafDehydrated.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
@@ -321,7 +322,7 @@ public class RecipeLoader {
             GameRegistry.addSmelting(BlackTeaLeaf.get(1), BlackTea.get(1), 10);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(BlackTea.get(1), GameRegistry.findItemStack("harvestcraft", "limejuiceItem", 1))
+                .itemInputs(BlackTea.get(1), GTModHandler.getModItem(PamsHarvestCraft.ID, "limejuiceItem", 1))
                 .itemOutputs(EarlGrayTea.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
@@ -348,7 +349,7 @@ public class RecipeLoader {
             GameRegistry.addSmelting(OolongTeaLeaf.get(1), OolongTea.get(1), 10);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GameRegistry.findItemStack("harvestcraft", "peppermintItem", 1))
+                .itemInputs(GTModHandler.getModItem(PamsHarvestCraft.ID, "peppermintItem", 1))
                 .itemOutputs(PeppermintTea.get(1))
                 .fluidInputs(Materials.Water.getFluid(1_000))
                 .eut(TierEU.RECIPE_LV)
