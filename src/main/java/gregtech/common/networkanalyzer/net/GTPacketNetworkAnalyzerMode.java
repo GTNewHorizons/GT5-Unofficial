@@ -18,6 +18,8 @@ import gregtech.common.networkanalyzer.events.NetworkAnalyzerPlayerTracker;
 import gregtech.common.tools.ItemNetworkAnalyzer;
 import io.netty.buffer.ByteBuf;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 public class GTPacketNetworkAnalyzerMode extends GTPacket {
 
     private AnalyzerModes mode;
@@ -42,7 +44,7 @@ public class GTPacketNetworkAnalyzerMode extends GTPacket {
         try {
             aOut.writeInt(this.mode.ordinal());
         } catch (Exception ex) {
-            ex.printStackTrace();
+            GT_FML_LOGGER.error(ex);;
         }
     }
 

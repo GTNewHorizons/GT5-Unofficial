@@ -1,5 +1,6 @@
 package gregtech.common.misc;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.common.misc.GlobalVariableStorage.GlobalEnergy;
 
 import java.math.BigInteger;
@@ -31,7 +32,7 @@ public class WirelessNetworkManager {
             GlobalEnergyWorldSavedData.INSTANCE.markDirty();
         } catch (Exception exception) {
             System.out.println("COULD NOT MARK GLOBAL ENERGY AS DIRTY IN ADD EU");
-            exception.printStackTrace();
+            GT_FML_LOGGER.error(exception);
         }
 
         // Get the team UUID. Users are by default in a team with a UUID equal to their player UUID.
@@ -83,7 +84,7 @@ public class WirelessNetworkManager {
             GlobalEnergyWorldSavedData.INSTANCE.markDirty();
         } catch (Exception exception) {
             System.out.println("COULD NOT MARK GLOBAL ENERGY AS DIRTY IN SET EU");
-            exception.printStackTrace();
+            GT_FML_LOGGER.error(exception);
         }
 
         GlobalEnergy.put(SpaceProjectManager.getLeader(user_uuid), EU);

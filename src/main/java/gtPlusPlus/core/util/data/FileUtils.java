@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.util.Utils;
 
 public class FileUtils {
@@ -63,7 +64,7 @@ public class FileUtils {
                 try {
                     Files.write(p, content, StandardCharsets.UTF_8, StandardOpenOption.APPEND);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    GTplusplus.logger.error(e);
                 }
             }
         }

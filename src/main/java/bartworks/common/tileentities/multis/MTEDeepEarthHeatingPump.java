@@ -16,6 +16,7 @@ package bartworks.common.tileentities.multis;
 import java.util.Arrays;
 import java.util.List;
 
+import bartworks.MainMod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -309,7 +310,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
         try {
             this.mEUt = this.isPickingPipes ? -60 : -((int) TierEU.RECIPE_HV);
         } catch (ArithmeticException e) {
-            e.printStackTrace();
+            MainMod.LOGGER.error(e);
             this.mEUt = Integer.MAX_VALUE - 7;
         }
         this.mProgresstime = 0;

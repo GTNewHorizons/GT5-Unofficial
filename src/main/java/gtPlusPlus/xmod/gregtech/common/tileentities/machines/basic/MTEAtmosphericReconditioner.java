@@ -5,6 +5,7 @@ import static gregtech.api.enums.GTValues.V;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import gtPlusPlus.GTplusplus;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -460,7 +461,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 return false;
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
         return false;
     }

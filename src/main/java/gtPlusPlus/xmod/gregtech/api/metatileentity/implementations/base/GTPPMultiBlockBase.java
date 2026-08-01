@@ -16,6 +16,7 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
+import gtPlusPlus.GTplusplus;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -246,7 +247,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 resetRecipeMapForHatch((MTEHatch) aTileEntity, getRecipeMap());
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
 
         if (!aList.isEmpty()) {

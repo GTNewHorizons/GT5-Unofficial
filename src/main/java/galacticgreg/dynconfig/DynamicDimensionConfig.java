@@ -12,6 +12,8 @@ import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.properties.Asteroids;
 import galacticgreg.registry.GalacticGregRegistry;
 
+import static galacticgreg.GalacticGreg.GAGREG_LOGGER;
+
 public class DynamicDimensionConfig {
 
     public static class AsteroidConfig {
@@ -118,7 +120,7 @@ public class DynamicDimensionConfig {
             }
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            GAGREG_LOGGER.error(e);
             return false;
         }
     }

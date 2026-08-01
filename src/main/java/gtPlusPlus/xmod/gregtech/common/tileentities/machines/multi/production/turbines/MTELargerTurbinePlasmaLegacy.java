@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.t
 
 import java.util.ArrayList;
 
+import gtPlusPlus.GTplusplus;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -196,7 +197,7 @@ public class MTELargerTurbinePlasmaLegacy extends MTELargerTurbineBaseLegacy {
                 return CheckRecipeResultRegistry.GENERATING;
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }

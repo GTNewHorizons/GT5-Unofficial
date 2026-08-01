@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import gtPlusPlus.GTplusplus;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -548,7 +549,7 @@ public class Material implements IOreMaterial {
 
             sChemicalFormula.put(materialDefaultLocalName.toLowerCase(), this.chemicalFormula);
         } catch (Throwable t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
     }
 
@@ -1055,7 +1056,7 @@ public class Material implements IOreMaterial {
                 return x;
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
         return Blocks.stone;
     }
@@ -1411,7 +1412,7 @@ public class Material implements IOreMaterial {
                 return Materials.Steel.mRGBa;
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
             return Materials.Steel.mRGBa;
         }
     }

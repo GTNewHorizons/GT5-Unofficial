@@ -14,6 +14,8 @@ import org.apache.commons.io.FileUtils;
 
 import galacticgreg.GalacticGreg;
 
+import static galacticgreg.GalacticGreg.GAGREG_LOGGER;
+
 /**
  * Class for XML Structure files. You only should edit/use this file/class if you want to add/fix stuff with
  * GalacticGreg itself, and never if you're a mod developer and want to add support for GGreg to your mod. However, feel
@@ -92,7 +94,7 @@ public class SpaceSchematicHandler {
                     }
                 } catch (Exception e) {
                     GalacticGreg.Logger.error("Error while loading Schematic %s", tSchematic);
-                    e.printStackTrace();
+                    GAGREG_LOGGER.error(e);
                 }
 
             }
@@ -114,7 +116,7 @@ public class SpaceSchematicHandler {
 
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            GAGREG_LOGGER.error(e);
             return false;
         }
     }
@@ -139,7 +141,7 @@ public class SpaceSchematicHandler {
 
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            GAGREG_LOGGER.error(e);
             return false;
         }
     }
@@ -174,7 +176,7 @@ public class SpaceSchematicHandler {
             tSchematic = (SpaceSchematic) jaxUnmarsh.unmarshal(pName);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            GAGREG_LOGGER.error(e);
         }
 
         return tSchematic;

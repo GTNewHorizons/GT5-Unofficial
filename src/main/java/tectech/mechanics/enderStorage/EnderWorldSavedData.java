@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import tectech.Reference;
+import tectech.TecTech;
 
 public class EnderWorldSavedData extends WorldSavedData {
 
@@ -58,7 +59,7 @@ public class EnderWorldSavedData extends WorldSavedData {
                     }
                 } catch (IOException | ClassNotFoundException e) {
                     System.out.println("ENDER_LIQUID_TAG_LINK LOAD FAILED");
-                    e.printStackTrace();
+                    TecTech.LOGGER.error(e);
                 }
 
                 try {
@@ -69,7 +70,7 @@ public class EnderWorldSavedData extends WorldSavedData {
                     }
                 } catch (IOException | ClassNotFoundException e) {
                     System.out.println("ENDER_LIQUID_TANK_LINK LOAD FAILED");
-                    e.printStackTrace();
+                    TecTech.LOGGER.error(e);
                 }
                 break;
             }

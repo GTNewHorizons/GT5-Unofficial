@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import gtPlusPlus.GTplusplus;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
@@ -584,7 +585,7 @@ public class GTPPFluids {
             OreDictionary.registerOre("cell" + s, temp.copy());
             return temp;
         } catch (final Exception e) {
-            e.printStackTrace();
+            GTplusplus.logger.error(e);
         }
         return null;
     }

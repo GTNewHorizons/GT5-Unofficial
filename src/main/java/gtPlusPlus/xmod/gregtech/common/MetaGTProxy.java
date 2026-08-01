@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common;
 
+import gtPlusPlus.GTplusplus;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -78,7 +79,7 @@ public class MetaGTProxy {
                 LangUtils.rewriteEntryForLanguageRegistry(aLangs[i], "ic2.fluidHotWater", aLangValues[i]);
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
     }
 }

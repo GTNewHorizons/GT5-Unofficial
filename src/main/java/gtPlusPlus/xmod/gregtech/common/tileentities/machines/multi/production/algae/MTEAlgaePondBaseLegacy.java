@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gtPlusPlus.GTplusplus;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -354,7 +355,7 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
             }
             return 0;
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
             return -1;
         }
     }

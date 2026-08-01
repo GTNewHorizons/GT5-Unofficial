@@ -16,6 +16,8 @@ import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.XSTR;
 import gregtech.common.config.Gregtech;
 
+import static galacticgreg.GalacticGreg.GAGREG_LOGGER;
+
 // import galacticgreg.GalacticGreg;
 
 /**
@@ -142,7 +144,7 @@ public class ModDimensionDef {
                 else if (tLst.size() > 1) tGen = tLst.get(random.nextInt(tLst.size()));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            GAGREG_LOGGER.error(e);
         }
         return tGen;
     }

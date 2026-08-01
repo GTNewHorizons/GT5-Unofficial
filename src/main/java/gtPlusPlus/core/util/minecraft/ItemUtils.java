@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import gtPlusPlus.GTplusplus;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -228,7 +229,7 @@ public class ItemUtils {
                     value = (t2.modId.isEmpty()) ? Minecraft.ID : modname;
                 }
             } catch (final Exception t3) {
-                t3.printStackTrace();
+                GTplusplus.logger.error(t3);
                 value = "bad modid";
             }
         }

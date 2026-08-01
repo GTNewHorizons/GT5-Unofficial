@@ -7,9 +7,11 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import java.util.ArrayList;
 import java.util.Set;
 
+import appeng.integration.modules.GT;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -168,7 +170,7 @@ public class MaterialGenerator {
             new RecipeGenFluids(matInfo);
             new RecipeGenMaterialProcessing(matInfo);
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
         // RecipeGen_Recycling.generateRecipes(matInfo);
     }
@@ -293,7 +295,7 @@ public class MaterialGenerator {
             }
 
         } catch (final Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
     }
 
@@ -333,7 +335,7 @@ public class MaterialGenerator {
             new RecipeGenRecycling(matInfo);
             new RecipeGenPlasma(matInfo);
         } catch (final Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
     }
 }

@@ -128,7 +128,7 @@ public class AEStorageCommand extends GTBaseCommand {
                 } else PlayerChatHelper.SendError(sender, "Error: Item in your hand is not a spatial storage drive!");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            GalacticGreg.GAGREG_LOGGER.error(e);
         }
     }
 

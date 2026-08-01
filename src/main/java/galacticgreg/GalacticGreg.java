@@ -22,6 +22,8 @@ import galacticgreg.schematics.SpaceSchematicHandler;
 import gregtech.GT_Version;
 import gregtech.api.enums.Mods;
 import gregtech.api.world.GTWorldgen;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Mod(
     modid = Mods.ModIDs.GALACTI_GREG,
@@ -39,7 +41,9 @@ public class GalacticGreg {
 
     public static final String VERSION = GT_Version.VERSION;
 
+    @Deprecated
     public static final LogHelper Logger = new LogHelper(NICE_MODID);
+    public static final Logger GAGREG_LOGGER = LogManager.getLogger();
     public static ProfilingStorage Profiler = new ProfilingStorage();
     public static SpaceSchematicHandler SchematicHandler;
 
@@ -86,7 +90,7 @@ public class GalacticGreg {
             try {
                 r.run();
             } catch (Exception e) {
-                e.printStackTrace();
+                GAGREG_LOGGER.error(e);
             }
         }
 

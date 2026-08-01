@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import gtPlusPlus.GTplusplus;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -268,7 +269,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
                 try {
                     return addToMachineListInternal(mReplicatorDataOrbHatches, hatch, aBaseCasingIndex);
                 } catch (Exception t) {
-                    t.printStackTrace();
+                    GTplusplus.logger.error(t);
                 }
             }
         }

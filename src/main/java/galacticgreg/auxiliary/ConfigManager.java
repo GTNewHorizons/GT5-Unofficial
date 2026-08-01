@@ -53,7 +53,7 @@ public abstract class ConfigManager {
             return true;
         } catch (Exception e) {
             GalacticGreg.Logger.error("Unable to init config file");
-            e.printStackTrace();
+            GalacticGreg.GAGREG_LOGGER.error(e);
             return false;
         }
     }

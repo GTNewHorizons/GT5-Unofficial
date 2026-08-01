@@ -1666,7 +1666,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             GTLog.err.println(
                 "Encountered Exception while rightclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
             e.printStackTrace(GTLog.err);
-            e.printStackTrace();
+            GT_FML_LOGGER.error(e);
         }
 
         return false;

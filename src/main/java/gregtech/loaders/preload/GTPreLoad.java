@@ -219,7 +219,7 @@ public class GTPreLoad {
                             scripts.add(line);
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        GT_FML_LOGGER.error(e);;
                     }
                 }
             }

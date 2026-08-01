@@ -13,6 +13,8 @@ import gtneioreplugin.Config;
 import gtneioreplugin.GTNEIOrePlugin;
 import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
 
+import static gtneioreplugin.GTNEIOrePlugin.LOG;
+
 // todo: yeet any opencsv usage.
 public class CSVMaker implements Runnable {
 
@@ -54,7 +56,7 @@ public class CSVMaker implements Runnable {
             one.flush();
             one.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
     }
 
@@ -112,7 +114,7 @@ public class CSVMaker implements Runnable {
             one.flush();
             one.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
     }
 }

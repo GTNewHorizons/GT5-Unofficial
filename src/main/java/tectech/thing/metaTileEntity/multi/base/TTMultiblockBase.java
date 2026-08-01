@@ -394,7 +394,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
         } catch (Exception e) {
             if (ConfigHandler.debug.DEBUG_MODE) {
-                e.printStackTrace();
+                TecTech.LOGGER.error(e);
             }
         }
     }

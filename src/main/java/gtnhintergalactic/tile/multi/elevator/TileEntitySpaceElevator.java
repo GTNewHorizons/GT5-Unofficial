@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import gtnhintergalactic.GTNHIntergalactic;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -965,7 +966,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                                 ElevatorUtil.getPlanetaryTravelTier(motorTier),
                                 GuiCelestialSelection.MapMode.TELEPORTATION);
                         } catch (final Exception e) {
-                            e.printStackTrace();
+                            GTNHIntergalactic.LOG.error(e);
                         }
                     }
                 }

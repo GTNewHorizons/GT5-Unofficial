@@ -17,6 +17,7 @@ import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Map;
 
+import bartworks.MainMod;
 import net.minecraft.item.Item;
 import net.minecraft.util.RegistryNamespaced;
 import net.minecraftforge.oredict.OreDictionary;
@@ -89,7 +90,7 @@ public class RadioHatchCompat {
             }
 
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
+            MainMod.LOGGER.error(e);
         }
     }
 

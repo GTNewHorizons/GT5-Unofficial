@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.WeakHashMap;
 
+import gtPlusPlus.GTplusplus;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -170,7 +171,7 @@ public class ItemMagicFeather extends CoreItem {
                     return;
                 }
             } catch (Exception t) {
-                t.printStackTrace();
+                GTplusplus.logger.error(t);
             }
 
             if (hasItem) {

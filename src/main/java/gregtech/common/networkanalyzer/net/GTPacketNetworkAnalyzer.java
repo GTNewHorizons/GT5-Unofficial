@@ -10,6 +10,8 @@ import gregtech.common.networkanalyzer.NetworkAnalyzerData;
 import gregtech.common.networkanalyzer.events.WorldOverlayRenderer;
 import io.netty.buffer.ByteBuf;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 public class GTPacketNetworkAnalyzer extends GTPacket {
 
     private NetworkAnalyzerData data;
@@ -33,7 +35,7 @@ public class GTPacketNetworkAnalyzer extends GTPacket {
         try {
             this.data.writeExternal(aOut);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            GT_FML_LOGGER.error(ex);
         }
     }
 

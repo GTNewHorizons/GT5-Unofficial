@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import gtPlusPlus.GTplusplus;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -276,7 +277,7 @@ public class BaseItemMetaFood extends ItemFood {
                 tooltip.add(aTooltip);
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
         super.addInformation(stack, player, tooltip, adv);
     }

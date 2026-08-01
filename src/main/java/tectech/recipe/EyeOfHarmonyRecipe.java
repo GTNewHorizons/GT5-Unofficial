@@ -36,6 +36,7 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.util.GT5OreLayerHelper;
 import gtneioreplugin.util.GT5OreSmallHelper;
+import tectech.TecTech;
 import tectech.util.FluidStackLong;
 import tectech.util.ItemStackLong;
 
@@ -570,7 +571,7 @@ public class EyeOfHarmonyRecipe {
                     .getUnlocalizedName();
                 total += plasmaEnergyMap.getOrDefault(plasmaName, 0L) * plasma.amount;
             } catch (Exception e) {
-                e.printStackTrace();
+                TecTech.LOGGER.error(e);
             }
         }
 

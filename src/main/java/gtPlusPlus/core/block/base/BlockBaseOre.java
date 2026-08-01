@@ -5,6 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.Nullable;
 
+import gtPlusPlus.GTplusplus;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -57,7 +58,7 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
                 "ore" + StringUtils.sanitizeString(this.blockMaterial.getDefaultLocalName()),
                 new ItemStack(this));
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
     }
 

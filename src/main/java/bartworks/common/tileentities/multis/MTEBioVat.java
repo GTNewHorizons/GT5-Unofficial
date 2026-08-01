@@ -42,6 +42,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import gtPlusPlus.GTplusplus;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -601,7 +602,10 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
                 this.mStack = aStack;
                 this.mCulture = lCulture;
                 if (this.needsVisualUpdate && aBaseMetaTileEntity.getTimer() % MTEBioVat.TIMERDIVIDER == 1) {
-                    if (aBaseMetaTileEntity.isClientSide()) new Throwable().printStackTrace();
+                    if (aBaseMetaTileEntity.isClientSide()) {
+                        GTplusplus.logger.error(new Throwable());
+                    }
+
                     this.placeFluid(xDir, zDir, offsetX_L, offsetY_L, offsetZ_L, offsetX_U, offsetY_U, offsetZ_U);
                     this.needsVisualUpdate = false;
                 }

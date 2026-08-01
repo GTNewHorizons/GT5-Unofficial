@@ -16,6 +16,8 @@ import gregtech.client.LMACraftingFX;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 public class GTPacketLMACraftingFX extends GTPacket {
 
     private int x;
@@ -55,7 +57,7 @@ public class GTPacketLMACraftingFX extends GTPacket {
             buffer.writeBytes(data);
         } catch (IOException e) {
             GTLog.out.println("Could not serialize LMA ItemStack");
-            e.printStackTrace();
+            GT_FML_LOGGER.error(e);;
         }
     }
 

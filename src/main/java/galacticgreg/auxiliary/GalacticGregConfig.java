@@ -11,6 +11,8 @@ import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import cpw.mods.fml.common.registry.GameRegistry;
 import galacticgreg.GalacticGreg;
 
+import static galacticgreg.GalacticGreg.GAGREG_LOGGER;
+
 public class GalacticGregConfig extends ConfigManager {
 
     public GalacticGregConfig(File pConfigBaseDirectory, String pModCollectionDirectory, String pModID) {
@@ -147,7 +149,7 @@ public class GalacticGregConfig extends ConfigManager {
             GalacticGreg.Logger.error(
                 "Unable to find custom chest override %s. Make sure item exists. Defaulting to Minecraft:chest",
                 LootChestItemOverride);
-            e.printStackTrace();
+            GAGREG_LOGGER.error(e);
             return false;
         }
     }

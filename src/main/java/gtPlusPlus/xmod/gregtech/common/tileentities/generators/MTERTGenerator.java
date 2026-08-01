@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
+import gtPlusPlus.GTplusplus;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -315,7 +316,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
                 TTUtility.setTier(mTier2, this);
                 this.mNewTier = mTier2;
             } catch (Exception e) {
-                e.printStackTrace();
+                GTplusplus.logger.error(e);
             }
 
             this.mTicksToBurnFor = getTotalEUGenerated(convertDaysToTicks(tFuel.mSpecialValue), voltage);

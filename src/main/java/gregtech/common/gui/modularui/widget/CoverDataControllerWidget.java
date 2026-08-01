@@ -22,6 +22,8 @@ import gregtech.api.gui.modularui.ICoverDataFollowerWidget;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.common.covers.Cover;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 public class CoverDataControllerWidget<T extends Cover>
     extends com.gtnewhorizons.modularui.common.widget.MultiChildWidget
     implements com.gtnewhorizons.modularui.api.widget.ISyncedWidget {
@@ -86,7 +88,7 @@ public class CoverDataControllerWidget<T extends Cover>
             CoverRegistry.writeCoverToNbt(cover, nbt);
             NetworkUtils.writeNBTBase(buffer, nbt);
         } catch (IOException e) {
-            e.printStackTrace();
+            GT_FML_LOGGER.error(e);
         }
     }
 

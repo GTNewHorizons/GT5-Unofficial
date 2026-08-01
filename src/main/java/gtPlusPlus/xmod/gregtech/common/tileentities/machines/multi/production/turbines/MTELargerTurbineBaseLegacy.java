@@ -16,6 +16,7 @@ import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.G
 import java.util.ArrayList;
 import java.util.List;
 
+import gtPlusPlus.GTplusplus;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -489,7 +490,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
                 return CheckRecipeResultRegistry.GENERATING;
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }

@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import static cpw.mods.fml.common.registry.GameRegistry.findBlock;
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.BloodArsenal;
@@ -71,11 +72,12 @@ public class GlassTier {
         if (block != null) {
             addCustomGlass(block, meta, tier, subtier);
         } else {
+            GT_FML_LOGGER.error(
             new IllegalArgumentException(
                 "Block: " + unlocalisedBlockName
                     + " of the Mod: "
                     + modname
-                    + " was NOT found when attempting to register a glass!").printStackTrace();
+                    + " was NOT found when attempting to register a glass!"));
         }
     }
 
