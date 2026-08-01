@@ -2,6 +2,7 @@ package gtPlusPlus;
 
 import static gregtech.api.enums.Mods.Thaumcraft;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -40,7 +41,7 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMultisUsingFluidInsteadOfCells;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 
 @Mod(
-    modid = "miscutils",
+    modid = Mods.ModIDs.G_T_PLUS_PLUS,
     name = GTPPCore.name,
     version = GTPPCore.VERSION,
     guiFactory = "gtPlusPlus.core.gui.config.GTPPGuiFactory",
@@ -75,7 +76,7 @@ public class GTplusplus {
 
     public static final Logger logger = LogManager.getLogger("GT++");
 
-    @Mod.Instance("miscutils")
+    @Mod.Instance(Mods.ModIDs.G_T_PLUS_PLUS)
     public static GTplusplus instance;
 
     @SidedProxy(clientSide = "gtPlusPlus.core.proxy.ClientProxy", serverSide = "gtPlusPlus.core.common.CommonProxy")

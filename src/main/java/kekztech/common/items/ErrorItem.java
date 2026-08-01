@@ -3,6 +3,7 @@ package kekztech.common.items;
 import java.util.Collections;
 import java.util.List;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -30,7 +31,7 @@ public class ErrorItem extends Item {
         super.setUnlocalizedName(unlocalizedName);
         super.setCreativeTab(CreativeTabs.tabMisc);
         super.setMaxStackSize(64);
-        super.setTextureName(KekzCore.MODID + ":" + "Error");
+        super.setTextureName(Mods.ModIDs.KEKZ_TECH + ":" + "Error");
         GameRegistry.registerItem(getInstance(), unlocalizedName);
     }
 

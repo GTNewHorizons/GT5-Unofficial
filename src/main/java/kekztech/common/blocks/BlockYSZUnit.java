@@ -1,5 +1,6 @@
 package kekztech.common.blocks;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -19,7 +20,7 @@ public class BlockYSZUnit extends BaseGTUpdateableBlock {
         final String blockName = "kekztech_yszceramicelectrolyteunit_block";
         instance.setBlockName(blockName);
         instance.setCreativeTab(CreativeTabs.tabMisc);
-        instance.setBlockTextureName(KekzCore.MODID + ":" + "YSZCeramicElectrolyteUnit");
+        instance.setBlockTextureName(Mods.ModIDs.KEKZ_TECH + ":" + "YSZCeramicElectrolyteUnit");
         instance.setHardness(5.0f);
         instance.setResistance(6.0f);
         GameRegistry.registerBlock(instance, blockName);

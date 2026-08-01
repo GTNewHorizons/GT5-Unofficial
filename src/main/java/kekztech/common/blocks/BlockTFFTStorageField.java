@@ -2,6 +2,7 @@ package kekztech.common.blocks;
 
 import java.util.List;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -61,9 +62,9 @@ public class BlockTFFTStorageField extends BaseGTUpdateableBlock {
 
     @Override
     public void registerBlockIcons(IIconRegister ir) {
-        textures[0] = ir.registerIcon(KekzCore.MODID + ":" + "TFFTCasing");
+        textures[0] = ir.registerIcon(Mods.ModIDs.KEKZ_TECH + ":" + "TFFTCasing");
         for (int i = 1; i < SUB_BLOCK_COUNT; i++) {
-            textures[i] = ir.registerIcon(KekzCore.MODID + ":" + "TFFTStorageFieldBlock" + i);
+            textures[i] = ir.registerIcon(Mods.ModIDs.KEKZ_TECH + ":" + "TFFTStorageFieldBlock" + i);
         }
     }
 
