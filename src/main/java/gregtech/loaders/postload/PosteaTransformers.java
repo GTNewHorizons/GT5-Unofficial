@@ -475,11 +475,11 @@ public class PosteaTransformers implements Runnable {
     }
 
     /// Migrates saved placed blocks and inventory stacks of the legacy frameGt/sheetmetal blocks
-    /// (`gregtech:bw.frames`, `gregtech:bw.sheetmetal`, `gregtech:gt.sheetmetal`, meta = material id; the
-    /// bw-named blocks are constructed by `LoaderGTBlockFluid` and so registered under the gregtech domain)
-    /// into the equivalent MaterialLib shape stack. None of these blocks carry a TileEntity, unlike
-    /// [#registerWerkstoffBlockCutoverTransformer]'s storage blocks, so only a block leg and an item leg are
-    /// needed.
+    /// (`gregtech:bw.frames`, `gregtech:bw.sheetmetal`, `gregtech:gt.sheetmetal`, `gregtech:gt.blockframes`,
+    /// meta = material id; the bw-named blocks are constructed by `LoaderGTBlockFluid` and so registered under
+    /// the gregtech domain) into the equivalent MaterialLib shape stack. None of these blocks carry a
+    /// TileEntity, unlike [#registerWerkstoffBlockCutoverTransformer]'s storage blocks, so only a block leg and
+    /// an item leg are needed.
     private static void registerFrameAndSheetmetalCutoverTransformers() {
         registerPartCutoverTransformer(
             "gregtech:bw.frames",
@@ -490,6 +490,7 @@ public class PosteaTransformers implements Runnable {
             OrePrefixes.sheetmetal,
             PosteaTransformers::werkstoffMaterialAt);
         registerPartCutoverTransformer("gregtech:gt.sheetmetal", OrePrefixes.sheetmetal, LegacyMaterialIDIndex::get);
+        registerPartCutoverTransformer("gregtech:gt.blockframes", OrePrefixes.frameGt, LegacyMaterialIDIndex::get);
     }
 
     /// The MaterialLib material a legacy bartworks werkstoff id resolves to, or null when the id is unknown
