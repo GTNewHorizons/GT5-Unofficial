@@ -50,7 +50,7 @@ public class MTELapotronicSuperCapacitorGui extends MTEMultiBlockBaseGui<MTELapo
         return super.createTerminalTextWidget(syncManager, parent).child(IKey.dynamic(() -> {
             String cap = EnumChatFormatting.BLUE + formatNumber(capacity.getValue());
             return EnumChatFormatting.WHITE + StatCollector
-                .translateToLocalFormatted("kekztech.infodata.lapotronic_super_capacitor.total_capacity", cap);
+                .translateToLocalFormatted("kekztech.gui.lapotronic_super_capacitor.total_capacity", cap);
         })
             .asWidget())
 
@@ -58,7 +58,7 @@ public class MTELapotronicSuperCapacitorGui extends MTEMultiBlockBaseGui<MTELapo
                 String percent = EnumChatFormatting.BLUE
                     + Util.toPercentageFrom(storedEu.getValue(), capacity.getValue());
                 return EnumChatFormatting.WHITE + StatCollector
-                    .translateToLocalFormatted("kekztech.infodata.lapotronic_super_capacitor.used_capacity", percent);
+                    .translateToLocalFormatted("kekztech.gui.lapotronic_super_capacitor.used_capacity", percent);
             })
                 .asWidget())
             .child(IKey.dynamic(() -> {
@@ -96,14 +96,13 @@ public class MTELapotronicSuperCapacitorGui extends MTEMultiBlockBaseGui<MTELapo
             .child(IKey.dynamic(() -> {
                 String lost = EnumChatFormatting.RED + formatNumber(loss.getValue()).toString();
                 return EnumChatFormatting.WHITE + StatCollector
-                    .translateToLocalFormatted("kekztech.infodata.lapotronic_super_capacitor.passive_loss", lost);
+                    .translateToLocalFormatted("kekztech.gui.lapotronic_super_capacitor.passive_loss", lost);
             })
                 .asWidget())
             .child(IKey.dynamic(() -> {
                 String wirelessFormat = EnumChatFormatting.LIGHT_PURPLE + formatNumber(wireless.getValue());
-                return EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
-                    "kekztech.infodata.lapotronic_super_capacitor.wireless_eu",
-                    wirelessFormat);
+                return EnumChatFormatting.WHITE + StatCollector
+                    .translateToLocalFormatted("kekztech.gui.lapotronic_super_capacitor.wireless_eu", wirelessFormat);
             })
                 .asWidget()
                 .setEnabledIf((w) -> multiblock.isWireless_mode()));
@@ -203,15 +202,15 @@ public class MTELapotronicSuperCapacitorGui extends MTEMultiBlockBaseGui<MTELapo
             if (avgIn - passLoss > 0) {
                 double timeToFull = (cap - sto) / (avgIn - (passLoss + avgOut)) / 20;
                 return EnumChatFormatting.WHITE + translateToLocalFormatted(
-                    "kekztech.infodata.lapotronic_super_capacitor.time_to.full",
+                    "kekztech.gui.lapotronic_super_capacitor.time_to.full",
                     EnumChatFormatting.AQUA + formatTime(timeToFull, true));
             }
-            return translateToLocal("kekztech.infodata.lapotronic_super_capacitor.time_to.sth");
+            return translateToLocal("kekztech.gui.lapotronic_super_capacitor.time_to.sth");
         } else {
             // Calculate time to empty if discharging
             double timeToEmpty = sto / ((avgOut + passLoss) - avgIn) / 20;
             return EnumChatFormatting.WHITE + translateToLocalFormatted(
-                "kekztech.infodata.lapotronic_super_capacitor.time_to.empty",
+                "kekztech.gui.lapotronic_super_capacitor.time_to.empty",
                 EnumChatFormatting.AQUA + formatTime(timeToEmpty, false));
         }
     }
