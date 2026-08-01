@@ -1,7 +1,6 @@
 package goodgenerator.blocks.myFluids;
 
-import static goodgenerator.main.GoodGenerator.MOD_ID;
-
+import gregtech.api.enums.Mods;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
@@ -28,8 +27,8 @@ public class BaseFluid extends BlockFluidClassic {
     }
 
     public void SetTexture(String fluidName) {
-        stillTexture = MOD_ID + ":fluids/" + fluidName + ".still";
-        flowingTexture = MOD_ID + ":fluids/" + fluidName + ".flowing";
+        stillTexture = Mods.ModIDs.GOOD_GENERATOR + ":fluids/" + fluidName + ".still";
+        flowingTexture = Mods.ModIDs.GOOD_GENERATOR + ":fluids/" + fluidName + ".flowing";
     }
 
     public static Fluid BuildFluid(String fluidName) {

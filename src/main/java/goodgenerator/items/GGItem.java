@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -82,7 +83,7 @@ public class GGItem extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         if (this.textureNames == null || this.textureNames.length < 1) {
-            this.itemIcon = iconRegister.registerIcon(GoodGenerator.MOD_ID + ":" + this.tex);
+            this.itemIcon = iconRegister.registerIcon(Mods.ModIDs.GOOD_GENERATOR + ":" + this.tex);
         } else {
             this.texture = new IIcon[this.textureNames.length];
             for (int i = 0; i < this.textureNames.length; ++i) {
