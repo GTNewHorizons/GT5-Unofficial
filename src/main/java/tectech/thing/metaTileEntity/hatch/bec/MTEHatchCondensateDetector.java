@@ -120,6 +120,7 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
         }
         comparison = Comparison.values()[aNBT == null ? 0 : aNBT.getInteger("comparison")];
         requestedAmount = aNBT == null ? 0 : aNBT.getLong("requestedAmount");
+        refreshOutput();
     }
 
     @Override
