@@ -246,13 +246,13 @@ and remove the old one in the same PR, across all shipped lang files.
 ## 5. Lang File Structure & Section Headers
 
 Comments in `.lang` files start with `#`. Use the following heading depth to organize sections.
-This structure mirrors Markdown heading levels and makes the file easier to navigate.
+This structure uses Markdown heading levels and makes the file easier to navigate.
 
 ```
-#### (4 hashes)  - Top-level / main group
-### (3 hashes)   - Sub-group level 1
-## (2 hashes)    - Sub-group level 2
-# (1 hash)       - Sub-group level 3 (most commonly used for fine-grained sections)
+# (1 hashes)    - Top-level / main group
+## (2 hashes)   - Sub-group level 1
+### (3 hashes)  - Sub-group level 2
+#### (4 hash)   - Sub-group level 3 (most commonly used for fine-grained sections)
 ```
 
 ### 5.1 Canonical Section Order
@@ -262,164 +262,164 @@ below. Use this as the reference when deciding where a new key belongs and which
 to create it under.
 
 ```
-#### Creative Tab
+# Creative Tab
 
-#### Items
-### Meta Items
-## Batteries
-## Battery Hulls
-## Circuits
-## Circuit Boards & Parts
-## Electronic Components (SMD / XSMD)
-## Wafers & Chips
-## Electric Motors
-## Electric Pistons
-## Electric Pumps
-## Robot Arms
-## Conveyor Modules
-## Sensors
-## Emitters
-## Field Generators
-## Cover Items
-## Solar Panels
-## Electromagnets
-## Wireless Energy Covers
-## Quantum Items
-## Black Hole Items
-## Shapes (Mold / Extruder / Slicer)
-## Steam Valves & Regulators
-## Fluid Filters & Regulators
-## Item Filters
-## Fuel Cans
-## Spray Cans
-## Thermos
-## Large Fluid Cells
-### Tools
-## Hand Tools
-## Chainsaw
-## Drill
-## Wrench
-## Vajra
-### Armor
-## Modular Armor
-## Power Goggles
-## Charger Packs
-## Healing Bauble
-## Mob Killing Baubles
-## Mag-Lev Harness
-## Wireless Headphones
-### Food
-## Drinks
-## Snacks & Fast Food
-## Bread & Sandwiches
-## Baguettes & Large Sandwiches
-## Pizzas
-## Misc Food
-### Misc Items
-## Sensor Cards
-## Neutron Reflector
-## Coolant Cells
-## Breeder Cells
-## Depleted Cells
-## Radioactive Cells
-## Drones
-## Volumetric Flask
-## Circuit Components (Fake / Integrated)
-## Quark Catalysts
-## Optical CPU
-## Timepiece
-## Transdimensional Alignment Matrix
-## Thermal Items
-## Netherite Items
-## Manafly
-## Match & Lighter
-## Manuals & Books
+# Items
+## Meta Items
+### Batteries
+### Battery Hulls
+### Circuits
+### Circuit Boards & Parts
+### Electronic Components (SMD / XSMD)
+### Wafers & Chips
+### Electric Motors
+### Electric Pistons
+### Electric Pumps
+### Robot Arms
+### Conveyor Modules
+### Sensors
+### Emitters
+### Field Generators
+### Cover Items
+### Solar Panels
+### Electromagnets
+### Wireless Energy Covers
+### Quantum Items
+### Black Hole Items
+### Shapes (Mold / Extruder / Slicer)
+### Steam Valves & Regulators
+### Fluid Filters & Regulators
+### Item Filters
+### Fuel Cans
+### Spray Cans
+### Thermos
+### Large Fluid Cells
+## Tools
+### Hand Tools
+### Chainsaw
+### Drill
+### Wrench
+### Vajra
+## Armor
+### Modular Armor
+### Power Goggles
+### Charger Packs
+### Healing Bauble
+### Mob Killing Baubles
+### Mag-Lev Harness
+### Wireless Headphones
+## Food
+### Drinks
+### Snacks & Fast Food
+### Bread & Sandwiches
+### Baguettes & Large Sandwiches
+### Pizzas
+### Misc Food
+## Misc Items
+### Sensor Cards
+### Neutron Reflector
+### Coolant Cells
+### Breeder Cells
+### Depleted Cells
+### Radioactive Cells
+### Drones
+### Volumetric Flask
+### Circuit Components (Fake / Integrated)
+### Quark Catalysts
+### Optical CPU
+### Timepiece
+### Transdimensional Alignment Matrix
+### Thermal Items
+### Netherite Items
+### Manafly
+### Match & Lighter
+### Manuals & Books
 
-#### Blocks
-### Machines
-## Basic Machines
-## Multiblock Machines
-## Hatches & Buses
-## Transformers & Cables
-## Pipes (in-world blocks)
-## Frame Boxes
-### Special Machines
-## NAC (Nano-scale Assembly Complex)
-## LHC & Beamcrafting
-## Exo-Foundry
-## Void Miner
-## BEC Machines
-## Spinmatron
-## Test Factory
-### Casings
-### Misc Blocks
-## Granites
-## Concretes
-## Reinforced Blocks
-## Stone Variants
-## Long Distance Pipe
+# Blocks
+## Machines
+### Basic Machines
+### Multiblock Machines
+### Hatches & Buses
+### Transformers & Cables
+### Pipes (in-world blocks)
+### Frame Boxes
+## Special Machines
+### NAC (Nano-scale Assembly Complex)
+### LHC & Beamcrafting
+### Exo-Foundry
+### Void Miner
+### BEC Machines
+### Spinmatron
+### Test Factory
+## Casings
+## Misc Blocks
+### Granites
+### Concretes
+### Reinforced Blocks
+### Stone Variants
+### Long Distance Pipe
 
-#### Elements / Materials
-### Ore Prefixes & Components
-### Fluids
-## Standard Fluids
-## Fission Fuels
-## Condensate Fluids
-### Dyes
-### Potions
-### BEC Material System
+# Elements / Materials
+## Ore Prefixes & Components
+## Fluids
+### Standard Fluids
+### Fission Fuels
+### Condensate Fluids
+## Dyes
+## Potions
+## BEC Material System
 
-#### GUI
-### Machine GUI
-### Cover GUI
-## Redstone Receiver
-## Arm
-## Machine Controller
-## Conveyor
-## EU Meter
-## Facade
-## Fluid Filter
-## Fluid Regulator
-## Item Filter
-## Item Meter
-## Liquid Meter
-## Player Detector
-## Pump
-## Redstone Wireless
-## Shutter
-## Wireless Activity
-## Wireless Fluid Detector
-## Wireless Item Detector
-## Energy Detector
-## Overflow Valve
-### NEI GUI
-### WAILA 
-### Space Projects GUI
-### Armor Config GUI
-### BEC GUI
+# GUI
+## Machine GUI
+## Cover GUI
+### Redstone Receiver
+### Arm
+### Machine Controller
+### Conveyor
+### EU Meter
+### Facade
+### Fluid Filter
+### Fluid Regulator
+### Item Filter
+### Item Meter
+### Liquid Meter
+### Player Detector
+### Pump
+### Redstone Wireless
+### Shutter
+### Wireless Activity
+### Wireless Fluid Detector
+### Wireless Item Detector
+### Energy Detector
+### Overflow Valve
+## NEI GUI
+## WAILA 
+## Space Projects GUI
+## Armor Config GUI
+## BEC GUI
 
-#### Tooltips
-### Multiblock Tooltip Builder Keywords
-### Machine Types
-### Recipe Categories & Maps
-### Structure Hints
-### Tool Tooltips
-### Generic / Shared Tooltips
-## Generic Words
-## Time Words
+# Tooltips
+## Multiblock Tooltip Builder Keywords
+## Machine Types
+## Recipe Categories & Maps
+## Structure Hints
+## Tool Tooltips
+## Generic / Shared Tooltips
+### Generic Words
+### Time Words
 
-#### Scanner & Info Data
+# Scanner & Info Data
 
-#### Chat
-### Errors
-### Warnings
-### Info
+# Chat
+## Errors
+## Warnings
+## Info
 
-#### Entities
+# Entities
 
-#### Achievements
+# Achievements
 
-#### Config
+# Config
 ```
 
 ### 5.1.1 Resolving ambiguous placement
@@ -431,58 +431,58 @@ tooltip builder specifically - not general GUI status text.
 ### 5.2 Example Structure
 
 ```properties
-#### Items
-### Meta Items
-## Batteries
+# Items
+## Meta Items
+### Batteries
 gt.item.battery.lv.name=Small Lithium Battery
 gt.item.battery.lv.tooltip=Stores %d EU
 
-## Circuits
+### Circuits
 gt.item.circuit.basic.name=Basic Electronic Circuit
 gt.item.circuit.basic.tooltip=The humble beginning.
 gt.item.circuit.basic.tooltip.1=Required for most early-game recipes.
 
-### Tools
-## Hand Tools
-# Wrenches
+## Tools
+### Hand Tools
+##### Wrenches
 gt.item.wrench.name=Wrench
 gt.item.wrench.tooltip=Right-click machines to disassemble.
 gt.item.wrench.tooltip.1=Hold Shift to pick up with inventory contents.
 
-## Vajra
+#### Vajra
 gt.item.vajra.name=Vajra
 gt.item.vajra.tooltip=The legendary mining tool.
 
-### Armor
+#### Armor
 ## Power Goggles
 gt.item.power_goggles.name=Power Goggles
 gt.item.power_goggles.tooltip=Displays EU/t and machine status.
 
-#### Blocks
-### Machines
-## Basic Machines
+# Blocks
+## Machines
+### Basic Machines
 gt.block.machine.electric_furnace.lv.name=Basic Electric Furnace
 gt.block.machine.electric_furnace.lv.tooltip=Smelts items using electricity.
 gt.block.machine.electric_furnace.lv.tooltip.1=Power: %d EU/t
 
-## Multiblock Machines
+### Multiblock Machines
 gt.block.machine.ebf.name=Electric Blast Furnace
 gt.block.machine.ebf.tooltip=Requires a heat-proof casing structure.
 
-### Casings
+## Casings
 gt.block.casing.heat_proof.name=Heat Proof Machine Casing
 gt.block.casing.heat_proof.tooltip=Used in high-temperature multiblocks.
 
-#### Elements / Materials
-### Ore Prefixes & Components
+# Elements / Materials
+## Ore Prefixes & Components
 gt.oreprefix.material_ingot=%s Ingot
 gt.oreprefix.material_plate=%s Plate
 
-### Fluids
+## Fluids
 gt.fluid.molten_iron.name=Molten Iron
 
-#### GUI
-### Machine GUI
+# GUI
+## Machine GUI
 gt.gui.machine.progress=Progress: %s%%
 gt.gui.machine.energy_stored=Energy: %s / %s EU
 
@@ -495,46 +495,46 @@ gt.gui.machine.shutdown_reason=Stopped: not enough %s EU/t.
 ## Recipe results
 gt.gui.machine.recipe_result=Output: %s
 
-### Cover GUI
-## Fluid Filter
+## Cover GUI
+### Fluid Filter
 gt.gui.cover.fluid_filter.title=Fluid Filter
 gt.gui.cover.fluid_filter.button.whitelist=Whitelist
 gt.gui.cover.fluid_filter.button.blacklist=Blacklist
 gt.gui.cover.fluid_filter.label.mode=Filter Mode
 
-## Conveyor
+### Conveyor
 gt.gui.cover.conveyor.title=Conveyor Module
 gt.gui.cover.conveyor.button.import=Import
 gt.gui.cover.conveyor.button.export=Export
 
-#### Tooltips
-### Multiblock Tooltip Builder Keywords
+# Tooltips
+## Multiblock Tooltip Builder Keywords
 gt.tooltip.multiblock.structure_ok=Structure: OK
 gt.tooltip.multiblock.structure_bad=Structure: Incomplete
 gt.tooltip.multiblock.structure_error=Missing %s in the structure.
 gt.tooltip.multiblock.shutdown_reason=Last shutdown: %s
 gt.tooltip.multiblock.recipe_result=Last output: %s
 
-### Machine Types
+## Machine Types
 gt.machine_type.electric_blast_furnace=Electric Blast Furnace, EBF
 
-#### Scanner & Info Data
+## Scanner & Info Data
 gt.infodata.basicBatteryBuffer.stored_items=Stored: %s / %s EU
 gt.infodata.basicBatteryBuffer.average_input=Avg. Input: %s EU/t
 
-#### Chat
-### Errors
+# Chat
+## Errors
 gt.chat.error.machine_broken=Your machine %s has broken down!
 gt.chat.error.no_power=Not enough power to run %s.
 
-### Info
+## Info
 gt.chat.info.recipe_complete=Recipe finished in %d ticks.
 gt.chat.info.structure_formed=Multiblock structure successfully formed.
 
-#### Entities
+# Entities
 gt.entity.lava_monster.name=Lava Monster
 
-#### Config
+# Config
 gt.config.pollution.enabled=Pollution Enabled
 
 # Achievements
