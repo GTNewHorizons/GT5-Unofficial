@@ -108,8 +108,8 @@ public class GTModHandler {
     private static final Object2IntOpenCustomHashMap<ItemStack> delayedRemovalByOutputFlags = new Object2IntOpenCustomHashMap<>(
         512,
         GTItemStack.ITEMSTACK_HASH_STRATEGY2);
-    private static final int DELAYED_REMOVAL_KEEP_SHAPELESS = 1 << 0;
-    private static final int DELAYED_REMOVAL_ONLY_REMOVE_NATIVE = 1 << 1;
+    private static final int DELAYED_REMOVAL_KEEP_SHAPELESS = 1;
+    private static final int DELAYED_REMOVAL_ONLY_REMOVE_NATIVE = 2;
 
     private static final List<InventoryCrafting> delayedRemovalByRecipe = new ArrayList<>();
 
