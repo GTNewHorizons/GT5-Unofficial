@@ -118,7 +118,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         this.setMaxStackSize(1);
         if (!isRegistered) {
             GameRegistry.registerItem(this, unlocalizedName);
-            isRegistered=false;
+            isRegistered = false;
         }
     }
 

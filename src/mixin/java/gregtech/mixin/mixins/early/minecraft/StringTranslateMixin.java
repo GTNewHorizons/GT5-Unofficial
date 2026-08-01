@@ -2,15 +2,14 @@ package gregtech.mixin.mixins.early.minecraft;
 
 import java.util.regex.Matcher;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.util.StringTranslate;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import gregtech.api.enums.Mods;
 import gregtech.mixin.hooks.MixinsVariablesHelper;
-import kubatech.Tags;
 
 @Mixin(value = StringTranslate.class)
 public class StringTranslateMixin {

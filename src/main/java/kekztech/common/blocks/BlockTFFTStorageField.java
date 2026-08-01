@@ -2,7 +2,6 @@ package kekztech.common.blocks;
 
 import java.util.List;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -14,8 +13,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IIconContainer;
-import kekztech.KekzCore;
 import kekztech.common.itemBlocks.ItemBlockTFFTStorageField;
 import kekztech.common.tileentities.MTETankTFFT;
 

@@ -2,7 +2,6 @@ package gregtech.mixin.mixins.early.minecraft;
 
 import java.util.regex.Matcher;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.client.resources.Locale;
 import net.minecraft.util.ResourceLocation;
 
@@ -11,8 +10,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import gregtech.api.enums.Mods;
 import gregtech.mixin.hooks.MixinsVariablesHelper;
-import kubatech.Tags;
 
 @Mixin(value = Locale.class)
 public class LocaleMixin {

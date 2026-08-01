@@ -24,7 +24,6 @@ import static kubatech.loaders.block.kubablock.KubaBlock.defaultTileEntityUI;
 
 import java.util.List;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -37,7 +36,7 @@ import net.minecraft.world.World;
 
 import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
 
-import kubatech.Tags;
+import gregtech.api.enums.Mods;
 
 public class BlockProxy {
 

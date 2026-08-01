@@ -17,7 +17,6 @@ import com.cleanroommc.modularui.drawable.UITexture;
 import bartworks.MainMod;
 import gregtech.api.enums.Mods;
 import gregtech.common.modularui2.util.SteamTexture;
-import kekztech.KekzCore;
 
 /**
  * Holds all the references to GUI textures used within GregTech.

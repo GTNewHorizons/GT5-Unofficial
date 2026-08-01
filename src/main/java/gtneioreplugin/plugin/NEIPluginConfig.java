@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.item.ItemStack;
 
 import codechicken.nei.api.API;
@@ -15,6 +14,7 @@ import codechicken.nei.recipe.HandlerInfo;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.StoneType;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.ores.OreManager;

@@ -9,7 +9,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -30,6 +29,7 @@ import com.gtnewhorizon.gtnhlib.util.data.Lazy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
@@ -76,8 +76,9 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer, IS
     public String[] getDescription() {
         if (tooltip == null) {
             tooltip = new Lazy<>(
-                () -> MarkdownTooltipLoader.STANDARD
-                    .loadStandardPath(new ResourceLocation(Mods.ModIDs.GREG_TECH, "los-connector"), Map.of("range", SCAN_DIST)));
+                () -> MarkdownTooltipLoader.STANDARD.loadStandardPath(
+                    new ResourceLocation(Mods.ModIDs.GREG_TECH, "los-connector"),
+                    Map.of("range", SCAN_DIST)));
         }
         return ArrayUtils.addAll(
             super.getDescription(),

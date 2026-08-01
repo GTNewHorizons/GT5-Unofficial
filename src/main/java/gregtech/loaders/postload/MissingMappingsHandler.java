@@ -1,7 +1,5 @@
 package gregtech.loaders.postload;
 
-import static gregtech.api.enums.Materials.Ammonium;
-import static gregtech.api.enums.Materials.Cryolite;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gtPlusPlus.core.material.MaterialMisc.AMMONIUM;
 import static gtPlusPlus.core.material.MaterialsOres.CRYOLITE;
@@ -15,10 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.items.CircuitComponentFakeItem;
-import gtPlusPlus.core.material.MaterialMisc;
-import gtPlusPlus.core.material.MaterialsElements;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
@@ -26,6 +20,8 @@ import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
+import gregtech.api.items.CircuitComponentFakeItem;
+import gtPlusPlus.core.material.MaterialsElements;
 import kubatech.loaders.BlockLoader;
 
 public class MissingMappingsHandler {

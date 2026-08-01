@@ -24,7 +24,6 @@ import static kubatech.api.enums.ItemList.LegendaryRedTea;
 
 import java.util.List;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -45,6 +44,7 @@ import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
+import gregtech.api.enums.Mods;
 import kubatech.api.enums.ItemList;
 import kubatech.network.CustomTileEntityPacket;
 import kubatech.network.LoadConfigPacket;
@@ -114,7 +114,9 @@ public class kubatech {
 
     private static final Logger LOG = LogManager.getLogger(Mods.ModIDs.KUBA_TECH);
 
-    @SidedProxy(clientSide = Mods.ModIDs.KUBA_TECH + ".ClientProxy", serverSide = Mods.ModIDs.KUBA_TECH + ".CommonProxy")
+    @SidedProxy(
+        clientSide = Mods.ModIDs.KUBA_TECH + ".ClientProxy",
+        serverSide = Mods.ModIDs.KUBA_TECH + ".CommonProxy")
     public static CommonProxy proxy;
 
     @Mod.EventHandler

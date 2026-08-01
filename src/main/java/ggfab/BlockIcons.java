@@ -1,11 +1,11 @@
 package ggfab;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IIconContainer;
 
 public enum BlockIcons implements IIconContainer, Runnable {

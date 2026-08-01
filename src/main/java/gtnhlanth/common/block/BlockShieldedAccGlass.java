@@ -1,6 +1,5 @@
 package gtnhlanth.common.block;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
@@ -11,7 +10,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gtnhlanth.Tags;
+import gregtech.api.enums.Mods;
 
 public class BlockShieldedAccGlass extends Block {
 

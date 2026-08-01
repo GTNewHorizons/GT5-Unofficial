@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
@@ -29,6 +28,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import appeng.api.storage.data.IAEFluidStack;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;

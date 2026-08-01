@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -34,6 +33,7 @@ import appeng.api.storage.data.IAEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTAuthors;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;

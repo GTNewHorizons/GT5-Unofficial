@@ -2,7 +2,6 @@ package gtPlusPlus;
 
 import static gregtech.api.enums.Mods.Thaumcraft;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -25,6 +24,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.FishPondRecipes;
 import gregtech.api.util.SemiFluidFuelHandler;

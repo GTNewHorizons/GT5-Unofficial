@@ -3,7 +3,6 @@ package gtnhintergalactic.render;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -28,6 +27,7 @@ import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import gregtech.api.enums.Mods;
 import gtnhintergalactic.GTNHIntergalactic;
 import gtnhintergalactic.block.BlockSpaceElevatorCable;
 import gtnhintergalactic.config.IGConfig;

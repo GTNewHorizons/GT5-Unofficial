@@ -9,7 +9,6 @@ import static tectech.thing.metaTileEntity.multi.bec.MTEBECIONode.SPEED_DIVISOR_
 import java.util.Collections;
 import java.util.function.Function;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
@@ -25,6 +24,7 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.enums.CondensateType;
+import gregtech.api.enums.Mods;
 import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import gregtech.common.gui.modularui.adapter.CondensateListAdapter;
 import gregtech.common.gui.modularui.widget.WidgetConfigurator;

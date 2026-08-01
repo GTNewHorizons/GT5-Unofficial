@@ -1,6 +1,5 @@
 package goodgenerator.blocks.regularBlock;
 
-import goodgenerator.main.GoodGenerator;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;

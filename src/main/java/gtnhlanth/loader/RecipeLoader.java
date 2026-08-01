@@ -122,7 +122,6 @@ import static gtnhlanth.common.register.WerkstoffMaterialPool.YtterbiumOreConcen
 
 import java.util.HashSet;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -140,6 +139,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTLog;
@@ -4094,7 +4094,8 @@ public class RecipeLoader {
     }
 
     public static void registerCauldronRemaps() {
-        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing cauldron washing recipes to replace cerium sources");
+        GTLog.out.println(
+            Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing cauldron washing recipes to replace cerium sources");
         registerCauldronCleaningFor(Materials.Cerium, WerkstoffMaterialPool.CeriumRichMixture.getBridgeMaterial());
         registerCauldronCleaningFor(
             Materials.Samarium,

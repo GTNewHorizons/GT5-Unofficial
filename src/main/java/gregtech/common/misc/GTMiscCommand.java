@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
@@ -26,6 +25,7 @@ import com.gtnewhorizon.structurelib.StructureLib;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.util.FakeCleanroom;
 import gregtech.api.util.GTMusicSystem;

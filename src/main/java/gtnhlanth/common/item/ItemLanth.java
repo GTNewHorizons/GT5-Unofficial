@@ -1,9 +1,8 @@
 package gtnhlanth.common.item;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.item.Item;
 
-import gtnhlanth.Tags;
+import gregtech.api.enums.Mods;
 
 public class ItemLanth extends Item {
 

@@ -22,7 +22,6 @@ package kubatech.loaders.item.kubaitem;
 
 import java.util.List;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,7 +39,7 @@ import com.gtnewhorizons.modularui.common.builder.UIInfo;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 
-import kubatech.Tags;
+import gregtech.api.enums.Mods;
 
 public class ItemProxy {
 

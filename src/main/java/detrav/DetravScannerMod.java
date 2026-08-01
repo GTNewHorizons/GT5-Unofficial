@@ -1,6 +1,5 @@
 package detrav;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.creativetab.CreativeTabs;
 
 import cpw.mods.fml.common.Mod;
@@ -17,6 +16,7 @@ import detrav.proxies.CommonProxy;
 import detrav.utils.DetravCreativeTab;
 import gregtech.GT_Version;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Mods;
 
 @Mod(
     modid = Mods.ModIDs.DETRAV_SCANNER_MOD,

@@ -1,9 +1,7 @@
 package ggfab;
 
-import gregtech.api.enums.Mods;
-import net.minecraft.util.EnumChatFormatting;
-
 import gregtech.GT_Version;
+import gregtech.api.enums.Mods;
 
 public class GGConstants {
 

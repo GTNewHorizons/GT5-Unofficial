@@ -3,7 +3,6 @@ package gttests.electricblastfurnace;
 import static com.gtnewhorizons.horizonqa.api.TestPos.at;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -18,6 +17,7 @@ import com.gtnewhorizons.horizonqa.api.gt.Multiblock;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;

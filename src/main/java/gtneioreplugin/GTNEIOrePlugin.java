@@ -2,7 +2,6 @@ package gtneioreplugin;
 
 import java.io.File;
 
-import gregtech.api.enums.Mods;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
@@ -18,6 +17,7 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.GT_Version;
+import gregtech.api.enums.Mods;
 import gtneioreplugin.plugin.NEIPluginConfig;
 import gtneioreplugin.plugin.block.ModBlocks;
 import gtneioreplugin.util.CSVMaker;

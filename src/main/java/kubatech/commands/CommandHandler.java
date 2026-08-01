@@ -30,7 +30,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -40,6 +39,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 
 public class CommandHandler extends CommandBase {
 

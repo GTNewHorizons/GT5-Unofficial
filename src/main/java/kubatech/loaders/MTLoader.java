@@ -20,11 +20,10 @@
 
 package kubatech.loaders;
 
-import gregtech.api.enums.Mods;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import kubatech.Tags;
+import gregtech.api.enums.Mods;
 import minetweaker.MineTweakerImplementationAPI;
 
 public class MTLoader {

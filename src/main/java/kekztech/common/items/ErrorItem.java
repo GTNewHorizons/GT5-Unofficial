@@ -3,7 +3,6 @@ package kekztech.common.items;
 import java.util.Collections;
 import java.util.List;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -12,8 +11,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
-import kekztech.KekzCore;
 
 public class ErrorItem extends Item {
 

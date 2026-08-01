@@ -217,7 +217,10 @@ public class GTMod {
     @Mod.Instance(Mods.ModIDs.GREG_TECH)
     public static GTMod GT;
 
-    @SidedProxy(modId = Mods.ModIDs.GREG_TECH, clientSide = "gregtech.common.GTClient", serverSide = "gregtech.common.GTProxy")
+    @SidedProxy(
+        modId = Mods.ModIDs.GREG_TECH,
+        clientSide = "gregtech.common.GTClient",
+        serverSide = "gregtech.common.GTProxy")
     public static GTProxy proxy;
     /** Field renamed, reference {@link gregtech.GTMod#proxy} instead */
     @SuppressWarnings("DeprecatedIsStillUsed")

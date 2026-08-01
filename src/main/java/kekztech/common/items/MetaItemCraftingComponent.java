@@ -2,7 +2,6 @@ package kekztech.common.items;
 
 import java.util.List;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,7 +11,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import kekztech.KekzCore;
+import gregtech.api.enums.Mods;
 
 public class MetaItemCraftingComponent extends Item {
 

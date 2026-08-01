@@ -23,7 +23,6 @@ import java.util.List;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -45,6 +44,7 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.util.item.AEFluidStack;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.IHatchElement;

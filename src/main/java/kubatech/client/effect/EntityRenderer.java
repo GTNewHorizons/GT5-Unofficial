@@ -25,7 +25,6 @@ import static net.minecraft.client.renderer.entity.RenderManager.renderPosX;
 import static net.minecraft.client.renderer.entity.RenderManager.renderPosY;
 import static net.minecraft.client.renderer.entity.RenderManager.renderPosZ;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
@@ -50,8 +49,8 @@ import com.kuba6000.mobsinfo.api.utils.MobUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
-import kubatech.Tags;
 import kubatech.config.Config;
 
 @SideOnly(Side.CLIENT)

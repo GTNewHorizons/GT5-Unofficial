@@ -138,10 +138,12 @@ public class Loaders {
         "circuitWrap",
         GoodGenerator.GG,
         new String[] { Mods.ModIDs.GOOD_GENERATOR + ":wraps/0", Mods.ModIDs.GOOD_GENERATOR + ":wraps/1",
-            Mods.ModIDs.GOOD_GENERATOR + ":wraps/2", Mods.ModIDs.GOOD_GENERATOR + ":wraps/3", Mods.ModIDs.GOOD_GENERATOR + ":wraps/4",
-            Mods.ModIDs.GOOD_GENERATOR + ":wraps/5", Mods.ModIDs.GOOD_GENERATOR + ":wraps/6", Mods.ModIDs.GOOD_GENERATOR + ":wraps/7",
-            Mods.ModIDs.GOOD_GENERATOR + ":wraps/8", Mods.ModIDs.GOOD_GENERATOR + ":wraps/9", Mods.ModIDs.GOOD_GENERATOR + ":wraps/10",
-            Mods.ModIDs.GOOD_GENERATOR + ":wraps/11", Mods.ModIDs.GOOD_GENERATOR + ":wraps/12", Mods.ModIDs.GOOD_GENERATOR + ":wraps/13",
+            Mods.ModIDs.GOOD_GENERATOR + ":wraps/2", Mods.ModIDs.GOOD_GENERATOR + ":wraps/3",
+            Mods.ModIDs.GOOD_GENERATOR + ":wraps/4", Mods.ModIDs.GOOD_GENERATOR + ":wraps/5",
+            Mods.ModIDs.GOOD_GENERATOR + ":wraps/6", Mods.ModIDs.GOOD_GENERATOR + ":wraps/7",
+            Mods.ModIDs.GOOD_GENERATOR + ":wraps/8", Mods.ModIDs.GOOD_GENERATOR + ":wraps/9",
+            Mods.ModIDs.GOOD_GENERATOR + ":wraps/10", Mods.ModIDs.GOOD_GENERATOR + ":wraps/11",
+            Mods.ModIDs.GOOD_GENERATOR + ":wraps/12", Mods.ModIDs.GOOD_GENERATOR + ":wraps/13",
             Mods.ModIDs.GOOD_GENERATOR + ":wraps/14" });
 
     public static final Block MAR_Casing = new BlockCasing(
@@ -187,11 +189,12 @@ public class Loaders {
         new String[] { Mods.ModIDs.GOOD_GENERATOR + ":speedingPipe_TOP" });
     public static final Block yottaFluidTankCell = new BlockCasing(
         "yottaFluidTankCell",
-        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/1", Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/2",
-            Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/3", Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/4",
-            Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/5", Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/6",
-            Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/7", Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/8",
-            Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/9", Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/10", });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/1",
+            Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/2", Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/3",
+            Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/4", Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/5",
+            Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/6", Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/7",
+            Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/8", Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/9",
+            Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCell/10", });
     public static final Block yottaFluidTankCasing = new BlockComplexTextureCasing(
         "yottaFluidTankCasing",
         new String[] { Mods.ModIDs.GOOD_GENERATOR + ":yottaFluidTankCasing_SIDE" },
@@ -207,8 +210,9 @@ public class Loaders {
         new String[] { Mods.ModIDs.GOOD_GENERATOR + ":preciseUnitCasing/0" });
     public static final Block preciseUnitCasing = new BlockCasing(
         "preciseUnitCasing",
-        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":preciseUnitCasing/1", Mods.ModIDs.GOOD_GENERATOR + ":preciseUnitCasing/2",
-            Mods.ModIDs.GOOD_GENERATOR + ":preciseUnitCasing/3", Mods.ModIDs.GOOD_GENERATOR + ":preciseUnitCasing/4" });
+        new String[] { Mods.ModIDs.GOOD_GENERATOR + ":preciseUnitCasing/1",
+            Mods.ModIDs.GOOD_GENERATOR + ":preciseUnitCasing/2", Mods.ModIDs.GOOD_GENERATOR + ":preciseUnitCasing/3",
+            Mods.ModIDs.GOOD_GENERATOR + ":preciseUnitCasing/4" });
     public static final Block compactFusionCoil = new BlockCasing(
         "compactFusionCoil",
         new String[] { Mods.ModIDs.GOOD_GENERATOR + ":fuison/1", Mods.ModIDs.GOOD_GENERATOR + ":fuison/2",
@@ -420,9 +424,12 @@ public class Loaders {
         GameRegistry.registerItem(wrappedPlutoniumIngot, "wrappedPlutoniumIngot", Mods.ModIDs.GOOD_GENERATOR);
         GameRegistry.registerItem(highDensityPlutoniumNugget, "highDensityPlutoniumNugget", Mods.ModIDs.GOOD_GENERATOR);
         GameRegistry.registerItem(highDensityPlutonium, "highDensityPlutonium", Mods.ModIDs.GOOD_GENERATOR);
-        GameRegistry.registerItem(rawAtomicSeparationCatalyst, "rawAtomicSeparationCatalyst", Mods.ModIDs.GOOD_GENERATOR);
         GameRegistry
-            .registerItem(advancedRadiationProtectionPlate, "advancedRadiationProtectionPlate", Mods.ModIDs.GOOD_GENERATOR);
+            .registerItem(rawAtomicSeparationCatalyst, "rawAtomicSeparationCatalyst", Mods.ModIDs.GOOD_GENERATOR);
+        GameRegistry.registerItem(
+            advancedRadiationProtectionPlate,
+            "advancedRadiationProtectionPlate",
+            Mods.ModIDs.GOOD_GENERATOR);
         GameRegistry.registerItem(aluminumNitride, "aluminumNitride", Mods.ModIDs.GOOD_GENERATOR);
         GameRegistry.registerItem(specialCeramics, "specialCeramics", Mods.ModIDs.GOOD_GENERATOR);
         GameRegistry.registerItem(specialCeramicsPlate, "specialCeramicsPlate", Mods.ModIDs.GOOD_GENERATOR);

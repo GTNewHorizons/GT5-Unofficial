@@ -1,8 +1,6 @@
 package gtnhintergalactic.recipe;
 
 import static gregtech.api.enums.GTValues.RA;
-import static gregtech.api.enums.MetaTileEntityIDs.ASSEMBLING_MACHINE_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.CIRCUIT_ASSEMBLER_UMV;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -18,7 +16,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.common.loaders.ItemRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.ItemList;
@@ -361,8 +358,7 @@ public class MachineRecipes implements Runnable {
             256,
             4000000,
             4,
-            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1),
-                ItemList.AssemblingMachineUV.get(4),
+            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1), ItemList.AssemblingMachineUV.get(4),
                 ItemList.Machine_UV_CircuitAssembler.get(4),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.CosmicNeutronium, 8),
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.CosmicNeutronium, 16),
@@ -383,8 +379,7 @@ public class MachineRecipes implements Runnable {
             2048,
             64000000,
             4,
-            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1),
-                ItemList.AssemblingMachineUEV.get(4),
+            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1), ItemList.AssemblingMachineUEV.get(4),
                 ItemList.CircuitAssemblerUEV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.TranscendentMetal, 8),
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.ProtoHalkonite, 16),
@@ -403,10 +398,8 @@ public class MachineRecipes implements Runnable {
             4096,
             256000000,
             4,
-            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1),
-                ItemList.AssemblingMachineUMV.get(4),
-                ItemList.CircuitAssemblerUMV.get(4),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.MHDCSM, 8),
+            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1), ItemList.AssemblingMachineUMV.get(4),
+                ItemList.CircuitAssemblerUMV.get(4), GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.MHDCSM, 8),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.MagMatter, 8),
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.MHDCSM, 16),
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.MagMatter, 16),

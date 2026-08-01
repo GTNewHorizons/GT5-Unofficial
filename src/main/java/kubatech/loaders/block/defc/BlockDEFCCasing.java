@@ -3,18 +3,17 @@ package kubatech.loaders.block.defc;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedText;
 import static kubatech.kubatech.KT;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.blocks.ItemCasings;
-import kubatech.Tags;
 import kubatech.api.enums.ItemList;
 
 public class BlockDEFCCasing extends BlockCasingsAbstract {

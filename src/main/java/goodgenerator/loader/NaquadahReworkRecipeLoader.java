@@ -37,7 +37,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
 import goodgenerator.items.GGMaterial;
-import goodgenerator.main.GoodGenerator;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
@@ -608,7 +607,8 @@ public class NaquadahReworkRecipeLoader {
 
     public static void Remover() {
 
-        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Begin to remove pure Naquadah, Enriched Naquadah and Naquadria.\n");
+        GTLog.out
+            .print(Mods.ModIDs.GOOD_GENERATOR + ": Begin to remove pure Naquadah, Enriched Naquadah and Naquadria.\n");
 
         HashSet<GTRecipe> remove = new HashSet<>(5000);
         HashSet<GTRecipe> reAdd = new HashSet<>(5000);

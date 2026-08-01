@@ -22,10 +22,9 @@ package kubatech.config;
 
 import java.io.File;
 
-import gregtech.api.enums.Mods;
 import net.minecraftforge.common.config.Configuration;
 
-import kubatech.Tags;
+import gregtech.api.enums.Mods;
 
 public class Config {
 

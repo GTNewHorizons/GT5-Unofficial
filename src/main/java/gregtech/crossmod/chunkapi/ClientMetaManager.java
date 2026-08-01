@@ -3,7 +3,6 @@ package gregtech.crossmod.chunkapi;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.S23PacketBlockChange;
@@ -13,6 +12,7 @@ import net.minecraft.world.chunk.Chunk;
 import com.falsepattern.chunk.api.DataManager;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IBlockWithClientMeta;
 import gregtech.api.net.ClientMetaTrackerRegistry;
 import gregtech.api.net.IClientMetaTracker;

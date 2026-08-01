@@ -1,12 +1,11 @@
 package kekztech.common.blocks;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import kekztech.KekzCore;
+import gregtech.api.enums.Mods;
 
 public class BlockGDCUnit extends BaseGTUpdateableBlock {
 

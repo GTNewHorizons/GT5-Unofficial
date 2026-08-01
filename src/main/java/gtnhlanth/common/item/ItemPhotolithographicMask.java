@@ -2,13 +2,12 @@ package gtnhlanth.common.item;
 
 import java.util.List;
 
-import gregtech.api.enums.Mods;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import gtnhlanth.Tags;
+import gregtech.api.enums.Mods;
 
 public class ItemPhotolithographicMask extends Item implements ICanFocus {
 
