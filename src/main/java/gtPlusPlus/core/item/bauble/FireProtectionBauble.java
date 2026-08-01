@@ -13,7 +13,7 @@ import gregtech.mixin.interfaces.accessors.EntityAccessor;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 
 public class FireProtectionBauble extends BaseBauble {
-
+    private static boolean isRegistered;
     public FireProtectionBauble() {
         super(BaubleType.RING);
         String aUnlocalName = "GTPP.bauble.fireprotection.0" + ".name";
@@ -23,8 +23,9 @@ public class FireProtectionBauble extends BaseBauble {
         this.setMaxStackSize(1);
         this.setNoRepair();
         this.setCreativeTab(AddToCreativeTab.tabMachines);
-        if (GameRegistry.findItem(GTPlusPlus.ID, aUnlocalName) == null) {
+        if (!isRegistered) {
             GameRegistry.registerItem(this, aUnlocalName);
+            isRegistered=true;
         }
     }
 

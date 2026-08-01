@@ -26,12 +26,14 @@ import ic2.api.item.IElectricItem;
 
 public class BatteryPackBaseBauble extends ElectricBaseBauble {
 
+    private static boolean isRegistered;
     public BatteryPackBaseBauble(int tier) {
         super(BaubleType.BELT, tier, GTValues.V[tier] * 20 * 300, "GTPP.BattPack.0" + tier + ".name");
         String aUnlocalName = "GTPP.BattPack.0" + tier + ".name";
         this.setCreativeTab(AddToCreativeTab.tabMachines);
-        if (GameRegistry.findItem(GTPlusPlus.ID, aUnlocalName) == null) {
+        if (!isRegistered) {
             GameRegistry.registerItem(this, aUnlocalName);
+            isRegistered = true;
         }
     }
 
