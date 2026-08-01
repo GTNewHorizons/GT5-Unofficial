@@ -79,8 +79,7 @@ public class EIGIC2Mode extends EIGMode {
         ttVars.put("fertilizerBonus", String.format("%.0f%%", this.getFertilizerBoost() * 100));
         ttVars.put("weedExMultiplier", this.getWeedEXMultiplier());
 
-        return builder
-            .addMarkdown(new ResourceLocation("gregtech", "extreme-industrial-greenhouse-ic2-mode"), ttVars);
+        return builder.addMarkdown(new ResourceLocation("gregtech", "extreme-industrial-greenhouse-ic2-mode"), ttVars);
     }
 
     @Override
