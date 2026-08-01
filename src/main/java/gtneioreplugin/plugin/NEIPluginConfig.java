@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.item.ItemStack;
 
 import codechicken.nei.api.API;
@@ -85,7 +86,7 @@ public class NEIPluginConfig implements IConfigureNEI {
                 new HandlerInfo.Builder(
                     "gtneioreplugin.plugin.gregtech5." + handler.getKey(),
                     GTNEIOrePlugin.NAME,
-                    GTNEIOrePlugin.MODID).setHeight(160)
+                    Mods.ModIDs.N_E_I_ORE_PLUGIN).setHeight(160)
                         .setShowFavoritesButton(false)
                         .setShowOverlayButton(false)
                         .setShiftY(-2)
