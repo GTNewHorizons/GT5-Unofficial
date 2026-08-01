@@ -4,7 +4,6 @@ import static gregtech.api.enums.OrePrefixes.___placeholder___;
 
 import java.util.Arrays;
 
-import gregtech.api.util.GTUtility;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,7 +14,6 @@ import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
@@ -23,7 +21,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.common.blocks.BlockFrameBox;
-import vexatos.tgregworks.reference.Mods;
 
 public class PosteaTransformers implements Runnable {
 
@@ -114,14 +111,10 @@ public class PosteaTransformers implements Runnable {
 
     // TODO: Remove this and bio and breakthrough circuits once 2.8 is released.
     private void registerProgrammedCircuitTransformers() {
-        ItemStackReplacementManager.addSimpleReplacement(
-            "miscutils:item.BioRecipeSelector",
-            ItemList.Circuit_Integrated.getItem(),
-            true);
-        ItemStackReplacementManager.addSimpleReplacement(
-            "miscutils:item.T3RecipeSelector",
-            ItemList.Circuit_Integrated.getItem(),
-            true);
+        ItemStackReplacementManager
+            .addSimpleReplacement("miscutils:item.BioRecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
+        ItemStackReplacementManager
+            .addSimpleReplacement("miscutils:item.T3RecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
     }
 
     private void registerPotassiumHydroxideTransformer() {
