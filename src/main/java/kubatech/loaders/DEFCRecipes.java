@@ -128,7 +128,7 @@ public class DEFCRecipes {
         conversionRecipes();
     }
 
-    private static final Item EMTItems = GameRegistry.findItem("EMT", "EMTItems");
+    private static final Item EMTItems = GameRegistry.findItem(ElectroMagicTools.ID, "EMTItems");
 
     private static void addOldHiddenRecipe(GTRecipe recipe) {
         if (!ElectroMagicTools.isModLoaded()) return;
