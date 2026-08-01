@@ -171,25 +171,39 @@ public final class GTOreAdapter implements IOreAdapter {
         registerCurrentGenTransformers();
     }
 
-    /// Decodes the pre-`GTBlockOre` era's 7-stone packing (see [#LEGACY_STONES]) and resolves it to the
-    /// MaterialLib block/meta -- shared by the `GT_TileEntity_Ores` tile-entity transformer and the single
-    /// `gregtech:gt.blockores` item transformer, both of which used this exact packing.
+    /// Decodes the pre-`GTBlockOre` era's 7-stone meta packing (see [#LEGACY_STONES]), or null when the meta
+    /// names no ore this adapter serves. Public because a reader of raw save data cannot go through
+    /// [OreManager]: the chunk-load transformers [#init] registers have not run on an unloaded region file, so
+    /// its `GT_TileEntity_Ores` tags still carry this packing and there is no block to look up. The returned
+    /// [OreInfo] comes from the pool and belongs to the caller (try-with-resources).
     ///
-    /// Every migrated ore is marked natural, whatever the saved tag's own natural flag said, so that a
-    /// migrated block drops what an unmined ore of its material drops.
-    private ImmutableBlockMeta resolveLegacyMeta(int meta) {
-        try (OreInfo info = OreInfo.getNewInfo()) {
-            info.stoneType = GTUtility.getIndexSafe(LEGACY_STONES, (meta % 16000) / 1000);
-            info.material = LegacyMaterialIDIndex.get(meta % 1000);
-            info.isSmall = meta >= 16000;
-            info.isNatural = true;
+    /// The decoded ore is always marked natural, whatever the saved tag's own natural flag said, so that it
+    /// drops what an unmined ore of its material drops.
+    public @Nullable OreInfo getLegacyOreInfo(int meta) {
+        OreInfo info = OreInfo.getNewInfo();
 
-            if (!this.supports(info)) {
-                return new BlockMeta(Blocks.air, 0);
-            } else {
-                ImmutableBlockMeta bm = this.getBlock(info);
-                return bm == null ? new BlockMeta(Blocks.air, 0) : bm;
-            }
+        info.stoneType = GTUtility.getIndexSafe(LEGACY_STONES, (meta % 16000) / 1000);
+        info.material = LegacyMaterialIDIndex.get(meta % 1000);
+        info.isSmall = meta >= 16000;
+        info.isNatural = true;
+
+        if (!this.supports(info)) {
+            info.release();
+            return null;
+        }
+
+        return info;
+    }
+
+    /// Resolves a legacy meta (see [#getLegacyOreInfo]) to the MaterialLib block/meta -- shared by the
+    /// `GT_TileEntity_Ores` tile-entity transformer and the single `gregtech:gt.blockores` item transformer,
+    /// both of which used that packing.
+    private ImmutableBlockMeta resolveLegacyMeta(int meta) {
+        try (OreInfo info = getLegacyOreInfo(meta)) {
+            if (info == null) return new BlockMeta(Blocks.air, 0);
+
+            ImmutableBlockMeta bm = this.getBlock(info);
+            return bm == null ? new BlockMeta(Blocks.air, 0) : bm;
         }
     }
 
