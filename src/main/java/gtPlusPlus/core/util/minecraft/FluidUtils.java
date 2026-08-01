@@ -195,12 +195,11 @@ public class FluidUtils {
         return null;
     }
 
+    /**
+     * This only works for fluids registered with helper methods from this class!!!
+     */
     public static ItemStack getFilledCellFromFluidName(Fluid fluid, int stackSize) {
-        return GTUtility.copyAmount(stackSize, FULL_CONTAINERS.get(fluid.getUnlocalizedName()));
-    }
-
-    public static ItemStack getFilledCellFromFluidName(String fluidName, int stackSize) {
-        return GTUtility.copyAmount(stackSize, FULL_CONTAINERS.get(fluidName));
+        return GTUtility.copyAmount(stackSize, FULL_CONTAINERS.get(fluid.getName()));
     }
 
     public static Fluid addGTFluid(String aName, final String aTexture, final String aLocalized, short[] aRGBa,
