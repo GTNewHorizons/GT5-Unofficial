@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
@@ -44,7 +45,7 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ICasingT
 
     private boolean running = false;
 
-    private static final Block EtFuturumDirtPath = GameRegistry.findBlock("etfuturum", "grass_path");
+    private static final Block EtFuturumDirtPath = GameRegistry.findBlock(Mods.EtFuturumRequiem.ID, "grass_path");
 
     public MTECharcoalPit(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
