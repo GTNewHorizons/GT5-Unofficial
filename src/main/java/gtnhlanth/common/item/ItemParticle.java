@@ -2,6 +2,7 @@ package gtnhlanth.common.item;
 
 import java.util.List;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -63,7 +64,7 @@ public class ItemParticle extends Item {
     public void registerIcons(IIconRegister register) {
         this.iconArray = new IIcon[NUMBER_OF_SUBTYPES];
         for (int i = 0; i < NUMBER_OF_SUBTYPES; ++i) {
-            this.iconArray[i] = register.registerIcon(Tags.MODID + ":" + "particle/" + names[i]);
+            this.iconArray[i] = register.registerIcon(Mods.ModIDs.G_T_N_H_LANTHANIDES + ":" + "particle/" + names[i]);
         }
     }
 

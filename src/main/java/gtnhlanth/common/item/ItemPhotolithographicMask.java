@@ -2,6 +2,7 @@ package gtnhlanth.common.item;
 
 import java.util.List;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,7 +20,7 @@ public class ItemPhotolithographicMask extends Item implements ICanFocus {
         this.setUnlocalizedName("photomask." + name);
         this.setMaxStackSize(64);
         this.setNoRepair();
-        this.setTextureName(Tags.MODID + ":photomask/" + name);
+        this.setTextureName(Mods.ModIDs.G_T_N_H_LANTHANIDES + ":photomask/" + name);
     }
 
     @Override

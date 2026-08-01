@@ -1,5 +1,6 @@
 package gtnhlanth.common.block;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
@@ -19,7 +20,7 @@ public class BlockShieldedAccGlass extends Block {
     public BlockShieldedAccGlass() {
         super(Material.glass);
         this.setBlockName("casing." + name);
-        this.setBlockTextureName(Tags.MODID + ":casing." + name);
+        this.setBlockTextureName(Mods.ModIDs.G_T_N_H_LANTHANIDES + ":casing." + name);
         GregTechAPI.registerMachineBlock(this, -1);
     }
 

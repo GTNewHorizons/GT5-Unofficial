@@ -122,6 +122,7 @@ import static gtnhlanth.common.register.WerkstoffMaterialPool.YtterbiumOreConcen
 
 import java.util.HashSet;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -3489,7 +3490,7 @@ public class RecipeLoader {
         HashSet<GTRecipe> remove = new HashSet<>(5000);
         HashSet<GTRecipe> reAdd = new HashSet<>(5000);
 
-        GTLog.out.print(Tags.MODID + ": processing macerator recipes");
+        GTLog.out.print(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing macerator recipes");
         for (GTRecipe recipe : maceratorRecipes.getAllRecipes()) {
             ItemStack input = recipe.mInputs[0];
             if (!GTUtility.isStackValid(input)) {
@@ -3544,14 +3545,14 @@ public class RecipeLoader {
         remove.clear();
         reAdd.clear();
 
-        GTLog.out.print(Tags.MODID + ": macerator recipes done!");
+        GTLog.out.print(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": macerator recipes done!");
     }
 
     public static void removeCeriumWasher() {
         HashSet<GTRecipe> remove = new HashSet<>(5000);
         HashSet<GTRecipe> reAdd = new HashSet<>(5000);
 
-        GTLog.out.println(Tags.MODID + ": processing orewasher recipes");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing orewasher recipes");
         for (GTRecipe recipe : oreWasherRecipes.getAllRecipes()) {
             ItemStack input = recipe.mInputs[0];
             if (!GTUtility.isStackValid(input)) {
@@ -3573,7 +3574,7 @@ public class RecipeLoader {
                             tRecipe.mOutputs[i].stackSize * 2,
                             WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
                         GTLog.out.println(
-                            Tags.MODID + ": recipe with input: "
+                            Mods.ModIDs.G_T_N_H_LANTHANIDES + ": recipe with input: "
                                 + input.getDisplayName()
                                 + " get Cerium dust turned into Cerium Rich Mixture dust.");
                         modified = true;
@@ -3582,7 +3583,7 @@ public class RecipeLoader {
                             tRecipe.mOutputs[i].stackSize * 2,
                             WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
                         GTLog.out.println(
-                            Tags.MODID + ": recipe with input: "
+                            Mods.ModIDs.G_T_N_H_LANTHANIDES + ": recipe with input: "
                                 + input.getDisplayName()
                                 + " get Samarium dust turned into Samarium Ore Concentrate dust.");
                         modified = true;
@@ -3596,7 +3597,7 @@ public class RecipeLoader {
             }
         }
 
-        GTLog.out.println(Tags.MODID + ": regenerating ore washer recipes");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": regenerating ore washer recipes");
         oreWasherRecipes.getBackend()
             .removeRecipes(remove);
         reAdd.forEach(oreWasherRecipes::add);
@@ -3606,7 +3607,7 @@ public class RecipeLoader {
         remove.clear();
         reAdd.clear();
 
-        GTLog.out.println(Tags.MODID + ": ore washer recipes done!");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": ore washer recipes done!");
     }
 
     public static void removeCeriumThermalCentrifuge() {
@@ -3614,7 +3615,7 @@ public class RecipeLoader {
         HashSet<GTRecipe> remove = new HashSet<>(5000);
         HashSet<GTRecipe> reAdd = new HashSet<>(5000);
 
-        GTLog.out.println(Tags.MODID + ": processing thermal centrifuge recipes");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing thermal centrifuge recipes");
         for (GTRecipe recipe : thermalCentrifugeRecipes.getAllRecipes()) {
             ItemStack input = recipe.mInputs[0];
             if (!GTUtility.isStackValid(input)) {
@@ -3638,7 +3639,7 @@ public class RecipeLoader {
                             tRecipe.mOutputs[i].stackSize * 2,
                             WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
                         GTLog.out.println(
-                            Tags.MODID + ": recipe with input "
+                            Mods.ModIDs.G_T_N_H_LANTHANIDES + ": recipe with input "
                                 + input.getDisplayName()
                                 + " get Cerium dust turned into Cerium Rich Mixture dust.");
                         modified = true;
@@ -3647,7 +3648,7 @@ public class RecipeLoader {
                             tRecipe.mOutputs[i].stackSize * 2,
                             WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
                         GTLog.out.println(
-                            Tags.MODID + ": recipe with input "
+                            Mods.ModIDs.G_T_N_H_LANTHANIDES + ": recipe with input "
                                 + input.getDisplayName()
                                 + " get Samarium dust turned into Samarium Ore Concentrate dust.");
                         modified = true;
@@ -3661,7 +3662,7 @@ public class RecipeLoader {
             }
         }
 
-        GTLog.out.println(Tags.MODID + ": regenerating thermal centrifuge recipes");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": regenerating thermal centrifuge recipes");
         thermalCentrifugeRecipes.getBackend()
             .removeRecipes(remove);
         reAdd.forEach(thermalCentrifugeRecipes::add);
@@ -3671,14 +3672,14 @@ public class RecipeLoader {
         remove.clear();
         reAdd.clear();
 
-        GTLog.out.println(Tags.MODID + ": thermal centrifuge recipes done!");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": thermal centrifuge recipes done!");
     }
 
     public static void removeCeriumCentrifuge() {
 
         HashSet<GTRecipe> remove = new HashSet<>(5000);
         HashSet<GTRecipe> reAdd = new HashSet<>(5000);
-        GTLog.out.println(Tags.MODID + ": processing centrifuge recipes");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing centrifuge recipes");
         for (GTRecipe recipe : centrifugeRecipes.getAllRecipes()) {
             ItemStack input = null;
             if (recipe.mInputs.length > 0) input = recipe.mInputs[0];
@@ -3700,7 +3701,7 @@ public class RecipeLoader {
                             tRecipe.mOutputs[i].stackSize * 2,
                             WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dustTiny, 1));
                         GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
+                            Mods.ModIDs.G_T_N_H_LANTHANIDES + ": recipe with input oredict: "
                                 + oreName
                                 + " get Cerium tiny dust turned into Cerium Rich Mixture tiny dust.");
                         modified = true;
@@ -3709,7 +3710,7 @@ public class RecipeLoader {
                             tRecipe.mOutputs[i].stackSize * 2,
                             WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
                         GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
+                            Mods.ModIDs.G_T_N_H_LANTHANIDES + ": recipe with input oredict: "
                                 + oreName
                                 + " get Cerium dust turned into Cerium Rich Mixture dust.");
                         modified = true;
@@ -3718,7 +3719,7 @@ public class RecipeLoader {
                             tRecipe.mOutputs[i].stackSize * 2,
                             WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dustSmall, 1));
                         GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
+                            Mods.ModIDs.G_T_N_H_LANTHANIDES + ": recipe with input oredict: "
                                 + oreName
                                 + " get Cerium small dust turned into Cerium Rich Mixture small dust.");
                         modified = true;
@@ -3727,7 +3728,7 @@ public class RecipeLoader {
                             tRecipe.mOutputs[i].stackSize * 2,
                             WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dustTiny, 1));
                         GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
+                            Mods.ModIDs.G_T_N_H_LANTHANIDES + ": recipe with input oredict: "
                                 + oreName
                                 + " get Samarium dust turned into Samarium Ore Concentrate tiny dust.");
                         modified = true;
@@ -3736,7 +3737,7 @@ public class RecipeLoader {
                             tRecipe.mOutputs[i].stackSize * 2,
                             WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
                         GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
+                            Mods.ModIDs.G_T_N_H_LANTHANIDES + ": recipe with input oredict: "
                                 + oreName
                                 + " get Samarium dust turned into Samarium Ore Concentrate dust.");
                         modified = true;
@@ -3745,7 +3746,7 @@ public class RecipeLoader {
                             tRecipe.mOutputs[i].stackSize * 2,
                             WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dustSmall, 1));
                         GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
+                            Mods.ModIDs.G_T_N_H_LANTHANIDES + ": recipe with input oredict: "
                                 + oreName
                                 + " get Samarium dust turned into Samarium Ore Concentrate small dust.");
                         modified = true;
@@ -3759,7 +3760,7 @@ public class RecipeLoader {
             }
         }
 
-        GTLog.out.println(Tags.MODID + ": regenerating centrifuge recipes");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": regenerating centrifuge recipes");
         centrifugeRecipes.getBackend()
             .removeRecipes(remove);
         reAdd.forEach(centrifugeRecipes::add);
@@ -3769,7 +3770,7 @@ public class RecipeLoader {
         remove.clear();
         reAdd.clear();
 
-        GTLog.out.println(Tags.MODID + ": centrifuge recipes done!");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": centrifuge recipes done!");
     }
 
     public static void removeCeriumHammer() {
@@ -3777,7 +3778,7 @@ public class RecipeLoader {
         HashSet<GTRecipe> remove = new HashSet<>(5000);
         HashSet<GTRecipe> reAdd = new HashSet<>(5000);
 
-        GTLog.out.println(Tags.MODID + ": processing forge hammer recipes");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing forge hammer recipes");
 
         for (GTRecipe recipe : hammerRecipes.getAllRecipes()) {
             ItemStack input = recipe.mInputs[0];
@@ -3800,7 +3801,7 @@ public class RecipeLoader {
                             tRecipe.mOutputs[i].stackSize * 2,
                             WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
                         GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
+                            Mods.ModIDs.G_T_N_H_LANTHANIDES + ": recipe with input oredict: "
                                 + oreName
                                 + " get Cerium dust turned into Cerium Rich Mixture dust.");
                         modified = true;
@@ -3809,7 +3810,7 @@ public class RecipeLoader {
                             tRecipe.mOutputs[i].stackSize * 2,
                             WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
                         GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
+                            Mods.ModIDs.G_T_N_H_LANTHANIDES + ": recipe with input oredict: "
                                 + oreName
                                 + " get Samarium dust turned into Samarium Ore Concentrate dust.");
                         modified = true;
@@ -3823,7 +3824,7 @@ public class RecipeLoader {
             }
         }
 
-        GTLog.out.println(Tags.MODID + ": regenerating forge hammer recipes");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": regenerating forge hammer recipes");
         hammerRecipes.getBackend()
             .removeRecipes(remove);
         reAdd.forEach(hammerRecipes::add);
@@ -3833,13 +3834,13 @@ public class RecipeLoader {
         remove.clear();
         reAdd.clear();
 
-        GTLog.out.println(Tags.MODID + ": forge hammer recipes done!");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": forge hammer recipes done!");
     }
 
     public static void removeCeriumElectrolyzer() {
         HashSet<GTRecipe> remove = new HashSet<>(5000);
         HashSet<GTRecipe> reAdd = new HashSet<>(5000);
-        GTLog.out.println(Tags.MODID + ": Processing electrolyzer recipes");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": Processing electrolyzer recipes");
         for (GTRecipe recipe : electrolyzerRecipes.getAllRecipes()) {
             for (ItemStack input : recipe.mInputs) {
                 if (!GTUtility.isStackValid(input)) {
@@ -3868,7 +3869,7 @@ public class RecipeLoader {
                                 tRecipe.mOutputs[i].stackSize,
                                 WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
                             GTLog.out.println(
-                                Tags.MODID + ": recipe with input oredict: "
+                                Mods.ModIDs.G_T_N_H_LANTHANIDES + ": recipe with input oredict: "
                                     + oreName
                                     + " get Cerium dust turned into Cerium Rich Mixture dust.");
                             modified = true;
@@ -3877,7 +3878,7 @@ public class RecipeLoader {
                                 tRecipe.mOutputs[i].stackSize,
                                 WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
                             GTLog.out.println(
-                                Tags.MODID + ": recipe with input oredict: "
+                                Mods.ModIDs.G_T_N_H_LANTHANIDES + ": recipe with input oredict: "
                                     + oreName
                                     + " get Samarium dust turned into Samarium Ore Concentrate dust.");
                             modified = true;
@@ -3892,7 +3893,7 @@ public class RecipeLoader {
             }
         }
 
-        GTLog.out.println(Tags.MODID + ": regenerating electrolyzer recipes");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": regenerating electrolyzer recipes");
         electrolyzerRecipes.getBackend()
             .removeRecipes(remove);
         reAdd.forEach(electrolyzerRecipes::add);
@@ -3902,13 +3903,13 @@ public class RecipeLoader {
         remove.clear();
         reAdd.clear();
 
-        GTLog.out.println(Tags.MODID + ": Electrolyzer recipe done!");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": Electrolyzer recipe done!");
     }
 
     public static void removeCeriumSimpleWasher() {
         HashSet<GTRecipe> remove = new HashSet<>(5000);
         HashSet<GTRecipe> reAdd = new HashSet<>(5000);
-        GTLog.out.println(Tags.MODID + ": processing simple washer recipes.");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing simple washer recipes.");
         for (GTRecipe recipe : simpleWasherRecipes.getAllRecipes()) {
             ItemStack input = recipe.mInputs[0];
             if (!GTUtility.isStackValid(input)) {
@@ -3933,7 +3934,7 @@ public class RecipeLoader {
                             tRecipe.mOutputs[i].stackSize,
                             WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
                         GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
+                            Mods.ModIDs.G_T_N_H_LANTHANIDES + ": recipe with input oredict: "
                                 + oreName
                                 + " get Cerium dust turned into Cerium Rich Mixture dust.");
                     } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1))) {
@@ -3941,7 +3942,7 @@ public class RecipeLoader {
                             tRecipe.mOutputs[i].stackSize,
                             WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
                         GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
+                            Mods.ModIDs.G_T_N_H_LANTHANIDES + ": recipe with input oredict: "
                                 + oreName
                                 + " get Samarium dust turned into Samarium Ore Concentrate dust.");
                     }
@@ -3954,7 +3955,7 @@ public class RecipeLoader {
             }
         }
 
-        GTLog.out.println(Tags.MODID + ": regenerating simple washer recipes");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": regenerating simple washer recipes");
         simpleWasherRecipes.getBackend()
             .removeRecipes(remove);
         reAdd.forEach(simpleWasherRecipes::add);
@@ -3964,13 +3965,13 @@ public class RecipeLoader {
         remove.clear();
         reAdd.clear();
 
-        GTLog.out.println(Tags.MODID + ": Simple washer recipes done!");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": Simple washer recipes done!");
     }
 
     public static void removeCeriumDehydrator() {
         HashSet<GTRecipe> remove = new HashSet<>(5000);
         HashSet<GTRecipe> reAdd = new HashSet<>(5000);
-        GTLog.out.println(Tags.MODID + ": processing chemical dehydrator recipes.");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing chemical dehydrator recipes.");
 
         for (GTRecipe recipe : chemicalDehydratorRecipes.getAllRecipes()) {
             if (recipe.mInputs.length == 0) {
@@ -4006,7 +4007,7 @@ public class RecipeLoader {
                             WerkstoffMaterialPool.CeriumRichMixture
                                 .get(OrePrefixes.dust, tRecipe.mOutputs[i].stackSize));
                         GTLog.out.println(
-                            Tags.MODID + ": recipe with input oredict: "
+                            Mods.ModIDs.G_T_N_H_LANTHANIDES + ": recipe with input oredict: "
                                 + oreName
                                 + " get Cerium dust turned into Cerium Rich Mixture dust.");
                     }
@@ -4021,26 +4022,26 @@ public class RecipeLoader {
 
         }
 
-        GTLog.out.println(Tags.MODID + ": regenerating chemical dehydrator recipes");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": regenerating chemical dehydrator recipes");
         chemicalDehydratorRecipes.getBackend()
             .removeRecipes(remove);
         reAdd.forEach(chemicalDehydratorRecipes::add);
         chemicalDehydratorRecipes.getBackend()
             .reInit();
 
-        GTLog.out.print(Tags.MODID + ": Replace " + remove.size() + "! ");
+        GTLog.out.print(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": Replace " + remove.size() + "! ");
 
         remove.clear();
         reAdd.clear();
 
-        GTLog.out.println(Tags.MODID + ": chemical dehydrator recipes done!");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": chemical dehydrator recipes done!");
 
     }
 
     public static void removeCeriumChemicalBath() {
         HashSet<GTRecipe> remove = new HashSet<>(5000);
 
-        GTLog.out.println(Tags.MODID + ": marking recipes in chem bath for removal!");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": marking recipes in chem bath for removal!");
         for (GTRecipe recipe : chemicalBathRecipes.getAllRecipes()) {
             for (ItemStack input : recipe.mInputs) {
                 if (!GTUtility.isStackValid(input)) {
@@ -4050,12 +4051,12 @@ public class RecipeLoader {
                 for (int oreDictID : oreDict) {
                     String oreName = OreDictionary.getOreName(oreDictID);
                     if (oreName.equals("dustTin")) {
-                        GTLog.out.println(Tags.MODID + ": chem bath recipe with tin dust detected, removing it.");
+                        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": chem bath recipe with tin dust detected, removing it.");
                         remove.add(recipe);
                         break;
                     }
                     if (oreName.equals("dustRutile")) {
-                        GTLog.out.println(Tags.MODID + ": chem bath recipe with rutile dust detected, removing it.");
+                        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": chem bath recipe with rutile dust detected, removing it.");
                         remove.add(recipe);
                         break;
                     }
@@ -4063,7 +4064,7 @@ public class RecipeLoader {
             }
         }
 
-        GTLog.out.println(Tags.MODID + ": regenerating chem bath recipes");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": regenerating chem bath recipes");
         chemicalBathRecipes.getBackend()
             .removeRecipes(remove);
         chemicalBathRecipes.getBackend()
@@ -4085,20 +4086,20 @@ public class RecipeLoader {
         removeCeriumChemicalBath();
 
         // For Crafting Table
-        GTLog.out.println(Tags.MODID + ": processing crafting recipes to replace cerium sources");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing crafting recipes to replace cerium sources");
         CraftingManager.getInstance()
             .getRecipeList()
             .forEach(RecipeLoader::replaceInCraftTable);
-        GTLog.out.println(Tags.MODID + ": processing crafting recipes done!");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing crafting recipes done!");
     }
 
     public static void registerCauldronRemaps() {
-        GTLog.out.println(Tags.MODID + ": processing cauldron washing recipes to replace cerium sources");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing cauldron washing recipes to replace cerium sources");
         registerCauldronCleaningFor(Materials.Cerium, WerkstoffMaterialPool.CeriumRichMixture.getBridgeMaterial());
         registerCauldronCleaningFor(
             Materials.Samarium,
             WerkstoffMaterialPool.SamariumOreConcentrate.getBridgeMaterial());
-        GTLog.out.println(Tags.MODID + ": processing cauldron washing recipes done!");
+        GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing cauldron washing recipes done!");
     }
 
     public static void replaceInCraftTable(Object obj) {

@@ -1,5 +1,6 @@
 package gtnhlanth.common.block;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
@@ -23,14 +24,14 @@ public class BlockCasing extends Block {
     public BlockCasing(String name) {
         super(Material.iron);
         this.name = name;
-        this.setBlockTextureName(Tags.MODID + ":casing." + name);
+        this.setBlockTextureName(Mods.ModIDs.G_T_N_H_LANTHANIDES + ":casing." + name);
         GregTechAPI.registerMachineBlock(this, -1);
     }
 
     public BlockCasing(String name, Material material) {
         super(material);
         this.name = name;
-        this.setBlockTextureName(Tags.MODID + ":casing." + name);
+        this.setBlockTextureName(Mods.ModIDs.G_T_N_H_LANTHANIDES + ":casing." + name);
         GregTechAPI.registerMachineBlock(this, -1);
     }
 
