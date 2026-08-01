@@ -1,12 +1,15 @@
-{hr}
+The ideal home for your bees
+Use screwdriver to change primary mode (INPUT/OUTPUT/OPERATING)
+Use screwdriver + shift to change operation mode (NORMAL/SWARMER)
+{gray:{hr}}
 {gold:Input Mode:}
 - Does not take power
 - Put your queens in the input bus to put them in the internal buffer
-{hr}
+{gray:{hr}}
 {gold:Output Mode:}
 - Does not take power
 - Will give your bees back to output bus
-{hr}
+{gray:{hr}}
 {gold:Operating Mode:}
 - NORMAL:
   - Processing time: 5 seconds

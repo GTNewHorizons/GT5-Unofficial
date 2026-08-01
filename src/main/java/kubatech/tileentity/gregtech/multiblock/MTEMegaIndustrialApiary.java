@@ -349,9 +349,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         ttVars.put("voltageTier6", voltageTooltipFormatted(6));
         ttVars.put("voltageTier5", voltageTooltipFormatted(5));
         tt.addMachineType(StatCollector.translateToLocal("kubatech.multiblock.MegaIndustrialApiary.machine_type"))
-            .addMarkdown(new ResourceLocation("gregtech", "mega-apiary-1"))
+            .addMarkdown(new ResourceLocation("gregtech", "mega-apiary"), ttVars)
             .addGlassEnergyLimitInfo()
-            .addMarkdown(new ResourceLocation("gregtech", "mega-apiary-2"), ttVars)
             .beginStructureBlock(15, 17, 15, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_9th_layer"))
             .addCasing(
