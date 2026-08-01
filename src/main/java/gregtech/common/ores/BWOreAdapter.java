@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
@@ -139,17 +140,34 @@ public final class BWOreAdapter implements IOreAdapter {
         registerCurrentGenTransformers();
     }
 
-    /// The ancient TE-based ore format only ever existed for [StoneType#Stone] (Moon ore was added after the
-    /// switch to [BWMetaGeneratedOres]), and never encoded a natural flag -- mirrors the legacy `transform`
-    /// method this replaces, which unconditionally resolved through the `Stone` [Ores] entry.
-    private ImmutableBlockMeta resolveLegacyTE(int meta, boolean small) {
-        try (OreInfo info = OreInfo.getNewInfo()) {
-            info.material = LegacyWerkstoffIndex.get(meta);
-            info.stoneType = StoneType.Stone;
-            info.isSmall = small;
-            info.isNatural = true;
+    /// Decodes an ancient TE-based `bw.blockoresTE`/`bw.blockoresSmallTE` meta, or null when the meta names no
+    /// ore this adapter serves. Public for the same reason as [GTOreAdapter#getLegacyOreInfo]: a reader of raw
+    /// save data has no block to look up, since the chunk-load transformers [#init] registers have not run on
+    /// an unloaded region file. The returned [OreInfo] comes from the pool and belongs to the caller
+    /// (try-with-resources).
+    ///
+    /// That format only ever existed for [StoneType#Stone] (Moon ore was added after the switch to
+    /// [BWMetaGeneratedOres]) and never encoded a natural flag, so the stone type is fixed and the decoded ore
+    /// is always marked natural.
+    public @Nullable OreInfo getLegacyOreInfo(int meta, boolean small) {
+        OreInfo info = OreInfo.getNewInfo();
 
-            if (info.material == null || !supports(info)) return new BlockMeta(Blocks.air, 0);
+        info.material = LegacyWerkstoffIndex.get(meta);
+        info.stoneType = StoneType.Stone;
+        info.isSmall = small;
+        info.isNatural = true;
+
+        if (!supports(info)) {
+            info.release();
+            return null;
+        }
+
+        return info;
+    }
+
+    private ImmutableBlockMeta resolveLegacyTE(int meta, boolean small) {
+        try (OreInfo info = getLegacyOreInfo(meta, small)) {
+            if (info == null) return new BlockMeta(Blocks.air, 0);
 
             ImmutableBlockMeta bm = getBlock(info);
             return bm == null ? new BlockMeta(Blocks.air, 0) : bm;
