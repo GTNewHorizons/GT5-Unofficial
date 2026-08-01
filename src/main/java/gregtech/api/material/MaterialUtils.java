@@ -175,11 +175,6 @@ public class MaterialUtils {
     private static final Shape[] ANY_FLUID_SHAPES = { FluidShapes.fluidMolten, FluidShapes.fluidLiquid,
         FluidShapes.fluidGas };
 
-    /// Materials whose fluid is registered directly by name rather than through a shape of their own, so no
-    /// shape lookup can reach it.
-    private static final Map<String, String> UNDECLARED_FLUID_NAMES = Map
-        .of("ZirconiumTetrafluoride", "zirconiumtetrafluoride");
-
     /// [#anyFluid]'s raw [Fluid], for a bare fluid read with no stack size.
     public static @Nullable Fluid anyFluidOf(@Nullable Material material) {
         if (material == null) return null;
@@ -187,8 +182,7 @@ public class MaterialUtils {
             Fluid fluid = MaterialLibAPI.getFluid(material, shape);
             if (fluid != null) return fluid;
         }
-        String name = UNDECLARED_FLUID_NAMES.get(material.getName());
-        return name == null ? null : FluidRegistry.getFluid(name);
+        return null;
     }
 
     /// A gtPlusPlus-originated material's registered plasma fluid, from

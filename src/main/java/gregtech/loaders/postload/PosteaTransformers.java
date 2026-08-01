@@ -269,17 +269,18 @@ public class PosteaTransformers implements Runnable {
         return MaterialParts.stack(entry.prefix(), material, 1);
     }
 
-    /// The five materials whose legacy `cell` item was `miscutils:itemCell<Name>`, the same naming convention
-    /// as every other gtPlusPlus-owned cell, but which had already resolved to a gregtech-owned
-    /// `materiallib:cell` stack by the time the pinned dump was captured (these five are also plain gregtech elements
-    /// whose own fluid/cell cutover claims
-    /// the oredict `cell<Name>` slot before gtpp's `Material` construction ever runs, so their dump never
-    /// captured the miscutils registry name at all). [GtppItemCutoverTable] is generated purely from that dump
-    /// and so cannot include a row for them; they are migrated by hand instead, to the same fallback
-    /// [MaterialParts#cell] every other gtpp cell resolves through.
+    /// The materials whose legacy `cell` item was `miscutils:itemCell<Name>`, the same naming convention as
+    /// every other gtPlusPlus-owned cell, but for which [GtppItemCutoverTable] holds no row: that table is
+    /// generated purely from a pinned registry dump, and the dump never captured that id for them. Most are
+    /// plain gregtech elements whose own fluid/cell cutover claims the oredict `cell<Name>` slot before gtpp's
+    /// `Material` construction ever runs, so the dump recorded a gregtech-owned `materiallib:cell` stack in
+    /// their place; `ZirconiumTetrafluoride`'s gtpp cell carried no `itemCell` prefix, so only its unprefixed
+    /// id reached the dump. They are migrated by hand instead, to the same fallback [MaterialParts#cell] every
+    /// other gtpp cell resolves through.
     private static void registerGtppCarryoverCellTransformers() {
         registerGtppCarryoverCellTransformer("Iodine");
         registerGtppCarryoverCellTransformer("ThoriumTetrafluoride");
+        registerGtppCarryoverCellTransformer("ZirconiumTetrafluoride");
         registerGtppCarryoverCellTransformer("Xenon");
         registerGtppCarryoverCellTransformer("Neon");
         registerGtppCarryoverCellTransformer("Krypton");

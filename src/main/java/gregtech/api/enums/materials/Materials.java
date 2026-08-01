@@ -32035,6 +32035,7 @@ public class Materials {
             .setTint(0xFFFFFCE6)
             .addToFamily(Families.all)
             .addToFamily(Families.dusts)
+            .addToFamily(Families.liquids)
             .generateShape(Shapes.stick)
             .generateShape(Shapes.stickLong)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Zirconium Tetrafluoride")
