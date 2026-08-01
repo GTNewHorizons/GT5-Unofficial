@@ -91,6 +91,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTPlayedSound;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.client.DynamicLangManager;
 import gregtech.api.util.client.ResourceUtils;
 import gregtech.client.BlockOverlayRenderer;
 import gregtech.client.GTMouseEventHandler;
@@ -285,6 +286,7 @@ public class GTClient extends GTProxy {
                     GUIColorOverride.onResourceManagerReload();
                     FallbackableSteamTexture.reload();
                     CoverRegistry.reloadCoverColorOverrides();
+                    DynamicLangManager.reload();
                 }
             });
         Pollution.onPostInitClient();

@@ -155,7 +155,7 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
     public String[] getInfoData() {
         List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
-        data.add("Network: " + (network == null ? "None" : network.id));
+        data.add("BEC Network: " + (network == null ? "None" : network.id));
 
         return data.toArray(new String[0]);
     }
@@ -183,6 +183,15 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
     @Override
     public void onRemoval() {
         super.onRemoval();
+
+        if (GTUtility.isServer()) {
+            BECFactoryGrid.INSTANCE.removeElement(this);
+        }
+    }
+
+    @Override
+    public void onUnload() {
+        super.onUnload();
 
         if (GTUtility.isServer()) {
             BECFactoryGrid.INSTANCE.removeElement(this);
