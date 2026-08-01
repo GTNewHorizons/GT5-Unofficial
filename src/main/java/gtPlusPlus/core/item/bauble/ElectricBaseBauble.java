@@ -34,7 +34,6 @@ public abstract class ElectricBaseBauble extends BaseBauble implements IElectric
     public final int mTier;
     private final double maxValueEU;
     private final BaubleType mType;
-    private static boolean isRegistered;
 
     public ElectricBaseBauble(BaubleType aType, int aTier, double aMaxEU, String aUnlocalName) {
         super(aType);
@@ -47,10 +46,6 @@ public abstract class ElectricBaseBauble extends BaseBauble implements IElectric
         this.setMaxStackSize(1);
         this.setNoRepair();
         this.setCreativeTab(AddToCreativeTab.tabMachines);
-        if (!isRegistered) {
-            GameRegistry.registerItem(this, aUnlocalName);
-            isRegistered = true;
-        }
     }
 
     public abstract String getTextureNameForBauble();

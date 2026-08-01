@@ -14,21 +14,17 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 
 public class FireProtectionBauble extends BaseBauble {
 
-    private static boolean isRegistered;
 
     public FireProtectionBauble() {
         super(BaubleType.RING);
-        String aUnlocalName = "GTPP.bauble.fireprotection.0" + ".name";
+        String aUnlocalName = "GTPP.bauble.fireprotection.0.name";
         this.setUnlocalizedName(aUnlocalName);
         this.setTextureName(GTPlusPlus.ID + ":" + getTextureNameForBauble());
         this.setMaxDamage(100);
         this.setMaxStackSize(1);
         this.setNoRepair();
         this.setCreativeTab(AddToCreativeTab.tabMachines);
-        if (!isRegistered) {
-            GameRegistry.registerItem(this, aUnlocalName);
-            isRegistered = true;
-        }
+        GameRegistry.registerItem(this, aUnlocalName);
     }
 
     @Override
