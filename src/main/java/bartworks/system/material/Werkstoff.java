@@ -335,8 +335,6 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             this.isFormulaNeededLocalized = true;
             GTLanguageManager.addStringLocalization(getLocalizedNameKey() + ".ChemicalFormula", this.toolTip);
         }
-        // if (this.toolTip.length() > 25)
-        // this.toolTip = "The formula is to long...";
 
         if (this.stats.protons == 0) {
             long tmpprotons = 0;
