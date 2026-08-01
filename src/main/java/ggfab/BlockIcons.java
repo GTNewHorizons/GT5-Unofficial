@@ -1,5 +1,6 @@
 package ggfab;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -16,7 +17,7 @@ public enum BlockIcons implements IIconContainer, Runnable {
     OVERLAY_FRONT_ADV_ASSLINE,
     OVERLAY_FRONT_ADV_ASSLINE_GLOW,;
 
-    public static final String RES_PATH = GGConstants.MODID + ":";
+    public static final String RES_PATH = Mods.ModIDs.G_G_FAB + ":";
     private IIcon mIcon;
 
     BlockIcons() {
