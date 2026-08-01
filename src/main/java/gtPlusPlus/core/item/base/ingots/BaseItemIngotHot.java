@@ -18,7 +18,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 
 public class BaseItemIngotHot extends BaseItemIngot {
 
@@ -29,17 +28,6 @@ public class BaseItemIngotHot extends BaseItemIngot {
         this.setTextureName(GTPlusPlus.ID + ":" + "itemIngotHot");
         this.outputIngot = material.getIngot(1);
         this.generateRecipe();
-    }
-
-    @Override
-    public String getItemStackDisplayName(final ItemStack p_77653_1_) {
-        return super.getItemStackDisplayName(p_77653_1_);
-        // return ("Hot "+this.materialName+ " Ingot");
-    }
-
-    @Override
-    public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
-        return Utils.rgbtoHexValue(225, 225, 225);
     }
 
     private void generateRecipe() {

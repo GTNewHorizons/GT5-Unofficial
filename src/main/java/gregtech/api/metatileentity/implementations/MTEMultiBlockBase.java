@@ -211,17 +211,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected boolean canBeMuffled = true;
     protected boolean debugEnergyPresent = false;
     /** A pending IMMEDIATE recipe-check push (new inputs, drained output, user/structure change); never throttled. */
-    private boolean recipeCheckImmediately = false;
+    protected boolean recipeCheckImmediately = false;
     /**
      * A pending THROTTLED recipe-check push (ME restock, power trickle); deferred while the fail cooldown is active.
      */
-    private boolean recipeCheckThrottled = false;
+    protected boolean recipeCheckThrottled = false;
     /**
      * While {@code mTotalRunTime < this}, THROTTLED rechecks are deferred (the push flag is kept until it expires).
      * Set after a failed check to {@code now + MachineStats.machines.recipeCheckFailCooldown}; 0 means no cooldown.
      * IMMEDIATE pushes ignore this entirely.
      */
-    private long recipeCheckCooldownUntil = 0;
+    protected long recipeCheckCooldownUntil = 0;
 
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
@@ -239,7 +239,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public ArrayList<MTEHatchMuffler> mMufflerHatches = new ArrayList<>();
     public ArrayList<MTEHatchEnergy> mEnergyHatches = new ArrayList<>();
     public ArrayList<MTEHatchMaintenance> mMaintenanceHatches = new ArrayList<>();
-    private boolean doPeriodicChecks = false;
+    protected boolean doPeriodicChecks = false;
 
     /**
      * The list of coils in this multi's structure. Use
@@ -662,9 +662,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (mMachine && !mCoils.isEmpty() && isActive && coilLease == null) {
                 coilLease = GTCoilTracker.activate(this, mCoils);
             }
-        } else {
-            startActivitySound();
         }
+    }
+
+    @Override
+    public boolean needsClientTick() {
+        return false;
+    }
+
+    @Override
+    public void onClientSoundStateChanged() {
+        startActivitySound();
     }
 
     @Override
@@ -748,7 +756,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
     }
 
-    private boolean shouldCheckRecipeThisTick(long aTick) {
+    protected boolean shouldCheckRecipeThisTick(long aTick) {
         // Recipe checks are purely event-driven: hatches and config changes push via scheduleRecipeCheck(reason)
         // instead of being polled on a periodic timer.
         if (recipeCheckImmediately) {
@@ -2284,6 +2292,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             && mteHatchCryotheum.mLockedFluid == TFFluids.fluidCryotheum) {
             mteHatchCryotheum.updateTexture(aBaseCasingIndex);
             mteHatchCryotheum.updateCraftingIcon(this.getMachineCraftingIcon());
+            addIfSmartInput(mteHatchCryotheum);
             return mCryotheumHatches.add(mteHatchCryotheum);
         }
         return false;
@@ -2297,6 +2306,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             && mteHatchPyrotheum.mLockedFluid == TFFluids.fluidPyrotheum) {
             mteHatchPyrotheum.updateTexture(aBaseCasingIndex);
             mteHatchPyrotheum.updateCraftingIcon(this.getMachineCraftingIcon());
+            addIfSmartInput(mteHatchPyrotheum);
             return mPyrotheumHatches.add(mteHatchPyrotheum);
         }
         return false;

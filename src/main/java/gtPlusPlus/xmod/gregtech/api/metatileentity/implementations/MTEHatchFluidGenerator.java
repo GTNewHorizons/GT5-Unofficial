@@ -81,6 +81,11 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
     }
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
     public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         if (!aBaseMetaTileEntity.isAllowedToWork()) {
             aBaseMetaTileEntity.setActive(false);

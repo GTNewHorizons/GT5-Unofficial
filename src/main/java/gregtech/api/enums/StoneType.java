@@ -420,7 +420,7 @@ public enum StoneType implements IStoneType {
     public static StoneType findStoneTypeByPrefix(OrePrefixes prefix) {
         var options = STONE_TYPES_BY_PREFIX.get(prefix);
 
-        if (options.isEmpty()) return null;
+        if (options == null || options.isEmpty()) return null;
 
         return options.getFirst();
     }

@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -227,8 +228,18 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     @Override
     public void onRemoval() {
         super.onRemoval();
-        if (getBaseMetaTileEntity().isServerSide())
-            tryOutputAll(mStorage, s -> Collections.singletonList(s.queenStack));
+        IGregTechTileEntity bmte = getBaseMetaTileEntity();
+        for (BeeSimulator s : mStorage) {
+            EntityItem item = new EntityItem(
+                bmte.getWorld(),
+                bmte.getXCoord(),
+                bmte.getYCoord(),
+                bmte.getZCoord(),
+                s.queenStack);
+            item.delayBeforeCanPickup = 10;
+            bmte.getWorld()
+                .spawnEntityInWorld(item);
+        }
     }
 
     /**
@@ -492,6 +503,11 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         if (mOld != 0 && mOld != mMaxSlots) {
             needsTVarUpdate = true;
         }
+    }
+
+    @Override
+    public boolean needsClientTick() {
+        return true;
     }
 
     @Override

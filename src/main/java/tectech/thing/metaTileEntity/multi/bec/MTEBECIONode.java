@@ -212,7 +212,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             .addCasing("94", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
             .addCasing("88", ConflictInducementCasing.getLocalizedName(), false)
             .addCasing("56", ElectromagneticWaveguide.getLocalizedName(), false)
-            .addCasing("0-48", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("18-48", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
             .addCasing("44", FineStructureConstantManipulator.getLocalizedName(), false)
             .addCasing("44", CondensateTransformativeCoil.getLocalizedName(), false)
             .addCasing("32", PeaceEnforcementCasing.getLocalizedName(), false)
@@ -227,8 +227,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                 "Teleportation Node Controller Hatch",
                 StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"),
                 1)
-            .addInputBus("0+", StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
-            .addOutputBus("0+", StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
             .addMiscHatch(
                 "1",
                 "Line-of-Sight Connector Hatch",
@@ -1058,6 +1058,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                     hatch.updateCraftingIcon(self.getMachineCraftingIcon());
                     hatch.setOwner(self);
 
+                    self.addIfSmartInput(hatch);
                     self.losHatch = hatch;
 
                     return true;

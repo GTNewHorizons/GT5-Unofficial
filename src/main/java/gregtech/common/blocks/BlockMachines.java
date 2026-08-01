@@ -63,6 +63,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.common.render.IIconTexture;
+import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import gregtech.common.tileentities.storage.MTEQuantumChest;
 import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.MTERedstoneLamp;
 
@@ -534,6 +535,11 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
             if (tTileEntity instanceof BaseMetaTileEntity baseTE) {
                 baseTE.setColorization((byte) -1);
+            }
+
+            if (tTileEntity instanceof IGregTechTileEntity gtTE
+                && gtTE.getMetaTileEntity() instanceof MTEDigitalTankBase tankMTE) {
+                tankMTE.resetFluidLockOnShiftBreak();
             }
         }
         // This delays deletion of the block until after getDrops
