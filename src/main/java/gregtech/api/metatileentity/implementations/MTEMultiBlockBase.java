@@ -1801,7 +1801,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
             remaining.amount -= drained.amount;
         }
-        return remaining.amount;
+        return aLiquid.amount - remaining.amount;
     }
 
     /**
