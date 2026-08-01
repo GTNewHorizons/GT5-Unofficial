@@ -17,11 +17,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.S23PacketBlockChange;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
@@ -542,6 +544,10 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     public void harvestBlock(World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ, int aMeta) {
         super.harvestBlock(aWorld, aPlayer, aX, aY, aZ, aMeta);
         aWorld.setBlockToAir(aX, aY, aZ);
+        if (aPlayer instanceof EntityPlayerMP player) {
+            // vajra support for triggering resync earlier instead of delaying by 1 tick (50ms).
+            player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(aX, aY, aZ, aWorld));
+        }
     }
 
     @Override
