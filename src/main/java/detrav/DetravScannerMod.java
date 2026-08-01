@@ -1,5 +1,6 @@
 package detrav;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.creativetab.CreativeTabs;
 
 import cpw.mods.fml.common.Mod;
@@ -18,19 +19,18 @@ import gregtech.GT_Version;
 import gregtech.api.GregTechAPI;
 
 @Mod(
-    modid = DetravScannerMod.MODID,
+    modid = Mods.ModIDs.DETRAV_SCANNER_MOD,
     version = GT_Version.VERSION,
     dependencies = "required-after:IC2;required-after:gregtech;after:miscutils;after:bartworks")
 public class DetravScannerMod {
 
-    public static final String MODID = "detravscannermod";
     public static final boolean DEBUG_ENABLED = Boolean.parseBoolean(System.getProperty("com.detrav.debug", "false"));
     public static final CreativeTabs TAB_DETRAV = new DetravCreativeTab();
 
     @SidedProxy(clientSide = "detrav.proxies.ClientProxy", serverSide = "detrav.proxies.ServerProxy")
     public static CommonProxy proxy;
 
-    @Mod.Instance(DetravScannerMod.MODID)
+    @Mod.Instance(Mods.ModIDs.DETRAV_SCANNER_MOD)
     public static DetravScannerMod instance;
 
     public DetravScannerMod() {
