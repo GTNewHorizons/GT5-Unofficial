@@ -312,6 +312,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity instanceof MTENanochipAssemblyModuleBase<?>module) {
             module.connect(this);
+            // whenever main structure check happens, trigger module structure check immediately.
+            module.checkStructure(true, aTileEntity);
             return modules.add(module);
         }
         return false;
