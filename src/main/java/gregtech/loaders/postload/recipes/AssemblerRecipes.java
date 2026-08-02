@@ -3386,6 +3386,31 @@ public class AssemblerRecipes implements Runnable {
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 2),
+                GTOreDictUnificator.get(OrePrefixes.rod, Materials.Wood, 1))
+            .itemOutputs(new ItemStack(Items.diamond_sword))
+            .duration(4 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 2),
+                GTOreDictUnificator.get(OrePrefixes.rod, Materials.Wood, 1))
+            .itemOutputs(new ItemStack(Items.golden_sword))
+            .duration(4 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2),
+                GTOreDictUnificator.get(OrePrefixes.rod, Materials.Wood, 1))
+            .itemOutputs(new ItemStack(Items.iron_sword))
+            .duration(4 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
     }
 
     /**
