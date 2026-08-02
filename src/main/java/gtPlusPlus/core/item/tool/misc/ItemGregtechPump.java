@@ -84,6 +84,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     private final HashMap<Integer, IIcon> mIconMap = new HashMap<>();
     private final HashMap<Integer, EnumRarity> rarity = new HashMap<>();
     public final HashMap<Short, Long[]> mElectricStats = new HashMap<>();
+    private static boolean isRegistered;
 
     public void registerPumpType(final int aID, final String aPumpName, final int aEuMax, final int aTier) {
         registerItem(
@@ -115,8 +116,9 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         this.setUnlocalizedName(unlocalizedName);
         this.setCreativeTab(creativeTab);
         this.setMaxStackSize(1);
-        if (GameRegistry.findItem(GTPlusPlus.ID, unlocalizedName) == null) {
+        if (!isRegistered) {
             GameRegistry.registerItem(this, unlocalizedName);
+            isRegistered = false;
         }
     }
 

@@ -345,7 +345,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             'V',
             buildHatchAdder(MTENanoForge.class)
                 .atLeast(ImmutableMap.of(InputHatch, 1, OutputBus, 1, InputBus, 1, Energy.or(ExoticEnergy), 1))
-                .hint(1)
+                .hint(2)
                 .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(6))
                 .buildAndChain(onElementPass(MTENanoForge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings13, 6))))
         .addElement('R', ofBlock(GregTechAPI.sBlockGlass1, 5))
@@ -717,10 +717,13 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     @Override
     public void onPreviewConstruct(@NotNull ItemStack trigger) {
         mSpecialTier = (byte) trigger.stackSize;
-        if (mSpecialTier == 4) {
-            buildPiece(STRUCTURE_PIECE_TIER4_BASE, trigger, false, 20, 33, 0);
-            buildPiece(STRUCTURE_PIECE_TIER4_RENDER, trigger, false, 20, 50, 0);
-        }
+        ItemStack nanite = switch (trigger.stackSize) {
+            case 1 -> Materials.Carbon.getNanite(1);
+            case 2 -> Materials.Neutronium.getNanite(1);
+            case 3 -> Materials.TranscendentMetal.getNanite(1);
+            default -> Materials.Eternity.getNanite(1);
+        };
+        setInventorySlotContents(getControllerSlotIndex(), nanite);
     }
 
     @Override

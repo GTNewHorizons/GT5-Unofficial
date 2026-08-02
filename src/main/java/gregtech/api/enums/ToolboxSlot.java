@@ -165,15 +165,25 @@ public enum ToolboxSlot {
 
     private static Predicate<ItemStack> isItemInToolSet(GTHashSet... toolSet) {
         return (ItemStack itemStack) -> {
-            if (!(itemStack.getItem() instanceof final MetaGeneratedTool mgTool)
+            if (toolSet.length == 0 || !(itemStack.getItem() instanceof final MetaGeneratedTool mgTool)
                 || BANNED_TOOLS.contains(mgTool.getToolStats(itemStack).getClass())
                 || GTMod.proxy.toolboxBans.contains(mgTool)
             ) {
                 return false;
             }
 
+            final Long[] electricStats = mgTool.getElectricStats(itemStack);
+            ItemStack copy = itemStack;
+
+            // Uncharged items aren't recognized as a valid tool, normally. Get around this by adding 1 EU to a copy of
+            // the tool, so we can determine if it's actually a tool of the relevant type.
+            if (electricStats != null && mgTool.getRealCharge(itemStack) == 0) {
+                copy = itemStack.copy();
+                mgTool.charge(copy, 1, Integer.MAX_VALUE, true, false);
+            }
+
             for (final GTHashSet toolType : toolSet) {
-                if (GTUtility.isStackInList(itemStack, toolType)) {
+                if (GTUtility.isStackInList(copy, toolType)) {
                     return true;
                 }
             }
