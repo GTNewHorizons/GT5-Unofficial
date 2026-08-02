@@ -35,7 +35,6 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -49,6 +48,7 @@ import gregtech.common.WirelessComputationPacket;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataItemsInput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataItemsOutput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessDataItemsOutput;
@@ -61,7 +61,10 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     private final ArrayList<MTEHatchDataItemsOutput> eStacksDataOutputs = new ArrayList<>();
     private final ArrayList<MTEHatchWirelessDataItemsOutput> eWirelessStacksDataOutputs = new ArrayList<>();
     private final ArrayList<MTEHatchDataAccess> eDataAccessHatches = new ArrayList<>();
+    private ALRecipeDataPacket lastRecipeDataPacket = null;
+    private int lastOutputHatchCount = 0;
     private boolean slave = false;
+    private boolean dirty = false;
     private boolean wirelessModeEnabled = false;
     // endregion
 
@@ -153,9 +156,6 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     @Override
     public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
         List<StructureError> errors) {
-        eDataAccessHatches.clear();
-        eStacksDataOutputs.clear();
-        eWirelessStacksDataOutputs.clear();
         slave = false;
         if (!checkPiece("main", 2, 1, 0, errors)) return;
         if (eDataAccessHatches.isEmpty()) {
@@ -166,6 +166,19 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         }
         checkHasAnyEnergy(errors);
         checkHasMaintenanceHatch(errors);
+    }
+
+    @Override
+    public void clearHatches() {
+        lastOutputHatchCount = calcOutputHatchCount();
+        super.clearHatches();
+        // avoid duplicate calls to addWatcher resulting in duplicate notifyWatchers calls
+        for (MTEHatchDataAccess dataAccess : eDataAccessHatches) {
+            dataAccess.removeWatcher(this);
+        }
+        eDataAccessHatches.clear();
+        eStacksDataOutputs.clear();
+        eWirelessStacksDataOutputs.clear();
     }
 
     @Override
@@ -184,30 +197,53 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     @Override
     public void outputAfterRecipe_EM() {
+        if (!this.dirty) return;
+
         HashSet<RecipeAssemblyLine> availableRecipes = new HashSet<>();
 
         for (MTEHatchDataAccess dataAccess : validMTEList(eDataAccessHatches)) {
             availableRecipes.addAll(dataAccess.getAssemblyLineRecipes());
         }
 
+        ALRecipeDataPacket dataPacket = null;
         if (!availableRecipes.isEmpty()) {
             RecipeAssemblyLine[] recipeArray = availableRecipes.toArray(new RecipeAssemblyLine[0]);
+            dataPacket = new ALRecipeDataPacket(recipeArray);
+        }
 
-            for (MTEHatchDataItemsOutput hatch : validMTEList(eStacksDataOutputs)) {
-                hatch.q = new ALRecipeDataPacket(recipeArray);
-            }
+        updateDataOutputs(dataPacket);
+        lastRecipeDataPacket = dataPacket;
 
-            if (wirelessModeEnabled) {
-                for (MTEHatchWirelessDataItemsOutput hatch : validMTEList(eWirelessStacksDataOutputs)) {
-                    hatch.dataPacket = new ALRecipeDataPacket(recipeArray);
-                }
+        this.dirty = false;
+    }
+
+    /**
+     * Updates the data outputs of the machine using the provided {@code ALRecipeDataPacket}.
+     * This method adjusts the state of (wireless) data output hatches if the provided packet differs from their last
+     * cached packet.
+     * If wireless mode is enabled, it ensures the wireless hatches are updated and marked dirty as needed.
+     *
+     * @param dataPacket the {@link ALRecipeDataPacket} containing the data to be used for updating
+     *                   the outputs. This includes information propagated to the output hatches.
+     */
+    private void updateDataOutputs(ALRecipeDataPacket dataPacket) {
+        for (MTEHatchDataItemsOutput hatch : validMTEList(eStacksDataOutputs)) {
+            // only update the hatch if it's different packet than the last one
+            if (hatch.previousPacket == dataPacket) continue;
+            hatch.q = dataPacket;
+            // somehow the hatches posttick doesn't wanna happen, so let's trigger the update manually
+            hatch.moveAround(hatch.getBaseMetaTileEntity(), MTEHatchDataConnector.CheckState.NEW_DATA);
+        }
+
+        if (wirelessModeEnabled) {
+            for (MTEHatchWirelessDataItemsOutput hatch : validMTEList(eWirelessStacksDataOutputs)) {
+                if (hatch.dataPacket == dataPacket) continue;
+                hatch.dataPacket = dataPacket;
+                hatch.dirty = true;
             }
         } else {
-            for (MTEHatchDataItemsOutput hatch : validMTEList(eStacksDataOutputs)) {
-                hatch.q = null;
-            }
-
             for (MTEHatchWirelessDataItemsOutput hatch : validMTEList(eWirelessStacksDataOutputs)) {
+                hatch.dirty = hatch.dataPacket != null;
                 hatch.dataPacket = null;
             }
         }
@@ -228,36 +264,54 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         return SoundResource.TECTECH_MACHINES_FX_HIGH_FREQ;
     }
 
+    // called by the hatches' notifyWatchers
+    @Override
+    public void scheduleRecipeCheckImmediate() {
+        super.scheduleRecipeCheckImmediate();
+        this.dirty = true;
+    }
+
+    // be dirty on first tick, so that the cache gets primed
+    @Override
+    public void onFirstTick_EM(IGregTechTileEntity bmTE) {
+        super.onFirstTick_EM(bmTE);
+
+        if (!bmTE.isServerSide()) return;
+
+        this.dirty = true;
+    }
+
     public final boolean addDataBankHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;
         }
 
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
-        }
-
-        if (aMetaTileEntity instanceof MTEHatchWirelessDataItemsOutput) {
-            ((MTEHatchWirelessDataItemsOutput) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eWirelessStacksDataOutputs.add((MTEHatchWirelessDataItemsOutput) aMetaTileEntity);
-        }
-
-        if (aMetaTileEntity instanceof MTEHatchDataItemsOutput) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eStacksDataOutputs.add((MTEHatchDataItemsOutput) aMetaTileEntity);
-        }
-
-        if (aMetaTileEntity instanceof MTEHatchDataAccess hatch
-            && !(aMetaTileEntity instanceof MTEHatchDataItemsInput)) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eDataAccessHatches.add(hatch);
-        }
-
-        if (aMetaTileEntity instanceof MTEHatchDataItemsInput hatch) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            slave = true;
-            return eDataAccessHatches.add(hatch);
+        switch (aMetaTileEntity) {
+            case null -> {
+                return false;
+            }
+            case MTEHatchWirelessDataItemsOutput mteHatchWirelessDataItemsOutput -> {
+                mteHatchWirelessDataItemsOutput.updateTexture(aBaseCasingIndex);
+                return eWirelessStacksDataOutputs.add(mteHatchWirelessDataItemsOutput);
+            }
+            case MTEHatchDataItemsOutput mteHatchDataItemsOutput -> {
+                mteHatchDataItemsOutput.updateTexture(aBaseCasingIndex);
+                return eStacksDataOutputs.add(mteHatchDataItemsOutput);
+            }
+            case MTEHatchDataItemsInput mteDataItemInput -> {
+                mteDataItemInput.updateTexture(aBaseCasingIndex);
+                slave = true;
+                mteDataItemInput.addWatcher(this);
+                return eDataAccessHatches.add(mteDataItemInput);
+            }
+            case MTEHatchDataAccess mteDatastickHatch -> {
+                mteDatastickHatch.updateTexture(aBaseCasingIndex);
+                mteDatastickHatch.addWatcher(this);
+                return eDataAccessHatches.add(mteDatastickHatch);
+            }
+            default -> {
+            }
         }
 
         return false;
@@ -268,6 +322,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         ItemStack aTool) {
         if (getBaseMetaTileEntity().isServerSide()) {
             wirelessModeEnabled = !wirelessModeEnabled;
+            this.dirty = true;
             if (wirelessModeEnabled) {
                 GTUtility.sendChatToPlayer(aPlayer, "Wireless mode enabled");
                 WirelessComputationPacket.enableWirelessNetWork(getBaseMetaTileEntity());
@@ -275,6 +330,28 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                 GTUtility.sendChatToPlayer(aPlayer, "Wireless mode disabled");
                 WirelessComputationPacket.disableWirelessNetWork(getBaseMetaTileEntity());
             }
+        }
+    }
+
+    @Override
+    public void onEnableWorking() {
+        super.onEnableWorking();
+        this.dirty = true;
+    }
+
+    @Override
+    public void onDisableWorking() {
+        super.onDisableWorking();
+        // force outputs to drop packets
+        updateDataOutputs(null);
+    }
+
+    @Override
+    protected void onStructureCheckFinished(IGregTechTileEntity igte) {
+        super.onStructureCheckFinished(igte);
+        // output hatches were modified, so let's update the outputs
+        if (lastOutputHatchCount != calcOutputHatchCount()) {
+            updateDataOutputs(lastRecipeDataPacket);
         }
     }
 
@@ -367,5 +444,9 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
+    }
+
+    private int calcOutputHatchCount() {
+        return ((eStacksDataOutputs.size() & 0xFF) << 8) + (eWirelessStacksDataOutputs.size() & 0xFF);
     }
 }
