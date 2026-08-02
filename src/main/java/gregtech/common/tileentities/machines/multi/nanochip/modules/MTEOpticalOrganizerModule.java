@@ -10,7 +10,6 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -213,7 +212,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
 
             final List<BoostingWater> fluid = WATER_LIST.stream()
                 .filter(candidate -> drain(hatch, candidate.water.getFluid(candidate.amount), false))
-                .collect(Collectors.toList());
+                .toList();
 
             if (fluid.size() >= 2) {
                 firstWater = fluid.get(0);

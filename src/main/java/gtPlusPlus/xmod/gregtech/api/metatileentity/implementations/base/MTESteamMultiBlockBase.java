@@ -341,14 +341,20 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     }
 
     public boolean resetRecipeMapForHatch(MTEHatch aTileEntity, RecipeMap<?> aMap) {
-        if (aTileEntity == null) return false;
-        if (aTileEntity instanceof MTEHatchInput hatch) {
-            hatch.mRecipeMap = aMap;
-            return true;
-        }
-        if (aTileEntity instanceof MTEHatchInputBus hatch) {
-            hatch.mRecipeMap = aMap;
-            return true;
+        switch (aTileEntity) {
+            case null -> {
+                return false;
+            }
+            case MTEHatchInput hatch -> {
+                hatch.mRecipeMap = aMap;
+                return true;
+            }
+            case MTEHatchInputBus hatch -> {
+                hatch.mRecipeMap = aMap;
+                return true;
+            }
+            default -> {
+            }
         }
         return false;
     }

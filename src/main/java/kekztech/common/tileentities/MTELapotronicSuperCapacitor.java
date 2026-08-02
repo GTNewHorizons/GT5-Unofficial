@@ -334,36 +334,46 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         if (aTileEntity == null || aTileEntity.isDead()) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (!(aMetaTileEntity instanceof MTEHatch)) return false;
-        if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
-                droneDownLink.registerMachineController(this);
+        switch (aMetaTileEntity) {
+            case MTEHatchMaintenance hatch -> {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
+                    droneDownLink.registerMachineController(this);
+                }
+                return MTELapotronicSuperCapacitor.this.mMaintenanceHatches.add(hatch);
             }
-            return MTELapotronicSuperCapacitor.this.mMaintenanceHatches.add(hatch);
-        } else if (aMetaTileEntity instanceof MTEHatchEnergy tHatch) {
-            // Add GT hatches
-            processInputHatch(tHatch, aBaseCasingIndex);
-            return mEnergyHatches.add(tHatch);
-        } else if (aMetaTileEntity instanceof MTEHatchEnergyTunnel tHatch) {
-            // Add TT Laser hatches
-            processInputHatch(tHatch, aBaseCasingIndex);
-            return mEnergyTunnelsTT.add(tHatch);
-        } else if (aMetaTileEntity instanceof MTEHatchEnergyMulti tHatch) {
-            // Add TT hatches
-            processInputHatch(tHatch, aBaseCasingIndex);
-            return mEnergyHatchesTT.add(tHatch);
-        } else if (aMetaTileEntity instanceof MTEHatchDynamoTunnel tDynamo) {
-            // Add TT Laser hatches
-            processOutputHatch(tDynamo, aBaseCasingIndex);
-            return mDynamoTunnelsTT.add(tDynamo);
-        } else if (aMetaTileEntity instanceof MTEHatchDynamoMulti tDynamo) {
-            // Add TT hatches
-            processOutputHatch(tDynamo, aBaseCasingIndex);
-            return mDynamoHatchesTT.add(tDynamo);
-        } else if (aMetaTileEntity instanceof MTEHatchDynamo tDynamo) {
-            // Add GT hatches
-            processOutputHatch(tDynamo, aBaseCasingIndex);
-            return mDynamoHatches.add(tDynamo);
+            case MTEHatchEnergy tHatch -> {
+                // Add GT hatches
+                processInputHatch(tHatch, aBaseCasingIndex);
+                return mEnergyHatches.add(tHatch);
+            }
+            case MTEHatchEnergyTunnel tHatch -> {
+                // Add TT Laser hatches
+                processInputHatch(tHatch, aBaseCasingIndex);
+                return mEnergyTunnelsTT.add(tHatch);
+            }
+            case MTEHatchEnergyMulti tHatch -> {
+                // Add TT hatches
+                processInputHatch(tHatch, aBaseCasingIndex);
+                return mEnergyHatchesTT.add(tHatch);
+            }
+            case MTEHatchDynamoTunnel tDynamo -> {
+                // Add TT Laser hatches
+                processOutputHatch(tDynamo, aBaseCasingIndex);
+                return mDynamoTunnelsTT.add(tDynamo);
+            }
+            case MTEHatchDynamoMulti tDynamo -> {
+                // Add TT hatches
+                processOutputHatch(tDynamo, aBaseCasingIndex);
+                return mDynamoHatchesTT.add(tDynamo);
+            }
+            case MTEHatchDynamo tDynamo -> {
+                // Add GT hatches
+                processOutputHatch(tDynamo, aBaseCasingIndex);
+                return mDynamoHatches.add(tDynamo);
+            }
+            default -> {
+            }
         }
         return false;
     }

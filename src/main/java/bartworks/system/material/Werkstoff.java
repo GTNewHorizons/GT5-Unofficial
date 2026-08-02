@@ -335,8 +335,6 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             this.isFormulaNeededLocalized = true;
             GTLanguageManager.addStringLocalization(getLocalizedNameKey() + ".ChemicalFormula", this.toolTip);
         }
-        // if (this.toolTip.length() > 25)
-        // this.toolTip = "The formula is to long...";
 
         if (this.stats.protons == 0) {
             long tmpprotons = 0;
@@ -809,7 +807,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             Mixing,
             /// Adds a sifting oreproc recipe for this material's ore. Also adds a 9x gem -> block compressor recipe for
             /// some reason.
-            Sifting;
+            Sifting
         }
 
         public GenerationFeatures() {}

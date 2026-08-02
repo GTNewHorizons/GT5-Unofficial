@@ -533,7 +533,6 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
                             placed = true;
                             if (dryRun) return;
                         }
-                        continue;
                     }
                 }
             }

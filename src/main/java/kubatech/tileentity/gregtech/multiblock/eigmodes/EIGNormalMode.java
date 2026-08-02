@@ -2,7 +2,10 @@ package kubatech.tileentity.gregtech.multiblock.eigmodes;
 
 import static gregtech.api.util.StringUtils.voltageTooltipFormatted;
 
-import net.minecraft.util.StatCollector;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.util.ResourceLocation;
 
 import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.api.eig.EIGMode;
@@ -64,39 +67,17 @@ public class EIGNormalMode extends EIGMode {
 
     @Override
     public MultiblockTooltipBuilder addTooltipInfo(MultiblockTooltipBuilder builder) {
-        String minVoltageTier = voltageTooltipFormatted(this.getMinVoltageTier());
-        String minVoltageTierMinus1 = voltageTooltipFormatted(this.getMinVoltageTier() - 1);
+        Map<String, Object> ttVars = new HashMap<>();
+        ttVars.put("minVoltageTier", voltageTooltipFormatted(this.getMinVoltageTier()));
+        ttVars.put("minVoltageTierMinus1", voltageTooltipFormatted(this.getMinVoltageTier() - 1));
+        ttVars.put("startingSlotCount", this.getStartingSlotCount());
+        ttVars.put("slotPerTierMultiplier", this.getSlotPerTierMultiplier());
+        ttVars.put("seedCapacityPerSlot", this.getSeedCapacityPerSlot());
+        ttVars.put("maxFertilizerUsagePerSeed", this.getMaxFertilizerUsagePerSeed());
+        ttVars.put("fertilizerBonus", String.format("%.0f%%", this.getFertilizerBoost() * 100));
 
-        double fertilizerBonusMultiplier = this.getFertilizerBoost() * 100;
-        String fertilizerBonus = String.format("%.0f%%", fertilizerBonusMultiplier);
-
-        return builder.addSeparator()
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.EIGNormalMode.header"))
-            .addInfo(StatCollector.translateToLocalFormatted("kubatech.multiblock.EIGNormalMode.desc1", minVoltageTier))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("kubatech.multiblock.EIGNormalMode.desc2", this.getStartingSlotCount()))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.multiblock.EIGNormalMode.desc3",
-                    minVoltageTier,
-                    this.getSlotPerTierMultiplier()))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.multiblock.EIGNormalMode.desc4",
-                    this.getSeedCapacityPerSlot()))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.EIGNormalMode.desc5"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("kubatech.multiblock.EIGNormalMode.desc6", minVoltageTierMinus1))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.EIGNormalMode.desc7"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.EIGNormalMode.desc8"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.multiblock.EIGNormalMode.desc9",
-                    this.getMaxFertilizerUsagePerSeed()))
-            .addInfo(
-                StatCollector.translateToLocalFormatted("kubatech.multiblock.EIGNormalMode.desc10", fertilizerBonus));
+        return builder
+            .addMarkdown(new ResourceLocation("gregtech", "extreme-industrial-greenhouse-normal-mode"), ttVars);
     }
 
     @Override
