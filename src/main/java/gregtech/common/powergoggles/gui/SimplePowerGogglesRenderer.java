@@ -11,6 +11,7 @@ import java.text.DecimalFormat;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Function;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -57,6 +58,27 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     private final PowerGogglesMeasurement[] lastMeasurementsCache =
         new PowerGogglesMeasurement[PowerGogglesConstants.MEASUREMENT_COUNT_1H];
     private int lastMeasurementsCount;
+
+    private final CachedText cachedStorage = new CachedText();
+    private final CachedText cached5mText = new CachedText();
+    private final CachedText cached1hText = new CachedText();
+    private final CachedText cachedChartMinText = new CachedText();
+    private final CachedText cachedChartMaxText = new CachedText();
+
+    private static final class CachedText {
+        private BigInteger value;
+        private int configIndex;
+        private String text;
+
+        private String get(BigInteger value, int configIndex, Function<BigInteger, String> formatter) {
+            if (!value.equals(this.value) || configIndex != this.configIndex) {
+                this.value = value;
+                this.configIndex = configIndex;
+                this.text = formatter.apply(value);
+            }
+            return this.text;
+        }
+    }
 
     @Override
     public void render(RenderGameOverlayEvent.Post event) {
@@ -125,7 +147,10 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             : measurements.getLast()
                 .getMeasurement();
 
-        String currentStorage = PowerGogglesUtil.format(measurement);
+        String currentStorage = cachedStorage.get(
+            measurement,
+            PowerGogglesConfigHandler.formatIndex,
+            PowerGogglesUtil::format);
         drawScaledString(currentStorage, xOffset, stringY, stringColor, mainScale);
     }
 
@@ -278,27 +303,41 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     private void render5mDifference(int stringY) {
-        String formattedDifference5m = PowerGogglesUtil.format(euDifference5m);
-        int tickCount5m = 5 * PowerGogglesConstants.MINUTES;
-
-        BigInteger tickDifference5m = euDifference5m.divide(BigInteger.valueOf(tickCount5m));
-        String formattedTickDifference5m = PowerGogglesUtil.format(tickDifference5m);
-        String timedDifference5m = getTimedDifferenceText("5m: ", formattedDifference5m, formattedTickDifference5m);
+        String timedDifference5m = cached5mText.get(
+            euDifference5m,
+            PowerGogglesConfigHandler.readingIndex,
+            this::format5mDifference);
         int stringColor5m = getTextColor(euDifference5m);
 
         drawScaledString(timedDifference5m, xOffset, stringY, stringColor5m, subScale);
     }
 
-    private void render1hDifference(int stringY) {
-        String formattedDifference1h = PowerGogglesUtil.format(euDifference1h);
+    private String format5mDifference(BigInteger difference) {
+        String formattedDifference5m = PowerGogglesUtil.format(difference);
 
-        int tickCount1h = 1 * PowerGogglesConstants.HOURS;
-        BigInteger tickDifference1h = euDifference1h.divide(BigInteger.valueOf(tickCount1h));
+        int tickCount5m = 5 * PowerGogglesConstants.MINUTES;
+        BigInteger tickDifference5m = difference.divide(BigInteger.valueOf(tickCount5m));
+        String formattedTickDifference5m = PowerGogglesUtil.format(tickDifference5m);
+        return getTimedDifferenceText("5m: ", formattedDifference5m, formattedTickDifference5m);
+    }
+
+    private void render1hDifference(int y) {
+        String timedDifference1h = cached1hText.get(
+            euDifference1h,
+            PowerGogglesConfigHandler.readingIndex,
+            this::format1hDifference);
+        int stringColor1h = getTextColor(euDifference1h);
+        drawScaledString(timedDifference1h, xOffset, y, stringColor1h, subScale);
+    }
+
+    private String format1hDifference(BigInteger difference) {
+        String formattedDifference1h = PowerGogglesUtil.format(difference);
+
+        int tickCount1h = PowerGogglesConstants.HOURS;
+        BigInteger tickDifference1h = difference.divide(BigInteger.valueOf(tickCount1h));
         String formattedTickDifference1h = PowerGogglesUtil.format(tickDifference1h);
 
-        String timedDifference1h = getTimedDifferenceText("1h: ", formattedDifference1h, formattedTickDifference1h);
-        int stringColor1h = getTextColor(euDifference1h);
-        drawScaledString(timedDifference1h, xOffset, stringY, stringColor1h, subScale);
+        return getTimedDifferenceText("1h: ", formattedDifference1h, formattedTickDifference1h);
     }
 
     private String getTimedDifferenceText(String prefix, String formattedDifference, String formattedTickDifference) {
@@ -534,14 +573,23 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
     private void renderPowerChartBounds(BigInteger minReading, BigInteger maxReading) {
         double scale = 0.5f;
+        String minText = cachedChartMinText.get(
+            minReading,
+            PowerGogglesConfigHandler.formatIndex,
+            PowerGogglesUtil::format);
         drawScaledString(
-            PowerGogglesUtil.format(minReading),
+            minText,
             xOffset,
             screenHeight - yOffset - borderRadius * 2 - (int) (fontRenderer.FONT_HEIGHT * scale),
             PowerGogglesConfigHandler.chartMinTextColor,
             scale);
+        String maxText = minReading.equals(maxReading) ? ""
+            : cachedChartMaxText.get(
+                maxReading,
+                PowerGogglesConfigHandler.formatIndex,
+                PowerGogglesUtil::format);
         drawScaledString(
-            minReading.equals(maxReading) ? "" : PowerGogglesUtil.format(maxReading),
+            maxText,
             xOffset,
             screenHeight - yOffset - borderRadius * 2 - chartHeight,
             PowerGogglesConfigHandler.chartMaxTextColor,
