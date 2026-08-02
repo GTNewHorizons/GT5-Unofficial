@@ -700,10 +700,12 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             case "d" -> "n";
             case "how fast are you" -> "2fast2quick";
             case "knock knock" -> "Who's there?";
-            case "cake" -> switch (MathUtils.randInt(1, 2)) {
-                    case 1 -> "Preheat oven to 180C. Mix 2 eggs, 1 cup sugar, 1/2 cup oil, 1 cup milk. Stir in 2 cups flour and 1 tbsp baking powder. Pour into greased pan and bake 35 minutes until golden. Cool slightly and serve plain or dusted with sugar. Simple and fluffy.";
-                    default -> "This time not a lie";
-                };
+            case "cake" -> {
+                if (MathUtils.randInt(1, 2) == 1) {
+                   yield "Preheat oven to 180C. Mix 2 eggs, 1 cup sugar, 1/2 cup oil, 1 cup milk. Stir in 2 cups flour and 1 tbsp baking powder. Pour into greased pan and bake 35 minutes until golden. Cool slightly and serve plain or dusted with sugar. Simple and fluffy.";
+                }
+               yield "This time not a lie";
+            }
             case "6" -> "7";
             case "joke" -> switch (MathUtils.randInt(1, 7)) {
                     case 1 -> "No time for jokes.";
