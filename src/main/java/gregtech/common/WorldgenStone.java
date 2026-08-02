@@ -232,10 +232,6 @@ public class WorldgenStone extends GTWorldgen {
                                     continue;
                                 }
                                 // spotless:on
-
-                                if (OreManager.setExistingOreStoneType(aWorld, iX, iY, iZ, stoneType)) {
-                                    continue;
-                                }
                             }
                         }
                     }
