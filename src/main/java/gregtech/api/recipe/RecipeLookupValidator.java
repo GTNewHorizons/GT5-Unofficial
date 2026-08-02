@@ -139,7 +139,7 @@ public final class RecipeLookupValidator {
 
     private static String describeRecipeCategory(GTRecipe recipe) {
         RecipeCategory category = recipe.getRecipeCategory();
-        return category == null ? "<none>" : String.valueOf(category.unlocalizedName);
+        return category == null ? "<none>" : category.unlocalizedName;
     }
 
     private static String describeRecipeOwners(GTRecipe recipe) {
