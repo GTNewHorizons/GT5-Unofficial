@@ -51,6 +51,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -801,48 +802,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.machine-type"))
-            .addInfo(EnumChatFormatting.ITALIC + "Also known as Godforge or Gorge for short")
-            .addSeparator(EnumChatFormatting.AQUA, 73)
-            .addInfo("A massive structure harnessing the thermal, gravitational and")
-            .addInfo("kinetic energy of a stabilised neutron star for material processing")
-            .addInfo(
-                "This multiblock can house " + EnumChatFormatting.RED
-                    + "up to 16 modules "
-                    + EnumChatFormatting.GRAY
-                    + "which utilize the star to energize materials")
-            .addInfo("to varying degrees, ranging from regular smelting to matter degeneration")
-            .addInfo("EU requirements for all modules are handled via wireless energy directly")
-            .addSeparator(EnumChatFormatting.AQUA, 73)
-            .addInfo(
-                "This multiblock has an " + EnumChatFormatting.GOLD
-                    + "extensive upgrade tree "
-                    + EnumChatFormatting.GRAY
-                    + "which influences all of its functions,")
-            .addInfo(
-                "such as " + EnumChatFormatting.GOLD
-                    + "unlocking new module types"
-                    + EnumChatFormatting.GRAY
-                    + ", "
-                    + EnumChatFormatting.GOLD
-                    + "increasing heat levels "
-                    + EnumChatFormatting.GRAY
-                    + "and "
-                    + EnumChatFormatting.GOLD
-                    + "granting")
-            .addInfo(
-                EnumChatFormatting.GOLD + "various processing speed bonuses"
-                    + EnumChatFormatting.GRAY
-                    + ". "
-                    + EnumChatFormatting.GRAY
-                    + "These upgrades can be unlocked by reaching")
-            .addInfo("certain milestones and/or spending materials")
-            .addSeparator(EnumChatFormatting.AQUA, 73)
-            .addInfo(
-                EnumChatFormatting.GREEN
-                    + "Clicking on the logo in the controller gui opens an extensive information window"
-                    + EnumChatFormatting.GRAY
-                    + ",")
-            .addInfo("explaining everything there is to know about this multiblock")
+            .addMarkdown(new ResourceLocation("gregtech", "forge-of-gods"))
             .beginStructureBlock(127, 29, 186, true)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.controller-pos"))
             .addInputHatch("1", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.hatch-pos"), 1)
