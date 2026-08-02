@@ -55,8 +55,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     private BigInteger euDifference5m = BigInteger.ZERO;
     private BigInteger euDifference1h = BigInteger.ZERO;
 
-    private final PowerGogglesMeasurement[] lastMeasurementsCache =
-        new PowerGogglesMeasurement[PowerGogglesConstants.MEASUREMENT_COUNT_1H];
+    private final PowerGogglesMeasurement[] lastMeasurementsCache = new PowerGogglesMeasurement[PowerGogglesConstants.MEASUREMENT_COUNT_1H];
     private int lastMeasurementsCount;
 
     private final CachedText cachedStorage = new CachedText();
@@ -70,6 +69,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     private BigInteger cachedGradientDifference;
 
     private static final class CachedText {
+
         private BigInteger value;
         private int configIndex;
         private String text;
@@ -151,10 +151,8 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             : measurements.getLast()
                 .getMeasurement();
 
-        String currentStorage = cachedStorage.get(
-            measurement,
-            PowerGogglesConfigHandler.formatIndex,
-            PowerGogglesUtil::format);
+        String currentStorage = cachedStorage
+            .get(measurement, PowerGogglesConfigHandler.formatIndex, PowerGogglesUtil::format);
         drawScaledString(currentStorage, xOffset, stringY, stringColor, mainScale);
     }
 
@@ -263,8 +261,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         if (lastMeasurement.equals(BigInteger.ZERO)) {
             PowerGogglesMeasurement[] recentMeasurements = getLastMeasurements(
                 PowerGogglesConstants.MEASUREMENT_COUNT_5M);
-            if (getMaximumMeasurement(recentMeasurements, lastMeasurementsCount)
-                .compareTo(BigInteger.ZERO) > 0) {
+            if (getMaximumMeasurement(recentMeasurements, lastMeasurementsCount).compareTo(BigInteger.ZERO) > 0) {
                 differenceRatio = -1;
             } else {
                 differenceRatio = 0;
@@ -309,10 +306,8 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     private void render5mDifference(int stringY) {
-        String timedDifference5m = cached5mText.get(
-            euDifference5m,
-            PowerGogglesConfigHandler.readingIndex,
-            this::format5mDifference);
+        String timedDifference5m = cached5mText
+            .get(euDifference5m, PowerGogglesConfigHandler.readingIndex, this::format5mDifference);
         int stringColor5m = getTextColor(euDifference5m);
 
         drawScaledString(timedDifference5m, xOffset, stringY, stringColor5m, subScale);
@@ -328,10 +323,8 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     private void render1hDifference(int y) {
-        String timedDifference1h = cached1hText.get(
-            euDifference1h,
-            PowerGogglesConfigHandler.readingIndex,
-            this::format1hDifference);
+        String timedDifference1h = cached1hText
+            .get(euDifference1h, PowerGogglesConfigHandler.readingIndex, this::format1hDifference);
         int stringColor1h = getTextColor(euDifference1h);
         drawScaledString(timedDifference1h, xOffset, y, stringColor1h, subScale);
     }
@@ -579,10 +572,8 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
     private void renderPowerChartBounds(BigInteger minReading, BigInteger maxReading) {
         double scale = 0.5f;
-        String minText = cachedChartMinText.get(
-            minReading,
-            PowerGogglesConfigHandler.formatIndex,
-            PowerGogglesUtil::format);
+        String minText = cachedChartMinText
+            .get(minReading, PowerGogglesConfigHandler.formatIndex, PowerGogglesUtil::format);
         drawScaledString(
             minText,
             xOffset,
@@ -590,10 +581,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             PowerGogglesConfigHandler.chartMinTextColor,
             scale);
         String maxText = minReading.equals(maxReading) ? ""
-            : cachedChartMaxText.get(
-                maxReading,
-                PowerGogglesConfigHandler.formatIndex,
-                PowerGogglesUtil::format);
+            : cachedChartMaxText.get(maxReading, PowerGogglesConfigHandler.formatIndex, PowerGogglesUtil::format);
         drawScaledString(
             maxText,
             xOffset,
