@@ -39,21 +39,6 @@ public class MTEXLTurbineSteam extends MTEXLTurbineBase {
     }
 
     @Override
-    protected Casings getCasing() {
-        return Casings.ReinforcedSteamTurbineCasing;
-    }
-
-    @Override
-    protected Materials getFrameMaterial() {
-        return Materials.Steel;
-    }
-
-    @Override
-    protected Casings getRotorCasing() {
-        return Casings.SteelPipeCasing;
-    }
-
-    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Steam Turbine, XLST")

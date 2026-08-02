@@ -842,11 +842,6 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         return true;
     }
 
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
     private enum CentrifugeHatchElement implements IHatchElement<MTESpinmatron> {
 
         ROTOR_ASSEMBLY(MTESpinmatron::addTurbineHatch, MTEHatchTurbine.class) {
