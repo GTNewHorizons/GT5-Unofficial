@@ -10,19 +10,18 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 
 /**
- * An abstract hatch class that can emit directional redstone signals. Extend to add textures/description/data, and
- * implement redstone logic on multi side.
+ * An abstract hatch class that can emit directional redstone signals. Extend to add textures/description/data.
  */
-public abstract class MTEDetectorHatchBase extends MTEHatch {
+public abstract class MTERedstoneHatchBase extends MTEHatch {
 
     private final byte[] redstoneSignal = { 0, 0, 0, 0, 0, 0 };
 
-    public MTEDetectorHatchBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
+    public MTERedstoneHatchBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
         String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public MTEDetectorHatchBase(String aName, int aTier, int aInvSlotCount, String[] aDescription,
+    public MTERedstoneHatchBase(String aName, int aTier, int aInvSlotCount, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }

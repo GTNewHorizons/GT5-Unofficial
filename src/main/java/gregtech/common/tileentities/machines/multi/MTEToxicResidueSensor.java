@@ -1,10 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -16,15 +13,13 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEToxicResidueSensorGui;
 
-public class MTEToxicResidueSensor extends MTEHatch {
+public class MTEToxicResidueSensor extends MTERedstoneHatchBase {
 
     private int threshold = 0;
     private boolean inverted = false;
-    private boolean isOn = false;
     private ThresholdType thresholdType;
 
     private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_TOXIC_RESIDUE_SENSOR;
@@ -41,45 +36,6 @@ public class MTEToxicResidueSensor extends MTEHatch {
     }
 
     @Override
-    public boolean isValidSlot(int aIndex) {
-        return false;
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean allowGeneralRedstoneOutput() {
-        return true;
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public void initDefaultModes(NBTTagCompound aNBT) {
-        getBaseMetaTileEntity().setActive(true);
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
-        openGui(aPlayer);
-        return true;
-    }
-
-    @Override
     public String[] getDescription() {
         return new String[] { "Reads Toxic Residue of the Large Neutralization Engine",
             "Right click to open the GUI and change settings." };
@@ -91,7 +47,6 @@ public class MTEToxicResidueSensor extends MTEHatch {
         inverted = aNBT.getBoolean("mInverted");
         thresholdType = ThresholdType.values()[Math
             .max(Math.min(aNBT.getInteger("thresholdType"), ThresholdType.values().length - 1), 0)];
-        isOn = aNBT.getBoolean("isOn");
         super.loadNBTData(aNBT);
     }
 
@@ -100,7 +55,6 @@ public class MTEToxicResidueSensor extends MTEHatch {
         aNBT.setInteger("mThreshold", threshold);
         aNBT.setBoolean("mInverted", inverted);
         aNBT.setInteger("thresholdType", thresholdType.ordinal());
-        aNBT.setBoolean("isOn", isOn);
         super.saveNBTData(aNBT);
     }
 
@@ -111,15 +65,7 @@ public class MTEToxicResidueSensor extends MTEHatch {
         if (thresholdType == ThresholdType.PERCENTAGE) {
             toxicResidue = (capacity == 0) ? 0 : (int) (((float) toxicResidue / capacity) * 100);
         }
-        isOn = (toxicResidue > threshold) ^ inverted;
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, (byte) (isOn ? 15 : 0));
-        }
-        super.onPostTick(aBaseMetaTileEntity, aTick);
+        setFacingSideRedstoneSignal((toxicResidue > threshold) ^ inverted);
     }
 
     @Override
