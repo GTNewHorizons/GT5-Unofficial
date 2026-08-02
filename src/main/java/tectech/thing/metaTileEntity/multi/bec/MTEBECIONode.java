@@ -44,6 +44,7 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.util.item.AEFluidStack;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.IHatchElement;
@@ -205,14 +206,14 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         StructureWrapperTooltipBuilder<MTEBECIONode> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("BEC I/O Node, Input Bus, Output Bus")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-ionode"));
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode"));
 
         tt.beginStructureBlock(7, 23, 13, false)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.controller-pos"))
             .addCasing("94", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
             .addCasing("88", ConflictInducementCasing.getLocalizedName(), false)
             .addCasing("56", ElectromagneticWaveguide.getLocalizedName(), false)
-            .addCasing("0-48", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("18-48", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
             .addCasing("44", FineStructureConstantManipulator.getLocalizedName(), false)
             .addCasing("44", CondensateTransformativeCoil.getLocalizedName(), false)
             .addCasing("32", PeaceEnforcementCasing.getLocalizedName(), false)
@@ -227,8 +228,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                 "Teleportation Node Controller Hatch",
                 StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"),
                 1)
-            .addInputBus("0+", StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
-            .addOutputBus("0+", StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
+            .addInputBus("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.hatch-pos"), 1)
             .addMiscHatch(
                 "1",
                 "Line-of-Sight Connector Hatch",
@@ -1058,6 +1059,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                     hatch.updateCraftingIcon(self.getMachineCraftingIcon());
                     hatch.setOwner(self);
 
+                    self.addIfSmartInput(hatch);
                     self.losHatch = hatch;
 
                     return true;

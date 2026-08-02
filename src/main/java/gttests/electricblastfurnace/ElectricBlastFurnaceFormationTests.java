@@ -17,12 +17,13 @@ import com.gtnewhorizons.horizonqa.api.gt.Multiblock;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTRecipeBuilder;
 
-@GameTestHolder(value = "gregtech", templatePrefix = "multiblock/electric_blast_furnace")
+@GameTestHolder(value = Mods.ModIDs.GREG_TECH, templatePrefix = "multiblock/electric_blast_furnace")
 public class ElectricBlastFurnaceFormationTests {
 
     private static final TestPos CONTROLLER = at(1, 0, 0);

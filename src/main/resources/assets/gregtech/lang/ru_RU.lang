@@ -260,10 +260,10 @@ gt.blockmachines.itempipe.rounting_value=Значение маршрутизац
 
 Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver=Диапазон поглощения: %s блоков
 
-gt.hatch_element_or= или
-gt.hatch_element_of_type=of type
-gt.hatch_element_of_class=of class
-gt.hatch_element_of_id=of id
+gt.hatch_element_or= или 
+gt.hatch_element_of_type=of type 
+gt.hatch_element_of_class=of class %s
+gt.hatch_element_of_id=of id %s
 
 # Basic Machine
 gt.blockmachines.basicmachine.accelerator.tier.01.name=Базовый мировой ускоритель
@@ -4331,7 +4331,7 @@ gt.item.large_fluid_cell.stainless_steel.name=Большая жидкостна�
 gt.item.large_fluid_cell.stainless_steel.tooltip=
 gt.item.large_fluid_cell.titanium.name=Большая титановая жидкостная капсула
 gt.item.large_fluid_cell.titanium.tooltip=
-gt.item.large_fluid_cell.chrome.name=Большая хромовая жидкостная капсула
+gt.item.large_fluid_cell.chrome.name=Большая палладия покрытый родием жидкостная капсула
 gt.item.large_fluid_cell.chrome.tooltip=
 gt.item.large_fluid_cell.iridium.name=Большая иридиевая жидкостная капсула
 gt.item.large_fluid_cell.iridium.tooltip=

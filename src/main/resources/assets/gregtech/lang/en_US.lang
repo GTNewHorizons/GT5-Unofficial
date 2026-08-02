@@ -260,10 +260,10 @@ gt.blockmachines.itempipe.rounting_value=Routing Value: %s
 
 Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver=Absorption range: %s blocks
 
-gt.hatch_element_or= or
-gt.hatch_element_of_type=of type
-gt.hatch_element_of_class=of class
-gt.hatch_element_of_id=of id
+gt.hatch_element_or= or 
+gt.hatch_element_of_type=of type 
+gt.hatch_element_of_class=of class %s
+gt.hatch_element_of_id=of id %s
 
 # Basic Machine
 gt.blockmachines.basicmachine.accelerator.tier.01.name=Basic World Accelerator
@@ -3811,6 +3811,7 @@ GT5U.armor.behavior.Teleporter=Personal Teleporter
 GT5U.armor.behavior.MilkInfusion=Milk Infusion
 GT5U.armor.behavior.HoloInventory=Holographic Inventory
 GT5U.armor.behavior.Terrasteel=Will of the Ancients
+GT5U.armor.behavior.Levitation=Levitation Mode
 
 GT5U.armor.message.enabled=%s §aEnabled§r
 GT5U.armor.message.disabled=%s §cDisabled§r
@@ -4423,7 +4424,7 @@ gt.item.large_fluid_cell.stainless_steel.name=Large Stainless Steel Fluid Cell
 gt.item.large_fluid_cell.stainless_steel.tooltip=
 gt.item.large_fluid_cell.titanium.name=Large Titanium Fluid Cell
 gt.item.large_fluid_cell.titanium.tooltip=
-gt.item.large_fluid_cell.chrome.name=Large Chrome Fluid Cell
+gt.item.large_fluid_cell.chrome.name=Large Rhodium-Plated Palladium Fluid Cell
 gt.item.large_fluid_cell.chrome.tooltip=
 gt.item.large_fluid_cell.iridium.name=Large Iridium Fluid Cell
 gt.item.large_fluid_cell.iridium.tooltip=
@@ -7123,6 +7124,7 @@ key.gt.speed_decrease=Decrease Speed
 key.gt.jump_increase=Increase Jump Boost
 key.gt.jump_decrease=Decrease Jump Boost
 key.gt.force_field=Toggle Force Field
+key.gt.toggle_levitation_mode=Toggle Levitation Mode
 key.gt.open_radial_menu=Open Radial Menu
 
 # Tooltips for GT Tools

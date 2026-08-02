@@ -49,14 +49,14 @@ import com.kuba6000.mobsinfo.api.utils.MobUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
-import kubatech.Tags;
 import kubatech.config.Config;
 
 @SideOnly(Side.CLIENT)
 public class EntityRenderer extends EntityFX {
 
-    private static final Logger LOG = LogManager.getLogger(Tags.MODID + "[Entity Renderer]");
+    private static final Logger LOG = LogManager.getLogger(Mods.ModIDs.KUBA_TECH + "[Entity Renderer]");
     private Vector3f verticalAxis;
     private Vector3f horizontalAxis;
     private EntityLiving entityToRender = null;
@@ -266,8 +266,8 @@ public class EntityRenderer extends EntityFX {
         if (stackdepth > 0) for (; stackdepth > 0; stackdepth--) GL11.glPushMatrix();
 
         int err;
-        while ((err = GL11.glGetError()) != GL11.GL_NO_ERROR) if (Config.Debug.showRenderErrors) LOG.error(
-            EntityList.getEntityString(entityToRender) + " | GL ERROR: " + err + " / " + GLU.gluErrorString(err));
+        while ((err = GL11.glGetError()) != GL11.GL_NO_ERROR) if (Config.Debug.showRenderErrors) LOG
+            .error("{} | GL ERROR: {} / {}", EntityList.getEntityString(entityToRender), err, GLU.gluErrorString(err));
 
         GL11.glPopAttrib();
         GL11.glPopMatrix();

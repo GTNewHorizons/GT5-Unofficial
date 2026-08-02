@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.enums.GTAuthors;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
@@ -145,14 +146,14 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
         StructureWrapperTooltipBuilder<MTEBECDiode> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("BEC Diode, Storage Bus")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-diode"))
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-diode"))
             .addSupportAny();
 
         tt.beginStructureBlock(17, 11, 11, true)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-diode.controller-pos"))
             .addCasing("148", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
             .addCasing("92", ConflictInducementCasing.getLocalizedName(), false)
-            .addCasing("0-90", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("83-90", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
             .addCasing("84", FineStructureConstantManipulator.getLocalizedName(), false)
             .addCasing("70", ElectromagneticWaveguide.getLocalizedName(), false)
             .addCasing("68", PeaceEnforcementCasing.getLocalizedName(), false)

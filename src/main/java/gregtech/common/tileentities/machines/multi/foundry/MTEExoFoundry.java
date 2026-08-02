@@ -641,6 +641,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchInput inp) {
+            addIfSmartInput(inp);
             inp.updateTexture(aBaseCasingIndex);
             coolantHatches.add(inp);
             return true;
@@ -778,11 +779,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     @Override
     public boolean getDefaultInputSeparationMode() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 
