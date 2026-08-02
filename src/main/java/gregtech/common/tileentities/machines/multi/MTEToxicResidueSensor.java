@@ -65,7 +65,12 @@ public class MTEToxicResidueSensor extends MTERedstoneHatchBase {
         if (thresholdType == ThresholdType.PERCENTAGE) {
             toxicResidue = (capacity == 0) ? 0 : (int) (((float) toxicResidue / capacity) * 100);
         }
-        setFacingSideRedstoneSignal((toxicResidue > threshold) ^ inverted);
+        setFacingSideRedstoneSignal(toxicResidue > threshold);
+    }
+
+    @Override
+    public void setRedstoneSignal(int facing, byte signal) {
+        super.setRedstoneSignal(facing, redstoneSignalFromOn((signal > 0) ^ inverted));
     }
 
     @Override

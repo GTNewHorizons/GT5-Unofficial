@@ -26,7 +26,7 @@ public abstract class MTERedstoneHatchBase extends MTEHatch {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    private static byte redstoneSignalFromOn(boolean on) {
+    protected static byte redstoneSignalFromOn(boolean on) {
         return (byte) (on ? 15 : 0);
     }
 
