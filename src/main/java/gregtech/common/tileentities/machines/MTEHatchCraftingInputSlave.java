@@ -247,7 +247,7 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (!(aPlayer instanceof EntityPlayerMP player)) {
-            return false;
+            return true;
         }
         if (tryLinkDataStick(aPlayer)) {
             return true;
