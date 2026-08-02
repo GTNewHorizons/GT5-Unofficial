@@ -143,25 +143,21 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         }
 
         PowerGogglesMeasurement measurementData = measurements.getLast();
-        BigInteger measurement = measurementData.getMeasurement();
-        BigDecimal decimalMeasurement = new BigDecimal(measurement);
+        double measurement = measurementData.getMeasurement()
+            .doubleValue();
 
         if (measurementData.isWireless()) {
-            BigDecimal decimalMaximumMeasurement = new BigDecimal(getMaximumMeasurement(measurements));
-            if (decimalMeasurement.equals(BigDecimal.ZERO) || decimalMaximumMeasurement.equals(BigDecimal.ZERO)) {
+            double maximumMeasurement = getMaximumMeasurement(measurements).doubleValue();
+            if (measurement == 0 || maximumMeasurement == 0) {
                 return 0;
             }
-            return clampPercentage(
-                decimalMeasurement.divide(decimalMaximumMeasurement, 8, RoundingMode.HALF_EVEN)
-                    .doubleValue());
+            return clampPercentage(measurement / maximumMeasurement);
         } else {
-            BigDecimal decimalCapacity = BigDecimal.valueOf(measurementData.getCapacity());
-            if (decimalCapacity.equals(BigDecimal.ZERO)) {
+            long capacity = measurementData.getCapacity();
+            if (capacity == 0) {
                 return 0;
             }
-            return clampPercentage(
-                decimalMeasurement.divide(decimalCapacity, 8, RoundingMode.HALF_EVEN)
-                    .doubleValue());
+            return clampPercentage(measurement / capacity);
         }
     }
 
