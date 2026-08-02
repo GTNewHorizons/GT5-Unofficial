@@ -302,7 +302,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 // Backhand and fast swap fix:
                 // Due to markBlockForUpdate will delay a full tick (50ms), we need to send this packet earlier to
                 // prevent desync.
-                if (aPlayer instanceof EntityPlayerMP player) {
+                if (aPlayer instanceof EntityPlayerMP player && player.playerNetServerHandler != null) {
                     player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(aX, aY, aZ, aWorld));
                     Packet tePacket = tile.getDescriptionPacket();
                     if (tePacket != null) {
