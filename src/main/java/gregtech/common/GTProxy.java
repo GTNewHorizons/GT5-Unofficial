@@ -132,6 +132,7 @@ import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.items.armor.ArmorActionManager;
@@ -1508,22 +1509,8 @@ public class GTProxy implements IFuelHandler {
         ItemStack aStack = aEvent.harvester.getCurrentEquippedItem();
         if (aStack == null) return;
 
-        if ((aStack.getItem() instanceof MetaGeneratedTool tool)) {
-            tool.onHarvestBlockEvent(
-                aEvent.drops,
-                aStack,
-                aEvent.harvester,
-                aEvent.block,
-                aEvent.x,
-                aEvent.y,
-                aEvent.z,
-                aEvent.blockMetadata,
-                aEvent.fortuneLevel,
-                aEvent.isSilkTouching,
-                aEvent);
-        }
-        if (aStack.getItem() instanceof final ItemGTToolbox toolbox) {
-            toolbox.onBlockHarvestingEvent(aEvent);
+        if (aStack.getItem() instanceof GTGenericItem item) {
+            item.onBlockHarvestingEvent(aEvent);
         }
         if (EnchantmentHelper.getEnchantmentLevel(Enchantment.fireAspect.effectId, aStack) > 2) {
             try {

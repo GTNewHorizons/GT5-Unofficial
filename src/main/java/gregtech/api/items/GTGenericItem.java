@@ -20,6 +20,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.event.world.BlockEvent;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -131,6 +132,8 @@ public class GTGenericItem extends Item implements IProjectileItem {
         BehaviorDefaultDispenseItem.doDispense(aSource.getWorld(), itemstack1, 6, enumfacing, iposition);
         return aStack;
     }
+
+    public void onBlockHarvestingEvent(BlockEvent.HarvestDropsEvent event) {}
 
     @Override
     public EntityArrow getProjectile(SubTag aProjectileType, ItemStack aStack, World aWorld, double aX, double aY,

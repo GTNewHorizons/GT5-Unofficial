@@ -11,13 +11,18 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S23PacketBlockChange;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.event.world.BlockEvent;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
@@ -58,6 +63,19 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         EntityLivingBase entityLiving) {
         ElectricItem.manager.use(stack, baseCost, entityLiving);
         return true;
+    }
+
+    @Override
+    public void onBlockHarvestingEvent(BlockEvent.HarvestDropsEvent event) {
+        super.onBlockHarvestingEvent(event);
+        if (event.harvester instanceof EntityPlayerMP player && player.playerNetServerHandler != null) {
+            player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(event.x, event.y, event.z, event.world));
+            TileEntity te = event.world.getTileEntity(event.x, event.y, event.z);
+            if (te == null) return;
+            Packet pkt = te.getDescriptionPacket();
+            if (pkt == null) return;
+            player.playerNetServerHandler.sendPacket(pkt);
+        }
     }
 
     @Override

@@ -286,6 +286,22 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     /**
      * Called by the Block Harvesting Event within the GTProxy
      */
+    public void onBlockHarvestingEvent(BlockEvent.HarvestDropsEvent event) {
+        super.onBlockHarvestingEvent(event);
+        onHarvestBlockEvent(
+            event.drops,
+            event.harvester.getCurrentEquippedItem(),
+            event.harvester,
+            event.block,
+            event.x,
+            event.y,
+            event.z,
+            event.blockMetadata,
+            event.fortuneLevel,
+            event.isSilkTouching,
+            event);
+    }
+
     public void onHarvestBlockEvent(ArrayList<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock,
         int aX, int aY, int aZ, int aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         IToolStats tStats = getToolStats(aStack);

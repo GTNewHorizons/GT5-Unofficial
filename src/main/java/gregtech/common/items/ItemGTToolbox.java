@@ -678,22 +678,13 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         });
     }
 
-    public void onBlockHarvestingEvent(BlockEvent.HarvestDropsEvent aEvent) {
-        getToolboxIfEquipped(aEvent.harvester).flatMap(ToolboxUtil::getSelectedTool)
+    @Override
+    public void onBlockHarvestingEvent(BlockEvent.HarvestDropsEvent event) {
+        super.onBlockHarvestingEvent(event);
+        getToolboxIfEquipped(event.harvester).flatMap(ToolboxUtil::getSelectedTool)
             .ifPresent(tool -> {
-                if ((tool.getItem() instanceof MetaGeneratedTool toolItem)) {
-                    toolItem.onHarvestBlockEvent(
-                        aEvent.drops,
-                        tool,
-                        aEvent.harvester,
-                        aEvent.block,
-                        aEvent.x,
-                        aEvent.y,
-                        aEvent.z,
-                        aEvent.blockMetadata,
-                        aEvent.fortuneLevel,
-                        aEvent.isSilkTouching,
-                        aEvent);
+                if ((tool.getItem() instanceof GTGenericItem toolItem)) {
+                    toolItem.onBlockHarvestingEvent(event);
                 }
             });
     }
