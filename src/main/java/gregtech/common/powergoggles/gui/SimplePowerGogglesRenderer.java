@@ -65,6 +65,10 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     private final CachedText cachedChartMinText = new CachedText();
     private final CachedText cachedChartMaxText = new CachedText();
 
+    private final int[] cachedGradientRectangleColors = new int[2];
+    private BigInteger cachedGradientMeasurement;
+    private BigInteger cachedGradientDifference;
+
     private static final class CachedText {
         private BigInteger value;
         private int configIndex;
@@ -245,13 +249,15 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     private int[] getGradientRectangleColors() {
-        int[] gradients;
-        int colorLeft;
-        int colorRight;
-
         BigInteger lastMeasurement = measurements.isEmpty() ? BigInteger.ZERO
             : measurements.getLast()
                 .getMeasurement();
+
+        if (lastMeasurement == cachedGradientMeasurement && euDifference5m == cachedGradientDifference) {
+            return cachedGradientRectangleColors;
+        }
+        cachedGradientMeasurement = lastMeasurement;
+        cachedGradientDifference = euDifference5m;
 
         double differenceRatio;
         if (lastMeasurement.equals(BigInteger.ZERO)) {
@@ -271,23 +277,23 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
         double gradientChangeFactor = 3.3;
         if (differenceRatio < 0) {
-            gradients = getGradient(
+            int[] gradients = getGradient(
                 -differenceRatio,
                 gradientChangeFactor,
                 PowerGogglesConfigHandler.gradientBadColor,
                 PowerGogglesConfigHandler.gradientOkColor);
-            colorLeft = gradients[0];
-            colorRight = gradients[1];
+            cachedGradientRectangleColors[0] = gradients[0];
+            cachedGradientRectangleColors[1] = gradients[1];
         } else {
-            gradients = getGradient(
+            int[] gradients = getGradient(
                 differenceRatio,
                 gradientChangeFactor * 1.6f,
                 PowerGogglesConfigHandler.gradientGoodColor,
                 PowerGogglesConfigHandler.gradientOkColor);
-            colorLeft = gradients[1];
-            colorRight = gradients[0];
+            cachedGradientRectangleColors[0] = gradients[1];
+            cachedGradientRectangleColors[1] = gradients[0];
         }
-        return new int[] { colorLeft, colorRight };
+        return cachedGradientRectangleColors;
     }
 
     private void renderTimedDifferenceText() {
