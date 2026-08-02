@@ -413,10 +413,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             formatNumber(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap));
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.LapotronicSuperCapacitor.machine_type"))
-            .addMarkdown(new ResourceLocation("gregtech", "lapotronic-super-capacitor-1"), tooltipVars)
+            .addMarkdown(new ResourceLocation("gregtech", "lapotronic-super-capacitor"), tooltipVars)
             .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addMarkdown(new ResourceLocation("gregtech", "lapotronic-super-capacitor-2"), tooltipVars)
             .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addEnergyHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)

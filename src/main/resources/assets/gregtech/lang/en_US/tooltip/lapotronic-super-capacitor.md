@@ -1,5 +1,11 @@
+Loses energy equal to 1% of the total capacity every 24 hours
+Capped at {red:{var:maxPassiveDrain}} EU/t passive loss per {var:tierColorName}§7 capacitor
+The passive loss increases {dark_red:100}-fold for every capacitor tier above
+Passive loss is multiplied by the number of maintenance issues present
+{gray:{hr}}
+Glass shell has to be Tier - 3 of the highest capacitor tier
 Add more or better capacitors to increase capacity
-{hr}
+{gray:{hr}}
 Wireless mode can be enabled by right clicking with a screwdriver
 This mode can only be enabled if you have a {var:tierColorName}§7+ capacitor in the multiblock.
 When enabled every {blue:{var:rebalanceTicks}} ticks the LSC will attempt to re-balance against your
