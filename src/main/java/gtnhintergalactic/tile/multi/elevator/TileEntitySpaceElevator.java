@@ -67,6 +67,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import gtnhintergalactic.GTNHIntergalactic;
 import gtnhintergalactic.client.TooltipUtil;
 import gtnhintergalactic.config.IGConfig;
 import gtnhintergalactic.gui.IG_UITextures;
@@ -965,7 +966,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                                 ElevatorUtil.getPlanetaryTravelTier(motorTier),
                                 GuiCelestialSelection.MapMode.TELEPORTATION);
                         } catch (final Exception e) {
-                            e.printStackTrace();
+                            GTNHIntergalactic.LOG.error(e);
                         }
                     }
                 }

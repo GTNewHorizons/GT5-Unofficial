@@ -21,6 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.RegistryNamespaced;
 import net.minecraftforge.oredict.OreDictionary;
 
+import bartworks.MainMod;
 import bartworks.util.log.DebugLog;
 import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.Loader;
@@ -89,7 +90,7 @@ public class RadioHatchCompat {
             }
 
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
+            MainMod.LOGGER.error(e);
         }
     }
 

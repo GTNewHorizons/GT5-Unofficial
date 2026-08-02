@@ -364,8 +364,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         int newPart = baseGradientPart + (int) (partDifference * appliedPercentageOfDifference);
 
         int clampBottom = Math.max(0, newPart);
-        int clampTop = Math.min(255, clampBottom);
-        return clampTop;
+        return Math.min(255, clampBottom);
     }
 
     private void renderBackground() {
