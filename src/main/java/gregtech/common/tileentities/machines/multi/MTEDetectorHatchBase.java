@@ -1,59 +1,80 @@
 package gregtech.common.tileentities.machines.multi;
 
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+
 /**
- * An abstract hatch class that can emit directional redstone signals. Extend to add textures and data, and implement redstone logic on multi side.
+ * An abstract hatch class that can emit directional redstone signals. Extend to add textures/description/data, and
+ * implement redstone logic on multi side.
  */
 public abstract class MTEDetectorHatchBase extends MTEHatch {
 
-    private final byte[] redstoneSignal={0,0,0,0,0,0};
+    private final byte[] redstoneSignal = { 0, 0, 0, 0, 0, 0 };
 
-    public MTEDetectorHatchBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription, ITexture... aTextures) {
+    public MTEDetectorHatchBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
+        String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    public MTEDetectorHatchBase(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
+    public MTEDetectorHatchBase(String aName, int aTier, int aInvSlotCount, String[] aDescription,
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    private static byte redstoneSignalFromOn(boolean on){
-        return (byte) (on? 15:0);
+    private static byte redstoneSignalFromOn(boolean on) {
+        return (byte) (on ? 15 : 0);
     }
 
-    public void setRedstoneSignal(int facing, byte signal){
-        if(facing<0||facing>ForgeDirection.VALID_DIRECTIONS.length) return;
-        redstoneSignal[facing]=signal;
+    /**
+     * This should be the only method that directly changes the redstoneSignal field, override for invert logic etc.
+     */
+    public void setRedstoneSignal(int facing, byte signal) {
+        if (facing < 0 || facing > ForgeDirection.VALID_DIRECTIONS.length) return;
+        redstoneSignal[facing] = signal;
     }
 
-    public void setRedstoneSignal(int facing, boolean on){
-        setRedstoneSignal(facing,redstoneSignalFromOn(on));
+    public void setRedstoneSignal(int facing, boolean on) {
+        setRedstoneSignal(facing, redstoneSignalFromOn(on));
     }
 
-    public void setAllFacesRedstoneSignal(byte signal){
-        for(int i=0;i<ForgeDirection.VALID_DIRECTIONS.length;i++) {
-            setRedstoneSignal(i,signal);
+    public void setAllFacesRedstoneSignal(byte signal) {
+        for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
+            setRedstoneSignal(i, signal);
         }
     }
 
-    public void setAllFacesRedstoneSignal(boolean on){
-        for(int i=0;i<ForgeDirection.VALID_DIRECTIONS.length;i++) {
-            setRedstoneSignal(i,on);
+    public void setAllFacesRedstoneSignal(boolean on) {
+        for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
+            setRedstoneSignal(i, on);
         }
     }
 
-    public void setFacingSideRedstoneSignal(byte signal){
-        setRedstoneSignal(getBaseMetaTileEntity().getFrontFacing().ordinal(),signal);
+    public void setFacingSideRedstoneSignal(byte signal) {
+        setRedstoneSignal(
+            getBaseMetaTileEntity().getFrontFacing()
+                .ordinal(),
+            signal);
     }
 
-    public void setFacingSideRedstoneSignal(boolean on){
-        setRedstoneSignal(getBaseMetaTileEntity().getFrontFacing().ordinal(),on);
+    public void setFacingSideRedstoneSignal(boolean on) {
+        setRedstoneSignal(
+            getBaseMetaTileEntity().getFrontFacing()
+                .ordinal(),
+            on);
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, redstoneSignal[side.ordinal()]);
+        }
+        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     @Override
@@ -73,13 +94,13 @@ public abstract class MTEDetectorHatchBase extends MTEHatch {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
-                                  ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-                                 ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -90,23 +111,23 @@ public abstract class MTEDetectorHatchBase extends MTEHatch {
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-                                float aX, float aY, float aZ) {
+        float aX, float aY, float aZ) {
         openGui(aPlayer);
         return true;
     }
 
     @Override
-    public void loadNBTData(NBTTagCompound aNBT){
-        for(int i=0;i<ForgeDirection.VALID_DIRECTIONS.length;i++){
-            redstoneSignal[i]= aNBT.getByte("signal"+i);
+    public void loadNBTData(NBTTagCompound aNBT) {
+        for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
+            redstoneSignal[i] = aNBT.getByte("signal" + i);
         }
         super.loadNBTData(aNBT);
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT){
-        for(int i=0;i<ForgeDirection.VALID_DIRECTIONS.length;i++){
-            aNBT.setByte("signal"+i,redstoneSignal[i]);
+    public void saveNBTData(NBTTagCompound aNBT) {
+        for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
+            aNBT.setByte("signal" + i, redstoneSignal[i]);
         }
     }
 }
