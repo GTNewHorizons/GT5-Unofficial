@@ -656,21 +656,18 @@ public class GTRecipeRegistrator {
                     continue;
                 }
                 Object tObject = input[x + y * tRecipeWidth];
-                switch (tObject) {
-                    case null -> {
-                        emptySlotIndexesBuffer.add(x + y * 3);
-                        continue;
-                    }
-                    case ItemStack itemStack when (itemStack.getItem() == null || itemStack.getMaxStackSize() < 2
-                        || itemStack.getMaxDamage() > 0
-                        || itemStack.getItem() instanceof ItemBlock) -> {
-                        return false;
-                    }
-                    case List list when list.isEmpty() -> {
-                        return false;
-                    }
-                    default -> {
-                    }
+                if (tObject == null) {
+                    emptySlotIndexesBuffer.add(x + y * 3);
+                    continue;
+                }
+                if (tObject instanceof ItemStack
+                    && (((ItemStack) tObject).getItem() == null || ((ItemStack) tObject).getMaxStackSize() < 2
+                        || ((ItemStack) tObject).getMaxDamage() > 0
+                        || ((ItemStack) tObject).getItem() instanceof ItemBlock)) {
+                    return false;
+                }
+                if (tObject instanceof List && ((List<?>) tObject).isEmpty()) {
+                    return false;
                 }
             }
         }
