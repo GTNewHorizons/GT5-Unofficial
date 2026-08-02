@@ -838,7 +838,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         }
     }
 
-    private class TerminalTextListWidget extends ListWidget<IWidget, TerminalTextListWidget> {
+    private static class TerminalTextListWidget extends ListWidget<IWidget, TerminalTextListWidget> {
 
         public int playerTextColor = Color.WHITE.main;
         public int responseTextColor = Color.CYAN.main;
