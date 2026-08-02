@@ -287,18 +287,24 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
                 IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 
-                if (aMetaTileEntity == null) return false;
-
-                if (aMetaTileEntity instanceof MTEHatchEnergyMulti input) {
-                    input.updateTexture(aBaseCasingIndex);
-                    input.updateCraftingIcon(tile.getMachineCraftingIcon());
-                    tile.mSendHatches[mIndex] = input;
-                    return true;
-                } else if (aMetaTileEntity instanceof MTEHatchDynamoMulti output) {
-                    output.updateTexture(aBaseCasingIndex);
-                    output.updateCraftingIcon(tile.getMachineCraftingIcon());
-                    tile.mReceiveHatches[mIndex] = output;
-                    return true;
+                switch (aMetaTileEntity) {
+                    case null -> {
+                        return false;
+                    }
+                    case MTEHatchEnergyMulti input -> {
+                        input.updateTexture(aBaseCasingIndex);
+                        input.updateCraftingIcon(tile.getMachineCraftingIcon());
+                        tile.mSendHatches[mIndex] = input;
+                        return true;
+                    }
+                    case MTEHatchDynamoMulti output -> {
+                        output.updateTexture(aBaseCasingIndex);
+                        output.updateCraftingIcon(tile.getMachineCraftingIcon());
+                        tile.mReceiveHatches[mIndex] = output;
+                        return true;
+                    }
+                    default -> {
+                    }
                 }
 
                 return false;

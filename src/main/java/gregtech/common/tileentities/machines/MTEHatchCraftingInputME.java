@@ -255,11 +255,14 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
 
             if (patternDetails != null) {
                 for (IAEStack<?> singleInput : patternDetails.getAEInputs()) {
-                    if (singleInput == null) continue;
-                    if (singleInput instanceof IAEItemStack ais) {
-                        inputItems = ArrayUtils.addAll(inputItems, ais.getItemStack());
-                    } else if (singleInput instanceof IAEFluidStack ifs) {
-                        inputFluids = ArrayUtils.addAll(inputFluids, ifs.getFluidStack());
+                    switch (singleInput) {
+                        case null -> {
+                            continue;
+                        }
+                        case IAEItemStack ais -> inputItems = ArrayUtils.addAll(inputItems, ais.getItemStack());
+                        case IAEFluidStack ifs -> inputFluids = ArrayUtils.addAll(inputFluids, ifs.getFluidStack());
+                        default -> {
+                        }
                     }
                 }
             }
@@ -416,13 +419,18 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         public boolean insertItemsAndFluids(MEInventoryCrafting inventoryCrafting) {
             for (int i = 0; i < inventoryCrafting.getSizeInventory(); ++i) {
                 final IAEStack<?> aes = inventoryCrafting.getAEStackInSlot(i);
-                if (aes == null) continue;
-
-                if (aes instanceof IAEFluidStack ifs) { // insert fluid
-                    insertFluid(ifs);
-                } else if (aes instanceof IAEItemStack ais) { // insert item
-                    insertItem(ais);
+                switch (aes) {
+                    case null -> {
+                        continue;
+                    }
+                    case IAEFluidStack ifs ->  // insert fluid
+                        insertFluid(ifs);
+                    case IAEItemStack ais ->  // insert item
+                        insertItem(ais);
+                    default -> {
+                    }
                 }
+
             }
             return true;
         }

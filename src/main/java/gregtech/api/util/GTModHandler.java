@@ -1080,40 +1080,43 @@ public class GTModHandler {
             }
             Character chr = (Character) aRecipe[idx];
             Object in = aRecipe[idx + 1];
-            if (in instanceof ItemStack is) {
-                tItemStackMap.put(chr, GTUtility.copyOrNull(is));
-                tItemDataMap.put(chr, GTOreDictUnificator.getItemData(is));
-            } else if (in instanceof ItemData) {
-                String tString = in.toString();
-                switch (tString) {
-                    case "plankWood" -> tItemDataMap.put(chr, new ItemData(Materials.Wood, M));
-                    case "stoneNetherrack" -> tItemDataMap.put(chr, new ItemData(Materials.Netherrack, M));
-                    case "stoneObsidian" -> tItemDataMap.put(chr, new ItemData(Materials.Obsidian, M));
-                    case "stoneEndstone" -> tItemDataMap.put(chr, new ItemData(Materials.Endstone, M));
-                    default -> tItemDataMap.put(chr, (ItemData) in);
+            switch (in) {
+                case ItemStack is -> {
+                    tItemStackMap.put(chr, GTUtility.copyOrNull(is));
+                    tItemDataMap.put(chr, GTOreDictUnificator.getItemData(is));
                 }
-                ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
-                if (tStack == null) tRemoveRecipe = false;
-                else tItemStackMap.put(chr, tStack);
-                in = aRecipe[idx + 1] = in.toString();
-            } else if (in instanceof String) {
-                if (in.equals(OreDictNames.craftingChest.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Wood, M * 8));
-                else if (in.equals(OreDictNames.craftingBook.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Paper, M * 3));
-                else if (in.equals(OreDictNames.craftingPiston.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 4, Materials.Wood, M * 3));
-                else if (in.equals(OreDictNames.craftingFurnace.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 8));
-                else if (in.equals(OreDictNames.craftingIndustrialDiamond.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
-                else if (in.equals(OreDictNames.craftingAnvil.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
-                ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
-                if (tStack == null) tRemoveRecipe = false;
-                else tItemStackMap.put(chr, tStack);
-            } else {
-                throw new IllegalArgumentException();
+                case ItemData itemData -> {
+                    String tString = in.toString();
+                    switch (tString) {
+                        case "plankWood" -> tItemDataMap.put(chr, new ItemData(Materials.Wood, M));
+                        case "stoneNetherrack" -> tItemDataMap.put(chr, new ItemData(Materials.Netherrack, M));
+                        case "stoneObsidian" -> tItemDataMap.put(chr, new ItemData(Materials.Obsidian, M));
+                        case "stoneEndstone" -> tItemDataMap.put(chr, new ItemData(Materials.Endstone, M));
+                        default -> tItemDataMap.put(chr, itemData);
+                    }
+                    ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
+                    if (tStack == null) tRemoveRecipe = false;
+                    else tItemStackMap.put(chr, tStack);
+                    in = aRecipe[idx + 1] = in.toString();
+                }
+                case String s -> {
+                    if (in.equals(OreDictNames.craftingChest.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Wood, M * 8));
+                    else if (in.equals(OreDictNames.craftingBook.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Paper, M * 3));
+                    else if (in.equals(OreDictNames.craftingPiston.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 4, Materials.Wood, M * 3));
+                    else if (in.equals(OreDictNames.craftingFurnace.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 8));
+                    else if (in.equals(OreDictNames.craftingIndustrialDiamond.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
+                    else if (in.equals(OreDictNames.craftingAnvil.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
+                    ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
+                    if (tStack == null) tRemoveRecipe = false;
+                    else tItemStackMap.put(chr, tStack);
+                }
+                case null, default -> throw new IllegalArgumentException();
             }
         }
 
@@ -1247,19 +1250,23 @@ public class GTModHandler {
 
         ItemStack[] tRecipe = new ItemStack[9];
         int i = 0;
+        label:
         for (Object tObject : aRecipe) {
-            if (tObject == null) {
-                if (D1) GTLog.err.println(
-                    "WARNING: Missing Item for shapeless Recipe: "
-                        + (aResult == null ? "null" : aResult.getDisplayName()));
-                for (Object tContent : aRecipe) GTLog.err.println(tContent);
-                return false;
-            }
-            if (tObject instanceof ItemStack) {
-                tRecipe[i] = (ItemStack) tObject;
-            } else if (tObject instanceof String) {
-                tRecipe[i] = GTOreDictUnificator.getFirstOre(tObject, 1);
-                if (tRecipe[i] == null) break;
+            switch (tObject) {
+                case null -> {
+                    if (GTValues.D1) GTLog.err.println(
+                        "WARNING: Missing Item for shapeless Recipe: "
+                            + (aResult == null ? "null" : aResult.getDisplayName()));
+                    for (Object tContent : aRecipe) GTLog.err.println(tContent);
+                    return false;
+                }
+                case ItemStack itemStack -> tRecipe[i] = itemStack;
+                case String s -> {
+                    tRecipe[i] = GTOreDictUnificator.getFirstOre(tObject, 1);
+                    if (tRecipe[i] == null) break label;
+                }
+                default -> {
+                }
             }
             i++;
         }

@@ -655,19 +655,23 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
         addIfSmartInput(aMetaTileEntity);
-        if (aMetaTileEntity instanceof MTEHatchInput tInput) {
-            tInput.mRecipeMap = getRecipeMap();
-            return mInputHatches.add(tInput);
-        }
-        if (aMetaTileEntity instanceof AntimatterOutputHatch tAntimatter) {
-            return amOutputHatches.add(tAntimatter);
-        }
-        if (aMetaTileEntity instanceof MTEHatchOutput tOutput) {
-            return mOutputHatches.add(tOutput);
-        }
-        if (aMetaTileEntity instanceof IDualInputHatch tInput) {
-            tInput.updateCraftingIcon(this.getMachineCraftingIcon());
-            return mDualInputHatches.add(tInput);
+        switch (aMetaTileEntity) {
+            case MTEHatchInput tInput -> {
+                tInput.mRecipeMap = getRecipeMap();
+                return mInputHatches.add(tInput);
+            }
+            case AntimatterOutputHatch tAntimatter -> {
+                return amOutputHatches.add(tAntimatter);
+            }
+            case MTEHatchOutput tOutput -> {
+                return mOutputHatches.add(tOutput);
+            }
+            case IDualInputHatch tInput -> {
+                tInput.updateCraftingIcon(this.getMachineCraftingIcon());
+                return mDualInputHatches.add(tInput);
+            }
+            default -> {
+            }
         }
         return false;
     }

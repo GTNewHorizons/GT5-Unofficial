@@ -52,49 +52,53 @@ public class GTUtil {
     public static NBTTagCompound makeNBT(Tuple... tags) {
         final NBTTagCompound nbt = new NBTTagCompound();
         for (Tuple t : tags) {
-            if (t.getSecond() == null) continue;
+            switch (t.getSecond()) {
+                case null -> {
+                    continue;
+                }
+                case Boolean b -> nbt.setBoolean(
+                    t.getFirst()
+                        .toString(),
+                    b);
+                case Byte b -> nbt.setByte(
+                    t.getFirst()
+                        .toString(),
+                    b);
+                case Short i -> nbt.setShort(
+                    t.getFirst()
+                        .toString(),
+                    i);
+                case Integer i -> nbt.setInteger(
+                    t.getFirst()
+                        .toString(),
+                    i);
+                case Long l -> nbt.setLong(
+                    t.getFirst()
+                        .toString(),
+                    l);
+                case Float v -> nbt.setFloat(
+                    t.getFirst()
+                        .toString(),
+                    v);
+                case Double v -> nbt.setDouble(
+                    t.getFirst()
+                        .toString(),
+                    v);
+                case String s -> nbt.setString(
+                    t.getFirst()
+                        .toString(),
+                    s);
+                case NBTBase nbtBase -> nbt.setTag(
+                    t.getFirst()
+                        .toString(),
+                    nbtBase);
+                default -> nbt.setString(
+                    t.getFirst()
+                        .toString(),
+                    t.getSecond()
+                        .toString());
+            }
 
-            if (t.getSecond() instanceof Boolean) nbt.setBoolean(
-                t.getFirst()
-                    .toString(),
-                (Boolean) t.getSecond());
-            else if (t.getSecond() instanceof Byte) nbt.setByte(
-                t.getFirst()
-                    .toString(),
-                (Byte) t.getSecond());
-            else if (t.getSecond() instanceof Short) nbt.setShort(
-                t.getFirst()
-                    .toString(),
-                (Short) t.getSecond());
-            else if (t.getSecond() instanceof Integer) nbt.setInteger(
-                t.getFirst()
-                    .toString(),
-                (Integer) t.getSecond());
-            else if (t.getSecond() instanceof Long) nbt.setLong(
-                t.getFirst()
-                    .toString(),
-                (Long) t.getSecond());
-            else if (t.getSecond() instanceof Float) nbt.setFloat(
-                t.getFirst()
-                    .toString(),
-                (Float) t.getSecond());
-            else if (t.getSecond() instanceof Double) nbt.setDouble(
-                t.getFirst()
-                    .toString(),
-                (Double) t.getSecond());
-            else if (t.getSecond() instanceof String) nbt.setString(
-                t.getFirst()
-                    .toString(),
-                (String) t.getSecond());
-            else if (t.getSecond() instanceof NBTBase) nbt.setTag(
-                t.getFirst()
-                    .toString(),
-                (NBTBase) t.getSecond());
-            else nbt.setString(
-                t.getFirst()
-                    .toString(),
-                t.getSecond()
-                    .toString());
         }
 
         return nbt;

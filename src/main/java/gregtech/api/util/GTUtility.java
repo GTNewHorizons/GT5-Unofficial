@@ -3188,27 +3188,32 @@ public class GTUtility {
         List<ItemStack> inputs = new ArrayList<>();
 
         for (Object o : aRecipe) {
-            if (o instanceof ItemStack) {
-                ItemStack toAdd = ((ItemStack) o).copy();
-                inputs.add(toAdd);
-            } else if (o instanceof String) {
-                ItemStack stack = GTOreDictUnificator.get(o, 1);
-                if (stack == null) {
-                    Optional<ItemStack> oStack = OreDictionary.getOres((String) o)
-                        .stream()
-                        .findAny();
-                    if (oStack.isPresent()) {
-                        ItemStack copy = oStack.get()
-                            .copy();
+            switch (o) {
+                case ItemStack itemStack -> {
+                    ItemStack toAdd = itemStack.copy();
+                    inputs.add(toAdd);
+                }
+                case String s -> {
+                    ItemStack stack = GTOreDictUnificator.get(o, 1);
+                    if (stack == null) {
+                        Optional<ItemStack> oStack = OreDictionary.getOres(s)
+                            .stream()
+                            .findAny();
+                        if (oStack.isPresent()) {
+                            ItemStack copy = oStack.get()
+                                .copy();
+                            inputs.add(copy);
+                        }
+                    } else {
+                        ItemStack copy = stack.copy();
                         inputs.add(copy);
                     }
-                } else {
-                    ItemStack copy = stack.copy();
-                    inputs.add(copy);
                 }
-            } else if (o instanceof Item) inputs.add(new ItemStack((Item) o));
-            else if (o instanceof Block) inputs.add(new ItemStack((Block) o));
-            else throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
+                case Item item -> inputs.add(new ItemStack(item));
+                case Block block -> inputs.add(new ItemStack(block));
+                case null, default ->
+                    throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
+            }
         }
 
         inputs.removeIf(x -> x.getItem() instanceof MetaGeneratedTool);
@@ -3256,32 +3261,37 @@ public class GTUtility {
 
         for (Map.Entry<Object, Integer> o : recipeAsMap.entrySet()) {
             final int amount = o.getValue();
-            if (o.getKey() instanceof ItemStack) {
-                ItemStack toAdd = ((ItemStack) o.getKey()).copy();
-                toAdd.stackSize = amount;
-                inputs.add(toAdd);
-            } else if (o.getKey() instanceof String dictName) {
-                // Do not register tools dictName in inputs
-                if (ToolDictNames.contains(dictName)) continue;
-                ItemStack stack = GTOreDictUnificator.get(dictName, null, amount, false, true);
-                if (stack == null) {
-                    Optional<ItemStack> oStack = OreDictionary.getOres(dictName)
-                        .stream()
-                        .findAny();
-                    if (oStack.isPresent()) {
-                        ItemStack copy = oStack.get()
-                            .copy();
+            switch (o.getKey()) {
+                case ItemStack itemStack -> {
+                    ItemStack toAdd = itemStack.copy();
+                    toAdd.stackSize = amount;
+                    inputs.add(toAdd);
+                }
+                case String dictName -> {
+                    // Do not register tools dictName in inputs
+                    if (ToolDictNames.contains(dictName)) continue;
+                    ItemStack stack = GTOreDictUnificator.get(dictName, null, amount, false, true);
+                    if (stack == null) {
+                        Optional<ItemStack> oStack = OreDictionary.getOres(dictName)
+                            .stream()
+                            .findAny();
+                        if (oStack.isPresent()) {
+                            ItemStack copy = oStack.get()
+                                .copy();
+                            copy.stackSize = amount;
+                            inputs.add(copy);
+                        }
+                    } else {
+                        ItemStack copy = stack.copy();
                         copy.stackSize = amount;
                         inputs.add(copy);
                     }
-                } else {
-                    ItemStack copy = stack.copy();
-                    copy.stackSize = amount;
-                    inputs.add(copy);
                 }
-            } else if (o.getKey() instanceof Item) inputs.add(new ItemStack((Item) o.getKey(), amount));
-            else if (o.getKey() instanceof Block) inputs.add(new ItemStack((Block) o.getKey(), amount));
-            else throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
+                case Item item -> inputs.add(new ItemStack(item, amount));
+                case Block block -> inputs.add(new ItemStack(block, amount));
+                case null, default ->
+                    throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
+            }
         }
 
         // Remove tools from inputs in case a recipe has one as a direct Item or ItemStack reference

@@ -461,17 +461,22 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchEnergy) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof MTEHatchDynamo) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof MTEHatchMaintenance) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else {
-                if (isThisHatchMultiDynamo(aMetaTileEntity)) {
+            switch (aMetaTileEntity) {
+                case MTEHatchEnergy mteHatchEnergy -> {
                     return addToMachineList(aTileEntity, aBaseCasingIndex);
-                } else if (isThisHatchMultiEnergy(aMetaTileEntity)) {
+                }
+                case MTEHatchDynamo mteHatchDynamo -> {
                     return addToMachineList(aTileEntity, aBaseCasingIndex);
+                }
+                case MTEHatchMaintenance mteHatchMaintenance -> {
+                    return addToMachineList(aTileEntity, aBaseCasingIndex);
+                }
+                case null, default -> {
+                    if (isThisHatchMultiDynamo(aMetaTileEntity)) {
+                        return addToMachineList(aTileEntity, aBaseCasingIndex);
+                    } else if (isThisHatchMultiEnergy(aMetaTileEntity)) {
+                        return addToMachineList(aTileEntity, aBaseCasingIndex);
+                    }
                 }
             }
         }
