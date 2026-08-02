@@ -1625,11 +1625,9 @@ public enum OreMixes {
     }
 
     private static Set<StoneType> getStoneTypesForDim(String dim) {
-        Set<StoneType> stoneTypes = new HashSet<>();
         String fullName = DimensionHelper.getDimFullName(dim);
-        stoneTypes.addAll(
-            DimensionHelper.REGISTRY.get(fullName)
-                .stoneTypes());
+        Set<StoneType> stoneTypes = new HashSet<>(DimensionHelper.REGISTRY.get(fullName)
+            .stoneTypes());
         addGTStoneTypes(stoneTypes, dim);
         addAsteroidStoneTypes(stoneTypes, dim);
         return stoneTypes;
