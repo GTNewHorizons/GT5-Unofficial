@@ -116,9 +116,7 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
                 }
             }
             // Unified ore, Per Dimension ore, Regular ore
-            case UnifiedBlock, PerDimBlock, Block -> {
-                drops.add(info.material.getOre(1));
-            }
+            case UnifiedBlock, PerDimBlock, Block -> drops.add(info.material.getOre(1));
         }
 
         return drops;

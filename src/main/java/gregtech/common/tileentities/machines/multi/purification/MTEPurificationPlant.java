@@ -469,26 +469,18 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             PurificationUnitStatus status = unit.metaTileEntity()
                 .status();
             switch (status) {
-                case ACTIVE -> {
-                    text = text + EnumChatFormatting.GREEN
-                        + IGregTechDeviceInformation
-                            .decode("GT5U.infodata.purification_plant.linked_units.status.active");
-                }
-                case IDLE -> {
-                    text = text + EnumChatFormatting.GREEN
-                        + IGregTechDeviceInformation
-                            .decode("GT5U.infodata.purification_plant.linked_units.status.idle");
-                }
-                case DISABLED -> {
-                    text = text + EnumChatFormatting.YELLOW
-                        + IGregTechDeviceInformation
-                            .decode("GT5U.infodata.purification_plant.linked_units.status.disabled");
-                }
-                case INCOMPLETE_STRUCTURE -> {
-                    text = text + EnumChatFormatting.RED
-                        + IGregTechDeviceInformation
-                            .decode("GT5U.infodata.purification_plant.linked_units.status.incomplete");
-                }
+                case ACTIVE -> text = text + EnumChatFormatting.GREEN
+                    + IGregTechDeviceInformation
+                        .decode("GT5U.infodata.purification_plant.linked_units.status.active");
+                case IDLE -> text = text + EnumChatFormatting.GREEN
+                    + IGregTechDeviceInformation
+                        .decode("GT5U.infodata.purification_plant.linked_units.status.idle");
+                case DISABLED -> text = text + EnumChatFormatting.YELLOW
+                    + IGregTechDeviceInformation
+                        .decode("GT5U.infodata.purification_plant.linked_units.status.disabled");
+                case INCOMPLETE_STRUCTURE -> text = text + EnumChatFormatting.RED
+                    + IGregTechDeviceInformation
+                        .decode("GT5U.infodata.purification_plant.linked_units.status.incomplete");
             }
             ret.add(text);
         }

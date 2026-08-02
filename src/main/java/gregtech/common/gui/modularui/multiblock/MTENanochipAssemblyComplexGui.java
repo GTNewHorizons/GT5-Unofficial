@@ -741,13 +741,11 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 };
             case "open the pod bay doors" -> " I'm sorry, Dave. I'm afraid I can't do that";
             case "shall we play a game" -> "tik tack toe";
-            case "nac" -> {
-                yield "NAC stands for: " + NOptions.get(MathUtils.randInt(0, NOptions.size() - 1))
-                    + " "
-                    + AOptions.get(MathUtils.randInt(0, AOptions.size() - 1))
-                    + " "
-                    + COptions.get(MathUtils.randInt(0, COptions.size() - 1));
-            }
+            case "nac" -> "NAC stands for: " + NOptions.get(MathUtils.randInt(0, NOptions.size() - 1))
+                + " "
+                + AOptions.get(MathUtils.randInt(0, AOptions.size() - 1))
+                + " "
+                + COptions.get(MathUtils.randInt(0, COptions.size() - 1));
             default -> switch (MathUtils.randInt(1, 10)) {
                     case 1 -> "It is certain";
                     case 2 -> "It is decidedly so";

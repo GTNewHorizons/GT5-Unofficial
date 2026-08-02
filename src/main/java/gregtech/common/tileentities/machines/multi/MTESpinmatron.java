@@ -304,18 +304,11 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             // 3, 5 = right top, right bottom
             // 6, 7 = back top, back bottom (all in theory)
             switch (i) {
-                case 0, 1 -> {
-                    te.setFrontFacing(direction.getRelativeForwardInWorld());
-                }
-                case 2, 4 -> {
-                    te.setFrontFacing(direction.getRelativeRightInWorld());
-                }
-                case 3, 5 -> {
-                    te.setFrontFacing(direction.getRelativeLeftInWorld());
-                }
-                case 6, 7 -> {
-                    te.setFrontFacing(direction.getRelativeBackInWorld());
-                }
+                case 0, 1 -> te.setFrontFacing(direction.getRelativeForwardInWorld());
+                case 2, 4 -> te.setFrontFacing(direction.getRelativeRightInWorld());
+                case 3, 5 -> te.setFrontFacing(direction.getRelativeLeftInWorld());
+                case 6, 7 -> te.setFrontFacing(direction.getRelativeBackInWorld());
+
             }
         }
     }
