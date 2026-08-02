@@ -828,7 +828,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                     }
                 }
             }
-        } catch (Exception t) {}
+        } catch (Exception ignored) {}
         return false;
     }
 

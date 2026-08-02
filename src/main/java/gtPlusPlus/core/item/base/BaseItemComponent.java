@@ -186,7 +186,7 @@ public class BaseItemComponent extends Item {
                     }
                 }
             }
-        } catch (Exception t) {}
+        } catch (Exception ignored) {}
 
         super.addInformation(stack, aPlayer, list, bool);
     }
