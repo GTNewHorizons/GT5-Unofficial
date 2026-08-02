@@ -275,7 +275,7 @@ public abstract class StandardFactoryGrid<TSelf extends StandardFactoryGrid<TSel
 
             if (networks != null) networks.add(current.getNetwork());
 
-            if (current == start || (recurseIntoNetworked ? true : current.getNetwork() == null)) {
+            if (current == start || (recurseIntoNetworked || current.getNetwork() == null)) {
                 queue.addAll(edges.get(current));
             }
         }
