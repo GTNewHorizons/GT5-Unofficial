@@ -79,7 +79,7 @@ public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactory
                 IGregTechTileEntity base = hatch.getBaseMetaTileEntity();
 
                 data.add(
-                    base.getXCoord() + ", " + base.getYCoord() + ", " + base.getZCoord() + ": " + hatch.toString());
+                    base.getXCoord() + ", " + base.getYCoord() + ", " + base.getZCoord() + ": " + hatch);
             }
         }
 
