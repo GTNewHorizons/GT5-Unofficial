@@ -21,7 +21,7 @@ import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.OreShapes;
-import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
@@ -173,7 +173,7 @@ public class MaterialParts {
             collectShapes(map, CellShapes.class);
             collectShapes(map, BlockShapes.class);
             collectShapes(map, OreShapes.class);
-            collectShapes(map, PipeShapes.class);
+            collectShapes(map, TEBlockShapes.class);
             for (Map.Entry<String, List<Shape>> entry : map.entrySet()) {
                 String prefix = entry.getKey();
                 entry.getValue()

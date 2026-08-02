@@ -9,7 +9,7 @@ import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 
 /// The frozen per-material pipe-family MTE ids, mapped to the MaterialLib shape and material each id's
 /// wire/cable/fluid-pipe/item-pipe served, for [PosteaTransformers]' save migration. The id layout is:
@@ -181,24 +181,24 @@ public final class LegacyPipeCutoverTable {
         putRange(
             material,
             startId + 6,
-            PipeShapes.cableGt01,
-            PipeShapes.cableGt02,
-            PipeShapes.cableGt04,
-            PipeShapes.cableGt08,
-            PipeShapes.cableGt12,
-            PipeShapes.cableGt16);
+            TEBlockShapes.cableGt01,
+            TEBlockShapes.cableGt02,
+            TEBlockShapes.cableGt04,
+            TEBlockShapes.cableGt08,
+            TEBlockShapes.cableGt12,
+            TEBlockShapes.cableGt16);
     }
 
     private static void wireOnly(Material material, int startId) {
         putRange(
             material,
             startId,
-            PipeShapes.wireGt01,
-            PipeShapes.wireGt02,
-            PipeShapes.wireGt04,
-            PipeShapes.wireGt08,
-            PipeShapes.wireGt12,
-            PipeShapes.wireGt16);
+            TEBlockShapes.wireGt01,
+            TEBlockShapes.wireGt02,
+            TEBlockShapes.wireGt04,
+            TEBlockShapes.wireGt08,
+            TEBlockShapes.wireGt12,
+            TEBlockShapes.wireGt16);
     }
 
     private static void fluidPipe(Material material, int startId) {
@@ -207,22 +207,22 @@ public final class LegacyPipeCutoverTable {
 
     private static void fluidPipe(Material material, int startId, int multiFluidStartId) {
         fluidPipeNoMulti(material, startId);
-        putRange(material, multiFluidStartId, PipeShapes.pipeQuadruple, PipeShapes.pipeNonuple);
+        putRange(material, multiFluidStartId, TEBlockShapes.pipeQuadruple, TEBlockShapes.pipeNonuple);
     }
 
     private static void fluidPipeNoMulti(Material material, int startId) {
         putRange(
             material,
             startId,
-            PipeShapes.pipeTiny,
-            PipeShapes.pipeSmall,
-            PipeShapes.pipeMedium,
-            PipeShapes.pipeLarge,
-            PipeShapes.pipeHuge);
+            TEBlockShapes.pipeTiny,
+            TEBlockShapes.pipeSmall,
+            TEBlockShapes.pipeMedium,
+            TEBlockShapes.pipeLarge,
+            TEBlockShapes.pipeHuge);
     }
 
     private static void threeSizeFluidPipe(Material material, int startId) {
-        putRange(material, startId, PipeShapes.pipeSmall, PipeShapes.pipeMedium, PipeShapes.pipeLarge);
+        putRange(material, startId, TEBlockShapes.pipeSmall, TEBlockShapes.pipeMedium, TEBlockShapes.pipeLarge);
     }
 
     private static void itemPipe(Material material, int startId) {
@@ -233,10 +233,10 @@ public final class LegacyPipeCutoverTable {
     }
 
     private static void itemPipeIds(Material material, int... ids) {
-        Shape[] sizes = { PipeShapes.itemPipeTiny, PipeShapes.itemPipeSmall, PipeShapes.itemPipeMedium,
-            PipeShapes.itemPipeLarge, PipeShapes.itemPipeHuge, PipeShapes.itemPipeRestrictiveTiny,
-            PipeShapes.itemPipeRestrictiveSmall, PipeShapes.itemPipeRestrictiveMedium,
-            PipeShapes.itemPipeRestrictiveLarge, PipeShapes.itemPipeRestrictiveHuge };
+        Shape[] sizes = { TEBlockShapes.itemPipeTiny, TEBlockShapes.itemPipeSmall, TEBlockShapes.itemPipeMedium,
+            TEBlockShapes.itemPipeLarge, TEBlockShapes.itemPipeHuge, TEBlockShapes.itemPipeRestrictiveTiny,
+            TEBlockShapes.itemPipeRestrictiveSmall, TEBlockShapes.itemPipeRestrictiveMedium,
+            TEBlockShapes.itemPipeRestrictiveLarge, TEBlockShapes.itemPipeRestrictiveHuge };
         for (int i = 0; i < sizes.length; i++) {
             put(ids[i], sizes[i], material);
         }
@@ -246,12 +246,12 @@ public final class LegacyPipeCutoverTable {
         putRange(
             material,
             startId,
-            PipeShapes.itemPipeMedium,
-            PipeShapes.itemPipeLarge,
-            PipeShapes.itemPipeHuge,
-            PipeShapes.itemPipeRestrictiveMedium,
-            PipeShapes.itemPipeRestrictiveLarge,
-            PipeShapes.itemPipeRestrictiveHuge);
+            TEBlockShapes.itemPipeMedium,
+            TEBlockShapes.itemPipeLarge,
+            TEBlockShapes.itemPipeHuge,
+            TEBlockShapes.itemPipeRestrictiveMedium,
+            TEBlockShapes.itemPipeRestrictiveLarge,
+            TEBlockShapes.itemPipeRestrictiveHuge);
     }
 
     private static void putRange(Material material, int startId, Shape... shapes) {

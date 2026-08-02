@@ -65,7 +65,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -141,7 +141,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         .addElement('L', ofBlock(GregTechAPI.sBlockCasings2, 13)) // Steel Pipe Casing
         .addElement('M', ofBlock(GregTechAPI.sBlockCasings2, 14)) // Titanium Pipe Casing
         .addElement('N', ofBlock(GregTechAPI.sBlockCasings2, 15)) // Tungstensteel Pipe Casing
-        .addElement('P', ofBlock(MaterialLibAPI.getBlock(PipeShapes.frameGt), Materials.Tungsten.getIndex())) // Tungsten
+        .addElement('P', ofBlock(MaterialLibAPI.getBlock(TEBlockShapes.frameGt), Materials.Tungsten.getIndex())) // Tungsten
                                                                                                               // Frame
                                                                                                               // Box
         .addElement(

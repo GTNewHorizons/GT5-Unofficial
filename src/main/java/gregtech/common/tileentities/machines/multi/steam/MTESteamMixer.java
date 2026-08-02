@@ -45,7 +45,7 @@ import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -153,7 +153,7 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
 
     @Nullable
     public static Integer getTierFrame(Block block, int meta) {
-        if (block == MaterialLibAPI.getBlock(PipeShapes.frameGt)) {
+        if (block == MaterialLibAPI.getBlock(TEBlockShapes.frameGt)) {
             if (meta == Materials.Bronze.getIndex()) return 1;
             if (meta == Materials.Steel.getIndex()) return 2;
         }
@@ -232,8 +232,8 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
                     ofBlocksTiered(
                         MTESteamMixer::getTierFrame,
                         ImmutableList.of(
-                            Pair.of(MaterialLibAPI.getBlock(PipeShapes.frameGt), Materials.Bronze.getIndex()),
-                            Pair.of(MaterialLibAPI.getBlock(PipeShapes.frameGt), Materials.Steel.getIndex())),
+                            Pair.of(MaterialLibAPI.getBlock(TEBlockShapes.frameGt), Materials.Bronze.getIndex()),
+                            Pair.of(MaterialLibAPI.getBlock(TEBlockShapes.frameGt), Materials.Steel.getIndex())),
                         -1,
                         (t, m) -> t.tierFrame = m,
                         t -> t.tierFrame))

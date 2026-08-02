@@ -15,7 +15,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.util.GTOreDictUnificator;
@@ -320,11 +320,11 @@ public enum CircuitComponent {
     FrameboxCelestialTungsten(
         1402,
         "gt.circuitcomponent.frame.celestialtungsten",
-        () -> MaterialLibAPI.getStack(Materials.CelestialTungsten, PipeShapes.frameGt, 1)),
+        () -> MaterialLibAPI.getStack(Materials.CelestialTungsten, TEBlockShapes.frameGt, 1)),
     FrameboxHypogen(
         1403,
         "gt.circuitcomponent.frame.hypogen",
-        () -> MaterialLibAPI.getStack(Materials.Hypogen, PipeShapes.frameGt, 1)),
+        () -> MaterialLibAPI.getStack(Materials.Hypogen, TEBlockShapes.frameGt, 1)),
     FrameboxMagMatter(
         1404,
         "gt.circuitcomponent.frame.magmatter",

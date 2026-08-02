@@ -38,7 +38,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -120,7 +120,7 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
 
     @Nullable
     public static Integer getTierFrame(Block block, int meta) {
-        if (block == MaterialLibAPI.getBlock(PipeShapes.frameGt)) {
+        if (block == MaterialLibAPI.getBlock(TEBlockShapes.frameGt)) {
             if (meta == Materials.Bronze.getIndex()) return 1;
             if (meta == Materials.Steel.getIndex()) return 2;
         }
@@ -213,8 +213,8 @@ public class MTESteamMacerator extends MTESteamMultiBlockBase<MTESteamMacerator>
                     ofBlocksTiered(
                         MTESteamMacerator::getTierFrame,
                         ImmutableList.of(
-                            Pair.of(MaterialLibAPI.getBlock(PipeShapes.frameGt), Materials.Bronze.getIndex()),
-                            Pair.of(MaterialLibAPI.getBlock(PipeShapes.frameGt), Materials.Steel.getIndex())),
+                            Pair.of(MaterialLibAPI.getBlock(TEBlockShapes.frameGt), Materials.Bronze.getIndex()),
+                            Pair.of(MaterialLibAPI.getBlock(TEBlockShapes.frameGt), Materials.Steel.getIndex())),
                         -1,
                         (t, m) -> t.tierFrame = m,
                         t -> t.tierFrame))

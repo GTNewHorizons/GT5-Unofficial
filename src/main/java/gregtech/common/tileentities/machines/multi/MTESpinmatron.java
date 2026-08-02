@@ -54,7 +54,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -233,7 +233,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             lazy(
                 t -> ofBlock(
                     Block.getBlockFromItem(
-                        MaterialLibAPI.getStack(Materials.Pikyonium64B, PipeShapes.frameGt, 1)
+                        MaterialLibAPI.getStack(Materials.Pikyonium64B, TEBlockShapes.frameGt, 1)
                             .getItem()),
                     0))) // t1 frame, Pikyonium
         .addElement(

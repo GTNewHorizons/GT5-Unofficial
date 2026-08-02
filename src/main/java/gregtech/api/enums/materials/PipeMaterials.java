@@ -179,13 +179,13 @@ public class PipeMaterials {
     /// The wire sizes this table grants as one unit: a material carrying any of them carries all six. Public
     /// so a consumer can state that unit as its own precondition instead of re-listing the sizes.
     public static Shape[] wireShapes() {
-        return new Shape[] { PipeShapes.wireGt01, PipeShapes.wireGt02, PipeShapes.wireGt04, PipeShapes.wireGt08,
-            PipeShapes.wireGt12, PipeShapes.wireGt16 };
+        return new Shape[] { TEBlockShapes.wireGt01, TEBlockShapes.wireGt02, TEBlockShapes.wireGt04, TEBlockShapes.wireGt08,
+            TEBlockShapes.wireGt12, TEBlockShapes.wireGt16 };
     }
 
     private static Shape[] cableShapes() {
-        return new Shape[] { PipeShapes.cableGt01, PipeShapes.cableGt02, PipeShapes.cableGt04, PipeShapes.cableGt08,
-            PipeShapes.cableGt12, PipeShapes.cableGt16 };
+        return new Shape[] { TEBlockShapes.cableGt01, TEBlockShapes.cableGt02, TEBlockShapes.cableGt04, TEBlockShapes.cableGt08,
+            TEBlockShapes.cableGt12, TEBlockShapes.cableGt16 };
     }
 
     // spotless:off
@@ -242,22 +242,22 @@ public class PipeMaterials {
             if (row.material() == Materials.Void && !Mods.Thaumcraft.isModLoaded()) continue;
             if (row.material() == Materials.DarkSteel && !Mods.EnderIO.isModLoaded()) continue;
             edit.generateShapes(
-                PipeShapes.pipeTiny,
-                PipeShapes.pipeSmall,
-                PipeShapes.pipeMedium,
-                PipeShapes.pipeLarge,
-                PipeShapes.pipeHuge,
-                PipeShapes.pipeQuadruple,
-                PipeShapes.pipeNonuple);
+                TEBlockShapes.pipeTiny,
+                TEBlockShapes.pipeSmall,
+                TEBlockShapes.pipeMedium,
+                TEBlockShapes.pipeLarge,
+                TEBlockShapes.pipeHuge,
+                TEBlockShapes.pipeQuadruple,
+                TEBlockShapes.pipeNonuple);
         }
 
         edit(Materials.Wood).setProperty(PipeProperties.PIPE_HEAT_RESISTANCE, WOOD_FLUID_PIPE_HEAT_RESISTANCE)
             .setProperty(PipeProperties.PIPE_GAS_PROOF, false)
-            .generateShapes(PipeShapes.pipeSmall, PipeShapes.pipeMedium, PipeShapes.pipeLarge);
+            .generateShapes(TEBlockShapes.pipeSmall, TEBlockShapes.pipeMedium, TEBlockShapes.pipeLarge);
         edit(Materials.Clay).setProperty(PipeProperties.PIPE_GAS_PROOF, false);
         edit(Materials.Redstone)
             .setProperty(PipeProperties.PIPE_HEAT_RESISTANCE, HIGH_PRESSURE_FLUID_PIPE_HEAT_RESISTANCE)
-            .generateShapes(PipeShapes.pipeSmall, PipeShapes.pipeMedium, PipeShapes.pipeLarge);
+            .generateShapes(TEBlockShapes.pipeSmall, TEBlockShapes.pipeMedium, TEBlockShapes.pipeLarge);
     }
 
     // spotless:off
@@ -282,18 +282,18 @@ public class PipeMaterials {
         for (ItemPipe row : itemPipes) {
             MaterialEdit edit = edit(row.material()).setProperty(PipeProperties.BASE_ITEM_PIPE_SLOTS, row.hugeSlots())
                 .generateShapes(
-                    PipeShapes.itemPipeMedium,
-                    PipeShapes.itemPipeLarge,
-                    PipeShapes.itemPipeHuge,
-                    PipeShapes.itemPipeRestrictiveMedium,
-                    PipeShapes.itemPipeRestrictiveLarge,
-                    PipeShapes.itemPipeRestrictiveHuge);
+                    TEBlockShapes.itemPipeMedium,
+                    TEBlockShapes.itemPipeLarge,
+                    TEBlockShapes.itemPipeHuge,
+                    TEBlockShapes.itemPipeRestrictiveMedium,
+                    TEBlockShapes.itemPipeRestrictiveLarge,
+                    TEBlockShapes.itemPipeRestrictiveHuge);
             if (row.smallPipes()) {
                 edit.generateShapes(
-                    PipeShapes.itemPipeTiny,
-                    PipeShapes.itemPipeSmall,
-                    PipeShapes.itemPipeRestrictiveTiny,
-                    PipeShapes.itemPipeRestrictiveSmall);
+                    TEBlockShapes.itemPipeTiny,
+                    TEBlockShapes.itemPipeSmall,
+                    TEBlockShapes.itemPipeRestrictiveTiny,
+                    TEBlockShapes.itemPipeRestrictiveSmall);
             } else {
                 edit.setProperty(PipeProperties.NO_SMALL_ITEM_PIPES, true);
             }
@@ -305,7 +305,7 @@ public class PipeMaterials {
     /// other frame and sheetmetal membership is declared in [Materials].
     private static void applyModGatedFrames() {
         if (Mods.RotaryCraft.isModLoaded()) {
-            edit(Materials.HSLA).generateShape(PipeShapes.frameGt);
+            edit(Materials.HSLA).generateShape(TEBlockShapes.frameGt);
         }
     }
 

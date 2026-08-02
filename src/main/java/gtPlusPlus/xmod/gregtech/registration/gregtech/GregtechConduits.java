@@ -17,7 +17,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.PipeMaterials;
-import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -227,12 +227,12 @@ public class GregtechConduits {
 
         if (!hasWireLadder(material)) return;
 
-        ItemStack wire01 = MaterialLibAPI.getStack(material, PipeShapes.wireGt01, 1);
-        ItemStack wire02 = MaterialLibAPI.getStack(material, PipeShapes.wireGt02, 1);
-        ItemStack wire04 = MaterialLibAPI.getStack(material, PipeShapes.wireGt04, 1);
-        ItemStack wire08 = MaterialLibAPI.getStack(material, PipeShapes.wireGt08, 1);
-        ItemStack wire12 = MaterialLibAPI.getStack(material, PipeShapes.wireGt12, 1);
-        ItemStack wire16 = MaterialLibAPI.getStack(material, PipeShapes.wireGt16, 1);
+        ItemStack wire01 = MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 1);
+        ItemStack wire02 = MaterialLibAPI.getStack(material, TEBlockShapes.wireGt02, 1);
+        ItemStack wire04 = MaterialLibAPI.getStack(material, TEBlockShapes.wireGt04, 1);
+        ItemStack wire08 = MaterialLibAPI.getStack(material, TEBlockShapes.wireGt08, 1);
+        ItemStack wire12 = MaterialLibAPI.getStack(material, TEBlockShapes.wireGt12, 1);
+        ItemStack wire16 = MaterialLibAPI.getStack(material, TEBlockShapes.wireGt16, 1);
 
         // Adds manual crafting recipe
         if (material.hasShape(Shapes.plate) && MaterialUtils.voltageMultiplier(material) < 7680) {
@@ -247,7 +247,7 @@ public class GregtechConduits {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1))
                 .circuit(1)
-                .itemOutputs(MaterialLibAPI.getStack(material, PipeShapes.wireGt01, 2))
+                .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 2))
                 .duration(5 * SECONDS)
                 .eut(4)
                 .addTo(wiremillRecipes);
@@ -347,7 +347,7 @@ public class GregtechConduits {
         if (hasIngot) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1), ItemList.Shape_Extruder_Wire.get(0))
-                .itemOutputs(MaterialLibAPI.getStack(material, PipeShapes.wireGt01, 2))
+                .itemOutputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 2))
                 .duration(9 * SECONDS + 16 * TICKS)
                 .eut(96)
                 .addTo(extruderRecipes);
@@ -355,23 +355,23 @@ public class GregtechConduits {
 
         // Shapeless down-crafting
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(material, PipeShapes.wireGt01, 2),
+            MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 2),
             GTModHandler.RecipeBits.BUFFERED,
             new ItemStack[] { wire02 });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(material, PipeShapes.wireGt01, 4),
+            MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 4),
             GTModHandler.RecipeBits.BUFFERED,
             new ItemStack[] { wire04 });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(material, PipeShapes.wireGt01, 8),
+            MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 8),
             GTModHandler.RecipeBits.BUFFERED,
             new ItemStack[] { wire08 });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(material, PipeShapes.wireGt01, 12),
+            MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 12),
             GTModHandler.RecipeBits.BUFFERED,
             new ItemStack[] { wire12 });
         GTModHandler.addShapelessCraftingRecipe(
-            MaterialLibAPI.getStack(material, PipeShapes.wireGt01, 16),
+            MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 16),
             GTModHandler.RecipeBits.BUFFERED,
             new ItemStack[] { wire16 });
 
@@ -399,35 +399,35 @@ public class GregtechConduits {
 
         // Assemble small wires into bigger wires
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, PipeShapes.wireGt01, 2))
+            .itemInputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 2))
             .circuit(2)
             .itemOutputs(wire02)
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, PipeShapes.wireGt01, 4))
+            .itemInputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 4))
             .circuit(4)
             .itemOutputs(wire04)
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, PipeShapes.wireGt01, 8))
+            .itemInputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 8))
             .circuit(8)
             .itemOutputs(wire08)
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, PipeShapes.wireGt01, 12))
+            .itemInputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 12))
             .circuit(12)
             .itemOutputs(wire12)
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(material, PipeShapes.wireGt01, 16))
+            .itemInputs(MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 16))
             .circuit(16)
             .itemOutputs(wire16)
             .duration(5 * SECONDS)

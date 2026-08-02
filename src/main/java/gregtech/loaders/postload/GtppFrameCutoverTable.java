@@ -3,10 +3,11 @@ package gregtech.loaders.postload;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.TEBlockShapes;
 
 /// The materials whose gtPlusPlus frame block (`miscutils:blockFrameGt<Name>`, one distinct registered block
 /// per material) a saved world can still hold, for [PosteaTransformers]' migration onto the
-/// [gregtech.api.enums.materials.PipeShapes#frameGt] shape. Frozen: a name leaving this list orphans that
+/// [TEBlockShapes#frameGt] shape. Frozen: a name leaving this list orphans that
 /// block in every world that has one placed.
 public final class GtppFrameCutoverTable {
 

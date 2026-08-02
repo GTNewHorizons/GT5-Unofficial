@@ -54,7 +54,7 @@ import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
@@ -1030,13 +1030,13 @@ public class RecipeLoader2 {
             new Object[] { "NPN", "GHG", "IPI", 'N', "circuitMaster", 'P',
                 MaterialLibAPI.getStack(Materials.MARM200Steel, Shapes.plate, 1), 'H', ItemList.Hull_IV.get(1), 'G',
                 MaterialLibAPI.getStack(Materials.MARCeM200Steel, Shapes.gearGt, 1), 'I',
-                MaterialLibAPI.getStack(Materials.Incoloy903, PipeShapes.pipeLarge, 1) });
+                MaterialLibAPI.getStack(Materials.Incoloy903, TEBlockShapes.pipeLarge, 1) });
 
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.MARM200Steel, Shapes.plate, 2),
                 MaterialLibAPI.getStack(Materials.MARCeM200Steel, Shapes.gearGt, 2),
-                MaterialLibAPI.getStack(Materials.Incoloy903, PipeShapes.pipeLarge, 2),
+                MaterialLibAPI.getStack(Materials.Incoloy903, TEBlockShapes.pipeLarge, 2),
                 Circuits.LuV.get(2),
                 ItemList.Hull_IV.get(1))
             .itemOutputs(ItemList.SCSteamTurbine.get(1))

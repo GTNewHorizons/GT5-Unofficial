@@ -37,7 +37,7 @@ import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.OreShapes;
-import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.MaterialParts;
@@ -281,8 +281,8 @@ public class PosteaTransformers implements Runnable {
         Material[] materials = GtppFrameCutoverTable.materials();
         int count = 0;
         for (Material material : materials) {
-            if (!material.hasShape(PipeShapes.frameGt)) continue;
-            ItemStack cutover = MaterialLibAPI.getStack(material, PipeShapes.frameGt, 1);
+            if (!material.hasShape(TEBlockShapes.frameGt)) continue;
+            ItemStack cutover = MaterialLibAPI.getStack(material, TEBlockShapes.frameGt, 1);
             String legacyId = "miscutils:blockFrameGt" + material.getName();
             Block mlBlock = Block.getBlockFromItem(cutover.getItem());
             addBlockReplacement(legacyId, 0, mlBlock, cutover.getItemDamage());
@@ -580,7 +580,7 @@ public class PosteaTransformers implements Runnable {
                 // Do not modify this TE, so return null
                 return null;
             }
-            FrameShapeBlock frameBlock = (FrameShapeBlock) MaterialLibAPI.getBlock(PipeShapes.frameGt);
+            FrameShapeBlock frameBlock = (FrameShapeBlock) MaterialLibAPI.getBlock(TEBlockShapes.frameGt);
 
             // If this frame has a cover on it, we need to keep its TileEntity, rewritten to the single
             // material-agnostic frame MTE the shape block binds
@@ -608,7 +608,7 @@ public class PosteaTransformers implements Runnable {
             if (material == null) {
                 return false;
             }
-            Item frameItem = Item.getItemFromBlock(MaterialLibAPI.getBlock(PipeShapes.frameGt));
+            Item frameItem = Item.getItemFromBlock(MaterialLibAPI.getBlock(TEBlockShapes.frameGt));
             int itemId = Item.getIdFromItem(frameItem);
             // Change this item into the correct frame item (make sure to keep amount)
             tag.setInteger("id", itemId);

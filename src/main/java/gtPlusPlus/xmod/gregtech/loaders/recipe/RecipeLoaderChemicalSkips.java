@@ -32,7 +32,7 @@ import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
@@ -765,7 +765,7 @@ public class RecipeLoaderChemicalSkips {
             1024,
             (int) TierEU.RECIPE_ZPM,
             32,
-            new ItemStack[] { MaterialLibAPI.getStack(Materials.Quantum, PipeShapes.frameGt, 1),
+            new ItemStack[] { MaterialLibAPI.getStack(Materials.Quantum, TEBlockShapes.frameGt, 1),
                 GTOreDictUnificator.get("plateDensePreciousMetalsAlloy", 4),
                 MaterialLibAPI.getStack(Materials.Netherite, Shapes.plateSuperdense, 2),
                 ItemList.Field_Generator_UV.get(1),
@@ -781,7 +781,7 @@ public class RecipeLoaderChemicalSkips {
             2048,
             (int) TierEU.RECIPE_UV,
             32,
-            new ItemStack[] { MaterialLibAPI.getStack(Materials.Quantum, PipeShapes.frameGt, 2),
+            new ItemStack[] { MaterialLibAPI.getStack(Materials.Quantum, TEBlockShapes.frameGt, 2),
                 GTOreDictUnificator.get("plateDenseEnrichedNaquadahAlloy", 4),
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.plateSuperdense, 2),
                 ItemList.Field_Generator_UEV.get(1), MaterialLibAPI.getStack(Materials.RadoxPoly, Shapes.screw, 16),
@@ -797,7 +797,7 @@ public class RecipeLoaderChemicalSkips {
             4096,
             (int) TierEU.RECIPE_UHV,
             32,
-            new ItemStack[] { MaterialLibAPI.getStack(Materials.Quantum, PipeShapes.frameGt, 4),
+            new ItemStack[] { MaterialLibAPI.getStack(Materials.Quantum, TEBlockShapes.frameGt, 4),
                 MaterialLibAPI.getStack(Materials.Hypogen, Shapes.plateDense, 4),
                 MaterialLibAPI.getStack(Materials.protohalkonite, Shapes.plateSuperdense, 2),
                 ItemList.Field_Generator_UIV.get(1), GTOreDictUnificator.get("screwMetastableOganesson", 16),
@@ -813,7 +813,7 @@ public class RecipeLoaderChemicalSkips {
             8192,
             (int) TierEU.RECIPE_UEV,
             32,
-            new ItemStack[] { MaterialLibAPI.getStack(Materials.Quantum, PipeShapes.frameGt, 8),
+            new ItemStack[] { MaterialLibAPI.getStack(Materials.Quantum, TEBlockShapes.frameGt, 8),
                 GTOreDictUnificator.get("plateDenseShirabon", 4),
                 MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.plateSuperdense, 2),
                 ItemList.Field_Generator_UMV.get(1), MaterialLibAPI.getStack(Materials.Dilithium, Shapes.screw, 16),

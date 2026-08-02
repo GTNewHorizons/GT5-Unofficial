@@ -17,7 +17,7 @@ import gregtech.common.blocks.PipeShapeBlock.PipeFamily;
 /// oredict prefixes keep the legacy strings. These fields feed [gregtech.api.material.MaterialParts]'s prefix-to-shape
 /// reflection map; the `itemPipe*` fields, whose names match no `OrePrefixes`, are folded there under the
 /// `pipeTiny`..`pipeHuge` / `pipeRestrictive*` prefix keys, the fluid shape staying the first candidate.
-public class PipeShapes {
+public class TEBlockShapes {
 
     // spotless:off
     public static Shape wireGt01;
@@ -91,5 +91,5 @@ public class PipeShapes {
         return MaterialLibAPI.registerBlockShape(block);
     }
 
-    private PipeShapes() {}
+    private TEBlockShapes() {}
 }

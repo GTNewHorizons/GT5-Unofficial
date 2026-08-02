@@ -20,7 +20,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.OreDictItemStack;
@@ -297,7 +297,7 @@ public class FormingPressRecipes implements Runnable {
         // Peace Enforcement Casing
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Tairitsu, PipeShapes.frameGt, 1),
+                MaterialLibAPI.getStack(Materials.Tairitsu, TEBlockShapes.frameGt, 1),
                 MaterialLibAPI.getStack(Materials.Churitsu, Shapes.itemCasing, 2))
             .itemOutputs(ItemList.PeaceEnforcementCasing.get(1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Shijima, FluidShapes.fluidMolten, (int) (2 * INGOTS)))

@@ -44,7 +44,7 @@ import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -2286,7 +2286,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             (int) TierEU.RECIPE_UMV,
             64,
             new Object[] { ItemList.BlockQuarkContainmentCasing.get(6),
-                MaterialLibAPI.getStack(Materials.Tairitsu, PipeShapes.frameGt, 6),
+                MaterialLibAPI.getStack(Materials.Tairitsu, TEBlockShapes.frameGt, 6),
                 GTOreDictUnificator.get("frameGtChuritsu", 6), GTOreDictUnificator.get("frameGtShijima", 6),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "IrradiantReinforcedBedrockiumPlate", 8),
                 GTOreDictUnificator.get("foilprotohalkonite", 32),
@@ -2490,7 +2490,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 new Object[] { GTOreDictUnificator.get("frameGtMellion", 16),
                     GTOreDictUnificator.get("frameGtSixPhasedCopper", 16),
                     GTOreDictUnificator.get("frameGtTranscendentMetal", 8),
-                    MaterialLibAPI.getStack(Materials.AstralTitanium, PipeShapes.frameGt, 8),
+                    MaterialLibAPI.getStack(Materials.AstralTitanium, TEBlockShapes.frameGt, 8),
                     MaterialLibAPI.getStack(Materials.Creon, Shapes.plate, 6),
                     ItemList.StableBosonContainmentUnit.get(1), ItemList.Field_Generator_UEV.get(2),
                     // Artificial Gravity Generator
@@ -3051,10 +3051,10 @@ public class ResearchStationAssemblyLine implements Runnable {
                     MaterialLibAPI.getStack(Materials.SuperconductorUEVBase, Shapes.stickLong, 8),
                     getModItem(EternalSingularity.ID, "combined_singularity", 1L, 4),
                     MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.plateSuperdense, 2),
-                    MaterialLibAPI.getStack(Materials.Titansteel, PipeShapes.frameGt, 4),
+                    MaterialLibAPI.getStack(Materials.Titansteel, TEBlockShapes.frameGt, 4),
                     GTOreDictUnificator.get("plateprotohalkonite", 16),
                     MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.plateSuperdense, 2),
-                    MaterialLibAPI.getStack(Materials.AbyssalAlloy, PipeShapes.frameGt, 4) },
+                    MaterialLibAPI.getStack(Materials.AbyssalAlloy, TEBlockShapes.frameGt, 4) },
                 new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 2 * STACKS),
                     MaterialLibAPI.getFluidStack(Materials.Bedrockium, FluidShapes.fluidMolten, 256 * STACKS),
                     MaterialUtils.anyFluid(Materials.CelestialTungsten, 32 * STACKS),

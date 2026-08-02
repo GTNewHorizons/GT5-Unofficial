@@ -4,12 +4,12 @@ import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.loaders.oreprocessing.ProcessingPipe;
 
 /// Dispatches [ProcessingPipe]'s recipe generation for the twelve pipe prefixes. The fluid and item shapes
 /// sharing a `pipeTiny`..`pipeHuge` prefix string are both delegated under that prefix (their material sets
-/// are disjoint, see [PipeShapes]), matching the legacy oredict dispatch that fired for either
+/// are disjoint, see [TEBlockShapes]), matching the legacy oredict dispatch that fired for either
 /// family's registrations.
 ///
 /// The High Pressure (Redstone) fluid pipes are skipped: their oredict identity is the tier-keyed
@@ -21,37 +21,37 @@ public final class ConsumerPipe {
     private ConsumerPipe() {}
 
     static void register() {
-        fluid(PipeShapes.pipeTiny, OrePrefixes.pipeTiny);
-        fluid(PipeShapes.pipeSmall, OrePrefixes.pipeSmall);
-        fluid(PipeShapes.pipeMedium, OrePrefixes.pipeMedium);
-        fluid(PipeShapes.pipeLarge, OrePrefixes.pipeLarge);
-        fluid(PipeShapes.pipeHuge, OrePrefixes.pipeHuge);
-        fluid(PipeShapes.pipeQuadruple, OrePrefixes.pipeQuadruple);
-        fluid(PipeShapes.pipeNonuple, OrePrefixes.pipeNonuple);
+        fluid(TEBlockShapes.pipeTiny, OrePrefixes.pipeTiny);
+        fluid(TEBlockShapes.pipeSmall, OrePrefixes.pipeSmall);
+        fluid(TEBlockShapes.pipeMedium, OrePrefixes.pipeMedium);
+        fluid(TEBlockShapes.pipeLarge, OrePrefixes.pipeLarge);
+        fluid(TEBlockShapes.pipeHuge, OrePrefixes.pipeHuge);
+        fluid(TEBlockShapes.pipeQuadruple, OrePrefixes.pipeQuadruple);
+        fluid(TEBlockShapes.pipeNonuple, OrePrefixes.pipeNonuple);
 
-        ShapeConsumerSupport.delegate(PipeShapes.itemPipeTiny, OrePrefixes.pipeTiny, () -> ProcessingPipe.INSTANCE);
-        ShapeConsumerSupport.delegate(PipeShapes.itemPipeSmall, OrePrefixes.pipeSmall, () -> ProcessingPipe.INSTANCE);
-        ShapeConsumerSupport.delegate(PipeShapes.itemPipeMedium, OrePrefixes.pipeMedium, () -> ProcessingPipe.INSTANCE);
-        ShapeConsumerSupport.delegate(PipeShapes.itemPipeLarge, OrePrefixes.pipeLarge, () -> ProcessingPipe.INSTANCE);
-        ShapeConsumerSupport.delegate(PipeShapes.itemPipeHuge, OrePrefixes.pipeHuge, () -> ProcessingPipe.INSTANCE);
+        ShapeConsumerSupport.delegate(TEBlockShapes.itemPipeTiny, OrePrefixes.pipeTiny, () -> ProcessingPipe.INSTANCE);
+        ShapeConsumerSupport.delegate(TEBlockShapes.itemPipeSmall, OrePrefixes.pipeSmall, () -> ProcessingPipe.INSTANCE);
+        ShapeConsumerSupport.delegate(TEBlockShapes.itemPipeMedium, OrePrefixes.pipeMedium, () -> ProcessingPipe.INSTANCE);
+        ShapeConsumerSupport.delegate(TEBlockShapes.itemPipeLarge, OrePrefixes.pipeLarge, () -> ProcessingPipe.INSTANCE);
+        ShapeConsumerSupport.delegate(TEBlockShapes.itemPipeHuge, OrePrefixes.pipeHuge, () -> ProcessingPipe.INSTANCE);
         ShapeConsumerSupport.delegate(
-            PipeShapes.itemPipeRestrictiveTiny,
+            TEBlockShapes.itemPipeRestrictiveTiny,
             OrePrefixes.pipeRestrictiveTiny,
             () -> ProcessingPipe.INSTANCE);
         ShapeConsumerSupport.delegate(
-            PipeShapes.itemPipeRestrictiveSmall,
+            TEBlockShapes.itemPipeRestrictiveSmall,
             OrePrefixes.pipeRestrictiveSmall,
             () -> ProcessingPipe.INSTANCE);
         ShapeConsumerSupport.delegate(
-            PipeShapes.itemPipeRestrictiveMedium,
+            TEBlockShapes.itemPipeRestrictiveMedium,
             OrePrefixes.pipeRestrictiveMedium,
             () -> ProcessingPipe.INSTANCE);
         ShapeConsumerSupport.delegate(
-            PipeShapes.itemPipeRestrictiveLarge,
+            TEBlockShapes.itemPipeRestrictiveLarge,
             OrePrefixes.pipeRestrictiveLarge,
             () -> ProcessingPipe.INSTANCE);
         ShapeConsumerSupport.delegate(
-            PipeShapes.itemPipeRestrictiveHuge,
+            TEBlockShapes.itemPipeRestrictiveHuge,
             OrePrefixes.pipeRestrictiveHuge,
             () -> ProcessingPipe.INSTANCE);
     }

@@ -85,7 +85,7 @@ import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -286,7 +286,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                 .casingIndex(CASING.textureId)
                 .hint(1)
                 .buildAndChain(onElementPass(t -> t.mCasing++, CASING.asElement())))
-        .addElement('f', ofBlock(MaterialLibAPI.getBlock(PipeShapes.frameGt), Materials.TungstenSteel.getIndex()))
+        .addElement('f', ofBlock(MaterialLibAPI.getBlock(TEBlockShapes.frameGt), Materials.TungstenSteel.getIndex()))
         .addElement(
             'l',
             ProjectRedIllumination.isModLoaded()

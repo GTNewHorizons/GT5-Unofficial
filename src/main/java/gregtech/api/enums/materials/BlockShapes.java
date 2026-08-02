@@ -12,7 +12,7 @@ import gregtech.common.blocks.SheetmetalShapeBlock;
 /// `OrePrefixes` entry generates through a per-instance `Materials[]` array on each
 /// `gregtech.common.blocks.BlockMetal` rather than the generic pipeline every other prefix uses (its
 /// `generationBits` is `0`). `sheetmetal` generates through that generic pipeline, same
-/// as the pipe/frame shapes in [PipeShapes].
+/// as the pipe/frame shapes in [TEBlockShapes].
 public class BlockShapes {
 
     public static Shape block;

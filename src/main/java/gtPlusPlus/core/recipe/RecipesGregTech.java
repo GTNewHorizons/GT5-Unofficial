@@ -71,7 +71,7 @@ import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.PipeShapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -596,7 +596,7 @@ public class RecipesGregTech {
                 MaterialLibAPI.getStack(Materials.Zeron100, Shapes.gearGt, 6),
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.screw, 16),
                 MaterialLibAPI.getStack(Materials.EnergyCrystal, Shapes.bolt, 24),
-                MaterialLibAPI.getStack(Materials.HastelloyN, PipeShapes.frameGt, 12),
+                MaterialLibAPI.getStack(Materials.HastelloyN, TEBlockShapes.frameGt, 12),
                 GregtechItemList.DehydratorCoilWireZPM.get(64))
             .fluidInputs(
                 MaterialUtils.anyFluid(Materials.Pikyonium64B, 4 * STACKS + 32 * INGOTS),
@@ -730,7 +730,7 @@ public class RecipesGregTech {
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.gearGt, 6),
                 MaterialLibAPI.getStack(Materials.Titansteel, Shapes.screw, 16),
                 MaterialLibAPI.getStack(Materials.ArceusAlloy2B, Shapes.bolt, 24),
-                MaterialLibAPI.getStack(Materials.EnergyCrystal, PipeShapes.frameGt, 12),
+                MaterialLibAPI.getStack(Materials.EnergyCrystal, TEBlockShapes.frameGt, 12),
                 GregtechItemList.DehydratorCoilWireZPM.get(64))
             .fluidInputs(
                 MaterialUtils.anyFluid(Materials.AdvancedNitinol, 4 * STACKS + 32 * INGOTS),
