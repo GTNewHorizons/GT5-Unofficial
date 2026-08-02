@@ -1,7 +1,5 @@
 package gtPlusPlus.core.item.bauble;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
-
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -30,9 +28,7 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
         super(BaubleType.BELT, tier, GTValues.V[tier] * 20 * 300, "GTPP.BattPack.0" + tier + ".name");
         String aUnlocalName = "GTPP.BattPack.0" + tier + ".name";
         this.setCreativeTab(AddToCreativeTab.tabMachines);
-        if (GameRegistry.findItem(GTPlusPlus.ID, aUnlocalName) == null) {
-            GameRegistry.registerItem(this, aUnlocalName);
-        }
+        GameRegistry.registerItem(this, aUnlocalName);
     }
 
     @SideOnly(Side.CLIENT)

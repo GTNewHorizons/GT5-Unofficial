@@ -24,6 +24,7 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.enums.CondensateType;
+import gregtech.api.enums.Mods;
 import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import gregtech.common.gui.modularui.adapter.CondensateListAdapter;
 import gregtech.common.gui.modularui.widget.WidgetConfigurator;
@@ -137,17 +138,17 @@ public class MTEBECIONodeGui extends MTEBECMultiblockBaseGui<MTEBECIONode> {
                     case MIN_PARALLEL_PARAMETER -> textFieldWidget.tooltip(
                         t -> t.addStringLines(
                             MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                                new ResourceLocation("gregtech", "bec-ionode/min-parallels"),
+                                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode/min-parallels"),
                                 Collections.emptyMap())));
                     case MAX_PARALLEL_PARAMETER -> textFieldWidget.tooltip(
                         t -> t.addStringLines(
                             MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                                new ResourceLocation("gregtech", "bec-ionode/max-parallels"),
+                                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode/max-parallels"),
                                 Collections.emptyMap())));
                     case SPEED_DIVISOR_PARAMETER -> textFieldWidget.tooltip(
                         t -> t.addStringLines(
                             MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                                new ResourceLocation("gregtech", "bec-ionode/speed-divisor"),
+                                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode/speed-divisor"),
                                 Collections.emptyMap())));
                     default -> {}
                 }

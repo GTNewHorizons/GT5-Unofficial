@@ -23,12 +23,12 @@ package kubatech.loaders;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import kubatech.Tags;
+import gregtech.api.enums.Mods;
 import minetweaker.MineTweakerImplementationAPI;
 
 public class MTLoader {
 
-    private static final Logger LOG = LogManager.getLogger(Tags.MODID + "[MT Loader]");
+    private static final Logger LOG = LogManager.getLogger(Mods.ModIDs.KUBA_TECH + "[MT Loader]");
     public static MTLoader instance = null;
 
     public static void init() {
