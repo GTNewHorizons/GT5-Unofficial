@@ -21,7 +21,7 @@ import gregtech.common.config.Gregtech;
 
 /**
  * A simple cooperative scheduler that will run expensive tasks in the background without multithreading.
- * 
+ *
  * This cooperative scheduler differs from typical schedulers in that it will try to run the oldest tasks first, without
  * considering newer tasks.
  * This is to prevent it from becoming clogged if something's generating bad tasks.
@@ -71,9 +71,7 @@ public final class CooperativeScheduler {
             try {
                 future.run();
             } catch (Exception t) {
-                GTMod.GT_FML_LOGGER.error(
-                    "Caught error while running task; it will be cancelled (" + future.name + " " + future.task + ")",
-                    t);
+                GTMod.GT_FML_LOGGER.error("Caught error while running task; it will be cancelled ({} {})", future.name, future.task, t);
                 future.cancel(true);
             }
 
@@ -85,13 +83,7 @@ public final class CooperativeScheduler {
             if (end == 0) end = System.nanoTime();
 
             if (Gregtech.general.schedulerProfileLevel >= 2) {
-                GTMod.GT_FML_LOGGER.info(
-                    "Task " + future.name
-                        + " "
-                        + future.task
-                        + " took "
-                        + formatNumber((end - start2) / 1e3)
-                        + " microseconds");
+                GTMod.GT_FML_LOGGER.info("Task {} {} took {} microseconds", future.name, future.task, formatNumber((end - start2) / 1e3));
             }
 
             if ((end - start) > Gregtech.general.schedulerDuration) {
@@ -101,7 +93,7 @@ public final class CooperativeScheduler {
 
         if (Gregtech.general.schedulerProfileLevel >= 1) {
             GTMod.GT_FML_LOGGER
-                .info("Task scheduler took " + formatNumber((System.nanoTime() - start) / 1e3) + " microseconds");
+                .info("Task scheduler took {} microseconds", formatNumber((System.nanoTime() - start) / 1e3));
         }
 
         for (CoopFuture<?> future : newTasks) {

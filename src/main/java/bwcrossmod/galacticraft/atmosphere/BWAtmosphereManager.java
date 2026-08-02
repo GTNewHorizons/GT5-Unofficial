@@ -111,10 +111,7 @@ public final class BWAtmosphereManager {
         for (int i = 0; i < planet.atmosphere.size(); i++) {
             if (!BWAtmosphereManager
                 .addGCGasToWorld(planet.getDimensionID(), planet.atmosphere.get(i), i, planet.atmosphere.size()))
-                BartWorksCrossmod.LOGGER.warn(
-                    "Unidentified Fluid (" + planet.atmosphere.get(i)
-                        + ") in the Atmosphere of: "
-                        + planet.getLocalizedName());
+                BartWorksCrossmod.LOGGER.warn("Unidentified Fluid ({}) in the Atmosphere of: {}", planet.atmosphere.get(i), planet.getLocalizedName());
         }
     }
 }

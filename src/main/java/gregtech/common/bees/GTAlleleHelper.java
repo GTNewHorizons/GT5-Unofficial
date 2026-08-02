@@ -160,7 +160,7 @@ public class GTAlleleHelper extends AlleleHelper {
 
         if (!chromosomeType.getAlleleClass()
             .isInstance(allele)) {
-            GT_FML_LOGGER.warn("chromosomeType is not an instance of allele!" + allele.getName());
+            GT_FML_LOGGER.warn("chromosomeType is not an instance of allele!{}", allele.getName());
             return;
         }
 

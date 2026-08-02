@@ -1706,13 +1706,7 @@ public class WerkstoffLoader {
         addBridgeSubTags();
         runAdditionalOreDict();
         long timepost = System.nanoTime();
-        MainMod.LOGGER.info(
-            "Making Meta Items for BW Materials took " + (timepost - timepre)
-                + "ns/"
-                + (timepost - timepre) / 1000000
-                + "ms/"
-                + (timepost - timepre) / 1000000000
-                + "s!");
+        MainMod.LOGGER.info("Making Meta Items for BW Materials took {}ns/{}ms/{}s!", timepost - timepre, (timepost - timepre) / 1000000, (timepost - timepre) / 1000000000);
     }
 
     public static void run() {
@@ -1769,13 +1763,7 @@ public class WerkstoffLoader {
             AdditionalRecipes.run();
             ProgressManager.pop(progressBar);
             long timepost = System.nanoTime();
-            MainMod.LOGGER.info(
-                "Loading Processing Recipes for BW Materials took " + (timepost - timepre)
-                    + "ns/"
-                    + (timepost - timepre) / 1000000
-                    + "ms/"
-                    + (timepost - timepre) / 1000000000
-                    + "s!");
+            MainMod.LOGGER.info("Loading Processing Recipes for BW Materials took {}ns/{}ms/{}s!", timepost - timepre, (timepost - timepre) / 1000000, (timepost - timepre) / 1000000000);
             registered = true;
         }
     }

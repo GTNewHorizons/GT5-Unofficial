@@ -82,9 +82,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         long post = profileWorldGen ? System.nanoTime() : 0;
 
         if (profileWorldGen) {
-            GTMod.GT_FML_LOGGER.info(
-                String
-                    .format("Generated %d %d in %,d us (%d seeds)", chunkX, chunkZ, (int) ((post - pre) / 1e3), seeds));
+            GTMod.GT_FML_LOGGER.info("Generated {} {} in {} us ({} seeds)", chunkX, chunkZ, (int) ((post - pre) / 1e3), seeds);
         }
 
         Chunk tChunk = world.getChunkFromBlockCoords(chunkX, chunkZ);

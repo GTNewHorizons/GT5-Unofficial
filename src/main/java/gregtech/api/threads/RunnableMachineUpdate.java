@@ -163,18 +163,7 @@ public class RunnableMachineUpdate implements Runnable {
             }
 
         } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error(
-                "Well this update was broken... " + initialX
-                    + ", "
-                    + initialY
-                    + ", "
-                    + initialZ
-                    + ", mWorld={"
-                    + world.getProviderName()
-                    + " @dimId "
-                    + world.provider.dimensionId
-                    + "}",
-                e);
+            GTMod.GT_FML_LOGGER.error("Well this update was broken... {}, {}, {}, mWorld={{} @dimId {}}", initialX, initialY, initialZ, world.getProviderName(), world.provider.dimensionId, e);
         }
     }
 
