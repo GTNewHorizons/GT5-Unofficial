@@ -472,17 +472,25 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     private BigInteger getMinimumMeasurement(List<PowerGogglesMeasurement> lastMeasurements) {
-        return lastMeasurements.stream()
-            .map(PowerGogglesMeasurement::getMeasurement)
-            .reduce(BigInteger::min)
-            .orElse(BigInteger.ZERO);
+        BigInteger minimum = null;
+        for (PowerGogglesMeasurement measurement : lastMeasurements) {
+            BigInteger value = measurement.getMeasurement();
+            if (minimum == null || value.compareTo(minimum) < 0) {
+                minimum = value;
+            }
+        }
+        return minimum == null ? BigInteger.ZERO : minimum;
     }
 
     private BigInteger getMaximumMeasurement(List<PowerGogglesMeasurement> lastMeasurements) {
-        return lastMeasurements.stream()
-            .map(PowerGogglesMeasurement::getMeasurement)
-            .reduce(BigInteger::max)
-            .orElse(BigInteger.ZERO);
+        BigInteger maximum = null;
+        for (PowerGogglesMeasurement measurement : lastMeasurements) {
+            BigInteger value = measurement.getMeasurement();
+            if (maximum == null || value.compareTo(maximum) > 0) {
+                maximum = value;
+            }
+        }
+        return maximum == null ? BigInteger.ZERO : maximum;
     }
 
     private void renderPowerChartBackground() {
