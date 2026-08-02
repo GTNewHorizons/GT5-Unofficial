@@ -4,7 +4,7 @@ import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
 
-import galacticgreg.GalacticGreg;
+import static galacticgreg.GalacticGreg.LOGGER;
 
 /**
  * config class to read/setup config files and folders
@@ -52,8 +52,8 @@ public abstract class ConfigManager {
 
             return true;
         } catch (Exception e) {
-            GalacticGreg.Logger.error("Unable to init config file");
-            GalacticGreg.GAGREG_LOGGER.error(e);
+            LOGGER.error("Unable to init config file");
+            LOGGER.error(e);
             return false;
         }
     }
@@ -62,12 +62,12 @@ public abstract class ConfigManager {
      * Search for required config-directory / file and create them if they can't be found
      */
     private void InitConfigDirs() {
-        GalacticGreg.Logger.debug("Checking/creating config folders");
+        LOGGER.debug("Checking/creating config folders");
 
         _mainconfigDir = new File(String.format("%s%s%s", _mConfigBaseDirectory, File.separator, _mModCollection));
 
         if (!_mainconfigDir.exists()) {
-            GalacticGreg.Logger.info("Config folder not found. Creating...");
+            LOGGER.info("Config folder not found. Creating...");
             _mainconfigDir.mkdir();
         }
 

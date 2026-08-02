@@ -16,6 +16,8 @@ import galacticgreg.schematics.SpaceSchematic;
 import galacticgreg.schematics.SpaceSchematicFactory;
 import gregtech.commands.GTBaseCommand;
 
+import static galacticgreg.GalacticGreg.LOGGER;
+
 /**
  * This command allows to export any structure that has been stored inside a spatial storage cell to a xml file that can
  * later be enabled for spawning in dimensions.
@@ -57,8 +59,8 @@ public class AEStorageCommand extends GTBaseCommand {
                     }
 
                     // Export structure
-                    GalacticGreg.Logger.info(
-                        "Creating Structure from Spatial AE drive. Dimensions: X [%d] Y [%d] Z [%d]",
+                    LOGGER.info(
+                        "Creating Structure from Spatial AE drive. Dimensions: X [{}] Y [{}] Z [{}]",
                         storedSize.x,
                         storedSize.y,
                         storedSize.z);
@@ -89,8 +91,8 @@ public class AEStorageCommand extends GTBaseCommand {
                                     // If block is a TileEntity
                                     if (bTE != null) {
                                         // Print a warning on the console
-                                        GalacticGreg.Logger.warn(
-                                            "Warning: Found TileEntity at X[%d] Y[%d] Z[%d]. NBT States are not exported!",
+                                        LOGGER.warn(
+                                            "Warning: Found TileEntity at X[{}] Y[{}] Z[{}]. NBT States are not exported!",
                                             lX,
                                             lY,
                                             lZ);
@@ -128,7 +130,7 @@ public class AEStorageCommand extends GTBaseCommand {
                 } else PlayerChatHelper.SendError(sender, "Error: Item in your hand is not a spatial storage drive!");
             }
         } catch (Exception e) {
-            GalacticGreg.GAGREG_LOGGER.error(e);
+            LOGGER.error(e);
         }
     }
 

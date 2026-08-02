@@ -12,7 +12,7 @@ import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.properties.Asteroids;
 import galacticgreg.registry.GalacticGregRegistry;
 
-import static galacticgreg.GalacticGreg.GAGREG_LOGGER;
+import static galacticgreg.GalacticGreg.LOGGER;
 
 public class DynamicDimensionConfig {
 
@@ -57,8 +57,8 @@ public class DynamicDimensionConfig {
                     }
                     String tDimIdentifier = mdd.getDimIdentifier();
                     if (_mDynamicAsteroidMap.containsKey(tDimIdentifier)) {
-                        GalacticGreg.Logger.warn(
-                            "Found 2 Dimensions with the same Identifier! This should never happen, and you should report this to me. Identifier in question: %s",
+                        LOGGER.warn(
+                            "Found 2 Dimensions with the same Identifier! This should never happen, and you should report this to me. Identifier in question: {}",
                             tDimIdentifier);
                         continue;
                     }
@@ -77,7 +77,7 @@ public class DynamicDimensionConfig {
                         break;
                     }
                     if (AsteroidProperties == null) {
-                        GalacticGreg.Logger.error(
+                        LOGGER.error(
                             "Something went wrong! no properties are existing for Asteroid dim: "
                                 + mdd.getDimensionName()
                                 + " from mod container "
@@ -111,8 +111,8 @@ public class DynamicDimensionConfig {
                         aConf.RandomizeNumLootItems = false;
                     }
 
-                    if (aConf.MaxSize > 50) GalacticGreg.Logger.warn(
-                        "Asteroid-MaxSize for dimID [%s] is larger than 50. This might cause memory-problems, as the maximum asteroid size will be larger than 50*50*50 blocks",
+                    if (aConf.MaxSize > 50) LOGGER.warn(
+                        "Asteroid-MaxSize for dimID [{}] is larger than 50. This might cause memory-problems, as the maximum asteroid size will be larger than 50*50*50 blocks",
                         tDimIdentifier);
                     _mDynamicAsteroidMap.put(tDimIdentifier, aConf);
 
@@ -120,7 +120,7 @@ public class DynamicDimensionConfig {
             }
             return true;
         } catch (Exception e) {
-            GAGREG_LOGGER.error(e);
+            LOGGER.error(e);
             return false;
         }
     }

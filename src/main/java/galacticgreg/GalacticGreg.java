@@ -12,7 +12,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import galacticgreg.auxiliary.GalacticGregConfig;
-import galacticgreg.auxiliary.LogHelper;
 import galacticgreg.auxiliary.ProfilingStorage;
 import galacticgreg.command.AEStorageCommand;
 import galacticgreg.command.ProfilingCommand;
@@ -41,9 +40,7 @@ public class GalacticGreg {
 
     public static final String VERSION = GT_Version.VERSION;
 
-    @Deprecated
-    public static final LogHelper Logger = new LogHelper(NICE_MODID);
-    public static final Logger GAGREG_LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger();
     public static ProfilingStorage Profiler = new ProfilingStorage();
     public static SpaceSchematicHandler SchematicHandler;
 
@@ -59,15 +56,14 @@ public class GalacticGreg {
     @EventHandler
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
         GalacticConfig = new GalacticGregConfig(aEvent.getModConfigurationDirectory(), NICE_MODID, NICE_MODID);
-        if (!GalacticConfig.LoadConfig()) GalacticGreg.Logger
-            .warn("Something went wrong while reading GalacticGregs config file. Things will be wonky..");
+        if (!GalacticConfig.LoadConfig()) LOGGER.warn("Something went wrong while reading GalacticGregs config file. Things will be wonky..");
 
         GalacticRandom = new Random(System.currentTimeMillis());
 
         if (GalacticConfig.SchematicsEnabled)
             SchematicHandler = new SpaceSchematicHandler(aEvent.getModConfigurationDirectory());
 
-        Logger.trace("Leaving PRELOAD");
+        LOGGER.trace("Leaving PRELOAD");
     }
 
     public static final ArrayList<Runnable> ADDITIONALVEINREGISTER = new ArrayList<>();
@@ -81,7 +77,7 @@ public class GalacticGreg {
      */
     @EventHandler
     public void onPostLoad(FMLPostInitializationEvent aEvent) {
-        Logger.trace("Entering POSTLOAD");
+        LOGGER.trace("Entering POSTLOAD");
 
         if (!GalacticGregRegistry.InitRegistry()) throw new RuntimeException(
             "GalacticGreg registry has been finalized from a 3rd-party mod, this is forbidden!");
@@ -90,13 +86,13 @@ public class GalacticGreg {
             try {
                 r.run();
             } catch (Exception e) {
-                GAGREG_LOGGER.error(e);
+                LOGGER.error(e);
             }
         }
 
         GalacticConfig.serverPostInit();
 
-        Logger.trace("Leaving POSTLOAD");
+        LOGGER.trace("Leaving POSTLOAD");
     }
 
     /**
@@ -106,7 +102,7 @@ public class GalacticGreg {
      */
     @EventHandler
     public void serverLoad(FMLServerStartingEvent pEvent) {
-        Logger.trace("Entering SERVERLOAD");
+        LOGGER.trace("Entering SERVERLOAD");
 
         if (GalacticConfig.ProfileOreGen) pEvent.registerServerCommand(new ProfilingCommand());
 
@@ -115,6 +111,6 @@ public class GalacticGreg {
 
         pEvent.registerServerCommand(new WorldgenCommand());
 
-        Logger.trace("Leaving SERVERLOAD");
+        LOGGER.trace("Leaving SERVERLOAD");
     }
 }

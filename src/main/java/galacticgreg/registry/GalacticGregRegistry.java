@@ -4,10 +4,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import galacticgreg.GalacticGreg;
 import galacticgreg.api.ModContainer;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.dynconfig.DynamicDimensionConfig;
+
+import static galacticgreg.GalacticGreg.LOGGER;
 
 /**
  * GalacticGregs registry
@@ -24,18 +25,18 @@ public class GalacticGregRegistry {
      */
     public static void registerModContainer(ModContainer modContainer) {
         if (initializationDone) {
-            GalacticGreg.Logger.warn("Initialization is already done, you can't add more ModContainers!");
+            LOGGER.warn("Initialization is already done, you can't add more ModContainers!");
             return;
         }
 
         if (modContainers.containsKey(modContainer.getModName())) {
-            GalacticGreg.Logger
-                .warn("There is already a mod registered with that name: [%s]", modContainer.getModName());
+            LOGGER
+                .warn("There is already a mod registered with that name: [{}]", modContainer.getModName());
             return;
         }
 
-        GalacticGreg.Logger.info(
-            "Registered new mod to generate ores: [%s] Dimensions provided: [%d]",
+        LOGGER.info(
+            "Registered new mod to generate ores: [{}] Dimensions provided: [{}]",
             modContainer.getModName(),
             modContainer.getDimensionList()
                 .size());
@@ -71,17 +72,17 @@ public class GalacticGregRegistry {
         for (ModContainer mc : modContainers.values()) {
             // todo: rename Vanilla mod container name from "Vanilla" to "minecraft"
             if (!mc.isModLoaded()) {
-                GalacticGreg.Logger.warn(
-                    "Ignoring ModRegistration for OreGen: [%s], because mod is not loaded. Did you misspell the name?",
+                LOGGER.warn(
+                    "Ignoring ModRegistration for OreGen: [{}], because mod is not loaded. Did you misspell the name?",
                     mc.getModName());
                 continue;
             }
 
-            GalacticGreg.Logger.info("Mod [%s] is now enabled for OreGen by GalacticGreg", mc.getModName());
+            LOGGER.info("Mod [{}] is now enabled for OreGen by GalacticGreg", mc.getModName());
 
             for (ModDimensionDef md : mc.getDimensionList()) {
-                GalacticGreg.Logger.info(
-                    "ModID: [%s] DimName: [%s] Identifier: [%s]",
+                LOGGER.info(
+                    "ModID: [{}] DimName: [{}] Identifier: [{}]",
                     mc.getModName(),
                     md.getDimensionName(),
                     md.getDimIdentifier());
