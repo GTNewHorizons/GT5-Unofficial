@@ -1664,8 +1664,7 @@ public class GTProxy implements IFuelHandler {
                 } else if (aEvent.Name.contains(" ")) {
                     GTLog.ore.println(
                         tModToName + " is getting re-registered because the OreDict Name containing invalid spaces.");
-                    GTOreDictUnificator
-                        .registerOre(aEvent.Name.replace(" ", ""), GTUtility.copyAmount(1, aEvent.Ore));
+                    GTOreDictUnificator.registerOre(aEvent.Name.replace(" ", ""), GTUtility.copyAmount(1, aEvent.Ore));
                     aEvent.Ore.setStackDisplayName("Invalid OreDictionary Tag");
                     return;
                 } else if (this.mInvalidNames.contains(aEvent.Name)) {
@@ -1995,8 +1994,7 @@ public class GTProxy implements IFuelHandler {
                 OreDictEventContainer.registerRecipes(tOre);
             }
         } catch (Exception e) {
-            GT_FML_LOGGER
-                .error("Could not register ore (oredict name={}, item stack={})", aEvent.Name, aEvent.Ore, e);
+            GT_FML_LOGGER.error("Could not register ore (oredict name={}, item stack={})", aEvent.Name, aEvent.Ore, e);
         }
     }
 

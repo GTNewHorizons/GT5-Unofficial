@@ -120,7 +120,7 @@ public enum FoundryModule {
     private static final int HDR_MULTIPLIER = 12;
 
     FoundryModule(String display, String shortname, String structid, ItemStack icon, UITexture texture, Color c,
-                  EnumChatFormatting color, int voltageTier, Consumer<FoundryData> statFunction) {
+        EnumChatFormatting color, int voltageTier, Consumer<FoundryData> statFunction) {
         this.displayName = display;
         this.shorthand = shortname;
         this.structureID = structid;

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import gtPlusPlus.GTplusplus;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -30,6 +29,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.GTplusplus;
 
 public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
 
@@ -195,7 +195,7 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
                 entityToSpawn.playLivingSound();
             } else {
                 // DEBUG
-                GTplusplus.logger.debug("Entity not found {}",entityToSpawnName);
+                GTplusplus.logger.debug("Entity not found {}", entityToSpawnName);
             }
         }
 

@@ -454,7 +454,9 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                     s.setStackSize(tag.getLong("size"));
                     provider.addToCache(s);
                 } else {
-                    GTMod.GT_FML_LOGGER.warn("An error occurred while loading contents of ME Output Bus. This item has been voided: {}", tagItemStack);
+                    GTMod.GT_FML_LOGGER.warn(
+                        "An error occurred while loading contents of ME Output Bus. This item has been voided: {}",
+                        tagItemStack);
                 }
             }
         }

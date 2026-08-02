@@ -1,5 +1,7 @@
 package gregtech.common.networkanalyzer.net;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
@@ -17,8 +19,6 @@ import gregtech.common.networkanalyzer.NetworkAnalyzerData.AnalyzerModes;
 import gregtech.common.networkanalyzer.events.NetworkAnalyzerPlayerTracker;
 import gregtech.common.tools.ItemNetworkAnalyzer;
 import io.netty.buffer.ByteBuf;
-
-import static gregtech.GTMod.GT_FML_LOGGER;
 
 public class GTPacketNetworkAnalyzerMode extends GTPacket {
 

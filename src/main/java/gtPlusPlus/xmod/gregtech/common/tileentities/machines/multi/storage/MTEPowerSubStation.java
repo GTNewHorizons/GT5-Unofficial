@@ -125,8 +125,7 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         tt.addMachineType(getMachineType())
             .addInfo("Consumes " + this.ENERGY_TAX + "% of the average voltage of all energy type hatches")
             .addInfo("Does not require maintenance")
-            .addInfo(
-                "Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-" + (CELL_HEIGHT_MAX + 2))
+            .addInfo("Can be built with variable height between " + (CELL_HEIGHT_MIN + 2) + "-" + (CELL_HEIGHT_MAX + 2))
             .addInfo("Hatches can be placed nearly anywhere")
             .addInfo("HV Energy/Dynamo Hatches are the lowest tier you can use")
             .addInfo("Supports voltages >= UHV using MAX tier components")

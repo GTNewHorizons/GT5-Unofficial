@@ -16,7 +16,6 @@ package bartworks.common.tileentities.multis;
 import java.util.Arrays;
 import java.util.List;
 
-import bartworks.MainMod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
+import bartworks.MainMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;

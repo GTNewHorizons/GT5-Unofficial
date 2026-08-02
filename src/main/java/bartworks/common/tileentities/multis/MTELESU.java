@@ -411,12 +411,19 @@ public class MTELESU extends MTEMultiBlockBase {
 
         long finishedTime = System.nanoTime();
 
-        if (finishedTime - startingTime > 5000000)
-            MainMod.LOGGER.warn("LESU LookUp took longer than 5ms!({}ns / {}ms) Owner:{} Check at x:{} y:{} z:{} DIM-ID: {}", finishedTime - startingTime, (finishedTime - startingTime) / 1000000, this.getBaseMetaTileEntity()
-                .getOwnerName(), this.getBaseMetaTileEntity()
-                .getXCoord(), this.getBaseMetaTileEntity()
-                .getYCoord(), this.getBaseMetaTileEntity()
-                .getZCoord(), this.getBaseMetaTileEntity()
+        if (finishedTime - startingTime > 5000000) MainMod.LOGGER.warn(
+            "LESU LookUp took longer than 5ms!({}ns / {}ms) Owner:{} Check at x:{} y:{} z:{} DIM-ID: {}",
+            finishedTime - startingTime,
+            (finishedTime - startingTime) / 1000000,
+            this.getBaseMetaTileEntity()
+                .getOwnerName(),
+            this.getBaseMetaTileEntity()
+                .getXCoord(),
+            this.getBaseMetaTileEntity()
+                .getYCoord(),
+            this.getBaseMetaTileEntity()
+                .getZCoord(),
+            this.getBaseMetaTileEntity()
                 .getWorld().provider.dimensionId);
     }
 

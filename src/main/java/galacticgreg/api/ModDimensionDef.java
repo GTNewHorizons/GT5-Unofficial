@@ -1,5 +1,7 @@
 package galacticgreg.api;
 
+import static galacticgreg.GalacticGreg.LOGGER;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,8 +17,6 @@ import galacticgreg.api.Enums.DimensionType;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.XSTR;
 import gregtech.common.config.Gregtech;
-
-import static galacticgreg.GalacticGreg.LOGGER;
 
 // import galacticgreg.GalacticGreg;
 

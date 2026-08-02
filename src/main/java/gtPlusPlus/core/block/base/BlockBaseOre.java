@@ -5,7 +5,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.Nullable;
 
-import gtPlusPlus.GTplusplus;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,6 +26,7 @@ import gregtech.api.util.StringUtils;
 import gregtech.common.ores.GTPPOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockOre;
 import gtPlusPlus.core.material.Material;
 

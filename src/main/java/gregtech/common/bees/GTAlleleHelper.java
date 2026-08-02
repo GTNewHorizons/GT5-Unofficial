@@ -1,5 +1,7 @@
 package gregtech.common.bees;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Locale;
@@ -27,9 +29,6 @@ import forestry.core.genetics.alleles.EnumAllele;
 import forestry.core.genetics.alleles.IAlleleValue;
 import forestry.core.utils.vect.IVect;
 import forestry.plugins.PluginManager;
-import gregtech.GTMod;
-
-import static gregtech.GTMod.GT_FML_LOGGER;
 
 public class GTAlleleHelper extends AlleleHelper {
 

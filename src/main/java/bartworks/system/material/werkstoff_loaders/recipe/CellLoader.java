@@ -61,7 +61,8 @@ public class CellLoader implements IWerkstoffRunnable {
             && !werkstoff.hasItemType(dust)) {
 
             if (!werkstoff.getContents()
-                .getValue().isEmpty()) {
+                .getValue()
+                .isEmpty()) {
 
                 List<FluidStack> flOutputs = new ArrayList<>();
                 List<ItemStack> stOutputs = new ArrayList<>();

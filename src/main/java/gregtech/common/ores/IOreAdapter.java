@@ -95,7 +95,8 @@ public interface IOreAdapter<TMat extends IOreMaterial> {
      * Gets the drops for a block. This returns an ArrayList due to the return type of
      * {@link Block#getDrops(World, int, int, int, int, int)}.
      */
-    @NotNull ArrayList<ItemStack> getOreDrops(Random rng, OreInfo<?> info, boolean silktouch, int fortune);
+    @NotNull
+    ArrayList<ItemStack> getOreDrops(Random rng, OreInfo<?> info, boolean silktouch, int fortune);
 
     /**
      * Gets the potential drops for a block. Used for the NEI addon.

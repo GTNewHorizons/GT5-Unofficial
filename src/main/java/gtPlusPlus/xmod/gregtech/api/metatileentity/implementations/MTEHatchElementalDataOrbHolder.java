@@ -119,7 +119,7 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
         return aIndex == mInventory.length - 1 && aStack != null
             && aStack.getItem() instanceof ItemIntegratedCircuit
             && ordinalSide == getBaseMetaTileEntity().getFrontFacing()
-            .ordinal();
+                .ordinal();
     }
 
     @Override

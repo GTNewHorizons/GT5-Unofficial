@@ -5,7 +5,6 @@ import static gregtech.api.enums.GTValues.V;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import gtPlusPlus.GTplusplus;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,6 +41,7 @@ import gregtech.common.gui.modularui.hatch.MTEAtmosphericReconditionerGui;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.item.general.ItemBasicScrubberTurbine;
 import gtPlusPlus.core.util.math.MathUtils;

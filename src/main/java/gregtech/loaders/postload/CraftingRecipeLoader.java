@@ -6,7 +6,6 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

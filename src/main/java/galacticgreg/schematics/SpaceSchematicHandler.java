@@ -1,5 +1,7 @@
 package galacticgreg.schematics;
 
+import static galacticgreg.GalacticGreg.LOGGER;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -13,8 +15,6 @@ import javax.xml.bind.Unmarshaller;
 import org.apache.commons.io.FileUtils;
 
 import galacticgreg.GalacticGreg;
-
-import static galacticgreg.GalacticGreg.LOGGER;
 
 /**
  * Class for XML Structure files. You only should edit/use this file/class if you want to add/fix stuff with
@@ -104,8 +104,7 @@ public class SpaceSchematicHandler {
 
             if (tErrorsFound > 0) {
                 LOGGER.warn("Found errors while loading, not all schematics will be available");
-                if (pForceReload)
-                    LOGGER.info("Reload was forced, replacing currently active list with new one");
+                if (pForceReload) LOGGER.info("Reload was forced, replacing currently active list with new one");
                 else {
                     LOGGER.warn("Nothing was replaced. Fix any errors and reload again");
                     tDoReplace = false;

@@ -4,7 +4,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;

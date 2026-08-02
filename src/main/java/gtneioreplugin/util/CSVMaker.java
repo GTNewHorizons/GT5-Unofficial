@@ -1,5 +1,7 @@
 package gtneioreplugin.util;
 
+import static gtneioreplugin.GTNEIOrePlugin.LOG;
+
 import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -12,8 +14,6 @@ import java.util.Set;
 import gtneioreplugin.Config;
 import gtneioreplugin.GTNEIOrePlugin;
 import gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
-
-import static gtneioreplugin.GTNEIOrePlugin.LOG;
 
 // todo: yeet any opencsv usage.
 public class CSVMaker implements Runnable {

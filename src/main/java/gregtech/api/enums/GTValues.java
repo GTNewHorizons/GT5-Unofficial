@@ -451,7 +451,8 @@ public class GTValues {
      * blackboard is null, we're in a unit test that hasn't set its env up properly and also want those checks to be
      * ran.
      */
-    public static boolean DEVENV = Launch.blackboard == null || (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+    public static boolean DEVENV = Launch.blackboard == null
+        || (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
     public static final String TecTechHatches = "Supports multi-amp and laser hatches";
 

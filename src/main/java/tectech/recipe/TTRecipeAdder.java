@@ -56,7 +56,10 @@ public class TTRecipeAdder extends RecipeAdder {
         }
         for (ItemStack tItem : aInputs) {
             if (tItem == null) {
-                TecTech.LOGGER.error("addResearchableAssemblingLineRecipe {} --> {} there is some null item in that recipe", aResearchItem.getDisplayName(), aOutput.getUnlocalizedName());
+                TecTech.LOGGER.error(
+                    "addResearchableAssemblingLineRecipe {} --> {} there is some null item in that recipe",
+                    aResearchItem.getDisplayName(),
+                    aOutput.getUnlocalizedName());
             }
         }
         researchAmperage = GTUtility.clamp(researchAmperage, 1, Short.MAX_VALUE);
@@ -192,11 +195,16 @@ public class TTRecipeAdder extends RecipeAdder {
                         tPersistentHash = tPersistentHash * 31 + tAmount;
                         continue;
                     } catch (Exception t) {
-                        TecTech.LOGGER.error("addAssemblingLineRecipe {} --> there is some ... in that recipe", aResearchItem.getDisplayName());
+                        TecTech.LOGGER.error(
+                            "addAssemblingLineRecipe {} --> there is some ... in that recipe",
+                            aResearchItem.getDisplayName());
                     }
                 }
             }
-            TecTech.LOGGER.error("addAssemblingLineRecipe {} --> {} there is some null item in that recipe", aResearchItem.getDisplayName(), aOutput.getUnlocalizedName());
+            TecTech.LOGGER.error(
+                "addAssemblingLineRecipe {} --> {} there is some null item in that recipe",
+                aResearchItem.getDisplayName(),
+                aOutput.getUnlocalizedName());
         }
         tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(aResearchItem, true, false);
         tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(aOutput, true, false);

@@ -371,7 +371,7 @@ public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-                                        ItemStack aTool) {
+        ItemStack aTool) {
         if (getBaseMetaTileEntity().isServerSide()) {
             toggleReverseRecipes();
             GTUtility.sendChatTrans(aPlayer, "chat.proxy.reverse." + reverseRecipes);

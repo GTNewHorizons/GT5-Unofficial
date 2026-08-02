@@ -1,6 +1,5 @@
 package bartworks.API.modularUI;
 
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;

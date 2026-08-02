@@ -42,7 +42,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import gtPlusPlus.GTplusplus;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -103,6 +102,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.Sievert;
 import gregtech.common.misc.GTStructureChannels;
+import gtPlusPlus.GTplusplus;
 
 public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
     implements ISurvivalConstructable, ICasingTextureProvider {

@@ -7,7 +7,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import gtPlusPlus.GTplusplus;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
@@ -19,6 +18,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.core.init.InternalName;

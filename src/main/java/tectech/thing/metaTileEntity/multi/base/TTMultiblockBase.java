@@ -1388,7 +1388,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 TecTech.LOGGER.debug("L1 {} {} {}", EUuse, getEUVar(), EUuse > getEUVar());
                 TecTech.LOGGER.debug("L2 {} {} {}", EUtEffective, maxEUinputMax, EUtEffective > maxEUinputMax);
                 TecTech.LOGGER.debug("L3 {} {}", Amperes, getMaxInputEnergy());
-                TecTech.LOGGER.debug("L4 {} {} {}", (EUuse - 1) / maxEUinputMin + 1, eMaxAmpereFlow, (EUuse - 1) / maxEUinputMin + 1 > eMaxAmpereFlow);
+                TecTech.LOGGER.debug(
+                    "L4 {} {} {}",
+                    (EUuse - 1) / maxEUinputMin + 1,
+                    eMaxAmpereFlow,
+                    (EUuse - 1) / maxEUinputMin + 1 > eMaxAmpereFlow);
             }
             return false;
         }

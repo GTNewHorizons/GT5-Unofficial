@@ -79,7 +79,8 @@ public class DustLoader implements IWerkstoffRunnable {
                     .hasChemicalRecipes()) {
 
                 if (!werkstoff.getContents()
-                    .getValue().isEmpty()) {
+                    .getValue()
+                    .isEmpty()) {
 
                     for (Pair<ISubTagContainer, Integer> container : werkstoff.getContents()
                         .getValue()

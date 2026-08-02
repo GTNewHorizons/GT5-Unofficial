@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common;
 
-import gtPlusPlus.GTplusplus;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -10,6 +9,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TAE;
 import gregtech.api.util.GTLanguageManager;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.handler.AchievementHandler;
 import gtPlusPlus.core.util.minecraft.LangUtils;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;

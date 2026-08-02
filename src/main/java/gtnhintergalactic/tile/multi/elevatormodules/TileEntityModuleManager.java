@@ -1032,7 +1032,8 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                     .setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, 35)));
         return customButton.setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, 40))
             .setEnabled(
-                widget -> !button.getInternalName().isEmpty());
+                widget -> !button.getInternalName()
+                    .isEmpty());
     }
 
     /**
@@ -1082,7 +1083,8 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
             return upgradeFromProject != null && !upgradeFromProject.isEmpty()
                 && selectedProject != null
                 && selectedProject.isFinished()
-                && !selectedProject.getAllUpgrades().isEmpty();
+                && !selectedProject.getAllUpgrades()
+                    .isEmpty();
         } else {
             return true;
         }

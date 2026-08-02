@@ -18,10 +18,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import bartworks.MainMod;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.item.crafting.CraftingManager;
+
+import bartworks.MainMod;
 
 public class PrintRecipeListToFile extends CommandBase {
 

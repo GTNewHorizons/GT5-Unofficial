@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -21,8 +24,6 @@ import galacticgreg.schematics.SpaceSchematicHandler;
 import gregtech.GT_Version;
 import gregtech.api.enums.Mods;
 import gregtech.api.world.GTWorldgen;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 @Mod(
     modid = Mods.ModIDs.GALACTI_GREG,
@@ -56,7 +57,8 @@ public class GalacticGreg {
     @EventHandler
     public void onPreLoad(FMLPreInitializationEvent aEvent) {
         GalacticConfig = new GalacticGregConfig(aEvent.getModConfigurationDirectory(), NICE_MODID, NICE_MODID);
-        if (!GalacticConfig.LoadConfig()) LOGGER.warn("Something went wrong while reading GalacticGregs config file. Things will be wonky..");
+        if (!GalacticConfig.LoadConfig())
+            LOGGER.warn("Something went wrong while reading GalacticGregs config file. Things will be wonky..");
 
         GalacticRandom = new Random(System.currentTimeMillis());
 

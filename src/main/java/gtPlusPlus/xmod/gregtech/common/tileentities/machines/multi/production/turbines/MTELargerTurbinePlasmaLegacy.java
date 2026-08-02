@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.t
 
 import java.util.ArrayList;
 
-import gtPlusPlus.GTplusplus;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -21,6 +20,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 

@@ -1,10 +1,10 @@
 package galacticgreg.auxiliary;
 
+import static galacticgreg.GalacticGreg.LOGGER;
+
 import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
-
-import static galacticgreg.GalacticGreg.LOGGER;
 
 /**
  * config class to read/setup config files and folders

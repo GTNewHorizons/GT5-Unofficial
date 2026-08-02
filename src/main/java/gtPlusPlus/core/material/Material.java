@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import gtPlusPlus.GTplusplus;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -34,6 +33,7 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gregtech.common.config.Client;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.material.state.MaterialState;

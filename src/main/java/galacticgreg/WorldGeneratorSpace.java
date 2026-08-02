@@ -82,7 +82,8 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         long post = profileWorldGen ? System.nanoTime() : 0;
 
         if (profileWorldGen) {
-            GTMod.GT_FML_LOGGER.info("Generated {} {} in {} us ({} seeds)", chunkX, chunkZ, (int) ((post - pre) / 1e3), seeds);
+            GTMod.GT_FML_LOGGER
+                .info("Generated {} {} in {} us ({} seeds)", chunkX, chunkZ, (int) ((post - pre) / 1e3), seeds);
         }
 
         Chunk tChunk = world.getChunkFromBlockCoords(chunkX, chunkZ);
@@ -401,7 +402,8 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                 }
             } else {
                 // Something made a boo..
-                LOGGER.warn("Could not create lootchest at X[{}] Y[{}] Z[{}]. getTileEntity() returned null", cX, cY, cZ);
+                LOGGER
+                    .warn("Could not create lootchest at X[{}] Y[{}] Z[{}]. getTileEntity() returned null", cX, cY, cZ);
             }
 
             // Do some debug logging

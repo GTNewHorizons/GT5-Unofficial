@@ -168,7 +168,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
                         itemInventory.add(item);
                     }
                 } else {
-                    GTMod.GT_FML_LOGGER.warn("An error occurred while loading contents of ME Crafting Input Bus. This item has been voided: {}", tagItemStack);
+                    GTMod.GT_FML_LOGGER.warn(
+                        "An error occurred while loading contents of ME Crafting Input Bus. This item has been voided: {}",
+                        tagItemStack);
                 }
             }
             NBTTagList fluidInv = nbt.getTagList("fluidInventory", Constants.NBT.TAG_COMPOUND);
@@ -180,7 +182,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
                         fluidInventory.add(fluid);
                     }
                 } else {
-                    GTMod.GT_FML_LOGGER.warn("An error occurred while loading contents of ME Crafting Input Bus. This fluid has been voided: {}", tagFluidStack);
+                    GTMod.GT_FML_LOGGER.warn(
+                        "An error occurred while loading contents of ME Crafting Input Bus. This fluid has been voided: {}",
+                        tagFluidStack);
                 }
             }
         }
@@ -810,7 +814,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             if (pattern != null) {
                 internalInventory[patternSlot] = new PatternSlot<>(pattern, patternSlotNBT, this);
             } else {
-                GTMod.GT_FML_LOGGER.warn("An error occurred while loading contents of ME Crafting Input Bus. This pattern has been voided: {}", patternSlotNBT);
+                GTMod.GT_FML_LOGGER.warn(
+                    "An error occurred while loading contents of ME Crafting Input Bus. This pattern has been voided: {}",
+                    patternSlotNBT);
             }
         }
 
@@ -1168,7 +1174,10 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             if (slot == null) continue;
             ICraftingPatternDetails details = slot.getPatternDetails();
             if (details == null) {
-                GTMod.GT_FML_LOGGER.warn("Found an invalid pattern at {} in dim {}", getBaseMetaTileEntity().getCoords(), getBaseMetaTileEntity().getWorld().provider.dimensionId);
+                GTMod.GT_FML_LOGGER.warn(
+                    "Found an invalid pattern at {} in dim {}",
+                    getBaseMetaTileEntity().getCoords(),
+                    getBaseMetaTileEntity().getWorld().provider.dimensionId);
                 continue;
             }
             craftingTracker.addCraftingOption(this, details);

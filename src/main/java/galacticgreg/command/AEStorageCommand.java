@@ -1,5 +1,7 @@
 package galacticgreg.command;
 
+import static galacticgreg.GalacticGreg.LOGGER;
+
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,8 +17,6 @@ import galacticgreg.auxiliary.PlayerChatHelper;
 import galacticgreg.schematics.SpaceSchematic;
 import galacticgreg.schematics.SpaceSchematicFactory;
 import gregtech.commands.GTBaseCommand;
-
-import static galacticgreg.GalacticGreg.LOGGER;
 
 /**
  * This command allows to export any structure that has been stored inside a spatial storage cell to a xml file that can

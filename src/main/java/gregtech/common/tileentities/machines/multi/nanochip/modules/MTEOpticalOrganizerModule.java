@@ -10,7 +10,6 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;

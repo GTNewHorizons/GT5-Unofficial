@@ -470,11 +470,9 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 .status();
             switch (status) {
                 case ACTIVE -> text = text + EnumChatFormatting.GREEN
-                    + IGregTechDeviceInformation
-                        .decode("GT5U.infodata.purification_plant.linked_units.status.active");
+                    + IGregTechDeviceInformation.decode("GT5U.infodata.purification_plant.linked_units.status.active");
                 case IDLE -> text = text + EnumChatFormatting.GREEN
-                    + IGregTechDeviceInformation
-                        .decode("GT5U.infodata.purification_plant.linked_units.status.idle");
+                    + IGregTechDeviceInformation.decode("GT5U.infodata.purification_plant.linked_units.status.idle");
                 case DISABLED -> text = text + EnumChatFormatting.YELLOW
                     + IGregTechDeviceInformation
                         .decode("GT5U.infodata.purification_plant.linked_units.status.disabled");

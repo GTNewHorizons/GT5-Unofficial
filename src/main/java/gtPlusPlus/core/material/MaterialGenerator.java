@@ -7,7 +7,6 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import java.util.ArrayList;
 import java.util.Set;
 
-import appeng.integration.modules.GT;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;

@@ -72,7 +72,8 @@ public class MTENanochipAssemblyModuleBaseAdapter implements IByteBufAdapter<MTE
                 .getZCoord())
             return false;
         return t1.getBaseMetaTileEntity()
-            .getWorld().provider.dimensionId == t2.getBaseMetaTileEntity()
-            .getWorld().provider.dimensionId;
+            .getWorld().provider.dimensionId
+            == t2.getBaseMetaTileEntity()
+                .getWorld().provider.dimensionId;
     }
 }

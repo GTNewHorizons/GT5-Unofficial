@@ -78,8 +78,7 @@ public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactory
             for (TestFactoryHatch hatch : network.getComponents(TestFactoryHatch.class)) {
                 IGregTechTileEntity base = hatch.getBaseMetaTileEntity();
 
-                data.add(
-                    base.getXCoord() + ", " + base.getYCoord() + ", " + base.getZCoord() + ": " + hatch);
+                data.add(base.getXCoord() + ", " + base.getYCoord() + ", " + base.getZCoord() + ": " + hatch);
             }
         }
 

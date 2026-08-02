@@ -154,8 +154,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     public IStructureDefinition<MTEIndustrialCokeOven> getStructureDefinition() {
-        return StructureDefinition
-            .<MTEIndustrialCokeOven>builder()
+        return StructureDefinition.<MTEIndustrialCokeOven>builder()
             .addShape(
                 STRUCTURE_PIECE_FIRST,
                 new String[][] { { "      ", "   C  ", "   C  ", "   C  ", "   C  ", "   C  ", "   DDD" },

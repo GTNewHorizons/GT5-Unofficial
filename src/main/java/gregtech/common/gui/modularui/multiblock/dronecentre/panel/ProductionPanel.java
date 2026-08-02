@@ -464,9 +464,9 @@ public class ProductionPanel extends ModularPanel {
             return fluid.getFluid() != null && fluid.getFluid()
                 .getName() != null
                 && fluid.getFluid()
-                .getName()
-                .toLowerCase()
-                .contains(search);
+                    .getName()
+                    .toLowerCase()
+                    .contains(search);
         }
         return false;
     }

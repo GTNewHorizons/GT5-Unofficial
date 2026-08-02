@@ -17,11 +17,11 @@ import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Map;
 
-import bartworks.MainMod;
 import net.minecraft.item.Item;
 import net.minecraft.util.RegistryNamespaced;
 import net.minecraftforge.oredict.OreDictionary;
 
+import bartworks.MainMod;
 import bartworks.util.log.DebugLog;
 import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.Loader;

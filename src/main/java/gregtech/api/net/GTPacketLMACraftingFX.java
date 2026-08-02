@@ -1,5 +1,7 @@
 package gregtech.api.net;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 import java.io.IOException;
 
 import net.minecraft.client.Minecraft;
@@ -15,8 +17,6 @@ import gregtech.api.util.GTLog;
 import gregtech.client.LMACraftingFX;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-
-import static gregtech.GTMod.GT_FML_LOGGER;
 
 public class GTPacketLMACraftingFX extends GTPacket {
 

@@ -1,5 +1,7 @@
 package galacticgreg.registry;
 
+import static galacticgreg.GalacticGreg.LOGGER;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,8 +9,6 @@ import java.util.Map;
 import galacticgreg.api.ModContainer;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.dynconfig.DynamicDimensionConfig;
-
-import static galacticgreg.GalacticGreg.LOGGER;
 
 /**
  * GalacticGregs registry
@@ -30,8 +30,7 @@ public class GalacticGregRegistry {
         }
 
         if (modContainers.containsKey(modContainer.getModName())) {
-            LOGGER
-                .warn("There is already a mod registered with that name: [{}]", modContainer.getModName());
+            LOGGER.warn("There is already a mod registered with that name: [{}]", modContainer.getModName());
             return;
         }
 

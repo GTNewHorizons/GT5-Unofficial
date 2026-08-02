@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.widget;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 import java.io.IOException;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -21,8 +23,6 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.gui.modularui.ICoverDataFollowerWidget;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.common.covers.Cover;
-
-import static gregtech.GTMod.GT_FML_LOGGER;
 
 public class CoverDataControllerWidget<T extends Cover>
     extends com.gtnewhorizons.modularui.common.widget.MultiChildWidget

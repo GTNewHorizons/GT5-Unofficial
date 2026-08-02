@@ -73,11 +73,11 @@ public class GlassTier {
             addCustomGlass(block, meta, tier, subtier);
         } else {
             GT_FML_LOGGER.error(
-            new IllegalArgumentException(
-                "Block: " + unlocalisedBlockName
-                    + " of the Mod: "
-                    + modname
-                    + " was NOT found when attempting to register a glass!"));
+                new IllegalArgumentException(
+                    "Block: " + unlocalisedBlockName
+                        + " of the Mod: "
+                        + modname
+                        + " was NOT found when attempting to register a glass!"));
         }
     }
 

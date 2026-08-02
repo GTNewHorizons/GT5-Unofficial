@@ -1,5 +1,7 @@
 package gregtech.common.networkanalyzer.net;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -9,8 +11,6 @@ import gregtech.api.net.GTPacketTypes;
 import gregtech.common.networkanalyzer.NetworkAnalyzerData;
 import gregtech.common.networkanalyzer.events.WorldOverlayRenderer;
 import io.netty.buffer.ByteBuf;
-
-import static gregtech.GTMod.GT_FML_LOGGER;
 
 public class GTPacketNetworkAnalyzer extends GTPacket {
 

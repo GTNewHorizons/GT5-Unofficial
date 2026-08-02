@@ -3,6 +3,7 @@ package tectech.thing.metaTileEntity.multi.godforge.color;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
+
 import tectech.TecTech;
 
 public class ForgeOfGodsStarColorTest {

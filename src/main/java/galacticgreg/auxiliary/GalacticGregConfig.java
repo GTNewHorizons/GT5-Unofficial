@@ -1,5 +1,7 @@
 package galacticgreg.auxiliary;
 
+import static galacticgreg.GalacticGreg.LOGGER;
+
 import java.io.File;
 
 import net.minecraft.block.Block;
@@ -9,8 +11,6 @@ import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-
-import static galacticgreg.GalacticGreg.LOGGER;
 
 public class GalacticGregConfig extends ConfigManager {
 
@@ -110,8 +110,7 @@ public class GalacticGregConfig extends ConfigManager {
 
                     Block tBlock = GameRegistry.findBlock(tMod, tName);
                     if (tBlock != null) {
-                        LOGGER
-                            .debug("Found valid ChestOverride: {}. LootChest replaced", LootChestItemOverride);
+                        LOGGER.debug("Found valid ChestOverride: {}. LootChest replaced", LootChestItemOverride);
                         CustomLootChest = new BlockMeta(tBlock, tMeta);
                     }
                 }

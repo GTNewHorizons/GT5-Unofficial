@@ -1,5 +1,7 @@
 package gregtech.common.render;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -17,8 +19,6 @@ import org.lwjgl.opengl.GL11;
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
-
-import static gregtech.GTMod.GT_FML_LOGGER;
 
 public class GTRenderUtil {
 

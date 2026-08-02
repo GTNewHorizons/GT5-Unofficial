@@ -70,8 +70,7 @@ public class GTCLSCompat {
             }
             if (nextBakingMsgAt < now) {
                 nextBakingMsgAt = now + bakingMsgEvery;
-                GTMod.GT_FML_LOGGER
-                    .info("{} - Baking: {}%", materialsType, currentStep * 100 / sizeStep);
+                GTMod.GT_FML_LOGGER.info("{} - Baking: {}%", materialsType, currentStep * 100 / sizeStep);
             }
             action.accept(m);
             currentStep += 1;

@@ -1,5 +1,7 @@
 package galacticgreg.dynconfig;
 
+import static galacticgreg.GalacticGreg.LOGGER;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,8 +13,6 @@ import galacticgreg.api.ModContainer;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.properties.Asteroids;
 import galacticgreg.registry.GalacticGregRegistry;
-
-import static galacticgreg.GalacticGreg.LOGGER;
 
 public class DynamicDimensionConfig {
 

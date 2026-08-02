@@ -8,7 +8,6 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.KubaTech;
 import static tectech.Reference.MODID;
 
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.cleanroommc.modularui.drawable.ColorType;
