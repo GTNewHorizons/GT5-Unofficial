@@ -20,6 +20,7 @@ import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -73,6 +74,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -254,8 +256,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
         for (FluidStack fluid : inputFluid) {
             if (fluid == null) continue;
-            if (fluid.equals(GTModHandler.getDistilledWater(1L))) waterAmount += fluid.amount;
-            else if (fluid.equals(Materials.Lubricant.getFluid(1L))) lubricantAmount += fluid.amount;
+            if (fluid.equals(GTModHandler.getDistilledWater(1L))) waterAmount += GTUtility.getFluidAmount(fluid);
+            else if (fluid.equals(Materials.Lubricant.getFluid(1L))) lubricantAmount += GTUtility.getFluidAmount(fluid);
         }
 
         final long parallelFromFluids = Math.min(lubricantAmount / 2, waterAmount / 200);
@@ -283,16 +285,17 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
         long totalWaterToDrain = (long) effectiveParallel * 200L;
         while (totalWaterToDrain > 0) {
-            int tryDrain = (int) Math.min(totalWaterToDrain, Integer.MAX_VALUE);
+            long tryDrain = totalWaterToDrain;
             if (!depleteInput(GTModHandler.getDistilledWater(tryDrain))) {
-                int maxHatch = 0;
+                long maxHatch = 0;
                 for (FluidStack sf : getStoredFluids()) {
-                    if (sf != null && sf.isFluidEqual(GTModHandler.getDistilledWater(1L)) && sf.amount > maxHatch) {
-                        maxHatch = sf.amount;
+                    if (sf != null && sf.isFluidEqual(GTModHandler.getDistilledWater(1L))
+                        && GTUtility.getFluidAmount(sf) > maxHatch) {
+                        maxHatch = GTUtility.getFluidAmount(sf);
                     }
                 }
                 if (maxHatch <= 0) break;
-                tryDrain = (int) Math.min(totalWaterToDrain, maxHatch);
+                tryDrain = Math.min(totalWaterToDrain, maxHatch);
                 if (!depleteInput(GTModHandler.getDistilledWater(tryDrain))) break;
             }
             totalWaterToDrain -= tryDrain;
@@ -300,16 +303,17 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
         long totalLubricantToDrain = (long) effectiveParallel * 2L;
         while (totalLubricantToDrain > 0) {
-            int tryDrain = (int) Math.min(totalLubricantToDrain, Integer.MAX_VALUE);
+            long tryDrain = totalLubricantToDrain;
             if (!depleteInput(Materials.Lubricant.getFluid(tryDrain))) {
-                int maxHatch = 0;
+                long maxHatch = 0;
                 for (FluidStack sf : getStoredFluids()) {
-                    if (sf != null && sf.isFluidEqual(Materials.Lubricant.getFluid(1L)) && sf.amount > maxHatch) {
-                        maxHatch = sf.amount;
+                    if (sf != null && sf.isFluidEqual(Materials.Lubricant.getFluid(1L))
+                        && GTUtility.getFluidAmount(sf) > maxHatch) {
+                        maxHatch = GTUtility.getFluidAmount(sf);
                     }
                 }
                 if (maxHatch <= 0) break;
-                tryDrain = (int) Math.min(totalLubricantToDrain, maxHatch);
+                tryDrain = Math.min(totalLubricantToDrain, maxHatch);
                 if (!depleteInput(Materials.Lubricant.getFluid(tryDrain))) break;
             }
             totalLubricantToDrain -= tryDrain;
@@ -523,21 +527,22 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 FluidStack requiredFluid = recipe.getRepresentativeFluidInput(0)
                     .copy();
                 long available = getFluidAmount(requiredFluid);
-                int canProcess = (int) Math.min(available / requiredFluid.amount, stack.stackSize);
+                int canProcess = (int) Math.min(available / GTUtility.getFluidAmount(requiredFluid), stack.stackSize);
 
-                long totalChemToDrain = (long) canProcess * requiredFluid.amount;
+                long totalChemToDrain = (long) canProcess * GTUtility.getFluidAmount(requiredFluid);
                 while (totalChemToDrain > 0) {
-                    int tryDrain = (int) Math.min(totalChemToDrain, Integer.MAX_VALUE);
-                    if (!depleteInput(new FluidStack(requiredFluid.getFluid(), tryDrain))) {
-                        int maxHatch = 0;
+                    long tryDrain = totalChemToDrain;
+                    if (!depleteInput(GTUtility.createFluidStack(requiredFluid.getFluid(), tryDrain))) {
+                        long maxHatch = 0;
                         for (FluidStack sf : getStoredFluids()) {
-                            if (sf != null && sf.isFluidEqual(requiredFluid) && sf.amount > maxHatch) {
-                                maxHatch = sf.amount;
+                            if (sf != null && sf.isFluidEqual(requiredFluid)
+                                && GTUtility.getFluidAmount(sf) > maxHatch) {
+                                maxHatch = GTUtility.getFluidAmount(sf);
                             }
                         }
                         if (maxHatch <= 0) break;
-                        tryDrain = (int) Math.min(totalChemToDrain, maxHatch);
-                        if (!depleteInput(new FluidStack(requiredFluid.getFluid(), tryDrain))) break;
+                        tryDrain = Math.min(totalChemToDrain, maxHatch);
+                        if (!depleteInput(GTUtility.createFluidStack(requiredFluid.getFluid(), tryDrain))) break;
                     }
                     totalChemToDrain -= tryDrain;
                 }
@@ -564,7 +569,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         if (aFluid == null) return 0L;
         long total = 0L;
         for (FluidStack fluid : getStoredFluids()) {
-            if (aFluid.isFluidEqual(fluid)) total += fluid.amount;
+            if (aFluid.isFluidEqual(fluid)) total += GTUtility.getFluidAmount(fluid);
         }
         return total;
     }
@@ -576,41 +581,42 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             if (template == null) continue;
 
             int chance = aRecipe.getOutputChance(i);
-            int quantity;
+            long quantity;
             if (chance == 10000) {
-                quantity = aTime * template.stackSize;
+                quantity = (long) aTime * template.stackSize;
             } else {
                 // Normal-distribution approximation for probabilistic drops
                 double p = chance / 10000.0;
                 double mean = aTime * p;
                 double std = Math.sqrt(aTime * p * (1 - p));
-                quantity = (int) Math.ceil(std * random.nextGaussian() + mean);
+                quantity = (long) Math.ceil(std * random.nextGaussian() + mean);
                 quantity *= template.stackSize;
             }
             if (quantity > 0) {
-                outputs.add(GTUtility.copyAmountUnsafe(quantity, template));
+                Collections.addAll(outputs, GTUtility.splitItemStack(template, quantity));
             }
         }
         return outputs;
     }
 
     private void doCompress(List<ItemStack> aList) {
-        HashMap<Integer, Integer> merged = new HashMap<>();
+        HashMap<Integer, Long> merged = new HashMap<>();
         for (ItemStack stack : aList) {
             if (doesVoidStone && VOIDABLE_STONE_DUSTS.stream()
                 .anyMatch(dust -> GTUtility.areStacksEqual(dust, stack))) continue;
             int id = GTUtility.stackToInt(stack);
             if (id != 0) {
-                merged.merge(id, stack.stackSize, Integer::sum);
+                merged.merge(id, (long) stack.stackSize, Long::sum);
             }
         }
 
-        midProduct = new ItemStack[merged.size()];
-        int index = 0;
-        for (Map.Entry<Integer, Integer> entry : merged.entrySet()) {
+        List<ItemStack> midProductList = new ObjectArrayList<>();
+        for (Map.Entry<Integer, Long> entry : merged.entrySet()) {
             ItemStack template = GTUtility.intToStack(entry.getKey());
-            midProduct[index++] = GTUtility.copyAmountUnsafe(entry.getValue(), template);
+            Collections.addAll(midProductList, GTUtility.splitItemStack(template, entry.getValue()));
         }
+
+        midProduct = midProductList.toArray(new ItemStack[0]);
     }
 
     private void setCurrentParallelism(int parallelism) {

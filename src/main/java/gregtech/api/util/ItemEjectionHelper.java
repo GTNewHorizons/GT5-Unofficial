@@ -93,22 +93,19 @@ public class ItemEjectionHelper {
         List<ItemParallelData> outputParallels = new ArrayList<>(outputs.size());
 
         PriorityQueue<ItemParallelData> pendingOutputs = new PriorityQueue<>(
-            Comparator.comparingDouble(output -> -output.remaining.stackSize / (double) output.perParallel));
+            Comparator.comparingDouble(output -> -output.remainingAmount / (double) output.perParallel));
 
         for (var e : Object2LongMaps.fastIterable(GTUtility.getItemStackHistogram(outputs))) {
             if (e.getLongValue() <= 0) continue;
 
             GTUtility.ItemId id = e.getKey();
-            int amount = GTUtility.longToInt(e.getLongValue());
+            long amount = e.getLongValue();
 
-            ItemParallelData parallelData = new ItemParallelData(
-                id,
-                GTUtility.longToInt(amount * (long) startingParallels),
-                amount);
+            ItemParallelData parallelData = new ItemParallelData(id, amount * startingParallels, amount);
 
             outputParallels.add(parallelData);
 
-            if (parallelData.remaining.stackSize <= 0) continue;
+            if (parallelData.remainingAmount <= 0) continue;
 
             List<IOutputBusTransaction> transactions = new ArrayList<>(8);
 
@@ -138,7 +135,7 @@ public class ItemEjectionHelper {
             PeekingIterator<IOutputBusTransaction> outputBusses = output.outputs;
 
             // Loop until there are no more output busses for this item, or until all of its stacks have been ejected.
-            while (outputBusses.hasNext() && output.remaining.stackSize > 0) {
+            while (outputBusses.hasNext() && output.remainingAmount > 0) {
                 IOutputBusTransaction transaction = outputBusses.peek();
 
                 // If this bus is completely full, don't bother checking it.
@@ -159,7 +156,7 @@ public class ItemEjectionHelper {
 
             // If there are still busses available and there are still items to eject, insert this item back into the
             // queue. It will be put into its proper spot in the priority queue automatically.
-            if (outputBusses.hasNext() && output.remaining.stackSize > 0) {
+            if (outputBusses.hasNext() && output.remainingAmount > 0) {
                 pendingOutputs.add(output);
             }
         }
@@ -170,9 +167,9 @@ public class ItemEjectionHelper {
             // Otherwise, we can just tell the multi to run the full amount and it'll void everything that doesn't fit.
 
             for (ItemParallelData parallelData : outputParallels) {
-                int ejected = parallelData.initialAmount - parallelData.remaining.stackSize;
+                long ejected = parallelData.initialAmount - parallelData.remainingAmount;
 
-                startingParallels = Math.min(startingParallels, ejected / parallelData.perParallel);
+                startingParallels = (int) Math.min(startingParallels, ejected / parallelData.perParallel);
             }
         }
 
@@ -188,28 +185,32 @@ public class ItemEjectionHelper {
     private static class ItemParallelData {
 
         public final GTUtility.ItemId id;
-        public final ItemStack remaining;
-        public int perParallel, initialAmount;
+        public long initialAmount, remainingAmount;
+        public long perParallel;
         public PeekingIterator<IOutputBusTransaction> outputs;
+        private final ItemStack tmpStack;
 
-        private ItemParallelData(GTUtility.ItemId id, int amount, int perParallel) {
+        private ItemParallelData(GTUtility.ItemId id, long amount, long perParallel) {
             this.id = id;
-            this.remaining = id.getItemStack(amount);
+            this.remainingAmount = amount;
             this.perParallel = perParallel;
             this.initialAmount = amount;
+            this.tmpStack = id.getItemStack();
         }
 
         public boolean storePartial(IOutputBusTransaction transaction) {
-            if (transaction instanceof IOutputBusTransaction.IDynamicCapacityOutputAware sharedOutput
-                && sharedOutput.isDynamicCapacity()) {
-                int origin = remaining.stackSize;
-                int amount = Math.min(origin, perParallel);
-                remaining.stackSize = amount;
-                boolean succeed = transaction.storePartial(id, remaining);
-                remaining.stackSize += origin - amount;
-                return succeed;
+            boolean isSharedoutput = transaction instanceof IOutputBusTransaction.IDynamicCapacityOutputAware sharedOutput
+                && sharedOutput.isDynamicCapacity();
+            long targetAmount = remainingAmount;
+            if (isSharedoutput) {
+                targetAmount = Math.min(remainingAmount, perParallel);
             }
-            return transaction.storePartial(id, remaining);
+            int amount = GTUtility.longToInt(targetAmount);
+            tmpStack.stackSize = amount;
+            transaction.storePartial(id, tmpStack);
+            long actuallyInsert = amount - tmpStack.stackSize;
+            remainingAmount -= actuallyInsert;
+            return actuallyInsert > 0;
         }
     }
 }
