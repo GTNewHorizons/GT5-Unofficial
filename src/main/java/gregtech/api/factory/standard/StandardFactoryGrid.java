@@ -271,7 +271,7 @@ public abstract class StandardFactoryGrid<TSelf extends StandardFactoryGrid<TSel
         while (!queue.isEmpty()) {
             TElement current = queue.removeFirst();
 
-            if (!discovered.add(current)) continue;;
+            if (!discovered.add(current)) continue;
 
             if (networks != null) networks.add(current.getNetwork());
 

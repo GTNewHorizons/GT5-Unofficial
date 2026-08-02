@@ -266,7 +266,7 @@ public class GTPreLoad {
                                 if (GregTechAPI.sGeneratedMaterials[material] != null) {
                                     final String tag;
                                     if (tags.length > prefix) {
-                                        tag = tags[prefix] + GregTechAPI.sGeneratedMaterials[material].mName;;
+                                        tag = tags[prefix] + GregTechAPI.sGeneratedMaterials[material].mName;
                                     } else {
                                         tag = GregTechAPI.sGeneratedMaterials[material].mName;
                                     }

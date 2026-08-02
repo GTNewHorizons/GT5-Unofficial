@@ -807,7 +807,7 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             Mixing,
             /// Adds a sifting oreproc recipe for this material's ore. Also adds a 9x gem -> block compressor recipe for
             /// some reason.
-            Sifting;
+            Sifting
         }
 
         public GenerationFeatures() {}
