@@ -1843,6 +1843,7 @@ public final class RecipeMaps {
                 .validateOutputCount(1, 1)
                 .validateOutputFluidCount(-1, 0)
                 .validateInputFluidCount(1, 4)
+                .ignoreCollision()
                 .buildWithAlt();
             // noinspection SimplifyOptionalCallChains
             if (!rr.isPresent()) return Collections.emptyList();
