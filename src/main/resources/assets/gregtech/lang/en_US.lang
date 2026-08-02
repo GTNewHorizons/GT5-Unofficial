@@ -9116,6 +9116,16 @@ GT5U.tooltip.godforge-plasma-module.machine-type=Plasma Fabricator
 GT5U.tooltip.godforge-plasma-module.controller-pos=Front center, 4th layer
 GT5U.tooltip.godforge-plasma-module.hatch-pos=Any front shielding casing
 
+# Forge of Gods Structure Hints
+GT5U.tooltip.forge-of-gods.machine-type=Stellar Forge
+GT5U.tooltip.forge-of-gods.controller-pos=Front center, 15th layer
+GT5U.tooltip.forge-of-gods.hatch-pos=Around controller
+GT5U.tooltip.forge-of-gods.output-bus-pos=Around controller (ME only)
+GT5U.tooltip.forge-of-gods.module=Forge of the Gods Module
+GT5U.tooltip.forge-of-gods.module-pos=Any side center shielding casing
+GT5U.tooltip.forge-of-gods.second-ring=Second Ring
+GT5U.tooltip.forge-of-gods.third-ring=Third Ring
+
 # BEC Generator Structure Hints
 GT5U.tooltip.bec-generator.controller-pos=Front center, 10th layer
 GT5U.tooltip.bec-generator.hatch-pos=Any electromagnetically-isolated casing around controller
