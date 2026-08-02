@@ -1032,8 +1032,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                     .setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, 35)));
         return customButton.setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, 40))
             .setEnabled(
-                widget -> !button.getInternalName()
-                    .equals(""));
+                widget -> !button.getInternalName().isEmpty());
     }
 
     /**
