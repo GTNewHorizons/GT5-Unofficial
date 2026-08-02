@@ -4,8 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.VN;
-import static gregtech.api.enums.HatchElement.BeamlineInput;
-import static gregtech.api.enums.HatchElement.BeamlineOutput;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -18,6 +16,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_G
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTUtility.max;
+import static gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase.BeamHatchElement.BeamlineInput;
+import static gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase.BeamHatchElement.BeamlineOutput;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +54,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -68,6 +67,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMultiBase;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
@@ -79,7 +79,7 @@ import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import gtnhlanth.util.DescTextLocalization;
 import gtnhlanth.util.Util;
 
-public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotron>
+public class MTESynchrotron extends MTEBeamMultiBase<MTESynchrotron>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final IStructureDefinition<MTESynchrotron> STRUCTURE_DEFINITION;
@@ -491,10 +491,12 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
     public MTESynchrotron(String aName) {
         super(aName);
+        this.hasMaintenanceChecks = true;
     }
 
     public MTESynchrotron(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
+        this.hasMaintenanceChecks = true;
     }
 
     @Override
@@ -687,10 +689,10 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     }
 
     private void outputPacketAfterRecipe() {
-        if (!this.mBeamlineOutputHatches.isEmpty()) {
+        if (!this.mOutputBeamline.isEmpty()) {
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(this.outputEnergy, this.outputRate, this.outputParticleID, this.outputFocus));
-            for (MTEHatchOutputBeamline o : this.mBeamlineOutputHatches) {
+            for (MTEHatchOutputBeamline o : this.mOutputBeamline) {
                 o.dataPacket = packet;
             }
         }
@@ -708,7 +710,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     }
 
     private BeamInformation getInputInformation() {
-        for (MTEHatchInputBeamline in : this.mBeamlineInputHatches) {
+        for (MTEHatchInputBeamline in : this.mInputBeamline) {
             if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
             return in.dataPacket.getContent();
         }
@@ -733,7 +735,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     }
 
     private static float getMachineFocus(int temperature) {
-        return (float) Math.max(Math.min(Math.pow(1.5, -1.0 / 40.0 * (temperature - 480)), 90), 10);
+        return (float) Math.clamp(Math.pow(1.5, -1.0 / 40.0 * (temperature - 480)), 10, 90);
     }
 
     private static float getOutputRatio(float voltageFactor, int antennaTier) {

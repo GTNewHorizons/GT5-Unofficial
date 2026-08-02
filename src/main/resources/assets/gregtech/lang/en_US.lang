@@ -1649,6 +1649,9 @@ GT5U.MBTT.LensHousing=Lens Housing
 GT5U.MBTT.LensIndicator=Lens Indicator
 GT5U.MBTT.InputBus.WithFormat=Input Bus (%s)
 GT5U.MBTT.InputHatch.WithFormat=Input Hatch (%s)
+GT5U.MBTT.SolidiferHatch=Solidifier Hatch
+GT5U.MBTT.PatternProviderBus=Pattern Provider Bus
+GT5U.MBTT.ExtrusionBus=Extrusion Bus
 
 gt.unit.liter=L
 gt.unit.liter_per_second=L/s
