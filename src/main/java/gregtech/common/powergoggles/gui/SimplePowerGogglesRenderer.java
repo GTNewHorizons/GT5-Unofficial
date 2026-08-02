@@ -8,11 +8,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -55,6 +53,10 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
     private BigInteger euDifference5m = BigInteger.ZERO;
     private BigInteger euDifference1h = BigInteger.ZERO;
+
+    private final PowerGogglesMeasurement[] lastMeasurementsCache =
+        new PowerGogglesMeasurement[PowerGogglesConstants.MEASUREMENT_COUNT_1H];
+    private int lastMeasurementsCount;
 
     @Override
     public void render(RenderGameOverlayEvent.Post event) {
@@ -232,7 +234,9 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
         double differenceRatio;
         if (lastMeasurement.equals(BigInteger.ZERO)) {
-            if (getMaximumMeasurement(getLastMeasurements(PowerGogglesConstants.MEASUREMENT_COUNT_5M))
+            PowerGogglesMeasurement[] recentMeasurements = getLastMeasurements(
+                PowerGogglesConstants.MEASUREMENT_COUNT_5M);
+            if (getMaximumMeasurement(recentMeasurements, lastMeasurementsCount)
                 .compareTo(BigInteger.ZERO) > 0) {
                 differenceRatio = -1;
             } else {
@@ -418,13 +422,11 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         renderGraphScaleIndicator();
         if (measurements.isEmpty()) return;
 
-        List<PowerGogglesMeasurement> lastMeasurements = getLastMeasurements(
-            PowerGogglesConstants.MEASUREMENT_COUNT_5M);
-        // Reverses is it back to oldest to newest for easier chart line rendering
-        Collections.reverse(lastMeasurements);
+        PowerGogglesMeasurement[] lastMeasurements = getLastMeasurements(PowerGogglesConstants.MEASUREMENT_COUNT_5M);
+        int measurementCount = lastMeasurementsCount;
 
-        BigInteger minReading = getMinimumMeasurement(lastMeasurements);
-        BigInteger maxReading = getMaximumMeasurement(lastMeasurements);
+        BigInteger minReading = getMinimumMeasurement(lastMeasurements, measurementCount);
+        BigInteger maxReading = getMaximumMeasurement(lastMeasurements, measurementCount);
 
         if (minReading.compareTo(BigInteger.ZERO) > 0) {
             int exponent = BigIntegerMath.log10(minReading, RoundingMode.DOWN);
@@ -442,9 +444,9 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         }
 
         renderPowerChartBounds(minReading, maxReading);
-        if (lastMeasurements.size() < 2) return;
+        if (measurementCount < 2) return;
 
-        renderPowerChartLines(minReading, maxReading, lastMeasurements);
+        renderPowerChartLines(minReading, maxReading, lastMeasurements, measurementCount);
     }
 
     private void renderGraphScaleIndicator() {
@@ -493,6 +495,28 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         return maximum == null ? BigInteger.ZERO : maximum;
     }
 
+    private BigInteger getMinimumMeasurement(PowerGogglesMeasurement[] lastMeasurements, int count) {
+        BigInteger minimum = null;
+        for (int i = 0; i < count; i++) {
+            BigInteger value = lastMeasurements[i].getMeasurement();
+            if (minimum == null || value.compareTo(minimum) < 0) {
+                minimum = value;
+            }
+        }
+        return minimum == null ? BigInteger.ZERO : minimum;
+    }
+
+    private BigInteger getMaximumMeasurement(PowerGogglesMeasurement[] lastMeasurements, int count) {
+        BigInteger maximum = null;
+        for (int i = 0; i < count; i++) {
+            BigInteger value = lastMeasurements[i].getMeasurement();
+            if (maximum == null || value.compareTo(maximum) > 0) {
+                maximum = value;
+            }
+        }
+        return maximum == null ? BigInteger.ZERO : maximum;
+    }
+
     private void renderPowerChartBackground() {
 
         int left = xOffset;
@@ -529,8 +553,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     private void renderPowerChartLines(BigInteger minReading, BigInteger maxReading,
-        List<PowerGogglesMeasurement> lastMeasurements) {
-        int measurementCount = lastMeasurements.size();
+        PowerGogglesMeasurement[] lastMeasurements, int measurementCount) {
 
         double completeChartLineWidth = chartWidth * 0.8d;
         int chartY = yOffset + borderRadius * 2;
@@ -549,16 +572,14 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawing(GL_LINES);
 
-        BigInteger lastMeasurement = lastMeasurements.get(0)
-            .getMeasurement();
+        BigInteger lastMeasurement = lastMeasurements[0].getMeasurement();
         double lastX = xOffset + borderRadius + (chartWidth * 0.2d);
         double lastY = getPointY(chartY, chartHeight, minReading, maxReading, lastMeasurement);
         double lineWidth = completeChartLineWidth / PowerGogglesConstants.MEASUREMENT_COUNT_5M;
 
         for (int i = 1; i < measurementCount; i++) {
 
-            BigInteger measurement = lastMeasurements.get(i)
-                .getMeasurement();
+            BigInteger measurement = lastMeasurements[i].getMeasurement();
             setLineColor(tessellator, lastMeasurement, measurement);
 
             double currentX = lastX + lineWidth;
@@ -640,12 +661,13 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             return;
         }
 
-        LinkedList<PowerGogglesMeasurement> lastMeasurements = getLastMeasurements(
-            PowerGogglesConstants.MEASUREMENT_COUNT_5M);
-        BigInteger first = lastMeasurements.getFirst()
-            .getMeasurement();
-        BigInteger last = lastMeasurements.getLast()
-            .getMeasurement();
+        getLastMeasurements(PowerGogglesConstants.MEASUREMENT_COUNT_5M);
+        if (lastMeasurementsCount <= 1) {
+            this.euDifference5m = BigInteger.ZERO;
+            return;
+        }
+        BigInteger first = lastMeasurementsCache[0].getMeasurement();
+        BigInteger last = lastMeasurementsCache[lastMeasurementsCount - 1].getMeasurement();
 
         this.euDifference5m = first.subtract(last);
     }
@@ -656,24 +678,32 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             return;
         }
 
-        LinkedList<PowerGogglesMeasurement> lastMeasurements = getLastMeasurements(
-            PowerGogglesConstants.MEASUREMENT_COUNT_1H);
-        BigInteger first = lastMeasurements.getFirst()
-            .getMeasurement();
-        BigInteger last = lastMeasurements.getLast()
-            .getMeasurement();
+        getLastMeasurements(PowerGogglesConstants.MEASUREMENT_COUNT_1H);
+        if (lastMeasurementsCount <= 1) {
+            this.euDifference1h = BigInteger.ZERO;
+            return;
+        }
+        BigInteger first = lastMeasurementsCache[0].getMeasurement();
+        BigInteger last = lastMeasurementsCache[lastMeasurementsCount - 1].getMeasurement();
 
         this.euDifference1h = first.subtract(last);
     }
 
-    private LinkedList<PowerGogglesMeasurement> getLastMeasurements(int count) {
-        List<PowerGogglesMeasurement> lastMeasurements = new ArrayList<>(measurements);
-        Collections.reverse(lastMeasurements);
-
-        return new LinkedList<>(
-            lastMeasurements.stream()
-                .limit(count)
-                .collect(Collectors.toList()));
+    private PowerGogglesMeasurement[] getLastMeasurements(int count) {
+        int stored = Math.min(count, Math.min(measurements.size(), lastMeasurementsCache.length));
+        int skip = measurements.size() - stored;
+        int index = stored;
+        Iterator<PowerGogglesMeasurement> iterator = measurements.descendingIterator();
+        while (index > 0) {
+            PowerGogglesMeasurement measurement = iterator.next();
+            if (skip > 0) {
+                skip--;
+                continue;
+            }
+            lastMeasurementsCache[--index] = measurement;
+        }
+        lastMeasurementsCount = stored;
+        return lastMeasurementsCache;
     }
 
 }
