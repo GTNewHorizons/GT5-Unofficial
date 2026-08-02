@@ -213,7 +213,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
 
             final List<BoostingWater> fluid = WATER_LIST.stream()
                 .filter(candidate -> drain(hatch, candidate.water.getFluid(candidate.amount), false))
-                .collect(Collectors.toList());
+                .toList();
 
             if (fluid.size() >= 2) {
                 firstWater = fluid.get(0);

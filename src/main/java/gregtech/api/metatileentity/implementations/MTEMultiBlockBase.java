@@ -3606,7 +3606,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 .sorted(
                     Map.Entry.<ItemStack, Long>comparingByValue()
                         .reversed())
-                .collect(Collectors.toList());
+                .toList();
 
             for (Map.Entry<ItemStack, Long> entry : sortedMap) {
                 Long itemCount = entry.getValue();
@@ -3654,7 +3654,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 .sorted(
                     Map.Entry.<FluidStack, Long>comparingByValue()
                         .reversed())
-                .collect(Collectors.toList());
+                .toList();
 
             for (Map.Entry<FluidStack, Long> entry : sortedMap) {
                 Long itemCount = entry.getValue();

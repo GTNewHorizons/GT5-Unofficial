@@ -123,7 +123,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                         a -> a.left()
                             .getName()))
                 .sorted((a, b) -> Integer.compare(b.right(), a.right()))
-                .collect(Collectors.toList());
+                .toList();
 
             for (Pair<ModuleTypes, Integer> modulePair : moduleDisplayList) {
                 listWidget.child(createModuleRow(modulePair));

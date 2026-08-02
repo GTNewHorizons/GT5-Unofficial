@@ -601,7 +601,7 @@ public class EyeOfHarmonyRecipe {
             Materials.Bismuth,
             Materials.Oxygen,
             Materials.Tin)
-        .collect(Collectors.toList());
+        .toList();
 
     private static final HashMap<String, Long> plasmaEnergyMap = new HashMap<>() {
 

@@ -1204,7 +1204,7 @@ public class GTStructureUtility {
                     .addAll(
                         IntStream.rangeClosed(0, 15)
                             .boxed()
-                            .collect(Collectors.toList()));
+                            .toList());
             } else {
                 map.computeIfAbsent(block, k -> new ArrayList<>())
                     .add(meta);

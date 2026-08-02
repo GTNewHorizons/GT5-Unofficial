@@ -87,7 +87,7 @@ public class SplitterRule {
         var filters = filterStacks.getStacks()
             .stream()
             .filter(Objects::nonNull)
-            .collect(Collectors.toList());
+            .toList();
         // If no items in the filter set match the given item, do not apply this rule
         if (!filters.isEmpty() && filters.stream()
             .noneMatch(stack -> stack.isItemEqual(item))) {

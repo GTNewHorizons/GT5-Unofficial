@@ -370,7 +370,7 @@ class GTRecipeTest {
         List<GTRecipe> matches = map.findRecipeQuery()
             .items(new ItemStack(log, 1, 0))
             .findAll()
-            .collect(Collectors.toList());
+            .toList();
         assertEquals(2, matches.size());
         assertTrue(matches.contains(oreRecipe));
         assertTrue(matches.contains(exactRecipe));

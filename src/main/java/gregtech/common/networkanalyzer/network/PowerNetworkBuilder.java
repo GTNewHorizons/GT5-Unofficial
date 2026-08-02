@@ -155,7 +155,7 @@ public class PowerNetworkBuilder {
     public void addNetwork(PowerNode node) {
         final List<ConsumerNode> consumers = node.mConsumers.stream()
             .filter(c -> !(c instanceof EmptyPowerConsumer) && this.flowVisited.add(c.mTileEntity))
-            .collect(Collectors.toList());
+            .toList();
         if (consumers.isEmpty()) return;
 
         processNode(consumers.get(0));

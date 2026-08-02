@@ -1001,7 +1001,7 @@ public final class GTGuiTextures {
                 .fullImage()
                 .location(GregTech.ID, "gui/overlay_slot/number_" + i)
                 .build())
-        .collect(Collectors.toList())
+        .toList()
         .toArray(new UITexture[0]);
 
     public static final UITexture OVERLAY_TOOLBOX_WRENCH = UITexture.builder()
