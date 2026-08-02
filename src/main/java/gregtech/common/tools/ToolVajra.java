@@ -15,9 +15,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S23PacketBlockChange;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
@@ -71,7 +69,8 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         super.onBlockHarvestingEvent(event);
         if (event.harvester instanceof EntityPlayerMP player && player.playerNetServerHandler != null) {
             if (event.world.getBlock(event.x, event.y, event.z) == Blocks.air) {
-                player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(event.x, event.y, event.z, event.world));
+                player.playerNetServerHandler
+                    .sendPacket(new S23PacketBlockChange(event.x, event.y, event.z, event.world));
             }
         }
     }
