@@ -3390,7 +3390,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 2),
-                GTOreDictUnificator.get(OrePrefixes.rod, Materials.Wood, 1))
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
             .itemOutputs(new ItemStack(Items.diamond_sword))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -3398,7 +3398,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 2),
-                GTOreDictUnificator.get(OrePrefixes.rod, Materials.Wood, 1))
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
             .itemOutputs(new ItemStack(Items.golden_sword))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -3406,7 +3406,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2),
-                GTOreDictUnificator.get(OrePrefixes.rod, Materials.Wood, 1))
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
             .itemOutputs(new ItemStack(Items.iron_sword))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
