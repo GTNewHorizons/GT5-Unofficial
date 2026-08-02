@@ -33,6 +33,8 @@ import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 
 public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
+    private static final DecimalFormat PERCENTAGE_FORMATTER = new DecimalFormat("0.00%");
+
     private FontRenderer fontRenderer;
     private final int borderRadius = 3;
     private final int gapBetweenLines = 2;
@@ -126,9 +128,8 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     private void renderFillPercentage(int stringY, int stringColor) {
-        DecimalFormat percentageFormatter = new DecimalFormat("0.00%");
         double percentage = getFillPercentage();
-        String percentageText = percentageFormatter.format(percentage);
+        String percentageText = PERCENTAGE_FORMATTER.format(percentage);
 
         int stringX = xOffset + gradientRectangleWidth - fontRenderer.getStringWidth(percentageText);
         drawScaledString(percentageText, stringX, stringY, stringColor, mainScale);
