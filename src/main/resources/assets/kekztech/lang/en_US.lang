@@ -116,9 +116,16 @@ gui.kekztech_lapotronicenergyunit.wireless_rebalance=Rebalance Wireless (One-Tim
 gui.kekztech_lapotronicenergyunit.warning.header=Warning!
 gui.kekztech_lapotronicenergyunit.warning.text=Make sure to carefully read and understand the tooltip before activating wireless mode. It can potentially brick your base. This warning won't appear again.
 
-kekztech.gui.lapotronic_super_capacitor.text.stored=Stored: %s EU
-kekztech.gui.lapotronic_super_capacitor.text.avg_eu_in=Avg EU IN: %s last 5s
-kekztech.gui.lapotronic_super_capacitor.text.avg_eu_out=Avg EU OUT: %s last 5s
+kekztech.gui.lapotronic_super_capacitor.total_capacity=Total Capacity: §9%s§f EU
+kekztech.gui.lapotronic_super_capacitor.used_capacity=Used Capacity: §9%s§f
+kekztech.gui.lapotronic_super_capacitor.text.stored=Stored: §a%s§f EU
+kekztech.gui.lapotronic_super_capacitor.text.avg_eu_in=Avg EU IN: §a%s§f last 5s
+kekztech.gui.lapotronic_super_capacitor.text.avg_eu_out=Avg EU OUT: §c%s§f last 5s
+kekztech.gui.lapotronic_super_capacitor.passive_loss=Passive Loss: §c%s§f EU/t
+kekztech.gui.lapotronic_super_capacitor.wireless_eu=Total wireless EU: §d%s§f EU
+kekztech.gui.lapotronic_super_capacitor.time_to.full=Time to Full: §b%s
+kekztech.gui.lapotronic_super_capacitor.time_to.sth=Time to Something: §bInfinite years
+kekztech.gui.lapotronic_super_capacitor.time_to.empty=Time to Empty: §b%s
 
 # -------- Tooltips
 tooltip.kekztech.crafting_component=Crafting component for KekzTech things

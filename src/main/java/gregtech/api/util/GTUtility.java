@@ -652,6 +652,12 @@ public class GTUtility {
             }
         }
 
+        // A format code at the very end has nothing left to format, so a pop that lands there only emits noise.
+        // Drop it, otherwise consumers that match whole lines (tooltip separators, for one) never see a clean line.
+        while (out.length() >= 2 && out.charAt(out.length() - 2) == FORMAT_ESCAPE) {
+            out.setLength(out.length() - 2);
+        }
+
         return out.toString();
     }
 
