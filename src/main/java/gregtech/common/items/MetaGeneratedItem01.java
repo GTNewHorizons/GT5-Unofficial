@@ -486,6 +486,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import codechicken.enderstorage.api.EnderStorageDyeTool;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverPlacer;
@@ -563,10 +564,15 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialCuttingMachine.S
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(
-    iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
-    modid = Mods.ModIDs.RAILCRAFT)
-public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFirestoneBurning {
+@Optional.InterfaceList(
+    value = {
+        @Optional.Interface(
+            iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
+            modid = Mods.ModIDs.RAILCRAFT),
+        @Optional.Interface(
+            iface = "codechicken.enderstorage.api.EnderStorageDyeTool",
+            modid = Mods.ModIDs.ENDER_STORAGE), })
+public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFirestoneBurning, EnderStorageDyeTool {
 
     public static MetaGeneratedItem01 INSTANCE;
     private static final String aTextEmptyRow = "   ";
@@ -5289,5 +5295,36 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             || data.mPrefix == OrePrefixes.crushedPurified
             || data.mPrefix == OrePrefixes.crushedCentrifuged
             || data.mPrefix == OrePrefixes.gem;
+    }
+
+    @Override
+    public int getDye(final ItemStack itemStack) {
+        if (Mods.EnderStorage.isModLoaded()) {
+            final List<Integer> results = mapEachBehavior(itemStack, behavior -> {
+                if (behavior instanceof final EnderStorageDyeTool dyeTool) {
+                    return dyeTool.getDye(itemStack);
+                }
+
+                return null;
+            });
+
+            if (!results.isEmpty()) {
+                return results.getFirst();
+            }
+        }
+
+        return -1;
+    }
+
+    @Override
+    public void expendToolUse(final ItemStack itemStack) {
+        if (Mods.EnderStorage.isModLoaded()) {
+            forEachBehavior(itemStack, behavior -> {
+                if (behavior instanceof final EnderStorageDyeTool dyeTool) {
+                    dyeTool.expendToolUse(itemStack);
+                }
+                return false;
+            });
+        }
     }
 }
