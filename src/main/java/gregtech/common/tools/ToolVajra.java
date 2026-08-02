@@ -12,6 +12,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
@@ -69,12 +70,9 @@ public class ToolVajra extends ItemTool implements IElectricItem {
     public void onBlockHarvestingEvent(BlockEvent.HarvestDropsEvent event) {
         super.onBlockHarvestingEvent(event);
         if (event.harvester instanceof EntityPlayerMP player && player.playerNetServerHandler != null) {
-            player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(event.x, event.y, event.z, event.world));
-            TileEntity te = event.world.getTileEntity(event.x, event.y, event.z);
-            if (te == null) return;
-            Packet pkt = te.getDescriptionPacket();
-            if (pkt == null) return;
-            player.playerNetServerHandler.sendPacket(pkt);
+            if (event.world.getBlock(event.x, event.y, event.z) == Blocks.air) {
+                player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(event.x, event.y, event.z, event.world));
+            }
         }
     }
 
