@@ -1,6 +1,11 @@
 package tectech.thing.metaTileEntity.multi.godforge;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.casing.Casings.BoundlessGravitationallySeveredStructureCasing;
+import static gregtech.api.casing.Casings.CelestialMatterGuidanceCasing;
+import static gregtech.api.casing.Casings.HarmonicPhononTransmissionConduit;
+import static gregtech.api.casing.Casings.SingularityReinforcedStellarShieldingCasing;
+import static gregtech.api.casing.Casings.StellarEnergySiphonCasing;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_MULTISTEP;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_TIER;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
@@ -178,7 +183,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Plasma Fabricator")
+        tt.addMachineType(StatCollector.translateToLocal("GT5U.tooltip.godforge-plasma-module.machine-type"))
             .addInfo("This is a module of the Godforge")
             .addInfo("Must be part of a Godforge to function")
             .addInfo("Used for extreme temperature matter ionization")
@@ -188,15 +193,15 @@ public class MTEPlasmaModule extends MTEBaseModule {
             .addInfo("right away, some of them require certain upgrades to be unlocked")
             .addInfo("This module is specialized towards energy and overclock efficiency")
             .beginStructureBlock(7, 7, 13, false)
-            .addController("Front center, 4th layer")
-            .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
-            .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)
-            .addCasing("5", "Celestial Matter Guidance Casing", false)
-            .addCasing("5", "Harmonic Phonon Transmission Conduit", false)
-            .addCasing("1", "Stellar Energy Siphon Casing", false)
-            .addInputBus("0+", "Any front shielding casing", 1)
-            .addInputHatch("0+", "Any front shielding casing", 1)
-            .addOutputHatch("0+", "Any front shielding casing", 1)
+            .addController(StatCollector.translateToLocal("GT5U.tooltip.godforge-plasma-module.controller-pos"))
+            .addCasing("0-20", SingularityReinforcedStellarShieldingCasing.getLocalizedName(), false)
+            .addCasing("20", BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), false)
+            .addCasing("5", CelestialMatterGuidanceCasing.getLocalizedName(), false)
+            .addCasing("5", HarmonicPhononTransmissionConduit.getLocalizedName(), false)
+            .addCasing("1", StellarEnergySiphonCasing.getLocalizedName(), false)
+            .addInputBus("0+", StatCollector.translateToLocal("GT5U.tooltip.godforge-plasma-module.hatch-pos"), 1)
+            .addInputHatch("0+", StatCollector.translateToLocal("GT5U.tooltip.godforge-plasma-module.hatch-pos"), 1)
+            .addOutputHatch("0+", StatCollector.translateToLocal("GT5U.tooltip.godforge-plasma-module.hatch-pos"), 1)
             .toolTipFinisher();
         return tt;
     }

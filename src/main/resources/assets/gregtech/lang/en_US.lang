@@ -9111,6 +9111,11 @@ GT5U.tooltip.godforge-smelting-module.machine-type=Blast Furnace, Furnace
 GT5U.tooltip.godforge-smelting-module.controller-pos=Front center, 4th layer
 GT5U.tooltip.godforge-smelting-module.hatch-pos=Any front shielding casing
 
+# Godforge Plasma Module Structure Hints
+GT5U.tooltip.godforge-plasma-module.machine-type=Plasma Fabricator
+GT5U.tooltip.godforge-plasma-module.controller-pos=Front center, 4th layer
+GT5U.tooltip.godforge-plasma-module.hatch-pos=Any front shielding casing
+
 # BEC Generator Structure Hints
 GT5U.tooltip.bec-generator.controller-pos=Front center, 10th layer
 GT5U.tooltip.bec-generator.hatch-pos=Any electromagnetically-isolated casing around controller
