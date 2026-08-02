@@ -35,9 +35,7 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
         if (info.stoneType != null && info.stoneType != StoneType.Stone) return false;
         if (!(info.material instanceof Material gtppMat)) return false;
         if (info.isSmall) return false;
-        if (!gtppMat.hasOre()) return false;
-
-        return true;
+        return gtppMat.hasOre();
     }
 
     @Override

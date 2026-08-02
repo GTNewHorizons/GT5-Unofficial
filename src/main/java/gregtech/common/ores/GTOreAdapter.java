@@ -170,9 +170,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
         if (!oreBlocksByStoneType.containsKey(stoneType2)) return false;
         if (!stoneType2.isEnabled()) return false;
         if (!gtMat.isValidForStone(stoneType2)) return false;
-        if (stoneType2.getCategory() == StoneCategory.Ice && info.isSmall) return false;
-
-        return true;
+        return stoneType2.getCategory() != StoneCategory.Ice || !info.isSmall;
     }
 
     public static final int SMALL_ORE_META_OFFSET = 16000;

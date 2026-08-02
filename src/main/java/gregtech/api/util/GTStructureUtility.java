@@ -112,8 +112,7 @@ public class GTStructureUtility {
                 boolean isWater = isWater(block);
                 boolean isFlowing = isFlowingWater(block, world, x, y, z);
                 if (isWater && !isFlowing) return true;
-                if (allowFlowing && isFlowing) return true;
-                return false;
+                return allowFlowing && isFlowing;
             }
 
             @Override

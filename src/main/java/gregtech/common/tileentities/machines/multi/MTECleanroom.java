@@ -589,9 +589,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         if (!addStructureBlock(aBaseMetaTileEntity, dxMin, dy, dzMin, MASK_WALL_EDGE, errors)) return false;
         if (!addStructureBlock(aBaseMetaTileEntity, dxMin, dy, dzMax, MASK_WALL_EDGE, errors)) return false;
         if (!addStructureBlock(aBaseMetaTileEntity, dxMax, dy, dzMin, MASK_WALL_EDGE, errors)) return false;
-        if (!addStructureBlock(aBaseMetaTileEntity, dxMax, dy, dzMax, MASK_WALL_EDGE, errors)) return false;
-
-        return true;
+        return addStructureBlock(aBaseMetaTileEntity, dxMax, dy, dzMax, MASK_WALL_EDGE, errors);
     }
 
     @Override

@@ -125,9 +125,7 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
         if (!this.ores.containsKey(stoneType)) return false;
 
         if (!(info.material instanceof Werkstoff w)) return false;
-        if (!w.hasItemType(OrePrefixes.ore)) return false;
-
-        return true;
+        return w.hasItemType(OrePrefixes.ore);
     }
 
     @Override
