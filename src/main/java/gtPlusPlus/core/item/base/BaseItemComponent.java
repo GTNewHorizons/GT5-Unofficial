@@ -81,8 +81,7 @@ public class BaseItemComponent extends Item {
         } else {
             aFormattedNameForFluids = unlocalName;
         }
-        Material aTempMaterial = Material.mMaterialCache.get(localName.toLowerCase());
-        this.componentMaterial = aTempMaterial;
+        this.componentMaterial = Material.mMaterialCache.get(localName.toLowerCase());
         this.unlocalName = "itemCell" + aFormattedNameForFluids;
         this.materialName = localName;
         this.materialKey = fluid.getUnlocalizedName();

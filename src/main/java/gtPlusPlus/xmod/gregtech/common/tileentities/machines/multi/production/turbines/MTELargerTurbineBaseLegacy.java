@@ -255,8 +255,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
             updateTexture(aTileEntity, aBaseCasingIndex);
             IGregTechTileEntity g = this.getBaseMetaTileEntity();
             if (aTurbineHatch.setController(new BlockPos(g.getXCoord(), g.getYCoord(), g.getZCoord(), g.getWorld()))) {
-                boolean aDidAdd = this.mTurbineRotorHatches.add(aTurbineHatch);
-                return aDidAdd;
+                return this.mTurbineRotorHatches.add(aTurbineHatch);
             }
         }
         return false;
