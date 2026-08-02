@@ -306,8 +306,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     private void render5mDifference(int stringY) {
-        String timedDifference5m = cached5mText
-            .get(euDifference5m, PowerGogglesConfigHandler.readingIndex, this::format5mDifference);
+        String timedDifference5m = cached5mText.get(euDifference5m, getTextConfigKey(), this::format5mDifference);
         int stringColor5m = getTextColor(euDifference5m);
 
         drawScaledString(timedDifference5m, xOffset, stringY, stringColor5m, subScale);
@@ -323,8 +322,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
     }
 
     private void render1hDifference(int y) {
-        String timedDifference1h = cached1hText
-            .get(euDifference1h, PowerGogglesConfigHandler.readingIndex, this::format1hDifference);
+        String timedDifference1h = cached1hText.get(euDifference1h, getTextConfigKey(), this::format1hDifference);
         int stringColor1h = getTextColor(euDifference1h);
         drawScaledString(timedDifference1h, xOffset, y, stringColor1h, subScale);
     }
@@ -337,6 +335,10 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         String formattedTickDifference1h = PowerGogglesUtil.format(tickDifference1h);
 
         return getTimedDifferenceText("1h: ", formattedDifference1h, formattedTickDifference1h);
+    }
+
+    private int getTextConfigKey() {
+        return PowerGogglesConfigHandler.readingIndex * 100 + PowerGogglesConfigHandler.formatIndex;
     }
 
     private String getTimedDifferenceText(String prefix, String formattedDifference, String formattedTickDifference) {
@@ -707,10 +709,10 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             this.euDifference5m = BigInteger.ZERO;
             return;
         }
-        BigInteger first = lastMeasurementsCache[0].getMeasurement();
-        BigInteger last = lastMeasurementsCache[lastMeasurementsCount - 1].getMeasurement();
+        BigInteger oldest = lastMeasurementsCache[0].getMeasurement();
+        BigInteger newest = lastMeasurementsCache[lastMeasurementsCount - 1].getMeasurement();
 
-        this.euDifference5m = first.subtract(last);
+        this.euDifference5m = newest.subtract(oldest);
     }
 
     private void update1hDifference() {
@@ -724,10 +726,10 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             this.euDifference1h = BigInteger.ZERO;
             return;
         }
-        BigInteger first = lastMeasurementsCache[0].getMeasurement();
-        BigInteger last = lastMeasurementsCache[lastMeasurementsCount - 1].getMeasurement();
+        BigInteger oldest = lastMeasurementsCache[0].getMeasurement();
+        BigInteger newest = lastMeasurementsCache[lastMeasurementsCount - 1].getMeasurement();
 
-        this.euDifference1h = first.subtract(last);
+        this.euDifference1h = newest.subtract(oldest);
     }
 
     private PowerGogglesMeasurement[] getLastMeasurements(int count) {
