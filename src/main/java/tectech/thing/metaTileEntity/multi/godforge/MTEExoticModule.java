@@ -512,7 +512,7 @@ public class MTEExoticModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Exotic Matter Producer")
+        tt.addMachineType(StatCollector.translateToLocal("GT5U.tooltip.godforge-exotic-module.machine-type"))
             .addMarkdown(new ResourceLocation("gregtech", "godforge-exotic-module"))
             .beginStructureBlock(7, 7, 13, false)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.godforge-exotic-module.controller-pos"))

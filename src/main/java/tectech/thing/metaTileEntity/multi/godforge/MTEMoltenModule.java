@@ -166,7 +166,7 @@ public class MTEMoltenModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Blast Smelter")
+        tt.addMachineType(StatCollector.translateToLocal("GT5U.tooltip.godforge-molten-module.machine-type"))
             .addMarkdown(new ResourceLocation("gregtech", "godforge-molten-module"))
             .beginStructureBlock(7, 7, 13, false)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.godforge-molten-module.controller-pos"))
