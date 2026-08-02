@@ -2105,7 +2105,7 @@ public class GTModHandler {
      * array containing [ current_charge, maximum_charge ] on success.
      */
     public static Optional<Long[]> getElectricItemCharge(ItemStack aStack) {
-        if (aStack == null || !isElectricItem(aStack)) {
+        if (!isElectricItem(aStack)) {
             return Optional.empty();
         }
 
