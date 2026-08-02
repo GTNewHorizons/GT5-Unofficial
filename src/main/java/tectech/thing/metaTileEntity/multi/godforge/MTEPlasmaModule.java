@@ -18,7 +18,7 @@ import static net.minecraft.util.EnumChatFormatting.YELLOW;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
@@ -184,14 +184,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("GT5U.tooltip.godforge-plasma-module.machine-type"))
-            .addInfo("This is a module of the Godforge")
-            .addInfo("Must be part of a Godforge to function")
-            .addInfo("Used for extreme temperature matter ionization")
-            .addSeparator(EnumChatFormatting.AQUA, 74)
-            .addInfo("The third module of the Godforge, this module infuses materials with extreme amounts")
-            .addInfo("of heat, ionizing and turning them into plasma directly. Not all plasmas can be produced")
-            .addInfo("right away, some of them require certain upgrades to be unlocked")
-            .addInfo("This module is specialized towards energy and overclock efficiency")
+            .addMarkdown(new ResourceLocation("gregtech", "godforge-plasma-module"))
             .beginStructureBlock(7, 7, 13, false)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.godforge-plasma-module.controller-pos"))
             .addCasing("0-20", SingularityReinforcedStellarShieldingCasing.getLocalizedName(), false)
