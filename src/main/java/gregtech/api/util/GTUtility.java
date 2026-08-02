@@ -4249,11 +4249,9 @@ public class GTUtility {
         Flip flip = extendedFacing.getFlip();
 
         float faceAngleDeg = switch (direction) {
-            case DOWN -> 90f;
-            case UP -> -90f;
+            case DOWN, WEST -> 90f;
+            case UP, EAST -> -90f;
             case SOUTH -> 180f;
-            case WEST -> 90f;
-            case EAST -> -90f;
             default -> 0f; // NORTH
         };
 
