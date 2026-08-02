@@ -23,7 +23,7 @@ public interface IOreAdapter<TMat extends IOreMaterial> {
      * A fast check to see if this adapter can support this block/meta combination.
      * This function can return false positives, but never false negatives.
      */
-    public boolean supports(Block block, int meta);
+    boolean supports(Block block, int meta);
 
     /**
      * Checks if this adapter can support the requested ore combination.
@@ -31,21 +31,21 @@ public interface IOreAdapter<TMat extends IOreMaterial> {
      * If this returns false, methods that take an OreInfo must return an 'invalid' value (see method comments for what
      * this entails).
      */
-    public boolean supports(OreInfo<?> info);
+    boolean supports(OreInfo<?> info);
 
     /**
      * Analyzes the given block + meta and returns an OreInfo with its information, or null if the combination is
      * invalid.
      * Calling {@link #getBlock(OreInfo)} with the returned info must give back the same block/meta combination.
      */
-    public OreInfo<TMat> getOreInfo(Block block, int meta);
+    OreInfo<TMat> getOreInfo(Block block, int meta);
 
     /**
      * Analyzes the block at the given coordinates and returns an OreInfo with its information, or null if the block is
      * invalid.
      * Calling {@link #getBlock(OreInfo)} with the returned info must give back the same block/meta combination.
      */
-    public default OreInfo<TMat> getOreInfo(World world, int x, int y, int z) {
+    default OreInfo<TMat> getOreInfo(World world, int x, int y, int z) {
         return getOreInfo(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
     }
 
@@ -54,7 +54,7 @@ public interface IOreAdapter<TMat extends IOreMaterial> {
      * invalid.
      * Calling {@link #getBlock(OreInfo)} with the returned info must give back the same block/meta combination.
      */
-    public default OreInfo<TMat> getOreInfo(ItemStack stack) {
+    default OreInfo<TMat> getOreInfo(ItemStack stack) {
         if (!(stack.getItem() instanceof ItemBlock itemBlock)) return null;
 
         return getOreInfo(itemBlock.field_150939_a, Items.feather.getDamage(stack));
@@ -63,13 +63,13 @@ public interface IOreAdapter<TMat extends IOreMaterial> {
     /**
      * Gets a block that represents the given OreInfo, or null if the OreInfo is invalid.
      */
-    public ImmutableBlockMeta getBlock(OreInfo<?> info);
+    ImmutableBlockMeta getBlock(OreInfo<?> info);
 
     /**
      * Gets a stack of the block for the given OreInfo, or null if the OreInfo is invalid.
      * If the first operation fails, this tries again with the stoneType set to {@link StoneType#Stone}.
      */
-    public default ItemStack getStack(OreInfo<?> info, int amount) {
+    default ItemStack getStack(OreInfo<?> info, int amount) {
         ImmutableBlockMeta bm = getBlock(info);
 
         if (bm != null) {
@@ -95,11 +95,10 @@ public interface IOreAdapter<TMat extends IOreMaterial> {
      * Gets the drops for a block. This returns an ArrayList due to the return type of
      * {@link Block#getDrops(World, int, int, int, int, int)}.
      */
-    @NotNull
-    public ArrayList<ItemStack> getOreDrops(Random rng, OreInfo<?> info, boolean silktouch, int fortune);
+    @NotNull ArrayList<ItemStack> getOreDrops(Random rng, OreInfo<?> info, boolean silktouch, int fortune);
 
     /**
      * Gets the potential drops for a block. Used for the NEI addon.
      */
-    public List<ItemStack> getPotentialDrops(OreInfo<?> info);
+    List<ItemStack> getPotentialDrops(OreInfo<?> info);
 }
