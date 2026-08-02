@@ -574,7 +574,9 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
 
         BigInteger lastMeasurement = lastMeasurements[0].getMeasurement();
         double lastX = xOffset + borderRadius + (chartWidth * 0.2d);
-        double lastY = getPointY(chartY, chartHeight, minReading, maxReading, lastMeasurement);
+        double minReadingDouble = minReading.doubleValue();
+        double maxReadingDouble = maxReading.doubleValue();
+        double lastY = getPointY(chartY, chartHeight, minReadingDouble, maxReadingDouble, lastMeasurement);
         double lineWidth = completeChartLineWidth / PowerGogglesConstants.MEASUREMENT_COUNT_5M;
 
         for (int i = 1; i < measurementCount; i++) {
@@ -583,7 +585,7 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
             setLineColor(tessellator, lastMeasurement, measurement);
 
             double currentX = lastX + lineWidth;
-            double currentY = getPointY(chartY, chartHeight, minReading, maxReading, measurement);
+            double currentY = getPointY(chartY, chartHeight, minReadingDouble, maxReadingDouble, measurement);
 
             tessellator.addVertex(lastX, lastY, 0);
             tessellator.addVertex(currentX, currentY, 0);
@@ -601,18 +603,19 @@ public class SimplePowerGogglesRenderer extends PowerGogglesRenderer {
         GL11.glPopAttrib();
     }
 
-    private double getPointY(int chartY, int chartHeight, BigInteger minReading, BigInteger maxReading,
+    private double getPointY(int chartY, int chartHeight, double minReading, double maxReading,
         BigInteger measurement) {
-        if (maxReading.compareTo(minReading) <= 0) {
+        if (maxReading <= minReading) {
             return screenHeight - chartY;
         }
 
-        BigInteger clampedMeasurement = measurement.max(minReading)
-            .min(maxReading);
-        BigInteger range = maxReading.subtract(minReading);
-        BigInteger offset = clampedMeasurement.subtract(minReading);
-        double heightPercentage = new BigDecimal(offset).divide(new BigDecimal(range), 8, RoundingMode.HALF_EVEN)
-            .doubleValue();
+        double value = measurement.doubleValue();
+        if (value < minReading) {
+            value = minReading;
+        } else if (value > maxReading) {
+            value = maxReading;
+        }
+        double heightPercentage = (value - minReading) / (maxReading - minReading);
         return screenHeight - (chartY + (chartHeight * heightPercentage));
     }
 
