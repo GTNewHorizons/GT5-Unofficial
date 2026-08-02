@@ -91,7 +91,7 @@ public class GTPreLoad {
                 .getCurrentLanguage()
                 .getLanguageCode();
             GTLanguageManager.LanguageCode = userLang;
-            GT_FML_LOGGER.info("User lang is " + userLang);
+            GT_FML_LOGGER.info("User lang is {}", userLang);
             if (userLang.equals("en_US")) {
                 GT_FML_LOGGER.info("Loading GregTech.lang");
                 GTLanguageManager.isEN_US = true;
@@ -100,10 +100,10 @@ public class GTPreLoad {
                 String l10nFileName = "GregTech_" + userLang + ".lang";
                 File l10nFile = new File(languageDir, l10nFileName);
                 if (l10nFile.isFile()) {
-                    GT_FML_LOGGER.info("Loading l10n file: " + l10nFileName);
+                    GT_FML_LOGGER.info("Loading l10n file: {}", l10nFileName);
                     GTLanguageManager.sEnglishFile = new Configuration(l10nFile);
                 } else {
-                    GT_FML_LOGGER.info("Cannot find l10n file " + l10nFileName + ", fallback to GregTech.lang");
+                    GT_FML_LOGGER.info("Cannot find l10n file {}, fallback to GregTech.lang", l10nFileName);
                     GTLanguageManager.isEN_US = true;
                     GTLanguageManager.sEnglishFile = new Configuration(new File(languageDir, "GregTech.lang"));
                 }
@@ -219,7 +219,7 @@ public class GTPreLoad {
                             scripts.add(line);
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        GT_FML_LOGGER.error(e);;
                     }
                 }
             }
@@ -253,7 +253,7 @@ public class GTPreLoad {
                                 hit = hit.substring(2);
                                 meta = Integer.parseInt(hit);
                             } catch (Exception e) {
-                                GT_FML_LOGGER.info("parseError: " + hit);
+                                GT_FML_LOGGER.info("parseError: {}", hit);
                             }
                             if (meta > 0 && meta < 32000) {
                                 int prefix = meta / 1000;
@@ -266,13 +266,13 @@ public class GTPreLoad {
                                 if (GregTechAPI.sGeneratedMaterials[material] != null) {
                                     final String tag;
                                     if (tags.length > prefix) {
-                                        tag = tags[prefix] + GregTechAPI.sGeneratedMaterials[material].mName;;
+                                        tag = tags[prefix] + GregTechAPI.sGeneratedMaterials[material].mName;
                                     } else {
                                         tag = GregTechAPI.sGeneratedMaterials[material].mName;
                                     }
                                     if (!oreTags.contains(tag)) oreTags.add(tag);
                                 } else if (material > 0) {
-                                    GT_FML_LOGGER.info("MaterialDisabled: " + material + " " + m.group(1));
+                                    GT_FML_LOGGER.info("MaterialDisabled: {} {}", material, m.group(1));
                                 }
                             }
                         }
@@ -299,7 +299,7 @@ public class GTPreLoad {
             final String str = oreTags.get(i);
             if (StringUtils.startsWithAny(str, preS)) {
                 mMTTags.add(str);
-                if (GTValues.D1) GT_FML_LOGGER.info("oretag: " + str);
+                if (GTValues.D1) GT_FML_LOGGER.info("oretag: {}", str);
             }
         }
 
@@ -342,7 +342,7 @@ public class GTPreLoad {
                     OrePrefixes.ring.mGeneratedItems.add(tName);
                 }
             } else {
-                GT_FML_LOGGER.info("noPrefix " + reEnable);
+                GT_FML_LOGGER.info("noPrefix {}", reEnable);
             }
         }
     }

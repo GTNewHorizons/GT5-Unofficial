@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.widget;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 import java.io.IOException;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -86,7 +88,7 @@ public class CoverDataControllerWidget<T extends Cover>
             CoverRegistry.writeCoverToNbt(cover, nbt);
             NetworkUtils.writeNBTBase(buffer, nbt);
         } catch (IOException e) {
-            e.printStackTrace();
+            GT_FML_LOGGER.error(e);
         }
     }
 

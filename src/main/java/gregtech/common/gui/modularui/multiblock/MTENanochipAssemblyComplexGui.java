@@ -9,7 +9,6 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import net.minecraft.util.EnumChatFormatting;
 
@@ -123,7 +122,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                         a -> a.left()
                             .getName()))
                 .sorted((a, b) -> Integer.compare(b.right(), a.right()))
-                .collect(Collectors.toList());
+                .toList();
 
             for (Pair<ModuleTypes, Integer> modulePair : moduleDisplayList) {
                 listWidget.child(createModuleRow(modulePair));
@@ -687,8 +686,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 + "\n";
             case "gm" -> "Good morning, engineer!";
             case "good morning" -> "Good morning, engineer!";
-            case "gn" -> "Have a great sleep, architect!";
-            case "good night" -> "Have a great sleep, architect!";
+            case "gn", "good night" -> "Have a great sleep, architect!";
             case "gregos" -> "It seems you have asked about NAC's advanced sentient artificial intelligence. This is "
                 + "an artificial intelligence designed to simulate the player's otherwise inimitably rad typing "
                 + "style, tone, cadence, personality, and substance of retort while they are using the NAC. The "
@@ -700,10 +698,12 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             case "d" -> "n";
             case "how fast are you" -> "2fast2quick";
             case "knock knock" -> "Who's there?";
-            case "cake" -> switch (MathUtils.randInt(1, 2)) {
-                    case 1 -> "Preheat oven to 180C. Mix 2 eggs, 1 cup sugar, 1/2 cup oil, 1 cup milk. Stir in 2 cups flour and 1 tbsp baking powder. Pour into greased pan and bake 35 minutes until golden. Cool slightly and serve plain or dusted with sugar. Simple and fluffy.";
-                    default -> "This time not a lie";
-                };
+            case "cake" -> {
+                if (MathUtils.randInt(1, 2) == 1) {
+                    yield "Preheat oven to 180C. Mix 2 eggs, 1 cup sugar, 1/2 cup oil, 1 cup milk. Stir in 2 cups flour and 1 tbsp baking powder. Pour into greased pan and bake 35 minutes until golden. Cool slightly and serve plain or dusted with sugar. Simple and fluffy.";
+                }
+                yield "This time not a lie";
+            }
             case "6" -> "7";
             case "joke" -> switch (MathUtils.randInt(1, 7)) {
                     case 1 -> "No time for jokes.";
@@ -741,13 +741,11 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 };
             case "open the pod bay doors" -> " I'm sorry, Dave. I'm afraid I can't do that";
             case "shall we play a game" -> "tik tack toe";
-            case "nac" -> {
-                yield "NAC stands for: " + NOptions.get(MathUtils.randInt(0, NOptions.size() - 1))
-                    + " "
-                    + AOptions.get(MathUtils.randInt(0, AOptions.size() - 1))
-                    + " "
-                    + COptions.get(MathUtils.randInt(0, COptions.size() - 1));
-            }
+            case "nac" -> "NAC stands for: " + NOptions.get(MathUtils.randInt(0, NOptions.size() - 1))
+                + " "
+                + AOptions.get(MathUtils.randInt(0, AOptions.size() - 1))
+                + " "
+                + COptions.get(MathUtils.randInt(0, COptions.size() - 1));
             default -> switch (MathUtils.randInt(1, 10)) {
                     case 1 -> "It is certain";
                     case 2 -> "It is decidedly so";
@@ -838,7 +836,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         }
     }
 
-    private class TerminalTextListWidget extends ListWidget<IWidget, TerminalTextListWidget> {
+    private static class TerminalTextListWidget extends ListWidget<IWidget, TerminalTextListWidget> {
 
         public int playerTextColor = Color.WHITE.main;
         public int responseTextColor = Color.CYAN.main;

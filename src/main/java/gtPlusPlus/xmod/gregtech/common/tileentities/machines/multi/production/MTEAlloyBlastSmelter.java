@@ -193,11 +193,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
 
         if (aStack == null) {
             return true;
-        } else if (aStack.getItem() == circuit) {
-            return true;
-        }
-
-        return false;
+        } else return aStack.getItem() == circuit;
     }
 
     @Override

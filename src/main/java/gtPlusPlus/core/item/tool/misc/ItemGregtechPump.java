@@ -159,7 +159,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             EnumChatFormatting.BLUE + (f != null ? f.getLocalizedName()
                 : StatCollector.translateToLocal("item.itemGregtechPump.tooltip.3")));
         aList.add(
-            EnumChatFormatting.BLUE + (f != null ? "" + formatNumber(f.amount) : "" + 0)
+            EnumChatFormatting.BLUE + (f != null ? formatNumber(f.amount) : "" + 0)
                 + "L"
                 + " / "
                 + formatNumber(getCapacity(aStack))
@@ -828,7 +828,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                     }
                 }
             }
-        } catch (Exception t) {}
+        } catch (Exception ignored) {}
         return false;
     }
 

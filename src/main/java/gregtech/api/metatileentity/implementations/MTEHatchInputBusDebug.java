@@ -100,11 +100,6 @@ public class MTEHatchInputBusDebug extends MTEHatchInputBus {
     }
 
     @Override
-    public boolean allowSelectCircuit() {
-        return true;
-    }
-
-    @Override
     public int getCircuitSlotX() {
         return 152;
     }

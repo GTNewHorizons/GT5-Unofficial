@@ -122,9 +122,9 @@ public class BlockGlass1 extends BlockCasingsAbstract {
             return 0.0F;
         }
         int meta = world.getBlockMetadata(x, y, z);
-        return switch (meta) {
-            case 10 -> 108.0F;
-            default -> super.getExplosionResistance(entity, world, x, y, z, explosionX, explosionY, explosionZ);
-        };
+        if (meta == 10) return 108.0F;
+
+        return super.getExplosionResistance(entity, world, x, y, z, explosionX, explosionY, explosionZ);
+
     }
 }
