@@ -124,11 +124,11 @@ public class GTAuthors {
     public static final String AuthorSilverMoon = EnumChatFormatting.AQUA + "SilverMoon";
     public static final String AuthorTheEpicGamer274 = EnumChatFormatting.DARK_AQUA + "TheEpicGamer274";
     public static final String Ollie = EnumChatFormatting.GREEN.toString() + EnumChatFormatting.BOLD + "Ollie";
-    public static final String authorBaps = "" + EnumChatFormatting.GOLD
+    public static final String authorBaps = EnumChatFormatting.GOLD
         + "Ba"
         + EnumChatFormatting.LIGHT_PURPLE
         + "ps";
-    public static final String AuthorOmdaCZ = "" + EnumChatFormatting.BLUE + "Omda" + EnumChatFormatting.RED + "CZ";
+    public static final String AuthorOmdaCZ = EnumChatFormatting.BLUE + "Omda" + EnumChatFormatting.RED + "CZ";
     public static final String AuthorEvgenWarGold = "" + EnumChatFormatting.RED
         + EnumChatFormatting.BOLD
         + "Evgen"
