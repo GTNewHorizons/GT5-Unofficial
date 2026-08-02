@@ -2651,7 +2651,7 @@ public class GTUtility {
 
     public static String joinListToString(List<String> list) {
         StringBuilder result = new StringBuilder(32);
-        for (String s : list) result.append(result.length() == 0 ? s : '|' + s);
+        for (String s : list) result.append(result.isEmpty() ? s : '|' + s);
         return result.toString();
     }
 
@@ -3082,17 +3082,17 @@ public class GTUtility {
             do {
                 tPageText = new StringBuilder();
                 for (int i = tPage * aItemsPerPage; i < (tPage + 1) * aItemsPerPage && i < list.length; i += 1)
-                    tPageText.append((tPageText.length() == 0) ? "" : aListDelimiter)
+                    tPageText.append((tPageText.isEmpty()) ? "" : aListDelimiter)
                         .append(list[i]);
 
-                if (tPageText.length() != 0) {
+                if (!tPageText.isEmpty()) {
                     String tPageCounter = tTotalPages > 1 ? String.format(aPageFormatter, tPage + 1, tTotalPages) : "";
                     NBTTagString tPageTag = new NBTTagString(String.format(aPageHeader, tPageCounter) + tPageText);
                     aBook.appendTag(tPageTag);
                 }
 
                 ++tPage;
-            } while (tPageText.length() != 0);
+            } while (!tPageText.isEmpty());
         }
 
         /**

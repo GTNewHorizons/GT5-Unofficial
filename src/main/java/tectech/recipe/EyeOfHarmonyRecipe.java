@@ -369,7 +369,7 @@ public class EyeOfHarmonyRecipe {
         if (material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM))
             outputMap.add(Materials.Neodymium, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
 
-        if (material.mOreByProducts.size() == 0) {
+        if (material.mOreByProducts.isEmpty()) {
             if (material.contains(SubTag.WASHING_MERCURY_99_PERCENT))
                 outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
             else if (material.contains(SubTag.WASHING_MERCURY))

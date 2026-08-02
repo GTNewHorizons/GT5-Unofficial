@@ -1080,11 +1080,10 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
      */
     private boolean isUpgradeButtonClickable() {
         if (projectMode) {
-            return upgradeFromProject != null && upgradeFromProject.size() > 0
+            return upgradeFromProject != null && !upgradeFromProject.isEmpty()
                 && selectedProject != null
                 && selectedProject.isFinished()
-                && selectedProject.getAllUpgrades()
-                    .size() > 0;
+                && !selectedProject.getAllUpgrades().isEmpty();
         } else {
             return true;
         }

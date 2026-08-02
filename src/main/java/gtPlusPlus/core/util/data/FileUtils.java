@@ -34,15 +34,15 @@ public class FileUtils {
     }
 
     public static File getFile(String path, String filename, String extension) {
-        if (path == null || path.length() == 0) {
+        if (path == null || path.isEmpty()) {
             path = "";
         } else {
             path = path + "/";
         }
-        if (filename == null || filename.length() == 0) {
+        if (filename == null || filename.isEmpty()) {
             return null;
         }
-        if (extension == null || extension.length() == 0) {
+        if (extension == null || extension.isEmpty()) {
             extension = ".txt";
         } else {
             extension = "." + extension;
