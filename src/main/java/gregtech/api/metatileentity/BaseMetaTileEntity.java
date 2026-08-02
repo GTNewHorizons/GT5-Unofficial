@@ -1226,7 +1226,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         if (canAccessData()) {
             final long cap = mMetaTileEntity.maxEUStore();
             final long stored = mMetaTileEntity.getEUVar();
-            return stored > cap ? cap : stored;
+            return Math.min(stored, cap);
         }
         return 0;
     }
