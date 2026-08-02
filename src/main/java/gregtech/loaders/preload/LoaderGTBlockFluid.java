@@ -43,7 +43,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
-import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.fluid.GTFluidFactory;
@@ -81,7 +80,6 @@ import gregtech.common.blocks.BlockCasingsFoundry;
 import gregtech.common.blocks.BlockCasingsNH;
 import gregtech.common.blocks.BlockConcretes;
 import gregtech.common.blocks.BlockCyclotronCoils;
-import gregtech.common.blocks.BlockDecorativeFrame;
 import gregtech.common.blocks.BlockFenceMetal;
 import gregtech.common.blocks.BlockGlass1;
 import gregtech.common.blocks.BlockGranites;
@@ -92,7 +90,6 @@ import gregtech.common.blocks.BlockOresLegacy;
 import gregtech.common.blocks.BlockPad;
 import gregtech.common.blocks.BlockReinforced;
 import gregtech.common.blocks.BlockRenderer;
-import gregtech.common.blocks.BlockSheetMetal;
 import gregtech.common.blocks.BlockStones;
 import gregtech.common.blocks.BlockTintedIndustrialGlass;
 import gregtech.common.blocks.TileEntityOres;
@@ -886,16 +883,6 @@ public class LoaderGTBlockFluid implements Runnable {
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS13);
 
         GregTechAPI.sBlockReinforced = new BlockReinforced("gt.blockreinforced");
-
-        GregTechAPI.sBlockSheetmetalBW = new BlockSheetMetal(
-            "bw.sheetmetal",
-            meta -> LegacyWerkstoffIndex.get(meta),
-            Short.MAX_VALUE);
-
-        GregTechAPI.sBlockFramesBW = new BlockDecorativeFrame(
-            "bw.frames",
-            meta -> LegacyWerkstoffIndex.get(meta),
-            Short.MAX_VALUE);
 
         GTLog.out.println("GTMod: Register TileEntities.");
 

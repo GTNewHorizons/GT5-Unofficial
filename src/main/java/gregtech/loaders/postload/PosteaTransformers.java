@@ -476,10 +476,10 @@ public class PosteaTransformers implements Runnable {
 
     /// Migrates saved placed blocks and inventory stacks of the legacy frameGt/sheetmetal blocks
     /// (`gregtech:bw.frames`, `gregtech:bw.sheetmetal`, `gregtech:gt.sheetmetal`, `gregtech:gt.blockframes`,
-    /// meta = material id; the bw-named blocks are constructed by `LoaderGTBlockFluid` and so registered under
-    /// the gregtech domain) into the equivalent MaterialLib shape stack. None of these blocks carry a
-    /// TileEntity, unlike [#registerWerkstoffBlockCutoverTransformer]'s storage blocks, so only a block leg and
-    /// an item leg are needed.
+    /// meta = material id) into the equivalent MaterialLib shape stack. The bw-named ids carry the gregtech
+    /// domain despite their name because gregtech registered them. None of these blocks carry a TileEntity,
+    /// unlike [#registerWerkstoffBlockCutoverTransformer]'s storage blocks, so only a block leg and an item leg
+    /// are needed.
     private static void registerFrameAndSheetmetalCutoverTransformers() {
         registerPartCutoverTransformer(
             "gregtech:bw.frames",

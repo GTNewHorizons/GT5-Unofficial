@@ -12,6 +12,7 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.ShapeBlock;
 
+import appeng.api.parts.IFacadeControl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
@@ -24,10 +25,10 @@ import gregtech.api.render.TextureFactory;
 import gregtech.common.render.GTRendererBlock;
 
 /// The block backing the `sheetmetal` MaterialLib shape: a decorative material block with no tile entity,
-/// metadata equal to the material's global index. Ports the legacy `gregtech.common.blocks.BlockSheetMetal`
-/// behavior (inherited there from `BlockStorage`): pickaxe harvesting at level 1, hardness/resistance matching
-/// vanilla's iron block, and rendering in both the opaque and alpha-blended passes.
-public class SheetmetalShapeBlock extends ShapeBlock implements IBlockWithTextures {
+/// metadata equal to the material's global index. Harvested with a pickaxe at level 1, with the hardness and
+/// resistance of vanilla's iron block, and rendered in both the opaque and alpha-blended passes. AE2 is denied
+/// facades of it through [appeng.api.parts.IFacadeControl].
+public class SheetmetalShapeBlock extends ShapeBlock implements IBlockWithTextures, IFacadeControl {
 
     private final Map<Integer, ITexture[][]> texturesByIndex = new ConcurrentHashMap<>();
 
@@ -89,5 +90,10 @@ public class SheetmetalShapeBlock extends ShapeBlock implements IBlockWithTextur
                 .of(textureSet.mTextures[OrePrefixes.sheetmetal.getTextureIndex()], Dyes.getModulation(-1, rgba)) };
             return new ITexture[][] { texture, texture, texture, texture, texture, texture };
         });
+    }
+
+    @Override
+    public boolean createFacadeForBlock(int meta) {
+        return false;
     }
 }

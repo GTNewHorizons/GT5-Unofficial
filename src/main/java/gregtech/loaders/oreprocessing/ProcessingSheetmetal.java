@@ -15,9 +15,8 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
-/// The `sheetmetal` recipe registrator: a single bender recipe from two plates of the material, ported from
-/// `gregtech.common.blocks.BlockSheetMetal#registerRecipes`. Dispatched once per sheetmetal-generating material
-/// by [gregtech.loaders.shapeconsumers.ConsumerSheetmetal].
+/// The `sheetmetal` recipe registrator: a single bender recipe from two plates of the material. Dispatched once
+/// per sheetmetal-generating material by [gregtech.loaders.shapeconsumers.ConsumerSheetmetal].
 public class ProcessingSheetmetal implements IOreRecipeRegistrator {
 
     public static final ProcessingSheetmetal INSTANCE = new ProcessingSheetmetal();
