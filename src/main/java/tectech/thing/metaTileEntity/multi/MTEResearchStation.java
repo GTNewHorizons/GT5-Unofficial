@@ -262,9 +262,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing"), 1)
             .addStructureInfo("")
-            .addStructureFooter(
-                EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.tooltip.research-station.footer")
-                    + EnumChatFormatting.RESET)
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.tooltip.research-station.footer"))
             .toolTipFinisher();
         return tt;
     }
