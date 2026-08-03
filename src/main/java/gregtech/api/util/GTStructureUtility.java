@@ -63,7 +63,6 @@ import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.interfaces.IHatchElement;
@@ -71,6 +70,7 @@ import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
@@ -220,13 +220,15 @@ public class GTStructureUtility {
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                TextureSet textureSet = MaterialUtils.iconSet(material);
                 short[] rgba = MaterialUtils.rgba(material);
-                if (textureSet == null || rgba == null) return false;
+                if (material == null || rgba == null) return false;
                 if (mIcons == null && FMLLaunchHandler.side()
                     .isClient()) {
                     mIcons = new IIcon[6];
-                    Arrays.fill(mIcons, textureSet.mTextures[OrePrefixes.sheetmetal.getTextureIndex()].getIcon());
+                    Arrays.fill(
+                        mIcons,
+                        GTMaterialIcons.block("sheetmetal", material)
+                            .getIcon());
                 }
                 StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, rgba);
                 return true;
@@ -330,13 +332,15 @@ public class GTStructureUtility {
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 com.ruling_0.materiallib.api.Material material = materialSupplier.get();
-                TextureSet textureSet = MaterialUtils.iconSet(material);
                 short[] rgba = MaterialUtils.rgba(material);
-                if (textureSet == null || rgba == null) return false;
+                if (material == null || rgba == null) return false;
                 if (mIcons == null && FMLLaunchHandler.side()
                     .isClient()) {
                     mIcons = new IIcon[6];
-                    Arrays.fill(mIcons, textureSet.mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon());
+                    Arrays.fill(
+                        mIcons,
+                        GTMaterialIcons.block("frameGt", material)
+                            .getIcon());
                 }
                 StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, rgba);
                 return true;

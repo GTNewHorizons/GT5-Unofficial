@@ -26,8 +26,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.PipeProperties;
 import gregtech.api.interfaces.ITexture;
@@ -35,6 +33,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityItemPipe;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.material.PipeStats;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -169,65 +168,14 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
         int aColorIndex, boolean aConnected, boolean redstoneLevel) {
-        final TextureSet textureSet = MaterialUtils.iconSet(getMaterial());
-        final short[] rgba = MaterialUtils.rgba(getMaterial());
-        if (textureSet == null || rgba == null) return Textures.BlockIcons.ERROR_RENDERING;
-        if (mIsRestrictive) {
-            if (aConnected) {
-                float tThickNess = getThickness();
-                if (tThickNess < 0.124F) return new ITexture[] { TextureFactory.of(
-                    textureSet.mTextures[OrePrefixes.pipe.getTextureIndex()],
-                    Dyes.getModulation(aColorIndex, rgba)), TextureFactory.of(PIPE_RESTRICTOR) };
-                if (tThickNess < 0.374F) // 0.375
-                    return new ITexture[] { TextureFactory.of(
-                        textureSet.mTextures[OrePrefixes.pipeTiny.getTextureIndex()],
-                        Dyes.getModulation(aColorIndex, rgba)), TextureFactory.of(PIPE_RESTRICTOR) };
-                if (tThickNess < 0.499F) // 0.500
-                    return new ITexture[] { TextureFactory.of(
-                        textureSet.mTextures[OrePrefixes.pipeSmall.getTextureIndex()],
-                        Dyes.getModulation(aColorIndex, rgba)), TextureFactory.of(PIPE_RESTRICTOR) };
-                if (tThickNess < 0.749F) // 0.750
-                    return new ITexture[] { TextureFactory.of(
-                        textureSet.mTextures[OrePrefixes.pipeMedium.getTextureIndex()],
-                        Dyes.getModulation(aColorIndex, rgba)), TextureFactory.of(PIPE_RESTRICTOR) };
-                if (tThickNess < 0.874F) // 0.825
-                    return new ITexture[] { TextureFactory.of(
-                        textureSet.mTextures[OrePrefixes.pipeLarge.getTextureIndex()],
-                        Dyes.getModulation(aColorIndex, rgba)), TextureFactory.of(PIPE_RESTRICTOR) };
-                return new ITexture[] { TextureFactory.of(
-                    textureSet.mTextures[OrePrefixes.pipeHuge.getTextureIndex()],
-                    Dyes.getModulation(aColorIndex, rgba)), TextureFactory.of(PIPE_RESTRICTOR) };
-            }
-            return new ITexture[] { TextureFactory
-                .of(textureSet.mTextures[OrePrefixes.pipe.getTextureIndex()], Dyes.getModulation(aColorIndex, rgba)),
-                TextureFactory.of(PIPE_RESTRICTOR) };
-        }
-        if (aConnected) {
-            float tThickNess = getThickness();
-            if (tThickNess < 0.124F) return new ITexture[] { TextureFactory
-                .of(textureSet.mTextures[OrePrefixes.pipe.getTextureIndex()], Dyes.getModulation(aColorIndex, rgba)) };
-            if (tThickNess < 0.374F) // 0.375
-                return new ITexture[] { TextureFactory.of(
-                    textureSet.mTextures[OrePrefixes.pipeTiny.getTextureIndex()],
-                    Dyes.getModulation(aColorIndex, rgba)) };
-            if (tThickNess < 0.499F) // 0.500
-                return new ITexture[] { TextureFactory.of(
-                    textureSet.mTextures[OrePrefixes.pipeSmall.getTextureIndex()],
-                    Dyes.getModulation(aColorIndex, rgba)) };
-            if (tThickNess < 0.749F) // 0.750
-                return new ITexture[] { TextureFactory.of(
-                    textureSet.mTextures[OrePrefixes.pipeMedium.getTextureIndex()],
-                    Dyes.getModulation(aColorIndex, rgba)) };
-            if (tThickNess < 0.874F) // 0.825
-                return new ITexture[] { TextureFactory.of(
-                    textureSet.mTextures[OrePrefixes.pipeLarge.getTextureIndex()],
-                    Dyes.getModulation(aColorIndex, rgba)) };
-            return new ITexture[] { TextureFactory.of(
-                textureSet.mTextures[OrePrefixes.pipeHuge.getTextureIndex()],
-                Dyes.getModulation(aColorIndex, rgba)) };
-        }
-        return new ITexture[] { TextureFactory
-            .of(textureSet.mTextures[OrePrefixes.pipe.getTextureIndex()], Dyes.getModulation(aColorIndex, rgba)) };
+        final Material material = getMaterial();
+        final short[] rgba = MaterialUtils.rgba(material);
+        if (material == null || rgba == null) return Textures.BlockIcons.ERROR_RENDERING;
+        String iconName = aConnected ? getShapeHost().getName() : "pipeSide";
+        ITexture body = TextureFactory
+            .of(GTMaterialIcons.block(iconName, material), Dyes.getModulation(aColorIndex, rgba));
+        if (mIsRestrictive) return new ITexture[] { body, TextureFactory.of(PIPE_RESTRICTOR) };
+        return new ITexture[] { body };
     }
 
     @Override

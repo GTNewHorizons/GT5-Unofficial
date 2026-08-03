@@ -14,7 +14,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -31,12 +30,12 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -402,14 +401,6 @@ public class FrameShapeBlock extends ShapeBlock implements IBlockWithTextures {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        TextureSet textureSet = MaterialUtils.iconSet(MaterialLibAPI.getMaterialByIndex(meta));
-        if (textureSet == null) return super.getIcon(side, meta);
-        return textureSet.mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon();
-    }
-
-    @Override
     public ITexture[][] getTextures(IBlockAccess world, int x, int y, int z) {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof BaseMetaPipeEntity bmpe) {
@@ -426,11 +417,10 @@ public class FrameShapeBlock extends ShapeBlock implements IBlockWithTextures {
     public ITexture[][] getTextures(int meta) {
         return texturesByIndex.computeIfAbsent(meta, index -> {
             Material material = MaterialLibAPI.getMaterialByIndex(index);
-            TextureSet textureSet = MaterialUtils.iconSet(material);
             short[] rgba = MaterialUtils.rgba(material);
-            if (textureSet == null || rgba == null) return null;
-            ITexture[] texture = { TextureFactory
-                .of(textureSet.mTextures[OrePrefixes.frameGt.getTextureIndex()], Dyes.getModulation(-1, rgba)) };
+            if (material == null || rgba == null) return null;
+            ITexture[] texture = {
+                TextureFactory.of(GTMaterialIcons.block(getName(), material), Dyes.getModulation(-1, rgba)) };
             return new ITexture[][] { texture, texture, texture, texture, texture, texture };
         });
     }

@@ -5,7 +5,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import com.ruling_0.materiallib.api.Material;
@@ -13,13 +12,10 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.ShapeBlock;
 
 import appeng.api.parts.IFacadeControl;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.render.GTRendererBlock;
@@ -72,22 +68,13 @@ public class SheetmetalShapeBlock extends ShapeBlock implements IBlockWithTextur
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        TextureSet textureSet = MaterialUtils.iconSet(MaterialLibAPI.getMaterialByIndex(meta));
-        if (textureSet == null) return super.getIcon(side, meta);
-        return textureSet.mTextures[OrePrefixes.sheetmetal.getTextureIndex()].getIcon();
-    }
-
-    @Override
     public ITexture[][] getTextures(int meta) {
         return texturesByIndex.computeIfAbsent(meta, index -> {
             Material material = MaterialLibAPI.getMaterialByIndex(index);
-            TextureSet textureSet = MaterialUtils.iconSet(material);
             short[] rgba = MaterialUtils.rgba(material);
-            if (textureSet == null || rgba == null) return null;
-            ITexture[] texture = { TextureFactory
-                .of(textureSet.mTextures[OrePrefixes.sheetmetal.getTextureIndex()], Dyes.getModulation(-1, rgba)) };
+            if (material == null || rgba == null) return null;
+            ITexture[] texture = {
+                TextureFactory.of(GTMaterialIcons.block(getName(), material), Dyes.getModulation(-1, rgba)) };
             return new ITexture[][] { texture, texture, texture, texture, texture, texture };
         });
     }

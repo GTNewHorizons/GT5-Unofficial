@@ -9,12 +9,12 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
@@ -65,11 +65,11 @@ public class MTEFrame extends MetaPipeEntity implements ILocalizedMetaPipeEntity
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection, int connections,
         int colorIndex, boolean active, boolean redstoneLevel) {
-        final TextureSet textureSet = MaterialUtils.iconSet(getMaterial());
-        final short[] rgba = MaterialUtils.rgba(getMaterial());
-        if (textureSet == null || rgba == null) return Textures.BlockIcons.ERROR_RENDERING;
-        return new ITexture[] { TextureFactory
-            .of(textureSet.mTextures[OrePrefixes.frameGt.getTextureIndex()], Dyes.getModulation(colorIndex, rgba)) };
+        final Material material = getMaterial();
+        final short[] rgba = MaterialUtils.rgba(material);
+        if (material == null || rgba == null) return Textures.BlockIcons.ERROR_RENDERING;
+        return new ITexture[] {
+            TextureFactory.of(GTMaterialIcons.block("frameGt", material), Dyes.getModulation(colorIndex, rgba)) };
     }
 
     @Override

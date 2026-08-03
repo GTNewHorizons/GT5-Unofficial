@@ -47,10 +47,8 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolModes;
 import gregtech.api.enums.materials.Materials;
@@ -62,6 +60,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.material.PipeStats;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -182,38 +181,14 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         return textures.toArray(new ITexture[0]);
     }
 
+    /// The pipe body, or the smaller end-face art when this side connects to nothing. A connected pipe draws its
+    /// own shape's art, which already encodes the size the legacy thickness ladder used to select.
     protected ITexture getBaseTexture(boolean connected, int colorIndex) {
-        TextureSet textureSet = MaterialUtils.iconSet(getMaterial());
-        short[] rgba = MaterialUtils.rgba(getMaterial());
-        if (textureSet == null || rgba == null) return Textures.BlockIcons.ERROR_RENDERING[0];
-        return getBaseTexture(mThickNess, mPipeAmount, textureSet, rgba, connected, colorIndex);
-    }
-
-    protected static ITexture getBaseTexture(float aThickNess, int aPipeAmount, TextureSet textureSet, short[] rgba,
-        boolean connected, int colorIndex) {
-        IIconContainer texture = textureSet.mTextures[OrePrefixes.pipeHuge.getTextureIndex()];
-
-        if (!connected) {
-            texture = textureSet.mTextures[OrePrefixes.pipe.getTextureIndex()];
-        } else if (aPipeAmount >= 9) {
-            texture = textureSet.mTextures[OrePrefixes.pipeNonuple.getTextureIndex()];
-        } else if (aPipeAmount >= 4) {
-            texture = textureSet.mTextures[OrePrefixes.pipeQuadruple.getTextureIndex()];
-        } else if (aThickNess < 0.124F) {
-            texture = textureSet.mTextures[OrePrefixes.pipe.getTextureIndex()];
-        } else if (aThickNess < 0.374F) {
-            texture = textureSet.mTextures[OrePrefixes.pipeTiny.getTextureIndex()];
-        } else if (aThickNess < 0.499F) {
-            texture = textureSet.mTextures[OrePrefixes.pipeSmall.getTextureIndex()];
-        } else if (aThickNess < 0.749F) {
-            texture = textureSet.mTextures[OrePrefixes.pipeMedium.getTextureIndex()];
-        } else if (aThickNess < 0.874F) {
-            texture = textureSet.mTextures[OrePrefixes.pipeLarge.getTextureIndex()];
-        }
-
-        rgba = Dyes.getModulation(colorIndex, rgba);
-
-        return TextureFactory.of(texture, rgba);
+        Material material = getMaterial();
+        short[] rgba = MaterialUtils.rgba(material);
+        if (material == null || rgba == null) return Textures.BlockIcons.ERROR_RENDERING[0];
+        String iconName = connected ? getShapeHost().getName() : "pipeSide";
+        return TextureFactory.of(GTMaterialIcons.block(iconName, material), Dyes.getModulation(colorIndex, rgba));
     }
 
     protected static ITexture getRestrictorTexture(int borderMask) {
