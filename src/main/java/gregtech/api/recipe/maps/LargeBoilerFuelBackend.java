@@ -140,7 +140,7 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
             .orElse(null);
     }
 
-    public static int getBurntimeRatio(double fuelValueTicks, int divider) {
+    public static int getBurntimeRatioTicks(double fuelValueTicks, int divider) {
         // 10 in this formula is 10 seconds of burn time in steel boiler, or 16000 Burn Time value
         return new BigDecimal(
             ((fuelValueTicks / divider * Math.max(1, 1 + Math.log(fuelValueTicks / divider / 10) * 0.025))))

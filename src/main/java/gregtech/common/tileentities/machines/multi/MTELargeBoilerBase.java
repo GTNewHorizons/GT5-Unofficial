@@ -336,7 +336,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                         this.excessFuel += (int) (fuelValue % 80);
                         burnTime += this.excessFuel / 80;
                         this.excessFuel %= 80;
-                        burnTime = LargeBoilerFuelBackend.getBurntimeRatio(burnTime, 20);
+                        burnTime = LargeBoilerFuelBackend.getBurntimeRatioTicks(burnTime, 20);
                         setupBoilerRecipe(burnTime, getEfficiencyIncrease(), false);
                         tInput.stackSize -= 1;
                         updateSlots();
