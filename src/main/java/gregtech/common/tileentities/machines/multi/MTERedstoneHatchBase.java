@@ -31,41 +31,46 @@ public abstract class MTERedstoneHatchBase extends MTEHatch {
     }
 
     /**
-     * This should be the only method that directly changes the redstoneSignal field, override for invert logic etc.
+     * This should be the only method that directly changes redstoneSignal, override for invert logic etc.
      */
-    public void setRedstoneSignal(int facing, byte signal) {
+    public void setRedstoneSignalOnFace(int facing, byte signal, boolean turnOtherFacesOff) {
         if (facing < 0 || facing > ForgeDirection.VALID_DIRECTIONS.length) return;
-        redstoneSignal[facing] = signal;
+        if (!turnOtherFacesOff) {
+            redstoneSignal[facing] = signal;
+            return;
+        }
+        for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
+            redstoneSignal[i] = (i == facing) ? signal : 0;
+        }
     }
 
-    public void setRedstoneSignal(int facing, boolean on) {
-        setRedstoneSignal(facing, redstoneSignalFromOn(on));
+    public void setRedstoneSignalOnFace(int facing, boolean on, boolean turnOtherFacesOff) {
+        setRedstoneSignalOnFace(facing, redstoneSignalFromOn(on), turnOtherFacesOff);
     }
 
     public void setAllFacesRedstoneSignal(byte signal) {
         for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
-            setRedstoneSignal(i, signal);
+            setRedstoneSignalOnFace(i, signal, false);
         }
     }
 
     public void setAllFacesRedstoneSignal(boolean on) {
         for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
-            setRedstoneSignal(i, on);
+            setRedstoneSignalOnFace(i, on, false);
         }
     }
 
-    public void setFacingSideRedstoneSignal(byte signal) {
-        setRedstoneSignal(
+    public void setFacingSideRedstoneSignal(byte signal, boolean turnOtherFacesOff) {
+        if(this.getBaseMetaTileEntity()==null) return;
+        this.setRedstoneSignalOnFace(
             getBaseMetaTileEntity().getFrontFacing()
                 .ordinal(),
-            signal);
+            signal,
+            turnOtherFacesOff);
     }
 
-    public void setFacingSideRedstoneSignal(boolean on) {
-        setRedstoneSignal(
-            getBaseMetaTileEntity().getFrontFacing()
-                .ordinal(),
-            on);
+    public void setFacingSideRedstoneSignal(boolean on, boolean turnOtherFacesOff) {
+        setFacingSideRedstoneSignal(redstoneSignalFromOn(on),turnOtherFacesOff);
     }
 
     @Override
