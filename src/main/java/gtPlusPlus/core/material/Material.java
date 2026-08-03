@@ -33,6 +33,7 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gregtech.common.config.Client;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.material.state.MaterialState;
@@ -570,7 +571,7 @@ public class Material implements IOreMaterial {
 
             sChemicalFormula.put(materialDefaultLocalName.toLowerCase(), this.chemicalFormula);
         } catch (Throwable t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
     }
 
@@ -1077,7 +1078,7 @@ public class Material implements IOreMaterial {
                 return x;
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
         return Blocks.stone;
     }
@@ -1433,7 +1434,7 @@ public class Material implements IOreMaterial {
                 return Materials.Steel.mRGBa;
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
             return Materials.Steel.mRGBa;
         }
     }
