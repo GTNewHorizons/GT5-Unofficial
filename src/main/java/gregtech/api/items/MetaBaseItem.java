@@ -33,6 +33,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.KeyboardUtil;
 
@@ -687,5 +688,35 @@ public abstract class MetaBaseItem extends GTGenericItem
         }
 
         return false;
+    }
+
+    /**
+     * Applies a function to each behavior, returning a value from each behavior.
+     *
+     * @param itemStack The item whose behaviors are to be checked
+     * @param func      A function that is passed the itemStack and behavior. Return a null for non-complying behaviors.
+     * @param <V>       The type of value to return
+     * @return A {@link List} containing each behavior that returned a value. Any null results are omitted from the
+     *         list.
+     */
+    public <V> ImmutableList<V> mapEachBehavior(ItemStack itemStack, Function<IItemBehaviour<MetaBaseItem>, V> func) {
+        ArrayList<IItemBehaviour<MetaBaseItem>> behaviorList = mItemBehaviors.get((short) getDamage(itemStack));
+        if (behaviorList == null) {
+            return ImmutableList.of();
+        }
+
+        final ImmutableList.Builder<V> builder = ImmutableList.builder();
+        try {
+            for (IItemBehaviour<MetaBaseItem> behavior : behaviorList) {
+                final V result = func.apply(behavior);
+                if (result != null) {
+                    builder.add(result);
+                }
+            }
+        } catch (Exception e) {
+            if (D1) e.printStackTrace(GTLog.err);
+        }
+
+        return builder.build();
     }
 }
