@@ -27,12 +27,10 @@ import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import galacticgreg.api.enums.DimensionDef;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.LegacyNameDomain;
-import gregtech.api.material.MaterialUtils;
 import gregtech.client.renderer.BillboardRenderHelper;
 import gregtech.client.renderer.BillboardRenderHelper.Plane;
 import gregtech.common.config.Client;
@@ -77,11 +75,7 @@ public class DetravOreMarkerRenderer {
         if (materialName == null || materialName.isEmpty()) return null;
         Material mat = LegacyNameDomain.lookup(materialName);
         if (mat == null) return null;
-        TextureSet ts = MaterialUtils.iconSet(mat);
-        if (ts == null) return null;
-        int idx = OrePrefixes.ore.getTextureIndex();
-        if (idx < 0 || idx >= ts.mTextures.length) return null;
-        return ts.mTextures[idx];
+        return GTMaterialIcons.oreBlock("ore", mat);
     }
 
     @SubscribeEvent

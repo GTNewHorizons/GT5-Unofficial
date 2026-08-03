@@ -32,17 +32,17 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials.LegacyMaterialIDIndex;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.events.OreInteractEvent;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
@@ -214,14 +214,12 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
         if (mat != null) {
             fgBuilder = TextureFactory.builder()
-                .addIcon(
-                    MaterialUtils.iconSet(mat).mTextures[small ? OrePrefixes.oreSmall.getTextureIndex()
-                        : OrePrefixes.ore.getTextureIndex()])
+                .addIcon(GTMaterialIcons.oreBlock(small ? "oreSmall" : "ore", mat))
                 .setRGBA(MaterialUtils.rgba(mat))
                 .glow(Boolean.TRUE.equals(mat.getProperty(GTMaterialProperties.HAS_GLOWING_ORE)));
         } else {
             fgBuilder = TextureFactory.builder()
-                .addIcon(TextureSet.SET_NONE.mTextures[OrePrefixes.ore.getTextureIndex()]);
+                .addIcon(GTMaterialIcons.oreBlock("ore", Materials.NULL));
         }
 
         final ITexture bg = (stoneType == null ? StoneType.Stone : stoneType).getTexture(0);

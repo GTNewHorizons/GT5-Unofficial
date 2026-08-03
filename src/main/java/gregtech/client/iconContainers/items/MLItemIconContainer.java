@@ -13,11 +13,12 @@ import gregtech.api.util.GTLog;
 
 /// One material's item-atlas icon, drawn from MaterialLib's texture-set resolution rather than owned outright.
 ///
-/// The art is either an item shape's own icon or a [IconSet]'s; which of the two is decided on the first draw and
-/// remembered, but the [IIcon] itself is fetched through that handle every time, because MaterialLib rebinds icons
-/// on every resource reload and a cached [IIcon] would render the stale atlas coordinates after one. Obtain
-/// instances from [gregtech.api.material.GTMaterialIcons], which interns them so the textures built from them
-/// dedupe.
+/// The art is either a [GTMaterialIconSets] icon set's or, where GregTech declared none for the name, the item
+/// shape of that name. The set wins because it binds every registered material, where a shape only binds the
+/// materials that generate it. Which of the two applies is decided on the first draw and remembered, but the
+/// [IIcon] itself is fetched through that handle every time, because MaterialLib rebinds icons on every resource
+/// reload and a cached [IIcon] would render stale atlas coordinates after one. Obtain instances from
+/// [gregtech.api.material.GTMaterialIcons], which interns them so the textures built from them dedupe.
 public final class MLItemIconContainer extends AbstractItemIconContainer {
 
     private final String name;
@@ -51,11 +52,11 @@ public final class MLItemIconContainer extends AbstractItemIconContainer {
     private void resolve() {
         if (resolved) return;
         resolved = true;
+        iconSet = GTMaterialIconSets.item(name);
+        if (iconSet != null) return;
         shape = ShapeRegistry.instance()
             .getItemShape(name);
-        if (shape != null) return;
-        iconSet = GTMaterialIconSets.item(name);
-        if (iconSet == null) {
+        if (shape == null) {
             GTLog.err.println(
                 "No item shape or icon set is named " + name
                     + ", asked for by material "

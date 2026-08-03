@@ -13,8 +13,8 @@ import gregtech.api.util.GTLog;
 
 /// One material's block-atlas icon, drawn from MaterialLib's texture-set resolution rather than owned outright;
 /// the block-atlas counterpart of
-/// [MLItemIconContainer][gregtech.client.iconContainers.items.MLItemIconContainer], with the same resolve-once,
-/// read-the-icon-every-time contract.
+/// [MLItemIconContainer][gregtech.client.iconContainers.items.MLItemIconContainer], with the same
+/// icon-set-before-shape resolution and the same resolve-once, read-the-icon-every-time contract.
 ///
 /// Ore art draws in render pass 1 so the transparent parts of the icon show the stone behind it; every other
 /// material block icon is opaque and draws in pass 0.
@@ -62,11 +62,11 @@ public final class MLBlockIconContainer extends AbstractBlockIconContainer {
     private void resolve() {
         if (resolved) return;
         resolved = true;
+        iconSet = GTMaterialIconSets.block(name);
+        if (iconSet != null) return;
         ShapeRegistry shapes = ShapeRegistry.instance();
         shape = variant != null ? shapes.getBlockShape(name, variant) : shapes.getBlockShape(name);
-        if (shape != null) return;
-        iconSet = GTMaterialIconSets.block(name);
-        if (iconSet == null) {
+        if (shape == null) {
             GTLog.err.println(
                 "No block shape or icon set is named " + name
                     + ", asked for by material "

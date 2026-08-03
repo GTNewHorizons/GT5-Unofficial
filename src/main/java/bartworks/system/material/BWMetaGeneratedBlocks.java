@@ -16,7 +16,6 @@ package bartworks.system.material;
 import static bartworks.system.material.BWMetaGeneratedOres.ORE_TAB;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -30,17 +29,16 @@ import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.common.blocks.BWTileEntityContainer;
 import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IBlockWithTextures;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
@@ -80,28 +78,19 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
         return GTRendererBlock.RENDER_ID;
     }
 
+    /// The texture-set file this block's art lives in. The storage block keeps drawing the `block1` cover art
+    /// its prefix has always resolved to, rather than the `block` shape's own art, so a world full of placed
+    /// werkstoff blocks looks unchanged; the two casings draw art named after their prefix.
+    private String iconName() {
+        return prefix == OrePrefixes.block ? "block1" : prefix.name();
+    }
+
     @Override
     public @Nullable ITexture[][] getTextures(int meta) {
-        ITexture baseTexture = null;
-
         com.ruling_0.materiallib.api.Material mat = LegacyWerkstoffIndex.get(meta);
-
-        if (mat != null) {
-            TextureSet set = MaterialUtils.iconSet(mat);
-
-            IIconContainer baseIcon = PrefixTextureLinker.texMapBlocks.getOrDefault(prefix, Collections.emptyMap())
-                .get(set);
-
-            if (baseIcon == null) {
-                baseIcon = TextureSet.SET_NONE.mTextures[OrePrefixes.block.getTextureIndex()];
-            }
-
-            baseTexture = TextureFactory.of(baseIcon, MaterialUtils.rgba(mat));
-        }
-
-        if (baseTexture == null) {
-            baseTexture = TextureFactory.of(TextureSet.SET_NONE.mTextures[OrePrefixes.block.getTextureIndex()]);
-        }
+        ITexture baseTexture = mat != null
+            ? TextureFactory.of(GTMaterialIcons.block(iconName(), mat), MaterialUtils.rgba(mat))
+            : TextureFactory.of(GTMaterialIcons.block(iconName(), Materials.NULL));
 
         ITexture[] texture = new ITexture[] { TextureFactory.of(Blocks.iron_block), baseTexture };
 
