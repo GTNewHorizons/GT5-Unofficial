@@ -312,6 +312,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity instanceof MTENanochipAssemblyModuleBase<?>module) {
             module.connect(this);
+            // immediate recheck to prevent module from using outdated hatch during recipe check
+            // delay is already done by the main structure, this does not cause immediate recheck.
+            module.checkStructure(true, aTileEntity);
             return modules.add(module);
         }
         return false;
