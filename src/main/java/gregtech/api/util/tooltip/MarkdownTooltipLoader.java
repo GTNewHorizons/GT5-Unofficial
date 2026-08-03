@@ -467,7 +467,7 @@ public class MarkdownTooltipLoader {
                     }
                 });
 
-                if (paramBuffer.length() > 0) {
+                if (!paramBuffer.isEmpty()) {
                     paramList.add(paramBuffer.toString());
                 }
 

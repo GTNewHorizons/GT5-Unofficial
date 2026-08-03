@@ -50,7 +50,7 @@ dependencies {
 
     compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.12.27:dev')
     compileOnlyApi("com.github.GTNewHorizons:Mobs-Info:0.5.18-GTNH:dev")
-    compileOnlyApi("com.github.GTNewHorizons:Navigator:1.1.4:dev")
+    compileOnlyApi("com.github.GTNewHorizons:Navigator:1.1.8:dev")
     implementation('com.github.GTNewHorizons:Baubles-Expanded:2.2.21-GTNH:dev') {transitive=false}
     // Required to prevent an older bauble api from Extra Utilities from loading first in the javac classpath
     compileOnly('com.github.GTNewHorizons:Baubles-Expanded:2.2.21-GTNH:dev') {transitive=false}

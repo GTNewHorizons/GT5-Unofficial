@@ -266,8 +266,8 @@ public class EntityRenderer extends EntityFX {
         if (stackdepth > 0) for (; stackdepth > 0; stackdepth--) GL11.glPushMatrix();
 
         int err;
-        while ((err = GL11.glGetError()) != GL11.GL_NO_ERROR) if (Config.Debug.showRenderErrors) LOG.error(
-            EntityList.getEntityString(entityToRender) + " | GL ERROR: " + err + " / " + GLU.gluErrorString(err));
+        while ((err = GL11.glGetError()) != GL11.GL_NO_ERROR) if (Config.Debug.showRenderErrors) LOG
+            .error("{} | GL ERROR: {} / {}", EntityList.getEntityString(entityToRender), err, GLU.gluErrorString(err));
 
         GL11.glPopAttrib();
         GL11.glPopMatrix();

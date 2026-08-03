@@ -520,10 +520,11 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
 
         String className = provider.getClass()
             .getName();
-        return switch (className) {
-            case "me.eigenraven.personalspace.world.PersonalWorldProvider" -> IGConfig.dysonSwarm.getPowerFactor("PS");
-            default -> IGConfig.dysonSwarm.getPowerFactor(String.valueOf(provider.dimensionId));
-        };
+        if (className.equals("me.eigenraven.personalspace.world.PersonalWorldProvider")) {
+            return IGConfig.dysonSwarm.getPowerFactor("PS");
+        }
+        return IGConfig.dysonSwarm.getPowerFactor(String.valueOf(provider.dimensionId));
+
     }
 
     private static DecimalFormat getDecimalFormat() {

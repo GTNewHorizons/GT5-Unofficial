@@ -378,53 +378,56 @@ public class GTRecipeBuilder {
         Arrays.fill(altOreIds, -1);
         for (int i = 0, inputsLength = inputs.length; i < inputsLength; i++) {
             Object input = inputs[i];
-            if (input instanceof ItemStack) {
-                alts[i] = new ItemStack[] { (ItemStack) input };
-            } else if (input instanceof ItemStack[]inputArr) {
-                if (debugNull() && containsNull(inputArr)) handleNullRecipeComponents("itemInputs");
-                alts[i] = inputArr.clone();
-            } else if (input instanceof OreDictItemStack ods) {
-                altOreIds[i] = OreDictionary.getOreID(ods.mOreName);
-                ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(ods.mOreName);
-                if (ores.isEmpty()) {
+            switch (input) {
+                case ItemStack stack -> alts[i] = new ItemStack[]{stack};
+                case ItemStack[] inputArr -> {
+                    if (debugNull() && containsNull(inputArr)) handleNullRecipeComponents("itemInputs");
+                    alts[i] = inputArr.clone();
+                }
+                case OreDictItemStack ods -> {
+                    altOreIds[i] = OreDictionary.getOreID(ods.mOreName);
+                    ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(ods.mOreName);
+                    if (ores.isEmpty()) {
+                        alts[i] = GTValues.emptyItemStackArray;
+                        GTLog.err
+                            .println("Warning: OreDict entry \"" + ods.mOreName + "\" is empty; recipe will be skipped.");
+                        if (debugNull()) handleNullRecipeComponents("itemInputs empty ore dict");
+                        continue;
+                    }
+                    ArrayList<ItemStack> list = new ArrayList<>(ores.size());
+                    // noinspection ForLoopReplaceableByForEach
+                    for (int j = 0, oresSize = ores.size(); j < oresSize; j++) {
+                        ItemStack itemStack = GTUtility.copyAmount(ods.mAmount, ores.get(j));
+                        if (GTUtility.isStackValid(itemStack)) list.add(itemStack);
+                    }
+                    if (debugNull() && list.isEmpty()) handleNullRecipeComponents("itemInputs no valid ore dict item");
+                    alts[i] = list.toArray(new ItemStack[0]);
+                }
+                case Object[] arr -> {
+                    if (arr.length != 2) continue;
+                    altOreIds[i] = OreDictionary.getOreID(arr[0].toString());
+                    ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(arr[0]);
+                    if (ores.isEmpty()) {
+                        alts[i] = GTValues.emptyItemStackArray;
+                        GTLog.err.println("Warning: OreDict entry \"" + arr[0] + "\" is empty; recipe will be skipped.");
+                        if (debugNull()) handleNullRecipeComponents("itemInputs empty ore dict");
+                        continue;
+                    }
+                    int size = ((Number) arr[1]).intValue();
+                    ArrayList<ItemStack> list = new ArrayList<>(ores.size());
+                    // noinspection ForLoopReplaceableByForEach
+                    for (int j = 0, oresSize = ores.size(); j < oresSize; j++) {
+                        ItemStack itemStack = GTUtility.copyAmount(size, ores.get(j));
+                        if (GTUtility.isStackValid(itemStack)) list.add(itemStack);
+                    }
+                    if (debugNull() && list.isEmpty()) handleNullRecipeComponents("itemInputs no valid ore dict item");
+                    alts[i] = list.toArray(new ItemStack[0]);
+                }
+                case null -> {
+                    if (debugNull()) handleNullRecipeComponents("recipe oredict input");
                     alts[i] = GTValues.emptyItemStackArray;
-                    GTLog.err
-                        .println("Warning: OreDict entry \"" + ods.mOreName + "\" is empty; recipe will be skipped.");
-                    if (debugNull()) handleNullRecipeComponents("itemInputs empty ore dict");
-                    continue;
                 }
-                ArrayList<ItemStack> list = new ArrayList<>(ores.size());
-                // noinspection ForLoopReplaceableByForEach
-                for (int j = 0, oresSize = ores.size(); j < oresSize; j++) {
-                    ItemStack itemStack = GTUtility.copyAmount(ods.mAmount, ores.get(j));
-                    if (GTUtility.isStackValid(itemStack)) list.add(itemStack);
-                }
-                if (debugNull() && list.isEmpty()) handleNullRecipeComponents("itemInputs no valid ore dict item");
-                alts[i] = list.toArray(new ItemStack[0]);
-            } else if (input instanceof Object[]arr) {
-                if (arr.length != 2) continue;
-                altOreIds[i] = OreDictionary.getOreID(arr[0].toString());
-                ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(arr[0]);
-                if (ores.isEmpty()) {
-                    alts[i] = GTValues.emptyItemStackArray;
-                    GTLog.err.println("Warning: OreDict entry \"" + arr[0] + "\" is empty; recipe will be skipped.");
-                    if (debugNull()) handleNullRecipeComponents("itemInputs empty ore dict");
-                    continue;
-                }
-                int size = ((Number) arr[1]).intValue();
-                ArrayList<ItemStack> list = new ArrayList<>(ores.size());
-                // noinspection ForLoopReplaceableByForEach
-                for (int j = 0, oresSize = ores.size(); j < oresSize; j++) {
-                    ItemStack itemStack = GTUtility.copyAmount(size, ores.get(j));
-                    if (GTUtility.isStackValid(itemStack)) list.add(itemStack);
-                }
-                if (debugNull() && list.isEmpty()) handleNullRecipeComponents("itemInputs no valid ore dict item");
-                alts[i] = list.toArray(new ItemStack[0]);
-            } else if (input == null) {
-                if (debugNull()) handleNullRecipeComponents("recipe oredict input");
-                alts[i] = GTValues.emptyItemStackArray;
-            } else {
-                throw new IllegalArgumentException("index " + i + ", unexpected type: " + input.getClass());
+                default -> throw new IllegalArgumentException("index " + i + ", unexpected type: " + input.getClass());
             }
         }
         ArrayList<ItemStack> list = new ArrayList<>(alts.length);

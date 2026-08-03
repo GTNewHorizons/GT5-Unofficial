@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.interfaces.tileentity.IColoredTileEntity.UNCOLOURED;
 
 import java.util.List;
@@ -762,7 +763,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
             if (!eg.isNetworkPowered())
                 return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.power");
         } catch (Exception ex) {
-            ex.printStackTrace();
+            GT_FML_LOGGER.error(ex);
         }
         return "";
     }
