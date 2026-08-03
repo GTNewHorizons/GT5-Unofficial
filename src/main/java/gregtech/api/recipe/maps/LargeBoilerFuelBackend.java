@@ -3,6 +3,7 @@ package gregtech.api.recipe.maps;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.List;
 
@@ -142,10 +143,10 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
     public static int getBurntimeRatio(double fuelValueTicks, int divider) {
         // 10 in this formula is 10 seconds of burn time in steel boiler, or 16000 Burn Time value
         return new BigDecimal(
-            formatNumber(
-                ((fuelValueTicks / divider * Math.max(1, 1 + Math.log(fuelValueTicks / divider / 10) * 0.025)))))
-                    .multiply(new BigDecimal(20))
-                    .intValue();
+            ((fuelValueTicks / divider * Math.max(1, 1 + Math.log(fuelValueTicks / divider / 10) * 0.025))))
+                .setScale(2, RoundingMode.HALF_UP)
+                .multiply(new BigDecimal(20))
+                .intValue();
     }
 
     private static double getBurntimeRatio(double fuelValue) {
@@ -158,7 +159,8 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
         BigDecimal ticksDecimal = new BigDecimal("20");
         // the initial non modified time is now stored in ticks
         BigDecimal correctedBurnTime = new BigDecimal(
-            new BigDecimal(formatNumber(getBurntimeRatio(baseBurnTime))).multiply(ticksDecimal)
+            new BigDecimal(getBurntimeRatio(baseBurnTime)).setScale(2, RoundingMode.HALF_UP)
+                .multiply(ticksDecimal)
                 .intValue());
 
         BigDecimal bronzeBurnTime = correctedBurnTime.multiply(new BigDecimal("2"))
