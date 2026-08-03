@@ -31,8 +31,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -255,7 +255,8 @@ public class RecipesMachinesMulti {
             GregtechItemList.Controller_SteamMaceratorMulti.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CDC", "PFP", "CDC", 'C', ItemList.Casing_BronzePlatedBricks, 'D', "gemDiamond", 'P',
-                OreDictNames.craftingPiston, 'F', MaterialLibAPI.getStack(Materials.Tumbaga, TEBlockShapes.frameGt, 1) });
+                OreDictNames.craftingPiston, 'F',
+                MaterialLibAPI.getStack(Materials.Tumbaga, TEBlockShapes.frameGt, 1) });
 
         // Steam Purifier
         GTModHandler.addCraftingRecipe(
@@ -823,8 +824,9 @@ public class RecipesMachinesMulti {
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PGP", "AFB", "PGP", 'P', MaterialLibAPI.getStack(Materials.Grisium, Shapes.plateDouble, 1),
                 'G', MaterialLibAPI.getStack(Materials.IncoloyMA956, Shapes.gearGt, 1), 'A',
-                ItemList.Reactor_Coolant_He_6, 'F', MaterialLibAPI.getStack(Materials.Nitinol60, TEBlockShapes.frameGt, 1),
-                'B', ItemList.Reactor_Coolant_NaK_6.get(1) });
+                ItemList.Reactor_Coolant_He_6, 'F',
+                MaterialLibAPI.getStack(Materials.Nitinol60, TEBlockShapes.frameGt, 1), 'B',
+                ItemList.Reactor_Coolant_NaK_6.get(1) });
 
         // Cryogenic Freezer
         GTModHandler.addCraftingRecipe(

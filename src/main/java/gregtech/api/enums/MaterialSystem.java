@@ -8,10 +8,10 @@ import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.enums.materials.PipeMaterials;
-import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.enums.materials.ShapeData;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 
 public class MaterialSystem {
 

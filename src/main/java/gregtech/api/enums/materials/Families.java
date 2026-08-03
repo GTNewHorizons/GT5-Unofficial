@@ -5,24 +5,13 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.StandardProperties;
 import com.ruling_0.materiallib.api.TextureSet;
 
-// Hand-maintained -- edit this file directly.
-/// The shape groups a material joins. A family carries the shapes every member generates, so a member declares
-/// only its own exceptions: [Materials] adds a shape the family does not carry with `generateShape`
-/// and drops one it does with `removeShape`.
+import gregtech.api.material.GTMaterialProperties;
+
+/// Groupings for [Materials]. All materials of a family generate its [Shape]s.
 ///
-/// Grouping follows what a material *is* rather than what its items are called. The capability families
-/// ([#dusts], [#metals], [#gems], [#ores], [#toolParts], [#gears]) carry the shapes shared by essentially
-/// every member; where a sizeable minority shares a distinct sub-set, that sub-set is its own family
-/// ([#multiPlates], [#gemQualities], [#poweredToolParts]) rather than a shape the majority removes.
-///
-/// The fluid-state families ([#liquids], [#gases], [#moltens], [#plasmas]) each carry a fluid shape and the
-/// cell shape that follows from it: every cell-generating material also generates the matching fluid, so cell
-/// membership is a consequence of fluid state, not an independent fact.
-///
-/// [#all] carries no shapes. It exists only to give every material a fallback texture set, and is the one
-/// family allowed to declare a property: family property lookup takes the first family in `modid:name` order,
-/// and `gregtech:All` sorts ahead of every other, so a second property-carrying family would silently win or
-/// lose by name.
+/// [#all] and [#superconductors] carry no shapes: `all` exists only to give every material a fallback texture
+/// set, and `superconductors` only to carry [GTMaterialProperties#IS_SUPERCONDUCTOR] for its members. The
+/// superconductor markers take their wire shapes from [PipeMaterials], like every other wire material.
 public class Families {
 
     // spotless:off
@@ -40,6 +29,7 @@ public class Families {
     public static Family gases;
     public static Family moltens;
     public static Family plasmas;
+    public static Family superconductors;
     // spotless:on
 
     public static void init() {
@@ -128,6 +118,9 @@ public class Families {
             .build();
         plasmas = MaterialLibAPI.newFamily("gregtech", "Plasmas")
             .generateShape(FluidShapes.fluidPlasma)
+            .build();
+        superconductors = MaterialLibAPI.newFamily("gregtech", "Superconductors")
+            .setProperty(GTMaterialProperties.IS_SUPERCONDUCTOR, true)
             .build();
     }
 

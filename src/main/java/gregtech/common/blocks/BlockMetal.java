@@ -11,7 +11,6 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials.MaterialParentMods;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.material.MaterialParts;
@@ -27,6 +26,9 @@ import gregtech.api.util.GTOreDictUnificator;
 /// instances themselves must keep existing and registering for every material, cut over or not. Only the canonical
 /// [gregtech.api.util.GTOreDictUnificator] association moves to the MaterialLib stack for a cut-over material's
 /// slot (and that slot is hidden from NEI); the legacy item and block remain fully functional at every slot.
+///
+/// A null batch entry is a retired slot: the material it held is gone, but the index stays so the metadata of
+/// every slot after it is unchanged for saved blocks. Such a slot generates nothing and is hidden from NEI.
 public class BlockMetal extends BlockStorage {
 
     public Material[] mMats;
@@ -43,8 +45,12 @@ public class BlockMetal extends BlockStorage {
         mHideBlocks = mNEIisLoaded;
 
         for (int i = 0; i < aMats.length; i++) {
-            if (MaterialUtils.oldSubId(aMats[i]) > 0 && MaterialParentMods.hasParentMod(aMats[i])) {
-                Material material = aMats[i];
+            Material material = aMats[i];
+            if (material == null) {
+                if (mNEIisLoaded) codechicken.nei.api.API.hideItem(new ItemStack(this, 1, i));
+                continue;
+            }
+            if (MaterialUtils.oldSubId(material) > 0) {
                 ItemStack cutover = MaterialParts.stack(aPrefix, material, 1);
                 ItemStack canonicalStack = cutover != null ? cutover : new ItemStack(this, 1, i);
                 if (aPrefix.isUnifiable()) {

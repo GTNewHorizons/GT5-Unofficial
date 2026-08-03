@@ -349,7 +349,6 @@ public final class LegacyNameDomainTable {
         m.put("GrowthMediumSterilized", "GrowthMediumSterilized");
         m.put("Gunpowder", "Gunpowder");
         m.put("Gypsum", "Gypsum");
-        m.put("HSLA", "HSLA");
         m.put("HSSE", "HSSE");
         m.put("HSSG", "HSSG");
         m.put("HSSS", "HSSS");

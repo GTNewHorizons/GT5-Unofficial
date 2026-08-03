@@ -8,9 +8,6 @@ import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
 
-/// The gas-conditional arc-smelting table as declared [Material]-keyed rows: material -> (gas -> result). The
-/// data declares exactly two rows -- `Copper` and the `AnyCopper` wildcard marker each arc-smelt into
-/// `AnnealedCopper` under `Oxygen`.
 public class MaterialArcSmeltHelper {
 
     private static Map<Material, Map<Material, Material>> table;

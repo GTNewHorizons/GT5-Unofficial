@@ -120,7 +120,7 @@ public class CraftingRecipes implements Runnable {
             new ItemStack(ItemRegistry.TESLASTAFF),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "BO ", "OP ", "  P", 'O',
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, MaterialFacades.SuperconductorUHV, 1), 'B',
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 1), 'B',
                 ItemList.Energy_LapotronicOrb.get(1L), 'P', "plateAlloyIridium", });
 
         GTModHandler.addCraftingRecipe(
@@ -550,14 +550,14 @@ public class CraftingRecipes implements Runnable {
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "DCD", "PWP", "DCD", 'D', OrePrefixes.plateDense.ingredient(Materials.NeodymiumMagnetic),
                 'C', ItemList.HV_Coil, 'P', OrePrefixes.plate.ingredient(Materials.Silver), 'W',
-                MaterialParts.namedIngredient(OrePrefixes.wireGt12, MaterialFacades.SuperconductorIV) });
+                MaterialParts.namedIngredient(OrePrefixes.wireGt12, Materials.SuperconductorIV) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Vajra_Core.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "wEh", "ITI", "SRS", 'E', OrePrefixes.plate.ingredient(Materials.Silver), 'I',
                 OrePrefixes.plateDense.ingredient(Materials.Iridium), 'T', ItemList.Transformer_EV_HV.get(1), 'S',
-                MaterialParts.namedIngredient(OrePrefixes.wireGt12, MaterialFacades.SuperconductorIV), 'R',
+                MaterialParts.namedIngredient(OrePrefixes.wireGt12, Materials.SuperconductorIV), 'R',
                 ItemList.Transformer_IV_EV.get(1) });
     }
 }

@@ -95,6 +95,10 @@ public class GTMaterialProperties {
     /// Whether the material is radioactive, unifying the legacy bartworks material's own radioactivity flag and
     /// `Material.isRadioactive`.
     public static final Property<Boolean> IS_RADIOACTIVE = Property.of("gregtech", "isRadioactive");
+    /// Whether the material is one of the superconductor wire markers -- the material a tier's superconductor
+    /// wires unify under, carrying no composition of its own. Set on
+    /// [gregtech.api.enums.materials.Families#superconductors].
+    public static final Property<Boolean> IS_SUPERCONDUCTOR = Property.of("gregtech", "isSuperconductor", false);
     /// The `FluidRegistry` name of a gtPlusPlus-originated material's plasma fluid, present only for the 37
     /// materials where it is not [FluidNames#plasma] on [#LEGACY_FLUIDS]. A merged material's combined
     /// `LEGACY_FLUIDS.plasma` may be a gregtech-side plasma sharing the slot, so the gtPlusPlus contribution

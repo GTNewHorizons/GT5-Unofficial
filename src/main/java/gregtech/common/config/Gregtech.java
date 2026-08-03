@@ -264,11 +264,6 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean achievements;
 
-        @Config.Comment("if true, enables all the materials in GT5U.")
-        @Config.DefaultBoolean(false)
-        @Config.RequiresMcRestart
-        public boolean enableAllMaterials;
-
         @Config.Comment("Controls the amount of tick over the lag averaging is done with the scanner.")
         @Config.DefaultInt(25)
         @Config.RequiresMcRestart

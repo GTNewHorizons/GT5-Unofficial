@@ -13,18 +13,7 @@ import gregtech.api.material.GTMaterialProperties;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
-/// The legacy bartworks `Werkstoff` id space rebuilt over MaterialLib materials: every registered material
-/// carrying [GTMaterialProperties#WERKSTOFF_IDS] is registered under every id its list names -- a material can
-/// cover several legacy ids (two same-name werkstoffe folded into one MaterialLib declaration), unlike
-/// [LegacyMaterialIDIndex]'s one-id-per-material legacy spine. The property is bartworks-owned data (see its
-/// javadoc) but this index itself is gregtech-owned: save games store these ids forever, so the decoding must
-/// outlive `bartworks.system.material.Werkstoff`.
-///
-/// Werkstoff ids are not densely packed like [LegacyMaterialIDIndex]'s 1000-slot space -- bartworks' own pools run
-/// roughly 1..500, goodgenerator ids start at 10001, gtnhlanth ids at 11000 -- so an [Int2ObjectOpenHashMap]
-/// backs the index rather than a fixed array. Populated at the start of GT's preInit -- listing the registry
-/// requires MaterialLib to have resolved it, which happens only after every MaterialRegistrationEvent handler
-/// has completed.
+/// Akin to [LegacyMaterialIDIndex], but for old Werkstoff materials.
 public class LegacyWerkstoffIndex {
 
     private static final Int2ObjectMap<Material> INDEX = new Int2ObjectOpenHashMap<>();

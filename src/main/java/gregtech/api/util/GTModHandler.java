@@ -739,7 +739,7 @@ public class GTModHandler {
                     case  6 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.NiobiumTitanium);
                     case  7 -> MaterialParts.craftIngredient(OrePrefixes.cableGt01, Materials.Naquadah);
                     case  8 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.NaquadahAlloy);
-                    default -> MaterialParts.namedIngredient(OrePrefixes.wireGt01, MaterialFacades.SuperconductorUHV);
+                    default -> MaterialParts.namedIngredient(OrePrefixes.wireGt01, Materials.SuperconductorUHV);
                 };
 
                 case WIRE4 -> switch (machineTier) {
@@ -751,8 +751,8 @@ public class GTModHandler {
                     case  5 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.Platinum);
                     case  6 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.NiobiumTitanium);
                     case  7 -> MaterialParts.craftIngredient(OrePrefixes.cableGt04, Materials.Naquadah);
-                    case  8 -> MaterialParts.namedIngredient(OrePrefixes.wireGt01, MaterialFacades.SuperconductorUHV);
-                    default -> MaterialParts.namedIngredient(OrePrefixes.wireGt04, MaterialFacades.SuperconductorUHV);
+                    case  8 -> MaterialParts.namedIngredient(OrePrefixes.wireGt01, Materials.SuperconductorUHV);
+                    default -> MaterialParts.namedIngredient(OrePrefixes.wireGt04, Materials.SuperconductorUHV);
                 };
 
                 case STICK_DISTILLATION -> MaterialParts.craftIngredient(OrePrefixes.stick, Materials.Blaze);

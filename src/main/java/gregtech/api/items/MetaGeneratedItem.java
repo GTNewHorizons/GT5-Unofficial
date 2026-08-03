@@ -39,7 +39,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.materials.LegacyMaterialIDIndex;
-import gregtech.api.enums.materials.MaterialParentMods;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IFoodStat;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
@@ -126,13 +125,9 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         return isMaterialItem(stack.getItemDamage());
     }
 
-    /// The [Material] whose generated items occupy a material id slot, or null when the slot is empty or the
-    /// material's parent mod is absent ([MaterialParentMods#hasParentMod]): an absent-parent material never
-    /// generates items, so item-facing readers treat its slot as vacant even though
-    /// [LegacyMaterialIDIndex] lists the material.
+    /// The [Material] whose generated items occupy a material id slot, or null when the slot is empty.
     public static @Nullable Material generatedMaterial(int id) {
-        Material material = LegacyMaterialIDIndex.get(id);
-        return material != null && MaterialParentMods.hasParentMod(material) ? material : null;
+        return LegacyMaterialIDIndex.get(id);
     }
 
     /**

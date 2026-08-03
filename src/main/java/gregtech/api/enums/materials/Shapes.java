@@ -3,11 +3,7 @@ package gregtech.api.enums.materials;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
-// Hand-maintained -- edit this file directly.
-/// One [Shape] field per material-driven item `OrePrefixes` entry with a non-zero generation bit mask,
-/// excluding block-kind, fluid-container, and complex tool/armor prefixes. `milled` is the one hand-added
-/// entry: gtPlusPlus's `BaseItemMilledOre` built real per-material items even though the prefix holds no
-/// `MetaGeneratedItemX32` slot, so gtPlusPlus materials need a shape of their own for it.
+/// Basic item [Shape]s
 public class Shapes {
 
     // spotless:off

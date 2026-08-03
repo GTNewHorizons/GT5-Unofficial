@@ -17,14 +17,14 @@ import gregtech.api.enums.TierEU;
 /// naming a material that does not exist -- cannot arise.
 ///
 /// Only stat-bearing membership lives here. Frame and sheetmetal membership carries no stats, so it is
-/// declared on each material's own builder in [Materials] instead.
+/// declared on each material's own builder in [Materials].
 ///
 /// The wooden and High Pressure fluid pipes exist in three sizes whose capacities follow no base-value
 /// formula, so they carry per-size capacity constants here instead of a [PipeProperties#BASE_PIPE_FLOW]
 /// value.
 ///
-/// Rows reference [Materials] and [MaterialFacades] fields, so [#init] must run after those are
-/// assigned; [MaterialSystem#init] orders it so.
+/// Rows reference [Materials] fields, so [#init] must run after those are assigned; [MaterialSystem#init]
+/// orders it so.
 public class PipeMaterials {
 
     /// Fluid capacities (small, medium, large) of the wooden fluid pipes.
@@ -48,7 +48,6 @@ public class PipeMaterials {
         applyWireCables();
         applyFluidPipes();
         applyItemPipes();
-        applyModGatedFrames();
     }
 
     // spotless:off
@@ -132,17 +131,17 @@ public class PipeMaterials {
         };
 
         WireOnly[] superconductorMarkers = {
-            new WireOnly(MaterialFacades.SuperconductorMV, 0, 4, TierEU.MV, false),
-            new WireOnly(MaterialFacades.SuperconductorHV, 0, 6, TierEU.HV, false),
-            new WireOnly(MaterialFacades.SuperconductorEV, 0, 8, TierEU.EV, false),
-            new WireOnly(MaterialFacades.SuperconductorIV, 0, 12, TierEU.IV, false),
-            new WireOnly(MaterialFacades.SuperconductorLuV, 0, 16, TierEU.LuV, false),
-            new WireOnly(MaterialFacades.SuperconductorZPM, 0, 24, TierEU.ZPM, false),
-            new WireOnly(MaterialFacades.SuperconductorUV, 0, 32, TierEU.UV, false),
-            new WireOnly(MaterialFacades.SuperconductorUHV, 0, 48, TierEU.UHV, false),
-            new WireOnly(MaterialFacades.SuperconductorUEV, 0, 64, TierEU.UEV, false),
-            new WireOnly(MaterialFacades.SuperconductorUIV, 0, 64, TierEU.UIV, false),
-            new WireOnly(MaterialFacades.SuperconductorUMV, 0, 64, TierEU.UMV, false),
+            new WireOnly(Materials.SuperconductorMV, 0, 4, TierEU.MV, false),
+            new WireOnly(Materials.SuperconductorHV, 0, 6, TierEU.HV, false),
+            new WireOnly(Materials.SuperconductorEV, 0, 8, TierEU.EV, false),
+            new WireOnly(Materials.SuperconductorIV, 0, 12, TierEU.IV, false),
+            new WireOnly(Materials.SuperconductorLuV, 0, 16, TierEU.LuV, false),
+            new WireOnly(Materials.SuperconductorZPM, 0, 24, TierEU.ZPM, false),
+            new WireOnly(Materials.SuperconductorUV, 0, 32, TierEU.UV, false),
+            new WireOnly(Materials.SuperconductorUHV, 0, 48, TierEU.UHV, false),
+            new WireOnly(Materials.SuperconductorUEV, 0, 64, TierEU.UEV, false),
+            new WireOnly(Materials.SuperconductorUIV, 0, 64, TierEU.UIV, false),
+            new WireOnly(Materials.SuperconductorUMV, 0, 64, TierEU.UMV, false),
         };
         // spotless:on
 
@@ -179,13 +178,13 @@ public class PipeMaterials {
     /// The wire sizes this table grants as one unit: a material carrying any of them carries all six. Public
     /// so a consumer can state that unit as its own precondition instead of re-listing the sizes.
     public static Shape[] wireShapes() {
-        return new Shape[] { TEBlockShapes.wireGt01, TEBlockShapes.wireGt02, TEBlockShapes.wireGt04, TEBlockShapes.wireGt08,
-            TEBlockShapes.wireGt12, TEBlockShapes.wireGt16 };
+        return new Shape[] { TEBlockShapes.wireGt01, TEBlockShapes.wireGt02, TEBlockShapes.wireGt04,
+            TEBlockShapes.wireGt08, TEBlockShapes.wireGt12, TEBlockShapes.wireGt16 };
     }
 
     private static Shape[] cableShapes() {
-        return new Shape[] { TEBlockShapes.cableGt01, TEBlockShapes.cableGt02, TEBlockShapes.cableGt04, TEBlockShapes.cableGt08,
-            TEBlockShapes.cableGt12, TEBlockShapes.cableGt16 };
+        return new Shape[] { TEBlockShapes.cableGt01, TEBlockShapes.cableGt02, TEBlockShapes.cableGt04,
+            TEBlockShapes.cableGt08, TEBlockShapes.cableGt12, TEBlockShapes.cableGt16 };
     }
 
     // spotless:off
@@ -297,15 +296,6 @@ public class PipeMaterials {
             } else {
                 edit.setProperty(PipeProperties.NO_SMALL_ITEM_PIPES, true);
             }
-        }
-    }
-
-    /// HSLA's frame is the one row that cannot be a `generateShape` on the material's own declaration: it
-    /// exists only when RotaryCraft supplies the recipe, and a builder chain cannot be conditional. Every
-    /// other frame and sheetmetal membership is declared in [Materials].
-    private static void applyModGatedFrames() {
-        if (Mods.RotaryCraft.isModLoaded()) {
-            edit(Materials.HSLA).generateShape(TEBlockShapes.frameGt);
         }
     }
 

@@ -21,8 +21,8 @@ import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.OreShapes;
-import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 

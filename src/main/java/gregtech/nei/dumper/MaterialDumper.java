@@ -6,7 +6,6 @@ import java.util.List;
 import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.materials.LegacyMaterialIDIndex;
-import gregtech.api.enums.materials.MaterialParentMods;
 import gregtech.api.material.MaterialUtils;
 
 public class MaterialDumper extends GregTechIDDumper {
@@ -25,9 +24,7 @@ public class MaterialDumper extends GregTechIDDumper {
         List<String[]> dump = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
             Material material = LegacyMaterialIDIndex.get(i);
-            // A slot whose material has no available parent mod never generates an item, so it counts as free
-            // rather than used.
-            boolean used = material != null && MaterialParentMods.hasParentMod(material);
+            boolean used = material != null;
             if (mode == Mode.FREE && !used) {
                 dump.add(new String[] { String.valueOf(i), "", });
             } else if (mode == Mode.USED && used) {

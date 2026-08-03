@@ -13,13 +13,12 @@ import com.ruling_0.materiallib.api.Shape;
 import gregtech.api.material.FluidNames;
 import gregtech.api.material.FluidRef;
 
-/// Hand-maintained fluid [Shape] declarations, one per [MaterialFluidNames] slot
-/// (solid/fluid/gas/plasma/molten) plus the six cracked-fluid slots. Each needs its own [FluidRef] extractor
-/// rather than a uniform mapping.
+/// Fluid [Shape] declarations, one per [MaterialFluidNames] slot (solid/fluid/gas/plasma/molten) plus the six
+/// cracked-fluid slots. Each needs its own [FluidRef] extractor rather than a uniform mapping.
 ///
 /// Each shape's `FluidNamer` returns the material's frozen Forge registry name and its `FluidConfigurer`
 /// supplies the matching temperature/gaseous/density/viscosity/luminosity attributes. The names are frozen
-/// because fluid stacks persist in world NBT by name.
+/// because fluid stacks persist in world NBT by name (legacy support).
 public class FluidShapes {
 
     // spotless:off

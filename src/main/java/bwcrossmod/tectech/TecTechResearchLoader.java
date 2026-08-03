@@ -25,7 +25,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
-import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
@@ -81,7 +80,7 @@ public class TecTechResearchLoader {
                 MaterialLibAPI.getStack(Materials.Neutronium, Shapes.plateSuperdense, 1),
                 MaterialLibAPI.getStack(Materials.Osmium, Shapes.stickLong, 64),
                 MaterialLibAPI.getStack(Materials.Osmium, Shapes.ring, 64),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, MaterialFacades.SuperconductorUHV, 64),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 64),
                 ItemList.Electric_Piston_UV.get(64), },
             new FluidStack[] { MaterialUtils.anyFluid(Materials.Indalloy140, 10 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, (int) (10 * INGOTS)),

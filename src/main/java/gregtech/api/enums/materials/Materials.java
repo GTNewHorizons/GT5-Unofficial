@@ -819,7 +819,6 @@ public class Materials {
     public static Material EnrichedBacterialSludge;
     public static Material FermentedBacterialSludge;
     public static Material FreshWater;
-    public static Material HSLA;
     public static Material Hematite;
     public static Material Lumium;
     public static Material Mercassium;
@@ -1415,6 +1414,17 @@ public class Materials {
     public static Material Zirconolite;
     public static Material Zircophyllite;
     public static Material Zirkelite;
+    public static Material SuperconductorMV;
+    public static Material SuperconductorHV;
+    public static Material SuperconductorEV;
+    public static Material SuperconductorIV;
+    public static Material SuperconductorLuV;
+    public static Material SuperconductorZPM;
+    public static Material SuperconductorUV;
+    public static Material SuperconductorUHV;
+    public static Material SuperconductorUEV;
+    public static Material SuperconductorUIV;
+    public static Material SuperconductorUMV;
     // spotless:on
 
     public static void init() {
@@ -1449,6 +1459,7 @@ public class Materials {
         initPart29();
         initPart30();
         initPart31();
+        initPart32();
     }
 
     private static void initPart1() {
@@ -18886,30 +18897,6 @@ public class Materials {
             .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("AQUA", 2)))
             .setProperty(GTMaterialProperties.FORMULA, "H₂O")
             .build();
-        Materials.HSLA = MaterialLibAPI.newMaterial("gregtech", "HSLA", TextureSet.of("gregtech", "METALLIC"))
-            .setTint(0xFF808080)
-            .addToFamily(Families.all)
-            .addToFamily(Families.moltens)
-            .generateShape(BlockShapes.block)
-            .removeShape(CellShapes.cellMolten)
-            .setProperty(GTMaterialProperties.LOCAL_NAME, "HSLA Steel")
-            .setProperty(GTMaterialProperties.ARGB, 8421504)
-            .setProperty(GTMaterialProperties.MELTING_POINT, 1811)
-            .setProperty(GTMaterialProperties.BLAST_TEMP, 1000)
-            .setProperty(GTMaterialProperties.BLAST_REQUIRED, true)
-            .setProperty(GTMaterialProperties.TOOL_SPEED, 6.0F)
-            .setProperty(GTMaterialProperties.DURABILITY, 500)
-            .setProperty(GTMaterialProperties.TOOL_QUALITY, 3)
-            .setProperty(GTMaterialProperties.OLD_SUB_ID, 322)
-            .setProperty(GTMaterialProperties.MOLTEN_TINT, 0xFF808080)
-            .setProperty(GTMaterialProperties.HANDLE_MATERIAL, new MaterialRef("Wood"))
-            .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(new MaterialRef("Iron"), 1L)))
-            .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR, GTMaterialFlag.METAL, GTMaterialFlag.MORTAR_GRINDABLE, GTMaterialFlag.SMELTING_TO_FLUID))
-            .setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of(GTMaterialGenerationFlag.DUST, GTMaterialGenerationFlag.METAL, GTMaterialGenerationFlag.TOOL_HEAD, GTMaterialGenerationFlag.GEAR))
-            .setProperty(GTMaterialProperties.TOOL_ENCHANTMENT, "enchantment.damage.all")
-            .setProperty(GTMaterialProperties.TOOL_ENCHANTMENT_LEVEL, 2)
-            .setProperty(GTMaterialProperties.ASPECTS, List.of(new AspectRefStack("METALLUM", 1), new AspectRefStack("ORDO", 1)))
-            .build();
         Materials.Hematite = MaterialLibAPI.newMaterial("gregtech", "Hematite", TextureSet.of("gregtech", "NONE"))
             .setTint(0xFFFFFFFF)
             .addToFamily(Families.all)
@@ -32088,6 +32075,81 @@ public class Materials {
             .setProperty(GTMaterialProperties.DURABILITY, 1322000)
             .setProperty(GTMaterialProperties.FORMULA, "CaThCeZrTi₂Nb₂O₇")
             .setProperty(GTMaterialProperties.GTPP_STATE, "ORE")
+            .build();
+        // spotless:on
+    }
+
+    /// The superconductor wire markers: the material a tier's superconductor wires unify under, carrying no
+    /// composition of its own -- the wires are made from the tier's `Superconductor*Base` material, which is a
+    /// separate material declared above. `SuperconductorUHV` registers as `Superconductor`, the name its
+    /// ore-dictionary entries have always used.
+    private static void initPart32() {
+        // spotless:off
+        Materials.SuperconductorMV = MaterialLibAPI.newMaterial("gregtech", "SuperconductorMV", TextureSet.of("gregtech", "SHINY"))
+            .addToFamily(Families.all)
+            .addToFamily(Families.superconductors)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Superconductor MV")
+            .setProperty(GTMaterialProperties.ARGB, 0x00555555)
+            .build();
+        Materials.SuperconductorHV = MaterialLibAPI.newMaterial("gregtech", "SuperconductorHV", TextureSet.of("gregtech", "SHINY"))
+            .addToFamily(Families.all)
+            .addToFamily(Families.superconductors)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Superconductor HV")
+            .setProperty(GTMaterialProperties.ARGB, 0x00331900)
+            .build();
+        Materials.SuperconductorEV = MaterialLibAPI.newMaterial("gregtech", "SuperconductorEV", TextureSet.of("gregtech", "SHINY"))
+            .addToFamily(Families.all)
+            .addToFamily(Families.superconductors)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Superconductor EV")
+            .setProperty(GTMaterialProperties.ARGB, 0x00008700)
+            .build();
+        Materials.SuperconductorIV = MaterialLibAPI.newMaterial("gregtech", "SuperconductorIV", TextureSet.of("gregtech", "SHINY"))
+            .addToFamily(Families.all)
+            .addToFamily(Families.superconductors)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Superconductor IV")
+            .setProperty(GTMaterialProperties.ARGB, 0x00330033)
+            .build();
+        Materials.SuperconductorLuV = MaterialLibAPI.newMaterial("gregtech", "SuperconductorLuV", TextureSet.of("gregtech", "SHINY"))
+            .addToFamily(Families.all)
+            .addToFamily(Families.superconductors)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Superconductor LuV")
+            .setProperty(GTMaterialProperties.ARGB, 0x00994c00)
+            .build();
+        Materials.SuperconductorZPM = MaterialLibAPI.newMaterial("gregtech", "SuperconductorZPM", TextureSet.of("gregtech", "SHINY"))
+            .addToFamily(Families.all)
+            .addToFamily(Families.superconductors)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Superconductor ZPM")
+            .setProperty(GTMaterialProperties.ARGB, 0x000a0a0a)
+            .build();
+        Materials.SuperconductorUV = MaterialLibAPI.newMaterial("gregtech", "SuperconductorUV", TextureSet.of("gregtech", "SHINY"))
+            .addToFamily(Families.all)
+            .addToFamily(Families.superconductors)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Superconductor UV")
+            .setProperty(GTMaterialProperties.ARGB, 0x00e0d207)
+            .build();
+        Materials.SuperconductorUHV = MaterialLibAPI.newMaterial("gregtech", "Superconductor", TextureSet.of("gregtech", "SHINY"))
+            .addToFamily(Families.all)
+            .addToFamily(Families.superconductors)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Superconductor UHV")
+            .setProperty(GTMaterialProperties.ARGB, 0x002681bd)
+            .build();
+        Materials.SuperconductorUEV = MaterialLibAPI.newMaterial("gregtech", "SuperconductorUEV", TextureSet.of("gregtech", "SHINY"))
+            .addToFamily(Families.all)
+            .addToFamily(Families.superconductors)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Superconductor UEV")
+            .setProperty(GTMaterialProperties.ARGB, 0x00ae0808)
+            .build();
+        Materials.SuperconductorUIV = MaterialLibAPI.newMaterial("gregtech", "SuperconductorUIV", TextureSet.of("gregtech", "SHINY"))
+            .addToFamily(Families.all)
+            .addToFamily(Families.superconductors)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Superconductor UIV")
+            .setProperty(GTMaterialProperties.ARGB, 0x00e558b1)
+            .build();
+        Materials.SuperconductorUMV = MaterialLibAPI.newMaterial("gregtech", "SuperconductorUMV", TextureSet.of("gregtech", "SHINY"))
+            .addToFamily(Families.all)
+            .addToFamily(Families.superconductors)
+            .setProperty(GTMaterialProperties.LOCAL_NAME, "Superconductor UMV")
+            .setProperty(GTMaterialProperties.ARGB, 0x00b526cd)
             .build();
         // spotless:on
     }

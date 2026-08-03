@@ -767,7 +767,9 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GTOreAdapter.INSTANCE.init();
 
-        // meta ID order, DO NOT CHANGE ORDER
+        // meta ID order, DO NOT CHANGE ORDER: each index is a saved block's metadata, and
+        // PosteaTransformers' storage-block cutover reads these arrays positionally. A retired material leaves
+        // a null hole rather than shifting everything after it.
 
         GregTechAPI.sBlockMetal1 = new BlockMetal(
             "gt.blockmetal1",
@@ -790,7 +792,7 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockMetal3 = new BlockMetal(
             "gt.blockmetal3",
             new Material[] { Materials.ElectrumFlux, Materials.Enderium, Materials.Erbium, Materials.Europium,
-                Materials.FierySteel, Materials.Gadolinium, Materials.Gallium, Materials.Holmium, Materials.HSLA,
+                Materials.FierySteel, Materials.Gadolinium, Materials.Gallium, Materials.Holmium, null,
                 Materials.Indium, Materials.InfusedGold, Materials.Invar, Materials.Iridium, Materials.IronMagnetic,
                 Materials.IronWood, Materials.Kanthal },
             OrePrefixes.block,

@@ -20,8 +20,7 @@ import java.util.Set;
 /// `"Aluminiumoxide"`, whose live counterparts `Aluminiumfluoride`/`AluminiumHydroxide`/`Alumina` carry the
 /// domain rows) -- kept because a foreign mod's ore-dictionary entry may still use the old spelling, and this
 /// set's job is to keep such a name on the legacy path rather than let it take an unrelated registry hit,
-/// - the [gregtech.api.enums.materials.MaterialFacades] superconductor backings, which resolve through the
-/// registry and never through the domain,
+/// - the superconductor wire markers, which resolve through the registry and never through the domain,
 /// - names whose MaterialLib registration name had to be sanitized (`"Computation Base"` ->
 /// `"ComputationBase"`), where the domain is keyed by the legacy name and this set holds the sanitized one,
 /// - the many names retired outright, which resolve nowhere either way.

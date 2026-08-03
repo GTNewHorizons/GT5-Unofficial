@@ -30,9 +30,12 @@ public final class ConsumerPipe {
         fluid(TEBlockShapes.pipeNonuple, OrePrefixes.pipeNonuple);
 
         ShapeConsumerSupport.delegate(TEBlockShapes.itemPipeTiny, OrePrefixes.pipeTiny, () -> ProcessingPipe.INSTANCE);
-        ShapeConsumerSupport.delegate(TEBlockShapes.itemPipeSmall, OrePrefixes.pipeSmall, () -> ProcessingPipe.INSTANCE);
-        ShapeConsumerSupport.delegate(TEBlockShapes.itemPipeMedium, OrePrefixes.pipeMedium, () -> ProcessingPipe.INSTANCE);
-        ShapeConsumerSupport.delegate(TEBlockShapes.itemPipeLarge, OrePrefixes.pipeLarge, () -> ProcessingPipe.INSTANCE);
+        ShapeConsumerSupport
+            .delegate(TEBlockShapes.itemPipeSmall, OrePrefixes.pipeSmall, () -> ProcessingPipe.INSTANCE);
+        ShapeConsumerSupport
+            .delegate(TEBlockShapes.itemPipeMedium, OrePrefixes.pipeMedium, () -> ProcessingPipe.INSTANCE);
+        ShapeConsumerSupport
+            .delegate(TEBlockShapes.itemPipeLarge, OrePrefixes.pipeLarge, () -> ProcessingPipe.INSTANCE);
         ShapeConsumerSupport.delegate(TEBlockShapes.itemPipeHuge, OrePrefixes.pipeHuge, () -> ProcessingPipe.INSTANCE);
         ShapeConsumerSupport.delegate(
             TEBlockShapes.itemPipeRestrictiveTiny,

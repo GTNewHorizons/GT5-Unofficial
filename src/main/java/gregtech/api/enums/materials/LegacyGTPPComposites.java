@@ -7,19 +7,9 @@ import java.util.Map;
 import com.github.bsideup.jabel.Desugar;
 import com.ruling_0.materiallib.api.Material;
 
-/// The curated composite table gtPlusPlus-originated materials mix from: per material, 1-4 component
-/// materials and their ratio parts, already reduced to smallest-ratio form.
-///
-/// This is a crafting ratio, not a chemical makeup, so it is a separate and narrower dataset from
-/// [gregtech.api.material.GTMaterialProperties#COMPOSITION] and is not derivable from it. The entry set is
-/// frozen: a material qualifies by being listed here, never by composite count or any other property.
-///
-/// Two consumers read it -- [gregtech.loaders.oreprocessing.ProcessingMixerGtpp] for the mixer recipe and
-/// [gregtech.loaders.oreprocessing.ProcessingAlloyBlastSmelter] for the composite-dust-to-molten-fluid recipe
-/// -- and each declares its own eligibility, which is neither a subset nor a superset of the other's. A shared
-/// entry's parts are valid for both. `EglinSteelBaseCompound` is the one entry the mixer builds standalone
-/// rather than through the ordinary mixer block; see [gregtech.loaders.oreprocessing.ProcessingMixerGtpp]'s
-/// circuit handling.
+/// Legacy support for old gregtechplusplus composition based processing, now in
+/// [gregtech.loaders.oreprocessing.ProcessingMixerGtpp] for the mixer recipe and
+/// [gregtech.loaders.oreprocessing.ProcessingAlloyBlastSmelter] for the composite-dust-to-molten-fluid recipe.
 public final class LegacyGTPPComposites {
 
     @Desugar

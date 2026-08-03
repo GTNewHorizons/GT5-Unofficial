@@ -8,14 +8,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.GTMod;
 import gregtech.api.material.GTMaterialProperties;
 
-/// The 1000-slot generated-material id spine, built over MaterialLib materials: every registered material
-/// carrying [GTMaterialProperties#OLD_SUB_ID] occupies the
-/// slot that property names. The property is GT-owned and set only for the legacy id space -- werkstoff and
-/// gtPlusPlus materials key their own id spaces ([GTMaterialProperties#WERKSTOFF_IDS],
-/// [GTMaterialProperties#GTPP_STATE]) and never appear here -- so the population is exactly the gregtech-native
-/// legacy material set. Populated at the start of GT's preInit -- listing the registry requires MaterialLib to
-/// have resolved it, which happens only after every MaterialRegistrationEvent handler (including
-/// [Materials]'s registration) has completed.
+/// The legacy IDs the materials had, maps to [GTMaterialProperties#OLD_SUB_ID].
 public class LegacyMaterialIDIndex {
 
     private static final Material[] INDEX = new Material[1000];

@@ -47,7 +47,7 @@ public final class LegacyMetalItemsTable {
             Materials.PigIron, Materials.RedAlloy, Materials.BlueAlloy, Materials.Cupronickel, Materials.Nichrome,
             Materials.Kanthal, Materials.Magnalium, Materials.SolderingAlloy, Materials.BatteryAlloy,
             Materials.TungstenSteel, Materials.Osmiridium, Materials.Sunnarium, Materials.Adamantium,
-            Materials.ElectrumFlux, Materials.Enderium, Materials.HSLA, Materials.InfusedGold, Materials.Naquadah,
+            Materials.ElectrumFlux, Materials.Enderium, Materials.InfusedGold, Materials.Naquadah,
             Materials.NaquadahAlloy, Materials.NaquadahEnriched, Materials.Naquadria, Materials.Duranium,
             Materials.Tritanium, Materials.Thaumium, Materials.Mithril, Materials.AstralSilver, Materials.BlackSteel,
             Materials.DamascusSteel, Materials.ShadowIron, Materials.ShadowSteel, Materials.IronWood,

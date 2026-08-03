@@ -5,16 +5,14 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
-/// Hand-maintained fluid-in-container [Shape] declarations for GT's cells. Empty container is IC2's
-/// cell (`IC2:itemCellEmpty`), resolved once at MaterialLib's init -- after IC2's own preInit has registered it
-/// -- via the deferred-by-name mechanism, since IC2 loads and registers items independently of MaterialLib's
-/// own preInit-time resolve.
+/// Fluid-in-container [Shape] declarations for cells. Empty container is IC2's cell (`IC2:itemCellEmpty`), resolved
+/// once at MaterialLib's init -- after IC2's own preInit has registered it -- via the deferred-by-name mechanism, since
+/// IC2 loads and registers items independently of MaterialLib's own preInit-time resolve.
 ///
-/// `cellPlasma` needs two shapes sharing one oredict prefix: legacy plasma cells hold [GTRecipeBuilder#INGOTS]
-/// (144 mB) when the material also has a molten fluid (metal plasmas), or 1000 mB otherwise (gas/element
-/// plasmas) -- a per-material volume MaterialLib's container shape does not support directly. [MaterialParts] resolves
-/// the
-/// two back to one prefix.
+/// `cellPlasma` needs two shapes sharing one oredict prefix: legacy plasma cells hold [GTRecipeBuilder#INGOTS] (144 mB)
+/// when the material also has a molten fluid (metal plasmas), or 1000 mB otherwise (gas/element plasmas) -- a
+/// per-material volume MaterialLib's container shape does not support directly. [MaterialParts] resolves the two back
+/// to one prefix.
 public class CellShapes {
 
     private static final String EMPTY_CELL = "IC2:itemCellEmpty";

@@ -610,7 +610,6 @@ public class GTProxy implements IFuelHandler {
     public final GTUODimensionList mUndergroundOil = new GTUODimensionList();
     public boolean enableUndergroundGravelGen = true;
     public boolean enableUndergroundDirtGen = true;
-    public boolean mEnableAllMaterials = false;
     public boolean mEnableCleanroom = true;
     public boolean mLowGravProcessing = false;
     public boolean mAMHInteraction = true;

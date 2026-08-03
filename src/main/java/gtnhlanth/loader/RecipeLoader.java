@@ -65,7 +65,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
-import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
@@ -255,7 +254,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tungsten, 1),
                 MaterialLibAPI.getStack(Materials.Copper, Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plate, 5),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialFacades.SuperconductorLuV, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorLuV, 4),
                 new Object[] { Circuits.ZPM.getIngredient(), 4 },
                 ItemList.Emitter_LuV.get(6),
                 MaterialLibAPI.getStack(Materials.Gold, Shapes.wireFine, 32),
@@ -277,7 +276,7 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenCarbide, 1),
                 MaterialLibAPI.getStack(Materials.Copper, Shapes.plate, 4),
                 MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plate, 5),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialFacades.SuperconductorZPM, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorZPM, 4),
                 new Object[] { Circuits.UV.getIngredient(), 4 },
                 ItemList.Emitter_ZPM.get(6),
                 MaterialLibAPI.getStack(Materials.Gold, Shapes.wireFine, 64),
@@ -478,7 +477,7 @@ public class RecipeLoader {
                 new ItemStack(LanthItemList.CAPILLARY_EXCHANGE, 4),
                 ItemList.Electric_Pump_LuV.get(2),
                 ItemList.Electric_Motor_LuV.get(4),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, MaterialFacades.SuperconductorLuV, 8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 8),
                 LanthItemList.BEAMLINE_PIPE,
                 MaterialLibAPI.getStack(Materials.Mumetal, Shapes.plate, 8)
 

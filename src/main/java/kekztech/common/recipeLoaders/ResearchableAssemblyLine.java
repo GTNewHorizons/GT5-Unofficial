@@ -14,7 +14,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
-import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
@@ -41,7 +40,7 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Field_Generator_UHV.get(4), ItemList.Circuit_Wafer_UHPIC.get(64),
                 ItemList.Circuit_Wafer_UHPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(32),
                 ItemList.Circuit_Parts_DiodeASMD.get(64),
-                GTOreDictUnificator.get(OrePrefixes.wireGt02, MaterialFacades.SuperconductorUHV, 64) },
+                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 64) },
             new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 32 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (1 * STACKS)),
                 GTModHandler.getIC2Coolant(32_000) },
@@ -63,7 +62,7 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Field_Generator_UEV.get(4), ItemList.Circuit_Wafer_PPIC.get(64),
                 ItemList.Circuit_Wafer_PPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialFacades.SuperconductorUEV, 64) },
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 64) },
             new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 1 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Quantium, FluidShapes.fluidMolten, (int) (2 * STACKS)),
                 MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, (int) (2 * STACKS)),
@@ -86,7 +85,7 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Field_Generator_UIV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
                 ItemList.Circuit_Wafer_QPIC.get(64), ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(32),
-                GTOreDictUnificator.get(OrePrefixes.wireGt08, MaterialFacades.SuperconductorUIV, 64) },
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUIV, 64) },
             new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 2 * STACKS),
                 MaterialUtils.anyFluid(Materials.CelestialTungsten, 2 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.Quantium, FluidShapes.fluidMolten, (int) (2 * STACKS)),
@@ -109,7 +108,7 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Field_Generator_UMV.get(4), ItemList.Circuit_Wafer_FPIC.get(64),
                 ItemList.Circuit_Wafer_FPIC.get(64), ItemList.Circuit_Parts_Chip_Bioware.get(64),
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(64),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, MaterialFacades.SuperconductorUMV, 64) },
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
             new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 4 * STACKS),
                 new FluidStack(FluidRegistry.getFluid("molten.astraltitanium"), 4 * STACKS),
                 MaterialUtils.anyFluid(Materials.CelestialTungsten, 4 * STACKS),

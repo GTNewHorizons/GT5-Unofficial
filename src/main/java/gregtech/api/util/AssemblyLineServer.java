@@ -14,7 +14,6 @@ import com.ruling_0.materiallib.api.Material;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.enums.materials.LegacyMaterialIDIndex;
-import gregtech.api.enums.materials.MaterialParentMods;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialUtils;
 
@@ -22,16 +21,12 @@ public class AssemblyLineServer {
 
     public static LinkedHashMap<String, String> lServerNames = new LinkedHashMap<>();
 
-    /// The material-name token substituted into a generated item or ore block's server-side name, or null
-    /// when the id slot never yielded items -- empty, or its material's parent mod absent
-    /// (`MaterialParentMods#hasParentMod`), which left the slot without items or names. These tokens feed
-    /// assembly-line data packets, so they must be byte-identical to the legacy internal name;
-    /// [MaterialUtils#internalName] resolves exactly that string, including the LEGACY_NAME divergents.
+    /// The material-name token substituted into a generated item or ore block's server-side name, or null when
+    /// the id slot is empty. These tokens feed assembly-line data packets, so they must be byte-identical to
+    /// the legacy internal name; [MaterialUtils#internalName] resolves exactly that string, including the
+    /// LEGACY_NAME divergents.
     private static @Nullable String generatedMaterialName(int id) {
-        Material material = LegacyMaterialIDIndex.get(id);
-        if (material == null) return null;
-        if (!MaterialParentMods.hasParentMod(material)) return null;
-        return MaterialUtils.internalName(material);
+        return MaterialUtils.internalName(LegacyMaterialIDIndex.get(id));
     }
 
     public static void fillMap(FMLPreInitializationEvent aEvent) {
@@ -235,9 +230,9 @@ public class AssemblyLineServer {
                                 Materials.Electrum };
                             case 3 -> mMats = new Material[] { Materials.ElectrumFlux, Materials.Enderium,
                                 Materials.Erbium, Materials.Europium, Materials.FierySteel, Materials.Gadolinium,
-                                Materials.Gallium, Materials.Holmium, Materials.HSLA, Materials.Indium,
-                                Materials.InfusedGold, Materials.Invar, Materials.Iridium, Materials.IronMagnetic,
-                                Materials.IronWood, Materials.Kanthal };
+                                Materials.Gallium, Materials.Holmium, null, Materials.Indium, Materials.InfusedGold,
+                                Materials.Invar, Materials.Iridium, Materials.IronMagnetic, Materials.IronWood,
+                                Materials.Kanthal };
                             case 4 -> mMats = new Material[] { Materials.Knightmetal, Materials.Lanthanum,
                                 Materials.Lead, Materials.Lutetium, Materials.Magnalium, Materials.Magnesium,
                                 Materials.Manganese, Materials.MeteoricIron, Materials.MeteoricSteel, Materials.Trinium,
@@ -270,7 +265,8 @@ public class AssemblyLineServer {
                                 entry.getKey()
                                     .length() - ".name".length());
                         i = Integer.parseInt(t);
-                        lServerNames.put(entry.getKey(), "Block of " + MaterialUtils.internalName(mMats[i]));
+                        String name = MaterialUtils.internalName(mMats[i]);
+                        lServerNames.put(entry.getKey(), name == null ? null : "Block of " + name);
                     } else if (entry.getKey()
                         .contains("blockgem")) {
                             Material[] mMats = null;

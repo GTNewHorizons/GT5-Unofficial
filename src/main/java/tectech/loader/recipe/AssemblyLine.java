@@ -17,7 +17,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
-import gregtech.api.enums.materials.MaterialFacades;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
@@ -122,7 +121,7 @@ public class AssemblyLine implements Runnable {
                 new Object[] { Circuits.UV.getIngredient(), 2 },
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1),
-                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.wireGt04, MaterialFacades.SuperconductorUV, 8) },
+                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 8) },
                 CustomItemList.DATApipe.get(8),
                 new ItemStack[] { MaterialLibAPI.getStack(Materials.Polybenzimidazole, Shapes.plateSuperdense, 2) })
             .fluidInputs(
