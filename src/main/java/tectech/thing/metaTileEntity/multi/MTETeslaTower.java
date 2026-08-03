@@ -32,6 +32,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -49,6 +50,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
@@ -66,6 +68,7 @@ import gregtech.api.objects.RingBuffer;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -77,6 +80,7 @@ import tectech.mechanics.spark.RendererMessage;
 import tectech.mechanics.spark.ThaumSpark;
 import tectech.mechanics.tesla.ITeslaConnectable;
 import tectech.mechanics.tesla.ITeslaConnectableSimple;
+import tectech.thing.CustomItemList;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchCapacitor;
@@ -94,6 +98,7 @@ import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTETeslaTower extends TTMultiblockBase
     implements ISurvivalConstructable, ITeslaConnectable, IParametrized {
 
@@ -547,37 +552,23 @@ public class MTETeslaTower extends TTMultiblockBase
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.name")) // Machine Type: Tesla
-                                                                                               // Tower
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.0")) // Controller block of
-                                                                                            // the Tesla Tower
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.1")) // Used to transmit
-                                                                                            // power to Tesla
-            // Coil Covers and Tesla
-            // Transceivers
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.2")) // Can be fed with
-            // Helium/Nitrogen/Radon Plasma to
-            // increase the range
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.3")) // Transmitted voltage
-                                                                                            // depends on
-            // the used Tesla Capacitor tier
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.4")) // Primary Tesla
-                                                                                            // Windings need to
-            // be at least the same tier as
-            // the Tesla Capacitor
+        // spotless:off
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.name"))
+            .addMarkdown(new ResourceLocation("gregtech", "tesla-tower"))
             .addSupportAny()
             .beginStructureBlock(7, 17, 7, false)
-            .addController("Front bottom center")
-            .addCasing("128", "Tesla Toroid Casing", false)
-            .addCasing("17-33", "Tesla Base Casing", false)
-            .addCasing("20", "Primary Tesla Windings", true)
-            .addCasing("16", "Titanium Frame Box", false)
-            .addCasing("12", "Secondary Tesla Windings", false)
-            .addMiscHatch("1+", "Capacitor Hatch", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
+            .addController(translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("128", CustomItemList.tM_TeslaToroid.get(1L).getDisplayName(), false)
+            .addCasing("17-33", CustomItemList.tM_TeslaBase.get(1L).getDisplayName(), false)
+            .addCasing("20", TTCasingsContainer.sBlockCasingsBA0.getLocalizedName(), true)
+            .addCasing("16", GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1L).getDisplayName(), false)
+            .addCasing("12", CustomItemList.tM_TeslaSecondary.get(1L).getDisplayName(), false)
+            .addMiscHatch("1+", translateToLocal("gt.blockmachines.hatch.capacitor.tier.03.name"), translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .addInputHatch("0+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
