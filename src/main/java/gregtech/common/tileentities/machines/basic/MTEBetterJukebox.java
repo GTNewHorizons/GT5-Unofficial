@@ -406,12 +406,8 @@ public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandle
             }
             switch (validSlotCount) {
                 case 0 -> {}
-                case 1 -> {
-                    playbackSlot = validSlots[0];
-                }
-                default -> {
-                    playbackSlot = validSlots[SHUFFLER.nextInt(validSlotCount)];
-                }
+                case 1 -> playbackSlot = validSlots[0];
+                default -> playbackSlot = validSlots[SHUFFLER.nextInt(validSlotCount)];
             }
         } else {
             int attempt = 0;

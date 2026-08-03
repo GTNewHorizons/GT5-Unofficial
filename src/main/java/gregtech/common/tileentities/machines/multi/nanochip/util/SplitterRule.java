@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -87,7 +86,7 @@ public class SplitterRule {
         var filters = filterStacks.getStacks()
             .stream()
             .filter(Objects::nonNull)
-            .collect(Collectors.toList());
+            .toList();
         // If no items in the filter set match the given item, do not apply this rule
         if (!filters.isEmpty() && filters.stream()
             .noneMatch(stack -> stack.isItemEqual(item))) {
@@ -96,9 +95,7 @@ public class SplitterRule {
         // If a redstone mode is set
         if (redstoneMode != null) {
             // Redstone level in requested channel should be at least the given level
-            if (redstoneMode.level > redstoneState.get(redstoneMode.channel)) {
-                return false;
-            }
+            return redstoneMode.level <= redstoneState.get(redstoneMode.channel);
         }
         // All checks passed, this rule applies
         return true;

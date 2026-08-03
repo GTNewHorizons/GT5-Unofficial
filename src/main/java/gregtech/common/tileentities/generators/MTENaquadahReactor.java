@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.generators;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_BACK;
 import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_BACK_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_BACK_ACTIVE_GLOW;
@@ -39,14 +40,14 @@ public class MTENaquadahReactor extends MTEBasicGenerator {
     public MTENaquadahReactor(int aID, String aName, String[] aDescription, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, (String) null);
         if (aTier > 8 || aTier < 4) {
-            new Exception("Tier without Recipe Map!").printStackTrace();
+            GT_FML_LOGGER.error(new Exception("Tier without Recipe Map!"));
         }
     }
 
     public MTENaquadahReactor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         if (aTier > 8 || aTier < 4) {
-            new Exception("Tier without Recipe Map!").printStackTrace();
+            GT_FML_LOGGER.error(new Exception("Tier without Recipe Map!"));
         }
     }
 

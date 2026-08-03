@@ -120,7 +120,6 @@ public final class SBRWorldContext extends SBRContextBase implements ISBRWorldCo
      * @return this context instance, configured with the given parameters
      */
     @Override
-    @SuppressWarnings("MethodWithTooManyParameters")
     public
     // Blame ISimpleBlockRenderingHandler.renderWorldBlock
     ISBRWorldContext setup(int x, int y, int z, Block block, int modelId, RenderBlocks renderBlocks) {

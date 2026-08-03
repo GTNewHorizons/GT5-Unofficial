@@ -351,11 +351,13 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             IGregTechTileEntity te = aBaseMetaTileEntity.getIGregTechTileEntityOffset(dx, dy, dz);
             if (te != null) {
                 IMetaTileEntity mte = te.getMetaTileEntity();
-                if (mte instanceof MTEHatchMaintenance) return CleanroomBlockType.HATCH_MAINTENANCE;
-                else if (mte instanceof MTEHatchEnergy) return CleanroomBlockType.HATCH_ENERGY;
-                // Both hulls and diodes are instanceof MTEBasicHull.
-                else if (mte instanceof MTEBasicHull) return CleanroomBlockType.HATCH_DIODE;
-                else return CleanroomBlockType.INVALID;
+                return switch (mte) {
+                    case MTEHatchMaintenance mteHatchMaintenance -> CleanroomBlockType.HATCH_MAINTENANCE;
+                    case MTEHatchEnergy mteHatchEnergy -> CleanroomBlockType.HATCH_ENERGY;
+                    // Both hulls and diodes are instanceof MTEBasicHull.
+                    case MTEBasicHull mteBasicHull -> CleanroomBlockType.HATCH_DIODE;
+                    case null, default -> CleanroomBlockType.INVALID;
+                };
             }
         }
 
@@ -589,9 +591,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         if (!addStructureBlock(aBaseMetaTileEntity, dxMin, dy, dzMin, MASK_WALL_EDGE, errors)) return false;
         if (!addStructureBlock(aBaseMetaTileEntity, dxMin, dy, dzMax, MASK_WALL_EDGE, errors)) return false;
         if (!addStructureBlock(aBaseMetaTileEntity, dxMax, dy, dzMin, MASK_WALL_EDGE, errors)) return false;
-        if (!addStructureBlock(aBaseMetaTileEntity, dxMax, dy, dzMax, MASK_WALL_EDGE, errors)) return false;
-
-        return true;
+        return addStructureBlock(aBaseMetaTileEntity, dxMax, dy, dzMax, MASK_WALL_EDGE, errors);
     }
 
     @Override

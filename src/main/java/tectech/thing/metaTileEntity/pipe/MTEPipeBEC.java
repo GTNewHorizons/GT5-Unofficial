@@ -17,6 +17,7 @@ import com.gtnewhorizon.gtnhlib.util.data.Lazy;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -56,7 +57,7 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
         if (tooltip == null) {
             tooltip = new Lazy<>(
                 () -> MarkdownTooltipLoader.STANDARD
-                    .loadStandardPath(new ResourceLocation("gregtech", "bec-pipe"), new HashMap<>()));
+                    .loadStandardPath(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-pipe"), new HashMap<>()));
         }
         return ArrayUtils.addAll(
             super.getDescription(),

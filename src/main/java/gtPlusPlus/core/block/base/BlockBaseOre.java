@@ -26,6 +26,7 @@ import gregtech.api.util.StringUtils;
 import gregtech.common.ores.GTPPOreAdapter;
 import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockOre;
 import gtPlusPlus.core.material.Material;
 
@@ -57,7 +58,7 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
                 "ore" + StringUtils.sanitizeString(this.blockMaterial.getDefaultLocalName()),
                 new ItemStack(this));
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
     }
 
