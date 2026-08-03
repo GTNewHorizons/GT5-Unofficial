@@ -2601,6 +2601,7 @@ GT5U.gui.text.per_hour=§fPer hour:
 GT5U.gui.text.per_day=§fPer day:
 GT5U.gui.text.progress_recipe=§fProgress: %ss / %ss (%s%%)
 GT5U.gui.text.progress_detail=§fProgress: %s%% §7(§f%ss§7/§f%ss§7)§r
+GT5U.gui.text.tier_name_with_parentheses=(%s)
 GT5U.gui.text.rate_short=(§7%s/s§f)
 GT5U.gui.text.rate_short_slow=(§7%ss/each§f)
 GT5U.gui.text.rate_large_suffix=§f[§7%s§f]
