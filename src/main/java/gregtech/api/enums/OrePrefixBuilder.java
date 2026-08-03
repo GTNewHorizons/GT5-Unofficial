@@ -2,8 +2,6 @@ package gregtech.api.enums;
 
 import java.util.Set;
 
-import org.intellij.lang.annotations.MagicConstant;
-
 import gregtech.api.material.GTMaterialGenerationFlag;
 
 public class OrePrefixBuilder {
@@ -22,7 +20,6 @@ public class OrePrefixBuilder {
     private Set<GTMaterialGenerationFlag> generationFlags = Set.of();
     private long materialAmount = -1;
     private int defaultStackSize = 64;
-    private int textureIndex = -1;
 
     public OrePrefixBuilder(String name) {
         this.name = name;
@@ -44,8 +41,7 @@ public class OrePrefixBuilder {
             isEnchantable,
             generationFlags,
             materialAmount,
-            defaultStackSize,
-            textureIndex
+            defaultStackSize
             // spotless:on
         );
     }
@@ -123,9 +119,4 @@ public class OrePrefixBuilder {
         return this;
     }
 
-    /** Sets the texture index used for this prefix. See {@link OrePrefixTextureID}. */
-    public OrePrefixBuilder textureIndex(@MagicConstant(flagsFromClass = OrePrefixTextureID.class) int textureIndex) {
-        this.textureIndex = textureIndex;
-        return this;
-    }
 }

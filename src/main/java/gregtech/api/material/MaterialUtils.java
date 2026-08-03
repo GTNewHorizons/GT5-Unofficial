@@ -31,10 +31,8 @@ import gregtech.api.enums.Element;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.MaterialFluidNames;
-import gregtech.api.enums.materials.MaterialTextures;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.MaterialStack;
@@ -50,7 +48,7 @@ import gregtech.common.config.Client;
 /// the defaults a constant cannot express.
 ///
 /// Computation lives in the purpose-built classes this delegates to -- [MaterialAtomics], [MaterialFormulas],
-/// [MaterialTextures] -- which are implementation detail; this is the surface callers use.
+/// which are implementation detail; this is the surface callers use.
 public class MaterialUtils {
 
     private MaterialUtils() {}
@@ -384,12 +382,6 @@ public class MaterialUtils {
         }
         return new short[] { (short) ((moltenArgb >>> 16) & 0xFF), (short) ((moltenArgb >>> 8) & 0xFF),
             (short) (moltenArgb & 0xFF), (short) ((moltenArgb >>> 24) & 0xFF) };
-    }
-
-    /// The texture set for a material, resolved via [MaterialTextures#iconSetOf]. Null when `material`
-    /// is null.
-    public static @Nullable TextureSet iconSet(@Nullable Material material) {
-        return material == null ? null : MaterialTextures.iconSetOf(material);
     }
 
     /// The name of a material's [StandardProperties#TEXTURE_SET], i.e. the folder its art lives in under

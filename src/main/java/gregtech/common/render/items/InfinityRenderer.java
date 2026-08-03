@@ -54,8 +54,7 @@ public class InfinityRenderer extends GeneratedMaterialRenderer {
             }
 
             // Workaround for cell and comb:
-            // 1. BW capsule needs `renderContainedFluid` call as it doesn't have
-            // `materialicons/CUSTOM/infinity/capsuleMolten`
+            // 1. BW capsule needs `renderContainedFluid` call as it has no capsule art of its own
             // 2. Without these 2 GL calls fluid texture leaks out of the cell / capsule
             // 3. Comb texture doesn't like depth enabled
             if (passes == 1) {

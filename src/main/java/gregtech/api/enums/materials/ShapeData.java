@@ -16,7 +16,6 @@ import static gregtech.api.material.GTMaterialGenerationFlag.TOOL_HEAD;
 import java.util.List;
 import java.util.Set;
 
-import gregtech.api.enums.OrePrefixTextureID;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.material.GTShapeProperties;
@@ -41,7 +40,6 @@ public final class ShapeData {
 
     public static void init() {
         BlockShapes.block.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 9)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.BLOCK)
             .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, OTHER_STACK_SIZE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Block of %s")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -62,7 +60,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true);
         Shapes.bolt.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 8)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.BOLT)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL, GEM))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Bolt")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -105,7 +102,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ELECTRUM, 1L)));
         CellShapes.cell.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(CELL, EMPTY))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Cell")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -115,7 +111,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         CellShapes.cellHydroCracked1.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Lightly Hydro-Cracked %s Cell")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -123,7 +118,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         CellShapes.cellHydroCracked2.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Moderately Hydro-Cracked %s Cell")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -131,7 +125,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         CellShapes.cellHydroCracked3.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Severely Hydro-Cracked %s Cell")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -139,7 +132,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         CellShapes.cellMolten.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL_PLASMA)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(TOOL_HEAD))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Molten %s Cell")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -149,7 +141,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.HEAT_DAMAGE, 3.0F)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         CellShapes.cellPlasma.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL_PLASMA)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(PLASMA))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Plasma Cell")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -160,7 +151,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         CellShapes.cellPlasmaLight // from prefix cellPlasma
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL_PLASMA)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(PLASMA))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Plasma Cell")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -170,7 +160,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.HEAT_DAMAGE, 6.0F)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         CellShapes.cellSteamCracked1.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Lightly Steam-Cracked %s Cell")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -178,7 +167,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         CellShapes.cellSteamCracked2.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Moderately Steam-Cracked %s Cell")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -186,44 +174,38 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
         CellShapes.cellSteamCracked3.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CELL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Severely Steam-Cracked %s Cell")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SELF_REFERENCING, true)
             .setProperty(GTShapeProperties.CONTAINER, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Tin, M * 2));
-        Shapes.crushed.setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CRUSHED)
-            .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
+        Shapes.crushed.setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(ORE))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Crushed %s Ore")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Stone, M * 1))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.PERFODIO, 1L)));
-        Shapes.crushedCentrifuged.setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CRUSHED_CENTRIFUGED)
-            .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
+        Shapes.crushedCentrifuged.setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(ORE))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Centrifuged %s Ore")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.PERFODIO, 1L)));
-        Shapes.crushedPurified.setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CRUSHED_PURIFIED)
-            .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
+        Shapes.crushedPurified.setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(ORE))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Purified %s Ore")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.PERFODIO, 1L)));
         Shapes.dust.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.DUST)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(DUST, METAL, GEM, ORE))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Dust")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.PERDITIO, 1L)));
         Shapes.dustImpure.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.DUST_IMPURE)
             .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(ORE))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Impure Pile of %s Dust")
@@ -231,7 +213,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.PERDITIO, 1L)));
         Shapes.dustPure.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.DUST_PURE)
             .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(ORE))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Purified Pile of %s Dust")
@@ -239,28 +220,24 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.PERDITIO, 1L)));
         Shapes.dustSmall.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 4)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.DUST_SMALL)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(DUST, METAL, GEM, ORE))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Small Pile of %s Dust")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.PERDITIO, 1L)));
         Shapes.dustTiny.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 9)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.DUST_TINY)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(DUST, METAL, GEM, ORE))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Tiny Pile of %s Dust")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.PERDITIO, 1L)));
         Shapes.foil.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 4)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.FOIL)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Foil")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true);
         TEBlockShapes.frameGt.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 2)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.FRAME)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Frame Box")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -268,7 +245,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.FABRICO, 1L)));
         Shapes.gearGt.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 4)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.GEAR)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(GEAR))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Gear")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -278,7 +254,6 @@ public final class ShapeData {
                 GTShapeProperties.ASPECTS,
                 List.of(new TC_AspectStack(TCAspects.MOTUS, 1L), new TC_AspectStack(TCAspects.MACHINA, 1L)));
         Shapes.gearGtSmall.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.GEAR_SMALL)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(GEAR))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Small %s Gear")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -288,7 +263,6 @@ public final class ShapeData {
                 GTShapeProperties.ASPECTS,
                 List.of(new TC_AspectStack(TCAspects.MOTUS, 1L), new TC_AspectStack(TCAspects.MACHINA, 1L)));
         Shapes.gem.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.GEM)
             .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, OTHER_STACK_SIZE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(GEM))
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -297,7 +271,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.VITREUS, 1L)));
         Shapes.gemChipped.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 4)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.GEM_CHIPPED)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(GEM))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Chipped %s")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -306,7 +279,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.VITREUS, 1L)));
         Shapes.gemExquisite.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 4)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.GEM_EXQUISITE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(GEM))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Exquisite %s")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -315,7 +287,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.VITREUS, 1L)));
         Shapes.gemFlawed.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 2)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.GEM_FLAWED)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(GEM))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Flawed %s")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -324,7 +295,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.VITREUS, 1L)));
         Shapes.gemFlawless.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 2)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.GEM_FLAWLESS)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(GEM))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Flawless %s")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -333,14 +303,12 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.VITREUS, 1L)));
         Shapes.ingot.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.INGOT)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Ingot")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.METALLUM, 1L)));
         Shapes.ingotHot.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.INGOT_HOT)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Hot %s Ingot")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -348,7 +316,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.HEAT_DAMAGE, 3.0F)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.METALLUM, 1L)));
         Shapes.itemCasing.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 2)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.CASING_SMALL)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL, GEM))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Casing")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -356,7 +323,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true);
         TEBlockShapes.itemPipeHuge // from prefix pipeHuge
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 12)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_HUGE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Huge %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -365,7 +331,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.itemPipeLarge // from prefix pipeLarge
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 6)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_LARGE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Large %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -374,7 +339,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.itemPipeMedium // from prefix pipeMedium
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 3)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_MEDIUM)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Medium %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -383,7 +347,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.itemPipeRestrictiveHuge // from prefix pipeRestrictiveHuge
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 12)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_HUGE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Huge Restrictive %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -393,7 +356,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.itemPipeRestrictiveLarge // from prefix pipeRestrictiveLarge
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 6)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_LARGE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Large Restrictive %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -403,7 +365,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.itemPipeRestrictiveMedium // from prefix pipeRestrictiveMedium
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 3)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_MEDIUM)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Medium Restrictive %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -413,7 +374,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.itemPipeRestrictiveSmall // from prefix pipeRestrictiveSmall
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_SMALL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Small Restrictive %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -423,7 +383,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.itemPipeRestrictiveTiny // from prefix pipeRestrictiveTiny
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 2)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_TINY)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Tiny Restrictive %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -433,7 +392,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.itemPipeSmall // from prefix pipeSmall
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_SMALL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Small %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -442,7 +400,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.itemPipeTiny // from prefix pipeTiny
             .setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 2)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_TINY)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Tiny %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -450,7 +407,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         Shapes.lens.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 3 / 4)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.LENS)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(GEM))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Lens")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -463,22 +419,19 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true);
         Shapes.nugget.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 9)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.NUGGET)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Nugget")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.METALLUM, 1L)));
-        OreShapes.ore.setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.ORE)
-            .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
+        OreShapes.ore.setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(ORE))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Ore")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Stone, M * 1))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.TERRA, 1L)));
-        OreShapes.oreSmall.setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.ORE_SMALL)
-            .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
+        OreShapes.oreSmall.setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(ORE))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Small %s Ore")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -486,7 +439,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Stone, M * 2))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.TERRA, 1L)));
         TEBlockShapes.pipeHuge.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 12)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_HUGE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Huge %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -494,7 +446,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.pipeLarge.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 6)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_LARGE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Large %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -502,7 +453,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.pipeMedium.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 3)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_MEDIUM)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Medium %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -510,7 +460,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.pipeNonuple.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 9)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_NONUPLE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Nonuple %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -518,7 +467,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.pipeQuadruple.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 12)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_QUADRUPLE)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Quadruple %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -526,7 +474,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.pipeSmall.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_SMALL)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Small %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -534,7 +481,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         TEBlockShapes.pipeTiny.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 2)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PIPE_TINY)
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Tiny %s Pipe")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
@@ -542,7 +488,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.SKIP_ACTIVE_UNIFICATION, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.ITER, 1L)));
         Shapes.plate.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PLATE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL, GEM))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Plate")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -550,7 +495,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.FABRICO, 1L)));
         Shapes.plateDense.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 9)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PLATE_DENSE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Dense %s Plate")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -558,7 +502,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.FABRICO, 1L)));
         Shapes.plateDouble.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 2)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PLATE_DOUBLE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Double %s Plate")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -566,7 +509,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.FABRICO, 1L)));
         Shapes.plateQuadruple.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 4)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PLATE_QUADRUPLE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Quadruple %s Plate")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -574,7 +516,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.FABRICO, 1L)));
         Shapes.plateQuintuple.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 5)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PLATE_QUINTUPLE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Quintuple %s Plate")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -582,7 +523,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.FABRICO, 1L)));
         Shapes.plateSuperdense.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 64)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PLATE_SUPERDENSE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Superdense %s Plate")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -590,50 +530,43 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.FABRICO, 1L)));
         Shapes.plateTriple.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 3)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.PLATE_TRIPLE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Triple %s Plate")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.FABRICO, 1L)));
-        Shapes.rawOre.setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.ORE_RAW)
-            .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
+        Shapes.rawOre.setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, ORE_STACK_SIZE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(ORE))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Raw %s Ore")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Stone, M * 1));
         Shapes.ring.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 4)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.RING)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Ring")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true);
         Shapes.rotor.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 4 + M / 4)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.ROTOR)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(GEAR))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Rotor")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true);
         Shapes.round.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 9)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.ROUND)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Round")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true);
         Shapes.screw.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 8)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.SCREW)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL, GEM))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Screw")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true);
         BlockShapes.sheetmetal.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 2)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.BLOCK_SHEETMETAL)
             .setProperty(GTShapeProperties.DEFAULT_STACK_SIZE, OTHER_STACK_SIZE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Sheetmetal")
@@ -641,35 +574,30 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true);
         Shapes.spring.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.SPRING)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Spring")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true);
         Shapes.springSmall.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 4)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.SPRING_SMALL)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Small %s Spring")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true);
         Shapes.stick.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 2)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.STICK)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL, GEM))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Rod")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true);
         Shapes.stickLong.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 1)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.STICK_LONG)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL, GEM))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Long %s Rod")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true);
         Shapes.toolHeadBuzzSaw.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 4)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.TOOL_HEAD_BUZZ_SAW)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(TOOL_HEAD))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Buzzsaw Blade")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -677,7 +605,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.INSTRUMENTUM, 2L)));
         Shapes.toolHeadChainsaw.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 2)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.TOOL_HEAD_CHAINSAW)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(TOOL_HEAD))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Chainsaw Tip")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -686,7 +613,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Steel, M * 4 + M / 4 * 2))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.INSTRUMENTUM, 2L)));
         Shapes.toolHeadDrill.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 4)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.TOOL_HEAD_DRILL)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(TOOL_HEAD))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Drill Tip")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -694,7 +620,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.INSTRUMENTUM, 2L)));
         Shapes.toolHeadFile.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 2)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.TOOL_HEAD_FILE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(TOOL_HEAD))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s File Head")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -702,7 +627,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.INSTRUMENTUM, 2L)));
         Shapes.toolHeadHammer.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 6)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.TOOL_HEAD_HAMMER)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(TOOL_HEAD))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Hammer Head")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -710,7 +634,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.INSTRUMENTUM, 2L)));
         Shapes.toolHeadSaw.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 2)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.TOOL_HEAD_SAW)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(TOOL_HEAD))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Saw Blade")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -718,7 +641,6 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.RECYCLABLE, true)
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.INSTRUMENTUM, 2L)));
         Shapes.toolHeadWrench.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 4)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.TOOL_HEAD_WRENCH)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(TOOL_HEAD))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Wrench Tip")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
@@ -727,14 +649,12 @@ public final class ShapeData {
             .setProperty(GTShapeProperties.SECONDARY_MATERIAL, new MaterialStack(Materials.Steel, M / 4 + M / 8 * 2))
             .setProperty(GTShapeProperties.ASPECTS, List.of(new TC_AspectStack(TCAspects.INSTRUMENTUM, 2L)));
         Shapes.turbineBlade.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M * 6)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.TURBINE_BLADE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(TOOL_HEAD))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "%s Turbine Blade")
             .setProperty(GTShapeProperties.UNIFIABLE, true)
             .setProperty(GTShapeProperties.MATERIAL_BASED, true)
             .setProperty(GTShapeProperties.RECYCLABLE, true);
         Shapes.wireFine.setProperty(GTShapeProperties.MATERIAL_AMOUNT, M / 8)
-            .setProperty(GTShapeProperties.TEXTURE_INDEX, OrePrefixTextureID.WIRE_FINE)
             .setProperty(GTShapeProperties.GENERATION_FLAGS, Set.of(METAL))
             .setProperty(GTShapeProperties.LOCAL_NAME_FORMAT, "Fine %s Wire")
             .setProperty(GTShapeProperties.UNIFIABLE, true)

@@ -696,7 +696,6 @@ public class OrePrefixes {
         .generationFlags(ORE)
         .materialAmount(M * 1)
         .defaultStackSize(ORE_STACK_SIZE)
-        .textureIndex(OrePrefixTextureID.DUST)
         .build();
 
     public static final OrePrefixes dustPure = new OrePrefixBuilder("dustPure").withDefaultLocalName("Purified Dusts")
@@ -714,13 +713,11 @@ public class OrePrefixes {
     public static final OrePrefixes plateAlloy = new OrePrefixBuilder("plateAlloy").withDefaultLocalName("Alloy Plates")
         .unifiable()
         .generationFlags(METAL)
-        .textureIndex(OrePrefixTextureID.PLATE)
         .build();
 
     public static final OrePrefixes plateSteamcraft = new OrePrefixBuilder("plateSteamcraft")
         .withDefaultLocalName("Steamcraft Plates")
         .generationFlags(METAL)
-        .textureIndex(OrePrefixTextureID.PLATE)
         .build();
 
     /** 9 Plates combined in one Item. */
@@ -778,7 +775,6 @@ public class OrePrefixes {
         .withSuffix(" Comb")
         .generationFlags(METAL, GEM)
         .materialAmount(M)
-        .textureIndex(OrePrefixTextureID.COMB)
         .build();
 
     /** consisting out of a Bolt. */
@@ -950,7 +946,6 @@ public class OrePrefixes {
         .recyclable()
         .generationFlags(TOOL_HEAD)
         .materialAmount(M * 1)
-        .textureIndex(OrePrefixTextureID.TOOL_HEAD_SCREWDRIVER)
         .build();
 
     /** consisting out of 4 Ingots. */
@@ -1374,7 +1369,6 @@ public class OrePrefixes {
     public static final OrePrefixes pipe = new OrePrefixBuilder("pipe").withDefaultLocalName("Pipes")
         .withSuffix(" Pipe")
         .unifiable()
-        .textureIndex(OrePrefixTextureID.PIPE_SIDE)
         .build();
 
     public static final OrePrefixes wireGt16 = new OrePrefixBuilder("wireGt16").withDefaultLocalName("16x Wires")
@@ -1715,7 +1709,6 @@ public class OrePrefixes {
         .recyclable()
         .generationFlags(TOOL_HEAD)
         .materialAmount(M * 6)
-        .textureIndex(OrePrefixTextureID.TOOL_HEAD_MALLET)
         .build();
 
     /** Reverse Stick made of half an Ingot. Introduced by Eloraam */
@@ -1727,7 +1720,6 @@ public class OrePrefixes {
         .recyclable()
         .generationFlags(METAL, GEM)
         .materialAmount(M / 2)
-        .textureIndex(OrePrefixTextureID.HANDLE_MALLET)
         .build();
 
     // Cracked fluids
@@ -1776,7 +1768,6 @@ public class OrePrefixes {
         .unifiable()
         .materialBased()
         .selfReferencing()
-        .textureIndex(OrePrefixTextureID.NANITES)
         .build();
 
     // migrated from GT++
@@ -1843,7 +1834,6 @@ public class OrePrefixes {
     private Set<GTMaterialGenerationFlag> generationFlags;
     private long materialAmount;
     private int defaultStackSize;
-    private int textureIndex;
 
     OrePrefixes(
         // spotless:off
@@ -1860,8 +1850,7 @@ public class OrePrefixes {
         boolean isEnchantable,
         Set<GTMaterialGenerationFlag> generationFlags,
         long materialAmount,
-        int defaultStackSize,
-        int textureIndex
+        int defaultStackSize
         // spotless:on
     ) {
         this.name = name;
@@ -1878,7 +1867,6 @@ public class OrePrefixes {
         this.generationFlags = generationFlags;
         this.materialAmount = materialAmount;
         this.defaultStackSize = defaultStackSize;
-        this.textureIndex = textureIndex;
 
         addAspectForName();
 
@@ -1920,7 +1908,6 @@ public class OrePrefixes {
                 prefix.materialPostfix = format.substring(split + 2);
             }
             prefix.materialAmount = shape.getProperty(GTShapeProperties.MATERIAL_AMOUNT);
-            prefix.textureIndex = shape.getProperty(GTShapeProperties.TEXTURE_INDEX);
             prefix.defaultStackSize = shape.getProperty(GTShapeProperties.DEFAULT_STACK_SIZE);
             prefix.generationFlags = shape.getProperty(GTShapeProperties.GENERATION_FLAGS);
             prefix.isUnifiable = shape.getProperty(GTShapeProperties.UNIFIABLE);
@@ -2018,10 +2005,6 @@ public class OrePrefixes {
 
     public long getMaterialAmount() {
         return materialAmount;
-    }
-
-    public int getTextureIndex() {
-        return textureIndex;
     }
 
     public @NotNull String getName() {

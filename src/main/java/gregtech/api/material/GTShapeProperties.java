@@ -29,10 +29,6 @@ public class GTShapeProperties {
     /// recipes ([gregtech.api.enums.OrePrefixes#mSecondaryMaterial]).
     public static final Property<MaterialStack> SECONDARY_MATERIAL = Property.of("gregtech", "secondaryMaterial");
 
-    /// Index into a material's [gregtech.api.enums.TextureSet] for this shape's icon
-    /// ([gregtech.api.enums.OrePrefixes#getTextureIndex]); see [gregtech.api.enums.OrePrefixTextureID].
-    public static final Property<Integer> TEXTURE_INDEX = Property.of("gregtech", "textureIndex", -1);
-
     public static final Property<Integer> DEFAULT_STACK_SIZE = Property.of("gregtech", "defaultStackSize", 64);
 
     /// The material generation groups a material must belong to for this shape's item to be generated for it

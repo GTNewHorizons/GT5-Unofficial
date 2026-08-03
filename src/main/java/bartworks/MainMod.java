@@ -33,7 +33,6 @@ import bartworks.client.creativetabs.BartWorksTab;
 import bartworks.client.creativetabs.BioTab;
 import bartworks.client.creativetabs.GT2Tab;
 import bartworks.client.renderer.CircuitPartItemsRenderer;
-import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.common.configs.Configuration;
 import bartworks.common.items.BWItemBlocks;
 import bartworks.common.loaders.ArtificialMicaLine;
@@ -150,9 +149,7 @@ public final class MainMod {
             GregTechAPI.sAfterGTPostload.add(CircuitPartItemsRenderer::new);
         }
         if (event.getSide()
-            .isClient()) {
-            GregTechAPI.sBeforeGTLoad.add(new PrefixTextureLinker());
-        }
+            .isClient()) {}
     }
 
     @Mod.EventHandler
