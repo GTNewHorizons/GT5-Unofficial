@@ -15,9 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 
 /**
@@ -76,19 +74,6 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
         return aPrefix.getDefaultLocalNameForItem(aMaterial);
     }
 
-    /**
-     * @param aMetaData a Index from [0 - 31999]
-     * @param aMaterial the Material
-     * @return an Icon Container for the Item Display.
-     */
-    public final IIconContainer getIconContainer(final int aMetaData, final Material aMaterial) {
-        return (this.mGeneratedPrefixList[aMetaData / 1000] != null)
-            && (this.mGeneratedPrefixList[aMetaData / 1000].getTextureIndex() >= 0)
-                ? MaterialUtils.iconSet(aMaterial).mTextures[this.mGeneratedPrefixList[aMetaData / 1000]
-                    .getTextureIndex()]
-                : null;
-    }
-
     /* ---------- INTERNAL OVERRIDES ---------- */
 
     @Override
@@ -123,18 +108,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
 
     @Override
     public final IIcon getIconFromDamage(final int aMetaData) {
-        if (aMetaData < 0) {
-            return null;
-        }
         if (aMetaData < 32000) {
-            final Material tMaterial = MetaGeneratedItem.generatedMaterial(aMetaData % 1000);
-            if (tMaterial == null) {
-                return null;
-            }
-            final IIconContainer tIcon = this.getIconContainer(aMetaData, tMaterial);
-            if (tIcon != null) {
-                return tIcon.getIcon();
-            }
             return null;
         }
         return (aMetaData - 32000) < this.mIconList.length ? this.mIconList[aMetaData - 32000][0] : null;

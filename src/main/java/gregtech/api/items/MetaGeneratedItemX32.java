@@ -20,6 +20,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialRenderers;
 import gregtech.api.material.MaterialUtils;
@@ -116,8 +117,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
      */
     public final IIconContainer getIconContainer(int aMetaData, Material aMaterial) {
         final OrePrefixes prefixes = getOrePrefix(aMetaData);
-        return prefixes != null && prefixes.getTextureIndex() >= 0
-            ? MaterialUtils.iconSet(aMaterial).mTextures[prefixes.getTextureIndex()]
+        return prefixes != null && GTMaterialIcons.hasItemIcon(prefixes) ? GTMaterialIcons.item(prefixes, aMaterial)
             : null;
     }
 

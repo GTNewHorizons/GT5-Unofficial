@@ -17,8 +17,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -107,10 +106,9 @@ public class BaseOreComponent extends Item {
                     .registerIcon(Mods.GTPlusPlus.ID + ":" + "processing/MilledOre/milled_OVERLAY");
             }
         } else {
-            IIconContainer container = Textures.ItemIcons
-                .textureSetWithRegister("METALLIC", "/" + this.componentType.COMPONENT_NAME, par1IconRegister);
-            iconBase = container.getIcon();
-            iconOverlay = container.getOverlayIcon();
+            String path = GTMaterialIcons.itemIconPath("METALLIC", this.componentType.COMPONENT_NAME);
+            iconBase = par1IconRegister.registerIcon(path);
+            iconOverlay = par1IconRegister.registerIcon(path + "_OVERLAY");
         }
     }
 

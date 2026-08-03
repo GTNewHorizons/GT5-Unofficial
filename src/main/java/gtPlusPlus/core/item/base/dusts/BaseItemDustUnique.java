@@ -78,12 +78,12 @@ public class BaseItemDustUnique extends Item {
     private String getCorrectTexture(final String pileSize) {
         if (pileSize.toLowerCase()
             .contains("small")) {
-            return GregTech.ID + ":" + "materialicons/SHINY/dustSmall";
+            return GregTech.ID + ":" + "materials/SHINY/dustSmall";
         } else if (pileSize.toLowerCase()
             .contains("tiny")) {
-                return GregTech.ID + ":" + "materialicons/SHINY/dustTiny";
+                return GregTech.ID + ":" + "materials/SHINY/dustTiny";
             }
-        return GregTech.ID + ":" + "materialicons/SHINY/dust";
+        return GregTech.ID + ":" + "materials/SHINY/dust";
     }
 
     @Override

@@ -20,9 +20,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -114,7 +112,7 @@ public class BaseItemComponent extends Item {
                 if (Client.tooltip.showCtrlText) {
                     // Hidden Tooltip
                     if (GuiScreen.isCtrlKeyDown()) {
-                        String type = MaterialUtils.iconSet(this.componentMaterial).mSetName;
+                        String type = MaterialUtils.textureSetName(this.componentMaterial);
                         String output = type.substring(0, 1)
                             .toUpperCase() + type.substring(1);
                         list.add(
@@ -203,18 +201,11 @@ public class BaseItemComponent extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister i) {
-        String metType = null;
-        if (this.componentMaterial != null) {
-            TextureSet u = MaterialUtils.iconSet(this.componentMaterial);
-            if (u != null) {
-                metType = u.mSetName;
-            }
-        }
-        metType = (metType == null ? "METALLIC" : metType);
-        IIconContainer container = Textures.ItemIcons
-            .textureSetWithRegister(metType, "/" + this.componentType.getOreDictName(), i);
-        iconBase = container.getIcon();
-        iconOverlay = container.getOverlayIcon();
+        String setName = MaterialUtils.textureSetName(this.componentMaterial);
+        String path = GTMaterialIcons
+            .itemIconPath(setName != null ? setName : "METALLIC", this.componentType.getOreDictName());
+        iconBase = i.registerIcon(path);
+        iconOverlay = i.registerIcon(path + "_OVERLAY");
     }
 
     public enum ComponentTypes {

@@ -10,6 +10,7 @@ import com.ruling_0.materiallib.api.ShapeRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.util.client.ResourceUtils;
 import gregtech.client.iconContainers.blocks.MLBlockIconContainer;
 import gregtech.client.iconContainers.items.MLItemIconContainer;
 
@@ -65,6 +66,15 @@ public final class GTMaterialIcons {
         String name = prefix.name();
         return GTMaterialIconSets.ITEM_NAMES.contains(name) || ShapeRegistry.instance()
             .getItemShape(name) != null;
+    }
+
+    /// The item-atlas icon identifier for `name` in the texture set `setName`, or the `NONE` set's when that set
+    /// ships no such file -- the tail of the chain a shape's icons resolve through. For the handful of items that
+    /// register material art straight into the atlas rather than drawing it through an [IIconContainer].
+    public static String itemIconPath(String setName, String name) {
+        String path = "gregtech:materials/" + setName + "/" + name;
+        if (ResourceUtils.resourceExists(ResourceUtils.getCompleteItemTextureResourceLocation(path))) return path;
+        return "gregtech:materials/NONE/" + name;
     }
 
     private static IIconContainer intern(Map<String, Map<Material, IIconContainer>> containers, String name,

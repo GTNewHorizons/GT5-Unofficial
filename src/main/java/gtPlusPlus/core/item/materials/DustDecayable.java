@@ -37,9 +37,9 @@ public class DustDecayable extends BaseItemTickable {
 
     @Override
     public void registerIcons(IIconRegister reg) {
-        String gt = GregTech.ID + ":" + "materialicons/" + "NUCLEAR" + "/" + "dust";
+        String gt = GregTech.ID + ":" + "materials/" + "NUCLEAR" + "/" + "dust";
         this.mIcon[0] = reg.registerIcon(gt);
-        String gt2 = GregTech.ID + ":" + "materialicons/" + "NUCLEAR" + "/" + "dust" + "_OVERLAY";
+        String gt2 = GregTech.ID + ":" + "materials/" + "NUCLEAR" + "/" + "dust" + "_OVERLAY";
         this.mIcon[1] = reg.registerIcon(gt2);
     }
 
