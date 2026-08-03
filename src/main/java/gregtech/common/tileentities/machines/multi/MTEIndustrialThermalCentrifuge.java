@@ -96,7 +96,7 @@ public class MTEIndustrialThermalCentrifuge extends MTEExtendedPowerMultiBlockBa
                     TooltipHelper.effText((float) (1 - HEATING_COIL_EU_MULTIPLIER))))
             .addInfo(
                 String.format(
-                    "The EU multiplier is %s%.2f * (%.2f ^ Heating Coil Tier)%s, prior to overclocks",
+                    "The EU multiplier is some number, who knows what that number might be??",
                     EnumChatFormatting.ITALIC,
                     BASE_EU_MULTIPLIER,
                     HEATING_COIL_EU_MULTIPLIER,
