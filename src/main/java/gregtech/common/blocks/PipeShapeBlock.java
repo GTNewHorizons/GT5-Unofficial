@@ -57,6 +57,7 @@ public class PipeShapeBlock extends ShapeBlock {
     private static final ThreadLocal<IGregTechTileEntity> temporaryTileEntity = new ThreadLocal<>();
 
     private final String prefixKey;
+    private final String iconName;
     private final int mteId;
     private final PipeFamily family;
     private final int sizeIndex;
@@ -65,10 +66,13 @@ public class PipeShapeBlock extends ShapeBlock {
 
     private boolean checkingAdjacent = false;
 
+    /// `iconName` is the texture-set file this shape's art lives in, which several shapes share: every wire and
+    /// cable gauge draws `wire.png`, and each item pipe draws the fluid pipe art of its size.
     public PipeShapeBlock(String name, String displayNameFormat, String prefixKey, int mteId, PipeFamily family,
-        int sizeIndex, int pipeAmount, float thickness, String... oreDicts) {
+        int sizeIndex, int pipeAmount, float thickness, String iconName, String... oreDicts) {
         super(new MaterialMachines(), "gregtech", name, displayNameFormat, oreDicts);
         this.prefixKey = prefixKey;
+        this.iconName = iconName;
         this.mteId = mteId;
         this.family = family;
         this.sizeIndex = sizeIndex;
@@ -83,6 +87,11 @@ public class PipeShapeBlock extends ShapeBlock {
     /// The language key of this shape's `gt.oreprefix.*` display-name format.
     public String getPrefixKey() {
         return prefixKey;
+    }
+
+    @Override
+    protected String iconName() {
+        return iconName;
     }
 
     /// The id of the single material-agnostic MTE every placement of this shape binds.

@@ -2255,6 +2255,9 @@ public class Materials {
             .generateShape(BlockShapes.sheetmetal)
             .build();
         Materials.Iron = MaterialLibAPI.newMaterial("gregtech", "Iron", TextureSet.of("gregtech", "CUSTOM/iron"))
+            .setProperty(
+                StandardProperties.FALLBACK_TEXTURE_SETS,
+                List.of(TextureSet.of("gregtech", "METALLIC"), TextureSet.of("gregtech", "NONE")))
             .setTint(0xFFC8C8C8)
             .setProperty(StandardProperties.BLOCK_OVERLAY_TINT, 0xFFFFFFFF)
             .addToFamily(Families.all)
@@ -2378,6 +2381,9 @@ public class Materials {
             .generateShape(BlockShapes.sheetmetal)
             .build();
         Materials.Copper = MaterialLibAPI.newMaterial("gregtech", "Copper", TextureSet.of("gregtech", "CUSTOM/copper"))
+            .setProperty(
+                StandardProperties.FALLBACK_TEXTURE_SETS,
+                List.of(TextureSet.of("gregtech", "DULL"), TextureSet.of("gregtech", "NONE")))
             .setTint(0xFFFF6400)
             .setProperty(StandardProperties.BLOCK_OVERLAY_TINT, 0xFFFFFFFF)
             .addToFamily(Families.all)
@@ -3626,6 +3632,9 @@ public class Materials {
             .generateShape(BlockShapes.sheetmetal)
             .build();
         Materials.Gold = MaterialLibAPI.newMaterial("gregtech", "Gold", TextureSet.of("gregtech", "CUSTOM/gold"))
+            .setProperty(
+                StandardProperties.FALLBACK_TEXTURE_SETS,
+                List.of(TextureSet.of("gregtech", "SHINY"), TextureSet.of("gregtech", "NONE")))
             .setTint(0xFFFFFF1E)
             .setProperty(StandardProperties.BLOCK_OVERLAY_TINT, 0xFFFFFFFF)
             .addToFamily(Families.all)
@@ -9559,6 +9568,9 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "CO₂")
             .build();
         Materials.Diamond = MaterialLibAPI.newMaterial("gregtech", "Diamond", TextureSet.of("gregtech", "CUSTOM/diamond"))
+            .setProperty(
+                StandardProperties.FALLBACK_TEXTURE_SETS,
+                List.of(TextureSet.of("gregtech", "DIAMOND"), TextureSet.of("gregtech", "NONE")))
             .setTint(2143879167)
             .setProperty(StandardProperties.BLOCK_OVERLAY_TINT, 0xFFFFFFFF)
             .addToFamily(Families.all)
@@ -9589,6 +9601,9 @@ public class Materials {
             .setProperty(GTMaterialProperties.FORMULA, "C")
             .build();
         Materials.Emerald = MaterialLibAPI.newMaterial("gregtech", "Emerald", TextureSet.of("gregtech", "CUSTOM/emerald"))
+            .setProperty(
+                StandardProperties.FALLBACK_TEXTURE_SETS,
+                List.of(TextureSet.of("gregtech", "EMERALD"), TextureSet.of("gregtech", "NONE")))
             .setTint(2136014672)
             .setProperty(StandardProperties.BLOCK_OVERLAY_TINT, 0xFFFFFFFF)
             .addToFamily(Families.all)

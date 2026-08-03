@@ -26,9 +26,11 @@ public final class GTMaterialIconSets {
 
     private GTMaterialIconSets() {}
 
-    /// The item-atlas names, one per tool part GregTech composites from a material in a tool's NBT.
+    /// The item-atlas names: one per tool part GregTech composites from a material in a tool's NBT, plus
+    /// `nanite`, whose items [gregtech.common.items.MetaGeneratedItem03] hosts rather than a shape.
     // spotless:off
     public static final Set<String> ITEM_NAMES = Set.of(
+        "nanite",
         "toolWrench", "toolCrowbar", "toolWireCutter", "toolScoop", "toolBranchCutter", "toolKnife",
         "toolKnifeButchery", "toolPlunger", "toolJackHammer", "toolTurbine", "toolTrowel", "handleTrowel",
         "handleFile", "handleSaw", "handleScrewdriver", "handleMallet", "toolHeadMallet", "toolHeadScrewdriver",
