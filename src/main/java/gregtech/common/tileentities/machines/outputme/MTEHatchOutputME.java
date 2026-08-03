@@ -336,8 +336,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                     provider.addToCache(s);
                 } else {
                     GTMod.GT_FML_LOGGER.warn(
-                        "An error occurred while loading contents of ME Output Hatch. This fluid has been voided: "
-                            + tagFluidStack);
+                        "An error occurred while loading contents of ME Output Hatch. This fluid has been voided: {}",
+                        tagFluidStack);
                 }
             }
         }

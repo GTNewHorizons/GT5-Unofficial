@@ -583,7 +583,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
         if (!GTMod.proxy.mPollution) return true;
         mPollution += aPollutionLevel;
         if (mPollution < VENT_AMOUNT) return true;
-        if (mMufflerHatches.size() == 0) {
+        if (mMufflerHatches.isEmpty()) {
             // No muffler present. Fail.
             return false;
         }

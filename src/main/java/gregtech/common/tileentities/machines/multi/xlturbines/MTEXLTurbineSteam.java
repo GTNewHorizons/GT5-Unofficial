@@ -9,8 +9,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GTMod;
-import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTModHandler;
@@ -36,21 +34,6 @@ public class MTEXLTurbineSteam extends MTEXLTurbineBase {
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEXLTurbineSteam(mName);
-    }
-
-    @Override
-    protected Casings getCasing() {
-        return Casings.ReinforcedSteamTurbineCasing;
-    }
-
-    @Override
-    protected Materials getFrameMaterial() {
-        return Materials.Steel;
-    }
-
-    @Override
-    protected Casings getRotorCasing() {
-        return Casings.SteelPipeCasing;
     }
 
     @Override

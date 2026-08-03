@@ -174,7 +174,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             Arrays.stream(struct)
                 .map(
                     sa -> Arrays.stream(sa)
-                        .map(s -> s.replaceAll("F", " "))
+                        .map(s -> s.replace("F", " "))
                         .toArray(String[]::new))
                 .toArray(String[][]::new))
         .addShape(

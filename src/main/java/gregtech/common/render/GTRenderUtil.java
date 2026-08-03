@@ -1,5 +1,7 @@
 package gregtech.common.render;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -26,7 +28,7 @@ public class GTRenderUtil {
             short[] tModulation = aItem.getRGBa(aStack);
             GL11.glColor4f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F, 1);
         } else {
-            System.out.println("WARNING: " + aStack.getDisplayName() + " does not have an associated GT colour.");
+            GT_FML_LOGGER.warn("WARNING: {} does not have an associated GT colour.", aStack.getDisplayName());
         }
     }
 
