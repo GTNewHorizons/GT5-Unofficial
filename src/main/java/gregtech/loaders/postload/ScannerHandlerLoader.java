@@ -265,9 +265,8 @@ public class ScannerHandlerLoader {
         if (!ItemList.Tool_DataStick.isStackEqual(aInput, false, true)) return false;
         // this feels like a bad idea in terms of localization, maybe consider retooling this to a separate unique nbt
         // tag or item in the future.
-        if (!GTUtility.ItemNBT.getBookTitle(aInput)
-            .equals(GTUtility.ItemNBT.getRawProspectionDataName())) return false;
-        return true;
+        return GTUtility.ItemNBT.getBookTitle(aInput)
+            .equals(GTUtility.ItemNBT.getRawProspectionDataName());
     }
 
     public static @Nullable GTScannerResult doAssemblyLineResearch(@Nonnull MetaTileEntity aScanner,

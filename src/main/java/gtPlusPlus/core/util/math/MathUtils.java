@@ -260,11 +260,7 @@ public class MathUtils {
     public static long clamp_long(long number, long min, long max) {
         if (number > max) {
             return max;
-        } else if (number < min) {
-            return min;
-        } else {
-            return number;
-        }
+        } else return Math.max(number, min);
     }
 
     /**

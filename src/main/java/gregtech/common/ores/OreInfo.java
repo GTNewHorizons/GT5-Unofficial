@@ -117,8 +117,7 @@ public class OreInfo<TMat extends IOreMaterial> implements AutoCloseable {
             if (other.stoneType != null) return false;
         } else if (!stoneType.equals(other.stoneType)) return false;
         if (isSmall != other.isSmall) return false;
-        if (isNatural != other.isNatural) return false;
-        return true;
+        return isNatural == other.isNatural;
     }
 
     @Override
