@@ -201,3 +201,38 @@ kubatech.tooltip.tea_storage.0=Расширяет хранилище чая на
 kubatech.tooltip.tea_ingredient.0=Это ингредиент чая
 
 kubatech.tooltip.structure.flowers=Цветы
+
+kubatech.arcfurnace.mode.normal=Обычный
+kubatech.arcfurnace.mode.blast=Доменный
+kubatech.arcfurnace.mode.ore=Рудный
+kubatech.multiblock.DEFusionCrafter.machine_type=Термоядерный крафтер, DEFC
+kubatech.multiblock.DEFusionCrafter.fusion_casing=Термоядерный корпус
+kubatech.multiblock.DEFusionCrafter.fusion_machine_casing=Корпус термоядерного реактора
+kubatech.multiblock.DEFusionCrafter.footer=§cИзначальная жемчужина расходуется в рецепте контроллера!
+
+kubatech.multiblock.ExtremeEntityCrusher.machine_type=Электроспаунер, EEC
+kubatech.multiblock.ExtremeEntityCrusher.steel_frame_box=Стальной каркас
+kubatech.multiblock.ExtremeEntityCrusher.diamond_spike=Алмазные шипы
+
+kubatech.multiblock.ExtremeIndustrialGreenhouse.machine_type=Растениеводческая ферма, EIG
+kubatech.multiblock.ExtremeIndustrialGreenhouse.sterile_farm_casing=Корпус стерильной фермы
+kubatech.multiblock.ExtremeIndustrialGreenhouse.frame_box=Вольфрамостальной каркас
+kubatech.multiblock.ExtremeIndustrialGreenhouse.fertilized_dirt=Удобренная земля (RandomThings)
+kubatech.multiblock.ExtremeIndustrialGreenhouse.purple_lamp=Фиолетовая лампа (ProjectRed Illumination, обычная или инвертированная)
+kubatech.multiblock.ExtremeIndustrialGreenhouse.footer=Земля вспахивается, а вода появляется бесплатно после формирования структуры
+
+
+kubatech.multiblock.MegaIndustrialApiary.machine_type=Мега пасека, Mapiary
+kubatech.multiblock.MegaIndustrialApiary.dirt_or_grass=Земля или трава
+kubatech.multiblock.MegaIndustrialApiary.wood_plank=Деревянная доска
+kubatech.multiblock.MegaIndustrialApiary.water=Вода
+kubatech.multiblock.MegaIndustrialApiary.alveary_fan=Улей-вентилятор
+kubatech.multiblock.MegaIndustrialApiary.alveary_heater=Улей-обогреватель
+kubatech.multiblock.MegaIndustrialApiary.alveary_hygroregulator=Улей-гигрорегулятор
+kubatech.multiblock.MegaIndustrialApiary.alveary=Улей
+kubatech.multiblock.MegaIndustrialApiary.alveary_stabiliser=Улей-стабилизатор
+kubatech.multiblock.MegaIndustrialApiary.apiary=Пасека
+kubatech.multiblock.MegaIndustrialApiary.wood_slab=Деревянная плита
+kubatech.multiblock.MegaIndustrialApiary.flower=Цветок (зависит от пчелы)
+kubatech.multiblock.MegaIndustrialApiary.any_casing_luv=Любой блок корпуса (LuV+)
+kubatech.multiblock.MegaIndustrialApiary.footer=Используйте обычную или дистиллированную воду, размещается вручную

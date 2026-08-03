@@ -59,7 +59,7 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
 
     @SideOnly(Side.CLIENT)
     public ModularScreen createScreen(ProxiedMteGuiData data, ModularPanel mainPanel) {
-        return new GTModularScreen(mainPanel, mte.getColoredTheme());
+        return new GTModularScreen(mainPanel, mte.getGuiTheme());
     }
 
     public ModularPanel buildUI(ProxiedMteGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {

@@ -175,6 +175,16 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
 
     /**
+     * Whether {@link #onPreTick} and {@link #onPostTick} run on the client.
+     */
+    boolean needsClientTick();
+
+    /**
+     * Client only. Called after any state sounds depending on have changed.
+     */
+    void onClientSoundStateChanged();
+
+    /**
      * Called when this MetaTileEntity gets (intentionally) disconnected from the BaseMetaTileEntity. Doesn't get called
      * when this thing is moved by Frames or similar hacks.
      */

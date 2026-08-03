@@ -85,7 +85,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
             .addInfo("Allows Complex alloys to be created")
             .addInfo("Recipe tier is limited to hatch tier")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 4, true)
+            .beginStructureBlock(3, 4, 3, true)
             .addController("Front bottom center")
             .addCasing("16", "Blast Smelter Heat Containment Coil", false)
             .addCasing("3-12", "Blast Smelter Casing Block", false)
@@ -193,11 +193,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
 
         if (aStack == null) {
             return true;
-        } else if (aStack.getItem() == circuit) {
-            return true;
-        }
-
-        return false;
+        } else return aStack.getItem() == circuit;
     }
 
     @Override

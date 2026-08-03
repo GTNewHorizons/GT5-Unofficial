@@ -1,5 +1,7 @@
 package gregtech.api.net;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 import java.io.IOException;
 
 import net.minecraft.client.Minecraft;
@@ -55,7 +57,7 @@ public class GTPacketLMACraftingFX extends GTPacket {
             buffer.writeBytes(data);
         } catch (IOException e) {
             GTLog.out.println("Could not serialize LMA ItemStack");
-            e.printStackTrace();
+            GT_FML_LOGGER.error(e);;
         }
     }
 

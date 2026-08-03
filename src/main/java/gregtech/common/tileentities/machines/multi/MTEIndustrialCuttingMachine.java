@@ -177,7 +177,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
                     + ", one multi-amp hatch is allowed")
             .addInfo("Use screwdriver to disable sawblade rendering")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 9, 4, false)
+            .beginStructureBlock(9, 4, 3, false)
             .addController("Front left, 2nd layer")
             .addCasing("10-29", "Cutting Factory Frame", false)
             .addCasing("18", "Tantalum Carbide Frame Box", false)
@@ -369,17 +369,17 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     public boolean supportsVoidProtection() {
         return true;
     }
 
     @Override
     public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
+    public boolean needsClientTick() {
         return true;
     }
 

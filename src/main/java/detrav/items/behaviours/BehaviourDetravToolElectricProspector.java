@@ -123,7 +123,6 @@ public class BehaviourDetravToolElectricProspector extends BehaviourDetravToolPr
                                             if (data != MODE_ALL_ORES && info.isSmall) continue;
 
                                             packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, block, meta);
-                                            continue;
                                         }
                                     }
                                 }

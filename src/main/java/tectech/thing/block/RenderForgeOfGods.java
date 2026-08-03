@@ -28,6 +28,7 @@ import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 
 import gregtech.GTMod;
 import tectech.Reference;
+import tectech.TecTech;
 import tectech.rendering.EOH.EOHRenderingUtils;
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsRingsStructureString;
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsStructureString;
@@ -83,7 +84,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             u_ModelMatrix = starProgram.getUniformLocation("u_ModelMatrix");
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            TecTech.LOGGER.info(e.getMessage());
             return;
         }
 
@@ -103,7 +104,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
             a_VertexID = beamProgram.getAttribLocation("a_VertexID");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            TecTech.LOGGER.info(e.getMessage());
             return;
         }
 
@@ -449,7 +450,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             try {
                 initRings();
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                TecTech.LOGGER.info(e.getMessage());
                 failedInit = true;
                 return;
             }

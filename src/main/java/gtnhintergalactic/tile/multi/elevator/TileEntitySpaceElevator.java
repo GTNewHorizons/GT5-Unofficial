@@ -67,6 +67,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import gtnhintergalactic.GTNHIntergalactic;
 import gtnhintergalactic.client.TooltipUtil;
 import gtnhintergalactic.config.IGConfig;
 import gtnhintergalactic.gui.IG_UITextures;
@@ -739,7 +740,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.desc7"))
             .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.desc8"))
             .addSupportAny()
-            .beginVariableStructureBlock(35, 47, 35, 47, 48, 48, false)
+            .beginVariableStructureBlock(35, 47, 48, 48, 35, 47, false)
             .addController("Front center of central column, 4th layer")
             .addCasing("620", StatCollector.translateToLocal("gt.blockcasings.ig.1.name"), false)
             .addCasing("88", StatCollector.translateToLocal("ig.elevator.structure.Motor"), true)
@@ -965,7 +966,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                                 ElevatorUtil.getPlanetaryTravelTier(motorTier),
                                 GuiCelestialSelection.MapMode.TELEPORTATION);
                         } catch (final Exception e) {
-                            e.printStackTrace();
+                            GTNHIntergalactic.LOG.error(e);
                         }
                     }
                 }

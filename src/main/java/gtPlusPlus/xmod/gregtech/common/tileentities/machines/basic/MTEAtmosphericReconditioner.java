@@ -41,6 +41,7 @@ import gregtech.common.gui.modularui.hatch.MTEAtmosphericReconditionerGui;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.item.general.ItemBasicScrubberTurbine;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -460,7 +461,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 return false;
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
         return false;
     }

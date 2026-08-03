@@ -7,7 +7,6 @@ import java.util.WeakHashMap;
 
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.FakePlayer;
@@ -157,8 +156,7 @@ public class ArmorEventHandlers {
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onLivingFall(LivingFallEvent event) {
-        if (event.entityLiving instanceof EntityPlayerMP player) {
-
+        if (event.entityLiving instanceof EntityPlayer player) {
             ItemStack chest = player.getCurrentArmor(SLOT_CHEST);
             if (chest != null && chest.getItem() instanceof MechArmorBase) {
                 ArmorContext chestContext = MechArmorBase.load(player, chest);
@@ -169,7 +167,7 @@ public class ArmorEventHandlers {
                 }
             }
 
-            if (player.fallDistance < 3.2f) {
+            if (event.distance < 3.2f) {
                 return;
             }
             ItemStack boots = player.getCurrentArmor(SLOT_BOOTS);
@@ -181,9 +179,13 @@ public class ArmorEventHandlers {
 
             if (context.hasBehavior(BehaviorName.FallProtection)
                 && context.drainEnergy(500 * (player.fallDistance - 1.2f))) {
+                event.distance = 0;
                 player.fallDistance = 0;
                 event.setCanceled(true);
-                context.save();
+
+                if (!player.worldObj.isRemote) {
+                    context.save();
+                }
             }
         }
     }

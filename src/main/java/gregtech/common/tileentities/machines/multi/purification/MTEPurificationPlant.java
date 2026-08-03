@@ -208,7 +208,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "purification processes, and this multiblock is the heart of the operation")
-            .beginStructureBlock(8, 7, 9, true)
+            .beginStructureBlock(7, 9, 8, true)
             .addController("Front center, 3rd layer")
             .addCasing("77", "Reinforced Sterile Water Plant Casing", false)
             .addCasing("71-72", "Sterile Water Plant Casing", false)
@@ -403,6 +403,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             }
             unit.setActive(false);
         }
+        mLastWorkingTick = mTotalRunTime;
     }
 
     /**
@@ -458,7 +459,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         var ret = new ArrayList<String>();
         ret.add(
             IGregTechDeviceInformation.encode(
-                "GT5U.infodata.multiblock.recipes_done",
+                "GT5U.multiblock.recipesDone.fmt",
                 EnumChatFormatting.GREEN + formatNumber(recipesDone) + EnumChatFormatting.RESET));
         // Show linked purification units and their status
         ret.add("GT5U.infodata.purification_plant.linked_units");
@@ -468,26 +469,16 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             PurificationUnitStatus status = unit.metaTileEntity()
                 .status();
             switch (status) {
-                case ACTIVE -> {
-                    text = text + EnumChatFormatting.GREEN
-                        + IGregTechDeviceInformation
-                            .decode("GT5U.infodata.purification_plant.linked_units.status.active");
-                }
-                case IDLE -> {
-                    text = text + EnumChatFormatting.GREEN
-                        + IGregTechDeviceInformation
-                            .decode("GT5U.infodata.purification_plant.linked_units.status.idle");
-                }
-                case DISABLED -> {
-                    text = text + EnumChatFormatting.YELLOW
-                        + IGregTechDeviceInformation
-                            .decode("GT5U.infodata.purification_plant.linked_units.status.disabled");
-                }
-                case INCOMPLETE_STRUCTURE -> {
-                    text = text + EnumChatFormatting.RED
-                        + IGregTechDeviceInformation
-                            .decode("GT5U.infodata.purification_plant.linked_units.status.incomplete");
-                }
+                case ACTIVE -> text = text + EnumChatFormatting.GREEN
+                    + IGregTechDeviceInformation.decode("GT5U.infodata.purification_plant.linked_units.status.active");
+                case IDLE -> text = text + EnumChatFormatting.GREEN
+                    + IGregTechDeviceInformation.decode("GT5U.infodata.purification_plant.linked_units.status.idle");
+                case DISABLED -> text = text + EnumChatFormatting.YELLOW
+                    + IGregTechDeviceInformation
+                        .decode("GT5U.infodata.purification_plant.linked_units.status.disabled");
+                case INCOMPLETE_STRUCTURE -> text = text + EnumChatFormatting.RED
+                    + IGregTechDeviceInformation
+                        .decode("GT5U.infodata.purification_plant.linked_units.status.incomplete");
             }
             ret.add(text);
         }

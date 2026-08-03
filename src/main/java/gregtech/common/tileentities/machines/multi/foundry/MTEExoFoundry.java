@@ -491,7 +491,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             .addSupportAny()
             .addSeparator()
             .addInfo(EnumChatFormatting.RED + "Glorious Evolution!")
-            .beginStructureBlock(15, 15, 55, true)
+            .beginStructureBlock(15, 55, 15, true)
             .addController("Front center, 2nd layer")
             .addCasing("548", "Exo-Foundry Containment Glass", false)
             .addCasing(MIN_CASINGS + "-485", "Primary Exo-Foundry Casing", false)
@@ -641,6 +641,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchInput inp) {
+            addIfSmartInput(inp);
             inp.updateTexture(aBaseCasingIndex);
             coolantHatches.add(inp);
             return true;
@@ -782,11 +783,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
@@ -804,7 +800,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.EXOFOUNDRY;
     }
 

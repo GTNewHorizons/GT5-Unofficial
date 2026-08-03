@@ -260,10 +260,10 @@ gt.blockmachines.itempipe.rounting_value=Routing Value: %s
 
 Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver=Absorption range: %s blocks
 
-gt.hatch_element_or= or
-gt.hatch_element_of_type=of type
-gt.hatch_element_of_class=of class
-gt.hatch_element_of_id=of id
+gt.hatch_element_or= or 
+gt.hatch_element_of_type=of type 
+gt.hatch_element_of_class=of class %s
+gt.hatch_element_of_id=of id %s
 
 # Basic Machine
 gt.blockmachines.basicmachine.accelerator.tier.01.name=Basic World Accelerator
@@ -1699,11 +1699,32 @@ GT5U.MBTT.Structure.MaxTierSkips=This machine can run recipes at most %d tiers a
 GT5U.MBTT.Structure.UnlimitedTierSkips=This machine can run recipes regardless of tier, if given enough energy
 GT5U.MBTT.Structure.DataStick.Waterline=Link to the §bWater Purification Plant§7 with a §aData Stick
 GT5U.MBTT.Structure.DataStick.PCB=Link to the §bPCB Factory§7 with a §aData Stick
-gt.mbtt.structure.front_center=Front center
+
 gt.mbtt.structure.back_center=Back center
+gt.mbtt.structure.front_bottom_center=Front bottom center
+gt.mbtt.structure.front_center=Front center
 gt.mbtt.structure.front_center_2nd_layer=Front center, 2nd layer
+gt.mbtt.structure.front_center_4th_layer=Front center, 4th layer
+gt.mbtt.structure.front_center_9th_layer=Front center, 9th layer
+gt.mbtt.structure.front_center_15th_layer=Front center, 15th layer
+gt.mbtt.structure.front_center_17th_layer=Front center, 17th layer
 gt.mbtt.structure.any_casing=Any casing
 gt.mbtt.structure.interior=Interior of the structure
+gt.mbtt.structure.any_tiered_glass=Any Tiered Glass
+gt.mbtt.structure.min_tiered_glass=%s+ Tiered Glass
+gt.mbtt.structure.any_bottom_casing=Any bottom casing
+gt.mbtt.structure.back_center_casing=Back center casing
+gt.mbtt.structure.any_back_center_casing=Any back center casing
+gt.mbtt.structure.any_front_shielding_casing=Any front shielding casing
+
+# Generic machine types
+gt.mbtt.machine_type.spacetime_manipulator=Spacetime Manipulator, EOH
+gt.mbtt.machine_type.exotic_matter_producer=Exotic Matter Producer
+gt.mbtt.machine_type.blast_smelter=Blast Smelter
+gt.mbtt.machine_type.blast_furnace=Blast Furnace, Furnace
+gt.mbtt.machine_type.plasma_fabricator=Plasma Fabricator
+gt.mbtt.machine_type.stellar_forge=Stellar Forge
+
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
 GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
@@ -1739,7 +1760,6 @@ GT5U.MBTT.PCB.Tooltip.3=Allows for overclocking. Requires 10 L/s of distilled wa
 GT5U.MBTT.PCB.Tooltip.4=Enables perfect overclocking by allowing nanites to work with extreme speed and efficiency. Uses 10 L/s of Super Coolant.
 GT5U.MBTT.PCB.Tooltip.5=Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste material but are fast. 50-200 μm.
 GT5U.MBTT.PCB.Tooltip.6=Can't change configuration when running!
-
 GT5U.MBTT.AlchemyCasingAny=Alchemically Resistant/Inert/Immune Casing
 GT5U.MBTT.AlchemicalConstructAny=Alchemical Construct
 GT5U.MBTT.SuperChest=Super/Quantum Chest
@@ -1796,12 +1816,12 @@ gt.multiblock.ExtremeHeatExchanger.desc3=Converts distilled water into §rSH Ste
 gt.multiblock.ExtremeHeatExchanger.desc4=Outputs §rSC Steam§7 if the input rate of hot fluid is above a certain §dthreshold
 gt.multiblock.ExtremeHeatExchanger.desc5=Explodes immediately if it runs out of distilled water
 gt.multiblock.ExtremeHeatExchanger.lava=§cLava§7 | SC Threshold §d80,000 %s/s§7 | Max Input §c160,000 %s/s§7 | Max Output §r640,000 %s/t SC Steam
-gt.multiblock.ExtremeHeatExchanger.hotcoolant=§cHot Coolant§7 | SC Threshold §d8,000 %s/s§7 | Max Input §c16,000 %s/s§7 | Max Output §r160,000 %s/t SC Steam
+gt.multiblock.ExtremeHeatExchanger.hotcoolant=§cHot Coolant§7 | SC Threshold §d8,000 %s/s§7 | Max Input §c128,000 %s/s§7 | Max Output §r1,280,000 %s/t SC Steam
 gt.multiblock.ExtremeHeatExchanger.hotsolarsalt=§cHot Solar Salt§7 | SC Threshold §d1,600 %s/s§7 | Max Input §c3,200 %s/s§7 | Max Output §r160,000 %s/t SC Steam
 gt.multiblock.ExtremeHeatExchanger.plasma1=§cPlasma§7 always outputs §rDense SC Steam§7 regardless of input rate
 gt.multiblock.ExtremeHeatExchanger.plasma2=The max input and output rates depend on the plasma's density (EU/L)
 gt.multiblock.ExtremeHeatExchanger.throttle1=A circuit in the controller lowers the SC threshold at the cost of steam
-gt.multiblock.ExtremeHeatExchanger.throttle2=§d-1.5%§7 SC Threshold and §r-1.5%§7 steam output per circuit over 1
+gt.multiblock.ExtremeHeatExchanger.throttle2=§d-150 %s/s§7 SC Threshold and §r-1.5%%§7 steam output per circuit over 1
 
 gt.multiblock.NeutralizationEngine.efficiency=Can §fuse §7a §bbase §7to boost §defficiency §7(consumes one by one):
 gt.multiblock.NeutralizationEngine.alkali_text=§b%s§7 : §d%d%%§7 : §f%d§7/§fminute
@@ -1826,6 +1846,7 @@ GT5U.MBTT.subchannel=Subchannel §b%s§7 determines §b%s
 
 GT5U.MBTT.CokeOvenHatch=Coke Oven Hatch
 GT5U.MBTT.CryotheumHatch=Cryotheum Cooling Hatch
+GT5U.MBTT.PyrotheumHatch=Pyrotheum Heating Hatch
 
 GT5U.cracker.io_side=Input/Output Hatches must be on opposite sides!
 GT5U.gui.text.structure_error.cracker_missing_middle_input_hatch=Missing Input Hatch for cracking fluid
@@ -2506,6 +2527,7 @@ GT5U.gui.button.voiding_mode_none=§7Void Nothing
 GT5U.gui.button.voiding_mode_item=§7Void Excess §6Items
 GT5U.gui.button.voiding_mode_fluid=§7Void Excess §9Fluids
 GT5U.gui.button.voiding_mode_all=§7Void Excess §6Items §7and §9Fluids
+GT5U.chat.voiding_mode_set=Voiding Mode: %s
 GT5U.gui.button.input_separation=Input Separation
 GT5U.gui.button.mode_switch=Mode Switch
 GT5U.gui.button.batch_mode=Batch Mode
@@ -2579,6 +2601,7 @@ GT5U.gui.text.per_hour=§fPer hour:
 GT5U.gui.text.per_day=§fPer day:
 GT5U.gui.text.progress_recipe=§fProgress: %ss / %ss (%s%%)
 GT5U.gui.text.progress_detail=§fProgress: %s%% §7(§f%ss§7/§f%ss§7)§r
+GT5U.gui.text.tier_name_with_parentheses=(%s)
 GT5U.gui.text.rate_short=(§7%s/s§f)
 GT5U.gui.text.rate_short_slow=(§7%ss/each§f)
 GT5U.gui.text.rate_large_suffix=§f[§7%s§f]
@@ -3579,6 +3602,7 @@ GT5U.item.toolbox.tooltip.deselect_tool=%s (while sneaking): Deselect active too
 GT5U.item.toolbox.tooltip.open_toolbox=%s: Open toolbox
 # This inserts gt.item.desc.durability into the %s
 GT5U.item.toolbox.tooltip.tool_durability=Tool %s
+GT5U.item.toolbox.tooltip.crafting=§4§lNOTE:§r §bWill craft with any/no tool selected
 
 GT5U.item.toolbox.byline.closed=Your stalwart ally for an epic\n§oengineering journey.
 # The tool-specific bylines are pretty much all jokes. Accuracy in translation isn't important.
@@ -3802,6 +3826,7 @@ GT5U.armor.behavior.Teleporter=Personal Teleporter
 GT5U.armor.behavior.MilkInfusion=Milk Infusion
 GT5U.armor.behavior.HoloInventory=Holographic Inventory
 GT5U.armor.behavior.Terrasteel=Will of the Ancients
+GT5U.armor.behavior.Levitation=Levitation Mode
 
 GT5U.armor.message.enabled=%s §aEnabled§r
 GT5U.armor.message.disabled=%s §cDisabled§r
@@ -3883,7 +3908,7 @@ GT5U.hatch.filter.tooltip.0=§6Left-Click§8 to remove
 GT5U.hatch.outputme.filter.format=%s: %s:
 GT5U.hatch.outputme.checkMode.true=Check Mode §cOn§r
 GT5U.hatch.outputme.checkMode.false=Check Mode §aOff§r
-GT5U.hatch.outputme.checkMode.desc=NOTE: Simulates insertion into the internal cell during recipe checks, limiting parallel by cell space. (requires a cell to work, increases recipe calculation cost)
+GT5U.hatch.outputme.checkMode.desc=NOTE: Check Mode caps parallelism based on available space during recipe checks (increases recipe calculation cost, especially without equal distribution card).
 GT5U.hatch.outputme.cacheMode.true=Cache Mode §cOn§r
 GT5U.hatch.outputme.cacheMode.false=Cache Mode §aOff§r
 GT5U.hatch.outputme.cacheMode.desc=Stores to the internal cell instead of to the ME Network.
@@ -3951,8 +3976,8 @@ GT5U.multiblock.scanner.is_meta_tile_entity=§cMetaTileEntity == null!
 
 
 # NEI recipe handlers
-GT5U.nei.heat_capacity=Heat Capacity: %s K
-GT5U.nei.heat_capacity.material=(%s)
+GT5U.nei.heat_capacity=Heat: %s K
+GT5U.nei.heat_capacity.material=Coil: %s
 GT5U.nei.tier=Tier: %s
 GT5U.nei.start_eu=Start: %s EU (MK %s)
 GT5U.nei.stages=Stages: %s
@@ -4414,7 +4439,7 @@ gt.item.large_fluid_cell.stainless_steel.name=Large Stainless Steel Fluid Cell
 gt.item.large_fluid_cell.stainless_steel.tooltip=
 gt.item.large_fluid_cell.titanium.name=Large Titanium Fluid Cell
 gt.item.large_fluid_cell.titanium.tooltip=
-gt.item.large_fluid_cell.chrome.name=Large Chrome Fluid Cell
+gt.item.large_fluid_cell.chrome.name=Large Rhodium-Plated Palladium Fluid Cell
 gt.item.large_fluid_cell.chrome.tooltip=
 gt.item.large_fluid_cell.iridium.name=Large Iridium Fluid Cell
 gt.item.large_fluid_cell.iridium.tooltip=
@@ -6385,11 +6410,12 @@ gt.blockmachines.multimachine.foundry.chassis2.flavor=Become Eternal
 gt.blockmachines.multimachine.foundry.chassis3.flavor=Ascend Reality
 
 gt.blockmachines.multimachine.foundry.universalcollapser.flavor=Fractured Universe
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip1=- Multiplies Speed by %s2x
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip1=- Multiplies Speed by %s4x
 gt.blockmachines.multimachine.foundry.universalcollapser.tooltip2=- Multiplies EU Consumption by §c4x
 gt.blockmachines.multimachine.foundry.universalcollapser.tooltip3=- Reduces Hatch Space by §615
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4=- Multiplies Speed by an additional %s2x§7 and EU Consumption by an additional §c2x§7 when
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5=   paired with the §bHypercooler§7 module
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4=- Additionally allows for §1§nUIV+§7 Recipes to be processed
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5=- Multiplies Speed by an additional %s2x§7 and EU Consumption by an additional §c2x§7 when
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip6=   paired with the §bHypercooler§7 module
 
 gt.blockmachines.multimachine.foundry.efficientoc.flavor=Optimized Overclocks
 gt.blockmachines.multimachine.foundry.efficientoc.tooltip1=- Increases Overclock Factor by §d0.4
@@ -6405,15 +6431,16 @@ gt.blockmachines.multimachine.foundry.powerefficient.tooltip4=   paired with the
 
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.flavor=Raised Boundary
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip1=- Allows for §1§nUIV+§7 Recipes to be processed
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip2=- Grants benefits when paired with other §dHeliocast Reinforcement§7 modules
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip3=- §f2+ Modules:
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4=   - Increases Base Speed by %s75%%§7 per module
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5=   - Subtracts %s10%%§7 from Initial EU Cost per module
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6=- §f3+ Modules:
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7=   - Adds %s6§7 Parallels per %sVoltage§7 tier per module
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=   - Increases Overclock Factor by §d0.08
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9=- §f4 Modules:
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10=   - Grants 2 maximum§d overclocks
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip2=- Grants extra effects when paired with at least 2 other §dHeliocast Reinforcement§7 modules
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip3=- Randomly increases processing values by a factor of Entropy which is rolled independently per value
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4=- Entropy is rolled between 0 and the number of §dHeliocast Reinforcement§7 Modules present (inclusive)
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5=- §f3+ Modules:
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6=   - Increases Base Speed by %s100%% * Entropy
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7=   - Subtracts %s15%% * Entropy§7 from Initial EU Cost
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=   - Adds %s8 * Entropy§7 Parallels per %sVoltage§7 tier
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9=   - Increases Overclock Factor by §d0.05 * Entropy
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10=- §f4 Modules:
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip11=   - Increases Maximum Overclocks by Entropy
 
 gt.blockmachines.multimachine.foundry.parallel.flavor=Greater Fate
 gt.blockmachines.multimachine.foundry.parallel.tooltip1=- Adds §612 §7Parallels per %s §7tier
@@ -6454,17 +6481,18 @@ GT5U.gui.text.foundry.pairings.harmonicefficiency.required=Requires §aProto-Vol
 GT5U.gui.text.foundry.pairings.harmonicefficiency.tooltip1=§d+0.1§r OC Factor
 GT5U.gui.text.foundry.pairings.harmonicefficiency.tooltip2=%s-50%%§r Initial EU Cost
 
-GT5U.gui.text.foundry.pairings.superstablecore.title=§dSuperstable Core
-GT5U.gui.text.foundry.pairings.superstablecore.required=Requires 2+ §dHeliocast Reinforcement§r Modules
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip1=This pairings bonuses scale with the amount of §dHeliocast Reinforcement§r Modules
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip2=When §f2 or more§r §dHeliocast Reinforcement§r modules are present:
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip3=Increases Base Speed by %s75%%§r per module
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip4=Subtracts %s10%%§r from Initial EU Cost per module
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip5=When §f3 or more§r §dHeliocast Reinforcement§r modules are present:
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip6=Adds %s6§r parallels per %sVoltage§r Tier per module
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip7=Increases Overclock Factor by §d0.08
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip8=§fWhen §f4§r §dHeliocast Reinforcement§r modules are present:
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip9=Grants 2 maximum §doverclocks
+GT5U.gui.text.foundry.pairings.entropiccore.title=§dEntropic Core
+GT5U.gui.text.foundry.pairings.entropiccore.required=Requires 3+ §dHeliocast Reinforcement§r Modules
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip1=This pairings bonuses scale with the amount of §dHeliocast Reinforcement§r Modules
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip2=Randomly increases processing values by a factor of Entropy which is rolled independently per value
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip3=Entropy is rolled between 0 and the number of §dHeliocast Reinforcement§r Modules present (inclusive)
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip4=When §f3 or more§r §dHeliocast Reinforcement§r modules are present:
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip5=%s+100%% * Entropy§r Speed
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip6=%s-15%% * Entropy§r Initial EU Cost
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip7=%s+8 * Entropy§r parallels per %sVoltage§r tier
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip8=§d+0.05 * Entropy§r OC Factor
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip9=§fWhen §f4§r §dHeliocast Reinforcement§r modules are present:
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip10=Increases Maximum Overclocks by Entropy
 
 GT5U.gui.text.foundry.pairings.realizedpotential.title=§5§k0§r§4Realized Potential§5§k0
 GT5U.gui.text.foundry.pairings.realizedpotential.required=Requires §bHypercooler§r and §5Universal Collapser§r Modules
@@ -6805,7 +6833,7 @@ fluid.dye.watermixed.dyered=Water Mixed Red Dye
 fluid.dye.watermixed.dyewhite=Water Mixed White Dye
 fluid.dye.watermixed.dyeyellow=Water Mixed Yellow Dye
 
-fluid.enzymessollution=EnzymesSollution
+fluid.enzymessollution=Enzyme Solution
 fluid.escherichiakolifluid=eColi Bacteria Fluid
 fluid.fermentation.base=Fermentation Base
 fluid.fieryblood=Fiery Blood
@@ -6836,7 +6864,7 @@ fluid.fluid.rocketfuelmixc=CN3H7O3 Rocket Fuel
 fluid.fluid.rocketfuelmixd=Dense Hydrazine Fuel Mixture
 fluid.fluid.rp1fuel=RP-1
 fluid.fluid.sulfuriccoaltaroil=Sulfuric Coal Tar Oil
-fluid.fluorecentddna=FluorecentdDNA
+fluid.fluorecentddna=Fluorescent DNA
 fluid.froth.almandineflotation=Almandine Froth
 fluid.froth.copperflotation=Chalcopyrite Froth
 fluid.froth.grossularflotation=Grossular Froth
@@ -6982,7 +7010,7 @@ fluid.putrescine=Putrescine
 fluid.pyrotheum=Blazing Pyrotheum
 fluid.rocket_fuel=Rocket Fuel
 fluid.saccharomycescerevisiaefluid=Common Yeast Fluid
-fluid.saccharomycescerevisiaevarbayanusfluid=Whine Yeast Fluid
+fluid.saccharomycescerevisiaevarbayanusfluid=Wine Yeast Fluid
 fluid.saccharomycescerevisiaevarcerevisiaefluid=Beer Yeast Fluid
 fluid.saccharomycesescherichiafluid=General Purpose Fermenting Bacteria Fluid
 fluid.solution.bluevitriol=Blue Vitriol Water Solution
@@ -7111,6 +7139,7 @@ key.gt.speed_decrease=Decrease Speed
 key.gt.jump_increase=Increase Jump Boost
 key.gt.jump_decrease=Decrease Jump Boost
 key.gt.force_field=Toggle Force Field
+key.gt.toggle_levitation_mode=Toggle Levitation Mode
 key.gt.open_radial_menu=Open Radial Menu
 
 # Tooltips for GT Tools
@@ -7553,6 +7582,13 @@ GT5U.infodata.fusion.mk_tier=§9Fusion Reactor MK§r %s
 GT5U.infodata.fusion.req=EU Required: §c%s§rEU/t
 GT5U.infodata.fusion.plasma=Plasma Output: §e%s§rL/t
 GT5U.infodata.naquadah_refinery.coil_tier=Coil Tier: %s
+
+GT5U.infodata.turbine.output=%s: %s EU/t
+GT5U.infodata.turbine.efficiency=Current Speed: %s %%
+GT5U.infodata.turbine.flow=Optimal Flow: %s L/%s (%s)
+GT5U.infodata.turbine.fuel=Fuel Remaining: %s L
+GT5U.infodata.turbine.dmg=Turbine Damage: %s %%
+GT5U.infodata.turbine.pollution=Pollution reduced to: %s %%
 
 GT5U.infodata.large_fluid_extractor.max_parallels=Max Parallels: %s%d%s
 GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus=Heating Coil Speed Bonus: +%s%.0f%s %%
@@ -9065,6 +9101,22 @@ GT5U.tooltip.bec-ionode.controller-pos=Front center, 12th layer
 GT5U.tooltip.bec-ionode.hatch-pos=Any electromagnetically-isolated casing
 GT5U.tooltip.bec-ionode.los-hatch-pos=Back center casing
 
+# Eye of Harmony Structure Hints
+GT5U.tooltip.eye-of-harmony.boundary-no-stocking-bus=Any boundary casing (no stocking bus)
+GT5U.tooltip.eye-of-harmony.boundary-no-stocking-hatch=Any boundary casing (no stocking hatch)
+GT5U.tooltip.eye-of-harmony.any-boundary-casing=Any boundary casing
+
+# Research Station Structure Hints
+GT5U.tooltip.research-station.footer=§aData Sticks go in the controller
+
+# Forge of Gods Structure Hints
+GT5U.tooltip.forge-of-gods.hatch-pos=Around controller
+GT5U.tooltip.forge-of-gods.output-bus-pos=Around controller (ME only)
+GT5U.tooltip.forge-of-gods.module=Forge of the Gods Module
+GT5U.tooltip.forge-of-gods.module-pos=Any side center shielding casing
+GT5U.tooltip.forge-of-gods.second-ring=Second Ring
+GT5U.tooltip.forge-of-gods.third-ring=Third Ring
+
 # BEC Generator Structure Hints
 GT5U.tooltip.bec-generator.controller-pos=Front center, 10th layer
 GT5U.tooltip.bec-generator.hatch-pos=Any electromagnetically-isolated casing around controller
@@ -9110,7 +9162,7 @@ GT5U.chat.bec-connected-assembler=Successfully connected to the Observation Arra
 GT5U.chat.bec-no-connect-assembler=Could not connect to the Observation Array
 
 # BEC Waila
-GT5U.chat.bec-processing-speed=Processing Speed: x%s
+GT5U.chat.bec-processing-speed=Processing Speed: %s points per tick
 GT5U.chat.bec-slowdowns=Slowdowns: %s
 
 # Test Factory Machines

@@ -976,9 +976,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     case weapon -> {
                         if (tStats.isWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
                     }
-                    case all -> {
-                        tResult.put(tEntry.getKey(), tEntry.getValue());
-                    }
+                    case all -> tResult.put(tEntry.getKey(), tEntry.getValue());
                     case armor, armor_feet, armor_head, armor_legs, armor_torso, breakable, fishing_rod -> {}
                     case bow -> {
                         if (tStats.isRangedWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
