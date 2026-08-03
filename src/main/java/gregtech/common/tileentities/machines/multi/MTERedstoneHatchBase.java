@@ -61,7 +61,7 @@ public abstract class MTERedstoneHatchBase extends MTEHatch {
     }
 
     public void setFacingSideRedstoneSignal(byte signal, boolean turnOtherFacesOff) {
-        if(this.getBaseMetaTileEntity()==null) return;
+        if (this.getBaseMetaTileEntity() == null) return;
         this.setRedstoneSignalOnFace(
             getBaseMetaTileEntity().getFrontFacing()
                 .ordinal(),
@@ -70,7 +70,7 @@ public abstract class MTERedstoneHatchBase extends MTEHatch {
     }
 
     public void setFacingSideRedstoneSignal(boolean on, boolean turnOtherFacesOff) {
-        setFacingSideRedstoneSignal(redstoneSignalFromOn(on),turnOtherFacesOff);
+        setFacingSideRedstoneSignal(redstoneSignalFromOn(on), turnOtherFacesOff);
     }
 
     @Override
