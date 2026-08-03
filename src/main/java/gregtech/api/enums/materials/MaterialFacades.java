@@ -12,7 +12,6 @@ import org.jetbrains.annotations.Nullable;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.api.enums.TextureSet;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialRef;
@@ -67,36 +66,22 @@ public class MaterialFacades {
     /// Registers a shapeless MaterialLib [Material] backing each wildcard marker, which
     /// [gregtech.api.material.MaterialUtils#byLegacyName] resolves by registry name.
     public static void registerBackingMaterials() {
-        AnyBronze = registerWildcard(
-            "AnyBronze",
-            "AnyBronze",
-            TextureSet.SET_SHINY,
-            GTMaterialFlag.METAL,
-            null,
-            null,
-            null);
+        AnyBronze = registerWildcard("AnyBronze", "AnyBronze", "SHINY", GTMaterialFlag.METAL, null, null, null);
         AnyCopper = registerWildcard(
             "AnyCopper",
             "AnyCopper",
-            TextureSet.SET_SHINY,
+            "SHINY",
             GTMaterialFlag.METAL,
             "Copper",
             "Copper",
             "AnnealedCopper");
-        AnyCarbon = registerWildcard("AnyCarbon", "AnyCarbon", TextureSet.SET_DULL, null, null, null, null);
-        AnyIron = registerWildcard(
-            "AnyIron",
-            "AnyIron",
-            TextureSet.SET_SHINY,
-            GTMaterialFlag.METAL,
-            "Iron",
-            "Iron",
-            null);
-        AnyRubber = registerWildcard("AnyRubber", "AnyRubber", TextureSet.SET_SHINY, null, null, "Rubber", null);
+        AnyCarbon = registerWildcard("AnyCarbon", "AnyCarbon", "DULL", null, null, null, null);
+        AnyIron = registerWildcard("AnyIron", "AnyIron", "SHINY", GTMaterialFlag.METAL, "Iron", "Iron", null);
+        AnyRubber = registerWildcard("AnyRubber", "AnyRubber", "SHINY", null, null, "Rubber", null);
         AnySyntheticRubber = registerWildcard(
             "AnySyntheticRubber",
             "AnySyntheticRubber",
-            TextureSet.SET_SHINY,
+            "SHINY",
             null,
             null,
             null,
@@ -105,10 +90,10 @@ public class MaterialFacades {
 
     /// Ports the smelt/macerate/arc targets, the metal flag, and `setUnifiable(false)` a wildcard marker
     /// carries. No shape table adds to these materials, which is what keeps them shapeless.
-    private static Material registerWildcard(String name, String localName, TextureSet texture, GTMaterialFlag flag,
+    private static Material registerWildcard(String name, String localName, String texture, GTMaterialFlag flag,
         String smeltInto, String macerateInto, String arcSmeltInto) {
         com.ruling_0.materiallib.api.MaterialBuilder builder = MaterialLibAPI
-            .newMaterial("gregtech", name, com.ruling_0.materiallib.api.TextureSet.of("gregtech", texture.mSetName))
+            .newMaterial("gregtech", name, com.ruling_0.materiallib.api.TextureSet.of("gregtech", texture))
             .setProperty(GTMaterialProperties.LOCAL_NAME, localName)
             .setProperty(GTMaterialProperties.ARGB, DEFAULT_ARGB)
             .setProperty(GTMaterialProperties.UNIFIABLE, false);

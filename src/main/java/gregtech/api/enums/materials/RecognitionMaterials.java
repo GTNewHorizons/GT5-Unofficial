@@ -15,7 +15,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 
@@ -60,11 +59,11 @@ public class RecognitionMaterials {
     /// The declared name and properties of a recognition entry, read by [#registerBackingMaterials] to build or
     /// find its backing [Material]. Carries no behaviour of its own -- it is pure declaration data, not part of
     /// the marker's runtime identity.
-    private record MarkerSpec(String name, String localName, TextureSet textureSet, int argb, boolean unifiable,
+    private record MarkerSpec(String name, String localName, String textureSet, int argb, boolean unifiable,
         Set<SubTag> subTags) {
 
         MarkerSpec(String name, boolean unifiable) {
-            this(name, name, TextureSet.SET_NONE, DEFAULT_ARGB, unifiable, Set.of());
+            this(name, name, "NONE", DEFAULT_ARGB, unifiable, Set.of());
         }
     }
 
@@ -127,7 +126,7 @@ public class RecognitionMaterials {
                     .newMaterial(
                         "gregtech",
                         m.name(),
-                        com.ruling_0.materiallib.api.TextureSet.of("gregtech", m.textureSet().mSetName))
+                        com.ruling_0.materiallib.api.TextureSet.of("gregtech", m.textureSet()))
                     .setProperty(GTMaterialProperties.LOCAL_NAME, m.localName())
                     .setProperty(GTMaterialProperties.ARGB, m.argb())
                     .setProperty(GTMaterialProperties.UNIFIABLE, m.unifiable());
@@ -156,14 +155,14 @@ public class RecognitionMaterials {
 
     // spotless:off
     private static final Marker[] MARKERS = {
-        new Marker(m -> Advanced = m, new MarkerSpec("Advanced", "Advanced Alloy", TextureSet.SET_NONE, DEFAULT_ARGB, true, Set.of())),
-        new Marker(m -> Ammonium = m, new MarkerSpec("Ammonium", "Ammonium", TextureSet.SET_NONE, DEFAULT_ARGB, true, Set.of())),
-        new Marker(m -> Fluix = m, new MarkerSpec("Fluix", "Fluix", TextureSet.SET_NONE, DEFAULT_ARGB, true, Set.of(SubTag.CRYSTAL, SubTag.CRYSTALLISABLE, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.QUARTZ))),
-        new Marker(m -> Leather = m, new MarkerSpec("Leather", "Leather", TextureSet.SET_ROUGH, 0x7f969650, true, Set.of())),
-        new Marker(m -> Limestone = m, new MarkerSpec("Limestone", "Limestone", TextureSet.SET_NONE, DEFAULT_ARGB, true, Set.of())),
-        new Marker(m -> Prismarine = m, new MarkerSpec("Prismarine", "Prismarine", TextureSet.SET_NONE, DEFAULT_ARGB, true, Set.of())),
-        new Marker(m -> Quartz = m, new MarkerSpec("Quartz", "Quartz", TextureSet.SET_QUARTZ, DEFAULT_ARGB, false, Set.of(SubTag.CRYSTAL, SubTag.CRYSTALLISABLE, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.QUARTZ))),
-        new Marker(m -> Sand = m, new MarkerSpec("Sand", "Sand", TextureSet.SET_NONE, DEFAULT_ARGB, true, Set.of())), };
+        new Marker(m -> Advanced = m, new MarkerSpec("Advanced", "Advanced Alloy", "NONE", DEFAULT_ARGB, true, Set.of())),
+        new Marker(m -> Ammonium = m, new MarkerSpec("Ammonium", "Ammonium", "NONE", DEFAULT_ARGB, true, Set.of())),
+        new Marker(m -> Fluix = m, new MarkerSpec("Fluix", "Fluix", "NONE", DEFAULT_ARGB, true, Set.of(SubTag.CRYSTAL, SubTag.CRYSTALLISABLE, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.QUARTZ))),
+        new Marker(m -> Leather = m, new MarkerSpec("Leather", "Leather", "ROUGH", 0x7f969650, true, Set.of())),
+        new Marker(m -> Limestone = m, new MarkerSpec("Limestone", "Limestone", "NONE", DEFAULT_ARGB, true, Set.of())),
+        new Marker(m -> Prismarine = m, new MarkerSpec("Prismarine", "Prismarine", "NONE", DEFAULT_ARGB, true, Set.of())),
+        new Marker(m -> Quartz = m, new MarkerSpec("Quartz", "Quartz", "QUARTZ", DEFAULT_ARGB, false, Set.of(SubTag.CRYSTAL, SubTag.CRYSTALLISABLE, SubTag.NO_SMASHING, SubTag.NO_SMELTING, SubTag.QUARTZ))),
+        new Marker(m -> Sand = m, new MarkerSpec("Sand", "Sand", "NONE", DEFAULT_ARGB, true, Set.of())), };
 
     private static final MarkerSpec[] RECOGNITION_MARKERS = {
         new MarkerSpec("Adamite", true),

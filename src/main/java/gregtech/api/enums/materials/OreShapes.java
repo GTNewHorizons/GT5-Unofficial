@@ -51,6 +51,13 @@ public class OreShapes {
     private static final String[] SMALL_ORE_EXCLUDED = { "PackedIce", "BlueIce" };
     // spotless:on
 
+    /// The variant whose per-material icon stands in for the whole shape wherever GregTech draws ore art without
+    /// a shape block behind it -- [gregtech.common.blocks.GTBlockOre] and the ore marker overlay both composite
+    /// the stone layer themselves, so they need the tinted ore icon alone. Every variant resolves the same
+    /// `ore`/`oreSmall` texture unless a texture set ships per-variant art, and this one is the only variant both
+    /// shapes are guaranteed to declare ([#SMALL_ORE_EXCLUDED] drops two from `oreSmall`).
+    public static final String ICON_VARIANT = variantOf(STONE_TYPE_NAMES[0]);
+
     /// Untinted per-variant background textures, one per [StoneType], each a `"<domain>:<path>"` icon name
     /// resolved on the block atlas (basePath `textures/blocks/`, per
     /// [com.ruling_0.materiallib.api.BlockShapeBuilder#variantBase]'s contract) -- vanilla Minecraft blocks, GT's

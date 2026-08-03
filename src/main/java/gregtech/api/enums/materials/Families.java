@@ -1,5 +1,7 @@
 package gregtech.api.enums.materials;
 
+import java.util.List;
+
 import com.ruling_0.materiallib.api.Family;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.StandardProperties;
@@ -34,7 +36,7 @@ public class Families {
 
     public static void init() {
         all = MaterialLibAPI.newFamily("gregtech", "All")
-            .setProperty(StandardProperties.FALLBACK_TEXTURE_SET, TextureSet.of("gregtech", "NONE"))
+            .setProperty(StandardProperties.FALLBACK_TEXTURE_SETS, List.of(TextureSet.of("gregtech", "NONE")))
             .build();
 
         dusts = MaterialLibAPI.newFamily("gregtech", "Dusts")
