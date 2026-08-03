@@ -21,6 +21,7 @@ import static gregtech.api.util.GTUtility.max;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.annotation.Nullable;
@@ -28,6 +29,7 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -76,9 +78,9 @@ import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
-import gtnhlanth.util.DescTextLocalization;
 import gtnhlanth.util.Util;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotron>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -504,33 +506,11 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        final Map<String, Object> tooltipVars = Map.of("fluidUnit", getFluidUnit());
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.synch.machinetype"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info1"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info2"))
-            .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocalFormatted("gtnhlanth.tt.synch.info3", getFluidUnit()))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.oxygen"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.nitrogen"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.coolant"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.Scoolant"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info4"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info5"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info6"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info7"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info8"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info9"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info10"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info11"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info12"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info13"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info14"))
-            .addSupportAny()
+            .addMarkdown(new ResourceLocation("gregtech", "synchrotron"), tooltipVars)
             .beginStructureBlock(36, 7, 34, true)
             .addController("Front center, 4th layer")
             .addCasing("1690", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
@@ -554,6 +534,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addSubChannel(GTStructureChannels.SYNCHROTRON_ANTENNA)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -57,6 +58,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolutionTank>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -217,9 +219,9 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.disstank.machinetype"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.disstank.info1"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.disstank.info2"))
+            .addMarkdown(new ResourceLocation("gregtech", "dissolution-tank"))
             .beginStructureBlock(5, 5, 5, true)
             .addController("Front center, 2nd layer")
             .addCasing("30-44", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
@@ -233,6 +235,7 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 }

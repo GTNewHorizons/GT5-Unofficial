@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -66,8 +67,8 @@ import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.item.ItemPhotolithographicMask;
 import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.TargetChamberMetadata;
-import gtnhlanth.util.DescTextLocalization;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -188,17 +189,9 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.tc.machinetype"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info1"))
-            .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info2"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info3"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info4"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info5"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info6"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info7"))
+            .addMarkdown(new ResourceLocation("gregtech", "target-chamber"))
             .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom center")
             .addCasing("34", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), false)
@@ -218,6 +211,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
