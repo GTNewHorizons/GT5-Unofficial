@@ -7,6 +7,7 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
@@ -23,6 +24,6 @@ public class ProcessingCompressed implements IOreRecipeRegistrator {
         GTModHandler.removeRecipeByOutputDelayed(stack);
         CoverRegistry.registerDecorativeCover(
             stack,
-            TextureFactory.of(MaterialUtils.iconSet(material).mTextures[72], MaterialUtils.rgba(material)));
+            TextureFactory.of(GTMaterialIcons.block("block2", material), MaterialUtils.rgba(material)));
     }
 }

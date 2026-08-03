@@ -24,6 +24,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
@@ -178,19 +179,26 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
     }
 
     /** Cell type specifies the cell capacity, appearance, and item name format. */
+    /// The untinted cell art each [CellType] draws, tinted per fluid at render; the same two base textures
+    /// [gregtech.api.enums.materials.CellShapes] gives the cell and plasma-cell shapes.
+    private static final String CELL_BASE = "gregtech:materials/cell_base";
+    private static final String CELL_PLASMA_BASE = "gregtech:materials/cell_plasma_base";
+
     private enum CellType {
 
-        REGULAR(1_000, OrePrefixes.cell),
-        SMALL(1 * INGOTS, OrePrefixes.cell),
-        MOLTEN(1 * INGOTS, OrePrefixes.cellMolten),
-        PLASMA(1_000, OrePrefixes.cellPlasma);
+        REGULAR(1_000, OrePrefixes.cell, CELL_BASE),
+        SMALL(1 * INGOTS, OrePrefixes.cell, CELL_BASE),
+        MOLTEN(1 * INGOTS, OrePrefixes.cellMolten, CELL_PLASMA_BASE),
+        PLASMA(1_000, OrePrefixes.cellPlasma, CELL_PLASMA_BASE);
 
         private final int capacity;
         private final OrePrefixes prefix;
+        private final String baseIcon;
 
-        CellType(int capacity, OrePrefixes prefix) {
+        CellType(int capacity, OrePrefixes prefix, String baseIcon) {
             this.capacity = capacity;
             this.prefix = prefix;
+            this.baseIcon = baseIcon;
         }
     }
 
@@ -233,11 +241,8 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
     public static synchronized void preInit() {
         if (INSTANCE == null) INSTANCE = new MetaGeneratedItem98();
 
-        // We'll just steal the icons from Water. They are all the same anyway (except _NULL is broken for cells).
         for (CellType cellType : CellType.values()) {
-            IIconContainer iconContainer = MaterialUtils.iconSet(Materials.Water).mTextures[cellType.prefix
-                .getTextureIndex()];
-            INSTANCE.iconContainerMap.put(cellType, iconContainer);
+            INSTANCE.iconContainerMap.put(cellType, Textures.ItemIcons.custom(cellType.baseIcon));
         }
     }
 

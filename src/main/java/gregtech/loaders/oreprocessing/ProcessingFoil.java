@@ -11,6 +11,7 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
@@ -45,6 +46,6 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
     private void registerCover(ItemStack stack, Material material) {
         CoverRegistry.registerDecorativeCover(
             stack,
-            TextureFactory.of(MaterialUtils.iconSet(material).mTextures[70], MaterialUtils.rgba(material)));
+            TextureFactory.of(GTMaterialIcons.block("foil", material), MaterialUtils.rgba(material)));
     }
 }

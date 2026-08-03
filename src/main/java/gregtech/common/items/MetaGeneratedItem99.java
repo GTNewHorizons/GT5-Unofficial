@@ -21,6 +21,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
@@ -182,7 +183,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         Material material = getMaterial(aMetaData);
         OrePrefixes prefix = getOrePrefix(aMetaData);
         if (material != null && prefix != null) {
-            return MaterialUtils.iconSet(material).mTextures[prefix.getTextureIndex()];
+            return GTMaterialIcons.item(prefix, material);
         }
         return null;
     }

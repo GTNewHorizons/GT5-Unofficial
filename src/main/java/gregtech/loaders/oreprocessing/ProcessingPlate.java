@@ -36,7 +36,6 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
@@ -44,6 +43,7 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -585,9 +585,9 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             stack,
             // If there is an ItemStack of Block for Materials
             tStack == NI ?
-            // Use the material's RGBA-dyed blocs/materialicons/MATERIALSET/block1 icons
+            // Use the material's RGBA-dyed blocks/materials/MATERIALSET/block1 icons
                 TextureFactory.builder()
-                    .addIcon(MaterialUtils.iconSet(material).mTextures[MaterialIconRegistry.IconType.BLOCK1.ordinal()])
+                    .addIcon(GTMaterialIcons.block("block1", material))
                     .setRGBA(MaterialUtils.rgba(material))
                     .stdOrient()
                     .build()
