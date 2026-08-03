@@ -810,8 +810,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             .addInputBus("1", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.hatch-pos"), 1)
             .addOutputBus("1", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.output-bus-pos"), 1)
             .addStructureInfo("")
-            .addStructureInfo(
-                StatCollector.translateToLocal("GT5U.MBTT.Structure.Base") + EnumChatFormatting.AQUA + " (T1)")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base") + EnumChatFormatting.AQUA + " (T1)")
             .addCasing("3949", TranscendentallyAmplifiedMagneticConfinementCasing.getLocalizedName(), false)
             .addCasing("2799-2815", SingularityReinforcedStellarShieldingCasing.getLocalizedName(), false)
             .addCasing("345", RemoteGravitonFlowModulator.getLocalizedName(), false)
@@ -819,43 +818,25 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             .addCasing("130", BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), false)
             .addCasing("36", StellarEnergySiphonCasing.getLocalizedName(), false)
             .addCasing("9", SpatiallyTranscendentGravitationalLens.getLocalizedName(), false)
-            .addMiscHatch(
-                "0-8",
-                StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module"),
-                StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module-pos"),
-                2)
+            .addMiscHatch("0-8", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module"), StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module-pos"), 2)
             .addStructureInfo("")
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.second-ring")
-                    + EnumChatFormatting.AQUA
-                    + " (T2)")
+            .addStructureInfo(EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.second-ring") + EnumChatFormatting.AQUA + " (T2)")
             .addCasing("3336", TranscendentallyAmplifiedMagneticConfinementCasing.getLocalizedName(), false)
             .addCasing("2012", SingularityReinforcedStellarShieldingCasing.getLocalizedName(), false)
             .addCasing("357", MedialGravitonFlowModulator.getLocalizedName(), false)
             .addCasing("240", CelestialMatterGuidanceCasing.getLocalizedName(), false)
             .addCasing("45", SpatiallyTranscendentGravitationalLens.getLocalizedName(), false)
             .addCasing("14", BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), false)
-            .addMiscHatch(
-                "0-12",
-                StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module"),
-                StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module-pos"),
-                2)
+            .addMiscHatch("0-12", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module"), StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module-pos"), 2)
             .addStructureInfo("")
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.third-ring")
-                    + EnumChatFormatting.AQUA
-                    + " (T3)")
+            .addStructureInfo(EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.third-ring") + EnumChatFormatting.AQUA + " (T3)")
             .addCasing("3728", TranscendentallyAmplifiedMagneticConfinementCasing.getLocalizedName(), false)
             .addCasing("1736", SingularityReinforcedStellarShieldingCasing.getLocalizedName(), false)
             .addCasing("397", CentralGravitonFlowModulator.getLocalizedName(), false)
             .addCasing("312", CelestialMatterGuidanceCasing.getLocalizedName(), false)
             .addCasing("101", SpatiallyTranscendentGravitationalLens.getLocalizedName(), false)
             .addCasing("14", BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), false)
-            .addMiscHatch(
-                "0-16",
-                StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module"),
-                StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module-pos"),
-                2)
+            .addMiscHatch("0-16", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module"), StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module-pos"), 2)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.rings"))
             .toolTipFinisher();

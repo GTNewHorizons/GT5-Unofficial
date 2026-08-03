@@ -1699,11 +1699,15 @@ GT5U.MBTT.Structure.MaxTierSkips=This machine can run recipes at most %d tiers a
 GT5U.MBTT.Structure.UnlimitedTierSkips=This machine can run recipes regardless of tier, if given enough energy
 GT5U.MBTT.Structure.DataStick.Waterline=Link to the §bWater Purification Plant§7 with a §aData Stick
 GT5U.MBTT.Structure.DataStick.PCB=Link to the §bPCB Factory§7 with a §aData Stick
-gt.mbtt.structure.front_center=Front center
+
 gt.mbtt.structure.back_center=Back center
+gt.mbtt.structure.front_bottom_center=Front bottom center
+gt.mbtt.structure.front_center=Front center
 gt.mbtt.structure.front_center_2nd_layer=Front center, 2nd layer
 gt.mbtt.structure.front_center_4th_layer=Front center, 4th layer
-gt.mbtt.structure.front_bottom_center=Front bottom center
+gt.mbtt.structure.front_center_9th_layer=Front center, 9th layer
+gt.mbtt.structure.front_center_15th_layer=Front center, 15th layer
+gt.mbtt.structure.front_center_17th_layer=Front center, 17th layer
 gt.mbtt.structure.any_casing=Any casing
 gt.mbtt.structure.interior=Interior of the structure
 gt.mbtt.structure.any_tiered_glass=Any Tiered Glass
@@ -1711,9 +1715,6 @@ gt.mbtt.structure.min_tiered_glass=%s+ Tiered Glass
 gt.mbtt.structure.any_bottom_casing=Any bottom casing
 gt.mbtt.structure.back_center_casing=Back center casing
 gt.mbtt.structure.any_back_center_casing=Any back center casing
-gt.mbtt.structure.front_center_9th_layer=Front center, 9th layer
-gt.mbtt.structure.front_center_15th_layer=Front center, 15th layer
-gt.mbtt.structure.front_center_17th_layer=Front center, 17th layer
 gt.mbtt.structure.any_front_shielding_casing=Any front shielding casing
 
 # Generic machine types

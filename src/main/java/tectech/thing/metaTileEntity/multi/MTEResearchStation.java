@@ -240,7 +240,6 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // Machine Type: Research Station, Scanner
         // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.type"))
             .addMarkdown(new ResourceLocation("gregtech", "research-station"))
@@ -250,16 +249,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             .addCasing("52-58", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 1).getDisplayName(), false)
             .addCasing("23", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 3).getDisplayName(), false)
             .addCasing("14", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 2).getDisplayName(), false)
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"),
-                StatCollector.translateToLocal("tt.keyword.Structure.CenterPillar"),
-                2)
-            .addMiscHatch(
-                "1+",
-                StatCollector.translateToLocal("tt.keyword.Structure.DataInput"),
-                StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing"),
-                1)
+            .addMiscHatch("1", StatCollector.translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"), StatCollector.translateToLocal("tt.keyword.Structure.CenterPillar"), 2)
+            .addMiscHatch("1+", StatCollector.translateToLocal("tt.keyword.Structure.DataInput"), StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing"), 1)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing"), 1)
             .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing"), 1)
             .addStructureInfo("")

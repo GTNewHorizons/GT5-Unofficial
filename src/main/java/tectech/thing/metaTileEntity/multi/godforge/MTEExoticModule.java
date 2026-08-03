@@ -517,47 +517,15 @@ public class MTEExoticModule extends MTEBaseModule {
             .addMarkdown(new ResourceLocation("gregtech", "godforge-exotic-module"))
             .beginStructureBlock(7, 7, 13, false)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
-            .addCasing(
-                "0-20",
-                CustomItemList.Godforge_SingularityShieldingCasing.get(1)
-                    .getDisplayName(),
-                false)
-            .addCasing(
-                "20",
-                CustomItemList.Godforge_BoundlessStructureCasing.get(1)
-                    .getDisplayName(),
-                false)
-            .addCasing(
-                "5",
-                CustomItemList.Godforge_GuidanceCasing.get(1)
-                    .getDisplayName(),
-                false)
-            .addCasing(
-                "5",
-                CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(1)
-                    .getDisplayName(),
-                false)
-            .addCasing(
-                "1",
-                CustomItemList.Godforge_StellarEnergySiphonCasing.get(1)
-                    .getDisplayName(),
-                false)
-            .addInputBus(
-                "0+",
-                StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"),
-                1)
-            .addInputHatch(
-                "0+",
-                StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"),
-                1)
-            .addOutputBus(
-                "1+",
-                StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"),
-                1)
-            .addOutputHatch(
-                "1+",
-                StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"),
-                1)
+            .addCasing("0-20", CustomItemList.Godforge_SingularityShieldingCasing.get(1).getDisplayName(), false)
+            .addCasing("20", CustomItemList.Godforge_BoundlessStructureCasing.get(1).getDisplayName(), false)
+            .addCasing("5", CustomItemList.Godforge_GuidanceCasing.get(1).getDisplayName(), false)
+            .addCasing("5", CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(1).getDisplayName(), false)
+            .addCasing("1", CustomItemList.Godforge_StellarEnergySiphonCasing.get(1).getDisplayName(), false)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
             .toolTipFinisher();
         // spotless:on
         return tt;

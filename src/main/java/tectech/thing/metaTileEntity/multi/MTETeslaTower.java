@@ -553,38 +553,17 @@ public class MTETeslaTower extends TTMultiblockBase
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.name")) // Machine Type: Tesla
-                                                                                               // Tower
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.name"))
             .addMarkdown(new ResourceLocation("gregtech", "tesla-tower"))
             .addSupportAny()
             .beginStructureBlock(7, 17, 7, false)
             .addController(translateToLocal("gt.mbtt.structure.front_bottom_center"))
-            .addCasing(
-                "128",
-                CustomItemList.tM_TeslaToroid.get(1L)
-                    .getDisplayName(),
-                false)
-            .addCasing(
-                "17-33",
-                CustomItemList.tM_TeslaBase.get(1L)
-                    .getDisplayName(),
-                false)
+            .addCasing("128", CustomItemList.tM_TeslaToroid.get(1L).getDisplayName(), false)
+            .addCasing("17-33", CustomItemList.tM_TeslaBase.get(1L).getDisplayName(), false)
             .addCasing("20", TTCasingsContainer.sBlockCasingsBA0.getLocalizedName(), true)
-            .addCasing(
-                "16",
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1L)
-                    .getDisplayName(),
-                false)
-            .addCasing(
-                "12",
-                CustomItemList.tM_TeslaSecondary.get(1L)
-                    .getDisplayName(),
-                false)
-            .addMiscHatch(
-                "1+",
-                translateToLocal("gt.blockmachines.hatch.capacitor.tier.03.name"),
-                translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"),
-                1)
+            .addCasing("16", GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1L).getDisplayName(), false)
+            .addCasing("12", CustomItemList.tM_TeslaSecondary.get(1L).getDisplayName(), false)
+            .addMiscHatch("1+", translateToLocal("gt.blockmachines.hatch.capacitor.tier.03.name"), translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .addInputHatch("0+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
