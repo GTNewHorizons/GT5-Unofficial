@@ -7,12 +7,12 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialUtils;
 
 public class ToolBuzzSawLV extends ToolSaw {
@@ -54,9 +54,7 @@ public class ToolBuzzSawLV extends ToolSaw {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead
-            ? MaterialUtils.iconSet(
-                MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[OrePrefixes.toolHeadBuzzSaw.getTextureIndex()]
+        return !aIsToolHead ? GTMaterialIcons.item("toolHeadBuzzSaw", MetaGeneratedTool.getPrimaryMaterialML(aStack))
             : Textures.ItemIcons.HANDLE_BUZZSAW;
     }
 

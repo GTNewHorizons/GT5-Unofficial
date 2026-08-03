@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.material.MaterialUtils;
+import gregtech.api.material.GTMaterialIcons;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -33,13 +33,11 @@ public class DetravToolElectricProspector extends DetravToolElectricProspectorBa
 
         if (tier <= 9 && tier >= 6) {
             return aIsToolHead
-                ? MaterialUtils
-                    .iconSet(MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[mProspectorTextures[tier - 5]]
+                ? GTMaterialIcons.item(PROSPECTOR_ICONS[tier - 5], MetaGeneratedTool.getPrimaryMaterialML(aStack))
                 : null;
         } else {
             return aIsToolHead
-                ? MaterialUtils
-                    .iconSet(MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[mProspectorTextures[1]]
+                ? GTMaterialIcons.item(PROSPECTOR_ICONS[1], MetaGeneratedTool.getPrimaryMaterialML(aStack))
                 : null;
         }
     }

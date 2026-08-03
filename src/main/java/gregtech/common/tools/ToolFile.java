@@ -7,11 +7,10 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
-import gregtech.api.enums.MaterialIconRegistry;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTToolHarvestHelper;
 
@@ -54,12 +53,8 @@ public class ToolFile extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead
-            ? MaterialUtils.iconSet(MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[OrePrefixes.toolHeadFile
-                .getTextureIndex()]
-            : MaterialUtils.iconSet(
-                MetaGeneratedTool.getSecondaryMaterialML(aStack)).mTextures[MaterialIconRegistry.IconType.HANDLE_FILE
-                    .ordinal()];
+        return !aIsToolHead ? GTMaterialIcons.item("toolHeadFile", MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : GTMaterialIcons.item("handleFile", MetaGeneratedTool.getSecondaryMaterialML(aStack));
     }
 
     @Override

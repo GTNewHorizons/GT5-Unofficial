@@ -7,17 +7,11 @@ import net.minecraftforge.common.MinecraftForge;
 import detrav.DetravScannerMod;
 import detrav.client.DetravOreMarkerRenderer;
 import detrav.gui.DetravScannerGUI;
-import detrav.items.tools.DetravToolElectricProspectorBase;
 
 /**
  * Created by wital_000 on 19.03.2016.
  */
 public class ClientProxy extends CommonProxy {
-
-    public ClientProxy() {
-        // if removed, textures are somehow not loaded in the game.
-        int test = DetravToolElectricProspectorBase.mProspectorTextures.length;
-    }
 
     @Override
     public void onPostLoad() {

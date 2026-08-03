@@ -9,11 +9,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
 import gregtech.GTMod;
-import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Textures.ItemIcons;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialUtils;
 import gregtech.common.tools.ToolWireCutter;
 
@@ -41,10 +41,8 @@ public class ToolElectricSnips extends ToolWireCutter {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MaterialUtils.iconSet(
-            MetaGeneratedTool
-                .getPrimaryMaterialML(aStack)).mTextures[MaterialIconRegistry.IconType.TOOL_HEAD_ELECTRIC_SNIPS
-                    .ordinal()]
+        return aIsToolHead
+            ? GTMaterialIcons.item("toolHeadElectricSnips", MetaGeneratedTool.getPrimaryMaterialML(aStack))
             : ItemIcons.POWER_UNIT_MV;
     }
 

@@ -19,11 +19,11 @@ import net.minecraftforge.event.world.BlockEvent;
 import detrav.items.behaviours.BehaviourDetravToolElectricProspector;
 import gregtech.api.damagesources.GTDamageSources;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialUtils;
 
 /**
@@ -31,12 +31,9 @@ import gregtech.api.material.MaterialUtils;
  */
 public class DetravToolElectricProspectorBase implements IToolStats {
 
-    public static final short[] mProspectorTextures = new short[] {
-        (short) MaterialIconRegistry.IconType.TOOL_PROSPECTOR.ordinal(),
-        (short) MaterialIconRegistry.IconType.TOOL_PROSPECTOR_LUV.ordinal(),
-        (short) MaterialIconRegistry.IconType.TOOL_PROSPECTOR_ZPM.ordinal(),
-        (short) MaterialIconRegistry.IconType.TOOL_PROSPECTOR_UV.ordinal(),
-        (short) MaterialIconRegistry.IconType.TOOL_PROSPECTOR_UHV.ordinal() };
+    /// The prospector art of each tier, indexed the way [DetravToolElectricProspector] selects it.
+    public static final String[] PROSPECTOR_ICONS = { "toolProspector", "toolProspectorElectricLuV",
+        "toolProspectorElectricZPM", "toolProspectorElectricUV", "toolProspectorElectricUHV" };
 
     @Override
     public int getToolDamagePerBlockBreak() {
@@ -194,8 +191,7 @@ public class DetravToolElectricProspectorBase implements IToolStats {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead
-            ? MaterialUtils.iconSet(MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[mProspectorTextures[0]]
+        return aIsToolHead ? GTMaterialIcons.item(PROSPECTOR_ICONS[0], MetaGeneratedTool.getPrimaryMaterialML(aStack))
             : null;
     }
 

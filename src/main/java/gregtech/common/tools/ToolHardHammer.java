@@ -16,10 +16,10 @@ import net.minecraft.util.IChatComponent;
 import net.minecraftforge.event.world.BlockEvent;
 
 import gregtech.GTMod;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
@@ -133,11 +133,8 @@ public class ToolHardHammer extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead
-            ? MaterialUtils.iconSet(MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[OrePrefixes.toolHeadHammer
-                .getTextureIndex()]
-            : MaterialUtils.iconSet(MetaGeneratedTool.getSecondaryMaterialML(aStack)).mTextures[OrePrefixes.stick
-                .getTextureIndex()];
+        return aIsToolHead ? GTMaterialIcons.item("toolHeadHammer", MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : GTMaterialIcons.item("stick", MetaGeneratedTool.getSecondaryMaterialML(aStack));
     }
 
     @Override

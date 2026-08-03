@@ -11,12 +11,12 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
 import gregtech.GTMod;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTToolHarvestHelper;
 
@@ -80,9 +80,7 @@ public class ToolDrillLV extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead
-            ? MaterialUtils.iconSet(MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[OrePrefixes.toolHeadDrill
-                .getTextureIndex()]
+        return aIsToolHead ? GTMaterialIcons.item("toolHeadDrill", MetaGeneratedTool.getPrimaryMaterialML(aStack))
             : Textures.ItemIcons.POWER_UNIT_LV;
     }
 

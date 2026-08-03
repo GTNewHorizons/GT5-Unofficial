@@ -2,11 +2,11 @@ package gregtech.common.tools;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialUtils;
 
 public class ToolScrewdriverLV extends ToolScrewdriver {
@@ -25,9 +25,7 @@ public class ToolScrewdriverLV extends ToolScrewdriver {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return !aIsToolHead
-            ? MaterialUtils
-                .iconSet(MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[OrePrefixes.toolHeadScrewdriver
-                    .getTextureIndex()]
+            ? GTMaterialIcons.item("toolHeadScrewdriver", MetaGeneratedTool.getPrimaryMaterialML(aStack))
             : Textures.ItemIcons.HANDLE_ELECTRIC_SCREWDRIVER;
     }
 

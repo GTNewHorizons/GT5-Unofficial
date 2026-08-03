@@ -15,11 +15,10 @@ import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.world.BlockEvent;
 
-import gregtech.api.enums.MaterialIconRegistry;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTToolHarvestHelper;
 
@@ -88,12 +87,8 @@ public class ToolSaw extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead
-            ? MaterialUtils.iconSet(MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[OrePrefixes.toolHeadSaw
-                .getTextureIndex()]
-            : MaterialUtils.iconSet(
-                MetaGeneratedTool.getSecondaryMaterialML(aStack)).mTextures[MaterialIconRegistry.IconType.HANDLE_SAW
-                    .ordinal()];
+        return aIsToolHead ? GTMaterialIcons.item("toolHeadSaw", MetaGeneratedTool.getPrimaryMaterialML(aStack))
+            : GTMaterialIcons.item("handleSaw", MetaGeneratedTool.getSecondaryMaterialML(aStack));
     }
 
     @Override

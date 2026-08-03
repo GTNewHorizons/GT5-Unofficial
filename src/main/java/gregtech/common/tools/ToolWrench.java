@@ -28,10 +28,10 @@ import appeng.api.parts.IPartHost;
 import appeng.block.AEBaseTileBlock;
 import appeng.parts.PartPlacement;
 import appeng.util.Platform;
-import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTToolHarvestHelper;
 import gregtech.common.items.behaviors.BehaviourSwitchMode;
@@ -98,11 +98,7 @@ public class ToolWrench extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead
-            ? MaterialUtils.iconSet(
-                MetaGeneratedTool.getPrimaryMaterialML(aStack)).mTextures[MaterialIconRegistry.IconType.TOOL_WRENCH
-                    .ordinal()]
-            : null;
+        return aIsToolHead ? GTMaterialIcons.item("toolWrench", MetaGeneratedTool.getPrimaryMaterialML(aStack)) : null;
     }
 
     @Override
