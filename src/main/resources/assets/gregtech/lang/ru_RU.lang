@@ -1690,6 +1690,9 @@ gt.mbtt.structure.min_tiered_glass=Стекло тира %s+
 gt.mbtt.structure.any_bottom_casing=Любой нижний блок корпуса
 gt.mbtt.structure.back_center_casing=Сзади посередине
 gt.mbtt.structure.front_center_9th_layer=Спереди в центре, 9-й слой
+gt.mbtt.structure.front_center_17th_layer=Спереди в центре, 17-й слой
+
+gt.mbtt.machine_type.spacetime_manipulator=Пространственно-временной манипулятор, EOH
 GT5U.MBTT.HatchInfo=Любой %s
 GT5U.MBTT.HatchHint= (Подсказка: %s)
 GT5U.MBTT.BoroGlassAny=Боросиликатное стекло (любое, смешанное)
@@ -7274,8 +7277,6 @@ GT5U.tooltip.drone_remote_disconnected=Shift-right-click an active Drone Centre 
 GT5U.tooltip.drone_remote_connected=Connected to centre: %s, %s, %s, on dim%s
 GT5U.tooltip.drone_remote_not_found=Дрон-станция: x: %s y: %s z: %s в dim%s не найдена!
 
-GT5U.tooltip.eye-of-harmony.machine-type=Пространственно-временной манипулятор, EOH
-GT5U.tooltip.eye-of-harmony.controller-pos=Спереди в центре
 
 # info data
 GT5U.infodata.no_network=Нет сети

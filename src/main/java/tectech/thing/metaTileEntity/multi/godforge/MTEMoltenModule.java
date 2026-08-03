@@ -166,19 +166,19 @@ public class MTEMoltenModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("GT5U.tooltip.godforge-molten-module.machine-type"))
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.blast_smelter"))
             .addMarkdown(new ResourceLocation("gregtech", "godforge-molten-module"))
             .beginStructureBlock(7, 7, 13, false)
-            .addController(StatCollector.translateToLocal("GT5U.tooltip.godforge-molten-module.controller-pos"))
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
             .addCasing("0-20", CustomItemList.Godforge_SingularityShieldingCasing.getDisplayName(), false)
             .addCasing("20", CustomItemList.Godforge_BoundlessStructureCasing.getDisplayName(), false)
             .addCasing("5", CustomItemList.Godforge_GuidanceCasing.getDisplayName(), false)
             .addCasing("5", CustomItemList.Godforge_HarmonicPhononTransmissionConduit.getDisplayName(), false)
             .addCasing("1", CustomItemList.Godforge_StellarEnergySiphonCasing.getDisplayName(), false)
-            .addInputBus("0+", StatCollector.translateToLocal("GT5U.tooltip.godforge-molten-module.hatch-pos"), 1)
-            .addInputHatch("0+", StatCollector.translateToLocal("GT5U.tooltip.godforge-molten-module.hatch-pos"), 1)
-            .addOutputBus("0+", StatCollector.translateToLocal("GT5U.tooltip.godforge-molten-module.hatch-pos"), 1)
-            .addOutputHatch("0+", StatCollector.translateToLocal("GT5U.tooltip.godforge-molten-module.hatch-pos"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .addOutputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
             .toolTipFinisher();
         return tt;
     }

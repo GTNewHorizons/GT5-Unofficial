@@ -512,10 +512,10 @@ public class MTEExoticModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("GT5U.tooltip.godforge-exotic-module.machine-type"))
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.exotic_matter_producer"))
             .addMarkdown(new ResourceLocation("gregtech", "godforge-exotic-module"))
             .beginStructureBlock(7, 7, 13, false)
-            .addController(StatCollector.translateToLocal("GT5U.tooltip.godforge-exotic-module.controller-pos"))
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
             .addCasing(
                 "0-20",
                 CustomItemList.Godforge_SingularityShieldingCasing.get(1)
@@ -543,19 +543,19 @@ public class MTEExoticModule extends MTEBaseModule {
                 false)
             .addInputBus(
                 "0+",
-                StatCollector.translateToLocal("GT5U.tooltip.godforge-exotic-module.front-shielding-casing"),
+                StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"),
                 1)
             .addInputHatch(
                 "0+",
-                StatCollector.translateToLocal("GT5U.tooltip.godforge-exotic-module.front-shielding-casing"),
+                StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"),
                 1)
             .addOutputBus(
                 "1+",
-                StatCollector.translateToLocal("GT5U.tooltip.godforge-exotic-module.front-shielding-casing"),
+                StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"),
                 1)
             .addOutputHatch(
                 "1+",
-                StatCollector.translateToLocal("GT5U.tooltip.godforge-exotic-module.front-shielding-casing"),
+                StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"),
                 1)
             .toolTipFinisher();
         return tt;

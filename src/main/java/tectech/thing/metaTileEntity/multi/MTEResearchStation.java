@@ -245,7 +245,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             .addMarkdown(new ResourceLocation("gregtech", "research-station"))
             .addSupportAny()
             .beginStructureBlock(3, 7, 7, false)
-            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
             .addCasing("52-58", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 1).getDisplayName(), false)
             .addCasing("23", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 3).getDisplayName(), false)
             .addCasing("14", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 2).getDisplayName(), false)

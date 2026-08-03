@@ -801,10 +801,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.machine-type"))
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.stellar_forge"))
             .addMarkdown(new ResourceLocation("gregtech", "forge-of-gods"))
             .beginStructureBlock(127, 29, 186, true)
-            .addController(StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.controller-pos"))
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_15th_layer"))
             .addInputHatch("1", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.hatch-pos"), 1)
             .addInputBus("1", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.hatch-pos"), 1)
             .addOutputBus("1", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.output-bus-pos"), 1)

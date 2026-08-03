@@ -213,19 +213,19 @@ public class MTESmeltingModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("GT5U.tooltip.godforge-smelting-module.machine-type"))
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.blast_furnace"))
             .addMarkdown(new ResourceLocation("gregtech", "godforge-smelting-module"))
             .beginStructureBlock(7, 7, 13, false)
-            .addController(StatCollector.translateToLocal("GT5U.tooltip.godforge-smelting-module.controller-pos"))
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
             .addCasing("0-20", SingularityReinforcedStellarShieldingCasing.getLocalizedName(), false)
             .addCasing("20", BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), false)
             .addCasing("5", CelestialMatterGuidanceCasing.getLocalizedName(), false)
             .addCasing("5", HypogenCoilBlock.getLocalizedName(), false)
             .addCasing("1", StellarEnergySiphonCasing.getLocalizedName(), false)
-            .addInputBus("0+", StatCollector.translateToLocal("GT5U.tooltip.godforge-smelting-module.hatch-pos"), 1)
-            .addInputHatch("0+", StatCollector.translateToLocal("GT5U.tooltip.godforge-smelting-module.hatch-pos"), 1)
-            .addOutputBus("0+", StatCollector.translateToLocal("GT5U.tooltip.godforge-smelting-module.hatch-pos"), 1)
-            .addOutputHatch("0+", StatCollector.translateToLocal("GT5U.tooltip.godforge-smelting-module.hatch-pos"), 1)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .addOutputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
             .toolTipFinisher();
         return tt;
     }

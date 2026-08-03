@@ -953,10 +953,10 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.machine-type"))
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.spacetime_manipulator"))
             .addMarkdown(new ResourceLocation("gregtech", "eye-of-harmony"))
             .beginStructureBlock(33, 33, 33, false)
-            .addController(StatCollector.translateToLocal("GT5U.tooltip.eye-of-harmony.controller-pos"))
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_17th_layer"))
             .addCasing("896", new ItemStack(TTCasingsContainer.sBlockCasingsBA0, 1, 11).getDisplayName(), false)
             .addCasing("534", new ItemStack(TTCasingsContainer.sBlockCasingsBA0, 1, 10).getDisplayName(), false)
             .addCasing("168", TTCasingsContainer.TimeAccelerationFieldGenerator.getLocalizedName(), true)
