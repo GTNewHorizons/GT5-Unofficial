@@ -502,7 +502,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     return stackSizeB.compareTo(stackSizeA);
                 }
             })
-            .collect(Collectors.toList());
+            .toList();
 
         // create row for each entry
         for (Map.Entry<ItemDisplayKey, Long> entry : sortedEntries) {
@@ -552,7 +552,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                         entry -> entry.getKey()
                             .getLocalizedName())
                     .reversed())
-            .collect(Collectors.toList());
+            .toList();
 
         // create row for each entry
         for (Map.Entry<FluidStack, Long> entry : sortedEntryList) {

@@ -289,7 +289,7 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
     public void notifyListeners(boolean isIncrement, FluidStack stack) {
         if (stack == null) return;
         AEFluidStack s = AEFluidStack.create(stack);
-        if (isIncrement == false) s.setStackSize(-s.getStackSize());
+        if (!isIncrement) s.setStackSize(-s.getStackSize());
         listeners.forEach((l, o) -> {
             if (l.isValid(o)) l.postChange(this, ImmutableSet.of(s), null);
             else removeListener(l);

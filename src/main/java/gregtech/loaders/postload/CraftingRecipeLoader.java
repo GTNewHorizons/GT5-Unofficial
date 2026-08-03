@@ -6,7 +6,6 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -1500,7 +1499,7 @@ public class CraftingRecipeLoader implements Runnable {
                     "insulatedIronCableItem", "glassFiberCableItem", "tinCableItem", "ironCableItem",
                     "insulatedTinCableItem", "detectorCableItem", "splitterCableItem", "electrolyzer", "cutter" })
             .map(x -> GTModHandler.getIC2Item(x, 1L))
-            .collect(Collectors.toList());
+            .toList();
 
         if (NotEnoughItems.isModLoaded()) {
             iToRemoveAndHide.forEach(item -> {

@@ -554,7 +554,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         List<MTEHatchInputBus> inputs = GTUtility.filterValidMTEs(mInputBusses)
             .stream()
             .filter(bus -> !(bus instanceof MTEHatchCraftingInputME))
-            .collect(Collectors.toList());
+            .toList();
 
         boolean changed = false;
         Map<ItemStack, ICraftingPatternDetails> patterns = new ItemStackMap<>(true);

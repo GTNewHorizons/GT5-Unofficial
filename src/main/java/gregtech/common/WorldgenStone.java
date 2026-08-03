@@ -17,7 +17,6 @@ import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
-import gregtech.common.ores.OreManager;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
 public class WorldgenStone extends GTWorldgen {
@@ -232,10 +231,6 @@ public class WorldgenStone extends GTWorldgen {
                                     continue;
                                 }
                                 // spotless:on
-
-                                if (OreManager.setExistingOreStoneType(aWorld, iX, iY, iZ, stoneType)) {
-                                    continue;
-                                }
                             }
                         }
                     }
