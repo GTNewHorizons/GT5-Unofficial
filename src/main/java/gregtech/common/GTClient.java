@@ -623,7 +623,7 @@ public class GTClient extends GTProxy {
     }
 
     @SubscribeEvent
-    public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event){
+    public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
         VacuumFactoryGrid.clearAll();
         BECFactoryGrid.clearAll();
     }

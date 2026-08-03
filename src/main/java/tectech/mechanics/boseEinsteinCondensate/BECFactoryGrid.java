@@ -27,7 +27,6 @@ public class BECFactoryGrid extends StandardFactoryGrid<BECFactoryGrid, BECFacto
         clearAll();
     }
 
-
     public static void clearAll() {
         INSTANCE.networks.forEach(network -> {
             network.elements.forEach(element -> { element.setNetwork(null); });
