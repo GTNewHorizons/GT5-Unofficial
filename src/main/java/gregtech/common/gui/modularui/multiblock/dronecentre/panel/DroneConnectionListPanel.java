@@ -485,9 +485,10 @@ public class DroneConnectionListPanel extends ModularPanel {
             .disableThemeBackground(true)
             .disableHoverThemeBackground(true)
             .tooltipDynamic(builder -> {
-                builder.addLine(IKey.lang("GT5U.gui.button.drone_select_group"));
                 if (centre.getActiveGroup() == 0) {
                     builder.addLine(IKey.lang("GT5U.gui.tooltip.drone_cannot_add_all_group"));
+                } else {
+                    builder.addLine(IKey.lang("GT5U.gui.button.drone_select_group"));
                 }
                 GenericListSyncHandler<String> groupSyncValue = syncManager
                     .findSyncHandler("groupNameList", GenericListSyncHandler.class);
@@ -503,7 +504,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                             .orElse(conn.getGroupMask());
                     }
                     List<String> inGroups = new ArrayList<>();
-                    int maxGroups = Math.min(groupNames.size(), 64);
+                    int maxGroups = Math.min(groupNames.size(), MTEDroneCentre.MAX_GROUPS);
                     for (int i = 1; i < maxGroups; i++) {
                         if ((mask & (1L << i)) != 0) {
                             String name = groupNames.get(i);
