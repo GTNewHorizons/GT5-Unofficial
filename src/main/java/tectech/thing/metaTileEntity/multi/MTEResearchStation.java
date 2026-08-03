@@ -31,6 +31,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -85,6 +86,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  * Created by danie_000 on 17.12.2016.
  * Updated by C0bra5 on 11.01.2026.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEResearchStation extends TTMultiblockBase implements ISurvivalConstructable {
 
     // region variables
@@ -238,40 +240,23 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // Machine Type: Research Station, Scanner
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.type"))
-            // Used to scan Data Sticks for Assembling Line Recipes
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.1"))
-            // Needs to be fed with computation to work
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.2"))
-            // Does not consume the item until the Data Stick is written
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.3"))
-            // Use screwdriver to change mode
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.4"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.5"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.desc.6"))
+            .addMarkdown(new ResourceLocation("gregtech", "research-station"))
             .addSupportAny()
             .beginStructureBlock(3, 7, 7, false)
-            .addController("Front center")
-            .addCasing("52-58", "Computer Casing", false)
-            .addCasing("23", "Advanced Computer Casing", false)
-            .addCasing("14", "Computer Heat Vent", false)
-            .addMiscHatch(
-                "1",
-                StatCollector.translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"),
-                StatCollector.translateToLocal("tt.keyword.Structure.CenterPillar"),
-                2)
-            .addMiscHatch(
-                "1+",
-                StatCollector.translateToLocal("tt.keyword.Structure.DataInput"),
-                "Any back center casing",
-                1)
-            .addEnergyHatch("1+", "Any back center casing", 1)
-            .addMaintenanceHatch("1", "Any back center casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("52-58", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 1).getDisplayName(), false)
+            .addCasing("23", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 3).getDisplayName(), false)
+            .addCasing("14", new ItemStack(TTCasingsContainer.sBlockCasingsTT, 1, 2).getDisplayName(), false)
+            .addMiscHatch("1", StatCollector.translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"), StatCollector.translateToLocal("tt.keyword.Structure.CenterPillar"), 2)
+            .addMiscHatch("1+", StatCollector.translateToLocal("tt.keyword.Structure.DataInput"), StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing"), 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_back_center_casing"), 1)
             .addStructureInfo("")
-            .addStructureFooter(
-                EnumChatFormatting.GREEN + "Data Sticks " + EnumChatFormatting.RESET + "go in the controller")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.tooltip.research-station.footer"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

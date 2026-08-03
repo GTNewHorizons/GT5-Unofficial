@@ -24,7 +24,10 @@ public class BECFactoryGrid extends StandardFactoryGrid<BECFactoryGrid, BECFacto
         }
 
         // Make sure everything is unloaded, even if something didn't remove itself properly
+        clearAll();
+    }
 
+    public static void clearAll() {
         INSTANCE.networks.forEach(network -> {
             network.elements.forEach(element -> { element.setNetwork(null); });
 
