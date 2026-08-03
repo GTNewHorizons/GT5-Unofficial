@@ -562,20 +562,16 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     if (mMaxProgresstime > 0) {
                         tile.setRunning(true);
                         tile.setTimer(tile.getTimer() + deltaT);
-                        if (timer >= 10) {
-                            tile.setTimerServer(tile.getTimer());
-                            timer = 0;
-                        }
                     } else {
                         tile.setRunning(false);
                         tile.setTimer(tile.getTimer() - deltaT);
                         if (tile.getTimer() < 0) {
                             tile.setTimer(0);
                         }
-                        if (timer >= 10) {
-                            tile.setTimerServer(tile.getTimer());
-                            timer = 0;
-                        }
+                    }
+                    if (timer >= 10) {
+                        tile.setTimerServer(tile.getTimer());
+                        timer = 0;
                     }
                 }
             }

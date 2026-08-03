@@ -43,7 +43,7 @@ public class CrackRecipeAdder {
         FluidStack[] actOutput = new FluidStack[num];
         name = inputFluid.getFluid()
             .getName()
-            .replaceAll(" ", "");
+            .replace(" ", "");
 
         GTValues.RA.stdBuilder()
             .circuit(1)

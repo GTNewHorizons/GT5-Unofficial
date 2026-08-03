@@ -756,11 +756,6 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
     }
 
     @Override
-    public boolean supportsBatchMode() {
-        return false;
-    }
-
-    @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
     }
