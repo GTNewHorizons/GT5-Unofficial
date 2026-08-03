@@ -3392,6 +3392,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 2),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
             .itemOutputs(new ItemStack(Items.diamond_sword))
+            .circuit(2)
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -3400,6 +3401,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 2),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
             .itemOutputs(new ItemStack(Items.golden_sword))
+            .circuit(2)
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -3408,6 +3410,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
             .itemOutputs(new ItemStack(Items.iron_sword))
+            .circuit(2)
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
