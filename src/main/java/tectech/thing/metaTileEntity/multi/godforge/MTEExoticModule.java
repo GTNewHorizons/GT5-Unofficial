@@ -512,6 +512,7 @@ public class MTEExoticModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.exotic_matter_producer"))
             .addMarkdown(new ResourceLocation("gregtech", "godforge-exotic-module"))
             .beginStructureBlock(7, 7, 13, false)
@@ -558,6 +559,7 @@ public class MTEExoticModule extends MTEBaseModule {
                 StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"),
                 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

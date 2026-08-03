@@ -953,6 +953,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.spacetime_manipulator"))
             .addMarkdown(new ResourceLocation("gregtech", "eye-of-harmony"))
             .beginStructureBlock(33, 33, 33, false)
@@ -975,6 +976,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             .addSubChannel(GTStructureChannels.EOH_DILATION)
             .addSubChannel(GTStructureChannels.EOH_COMPRESSION)
             .toolTipFinisher(EnumChatFormatting.GOLD, 87, GTAuthors.AuthorColen);
+        // spotless:on
         return tt;
     }
 

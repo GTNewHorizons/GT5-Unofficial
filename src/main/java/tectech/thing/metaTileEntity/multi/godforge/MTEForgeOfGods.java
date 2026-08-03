@@ -801,6 +801,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.stellar_forge"))
             .addMarkdown(new ResourceLocation("gregtech", "forge-of-gods"))
             .beginStructureBlock(127, 29, 186, true)
@@ -858,6 +859,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.rings"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

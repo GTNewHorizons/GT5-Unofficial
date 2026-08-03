@@ -183,6 +183,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.plasma_fabricator"))
             .addMarkdown(new ResourceLocation("gregtech", "godforge-plasma-module"))
             .beginStructureBlock(7, 7, 13, false)
@@ -196,6 +197,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
             .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
             .addOutputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

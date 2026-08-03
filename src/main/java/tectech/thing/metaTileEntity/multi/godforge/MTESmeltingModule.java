@@ -213,6 +213,7 @@ public class MTESmeltingModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.blast_furnace"))
             .addMarkdown(new ResourceLocation("gregtech", "godforge-smelting-module"))
             .beginStructureBlock(7, 7, 13, false)
@@ -227,6 +228,7 @@ public class MTESmeltingModule extends MTEBaseModule {
             .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
             .addOutputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

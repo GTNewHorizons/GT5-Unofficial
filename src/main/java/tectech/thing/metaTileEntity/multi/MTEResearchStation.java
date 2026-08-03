@@ -241,6 +241,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // Machine Type: Research Station, Scanner
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.type"))
             .addMarkdown(new ResourceLocation("gregtech", "research-station"))
             .addSupportAny()
@@ -264,6 +265,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.tooltip.research-station.footer"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

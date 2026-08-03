@@ -552,6 +552,7 @@ public class MTETeslaTower extends TTMultiblockBase
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.name")) // Machine Type: Tesla
                                                                                                // Tower
             .addMarkdown(new ResourceLocation("gregtech", "tesla-tower"))
@@ -588,6 +589,7 @@ public class MTETeslaTower extends TTMultiblockBase
             .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .addInputHatch("0+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

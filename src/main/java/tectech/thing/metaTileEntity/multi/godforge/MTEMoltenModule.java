@@ -166,6 +166,7 @@ public class MTEMoltenModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.blast_smelter"))
             .addMarkdown(new ResourceLocation("gregtech", "godforge-molten-module"))
             .beginStructureBlock(7, 7, 13, false)
@@ -180,6 +181,7 @@ public class MTEMoltenModule extends MTEBaseModule {
             .addOutputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
             .addOutputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
