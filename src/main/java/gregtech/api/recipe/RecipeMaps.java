@@ -1869,7 +1869,7 @@ public final class RecipeMaps {
                 .map(
                     val -> Arrays.stream(val)
                         .collect(Collectors.toList()))
-                .collect(Collectors.toList());
+                .toList();
             slots.stream()
                 .reduce(
                     Stream.of(new ArrayList<ItemStack>()),

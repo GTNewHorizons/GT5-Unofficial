@@ -549,7 +549,7 @@ public class GTMod {
         GTLog.out.println("GTMod: Adding buffered Recipes.");
         GTModHandler.stopBufferingCraftingRecipes();
         // noinspection UnstableApiUsage// Stable enough for this project
-        GT_FML_LOGGER.info("Executed delayed Crafting Recipes (" + stopwatch.stop() + "). Have a Cake.");
+        GT_FML_LOGGER.info("Executed delayed Crafting Recipes ({}). Have a Cake.", stopwatch.stop());
 
         GTLog.out.println("GTMod: Saving Lang File.");
         new MachineTooltipsLoader().run();

@@ -70,13 +70,12 @@ public class GTCLSCompat {
             }
             if (nextBakingMsgAt < now) {
                 nextBakingMsgAt = now + bakingMsgEvery;
-                GTMod.GT_FML_LOGGER
-                    .info(String.format("%s - Baking: %d%%", materialsType, currentStep * 100 / sizeStep));
+                GTMod.GT_FML_LOGGER.info("{} - Baking: {}%", materialsType, currentStep * 100 / sizeStep);
             }
             action.accept(m);
             currentStep += 1;
         }
-        GTMod.GT_FML_LOGGER.info(String.format("%s - Baking: Done", materialsType));
+        GTMod.GT_FML_LOGGER.info("{} - Baking: Done", materialsType);
         try {
             progressBarStep.set(progressBar, currentStep);
         } catch (IllegalAccessException iae) {

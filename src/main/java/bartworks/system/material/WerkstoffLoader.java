@@ -1707,12 +1707,10 @@ public class WerkstoffLoader {
         runAdditionalOreDict();
         long timepost = System.nanoTime();
         MainMod.LOGGER.info(
-            "Making Meta Items for BW Materials took " + (timepost - timepre)
-                + "ns/"
-                + (timepost - timepre) / 1000000
-                + "ms/"
-                + (timepost - timepre) / 1000000000
-                + "s!");
+            "Making Meta Items for BW Materials took {}ns/{}ms/{}s!",
+            timepost - timepre,
+            (timepost - timepre) / 1000000,
+            (timepost - timepre) / 1000000000);
     }
 
     public static void run() {
@@ -1770,12 +1768,10 @@ public class WerkstoffLoader {
             ProgressManager.pop(progressBar);
             long timepost = System.nanoTime();
             MainMod.LOGGER.info(
-                "Loading Processing Recipes for BW Materials took " + (timepost - timepre)
-                    + "ns/"
-                    + (timepost - timepre) / 1000000
-                    + "ms/"
-                    + (timepost - timepre) / 1000000000
-                    + "s!");
+                "Loading Processing Recipes for BW Materials took {}ns/{}ms/{}s!",
+                timepost - timepre,
+                (timepost - timepre) / 1000000,
+                (timepost - timepre) / 1000000000);
             registered = true;
         }
     }
@@ -2035,7 +2031,7 @@ public class WerkstoffLoader {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             Materials bridgeMaterial = werkstoff.getBridgeMaterial();
             List<Materials> mOreByProducts = bridgeMaterial.mOreByProducts;
-            if (mOreByProducts.size() > 0) continue; // Not to add if there're already oreByProducts.
+            if (!mOreByProducts.isEmpty()) continue; // Not to add if there're already oreByProducts.
 
             int size = werkstoff.getNoOfByProducts();
             for (int i = 0; i < size; i++) {

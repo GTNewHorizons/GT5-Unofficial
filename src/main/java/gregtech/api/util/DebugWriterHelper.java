@@ -388,7 +388,7 @@ public class DebugWriterHelper {
             customClassifier);
 
         return builder.toString()
-            .replaceAll("\"\"", "E");
+            .replace("\"\"", "E");
     }
 
     private static void appendStructureScanWithCustom(StringBuilder builder, Map<String, Character> mapping,
