@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.outputme.base;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.common.covers.modes.FilterType.BLACKLIST;
 import static gregtech.common.covers.modes.FilterType.WHITELIST;
 
@@ -760,7 +761,8 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
                         nameGetter.apply(s) + ": "
                             + EnumChatFormatting.GOLD
                             + formatNumber(s.getStackSize())
-                            + " L"
+                            + " "
+                            + getFluidUnit()
                             + EnumChatFormatting.RESET);
                 });
         }
@@ -775,7 +777,10 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         ss.add(
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.hatch.output_me.cache_capacity",
-                EnumChatFormatting.GOLD + formatNumber(getCacheCapacity()) + " L" + EnumChatFormatting.RESET));
+                EnumChatFormatting.GOLD + formatNumber(getCacheCapacity())
+                    + " "
+                    + getFluidUnit()
+                    + EnumChatFormatting.RESET));
         processInfoData(langBaseKey, nameGetter, getCacheList(), ss);
         if (cacheMode && cell != null) {
             List<T> cacheList = new ArrayList<>();
