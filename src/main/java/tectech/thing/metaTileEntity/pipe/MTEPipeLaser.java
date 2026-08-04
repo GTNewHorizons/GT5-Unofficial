@@ -10,7 +10,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
+import org.jetbrains.annotations.ApiStatus;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
@@ -23,11 +24,8 @@ import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import tectech.TecTech;
-import tectech.loader.NetworkDispatcher;
 import tectech.mechanics.pipe.IActivePipe;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
-import tectech.mechanics.pipe.PipeActivityMessage;
 import tectech.util.CommonValues;
 
 public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTunnel, IActivePipe {
@@ -92,13 +90,8 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
         }
     }
 
-    public void updateNetwork(boolean nestedCall) {
-        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
-
-        computingActivity = true;
-        boolean prevActive = active;
-        active = false;
-
+    @ApiStatus.OverrideOnly
+    protected void updateSelf(IGregTechTileEntity aBaseMetaTileEntity) {
         mConnections = 0;
         connectionCount = 0;
 
@@ -126,6 +119,16 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
                     }
                 }
         }
+    }
+
+    public void updateNetwork(boolean nestedCall) {
+        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
+
+        computingActivity = true;
+        boolean prevActive = active;
+        active = false;
+
+        updateSelf(aBaseMetaTileEntity);
 
         if (!nestedCall) updateNeighboringNetworks();
         if (prevActive != active) {

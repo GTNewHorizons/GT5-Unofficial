@@ -101,8 +101,7 @@ public class PipeActivityMessage implements IMessage {
                 TileEntity te = world.getTileEntity(message.mPosX, message.mPosY, message.mPosZ);
                 if (te instanceof IGregTechTileEntity gregTile) {
                     IMetaTileEntity meta = gregTile.getMetaTileEntity();
-                    if (meta instanceof IActivePipe activePipe) {
-                    }
+                    if (meta instanceof IActivePipe activePipe) {}
                 }
             }
             return null;
