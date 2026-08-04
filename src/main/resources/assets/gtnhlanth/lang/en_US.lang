@@ -18,6 +18,7 @@ gtnhlanth.tt.linac.structure.hatch_pos=Any bottom edge casing 3-8 blocks from fr
 gtnhlanth.tt.linac.structure.input_hatch_pos=Top center casing 8th block from front
 gtnhlanth.tt.linac.structure.output_hatch_pos=Top center casing 8th block from back
 gtnhlanth.tt.sc.structure.output_pos=Behind controller
+gtnhlanth.tt.synch.structure.antenna_casing=Antenna Casing
 gtnhlanth.tt.synch.structure.energy_pos=Above each antenna casing
 gtnhlanth.tt.synch.structure.input_hatch_pos=Between the energy hatches
 gtnhlanth.tt.synch.structure.output_hatch_pos=Opposite the input hatches

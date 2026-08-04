@@ -518,7 +518,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             .addCasing("64", LanthItemList.NIOBIUM_CAVITY_CASING.getLocalizedName(), false)
             .addCasing("28", LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), false)
             .addCasing("16", StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.LuV]), false)
-            .addCasing("4", LanthItemList.ANTENNA_CASING_T1.getLocalizedName(), true)
+            .addCasing("4", StatCollector.translateToLocal("gtnhlanth.tt.synch.structure.antenna_casing"), true)
             .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), StatCollector.translateToLocal("gtnhlanth.tt.synch.structure.beam_input_pos"), 1)
             .addMiscHatch(
                 "1",
