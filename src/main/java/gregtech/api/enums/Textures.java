@@ -2799,6 +2799,19 @@ public class Textures {
             return GTCustomItemIconContainer.create(aIconName);
         }
 
+        /**
+         * Registers a Custom Item {@link IIconContainer} whose overlay is a texture of its own rather than the
+         * {@code _OVERLAY} sibling of {@code aIconName}, for art that layers a shared texture over a per-item one.
+         *
+         * @param aIconName    The identifier of the icon drawn first, which the item's colour tints.
+         * @param aOverlayName The identifier of the untinted layer drawn over it.
+         *
+         * @return The {@link IIconContainer} instance
+         */
+        public static @NotNull IIconContainer custom(@NotNull String aIconName, @NotNull String aOverlayName) {
+            return GTCustomItemIconContainer.create(aIconName, aOverlayName);
+        }
+
         private static @NotNull IIconContainer create(@NotNull String name) {
             return GTItemIconContainer.create(name);
         }

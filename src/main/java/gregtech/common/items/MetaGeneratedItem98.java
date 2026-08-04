@@ -179,7 +179,12 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
     }
 
     /** Cell type specifies the cell capacity, appearance, and item name format. */
-    /// The untinted cell art each [CellType] draws, tinted per fluid at render; the same two base textures
+    /// The fluid fill each cell draws under its container, tinted per fluid at render. One texture serves every
+    /// [CellType] because these cells hold an arbitrary fluid rather than a material, and the per-set `cell` fill
+    /// is the same file in every texture set anyway.
+    private static final String CELL_FILL = "gregtech:materials/NONE/cell";
+
+    /// The untinted container each [CellType] draws over its fill: the same two base textures
     /// [gregtech.api.enums.materials.CellShapes] gives the cell and plasma-cell shapes.
     private static final String CELL_BASE = "gregtech:materials/cell_base";
     private static final String CELL_PLASMA_BASE = "gregtech:materials/cell_plasma_base";
@@ -242,7 +247,7 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
         if (INSTANCE == null) INSTANCE = new MetaGeneratedItem98();
 
         for (CellType cellType : CellType.values()) {
-            INSTANCE.iconContainerMap.put(cellType, Textures.ItemIcons.custom(cellType.baseIcon));
+            INSTANCE.iconContainerMap.put(cellType, Textures.ItemIcons.custom(CELL_FILL, cellType.baseIcon));
         }
     }
 
