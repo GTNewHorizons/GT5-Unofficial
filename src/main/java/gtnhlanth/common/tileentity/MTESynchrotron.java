@@ -526,7 +526,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 StatCollector.translateToLocal("gtnhlanth.tt.synch.structure.beam_output_pos"),
                 6)
             .addEnergyHatch("4", StatCollector.translateToLocal("gtnhlanth.tt.synch.structure.energy_pos"), 4)
-            .addMaintenanceHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.synch.structure.maintenance_pos"), 5)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.around_controller"), 5)
             .addInputHatch("2", StatCollector.translateToLocal("gtnhlanth.tt.synch.structure.input_hatch_pos"), 2)
             .addOutputHatch("2", StatCollector.translateToLocal("gtnhlanth.tt.synch.structure.output_hatch_pos"), 3)
             .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))

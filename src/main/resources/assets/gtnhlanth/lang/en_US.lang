@@ -19,7 +19,6 @@ gtnhlanth.tt.linac.structure.input_hatch_pos=Top center casing 8th block from fr
 gtnhlanth.tt.linac.structure.output_hatch_pos=Top center casing 8th block from back
 gtnhlanth.tt.sc.structure.output_pos=Behind controller
 gtnhlanth.tt.synch.structure.energy_pos=Above each antenna casing
-gtnhlanth.tt.synch.structure.maintenance_pos=Around controller
 gtnhlanth.tt.synch.structure.input_hatch_pos=Between the energy hatches
 gtnhlanth.tt.synch.structure.output_hatch_pos=Opposite the input hatches
 gtnhlanth.tt.synch.structure.beam_input_pos=Left of controller
