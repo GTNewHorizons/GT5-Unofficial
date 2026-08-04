@@ -8,6 +8,7 @@ import java.util.Map;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.oredict.OreDictionary;
 
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
@@ -41,6 +42,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.items.MetaGeneratedItem02;
 import gregtech.common.items.MetaGeneratedItem03;
+import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CCNEIRepresentation;
@@ -217,6 +219,16 @@ public class NEIGTConfig implements IConfigureNEI {
         GTOreAdapter.INSTANCE.hideOres();
         BWOreAdapter.INSTANCE.hideOres();
         LoaderLegacyBartworksBlocks.hideSupersededSlots();
+        hideEmptyLegacyCells();
+    }
+
+    /// Hides [MetaGeneratedItem99] while it registers nothing. NEI fills its item panel by probing damage values
+    /// when an item declares subtypes but lists none, so an item left registered only so that stacks saved before
+    /// the cutover still resolve otherwise shows up as one phantom cell per material id.
+    private static void hideEmptyLegacyCells() {
+        MetaGeneratedItem99 item = MetaGeneratedItem99.INSTANCE;
+        if (item == null || item.hasRegisteredItems()) return;
+        API.hideItem(new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE));
     }
 
     @SubscribeEvent

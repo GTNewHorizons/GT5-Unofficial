@@ -175,6 +175,13 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         return null;
     }
 
+    /// Whether any metadata of this item is registered. Empty once every molten and cracked cell a material can
+    /// hold has cut over to its `CellShapes` shape, which is the state today; [gregtech.nei.NEIGTConfig] reads
+    /// this to keep NEI from filling its item panel with guesses.
+    public boolean hasRegisteredItems() {
+        return !enabled.isEmpty();
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
