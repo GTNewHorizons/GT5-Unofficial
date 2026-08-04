@@ -871,19 +871,6 @@ public class RecipeLoader {
                 .addTo(AssemblyLine);
         }
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BorosilicateGlass, 1),
-                ItemList.ReinforcedGlass.get(6),
-                MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.ring, 32),
-                ItemList.Field_Generator_HV.get(4))
-            .circuit(6)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Naquadria, FluidShapes.fluidMolten, 2 * INGOTS))
-            .itemOutputs(ItemRefer.Field_Restriction_Glass.get(1))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_ZPM)
-            .addTo(assemblerRecipes);
-
         // Ca + O = CaO
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Calcium, Shapes.dust, 1))
