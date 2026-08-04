@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.MaterialRef;
 import com.ruling_0.materiallib.api.Shape;
 import com.ruling_0.materiallib.api.StandardProperties;
 
@@ -73,24 +74,24 @@ public class MaterialUtils {
 
     /// The dust [ItemStack] a [GTMaterialProperties#COMPOSITION] entry contributes to a recipe, sized by the
     /// entry's amount, or null when the referenced material carries no `dust` shape (a gas/fluid-only
-    /// component -- see [#compositionGas]) or fails to resolve. A composition entry always names a MaterialLib
-    /// material directly ([MaterialRef#resolve]), so unlike [#stack] this needs no bartworks fallback.
+    /// component -- see [#compositionGas]). A composition entry always names a MaterialLib material directly
+    /// ([MaterialRef#resolve]), so unlike [#stack] this needs no bartworks fallback.
     public static @Nullable ItemStack compositionDust(MaterialRefStack entry) {
         Material material = entry.material()
             .resolve();
-        if (material == null || !material.hasShape(Shapes.dust)) return null;
+        if (!material.hasShape(Shapes.dust)) return null;
         return MaterialLibAPI.getStack(material, Shapes.dust, (int) entry.amount());
     }
 
     /// The gas [FluidStack] a [GTMaterialProperties#COMPOSITION] entry contributes when its material has no
     /// `dust` shape, at 1000 mB per unit of the entry's amount -- the only non-dust composition backing
     /// [gregtech.loaders.materialrecipes.LoaderMixerRecipes] and [gregtech.loaders.materialrecipes.
-    /// LoaderChemicalRecipes]'s carriers reference. Null when the material resolves but carries neither a
-    /// `dust` nor a `fluidGas` shape.
+    /// LoaderChemicalRecipes]'s carriers reference. Null when the material carries neither a `dust` nor a
+    /// `fluidGas` shape.
     public static @Nullable FluidStack compositionGas(MaterialRefStack entry) {
         Material material = entry.material()
             .resolve();
-        if (material == null || !material.hasShape(FluidShapes.fluidGas)) return null;
+        if (!material.hasShape(FluidShapes.fluidGas)) return null;
         return MaterialLibAPI.getFluidStack(material, FluidShapes.fluidGas, (int) (1000 * entry.amount()));
     }
 
@@ -455,16 +456,16 @@ public class MaterialUtils {
     }
 
     /// The ore byproducts list for a material, resolved from [GTMaterialProperties#ORE_BYPRODUCTS] in
-    /// declaration order; empty when absent. A reference that fails to resolve is skipped.
+    /// declaration order; empty when absent.
     public static List<Material> oreByProducts(@Nullable Material material) {
         if (material == null) return Collections.emptyList();
         List<MaterialRefStack> oreByProducts = material.getProperty(GTMaterialProperties.ORE_BYPRODUCTS);
         if (oreByProducts == null || oreByProducts.isEmpty()) return Collections.emptyList();
         List<Material> list = new ArrayList<>(oreByProducts.size());
         for (MaterialRefStack entry : oreByProducts) {
-            Material resolved = entry.material()
-                .resolve();
-            if (resolved != null) list.add(resolved);
+            list.add(
+                entry.material()
+                    .resolve());
         }
         return list;
     }
@@ -687,8 +688,7 @@ public class MaterialUtils {
         if (override != null) return override;
         MaterialRef ref = material.getProperty(GTMaterialProperties.HANDLE_MATERIAL);
         if (ref == null) return material;
-        Material resolved = ref.resolve();
-        return resolved != null ? resolved : material;
+        return ref.resolve();
     }
 
     private static final Map<Material, Material> reconstructedHandles = new HashMap<>();
@@ -722,10 +722,8 @@ public class MaterialUtils {
         MaterialRef ref = material.getProperty(property);
         if (ref == null) return material;
         Material target = ref.resolve();
-        if (target == null) return material;
         MaterialRef hop = target.getProperty(property);
-        Material hopped = hop == null ? null : hop.resolve();
-        return hopped != null ? hopped : target;
+        return hop == null ? target : hop.resolve();
     }
 
     /// Whether a material carries a legacy [gregtech.api.enums.SubTag], ported 1:1 to [GTMaterialFlag] of
@@ -813,9 +811,11 @@ public class MaterialUtils {
         if (composition == null || composition.isEmpty()) return Collections.emptyList();
         List<MaterialStack> list = new ArrayList<>(composition.size());
         for (MaterialRefStack entry : composition) {
-            Material resolved = entry.material()
-                .resolve();
-            if (resolved != null) list.add(new MaterialStack(resolved, entry.amount()));
+            list.add(
+                new MaterialStack(
+                    entry.material()
+                        .resolve(),
+                    entry.amount()));
         }
         return list;
     }
@@ -836,7 +836,6 @@ public class MaterialUtils {
         for (MaterialRefStack entry : composition) {
             Material component = entry.material()
                 .resolve();
-            if (component == null) continue;
             components += entry.amount();
             for (AspectRefStack aspect : aspects(component)) {
                 if (aspect.amount() == 0) continue;

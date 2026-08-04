@@ -3,6 +3,7 @@ package gregtech.api.material;
 import java.util.EnumSet;
 import java.util.List;
 
+import com.ruling_0.materiallib.api.MaterialRef;
 import com.ruling_0.materiallib.api.Property;
 
 /// Typed property keys GregTech attaches to MaterialLib materials; values referencing other materials use

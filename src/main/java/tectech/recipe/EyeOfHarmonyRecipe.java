@@ -468,8 +468,7 @@ public class EyeOfHarmonyRecipe {
     }
 
     /// A breadth-first walk of `material`'s [GTMaterialProperties#COMPOSITION] tree, collecting every leaf
-    /// (a material with no composition of its own). A composition entry that fails to resolve is dropped
-    /// rather than descended into.
+    /// (a material with no composition of its own).
     private static ArrayList<com.ruling_0.materiallib.api.Material> compoundMaterialsRecursively(
         com.ruling_0.materiallib.api.Material material) {
         ArrayList<com.ruling_0.materiallib.api.Material> resultList = new ArrayList<>();
@@ -485,9 +484,9 @@ public class EyeOfHarmonyRecipe {
                 resultList.add(current);
             } else {
                 for (MaterialRefStack entry : composition) {
-                    com.ruling_0.materiallib.api.Material child = entry.material()
-                        .resolve();
-                    if (child != null) toCheck.add(child);
+                    toCheck.add(
+                        entry.material()
+                            .resolve());
                 }
             }
             processed++;
@@ -536,7 +535,7 @@ public class EyeOfHarmonyRecipe {
                 bonusB = composites.get(i)
                     .material()
                     .resolve();
-                if (bonusB != null && hasSolidForm(bonusB)) {
+                if (hasSolidForm(bonusB)) {
                     allFailed = false;
                     break;
                 }
@@ -550,16 +549,12 @@ public class EyeOfHarmonyRecipe {
         int materialTier = MaterialUtils.tier(material);
 
         // Default out if it's made of fluids or some stuff.
-        if (bonusA == null && materialTier >= 2) {
-            bonusA = material;
-        }
-        // Default out if it's made of fluids or some stuff.
         if ((allFailed || bonusB == null) && materialTier >= 2) {
             bonusB = material;
         }
 
         // Need two valid outputs
-        if (bonusA != null && hasSolidForm(bonusA)) {
+        if (hasSolidForm(bonusA)) {
             outputMap.add(bonusA, 2 * GTPP_PRIMARY_MULTIPLIER * mainMultiplier * probability);
         } else outputMap.add(Materials.Stone, 2 * GTPP_PRIMARY_MULTIPLIER * mainMultiplier * probability);
         if (bonusB != null && hasSolidForm(bonusB)) {

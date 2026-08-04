@@ -11,10 +11,10 @@ import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.MaterialRef;
 
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MaterialRef;
 
 /// The six wildcard markers (`AnyBronze`/`AnyCopper`/`AnyCarbon`/`AnyIron`/`AnyRubber`/`AnySyntheticRubber`):
 /// materials that back an ore-dictionary entry without carrying composition of their own, so an Iron ore entry
@@ -72,12 +72,26 @@ public class MaterialFacades {
             "AnyCopper",
             "SHINY",
             GTMaterialFlag.METAL,
-            "Copper",
-            "Copper",
-            "AnnealedCopper");
+            MaterialRef.of(() -> Materials.Copper),
+            MaterialRef.of(() -> Materials.Copper),
+            MaterialRef.of(() -> Materials.AnnealedCopper));
         AnyCarbon = registerWildcard("AnyCarbon", "AnyCarbon", "DULL", null, null, null, null);
-        AnyIron = registerWildcard("AnyIron", "AnyIron", "SHINY", GTMaterialFlag.METAL, "Iron", "Iron", null);
-        AnyRubber = registerWildcard("AnyRubber", "AnyRubber", "SHINY", null, null, "Rubber", null);
+        AnyIron = registerWildcard(
+            "AnyIron",
+            "AnyIron",
+            "SHINY",
+            GTMaterialFlag.METAL,
+            MaterialRef.of(() -> Materials.Iron),
+            MaterialRef.of(() -> Materials.Iron),
+            null);
+        AnyRubber = registerWildcard(
+            "AnyRubber",
+            "AnyRubber",
+            "SHINY",
+            null,
+            null,
+            MaterialRef.of(() -> Materials.Rubber),
+            null);
         AnySyntheticRubber = registerWildcard(
             "AnySyntheticRubber",
             "AnySyntheticRubber",
@@ -91,19 +105,16 @@ public class MaterialFacades {
     /// Ports the smelt/macerate/arc targets, the metal flag, and `setUnifiable(false)` a wildcard marker
     /// carries. No shape table adds to these materials, which is what keeps them shapeless.
     private static Material registerWildcard(String name, String localName, String texture, GTMaterialFlag flag,
-        String smeltInto, String macerateInto, String arcSmeltInto) {
+        @Nullable MaterialRef smeltInto, @Nullable MaterialRef macerateInto, @Nullable MaterialRef arcSmeltInto) {
         com.ruling_0.materiallib.api.MaterialBuilder builder = MaterialLibAPI
             .newMaterial("gregtech", name, com.ruling_0.materiallib.api.TextureSet.of("gregtech", texture))
             .setProperty(GTMaterialProperties.LOCAL_NAME, localName)
             .setProperty(GTMaterialProperties.ARGB, DEFAULT_ARGB)
             .setProperty(GTMaterialProperties.UNIFIABLE, false);
         if (flag != null) builder = builder.setProperty(GTMaterialProperties.FLAGS, EnumSet.of(flag));
-        if (smeltInto != null)
-            builder = builder.setProperty(GTMaterialProperties.SMELT_INTO, new MaterialRef(smeltInto));
-        if (macerateInto != null)
-            builder = builder.setProperty(GTMaterialProperties.MACERATE_INTO, new MaterialRef(macerateInto));
-        if (arcSmeltInto != null)
-            builder = builder.setProperty(GTMaterialProperties.ARC_SMELT_INTO, new MaterialRef(arcSmeltInto));
+        if (smeltInto != null) builder = builder.setProperty(GTMaterialProperties.SMELT_INTO, smeltInto);
+        if (macerateInto != null) builder = builder.setProperty(GTMaterialProperties.MACERATE_INTO, macerateInto);
+        if (arcSmeltInto != null) builder = builder.setProperty(GTMaterialProperties.ARC_SMELT_INTO, arcSmeltInto);
         return builder.build();
     }
 }

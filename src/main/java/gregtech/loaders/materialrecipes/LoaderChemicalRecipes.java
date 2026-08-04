@@ -79,7 +79,8 @@ public final class LoaderChemicalRecipes {
                     "LoaderChemicalRecipes: " + material.getName()
                         + " has an unsupported non-dust composition entry: "
                         + entry.material()
-                            .name());
+                            .resolve()
+                            .getName());
                 return;
             }
             fluidInput = gasInput;

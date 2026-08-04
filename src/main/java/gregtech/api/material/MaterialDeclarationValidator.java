@@ -8,19 +8,20 @@ import java.util.Set;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.MaterialRef;
 import com.ruling_0.materiallib.api.Property;
 
 import gregtech.api.enums.Element;
 
-/// Resolves every cross-material reference GregTech declares, once, so a reference whose target was renamed or
-/// deleted is a boot failure naming the material and the property.
+/// Sweeps every GregTech material declaration once at boot and reports what it finds as a single aggregated
+/// error, rather than letting each problem surface later at whichever consumer touches it first.
 ///
-/// Without this the same declaration bug surfaces once per consumer and never as itself: [MaterialAtomics]
-/// throws lazily at the first tooltip render or recipe load, [MaterialUtils#materialList] and
-/// [MaterialUtils#oreByProducts] compute formulas and decomposition recipes from a partial composition, and
-/// `MaterialUtils`'s smelt/macerate/arc-smelt chase silently falls back to the material itself, producing a
-/// plausible "smelts into itself" nobody notices until gameplay. Those read paths therefore stay lenient: with
-/// this sweep in place their miss branches are unreachable for declared data.
+/// A [MaterialRef] names its target as a lambda over the field holding it, so the compiler already rejects a
+/// reference to a renamed or deleted field. One residual case escapes it: a material whose registration was
+/// removed while its field and the references to it remain, which leaves the field null and every reference to
+/// it throwing on resolve. This sweep resolves each reference to catch that, alongside the invariants the
+/// compiler cannot see -- a composition whose amounts sum to zero, an unknown [Element] name, a zero density
+/// divider, and cycles in the composition graph.
 public final class MaterialDeclarationValidator {
 
     private static final int MAX_REPORTED = 20;
@@ -68,8 +69,11 @@ public final class MaterialDeclarationValidator {
     private static void checkRefs(Material material, List<String> errors) {
         for (Property<MaterialRef> property : REF_PROPERTIES) {
             MaterialRef ref = material.getProperty(property);
-            if (ref != null && ref.resolve() == null) {
-                errors.add(describe(material, property) + " names unregistered material " + ref.name());
+            if (ref == null) continue;
+            try {
+                ref.resolve();
+            } catch (IllegalStateException e) {
+                errors.add(describe(material, property) + " does not resolve");
             }
         }
         for (Property<List<MaterialRefStack>> property : REF_STACK_PROPERTIES) {
@@ -78,12 +82,11 @@ public final class MaterialDeclarationValidator {
             long total = 0;
             for (MaterialRefStack entry : entries) {
                 total += entry.amount();
-                if (entry.material()
-                    .resolve() == null) {
-                    errors.add(
-                        describe(material, property) + " names unregistered material "
-                            + entry.material()
-                                .name());
+                try {
+                    entry.material()
+                        .resolve();
+                } catch (IllegalStateException e) {
+                    errors.add(describe(material, property) + " does not resolve");
                 }
             }
             if (property == GTMaterialProperties.COMPOSITION && !entries.isEmpty() && total == 0) {
@@ -123,9 +126,14 @@ public final class MaterialDeclarationValidator {
         List<MaterialRefStack> composition = material.getProperty(GTMaterialProperties.COMPOSITION);
         if (composition != null) {
             for (MaterialRefStack entry : composition) {
-                Material component = entry.material()
-                    .resolve();
-                if (component != null) checkCompositionCycles(component, settled, path, errors);
+                Material component;
+                try {
+                    component = entry.material()
+                        .resolve();
+                } catch (IllegalStateException e) {
+                    continue;
+                }
+                checkCompositionCycles(component, settled, path, errors);
             }
         }
         path.remove(material);

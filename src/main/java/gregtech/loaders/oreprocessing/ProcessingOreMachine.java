@@ -135,7 +135,7 @@ public class ProcessingOreMachine {
                 bonusB = composites.get(i)
                     .material()
                     .resolve();
-                if (bonusB != null && hasSolidForm(bonusB)) {
+                if (hasSolidForm(bonusB)) {
                     allFailed = false;
                     break;
                 }
@@ -145,9 +145,6 @@ public class ProcessingOreMachine {
             bonusB = amJ.get(1);
         }
 
-        if (bonusA == null) {
-            bonusA = tVoltageMultiplier > 100 ? material : mStone;
-        }
         if (allFailed || bonusB == null) {
             bonusB = tVoltageMultiplier > 100 ? material : mStone;
         }
@@ -161,10 +158,10 @@ public class ProcessingOreMachine {
                         .resolve()));
         }
 
-        if (bonusA == null || !hasSolidForm(bonusA)) {
+        if (!hasSolidForm(bonusA)) {
             bonusA = mStone;
         }
-        if (bonusB == null || !hasSolidForm(bonusB)) {
+        if (!hasSolidForm(bonusB)) {
             bonusB = mStone;
         }
 
@@ -416,9 +413,9 @@ public class ProcessingOreMachine {
                 result.add(current);
             } else {
                 for (MaterialRefStack entry : composites) {
-                    Material child = entry.material()
-                        .resolve();
-                    if (child != null) toCheck.add(child);
+                    toCheck.add(
+                        entry.material()
+                            .resolve());
                 }
             }
             processed++;
