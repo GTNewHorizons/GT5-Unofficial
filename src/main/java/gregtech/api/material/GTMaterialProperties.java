@@ -7,7 +7,8 @@ import com.ruling_0.materiallib.api.MaterialRef;
 import com.ruling_0.materiallib.api.Property;
 
 /// Typed property keys GregTech attaches to MaterialLib materials; values referencing other materials use
-/// [MaterialRef] because registration order is unspecified.
+/// [MaterialRef] because the target's static field is not assigned until its own registration runs, and
+/// registration order across mods is unspecified.
 ///
 /// The gtPlusPlus-originated (`GTPP_*`) and bartworks-originated (`WERKSTOFF_*`) groups are each decomposed
 /// into individual keys rather than one composite property, so a reader needing a single value does not depend

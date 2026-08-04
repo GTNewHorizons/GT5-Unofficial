@@ -74,8 +74,8 @@ public class MaterialUtils {
 
     /// The dust [ItemStack] a [GTMaterialProperties#COMPOSITION] entry contributes to a recipe, sized by the
     /// entry's amount, or null when the referenced material carries no `dust` shape (a gas/fluid-only
-    /// component -- see [#compositionGas]). A composition entry always names a MaterialLib material directly
-    /// ([MaterialRef#resolve]), so unlike [#stack] this needs no bartworks fallback.
+    /// component -- see [#compositionGas]). A composition entry always references a MaterialLib material
+    /// directly ([MaterialRef#resolve]), so unlike [#stack] this needs no bartworks fallback.
     public static @Nullable ItemStack compositionDust(MaterialRefStack entry) {
         Material material = entry.material()
             .resolve();
@@ -86,8 +86,7 @@ public class MaterialUtils {
     /// The gas [FluidStack] a [GTMaterialProperties#COMPOSITION] entry contributes when its material has no
     /// `dust` shape, at 1000 mB per unit of the entry's amount -- the only non-dust composition backing
     /// [gregtech.loaders.materialrecipes.LoaderMixerRecipes] and [gregtech.loaders.materialrecipes.
-    /// LoaderChemicalRecipes]'s carriers reference. Null when the material carries neither a `dust` nor a
-    /// `fluidGas` shape.
+    /// LoaderChemicalRecipes]'s carriers reference. Null when the material carries no `fluidGas` shape.
     public static @Nullable FluidStack compositionGas(MaterialRefStack entry) {
         Material material = entry.material()
             .resolve();
