@@ -32,8 +32,6 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
     private final ForgeDirection[] connectedSides = { null, null };
     private ForgeDirection chainedFrontFacing = null;
 
-    private boolean active;
-
     public MTEPipeLaserMirror(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -74,19 +72,6 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {
-                if (TecTech.RANDOM.nextInt(15) == 0) {
-                    NetworkDispatcher.INSTANCE.sendToAllAround(
-                        new PipeActivityMessage.PipeActivityData(this),
-                        new NetworkRegistry.TargetPoint(
-                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                            aBaseMetaTileEntity.getXCoord(),
-                            aBaseMetaTileEntity.getYCoord(),
-                            aBaseMetaTileEntity.getZCoord(),
-                            256));
-                }
-                if (active) {
-                    active = false;
-                }
                 mConnections = 0;
                 connectedSides[0] = null;
                 connectedSides[1] = null;

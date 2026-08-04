@@ -21,7 +21,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import tectech.mechanics.pipe.IActivePipe;
-import tectech.mechanics.pipe.PipeActivity;
 
 public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActivePipe {
 
@@ -120,8 +119,6 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
         return mIsActive;
     }
 
-    private boolean prevActivity;
-
     @Override
     public void onFirstTick(IGregTechTileEntity base) {
         super.onFirstTick(base);
@@ -149,13 +146,6 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
                 if (mIsActive != isActive) {
                     mIsActive = isActive;
                     base.issueTileUpdate();
-                }
-
-                if (isActive != prevActivity || aTick % (60 * SECONDS) == 0) {
-                    prevActivity = isActive;
-
-                    PipeActivity
-                        .enqueueUpdate(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord(), isActive);
                 }
             }
         }
