@@ -37,6 +37,7 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     public byte connectionCount = 0;
 
     private boolean active;
+    private boolean computingActivity;
 
     public MTEPipeLaser(int aID, String aName, String aNameRegional) {
         super(aID, aName, 0);
@@ -94,6 +95,8 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     public void updateNetwork(boolean nestedCall) {
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
 
+        computingActivity = true;
+        boolean prevActive = active;
         active = false;
 
         mConnections = 0;
@@ -125,6 +128,10 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
         }
 
         if (!nestedCall) updateNeighboringNetworks();
+        if (prevActive != active) {
+            aBaseMetaTileEntity.issueTileUpdate();
+        }
+        computingActivity = false;
     }
 
     @Override
@@ -215,11 +222,15 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     }
 
     @Override
-    public void setActive(boolean state) {
-        if (state != active) {
-            active = state;
-            getBaseMetaTileEntity().issueTextureUpdate();
-        }
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("pipeActive", active);
+        return tag;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound tag) {
+        active = tag.getBoolean("pipeActive");
     }
 
     @Override
@@ -230,6 +241,9 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     @Override
     public void markUsed() {
         this.active = true;
+        if (!computingActivity) {
+            getBaseMetaTileEntity().issueTileUpdate();
+        }
     }
 
     @Override

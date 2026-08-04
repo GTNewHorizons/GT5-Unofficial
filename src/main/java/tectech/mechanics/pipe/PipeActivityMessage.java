@@ -102,7 +102,6 @@ public class PipeActivityMessage implements IMessage {
                 if (te instanceof IGregTechTileEntity gregTile) {
                     IMetaTileEntity meta = gregTile.getMetaTileEntity();
                     if (meta instanceof IActivePipe activePipe) {
-                        activePipe.setActive(message.mActive == 1);
                     }
                 }
             }

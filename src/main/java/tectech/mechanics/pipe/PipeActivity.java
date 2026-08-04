@@ -126,7 +126,6 @@ public class PipeActivity {
 
                 if (world.getTileEntity(x, y, z) instanceof IGregTechTileEntity igte) {
                     if (igte.getMetaTileEntity() instanceof IActivePipe pipe) {
-                        pipe.setActive(message.isActive);
                     }
                 }
             }

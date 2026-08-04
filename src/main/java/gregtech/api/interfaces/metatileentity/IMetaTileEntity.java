@@ -493,6 +493,9 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         return null;
     }
 
+    /**
+     * Note: texture update are automatically issued as part of tile entity resync
+     */
     default void onDescriptionPacket(NBTTagCompound data) {
 
     }

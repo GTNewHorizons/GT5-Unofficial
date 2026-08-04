@@ -132,6 +132,7 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
 
         active = false;
+        aBaseMetaTileEntity.issueTileUpdate();
 
         mConnections = 0;
         connectionCount = 0;
@@ -276,19 +277,24 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
     @Override
     public void markUsed() {
         this.active = true;
-    }
-
-    @Override
-    public void setActive(boolean state) {
-        if (state != active) {
-            active = state;
-            getBaseMetaTileEntity().issueTextureUpdate();
-        }
+        getBaseMetaTileEntity().issueTileUpdate();
     }
 
     @Override
     public boolean getActive() {
         return active;
+    }
+
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("pipeActive", active);
+        return tag;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound tag) {
+        active = tag.getBoolean("pipeActive");
     }
 
 }

@@ -29,7 +29,7 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
     public static final IIconContainer EM_BAR = Textures.BlockIcons.custom("iconsets/EM_BAR");
     public static final IIconContainer EM_BAR_ACTIVE = Textures.BlockIcons.custom("iconsets/EM_BAR_ACTIVE");
 
-    protected boolean mIsActive;
+    private boolean mIsActive;
 
     protected float mThickness = 0.5f;
 
@@ -79,7 +79,7 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
 
     @Override
     public void loadNBTData(NBTTagCompound nbtTagCompound) {
-        setActive(nbtTagCompound.getBoolean("eActive"));
+        mIsActive = nbtTagCompound.getBoolean("eActive");
         mConnections = nbtTagCompound.getByte("mConnections");
     }
 
@@ -111,15 +111,8 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
 
     @Override
     public void markUsed() {
-        setActive(true);
-    }
-
-    @Override
-    public void setActive(boolean state) {
-        if (state != mIsActive) {
-            mIsActive = state;
-            getBaseMetaTileEntity().issueTextureUpdate();
-        }
+        mIsActive = true;
+        getBaseMetaTileEntity().issueTileUpdate();
     }
 
     @Override
@@ -151,9 +144,12 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
             }
 
             if (aTick % SECONDS == 0) {
-                checkActive();
 
-                boolean isActive = getActive();
+                boolean isActive = checkActive();
+                if (mIsActive != isActive) {
+                    mIsActive = isActive;
+                    base.issueTileUpdate();
+                }
 
                 if (isActive != prevActivity || aTick % (60 * SECONDS) == 0) {
                     prevActivity = isActive;
@@ -165,8 +161,8 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
         }
     }
 
-    protected void checkActive() {
-        mIsActive = false;
+    protected boolean checkActive() {
+        return false;
     }
 
     @Override
@@ -183,5 +179,17 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
     public String[] getInfoData() {
         return new String[] { getActive() ? IGregTechDeviceInformation.encode("tt.infodata.pipe.active")
             : IGregTechDeviceInformation.encode("tt.infodata.pipe.inactive") };
+    }
+
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("pipeActive", mIsActive);
+        return tag;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound tag) {
+        mIsActive = tag.getBoolean("pipeActive");
     }
 }
