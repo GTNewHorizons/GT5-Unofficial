@@ -38,6 +38,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
@@ -193,21 +194,21 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.tc.machinetype"))
             .addMarkdown(new ResourceLocation("gregtech", "target-chamber"))
             .beginStructureBlock(5, 5, 6, true)
-            .addController("Front bottom center")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("34", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), false)
             .addCasing("27-29", Casings.GrateMachineCasing.getLocalizedName(), false)
             .addCasing("28", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
-            .addCasing("16", "LuV+ Tiered Glass", false)
+            .addCasing("16", StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.LuV]), false)
             .addCasing("4", LanthItemList.TARGET_RECEPTACLE_CASING.getLocalizedName(), false)
             .addCasing("4", LanthItemList.FOCUS_MANIPULATION_CASING.getLocalizedName(), false)
             .addCasing("1", LanthItemList.TARGET_HOLDER.getLocalizedName(), false)
             .addCasing("1", LanthItemList.FOCUS_HOLDER.getLocalizedName(), false)
-            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), "Front center casing", 1)
-            .addEnergyHatch("1+", "Any front bottom casing", 4)
-            .addMaintenanceHatch("1", "Any front bottom casing", 4)
-            .addInputBus("2", "2nd top center casing from front (masks) and back (wafers)", 2, 3)
-            .addOutputBus("1", "Back center casing", 5)
-            .addAir("Interior of the structure")
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), StatCollector.translateToLocal("gt.mbtt.structure.front_center_casing"), 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_bottom_casing"), 4)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_front_bottom_casing"), 4)
+            .addInputBus("2", StatCollector.translateToLocal("gtnhlanth.tt.tc.structure.input_bus_pos"), 2, 3)
+            .addOutputBus("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing"), 5)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();

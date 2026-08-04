@@ -1714,6 +1714,8 @@ gt.mbtt.structure.any_tiered_glass=Any Tiered Glass
 gt.mbtt.structure.min_tiered_glass=%s+ Tiered Glass
 gt.mbtt.structure.any_bottom_casing=Any bottom casing
 gt.mbtt.structure.back_center_casing=Back center casing
+gt.mbtt.structure.front_center_casing=Front center casing
+gt.mbtt.structure.any_front_bottom_casing=Any front bottom casing
 gt.mbtt.structure.any_back_center_casing=Any back center casing
 gt.mbtt.structure.any_front_shielding_casing=Any front shielding casing
 

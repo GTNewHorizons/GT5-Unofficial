@@ -143,16 +143,16 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.sc.machinetype"))
             .addMarkdown(new ResourceLocation("gregtech", "source-chamber"))
             .beginStructureBlock(5, 5, 6, true)
-            .addController("Front bottom center")
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("56", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
             .addCasing("52", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), false)
             .addCasing("16", LanthItemList.ELECTRODE_CASING.getLocalizedName(), false)
-            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"), "Back center casing", 4)
-            .addEnergyHatch("1", "Any front bottom casing", 3)
-            .addMaintenanceHatch("1", "Any front bottom casing", 3)
-            .addInputAny("1", "Front center casing", 1)
-            .addOutputAny("1", "Behind controller", 2)
-            .addAir("Interior of the structure")
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"), StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing"), 4)
+            .addEnergyHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_front_bottom_casing"), 3)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_front_bottom_casing"), 3)
+            .addInputAny("1", StatCollector.translateToLocal("gt.mbtt.structure.front_center_casing"), 1)
+            .addOutputAny("1", StatCollector.translateToLocal("gtnhlanth.tt.sc.structure.output_pos"), 2)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .toolTipFinisher();
         // spotless:on
         return tt;
