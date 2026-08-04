@@ -512,11 +512,6 @@ gt.blockmachines.multimachine.tm.microwave.cfgo.0=时间
 gt.blockmachines.multimachine.tm.microwave.cfgo.1=剩余时间
 
 gt.blockmachines.multimachine.tm.teslaCoil.name=特斯拉电塔
-gt.blockmachines.multimachine.tm.teslaCoil.desc.0=特斯拉电塔的控制器方块
-gt.blockmachines.multimachine.tm.teslaCoil.desc.1=用于向特斯拉线圈帽和特斯拉收发器传输电力
-gt.blockmachines.multimachine.tm.teslaCoil.desc.2=可加入氦/氮/氡等离子体增大范围
-gt.blockmachines.multimachine.tm.teslaCoil.desc.3=传输电压取决于使用的特斯拉电容等级
-gt.blockmachines.multimachine.tm.teslaCoil.desc.4=需要至少与特斯拉电容相同等级的初级特斯拉绕组
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0=迟滞低设置
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.1=迟滞高设置
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.2=特斯拉电塔传输半径设置
@@ -604,9 +599,6 @@ gt.blockmachines.multimachine.em.scanner.desc.0=元物质扫描仪的控制器�
 gt.blockmachines.multimachine.em.research.name=研究站
 gt.blockmachines.multimachine.em.research.hint.0=1 - 基础仓室、光学接口或电子计算机械方块
 gt.blockmachines.multimachine.em.research.hint.1=2 - 物品固定容器
-gt.blockmachines.multimachine.em.research.desc.1=用于扫描物品, 生成装配线配方闪存
-gt.blockmachines.multimachine.em.research.desc.2=需要为其提供算力
-gt.blockmachines.multimachine.em.research.desc.3=在完成闪存写入之前不会消耗物品
 
 gt.blockmachines.multimachine.em.collider.name=物质对撞机
 gt.blockmachines.multimachine.em.collider.hint.0=1 - 基础仓室或超能机械方块
