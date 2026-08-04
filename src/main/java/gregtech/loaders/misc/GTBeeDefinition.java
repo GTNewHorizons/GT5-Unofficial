@@ -2822,7 +2822,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         };
         IAlleleBeeEffect allele = (IAlleleBeeEffect) AlleleManager.alleleRegistry.getAllele(s);
         if (allele == null) {
-            GTMod.GT_FML_LOGGER.warn("Attempted to get unknown bee effect: " + s);
+            GTMod.GT_FML_LOGGER.warn("Attempted to get unknown bee effect: {}", s);
             allele = GTAlleleEffect.FORESTRY_BASE_EFFECT;
         }
         return allele;
@@ -2838,7 +2838,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         };
         IAlleleFlowers allele = (IAlleleFlowers) AlleleManager.alleleRegistry.getAllele(s);
         if (allele == null) {
-            GTMod.GT_FML_LOGGER.warn("Attempted to get unknown bee flower: " + s);
+            GTMod.GT_FML_LOGGER.warn("Attempted to get unknown bee flower: {}", s);
         }
         return allele;
     }
@@ -2853,7 +2853,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         };
         IAlleleBeeSpecies ret = (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele(s);
         if (ret == null) {
-            GTMod.GT_FML_LOGGER.warn("Attempted to get unknown bee species: " + s);
+            GTMod.GT_FML_LOGGER.warn("Attempted to get unknown bee species: {}", s);
             ret = NAQUADRIA.species;
         }
 

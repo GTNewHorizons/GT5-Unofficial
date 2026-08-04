@@ -27,7 +27,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
@@ -112,8 +111,7 @@ public class GTStructureUtility {
                 boolean isWater = isWater(block);
                 boolean isFlowing = isFlowingWater(block, world, x, y, z);
                 if (isWater && !isFlowing) return true;
-                if (allowFlowing && isFlowing) return true;
-                return false;
+                return allowFlowing && isFlowing;
             }
 
             @Override
@@ -205,11 +203,6 @@ public class GTStructureUtility {
         return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalGT, material.mMetaItemSubID)) {
 
             @Override
-            public @Nullable List<String> getDescription(T context) {
-                return Collections.singletonList(OrePrefixes.sheetmetal.getLocalizedNameForItem(material));
-            }
-
-            @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI.hintParticleTinted(
                     world,
@@ -227,11 +220,6 @@ public class GTStructureUtility {
     public static <T> IStructureElement<T> ofSheetMetal(Werkstoff werkstoff) {
         if (werkstoff == null) throw new IllegalArgumentException("werkstoff for sheet metal can not be null!");
         return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalBW, werkstoff.getmID())) {
-
-            @Override
-            public @Nullable List<String> getDescription(T context) {
-                return Collections.singletonList(OrePrefixes.sheetmetal.getLocalizedNameForItem(werkstoff));
-            }
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
@@ -1215,7 +1203,7 @@ public class GTStructureUtility {
                     .addAll(
                         IntStream.rangeClosed(0, 15)
                             .boxed()
-                            .collect(Collectors.toList()));
+                            .toList());
             } else {
                 map.computeIfAbsent(block, k -> new ArrayList<>())
                     .add(meta);

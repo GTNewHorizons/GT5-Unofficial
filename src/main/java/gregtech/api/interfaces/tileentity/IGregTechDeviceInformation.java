@@ -99,7 +99,7 @@ public interface IGregTechDeviceInformation {
     static IChatComponent toComponent(String encoded) {
         if (encoded == null) return new ChatComponentTranslation("");
         String[] parts = encoded.split("\\\\\\\\");
-        parts[0] = parts[0].replaceAll("%", "%%");
+        parts[0] = parts[0].replace("%", "%%");
         if (parts.length == 1) return new ChatComponentTranslation(parts[0]);
         Object[] args = new Object[parts.length - 1];
         // we have to rely on the native array copy here, as Arrays.copyOfRange(String[],...) results in a String[]

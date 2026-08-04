@@ -28,6 +28,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import appeng.api.storage.data.IAEFluidStack;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -139,14 +140,14 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
         StructureWrapperTooltipBuilder<MTEBECAssembler> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("BEC Assembler, Observation Array")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-assembler"))
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-assembler"))
             .addSupportAny();
 
         tt.beginStructureBlock(61, 31, 31, true)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.controller-pos"))
             .addCasing("1700", FineStructureConstantManipulator.getLocalizedName(), false)
             .addCasing("1515", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
-            .addCasing("0-1458", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("1444-1458", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
             .addCasing("838", ConflictInducementCasing.getLocalizedName(), false)
             .addCasing("790", PeaceEnforcementCasing.getLocalizedName(), false)
             .addCasing("664", ElectromagneticWaveguide.getLocalizedName(), false)

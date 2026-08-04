@@ -91,6 +91,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTPlayedSound;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.client.DynamicLangManager;
 import gregtech.api.util.client.ResourceUtils;
 import gregtech.client.BlockOverlayRenderer;
 import gregtech.client.GTMouseEventHandler;
@@ -131,6 +132,7 @@ import gregtech.common.render.items.MechanicalArmorRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
 import gregtech.common.render.items.ToolboxRenderer;
 import gregtech.common.tileentities.debug.MTEDebugStructureWriter;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
 import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
@@ -144,6 +146,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import mcp.mobius.waila.api.impl.ModuleRegistrar;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
+import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
 
 public class GTClient extends GTProxy {
 
@@ -285,6 +288,7 @@ public class GTClient extends GTProxy {
                     GUIColorOverride.onResourceManagerReload();
                     FallbackableSteamTexture.reload();
                     CoverRegistry.reloadCoverColorOverrides();
+                    DynamicLangManager.reload();
                 }
             });
         Pollution.onPostInitClient();
@@ -616,6 +620,12 @@ public class GTClient extends GTProxy {
     public void onWorldUnload(WorldEvent.Unload event) {
         super.onWorldUnload(event);
         RenderOverlay.onWorldUnload(event.world);
+    }
+
+    @SubscribeEvent
+    public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+        VacuumFactoryGrid.clearAll();
+        BECFactoryGrid.clearAll();
     }
 
     @SubscribeEvent

@@ -154,8 +154,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     public IStructureDefinition<MTEIndustrialCokeOven> getStructureDefinition() {
-        IStructureDefinition<MTEIndustrialCokeOven> STRUCTURE_DEFINITION = StructureDefinition
-            .<MTEIndustrialCokeOven>builder()
+        return StructureDefinition.<MTEIndustrialCokeOven>builder()
             .addShape(
                 STRUCTURE_PIECE_FIRST,
                 new String[][] { { "      ", "   C  ", "   C  ", "   C  ", "   C  ", "   C  ", "   DDD" },
@@ -199,11 +198,10 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
                         ImmutableList
                             .of(Pair.of(ModBlocks.blockCasingsMisc, 2), Pair.of(ModBlocks.blockCasingsMisc, 3)),
                         -1,
-                        (t, tier) -> t.tier = tier,
+                        (t, tier1) -> t.tier = tier1,
                         t -> t.tier)))
             .addElement('F', onElementPass(x -> ++x.casingAmount, Casings.StructuralCokeOvenCasing.asElement()))
             .build();
-        return STRUCTURE_DEFINITION;
     }
 
     @Override
@@ -416,11 +414,6 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

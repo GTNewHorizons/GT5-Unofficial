@@ -63,6 +63,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
@@ -340,33 +341,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.machine_type"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc1"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc2"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc3"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc4"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc5"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc6"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc7"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc8"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("kubatech.multiblock.ExtremeEntityCrusher.desc9", MAX_LOOTING_LEVEL))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc10"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc11"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc12"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc13"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc14"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc15"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc16"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc17"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc18"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc19"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc20"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc21"))
+            .addMarkdown(new ResourceLocation("gregtech", "extreme-entity-crusher"))
             .addGlassEnergyLimitInfo()
             .beginStructureBlock(5, 7, 5, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))

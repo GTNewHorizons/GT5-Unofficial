@@ -475,9 +475,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
             for (int i = 0; i < getSizeInventory(); i++) if (GTUtility.areStacksEqual(
                 GTOreDictUnificator.get(false, aStack),
                 GTOreDictUnificator.get(false, getStackInSlot(i)))) return i == aIndex;
-            if (IsAutoMaintenanceInput(aStack)) {
-                return true;
-            }
+            return IsAutoMaintenanceInput(aStack);
         }
         return false;
     }

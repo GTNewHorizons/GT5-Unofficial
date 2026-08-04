@@ -260,10 +260,10 @@ gt.blockmachines.itempipe.rounting_value=Routing Value: %s
 
 Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver=Absorption range: %s blocks
 
-gt.hatch_element_or= or
-gt.hatch_element_of_type=of type
-gt.hatch_element_of_class=of class
-gt.hatch_element_of_id=of id
+gt.hatch_element_or= or 
+gt.hatch_element_of_type=of type 
+gt.hatch_element_of_class=of class %s
+gt.hatch_element_of_id=of id %s
 
 # Basic Machine
 gt.blockmachines.basicmachine.accelerator.tier.01.name=Basic World Accelerator
@@ -1699,17 +1699,32 @@ GT5U.MBTT.Structure.MaxTierSkips=This machine can run recipes at most %d tiers a
 GT5U.MBTT.Structure.UnlimitedTierSkips=This machine can run recipes regardless of tier, if given enough energy
 GT5U.MBTT.Structure.DataStick.Waterline=Link to the §bWater Purification Plant§7 with a §aData Stick
 GT5U.MBTT.Structure.DataStick.PCB=Link to the §bPCB Factory§7 with a §aData Stick
-gt.mbtt.structure.front_center=Front center
+
 gt.mbtt.structure.back_center=Back center
-gt.mbtt.structure.front_center_2nd_layer=Front center, 2nd layer
 gt.mbtt.structure.front_bottom_center=Front bottom center
+gt.mbtt.structure.front_center=Front center
+gt.mbtt.structure.front_center_2nd_layer=Front center, 2nd layer
+gt.mbtt.structure.front_center_4th_layer=Front center, 4th layer
+gt.mbtt.structure.front_center_9th_layer=Front center, 9th layer
+gt.mbtt.structure.front_center_15th_layer=Front center, 15th layer
+gt.mbtt.structure.front_center_17th_layer=Front center, 17th layer
 gt.mbtt.structure.any_casing=Any casing
 gt.mbtt.structure.interior=Interior of the structure
 gt.mbtt.structure.any_tiered_glass=Any Tiered Glass
 gt.mbtt.structure.min_tiered_glass=%s+ Tiered Glass
 gt.mbtt.structure.any_bottom_casing=Any bottom casing
 gt.mbtt.structure.back_center_casing=Back center casing
-gt.mbtt.structure.front_center_9th_layer=Front center, 9th layer
+gt.mbtt.structure.any_back_center_casing=Any back center casing
+gt.mbtt.structure.any_front_shielding_casing=Any front shielding casing
+
+# Generic machine types
+gt.mbtt.machine_type.spacetime_manipulator=Spacetime Manipulator, EOH
+gt.mbtt.machine_type.exotic_matter_producer=Exotic Matter Producer
+gt.mbtt.machine_type.blast_smelter=Blast Smelter
+gt.mbtt.machine_type.blast_furnace=Blast Furnace, Furnace
+gt.mbtt.machine_type.plasma_fabricator=Plasma Fabricator
+gt.mbtt.machine_type.stellar_forge=Stellar Forge
+
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
 GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
@@ -1745,7 +1760,6 @@ GT5U.MBTT.PCB.Tooltip.3=Allows for overclocking. Requires 10 L/s of distilled wa
 GT5U.MBTT.PCB.Tooltip.4=Enables perfect overclocking by allowing nanites to work with extreme speed and efficiency. Uses 10 L/s of Super Coolant.
 GT5U.MBTT.PCB.Tooltip.5=Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste material but are fast. 50-200 μm.
 GT5U.MBTT.PCB.Tooltip.6=Can't change configuration when running!
-
 GT5U.MBTT.AlchemyCasingAny=Alchemically Resistant/Inert/Immune Casing
 GT5U.MBTT.AlchemicalConstructAny=Alchemical Construct
 GT5U.MBTT.SuperChest=Super/Quantum Chest
@@ -2590,6 +2604,7 @@ GT5U.gui.text.per_hour=§fPer hour:
 GT5U.gui.text.per_day=§fPer day:
 GT5U.gui.text.progress_recipe=§fProgress: %ss / %ss (%s%%)
 GT5U.gui.text.progress_detail=§fProgress: %s%% §7(§f%ss§7/§f%ss§7)§r
+GT5U.gui.text.tier_name_with_parentheses=(%s)
 GT5U.gui.text.rate_short=(§7%s/s§f)
 GT5U.gui.text.rate_short_slow=(§7%ss/each§f)
 GT5U.gui.text.rate_large_suffix=§f[§7%s§f]
@@ -3210,6 +3225,7 @@ GT5U.gui.hoverable.incomplete=Structure incomplete.
 GT5U.gui.hoverable.powerloss=Lost Power.
 GT5U.gui.hoverable.norepair=Machine too damaged.
 GT5U.gui.hoverable.manualshutdown=Manual shutdown (get it?).
+GT5U.gui.hoverable.computation_loss=Out of computation.
 GT5U.gui.hoverable.error=ERROR! REPORT ME!
 
 GT5U.gui.config.client=Client
@@ -9090,6 +9106,22 @@ GT5U.gui.text.bec-stored-condensate=Stored Condensate:
 GT5U.tooltip.bec-ionode.controller-pos=Front center, 12th layer
 GT5U.tooltip.bec-ionode.hatch-pos=Any electromagnetically-isolated casing
 GT5U.tooltip.bec-ionode.los-hatch-pos=Back center casing
+
+# Eye of Harmony Structure Hints
+GT5U.tooltip.eye-of-harmony.boundary-no-stocking-bus=Any boundary casing (no stocking bus)
+GT5U.tooltip.eye-of-harmony.boundary-no-stocking-hatch=Any boundary casing (no stocking hatch)
+GT5U.tooltip.eye-of-harmony.any-boundary-casing=Any boundary casing
+
+# Research Station Structure Hints
+GT5U.tooltip.research-station.footer=§aData Sticks go in the controller
+
+# Forge of Gods Structure Hints
+GT5U.tooltip.forge-of-gods.hatch-pos=Around controller
+GT5U.tooltip.forge-of-gods.output-bus-pos=Around controller (ME only)
+GT5U.tooltip.forge-of-gods.module=Forge of the Gods Module
+GT5U.tooltip.forge-of-gods.module-pos=Any side center shielding casing
+GT5U.tooltip.forge-of-gods.second-ring=Second Ring
+GT5U.tooltip.forge-of-gods.third-ring=Third Ring
 
 # BEC Generator Structure Hints
 GT5U.tooltip.bec-generator.controller-pos=Front center, 10th layer
