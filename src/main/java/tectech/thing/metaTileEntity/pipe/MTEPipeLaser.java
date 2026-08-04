@@ -3,6 +3,7 @@ package tectech.thing.metaTileEntity.pipe;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -133,6 +134,10 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
         if (!nestedCall) updateNeighboringNetworks();
         if (prevActive != active) {
             aBaseMetaTileEntity.issueTileUpdate();
+        }
+        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity instanceof BaseMetaPipeEntity base) {
+            base.updateConnections();
+            base.syncConnectionToClient();
         }
         computingActivity = false;
     }

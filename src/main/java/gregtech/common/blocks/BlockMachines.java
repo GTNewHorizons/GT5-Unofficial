@@ -423,7 +423,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         }
 
         if (tTileEntity instanceof IGregTechTileEntity gtTE) {
-            if (gtTE.getTimer() < 1L) {
+            if (gtTE.getTimer() <= 1L) {
                 return false;
             }
             if ((!aWorld.isRemote) && !gtTE.isUseableByPlayer(aPlayer)) {
