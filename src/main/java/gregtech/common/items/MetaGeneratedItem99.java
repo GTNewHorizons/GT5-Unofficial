@@ -20,6 +20,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
+import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -49,11 +50,6 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     /**
      * Assignment of metadata IDs: 0 - 999: Molten cells 10_000 - 15_999: Cracked fluid cells (# IDs used is
      * NUM_CRACKED_CELL_TYPES * 1_000; update this if you add any)
-     *
-     * <p>
-     * Nothing registers into either range any more -- every material that can be cracked generates the six
-     * cracked cell shapes, and molten cells come from {@code CellShapes.cellMolten}. The ranges and their
-     * damage-to-prefix mapping stay so that a stack of either still resolves in a world saved before the cutover.
      */
     private final BitSet enabled = new BitSet();
 
@@ -69,6 +65,19 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
                 continue;
             }
 
+            if (MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_FLUID)
+                && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING)
+                && !MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)) {
+                if (!cellMolten.mNotGeneratedItems.contains(material)) {
+                    registerMolten(material, subId);
+                }
+                Material smeltInto = MaterialUtils.smeltInto(material);
+                int smeltSubId = MaterialUtils.oldSubId(smeltInto);
+                if (smeltInto != material && smeltSubId >= 0 && smeltSubId < 1_000) {
+                    registerMolten(smeltInto, smeltSubId);
+                }
+            }
+
             if (MaterialUtils.canBeCracked(material)) {
                 registerCracked(material, subId);
             }
@@ -77,6 +86,19 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         // We're not going to use these BitSets, so clear them to save memory.
         mEnabledItems.clear();
         mVisibleItems.clear();
+    }
+
+    private void registerMolten(Material material, int i) {
+        if (MaterialParts.isCutOver(cellMolten, material)) return;
+
+        ItemStack tStack = new ItemStack(this, 1, i);
+        enabled.set(i);
+
+        if (cellMolten.isUnifiable()) {
+            GTOreDictUnificator.set(cellMolten, material, tStack);
+        } else {
+            GTOreDictUnificator.registerOre(cellMolten.oreDictName(material), tStack);
+        }
     }
 
     private void registerCracked(Material material, int i) {
