@@ -18,17 +18,17 @@ import net.minecraft.util.StatCollector;
 String name = StatCollector.translateToLocal("gt.item.item_name.name");
 ```
 
+> **Server-only logging**: It's fine to call StatCollector.translateToLocal on the server for text that is only ever written to the server log, since sometimes you need to log user-visible text.
+> However, do not introduce translation keys for the sole purpose of server-only logging - dedicated servers only ever load en_US.lang, so there is no localization benefit to justify it.
+> (Do note that server threads on LAN & Singleplayer will use the host client's language instead.)
+
 ### 1.2 `StatCollector.translateToLocalFormatted(key, args...)`
 Same as above but with format substitution. Use when the translated string contains `%s` or `%d`
 placeholders.
 
-```java
-String desc = StatCollector.translateToLocalFormatted("gt.item.item_name.tooltip", 16000);
-// lang: gt.item.item_name.tooltip=Capacity: %d L
-```
-
-**Never use these two methods in code that runs server-side for chat output.** On a dedicated
-server the lang file may not be loaded, so the key will be returned as-is instead of translated.
+> Never use these two methods in code that runs server-side for chat output.** On a server,
+> the loaded language may differ from the client's, so the message will be translated to 
+> the wrong language. Use `GTUtility.sendChatTrans` or `ChatComponentTranslation` instead.
 
 ### 1.3 `GTUtility.sendChatTrans(player, key, args...)` - Chat Messages
 Use for sending a single translated message to a player. Internally wraps `ChatComponentTranslation`,
@@ -48,7 +48,11 @@ GTUtility.sendChatTrans(player, "gt.chat.error.machine_broken", machineName);
 > `ChatComponentTranslation` to the local client. On a dedicated server it is sent over the network.
 > Either way, translation happens on the client in the player's own language.
 > Never pre-translate the string with `StatCollector` before passing it to chat - this breaks
-> multiplayer because translation would happen with the server's (possibly missing) lang file.
+> multiplayer because translation would happen with the server's (possibly wrong) lang file.
+
+> **Placeholder support**: `ChatComponentTranslation` (and therefore `sendChatTrans`) only supports
+> plain `%s` placeholders. Do not use `%d`, `%f`/`%.2f`, or positional placeholders like `%1$s`/`%2$s`
+> in lang keys used for chat messages - pass every argument through `%s` instead.
 
 ### 1.4 `GTUtility.sendChatComp(player, component)` - Complex Chat Messages
 Use when a single message needs multiple independently-formatted parts (e.g. a colored item name
