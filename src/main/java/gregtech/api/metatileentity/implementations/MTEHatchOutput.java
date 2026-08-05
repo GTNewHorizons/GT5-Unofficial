@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
@@ -379,13 +380,11 @@ public class MTEHatchOutput extends MTEHatch
                 "GT5U.infodata.hatch.output.fluid",
                 mFluid == null ? IGregTechDeviceInformation.translatable("GT5U.infodata.hatch.output.fluid.none")
                     : IGregTechDeviceInformation.translatable(mFluid.getUnlocalizedName())),
-            EnumChatFormatting.GREEN + formatNumber(mFluid == null ? 0 : mFluid.amount)
-                + " L"
+            EnumChatFormatting.GREEN + formatFluid(mFluid == null ? 0 : mFluid.amount)
                 + EnumChatFormatting.RESET
                 + " "
                 + EnumChatFormatting.YELLOW
-                + formatNumber(getCapacity())
-                + " L"
+                + formatFluid(getCapacity())
                 + EnumChatFormatting.RESET,
             (!isFluidLocked() || lockedFluid == null) ? "GT5U.infodata.hatch.output.fluid.locked_to.none"
                 : IGregTechDeviceInformation.encode(
