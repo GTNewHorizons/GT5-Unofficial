@@ -159,7 +159,7 @@ public class HatchElementBuilder<T> {
             .stream()
             .map(IHatchElement::mteBlacklist)
             .flatMap(Collection::stream)
-            .collect(Collectors.toList());
+            .toList();
 
         // map cannot be null or empty, so assert Optional isPresent
         return adder(

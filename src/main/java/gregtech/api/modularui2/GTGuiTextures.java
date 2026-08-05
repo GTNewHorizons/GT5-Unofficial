@@ -8,7 +8,6 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.KubaTech;
 import static tectech.Reference.MODID;
 
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.cleanroommc.modularui.drawable.ColorType;
@@ -1001,7 +1000,7 @@ public final class GTGuiTextures {
                 .fullImage()
                 .location(GregTech.ID, "gui/overlay_slot/number_" + i)
                 .build())
-        .collect(Collectors.toList())
+        .toList()
         .toArray(new UITexture[0]);
 
     public static final UITexture OVERLAY_TOOLBOX_WRENCH = UITexture.builder()

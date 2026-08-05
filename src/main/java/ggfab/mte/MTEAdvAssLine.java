@@ -740,7 +740,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         }
 
         if (GTValues.D1) {
-            GT_FML_LOGGER.info("Stick accepted, " + availableRecipes.size() + " Data Sticks found");
+            GT_FML_LOGGER.info("Stick accepted, {} Data Sticks found", availableRecipes.size());
         }
 
         for (RecipeAssemblyLine recipe : availableRecipes) {
