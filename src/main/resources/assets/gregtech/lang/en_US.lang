@@ -1714,6 +1714,9 @@ gt.mbtt.structure.any_tiered_glass=Any Tiered Glass
 gt.mbtt.structure.min_tiered_glass=%s+ Tiered Glass
 gt.mbtt.structure.any_bottom_casing=Any bottom casing
 gt.mbtt.structure.back_center_casing=Back center casing
+gt.mbtt.structure.front_center_casing=Front center casing
+gt.mbtt.structure.any_front_bottom_casing=Any front bottom casing
+gt.mbtt.structure.around_controller=Around controller
 gt.mbtt.structure.any_back_center_casing=Any back center casing
 gt.mbtt.structure.any_front_shielding_casing=Any front shielding casing
 
@@ -9127,7 +9130,6 @@ GT5U.tooltip.eye-of-harmony.any-boundary-casing=Any boundary casing
 GT5U.tooltip.research-station.footer=§aData Sticks go in the controller
 
 # Forge of Gods Structure Hints
-GT5U.tooltip.forge-of-gods.hatch-pos=Around controller
 GT5U.tooltip.forge-of-gods.output-bus-pos=Around controller (ME only)
 GT5U.tooltip.forge-of-gods.module=Forge of the Gods Module
 GT5U.tooltip.forge-of-gods.module-pos=Any side center shielding casing
