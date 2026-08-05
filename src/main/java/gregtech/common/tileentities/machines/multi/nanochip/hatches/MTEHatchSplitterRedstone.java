@@ -122,7 +122,7 @@ public class MTEHatchSplitterRedstone extends MTEHatch {
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.NANOCHIP;
     }
 

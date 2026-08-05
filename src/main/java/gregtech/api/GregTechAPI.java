@@ -336,8 +336,7 @@ public class GregTechAPI {
         if (block == TTCasingsContainer.eyeOfHarmonyRenderBlock) return true;
         if (block == TTCasingsContainer.forgeOfGodsRenderBlock) return true;
         if (block == FluidLoader.bioFluidBlock) return true;
-        if (block == Loaders.antimatterRenderBlock) return true;
-        return false;
+        return block == Loaders.antimatterRenderBlock;
     }
 
     /**

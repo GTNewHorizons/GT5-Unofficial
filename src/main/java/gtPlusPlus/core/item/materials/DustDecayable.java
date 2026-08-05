@@ -48,7 +48,8 @@ public class DustDecayable extends BaseItemTickable {
         super.addInformation(stack, player, list, adv);
         if (Client.tooltip.showRadioactiveText) {
             if (this.radLevel > 0) {
-                list.add(StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip_Radioactive", this.radLevel));
+                list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Radioactive"));
+                list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_HazmatWarning"));
             }
         }
         list.add(

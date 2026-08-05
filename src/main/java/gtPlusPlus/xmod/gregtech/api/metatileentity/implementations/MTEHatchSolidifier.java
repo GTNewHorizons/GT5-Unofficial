@@ -162,11 +162,6 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchSolidifierGui(this).build(guiData, syncManager, uiSettings);
     }

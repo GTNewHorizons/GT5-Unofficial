@@ -33,6 +33,7 @@ import appeng.api.storage.data.IAEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTAuthors;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -64,6 +65,7 @@ import tectech.thing.metaTileEntity.multi.base.parameter.LongParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implements BECInventory, IParametrized {
 
     private final CondensateList storedCondensate = new CondensateList();
@@ -98,7 +100,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     public IStructureDefinition<MTEBECStorage> compile(String[][] definition) {
         structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
         structure.addCasing('B', ElectromagneticallyIsolatedCasing)
-            .withHatches(1, 16, Arrays.asList(Energy, ExoticEnergy, DetectorHatchElement.INSTANCE));
+            .withHatches(1, 20, Arrays.asList(Energy, ExoticEnergy, DetectorHatchElement.INSTANCE));
         structure.addCasing('C', FineStructureConstantManipulator);
         structure.addCasing('D', ConflictInducementCasing);
         structure.addCasing('E', PeaceEnforcementCasing);
@@ -141,32 +143,26 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTEBECStorage> tt = new StructureWrapperTooltipBuilder<>(structure);
 
+        // spotless:off
         tt.addMachineType("BEC Storage, Entangled Condensate Storage")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-storage"))
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-storage"))
             .addSupportAny();
 
-        tt.beginStructureBlock(45, 45, 17, true)
+        tt.beginStructureBlock(45, 17, 45, true)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-storage.controller-pos"))
-            .addCasing("1045", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
             .addCasing("1236", ElectromagneticWaveguide.getLocalizedName(), false)
+            .addCasing("1045", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
             .addCasing("896", ConflictInducementCasing.getLocalizedName(), false)
             .addCasing("568", PeaceEnforcementCasing.getLocalizedName(), false)
             .addCasing("508", CondensateGuidanceCoil.getLocalizedName(), false)
             .addCasing("439-442", FineStructureConstantManipulator.getLocalizedName(), false)
-            .addCasing("0-343", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("324-343", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
             .addCasing("292", CondensateTransformativeCoil.getLocalizedName(), false)
             .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-storage.hatch-pos"), 1)
-            .addMiscHatch(
-                "1-4",
-                "Bose-Einstein Condensate Hatch",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-storage.bec-hatch-pos"),
-                2)
-            .addMiscHatch(
-                "0+",
-                "Bose-Einstein Condensate Detector Hatch",
-                StatCollector.translateToLocal("GT5U.tooltip.bec-storage.hatch-pos"),
-                1)
+            .addMiscHatch("1-4", "Bose-Einstein Condensate Hatch", StatCollector.translateToLocal("GT5U.tooltip.bec-storage.bec-hatch-pos"), 2)
+            .addMiscHatch("0+", "Bose-Einstein Condensate Detector Hatch", StatCollector.translateToLocal("GT5U.tooltip.bec-storage.hatch-pos"), 1)
             .toolTipFinisher(GTAuthors.AuthorPineapple);
+        // spotless:on
         return tt;
     }
 
@@ -216,6 +212,10 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         }
 
         return sum;
+    }
+
+    public void refreshContentForHatch() {
+        contentsChanged = true;
     }
 
     @Override
@@ -392,7 +392,9 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
                 if (imte instanceof MTEHatchCondensateDetector hatch) {
                     hatch.updateTexture(texture);
                     hatch.updateCraftingIcon(self.getMachineCraftingIcon());
+                    hatch.bindBECStorage(self);
                     self.condensateDetectors.add(hatch);
+                    self.contentsChanged = true;
                     return true;
                 } else {
                     return false;

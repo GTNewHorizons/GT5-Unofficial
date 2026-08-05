@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.interfaces.tileentity.IColoredTileEntity.UNCOLOURED;
 
 import java.util.List;
@@ -139,7 +140,8 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     @Override
-    public void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity) {
+    public final void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity) {
+        final IGregTechTileEntity oldBase = mBaseMetaTileEntity;
         if (mBaseMetaTileEntity != null && aBaseMetaTileEntity == null) {
             mBaseMetaTileEntity.getMetaTileEntity()
                 .inValidate();
@@ -148,6 +150,9 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         mBaseMetaTileEntity = aBaseMetaTileEntity;
         if (mBaseMetaTileEntity != null) {
             mBaseMetaTileEntity.setMetaTileEntity(this);
+        }
+        if (oldBase != aBaseMetaTileEntity && oldBase instanceof CommonBaseMetaTileEntity oldMeta) {
+            oldMeta.refreshMetaTileEntityValidity();
         }
     }
 
@@ -758,7 +763,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
             if (!eg.isNetworkPowered())
                 return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.power");
         } catch (Exception ex) {
-            ex.printStackTrace();
+            GT_FML_LOGGER.error(ex);
         }
         return "";
     }

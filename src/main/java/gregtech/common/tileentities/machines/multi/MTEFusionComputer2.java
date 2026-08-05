@@ -81,7 +81,7 @@ public class MTEFusionComputer2 extends MTEFusionComputer {
             .addInfo("§b8,192§7 EU/t and §b20M§7 EU capacity per Energy Hatch")
             .addInfo("If the recipe has a startup cost greater than the")
             .addInfo("number of energy hatches * cap, you can't do it")
-            .beginStructureBlock(15, 15, 3, false)
+            .beginStructureBlock(15, 3, 15, false)
             .addController("Middle center, 2nd layer")
             .addCasing("79-123", "Fusion Machine Casing", false)
             .addCasing("32", "Fusion Coil Block", false)

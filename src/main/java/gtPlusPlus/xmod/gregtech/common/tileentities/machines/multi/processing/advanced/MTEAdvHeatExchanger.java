@@ -152,7 +152,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.throttle1"))
             .addInfo(StatCollector.translateToLocal("gt.multiblock.AdvHeatExchanger.throttle2"))
-            .beginStructureBlock(5, 5, 9, false)
+            .beginStructureBlock(5, 9, 5, false)
             .addController("Front center, 4th layer")
             .addCasing("90-96", "Reinforced Heat Exchanger Casing", false)
             .addCasing("45", "Tungstensteel Pipe Casing", false)
@@ -342,6 +342,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchOutput) {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             mOutputColdFluidHatch = (MTEHatchOutput) aMetaTileEntity;
             return true;
@@ -354,6 +355,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchInput) {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             ((MTEHatchInput) aMetaTileEntity).mRecipeMap = getRecipeMap();
             mInputHotFluidHatch = (MTEHatchInput) aMetaTileEntity;

@@ -193,6 +193,7 @@ ig.button.projects=Projects
 # Planetary Gas Siphon
 gt.blockmachines.multimachine.ig.siphon.name=Planetary Gas Siphon
 gt.blockmachines.multimachine.ig.siphon.type=Pump, PGS
+gt.blockmachines.multimachine.ig.siphon.desc0=Every coil tier gives a §a+%s%%§7 speed bonus per coil tier
 gt.blockmachines.multimachine.ig.siphon.desc1=Build on a Space Station orbiting a Gas Planet
 gt.blockmachines.multimachine.ig.siphon.desc2=Requires a Programmed Circuit set to the depth you want to pump from (1 - 4)
 gt.blockmachines.multimachine.ig.siphon.desc3=Requires 64x depth Mining Pipes
@@ -378,6 +379,11 @@ ig.structure.specialThanks=Special Thanks to
 ig.structure.author=Added by
 ig.structure.and= and
 
+ig.dyson.structure.controller=Front bottom center of receiver, 2nd layer
+ig.dyson.structure.control.any_casing=Any center side casing on control center
+ig.dyson.structure.receiver.any_casing=Any center side casing on receiver
+ig.dyson.structure.deployment.any_casing=Any center side casing on deployment unit
+ig.dyson.structure.air=All eight layers above the receiver dish
 ig.dyson.structure.dynamo=Can use Single- and/or Multi-Amp Dynamo Hatches and/or Laser Source Hatches (1 - 12)
 ig.dyson.structure.optical=Optical Reception Connector
 ig.dyson.structure.additionally=Additionally needed:

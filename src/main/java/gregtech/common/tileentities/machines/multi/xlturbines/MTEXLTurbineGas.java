@@ -171,11 +171,6 @@ public class MTEXLTurbineGas extends MTEXLTurbineBase {
     }
 
     @Override
-    protected Casings getRotorCasing() {
-        return Casings.SteelPipeCasing;
-    }
-
-    @Override
     public boolean requiresOutputHatch() {
         return false;
     }
@@ -190,7 +185,7 @@ public class MTEXLTurbineGas extends MTEXLTurbineBase {
             .addInfo("Loose fit increases flow in exchange for efficiency")
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(26, 9, 9, true)
+            .beginStructureBlock(9, 9, 26, true)
             .addController("Front center, 5th layer")
             .addCasing(minCasingAmount() + "-346", "Reinforced Gas Turbine Casing", false)
             .addCasing("104", "Any Tiered Glass", false)

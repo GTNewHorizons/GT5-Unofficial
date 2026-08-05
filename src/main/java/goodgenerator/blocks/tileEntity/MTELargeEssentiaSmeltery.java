@@ -239,7 +239,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
             .addInfo("You can find more information about this machine in the Thaumonomicon")
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginVariableStructureBlock(5, 9, 5, 5, 5, 5, true)
+            .beginVariableStructureBlock(5, 5, 5, 5, 5, 9, true)
             .addController("Front center, 3rd layer")
             .addCasing("24-84", "Magic Casing", false)
             .addCasing("12-28", "Essentia Diffusion Cell", true)
@@ -583,7 +583,7 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
         if (!GTMod.proxy.mPollution) return true;
         mPollution += aPollutionLevel;
         if (mPollution < VENT_AMOUNT) return true;
-        if (mMufflerHatches.size() == 0) {
+        if (mMufflerHatches.isEmpty()) {
             // No muffler present. Fail.
             return false;
         }

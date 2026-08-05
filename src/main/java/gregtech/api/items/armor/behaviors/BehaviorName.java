@@ -33,7 +33,8 @@ public enum BehaviorName {
     MilkInfusion(EnumRarity.uncommon),
     HoloInventory(EnumRarity.uncommon),
     Terrasteel(EnumRarity.uncommon),
-    Soulbound(EnumRarity.common)
+    Soulbound(EnumRarity.common),
+    Levitation(EnumRarity.epic)
     //
     ;
 

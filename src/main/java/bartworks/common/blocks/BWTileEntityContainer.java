@@ -146,7 +146,7 @@ public class BWTileEntityContainer extends BlockContainer implements ITileAddsIn
             return ((ITileHasDifferentTextureSides) this.tileEntity.getConstructor()
                 .newInstance()).getTextureForSide(side, meta);
         } catch (Exception e) {
-            e.printStackTrace();
+            MainMod.LOGGER.error(e);
             return super.getIcon(side, meta);
         }
     }
@@ -159,7 +159,7 @@ public class BWTileEntityContainer extends BlockContainer implements ITileAddsIn
                 ((ITileHasDifferentTextureSides) this.tileEntity.getConstructor()
                     .newInstance()).registerBlockIcons(par1IconRegister);
             } catch (Exception e) {
-                e.printStackTrace();
+                MainMod.LOGGER.error(e);
             }
         } else super.registerBlockIcons(par1IconRegister);
     }
@@ -170,7 +170,7 @@ public class BWTileEntityContainer extends BlockContainer implements ITileAddsIn
             return this.tileEntity.getConstructor()
                 .newInstance();
         } catch (Exception e) {
-            e.printStackTrace();
+            MainMod.LOGGER.error(e);
         }
         return null;
     }
@@ -197,7 +197,7 @@ public class BWTileEntityContainer extends BlockContainer implements ITileAddsIn
                 return ((ITileAddsInformation) this.tileEntity.getConstructor()
                     .newInstance()).getInfoData();
             } catch (Exception e) {
-                e.printStackTrace();
+                MainMod.LOGGER.error(e);
             }
         }
         return GTValues.emptyStringArray;
