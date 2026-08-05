@@ -304,10 +304,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         flowerRequiredMap = new HashMap<>();
         for (int i = 0, size = mStorage.size(); i < size; i++) {
             BeeSimulator bee = mStorage.get(i);
-            System.out.println("The bee value is: " + bee);
-            System.out.println("The bee flowertype value is: " + bee.getFlowerType());
-            System.out.println("The bee drops value is: " + bee.getDrops(this, 1));
-            System.out.println("The bee isValid value is: " + bee.isValid);
             String type = bee.getFlowerType();
             if (!type.isEmpty()) {
                 flowerRequiredMap.putIfAbsent(type, bee.getFlowerTypeDescription());
@@ -778,7 +774,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             isValid = false;
             this.queenStack = queenStack.copy();
             this.queenStack.stackSize = 1;
-            if(generate(world, t)) {
+            if (generate(world, t)) {
                 isValid = true;
                 queenStack.stackSize--;
             }
