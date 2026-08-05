@@ -1730,6 +1730,17 @@ gt.mbtt.machine_type.stellar_forge=Stellar Forge
 
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
+GT5U.MBTT.Glass.03=Any HV Glass
+GT5U.MBTT.Glass.04=Any EV Glass
+GT5U.MBTT.Glass.05=Any IV Glass
+GT5U.MBTT.Glass.06=Any LuV Glass
+GT5U.MBTT.Glass.07=Any ZPM Glass
+GT5U.MBTT.Glass.08=Any UV Glass
+GT5U.MBTT.Glass.09=Any UHV Glass
+GT5U.MBTT.Glass.10=Any UEV Glass
+GT5U.MBTT.Glass.11=Any UIV Glass
+GT5U.MBTT.Glass.12=Any UMV Glass
+GT5U.MBTT.Glass.13=Any UXV Glass
 GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
 GT5U.MBTT.BoroGlassTiered=Borosilicate Glass (any)
 GT5U.MBTT.ConfigMenu=Configuration Menu
