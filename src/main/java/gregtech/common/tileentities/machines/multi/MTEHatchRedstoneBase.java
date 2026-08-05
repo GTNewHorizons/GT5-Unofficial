@@ -21,6 +21,11 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
+    public MTEHatchRedstoneBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
+        String[] aDescription, ITexture... aTextures) {
+        super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
+    }
+
     public MTEHatchRedstoneBase(String aName, int aTier, int aInvSlotCount, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
@@ -75,6 +80,10 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (!aBaseMetaTileEntity.isServerSide()) {
+            super.onPostTick(aBaseMetaTileEntity, aTick);
+            return;
+        }
         for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, redstoneSignal[side.ordinal()]);
         }

@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -61,7 +60,7 @@ public class MTEHatchPHSensor extends MTEHatchRedstoneBase {
      * Updates redstone output strength based on the pH of the multiblock.
      */
     public void updateRedstoneOutput(double pH) {
-        setFacingSideRedstoneSignal(pH>threshold, true);
+        setFacingSideRedstoneSignal(pH > threshold, true);
     }
 
     @Override
