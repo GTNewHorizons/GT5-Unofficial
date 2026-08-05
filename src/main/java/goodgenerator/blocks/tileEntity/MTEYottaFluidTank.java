@@ -1,6 +1,7 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.CharExchanger.formatNumber;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -681,8 +682,12 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
 
         screenElements
             .widget(
-                new TextWidget().setStringSupplier(
-                    () -> StatCollector.translateToLocal("gui.YOTTank.0") + " " + numberFormat.format(mStorage) + " L")
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocal("gui.YOTTank.0") + " "
+                            + numberFormat.format(mStorage)
+                            + " "
+                            + getFluidUnit())
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getErrorDisplayID() == 0))
@@ -700,7 +705,8 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
                         () -> StatCollector.translateToLocal("gui.YOTTank.2") + " "
                             + numberFormat.format(mStorageCurrent)
                             + EnumChatFormatting.RESET
-                            + " L"
+                            + " "
+                            + getFluidUnit()
                             + " ("
                             + EnumChatFormatting.GREEN
                             + getPercent()
