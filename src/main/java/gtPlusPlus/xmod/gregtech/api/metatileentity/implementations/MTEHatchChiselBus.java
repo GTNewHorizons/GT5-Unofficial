@@ -49,7 +49,6 @@ public class MTEHatchChiselBus extends MTEHatchInputBus {
 
     public static int getGhostTargetCount(int aTier) {
         return switch (aTier) {
-            case 1 -> 1;
             case 2 -> 4;
             case 3 -> 9;
             default -> 1;

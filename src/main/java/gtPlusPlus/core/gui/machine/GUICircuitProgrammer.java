@@ -32,10 +32,4 @@ public class GUICircuitProgrammer extends GuiContainer {
         final int y = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
     }
-
-    // This method is called when the Gui is first called!
-    @Override
-    public void initGui() {
-        super.initGui();
-    }
 }

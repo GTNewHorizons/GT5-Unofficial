@@ -44,6 +44,7 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.util.item.AEFluidStack;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.IHatchElement;
@@ -205,7 +206,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         StructureWrapperTooltipBuilder<MTEBECIONode> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("BEC I/O Node, Input Bus, Output Bus")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-ionode"));
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-ionode"));
 
         tt.beginStructureBlock(7, 23, 13, false)
             .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-ionode.controller-pos"))
