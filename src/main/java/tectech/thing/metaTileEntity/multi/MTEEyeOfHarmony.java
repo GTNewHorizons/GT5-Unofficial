@@ -899,6 +899,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         for (MTEHatchInput inputHatch : mInputHatches) {
             if (inputHatch instanceof MTEHatchInputME) {
                 errors.add(StructureErrors.of("GT5U.gui.text.structure_error.stocking_input_hatch_not_allowed"));
+                break;
             }
         }
         checkOneOutputBus(errors);
