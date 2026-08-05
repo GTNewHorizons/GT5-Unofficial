@@ -4,10 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -21,19 +18,18 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHeatProducer;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.gui.modularui.hatch.MTEHeatSensorGui;
+import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
 
-public class MTEHeatSensor extends MTEHatch {
+public class MTEHeatSensor extends MTEHatchRedstoneBase {
 
     protected static final IIconContainer TEXTURE_FRONT = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR;
     protected static final IIconContainer TEXTURE_FRONT_GLOW = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
 
     protected double threshold = 0;
     protected boolean inverted = false;
-    protected float heat = 0;
 
     public MTEHeatSensor(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Reads heat from a machine.");
@@ -41,45 +37,6 @@ public class MTEHeatSensor extends MTEHatch {
 
     public MTEHeatSensor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return false;
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean allowGeneralRedstoneOutput() {
-        return true;
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public void initDefaultModes(NBTTagCompound aNBT) {
-        getBaseMetaTileEntity().setActive(true);
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
-        openGui(aPlayer);
-        return true;
     }
 
     @Override
@@ -93,7 +50,6 @@ public class MTEHeatSensor extends MTEHatch {
     public void loadNBTData(NBTTagCompound aNBT) {
         threshold = aNBT.getDouble("mThreshold");
         inverted = aNBT.getBoolean("mInverted");
-        heat = aNBT.getFloat("heat");
         super.loadNBTData(aNBT);
     }
 
@@ -101,25 +57,16 @@ public class MTEHeatSensor extends MTEHatch {
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setDouble("mThreshold", threshold);
         aNBT.setBoolean("mInverted", inverted);
-        aNBT.setFloat("heat", heat);
         super.saveNBTData(aNBT);
     }
 
-    public void setHeatValue(float heat) {
-        this.heat = heat;
+    public void updateRedstoneOutput(float heat) {
+        setFacingSideRedstoneSignal(heat > threshold, true);
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-        ForgeDirection facing = getBaseMetaTileEntity().getFrontFacing();
-        boolean isOn = (heat > threshold) ^ inverted;
-        if (aBaseMetaTileEntity.isServerSide()) {
-            for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity
-                    .setStrongOutputRedstoneSignal(direction, isOn && direction == facing ? (byte) 15 : 0);
-            }
-        }
+    public void setRedstoneSignalOnFace(int facing, byte signal, boolean turnOtherFacesOff) {
+        super.setRedstoneSignalOnFace(facing, redstoneSignalFromOn((signal > 0) ^ inverted), turnOtherFacesOff);
     }
 
     @Override

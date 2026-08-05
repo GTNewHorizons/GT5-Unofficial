@@ -16,7 +16,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEToxicResidueSensorGui;
 
-public class MTEToxicResidueSensor extends MTERedstoneHatchBase {
+public class MTEToxicResidueSensor extends MTEHatchRedstoneBase {
 
     private int threshold = 0;
     private boolean inverted = false;
