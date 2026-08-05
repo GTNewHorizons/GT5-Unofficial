@@ -3,11 +3,7 @@ package goodgenerator.blocks.tileEntity.GTMetaTileEntity;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -20,9 +16,9 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTENeutronSensorGui;
+import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
 
 public class MTENeutronSensor extends MTEHatchRedstoneBase {
 
@@ -136,7 +132,7 @@ public class MTENeutronSensor extends MTEHatchRedstoneBase {
      * @param eV Amount of eV to compare.
      */
     public void updateRedstoneOutput(int eV) {
-        setFacingSideRedstoneSignal(eV>=threshold,true);
+        setFacingSideRedstoneSignal(eV >= threshold, true);
     }
 
     @Override

@@ -17,12 +17,12 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
     private final byte[] redstoneSignal = { 0, 0, 0, 0, 0, 0 };
 
     public MTEHatchRedstoneBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
-                                String aDescription, ITexture... aTextures) {
+        String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public MTEHatchRedstoneBase(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-                                ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
