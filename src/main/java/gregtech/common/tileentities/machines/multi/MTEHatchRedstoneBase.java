@@ -60,9 +60,7 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
     }
 
     public void setAllFacesRedstoneSignal(boolean on) {
-        for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
-            setRedstoneSignalOnFace(i, on, false);
-        }
+        setAllFacesRedstoneSignal(redstoneSignalFromOn(on));
     }
 
     public void setFacingSideRedstoneSignal(byte signal, boolean turnOtherFacesOff) {
