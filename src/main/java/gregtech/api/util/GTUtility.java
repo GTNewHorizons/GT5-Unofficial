@@ -501,7 +501,9 @@ public class GTUtility {
         byte tier = getTier(voltage);
         tier = tier < 1 ? 1 : tier;
         String color = GTValues.TIER_COLORS[tier];
-        return "(" + color + GTValues.VN[tier] + EnumChatFormatting.RESET + ")";
+        return translateToLocalFormatted(
+            "GT5U.gui.text.tier_name_with_parentheses",
+            color + GTValues.VN[tier] + EnumChatFormatting.RESET);
     }
 
     public static String getForgeDirectionNameKey(ForgeDirection side) {

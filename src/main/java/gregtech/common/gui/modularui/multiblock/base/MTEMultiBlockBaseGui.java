@@ -139,7 +139,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.manualshutdown"));
         this.shutdownReasonTooltipMap.put(
             "computation_loss",
-            EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.text.computation_loss"));
+            EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.computation_loss"));
     }
 
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
