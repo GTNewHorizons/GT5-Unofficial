@@ -2796,6 +2796,7 @@ GT5U.gui.text.static_mode=Static Mode
 GT5U.gui.text.structure_error.unneeded_muffler=Does not accept Muffler Hatches
 GT5U.gui.text.structure_error.crib_not_allowed=Crafting Inputs are not allowed
 GT5U.gui.text.structure_error.stocking_input_bus_not_allowed=Stocking Input Buses are not allowed
+GT5U.gui.text.structure_error.stocking_input_hatch_not_allowed=Stocking Input Hatches are not allowed
 GT5U.gui.text.structure_error.unknown=Unknown structure error
 GT5U.gui.text.structure_error.glass_tier_not_enough=Glass tier too low for energy hatch tier
 GT5U.gui.text.structure_error.missing_energy_hatch=Missing Energy Hatch
