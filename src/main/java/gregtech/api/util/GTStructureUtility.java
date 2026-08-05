@@ -904,15 +904,30 @@ public class GTStructureUtility {
         Function<T, Integer> getter) {
         return triggerItemTransform(
             GTStructureUtility::capGlassStack,
-            GTStructureChannels.BOROGLASS.use(
-                lazy(
-                    t -> ofBlocksTiered(
-                        GlassTier::getGlassBlockTier,
-                        GlassTier.getGlassList(),
-                        notSet,
-                        setter,
-                        getter,
-                        Collections.singletonList("GT5U.structure.tiered_glass")))));
+            GTStructureChannels.BOROGLASS.use(lazy(t -> chainAllGlassesImpl(notSet, setter, getter))));
+    }
+
+    private static <T> IStructureElement<T> chainAllGlassesImpl(int notSet, BiConsumer<T, Integer> setter,
+        Function<T, Integer> getter) {
+        IStructureElement<T> inner = ofBlocksTiered(
+            GlassTier::getGlassBlockTier,
+            GlassTier.getGlassList(),
+            notSet,
+            setter,
+            getter);
+        return new ProxyStructureElement<>(inner) {
+
+            @Override
+            public List<String> getDescription(T context) {
+                int tier = getter.apply(context);
+                if (tier == notSet) {
+                    return Collections.singletonList("GT5U.structure.tiered_glass");
+                }
+                return Collections.singletonList(
+                    GlassTier.getTierLangKeys()
+                        .get(tier));
+            }
+        };
     }
 
     /**
