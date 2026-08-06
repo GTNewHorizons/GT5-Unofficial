@@ -268,7 +268,7 @@ public class TileEntitySpaceElevatorCable extends TileEntityAdvanced {
         isRotating = compound.getBoolean(ROTATION_MOVEMENT_NBT_TAG);
         isMovingDirectionUp = compound.getBoolean(VERTICAL_DIRECTION_NBT_TAG);
         isRotationDirectionClockwise = compound.getBoolean(ROTATION_DIRECTION_NBT_TAG);
-        currentHeight = compound.getInteger(WAIT_TIME_NBT_TAG);
+        currentWaitTime = compound.getInteger(WAIT_TIME_NBT_TAG);
         shouldRender = compound.getBoolean(SHOULD_RENDER_NBT_TAG);
     }
 

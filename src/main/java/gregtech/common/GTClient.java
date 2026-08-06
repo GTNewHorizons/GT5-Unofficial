@@ -124,6 +124,7 @@ import gregtech.common.render.GTRendererCasing;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
 import gregtech.common.render.NanoForgeRenderer;
+import gregtech.common.render.RenderInit;
 import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.CircuitComponentItemRenderer;
 import gregtech.common.render.items.DataStickRenderer;
@@ -185,6 +186,7 @@ public class GTClient extends GTProxy {
         super.onPreInitialization(event);
         SoundSystemConfig.setNumberNormalChannels(Client.preference.maxNumSounds);
         MinecraftForge.EVENT_BUS.register(new ExtraIcons());
+        RenderInit.registerEarly();
         Minecraft.getMinecraft()
             .getResourcePackRepository().rprMetadataSerializer
                 .registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
@@ -291,6 +293,7 @@ public class GTClient extends GTProxy {
                     DynamicLangManager.reload();
                 }
             });
+        RenderInit.register();
         Pollution.onPostInitClient();
 
         ModuleRegistrar.instance()
@@ -583,6 +586,7 @@ public class GTClient extends GTProxy {
     @SubscribeEvent
     public void onRenderStart(TickEvent.RenderTickEvent event) {
         if (event.phase == TickEvent.Phase.START) {
+            RenderInit.runPendingReload();
             renderTickTime = event.renderTickTime;
             isRenderingWorld = true;
         } else if (event.phase == TickEvent.Phase.END) {
