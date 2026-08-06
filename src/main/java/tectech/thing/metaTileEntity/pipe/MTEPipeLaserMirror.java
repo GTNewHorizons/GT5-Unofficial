@@ -143,6 +143,7 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
             if (direction == null) {
                 return null;
             }
+            markUsed();
             ForgeDirection opposite = direction.getOpposite();
             for (short dist = 1; dist < 1000; dist++) {
 
