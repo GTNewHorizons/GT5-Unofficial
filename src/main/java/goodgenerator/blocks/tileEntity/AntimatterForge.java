@@ -488,11 +488,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         // Check for upgrade fluids
         long containedProtomatter = 0;
 
-        // fluidConsumptions[MAGNETIC_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, ));
-        // fluidConsumptions[GRAVITY_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, ));
-        // fluidConsumptions[CONTAINMENT_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount,));
-        // fluidConsumptions[ACTIVATION_ID] = (int) Math.ceil(Math.pow(totalAntimatterAmount, ));
-
         for (int modifierId = 0; modifierId < modifiers.length; modifierId++) {
             fluidConsumptions[modifierId] = (int) Math
                 .ceil(Math.pow(totalAntimatterAmount, fluidConsumptionExponents[modifierId]));
