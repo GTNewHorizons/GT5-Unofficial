@@ -23,7 +23,8 @@ import java.util.stream.Stream;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -53,8 +54,10 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEExoticModuleGui;
 import tectech.recipe.TecTechRecipeMaps;
+import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEExoticModule extends MTEBaseModule {
 
     public static final int RECIPE_REFRESH_LIMIT = 60 * SECONDS;
@@ -509,28 +512,22 @@ public class MTEExoticModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Exotic Matter Producer")
-            .addInfo("This is a module of the Godforge")
-            .addInfo("Must be part of a Godforge to function")
-            .addInfo("Used for ultra high temperature matter degeneration")
-            .addSeparator(EnumChatFormatting.AQUA, 75)
-            .addInfo("The fourth and final module of the Godforge, this module breaks apart the very")
-            .addInfo("building blocks of matter, producing exotic mixtures in the process. Quark-Gluon Plasma")
-            .addInfo("can be manufactured right away, but production of Magnetic Monopole Matter (Magmatter)")
-            .addInfo("requires a fully upgraded Godforge")
-            .addInfo("This module is specialized towards acquisition of unique materials")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.exotic_matter_producer"))
+            .addMarkdown(new ResourceLocation("gregtech", "godforge-exotic-module"))
             .beginStructureBlock(7, 7, 13, false)
-            .addController("Front center, 4th layer")
-            .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
-            .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)
-            .addCasing("5", "Celestial Matter Guidance Casing", false)
-            .addCasing("5", "Harmonic Phonon Transmission Conduit", false)
-            .addCasing("1", "Stellar Energy Siphon Casing", false)
-            .addInputBus("0+", "Any front shielding casing", 1)
-            .addInputHatch("0+", "Any front shielding casing", 1)
-            .addOutputBus("1+", "Any front shielding casing", 1)
-            .addOutputHatch("1+", "Any front shielding casing", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("0-20", CustomItemList.Godforge_SingularityShieldingCasing.get(1).getDisplayName(), false)
+            .addCasing("20", CustomItemList.Godforge_BoundlessStructureCasing.get(1).getDisplayName(), false)
+            .addCasing("5", CustomItemList.Godforge_GuidanceCasing.get(1).getDisplayName(), false)
+            .addCasing("5", CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(1).getDisplayName(), false)
+            .addCasing("1", CustomItemList.Godforge_StellarEnergySiphonCasing.get(1).getDisplayName(), false)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
