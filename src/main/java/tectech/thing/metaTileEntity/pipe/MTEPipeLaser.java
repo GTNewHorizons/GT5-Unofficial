@@ -234,7 +234,8 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     }
 
     public void markUsed() {
-        this.active = true;
+        if (active) return;
+        active = true;
         if (!computingActivity) {
             getBaseMetaTileEntity().issueTileUpdate();
         }
