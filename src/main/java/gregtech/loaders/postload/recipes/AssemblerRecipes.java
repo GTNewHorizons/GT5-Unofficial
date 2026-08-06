@@ -3389,8 +3389,8 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 2))
             .itemOutputs(new ItemStack(Items.diamond_sword))
             .circuit(17)
             .duration(4 * SECONDS)
@@ -3398,8 +3398,8 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 2))
             .itemOutputs(new ItemStack(Items.golden_sword))
             .circuit(17)
             .duration(4 * SECONDS)
@@ -3407,8 +3407,8 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2))
             .itemOutputs(new ItemStack(Items.iron_sword))
             .circuit(17)
             .duration(4 * SECONDS)
@@ -3416,12 +3416,12 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new OreDictItemStack("plankWood", 2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
+                new OreDictItemStack("plankWood", 2))
             .itemOutputs(new ItemStack(Items.wooden_sword))
             .circuit(17)
-            .duration(4 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
     }
 
