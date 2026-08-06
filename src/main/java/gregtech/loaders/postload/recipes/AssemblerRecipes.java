@@ -3386,6 +3386,34 @@ public class AssemblerRecipes implements Runnable {
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 2),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
+            .itemOutputs(new ItemStack(Items.diamond_sword))
+            .circuit(2)
+            .duration(4 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 2),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
+            .itemOutputs(new ItemStack(Items.golden_sword))
+            .circuit(2)
+            .duration(4 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 2),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1))
+            .itemOutputs(new ItemStack(Items.iron_sword))
+            .circuit(2)
+            .duration(4 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
     }
 
     /**
@@ -3899,6 +3927,42 @@ public class AssemblerRecipes implements Runnable {
                 .itemInputs(ItemList.Hatch_Output_Bus_LV.get(1), getModItem(ExtraUtilities.ID, "trashcan", 1L, 0))
                 .itemOutputs(ItemList.Hatch_Void_Bus.get(1))
                 .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+        }
+
+        // Spikes
+        {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.block, Materials.Diamond, 1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 3),
+                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.Diamond, 2),
+                    new ItemStack(Items.diamond_sword, 1))
+                .itemOutputs(getModItem(ExtraUtilities.ID, "spike_base_diamond", 2L, 0))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.block, Materials.Gold, 1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 3),
+                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.Gold, 2),
+                    new ItemStack(Items.golden_sword, 1))
+                .itemOutputs(getModItem(ExtraUtilities.ID, "spike_base_gold", 2L, 0))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 3),
+                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 2),
+                    new ItemStack(Items.iron_sword, 1))
+                .itemOutputs(getModItem(ExtraUtilities.ID, "spike_base", 2L, 0))
+                .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
         }
