@@ -285,7 +285,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
 
     @Override
     public byte getUpdateData() {
-        return LASER ? (byte)1 : (byte)0;
+        return LASER ? (byte) 1 : (byte) 0;
     }
 
     @Override
