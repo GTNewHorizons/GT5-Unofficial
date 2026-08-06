@@ -175,12 +175,12 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
         updateSelf(aBaseMetaTileEntity);
 
         if (!nestedCall) updateNeighboringNetworks();
-        if (prevActive != active) {
-            aBaseMetaTileEntity.issueTileUpdate();
-        }
         if (aBaseMetaTileEntity instanceof BaseMetaPipeEntity base) {
             base.updateConnections();
             base.syncConnectionToClient();
+        }
+        if (prevActive != active) {
+            aBaseMetaTileEntity.issueTileUpdate();
         }
         computingActivity = false;
     }
