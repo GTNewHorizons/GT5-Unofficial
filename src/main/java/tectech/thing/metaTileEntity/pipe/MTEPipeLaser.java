@@ -123,6 +123,7 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
 
     public void updateNetwork(boolean nestedCall) {
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
+        if (aBaseMetaTileEntity.isClientSide()) return;
 
         computingActivity = true;
         boolean prevActive = active;
@@ -134,7 +135,7 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
         if (prevActive != active) {
             aBaseMetaTileEntity.issueTileUpdate();
         }
-        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity instanceof BaseMetaPipeEntity base) {
+        if (aBaseMetaTileEntity instanceof BaseMetaPipeEntity base) {
             base.updateConnections();
             base.syncConnectionToClient();
         }

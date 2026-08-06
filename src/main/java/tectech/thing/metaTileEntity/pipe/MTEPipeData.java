@@ -166,6 +166,7 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
 
     public void updateNetwork(boolean nestedCall) {
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
+        if (aBaseMetaTileEntity.isClientSide()) return;
 
         computingActivity = true;
         boolean prevActive = active;
@@ -177,7 +178,7 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
         if (prevActive != active) {
             aBaseMetaTileEntity.issueTileUpdate();
         }
-        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity instanceof BaseMetaPipeEntity base) {
+        if (aBaseMetaTileEntity instanceof BaseMetaPipeEntity base) {
             base.updateConnections();
             base.syncConnectionToClient();
         }
@@ -283,7 +284,9 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
     public void markUsed() {
         if (active) return;
         active = true;
-        getBaseMetaTileEntity().issueTileUpdate();
+        if (!computingActivity) {
+            getBaseMetaTileEntity().issueTileUpdate();
+        }
     }
 
     public boolean getActive() {
