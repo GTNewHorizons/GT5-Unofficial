@@ -40,6 +40,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
+import goodgenerator.blocks.tileEntity.AntimatterForge;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
@@ -1611,8 +1612,13 @@ public class RecipeLoader {
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Protomatter.getFluid(1))
-            .fluidOutputs(Materials.Antimatter.getFluid(1))
+            .fluidInputs(
+                Materials.Protomatter.getFluid(0),
+                new SubstituteFluidStack(AntimatterForge.getMagneticUpgrades()),
+                new SubstituteFluidStack(AntimatterForge.getGravityUpgrades()),
+                new SubstituteFluidStack(AntimatterForge.getContainmentUpgrades()),
+                new SubstituteFluidStack(AntimatterForge.getActivationUpgrades()))
+            .fluidOutputs(Materials.Antimatter.getFluid(0))
             .duration(20)
             .eut(10_000_000)
             .addTo(GoodGeneratorRecipeMaps.antimatterForgeRecipes);
