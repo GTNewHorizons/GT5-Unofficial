@@ -1,6 +1,7 @@
 Supplies nanites, power, and condensate to {gold:{item:gregtech:gt.blockmachines:15757}s}.
 Nanites must be stored in a {gold:{item:gregtech:gt.blockmachines:9415}}.
 Different types of nanites can be mixed, but the effective tier will be the {underline:lowest} of all provided nanites.
+Only {gold:{var:max-nanites}} nanites can be provided at once - any additional nanites will be ignored.
 {dark_gray:{hr}}
 {gold:{item:gregtech:gt.blockmachines:15757}s} will stall if they request more power than the observation array can provide.
 A recipe's condensate can be supplied at any time during its crafting.
