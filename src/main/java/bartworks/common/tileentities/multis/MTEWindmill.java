@@ -128,6 +128,11 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                 return true;
             }
 
+            if (block == Blocks.stained_hardened_clay) {
+                t.mHardenedClay++;
+                return true;
+            }
+
             return false;
         }
 
@@ -172,7 +177,8 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         .addElement(
             'c',
             ofChain(
-                onElementPass(t -> t.mHardenedClay++, ofBlock(Blocks.hardened_clay, 0)),
+                onElementPass(t -> t.mHardenedClay++, ofBlockAnyMeta(Blocks.hardened_clay)),
+                onElementPass(t -> t.mHardenedClay++, ofBlockAnyMeta(Blocks.stained_hardened_clay)),
                 ofTileAdder(MTEWindmill::addDispenserToOutputSet, Blocks.hardened_clay, 0),
                 onElementPass(t -> t.mDoor++, new IStructureElementNoPlacement<MTEWindmill>() {
 
@@ -246,7 +252,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             .beginStructureBlock(7, 12, 7, true)
             .addController("Front bottom center")
             .addCasing("100", "Wood Planks (any type)", false)
-            .addCasing("40-47", "Terracotta (plain)", false)
+            .addCasing("40-47", "Terracotta (any color)", false)
             .addCasing("44", "Bricks", false)
             .addMiscHatch("1", "Primitive Kinetic Shaftbox", "Front center", 1)
             .addMiscHatch("1+", "Dispenser", "Any terracotta", 2)
