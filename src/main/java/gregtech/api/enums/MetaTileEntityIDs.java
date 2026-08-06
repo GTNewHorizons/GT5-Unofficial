@@ -2082,7 +2082,8 @@ public enum MetaTileEntityIDs {
     Hatch_Air_Intake_Atmospheric(32765),
     GT_Framer_LV(32050),
     GT_Framer_MV(32051),
-    GT_Framer_HV(32052);
+    GT_Framer_HV(32052),
+    CLEANROOM_PASSTHROUGH_HULL(32060);
 
     public final int ID;
 

@@ -201,6 +201,12 @@ public class MachineStats {
         @Config.RequiresMcRestart
         public int maxReplacementPercentage;
 
+        @Config.Comment("Maximum number of chained cleanroom pass-through hulls a network signal may cross.")
+        @Config.RangeInt(min = 1, max = 64)
+        @Config.DefaultInt(16)
+        @Config.RequiresMcRestart
+        public int passthroughChainLimit;
+
         @Config.Comment("List of other blocks allowed as a part of the cleanroom. Format: <block name> or <block name>:<meta>.")
         @Config.DefaultStringList({ "BW_TieredGlass", "BW_ExtraGlass", // All Bart glass (including HV tier)
             "tile.openblocks.elevator", "tile.openblocks.elevator_rotating", // OpenBlocks elevators
