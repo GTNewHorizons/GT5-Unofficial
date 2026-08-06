@@ -2308,7 +2308,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTModHandler.getModItem(Railcraft.ID, "machine.eta", 6, 8),
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.ProtoHalkonite, 12),
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Churitsu, 6),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Shijima, 48), ItemList.Sensor_UIV.get(2),
+                GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Shijima, 48), ItemList.Sensor_UIV.get(2),
                 ItemList.Emitter_UIV.get(2) },
             new FluidStack[] { CHRONOMATIC_GLASS.getFluidStack(384 * INGOTS), Materials.Infinity.getMolten(48 * INGOTS),
                 MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(48 * INGOTS),

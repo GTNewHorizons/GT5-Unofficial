@@ -38,6 +38,12 @@ public class MTEMachineWithFluidScreenBaseGui<T extends MTETieredMachineBlock> e
         super(machine);
     }
 
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+        syncManager.registerSlotGroup("fluid_inv", 1);
+    }
+
     protected boolean supportsFluidScreen() {
         return true;
     }
@@ -108,12 +114,14 @@ public class MTEMachineWithFluidScreenBaseGui<T extends MTETieredMachineBlock> e
     }
 
     protected ItemSlot createInputSlot(ModularPanel panel, PanelSyncManager syncManager, int inputSlot) {
-        return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, inputSlot).singletonSlotGroup())
+        return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, inputSlot).slotGroup("fluid_inv"))
             .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_IN_STANDARD);
     }
 
     protected ItemSlot createOutputSlot(ModularPanel panel, PanelSyncManager syncManager, int outputSlot) {
-        return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, outputSlot).canPut(false))
+        return new ItemSlot().slot(
+            new ModularSlot(machine.inventoryHandler, outputSlot).slotGroup("fluid_inv")
+                .canPut(false))
             .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_OUT_STANDARD);
     }
 
