@@ -1723,6 +1723,9 @@ gt.mbtt.structure.any_tiered_glass=Any Tiered Glass
 gt.mbtt.structure.min_tiered_glass=%s+ Tiered Glass
 gt.mbtt.structure.any_bottom_casing=Any bottom casing
 gt.mbtt.structure.back_center_casing=Back center casing
+gt.mbtt.structure.front_center_casing=Front center casing
+gt.mbtt.structure.any_front_bottom_casing=Any front bottom casing
+gt.mbtt.structure.around_controller=Around controller
 gt.mbtt.structure.any_back_center_casing=Any back center casing
 gt.mbtt.structure.any_front_shielding_casing=Any front shielding casing
 
@@ -2836,6 +2839,7 @@ GT5U.gui.text.static_mode=Static Mode
 GT5U.gui.text.structure_error.unneeded_muffler=Does not accept Muffler Hatches
 GT5U.gui.text.structure_error.crib_not_allowed=Crafting Inputs are not allowed
 GT5U.gui.text.structure_error.stocking_input_bus_not_allowed=Stocking Input Buses are not allowed
+GT5U.gui.text.structure_error.stocking_input_hatch_not_allowed=Stocking Input Hatches are not allowed
 GT5U.gui.text.structure_error.unknown=Unknown structure error
 GT5U.gui.text.structure_error.glass_tier_not_enough=Glass tier too low for energy hatch tier
 GT5U.gui.text.structure_error.missing_energy_hatch=Missing Energy Hatch
@@ -8374,6 +8378,7 @@ achievement.gt.blockmachines.hatch.datainass.wireless.tier.12.desc=Pick up this 
 achievement.gt.blockmachines.hatch.dataoutass.wireless.tier.12=Wireless Data Bank Transmission Connector
 achievement.gt.blockmachines.hatch.dataoutass.wireless.tier.12.desc=Pick up this item to see the recipe in NEI
 achievement.gt.blockmachines.hatch.nanite=Nanite Containment Bus
+achievement.gt.blockmachines.hatch.nanite.singularity=Singularity Nanite Containment Bus
 achievement.gt.blockmachines.hatch.nanite.desc=Pick up this item to see the recipe in NEI
 achievement.item.OriginNanoCircuit=Nano Circuit of Split Origin
 achievement.item.OriginNanoCircuit.desc=Pick up this item to see the recipe in NEI
@@ -9136,7 +9141,6 @@ GT5U.tooltip.eye-of-harmony.any-boundary-casing=Any boundary casing
 GT5U.tooltip.research-station.footer=§aData Sticks go in the controller
 
 # Forge of Gods Structure Hints
-GT5U.tooltip.forge-of-gods.hatch-pos=Around controller
 GT5U.tooltip.forge-of-gods.output-bus-pos=Around controller (ME only)
 GT5U.tooltip.forge-of-gods.module=Forge of the Gods Module
 GT5U.tooltip.forge-of-gods.module-pos=Any side center shielding casing
