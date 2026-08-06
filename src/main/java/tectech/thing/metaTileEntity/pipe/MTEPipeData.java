@@ -3,6 +3,7 @@ package tectech.thing.metaTileEntity.pipe;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,6 +22,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
+import org.jetbrains.annotations.ApiStatus;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.util.CommonValues;
 
@@ -34,6 +36,7 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
     public byte connectionCount = 0;
 
     private boolean active;
+    private boolean computingActivity;
 
     public MTEPipeData(int aID, String aName, String aNameRegional) {
         super(aID, aName, 0);
@@ -123,12 +126,8 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
         }
     }
 
-    public void updateNetwork(boolean nestedCall) {
-        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
-
-        active = false;
-        aBaseMetaTileEntity.issueTileUpdate();
-
+    @ApiStatus.OverrideOnly
+    public void updateSelf(IGregTechTileEntity aBaseMetaTileEntity) {
         mConnections = 0;
         connectionCount = 0;
 
@@ -163,8 +162,26 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
                 }
             }
         }
+    }
+
+    public void updateNetwork(boolean nestedCall) {
+        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
+
+        computingActivity = true;
+        boolean prevActive = active;
+        active = false;
+
+        updateSelf(aBaseMetaTileEntity);
 
         if (!nestedCall) updateNeighboringNetworks();
+        if (prevActive != active) {
+            aBaseMetaTileEntity.issueTileUpdate();
+        }
+        if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity instanceof BaseMetaPipeEntity base) {
+            base.updateConnections();
+            base.syncConnectionToClient();
+        }
+        computingActivity = false;
     }
 
     @Override
@@ -188,6 +205,11 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
         }
 
         super.onBlockDestroyed();
+    }
+
+    @Override
+    public void checkConnections() {
+        updateNetwork(false);
     }
 
     @Override
