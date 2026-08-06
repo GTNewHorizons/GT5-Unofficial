@@ -21,7 +21,6 @@ void main() {
     //Extremely fragile system to deteriminte if isolate parts of the blackhole
     //Would break with any uv remaping or atlas stiching
     bool isDisk = (abs(v_TexCoord.y-.5f)>.245);
-    bool isBack = (abs(v_TexCoord.x-.5f)>.245) && isDisk;
     bool isTinyRing = (v_TexCoord.y > .66) && !isDisk;
 
     vec2 texCoord = v_TexCoord;
