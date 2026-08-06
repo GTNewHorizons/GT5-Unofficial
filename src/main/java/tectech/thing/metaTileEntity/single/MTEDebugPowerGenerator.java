@@ -271,13 +271,26 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
         if (base == null) return;
         if (base.isServerSide()) {
             for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                if (base.getIGregTechTileEntityAtSide(side) instanceof MTEPipeLaser laser) {
+                IGregTechTileEntity igte = base.getIGregTechTileEntityAtSide(side);
+                if (igte == null) continue;
+                IMetaTileEntity imte = igte.getMetaTileEntity();
+                if (imte instanceof MTEPipeLaser laser) {
                     laser.updateNetwork(true);
                 }
             }
         } else {
             base.issueTextureUpdate();
         }
+    }
+
+    @Override
+    public byte getUpdateData() {
+        return LASER ? (byte)1 : (byte)0;
+    }
+
+    @Override
+    public void onValueUpdate(byte data) {
+        LASER = data == 1;
     }
 
     public void toggleLaser() {
