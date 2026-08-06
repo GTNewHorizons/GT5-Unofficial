@@ -21,14 +21,13 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import tectech.mechanics.pipe.IActivePipe;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.util.CommonValues;
 
 /**
  * Created by Tec on 26.02.2017.
  */
-public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, IActivePipe {
+public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
 
     private static IIconContainer EMpipe;
     private static IIconContainer EMbar, EMbarActive;
@@ -259,13 +258,11 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
         return getBaseMetaTileEntity().getColorization();
     }
 
-    @Override
     public void markUsed() {
         this.active = true;
         getBaseMetaTileEntity().issueTileUpdate();
     }
 
-    @Override
     public boolean getActive() {
         return active;
     }

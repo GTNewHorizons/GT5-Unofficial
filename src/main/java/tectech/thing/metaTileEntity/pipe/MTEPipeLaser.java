@@ -25,11 +25,10 @@ import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import tectech.mechanics.pipe.IActivePipe;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.util.CommonValues;
 
-public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTunnel, IActivePipe {
+public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTunnel {
 
     static IIconContainer EMcandy, EMCandyActive;
     private static IIconContainer EMpipe;
@@ -230,12 +229,10 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
         active = tag.getBoolean("pipeActive");
     }
 
-    @Override
     public boolean getActive() {
         return active;
     }
 
-    @Override
     public void markUsed() {
         this.active = true;
         if (!computingActivity) {

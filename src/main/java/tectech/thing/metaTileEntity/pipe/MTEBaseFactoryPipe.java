@@ -20,9 +20,8 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import tectech.mechanics.pipe.IActivePipe;
 
-public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActivePipe {
+public abstract class MTEBaseFactoryPipe extends MetaPipeEntity {
 
     public static final IIconContainer EM_PIPE = Textures.BlockIcons.custom("iconsets/EM_DATA");
     public static final IIconContainer EM_BAR = Textures.BlockIcons.custom("iconsets/EM_BAR");
@@ -108,13 +107,6 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
         return mThickness;
     }
 
-    @Override
-    public void markUsed() {
-        mIsActive = true;
-        getBaseMetaTileEntity().issueTileUpdate();
-    }
-
-    @Override
     public boolean getActive() {
         return mIsActive;
     }
