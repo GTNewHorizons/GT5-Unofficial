@@ -227,7 +227,7 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
+        if (aBaseMetaTileEntity.isServerSide() && aTick > 1) {
             aBaseMetaTileEntity.tryDisableTicking();
         }
     }
