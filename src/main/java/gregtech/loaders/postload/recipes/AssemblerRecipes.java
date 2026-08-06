@@ -3421,7 +3421,7 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Items.wooden_sword))
             .circuit(17)
             .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
+            .eut(7)
             .addTo(assemblerRecipes);
     }
 
