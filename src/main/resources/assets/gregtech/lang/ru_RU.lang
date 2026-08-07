@@ -260,10 +260,10 @@ gt.blockmachines.itempipe.rounting_value=Значение маршрутизац
 
 Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver=Диапазон поглощения: %s блоков
 
-gt.hatch_element_or= или
-gt.hatch_element_of_type=of type
-gt.hatch_element_of_class=of class
-gt.hatch_element_of_id=of id
+gt.hatch_element_or= или 
+gt.hatch_element_of_type=of type 
+gt.hatch_element_of_class=of class %s
+gt.hatch_element_of_id=of id %s
 
 # Basic Machine
 gt.blockmachines.basicmachine.accelerator.tier.01.name=Базовый мировой ускоритель
@@ -1679,12 +1679,21 @@ GT5U.MBTT.Structure.GlassEnergyLimitTier=-тир разблокирует всё
 GT5U.MBTT.Structure.NoTierSkips=Этот механизм может выполнять только те рецепты, которые соответствуют ее среднему тиру энерговвода
 GT5U.MBTT.Structure.MaxTierSkips=Этот механизм может выполнять рецепты на %d тиров выше своего среднего тира энерговвода
 GT5U.MBTT.Structure.UnlimitedTierSkips=Этот механизм может выполнять рецепты независимо от тира, если ей дать достаточно энергии
-gt.mbtt.structure.front_center=Спереди в центре
+
 gt.mbtt.structure.back_center=Сзади посередине
-gt.mbtt.structure.front_center_2nd_layer=Спереди в центре, 2-й слой
 gt.mbtt.structure.front_bottom_center=Спереди внизу
+gt.mbtt.structure.front_center=Спереди в центре
+gt.mbtt.structure.front_center_2nd_layer=Спереди в центре, 2-й слой
+gt.mbtt.structure.front_center_9th_layer=Спереди в центре, 9-й слой
+gt.mbtt.structure.front_center_17th_layer=Спереди в центре, 17-й слой
 gt.mbtt.structure.any_casing=Любой блок корпуса
 gt.mbtt.structure.interior=Внутри структуры
+gt.mbtt.structure.any_tiered_glass=Стекло любого тира
+gt.mbtt.structure.min_tiered_glass=Стекло тира %s+
+gt.mbtt.structure.any_bottom_casing=Любой нижний блок корпуса
+gt.mbtt.structure.back_center_casing=Сзади посередине
+
+gt.mbtt.machine_type.spacetime_manipulator=Пространственно-временной манипулятор, EOH
 GT5U.MBTT.HatchInfo=Любой %s
 GT5U.MBTT.HatchHint= (Подсказка: %s)
 GT5U.MBTT.BoroGlassAny=Боросиликатное стекло (любое, смешанное)
@@ -2466,6 +2475,7 @@ GT5U.gui.button.voiding_mode_none=§7Ничего не удалять
 GT5U.gui.button.voiding_mode_item=§7Уничтожение излишек §6предметов
 GT5U.gui.button.voiding_mode_fluid=§7Уничтожение излишек §9жидкостей
 GT5U.gui.button.voiding_mode_all=§7Уничтожение излишек §6предметов §7и §9жидкостей
+GT5U.chat.voiding_mode_set=Режим уничтожения излишков: %s
 GT5U.gui.button.input_separation=Разделение входов
 GT5U.gui.button.mode_switch=Переключить режим
 GT5U.gui.button.batch_mode=Пакетный режим
@@ -4325,7 +4335,7 @@ gt.item.large_fluid_cell.stainless_steel.name=Большая жидкостна�
 gt.item.large_fluid_cell.stainless_steel.tooltip=
 gt.item.large_fluid_cell.titanium.name=Большая титановая жидкостная капсула
 gt.item.large_fluid_cell.titanium.tooltip=
-gt.item.large_fluid_cell.chrome.name=Большая хромовая жидкостная капсула
+gt.item.large_fluid_cell.chrome.name=Большая палладия покрытый родием жидкостная капсула
 gt.item.large_fluid_cell.chrome.tooltip=
 gt.item.large_fluid_cell.iridium.name=Большая иридиевая жидкостная капсула
 gt.item.large_fluid_cell.iridium.tooltip=
@@ -7268,6 +7278,7 @@ GT5U.tooltip.drone_remote_disconnected=Shift-right-click an active Drone Centre 
 GT5U.tooltip.drone_remote_connected=Connected to centre: %s, %s, %s, on dim%s
 GT5U.tooltip.drone_remote_not_found=Дрон-станция: x: %s y: %s z: %s в dim%s не найдена!
 
+
 # info data
 GT5U.infodata.no_network=Нет сети
 GT5U.infodata.battery_buffer.stored_items=Stored Items: %s EU / %s EU
@@ -8888,7 +8899,7 @@ GT5U.chat.bec-connected-assembler=Successfully connected to the Observation Arra
 GT5U.chat.bec-no-connect-assembler=Could not connect to the Observation Array
 
 # BEC Waila
-GT5U.chat.bec-processing-speed=Processing Speed: x%s
+GT5U.chat.bec-processing-speed=Processing Speed: %s points per tick
 GT5U.chat.bec-slowdowns=Slowdowns: %s
 
 # BEC Structure

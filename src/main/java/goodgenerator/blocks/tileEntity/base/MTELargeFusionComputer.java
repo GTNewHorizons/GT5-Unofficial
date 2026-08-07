@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
@@ -101,7 +102,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                 .addShape(MAIN_NAME, transpose(new String[][] { L0, L1, L2, L3, L2, L1, L0 }))
                 .addElement('H', lazy(x -> ofBlock(x.getCoilBlock(), x.getCoilMeta())))
                 .addElement('C', lazy(x -> ofBlock(x.getCasingBlock(), x.getCasingMeta())))
-                .addElement('B', lazy(x -> ofBlock(x.getGlassBlock(), x.getGlassMeta())))
+                .addElement('B', lazy(MTELargeFusionComputer::glassElement))
                 .addElement(
                     'I',
                     lazy(
@@ -113,7 +114,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                                 gregtech.api.enums.HatchElement.OutputHatch)
                             .casingIndex(x.textureIndex())
                             .hint(1)
-                            .buildAndChain(ofBlock(x.getGlassBlock(), x.getGlassMeta()))))
+                            .buildAndChain(x.glassElement())))
                 .addElement(
                     'E',
                     lazy(
@@ -200,6 +201,23 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
     public abstract Block getGlassBlock();
 
     public abstract int getGlassMeta();
+
+    public Block getGlassBlock2() {
+        return null;
+    }
+
+    public int getGlassMeta2() {
+        return 0;
+    }
+
+    private IStructureElement<MTELargeFusionComputer> glassElement() {
+        Block glass = getGlassBlock();
+        Block glass2 = getGlassBlock2();
+        if (glass2 != null) {
+            return ofChain(ofBlock(glass, getGlassMeta()), ofBlock(glass2, getGlassMeta2()));
+        }
+        return ofBlock(glass, getGlassMeta());
+    }
 
     public abstract int energyHatchTier();
 
@@ -343,9 +361,12 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
             }
             setErrorDisplayID((getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
-        } else {
-            doActivitySound(getActivitySoundLoop());
         }
+    }
+
+    @Override
+    public void onClientSoundStateChanged() {
+        doActivitySound(getActivitySoundLoop());
     }
 
     /**
@@ -480,15 +501,22 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
 
     private boolean addEnergyInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
         IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchEnergy tHatch) {
-            if (tHatch.getTierForStructure() < energyHatchTier()) return false;
-            tHatch.updateTexture(aBaseCasingIndex);
-            return mEnergyHatches.add(tHatch);
-        } else if (aMetaTileEntity instanceof MTEHatchEnergyMulti tHatch) {
-            if (tHatch.getTierForStructure() < energyHatchTier()) return false;
-            tHatch.updateTexture(aBaseCasingIndex);
-            return eEnergyMulti.add(tHatch);
+        switch (aMetaTileEntity) {
+            case null -> {
+                return false;
+            }
+            case MTEHatchEnergy tHatch -> {
+                if (tHatch.getTierForStructure() < energyHatchTier()) return false;
+                tHatch.updateTexture(aBaseCasingIndex);
+                return mEnergyHatches.add(tHatch);
+            }
+            case MTEHatchEnergyMulti tHatch -> {
+                if (tHatch.getTierForStructure() < energyHatchTier()) return false;
+                tHatch.updateTexture(aBaseCasingIndex);
+                return eEnergyMulti.add(tHatch);
+            }
+            default -> {
+            }
         }
         return false;
     }

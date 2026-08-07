@@ -142,7 +142,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             .addInfo("Below 100% efficiency machines inside have a chance to void outputs!")
             .addInfo("Each maintenance issue reduces maximum efficiency by 10%")
             .addInfo("Generating any pollution inside causes the cleanroom to shut down")
-            .beginVariableStructureBlock(3, MAX_WIDTH, 3, MAX_WIDTH, 4, MAX_HEIGHT, true)
+            .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
             .addController("Top center")
             .addCasing(MachineStats.cleanroom.minCasingCount + "-1007", "Plascrete Block", false)
             .addCasing("0-168", "Filter Machine Casing", false)
@@ -351,11 +351,13 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             IGregTechTileEntity te = aBaseMetaTileEntity.getIGregTechTileEntityOffset(dx, dy, dz);
             if (te != null) {
                 IMetaTileEntity mte = te.getMetaTileEntity();
-                if (mte instanceof MTEHatchMaintenance) return CleanroomBlockType.HATCH_MAINTENANCE;
-                else if (mte instanceof MTEHatchEnergy) return CleanroomBlockType.HATCH_ENERGY;
-                // Both hulls and diodes are instanceof MTEBasicHull.
-                else if (mte instanceof MTEBasicHull) return CleanroomBlockType.HATCH_DIODE;
-                else return CleanroomBlockType.INVALID;
+                return switch (mte) {
+                    case MTEHatchMaintenance mteHatchMaintenance -> CleanroomBlockType.HATCH_MAINTENANCE;
+                    case MTEHatchEnergy mteHatchEnergy -> CleanroomBlockType.HATCH_ENERGY;
+                    // Both hulls and diodes are instanceof MTEBasicHull.
+                    case MTEBasicHull mteBasicHull -> CleanroomBlockType.HATCH_DIODE;
+                    case null, default -> CleanroomBlockType.INVALID;
+                };
             }
         }
 
@@ -589,9 +591,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         if (!addStructureBlock(aBaseMetaTileEntity, dxMin, dy, dzMin, MASK_WALL_EDGE, errors)) return false;
         if (!addStructureBlock(aBaseMetaTileEntity, dxMin, dy, dzMax, MASK_WALL_EDGE, errors)) return false;
         if (!addStructureBlock(aBaseMetaTileEntity, dxMax, dy, dzMin, MASK_WALL_EDGE, errors)) return false;
-        if (!addStructureBlock(aBaseMetaTileEntity, dxMax, dy, dzMax, MASK_WALL_EDGE, errors)) return false;
-
-        return true;
+        return addStructureBlock(aBaseMetaTileEntity, dxMax, dy, dzMax, MASK_WALL_EDGE, errors);
     }
 
     @Override

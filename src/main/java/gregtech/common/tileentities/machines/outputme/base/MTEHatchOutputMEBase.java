@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.outputme.base;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static gregtech.common.covers.modes.FilterType.BLACKLIST;
 import static gregtech.common.covers.modes.FilterType.WHITELIST;
 
@@ -512,7 +513,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         }
     }
 
-    public boolean shouldCheck() {
+    public boolean shouldCheckCell() {
         return checkMode && cacheMode && cell != null;
     }
 
@@ -546,13 +547,14 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
      * @return True if the stack was fully inserted into the output, false otherwise.
      */
     public boolean storePartial(@NotNull T input, boolean simulate) {
-        if (simulate && shouldCheck()) {
+        if (simulate && shouldCheckCell()) {
             input.setStackSize(input.getStackSize() + cache.get(input));
             final T rejected = cell.injectItems(input, Actionable.SIMULATE, env.getActionSource());
             input.setStackSize(Math.min(input.getStackSize(), rejected == null ? 0 : rejected.getStackSize()));
             return input.getStackSize() == 0;
         }
-        boolean isAllowed = hasAvailableSpace() || (tickCounter == lastInputTick);
+        boolean isAllowed = getCheckMode() ? input.getStackSize() <= getPhysicalSpace()
+            : hasAvailableSpace() || (tickCounter == lastInputTick);
         if (!isAllowed) return false;
         if (!canStore(input)) return false;
         if (!simulate) {
@@ -759,7 +761,8 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
                         nameGetter.apply(s) + ": "
                             + EnumChatFormatting.GOLD
                             + formatNumber(s.getStackSize())
-                            + " L"
+                            + " "
+                            + getFluidUnit()
                             + EnumChatFormatting.RESET);
                 });
         }
@@ -774,7 +777,10 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         ss.add(
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.hatch.output_me.cache_capacity",
-                EnumChatFormatting.GOLD + formatNumber(getCacheCapacity()) + " L" + EnumChatFormatting.RESET));
+                EnumChatFormatting.GOLD + formatNumber(getCacheCapacity())
+                    + " "
+                    + getFluidUnit()
+                    + EnumChatFormatting.RESET));
         processInfoData(langBaseKey, nameGetter, getCacheList(), ss);
         if (cacheMode && cell != null) {
             List<T> cacheList = new ArrayList<>();

@@ -113,7 +113,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
             .addBulkMachineInfo(4, 5f, 1f)
             .addInfo("Can be configured with a screwdriver to also be used as Simple Washer")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 5, 4, false)
+            .beginStructureBlock(5, 4, 9, false)
             .addController("Front center, 2nd layer")
             .addCasing("70-85", "Wash Plant Casing", false)
             .addCasing("15", "Steel Frame Box", false)
@@ -208,14 +208,8 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        switch (machineMode) {
-            case MACHINEMODE_OREWASH -> {
-                return RecipeMaps.oreWasherRecipes;
-            }
-            default -> {
-                return RecipeMaps.simpleWasherRecipes;
-            }
-        }
+        if (machineMode == MACHINEMODE_OREWASH) return RecipeMaps.oreWasherRecipes;
+        return RecipeMaps.simpleWasherRecipes;
     }
 
     @Nonnull
@@ -285,11 +279,6 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

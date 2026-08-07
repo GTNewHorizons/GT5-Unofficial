@@ -1,6 +1,7 @@
 package tectech.recipe;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.util.GTRecipeConstants.RESEARCH_STATION_DATA;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Collections;
@@ -8,8 +9,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-
-import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -51,16 +50,17 @@ public class ResearchStationFrontend extends RecipeMapFrontend {
     protected void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         long eut = recipeInfo.recipe.mEUt;
         int computation = recipeInfo.recipe.mDuration;
-        short ampere = (short) (recipeInfo.recipe.mSpecialValue & 0xFFFF);
-        short minComputationPerSec = (short) (recipeInfo.recipe.mSpecialValue >>> 16);
+        long special = recipeInfo.recipe
+            .getMetadataOrDefault(RESEARCH_STATION_DATA, ((long) recipeInfo.recipe.mSpecialValue));
+        short ampere = (short) (special & 0xFFFF);
+        long minComputationPerSec = (special >>> 16);
 
         recipeInfo.drawText(
             translateToLocalFormatted(
                 "tt.nei.research.max_eu",
                 formatNumber((1 + (computation - minComputationPerSec) / minComputationPerSec) * eut * ampere * 20)));
 
-        recipeInfo
-            .drawText(StatCollector.translateToLocalFormatted("GT5U.gui.text.usage_line", formatNumber(eut * ampere)));
+        recipeInfo.drawText(translateToLocalFormatted("GT5U.gui.text.usage_line", formatNumber(eut * ampere)));
 
         recipeInfo.drawText(translateToLocalFormatted("tt.nei.research.computation", formatNumber(computation)));
 

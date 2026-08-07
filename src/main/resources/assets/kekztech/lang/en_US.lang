@@ -116,9 +116,16 @@ gui.kekztech_lapotronicenergyunit.wireless_rebalance=Rebalance Wireless (One-Tim
 gui.kekztech_lapotronicenergyunit.warning.header=Warning!
 gui.kekztech_lapotronicenergyunit.warning.text=Make sure to carefully read and understand the tooltip before activating wireless mode. It can potentially brick your base. This warning won't appear again.
 
-kekztech.gui.lapotronic_super_capacitor.text.stored=Stored: %s EU
-kekztech.gui.lapotronic_super_capacitor.text.avg_eu_in=Avg EU IN: %s last 5s
-kekztech.gui.lapotronic_super_capacitor.text.avg_eu_out=Avg EU OUT: %s last 5s
+kekztech.gui.lapotronic_super_capacitor.total_capacity=Total Capacity: §9%s§f EU
+kekztech.gui.lapotronic_super_capacitor.used_capacity=Used Capacity: §9%s§f
+kekztech.gui.lapotronic_super_capacitor.text.stored=Stored: §a%s§f EU
+kekztech.gui.lapotronic_super_capacitor.text.avg_eu_in=Avg EU IN: §a%s§f last 5s
+kekztech.gui.lapotronic_super_capacitor.text.avg_eu_out=Avg EU OUT: §c%s§f last 5s
+kekztech.gui.lapotronic_super_capacitor.passive_loss=Passive Loss: §c%s§f EU/t
+kekztech.gui.lapotronic_super_capacitor.wireless_eu=Total wireless EU: §d%s§f EU
+kekztech.gui.lapotronic_super_capacitor.time_to.full=Time to Full: §b%s
+kekztech.gui.lapotronic_super_capacitor.time_to.sth=Time to Something: §bInfinite years
+kekztech.gui.lapotronic_super_capacitor.time_to.empty=Time to Empty: §b%s
 
 # -------- Tooltips
 tooltip.kekztech.crafting_component=Crafting component for KekzTech things
@@ -164,3 +171,19 @@ kekztech.infodata.tank.tfft.running_cost=Running Cost: %dEU/t
 kekztech.infodata.tank.tfft.auto_voiding=Auto-voiding: %b
 
 kekztech.structure.glass_incompatible=§cGlass configuration is incompatible
+
+kekztech.multiblock.LapotronicSuperCapacitor.machine_type=Energy Storage, LSC
+kekztech.multiblock.LapotronicSuperCapacitor.casing=Lapotronic Supercapacitor Casing
+kekztech.multiblock.LapotronicSuperCapacitor.capacitor=Lapotronic Capacitor
+kekztech.multiblock.LapotronicSuperCapacitor.structure_footer=Only 50% or more of the capacitors need to be non-empty
+
+kekztech.multiblock.SOFuelCell.machine_type=Gas Turbine, SOFC
+kekztech.multiblock.SOFuelCellMK1.electrolyte_unit=YSZ Ceramic Electrolyte Unit
+kekztech.multiblock.SOFuelCellMK2.electrolyte_unit=GDC Ceramic Electrolyte Unit
+
+kekztech.multiblock.TankTFFT.machine_type=Fluid Tank
+kekztech.multiblock.TankTFFT.multi_io_hatch=TFFT Multi I/O Hatch
+kekztech.multiblock.TankTFFT.any_casing_glass_adjacent=Any casing/glass adjacent to a field storage block
+kekztech.multiblock.TankTFFT.field_storage_block=Field Storage Block
+kekztech.multiblock.TankTFFT.footer1=No air gaps allowed, but the field storage blocks can be different tiers
+kekztech.multiblock.TankTFFT.footer2=Place a fluid storage bus on the Multi I/O Hatch to interact with all fluids directly

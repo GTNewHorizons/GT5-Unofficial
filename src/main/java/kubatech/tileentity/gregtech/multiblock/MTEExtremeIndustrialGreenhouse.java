@@ -59,6 +59,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -67,6 +69,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
@@ -113,6 +116,7 @@ import kubatech.gui.modularui2.MTEExtremeIndustrialGreenhouseGui;
 import kubatech.tileentity.gregtech.multiblock.eigbuckets.EIGIC2Bucket;
 
 @SuppressWarnings("unused")
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTEExtremeIndustrialGreenhouse>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -379,42 +383,39 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        String fertilizerBoostMax = String.format("%.0f", EIG_BALANCE_MAX_FERTILIZER_BOOST * 100);
-        tt.addMachineType("Crop Farm, EIG")
-            .addInfo("Grow your crops like a chad!")
-            .addInfo("Use screwdriver to enable/change/disable setup mode")
-            .addInfo("Use screwdriver while sneaking to enable/disable IC2 mode")
-            .addInfo("Use wire cutters to give incoming IC2 seeds 0 humidity")
-            .addInfo("Uses " + EIG_BALANCE_WATER_USAGE_PER_SEED + "L of water per seed per operation")
-            .addInfo(
-                "Uses 1L of " + new FluidStack(WEEDEX_FLUID, 1).getLocalizedName()
-                    + " per operation per seed if it contains more than "
-                    + EIG_BALANCE_WEED_EX_USAGE_BEGINS_AT
-                    + " seeds")
-            .addInfo("Otherwise, around 1% of seeds will be voided each operation")
-            .addInfo("You can insert fertilizer each operation to get more drops (max + " + fertilizerBoostMax + ")")
-            .addGlassEnergyLimitInfo()
-            .addSeparator()
-            .addInfo(EnumChatFormatting.GOLD + "Setup Mode:")
-            .addInfo("Does not take power")
-            .addInfo("There are two modes: input / output")
-            .addInfo("Input mode: machine will take seeds from input bus and plant them")
-            .addInfo("[IC2] You need to also input block that is required under the crop")
-            .addInfo("Output mode: machine will take planted seeds and output them");
+        tt.addMachineType(
+            StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.machine_type"))
+            .addMarkdown(
+                new ResourceLocation("gregtech", "extreme-industrial-greenhouse"),
+                ImmutableMap.of("weedexName", new FluidStack(WEEDEX_FLUID, 1).getLocalizedName()));
         EIGModes.addTooltipInfo(tt);
-        tt.beginStructureBlock(9, 7, 7, true)
-            .addController("Front bottom center")
-            .addCasing("102", "Any Tiered Glass", true)
-            .addCasing("70-86", "Sterile Farm Casing", false)
-            .addCasing("33", "Tunstensteel Frame Box", false)
-            .addCasing("21", "Fertilized Dirt (RandomThings)", false)
-            .addCasing("3", "Purple Lamp (ProjectRed Illumination, regular or inverted)", false)
-            .addEnergyHatch("1+", "Any casing", 1)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputAny("1+", "Any casing", 1)
-            .addOutputBus("1+", "Any casing", 1)
+        tt.addGlassEnergyLimitInfo()
+            .beginStructureBlock(7, 7, 9, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("102", StatCollector.translateToLocal("gt.mbtt.structure.any_tiered_glass"), true)
+            .addCasing(
+                "70-86",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.sterile_farm_casing"),
+                false)
+            .addCasing(
+                "33",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.frame_box"),
+                false)
+            .addCasing(
+                "21",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.fertilized_dirt"),
+                false)
+            .addCasing(
+                "3",
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.purple_lamp"),
+                false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputAny("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureInfo("")
-            .addStructureFooter("The dirt is tilled and the water is spawned for free once formed")
+            .addStructureFooter(
+                StatCollector.translateToLocal("kubatech.multiblock.ExtremeIndustrialGreenhouse.footer"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .addAuthors(GTAuthors.AuthorKuba)
             .addStructureAuthors("HydroCN")
@@ -705,6 +706,11 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         boolean isOldStructure) {
         CropRenderer crop = new CropRenderer(world, x, y, z, facing, age, isOldStructure);
         Minecraft.getMinecraft().effectRenderer.addEffect(crop);
+    }
+
+    @Override
+    public boolean needsClientTick() {
+        return true;
     }
 
     @Override

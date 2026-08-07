@@ -22,7 +22,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -34,6 +33,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.DebugWriterHelper;
 import gregtech.common.gui.modularui.singleblock.MTEDebugStructureWriterGui;
 
 public class MTEDebugStructureWriter extends MTETieredMachineBlock {
@@ -172,17 +172,14 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock {
         bondingBoxes.remove(this);
     }
 
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
-        printStructure(aPlayer);
-        aBaseMetaTileEntity.disableWorking();
-    }
-
     public String getPseudoJavaCode() {
         IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
-        return StructureUtility.getPseudoJavaCode(
+
+        if (aBaseMetaTileEntity == null) {
+            return "";
+        }
+
+        return DebugWriterHelper.getPseudoJavaCode(
             aBaseMetaTileEntity.getWorld(),
             ExtendedFacing.of(aBaseMetaTileEntity.getFrontFacing()),
             aBaseMetaTileEntity.getXCoord(),
@@ -196,7 +193,8 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock {
             numbers[3],
             numbers[4],
             numbers[5],
-            transpose);
+            transpose,
+            DebugWriterHelper::findSymbolOverride);
     }
 
     public void printStructure(EntityPlayer aPlayer) {

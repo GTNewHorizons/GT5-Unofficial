@@ -24,6 +24,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -434,30 +435,25 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translate("gt.blockmachines.multimachine.ig.dyson.type"));
-        if (TooltipUtil.dysonLoreText != null) tt.addInfo(ITALIC + addFormattedString(TooltipUtil.dysonLoreText));
+        if (TooltipUtil.dysonLoreText != null) tt.addInfo(ITALIC + TooltipUtil.dysonLoreText);
 
-        tt.addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc1"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.ig.dyson.desc2",
-                    getDecimalFormat().format(IGConfig.dysonSwarm.euPerModule)))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.ig.dyson.desc3",
-                    getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleChance),
-                    getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleA),
-                    getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleB)))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc4"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.ig.dyson.desc5",
-                    getDecimalFormat().format(IGConfig.dysonSwarm.coolantConsumption),
-                    IGConfig.dysonSwarm.getCoolantStack()
-                        .getLocalizedName()))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc6"))
-            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc7"))
+        final Map<String, Object> vars = Map.of(
+            "euPerModule",
+            getDecimalFormat().format(IGConfig.dysonSwarm.euPerModule),
+            "destroyModuleChance",
+            getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleChance),
+            "destroyModuleA",
+            getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleA),
+            "destroyModuleB",
+            getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleB),
+            "coolantConsumption",
+            getDecimalFormat().format(IGConfig.dysonSwarm.coolantConsumption),
+            "coolantName",
+            IGConfig.dysonSwarm.getCoolantStack()
+                .getLocalizedName());
+        tt.addMarkdown(new ResourceLocation("gregtech", "dyson-swarm"), vars)
             .addSupportAny()
-            .beginStructureBlock(16, 16, 20, false)
+            .beginStructureBlock(16, 20, 16, false)
             .addController(StatCollector.translateToLocal("ig.dyson.structure.controller"))
             .addCasing("256", StatCollector.translateToLocal("ig.dyson.structure.base.floor"), false)
             .addCasing("115-138", StatCollector.translateToLocal("ig.dyson.structure.control.base"), false)
@@ -524,10 +520,11 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
 
         String className = provider.getClass()
             .getName();
-        return switch (className) {
-            case "me.eigenraven.personalspace.world.PersonalWorldProvider" -> IGConfig.dysonSwarm.getPowerFactor("PS");
-            default -> IGConfig.dysonSwarm.getPowerFactor(String.valueOf(provider.dimensionId));
-        };
+        if (className.equals("me.eigenraven.personalspace.world.PersonalWorldProvider")) {
+            return IGConfig.dysonSwarm.getPowerFactor("PS");
+        }
+        return IGConfig.dysonSwarm.getPowerFactor(String.valueOf(provider.dimensionId));
+
     }
 
     private static DecimalFormat getDecimalFormat() {

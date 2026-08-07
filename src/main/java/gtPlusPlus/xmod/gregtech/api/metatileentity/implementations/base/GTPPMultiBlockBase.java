@@ -21,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -76,6 +77,7 @@ import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
@@ -245,7 +247,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
                 resetRecipeMapForHatch((MTEHatch) aTileEntity, getRecipeMap());
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
 
         if (!aList.isEmpty()) {
@@ -291,67 +293,79 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         }
         addIfSmartInput(aMetaTileEntity);
 
-        if (aMetaTileEntity instanceof MTEHatchInputBattery inputBattery) {
-            return addToMachineListInternal(mChargeHatches, inputBattery, aBaseCasingIndex);
-        }
-        if (aMetaTileEntity instanceof MTEHatchOutputBattery outputBattery) {
-            return addToMachineListInternal(mDischargeHatches, outputBattery, aBaseCasingIndex);
-        }
-        if (aMetaTileEntity instanceof MTEHatchAirIntake airIntake) {
-            boolean addedAir = addToMachineListInternal(mAirIntakes, airIntake, aBaseCasingIndex);
-            boolean addedInput = addToMachineListInternal(mInputHatches, airIntake, aBaseCasingIndex);
-            return addedAir && addedInput;
-        }
-        if (aMetaTileEntity instanceof MTEHatchEnergyMulti multiEnergyHatch) {
-            boolean added = addToMachineListInternal(mTecTechEnergyHatches, multiEnergyHatch, aBaseCasingIndex);
-            updateMasterEnergyHatchList(aMetaTileEntity);
-            return added;
-        }
-        // HatchElement.Dynamo uses mDynamoHatches for the count, but I'm uncertain where GT++
-        // actually uses the TTDynamoHatch list, so I'm just excluding 4A hatches to be added here
-        // and be caught past the lower comment currently in line 340.
-        if (aMetaTileEntity instanceof MTEHatchDynamoMulti multiDynamoHatch && multiDynamoHatch.getAmperes() > 4) {
-            boolean added = addToMachineListInternal(mTecTechDynamoHatches, multiDynamoHatch, aBaseCasingIndex);
-            mExoticDynamoHatches.add(multiDynamoHatch);
-            updateMasterDynamoHatchList(aMetaTileEntity);
-            return added;
-        }
-
-        // Handle Fluid Hatches using separate logic
-        if (aMetaTileEntity instanceof MTEHatchInput inputHatch)
-            return addToMachineListInternal(mInputHatches, inputHatch, aBaseCasingIndex);
-        if (aMetaTileEntity instanceof MTEHatchOutput outputHatch)
-            return addToMachineListInternal(mOutputHatches, outputHatch, aBaseCasingIndex);
-
-        // Process Remaining hatches using base GT Logic
-        if (aMetaTileEntity instanceof IDualInputHatch hatch) {
-            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-            return addToMachineListInternal(mDualInputHatches, hatch, aBaseCasingIndex);
-        }
-        if (aMetaTileEntity instanceof MTEHatchInputBus inputBus)
-            return addToMachineListInternal(mInputBusses, inputBus, aBaseCasingIndex);
-        if (aMetaTileEntity instanceof MTEHatchOutputBus outputBus)
-            return addToMachineListInternal(mOutputBusses, outputBus, aBaseCasingIndex);
-        if (aMetaTileEntity instanceof MTEHatchEnergy energyHatch) {
-            boolean added = addToMachineListInternal(mEnergyHatches, energyHatch, aBaseCasingIndex);
-            if (aMetaTileEntity instanceof MTEHatchEnergyDebug) debugEnergyPresent = true;
-            updateMasterEnergyHatchList(aMetaTileEntity);
-            return added;
-        }
-        // which is here, catches all other dynamo hatches here.
-        if (aMetaTileEntity instanceof MTEHatchDynamo dynamoHatch) {
-            boolean added = addToMachineListInternal(mDynamoHatches, dynamoHatch, aBaseCasingIndex);
-            updateMasterDynamoHatchList(aMetaTileEntity);
-            return added;
-        }
-        if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
-            if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
-                droneDownLink.registerMachineController(this);
+        switch (aMetaTileEntity) {
+            case MTEHatchInputBattery inputBattery -> {
+                return addToMachineListInternal(mChargeHatches, inputBattery, aBaseCasingIndex);
             }
-            return addToMachineListInternal(mMaintenanceHatches, hatch, aBaseCasingIndex);
+            case MTEHatchOutputBattery outputBattery -> {
+                return addToMachineListInternal(mDischargeHatches, outputBattery, aBaseCasingIndex);
+            }
+            case MTEHatchAirIntake airIntake -> {
+                boolean addedAir = addToMachineListInternal(mAirIntakes, airIntake, aBaseCasingIndex);
+                boolean addedInput = addToMachineListInternal(mInputHatches, airIntake, aBaseCasingIndex);
+                return addedAir && addedInput;
+            }
+            case MTEHatchEnergyMulti multiEnergyHatch -> {
+                boolean added = addToMachineListInternal(mTecTechEnergyHatches, multiEnergyHatch, aBaseCasingIndex);
+                updateMasterEnergyHatchList(aMetaTileEntity);
+                return added;
+            }
+
+            // HatchElement.Dynamo uses mDynamoHatches for the count, but I'm uncertain where GT++
+            // actually uses the TTDynamoHatch list, so I'm just excluding 4A hatches to be added here
+            // and be caught past the lower comment currently in line 340.
+            case MTEHatchDynamoMulti multiDynamoHatch when multiDynamoHatch.getAmperes() > 4 -> {
+                boolean added = addToMachineListInternal(mTecTechDynamoHatches, multiDynamoHatch, aBaseCasingIndex);
+                mExoticDynamoHatches.add(multiDynamoHatch);
+                updateMasterDynamoHatchList(aMetaTileEntity);
+                return added;
+            }
+
+
+            // Handle Fluid Hatches using separate logic
+            case MTEHatchInput inputHatch -> {
+                return addToMachineListInternal(mInputHatches, inputHatch, aBaseCasingIndex);
+            }
+            case MTEHatchOutput outputHatch -> {
+                return addToMachineListInternal(mOutputHatches, outputHatch, aBaseCasingIndex);
+            }
+
+            // Process Remaining hatches using base GT Logic
+            case IDualInputHatch hatch -> {
+                hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+                return addToMachineListInternal(mDualInputHatches, hatch, aBaseCasingIndex);
+            }
+            case MTEHatchInputBus inputBus -> {
+                return addToMachineListInternal(mInputBusses, inputBus, aBaseCasingIndex);
+            }
+            case MTEHatchOutputBus outputBus -> {
+                return addToMachineListInternal(mOutputBusses, outputBus, aBaseCasingIndex);
+            }
+            case MTEHatchEnergy energyHatch -> {
+                boolean added = addToMachineListInternal(mEnergyHatches, energyHatch, aBaseCasingIndex);
+                if (aMetaTileEntity instanceof MTEHatchEnergyDebug) debugEnergyPresent = true;
+                updateMasterEnergyHatchList(aMetaTileEntity);
+                return added;
+            }
+
+            // which is here, catches all other dynamo hatches here.
+            case MTEHatchDynamo dynamoHatch -> {
+                boolean added = addToMachineListInternal(mDynamoHatches, dynamoHatch, aBaseCasingIndex);
+                updateMasterDynamoHatchList(aMetaTileEntity);
+                return added;
+            }
+            case MTEHatchMaintenance hatch -> {
+                if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
+                    droneDownLink.registerMachineController(this);
+                }
+                return addToMachineListInternal(mMaintenanceHatches, hatch, aBaseCasingIndex);
+            }
+            case MTEHatchMuffler mufflerHatch -> {
+                return addToMachineListInternal(mMufflerHatches, mufflerHatch, aBaseCasingIndex);
+            }
+            default -> {
+            }
         }
-        if (aMetaTileEntity instanceof MTEHatchMuffler mufflerHatch)
-            return addToMachineListInternal(mMufflerHatches, mufflerHatch, aBaseCasingIndex);
 
         return false;
     }
@@ -641,10 +655,10 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         if (supportsVoidProtection() && wrenchingSide == getBaseMetaTileEntity().getFrontFacing()) {
             Set<VoidingMode> allowed = getAllowedVoidingModes();
             setVoidingMode(getVoidingMode().nextInCollection(allowed));
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 aPlayer,
-                StatCollector.translateToLocal("GT5U.gui.button.voiding_mode") + " "
-                    + StatCollector.translateToLocal(getVoidingMode().getTransKey()));
+                "GT5U.chat.voiding_mode_set",
+                new ChatComponentTranslation(getVoidingMode().getTransKey()));
             return true;
         } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }

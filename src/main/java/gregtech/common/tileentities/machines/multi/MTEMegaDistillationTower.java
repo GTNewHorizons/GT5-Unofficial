@@ -105,9 +105,9 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                 {"        FFF    ","     EAEFDF    ","    E F EFFFFF ","   E  H  EFFBFF","   AFHCHFAFBDBF","   E  H  EFFBFF","    E F E  FFF ","     EAE       ","               "},
                 {"               ","     GGG D     ","    G   G      ","   G  H  G  B  ","   G HCH G BDB ","   G  H  G  B  ","    G   G      ","     GGG       ","               "},
                 {"               ","     EAE D     "," F  E   E    F "," F E  H  E  BF "," FFA HCH A BDB "," F E  H  E  BF "," F  E   E    F ","     EAE       ","               "},
-                {"               ","     EAE DDD   "," F  E   E    F ","H  E  H  E  B B","HHHHHHCH A BDBB","H  E  H  E  B B"," F  E   E    F ","     EAE       ","               "},
-                {"               ","     GGG   D   "," F  G   G    F ","HHHHHHH  G  BBB","3CCCCCCH G BDD2","HHHHHHH  G  BBB"," F  G   G    F ","     GGG       ","               "},
-                {"               ","     EAE   D   "," F  E   E    F ","H  E     E  B B","HHHHHHH  A BDBB","H  E     E  B B"," F  E   E    F ","     EAE       ","               "},
+                {"               ","     EAE DDD   "," F  E   E    F ","3  E  H  E  B B","3HHHHHCH A BDBB","3  E  H  E  B B"," F  E   E    F ","     EAE       ","               "},
+                {"               ","     GGG   D   "," F  G   G    F ","3HHHHHH  G  BBB","3CCCCCCH G BDD2","3HHHHHH  G  BBB"," F  G   G    F ","     GGG       ","               "},
+                {"               ","     EAE   D   "," F  E   E    F ","3  E     E  B B","3HHHHHH  A BDBB","3  E     E  B B"," F  E   E    F ","     EAE       ","               "},
                 {"     GGG   G   ","    GEAEG GDG  "," F GE   EGEGEF "," FGE     EGEBE "," FAA     AGBDB "," FGE     EGEBE "," F GE   EG   F ","    GEAEG      ","     GGG       "},
                 {"  EEG111GE111  "," EEEE   EEEDEE ","EEEE     EEEEEE","1EE       EEBE1","111       1BDB1","1EE       EEBE1","EEEE     EE1EEE"," EEEE   EEE1EE ","  EEG111GE111  "},
                 {" GEEG111GEGGGE "," E         D E ","EE           EE","G             G","G           D G","G             G","EE           EE"," E           E "," GEEG111GEGGGE "},
@@ -363,6 +363,8 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
 
     protected int getCurrentLayerBottomOutputHatchCount() {
         int currentLayer = (height * 2) - 2;
+        if (outputHatchesPerLayer.isEmpty()) return 0;
+
         return outputHatchesPerLayer.size() < currentLayer || height <= 0 ? 0
             : outputHatchesPerLayer.get(currentLayer)
                 .size();
@@ -370,6 +372,8 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
 
     protected int getCurrentLayerTopOutputHatchCount() {
         int currentLayer = (height * 2) - 1;
+        if (outputHatchesPerLayer.isEmpty()) return 0;
+
         return outputHatchesPerLayer.size() < currentLayer || height <= 0 ? 0
             : outputHatchesPerLayer.get(currentLayer)
                 .size();
@@ -495,10 +499,10 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel);
     }
 
-    private static final float DISTILLERY_SPEED = 1.5f;
+    private static final float DISTILLERY_SPEED = 2f;
     private static final float DISTILLERY_EU_EFFICIENCY = 0.5f;
 
-    private static final float TOWER_SPEED = 1.2f;
+    private static final float TOWER_SPEED = 1.5f;
     private static final float TOWER_EU_EFFICIENCY = 0.9f;
 
     @Override
@@ -508,11 +512,11 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         logic.setUnlimitedTierSkips();
         if (this.machineMode == MACHINEMODE_DISTILLERY) {
             // make it compete with dangote somewhat. it will still be less eu efficient. numbers can be tweaked
-            logic.setSpeedBonus(DISTILLERY_SPEED);
+            logic.setSpeedBonus(1f / DISTILLERY_SPEED);
             logic.setEuModifier(DISTILLERY_EU_EFFICIENCY);
         } else {
             // same here, still worse than dangote but with laser
-            logic.setSpeedBonus(TOWER_SPEED);
+            logic.setSpeedBonus(1f / TOWER_SPEED);
             logic.setEuModifier(TOWER_EU_EFFICIENCY);
         }
     }
@@ -529,11 +533,6 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     public boolean supportsBatchMode() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 
@@ -568,7 +567,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .addSupportAny()
             .addUnlimitedTierSkips()
             .addInfo(EnumChatFormatting.GOLD + "Big Oil will be pleased with this!")
-            .beginVariableStructureBlock(9, 9, 15, 15, 30, 54, true)
+            .beginVariableStructureBlock(15, 15, 30, 54, 9, 9, true)
             .addController("Front center, 3rd Layer")
             .addEnergyHatch("1+", "Any base reinforced distillation casing", 1)
             .addMaintenanceHatch("1+", "Any base reinforced distillation casing", 1)

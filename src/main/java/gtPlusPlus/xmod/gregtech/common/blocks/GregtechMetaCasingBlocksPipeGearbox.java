@@ -106,10 +106,4 @@ public class GregtechMetaCasingBlocksPipeGearbox extends GregtechMetaCasingBlock
     public int getRenderColor(final int aMeta) {
         return sMaterialMapping.get(aMeta);
     }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public int getBlockColor() {
-        return super.getBlockColor();
-    }
 }

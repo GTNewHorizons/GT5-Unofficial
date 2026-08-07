@@ -260,10 +260,10 @@ gt.blockmachines.itempipe.rounting_value=Routing Value: %s
 
 Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver=Absorption range: %s blocks
 
-gt.hatch_element_or= or
-gt.hatch_element_of_type=of type
-gt.hatch_element_of_class=of class
-gt.hatch_element_of_id=of id
+gt.hatch_element_or= or 
+gt.hatch_element_of_type=of type 
+gt.hatch_element_of_class=of class %s
+gt.hatch_element_of_id=of id %s
 
 # Basic Machine
 gt.blockmachines.basicmachine.accelerator.tier.01.name=Basic World Accelerator
@@ -1700,14 +1700,48 @@ GT5U.MBTT.Structure.MaxTierSkips=This machine can run recipes at most %d tiers a
 GT5U.MBTT.Structure.UnlimitedTierSkips=This machine can run recipes regardless of tier, if given enough energy
 GT5U.MBTT.Structure.DataStick.Waterline=Link to the §bWater Purification Plant§7 with a §aData Stick
 GT5U.MBTT.Structure.DataStick.PCB=Link to the §bPCB Factory§7 with a §aData Stick
-gt.mbtt.structure.front_center=Front center
+
 gt.mbtt.structure.back_center=Back center
-gt.mbtt.structure.front_center_2nd_layer=Front center, 2nd layer
 gt.mbtt.structure.front_bottom_center=Front bottom center
+gt.mbtt.structure.front_center=Front center
+gt.mbtt.structure.front_center_2nd_layer=Front center, 2nd layer
+gt.mbtt.structure.front_center_4th_layer=Front center, 4th layer
+gt.mbtt.structure.front_center_9th_layer=Front center, 9th layer
+gt.mbtt.structure.front_center_15th_layer=Front center, 15th layer
+gt.mbtt.structure.front_center_17th_layer=Front center, 17th layer
 gt.mbtt.structure.any_casing=Any casing
 gt.mbtt.structure.interior=Interior of the structure
+gt.mbtt.structure.any_tiered_glass=Any Tiered Glass
+gt.mbtt.structure.min_tiered_glass=%s+ Tiered Glass
+gt.mbtt.structure.any_bottom_casing=Any bottom casing
+gt.mbtt.structure.back_center_casing=Back center casing
+gt.mbtt.structure.front_center_casing=Front center casing
+gt.mbtt.structure.any_front_bottom_casing=Any front bottom casing
+gt.mbtt.structure.around_controller=Around controller
+gt.mbtt.structure.any_back_center_casing=Any back center casing
+gt.mbtt.structure.any_front_shielding_casing=Any front shielding casing
+
+# Generic machine types
+gt.mbtt.machine_type.spacetime_manipulator=Spacetime Manipulator, EOH
+gt.mbtt.machine_type.exotic_matter_producer=Exotic Matter Producer
+gt.mbtt.machine_type.blast_smelter=Blast Smelter
+gt.mbtt.machine_type.blast_furnace=Blast Furnace, Furnace
+gt.mbtt.machine_type.plasma_fabricator=Plasma Fabricator
+gt.mbtt.machine_type.stellar_forge=Stellar Forge
+
 GT5U.MBTT.HatchInfo=Any %s
 GT5U.MBTT.HatchHint= (Hint: %s)
+GT5U.MBTT.Glass.03=Any HV Glass
+GT5U.MBTT.Glass.04=Any EV Glass
+GT5U.MBTT.Glass.05=Any IV Glass
+GT5U.MBTT.Glass.06=Any LuV Glass
+GT5U.MBTT.Glass.07=Any ZPM Glass
+GT5U.MBTT.Glass.08=Any UV Glass
+GT5U.MBTT.Glass.09=Any UHV Glass
+GT5U.MBTT.Glass.10=Any UEV Glass
+GT5U.MBTT.Glass.11=Any UIV Glass
+GT5U.MBTT.Glass.12=Any UMV Glass
+GT5U.MBTT.Glass.13=Any UXV Glass
 GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
 GT5U.MBTT.BoroGlassTiered=Borosilicate Glass (any)
 GT5U.MBTT.ConfigMenu=Configuration Menu
@@ -1741,7 +1775,6 @@ GT5U.MBTT.PCB.Tooltip.3=Allows for overclocking. Requires 10 L/s of distilled wa
 GT5U.MBTT.PCB.Tooltip.4=Enables perfect overclocking by allowing nanites to work with extreme speed and efficiency. Uses 10 L/s of Super Coolant.
 GT5U.MBTT.PCB.Tooltip.5=Set the trace size. Smaller traces allow material savings but take longer to fabricate. Larger traces waste material but are fast. 50-200 μm.
 GT5U.MBTT.PCB.Tooltip.6=Can't change configuration when running!
-
 GT5U.MBTT.AlchemyCasingAny=Alchemically Resistant/Inert/Immune Casing
 GT5U.MBTT.AlchemicalConstructAny=Alchemical Construct
 GT5U.MBTT.SuperChest=Super/Quantum Chest
@@ -1828,6 +1861,7 @@ GT5U.MBTT.subchannel=Subchannel §b%s§7 determines §b%s
 
 GT5U.MBTT.CokeOvenHatch=Coke Oven Hatch
 GT5U.MBTT.CryotheumHatch=Cryotheum Cooling Hatch
+GT5U.MBTT.PyrotheumHatch=Pyrotheum Heating Hatch
 
 GT5U.cracker.io_side=Input/Output Hatches must be on opposite sides!
 GT5U.gui.text.structure_error.cracker_missing_middle_input_hatch=Missing Input Hatch for cracking fluid
@@ -2185,7 +2219,7 @@ GT5U.machines.chunks=Chunks
 GT5U.machines.miner=Miner
 GT5U.machines.powersource.power=power
 GT5U.machines.powersource.steam=steam
-GT5U.machines.steam.amount=%1$s/%2$sL Steam
+GT5U.machines.steam.amount=%1$s/%2$s Steam
 GT5U.machines.pump=Pump
 GT5U.machines.separatebus.true=Input buses are separated
 GT5U.machines.separatebus.false=Input buses aren't separated
@@ -2508,6 +2542,7 @@ GT5U.gui.button.voiding_mode_none=§7Void Nothing
 GT5U.gui.button.voiding_mode_item=§7Void Excess §6Items
 GT5U.gui.button.voiding_mode_fluid=§7Void Excess §9Fluids
 GT5U.gui.button.voiding_mode_all=§7Void Excess §6Items §7and §9Fluids
+GT5U.chat.voiding_mode_set=Voiding Mode: %s
 GT5U.gui.button.input_separation=Input Separation
 GT5U.gui.button.mode_switch=Mode Switch
 GT5U.gui.button.batch_mode=Batch Mode
@@ -2550,7 +2585,10 @@ GT5U.gui.button.drone_name=Sort by §3name
 GT5U.gui.button.drone_distance=Sort by §3distance
 GT5U.gui.button.drone_status=Sort by §3shutdown status
 GT5U.gui.button.drone_searchoriname=Also search original name
-GT5U.gui.button.drone_select_group=Click here to add or remove a machine
+GT5U.gui.button.drone_select_group=Click here to add or remove machine to this group
+GT5U.gui.tooltip.drone_cannot_add_all_group=§cCannot add machines to Default Group!
+GT5U.gui.tooltip.drone_in_no_group=This machine is not added to any group
+GT5U.gui.tooltip.drone_in_groups=This machine is added to the following groups:
 GT5U.gui.button.drone_production=Open production panel
 GT5U.gui.button.drone_editmode=Group edit mode
 GT5U.gui.button.drone_pause.1=Auto update connection list
@@ -2581,6 +2619,7 @@ GT5U.gui.text.per_hour=§fPer hour:
 GT5U.gui.text.per_day=§fPer day:
 GT5U.gui.text.progress_recipe=§fProgress: %ss / %ss (%s%%)
 GT5U.gui.text.progress_detail=§fProgress: %s%% §7(§f%ss§7/§f%ss§7)§r
+GT5U.gui.text.tier_name_with_parentheses=(%s)
 GT5U.gui.text.rate_short=(§7%s/s§f)
 GT5U.gui.text.rate_short_slow=(§7%ss/each§f)
 GT5U.gui.text.rate_large_suffix=§f[§7%s§f]
@@ -2697,16 +2736,18 @@ GT5U.gui.text.drone_cam_stream_on=§bCam Stream: §aON
 GT5U.gui.text.drone_signal_link=§bSignal Link:
 GT5U.gui.text.drone_recipe_on=§bRecipe: §aON
 GT5U.gui.text.drone_cam_pos=§bCam %c: §7%s
-GT5U.gui.text.drone_level_excellent=§8Level: EXCELLENT
+GT5U.gui.text.drone_level_excellent=§7Level: §aEXCELLENT
+GT5U.gui.text.drone_stored_energy=Energy
+GT5U.gui.text.drone_locked_recipe=Recipe Lock
 GT5U.gui.text.recipe_metrics_header=§3[ RECIPE METRICS ]
 GT5U.gui.text.recipe_none=§7No active recipe.
 GT5U.gui.text.recipe_connecting_1=§7Connecting...
-GT5U.gui.text.recipe_connecting_2=§8Synchronizing NBT
-GT5U.gui.text.recipe_connecting_3=§8recipe stream...
+GT5U.gui.text.recipe_connecting_2=§7Synchronizing NBT
+GT5U.gui.text.recipe_connecting_3=§7recipe stream...
 GT5U.gui.text.recipe_no_conn_1=§7NO CONNECTION
-GT5U.gui.text.recipe_no_conn_2=§8Aim crosshair at
-GT5U.gui.text.recipe_no_conn_3=§8a machine to see
-GT5U.gui.text.recipe_no_conn_4=§8recipe details.
+GT5U.gui.text.recipe_no_conn_2=§7Aim crosshair at
+GT5U.gui.text.recipe_no_conn_3=§7a machine to see
+GT5U.gui.text.recipe_no_conn_4=§7recipe details.
 GT5U.gui.text.drone_zoom=ZOOM: %.1fx
 GT5U.gui.text.drone_flashlight=Flashlight ON
 GT5U.gui.text.shutdown_duration=§4Shut down §e%s §4h §e%s §4min §e%s §4s ago.
@@ -2790,6 +2831,7 @@ GT5U.gui.text.static_mode=Static Mode
 GT5U.gui.text.structure_error.unneeded_muffler=Does not accept Muffler Hatches
 GT5U.gui.text.structure_error.crib_not_allowed=Crafting Inputs are not allowed
 GT5U.gui.text.structure_error.stocking_input_bus_not_allowed=Stocking Input Buses are not allowed
+GT5U.gui.text.structure_error.stocking_input_hatch_not_allowed=Stocking Input Hatches are not allowed
 GT5U.gui.text.structure_error.unknown=Unknown structure error
 GT5U.gui.text.structure_error.glass_tier_not_enough=Glass tier too low for energy hatch tier
 GT5U.gui.text.structure_error.missing_energy_hatch=Missing Energy Hatch
@@ -3199,6 +3241,7 @@ GT5U.gui.hoverable.incomplete=Structure incomplete.
 GT5U.gui.hoverable.powerloss=Lost Power.
 GT5U.gui.hoverable.norepair=Machine too damaged.
 GT5U.gui.hoverable.manualshutdown=Manual shutdown (get it?).
+GT5U.gui.hoverable.computation_loss=Out of computation.
 GT5U.gui.hoverable.error=ERROR! REPORT ME!
 
 GT5U.gui.config.client=Client
@@ -3581,6 +3624,7 @@ GT5U.item.toolbox.tooltip.deselect_tool=%s (while sneaking): Deselect active too
 GT5U.item.toolbox.tooltip.open_toolbox=%s: Open toolbox
 # This inserts gt.item.desc.durability into the %s
 GT5U.item.toolbox.tooltip.tool_durability=Tool %s
+GT5U.item.toolbox.tooltip.crafting=§4§lNOTE:§r §bWill craft with any/no tool selected
 
 GT5U.item.toolbox.byline.closed=Your stalwart ally for an epic\n§oengineering journey.
 # The tool-specific bylines are pretty much all jokes. Accuracy in translation isn't important.
@@ -3804,6 +3848,7 @@ GT5U.armor.behavior.Teleporter=Personal Teleporter
 GT5U.armor.behavior.MilkInfusion=Milk Infusion
 GT5U.armor.behavior.HoloInventory=Holographic Inventory
 GT5U.armor.behavior.Terrasteel=Will of the Ancients
+GT5U.armor.behavior.Levitation=Levitation Mode
 
 GT5U.armor.message.enabled=%s §aEnabled§r
 GT5U.armor.message.disabled=%s §cDisabled§r
@@ -3885,7 +3930,7 @@ GT5U.hatch.filter.tooltip.0=§6Left-Click§8 to remove
 GT5U.hatch.outputme.filter.format=%s: %s:
 GT5U.hatch.outputme.checkMode.true=Check Mode §cOn§r
 GT5U.hatch.outputme.checkMode.false=Check Mode §aOff§r
-GT5U.hatch.outputme.checkMode.desc=NOTE: Simulates insertion into the internal cell during recipe checks, limiting parallel by cell space. (requires a cell to work, increases recipe calculation cost)
+GT5U.hatch.outputme.checkMode.desc=NOTE: Check Mode caps parallelism based on available space during recipe checks (increases recipe calculation cost, especially without equal distribution card).
 GT5U.hatch.outputme.cacheMode.true=Cache Mode §cOn§r
 GT5U.hatch.outputme.cacheMode.false=Cache Mode §aOff§r
 GT5U.hatch.outputme.cacheMode.desc=Stores to the internal cell instead of to the ME Network.
@@ -4416,7 +4461,7 @@ gt.item.large_fluid_cell.stainless_steel.name=Large Stainless Steel Fluid Cell
 gt.item.large_fluid_cell.stainless_steel.tooltip=
 gt.item.large_fluid_cell.titanium.name=Large Titanium Fluid Cell
 gt.item.large_fluid_cell.titanium.tooltip=
-gt.item.large_fluid_cell.chrome.name=Large Chrome Fluid Cell
+gt.item.large_fluid_cell.chrome.name=Large Rhodium-Plated Palladium Fluid Cell
 gt.item.large_fluid_cell.chrome.tooltip=
 gt.item.large_fluid_cell.iridium.name=Large Iridium Fluid Cell
 gt.item.large_fluid_cell.iridium.tooltip=
@@ -5866,6 +5911,10 @@ nei.options.tools.dump.gt5u.batch_mode=Batch mode missing support
 nei.options.tools.dump.gt5u.batch_modes=Batch mode missing supports
 nei.options.tools.dump.gt5u.recipe_locking=Recipe locking missing support
 nei.options.tools.dump.gt5u.recipe_lockings=Recipe locking missing supports
+nei.options.tools.dump.gt5u.fuels=Turbine Fuel Data
+nei.options.tools.dump.gt5u.fuelss=Turbine Fuels dumped to dumps/fuels.json
+nei.options.tools.dump.gt5u.rotors=Turbine Rotor Data
+nei.options.tools.dump.gt5u.rotorss=Turbine Rotors dumped to dumps/rotors.json
 nei.options.tools.dump.gt5u.warn_env=You're outside of the pack. Some IDs present in the full pack might be missing in this dump.
 nei.options.tools.dump.gt5u.mode.0=Free
 nei.options.tools.dump.gt5u.mode.1=Used
@@ -6810,7 +6859,7 @@ fluid.dye.watermixed.dyered=Water Mixed Red Dye
 fluid.dye.watermixed.dyewhite=Water Mixed White Dye
 fluid.dye.watermixed.dyeyellow=Water Mixed Yellow Dye
 
-fluid.enzymessollution=EnzymesSollution
+fluid.enzymessollution=Enzyme Solution
 fluid.escherichiakolifluid=eColi Bacteria Fluid
 fluid.fermentation.base=Fermentation Base
 fluid.fieryblood=Fiery Blood
@@ -6841,7 +6890,7 @@ fluid.fluid.rocketfuelmixc=CN3H7O3 Rocket Fuel
 fluid.fluid.rocketfuelmixd=Dense Hydrazine Fuel Mixture
 fluid.fluid.rp1fuel=RP-1
 fluid.fluid.sulfuriccoaltaroil=Sulfuric Coal Tar Oil
-fluid.fluorecentddna=FluorecentdDNA
+fluid.fluorecentddna=Fluorescent DNA
 fluid.froth.almandineflotation=Almandine Froth
 fluid.froth.copperflotation=Chalcopyrite Froth
 fluid.froth.grossularflotation=Grossular Froth
@@ -6987,7 +7036,7 @@ fluid.putrescine=Putrescine
 fluid.pyrotheum=Blazing Pyrotheum
 fluid.rocket_fuel=Rocket Fuel
 fluid.saccharomycescerevisiaefluid=Common Yeast Fluid
-fluid.saccharomycescerevisiaevarbayanusfluid=Whine Yeast Fluid
+fluid.saccharomycescerevisiaevarbayanusfluid=Wine Yeast Fluid
 fluid.saccharomycescerevisiaevarcerevisiaefluid=Beer Yeast Fluid
 fluid.saccharomycesescherichiafluid=General Purpose Fermenting Bacteria Fluid
 fluid.solution.bluevitriol=Blue Vitriol Water Solution
@@ -7116,6 +7165,7 @@ key.gt.speed_decrease=Decrease Speed
 key.gt.jump_increase=Increase Jump Boost
 key.gt.jump_decrease=Decrease Jump Boost
 key.gt.force_field=Toggle Force Field
+key.gt.toggle_levitation_mode=Toggle Levitation Mode
 key.gt.open_radial_menu=Open Radial Menu
 
 # Tooltips for GT Tools
@@ -7558,6 +7608,13 @@ GT5U.infodata.fusion.mk_tier=§9Fusion Reactor MK§r %s
 GT5U.infodata.fusion.req=EU Required: §c%s§rEU/t
 GT5U.infodata.fusion.plasma=Plasma Output: §e%s§rL/t
 GT5U.infodata.naquadah_refinery.coil_tier=Coil Tier: %s
+
+GT5U.infodata.turbine.output=%s: %s EU/t
+GT5U.infodata.turbine.efficiency=Current Speed: %s %%
+GT5U.infodata.turbine.flow=Optimal Flow: %s L/%s (%s)
+GT5U.infodata.turbine.fuel=Fuel Remaining: %s L
+GT5U.infodata.turbine.dmg=Turbine Damage: %s %%
+GT5U.infodata.turbine.pollution=Pollution reduced to: %s %%
 
 GT5U.infodata.large_fluid_extractor.max_parallels=Max Parallels: %s%d%s
 GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus=Heating Coil Speed Bonus: +%s%.0f%s %%
@@ -8317,6 +8374,7 @@ achievement.gt.blockmachines.hatch.datainass.wireless.tier.12.desc=Pick up this 
 achievement.gt.blockmachines.hatch.dataoutass.wireless.tier.12=Wireless Data Bank Transmission Connector
 achievement.gt.blockmachines.hatch.dataoutass.wireless.tier.12.desc=Pick up this item to see the recipe in NEI
 achievement.gt.blockmachines.hatch.nanite=Nanite Containment Bus
+achievement.gt.blockmachines.hatch.nanite.singularity=Singularity Nanite Containment Bus
 achievement.gt.blockmachines.hatch.nanite.desc=Pick up this item to see the recipe in NEI
 achievement.item.OriginNanoCircuit=Nano Circuit of Split Origin
 achievement.item.OriginNanoCircuit.desc=Pick up this item to see the recipe in NEI
@@ -9070,6 +9128,21 @@ GT5U.tooltip.bec-ionode.controller-pos=Front center, 12th layer
 GT5U.tooltip.bec-ionode.hatch-pos=Any electromagnetically-isolated casing
 GT5U.tooltip.bec-ionode.los-hatch-pos=Back center casing
 
+# Eye of Harmony Structure Hints
+GT5U.tooltip.eye-of-harmony.boundary-no-stocking-bus=Any boundary casing (no stocking bus)
+GT5U.tooltip.eye-of-harmony.boundary-no-stocking-hatch=Any boundary casing (no stocking hatch)
+GT5U.tooltip.eye-of-harmony.any-boundary-casing=Any boundary casing
+
+# Research Station Structure Hints
+GT5U.tooltip.research-station.footer=§aData Sticks go in the controller
+
+# Forge of Gods Structure Hints
+GT5U.tooltip.forge-of-gods.output-bus-pos=Around controller (ME only)
+GT5U.tooltip.forge-of-gods.module=Forge of the Gods Module
+GT5U.tooltip.forge-of-gods.module-pos=Any side center shielding casing
+GT5U.tooltip.forge-of-gods.second-ring=Second Ring
+GT5U.tooltip.forge-of-gods.third-ring=Third Ring
+
 # BEC Generator Structure Hints
 GT5U.tooltip.bec-generator.controller-pos=Front center, 10th layer
 GT5U.tooltip.bec-generator.hatch-pos=Any electromagnetically-isolated casing around controller
@@ -9115,7 +9188,7 @@ GT5U.chat.bec-connected-assembler=Successfully connected to the Observation Arra
 GT5U.chat.bec-no-connect-assembler=Could not connect to the Observation Array
 
 # BEC Waila
-GT5U.chat.bec-processing-speed=Processing Speed: x%s
+GT5U.chat.bec-processing-speed=Processing Speed: %s points per tick
 GT5U.chat.bec-slowdowns=Slowdowns: %s
 
 # Test Factory Machines

@@ -300,7 +300,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
             boolean matchesFilter = contains(selected.getStacks(), output) || contains(inputOres, output);
 
-            if ((isSelectedEmpty() && inputOres.isEmpty()) || (this.blacklist ? !matchesFilter : matchesFilter)) {
+            if ((isSelectedEmpty() && inputOres.isEmpty()) || (this.blacklist != matchesFilter)) {
                 this.addPendingOutput(output);
             }
         }

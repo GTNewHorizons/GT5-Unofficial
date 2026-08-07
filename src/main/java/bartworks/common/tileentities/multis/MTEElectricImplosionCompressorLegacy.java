@@ -163,7 +163,7 @@ public class MTEElectricImplosionCompressorLegacy
                 Arrays.stream(transpose(shape))
                     .map(
                         sa -> Arrays.stream(sa)
-                            .map(s -> s.replaceAll("F", "H"))
+                            .map(s -> s.replace("F", "H"))
                             .toArray(String[]::new))
                     .toArray(String[][]::new))
             .addElement(
@@ -290,6 +290,11 @@ public class MTEElectricImplosionCompressorLegacy
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
         this.updateChunkCoordinates();
+    }
+
+    @Override
+    public boolean needsClientTick() {
+        return true;
     }
 
     @Override

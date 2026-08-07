@@ -132,7 +132,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
             .addInfo("Runs gases through depleted molten salts to extract precious fluids")
             .addInfo("Works the same way as the Distillation Tower, but with a fixed height of 8")
             .addInfo("Fluids are outputted one per layer based on the slot number in NEI")
-            .beginStructureBlock(3, 3, 8, true)
+            .beginStructureBlock(3, 8, 3, true)
             .addController("Front bottom center")
             .addCasing("45-56", "Sparge Tower Exterior Casing", false)
             .addEnergyHatch("1+", "Any casing", 1, 2)
@@ -236,9 +236,8 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         }
         tHatch.updateTexture(aBaseCasingIndex);
         addIfSmartInput(tHatch);
-        boolean addedHatch = mOutputHatchesByLayer.get(mHeight - 1)
+        return mOutputHatchesByLayer.get(mHeight - 1)
             .add(tHatch);
-        return addedHatch;
     }
 
     @Override

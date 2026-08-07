@@ -139,7 +139,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.manualshutdown"));
         this.shutdownReasonTooltipMap.put(
             "computation_loss",
-            EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.text.computation_loss"));
+            EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.computation_loss"));
     }
 
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
@@ -537,7 +537,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     return stackSizeB.compareTo(stackSizeA);
                 }
             })
-            .collect(Collectors.toList());
+            .toList();
 
         // create row for each entry
         for (Map.Entry<ItemDisplayKey, Long> entry : sortedEntries) {
@@ -587,7 +587,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                         entry -> entry.getKey()
                             .getLocalizedName())
                     .reversed())
-            .collect(Collectors.toList());
+            .toList();
 
         // create row for each entry
         for (Map.Entry<FluidStack, Long> entry : sortedEntryList) {

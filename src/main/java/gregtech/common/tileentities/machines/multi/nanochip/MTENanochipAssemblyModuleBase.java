@@ -271,23 +271,27 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             return false;
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
+        switch (aMetaTileEntity) {
+            case null -> {
+                return false;
+            }
+            case MTEHatchVacuumConveyorInput hatch -> {
+                hatch.updateTexture(aBaseCasingIndex);
+                hatch.setMainController(this.getBaseMulti());
+                // Components arrive as fake items in the hatch's own storage (not mInventory), so register for the
+                // hatch's push instead of relying on the inventory-dirty flag.
+                hatch.addWatcher(this);
+                return vacuumConveyorInputs.addHatch(hatch);
+            }
+            case MTEHatchVacuumConveyorOutput hatch -> {
+                hatch.updateTexture(aBaseCasingIndex);
+                hatch.setMainController(this.getBaseMulti());
+                return vacuumConveyorOutputs.addHatch(hatch);
+            }
+            default -> {
+            }
         }
 
-        if (aMetaTileEntity instanceof MTEHatchVacuumConveyorInput hatch) {
-            hatch.updateTexture(aBaseCasingIndex);
-            hatch.setMainController(this.getBaseMulti());
-            // Components arrive as fake items in the hatch's own storage (not mInventory), so register for the
-            // hatch's push instead of relying on the inventory-dirty flag.
-            hatch.addWatcher(this);
-            return vacuumConveyorInputs.addHatch(hatch);
-        }
-        if (aMetaTileEntity instanceof MTEHatchVacuumConveyorOutput hatch) {
-            hatch.updateTexture(aBaseCasingIndex);
-            hatch.setMainController(this.getBaseMulti());
-            return vacuumConveyorOutputs.addHatch(hatch);
-        }
         return false;
     }
 

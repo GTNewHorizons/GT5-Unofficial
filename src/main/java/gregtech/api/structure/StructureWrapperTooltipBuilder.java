@@ -56,10 +56,10 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
         if (!structure.minSize.equals(structure.maxSize)) {
             super.beginVariableStructureBlock(
                 structure.minSize.get0(),
-                structure.minSize.get1(),
-                structure.minSize.get2(),
                 structure.maxSize.get0(),
+                structure.minSize.get1(),
                 structure.maxSize.get1(),
+                structure.minSize.get2(),
                 structure.maxSize.get2(),
                 hollow);
         } else {
@@ -80,10 +80,10 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
         if (!structure.minSize.equals(structure.maxSize)) {
             super.beginVariableStructureBlock(
                 structure.minSize.get0(),
-                structure.minSize.get1(),
-                structure.minSize.get2(),
                 structure.maxSize.get0(),
+                structure.minSize.get1(),
                 structure.maxSize.get1(),
+                structure.minSize.get2(),
                 structure.maxSize.get2(),
                 false);
         } else {
@@ -270,9 +270,7 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
                             hintNumbers);
                         hasExoticHatches = true;
                     }
-                    default -> {
-                        addOtherStructurePart(ttHatch.getDisplayName(), info, hintNumbers);
-                    }
+                    default -> addOtherStructurePart(ttHatch.getDisplayName(), info, hintNumbers);
                 }
             } else {
                 // fallback for custom hatches

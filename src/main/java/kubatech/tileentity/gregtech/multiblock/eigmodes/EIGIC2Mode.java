@@ -3,7 +3,10 @@ package kubatech.tileentity.gregtech.multiblock.eigmodes;
 import static gregtech.api.util.StringUtils.voltageTooltipFormatted;
 import static kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse.EIG_BALANCE_IC2_ACCELERATOR_TIER;
 
-import net.minecraft.util.EnumChatFormatting;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.util.ResourceLocation;
 
 import gregtech.api.util.MultiblockTooltipBuilder;
 import kubatech.api.eig.EIGMode;
@@ -65,28 +68,18 @@ public class EIGIC2Mode extends EIGMode {
 
     @Override
     public MultiblockTooltipBuilder addTooltipInfo(MultiblockTooltipBuilder builder) {
-        String minVoltageTier = voltageTooltipFormatted(this.getMinVoltageTier());
-        String minGlassTier = voltageTooltipFormatted(this.getMinGlassTier());
+        Map<String, Object> ttVars = new HashMap<>();
+        ttVars.put("minVoltageTier", voltageTooltipFormatted(this.getMinVoltageTier()));
+        ttVars.put("minGlassTier", voltageTooltipFormatted(this.getMinGlassTier()));
+        ttVars.put("startingSlotCount", this.getStartingSlotCount());
+        ttVars.put("slotPerTierMultiplier", this.getSlotPerTierMultiplier());
+        ttVars.put("seedCapacityPerSlot", this.getSeedCapacityPerSlot());
+        ttVars.put("acceleration", 1 << EIG_BALANCE_IC2_ACCELERATOR_TIER);
+        ttVars.put("maxFertilizerUsagePerSeed", this.getMaxFertilizerUsagePerSeed());
+        ttVars.put("fertilizerBonus", String.format("%.0f%%", this.getFertilizerBoost() * 100));
+        ttVars.put("weedExMultiplier", this.getWeedEXMultiplier());
 
-        int acceleration = (1 << EIG_BALANCE_IC2_ACCELERATOR_TIER);
-
-        double fertilizerBonusMultiplier = this.getFertilizerBoost() * 100;
-        String fertilizerBonus = String.format("%.0f%%", fertilizerBonusMultiplier);
-
-        return builder.addSeparator()
-            .addInfo(EnumChatFormatting.RED + "DEPRECATED" + EnumChatFormatting.RESET)
-            .addInfo(EnumChatFormatting.GOLD + "IC2 Crops:")
-            .addInfo("Minimal voltage tier: " + minVoltageTier)
-            .addInfo("Minimal glass tier: " + minGlassTier)
-            .addInfo("Starting with " + this.getStartingSlotCount() + " slot")
-            .addInfo(
-                "Every tier past " + minVoltageTier + ", slots are multiplied by " + this.getSlotPerTierMultiplier())
-            .addInfo("Every slot adds " + this.getSeedCapacityPerSlot() + " seed to the total seed capacity")
-            .addInfo("Process time: 5 sec")
-            .addInfo("All crops are accelerated by x" + acceleration + " times")
-            .addInfo("Can consume up to " + this.getMaxFertilizerUsagePerSeed() + " fertilizer per seed per cycle")
-            .addInfo("Boost per fertilizer: " + fertilizerBonus)
-            .addInfo("Weed-EX 9000 consumption is multiplied by " + this.getWeedEXMultiplier());
+        return builder.addMarkdown(new ResourceLocation("gregtech", "extreme-industrial-greenhouse-ic2-mode"), ttVars);
     }
 
     @Override

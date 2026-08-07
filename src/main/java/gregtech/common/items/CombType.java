@@ -259,7 +259,7 @@ public enum CombType {
         this.color = new int[] { color1, color2 };
         this.name = pName;
         GTLanguageManager
-            .addStringLocalization("comb." + pName, WordUtils.capitalize(pName.replaceAll("_", " ")) + " Comb");
+            .addStringLocalization("comb." + pName, WordUtils.capitalize(pName.replace("_", " ")) + " Comb");
     }
 
     public void setHidden() {
