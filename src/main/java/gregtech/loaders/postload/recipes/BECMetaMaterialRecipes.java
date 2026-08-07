@@ -239,7 +239,7 @@ public class BECMetaMaterialRecipes implements Runnable {
         long[] euts = { TierEU.RECIPE_UEV, TierEU.RECIPE_UIV, TierEU.RECIPE_UMV, TierEU.RECIPE_UXV };
 
         for (int t = 0; t < 4; t++) {
-            ItemStack[] inputs = { ItemList.Gravitational_Lens.get(baseAmounts[t]), ringPart(black4Tier[t], 2),
+            ItemStack[] inputs = { ItemList.Gravitational_Lens.get(1), ringPart(black4Tier[t], 2),
                 GTOreDictUnificator.get(OrePrefixes.ring, gray4Tier[t], 1),
                 GTOreDictUnificator.get(OrePrefixes.screw, white4Tier[t], 2) };
             NaniteTier[] nanites = { nanite(4 + t), nanite(1 + t), nanite(2 + t), nanite(1 + t) };
@@ -274,11 +274,13 @@ public class BECMetaMaterialRecipes implements Runnable {
         // 4-tier UEV/UIV/UMV/UXV 300s. Nanites: T3 T2 T4 T2, +1 per tier
         ItemList[] outputs = { ItemList.MetaMaterial_ResonanceChamber1, ItemList.MetaMaterial_ResonanceChamber2,
             ItemList.MetaMaterial_ResonanceChamber3, ItemList.MetaMaterial_ResonanceChamber4 };
+        ItemList[] emitters = { ItemList.Emitter_UHV, ItemList.Emitter_UEV, ItemList.Emitter_UIV,
+            ItemList.Emitter_UMV };
         long[] euts = { TierEU.RECIPE_UEV, TierEU.RECIPE_UIV, TierEU.RECIPE_UMV, TierEU.RECIPE_UXV };
 
         for (int t = 0; t < 4; t++) {
-            ItemStack[] inputs = { ItemList.Relativistic_Heat_Capacitor.get(baseAmounts[t]), rodPart(black4Tier[t], 2),
-                foilPart(gray4Tier[t], 1), GTOreDictUnificator.get(OrePrefixes.plate, white4Tier[t], 1) };
+            ItemStack[] inputs = { emitters[t].get(2), rodPart(black4Tier[t], 2), foilPart(gray4Tier[t], 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, white4Tier[t], 1) };
             NaniteTier[] nanites = { nanite(4 + t), nanite(1 + t), nanite(2 + t), nanite(1 + t) };
 
             if (t == 0) {

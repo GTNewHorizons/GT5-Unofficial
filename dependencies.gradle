@@ -127,6 +127,10 @@ dependencies {
     // runtimeOnlyNonPublishable rfg.deobf("curse.maven:extra-utilities-225561:2264384")
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Mobs-Info:0.5.20-GTNH:dev")
 
+    // For testing singularities and foundry
+    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Eternal-Singularity:1.4.3:dev")
+    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Universal-Singularities:8.15.4:dev")
+
     testImplementation(platform('org.junit:junit-bom:5.14.1'))
     testImplementation('org.junit.jupiter:junit-jupiter')
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
