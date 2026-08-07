@@ -501,7 +501,9 @@ public class GTUtility {
         byte tier = getTier(voltage);
         tier = tier < 1 ? 1 : tier;
         String color = GTValues.TIER_COLORS[tier];
-        return "(" + color + GTValues.VN[tier] + EnumChatFormatting.RESET + ")";
+        return translateToLocalFormatted(
+            "GT5U.gui.text.tier_name_with_parentheses",
+            color + GTValues.VN[tier] + EnumChatFormatting.RESET);
     }
 
     public static String getForgeDirectionNameKey(ForgeDirection side) {
@@ -1220,7 +1222,7 @@ public class GTUtility {
             tmp = aFluid.getFluid()
                 .getID();
         } catch (Exception e) {
-            e.printStackTrace();
+            GT_FML_LOGGER.error(e);
         }
         ItemStack rStack = ItemList.Display_Fluid.getWithDamage(1, tmp);
         NBTTagCompound tNBT = new NBTTagCompound();
@@ -1436,7 +1438,7 @@ public class GTUtility {
         ItemData tOreName = GTOreDictUnificator.getAssociation(aInput);
         for (Object o : aOutput) {
             if (o == null) {
-                GT_FML_LOGGER.info("EmptyIC2Output!" + aInput.getUnlocalizedName());
+                GT_FML_LOGGER.info("EmptyIC2Output!{}", aInput.getUnlocalizedName());
                 return false;
             }
         }
@@ -2651,7 +2653,7 @@ public class GTUtility {
 
     public static String joinListToString(List<String> list) {
         StringBuilder result = new StringBuilder(32);
-        for (String s : list) result.append(result.length() == 0 ? s : '|' + s);
+        for (String s : list) result.append(result.isEmpty() ? s : '|' + s);
         return result.toString();
     }
 
@@ -3082,17 +3084,17 @@ public class GTUtility {
             do {
                 tPageText = new StringBuilder();
                 for (int i = tPage * aItemsPerPage; i < (tPage + 1) * aItemsPerPage && i < list.length; i += 1)
-                    tPageText.append((tPageText.length() == 0) ? "" : aListDelimiter)
+                    tPageText.append((tPageText.isEmpty()) ? "" : aListDelimiter)
                         .append(list[i]);
 
-                if (tPageText.length() != 0) {
+                if (!tPageText.isEmpty()) {
                     String tPageCounter = tTotalPages > 1 ? String.format(aPageFormatter, tPage + 1, tTotalPages) : "";
                     NBTTagString tPageTag = new NBTTagString(String.format(aPageHeader, tPageCounter) + tPageText);
                     aBook.appendTag(tPageTag);
                 }
 
                 ++tPage;
-            } while (tPageText.length() != 0);
+            } while (!tPageText.isEmpty());
         }
 
         /**
@@ -3188,27 +3190,32 @@ public class GTUtility {
         List<ItemStack> inputs = new ArrayList<>();
 
         for (Object o : aRecipe) {
-            if (o instanceof ItemStack) {
-                ItemStack toAdd = ((ItemStack) o).copy();
-                inputs.add(toAdd);
-            } else if (o instanceof String) {
-                ItemStack stack = GTOreDictUnificator.get(o, 1);
-                if (stack == null) {
-                    Optional<ItemStack> oStack = OreDictionary.getOres((String) o)
-                        .stream()
-                        .findAny();
-                    if (oStack.isPresent()) {
-                        ItemStack copy = oStack.get()
-                            .copy();
+            switch (o) {
+                case ItemStack itemStack -> {
+                    ItemStack toAdd = itemStack.copy();
+                    inputs.add(toAdd);
+                }
+                case String s -> {
+                    ItemStack stack = GTOreDictUnificator.get(o, 1);
+                    if (stack == null) {
+                        Optional<ItemStack> oStack = OreDictionary.getOres(s)
+                            .stream()
+                            .findAny();
+                        if (oStack.isPresent()) {
+                            ItemStack copy = oStack.get()
+                                .copy();
+                            inputs.add(copy);
+                        }
+                    } else {
+                        ItemStack copy = stack.copy();
                         inputs.add(copy);
                     }
-                } else {
-                    ItemStack copy = stack.copy();
-                    inputs.add(copy);
                 }
-            } else if (o instanceof Item) inputs.add(new ItemStack((Item) o));
-            else if (o instanceof Block) inputs.add(new ItemStack((Block) o));
-            else throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
+                case Item item -> inputs.add(new ItemStack(item));
+                case Block block -> inputs.add(new ItemStack(block));
+                case null, default ->
+                    throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
+            }
         }
 
         inputs.removeIf(x -> x.getItem() instanceof MetaGeneratedTool);
@@ -3256,32 +3263,37 @@ public class GTUtility {
 
         for (Map.Entry<Object, Integer> o : recipeAsMap.entrySet()) {
             final int amount = o.getValue();
-            if (o.getKey() instanceof ItemStack) {
-                ItemStack toAdd = ((ItemStack) o.getKey()).copy();
-                toAdd.stackSize = amount;
-                inputs.add(toAdd);
-            } else if (o.getKey() instanceof String dictName) {
-                // Do not register tools dictName in inputs
-                if (ToolDictNames.contains(dictName)) continue;
-                ItemStack stack = GTOreDictUnificator.get(dictName, null, amount, false, true);
-                if (stack == null) {
-                    Optional<ItemStack> oStack = OreDictionary.getOres(dictName)
-                        .stream()
-                        .findAny();
-                    if (oStack.isPresent()) {
-                        ItemStack copy = oStack.get()
-                            .copy();
+            switch (o.getKey()) {
+                case ItemStack itemStack -> {
+                    ItemStack toAdd = itemStack.copy();
+                    toAdd.stackSize = amount;
+                    inputs.add(toAdd);
+                }
+                case String dictName -> {
+                    // Do not register tools dictName in inputs
+                    if (ToolDictNames.contains(dictName)) continue;
+                    ItemStack stack = GTOreDictUnificator.get(dictName, null, amount, false, true);
+                    if (stack == null) {
+                        Optional<ItemStack> oStack = OreDictionary.getOres(dictName)
+                            .stream()
+                            .findAny();
+                        if (oStack.isPresent()) {
+                            ItemStack copy = oStack.get()
+                                .copy();
+                            copy.stackSize = amount;
+                            inputs.add(copy);
+                        }
+                    } else {
+                        ItemStack copy = stack.copy();
                         copy.stackSize = amount;
                         inputs.add(copy);
                     }
-                } else {
-                    ItemStack copy = stack.copy();
-                    copy.stackSize = amount;
-                    inputs.add(copy);
                 }
-            } else if (o.getKey() instanceof Item) inputs.add(new ItemStack((Item) o.getKey(), amount));
-            else if (o.getKey() instanceof Block) inputs.add(new ItemStack((Block) o.getKey(), amount));
-            else throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
+                case Item item -> inputs.add(new ItemStack(item, amount));
+                case Block block -> inputs.add(new ItemStack(block, amount));
+                case null, default ->
+                    throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
+            }
         }
 
         // Remove tools from inputs in case a recipe has one as a direct Item or ItemStack reference
@@ -4239,11 +4251,9 @@ public class GTUtility {
         Flip flip = extendedFacing.getFlip();
 
         float faceAngleDeg = switch (direction) {
-            case DOWN -> 90f;
-            case UP -> -90f;
+            case DOWN, WEST -> 90f;
+            case UP, EAST -> -90f;
             case SOUTH -> 180f;
-            case WEST -> 90f;
-            case EAST -> -90f;
             default -> 0f; // NORTH
         };
 

@@ -113,27 +113,27 @@ public enum MaskList {
 
     ;
 
-    String name;
-    String englishName;
-    String spectrum;
+    final String name;
+    final String englishName;
+    final String spectrum;
 
-    int maxUses;
+    final int maxUses;
 
-    MaskList precursor;
-    Dyes lensColour;
+    final MaskList precursor;
+    final Dyes lensColour;
 
-    long engraverEUt;
+    final long engraverEUt;
 
-    float minEnergy;
-    float maxEnergy;
+    final float minEnergy;
+    final float maxEnergy;
 
-    float minFocus;
-    int baselineAmount;
+    final float minFocus;
+    final int baselineAmount;
 
-    ItemStack tcTargetItem;
-    ItemStack producedItem;
+    final ItemStack tcTargetItem;
+    final ItemStack producedItem;
 
-    ItemList[] forbiddenWafers;
+    final ItemList[] forbiddenWafers;
 
     MaskList(String name, String englishName, int maxUses, String spectrum, MaskList precursor, Dyes lensColour,
         long engraverEUt, float minEnergy, float maxEnergy, float minFocus, int baselineAmount, ItemStack producedItem,

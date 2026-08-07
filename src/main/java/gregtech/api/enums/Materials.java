@@ -1318,7 +1318,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
             mChemicalFormula = materialList.stream()
                 .map(MaterialStack::toString)
                 .collect(Collectors.joining())
-                .replaceAll("_", "-");
+                .replace("_", "-");
         }
 
         // Set texture and colors

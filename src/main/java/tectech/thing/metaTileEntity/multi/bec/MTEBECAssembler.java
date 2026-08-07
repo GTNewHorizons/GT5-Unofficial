@@ -23,11 +23,14 @@ import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import appeng.api.storage.data.IAEFluidStack;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -54,6 +57,8 @@ import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
+
+    public static final int MAX_NANITES = 2048 * 15;
 
     private final List<MTEHatchLoS> losHatches = new ArrayList<>();
 
@@ -139,7 +144,9 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
         StructureWrapperTooltipBuilder<MTEBECAssembler> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("BEC Assembler, Observation Array")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-assembler"))
+            .addMarkdown(
+                new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-assembler"),
+                ImmutableMap.of("max-nanites", NumberFormatUtil.formatNumber(MAX_NANITES)))
             .addSupportAny();
 
         tt.beginStructureBlock(61, 31, 31, true)
@@ -252,6 +259,8 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
 
                 igte.setActive(!nodes.isEmpty());
             }
+
+            this.availableNanites = Math.min(MAX_NANITES, this.availableNanites);
 
             lEUt = 0;
 
