@@ -94,6 +94,7 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
+import gregtech.common.misc.GTDebugCommand;
 import gregtech.common.misc.GTMiscCommand;
 import gregtech.common.misc.GTPowerfailCommand;
 import gregtech.common.misc.GTStructureChannels;
@@ -135,11 +136,12 @@ import gregtech.loaders.preload.LoaderGTOreDictionary;
 import gregtech.loaders.preload.LoaderMetaPipeEntities;
 import gregtech.loaders.preload.LoaderMetaTileEntities;
 import gregtech.loaders.preload.LoaderOreProcessing;
+import gtnhlanth.loader.RecipeLoader;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
 @Mod(
-    modid = "gregtech",
+    modid = Mods.ModIDs.GREG_TECH,
     name = "GregTech",
     version = GT_Version.VERSION,
     guiFactory = "gregtech.client.GTGuiFactory",
@@ -181,7 +183,8 @@ import ic2.api.recipe.RecipeOutput;
         + "after:UndergroundBiomes;"
         + "after:TConstruct;"
         + "after:Translocator;"
-        + "after:gendustry;")
+        + "after:gendustry;"
+        + "before:computronics;")
 public class GTMod {
 
     static {
@@ -211,10 +214,13 @@ public class GTMod {
 
     public static final int NBT_VERSION = calculateTotalGTVersion(VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
 
-    @Mod.Instance("gregtech")
+    @Mod.Instance(Mods.ModIDs.GREG_TECH)
     public static GTMod GT;
 
-    @SidedProxy(modId = "gregtech", clientSide = "gregtech.common.GTClient", serverSide = "gregtech.common.GTProxy")
+    @SidedProxy(
+        modId = Mods.ModIDs.GREG_TECH,
+        clientSide = "gregtech.common.GTClient",
+        serverSide = "gregtech.common.GTProxy")
     public static GTProxy proxy;
     /** Field renamed, reference {@link gregtech.GTMod#proxy} instead */
     @SuppressWarnings("DeprecatedIsStillUsed")
@@ -543,7 +549,7 @@ public class GTMod {
         GTLog.out.println("GTMod: Adding buffered Recipes.");
         GTModHandler.stopBufferingCraftingRecipes();
         // noinspection UnstableApiUsage// Stable enough for this project
-        GT_FML_LOGGER.info("Executed delayed Crafting Recipes (" + stopwatch.stop() + "). Have a Cake.");
+        GT_FML_LOGGER.info("Executed delayed Crafting Recipes ({}). Have a Cake.", stopwatch.stop());
 
         GTLog.out.println("GTMod: Saving Lang File.");
         new MachineTooltipsLoader().run();
@@ -567,6 +573,7 @@ public class GTMod {
 
         GTPostLoad.addSolidFakeLargeBoilerFuels();
         NaquadahReworkRecipeLoader.Remover();
+        RecipeLoader.registerCauldronRemaps();
         GTPostLoad.addCauldronRecipe();
         GTPostLoad.identifyAnySteam();
         GTPostLoad.processToolboxBans();
@@ -599,6 +606,7 @@ public class GTMod {
     @Mod.EventHandler
     public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
         proxy.onServerAboutToStart(event);
+        GTDebugCommand.register();
     }
 
     @Mod.EventHandler

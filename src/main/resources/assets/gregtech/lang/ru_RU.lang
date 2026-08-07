@@ -260,10 +260,10 @@ gt.blockmachines.itempipe.rounting_value=Значение маршрутизац
 
 Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver=Диапазон поглощения: %s блоков
 
-gt.hatch_element_or= или
-gt.hatch_element_of_type=of type
-gt.hatch_element_of_class=of class
-gt.hatch_element_of_id=of id
+gt.hatch_element_or= или 
+gt.hatch_element_of_type=of type 
+gt.hatch_element_of_class=of class %s
+gt.hatch_element_of_id=of id %s
 
 # Basic Machine
 gt.blockmachines.basicmachine.accelerator.tier.01.name=Базовый мировой ускоритель
@@ -1670,6 +1670,7 @@ GT5U.MBTT.Tiers.Glass=Стекло
 GT5U.MBTT.Tiers.ComponentAssemblyLineCasing=Корпус компонентной сборочной линии
 GT5U.MBTT.Steam.Speed=На %s быстрее, чем при использовании одноблочных паровых машин того же давления
 GT5U.MBTT.Steam.Eff=Расход пара составляет %s от обычно требуемого расхода
+GT5U.MBTT.Structure.Projector=§fЧтобы увидеть/построить структуру, используйте §9голограммный §1проектор§f мультиблочных структур!
 GT5U.MBTT.Structure.SeeStructure1=Чтобы увидеть структуру, используйте
 GT5U.MBTT.Structure.SeeStructure2=голограммный проект на контроллере!
 GT5U.MBTT.Structure.MinGlassForLaser=-тировое §fстекло§7 требуется для §9Tec§1Tech§7 лазеров
@@ -1678,8 +1679,21 @@ GT5U.MBTT.Structure.GlassEnergyLimitTier=-тир разблокирует всё
 GT5U.MBTT.Structure.NoTierSkips=Этот механизм может выполнять только те рецепты, которые соответствуют ее среднему тиру энерговвода
 GT5U.MBTT.Structure.MaxTierSkips=Этот механизм может выполнять рецепты на %d тиров выше своего среднего тира энерговвода
 GT5U.MBTT.Structure.UnlimitedTierSkips=Этот механизм может выполнять рецепты независимо от тира, если ей дать достаточно энергии
-gt.mbtt.structure.front_center=Спереди в центре
+
 gt.mbtt.structure.back_center=Сзади посередине
+gt.mbtt.structure.front_bottom_center=Спереди внизу
+gt.mbtt.structure.front_center=Спереди в центре
+gt.mbtt.structure.front_center_2nd_layer=Спереди в центре, 2-й слой
+gt.mbtt.structure.front_center_9th_layer=Спереди в центре, 9-й слой
+gt.mbtt.structure.front_center_17th_layer=Спереди в центре, 17-й слой
+gt.mbtt.structure.any_casing=Любой блок корпуса
+gt.mbtt.structure.interior=Внутри структуры
+gt.mbtt.structure.any_tiered_glass=Стекло любого тира
+gt.mbtt.structure.min_tiered_glass=Стекло тира %s+
+gt.mbtt.structure.any_bottom_casing=Любой нижний блок корпуса
+gt.mbtt.structure.back_center_casing=Сзади посередине
+
+gt.mbtt.machine_type.spacetime_manipulator=Пространственно-временной манипулятор, EOH
 GT5U.MBTT.HatchInfo=Любой %s
 GT5U.MBTT.HatchHint= (Подсказка: %s)
 GT5U.MBTT.BoroGlassAny=Боросиликатное стекло (любое, смешанное)
@@ -1793,6 +1807,9 @@ gt.multiblock.NeutralizationEngine.decay_boost.3=Insert §dmultiple §7(§f16 §
 gt.multiblock.NeutralizationEngine.decay_boost.4=Every §fminute§7, §dRobot Arm Amount§7/(§f45§7*(§f1§7+§dRobot Arm Tier§7)) chance for §fone §7used robot arm to §cvoid
 gt.multiblock.NeutralizationEngine.structure_tiers=Structure has §f3 Tiers§7, §fTier §7determines §9Base Decay §7and §3Capacity§7:
 gt.multiblock.NeutralizationEngine.tier_info=§fT%d§7 : §f%s§7 : §9%d§7 : §3%s
+
+gt.multiblock.VacuumFreezer.machine_type=Вакуумный морозильник, VF
+gt.multiblock.VacuumFreezer.desc1=Охлаждает раскалённые слитки и капсулы
 
 GT5U.MBTT.subchannel=Использует подканал §6%s§r§7 для §6%s
 
@@ -2055,6 +2072,74 @@ gt.recipe.category.alloy_smelter_molding=Формовка в сплавопла�
 gt.recipe.category.forge_hammer_recycling=Переработка в кузнечном молоте
 gt.recipe.category.tic_part_extruding=Экструдирование TiC деталей
 gt.recipe.category.tic_bolt_molding=Формовка TiC болтов
+
+gt.recipe.industrialcokeoven=Промышленная коксовая печь
+gt.recipe.matterfab2=Генератор материи
+gt.recipe.rocketenginefuel=Топливо для ракетного двигателя
+gt.recipe.quantumforcesmelter=Квантовый силовой преобразователь
+gt.recipe.chemicaldehydrator=Дегидратор
+gt.recipe.vacfurnace=Вакуумная печь
+gt.recipe.alloyblastsmelter=Плавильная доменная печь
+gt.recipe.lftr=Жидкостный фтористо-ториевый реактор
+gt.recipe.lftr.sparging=Барботирование газа ЖФТР
+gt.recipe.nuclearsaltprocessingplant=Завод по переработке ядерной соли
+gt.recipe.oremill=Измельчение
+gt.recipe.fissionfuel=Переработка ядерного топлива
+gt.recipe.coldtrap=Холодная ловушка
+gt.recipe.reactorprocessingunit=Реакторное процессорное устройство
+gt.recipe.simplewasher=Простая мойка пыли
+gt.recipe.moleculartransformer=Молекулярный преобразователь
+gt.recipe.fluidchemicaleactor=Химический завод
+gt.recipe.RTGgenerators=RTG
+gt.recipe.thermalboiler=Тепловой бойлер
+gt.recipe.solartower=Солнечная башня
+gt.recipe.cyclotron=КОМЕТА - Компактный циклотрон
+gt.recipe.fishpond=Чжухай - Рыбный порт
+gt.recipe.multicentrifuge=Мультиблоковая центрифуга
+gt.recipe.multielectro=Мультиблоковый электролизер
+gt.recipe.multimixer=Мультиблоковый миксер
+gt.recipe.multidehydrator=Мультиблоковый дегидратор
+gt.recipe.semifluidgeneratorfuels=Топливо полужидкостного генератора
+gt.recipe.flotationcell=Флотационная камера
+gt.recipe.treefarm=Симулятор роста деревьев
+gt.recipe.category.abs_non_alloy_recipes=Рецепты ABS без сплавов
+
+gt.nei.lftr.power=Power: %s EU/t per Dynamo
+gt.nei.lftr.dynamo=Dynamo: %s EU
+gt.nei.lftr.total=Всего: %s EU
+gt.nei.milling.not_consumed=Не всегда расходуется в процессе работы
+gt.nei.chemical_plant.not_consumed=Не всегда расходуется в процессе работы
+gt.nei.chemical_plant.higher_tier_casing=Корпуса труб более высокого уровня позволяют этому предмету служить дольше
+gt.nei.chemplant.tier.1=Бронза
+gt.nei.chemplant.tier.2=Сталь
+gt.nei.chemplant.tier.3=Алюминий
+gt.nei.chemplant.tier.4=Нержавеющая сталь
+gt.nei.chemplant.tier.5=Титан
+gt.nei.chemplant.tier.6=Вольфрамовая сталь
+gt.nei.chemplant.tier.7=Лаурений
+gt.nei.chemplant.tier.8=Ботмий
+gt.nei.rtg.days=Стоимость топлива: %s Minecraft дней
+gt.nei.solar_tower.1=Solar Heater rings boost tier
+gt.nei.solar_tower.2=R1:T1, R2:T2, R3:T4, R4:T8, R5:T16
+gt.nei.solar_tower.3=Input Amount = 1000 x T
+gt.nei.tgs.1=Саженец не расходуется.
+gt.nei.tgs.2=Если указан %s,
+gt.nei.tgs.3=Вместо этого выращивают саженцы.
+gt.nei.tgs.sapling=Выводится, если указан %s
+gt.nei.tgs.tooltip.sapling=Поместите в слот контроллера механизма
+gt.nei.tgs.tooltip.saw=Поместите в входной люк для сбора брёвен
+gt.nei.tgs.tooltip.needsSaw=Для сбора урожая требуется пила
+gt.nei.tgs.tooltip.cutter=Поместите в входной люк для сбора саженцев
+gt.nei.tgs.tooltip.needsCutter=Для сбора урожая требуется секатор
+gt.nei.tgs.tooltip.shears=Поместите в входной люк для сбора листвы
+gt.nei.tgs.tooltip.needsShears=Для сбора урожая требуется ножницы
+gt.nei.tgs.tooltip.knife=Поместите в входной люк для сбора фруктов
+gt.nei.tgs.tooltip.needsKnife=Для сбора урожая требуется нож
+gt.nei.tgs.tooltip.multiplier=Выходной множитель:
+gt.nei.tgs.info-1=Производительность дополнительно повышается
+gt.nei.tgs.info-2=за счет тира механизма
+gt.nei.tgs.info-3=и типа инструмента
+gt.nei.ap.tier=Algae Pond Tier: %s
 
 GT5U.recipes.recipe_by.original=Исходный рецепт: %s
 GT5U.recipes.recipe_by.modified=Изменено: %s
@@ -2390,6 +2475,7 @@ GT5U.gui.button.voiding_mode_none=§7Ничего не удалять
 GT5U.gui.button.voiding_mode_item=§7Уничтожение излишек §6предметов
 GT5U.gui.button.voiding_mode_fluid=§7Уничтожение излишек §9жидкостей
 GT5U.gui.button.voiding_mode_all=§7Уничтожение излишек §6предметов §7и §9жидкостей
+GT5U.chat.voiding_mode_set=Режим уничтожения излишков: %s
 GT5U.gui.button.input_separation=Разделение входов
 GT5U.gui.button.mode_switch=Переключить режим
 GT5U.gui.button.batch_mode=Пакетный режим
@@ -3533,7 +3619,13 @@ GT5U.item.pipe.gas_proof.yes=Да
 GT5U.item.pipe.gas_proof.no=Нет
 GT5U.item.pipe.amount=Количество труб
 GT5U.item.pipe.empty=Пусто
-GT5U.item.pipe.swap.s=Pipe swapped: %s
+GT5U.item.pipe.swap.s=Труба заменена: %s
+GT5U.item.pipe.swap.items=предметов
+GT5U.item.pipe.swap.routing=маршрутизация
+GT5U.item.pipe.swap.now_gas_proof=Теперь газонепроницаема
+GT5U.item.pipe.swap.no_longer_gas_proof=Больше не газонепроницаема
+GT5U.item.pipe.swap.now_restrictive=Теперь ограничительная
+GT5U.item.pipe.swap.no_longer_restrictive=Больше не ограничительная
 
 # Modular Armor
 
@@ -3780,7 +3872,8 @@ GT5U.multiblock.scanner.is_meta_tile_entity=§cMetaTileEntity == null!
 
 
 # NEI recipe handlers
-GT5U.nei.heat_capacity=Теплоёмкость: %s K (%s)
+GT5U.nei.heat_capacity=Нагрев: %s K
+GT5U.nei.heat_capacity.material=Катушка: %s
 GT5U.nei.tier=Тир: %s
 GT5U.nei.start_eu=Запуск: %s EU (MK %s)
 GT5U.nei.stages=Этапы: %s
@@ -4242,7 +4335,7 @@ gt.item.large_fluid_cell.stainless_steel.name=Большая жидкостна�
 gt.item.large_fluid_cell.stainless_steel.tooltip=
 gt.item.large_fluid_cell.titanium.name=Большая титановая жидкостная капсула
 gt.item.large_fluid_cell.titanium.tooltip=
-gt.item.large_fluid_cell.chrome.name=Большая хромовая жидкостная капсула
+gt.item.large_fluid_cell.chrome.name=Большая палладия покрытый родием жидкостная капсула
 gt.item.large_fluid_cell.chrome.tooltip=
 gt.item.large_fluid_cell.iridium.name=Большая иридиевая жидкостная капсула
 gt.item.large_fluid_cell.iridium.tooltip=
@@ -6226,15 +6319,16 @@ gt.blockmachines.multimachine.foundry.powerefficient.tooltip4=   paired with the
 
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.flavor=Raised Boundary
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip1=- Allows for §1§nUIV+§7 Recipes to be processed
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip2=- Grants benefits when paired with other §dHeliocast Reinforcement§7 modules
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip3=- §f2+ Modules:
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4=   - Increases Base Speed by %s75%%§7 per module
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5=   - Subtracts %s10%%§7 from Initial EU Cost per module
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6=- §f3+ Modules:
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7=   - Adds %s6§7 Parallels per %sVoltage§7 tier per module
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=   - Increases Overclock Factor by §d0.1
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9=- §f4 Modules:
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10=   - Grants 2 maximum§d overclocks
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip2=- Grants extra effects when paired with at least 2 other §dHeliocast Reinforcement§7 modules
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip3=- Randomly increases processing values by a factor of Entropy which is rolled independently per value
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4=- Entropy is rolled between 0 and the number of §dHeliocast Reinforcement§7 Modules present (inclusive)
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5=- §f3+ Modules:
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6=   - Increases Base Speed by %s100%% * Entropy
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7=   - Subtracts %s15%% * Entropy§7 from Initial EU Cost
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=   - Adds %s8 * Entropy§7 Parallels per %sVoltage§7 tier
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9=   - Increases Overclock Factor by §d0.05 * Entropy
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10=- §f4 Modules:
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip11=   - Increases Maximum Overclocks by Entropy
 
 gt.blockmachines.multimachine.foundry.parallel.flavor=Greater Fate
 gt.blockmachines.multimachine.foundry.parallel.tooltip1=- Adds §612 §7Parallels per %s §7tier
@@ -6275,17 +6369,18 @@ GT5U.gui.text.foundry.pairings.harmonicefficiency.required=Requires §aProto-Vol
 GT5U.gui.text.foundry.pairings.harmonicefficiency.tooltip1=§d+0.1§r OC Factor
 GT5U.gui.text.foundry.pairings.harmonicefficiency.tooltip2=%s-50%%§r Initial EU Cost
 
-GT5U.gui.text.foundry.pairings.superstablecore.title=§dSuperstable Core
-GT5U.gui.text.foundry.pairings.superstablecore.required=Requires 2+ §dHeliocast Reinforcement§r Modules
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip1=This pairings bonuses scale with the amount of §dHeliocast Reinforcement§r Modules
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip2=When §f2 or more§r §dHeliocast Reinforcement§r modules are present:
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip3=Increases Base Speed by %s75%%§r per module
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip4=Subtracts %s10%%§r from Initial EU Cost per module
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip5=When §f3 or more§r §dHeliocast Reinforcement§r modules are present:
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip6=Adds %s6§r parallels per %sVoltage§r Tier per module
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip7=Increases Overclock Factor by §d0.1
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip8=§fWhen §f4§r §dHeliocast Reinforcement§r modules are present:
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip9=Grants 2 maximum §doverclocks
+GT5U.gui.text.foundry.pairings.entropiccore.title=§dEntropic Core
+GT5U.gui.text.foundry.pairings.entropiccore.required=Requires 3+ §dHeliocast Reinforcement§r Modules
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip1=This pairings bonuses scale with the amount of §dHeliocast Reinforcement§r Modules
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip2=Randomly increases processing values by a factor of Entropy which is rolled independently per value
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip3=Entropy is rolled between 0 and the number of §dHeliocast Reinforcement§r Modules present (inclusive)
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip4=When §f3 or more§r §dHeliocast Reinforcement§r modules are present:
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip5=%s+100%% * Entropy§r Speed
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip6=%s-15%% * Entropy§r Initial EU Cost
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip7=%s+8 * Entropy§r parallels per %sVoltage§r tier
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip8=§d+0.05 * Entropy§r OC Factor
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip9=§fWhen §f4§r §dHeliocast Reinforcement§r modules are present:
+GT5U.gui.text.foundry.pairings.entropiccore.tooltip10=Increases Maximum Overclocks by Entropy
 
 GT5U.gui.text.foundry.pairings.realizedpotential.title=§5§k0§r§4Realized Potential§5§k0
 GT5U.gui.text.foundry.pairings.realizedpotential.required=Requires §bHypercooler§r and §5Universal Collapser§r Modules
@@ -7182,6 +7277,7 @@ GT5U.scanner.crop_info_5=Обнаружил: %s
 GT5U.tooltip.drone_remote_disconnected=Shift-right-click an active Drone Centre to connect
 GT5U.tooltip.drone_remote_connected=Connected to centre: %s, %s, %s, on dim%s
 GT5U.tooltip.drone_remote_not_found=Дрон-станция: x: %s y: %s z: %s в dim%s не найдена!
+
 
 # info data
 GT5U.infodata.no_network=Нет сети
@@ -8803,7 +8899,7 @@ GT5U.chat.bec-connected-assembler=Successfully connected to the Observation Arra
 GT5U.chat.bec-no-connect-assembler=Could not connect to the Observation Array
 
 # BEC Waila
-GT5U.chat.bec-processing-speed=Processing Speed: x%s
+GT5U.chat.bec-processing-speed=Processing Speed: %s points per tick
 GT5U.chat.bec-slowdowns=Slowdowns: %s
 
 # BEC Structure

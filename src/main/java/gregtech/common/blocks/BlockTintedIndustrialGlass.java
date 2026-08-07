@@ -15,12 +15,24 @@ import gregtech.api.enums.Textures;
 public class BlockTintedIndustrialGlass extends BlockCasingsAbstract {
 
     public BlockTintedIndustrialGlass() {
-        super(ItemCasings.class, "gt.blocktintedglass", Material.glass, 4);
+        super(ItemCasings.class, "gt.blocktintedglass", Material.glass, 16);
 
         register(0, ItemList.GlassTintedIndustrialWhite);
         register(1, ItemList.GlassTintedIndustrialLightGray);
         register(2, ItemList.GlassTintedIndustrialGray);
         register(3, ItemList.GlassTintedIndustrialBlack);
+        register(4, ItemList.GlassTintedIndustrialBrown);
+        register(5, ItemList.GlassTintedIndustrialRed);
+        register(6, ItemList.GlassTintedIndustrialOrange);
+        register(7, ItemList.GlassTintedIndustrialYellow);
+        register(8, ItemList.GlassTintedIndustrialLime);
+        register(9, ItemList.GlassTintedIndustrialGreen);
+        register(10, ItemList.GlassTintedIndustrialCyan);
+        register(11, ItemList.GlassTintedIndustrialLightBlue);
+        register(12, ItemList.GlassTintedIndustrialBlue);
+        register(13, ItemList.GlassTintedIndustrialPurple);
+        register(14, ItemList.GlassTintedIndustrialMagenta);
+        register(15, ItemList.GlassTintedIndustrialPink);
 
         // Register tinted industrial glass as EV-Tier glass
         OreDictionary.registerOre("blockGlassEV", this);
@@ -63,6 +75,18 @@ public class BlockTintedIndustrialGlass extends BlockCasingsAbstract {
             case 1 -> Textures.BlockIcons.GLASS_TINTED_INDUSTRIAL_LIGHT_GRAY.getIcon();
             case 2 -> Textures.BlockIcons.GLASS_TINTED_INDUSTRIAL_GRAY.getIcon();
             case 3 -> Textures.BlockIcons.GLASS_TINTED_INDUSTRIAL_BLACK.getIcon();
+            case 4 -> Textures.BlockIcons.GLASS_TINTED_INDUSTRIAL_BROWN.getIcon();
+            case 5 -> Textures.BlockIcons.GLASS_TINTED_INDUSTRIAL_RED.getIcon();
+            case 6 -> Textures.BlockIcons.GLASS_TINTED_INDUSTRIAL_ORANGE.getIcon();
+            case 7 -> Textures.BlockIcons.GLASS_TINTED_INDUSTRIAL_YELLOW.getIcon();
+            case 8 -> Textures.BlockIcons.GLASS_TINTED_INDUSTRIAL_LIME.getIcon();
+            case 9 -> Textures.BlockIcons.GLASS_TINTED_INDUSTRIAL_GREEN.getIcon();
+            case 10 -> Textures.BlockIcons.GLASS_TINTED_INDUSTRIAL_CYAN.getIcon();
+            case 11 -> Textures.BlockIcons.GLASS_TINTED_INDUSTRIAL_LIGHT_BLUE.getIcon();
+            case 12 -> Textures.BlockIcons.GLASS_TINTED_INDUSTRIAL_BLUE.getIcon();
+            case 13 -> Textures.BlockIcons.GLASS_TINTED_INDUSTRIAL_PURPLE.getIcon();
+            case 14 -> Textures.BlockIcons.GLASS_TINTED_INDUSTRIAL_MAGENTA.getIcon();
+            case 15 -> Textures.BlockIcons.GLASS_TINTED_INDUSTRIAL_PINK.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

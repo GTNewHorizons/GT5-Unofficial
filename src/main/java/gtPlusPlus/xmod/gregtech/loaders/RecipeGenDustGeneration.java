@@ -97,7 +97,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         if (!((inputStacks.length != 0) && (inputStacks.length <= 4))) {
             return;
         }
-        final long[] inputStackSize = material.vSmallestRatio;
+        final long[] inputStackSize = material.smallestRatio;
         // Is smallest ratio invalid?
         if (inputStackSize == null) {
             return;
@@ -168,7 +168,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
             builder.circuit(circuitNumber);
         }
         builder.duration((int) Math.max(material.getMass() * 2L, 1))
-            .eut(material.vVoltageMultiplier)
+            .eut(material.voltageMultiplier)
             .addTo(mixerRecipes);
     }
 
@@ -184,7 +184,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         if (!((inputStacks.length >= 1) && (inputStacks.length <= 4))) {
             return;
         }
-        final long[] inputStackSize = material.vSmallestRatio;
+        final long[] inputStackSize = material.smallestRatio;
 
         // Is smallest ratio invalid?
         if (inputStackSize == null) {
@@ -237,7 +237,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
                     || f == MaterialState.PURE_LIQUID
                     || f == MaterialState.PURE_GAS) {
                     oxygen = x.getStackMaterial()
-                        .getFluidStack((int) (material.vSmallestRatio[compSlot] * 1000));
+                        .getFluidStack((int) (material.smallestRatio[compSlot] * 1000));
                 }
                 compSlot++;
             }
@@ -254,7 +254,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
             builder.circuit(20);
         }
         builder.duration((int) Math.max(material.getMass() * 2L, 1))
-            .eut(material.vVoltageMultiplier)
+            .eut(material.voltageMultiplier)
             .addTo(mixerRecipes);
     }
 
@@ -318,13 +318,13 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         final int tempRequired) {
 
         int timeTaken;
-        if (aMatInfo.vTier <= 4) {
-            timeTaken = 25 * aMatInfo.vTier * 10;
+        if (aMatInfo.tier <= 4) {
+            timeTaken = 25 * aMatInfo.tier * 10;
         } else {
-            timeTaken = 125 * aMatInfo.vTier * 10;
+            timeTaken = 125 * aMatInfo.tier * 10;
         }
 
-        long aVoltage = aMatInfo.vVoltageMultiplier;
+        long aVoltage = aMatInfo.voltageMultiplier;
 
         GTValues.RA.stdBuilder()
             .itemInputs(input1)

@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
@@ -60,8 +61,14 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     private byte mColor = 0;
 
+    protected boolean mMetaTileEntityValid;
+
+    protected boolean mNeedsClientTick = true;
+
+    private long mClientLoadTime = Long.MIN_VALUE;
+
     // Profiling
-    private final int[] mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
+    private int[] mTimeStatistics;
     private boolean hasTimeStatisticsStarted;
     private int mTimeStatisticsIndex = 0;
     private int mLagWarningCount = 0;
@@ -105,7 +112,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         getWorld().func_147457_a(this);
         mIgnoreNextUnload = true;
         hasTimeStatisticsStarted = false;
-        Arrays.fill(mTimeStatistics, 0);
+        if (mTimeStatistics != null) Arrays.fill(mTimeStatistics, 0);
         mTickDisabled = true;
     }
 
@@ -199,10 +206,22 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         if (isServerSide) {
             checkDropCover();
         } else {
+            mClientLoadTime = worldObj.getTotalWorldTime();
             requestCoverDataIfNeeded();
         }
         worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
         getMetaTileEntity().onFirstTick(this);
+    }
+
+    /** Whether this tile has been on the client long enough to act on sound events. */
+    protected final boolean isClientSettled() {
+        return mClientLoadTime != Long.MIN_VALUE && worldObj.getTotalWorldTime() - mClientLoadTime > 20;
+    }
+
+    @Override
+    public void validate() {
+        super.validate();
+        mClientLoadTime = Long.MIN_VALUE;
     }
 
     /**
@@ -221,7 +240,9 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         if (mColor == color) return;
         mColor = color;
         if (isClientSide()) {
-            getMetaTileEntity().onColorChangeClient(mColor);
+            if (hasValidMetaTileEntity()) {
+                getMetaTileEntity().onColorChangeClient(mColor);
+            }
             issueTextureUpdate();
         } else {
             getMetaTileEntity().onColorChangeServer(mColor);
@@ -241,7 +262,8 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         } else {
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
-        getMetaTileEntity().onTextureUpdate();
+        final IMetaTileEntity mte = getMetaTileEntity();
+        if (mte != null) mte.onTextureUpdate();
         mNeedsUpdate = false;
     }
 
@@ -362,12 +384,15 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     @Override
     public void startTimeStatistics() {
+        if (mTimeStatistics == null) {
+            mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
+        }
         hasTimeStatisticsStarted = true;
     }
 
     protected void addProfilingInformation(List<String> tList) {
         if (mTickDisabled) {
-            tList.add(GTUtility.translate("GT5U.scanner.debug.tick_disabled"));
+            tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.tick_disabled"));
         } else if (hasTimeStatisticsStarted) {
             double tAverageTime = 0;
             double tWorstTime = 0;
@@ -387,7 +412,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             int samples = mTimeStatistics.length - amountOfZero;
             if (samples > 0) {
                 tList.add(
-                    GTUtility.translate(
+                    StatCollector.translateToLocalFormatted(
                         "GT5U.scanner.debug.tick_stats",
                         formatNumber(tAverageTime / samples),
                         formatNumber(samples),
@@ -395,11 +420,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             }
         } else {
             startTimeStatistics();
-            tList.add(GTUtility.translate("GT5U.scanner.debug.tick_stats_started"));
+            tList.add(StatCollector.translateToLocal("GT5U.scanner.debug.tick_stats_started"));
         }
         if (mLagWarningCount > 0) {
             tList.add(
-                GTUtility.translate(
+                StatCollector.translateToLocalFormatted(
                     mLagWarningCount >= 10 ? "GT5U.scanner.debug.lag_warnings_many" : "GT5U.scanner.debug.lag_warnings",
                     mLagWarningCount >= 10 ? GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING : mLagWarningCount,
                     GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING));
@@ -408,7 +433,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     @Override
     public int[] getTimeStatistics() {
-        return mTimeStatistics;
+        return mTimeStatistics == null ? GTValues.emptyIntArray : mTimeStatistics;
     }
 
     @Override
@@ -466,15 +491,19 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         // The mte sent from server is invalid
         if (mte == null) return;
 
-        if (!nbt.hasKey("mte")) return;
-        NBTTagCompound data = nbt.getCompoundTag("mte");
+        if (nbt.hasKey("mte")) {
+            mte.onDescriptionPacket(nbt.getCompoundTag("mte"));
+        }
 
-        mte.onDescriptionPacket(data);
+        mte.onClientSoundStateChanged();
     }
 
     @Override
     public void issueTextureUpdate() {
         mNeedsUpdate = true;
+        if (mTickDisabled && isClientSide()) {
+            handleBlockUpdateClient();
+        }
     }
 
     @Override
@@ -497,7 +526,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         return !isDead && hasValidMetaTileEntity();
     }
 
-    protected abstract boolean hasValidMetaTileEntity();
+    protected final boolean hasValidMetaTileEntity() {
+        return mMetaTileEntityValid;
+    }
+
+    abstract void refreshMetaTileEntityValidity();
 
     @Override
     public String[] getDescription() {
@@ -582,7 +615,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             }
         }
 
-        return suffix.length() > 0 ? suffix.toString() : null;
+        return !suffix.isEmpty() ? suffix.toString() : null;
     }
 
     @Override

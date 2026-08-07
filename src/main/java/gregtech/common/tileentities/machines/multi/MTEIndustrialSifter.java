@@ -72,7 +72,7 @@ public class MTEIndustrialSifter extends MTEExtendedPowerMultiBlockBase<MTEIndus
         tt.addMachineType("Sifter")
             .addBulkMachineInfo(4, 5f, 0.75f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 5, 6, false)
+            .beginStructureBlock(5, 6, 5, false)
             .addController("Front center, 2nd layer")
             .addCasing("45-49", "Industrial Sieve Casing", false)
             .addCasing("19", "Large Sieve Grate", false)
@@ -174,6 +174,11 @@ public class MTEIndustrialSifter extends MTEExtendedPowerMultiBlockBase<MTEIndus
     }
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
     public void onPreTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())
@@ -224,11 +229,6 @@ public class MTEIndustrialSifter extends MTEExtendedPowerMultiBlockBase<MTEIndus
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

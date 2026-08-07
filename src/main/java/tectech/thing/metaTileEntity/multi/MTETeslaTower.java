@@ -32,6 +32,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -49,6 +50,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
@@ -66,6 +68,7 @@ import gregtech.api.objects.RingBuffer;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -77,6 +80,7 @@ import tectech.mechanics.spark.RendererMessage;
 import tectech.mechanics.spark.ThaumSpark;
 import tectech.mechanics.tesla.ITeslaConnectable;
 import tectech.mechanics.tesla.ITeslaConnectableSimple;
+import tectech.thing.CustomItemList;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchCapacitor;
@@ -94,6 +98,7 @@ import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTETeslaTower extends TTMultiblockBase
     implements ISurvivalConstructable, ITeslaConnectable, IParametrized {
 
@@ -124,7 +129,7 @@ public class MTETeslaTower extends TTMultiblockBase
 
     private long energyCapacity = 0; // Total energy storage limited by capacitors
     private long outputVoltageMax = 0; // Tesla voltage output limited by capacitors
-    private int vTier = -1; // Tesla voltage tier limited by capacitors
+    private int tier = -1; // Tesla voltage tier limited by capacitors
     private long outputCurrentMax = 0; // Tesla current output limited by capacitors
 
     private long outputCurrentLastTick;
@@ -377,7 +382,7 @@ public class MTETeslaTower extends TTMultiblockBase
         super(aName);
     }
 
-    private float getRangeMulti(int mTier, int vTier) {
+    private float getRangeMulti(int mTier, int tier) {
         // By Default:
         // Helium and Nitrogen Plasmas will double the range
         // Radon will quadruple the range
@@ -394,7 +399,7 @@ public class MTETeslaTower extends TTMultiblockBase
         }
 
         // Over-tiered coils will add +25% range
-        if (vTier > mTier) {
+        if (tier > mTier) {
             return 1.25F * plasmaBoost;
         }
         return 1F * plasmaBoost;
@@ -506,31 +511,31 @@ public class MTETeslaTower extends TTMultiblockBase
 
         mEfficiencyIncrease = 10000;
         mMaxProgresstime = 20;
-        vTier = -1;
+        tier = -1;
         long[] capacitorData;
         for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
-            if (cap.getCapacitors()[0] > vTier) {
-                vTier = (int) cap.getCapacitors()[0];
+            if (cap.getCapacitors()[0] > tier) {
+                tier = (int) cap.getCapacitors()[0];
             }
         }
 
         energyCapacity = 0;
         outputCurrentMax = 0;
 
-        if (vTier < 0) {
+        if (tier < 0) {
             // Returning true to allow for 'passive running'
             outputVoltageMax = 0;
             return SimpleCheckRecipeResult.ofSuccess("routing");
-        } else if (vTier > mTier && getEUVar() > 0) {
+        } else if (tier > mTier && getEUVar() > 0) {
             return SimpleCheckRecipeResult.ofFailure("invalid_primary_winding");
         }
 
-        outputVoltageMax = V[vTier + 1];
+        outputVoltageMax = V[tier + 1];
         for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
             cap.getBaseMetaTileEntity()
                 .setActive(true);
             capacitorData = cap.getCapacitors();
-            if (capacitorData[0] < vTier) {
+            if (capacitorData[0] < tier) {
                 if (getEUVar() > 0 && capacitorData[0] != 0) {
                     cap.getBaseMetaTileEntity()
                         .setToFire();
@@ -547,37 +552,23 @@ public class MTETeslaTower extends TTMultiblockBase
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.name")) // Machine Type: Tesla
-                                                                                               // Tower
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.0")) // Controller block of
-                                                                                            // the Tesla Tower
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.1")) // Used to transmit
-                                                                                            // power to Tesla
-            // Coil Covers and Tesla
-            // Transceivers
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.2")) // Can be fed with
-            // Helium/Nitrogen/Radon Plasma to
-            // increase the range
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.3")) // Transmitted voltage
-                                                                                            // depends on
-            // the used Tesla Capacitor tier
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.desc.4")) // Primary Tesla
-                                                                                            // Windings need to
-            // be at least the same tier as
-            // the Tesla Capacitor
+        // spotless:off
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.name"))
+            .addMarkdown(new ResourceLocation("gregtech", "tesla-tower"))
             .addSupportAny()
-            .beginStructureBlock(7, 7, 17, false)
-            .addController("Front bottom center")
-            .addCasing("128", "Tesla Toroid Casing", false)
-            .addCasing("17-33", "Tesla Base Casing", false)
-            .addCasing("20", "Primary Tesla Windings", true)
-            .addCasing("16", "Titanium Frame Box", false)
-            .addCasing("12", "Secondary Tesla Windings", false)
-            .addMiscHatch("1+", "Capacitor Hatch", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
+            .beginStructureBlock(7, 17, 7, false)
+            .addController(translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("128", CustomItemList.tM_TeslaToroid.get(1L).getDisplayName(), false)
+            .addCasing("17-33", CustomItemList.tM_TeslaBase.get(1L).getDisplayName(), false)
+            .addCasing("20", TTCasingsContainer.sBlockCasingsBA0.getLocalizedName(), true)
+            .addCasing("16", GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1L).getDisplayName(), false)
+            .addCasing("12", CustomItemList.tM_TeslaSecondary.get(1L).getDisplayName(), false)
+            .addMiscHatch("1+", translateToLocal("gt.blockmachines.hatch.capacitor.tier.03.name"), translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .addInputHatch("0+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -846,40 +837,44 @@ public class MTETeslaTower extends TTMultiblockBase
             return false;
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
-        }
-        if (aMetaTileEntity instanceof MTEHatchCapacitor) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eCapacitorHatches.add((MTEHatchCapacitor) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchMaintenance) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return addMaintenanceToMachineList(aTileEntity, aBaseCasingIndex);
-        }
-        if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eEnergyMulti.add((MTEHatchEnergyMulti) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchEnergy) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchDynamo) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchInput) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mInputHatches.add((MTEHatchInput) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchOutput) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
+        switch (aMetaTileEntity) {
+            case null -> {
+                return false;
+            }
+            case MTEHatchCapacitor mteHatchCapacitor -> {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return eCapacitorHatches.add(mteHatchCapacitor);
+            }
+            case MTEHatchMaintenance mteHatchMaintenance -> {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return addMaintenanceToMachineList(aTileEntity, aBaseCasingIndex);
+            }
+            case MTEHatchEnergyMulti mteHatchEnergyMulti -> {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return eEnergyMulti.add(mteHatchEnergyMulti);
+            }
+            case MTEHatchEnergy mteHatchEnergy -> {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return mEnergyHatches.add(mteHatchEnergy);
+            }
+            case MTEHatchDynamoMulti mteHatchDynamoMulti -> {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return eDynamoMulti.add(mteHatchDynamoMulti);
+            }
+            case MTEHatchDynamo mteHatchDynamo -> {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return mDynamoHatches.add(mteHatchDynamo);
+            }
+            case MTEHatchInput mteHatchInput -> {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return mInputHatches.add(mteHatchInput);
+            }
+            case MTEHatchOutput mteHatchOutput -> {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return mOutputHatches.add(mteHatchOutput);
+            }
+            default -> {
+            }
         }
         return false;
     }
@@ -927,7 +922,7 @@ public class MTETeslaTower extends TTMultiblockBase
 
     @Override
     public int getTeslaTransmissionRange() {
-        return (int) (transferRadiusParameter.getValue() * getRangeMulti(mTier, vTier));
+        return (int) (transferRadiusParameter.getValue() * getRangeMulti(mTier, tier));
     }
 
     @Override

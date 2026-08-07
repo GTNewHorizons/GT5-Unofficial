@@ -19,10 +19,12 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -49,6 +51,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import kekztech.common.Blocks;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -106,23 +109,26 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Gas Turbine, SOFC")
-            .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
-            .addInfo(
-                "Consumes up to " + formatNumber(EU_PER_TICK * 20)
-                    + "EU worth of fuel with up to 100% efficiency each second")
-            .addInfo("Steam production requires the SOFC to heat up completely first")
-            .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
-            .addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
-            .beginStructureBlock(5, 3, 3, false)
-            .addController("Front center")
-            .addCasing("12-31", "Clean Stainless Steel Machine Casing", false)
-            .addCasing("6", "Reinforced Glass", false)
-            .addCasing("3", "YSZ Ceramic Electrolyte Unit", false)
-            .addDynamoHatch("1", "Back center casing", 2)
-            .addMaintenanceHatch("1", "Any casing", 1)
-            .addInputHatch("1+", "Any casing", 1)
-            .addOutputHatch("1+", "Any casing", 1)
+        final Map<String, Object> vars = Map.of(
+            "euPerTickX20",
+            formatNumber(EU_PER_TICK * 20),
+            "euPerTick",
+            EU_PER_TICK,
+            "steamPerSec",
+            STEAM_PER_SEC,
+            "oxygenPerSec",
+            OXYGEN_PER_SEC);
+        tt.addMachineType(StatCollector.translateToLocal("kekztech.multiblock.SOFuelCell.machine_type"))
+            .addMarkdown(new ResourceLocation("gregtech", "so-fuel-cell-mk1"), vars)
+            .beginStructureBlock(3, 3, 5, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("12-31", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("6", Casings.ReinforcedGlass.getLocalizedName(), false)
+            .addCasing("3", StatCollector.translateToLocal("kekztech.multiblock.SOFuelCellMK1.electrolyte_unit"), false)
+            .addDynamoHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing"), 2)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();

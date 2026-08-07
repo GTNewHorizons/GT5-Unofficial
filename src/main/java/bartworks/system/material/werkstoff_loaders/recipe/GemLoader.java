@@ -85,23 +85,25 @@ public class GemLoader implements IWerkstoffRunnable {
                     .addTo(sifterRecipes);
 
             }
-
-            GTModHandler.addCraftingRecipe(
-                werkstoff.get(gemFlawless, 2),
-                GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemExquisite) });
-            GTModHandler.addCraftingRecipe(
-                werkstoff.get(gem, 2),
-                GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemFlawless) });
-            GTModHandler.addCraftingRecipe(
-                werkstoff.get(gemFlawed, 2),
-                GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "h  ", "W  ", 'W', werkstoff.get(gem) });
-            GTModHandler.addCraftingRecipe(
-                werkstoff.get(gemChipped, 2),
-                GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemFlawed) });
+            if (werkstoff.getStats()
+                .getProcessingMaterialTierEU() < TierEU.IV) {
+                GTModHandler.addCraftingRecipe(
+                    werkstoff.get(gemFlawless, 2),
+                    GTModHandler.RecipeBits.BUFFERED,
+                    new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemExquisite) });
+                GTModHandler.addCraftingRecipe(
+                    werkstoff.get(gem, 2),
+                    GTModHandler.RecipeBits.BUFFERED,
+                    new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemFlawless) });
+                GTModHandler.addCraftingRecipe(
+                    werkstoff.get(gemFlawed, 2),
+                    GTModHandler.RecipeBits.BUFFERED,
+                    new Object[] { "h  ", "W  ", 'W', werkstoff.get(gem) });
+                GTModHandler.addCraftingRecipe(
+                    werkstoff.get(gemChipped, 2),
+                    GTModHandler.RecipeBits.BUFFERED,
+                    new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemFlawed) });
+            }
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(gemExquisite))

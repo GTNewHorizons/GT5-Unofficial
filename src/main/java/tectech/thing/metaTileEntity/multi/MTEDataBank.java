@@ -126,11 +126,13 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                                                                                            // toggle
                                                                                            // wireless mode
             .addSupportAny()
-            .beginStructureBlock(3, 5, 3, false)
+            .beginStructureBlock(5, 3, 3, false)
             .addController("Front center, 2nd layer")
             .addCasing("18", "Computer Heat Vent", false)
             .addCasing("3-16", "Computer Casing", false)
             .addCasing("0-6", "High Power Casing", false)
+            .addEnergyHatch("1+", "Any high power casing", 1)
+            .addMaintenanceHatch("1", "Any high power casing", 1)
             .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataAccessHatch"), "Any computer casing", 2)
             .addMiscHatch(
                 "1+",
@@ -142,8 +144,8 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                 translateToLocal("gt.blockmachines.hatch.datainass.tier.07.name"),
                 "Any computer casing",
                 2)
-            .addEnergyHatch("1+", "Any high power casing", 1)
-            .addMaintenanceHatch("1", "Any high power casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter("Use an assembly line reception connector to daisy-chain machines")
             .toolTipFinisher();
         return tt;
     }
@@ -232,30 +234,29 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         }
 
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
-        }
-
-        if (aMetaTileEntity instanceof MTEHatchWirelessDataItemsOutput) {
-            ((MTEHatchWirelessDataItemsOutput) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eWirelessStacksDataOutputs.add((MTEHatchWirelessDataItemsOutput) aMetaTileEntity);
-        }
-
-        if (aMetaTileEntity instanceof MTEHatchDataItemsOutput) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eStacksDataOutputs.add((MTEHatchDataItemsOutput) aMetaTileEntity);
-        }
-
-        if (aMetaTileEntity instanceof MTEHatchDataAccess hatch
-            && !(aMetaTileEntity instanceof MTEHatchDataItemsInput)) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eDataAccessHatches.add(hatch);
-        }
-
-        if (aMetaTileEntity instanceof MTEHatchDataItemsInput hatch) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            slave = true;
-            return eDataAccessHatches.add(hatch);
+        switch (aMetaTileEntity) {
+            case null -> {
+                return false;
+            }
+            case MTEHatchWirelessDataItemsOutput mteHatchWirelessDataItemsOutput -> {
+                mteHatchWirelessDataItemsOutput.updateTexture(aBaseCasingIndex);
+                return eWirelessStacksDataOutputs.add(mteHatchWirelessDataItemsOutput);
+            }
+            case MTEHatchDataItemsOutput mteHatchDataItemsOutput -> {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return eStacksDataOutputs.add(mteHatchDataItemsOutput);
+            }
+            case MTEHatchDataAccess hatch when !(aMetaTileEntity instanceof MTEHatchDataItemsInput) -> {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return eDataAccessHatches.add(hatch);
+            }
+            case MTEHatchDataItemsInput hatch -> {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                slave = true;
+                return eDataAccessHatches.add(hatch);
+            }
+            default -> {
+            }
         }
 
         return false;

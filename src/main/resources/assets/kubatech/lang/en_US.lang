@@ -115,6 +115,10 @@ kubatech.gui.text.electrode_detector.percentage=§8Durability percentage
 kubatech.chat.forbidden_while_running=Cannot change mode while running!
 kubatech.chat.mode.generic=Now running in mode: %s
 
+kubatech.arcfurnace.mode.normal=Normal
+kubatech.arcfurnace.mode.blast=Blast
+kubatech.arcfurnace.mode.ore=Ore
+
 kubatech.chat.eec.ritual_mode_enabled=Ritual mode enabled
 kubatech.chat.eec.ritual_mode_disabled=Ritual mode disabled
 kubatech.chat.eec.ritual_mode_connected=Successfully connected to ritual
@@ -241,18 +245,18 @@ item.arc_furnace_electrode.tip.speed=Speed: %s
 item.arc_furnace_electrode.tip.parallel_limit=Parallels: %s
 item.arc_furnace_electrode.tip.parallel_limit_none=None
 item.arc_furnace_electrode.tip.oc=OC: %s%s
-item.arc_furnace_electrode.tip.amperage_per_parallel=Amps/Parallel: %s
-item.arc_furnace_electrode.tip.startup_surge=Surge Power: %s
-item.arc_furnace_electrode.tip.startup_amperage=Startup Amperage: %s A (%sx 64A hatches)
+item.arc_furnace_electrode.tip.eu_modifier=EU Modifier: %s
+item.arc_furnace_electrode.tip.startup_penalty=Startup Penalty: %s
+item.arc_furnace_electrode.tip.startup_amperage=Startup Amperage: %s A
 
-item.arc_furnace_electrode.tip.special_effect.GraphiteElectrode=§6§lBread and Butter§r§6: No startup surge penalty
-item.arc_furnace_electrode.tip.special_effect.GrapheneElectrode=§6§lBread and Butter§r§6: No startup surge penalty
+item.arc_furnace_electrode.tip.special_effect.GraphiteElectrode=§6§lBread and Butter§r§6: No startup penalty
+item.arc_furnace_electrode.tip.special_effect.GrapheneElectrode=§6§lBread and Butter§r§6: No startup penalty
 item.arc_furnace_electrode.tip.special_effect.YBCOElectrode=§6§lRapid Oxidation§r§6: Every OC increases durability usage by 100%
 item.arc_furnace_electrode.tip.special_effect.NetheriteElectrode=§6§lHot Restart§r§6: There is no shutdown cooldown. If machine is off for less than 4 seconds, skip startup entirely
 item.arc_furnace_electrode.tip.special_effect.InfinityElectrode=§6§lTo Infinity!§r§6: Every successful processing doubles the amount of parallels, until power failure or machine shutdown (power usage is equal to the amount of parallels regardless of provided items)
-item.arc_furnace_electrode.tip.special_effect.NeutroniumNaniteElectrode=§6§lNanite Repair§r§6: Providing electrode material dust in the input bus gives a 70% chance per recipe to repair itself
-item.arc_furnace_electrode.tip.special_effect.TranscendentNaniteElectrode=§6§lNanite Maintenance§r§6: Providing electrode material dust in the input bus gives a 90% chance per recipe to repair itself
-item.arc_furnace_electrode.tip.special_effect.UniversiumNaniteElectrode=§6§lNanite Recovery§r§6: Providing electrode material dust in the input bus fully repairs the electrode
+item.arc_furnace_electrode.tip.special_effect.NeutroniumNaniteElectrode=§6§lNanite Repair§r§6: Optionally consumes one Neutronium Dust per operation for a 70% chance to not lose any durability
+item.arc_furnace_electrode.tip.special_effect.TranscendentNaniteElectrode=§6§lNanite Maintenance§r§6: Optionally consumes one Transcendent Metal Dust per operation to restore 1 durability
+item.arc_furnace_electrode.tip.special_effect.UniversiumNaniteElectrode=§6§lNanite Recovery§r§6: Optionally consumes one Universium Dust per operation to fully repair the electrode
 
 #Tea
 kubaitem.tea.black_tea.name=Black Tea
@@ -349,3 +353,35 @@ defc.casing.9.name=Draconium Fusion Casing
 defc.casing.10.name=Wyvern Fusion Casing
 defc.casing.11.name=Awakened Draconium Fusion Casing
 defc.casing.12.name=Chaotic Fusion Casing
+
+kubatech.multiblock.DEFusionCrafter.machine_type=Fusion Crafter, DEFC
+kubatech.multiblock.DEFusionCrafter.fusion_casing=Fusion Casing
+kubatech.multiblock.DEFusionCrafter.fusion_machine_casing=Fusion Machine Casing
+kubatech.multiblock.DEFusionCrafter.footer=§cThe primordial pearl is consumed in the controller recipe!
+
+kubatech.multiblock.ExtremeEntityCrusher.machine_type=Powered Spawner, EEC
+kubatech.multiblock.ExtremeEntityCrusher.steel_frame_box=Steel Frame Box
+kubatech.multiblock.ExtremeEntityCrusher.diamond_spike=Diamond Spike
+
+kubatech.multiblock.ExtremeIndustrialGreenhouse.machine_type=Crop Farm, EIG
+kubatech.multiblock.ExtremeIndustrialGreenhouse.sterile_farm_casing=Sterile Farm Casing
+kubatech.multiblock.ExtremeIndustrialGreenhouse.frame_box=Tungstensteel Frame Box
+kubatech.multiblock.ExtremeIndustrialGreenhouse.fertilized_dirt=Fertilized Dirt (RandomThings)
+kubatech.multiblock.ExtremeIndustrialGreenhouse.purple_lamp=Purple Lamp (ProjectRed Illumination, regular or inverted)
+kubatech.multiblock.ExtremeIndustrialGreenhouse.footer=The dirt is tilled and the water is spawned for free once formed
+
+
+kubatech.multiblock.MegaIndustrialApiary.machine_type=Mega Apiary, Mapiary
+kubatech.multiblock.MegaIndustrialApiary.dirt_or_grass=Dirt or Grass
+kubatech.multiblock.MegaIndustrialApiary.wood_plank=Wood Plank
+kubatech.multiblock.MegaIndustrialApiary.water=Water
+kubatech.multiblock.MegaIndustrialApiary.alveary_fan=Alveary Fan
+kubatech.multiblock.MegaIndustrialApiary.alveary_heater=Alveary Heater
+kubatech.multiblock.MegaIndustrialApiary.alveary_hygroregulator=Alveary Hygroregulator
+kubatech.multiblock.MegaIndustrialApiary.alveary=Alveary
+kubatech.multiblock.MegaIndustrialApiary.alveary_stabiliser=Alveary Stabiliser
+kubatech.multiblock.MegaIndustrialApiary.apiary=Apiary
+kubatech.multiblock.MegaIndustrialApiary.wood_slab=Wood Slab
+kubatech.multiblock.MegaIndustrialApiary.flower=Flower (depends on bee)
+kubatech.multiblock.MegaIndustrialApiary.any_casing_luv=Any casing (LuV+)
+kubatech.multiblock.MegaIndustrialApiary.footer=Use regular or distilled water, place manually

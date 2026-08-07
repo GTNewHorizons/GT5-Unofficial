@@ -169,8 +169,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
                     }
                 } else {
                     GTMod.GT_FML_LOGGER.warn(
-                        "An error occurred while loading contents of ME Crafting Input Bus. This item has been voided: "
-                            + tagItemStack);
+                        "An error occurred while loading contents of ME Crafting Input Bus. This item has been voided: {}",
+                        tagItemStack);
                 }
             }
             NBTTagList fluidInv = nbt.getTagList("fluidInventory", Constants.NBT.TAG_COMPOUND);
@@ -183,8 +183,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
                     }
                 } else {
                     GTMod.GT_FML_LOGGER.warn(
-                        "An error occurred while loading contents of ME Crafting Input Bus. This fluid has been voided: "
-                            + tagFluidStack);
+                        "An error occurred while loading contents of ME Crafting Input Bus. This fluid has been voided: {}",
+                        tagFluidStack);
                 }
             }
         }
@@ -255,11 +255,14 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
 
             if (patternDetails != null) {
                 for (IAEStack<?> singleInput : patternDetails.getAEInputs()) {
-                    if (singleInput == null) continue;
-                    if (singleInput instanceof IAEItemStack ais) {
-                        inputItems = ArrayUtils.addAll(inputItems, ais.getItemStack());
-                    } else if (singleInput instanceof IAEFluidStack ifs) {
-                        inputFluids = ArrayUtils.addAll(inputFluids, ifs.getFluidStack());
+                    switch (singleInput) {
+                        case null -> {
+                            continue;
+                        }
+                        case IAEItemStack ais -> inputItems = ArrayUtils.addAll(inputItems, ais.getItemStack());
+                        case IAEFluidStack ifs -> inputFluids = ArrayUtils.addAll(inputFluids, ifs.getFluidStack());
+                        default -> {
+                        }
                     }
                 }
             }
@@ -416,13 +419,18 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         public boolean insertItemsAndFluids(MEInventoryCrafting inventoryCrafting) {
             for (int i = 0; i < inventoryCrafting.getSizeInventory(); ++i) {
                 final IAEStack<?> aes = inventoryCrafting.getAEStackInSlot(i);
-                if (aes == null) continue;
-
-                if (aes instanceof IAEFluidStack ifs) { // insert fluid
-                    insertFluid(ifs);
-                } else if (aes instanceof IAEItemStack ais) { // insert item
-                    insertItem(ais);
+                switch (aes) {
+                    case null -> {
+                        continue;
+                    }
+                    case IAEFluidStack ifs ->  // insert fluid
+                        insertFluid(ifs);
+                    case IAEItemStack ais ->  // insert item
+                        insertItem(ais);
+                    default -> {
+                    }
                 }
+
             }
             return true;
         }
@@ -456,7 +464,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
     private final List<MTEHatchCraftingInputSlave> proxyHatches = new ArrayList<>();
-    private final List<IHatchWatcher> watchers = new ArrayList<>();
 
     // holds all internal inventories
     @SuppressWarnings("unchecked") // Java doesn't allow to create an array of a generic type.
@@ -703,6 +710,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
 
     @Override
     public String getNameSuffix() {
+        if (hasCustomName()) return "";
+
         StringBuilder suffix = new StringBuilder();
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
@@ -806,8 +815,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
                 internalInventory[patternSlot] = new PatternSlot<>(pattern, patternSlotNBT, this);
             } else {
                 GTMod.GT_FML_LOGGER.warn(
-                    "An error occurred while loading contents of ME Crafting Input Bus. This pattern has been voided: "
-                        + patternSlotNBT);
+                    "An error occurred while loading contents of ME Crafting Input Bus. This pattern has been voided: {}",
+                    patternSlotNBT);
             }
         }
 
@@ -1166,9 +1175,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             ICraftingPatternDetails details = slot.getPatternDetails();
             if (details == null) {
                 GTMod.GT_FML_LOGGER.warn(
-                    "Found an invalid pattern at " + getBaseMetaTileEntity().getCoords()
-                        + " in dim "
-                        + getBaseMetaTileEntity().getWorld().provider.dimensionId);
+                    "Found an invalid pattern at {} in dim {}",
+                    getBaseMetaTileEntity().getCoords(),
+                    getBaseMetaTileEntity().getWorld().provider.dimensionId);
                 continue;
             }
             craftingTracker.addCraftingOption(this, details);
@@ -1437,5 +1446,10 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
                 && super.isItemValidForSlot(index, itemStack);
         }
         return super.isItemValidForSlot(index, itemStack);
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 1;
     }
 }

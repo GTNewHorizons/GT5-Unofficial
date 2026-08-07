@@ -48,7 +48,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
@@ -210,7 +209,7 @@ public class MTEUniversalChemicalFuelEngineLegacy extends TTMultiblockBase imple
         result = processFuel(tFluids, RecipeMaps.gasTurbineFuels, PromoterAmount, GAS_EFFICIENCY_COEFFICIENT, 1);
         if (result.wasSuccessful()) return result;
 
-        result = processFuel(tFluids, GTPPRecipeMaps.rocketFuels, PromoterAmount, ROCKET_EFFICIENCY_COEFFICIENT, 3);
+        result = processFuel(tFluids, RecipeMaps.rocketFuels, PromoterAmount, ROCKET_EFFICIENCY_COEFFICIENT, 3);
         if (result.wasSuccessful()) return result;
 
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
@@ -385,7 +384,7 @@ public class MTEUniversalChemicalFuelEngineLegacy extends TTMultiblockBase imple
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(GTPPRecipeMaps.rocketFuels, RecipeMaps.dieselFuels, RecipeMaps.gasTurbineFuels);
+        return Arrays.asList(RecipeMaps.rocketFuels, RecipeMaps.dieselFuels, RecipeMaps.gasTurbineFuels);
     }
 
     @Override

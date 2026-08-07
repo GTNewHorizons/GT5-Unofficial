@@ -591,7 +591,7 @@ public final class ModItems {
         GTPPEverglades.GenerateOreMaterials();
 
         // Formula overrides
-        MaterialsAlloy.TUNGSTEN_TITANIUM_CARBIDE.vChemicalFormula = StringUtils.subscript("(CW)7Ti3");
+        MaterialsAlloy.TUNGSTEN_TITANIUM_CARBIDE.chemicalFormula = StringUtils.subscript("(CW)7Ti3");
 
         // Werkstoff bridge
         MaterialsElements.getInstance().ZIRCONIUM.setWerkstoffID((short) 3);

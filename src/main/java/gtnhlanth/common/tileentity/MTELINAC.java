@@ -19,12 +19,14 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -32,7 +34,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.StructureLib;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -66,9 +67,9 @@ import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
-import gtnhlanth.util.DescTextLocalization;
 import gtnhlanth.util.Util;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -129,12 +130,14 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
                 buildHatchAdder(MTELINAC.class).atLeast(BeamlineInput)
                     .casingIndex(ShieldedAccCasingTextureID)
                     .hint(1)
+                    .exclusive()
                     .build())
             .addElement(
                 'o',
                 buildHatchAdder(MTELINAC.class).atLeast(BeamlineOutput)
                     .casingIndex(ShieldedAccCasingTextureID)
                     .hint(4)
+                    .exclusive()
                     .build())
             .addElement('v', ofBlock(LanthItemList.ELECTRODE_CASING, 0))
             .addElement('k', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
@@ -170,48 +173,32 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        final Map<String, Object> tooltipVars = Map.of("fluidUnit", getFluidUnit());
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.linac.machinetype"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info1"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info2"))
-            .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocalFormatted("gtnhlanth.tt.linac.info3", getFluidUnit()))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.oxygen"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.nitrogen"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.coolant"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.Scoolant"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info4"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info5"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info6"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info7"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info8"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info9"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info10"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info11"))
-            .beginVariableStructureBlock(19, 83, 7, 7, 7, 7, false)
-            .addController("Front bottom center")
+            .addMarkdown(new ResourceLocation("gregtech", "linac"), tooltipVars)
+            .beginVariableStructureBlock(7, 7, 7, 7, 19, 83, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
             .addCasing("325-1285", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
             .addCasing("148-852", LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), false)
             .addCasing("156-732", LanthItemList.ELECTRODE_CASING.getLocalizedName(), false)
             .addCasing("127-703", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), false)
-            .addCasing("56-312", "Superconducting Coil Block", false)
-            .addCasing("48", "LuV+ Tiered Glass", false)
+            .addCasing("56-312", Casings.SuperconductingCoilBlock.getLocalizedName(), false)
+            .addCasing("48", StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.LuV]), false)
             .addCasing("47", Casings.GrateMachineCasing.getLocalizedName(), false)
-            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), "Front center casing", 1)
-            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"), "Back center casing", 4)
-            .addEnergyHatch("1-2", "Any bottom edge casing 3-8 blocks from front", 3)
-            .addMaintenanceHatch("1", "Any bottom edge casing 3-8 blocks from front", 3)
-            .addInputHatch("1", "Top casing 8th block from front", 2)
-            .addOutputHatch("1", "Top casing 8th block from back", 2)
-            .addAir("Interior of the structure")
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), StatCollector.translateToLocal("gt.mbtt.structure.front_center_casing"), 1)
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"), StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing"), 4)
+            .addEnergyHatch("1-2", StatCollector.translateToLocal("gtnhlanth.tt.linac.structure.hatch_pos"), 3)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.linac.structure.hatch_pos"), 3)
+            .addInputHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.linac.structure.input_hatch_pos"), 2)
+            .addOutputHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.linac.structure.output_hatch_pos"), 2)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -366,8 +353,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
         }
 
         buildPiece(STRUCTURE_PIECE_END, stackSize, hintsOnly, 3, 6, -(lLength + 2));
-
-        StructureLib.addClientSideChatMessages("Length: " + (11 + lLength) + " blocks.");
     }
 
     @Override

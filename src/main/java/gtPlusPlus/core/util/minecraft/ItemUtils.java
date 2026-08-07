@@ -27,6 +27,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -160,7 +161,7 @@ public class ItemUtils {
         final String materialName = material.getUnlocalizedName();
         final String unlocalizedName = StringUtils.sanitizeString(materialName);
         final int Colour = material.getRgbAsHex();
-        final String aChemForm = material.vChemicalFormula;
+        final String aChemForm = material.chemicalFormula;
         final boolean isChemFormvalid = (aChemForm != null && !aChemForm.isEmpty());
         Item[] output = null;
         if (!onlyLargeDust) {
@@ -228,7 +229,7 @@ public class ItemUtils {
                     value = (t2.modId.isEmpty()) ? Minecraft.ID : modname;
                 }
             } catch (final Exception t3) {
-                t3.printStackTrace();
+                GTplusplus.logger.error(t3);
                 value = "bad modid";
             }
         }

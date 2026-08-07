@@ -335,6 +335,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)
             .addMiscHatch("1+", "Input Bus or Crafting Pattern Provider", "Any casing", 1)
+            .addAir("Interior of the structure")
             .addStructureInfo("")
             .addStructureFooter("Place a data orb inside the controller and connect it to an AE2 network")
             .toolTipFinisher();
@@ -553,7 +554,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         List<MTEHatchInputBus> inputs = GTUtility.filterValidMTEs(mInputBusses)
             .stream()
             .filter(bus -> !(bus instanceof MTEHatchCraftingInputME))
-            .collect(Collectors.toList());
+            .toList();
 
         boolean changed = false;
         Map<ItemStack, ICraftingPatternDetails> patterns = new ItemStackMap<>(true);

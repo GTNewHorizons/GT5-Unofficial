@@ -39,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -62,6 +63,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -83,7 +85,6 @@ import gregtech.common.tools.ToolTurbineHuge;
 import gregtech.common.tools.ToolTurbineLarge;
 import gregtech.common.tools.ToolTurbineNormal;
 import gregtech.common.tools.ToolTurbineSmall;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
@@ -296,25 +297,18 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         for (int i = 0; i < turbineRotorHatchList.size(); i++) {
             if (turbineRotorHatchList.get(i) == null) continue;
             MTEHatchTurbine turbine = turbineRotorHatchList.get(i);
-            ForgeDirection direction = this.getDirection();
+            ExtendedFacing direction = getExtendedFacing();
             IGregTechTileEntity te = turbine.getBaseMetaTileEntity();
             // 0, 1 = front top, front bottom
             // 2, 4 = left top, left bottom
             // 3, 5 = right top, right bottom
             // 6, 7 = back top, back bottom (all in theory)
             switch (i) {
-                case 0, 1 -> {
-                    te.setFrontFacing(direction);
-                }
-                case 2, 4 -> {
-                    te.setFrontFacing(direction.getRotation(ForgeDirection.EAST));
-                }
-                case 3, 5 -> {
-                    te.setFrontFacing(direction.getRotation(ForgeDirection.WEST));
-                }
-                case 6, 7 -> {
-                    te.setFrontFacing(direction.getOpposite());
-                }
+                case 0, 1 -> te.setFrontFacing(direction.getRelativeForwardInWorld());
+                case 2, 4 -> te.setFrontFacing(direction.getRelativeRightInWorld());
+                case 3, 5 -> te.setFrontFacing(direction.getRelativeLeftInWorld());
+                case 6, 7 -> te.setFrontFacing(direction.getRelativeBackInWorld());
+
             }
         }
     }
@@ -450,7 +444,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             .addSeparator()
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Maahes guides the way...")
             .beginStructureBlock(17, 17, 17, false)
-            .addController("Front center")
+            .addController("Front center, 9th layer")
             .addCasing("550-712", "Vibration Safe Casing", false)
             .addCasing("264", "SC Turbine Casing", false)
             .addCasing("160", "PBI Pipe Casing", false)
@@ -820,7 +814,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.centrifugeNonCellRecipes;
+        return RecipeMaps.centrifugeNonCellRecipes;
     }
 
     @Override
@@ -845,11 +839,6 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

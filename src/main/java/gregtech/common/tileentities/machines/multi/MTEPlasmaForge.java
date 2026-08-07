@@ -616,7 +616,7 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             .addInfo("but the extra power cost is instead added in form of increased catalyst amounts")
             .addUnlimitedTierSkips()
             .addSupportAny()
-            .beginStructureBlock(33, 33, 24, false)
+            .beginStructureBlock(33, 24, 33, false)
             .addController("Middle of the structure, 3rd layer")
             .addCasing("2121", "Dimensionally Transcendent Casing", false)
             .addCasing("2112", "Heating Coil", true)

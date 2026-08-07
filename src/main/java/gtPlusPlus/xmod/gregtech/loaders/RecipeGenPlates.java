@@ -61,7 +61,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .itemInputs(ingotStackThree)
                 .itemOutputs(plate_SingleTwo)
                 .duration(Math.max(material.getMass(), 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(hammerRecipes);
         }
 
@@ -72,7 +72,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .circuit(1)
                 .itemOutputs(plate_Single)
                 .duration(Math.max(material.getMass() * 1L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(benderRecipes);
         }
 
@@ -82,7 +82,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .circuit(10)
                 .itemOutputs(foil_SingleFour)
                 .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(benderRecipes);
         }
 
@@ -92,7 +92,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .itemInputs(ingotStackTwo, shape_Mold)
                 .itemOutputs(plate_Single)
                 .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(alloySmelterRecipes);
         }
         // Cutting Machine
@@ -101,7 +101,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .itemInputs(block)
                 .itemOutputs(plate_SingleNine)
                 .duration(Math.max(material.getMass() * 10L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(cutterRecipes);
         }
 
@@ -112,7 +112,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .circuit(2)
                 .itemOutputs(plate_Double)
                 .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(benderRecipes);
         }
 
@@ -122,7 +122,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .circuit(2)
                 .itemOutputs(plate_Double)
                 .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(benderRecipes);
         }
 
@@ -133,7 +133,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .circuit(1)
                 .itemOutputs(material.getFoil(4))
                 .duration(Math.max(material.getMass(), 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(benderRecipes);
 
             CoverRegistry.registerDecorativeCover(
@@ -148,7 +148,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .circuit(9)
                 .itemOutputs(plate_Dense)
                 .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(benderRecipes);
         }
 
@@ -158,12 +158,12 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .circuit(9)
                 .itemOutputs(plate_Dense)
                 .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(benderRecipes);
 
         }
 
-        int tier = Math.max(1, material.vTier);
+        int tier = Math.max(1, material.tier);
         long aVoltage = VP[tier];
 
         // Making Superdense Plates
@@ -174,7 +174,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .itemOutputs(plate_Superdense)
                 .metadata(COMPRESSION_TIER, compressionTier)
                 .duration(Math.max(material.getMass() * 4L, 1L))
-                .eut(material.vVoltageMultiplier)
+                .eut(material.voltageMultiplier)
                 .addTo(compressorRecipes);
         }
     }

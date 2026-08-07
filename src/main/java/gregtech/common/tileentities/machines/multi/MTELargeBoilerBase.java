@@ -236,7 +236,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                     "GT5U.machines.large_boiler.info.tooltip.6",
                     formatNumber(500.0 / getEfficiencyIncrease())))
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 5, 6, false)
+            .beginStructureBlock(5, 6, 3, false)
             .addController("Front center, 2nd layer")
             .addCasing("20-28", getCasingMaterial() + " " + getCasingBlockType(), false)
             .addCasing("5-15", getCasingMaterial() + " Firebox Casing", false)
@@ -244,8 +244,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
             .addMaintenanceHatch("1", "Any machine or firebox casing", 1)
             .addMufflerHatch("1", "Any machine or firebox casing", 1)
             .addInputBus("0+", "Any machine or firebox casing", 1)
-            .addInputHatch("0+", "Any machine or firebox casing", 1)
-            .addOutputHatch("0+", "Any machine or firebox casing", 1)
+            .addInputHatch("1+", "Any machine or firebox casing", 1)
+            .addOutputHatch("1+", "Any machine or firebox casing", 1)
             .addStructureInfo("")
             .addStructureFooter("Use solid fuel, liquid fuel, or both")
             .addStructureFooter("Use regular or distilled water")
@@ -336,6 +336,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                         this.excessFuel += (int) (fuelValue % 80);
                         burnTime += this.excessFuel / 80;
                         this.excessFuel %= 80;
+                        burnTime = LargeBoilerFuelBackend.getBurntimeRatioTicks(burnTime, 20);
                         setupBoilerRecipe(burnTime, getEfficiencyIncrease(), false);
                         tInput.stackSize -= 1;
                         updateSlots();
@@ -531,6 +532,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         checkCasingMin(errors, fireboxAmount, 5);
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     private int adjustEUtForConfig(int rawEUt) {

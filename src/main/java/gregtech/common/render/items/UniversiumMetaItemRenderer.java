@@ -134,9 +134,7 @@ public class UniversiumMetaItemRenderer implements IItemRenderer {
                         MathHelper.floor_double(ent.posZ));
                 }
             }
-            default -> {
-                shader.setLightLevel(1.0f);
-            }
+            default -> shader.setLightLevel(1.0f);
         }
     }
 }

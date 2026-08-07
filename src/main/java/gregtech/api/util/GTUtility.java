@@ -131,7 +131,6 @@ import org.joml.Vector3i;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
@@ -502,7 +501,9 @@ public class GTUtility {
         byte tier = getTier(voltage);
         tier = tier < 1 ? 1 : tier;
         String color = GTValues.TIER_COLORS[tier];
-        return "(" + color + GTValues.VN[tier] + EnumChatFormatting.RESET + ")";
+        return translateToLocalFormatted(
+            "GT5U.gui.text.tier_name_with_parentheses",
+            color + GTValues.VN[tier] + EnumChatFormatting.RESET);
     }
 
     public static String getForgeDirectionNameKey(ForgeDirection side) {
@@ -651,6 +652,12 @@ public class GTUtility {
                 // Skip the format escape along with its code
                 start = end + 2;
             }
+        }
+
+        // A format code at the very end has nothing left to format, so a pop that lands there only emits noise.
+        // Drop it, otherwise consumers that match whole lines (tooltip separators, for one) never see a clean line.
+        while (out.length() >= 2 && out.charAt(out.length() - 2) == FORMAT_ESCAPE) {
+            out.setLength(out.length() - 2);
         }
 
         return out.toString();
@@ -1215,7 +1222,7 @@ public class GTUtility {
             tmp = aFluid.getFluid()
                 .getID();
         } catch (Exception e) {
-            e.printStackTrace();
+            GT_FML_LOGGER.error(e);
         }
         ItemStack rStack = ItemList.Display_Fluid.getWithDamage(1, tmp);
         NBTTagCompound tNBT = new NBTTagCompound();
@@ -1431,7 +1438,7 @@ public class GTUtility {
         ItemData tOreName = GTOreDictUnificator.getAssociation(aInput);
         for (Object o : aOutput) {
             if (o == null) {
-                GT_FML_LOGGER.info("EmptyIC2Output!" + aInput.getUnlocalizedName());
+                GT_FML_LOGGER.info("EmptyIC2Output!{}", aInput.getUnlocalizedName());
                 return false;
             }
         }
@@ -1471,12 +1478,12 @@ public class GTUtility {
         sBookCount++;
         rStack = new ItemStack(Items.written_book, 1);
         NBTTagCompound tNBT = new NBTTagCompound();
-        tNBT.setString("title", StatCollector.canTranslate(aTitle) ? GTUtility.translate(aTitle) : aTitle);
+        tNBT.setString("title", StatCollector.canTranslate(aTitle) ? translateToLocal(aTitle) : aTitle);
         tNBT.setString("author", aAuthor);
         NBTTagList tNBTList = new NBTTagList();
         for (byte i = 0; i < aPages.length; i++) {
             String pageKeyOrText = aPages[i] == null ? "" : aPages[i];
-            String pageText = StatCollector.canTranslate(pageKeyOrText) ? GTUtility.translate(pageKeyOrText)
+            String pageText = StatCollector.canTranslate(pageKeyOrText) ? translateToLocal(pageKeyOrText)
                 : pageKeyOrText;
             aPages[i] = pageText.replace("\\n", "\n");
             if (i < 48) {
@@ -2611,70 +2618,6 @@ public class GTUtility {
         }
     }
 
-    /**
-     * Translates a localization key to a localized string.
-     *
-     * @param key the localization key to translate
-     * @return the translated string
-     */
-    public static String translate(String key) {
-        return StatCollector.translateToLocal(key);
-    }
-
-    /**
-     * Translates a localization key to a localized string.
-     * If parameters are provided, they are substituted into the translated string via
-     * {@link StatCollector#translateToLocalFormatted(String, Object...)}.
-     *
-     * @param key        the localization key to translate
-     * @param parameters optional substitution arguments for the translated string
-     * @return the translated string
-     */
-    public static String translate(String key, Object... parameters) {
-        return parameters == null || parameters.length == 0 ? StatCollector.translateToLocal(key)
-            : StatCollector.translateToLocalFormatted(key, parameters);
-    }
-
-    /**
-     * Translates a localization key and splits the result into multiple lines.
-     * Lines are split on the literal {@code \n} sequence (backslash + n),
-     * as used in Minecraft lang files.
-     *
-     * @param key        the localization key to translate
-     * @param parameters optional substitution arguments for the translated string
-     * @return an array of lines from the translated string
-     * @see #translate(String, Object...)
-     */
-    public static String[] translateMultiline(String key, Object... parameters) {
-        return Iterables.toArray(NEWLINE_SPLITTER.split(translate(key, parameters)), String.class);
-    }
-
-    /**
-     * Translates a localization key, splits the result into multiple lines,
-     * and adds each line directly into the provided collection.
-     * Lines are split on the literal {@code \n} sequence (backslash + n),
-     * as used in Minecraft lang files.
-     *
-     * <p>
-     * This overload avoids allocating an intermediate array and is preferred
-     * when the caller already holds a {@link Collection}, such as the tooltip
-     * list in {@code addInformation}.
-     *
-     * <p>
-     * Note: the literal text {@code \n} cannot appear in tooltip lines,
-     * as it is used as the line separator.
-     *
-     * @param tooltip the collection to add translated lines into
-     * @param key     the localization key to translate
-     * @param args    optional substitution arguments for the translated string
-     * @see #translateMultiline(String, Object...)
-     */
-    public static void translateMultiline(Collection<String> tooltip, String key, Object... args) {
-        for (String line : NEWLINE_SPLITTER.split(translate(key, args))) {
-            tooltip.add(line);
-        }
-    }
-
     /*
      * Check if stack has enough items of given type and subtract from stack, if there's no creative or 111 stack.
      */
@@ -2710,7 +2653,7 @@ public class GTUtility {
 
     public static String joinListToString(List<String> list) {
         StringBuilder result = new StringBuilder(32);
-        for (String s : list) result.append(result.length() == 0 ? s : '|' + s);
+        for (String s : list) result.append(result.isEmpty() ? s : '|' + s);
         return result.toString();
     }
 
@@ -3141,17 +3084,17 @@ public class GTUtility {
             do {
                 tPageText = new StringBuilder();
                 for (int i = tPage * aItemsPerPage; i < (tPage + 1) * aItemsPerPage && i < list.length; i += 1)
-                    tPageText.append((tPageText.length() == 0) ? "" : aListDelimiter)
+                    tPageText.append((tPageText.isEmpty()) ? "" : aListDelimiter)
                         .append(list[i]);
 
-                if (tPageText.length() != 0) {
+                if (!tPageText.isEmpty()) {
                     String tPageCounter = tTotalPages > 1 ? String.format(aPageFormatter, tPage + 1, tTotalPages) : "";
                     NBTTagString tPageTag = new NBTTagString(String.format(aPageHeader, tPageCounter) + tPageText);
                     aBook.appendTag(tPageTag);
                 }
 
                 ++tPage;
-            } while (tPageText.length() != 0);
+            } while (!tPageText.isEmpty());
         }
 
         /**
@@ -3247,27 +3190,32 @@ public class GTUtility {
         List<ItemStack> inputs = new ArrayList<>();
 
         for (Object o : aRecipe) {
-            if (o instanceof ItemStack) {
-                ItemStack toAdd = ((ItemStack) o).copy();
-                inputs.add(toAdd);
-            } else if (o instanceof String) {
-                ItemStack stack = GTOreDictUnificator.get(o, 1);
-                if (stack == null) {
-                    Optional<ItemStack> oStack = OreDictionary.getOres((String) o)
-                        .stream()
-                        .findAny();
-                    if (oStack.isPresent()) {
-                        ItemStack copy = oStack.get()
-                            .copy();
+            switch (o) {
+                case ItemStack itemStack -> {
+                    ItemStack toAdd = itemStack.copy();
+                    inputs.add(toAdd);
+                }
+                case String s -> {
+                    ItemStack stack = GTOreDictUnificator.get(o, 1);
+                    if (stack == null) {
+                        Optional<ItemStack> oStack = OreDictionary.getOres(s)
+                            .stream()
+                            .findAny();
+                        if (oStack.isPresent()) {
+                            ItemStack copy = oStack.get()
+                                .copy();
+                            inputs.add(copy);
+                        }
+                    } else {
+                        ItemStack copy = stack.copy();
                         inputs.add(copy);
                     }
-                } else {
-                    ItemStack copy = stack.copy();
-                    inputs.add(copy);
                 }
-            } else if (o instanceof Item) inputs.add(new ItemStack((Item) o));
-            else if (o instanceof Block) inputs.add(new ItemStack((Block) o));
-            else throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
+                case Item item -> inputs.add(new ItemStack(item));
+                case Block block -> inputs.add(new ItemStack(block));
+                case null, default ->
+                    throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
+            }
         }
 
         inputs.removeIf(x -> x.getItem() instanceof MetaGeneratedTool);
@@ -3315,32 +3263,37 @@ public class GTUtility {
 
         for (Map.Entry<Object, Integer> o : recipeAsMap.entrySet()) {
             final int amount = o.getValue();
-            if (o.getKey() instanceof ItemStack) {
-                ItemStack toAdd = ((ItemStack) o.getKey()).copy();
-                toAdd.stackSize = amount;
-                inputs.add(toAdd);
-            } else if (o.getKey() instanceof String dictName) {
-                // Do not register tools dictName in inputs
-                if (ToolDictNames.contains(dictName)) continue;
-                ItemStack stack = GTOreDictUnificator.get(dictName, null, amount, false, true);
-                if (stack == null) {
-                    Optional<ItemStack> oStack = OreDictionary.getOres(dictName)
-                        .stream()
-                        .findAny();
-                    if (oStack.isPresent()) {
-                        ItemStack copy = oStack.get()
-                            .copy();
+            switch (o.getKey()) {
+                case ItemStack itemStack -> {
+                    ItemStack toAdd = itemStack.copy();
+                    toAdd.stackSize = amount;
+                    inputs.add(toAdd);
+                }
+                case String dictName -> {
+                    // Do not register tools dictName in inputs
+                    if (ToolDictNames.contains(dictName)) continue;
+                    ItemStack stack = GTOreDictUnificator.get(dictName, null, amount, false, true);
+                    if (stack == null) {
+                        Optional<ItemStack> oStack = OreDictionary.getOres(dictName)
+                            .stream()
+                            .findAny();
+                        if (oStack.isPresent()) {
+                            ItemStack copy = oStack.get()
+                                .copy();
+                            copy.stackSize = amount;
+                            inputs.add(copy);
+                        }
+                    } else {
+                        ItemStack copy = stack.copy();
                         copy.stackSize = amount;
                         inputs.add(copy);
                     }
-                } else {
-                    ItemStack copy = stack.copy();
-                    copy.stackSize = amount;
-                    inputs.add(copy);
                 }
-            } else if (o.getKey() instanceof Item) inputs.add(new ItemStack((Item) o.getKey(), amount));
-            else if (o.getKey() instanceof Block) inputs.add(new ItemStack((Block) o.getKey(), amount));
-            else throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
+                case Item item -> inputs.add(new ItemStack(item, amount));
+                case Block block -> inputs.add(new ItemStack(block, amount));
+                case null, default ->
+                    throw new IllegalStateException("A Recipe contains an invalid input! Output: " + output);
+            }
         }
 
         // Remove tools from inputs in case a recipe has one as a direct Item or ItemStack reference
@@ -3672,6 +3625,19 @@ public class GTUtility {
         }
 
         return result;
+    }
+
+    /// Multiplies two integers, clamping to the min/max for an int if the result overflows.
+    public static int mulSafe(int a, int b) {
+        try {
+            return Math.multiplyExact(a, b);
+        } catch (ArithmeticException ignored) {
+            if (a > 0 == b > 0) {
+                return Integer.MAX_VALUE;
+            } else {
+                return Integer.MIN_VALUE;
+            }
+        }
     }
 
     /**
@@ -4285,11 +4251,9 @@ public class GTUtility {
         Flip flip = extendedFacing.getFlip();
 
         float faceAngleDeg = switch (direction) {
-            case DOWN -> 90f;
-            case UP -> -90f;
+            case DOWN, WEST -> 90f;
+            case UP, EAST -> -90f;
             case SOUTH -> 180f;
-            case WEST -> 90f;
-            case EAST -> -90f;
             default -> 0f; // NORTH
         };
 

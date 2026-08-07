@@ -26,6 +26,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
@@ -69,6 +70,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import ggfab.ConfigurationHandler;
 import ggfab.mui.ClickableTextWidget;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
@@ -109,6 +111,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 /*
  * Dev note: 1. This multi will be an assline but with greater throughput. it will take one input every 2.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     implements ISurvivalConstructable, ICasingTextureProvider {
 
@@ -221,6 +224,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof MTEHatchDataAccess) {
+            addIfSmartInput(aMetaTileEntity);
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return mDataAccessHatches.add((MTEHatchDataAccess) aMetaTileEntity);
         }
@@ -315,64 +319,44 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Assembly Line, AAL")
-            .addInfo("Assembly Line with item pipelining")
-            .addInfo("All fluids are consumed at the start of the recipe")
-            .addInfo("Recipe tier is limited by the lowest Energy Hatch tier")
-            .addSeparator(EnumChatFormatting.GOLD, 67)
-            .addInfo("Runs imperfect overclocks until Energy Hatch tier")
-            .addInfo("Additional overclocks are increasingly more expensive")
-            .addInfo(
-                EnumChatFormatting.AQUA
-                    + "Multiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)"
-                    + EnumChatFormatting.GRAY)
-            .addInfo(
-                EnumChatFormatting.AQUA + "Power usage = Multiplier × (Active Slices) × (Recipe EU/t)"
-                    + EnumChatFormatting.GRAY)
-            .addInfo("Overclocking assumes all recipe slices are active")
-            .addInfo(EnumChatFormatting.BOLD + "Does not overclock beyond 1 tick")
-            .addSeparator(EnumChatFormatting.GOLD, 67)
-            .addInfo("Constructed identically to the Assembly Line")
+        tt.addMachineType(StatCollector.translateToLocal("ggfab.tt.advassline.machine_type"))
+            .addMarkdown(new ResourceLocation("gregtech", "advanced-assembly-line"))
             .addSupportAny()
-            .beginVariableStructureBlock(3, 3, 5, 16, 4, 4, false)
-            .addController("First slice, 3rd layer")
+            .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
+            .addController(StatCollector.translateToLocal("ggfab.tt.advassline.structure.controller"))
             .addMiscHatch(
                 "1",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"),
-                "Any grate machine casing NOT on first slice",
+                StatCollector.translateToLocal("ggfab.tt.advassline.structure.data_access_location"),
                 3)
-            .addEnergyHatch("1+", "Any layer 4 casing", 4)
-            .addMaintenanceHatch("1", "Any layer 1 side casing", 1)
-            .addInputBus("5-16", "Bottom center of each slice", 2)
-            .addInputHatch("1-4", "Any layer 1 side casing", 1)
-            .addOutputBus("1", "Any layer 1 casing on last slice", 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("ggfab.tt.advassline.structure.energy_location"), 4)
+            .addMaintenanceHatch(
+                "1",
+                StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer1_side_casing"),
+                1)
+            .addInputBus("5-16", StatCollector.translateToLocal("ggfab.tt.advassline.structure.input_bus_location"), 2)
+            .addInputHatch("1-4", StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer1_side_casing"), 1)
+            .addOutputBus("1", StatCollector.translateToLocal("ggfab.tt.advassline.structure.output_bus_location"), 1)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("10", "Any Tiered Glass", false)
-            .addCasing("8", "Grate Machine Casing", false)
-            .addCasing("4-8", "Solid Steel Machine Casing", false)
-            .addCasing("5", "Assembly Line Casing", false)
-            .addCasing("5", "Assembler Machine Casing", false)
+            .addCasing(
+                "10",
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.MBTT.HatchInfo",
+                    StatCollector.translateToLocal("GT5U.structure.tiered_glass")),
+                false)
+            .addCasing("8", Casings.GrateMachineCasing.getLocalizedName(), false)
+            .addCasing("4-8", Casings.SolidSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("5", Casings.AssemblyLineCasing.getLocalizedName(), false)
+            .addCasing("5", Casings.AssemblerMachineCasing.getLocalizedName(), false)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 4: "
-                    + EnumChatFormatting.GRAY
-                    + "Empty, Solid Steel Machine Casing, Empty")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 3: "
-                    + EnumChatFormatting.GRAY
-                    + "Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 2: "
-                    + EnumChatFormatting.GRAY
-                    + "Any Tiered Glass, Assembly Line Casing, Any Tiered Glass")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Layer 1: "
-                    + EnumChatFormatting.GRAY
-                    + "Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
+            .addStructureInfo(StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer4"))
+            .addStructureInfo(StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer3"))
+            .addStructureInfo(StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer2"))
+            .addStructureInfo(StatCollector.translateToLocal("ggfab.tt.advassline.structure.layer1"))
             .addStructureInfo("")
-            .addStructureFooter("Up to 16 total slices, each one allows for 1 more item in recipes")
+            .addStructureFooter(StatCollector.translateToLocal("ggfab.tt.advassline.structure.footer"))
             .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
@@ -443,12 +427,12 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         RecipeAssemblyLine recipe = null;
 
         if (aNBT.hasKey(TAG_KEY_CURRENT_RECIPE, Constants.NBT.TAG_COMPOUND)) {
-            recipe = AssemblyLineUtils
-                .assertSingleRecipe(AssemblyLineUtils.loadRecipe(aNBT.getCompoundTag(TAG_KEY_CURRENT_RECIPE)));
+            recipe = selectRecipe(AssemblyLineUtils.loadRecipe(aNBT.getCompoundTag(TAG_KEY_CURRENT_RECIPE)), aNBT);
         } else if (aNBT.hasKey(TAG_KEY_CURRENT_STICK, Constants.NBT.TAG_COMPOUND)) {
-            recipe = AssemblyLineUtils.assertSingleRecipe(
+            recipe = selectRecipe(
                 AssemblyLineUtils.findALRecipeFromDataStick(
-                    ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(TAG_KEY_CURRENT_STICK))));
+                    ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(TAG_KEY_CURRENT_STICK))),
+                aNBT);
         }
 
         if (recipe != null) {
@@ -474,6 +458,20 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         } else {
             setCurrentRecipe(recipe);
         }
+    }
+
+    // Outputs aren't unique so pick by hash; on a miss return the first candidate so the
+    // caller's hash check fails loudly instead of null silently clearing the recipe.
+    private static RecipeAssemblyLine selectRecipe(Collection<RecipeAssemblyLine> candidates, NBTTagCompound aNBT) {
+        if (candidates.isEmpty()) return null;
+        if (aNBT.hasKey(TAG_KEY_RECIPE_HASH, Constants.NBT.TAG_INT)) {
+            int hash = aNBT.getInteger(TAG_KEY_RECIPE_HASH);
+            for (RecipeAssemblyLine candidate : candidates) {
+                if (candidate.getPersistentHash() == hash) return candidate;
+            }
+        }
+        return candidates.iterator()
+            .next();
     }
 
     /**
@@ -742,7 +740,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         }
 
         if (GTValues.D1) {
-            GT_FML_LOGGER.info("Stick accepted, " + availableRecipes.size() + " Data Sticks found");
+            GT_FML_LOGGER.info("Stick accepted, {} Data Sticks found", availableRecipes.size());
         }
 
         for (RecipeAssemblyLine recipe : availableRecipes) {
@@ -776,20 +774,14 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
 
             int maxRegularOverclock = getTier(inputVoltage) - getTier(recipe.mEUt);
 
-            // Delete this one before enable overclocking under one tick.
-            int maxOverclockTo1Tick = GTUtility.log2(recipe.mDuration / recipe.mInputs.length);
-
             OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
                 .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
                 .setParallel(originalMaxParallel)
                 .setEUt(inputEUt / recipe.mInputs.length)
                 .setLaserOC(true)
-                .setMaxRegularOverclocks(Math.min(maxRegularOverclock, maxOverclockTo1Tick));
+                .setMaxRegularOverclocks(maxRegularOverclock);
 
-            // Disabled to disable overclocking under one tick.
-            /*
-             * maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
-             */
+            maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
 
             int maxParallelBeforeBatchMode = maxParallel;
             if (isBatchModeEnabled()) {

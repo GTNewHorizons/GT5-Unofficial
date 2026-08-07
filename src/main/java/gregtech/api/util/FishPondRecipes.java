@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
@@ -11,9 +12,9 @@ import net.minecraftforge.common.FishingHooks;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialFishingPond;
 import gregtech.mixin.interfaces.accessors.WeightedRandomFishableAccessor;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 
 public class FishPondRecipes {
 
@@ -33,7 +34,7 @@ public class FishPondRecipes {
             generateRecipes(MTEIndustrialFishingPond.JUNK_MODE, junkList, 1.35);
             generateRecipes(MTEIndustrialFishingPond.TREASURE_MODE, treasureList, 20D);
         } catch (Exception e) {
-            e.printStackTrace();
+            GT_FML_LOGGER.error(e);
         }
     }
 
@@ -66,6 +67,6 @@ public class FishPondRecipes {
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .ignoreCollision()
-            .addTo(GTPPRecipeMaps.fishPondRecipes);
+            .addTo(RecipeMaps.fishPondRecipes);
     }
 }

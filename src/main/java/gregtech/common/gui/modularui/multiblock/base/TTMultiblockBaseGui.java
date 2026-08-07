@@ -2,6 +2,8 @@ package gregtech.common.gui.modularui.multiblock.base;
 
 import java.util.function.Function;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -20,7 +22,6 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.WidgetConfigurator;
 import gregtech.common.gui.modularui.widget.settings.SettingsPanelBuilder;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -68,7 +69,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
 
     protected IWidget createPowerPassButton() {
         return new ToggleButton().value(createPowerPassSyncHandler())
-            .addTooltipLine(GTUtility.translate("tt.gui.tooltip.power_pass"))
+            .addTooltipLine(StatCollector.translateToLocal("tt.gui.tooltip.power_pass"))
             .overlay(createPowerPassOverlay());
     }
 
@@ -98,7 +99,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
             true,
             (p_syncManager, syncHandler) -> getParameterPanel(panel, p_syncManager));
         return new ButtonWidget<>().overlay(createEditParametersOverlay())
-            .addTooltipLine(GTUtility.translate("tt.gui.tooltip.edit_parameters"))
+            .addTooltipLine(StatCollector.translateToLocal("tt.gui.tooltip.edit_parameters"))
             .onMousePressed(onEditParametersPressed(infoPanel));
     }
 

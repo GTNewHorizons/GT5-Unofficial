@@ -27,7 +27,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.annotation.Nonnull;
@@ -112,8 +111,7 @@ public class GTStructureUtility {
                 boolean isWater = isWater(block);
                 boolean isFlowing = isFlowingWater(block, world, x, y, z);
                 if (isWater && !isFlowing) return true;
-                if (allowFlowing && isFlowing) return true;
-                return false;
+                return allowFlowing && isFlowing;
             }
 
             @Override
@@ -906,15 +904,30 @@ public class GTStructureUtility {
         Function<T, Integer> getter) {
         return triggerItemTransform(
             GTStructureUtility::capGlassStack,
-            GTStructureChannels.BOROGLASS.use(
-                lazy(
-                    t -> ofBlocksTiered(
-                        GlassTier::getGlassBlockTier,
-                        GlassTier.getGlassList(),
-                        notSet,
-                        setter,
-                        getter,
-                        Collections.singletonList("GT5U.structure.tiered_glass")))));
+            GTStructureChannels.BOROGLASS.use(lazy(t -> chainAllGlassesImpl(notSet, setter, getter))));
+    }
+
+    private static <T> IStructureElement<T> chainAllGlassesImpl(int notSet, BiConsumer<T, Integer> setter,
+        Function<T, Integer> getter) {
+        IStructureElement<T> inner = ofBlocksTiered(
+            GlassTier::getGlassBlockTier,
+            GlassTier.getGlassList(),
+            notSet,
+            setter,
+            getter);
+        return new ProxyStructureElement<>(inner) {
+
+            @Override
+            public List<String> getDescription(T context) {
+                int tier = getter.apply(context);
+                if (tier == notSet) {
+                    return Collections.singletonList("GT5U.structure.tiered_glass");
+                }
+                return Collections.singletonList(
+                    GlassTier.getTierLangKeys()
+                        .get(tier));
+            }
+        };
     }
 
     /**
@@ -1205,7 +1218,7 @@ public class GTStructureUtility {
                     .addAll(
                         IntStream.rangeClosed(0, 15)
                             .boxed()
-                            .collect(Collectors.toList()));
+                            .toList());
             } else {
                 map.computeIfAbsent(block, k -> new ArrayList<>())
                     .add(meta);
@@ -1345,6 +1358,11 @@ public class GTStructureUtility {
         @Override
         public long count(T t) {
             return proxiedHatch.count(t);
+        }
+
+        @Override
+        public boolean matchesHatch(IMetaTileEntity mte) {
+            return proxiedHatch.matchesHatch(mte);
         }
     }
 }

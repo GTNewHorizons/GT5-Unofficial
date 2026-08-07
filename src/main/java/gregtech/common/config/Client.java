@@ -329,6 +329,18 @@ public class Client {
         @Config.Comment({ "The color preset of the waila progress bar", "Set to Custom to specify your own color" })
         @Config.DefaultEnum("Green")
         public TTRenderGTProgressBar.ProgressBarColor ProgressBarColor = TTRenderGTProgressBar.ProgressBarColor.Green;
+
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Facing")
+        public boolean showFacing;
+
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Idle")
+        public boolean showIdle;
+
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Working Disable")
+        public boolean showWorkingDisable;
     }
 
     @Config.LangKey("GT5U.gui.config.client.nei")
@@ -388,7 +400,7 @@ public class Client {
             @Config.DefaultEnum("ENABLE")
             public RecipeCategorySetting ticBoltMolding = ENABLE;
 
-            @Config.LangKey("gtpp.recipe.category.abs_non_alloy_recipes")
+            @Config.LangKey("gt.recipe.category.abs_non_alloy_recipes")
             @Config.DefaultEnum("ENABLE")
             public RecipeCategorySetting absNonAlloyRecipes = ENABLE;
         }
@@ -436,15 +448,20 @@ public class Client {
         @Config.Name("Show Fluid State")
         public boolean showFluidState;
 
-        @Config.Comment("Enabled show GT++ Radioactive Text")
+        @Config.Comment("Enabled show Radioactive Text")
         @Config.DefaultBoolean(true)
-        @Config.Name("Show GT++ Radioactive Text")
+        @Config.Name("Show Radioactive Text")
         public boolean showRadioactiveText;
 
-        @Config.Comment("Enabled show GT++ Hot Ingot Text")
+        @Config.Comment("Enabled show Hot Ingot Text")
         @Config.DefaultBoolean(true)
-        @Config.Name("Show GT++ Hot Ingot Text")
+        @Config.Name("Show Hot Ingot Text")
         public boolean showHotIngotText;
+
+        @Config.Comment("Enabled show Toxic Text")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Toxic Text")
+        public boolean showToxicText;
 
         @Config.Comment("Enabled show GT++ Ctrl Text")
         @Config.DefaultBoolean(true)

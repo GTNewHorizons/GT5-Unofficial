@@ -29,6 +29,7 @@ import net.minecraft.util.MovementInput;
 import net.minecraft.util.MovementInputFromOptions;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -78,6 +79,7 @@ import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.CommonBaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.net.GTPacketClientPreference;
 import gregtech.api.net.cape.GTPacketSetCape;
@@ -89,6 +91,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTPlayedSound;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.client.DynamicLangManager;
 import gregtech.api.util.client.ResourceUtils;
 import gregtech.client.BlockOverlayRenderer;
 import gregtech.client.GTMouseEventHandler;
@@ -96,10 +99,13 @@ import gregtech.client.GTPowerfailRenderer;
 import gregtech.client.GTWorkAreaRenderer;
 import gregtech.client.SeekingOggCodec;
 import gregtech.client.handler.CondensateAnimationTickHandler;
+import gregtech.client.renderer.entity.RenderDrone;
 import gregtech.client.renderer.entity.RenderPowderBarrel;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
+import gregtech.common.data.drone.CameraViewportClientManager;
+import gregtech.common.entity.EntityDrone;
 import gregtech.common.entity.EntityPowderBarrelPrimed;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.toolbox.ToolboxUtil;
@@ -118,6 +124,7 @@ import gregtech.common.render.GTRendererCasing;
 import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
 import gregtech.common.render.NanoForgeRenderer;
+import gregtech.common.render.RenderInit;
 import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.CircuitComponentItemRenderer;
 import gregtech.common.render.items.DataStickRenderer;
@@ -126,6 +133,7 @@ import gregtech.common.render.items.MechanicalArmorRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
 import gregtech.common.render.items.ToolboxRenderer;
 import gregtech.common.tileentities.debug.MTEDebugStructureWriter;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
 import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
@@ -139,6 +147,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import mcp.mobius.waila.api.impl.ModuleRegistrar;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
+import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
 
 public class GTClient extends GTProxy {
 
@@ -177,10 +186,12 @@ public class GTClient extends GTProxy {
         super.onPreInitialization(event);
         SoundSystemConfig.setNumberNormalChannels(Client.preference.maxNumSounds);
         MinecraftForge.EVENT_BUS.register(new ExtraIcons());
+        RenderInit.registerEarly();
         Minecraft.getMinecraft()
             .getResourcePackRepository().rprMetadataSerializer
                 .registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
         mPreference = new GTClientPreference();
+        cameraViewportManager = new CameraViewportClientManager();
         Materials.initClient();
 
         ClientCommandHandler.instance.registerCommand(new GTPowerfailCommandClient());
@@ -261,6 +272,7 @@ public class GTClient extends GTProxy {
             .register(new CondensateAnimationTickHandler());
 
         RenderManager.instance.entityRenderMap.put(EntityPowderBarrelPrimed.class, new RenderPowderBarrel());
+        RenderManager.instance.entityRenderMap.put(EntityDrone.class, new RenderDrone());
         // spotless:on
     }
 
@@ -278,8 +290,10 @@ public class GTClient extends GTProxy {
                     GUIColorOverride.onResourceManagerReload();
                     FallbackableSteamTexture.reload();
                     CoverRegistry.reloadCoverColorOverrides();
+                    DynamicLangManager.reload();
                 }
             });
+        RenderInit.register();
         Pollution.onPostInitClient();
 
         ModuleRegistrar.instance()
@@ -410,6 +424,9 @@ public class GTClient extends GTProxy {
                 hideThings = newHideValue;
                 changeDetected = 5;
             }
+            if (changeDetected >= 1 && changeDetected <= 4) {
+                refreshTileEntityTextures(4 - changeDetected);
+            }
             heldItemForcesFullBlockBB = shouldHeldItemForceFullBlockBB();
 
             // Animation related bits need to cease when game is paused in singleplayer.
@@ -497,6 +514,32 @@ public class GTClient extends GTProxy {
         return hideThings;
     }
 
+    /** Re-issues a texture update on every loaded GT tile after the pipe/cover hiding state changes. */
+    private static void refreshTileEntityTextures(int quarter) {
+        final Minecraft mc = Minecraft.getMinecraft();
+        if (mc.theWorld == null || mc.thePlayer == null) return;
+
+        final int radius = mc.gameSettings.renderDistanceChunks;
+        final int centerX = MathHelper.floor_double(mc.thePlayer.posX) >> 4;
+        final int centerZ = MathHelper.floor_double(mc.thePlayer.posZ) >> 4;
+
+        final int span = 2 * radius + 1;
+        final int from = centerX - radius + (span * quarter) / 4;
+        final int to = centerX - radius + (span * (quarter + 1)) / 4;
+
+        for (int cx = from; cx < to; cx++) {
+            for (int cz = centerZ - radius; cz <= centerZ + radius; cz++) {
+                final Chunk chunk = mc.theWorld.getChunkFromChunkCoords(cx, cz);
+                if (chunk == null || !chunk.isChunkLoaded) continue;
+                for (Object tile : chunk.chunkTileEntityMap.values()) {
+                    if (tile instanceof CommonBaseMetaTileEntity gtTile) {
+                        gtTile.issueTextureUpdate();
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * <p>
      * Client tick counter that is set to 5 on hiding pipes and covers.
@@ -543,6 +586,7 @@ public class GTClient extends GTProxy {
     @SubscribeEvent
     public void onRenderStart(TickEvent.RenderTickEvent event) {
         if (event.phase == TickEvent.Phase.START) {
+            RenderInit.runPendingReload();
             renderTickTime = event.renderTickTime;
             isRenderingWorld = true;
         } else if (event.phase == TickEvent.Phase.END) {
@@ -580,6 +624,12 @@ public class GTClient extends GTProxy {
     public void onWorldUnload(WorldEvent.Unload event) {
         super.onWorldUnload(event);
         RenderOverlay.onWorldUnload(event.world);
+    }
+
+    @SubscribeEvent
+    public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+        VacuumFactoryGrid.clearAll();
+        BECFactoryGrid.clearAll();
     }
 
     @SubscribeEvent

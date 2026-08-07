@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import net.minecraft.item.ItemStack;
@@ -36,6 +35,7 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.util.GT5OreLayerHelper;
 import gtneioreplugin.util.GT5OreSmallHelper;
+import tectech.TecTech;
 import tectech.util.FluidStackLong;
 import tectech.util.ItemStackLong;
 
@@ -368,7 +368,7 @@ public class EyeOfHarmonyRecipe {
         if (material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM))
             outputMap.add(Materials.Neodymium, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
 
-        if (material.mOreByProducts.size() == 0) {
+        if (material.mOreByProducts.isEmpty()) {
             if (material.contains(SubTag.WASHING_MERCURY_99_PERCENT))
                 outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
             else if (material.contains(SubTag.WASHING_MERCURY))
@@ -471,11 +471,11 @@ public class EyeOfHarmonyRecipe {
         }
 
         // Default out if it's made of fluids or some stuff.
-        if (bonusA == null && material.vTier >= 2) {
+        if (bonusA == null && material.tier >= 2) {
             bonusA = material;
         }
         // Default out if it's made of fluids or some stuff.
-        if ((allFailed || bonusB == null) && material.vTier >= 2) {
+        if ((allFailed || bonusB == null) && material.tier >= 2) {
             bonusB = material;
         }
 
@@ -570,7 +570,7 @@ public class EyeOfHarmonyRecipe {
                     .getUnlocalizedName();
                 total += plasmaEnergyMap.getOrDefault(plasmaName, 0L) * plasma.amount;
             } catch (Exception e) {
-                e.printStackTrace();
+                TecTech.LOGGER.error(e);
             }
         }
 
@@ -600,7 +600,7 @@ public class EyeOfHarmonyRecipe {
             Materials.Bismuth,
             Materials.Oxygen,
             Materials.Tin)
-        .collect(Collectors.toList());
+        .toList();
 
     private static final HashMap<String, Long> plasmaEnergyMap = new HashMap<>() {
 

@@ -1318,7 +1318,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
             mChemicalFormula = materialList.stream()
                 .map(MaterialStack::toString)
                 .collect(Collectors.joining())
-                .replaceAll("_", "-");
+                .replace("_", "-");
         }
 
         // Set texture and colors
@@ -1404,7 +1404,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         mOreMultiplier = oreMultiplier;
         mUnifiable = unifiable;
 
-        // No clue what is going on here...
         int numberOfComponents = 0;
         int tMeltingPoint = 0;
         for (MaterialStack tMaterial : mMaterialList) {
@@ -1419,7 +1418,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
             }
         }
 
-        if (mMeltingPoint < 0) mMeltingPoint = 0;
+        if (mMeltingPoint < 0 && numberOfComponents > 1) mMeltingPoint = tMeltingPoint / numberOfComponents;
 
         numberOfComponents *= densityMultiplier;
         numberOfComponents /= densityDivider;
@@ -1821,14 +1820,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         return mName;
     }
 
-    /**
-     * @deprecated Always returns false, apparently.
-     */
-    @Deprecated
-    public boolean isRadioactive() {
-        return false;
-    }
-
     public long getProtons() {
         if (mElement != null) return mElement.getProtons();
         if (mMaterialList.isEmpty()) return Element.Tc.getProtons();
@@ -2206,7 +2197,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     }
 
     public int getLiquidTemperature() {
-        return mMeltingPoint == 0 ? 295 : mMeltingPoint;
+        return mMeltingPoint == -1 ? 295 : mMeltingPoint;
     }
 
     public Materials setLiquidTemperature(int liquidTemperature) {

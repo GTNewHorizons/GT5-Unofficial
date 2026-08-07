@@ -186,6 +186,7 @@ ig.button.projects=Проекты
 # Planetary Gas Siphon
 gt.blockmachines.multimachine.ig.siphon.name=Планетарный газовый сифон
 gt.blockmachines.multimachine.ig.siphon.type=Помпа
+gt.blockmachines.multimachine.ig.siphon.desc0=Каждый уровень катушки даёт §a+%s%%§7 бонус к скорости за уровень катушки
 gt.blockmachines.multimachine.ig.siphon.desc1=Постройте космическую станцию на орбите газовой планеты
 gt.blockmachines.multimachine.ig.siphon.desc2=Требуется запрограммированная схема, настроенная на глубину, с которой вы хотите качать (1 - 4)
 gt.blockmachines.multimachine.ig.siphon.desc3=Требует 64x глубинных буровых труб
@@ -361,6 +362,11 @@ ig.structure.specialThanks=Особая благодарность
 ig.structure.author=Добавлено
 ig.structure.and= и
 
+ig.dyson.structure.controller=Спереди внизу приёмника, 2-й слой
+ig.dyson.structure.control.any_casing=Любой боковой корпус по центру центра управления
+ig.dyson.structure.receiver.any_casing=Любой боковой корпус по центру приёмника
+ig.dyson.structure.deployment.any_casing=Любой боковой корпус по центру модуля развёртывания
+ig.dyson.structure.air=Все восемь слоёв над тарелкой приёмника
 ig.dyson.structure.dynamo=Может использовать обычные- и/или мультиамперные энерговыводы и/или источники лазера (1-12)
 ig.dyson.structure.optical=Оптический входной разъём
 ig.dyson.structure.additionally=Дополнительно необходимо:

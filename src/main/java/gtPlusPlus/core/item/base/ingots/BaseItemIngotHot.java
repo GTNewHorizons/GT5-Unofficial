@@ -18,7 +18,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
 
 public class BaseItemIngotHot extends BaseItemIngot {
 
@@ -31,23 +30,12 @@ public class BaseItemIngotHot extends BaseItemIngot {
         this.generateRecipe();
     }
 
-    @Override
-    public String getItemStackDisplayName(final ItemStack p_77653_1_) {
-        return super.getItemStackDisplayName(p_77653_1_);
-        // return ("Hot "+this.materialName+ " Ingot");
-    }
-
-    @Override
-    public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
-        return Utils.rgbtoHexValue(225, 225, 225);
-    }
-
     private void generateRecipe() {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(this))
             .itemOutputs(this.outputIngot.copy())
             .duration(Math.max(this.componentMaterial.getMass() * 3L, 1L) * TICKS)
-            .eut(this.componentMaterial.vVoltageMultiplier)
+            .eut(this.componentMaterial.voltageMultiplier)
             .addTo(vacuumFreezerRecipes);
     }
 
