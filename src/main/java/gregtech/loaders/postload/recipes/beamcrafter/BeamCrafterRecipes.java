@@ -235,7 +235,7 @@ public class BeamCrafterRecipes implements Runnable {
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
                     .particleID_A(JPSI.getId())
-                    .particleID_B(JPSI.getId())
+                    .particleID_B(LAMBDA.getId())
                     .amount_A(1000)
                     .amount_B(1000)
                     .build())
@@ -283,9 +283,9 @@ public class BeamCrafterRecipes implements Runnable {
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
                     .particleID_A(HIGGS.getId())
-                    .particleID_B(HIGGS.getId())
+                    .particleID_B(UPSILON.getId())
                     .amount_A(85)
-                    .amount_B(85)
+                    .amount_B(600)
                     .build())
             .eut(TierEU.RECIPE_UMV)
             .duration(2 * SECONDS)
