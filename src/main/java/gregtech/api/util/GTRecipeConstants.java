@@ -24,6 +24,7 @@ import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.api.util.recipe.QuantumComputerRecipeData;
 import gregtech.api.util.recipe.Scanning;
@@ -190,8 +191,7 @@ public class GTRecipeConstants {
     /**
      * Tier of advanced compression (HIP/black hole)
      */
-    public static final RecipeMetadataKey<Integer> COMPRESSION_TIER = SimpleRecipeMetadataKey
-        .create(Integer.class, "compression");
+    public static final RecipeMetadataKey<Integer> COMPRESSION_TIER = CompressionTierKey.INSTANCE;
 
     /**
      * Dissolution Tank Ratio.
@@ -246,10 +246,10 @@ public class GTRecipeConstants {
         .create(Integer.class, "sparge_max_byproduct");
 
     /**
-     * Research Station data.
+     * Research Station data, upper 48 bits are for minimum computation, lower 16 bit for research amps
      */
-    public static final RecipeMetadataKey<Integer> RESEARCH_STATION_DATA = SimpleRecipeMetadataKey
-        .create(Integer.class, "research_station_data");
+    public static final RecipeMetadataKey<Long> RESEARCH_STATION_DATA = SimpleRecipeMetadataKey
+        .create(Long.class, "research_station_data");
 
     /**
      * sievert data required for the biovat recipes.
@@ -265,6 +265,12 @@ public class GTRecipeConstants {
      * Whether non-gas recipe should be generated together with gas recipes.
      */
     public static final RecipeMetadataKey<Boolean> NO_GAS = SimpleRecipeMetadataKey.create(Boolean.class, "no_gas");
+
+    /**
+     * Prevents automatic generation of a non-cell multiblock variant from this recipe.
+     */
+    public static final RecipeMetadataKey<Boolean> SKIP_CELL_RECIPE_GENERATION = SimpleRecipeMetadataKey
+        .create(Boolean.class, "skip_cell_recipe_generation");
 
     /**
      * Circuit config in non-gas recipe. No integrated circuit applied if this is set to -1 (default).
@@ -337,21 +343,21 @@ public class GTRecipeConstants {
         int baseDuration = builder.getDuration();
 
         if (recycle) {
+            // Recycling only has no gas variant
             builder.recipeCategory(RecipeCategories.arcFurnaceRecycling);
-        }
+        } else {
+            // Generate recipe with gas
+            for (BlastFurnaceGasStat gasStat : BlastFurnaceGasStat.BlastFurnaceGasStats) {
+                int gasAmount = (int) (gasStat.recipeConsumedAmountMultiplier * baseGasAmount);
+                ret.addAll(
+                    builder.copy()
+                        .duration((int) Math.max(1, baseDuration * gasStat.recipeTimeMultiplier))
+                        .fluidInputs(GTUtility.copyAmount(gasAmount, gasStat.gas))
+                        .circuit(11)
+                        .addTo(RecipeMaps.arcFurnaceRecipes));
+            }
 
-        // Generate recipe with gas
-        for (BlastFurnaceGasStat gasStat : BlastFurnaceGasStat.BlastFurnaceGasStats) {
-            int gasAmount = (int) (gasStat.recipeConsumedAmountMultiplier * baseGasAmount);
-            ret.addAll(
-                builder.copy()
-                    .duration((int) Math.max(1, baseDuration * gasStat.recipeTimeMultiplier))
-                    .fluidInputs(GTUtility.copyAmount(gasAmount, gasStat.gas))
-                    .circuit(11)
-                    .addTo(RecipeMaps.arcFurnaceRecipes));
-        }
-
-        if (!recycle) {
+            // Generate recipe with plasma
             for (Materials mat : new Materials[] { Materials.Argon, Materials.Nitrogen }) {
                 int tPlasmaAmount = (int) Math.max(1L, baseDuration / (mat.getMass() * 16L));
                 GTRecipeBuilder plasmaBuilder = builder.copy()

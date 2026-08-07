@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -32,8 +33,6 @@ import gregtech.common.gui.modularui.singleblock.MTEItemDistributorGui;
 public class MTEItemDistributor extends MTEBuffer {
 
     private static final int NBT_BYTE_ARRAY = 7;
-
-    private static final String DISTRIBUTION_TOOLTIP = "GT5U.machines.item_distributor.distribution.tooltip";
 
     private byte[] itemsPerSide = new byte[6];
     private ForgeDirection currentSide = ForgeDirection.DOWN;
@@ -230,7 +229,7 @@ public class MTEItemDistributor extends MTEBuffer {
             }
         }
         if (!distributionDescriptions.isEmpty()) {
-            tooltip.add(GTUtility.translate(DISTRIBUTION_TOOLTIP) + ":");
+            tooltip.add(StatCollector.translateToLocal("GT5U.machines.item_distributor.distribution.tooltip") + ":");
             tooltip.addAll(distributionDescriptions);
         }
     }

@@ -10,14 +10,10 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -40,8 +36,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryElement;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryNetwork;
@@ -62,7 +56,7 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     protected final StructureWrapperInstanceInfo<TSelf> structureInstanceInfo;
 
     public MTEBECMultiblockBase(int id, String name) {
-        super(id, name, GTUtility.translate("gt.blockmachines." + name + ".name"));
+        super(id, name, StatCollector.translateToLocal("gt.blockmachines." + name + ".name"));
 
         structure = new StructureWrapper<>(this);
         structureInstanceInfo = null;
@@ -136,6 +130,8 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     public void clearHatches() {
         super.clearHatches();
 
+        structureInstanceInfo.clearHatches();
+
         mPreviousBECHatches = new ArrayList<>(mBECHatches);
 
         mBECHatches.forEach(h -> h.removeController(this));
@@ -157,29 +153,16 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     @Override
     @SuppressWarnings("unchecked")
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        if (!structure.checkStructure((TSelf) this, errors)) return;
+        if (!structure.checkStructure((TSelf) this, errors)) {
+            if (connectsToNetwork()) BECFactoryGrid.INSTANCE.updateElement(this);
+            return;
+        }
         structureInstanceInfo.validate(errors);
         structureInstanceInfo.onPostCheck((TSelf) this);
 
-        if (!Objects.equals(mPreviousBECHatches, mBECHatches)) {
+        if (!new HashSet<>(mPreviousBECHatches).equals(new HashSet<>(mBECHatches))) {
             BECFactoryGrid.INSTANCE.updateElement(this);
         }
-    }
-
-    @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString("network", network == null ? "None" : String.valueOf(network.id));
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        currenttip.add(
-            "Network: " + accessor.getNBTData()
-                .getString("network"));
     }
 
     @Override
@@ -247,11 +230,15 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         return ConnectionType.NONE;
     }
 
+    protected boolean connectsToNetwork() {
+        return true;
+    }
+
     @Override
     public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick_EM(aBaseMetaTileEntity);
 
-        if (GTUtility.isServer()) {
+        if (GTUtility.isServer() && connectsToNetwork()) {
             BECFactoryGrid.INSTANCE.updateElement(this);
         }
     }
@@ -260,9 +247,29 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     public void onRemoval() {
         super.onRemoval();
 
-        if (GTUtility.isServer()) {
+        if (GTUtility.isServer() && connectsToNetwork()) {
             BECFactoryGrid.INSTANCE.removeElement(this);
         }
+    }
+
+    @Override
+    public void onUnload() {
+        super.onUnload();
+
+        if (GTUtility.isServer() && connectsToNetwork()) {
+            BECFactoryGrid.INSTANCE.removeElement(this);
+        }
+    }
+
+    @Override
+    public String[] getInfoData() {
+        List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
+
+        if (connectsToNetwork()) {
+            data.add("BEC Network: " + (network == null ? "None" : network.id));
+        }
+
+        return data.toArray(new String[0]);
     }
 
     public enum BECHatches implements IHatchElement<MTEBECMultiblockBase<?>> {
@@ -290,7 +297,7 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         @Override
         public String getDisplayName() {
             return switch (this) {
-                case Hatch -> GTUtility.translate("gt.machine.bec.hatch.bec");
+                case Hatch -> StatCollector.translateToLocal("gt.blockmachines.hatch.bec.name");
             };
         }
 

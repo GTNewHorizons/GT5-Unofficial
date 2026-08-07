@@ -139,7 +139,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                 .outputChances(10000, 7000, 4000)
                 .fluidInputs(Materials.Mercury.getFluid(1_000))
                 .duration(40 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(chemicalBathRecipes);
 
             didMercury = true;
@@ -154,7 +154,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                 .outputChances(10000, 9900, 4000)
                 .fluidInputs(Materials.Mercury.getFluid(1_000))
                 .duration(40 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(chemicalBathRecipes);
 
             didMercury = true;
@@ -169,7 +169,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                 .outputChances(10000, 7000, 4000)
                 .fluidInputs(Materials.SodiumPersulfate.getFluid(100L))
                 .duration(40 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(chemicalBathRecipes);
 
             didPersulfate = true;

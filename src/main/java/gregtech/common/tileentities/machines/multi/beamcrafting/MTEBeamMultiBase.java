@@ -39,6 +39,7 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
         if (mte == null) return false;
 
         if (mte instanceof MTEHatchInputBeamline) {
+            this.addIfSmartInput(mte);
             return this.mInputBeamline.add((MTEHatchInputBeamline) mte);
         }
 
@@ -109,6 +110,14 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
         return false;
     }
 
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        this.mInputBeamline.clear();
+        this.mOutputBeamline.clear();
+        this.mAdvancedOutputBeamline.clear();
+    }
+
     protected static <T extends MTEBeamMultiBase<T>> IStructureElement<T> buildBeamlineInputHatch(Class<T> clazz,
         int casingIndex, int hint) {
         return buildHatchAdder(clazz).hatchId(HATCH_BEAMLINE_INPUT.ID)
@@ -124,6 +133,7 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
             .casingIndex(casingIndex)
             .hint(hint)
             .adder(MTEBeamMultiBase::addBeamLineOutputHatch)
+            .exclusive()
             .build();
     }
 

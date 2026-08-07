@@ -1,8 +1,6 @@
 package gregtech.common.items.armor;
 
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.items.armor.ArmorHelper.SLOT_CHEST;
-import static gregtech.api.items.armor.ArmorHelper.SLOT_LEGS;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.List;
@@ -18,12 +16,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
-import net.minecraftforge.common.util.Constants.NBT;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,15 +29,17 @@ import org.lwjgl.input.Keyboard;
 import com.gtnewhorizon.gtnhlib.keybind.IKeyPressedListener;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
+import codechicken.nei.api.API;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import forestry.api.apiculture.IArmorApiarist;
+import forestry.api.apiculture.IArmorApiaristMulti;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods.ModIDs;
 import gregtech.api.hazards.Hazard;
 import gregtech.api.hazards.IHazardProtector;
+import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorContext;
 import gregtech.api.items.armor.ArmorContext.ArmorContextImpl;
 import gregtech.api.items.armor.ArmorState;
@@ -49,7 +48,7 @@ import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
-import gregtech.api.util.GTDataUtils;
+import gregtech.api.items.armor.ui.ArmorRadialMenu;
 import gregtech.api.util.GTUtility;
 import gregtech.common.misc.NoTooltipElectricItemManager;
 import ic2.api.item.ICustomDamageItem;
@@ -61,15 +60,16 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.nodes.IRevealer;
 
 @InterfaceList(
-    value = { @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = ModIDs.FORESTRY),
+    value = { @Interface(iface = "forestry.api.apiculture.IArmorApiaristMulti", modid = ModIDs.FORESTRY),
         @Interface(iface = "thaumcraft.api.IVisDiscountGear", modid = ModIDs.THAUMCRAFT),
         @Interface(iface = "thaumcraft.api.IGoggles", modid = ModIDs.THAUMCRAFT),
         @Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = ModIDs.THAUMCRAFT),
-        @Interface(iface = "net.dries007.holoInventory.api.IHoloGlasses", modid = ModIDs.HOLO_INVENTORY), })
+        @Interface(iface = "net.dries007.holoInventory.api.IHoloGlasses", modid = ModIDs.HOLO_INVENTORY),
+        @Interface(iface = "vazkii.botania.api.mana.IManaDiscountArmor", modid = ModIDs.BOTANIA) })
 
-public class MechArmorBase extends ItemArmor
-    implements IKeyPressedListener, ISpecialArmor, ISpecialElectricItem, IGoggles, IRevealer, IVisDiscountGear,
-    IArmorApiarist, IHazardProtector, ICustomDamageItem, net.dries007.holoInventory.api.IHoloGlasses {
+public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISpecialArmor, ISpecialElectricItem,
+    IGoggles, IRevealer, IVisDiscountGear, IArmorApiaristMulti, IHazardProtector, ICustomDamageItem,
+    net.dries007.holoInventory.api.IHoloGlasses, vazkii.botania.api.mana.IManaDiscountArmor {
 
     protected IIcon coreIcon;
     protected IIcon frameIcon;
@@ -92,6 +92,7 @@ public class MechArmorBase extends ItemArmor
         this.type = type;
         this.setMaxDamage(0);
         this.setHasSubtypes(false);
+        API.setAliases(new ItemStack(this), "gt.alias.mechanical_armor");
     }
 
     @Override
@@ -143,13 +144,18 @@ public class MechArmorBase extends ItemArmor
     public void onArmorUnequip(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
         ArmorContext context = load(world, player, stack);
 
-        for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
-            if (player instanceof EntityPlayerMP playerMP) {
+        if (player instanceof EntityPlayerMP playerMP) {
+            for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
                 for (SyncedKeybind keyBind : behavior.getListenedKeys(context)) {
                     keyBind.removePlayerListener(playerMP, this);
                 }
             }
 
+            ArmorActionManager.getKeybind("open_radial_menu")
+                .removePlayerListener(playerMP, this);
+        }
+
+        for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
             behavior.onArmorUnequip(context);
         }
     }
@@ -158,6 +164,9 @@ public class MechArmorBase extends ItemArmor
         ArmorContext context = load(world, player, stack);
 
         if (player instanceof EntityPlayerMP playerMP) {
+            ArmorActionManager.getKeybind("open_radial_menu")
+                .registerPlayerListener(playerMP, this);
+
             for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
                 for (SyncedKeybind keyBind : behavior.getListenedKeys(context)) {
                     keyBind.registerPlayerListener(playerMP, this);
@@ -171,14 +180,16 @@ public class MechArmorBase extends ItemArmor
             for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
                 for (SyncedKeybind keyBind : behavior.getListenedKeys(context)) {
                     if (!initMessage) {
-                        GTUtility.sendChatToPlayer(player, GTUtility.translate("GT5U.armor.message.systems_online"));
+                        GTUtility.sendChatToPlayer(
+                            player,
+                            StatCollector.translateToLocal("GT5U.armor.message.systems_online"));
                         initMessage = true;
                     }
 
                     if (keyBind.getKeybinding() != null) {
                         GTUtility.sendChatToPlayer(
                             player,
-                            GTUtility.translate(
+                            StatCollector.translateToLocal(
                                 keyBind.getKeybinding()
                                     .getKeyDescription())
                                 + ": "
@@ -203,6 +214,13 @@ public class MechArmorBase extends ItemArmor
         if (stack.getItem() != this) return;
 
         ArmorContext context = load(player.getEntityWorld(), player, stack);
+
+        if (keyPressed == ArmorActionManager.getKeybind("open_radial_menu")) {
+            if (isDown && ArmorActionManager.isPrimaryArmorPiece(player, this)) {
+                ArmorRadialMenu.INSTANCE.open(player);
+            }
+            return;
+        }
 
         boolean didSomething = false;
 
@@ -258,8 +276,9 @@ public class MechArmorBase extends ItemArmor
             if (slot == 2) return GregTech.getResourcePath("textures/items/mech_armor/texture_layer_skeleton2.png");
             return GregTech.getResourcePath("textures/items/mech_armor/texture_layer_skeleton1.png");
         }
-        if (slot == 2) return GregTech.getResourcePath("textures/items/mech_armor/texture_layer2.png");
-        return GregTech.getResourcePath("textures/items/mech_armor/texture_layer1.png");
+
+        if (slot == 2) return GregTech.getResourcePath("textures/items/mech_armor/texture_layer_combined2.png");
+        return GregTech.getResourcePath("textures/items/mech_armor/texture_layer_combined1.png");
     }
 
     @Override
@@ -268,7 +287,13 @@ public class MechArmorBase extends ItemArmor
         if (modelLegs == null) modelLegs = new ModelMechArmor(0.25F);
         if (modelOther == null) modelOther = new ModelMechArmor(0.5F);
 
-        ModelMechArmor model = (armorSlot == SLOT_LEGS) ? modelLegs : modelOther;
+        ModelMechArmor model = (armorSlot == 2) ? modelLegs : modelOther;
+
+        if (getFrame(itemStack) != null) {
+            model.setColor(getFrame(itemStack).getColor());
+        } else {
+            model.setColor(new short[] { -1 });
+        }
 
         model.bipedHead.showModel = (armorType == 0);
         model.bipedHeadwear.showModel = (armorType == 0);
@@ -280,7 +305,7 @@ public class MechArmorBase extends ItemArmor
 
         ArmorState state = ArmorState.load(itemStack);
 
-        model.jettank1.showModel = (armorSlot == SLOT_CHEST && state.hasBehavior(BehaviorName.Jetpack));
+        model.jettank1.showModel = (armorSlot == 1 && state.hasBehavior(BehaviorName.Jetpack));
 
         model.core1.showModel = false;
         model.core2.showModel = false;
@@ -292,6 +317,19 @@ public class MechArmorBase extends ItemArmor
                 case 2 -> model.core2.showModel = true;
                 case 3 -> model.core3.showModel = true;
                 case 4 -> model.core4.showModel = true;
+            }
+        }
+
+        if (entityLiving != null) {
+            model.isSneak = entityLiving.isSneaking();
+
+            model.isRiding = entityLiving.isRiding();
+            model.isChild = entityLiving.isChild();
+
+            model.heldItemRight = entityLiving.getEquipmentInSlot(0) != null ? 1 : 0;
+
+            if (entityLiving instanceof EntityPlayer player) {
+                model.aimedBow = player.getItemInUseDuration() > 0;
             }
         }
 
@@ -345,25 +383,21 @@ public class MechArmorBase extends ItemArmor
     @Override
     public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage,
         int slot) {
-        if (source.isUnblockable()) return new ArmorProperties(0, getDamageReduction(armor) / 100D, 15);
-
         ArmorContext context = load(player, armor);
-
         if (context.isBehaviorActive(BehaviorName.ForceField) && context.drainEnergy(100000 * damage)) {
             context.save();
             return new ArmorProperties(0, 100, Integer.MAX_VALUE);
         }
 
-        if (source.isDamageAbsolute() || source.isMagicDamage() || context.getArmorState().charge < damage * 100) {
-            return new ArmorProperties(0, getDamageReduction(armor) / 100D, 15);
-        }
+        if (source.isUnblockable()) return new ArmorProperties(0, 0, 0);
 
-        return new ArmorProperties(0, getDamageReduction(armor) / 24.5D, 1000);
+        int max = context.getArmorState().charge < damage * 100 ? 0 : Integer.MAX_VALUE;
+        return new ArmorProperties(0, getDamageReduction(armor), max);
     }
 
     @Override
     public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-        return (int) getDamageReduction(armor);
+        return (int) (20 * getDamageReduction(armor));
     }
 
     @Override
@@ -374,15 +408,10 @@ public class MechArmorBase extends ItemArmor
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public boolean shouldRender(ItemStack stack) {
-        NBTTagCompound tag = stack.getTagCompound();
-        if (tag == null) return false;
-        NBTTagList active = tag.getTagList("active", NBT.TAG_STRING);
-        String name = BehaviorName.HoloInventory.name();
-        for (int i = 0; i < active.tagCount(); i++) {
-            if (name.equals(active.getStringTagAt(i))) return true;
-        }
-        return false;
+        ArmorContext context = load(null, stack);
+        return context.isBehaviorActive(BehaviorName.HoloInventory);
     }
 
     // Thaumcraft compat
@@ -391,14 +420,14 @@ public class MechArmorBase extends ItemArmor
     public boolean showIngamePopups(ItemStack armor, EntityLivingBase entity) {
         ArmorContext context = load(entity, armor);
 
-        return context.hasBehavior(BehaviorName.GogglesOfRevealing);
+        return context.isBehaviorActive(BehaviorName.GogglesOfRevealing);
     }
 
     @Override
     public boolean showNodes(ItemStack armor, EntityLivingBase entity) {
         ArmorContext context = load(entity, armor);
 
-        return context.hasBehavior(BehaviorName.GogglesOfRevealing);
+        return context.isBehaviorActive(BehaviorName.GogglesOfRevealing);
     }
 
     @Override
@@ -411,18 +440,18 @@ public class MechArmorBase extends ItemArmor
     // Forestry apiarist compat
     @Override
     public boolean protectEntity(EntityLivingBase entity, ItemStack armor, String cause, boolean doProtect) {
-        ItemStack leggings = GTDataUtils.getIndexSafe(entity.getLastActiveItems(), SLOT_LEGS);
-
-        if (leggings == null) return false;
-
-        ArmorContext context = load(entity, leggings);
-
+        ArmorContext context = load(entity, armor);
         return context.hasBehavior(BehaviorName.Apiarist);
     }
 
     @Override
     public boolean protectPlayer(EntityPlayer player, ItemStack armor, String cause, boolean doProtect) {
         return protectEntity(player, armor, cause, doProtect);
+    }
+
+    @Override
+    public int getProtectionCount(EntityLivingBase entity, ItemStack armor, String cause) {
+        return 4;
     }
 
     // Hazards
@@ -524,4 +553,23 @@ public class MechArmorBase extends ItemArmor
         // do nothing
         return false;
     }
+
+    // Botania Compat
+    @Override
+    public float getDiscount(ItemStack stack, int slot, EntityPlayer player) {
+        ArmorContext context = load(player.getEntityWorld(), player, stack);
+
+        return context.getArmorState().manaDiscount;
+    }
+
+    @Override
+    public int getItemEnchantability() {
+        return 0;
+    }
+
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return false;
+    }
+
 }

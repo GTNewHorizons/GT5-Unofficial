@@ -62,6 +62,11 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
     protected void dropFewItems(boolean p_70628_1_, int p_70628_2_) {
         int flowers = this.rand.nextInt(3);
         int ingots = this.rand.nextInt(3);
+        int lootingLevel = Math.min(p_70628_2_, 4); // hard capping it to 4
+
+        for (int i = 0; i < lootingLevel; i++) {
+            ingots += this.rand.nextInt(0, 2);
+        }
 
         if (flowers > 0) {
             this.func_145778_a(Item.getItemFromBlock(Blocks.yellow_flower), flowers, 0.0F);

@@ -2,7 +2,6 @@ package gtPlusPlus.core.item.base;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,8 +81,7 @@ public class BaseItemComponent extends Item {
         } else {
             aFormattedNameForFluids = unlocalName;
         }
-        Material aTempMaterial = Material.mMaterialCache.get(localName.toLowerCase());
-        this.componentMaterial = aTempMaterial;
+        this.componentMaterial = Material.mMaterialCache.get(localName.toLowerCase());
         this.unlocalName = "itemCell" + aFormattedNameForFluids;
         this.materialName = localName;
         this.materialKey = fluid.getUnlocalizedName();
@@ -181,14 +179,14 @@ public class BaseItemComponent extends Item {
                         list.add(
                             EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                                 "GTPP.tooltip.material.radioactivity",
-                                this.componentMaterial.vRadiationLevel));
+                                this.componentMaterial.radiationLevel));
                     } else {
                         list.add(
                             EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
                     }
                 }
             }
-        } catch (Exception t) {}
+        } catch (Exception ignored) {}
 
         super.addInformation(stack, aPlayer, list, bool);
     }
@@ -199,7 +197,7 @@ public class BaseItemComponent extends Item {
         if (this.componentMaterial != null) {
             EntityUtils.applyRadiationDamageToEntity(
                 iStack.stackSize,
-                this.componentMaterial.vRadiationLevel,
+                this.componentMaterial.radiationLevel,
                 world,
                 entityHolding);
         }
@@ -212,26 +210,6 @@ public class BaseItemComponent extends Item {
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
         return true;
-    }
-
-    public static int getMaterialCustomColor(Material material) {
-        switch (material.getRGBA()[3]) {
-            case 2:
-                // Mild Glow Effect
-                // 4 sec cycle, 200 control point. 20ms interval.
-                int currentFrame = (int) ((System.nanoTime() % 4_000_000_000L) / 20_000_000L);
-                int value = currentFrame < 50 ? currentFrame + 1
-                    : currentFrame < 100 ? 50 : currentFrame < 150 ? 149 - currentFrame : 0;
-                return Utils.rgbtoHexValue(
-                    Math.min(255, Math.max(material.getRGBA()[0] + value, 0)),
-                    Math.min(255, Math.max(material.getRGBA()[1] + value, 0)),
-                    Math.min(255, Math.max(material.getRGBA()[2] + value, 0)));
-            case 3:
-                // Rainbow Hue Cycle
-                return Color.HSBtoRGB((float) (System.nanoTime() % 8_000_000_000L) / 8_000_000_000f, 1, 1);
-            default:
-                return Utils.rgbtoHexValue(255, 255, 255);
-        }
     }
 
     @Override
@@ -258,7 +236,8 @@ public class BaseItemComponent extends Item {
             if (this.componentMaterial.getRGBA()[3] <= 1) {
                 return this.componentColour;
             } else {
-                return getMaterialCustomColor(this.componentMaterial);
+                // Animated materials ship baked animated textures; render them untinted.
+                return Utils.rgbtoHexValue(255, 255, 255);
             }
 
         } catch (Exception ignored) {}

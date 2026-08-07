@@ -191,8 +191,6 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
     }
 
     private ModularPanel createStackSizeConfigurationPanel(ModularPanel parent) {
-        BooleanSyncValue isRecipeCheckSyncer = new BooleanSyncValue(machine::doFastRecipeCheck, machine::setRecipeCheck)
-            .allowC2S();
         IntSyncValue minAutoPullAmountSyncer = new IntSyncValue(
             machine::getMinAutoPullAmount,
             machine::setMinAutoPullAmount).allowC2S();
@@ -213,8 +211,8 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
         // stack size text field
         mainColumn.child(
             new TextFieldWidget().value(minAutoPullAmountSyncer)
-                .setNumbers(1, Integer.MAX_VALUE)
-                .setFormatAsInteger(true)
+                .numbersInt(1, Integer.MAX_VALUE)
+                .formatAsInteger(true)
                 .setMaxLength(10)
                 .setTextAlignment(Alignment.CENTER)
                 .width(72));
@@ -229,31 +227,11 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
         // refresh time text field
         mainColumn.child(
             new TextFieldWidget().value(autoPullRefreshTimeSyncer)
-                .setNumbers(1, Integer.MAX_VALUE)
-                .setFormatAsInteger(true)
+                .numbersInt(1, Integer.MAX_VALUE)
+                .formatAsInteger(true)
                 .setMaxLength(10)
                 .setTextAlignment(Alignment.CENTER)
                 .width(72));
-
-        Flow recipeRow = Flow.row()
-            .coverChildren()
-            .childPadding(4);
-
-        // recipe check label
-        recipeRow.child(
-            IKey.lang("GT5U.machines.stocking_bus.force_check")
-                .asWidget()
-                .maxWidth(50));
-
-        // recipe check toggle button
-        recipeRow.child(
-            new ToggleButton().value(isRecipeCheckSyncer)
-                .background(true, GTGuiTextures.BUTTON_STANDARD)
-                .background(false, GTGuiTextures.BUTTON_STANDARD)
-                .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-                .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS));
-
-        mainColumn.child(recipeRow);
 
         return createPopUpPanel("configPanel").coverChildren()
             .relative(parent)
@@ -331,7 +309,7 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
             }
         })
             .asWidget()
-            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT);
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE);
 
         return super.createBottomLeftCornerFlow(panel, syncManager).child(status);
     }

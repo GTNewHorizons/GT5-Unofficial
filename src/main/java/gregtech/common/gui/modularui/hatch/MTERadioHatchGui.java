@@ -41,6 +41,19 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
         super(base);
     }
 
+    private int tickTimer = 0;
+    private int lastSoundTick = 0;
+
+    private void onTick(PosGuiData data) {
+        if (!data.isClient()) return;
+        tickTimer++;
+        if (machine.sievert <= 0 || baseMetaTileEntity.isMuffled()) return;
+        if (tickTimer > lastSoundTick + 5) {
+            lastSoundTick = tickTimer;
+            machine.startSoundLoop((byte) 1, data.getX(), data.getY(), data.getZ());
+        }
+    }
+
     // credit to purebluez
     @Override
     public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
@@ -151,6 +164,7 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
                 GTGuiTextures.PICTURE_BARTWORKS_LOGO_STANDARD.asWidget()
                     .pos(10, 53)
                     .size(47, 21))
+            .onUpdateListener(modularPanel -> this.onTick(data))
             .bindPlayerInventory();
     }
 
@@ -177,7 +191,7 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
                     .pos(16, 29)
                     .size(51, 50))
             .child(
-                new TextFieldWidget().setNumbers(0, 100)
+                new TextFieldWidget().numbersInt(0, 100)
                     .value(
                         new StringSyncValue(coverageSyncer::getStringValue, coverageSyncer::setStringValue).allowC2S())
                     .setTextColor(com.cleanroommc.modularui.utils.Color.WHITE.darker(1))

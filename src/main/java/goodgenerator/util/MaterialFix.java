@@ -11,6 +11,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import bartworks.system.material.Werkstoff;
+import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -26,7 +27,7 @@ public class MaterialFix {
                 .itemInputs(material.get(OrePrefixes.gearGtSmall))
                 .fluidOutputs(material.getMolten(1 * INGOTS))
                 .duration(1 * SECONDS + 12 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
         if (material.hasItemType(OrePrefixes.spring)) {
@@ -34,7 +35,7 @@ public class MaterialFix {
                 .itemInputs(material.get(OrePrefixes.spring))
                 .fluidOutputs(material.getMolten(1 * INGOTS))
                 .duration(1 * SECONDS + 12 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
         if (material.hasItemType(OrePrefixes.itemCasing)) {
@@ -42,7 +43,7 @@ public class MaterialFix {
                 .itemInputs(material.get(OrePrefixes.itemCasing))
                 .fluidOutputs(material.getMolten(1 * HALF_INGOTS))
                 .duration(16 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
         if (material.hasItemType(OrePrefixes.wireGt01)) {
@@ -50,7 +51,7 @@ public class MaterialFix {
                 .itemInputs(material.get(OrePrefixes.wireGt01))
                 .fluidOutputs(material.getMolten(1 * HALF_INGOTS))
                 .duration(16 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
         if (material.hasItemType(OrePrefixes.cableGt01)) {
@@ -59,7 +60,7 @@ public class MaterialFix {
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Ash, 2))
                 .fluidOutputs(material.getMolten(1 * HALF_INGOTS))
                 .duration(16 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
         if (material.hasItemType(OrePrefixes.foil)) {
@@ -67,7 +68,7 @@ public class MaterialFix {
                 .itemInputs(material.get(OrePrefixes.foil))
                 .fluidOutputs(material.getMolten(1 * QUARTER_INGOTS))
                 .duration(8 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
         if (material.hasItemType(OrePrefixes.springSmall)) {
@@ -75,7 +76,7 @@ public class MaterialFix {
                 .itemInputs(material.get(OrePrefixes.springSmall))
                 .fluidOutputs(material.getMolten(1 * QUARTER_INGOTS))
                 .duration(8 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
         if (material.hasItemType(OrePrefixes.ring)) {
@@ -83,7 +84,7 @@ public class MaterialFix {
                 .itemInputs(material.get(OrePrefixes.ring))
                 .fluidOutputs(material.getMolten(1 * QUARTER_INGOTS))
                 .duration(8 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
         if (material.hasItemType(OrePrefixes.bolt)) {
@@ -91,7 +92,7 @@ public class MaterialFix {
                 .itemInputs(material.get(OrePrefixes.bolt))
                 .fluidOutputs(material.getMolten(1 * EIGHTH_INGOTS))
                 .duration(4 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
         if (material.hasItemType(OrePrefixes.wireFine)) {
@@ -99,7 +100,7 @@ public class MaterialFix {
                 .itemInputs(material.get(OrePrefixes.wireFine))
                 .fluidOutputs(material.getMolten(1 * EIGHTH_INGOTS))
                 .duration(4 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
         if (material.hasItemType(OrePrefixes.round)) {
@@ -107,7 +108,7 @@ public class MaterialFix {
                 .itemInputs(material.get(OrePrefixes.round))
                 .fluidOutputs(material.getMolten(1 * NUGGETS))
                 .duration(4 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
         if (material.hasItemType(OrePrefixes.screw)) {
@@ -115,7 +116,7 @@ public class MaterialFix {
                 .itemInputs(material.get(OrePrefixes.screw))
                 .fluidOutputs(material.getMolten(1 * NUGGETS))
                 .duration(4 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
         if (material.hasItemType(OrePrefixes.rotor)) {
@@ -123,7 +124,7 @@ public class MaterialFix {
                 .itemInputs(material.get(OrePrefixes.rotor))
                 .fluidOutputs(material.getMolten(612))
                 .duration(136 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
         if (material.hasItemType(OrePrefixes.gearGt)) {
@@ -131,7 +132,7 @@ public class MaterialFix {
                 .itemInputs(material.get(OrePrefixes.gearGt))
                 .fluidOutputs(material.getMolten(4 * INGOTS))
                 .duration(128 * TICKS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
     }
@@ -149,7 +150,7 @@ public class MaterialFix {
                             tMaterial.getStats()
                                 .getMass() * 2,
                             1L) * TICKS)
-                    .eut(TierEU.RECIPE_MV / 2)
+                    .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
                 GTModHandler.addCraftingRecipe(
                     tMaterial.get(OrePrefixes.plateDouble, 1),
@@ -166,7 +167,7 @@ public class MaterialFix {
                             tMaterial.getStats()
                                 .getMass() * 3,
                             1L) * TICKS)
-                    .eut(TierEU.RECIPE_MV / 2)
+                    .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(tMaterial.get(OrePrefixes.ingot, 3))
@@ -177,7 +178,7 @@ public class MaterialFix {
                             tMaterial.getStats()
                                 .getMass() * 3,
                             1L) * TICKS)
-                    .eut(TierEU.RECIPE_MV / 2)
+                    .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
                 GTModHandler.addCraftingRecipe(
                     tMaterial.get(OrePrefixes.plateTriple, 1),
@@ -195,7 +196,7 @@ public class MaterialFix {
                             tMaterial.getStats()
                                 .getMass() * 9,
                             1L) * TICKS)
-                    .eut(TierEU.RECIPE_MV / 2)
+                    .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(tMaterial.get(OrePrefixes.ingot, 9))
@@ -206,7 +207,7 @@ public class MaterialFix {
                             tMaterial.getStats()
                                 .getMass() * 9,
                             1L) * TICKS)
-                    .eut(TierEU.RECIPE_MV / 2)
+                    .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
 
                 if (tMaterial.hasItemType(OrePrefixes.plateTriple)) {
@@ -219,7 +220,7 @@ public class MaterialFix {
                                 tMaterial.getStats()
                                     .getMass() * 3,
                                 1L) * TICKS)
-                        .eut(TierEU.RECIPE_MV / 2)
+                        .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                         .addTo(benderRecipes);
                 }
             }

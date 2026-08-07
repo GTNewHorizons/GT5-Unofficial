@@ -9,6 +9,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.GTMod;
@@ -17,7 +18,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEMonsterRepellent extends MTETieredMachineBlock {
@@ -30,7 +30,7 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return new String[] { GTUtility.translate(
+        return new String[] { StatCollector.translateToLocalFormatted(
             "gt.blockmachines.basicmachine.mobrep.tooltip",
             (4 + (12 * mTier)),
             (16 + (48 * mTier)),

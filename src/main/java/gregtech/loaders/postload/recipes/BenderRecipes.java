@@ -8,7 +8,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -235,7 +234,7 @@ public class BenderRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials.HV, 1L))
             .duration(5 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -243,7 +242,7 @@ public class BenderRecipes implements Runnable {
             .circuit(12)
             .itemOutputs(ItemList.Cell_Empty.get(1L))
             .duration(10 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -251,7 +250,7 @@ public class BenderRecipes implements Runnable {
             .circuit(12)
             .itemOutputs(ItemList.Cell_Empty.get(1L))
             .duration(5 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -259,7 +258,7 @@ public class BenderRecipes implements Runnable {
             .circuit(12)
             .itemOutputs(ItemList.Cell_Empty.get(4L))
             .duration(5 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
@@ -283,15 +282,7 @@ public class BenderRecipes implements Runnable {
             .circuit(2)
             .itemOutputs(ItemList.IC2_Fuel_Rod_Empty.get(1))
             .duration(5 * SECONDS)
-            .eut(8)
-            .addTo(benderRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GGMaterial.tairitsu.get(OrePrefixes.ingot, 9))
-            .circuit(9)
-            .itemOutputs(GGMaterial.tairitsu.get(OrePrefixes.plateDense, 1))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_ZPM)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(benderRecipes);
 
         if (GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Tin, 1L) != null) {

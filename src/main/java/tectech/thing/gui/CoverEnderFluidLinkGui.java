@@ -53,6 +53,8 @@ public class CoverEnderFluidLinkGui extends CoverBaseGui<CoverEnderFluidLink> {
     }
 
     private String getFrequency() {
+        if (cover.getTile()
+            .isClientSide()) return "";
         if (!(cover.getTile() instanceof IFluidHandler teTank)) {
             return "";
         }
@@ -62,6 +64,8 @@ public class CoverEnderFluidLinkGui extends CoverBaseGui<CoverEnderFluidLink> {
     }
 
     private void setFrequency(String val, PanelSyncManager syncManager) {
+        if (cover.getTile()
+            .isClientSide()) return;
         if (!(cover.getTile() instanceof IFluidHandler tank)) {
             return;
         }

@@ -153,7 +153,7 @@ public class MTEDrawerFramer extends MTEBasicMachine {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEBasicMachineBaseGui(this, this.getUIProperties()).useGregTechLogo(true)
+        return new MTEBasicMachineBaseGui<>(this, this.getUIProperties()).useGregTechLogo(true)
             .build(data, syncManager, uiSettings);
     }
 

@@ -44,11 +44,34 @@ public class MTEHatchMultiInput extends MTEHatchInput {
         mCapacityPer = getCapacityPerTank(aTier, aSlot);
         for (int i = 0; i < aSlot; i++) {
             final int index = i;
+            // GUI fluid edits go through the tank's fill()/drain() (the setter is only hit when filling an empty
+            // slot; topping up an existing fluid mutates it in place). Override both so any GUI change marks the tile
+            // dirty, which detectInventoryChange() turns into an event-based recipe check next tick.
             fluidTanks[i] = new FluidStackTank(
                 () -> mStoredFluid[index],
                 fluid -> mStoredFluid[index] = fluid,
-                mCapacityPer);
+                mCapacityPer) {
+
+                @Override
+                public int fill(FluidStack resource, boolean doFill) {
+                    int filled = super.fill(resource, doFill);
+                    if (doFill && filled > 0) markDirtyFromGui();
+                    return filled;
+                }
+
+                @Override
+                public FluidStack drain(int maxDrain, boolean doDrain) {
+                    FluidStack drained = super.drain(maxDrain, doDrain);
+                    if (doDrain && drained != null) markDirtyFromGui();
+                    return drained;
+                }
+            };
         }
+    }
+
+    private void markDirtyFromGui() {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base != null) base.markDirty();
     }
 
     @Override
@@ -295,11 +318,6 @@ public class MTEHatchMultiInput extends MTEHatchInput {
             "gt.blockmachines.input_hatch_multislot.desc",
             formatNumber(getCapacityPerTank(mTier, slots)),
             slots);
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
     }
 
     @Override

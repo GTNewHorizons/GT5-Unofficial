@@ -12,7 +12,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.common.CommonWidgets;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
-import gregtech.common.tileentities.machines.multi.compressor.MTEHeatSensor;
+import gregtech.common.tileentities.machines.MTEHeatSensor;
 
 public class MTEHeatSensorGui extends MTEHatchBaseGui<MTEHeatSensor> {
 
@@ -37,8 +37,8 @@ public class MTEHeatSensorGui extends MTEHatchBaseGui<MTEHeatSensor> {
     public Flow createThresholdFieldRow() {
         return Flow.row()
             .child(
-                new TextFieldWidget().setFormatAsInteger(true)
-                    .setNumbers(0, 100)
+                new TextFieldWidget().formatAsInteger(true)
+                    .numbersInt(0, 100)
                     .size(77, 12)
                     .value(new DoubleSyncValue(machine::getThreshold, machine::setThreshold).allowC2S())
                     .setFocusOnGuiOpen(true))

@@ -6,7 +6,6 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -99,7 +98,7 @@ public class CraftingRecipeLoader implements Runnable {
         }
 
         GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("ironFence", 6L),
+            ItemList.FenceIron.get(6L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { aTextIron2, aTextIron2, " w ", 'X', OrePrefixes.stick.get(Materials.AnyIron), 'S',
                 OrePrefixes.stick.get(Materials.Wood), 'I', OrePrefixes.ingot.get(Materials.AnyIron) });
@@ -1500,7 +1499,7 @@ public class CraftingRecipeLoader implements Runnable {
                     "insulatedIronCableItem", "glassFiberCableItem", "tinCableItem", "ironCableItem",
                     "insulatedTinCableItem", "detectorCableItem", "splitterCableItem", "electrolyzer", "cutter" })
             .map(x -> GTModHandler.getIC2Item(x, 1L))
-            .collect(Collectors.toList());
+            .toList();
 
         if (NotEnoughItems.isModLoaded()) {
             iToRemoveAndHide.forEach(item -> {

@@ -8,17 +8,15 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
@@ -138,6 +136,11 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
     }
 
     @Override
+    public boolean needsClientTick() {
+        return false;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity base, long aTick) {
         super.onPostTick(base, aTick);
 
@@ -159,11 +162,6 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
                         .enqueueUpdate(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord(), isActive);
                 }
             }
-        } else {
-            if (GTMod.clientProxy()
-                .changeDetected() == 4) {
-                base.issueTextureUpdate();
-            }
         }
     }
 
@@ -183,8 +181,7 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            getActive() ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("tt.infodata.pipe.active")
-                : EnumChatFormatting.RED + StatCollector.translateToLocal("tt.infodata.pipe.inactive") };
+        return new String[] { getActive() ? IGregTechDeviceInformation.encode("tt.infodata.pipe.active")
+            : IGregTechDeviceInformation.encode("tt.infodata.pipe.inactive") };
     }
 }

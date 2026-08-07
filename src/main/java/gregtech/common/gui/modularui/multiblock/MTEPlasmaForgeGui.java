@@ -103,10 +103,10 @@ public class MTEPlasmaForgeGui extends MTEMultiBlockBaseGui<MTEPlasmaForge> {
                 .asWidget()
                 .marginBottom(2));
         holdingColumn.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(1, 5)
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersInt(1, 5)
                 .setTextAlignment(Alignment.CENTER)
-                .setDefaultNumber(1)
+                .defaultNumber(1)
                 .value(catalystSyncer)
                 .size(WIDTH - PADDING_SIDES * 2, 18));
 

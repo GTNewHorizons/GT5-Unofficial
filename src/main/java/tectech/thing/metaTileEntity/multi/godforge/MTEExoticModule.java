@@ -15,6 +15,7 @@ import static tectech.loader.recipe.Godforge.exoticModulePlasmaItemMap;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ import java.util.stream.Stream;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -39,6 +40,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
@@ -52,8 +54,10 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEExoticModuleGui;
 import tectech.recipe.TecTechRecipeMaps;
+import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEExoticModule extends MTEBaseModule {
 
     public static final int RECIPE_REFRESH_LIMIT = 60 * SECONDS;
@@ -115,12 +119,15 @@ public class MTEExoticModule extends MTEBaseModule {
                     }
 
                     if (numberOfFluids != 0) {
-                        for (FluidStack fluidStack : randomizedFluidInput) {
-                            dumpFluid(
-                                mOutputHatches,
-                                new FluidStack(fluidStack.getFluid(), fluidStack.amount / 1000),
-                                false);
-                        }
+                        addFluidOutputs(
+                            Arrays.stream(randomizedFluidInput)
+                                .map(fluid -> {
+                                    FluidStack copy = fluid.copy();
+                                    copy.amount = copy.amount / 1000;
+                                    return copy;
+                                })
+                                .toArray(FluidStack[]::new),
+                            mOutputHatches);
                     }
 
                     if (numberOfItems != 0) {
@@ -336,13 +343,22 @@ public class MTEExoticModule extends MTEBaseModule {
         List<FluidStack> plasmas = new ArrayList<>();
 
         for (ItemStack itemStack : items) {
-            String dict = OreDictionary.getOreName(OreDictionary.getOreIDs(itemStack)[0]);
-            // substring 4 because dust is 4 characters long and there is no other possible oreDict
-            String strippedOreDict = dict.substring(4);
-            plasmas.add(
-                FluidRegistry.getFluidStack(
+            int[] oreIDs = OreDictionary.getOreIDs(itemStack);
+
+            // Retry until it finds a falid vluid
+            for (int oreID : oreIDs) {
+                String oreDict = OreDictionary.getOreName(oreID);
+                // substring 4 because dust is 4 characters long and there is no other possible oreDict
+                String strippedOreDict = oreDict.substring(4);
+                FluidStack plasma = FluidRegistry.getFluidStack(
                     "plasma." + strippedOreDict.toLowerCase(),
-                    (int) (INGOTS * multiplier * itemStack.stackSize)));
+                    (int) (INGOTS * multiplier * itemStack.stackSize));
+
+                if (plasma != null) {
+                    plasmas.add(plasma);
+                    break;
+                }
+            }
         }
 
         return plasmas.toArray(new FluidStack[0]);
@@ -496,34 +512,22 @@ public class MTEExoticModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Exotic Matter Producer")
-            .addInfo("This is a module of the Godforge")
-            .addInfo("Must be part of a Godforge to function")
-            .addInfo("Used for ultra high temperature matter degeneration")
-            .addSeparator(EnumChatFormatting.AQUA, 75)
-            .addInfo("The fourth and final module of the Godforge, this module breaks apart the very")
-            .addInfo("building blocks of matter, producing exotic mixtures in the process. Quark-Gluon Plasma")
-            .addInfo("can be manufactured right away, but production of Magnetic Monopole Matter (Magmatter)")
-            .addInfo("requires a fully upgraded Godforge")
-            .addInfo("This module is specialized towards acquisition of unique materials")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.exotic_matter_producer"))
+            .addMarkdown(new ResourceLocation("gregtech", "godforge-exotic-module"))
             .beginStructureBlock(7, 7, 13, false)
-            .addController("Front center")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Singularity Reinforced Stellar Shielding Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Harmonic Phonon Transmission Conduit")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Hatch")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Bus")
-            .toolTipFinisher(EnumChatFormatting.AQUA, 75);
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
+            .addCasing("0-20", CustomItemList.Godforge_SingularityShieldingCasing.get(1).getDisplayName(), false)
+            .addCasing("20", CustomItemList.Godforge_BoundlessStructureCasing.get(1).getDisplayName(), false)
+            .addCasing("5", CustomItemList.Godforge_GuidanceCasing.get(1).getDisplayName(), false)
+            .addCasing("5", CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(1).getDisplayName(), false)
+            .addCasing("1", CustomItemList.Godforge_StellarEnergySiphonCasing.get(1).getDisplayName(), false)
+            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -531,34 +535,31 @@ public class MTEExoticModule extends MTEBaseModule {
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>();
         str.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.progress",
                 GREEN + formatNumber(mProgresstime / 20) + RESET,
                 YELLOW + formatNumber(mMaxProgresstime / 20) + RESET));
         str.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "tt.infodata.multi.currently_using",
                 RED + (getBaseMetaTileEntity().isActive() ? formatNumber(EUt * actualParallel) : "0") + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.max_parallel",
-                RESET + formatNumber(getActualParallel())));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.max_parallel", YELLOW + formatNumber(getActualParallel()) + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.parallel.current",
-                RESET + (getBaseMetaTileEntity().isActive() ? formatNumber(getActualParallel()) : "0")));
+                YELLOW + (getBaseMetaTileEntity().isActive() ? formatNumber(getActualParallel()) : "0") + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.multiplier.recipe_time",
-                RESET + formatNumber(getSpeedBonus())));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.multiplier.recipe_time", YELLOW + formatNumber(getSpeedBonus()) + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.multiplier.energy",
-                RESET + formatNumber(getEnergyDiscount())));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.multiplier.energy", YELLOW + formatNumber(getEnergyDiscount()) + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "tt.infodata.multi.divisor.recipe_time.non_perfect_oc",
-                RESET + formatNumber(getOverclockTimeFactor())));
+                YELLOW + formatNumber(getOverclockTimeFactor()) + RESET));
         return str.toArray(new String[0]);
     }
 

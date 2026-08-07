@@ -2,11 +2,13 @@ package gregtech.common.blocks;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.Nullable;
@@ -28,6 +30,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.client.DynamicLangManager;
 import gregtech.common.render.GTRendererBlock;
 import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
@@ -51,6 +54,8 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
                 if (material == null) continue;
                 if (!material.generatesPrefix(OrePrefixes.sheetmetal)) continue;
 
+                DynamicLangManager.addStack(new ItemStack(this, 1, i));
+
                 OreDictionary.registerOre(
                     OrePrefixes.sheetmetal.get(material.getInternalName())
                         .toString(),
@@ -59,6 +64,7 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
         });
 
         GregTechAPI.sAfterGTPostload.add(this::registerRecipes);
+        GregTechAPI.registerMachineBlock(this, -1);
     }
 
     @Override
@@ -138,9 +144,9 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
     @SideOnly(Side.CLIENT)
     @Override
     public IIcon getIcon(int ordinalSide, int aMeta) {
-        Materials material = GregTechAPI.sGeneratedMaterials[aMeta];
+        IOreMaterial material = materials.get(aMeta);
         if (material == null) return null;
-        return material.mIconSet.mTextures[OrePrefixes.sheetmetal.getTextureIndex()].getIcon();
+        return material.getTextureSet().mTextures[OrePrefixes.sheetmetal.getTextureIndex()].getIcon();
     }
 
     public void registerRecipes() {
@@ -163,5 +169,17 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
     @Override
     public boolean createFacadeForBlock(int meta) {
         return false;
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+        GregTechAPI.causeMachineUpdate(world, x, y, z);
+        super.breakBlock(world, x, y, z, block, meta);
+    }
+
+    @Override
+    public void onBlockAdded(World world, int x, int y, int z) {
+        GregTechAPI.causeMachineUpdate(world, x, y, z);
+        super.onBlockAdded(world, x, y, z);
     }
 }

@@ -2,6 +2,7 @@ package bartworks.API.recipe;
 
 import bartworks.API.modularUI.BWUITextures;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
@@ -14,35 +15,32 @@ public class BartWorksRecipeMaps {
         .maxIO(6, 2, 1, 0)
         .minInputs(1, 1)
         .useSpecialSlot()
-        .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
+        .slotOverlaysMUI2((index, isFluid, isOutput, isSpecial) -> {
             if (isSpecial) {
-                return BWUITextures.OVERLAY_SLOT_MODULE;
+                return GTGuiTextures.OVERLAY_SLOT_MODULE;
             }
             if (isFluid) {
-                return GTUITextures.OVERLAY_SLOT_VIAL_2;
+                return GTGuiTextures.OVERLAY_SLOT_VIAL_2;
             }
             if (!isOutput) {
                 switch (index) {
                     case 0:
-                        return BWUITextures.OVERLAY_SLOT_DISH;
+                        return GTGuiTextures.OVERLAY_SLOT_DISH;
                     case 1:
-                        return BWUITextures.OVERLAY_SLOT_DNA_FLASK;
+                        return GTGuiTextures.OVERLAY_SLOT_DNA_FLASK;
                     case 2:
-                        return GTUITextures.OVERLAY_SLOT_CIRCUIT;
+                        return GTGuiTextures.OVERLAY_SLOT_CIRCUIT;
                     case 3:
-                        return GTUITextures.OVERLAY_SLOT_MOLECULAR_1;
+                        return GTGuiTextures.OVERLAY_SLOT_MOLECULAR_1;
                     case 4:
-                        return GTUITextures.OVERLAY_SLOT_MOLECULAR_2;
+                        return GTGuiTextures.OVERLAY_SLOT_MOLECULAR_2;
                     case 5:
-                        return GTUITextures.OVERLAY_SLOT_DATA_ORB;
+                        return GTGuiTextures.OVERLAY_SLOT_DATA_ORB;
                 }
             }
             return null;
         })
-        .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
-        .logo(BWUITextures.PICTURE_BW_LOGO_47X21)
-        .logoSize(47, 21)
-        .logoPos(125, 3)
+        .progressBarMUI2(GTGuiTextures.PROGRESSBAR_ARROW_MULTIPLE)
         .disableRegisterNEI()
         .build();
     public static final RecipeMap<RecipeMapBackend> bacterialVatRecipes = RecipeMapBuilder.of("bw.recipe.BacteriaVat")
@@ -69,8 +67,8 @@ public class BartWorksRecipeMaps {
         .maxIO(1, 0, 0, 0)
         .minInputs(1, 0)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> BWUITextures.OVERLAY_SLOT_ROD)
-        .logo(BWUITextures.PICTURE_BW_LOGO_47X21)
-        .logoSize(47, 21)
+        .logo(BWUITextures.PICTURE_BW_LOGO_47X20)
+        .logoSize(47, 20)
         .logoPos(118, 55)
         .dontUseProgressBar()
         .addSpecialTexture(74, 20, 29, 27, BWUITextures.PICTURE_RADIATION)

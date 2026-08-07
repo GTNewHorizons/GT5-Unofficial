@@ -278,7 +278,7 @@ public class MTELESU extends MTEMultiBlockBase {
 
     @Override
     public String getInventoryName() {
-        return "L.E.S.U.";
+        return getLocalNameKey();
     }
 
     @Override
@@ -410,26 +410,21 @@ public class MTELESU extends MTEMultiBlockBase {
             .setActive(true);
 
         long finishedTime = System.nanoTime();
-        // System.out.println("LESU LookUp: "+((finishedTime - startingTime) / 1000000)+"ms");
+
         if (finishedTime - startingTime > 5000000) MainMod.LOGGER.warn(
-            "LESU LookUp took longer than 5ms!(" + (finishedTime - startingTime)
-                + "ns / "
-                + (finishedTime - startingTime) / 1000000
-                + "ms) Owner:"
-                + this.getBaseMetaTileEntity()
-                    .getOwnerName()
-                + " Check at x:"
-                + this.getBaseMetaTileEntity()
-                    .getXCoord()
-                + " y:"
-                + this.getBaseMetaTileEntity()
-                    .getYCoord()
-                + " z:"
-                + this.getBaseMetaTileEntity()
-                    .getZCoord()
-                + " DIM-ID: "
-                + this.getBaseMetaTileEntity()
-                    .getWorld().provider.dimensionId);
+            "LESU LookUp took longer than 5ms!({}ns / {}ms) Owner:{} Check at x:{} y:{} z:{} DIM-ID: {}",
+            finishedTime - startingTime,
+            (finishedTime - startingTime) / 1000000,
+            this.getBaseMetaTileEntity()
+                .getOwnerName(),
+            this.getBaseMetaTileEntity()
+                .getXCoord(),
+            this.getBaseMetaTileEntity()
+                .getYCoord(),
+            this.getBaseMetaTileEntity()
+                .getZCoord(),
+            this.getBaseMetaTileEntity()
+                .getWorld().provider.dimensionId);
     }
 
     public World getWorld() {

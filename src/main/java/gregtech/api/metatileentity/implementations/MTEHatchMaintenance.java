@@ -389,7 +389,8 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
             mSoftMallet = true;
             setMaintenanceSound(SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F);
         }
-        if (GTUtility.isStackInList(aStack, GregTechAPI.sHardHammerList) && !mHardHammer
+        if ((GTUtility.isStackInList(aStack, GregTechAPI.sHardHammerList)
+            || GTUtility.isStackInList(aStack, GregTechAPI.sJackhammerList)) && !mHardHammer
             && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
             mHardHammer = true;
             setMaintenanceSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER, 1.0F, 1.0F);
@@ -474,9 +475,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
             for (int i = 0; i < getSizeInventory(); i++) if (GTUtility.areStacksEqual(
                 GTOreDictUnificator.get(false, aStack),
                 GTOreDictUnificator.get(false, getStackInSlot(i)))) return i == aIndex;
-            if (IsAutoMaintenanceInput(aStack)) {
-                return true;
-            }
+            return IsAutoMaintenanceInput(aStack);
         }
         return false;
     }
@@ -549,5 +548,10 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchMaintenanceGui(this, mAuto).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return IsAutoMaintenanceInput(itemStack) && super.isItemValidForSlot(index, itemStack);
     }
 }

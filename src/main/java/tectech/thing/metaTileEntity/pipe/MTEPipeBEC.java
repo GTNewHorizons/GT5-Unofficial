@@ -11,10 +11,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.gtnewhorizon.gtnhlib.color.ImmutableColor;
+import com.gtnewhorizon.gtnhlib.color.RGBColor;
 import com.gtnewhorizon.gtnhlib.util.data.Lazy;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -54,13 +57,16 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
         if (tooltip == null) {
             tooltip = new Lazy<>(
                 () -> MarkdownTooltipLoader.STANDARD
-                    .loadStandardPath(new ResourceLocation("gregtech", "bec-pipe"), new HashMap<>()));
+                    .loadStandardPath(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-pipe"), new HashMap<>()));
         }
         return ArrayUtils.addAll(
             super.getDescription(),
             tooltip.get()
                 .toArray(GTValues.emptyStringArray));
     }
+
+    private static final ImmutableColor BACKGROUND = RGBColor.fromRGB(0xd3ebed);
+    private static final ImmutableColor BASE_FG = RGBColor.fromRGB(0x3d3e41);
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity base, ForgeDirection side, int aConnections, int colorIndex,
@@ -71,16 +77,14 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
         textures.add(
             TextureFactory.builder()
                 .addIcon(EM_PIPE)
-                .setRGBA(Dyes.getModulation(colorIndex, new short[] { 0x81, 0xCA, 0xED, 0 }))
+                .setRGBA(BACKGROUND.toShorts())
                 .build());
 
-        if (getActive()) {
-            textures.add(
-                TextureFactory.builder()
-                    .addIcon(EM_BAR)
-                    .setRGBA(Dyes.getModulation(colorIndex, new short[] { 0x81, 0xCA, 0xED, 0 }))
-                    .build());
-        }
+        textures.add(
+            TextureFactory.builder()
+                .addIcon(getActive() ? EM_BAR_ACTIVE : EM_BAR)
+                .setRGBA(Dyes.getModulation(colorIndex, BASE_FG.toShorts()))
+                .build());
 
         return textures.toArray(new ITexture[0]);
     }
@@ -152,7 +156,7 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
     public String[] getInfoData() {
         List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
-        data.add("Network: " + (network == null ? "None" : network.id));
+        data.add("BEC Network: " + (network == null ? "None" : network.id));
 
         return data.toArray(new String[0]);
     }
@@ -180,6 +184,15 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
     @Override
     public void onRemoval() {
         super.onRemoval();
+
+        if (GTUtility.isServer()) {
+            BECFactoryGrid.INSTANCE.removeElement(this);
+        }
+    }
+
+    @Override
+    public void onUnload() {
+        super.onUnload();
 
         if (GTUtility.isServer()) {
             BECFactoryGrid.INSTANCE.removeElement(this);

@@ -1,17 +1,28 @@
 package gregtech.api.util.client;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.FallbackResourceManager;
+import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.IResourcePack;
+import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
 
 import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 
 public class ResourceUtils {
+
+    // 14810 (max size as of 2026/29/5) * 1.333 = 19.7k ~= 20k
+    private static final int EXISTS_CACHE_SIZE = 20_000;
+    private static Object2BooleanOpenHashMap<ResourceLocation> EXISTS_CACHE = new Object2BooleanOpenHashMap<>(
+        EXISTS_CACHE_SIZE);
 
     /**
      * Checks whether a resource exists.
@@ -21,14 +32,47 @@ public class ResourceUtils {
      */
     @SideOnly(Side.CLIENT)
     public static boolean resourceExists(@NotNull ResourceLocation resLoc) {
+        return EXISTS_CACHE.computeIfAbsent(resLoc, ResourceUtils::checkResource);
+    }
+
+    @SideOnly(Side.CLIENT)
+    private static boolean checkResource(@NotNull ResourceLocation resLoc) {
         final IResourceManager resMan = Minecraft.getMinecraft()
             .getResourceManager();
+        if (resMan instanceof SimpleReloadableResourceManager simple) {
+            FallbackResourceManager fallback = simple.domainResourceManagers.get(resLoc.getResourceDomain());
+            if (fallback != null) {
+                for (IResourcePack rp : fallback.resourcePacks) {
+                    if (rp != null && rp.resourceExists(resLoc)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        // Fallback in case some mod changed how the resource manager stores ResourcePacks
+        IResource res = null;
         try {
-            resMan.getResource(resLoc);
+            res = resMan.getResource(resLoc);
             return true;
         } catch (IOException ignored) {
             return false;
+        } finally {
+            if (res != null) {
+                try {
+                    InputStream stream = res.getInputStream();
+                    if (stream != null) {
+                        stream.close();
+                    }
+                } catch (IOException ignored) {}
+            }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void clearCache() {
+        EXISTS_CACHE = new Object2BooleanOpenHashMap<>(EXISTS_CACHE_SIZE);
     }
 
     /**

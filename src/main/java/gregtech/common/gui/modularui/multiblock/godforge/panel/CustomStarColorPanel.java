@@ -111,8 +111,8 @@ public class CustomStarColorPanel {
 
         // Rate text field
         colorListRow.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(1, 100)
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersInt(1, 100)
                 .setTextAlignment(Alignment.CENTER)
                 .value(new IntValue.Dynamic(() -> {
                     ForgeOfGodsStarColor starColor = getClickedStarColor(hypervisor);

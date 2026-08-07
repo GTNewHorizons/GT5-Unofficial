@@ -1,9 +1,5 @@
 package gregtech.api.net;
 
-import java.util.UUID;
-
-import net.minecraft.network.INetHandler;
-import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -20,7 +16,6 @@ import io.netty.buffer.ByteBuf;
 
 public class GTPacketClearPowerfail extends GTPacket {
 
-    private UUID sender;
     private int dim, x, y, z;
 
     GTPacketClearPowerfail() {}
@@ -58,16 +53,6 @@ public class GTPacketClearPowerfail extends GTPacket {
     }
 
     @Override
-    public void setINetHandler(INetHandler handler) {
-        super.setINetHandler(handler);
-
-        if (handler instanceof NetHandlerPlayServer server) {
-            sender = server.playerEntity.getGameProfile()
-                .getId();
-        }
-    }
-
-    @Override
     public void process(IBlockAccess blockAccess) {
         if (FMLCommonHandler.instance()
             .getEffectiveSide()
@@ -90,6 +75,6 @@ public class GTPacketClearPowerfail extends GTPacket {
     }
 
     private void clearServer() {
-        GTMod.proxy.powerfailTracker.removePowerfailEvents(sender, dim, x, y, z);
+        GTMod.proxy.powerfailTracker.removePowerfailEvents(dim, x, y, z);
     }
 }

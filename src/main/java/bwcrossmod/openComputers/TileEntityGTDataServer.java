@@ -173,7 +173,7 @@ public class TileEntityGTDataServer extends TileEntity
 
     @Override
     public String getInventoryName() {
-        return null;
+        return "gt.tile.data_server.name";
     }
 
     @Override

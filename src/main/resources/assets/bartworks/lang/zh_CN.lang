@@ -43,19 +43,20 @@ labModule.item.PCRThermoclyclingModule.name=聚合酶链式反应模块
 labModule.item.PlasmidSynthesisModule.name=质粒合成模块
 labModule.item.TransformationModule.name=转化模块
 labModule.item.ClonalCellularSynthesisModule.name=克隆细胞合成模块
-BW_GlasBlocks.0.name=硼硅酸盐方块
-BW_GlasBlocks.1.name=镍强化硼硅酸盐方块
-BW_GlasBlocks.2.name=钨强化硼硅酸盐方块
-BW_GlasBlocks.3.name=铬强化硼硅酸盐方块
-BW_GlasBlocks.4.name=铱强化硼硅酸盐方块
-BW_GlasBlocks.5.name=锇强化硼硅酸盐方块
-BW_GlasBlocks.6.name=染色硼硅酸盐方块(红)
-BW_GlasBlocks.7.name=染色硼硅酸盐方块(绿)
-BW_GlasBlocks.8.name=染色硼硅酸盐方块(紫)
-BW_GlasBlocks.9.name=染色硼硅酸盐方块(黄)
-BW_GlasBlocks.10.name=染色硼硅酸盐方块(淡绿)
-BW_GlasBlocks.11.name=染色硼硅酸盐方块(棕)
-BW_GlasBlocks.12.name=钍钇玻璃块
+BW_TieredGlass.name=硼硅酸盐方块
+BW_TieredGlass.0.name=硼硅酸盐方块
+BW_TieredGlass.1.name=镍强化硼硅酸盐方块
+BW_TieredGlass.2.name=钨强化硼硅酸盐方块
+BW_TieredGlass.3.name=铬强化硼硅酸盐方块
+BW_TieredGlass.4.name=铱强化硼硅酸盐方块
+BW_TieredGlass.5.name=锇强化硼硅酸盐方块
+BW_TieredGlass.6.name=Neutronium Reinforced Borosilicate Glass Block
+BW_TieredGlass.7.name=Infinity Reinforced Borosilicate Glass Block
+BW_TieredGlass.8.name=Transcendentally Reinforced Borosilicate Glass Block
+BW_TieredGlass.9.name=Hexanite Reinforced Borosilicate Glass Block
+BW_TieredGlass.10.name=Universium Reinforced Borosilicate Glass Block
+BW_ExtraGlass.name=硼硅酸盐方块
+BW_ExtraGlass.0.name=钍钇玻璃块
 
 tooltip.glas.0.name=玻璃等级:
 tooltip.LESU.0.name=最大容量!
@@ -91,10 +92,10 @@ tooltip.labparts.1.name=一个空的DNA烧瓶.
 tooltip.labparts.2.name=一个空的质粒单元.
 tooltip.labparts.3.name=生物工程专用洗涤粉
 tooltip.labparts.4.name=电泳分离DNA的粉末.
-tooltip.labparts.5.name=培养皿内含有:
+tooltip.labparts.5.name=培养皿内含有: %s
 tooltip.labparts.6.name=这是一种很弱的培养菌,不能在细菌培养皿中繁殖!
-tooltip.labparts.7.name=一个DNA烧瓶,内含:
-tooltip.labparts.8.name=一个质粒单元,内含:
+tooltip.labparts.7.name=一个DNA烧瓶,内含: %s
+tooltip.labparts.8.name=一个质粒单元,内含: %s
 
 tooltip.tile.waterpump.0.name=在有燃料时,产出
 tooltip.tile.waterpump.1.name=L/s水.
@@ -158,6 +159,6 @@ solarsystem.Ross128System=罗斯128星系
 
 itemGroup.bw.MetaItems.0=BartWorks电路更新物品
 
-BW.infoData.BioVat.expectedProduction=预期产量
+BW.infoData.BioVat.expectedProduction=预期产量: §a%s §r%%
 BW.infoData.BioVat.production=产量
 #This zh_CN.lang is translated by huajijam for bartworks (19/7/19)

@@ -50,9 +50,9 @@ public class MTEDebugPollutorGui extends MTETieredMachineBlockBaseGui<MTEDebugPo
                 .size(80, 14)
                 .setMaxLength(10)
                 .value(pollutionSyncer)
-                .setFormatAsInteger(true)
-                .setNumbers(0, Integer.MAX_VALUE)
-                .setDefaultNumber(0));
+                .formatAsInteger(true)
+                .numbersInt(0, Integer.MAX_VALUE)
+                .defaultNumber(0));
 
         // text widget for pollution
         pollutionRow.child(

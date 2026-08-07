@@ -1,13 +1,19 @@
 package gregtech.api.net;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 
+import appeng.api.util.WorldCoord;
+import gregtech.GTMod;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
+import gregtech.api.objects.blockupdate.BlockUpdateHandler;
 import gregtech.common.covers.Cover;
 import io.netty.buffer.ByteBuf;
 
@@ -63,9 +69,24 @@ public class GTPacketSendCoverData extends GTPacket {
 
     public static void decodeAndProcess(ByteArrayDataInput data, IBlockAccess world) {
         if (world == null) return;
-        final TileEntity tile = world.getTileEntity(data.readInt(), data.readShort(), data.readInt());
+        int x = data.readInt();
+        int y = data.readShort();
+        int z = data.readInt();
+        final TileEntity tile = world.getTileEntity(x, y, z);
         if (tile instanceof CoverableTileEntity coverable && !coverable.isDead()) {
             coverable.updateAttachedCover(data);
+            if (coverable instanceof IGregTechTileEntity base) {
+                base.issueTextureUpdate();
+            } else {
+                EntityPlayer player = GTMod.GT.getThePlayer();
+                if (player == null) return;
+                World realWorld = player.getEntityWorld();
+                if (GTMod.proxy.mUseBlockUpdateHandler) {
+                    BlockUpdateHandler.Instance.enqueueBlockUpdate(realWorld, new WorldCoord(x, y, z));
+                } else {
+                    realWorld.markBlockForUpdate(x, y, z);
+                }
+            }
         }
     }
 

@@ -132,7 +132,7 @@ public class TeaAcceptorTile extends TileEntity
 
     @Override
     public String getInventoryName() {
-        return "Tea acceptor";
+        return "kubatech.gui.text.tea_acceptor.name";
     }
 
     @Override

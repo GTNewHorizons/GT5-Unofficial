@@ -5,6 +5,7 @@ import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.recipe.RecipeMaps.neutroniumCompressorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -16,7 +17,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.recipe.metadata.CompressionTierKey;
 import kubatech.api.utils.ModUtils;
 import kubatech.loaders.item.arcfurnace.ElectrodeItem;
 
@@ -88,7 +88,7 @@ public class ArcFurnaceLoader {
             .itemOutputs(ArcFurnaceElectrode.TranscendentNaniteElectrode.getElectrodeItem(1))
             .eut(TierEU.RECIPE_UIV)
             .duration(4 * MINUTES)
-            .metadata(CompressionTierKey.INSTANCE, 2)
+            .metadata(COMPRESSION_TIER, 2)
             .addTo(neutroniumCompressorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -97,7 +97,7 @@ public class ArcFurnaceLoader {
             .itemOutputs(ArcFurnaceElectrode.UniversiumNaniteElectrode.getElectrodeItem(1))
             .eut(TierEU.RECIPE_UXV)
             .duration(8 * MINUTES)
-            .metadata(CompressionTierKey.INSTANCE, 2)
+            .metadata(COMPRESSION_TIER, 2)
             .addTo(neutroniumCompressorRecipes);
 
     }

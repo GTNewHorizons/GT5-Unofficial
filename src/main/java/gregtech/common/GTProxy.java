@@ -40,7 +40,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -62,13 +61,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -89,6 +86,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+import com.gtnewhorizon.gtnhlib.teams.TeamDataRegistry;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IFuelHandler;
@@ -112,6 +110,7 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -130,19 +129,19 @@ import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.fluid.GTFluidFactory;
-import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorEventHandlers;
-import gregtech.api.items.armor.ArmorKeybinds;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.threads.RunnableCableUpdate;
 import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.GTBlockMap;
 import gregtech.api.util.GTCLSCompat;
@@ -163,7 +162,10 @@ import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.config.OPStuff;
 import gregtech.common.data.GTPowerfailTracker;
+import gregtech.common.data.WirelessEnergyHatchManager;
+import gregtech.common.data.drone.CameraViewportManager;
 import gregtech.common.data.maglev.TetherManager;
+import gregtech.common.entity.EntityDrone;
 import gregtech.common.handlers.OffhandToolFunctionalityHandler;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.MetaGeneratedItem98;
@@ -171,15 +173,19 @@ import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.WirelessChargerManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
+import gregtech.common.networkanalyzer.events.NetworkAnalyzerPlayerTracker;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.powergoggles.PowerGogglesWorldSavedData;
 import gregtech.common.powergoggles.handlers.PowerGogglesEventHandler;
 import gregtech.common.recipes.CALImprintRecipe;
+import gregtech.common.recipes.MacerationStackConversionRecipe;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
 import gregtech.common.worldgen.HEEIslandScanner;
 import gregtech.nei.GTNEIDefaultHandler;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
 
 public class GTProxy implements IFuelHandler {
 
@@ -551,7 +557,6 @@ public class GTProxy implements IFuelHandler {
     public boolean mSurvivalIntoAdventure = false;
     public boolean mNerfedWoodPlank = true;
     public boolean mChangeWoodenVanillaTools = true;
-    public boolean mHungerEffect = true;
     public boolean mIgnoreTcon = true;
     public boolean mAchievements = true;
     private boolean mOreDictActivated = false;
@@ -726,12 +731,14 @@ public class GTProxy implements IFuelHandler {
     private final ConcurrentMap<UUID, GTClientPreference> mClientPrefernces = new ConcurrentHashMap<>();
     public final Int2ObjectOpenHashMap<Pollution> dimensionWisePollution = new Int2ObjectOpenHashMap<>(16);
     /** A fast lookup for players. */
-    private Map<UUID, EntityPlayerMP> PLAYERS_BY_UUID;
-    private Map<String, UUID> UUID_BY_NAME;
+    private static Map<UUID, EntityPlayerMP> PLAYERS_BY_UUID;
+    private static Map<String, UUID> UUID_BY_NAME;
     public WirelessChargerManager wirelessChargerManager;
     public GTSpawnEventHandler spawnEventHandler;
     public GTPowerfailTracker powerfailTracker;
+    public CameraViewportManager cameraViewportManager;
     public TetherManager tetherManager;
+    public WirelessEnergyHatchManager wirelessEnergyHatchManager;
 
     public SyncedKeybind TOOL_MODE_SWITCH_KEYBIND;
     public SyncedKeybind CTRL_KEYBIND;
@@ -802,9 +809,6 @@ public class GTProxy implements IFuelHandler {
         FMLCommonHandler.instance()
             .bus()
             .register(this);
-        if (Thaumcraft.isModLoaded()) {
-            GregTechAPI.sThaumcraftCompat = new GTThaumcraftCompat();
-        }
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
             .getRegisteredFluidContainerData()) {
             onFluidContainerRegistration(new FluidContainerRegistry.FluidContainerRegisterEvent(tData));
@@ -829,6 +833,9 @@ public class GTProxy implements IFuelHandler {
         // spotless:off
         GTLog.out.println("GTMod: Preload-Phase started!");
 
+        if (Thaumcraft.isModLoaded()) {
+            GregTechAPI.sThaumcraftCompat = new GTThaumcraftCompat();
+        }
         GregTechAPI.sPreloadStarted = true;
         this.mIgnoreTcon = OPStuff.ignoreTinkerConstruct;
         this.replicatorExponent = OPStuff.replicatorExponent;
@@ -1029,6 +1036,8 @@ public class GTProxy implements IFuelHandler {
         // Register chunk manager with Forge
         GTChunkManager.init();
         // spotless:on
+
+        ArmorActionManager.init();
     }
 
     public void onInitialization(FMLInitializationEvent event) {
@@ -1084,6 +1093,7 @@ public class GTProxy implements IFuelHandler {
             .register(PowerGogglesEventHandler.getInstance());
         MinecraftForge.EVENT_BUS.register(PowerGogglesEventHandler.getInstance());
         MinecraftForge.EVENT_BUS.register(new OffhandToolFunctionalityHandler());
+        NetworkAnalyzerPlayerTracker.init();
         TOOL_MODE_SWITCH_KEYBIND = SyncedKeybind
             .createConfigurable("key.gt.tool_mode_switch", "Gregtech", Keyboard.KEY_PERIOD)
             .registerGlobalListener(MetaGeneratedTool::switchCurrentToolMode)
@@ -1105,8 +1115,6 @@ public class GTProxy implements IFuelHandler {
         GTLog.out.println("GTMod: Beginning PostLoad-Phase.");
         GregTechAPI.sPostloadStarted = true;
 
-        new ArmorKeybinds();
-
         // This needs to happen late enough that all of the fluids we need have been registered.
         // onInitialization() seems to be too early, as the New Horizons Core Mod registers some fluids in post-load.
         MetaGeneratedItem98.init();
@@ -1127,7 +1135,7 @@ public class GTProxy implements IFuelHandler {
                 try {
                     GregTechAPI.METATILEENTITIES[i].onConfigLoad();
                 } catch (Exception e) {
-                    GT_FML_LOGGER.error("Could not load config for MTE " + GregTechAPI.METATILEENTITIES[i], e);
+                    GT_FML_LOGGER.error("Could not load config for MTE {}", GregTechAPI.METATILEENTITIES[i], e);
                 }
             }
         }
@@ -1199,6 +1207,8 @@ public class GTProxy implements IFuelHandler {
         // MUI2, but for the time being it stays here. -- miozune
         CoverRegistry.reloadCoverColorOverrides();
         CALImprintRecipe.register();
+        EntityRegistry.registerModEntity(EntityDrone.class, "GTDrone", 1, GTMod.GT, 64, 3, true);
+        MacerationStackConversionRecipe.register();
     }
 
     public void onLoadComplete(FMLLoadCompleteEvent event) {}
@@ -1214,13 +1224,19 @@ public class GTProxy implements IFuelHandler {
         wirelessChargerManager = new WirelessChargerManager();
         spawnEventHandler = new GTSpawnEventHandler();
         powerfailTracker = new GTPowerfailTracker();
+        if (cameraViewportManager == null) cameraViewportManager = new CameraViewportManager();
         tetherManager = new TetherManager();
+        wirelessEnergyHatchManager = new WirelessEnergyHatchManager();
         FMLCommonHandler.instance().bus().register(wirelessChargerManager);
         MinecraftForge.EVENT_BUS.register(spawnEventHandler);
         FMLCommonHandler.instance().bus().register(powerfailTracker);
         MinecraftForge.EVENT_BUS.register(powerfailTracker);
+        TeamDataRegistry.register(GTPowerfailTracker.DATA_NAME, GTPowerfailTracker.PowerfailData::new);
         FMLCommonHandler.instance().bus().register(tetherManager);
         MinecraftForge.EVENT_BUS.register(tetherManager);
+        FMLCommonHandler.instance().bus().register(cameraViewportManager);
+        MinecraftForge.EVENT_BUS.register(cameraViewportManager);
+        FMLCommonHandler.instance().bus().register(wirelessEnergyHatchManager);
         // spotless:off
     }
 
@@ -1287,14 +1303,23 @@ public class GTProxy implements IFuelHandler {
             FMLCommonHandler.instance().bus().unregister(powerfailTracker);
             MinecraftForge.EVENT_BUS.unregister(powerfailTracker);
         }
+        if (cameraViewportManager != null) {
+            FMLCommonHandler.instance().bus().unregister(cameraViewportManager);
+            MinecraftForge.EVENT_BUS.unregister(cameraViewportManager);
+            cameraViewportManager.resetStatus();
+        }
         if (tetherManager != null) {
             FMLCommonHandler.instance().bus().unregister(tetherManager);
             MinecraftForge.EVENT_BUS.unregister(tetherManager);
+        }
+        if (wirelessEnergyHatchManager != null) {
+            FMLCommonHandler.instance().bus().unregister(wirelessEnergyHatchManager);
         }
         wirelessChargerManager = null;
         spawnEventHandler = null;
         powerfailTracker = null;
         tetherManager = null;
+        wirelessEnergyHatchManager = null;
         PLAYERS_BY_UUID = null;
         UUID_BY_NAME = null;
         // spotless:on
@@ -1304,6 +1329,9 @@ public class GTProxy implements IFuelHandler {
             .onServerStopped(event);
         GTChunkManager.instance.onServerStopped();
         dimensionWisePollution.clear();
+
+        VacuumFactoryGrid.onServerClosed();
+        BECFactoryGrid.onServerClosed();
     }
 
     /**
@@ -1462,13 +1490,15 @@ public class GTProxy implements IFuelHandler {
             .getCurrentEquippedItem();
         if (item == null) return;
 
-        if (!(item.getItem() instanceof MetaGeneratedTool tool)) return;
+        if (item.getItem() instanceof MetaGeneratedTool tool) {
+            IToolStats stats = tool.getToolStats(item);
+            if (stats == null) return;
 
-        IToolStats stats = tool.getToolStats(item);
-        if (stats == null) return;
-
-        TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
-        stats.onBreakBlock(player, event.x, event.y, event.z, event.block, event.blockMetadata, tile, event);
+            TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
+            stats.onBreakBlock(player, event.x, event.y, event.z, event.block, event.blockMetadata, tile, event);
+        } else if (item.getItem() instanceof final ItemGTToolbox toolbox) {
+            toolbox.onBlockBreakingEvent(event);
+        }
     }
 
     @SubscribeEvent
@@ -1527,7 +1557,7 @@ public class GTProxy implements IFuelHandler {
             || (aEvent.Ore.getItem() == null)
             || (aEvent.Name == null)
             || (aEvent.Name.isEmpty())
-            || (aEvent.Name.replaceAll("_", "")
+            || (aEvent.Name.replace("_", "")
                 .length() - aEvent.Name.length() == 9)) {
             if (aOriginalMod.equals(GregTech.ID)) {
                 aOriginalMod = "UNKNOWN";
@@ -1634,8 +1664,7 @@ public class GTProxy implements IFuelHandler {
                 } else if (aEvent.Name.contains(" ")) {
                     GTLog.ore.println(
                         tModToName + " is getting re-registered because the OreDict Name containing invalid spaces.");
-                    GTOreDictUnificator
-                        .registerOre(aEvent.Name.replaceAll(" ", ""), GTUtility.copyAmount(1, aEvent.Ore));
+                    GTOreDictUnificator.registerOre(aEvent.Name.replace(" ", ""), GTUtility.copyAmount(1, aEvent.Ore));
                     aEvent.Ore.setStackDisplayName("Invalid OreDictionary Tag");
                     return;
                 } else if (this.mInvalidNames.contains(aEvent.Name)) {
@@ -1867,7 +1896,7 @@ public class GTProxy implements IFuelHandler {
                                                         .itemInputs(new ItemStack(aEvent.Ore.getItem(), 1, 3))
                                                         .itemOutputs(new ItemStack(aEvent.Ore.getItem(), 16, 4))
                                                         .duration(20 * SECONDS)
-                                                        .eut(8)
+                                                        .eut(TierEU.RECIPE_ULV)
                                                         .addTo(cutterRecipes);
                                                 }
                                     }
@@ -1965,22 +1994,7 @@ public class GTProxy implements IFuelHandler {
                 OreDictEventContainer.registerRecipes(tOre);
             }
         } catch (Exception e) {
-            GT_FML_LOGGER
-                .error("Could not register ore (oredict name=" + aEvent.Name + ", item stack=" + aEvent.Ore + ")", e);
-        }
-    }
-
-    @SubscribeEvent
-    public void applyBlockWalkOverEffects(LivingUpdateEvent event) {
-        final EntityLivingBase entity = event.entityLiving;
-        // the server should handle the movement of all entities except the players
-        if (!entity.worldObj.isRemote && entity.onGround && !(entity instanceof EntityPlayerMP)) {
-            int tX = MathHelper.floor_double(entity.posX),
-                tY = MathHelper.floor_double(entity.boundingBox.minY - 0.001F),
-                tZ = MathHelper.floor_double(entity.posZ);
-            Block tBlock = entity.worldObj.getBlock(tX, tY, tZ);
-            if (tBlock instanceof IBlockOnWalkOver)
-                ((IBlockOnWalkOver) tBlock).onWalkOver(entity, entity.worldObj, tX, tY, tZ);
+            GT_FML_LOGGER.error("Could not register ore (oredict name={}, item stack={})", aEvent.Name, aEvent.Ore, e);
         }
     }
 
@@ -1999,11 +2013,11 @@ public class GTProxy implements IFuelHandler {
     public void onServerTickEvent(TickEvent.ServerTickEvent aEvent) {
         if (aEvent.side.isServer()) {
             if (aEvent.phase == TickEvent.Phase.START) {
-                RunnableMachineUpdate.onBeforeTickLockLocked();
                 TICK_LOCK.lock();
             } else {
                 TICK_LOCK.unlock();
-                RunnableMachineUpdate.onAfterTickLockReleased();
+                RunnableMachineUpdate.endTick();
+                RunnableCableUpdate.endTick();
                 GTMusicSystem.ServerSystem.tick();
             }
         }
@@ -2092,64 +2106,37 @@ public class GTProxy implements IFuelHandler {
     }
 
     @SubscribeEvent
-    public void onPlayerTickEventServer(TickEvent.PlayerTickEvent aEvent) {
-        if ((!aEvent.side.isServer()) || (aEvent.phase == TickEvent.Phase.END) || (aEvent.player.isDead)) {
+    public void onPlayerTickEventServer(TickEvent.PlayerTickEvent event) {
+        final EntityPlayer player = event.player;
+        if (!event.side.isServer() || event.phase == TickEvent.Phase.END
+            || player.isDead
+            || player.ticksExisted % 120 != 0) {
             return;
         }
 
-        final boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);
-
-        if (aEvent.player.ticksExisted % 120 != 0) {
-            return;
-        }
-
-        int tCount = 64;
-        final ItemStack[] mainInventory = aEvent.player.inventory.mainInventory;
-        for (ItemStack tStack : mainInventory) {
-            if (tStack == null) {
-                continue;
-            }
-            if (!aEvent.player.capabilities.isCreativeMode) {
-                GTUtility.applyRadioactivity(aEvent.player, GTUtility.getRadioactivityLevel(tStack), tStack.stackSize);
-                final float tHeat = GTUtility.getHeatDamageFromItem(tStack);
-                if (tHeat != 0.0F) {
-                    if (tHeat > 0.0F) {
-                        GTUtility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
-                    } else {
-                        GTUtility.applyFrostDamage(aEvent.player, -tHeat);
-                    }
-                }
-            }
-            if (tHungerEffect) {
-                tCount += tStack.stackSize * 64 / Math.max(1, tStack.getMaxStackSize());
-            }
+        final ItemStack[] mainInventory = player.inventory.mainInventory;
+        for (ItemStack stack : mainInventory) {
+            applyItemEffects(player, stack);
             if (this.mInventoryUnification) {
-                GTOreDictUnificator.setStack(true, tStack);
+                GTOreDictUnificator.setStack(true, stack);
             }
+        }
+        final ItemStack[] armorInventory = player.inventory.armorInventory;
+        for (final ItemStack stack : armorInventory) {
+            applyItemEffects(player, stack);
+        }
+    }
 
+    private static void applyItemEffects(EntityPlayer player, ItemStack stack) {
+        if (stack == null || player.capabilities.isCreativeMode) {
+            return;
         }
-        final ItemStack[] armorInventory = aEvent.player.inventory.armorInventory;
-        for (final ItemStack tStack : armorInventory) {
-            if (tStack == null) {
-                continue;
-            }
-            if (!aEvent.player.capabilities.isCreativeMode) {
-                GTUtility.applyRadioactivity(aEvent.player, GTUtility.getRadioactivityLevel(tStack), tStack.stackSize);
-                final float tHeat = GTUtility.getHeatDamageFromItem(tStack);
-                if (tHeat != 0.0F) {
-                    if (tHeat > 0.0F) {
-                        GTUtility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
-                    } else {
-                        GTUtility.applyFrostDamage(aEvent.player, -tHeat);
-                    }
-                }
-            }
-            if (tHungerEffect) {
-                tCount += 256;
-            }
-        }
-        if (tHungerEffect) {
-            aEvent.player.addExhaustion(Math.max(1.0F, tCount / 666.6F));
+        GTUtility.applyRadioactivity(player, GTUtility.getRadioactivityLevel(stack), stack.stackSize);
+        final float heat = GTUtility.getHeatDamageFromItem(stack);
+        if (heat > 0.0F) {
+            GTUtility.applyHeatDamageFromItem(player, heat, stack);
+        } else if (heat < 0.0F) {
+            GTUtility.applyFrostDamage(player, -heat);
         }
     }
 
@@ -2489,7 +2476,7 @@ public class GTProxy implements IFuelHandler {
             event = i$.next();
             sizeStep--;
             if (sizeStep == 0) {
-                GT_FML_LOGGER.info("Baking : " + size + "%");
+                GT_FML_LOGGER.info("Baking : {}%", size);
                 sizeStep = oreDictEvents.size() / 20 - 1;
                 size += 5;
             }
@@ -2525,12 +2512,6 @@ public class GTProxy implements IFuelHandler {
                     aEvent);
             }
         }
-    }
-
-    @SubscribeEvent
-    public void onBlockEvent(BlockEvent event) {
-        if (event.block.getUnlocalizedName()
-            .equals("blockAlloyGlass")) GregTechAPI.causeMachineUpdate(event.world, event.x, event.y, event.z);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

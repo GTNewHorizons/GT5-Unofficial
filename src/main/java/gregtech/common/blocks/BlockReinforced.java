@@ -129,6 +129,12 @@ public class BlockReinforced extends GTGenericBlock {
                     .setResistance(5000.0f),
                 1,
                 12));
+        ItemList.Block_ReinforcedConcrete.set(
+            new ItemStack(
+                this.setHardness(40.0F)
+                    .setResistance(120.0F),
+                1,
+                13));
         GTModHandler.addShapelessCraftingRecipe(
             new ItemStack(Items.coal, 1, 1),
             new Object[] { ItemList.Block_BrittleCharcoal.get(1) });
@@ -184,10 +190,10 @@ public class BlockReinforced extends GTGenericBlock {
     @Override
     public int getHarvestLevel(int meta) {
         return switch (meta) {
-            case 4, 5, 6, 7 -> 1;
+            case 4, 5, 6, 7, 13 -> 1;
             case 2 -> 2;
             case 1, 3, 9 -> 5;
-            case 10, 11 -> 7;
+            case 10, 11, 12 -> 7;
             default -> 4;
         };
     }
@@ -206,6 +212,7 @@ public class BlockReinforced extends GTGenericBlock {
             case 10 -> Textures.BlockIcons.BLOCK_NAQUADAHPREIN.getIcon();
             case 11 -> Textures.BlockIcons.BLOCK_NEUTRONIUMPREIN.getIcon();
             case 12 -> Textures.BlockIcons.BLOCK_DEEP_DARK_RAW.getIcon();
+            case 13 -> Textures.BlockIcons.BLOCK_REINFORCED_CONCRETE.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         };
     }
@@ -229,6 +236,8 @@ public class BlockReinforced extends GTGenericBlock {
             case 9 -> 200.0F;
             case 10 -> 500.0F;
             case 11 -> 750.0F;
+            case 12 -> 1500.0F;
+            case 13 -> 40.0F;
             default -> Blocks.iron_block.getBlockHardness(world, x, y, z);
         };
     }
@@ -251,6 +260,8 @@ public class BlockReinforced extends GTGenericBlock {
             case 9 -> 300.0F;
             case 10 -> 1000.0F;
             case 11 -> 2500.0F;
+            case 12 -> 5000.0F;
+            case 13 -> 120.0F;
             default -> super.getExplosionResistance(entity, world, x, y, z, explosionX, explosionY, explosionZ);
         };
     }

@@ -1,8 +1,6 @@
 package gregtech.common.gui.modularui.hatch;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -15,16 +13,12 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
-import com.glodblock.github.common.item.FCBaseItemCell;
-import com.glodblock.github.common.item.ItemFluidVoidStorageCell;
 
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.core.localization.GuiText;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
-import gregtech.common.tileentities.machines.outputme.filter.MEFilterFluid;
 
 public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
 
@@ -34,50 +28,43 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        MTEHatchOutputMEBase<IAEFluidStack, MEFilterFluid, FluidStack> provider = machine.getProvider();
+        MTEHatchOutputMEBase<IAEFluidStack> provider = machine.getProvider();
         IntSyncValue prioritySyncer = new IntSyncValue(provider::getPriority, provider::setPriority).allowC2S();
         BooleanSyncValue isCaching = new BooleanSyncValue(provider::getCacheMode, provider::setCacheMode).allowC2S();
         BooleanSyncValue isChecking = new BooleanSyncValue(provider::getCheckMode, provider::setCheckMode).allowC2S();
 
         Flow mainRow = Flow.row()
             .coverChildren()
-            .verticalCenter();
+            .verticalCenter()
+            .collapseDisabledChild();
 
         // cell slot
-        mainRow.child(
-            new ItemSlot().slot(
-                new ModularSlot(machine.inventoryHandler, 0).singletonSlotGroup()
-                    .filter(this::isFluidCell)));
-
-        // check mode toggle
-        mainRow.child(
-            new ToggleButton().value(isChecking)
-                .overlay(GuiTextures.SEARCH)
-                .addTooltipLine(GTUtility.translate("GT5U.hatch.outputme.toggle_checking")));
+        mainRow.child(new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, 0).singletonSlotGroup()));
 
         // caching mode toggle
         mainRow.child(
             new ToggleButton().value(isCaching)
                 .overlay(GuiTextures.FOLDER)
-                .addTooltipLine(GTUtility.translate("GT5U.hatch.outputme.toggle_caching")));
+                .addTooltipLine(StatCollector.translateToLocal("GT5U.hatch.outputme.toggle_caching")));
 
         // priority input text field
         mainRow.child(
             new TextFieldWidget().size(75, 14)
-                .setFormatAsInteger(true)
+                .formatAsInteger(true)
                 .value(prioritySyncer)
-                .setNumbers(1, Integer.MAX_VALUE)
+                .numbersInt(Integer.MIN_VALUE, Integer.MAX_VALUE)
                 .setMaxLength(10)
                 .tooltip(t -> t.addLine(GuiText.Priority.getLocal()))
                 .setEnabledIf(t -> isCaching.getBoolValue())
                 .marginLeft(5));
 
-        return super.createContentSection(panel, syncManager).child(mainRow);
-    }
+        // check mode toggle
+        mainRow.child(
+            new ToggleButton().value(isChecking)
+                .overlay(GuiTextures.SEARCH)
+                .addTooltipLine(StatCollector.translateToLocal("GT5U.hatch.outputme.toggle_checking")));
 
-    private boolean isFluidCell(ItemStack itemStack) {
-        Item item = itemStack.getItem();
-        return item instanceof FCBaseItemCell || item instanceof ItemFluidVoidStorageCell;
+        return super.createContentSection(panel, syncManager).child(mainRow);
     }
 
     @Override

@@ -1,10 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.util.GTUtility.filterValidMTEs;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -14,6 +9,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.Iterables;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -67,6 +64,11 @@ public abstract class MTEExtendedPowerMultiBlockBase<T extends MTEEnhancedMultiB
     }
 
     @Override
+    public long getEUtForDamageCalc() {
+        return lEUt;
+    }
+
+    @Override
     public void stopMachine(@NotNull ShutDownReason reason) {
         this.lEUt = 0;
         super.stopMachine(reason);
@@ -77,16 +79,9 @@ public abstract class MTEExtendedPowerMultiBlockBase<T extends MTEEnhancedMultiB
         return (long) (-this.lEUt * (10000.0 / Math.max(1000, mEfficiency)));
     }
 
-    public List<MTEHatch> getExoticAndNormalEnergyHatchList() {
-        List<MTEHatch> tHatches = new ArrayList<>();
-        tHatches.addAll(filterValidMTEs(mExoticEnergyHatches));
-        tHatches.addAll(filterValidMTEs(mEnergyHatches));
-        return tHatches;
-    }
-
     @Override
     public boolean drainEnergyInput(long aEU) {
-        return ExoticEnergyInputHelper.drainEnergy(aEU, getExoticAndNormalEnergyHatchList());
+        return ExoticEnergyInputHelper.drainEnergy(aEU, Iterables.concat(mEnergyHatches, mExoticEnergyHatches));
     }
 
     @Override

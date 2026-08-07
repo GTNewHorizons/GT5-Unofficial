@@ -1,6 +1,5 @@
 package bartworks.API.modularUI;
 
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
@@ -30,8 +29,8 @@ public class BWUITextures {
         .fullImage(MainMod.MOD_ID, "GUI/progressbar/stored_eu_116");
     public static final UITexture PROGRESSBAR_FUEL = UITexture.fullImage(MainMod.MOD_ID, "GUI/progressbar/fuel");
 
-    public static final UITexture PICTURE_BW_LOGO_47X21 = UITexture
-        .fullImage(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21");
+    public static final UITexture PICTURE_BW_LOGO_47X20 = UITexture
+        .fullImage(MainMod.MOD_ID, "GUI/picture/bw_logo_47x20");
     public static final UITexture PICTURE_SIEVERT_CONTAINER = UITexture
         .fullImage(MainMod.MOD_ID, "GUI/picture/sievert_container");
     public static final UITexture PICTURE_DECAY_TIME_CONTAINER = UITexture
@@ -45,7 +44,7 @@ public class BWUITextures {
         .mapToObj(
             i -> UITexture
                 .partly(MainMod.MOD_ID, "GUI/picture/windmill_rotating", 32, 128, 0, i * 32, 32, (i + 1) * 32))
-        .collect(Collectors.toList())
+        .toList()
         .toArray(new UITexture[0]);
     public static final UITexture PICTURE_STORED_EU_FRAME = UITexture
         .fullImage(MainMod.MOD_ID, "GUI/picture/stored_eu_frame");

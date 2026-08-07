@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.WorldEvent;
@@ -16,7 +17,11 @@ public class BlockScanningEvent extends WorldEvent {
 
     public final EntityPlayer mPlayer;
     public final int mX, mY, mZ, mScanLevel;
+    /** @deprecated use {@link #mComponents} to preserve client-side localization */
+    @Deprecated
     public final List<String> mList;
+    /** Preferred: add {@link IChatComponent} entries here so the client translates them. */
+    public final List<IChatComponent> mComponents;
     public final ForgeDirection mSide;
     public final float mClickX, mClickY, mClickZ;
     public final TileEntity mTileEntity;
@@ -28,14 +33,15 @@ public class BlockScanningEvent extends WorldEvent {
     public int mEUCost = 0;
 
     public BlockScanningEvent(World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ, ForgeDirection side,
-        int aScanLevel, Block aBlock, TileEntity aTileEntity, List<String> aList, float aClickX, float aClickY,
-        float aClickZ) {
+        int aScanLevel, Block aBlock, TileEntity aTileEntity, List<String> aList, List<IChatComponent> aComponents,
+        float aClickX, float aClickY, float aClickZ) {
         super(aWorld);
         mPlayer = aPlayer;
         mScanLevel = aScanLevel;
         mTileEntity = aTileEntity;
         mBlock = aBlock;
         mList = aList;
+        mComponents = aComponents;
         mSide = side;
         mX = aX;
         mY = aY;

@@ -8,14 +8,26 @@ import static gregtech.api.util.GTRecipeBuilder.handleRecipeCollision;
 import static gregtech.api.util.GTUtility.areStacksEqualOrNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -25,18 +37,25 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.SetMultimap;
-
 import gregtech.api.objects.GTItemStack;
+import gregtech.api.recipe.lookup.GTFluidLookupIngredient;
+import gregtech.api.recipe.lookup.GTItemDataLookupIngredient;
+import gregtech.api.recipe.lookup.GTItemStackLookupIngredient;
+import gregtech.api.recipe.lookup.GTOreDictLookupIngredient;
+import gregtech.api.recipe.lookup.GTRecipeLookup;
+import gregtech.api.recipe.lookup.GTRecipeLookupBuilder;
+import gregtech.api.recipe.lookup.GTRecipeLookupIngredient;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTStreamUtil;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
@@ -49,16 +68,20 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public class RecipeMapBackend {
 
+    private static final Logger LOGGER = LogManager.getLogger("GregTech GTNH");
+
     private RecipeMap<?> recipeMap;
 
     /**
-     * Recipe index based on items.
+     * Contains all items that are present in some recipe in the corresponding recipeMap.
+     * This is used for hatch filtering.
      */
-    private final SetMultimap<GTItemStack, GTRecipe> itemIndex = LinkedHashMultimap.create();
+    private final Set<GTItemStack> meaningfulItems = new HashSet<>();
     /**
-     * Recipe index based on fluids.
+     * Contains all items that are present in some recipe in the corresponding recipeMap.
+     * This is used for hatch filtering.
      */
-    private final SetMultimap<String, GTRecipe> fluidIndex = LinkedHashMultimap.create();
+    private final Set<String> meaningfulFluids = new HashSet<>();
 
     /**
      * All the recipes belonging to this backend, indexed by recipe category.
@@ -69,7 +92,10 @@ public class RecipeMapBackend {
     public static final int CACHE_MAP_SIZE = 256;
 
     /** Cached recipes, by commutative hash of all inputs. */
-    private final GTRecipe[] cacheMap = new GTRecipe[CACHE_MAP_SIZE];
+    private final @Nullable GTRecipe[] cacheMap = new GTRecipe[CACHE_MAP_SIZE];
+
+    private GTRecipeLookup recipeLookup = new GTRecipeLookup();
+    private GTRecipeLookupBuilder.LookupBuildState recipeLookupState = GTRecipeLookupBuilder.newLookupState();
 
     /**
      * All the properties specific to this backend.
@@ -103,7 +129,7 @@ public class RecipeMapBackend {
     /**
      * @return Raw recipe list
      */
-    private Collection<GTRecipe> allRecipes() {
+    Collection<GTRecipe> allRecipes() {
         return recipesByCategory.values()
             .stream()
             .flatMap(Collection::stream)
@@ -139,24 +165,28 @@ public class RecipeMapBackend {
         recipesByCategory.computeIfAbsent(recipe.getRecipeCategory(), v -> new ArrayList<>())
             .add(recipe);
 
-        for (FluidStack fluid : recipe.mFluidInputs) {
-            if (fluid == null || fluid.getFluid() == null) continue;
-            fluidIndex.put(
-                fluid.getFluid()
-                    .getName(),
-                recipe);
-        }
-        return addToItemMap(recipe);
+        GTRecipe result = addToItemMap(recipe);
+        addRecipeToLookup(recipe);
+        return result;
     }
 
     /**
-     * Adds the supplied recipe to the item cache.
+     * Adds the supplied recipe to the meaningful item/fluid lists.
      */
     protected GTRecipe addToItemMap(GTRecipe recipe) {
+        if (recipe.mFluidInputs != null) {
+            for (FluidStack fluid : recipe.mFluidInputs) {
+                if (fluid == null) continue;
+                meaningfulFluids.add(
+                    fluid.getFluid()
+                        .getName());
+            }
+        }
+
         if (recipe.mInputs != null) {
             for (ItemStack item : recipe.mInputs) {
                 if (item == null) continue;
-                itemIndex.put(new GTItemStack(item), recipe);
+                meaningfulItems.add(new GTItemStack(item));
             }
         }
 
@@ -167,7 +197,7 @@ public class RecipeMapBackend {
                     if (itemStacks == null) continue;
                     for (ItemStack item : itemStacks) {
                         if (item == null) continue;
-                        itemIndex.put(new GTItemStack(item), recipe);
+                        meaningfulItems.add(new GTItemStack(item));
                     }
                 }
             }
@@ -177,10 +207,9 @@ public class RecipeMapBackend {
                     if (fluidStacks == null) continue;
                     for (FluidStack fluid : fluidStacks) {
                         if (fluid == null) continue;
-                        fluidIndex.put(
+                        meaningfulFluids.add(
                             fluid.getFluid()
-                                .getName(),
-                            recipe);
+                                .getName());
                     }
                 }
             }
@@ -222,9 +251,7 @@ public class RecipeMapBackend {
         StringBuilder errorInfo = new StringBuilder();
         boolean hasAnEntry = false;
         for (FluidStack fluid : recipe.mFluidInputs) {
-            if (fluid == null) {
-                continue;
-            }
+            if (fluid == null) continue;
             String s = fluid.getLocalizedName();
             if (s == null) {
                 continue;
@@ -238,9 +265,7 @@ public class RecipeMapBackend {
             hasAnEntry = true;
         }
         for (ItemStack item : recipe.mInputs) {
-            if (item == null) {
-                continue;
-            }
+            if (item == null) continue;
             String itemName = item.getDisplayName();
             if (hasAnEntry) {
                 errorInfo.append("+")
@@ -260,14 +285,11 @@ public class RecipeMapBackend {
         for (Collection<GTRecipe> recipes : recipesByCategory.values()) {
             recipes.removeAll(recipesToRemove);
         }
-        for (GTItemStack key : new HashMap<>(itemIndex.asMap()).keySet()) {
-            itemIndex.get(key)
-                .removeAll(recipesToRemove);
-        }
-        for (String key : new HashMap<>(fluidIndex.asMap()).keySet()) {
-            fluidIndex.get(key)
-                .removeAll(recipesToRemove);
-        }
+        recipesByCategory.entrySet()
+            .removeIf(
+                entry -> entry.getValue()
+                    .isEmpty());
+        rebuildLookupStructures(false);
     }
 
     /**
@@ -282,6 +304,7 @@ public class RecipeMapBackend {
      */
     public void clearRecipes() {
         recipesByCategory.clear();
+        clearLookupStructures();
     }
 
     // endregion
@@ -290,26 +313,52 @@ public class RecipeMapBackend {
      * Re-unificates all the items present in recipes. Also reflects recipe removals.
      */
     public void reInit() {
-        itemIndex.clear();
+        rebuildLookupStructures(true);
+    }
+
+    private void clearLookupStructures() {
+        meaningfulItems.clear();
+        meaningfulFluids.clear();
+        Arrays.fill(cacheMap, null);
+        recipeLookup = new GTRecipeLookup();
+        recipeLookupState = GTRecipeLookupBuilder.newLookupState();
+    }
+
+    private void rebuildLookupStructures(boolean reUnificate) {
+        meaningfulItems.clear();
+        meaningfulFluids.clear();
+        Arrays.fill(cacheMap, null);
+
+        GTRecipeLookupBuilder lookupBuilder = new GTRecipeLookupBuilder();
         for (GTRecipe recipe : allRecipes()) {
-            GTOreDictUnificator.setStackArray(true, true, recipe.mInputs);
-            GTOreDictUnificator.setStackArray(true, true, recipe.mOutputs);
+            if (reUnificate) {
+                GTOreDictUnificator.setStackArray(true, true, recipe.mInputs);
+                GTOreDictUnificator.setStackArray(true, true, recipe.mOutputs);
+            }
             addToItemMap(recipe);
+            lookupBuilder.add(recipe);
         }
+        GTRecipeLookupBuilder.BuildResult result = lookupBuilder.buildMutableWithState();
+        recipeLookup = result.lookup;
+        recipeLookupState = result.state;
+    }
+
+    private void addRecipeToLookup(GTRecipe recipe) {
+        GTRecipeLookupBuilder.addToLookup(recipeLookup, recipeLookupState, recipe);
     }
 
     /**
      * @return If supplied item is a valid input for any of the recipes
      */
     public boolean containsInput(ItemStack item) {
-        return itemIndex.containsKey(new GTItemStack(item)) || itemIndex.containsKey(new GTItemStack(item, true));
+        return meaningfulItems.contains(new GTItemStack(item)) || meaningfulItems.contains(new GTItemStack(item, true));
     }
 
     /**
      * @return If supplied fluid is a valid input for any of the recipes
      */
     public boolean containsInput(Fluid fluid) {
-        return fluidIndex.containsKey(fluid.getName());
+        return meaningfulFluids.contains(fluid.getName());
     }
 
     // region find recipe
@@ -336,7 +385,7 @@ public class RecipeMapBackend {
     /**
      * @return Whether to use {@link #overwriteFindRecipe} for finding recipe.
      */
-    protected boolean doesOverwriteFindRecipe() {
+    public boolean doesOverwriteFindRecipe() {
         return false;
     }
 
@@ -413,52 +462,74 @@ public class RecipeMapBackend {
             items = rawItems;
         }
 
-        return Stream.<Stream<GTRecipe>>of(
-            // Check the recipe which has been used last time in order to not have to search for it again, if
-            // possible.
-            GTStreamUtil.ofNullable(cachedRecipe)
-                .filter(recipe -> recipe.mCanBeBuffered)
+        // Recipe lookup uses the trie as fast filtering, the trie does not contain amount checks and nbt checking to
+        // allow fast trie traversal. The core logic of the recipe check happens inside filterFindRecipe,
+        // specially, maxParallelCalculatedByInputs in GTRecipe.
+
+        return Stream.concat(
+            Stream.<Stream<GTRecipe>>of(
+                GTStreamUtil.ofNullable(cachedRecipe)
+                    .filter(recipe -> recipe.mCanBeBuffered),
+                GTStreamUtil.ofSupplier(() -> cacheMap[GTUtility.mod(hash(items, fluids), CACHE_MAP_SIZE)])
+                    .filter(Objects::nonNull),
+                Stream.<Supplier<Stream<GTRecipe>>>of(() -> lookupCandidateStream(items, fluids))
+                    .flatMap(Supplier::get))
+                .flatMap(Function.identity())
+                .distinct()
                 .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
                 .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
                 .filter(Objects::nonNull),
-            GTStreamUtil.ofSupplier(() -> cacheMap[(hash(items, fluids)) % CACHE_MAP_SIZE])
-                .filter(Objects::nonNull)
-                .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
-                .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
-                .filter(Objects::nonNull),
-            // Now look for the recipes inside the item index, but only when the recipes actually can have items
-            // inputs.
-            GTStreamUtil.ofConditional(!itemIndex.isEmpty(), items)
-                .filter(Objects::nonNull)
-                .flatMap(item -> Stream.of(new GTItemStack(item), new GTItemStack(item, true)))
-                .map(itemIndex::get)
-                .flatMap(Collection::stream)
-                .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
-                .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
-                .filter(Objects::nonNull),
-            // If the minimum amount of items required for the recipes is 0, then it could match to fluid-only
-            // recipes,
-            // so check fluid index too.
-            GTStreamUtil.ofConditional(properties.minItemInputs == 0, fluids)
-                .filter(Objects::nonNull)
-                .map(
-                    fluidStack -> fluidIndex.get(
-                        fluidStack.getFluid()
-                            .getName()))
-                .flatMap(Collection::stream)
-                .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
-                .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
-                .filter(Objects::nonNull),
-            // Lastly, find fallback.
             forCollisionCheck ? Stream.empty()
                 : GTStreamUtil.ofSupplier(() -> findFallback(items, fluids, specialSlot))
-                    .filter(Objects::nonNull))
-            .flatMap(Function.identity());
+                    .filter(Objects::nonNull));
+    }
+
+    public static boolean shouldValidateLookup() {
+        return RecipeLookupValidator.shouldValidateLookup();
+    }
+
+    protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
+        @Nullable FluidStack @NotNull [] fluids) {
+        List<GTRecipeLookupIngredient> ingredients = new ArrayList<>();
+        Consumer<GTRecipeLookupIngredient> adder = ingredient -> addLookupIngredient(ingredients, ingredient);
+
+        for (ItemStack item : items) {
+            if (item == null) continue;
+
+            GTItemStackLookupIngredient.fromRuntime(adder, item);
+            GTItemDataLookupIngredient.fromRuntime(adder, item);
+            GTOreDictLookupIngredient.fromRuntime(adder, item);
+        }
+
+        for (FluidStack fluid : fluids) {
+            if (fluid == null || fluid.getFluid() == null) continue;
+
+            GTFluidLookupIngredient.fromRuntime(adder, fluid);
+        }
+
+        if (ingredients.isEmpty()) {
+            return Stream.empty();
+        }
+
+        Iterator<GTRecipe> iterator = recipeLookup.iterator(ingredients);
+        return StreamSupport
+            .stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.NONNULL | Spliterator.IMMUTABLE), false);
+    }
+
+    private static void addLookupIngredient(List<GTRecipeLookupIngredient> group, GTRecipeLookupIngredient ingredient) {
+        if (!group.contains(ingredient)) {
+            group.add(ingredient);
+        }
+    }
+
+    static Predicate<GTRecipe> distinctByIdentity() {
+        Set<GTRecipe> seen = Collections.newSetFromMap(new IdentityHashMap<>());
+        return seen::add;
     }
 
     protected void cache(@Nullable ItemStack @NotNull [] items, @Nullable FluidStack @NotNull [] fluids,
-        @NotNull GTRecipe recipe) {
-        cacheMap[hash(items, fluids) % CACHE_MAP_SIZE] = recipe;
+        GTRecipe recipe) {
+        cacheMap[GTUtility.mod(hash(items, fluids), CACHE_MAP_SIZE)] = recipe;
     }
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
@@ -488,7 +559,7 @@ public class RecipeMapBackend {
      * <p>
      * Note that this won't be called if {@link #doesOverwriteFindRecipe} is true.
      */
-    protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+    protected boolean filterFindRecipe(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
         @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
         if (recipe.mEnabled && !recipe.mFakeRecipe
             && recipe.isRecipeInputEqual(false, dontCheckStackSizes, fluids, items)) {

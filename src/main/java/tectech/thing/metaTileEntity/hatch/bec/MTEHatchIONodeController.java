@@ -2,11 +2,11 @@ package tectech.thing.metaTileEntity.hatch.bec;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
@@ -19,9 +19,9 @@ import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
@@ -38,21 +38,21 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
         @Override
         public String toString() {
             return switch (this) {
-                case PAUSE_INSTANT -> GTUtility.translate("GT5U.gui.text.pause-immediately");
-                case PAUSE_STEP -> GTUtility.translate("GT5U.gui.text.pause-next-step");
+                case PAUSE_INSTANT -> StatCollector.translateToLocal("GT5U.gui.text.pause-immediately");
+                case PAUSE_STEP -> StatCollector.translateToLocal("GT5U.gui.text.pause-next-step");
             };
         }
 
         public String getTooltip() {
             return switch (this) {
-                case PAUSE_INSTANT -> GTUtility.translate("GT5U.gui.text.pause-immediately.tooltip");
-                case PAUSE_STEP -> GTUtility.translate("GT5U.gui.text.pause-next-step.tooltip");
+                case PAUSE_INSTANT -> StatCollector.translateToLocal("GT5U.gui.text.pause-immediately.tooltip");
+                case PAUSE_STEP -> StatCollector.translateToLocal("GT5U.gui.text.pause-next-step.tooltip");
             };
         }
     }
 
     public MTEHatchIONodeController(int aID, String aName) {
-        super(aID, aName, VoltageIndex.UEV, null);
+        super(aID, aName, VoltageIndex.UIV, null);
     }
 
     protected MTEHatchIONodeController(MTEHatchIONodeController prototype) {
@@ -110,6 +110,11 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
         return new Gui().build(data, syncManager, uiSettings);
     }
 
+    @Override
+    public GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TECTECH_STANDARD;
+    }
+
     private class Gui extends MTEHatchBaseGui<MTEHatchIONodeController> {
 
         public Gui() {
@@ -117,27 +122,18 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
         }
 
         @Override
-        protected UITexture getLogoTexture() {
-            return GTGuiTextures.TT_PICTURE_TECTECH_LOGO;
-        }
-
-        @Override
         protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
             // spotless:off
             return super.createContentSection(panel, syncManager)
                 .child(SettingsPanel.builder()
-                    .setDividerPosition(40)
                     .addEnumCycleButton(
                         IKey.lang("GT5U.gui.text.bec-mode"),
                         Mode.class,
                         () -> mode,
                         v -> mode = v,
-                        (panel2, sync, button) -> {
-                            button.tooltip((Mode mode) -> new RichTooltip().add(mode.getTooltip()));
-                        })
-                    .build(panel, syncManager)
-                    .widthRel(1)
-                    .coverChildrenHeight());
+                        (_, _, button) -> button.tooltip((Mode mode) -> new RichTooltip().add(mode.getTooltip())))
+                    .build(panel, syncManager, getContentHolderHeight())
+                    .horizontalCenter());
             // spotless:on
         }
     }

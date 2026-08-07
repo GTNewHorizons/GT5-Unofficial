@@ -57,12 +57,12 @@ public class FuelConfigPanel {
 
         // Textbox
         column.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(raw -> MathHelper.clamp_int(raw, 1, GodforgeMath.calculateMaxFuelFactor(data)))
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersInt(raw -> MathHelper.clamp_int(raw, 1, GodforgeMath.calculateMaxFuelFactor(data)))
                 .setTextAlignment(Alignment.CENTER)
                 .value(SyncValues.FUEL_FACTOR.create(hypervisor))
                 .setTooltipOverride(true)
-                .setScrollValues(1, 4, 64)
+                .scrollValues(1, 64, 4, 16)
                 .size(70, 18)
                 .marginLeft(4)
                 .marginTop(3));
@@ -113,9 +113,8 @@ public class FuelConfigPanel {
             return formatter.format(data.getFuelConsumption()) + " L/5s";
         })
             .alignment(Alignment.CENTER)
-            .color(0x404040)
             .asWidget()
-            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_GRAY)
             .width(SIZE_W - 4)
             .marginTop(3));
 

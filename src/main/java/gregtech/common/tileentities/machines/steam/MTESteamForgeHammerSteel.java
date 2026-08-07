@@ -29,6 +29,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineSteel;
+import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -190,5 +191,12 @@ public class MTESteamForgeHammerSteel extends MTEBasicMachineSteel {
                     .run();
             }
         }
+    }
+
+    @Override
+    protected BasicUIProperties getUIProperties() {
+        return super.getUIProperties().toBuilder()
+            .maxFluidOutputs(0)
+            .build();
     }
 }

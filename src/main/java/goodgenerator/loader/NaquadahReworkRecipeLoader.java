@@ -10,6 +10,7 @@ import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.quantumForceTransformerRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -24,7 +25,6 @@ import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST;
 import static gregtech.api.util.GTRecipeConstants.QFT_FOCUS_TIER;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gregtech.common.items.MetaGeneratedItem01.registerCauldronCleaningFor;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.quantumForceTransformerRecipes;
 
 import java.util.HashSet;
 
@@ -37,7 +37,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
 import goodgenerator.items.GGMaterial;
-import goodgenerator.main.GoodGenerator;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
@@ -54,7 +53,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class NaquadahReworkRecipeLoader {
@@ -609,7 +607,8 @@ public class NaquadahReworkRecipeLoader {
 
     public static void Remover() {
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Begin to remove pure Naquadah, Enriched Naquadah and Naquadria.\n");
+        GTLog.out
+            .print(Mods.ModIDs.GOOD_GENERATOR + ": Begin to remove pure Naquadah, Enriched Naquadah and Naquadria.\n");
 
         HashSet<GTRecipe> remove = new HashSet<>(5000);
         HashSet<GTRecipe> reAdd = new HashSet<>(5000);
@@ -638,7 +637,7 @@ public class NaquadahReworkRecipeLoader {
         RecipeMaps.maceratorRecipes.getBackend()
             .reInit();
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace " + remove.size() + "! ");
 
         remove.clear();
         reAdd.clear();
@@ -667,7 +666,7 @@ public class NaquadahReworkRecipeLoader {
         RecipeMaps.oreWasherRecipes.getBackend()
             .reInit();
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace " + remove.size() + "! ");
 
         remove.clear();
         reAdd.clear();
@@ -694,7 +693,7 @@ public class NaquadahReworkRecipeLoader {
         RecipeMaps.thermalCentrifugeRecipes.getBackend()
             .reInit();
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace " + remove.size() + "! ");
 
         remove.clear();
         reAdd.clear();
@@ -797,7 +796,7 @@ public class NaquadahReworkRecipeLoader {
         RecipeMaps.centrifugeRecipes.getBackend()
             .reInit();
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace " + remove.size() + "! ");
 
         remove.clear();
         reAdd.clear();
@@ -823,7 +822,7 @@ public class NaquadahReworkRecipeLoader {
         RecipeMaps.hammerRecipes.getBackend()
             .reInit();
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace " + remove.size() + "! ");
 
         remove.clear();
         reAdd.clear();
@@ -873,7 +872,7 @@ public class NaquadahReworkRecipeLoader {
         RecipeMaps.chemicalReactorRecipes.getBackend()
             .reInit();
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace " + remove.size() + "! ");
 
         remove.clear();
         reAdd.clear();
@@ -923,7 +922,7 @@ public class NaquadahReworkRecipeLoader {
         RecipeMaps.multiblockChemicalReactorRecipes.getBackend()
             .reInit();
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace " + remove.size() + "! ");
 
         remove.clear();
         reAdd.clear();
@@ -931,7 +930,7 @@ public class NaquadahReworkRecipeLoader {
         GTLog.out.print("Multi Chemical Reactor done!\n");
 
         // For Simple Washer
-        for (GTRecipe recipe : GTPPRecipeMaps.simpleWasherRecipes.getAllRecipes()) {
+        for (GTRecipe recipe : RecipeMaps.simpleWasherRecipes.getAllRecipes()) {
             ItemStack input = recipe.mInputs[0];
             if (!GTUtility.isStackValid(input)) continue;
             int[] oreDict = OreDictionary.getOreIDs(input);
@@ -970,13 +969,13 @@ public class NaquadahReworkRecipeLoader {
             }
 
         }
-        GTPPRecipeMaps.simpleWasherRecipes.getBackend()
+        RecipeMaps.simpleWasherRecipes.getBackend()
             .removeRecipes(remove);
-        reAdd.forEach(GTPPRecipeMaps.simpleWasherRecipes::add);
-        GTPPRecipeMaps.simpleWasherRecipes.getBackend()
+        reAdd.forEach(RecipeMaps.simpleWasherRecipes::add);
+        RecipeMaps.simpleWasherRecipes.getBackend()
             .reInit();
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace " + remove.size() + "! ");
 
         remove.clear();
         reAdd.clear();
@@ -987,7 +986,7 @@ public class NaquadahReworkRecipeLoader {
         registerCauldronCleaningFor(Materials.Naquadah, GGMaterial.naquadahEarth.getBridgeMaterial());
         registerCauldronCleaningFor(Materials.NaquadahEnriched, GGMaterial.enrichedNaquadahEarth.getBridgeMaterial());
         registerCauldronCleaningFor(Materials.Naquadria, GGMaterial.naquadriaEarth.getBridgeMaterial());
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace 3! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace 3! ");
         GTLog.out.print("Cauldron Wash done!\n");
 
         // For Crafting Table
@@ -995,7 +994,7 @@ public class NaquadahReworkRecipeLoader {
             .getRecipeList()
             .forEach(NaquadahReworkRecipeLoader::replaceInCraftTable);
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace Unknown! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace Unknown! ");
         GTLog.out.print("Crafting Table done!\n");
     }
 

@@ -87,7 +87,7 @@ public class IndividualMilestonePanel {
             .style(EnumChatFormatting.GOLD)
             .alignment(Alignment.CENTER)
             .asWidget()
-            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
             .marginBottom(6));
 
         // Info texts
@@ -154,7 +154,7 @@ public class IndividualMilestonePanel {
             .alignment(Alignment.CENTER)
             .scale(0.7f)
             .asWidget()
-            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
             .width(140);
     }
 

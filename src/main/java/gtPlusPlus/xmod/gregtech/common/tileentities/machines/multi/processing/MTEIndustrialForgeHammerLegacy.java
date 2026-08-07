@@ -120,8 +120,7 @@ public class MTEIndustrialForgeHammerLegacy extends GTPPMultiBlockBase<MTEIndust
             .addMufflerHatch("Any Casing", 1)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GTPP.tooltip.structure.anvil"),
-                "In the center of 3x3x3 structure",
-                2)
+                "In the center of 3x3x3 structure")
             .toolTipFinisher();
         return tt;
     }

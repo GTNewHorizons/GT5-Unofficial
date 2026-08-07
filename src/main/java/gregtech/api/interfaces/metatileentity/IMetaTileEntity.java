@@ -175,6 +175,16 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
 
     /**
+     * Whether {@link #onPreTick} and {@link #onPostTick} run on the client.
+     */
+    boolean needsClientTick();
+
+    /**
+     * Client only. Called after any state sounds depending on have changed.
+     */
+    void onClientSoundStateChanged();
+
+    /**
      * Called when this MetaTileEntity gets (intentionally) disconnected from the BaseMetaTileEntity. Doesn't get called
      * when this thing is moved by Frames or similar hacks.
      */
@@ -225,7 +235,18 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @param stack The stack, or null for a general 'any standard stack' query (getMaxStackSize() == 64).
      */
     default int getStackSizeLimit(int slot, @Nullable ItemStack stack) {
-        return Math.min(getInventoryStackLimit(), stack == null ? 64 : stack.getMaxStackSize());
+        return Math.min(getSlotLimit(slot), stack == null ? 64 : stack.getMaxStackSize());
+    }
+
+    /**
+     * Gets the max stack size limit for a slot. This should be prioritised over
+     * {@link IMetaTileEntity#getStackSizeLimit(int, ItemStack)}in cases where the limit is independent of the item
+     * stack.
+     *
+     * @param slot The slot index, or -1 for a general 'lowest slot' query.
+     */
+    default int getSlotLimit(int slot) {
+        return getInventoryStackLimit();
     }
 
     /**
@@ -464,7 +485,9 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 
     void onColorChangeServer(byte aColor);
 
-    void onColorChangeClient(byte aColor);
+    default void onColorChangeClient(byte aColor) {
+        // Seems no code need this, keep around for compat just in case
+    }
 
     default NBTTagCompound getDescriptionData() {
         return null;
@@ -544,8 +567,17 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         return null;
     }
 
+    default String getLocalNameKey() {
+        return "GT5U.gui.title.unknown";
+    }
+
+    /**
+     * You should override {@link #getLocalNameKey()} instead of this one.
+     *
+     * @return localized name
+     */
     default String getLocalName() {
-        return StatCollector.translateToLocal("GT5U.gui.title.unknown");
+        return StatCollector.translateToLocal(getLocalNameKey());
     }
 
     default boolean doesBindPlayerInventory() {

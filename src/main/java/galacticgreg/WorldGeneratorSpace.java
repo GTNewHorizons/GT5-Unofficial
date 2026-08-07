@@ -1,5 +1,6 @@
 package galacticgreg;
 
+import static galacticgreg.GalacticGreg.LOGGER;
 import static gregtech.api.enums.GTValues.profileWorldGen;
 
 import java.util.ArrayList;
@@ -44,18 +45,18 @@ public class WorldGeneratorSpace implements IWorldGenerator {
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator,
         IChunkProvider chunkProvider) {
 
-        GalacticGreg.Logger.trace("Triggered generate: [Dimension %s]", world.provider.getDimensionName());
+        LOGGER.trace("Triggered generate: [Dimension {}]", world.provider.getDimensionName());
 
         // Don't use the effective dim def here because we want to generate asteroids that clip into end islands
         ModDimensionDef tDimDef = DimensionDef.getDefForWorld(world);
 
         if (tDimDef == null) {
-            GalacticGreg.Logger.trace(
-                "Ignoring dimension %s as there is no definition for it in the registry",
+            LOGGER.trace(
+                "Ignoring dimension {} as there is no definition for it in the registry",
                 world.provider.getDimensionName());
             return;
         } else {
-            GalacticGreg.Logger.trace("Selected DimDef: [%s]", tDimDef.getDimIdentifier());
+            LOGGER.trace("Selected DimDef: [{}]", tDimDef.getDimIdentifier());
         }
 
         if (!tDimDef.generatesAsteroids()) return;
@@ -81,9 +82,8 @@ public class WorldGeneratorSpace implements IWorldGenerator {
         long post = profileWorldGen ? System.nanoTime() : 0;
 
         if (profileWorldGen) {
-            GTMod.GT_FML_LOGGER.info(
-                String
-                    .format("Generated %d %d in %,d us (%d seeds)", chunkX, chunkZ, (int) ((post - pre) / 1e3), seeds));
+            GTMod.GT_FML_LOGGER
+                .info("Generated {} {} in {} us ({} seeds)", chunkX, chunkZ, (int) ((post - pre) / 1e3), seeds);
         }
 
         Chunk tChunk = world.getChunkFromBlockCoords(chunkX, chunkZ);
@@ -138,8 +138,8 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
             if (oreLayer == null) return null;
 
-            GalacticGreg.Logger.debug(
-                "Asteroid will be built with: Stone: [%s] Ore: [%s]",
+            LOGGER.debug(
+                "Asteroid will be built with: Stone: [{}] Ore: [{}]",
                 asteroidStone.getStone(),
                 oreLayer.getName());
 
@@ -151,13 +151,13 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             List<Ellipsoid> positive = new ArrayList<>();
             List<Ellipsoid> negative = new ArrayList<>();
 
-            int radius = asteroidConfig.MinSize + rng.nextInt(asteroidConfig.MinSize - asteroidConfig.MaxSize + 1);
+            int radius = asteroidConfig.MinSize + rng.nextInt(asteroidConfig.MaxSize - asteroidConfig.MinSize + 1);
             positive.add(new Ellipsoid(0, 0, 0, radius));
 
             if (asteroidConfig.PositiveEllipsoids > 0) {
                 int k = rng.nextInt(2);
                 for (int i = 0; i < k; i++) {
-                    negative.add(
+                    positive.add(
                         new Ellipsoid(
                             radius * (rng.nextFloat() * 2 - 1),
                             radius * (rng.nextFloat() * 2 - 1),
@@ -169,7 +169,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             if (asteroidConfig.NegativeEllipsoids > 0 && rng.nextInt(4) == 0) {
                 int k = rng.nextInt(asteroidConfig.NegativeEllipsoids);
                 for (int i = 0; i < k; i++) {
-                    positive.add(
+                    negative.add(
                         new Ellipsoid(
                             radius * (rng.nextFloat() * 2 - 1),
                             radius * (rng.nextFloat() * 2 - 1),
@@ -340,12 +340,12 @@ public class WorldGeneratorSpace implements IWorldGenerator {
 
             if (asteroidConfig.LootChestChance == 0 || size < 6) return;
 
-            GalacticGreg.Logger.trace("Random loot chest enabled, flipping the coin");
+            LOGGER.trace("Random loot chest enabled, flipping the coin");
 
             // Loot chest is 1 in 100 (Was: 1:1000 which actually never happened)
             if (asteroidConfig.LootChestChance < rng.nextInt(100)) return;
 
-            GalacticGreg.Logger.debug("We got a match. Preparing to generate the loot chest");
+            LOGGER.debug("We got a match. Preparing to generate the loot chest");
 
             int x = cX, y = cY, z = cZ;
 
@@ -366,7 +366,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                 }
             }
 
-            GalacticGreg.Logger.trace("Now generating LootChest and contents");
+            LOGGER.trace("Now generating LootChest and contents");
 
             // Get amount of items for the loot chests, randomize it (1-num) if enabled
             int tNumLootItems;
@@ -376,7 +376,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                 tNumLootItems = asteroidConfig.NumLootItems;
             }
 
-            GalacticGreg.Logger.debug(String.format("Loot chest random item count will be: %d", tNumLootItems));
+            LOGGER.debug("Loot chest random item count will be: {}", tNumLootItems);
 
             // Get items for the configured loot-table
             WeightedRandomChestContent[] tRandomLoot = ChestGenHooks
@@ -398,16 +398,16 @@ public class WorldGeneratorSpace implements IWorldGenerator {
                     // Fill the chest with stuffz!
                     WeightedRandomChestContent
                         .generateChestContents(rng, tRandomLoot, entityChestInventory, tNumLootItems);
-                    GalacticGreg.Logger.trace("Loot chest successfully generated");
+                    LOGGER.trace("Loot chest successfully generated");
                 }
             } else {
                 // Something made a boo..
-                GalacticGreg.Logger
-                    .warn("Could not create lootchest at X[%d] Y[%d] Z[%d]. getTileEntity() returned null", cX, cY, cZ);
+                LOGGER
+                    .warn("Could not create lootchest at X[{}] Y[{}] Z[{}]. getTileEntity() returned null", cX, cY, cZ);
             }
 
             // Do some debug logging
-            GalacticGreg.Logger.debug("Generated LootChest at X[%d] Y[%d] Z[%d]", cX, cY, cZ);
+            LOGGER.debug("Generated LootChest at X[{}] Y[{}] Z[{}]", cX, cY, cZ);
         }
     }
 

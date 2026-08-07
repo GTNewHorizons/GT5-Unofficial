@@ -400,7 +400,7 @@ public class MTERockBreaker extends MTEBasicMachine {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEBasicMachineBaseGui(this, this.getUIProperties()).build(data, syncManager, uiSettings);
+        return new MTEBasicMachineBaseGui<>(this, this.getUIProperties()).build(data, syncManager, uiSettings);
     }
 
     @Override

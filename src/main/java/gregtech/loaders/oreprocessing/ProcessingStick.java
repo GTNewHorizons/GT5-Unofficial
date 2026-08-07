@@ -15,7 +15,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
-import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -64,23 +63,30 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .itemInputs(GTUtility.copyAmount(1, aStack))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 4L))
                     .fluidInputs(
-                        new SubstituteFluidStack(
-                            Materials.Water.getFluid(
-                                Math.max(
-                                    4,
-                                    Math.min(
-                                        1000,
-                                        2 * ((int) Math.max(aMaterial.getMass() * 2L, 1L))
-                                            * calculateRecipeEU(aMaterial, 4)
-                                            / 320))),
-                            GTModHandler.getDistilledWater(
-                                Math.max(
-                                    3,
-                                    Math.min(
-                                        750,
-                                        2 * ((int) Math.max(aMaterial.getMass() * 2L, 1L))
-                                            * calculateRecipeEU(aMaterial, 4)
-                                            / 426)))))
+                        Materials.Water.getFluid(
+                            Math.max(
+                                4,
+                                Math.min(
+                                    1000,
+                                    2 * ((int) Math.max(aMaterial.getMass() * 2L, 1L))
+                                        * calculateRecipeEU(aMaterial, 4)
+                                        / 320))))
+                    .duration(2 * ((int) Math.max(aMaterial.getMass() * 2L, 1L)) * TICKS)
+                    .eut(calculateRecipeEU(aMaterial, 4))
+                    .addTo(cutterRecipes);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 4L))
+                    .fluidInputs(
+                        GTModHandler.getDistilledWater(
+                            Math.max(
+                                3,
+                                Math.min(
+                                    750,
+                                    2 * ((int) Math.max(aMaterial.getMass() * 2L, 1L))
+                                        * calculateRecipeEU(aMaterial, 4)
+                                        / 426))))
                     .duration(2 * ((int) Math.max(aMaterial.getMass() * 2L, 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 4))
                     .addTo(cutterRecipes);

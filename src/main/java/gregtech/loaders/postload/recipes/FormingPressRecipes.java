@@ -203,11 +203,11 @@ public class FormingPressRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MagMatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Eternity, 1L),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.WhiteDwarfMatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 16L),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 4L),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.SixPhasedCopper, 4L),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 4L),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.BlackDwarfMatter, 1L))
             .fluidInputs(Materials.UUMatter.getFluid(4_096_000L))
             .itemOutputs(ItemList.NaniteFramework.get(1))
@@ -284,6 +284,40 @@ public class FormingPressRecipes implements Runnable {
             .itemOutputs(ItemList.T4Sawblade.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
+            .addTo(formingPressRecipes);
+
+        // Hexanite Borosilicate Glass
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(ItemRegistry.bw_glasses[0], 1, 0),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Netherite, 12),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 1))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 9))
+            .fluidInputs(Materials.UnformedHexanite.getFluid(8 * INGOTS))
+            .duration(40 * SECONDS)
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(formingPressRecipes);
+
+        // Peace Enforcement Casing
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GGMaterial.tairitsu.get(OrePrefixes.frameGt, 1),
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Churitsu, 2))
+            .itemOutputs(ItemList.PeaceEnforcementCasing.get(1))
+            .fluidInputs(Materials.Shijima.getMolten(2 * INGOTS))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(formingPressRecipes);
+
+        // Conflict Inducement Casing
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Shijima, 1),
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Churitsu, 2))
+            .itemOutputs(ItemList.ConflictInducementCasing.get(1))
+            .fluidInputs(GGMaterial.tairitsu.getMolten(2 * INGOTS))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
             .addTo(formingPressRecipes);
     }
 }

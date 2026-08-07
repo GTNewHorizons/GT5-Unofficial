@@ -17,6 +17,7 @@ public class SelectItemServerAction extends SyncHandler<SelectItemServerAction> 
 
     public SelectItemServerAction(SelectItemGuiBuilder.OnSelectedAction onSelected) {
         this.onSelected = onSelected;
+        allowC2S();
     }
 
     public void send(int selected, MouseData mouseData) {

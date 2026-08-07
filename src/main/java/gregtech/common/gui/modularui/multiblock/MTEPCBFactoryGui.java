@@ -27,9 +27,9 @@ public class MTEPCBFactoryGui extends MTEMultiBlockBaseGui<MTEPCBFactory> {
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         return super.createRightPanelGapRow(parent, syncManager).child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setDefaultNumber(100)
-                .setNumbers(50, 200)
+            new TextFieldWidget().formatAsInteger(true)
+                .defaultNumber(100)
+                .numbersInt(50, 200)
                 .syncHandler("traceSize")
                 .width(40)
                 .tooltip(t -> t.addLine(translateToLocal("GT5U.MBTT.PCB.Tooltip.5"))));

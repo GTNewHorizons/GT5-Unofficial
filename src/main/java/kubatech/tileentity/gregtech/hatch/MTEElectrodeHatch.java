@@ -50,8 +50,7 @@ public class MTEElectrodeHatch extends MTEHatchInputBus {
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack itemStack) {
-        if (itemStack == null) return true;
-        return itemStack.getItem() == ARC_FURNACE_ELECTRODE;
+        return itemStack != null && itemStack.getItem() == ARC_FURNACE_ELECTRODE;
     }
 
     @Override

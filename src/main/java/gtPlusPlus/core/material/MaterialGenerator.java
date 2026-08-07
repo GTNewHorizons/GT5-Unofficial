@@ -1,12 +1,16 @@
 package gtPlusPlus.core.material;
 
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
+import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 
 import java.util.ArrayList;
 import java.util.Set;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.TierEU;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -33,7 +37,6 @@ import gtPlusPlus.core.item.base.rods.BaseItemRod;
 import gtPlusPlus.core.item.base.rods.BaseItemRodLong;
 import gtPlusPlus.core.item.base.rotors.BaseItemRotor;
 import gtPlusPlus.core.item.base.screws.BaseItemScrew;
-import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -43,7 +46,6 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGenBlastSmelter;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenExtruder;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenFluids;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenFluorite;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMaterialProcessing;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMetalRecipe;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenOre;
@@ -73,8 +75,8 @@ public class MaterialGenerator {
             final boolean hotIngot = matInfo.requiresBlastFurnace();
 
             int sRadiation = 0;
-            if (ItemUtils.getRadioactivityLevel(materialName) > 0 || (matInfo.vRadiationLevel != 0)) {
-                sRadiation = matInfo.vRadiationLevel;
+            if (ItemUtils.getRadioactivityLevel(materialName) > 0 || (matInfo.radiationLevel != 0)) {
+                sRadiation = matInfo.radiationLevel;
             }
 
             if (matInfo.getState() == MaterialState.SOLID) {
@@ -167,7 +169,7 @@ public class MaterialGenerator {
             new RecipeGenFluids(matInfo);
             new RecipeGenMaterialProcessing(matInfo);
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
         // RecipeGen_Recycling.generateRecipes(matInfo);
     }
@@ -183,8 +185,8 @@ public class MaterialGenerator {
                 .circuit(20)
                 .itemOutputs(matInfo.getDust(1))
                 .fluidInputs(matInfo.getFluidStack(1 * INGOTS))
-                .eut(matInfo.vVoltageMultiplier)
-                .duration(10 * (matInfo.vVoltageMultiplier / 5))
+                .eut(matInfo.voltageMultiplier)
+                .duration(10 * (matInfo.voltageMultiplier / 5))
                 .addTo(chemicalDehydratorRecipes);
         }
     }
@@ -270,14 +272,29 @@ public class MaterialGenerator {
             new BaseItemPurifiedDust(matInfo);
             new BaseItemRawOre(matInfo);
 
-            if (matInfo == MaterialsFluorides.FLUORITE) {
-                new RecipeGenFluorite(matInfo);
-            } else {
-                new RecipeGenOre(matInfo);
+            new RecipeGenOre(matInfo);
+
+            // Fluorite Dehydrator
+            if (matInfo.getLocalizedName()
+                .equals("Fluorite (F)")) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(matInfo.getDust(37))
+                    .itemOutputs(
+                        Materials.Gypsum.getDust(15),
+                        Materials.Silver.getDust(1),
+                        Materials.Gold.getDust(2),
+                        Materials.Tin.getDust(1),
+                        Materials.Copper.getDust(2))
+                    .outputChances(10000, 1000, 1000, 3000, 2000)
+                    .fluidInputs(Materials.SulfuricAcid.getFluid(8000))
+                    .fluidOutputs(Materials.HydrofluoricAcid.getFluid(16000))
+                    .eut(TierEU.RECIPE_HV / 2)
+                    .duration(10 * MINUTES)
+                    .addTo(chemicalDehydratorRecipes);
             }
 
         } catch (final Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
     }
 
@@ -317,7 +334,7 @@ public class MaterialGenerator {
             new RecipeGenRecycling(matInfo);
             new RecipeGenPlasma(matInfo);
         } catch (final Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
     }
 }

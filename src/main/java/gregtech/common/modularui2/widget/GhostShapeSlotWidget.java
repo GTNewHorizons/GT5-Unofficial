@@ -75,6 +75,7 @@ public class GhostShapeSlotWidget extends PhantomItemSlot {
     public PhantomItemSlot slot(ModularSlot slot) {
         shapeSyncHandler = new GhostShapeSyncHandler(slot, hatch);
         setSyncOrValue(shapeSyncHandler);
+        shapeSyncHandler.registerIndexSync(syncManager, "ghostShapeIndex");
         return this;
     }
 
@@ -112,8 +113,8 @@ public class GhostShapeSlotWidget extends PhantomItemSlot {
                         panel.closeIfOpen();
                     }
                 })
-                .setAllowDeselected(false)
                 .setCurrentItemSlotOverlay(GTGuiTextures.OVERLAY_SLOT_EXTRUDER_SHAPE)
+                .setAllowDeselected(true)
                 .build();
         });
     }

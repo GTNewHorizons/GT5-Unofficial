@@ -30,7 +30,7 @@ public class CoverLiquidMeterGui extends CoverBaseGui<CoverLiquidMeter> {
             .name("fluid_threshold")
             .child(
                 makeNumberField().value(new IntSyncValue(cover::getThreshold, cover::setThreshold).allowC2S())
-                    .setNumbers(0, maxCapacity)
+                    .numbersInt(0, maxCapacity)
                     .setFocusOnGuiOpen(true))
             .child(
                 IKey.lang("gt.interact.desc.Fluid_Meter.FluidThreshold")

@@ -1,8 +1,5 @@
 package gregtech.common.gui.modularui.hatch;
 
-import net.minecraft.item.ItemStack;
-
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 
 public class MTEHatchLensHousingGui extends MTEHatchInputBusGui {
@@ -19,10 +16,5 @@ public class MTEHatchLensHousingGui extends MTEHatchInputBusGui {
     @Override
     protected boolean supportsBottomLeftCornerFlow() {
         return false;
-    }
-
-    @Override
-    protected boolean isValidStack(ItemStack itemStack) {
-        return OrePrefixes.lens.contains(itemStack);
     }
 }

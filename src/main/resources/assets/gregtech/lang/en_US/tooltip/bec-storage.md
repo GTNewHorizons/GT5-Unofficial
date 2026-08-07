@@ -9,3 +9,5 @@ When multiple containment fields are present on a network, injected condensate i
 Excess condensate can be inserted into the containment field, but it will quickly be {red:{underline:voided}}.
 When a containment field is overfilled, {red:{underline:11%}} of its condensate is deleted each second.
 If a containment field shuts down at any point, its contents will be {red:{underline:voided}}.
+{dark_gray:{hr}}
+The {gold:{item:gregtech:gt.blockmachines:15761}} can be used to detect stored condensate levels.

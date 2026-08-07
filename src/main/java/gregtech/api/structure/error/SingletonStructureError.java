@@ -6,6 +6,7 @@ import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.github.bsideup.jabel.Desugar;
 
 import gregtech.api.enums.StructureErrorId;
@@ -23,6 +24,7 @@ public record SingletonStructureError(StructureErrorId id, String langKey, Suppl
             langKey,
             () -> IKey.lang(langKey)
                 .color(TEXT_COLOR)
+                .alignment(Alignment.CenterLeft)
                 .asWidget());
     }
 

@@ -1,9 +1,6 @@
 package gregtech.api.items.armor.behaviors;
 
-import static gregtech.loaders.ExtraIcons.rebreatherAugment;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.IIcon;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -18,11 +15,6 @@ public class WaterBreathingBehavior implements IArmorBehavior {
     @Override
     public BehaviorName getName() {
         return BehaviorName.WaterBreathing;
-    }
-
-    @Override
-    public IIcon getModularArmorTexture() {
-        return rebreatherAugment;
     }
 
     @Override

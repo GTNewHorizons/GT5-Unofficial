@@ -1,7 +1,10 @@
 package gregtech.common.render;
 
-import static gregtech.api.enums.Textures.InvisibleIcon.*;
+import static gregtech.api.enums.Mods.Angelica;
+import static gregtech.api.enums.Textures.InvisibleIcon.INVISIBLE_ICON;
 import static gregtech.api.render.ISBRWorldContext.MAX_BRIGHTNESS;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +17,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.prupe.mcpatcher.ctm.CTMUtils;
 
 import gregtech.GTMod;
 import gregtech.api.interfaces.IColorModulationContainer;
@@ -21,8 +25,9 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.ISBRContext;
+import gregtech.api.render.ISBRWorldContext;
 
-public class GTRenderedTexture extends GTTextureBase implements IColorModulationContainer {
+public class GTRenderedTexture extends GTTextureBase implements IColorModulationContainer, IIconTexture {
 
     protected final IIconContainer mIconContainer;
     private final short[] mRGBa;
@@ -35,6 +40,24 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         mRGBa = aRGBa;
         this.glow = glow;
         this.useExtFacing = extFacing;
+    }
+
+    @Override
+    public IIcon getIcon(int ordinalSide, @Nullable ISBRContext ctx) {
+        return getIcon(ForgeDirection.values()[ordinalSide], false, ctx);
+    }
+
+    public IIcon getIcon(ForgeDirection facing, boolean overlay, @Nullable ISBRContext ctx) {
+        final IIcon icon = overlay ? mIconContainer.getOverlayIcon() : mIconContainer.getIcon();
+        if (icon == null || !Angelica.isModLoaded()) return icon;
+        else return ctx instanceof ISBRWorldContext ctxW ? CTMUtils.getBlockIcon(
+            icon,
+            ctx.getBlock(),
+            ctxW.getBlockAccess(),
+            ctxW.getX(),
+            ctxW.getY(),
+            ctxW.getZ(),
+            facing.ordinal()) : icon;
     }
 
     @Override
@@ -51,14 +74,17 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
+            if (ctx instanceof ISBRWorldContext worldCtx) {
+                worldCtx.finishLighting();
+            }
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
-        final IIcon icon = mIconContainer.getIcon();
+        final IIcon icon = getIcon(ForgeDirection.EAST, false, ctx);
         if (icon != INVISIBLE_ICON && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.EAST, mRGBa);
             renderFaceXPos(ctx, mIconContainer.getIcon(), rotation);
         }
-        final IIcon overlayIcon = mIconContainer.getOverlayIcon();
+        final IIcon overlayIcon = getIcon(ForgeDirection.EAST, true, ctx);
         if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
             && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.EAST, 0xffffff);
@@ -66,6 +92,9 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         }
         renderBlocks.enableAO = enableAO;
         draw(renderBlocks);
+        if (glow && ctx instanceof ISBRWorldContext worldCtx) {
+            worldCtx.tryStartAngelicaLighting();
+        }
     }
 
     @Override
@@ -82,14 +111,17 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
+            if (ctx instanceof ISBRWorldContext worldCtx) {
+                worldCtx.finishLighting();
+            }
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
-        final IIcon icon = mIconContainer.getIcon();
+        final IIcon icon = getIcon(ForgeDirection.WEST, false, ctx);
         if (icon != INVISIBLE_ICON && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.WEST, mRGBa);
             renderFaceXNeg(ctx, mIconContainer.getIcon(), rotation);
         }
-        final IIcon overlayIcon = mIconContainer.getOverlayIcon();
+        final IIcon overlayIcon = getIcon(ForgeDirection.WEST, true, ctx);
         if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
             && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.WEST, 0xffffff);
@@ -97,6 +129,9 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         }
         renderBlocks.enableAO = enableAO;
         draw(renderBlocks);
+        if (glow && ctx instanceof ISBRWorldContext worldCtx) {
+            worldCtx.tryStartAngelicaLighting();
+        }
     }
 
     @Override
@@ -113,14 +148,17 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
+            if (ctx instanceof ISBRWorldContext worldCtx) {
+                worldCtx.finishLighting();
+            }
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
-        final IIcon icon = mIconContainer.getIcon();
+        final IIcon icon = getIcon(ForgeDirection.UP, false, ctx);
         if (icon != INVISIBLE_ICON && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.UP, mRGBa);
             renderFaceYPos(ctx, mIconContainer.getIcon(), rotation);
         }
-        final IIcon overlayIcon = mIconContainer.getOverlayIcon();
+        final IIcon overlayIcon = getIcon(ForgeDirection.UP, true, ctx);
         if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
             && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.UP, 0xffffff);
@@ -128,6 +166,9 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         }
         renderBlocks.enableAO = enableAO;
         draw(renderBlocks);
+        if (glow && ctx instanceof ISBRWorldContext worldCtx) {
+            worldCtx.tryStartAngelicaLighting();
+        }
     }
 
     @Override
@@ -144,14 +185,17 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
+            if (ctx instanceof ISBRWorldContext worldCtx) {
+                worldCtx.finishLighting();
+            }
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
-        final IIcon icon = mIconContainer.getIcon();
+        final IIcon icon = getIcon(ForgeDirection.DOWN, false, ctx);
         if (icon != INVISIBLE_ICON && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.DOWN, mRGBa);
             renderFaceYNeg(ctx, mIconContainer.getIcon(), rotation);
         }
-        final IIcon overlayIcon = mIconContainer.getOverlayIcon();
+        final IIcon overlayIcon = getIcon(ForgeDirection.DOWN, true, ctx);
         if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
             && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.DOWN, 0xffffff);
@@ -159,6 +203,9 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         }
         renderBlocks.enableAO = enableAO;
         draw(renderBlocks);
+        if (glow && ctx instanceof ISBRWorldContext worldCtx) {
+            worldCtx.tryStartAngelicaLighting();
+        }
     }
 
     @Override
@@ -175,14 +222,17 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
+            if (ctx instanceof ISBRWorldContext worldCtx) {
+                worldCtx.finishLighting();
+            }
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
-        final IIcon icon = mIconContainer.getIcon();
+        final IIcon icon = getIcon(ForgeDirection.SOUTH, false, ctx);
         if (icon != INVISIBLE_ICON && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.SOUTH, mRGBa);
             renderFaceZPos(ctx, mIconContainer.getIcon(), rotation);
         }
-        final IIcon overlayIcon = mIconContainer.getOverlayIcon();
+        final IIcon overlayIcon = getIcon(ForgeDirection.SOUTH, true, ctx);
         if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
             && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.SOUTH, 0xffffff);
@@ -190,6 +240,9 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         }
         renderBlocks.enableAO = enableAO;
         draw(renderBlocks);
+        if (glow && ctx instanceof ISBRWorldContext worldCtx) {
+            worldCtx.tryStartAngelicaLighting();
+        }
     }
 
     @Override
@@ -206,14 +259,17 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
             renderBlocks.enableAO = false;
             ctx.setLightnessOverride(1.0F);
             ctx.setBrightnessOverride(MAX_BRIGHTNESS);
+            if (ctx instanceof ISBRWorldContext worldCtx) {
+                worldCtx.finishLighting();
+            }
         }
         final ExtendedFacing rotation = getExtendedFacing(ctx.getX(), ctx.getY(), ctx.getZ());
-        final IIcon icon = mIconContainer.getIcon();
+        final IIcon icon = getIcon(ForgeDirection.NORTH, false, ctx);
         if (icon != INVISIBLE_ICON && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.NORTH, mRGBa);
             renderFaceZNeg(ctx, mIconContainer.getIcon(), rotation);
         }
-        final IIcon overlayIcon = mIconContainer.getOverlayIcon();
+        final IIcon overlayIcon = getIcon(ForgeDirection.NORTH, true, ctx);
         if (overlayIcon != null && overlayIcon != INVISIBLE_ICON
             && ctx.canRenderInPass(mIconContainer::canRenderInPass)) {
             ctx.setupColor(ForgeDirection.NORTH, 0xffffff);
@@ -221,6 +277,9 @@ public class GTRenderedTexture extends GTTextureBase implements IColorModulation
         }
         renderBlocks.enableAO = enableAO;
         draw(renderBlocks);
+        if (glow && ctx instanceof ISBRWorldContext worldCtx) {
+            worldCtx.tryStartAngelicaLighting();
+        }
     }
 
     @Override

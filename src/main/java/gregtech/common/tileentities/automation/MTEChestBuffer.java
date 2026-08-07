@@ -97,11 +97,6 @@ public class MTEChestBuffer extends MTEBuffer {
         return tickRate[tier];
     }
 
-    protected static int getMaxStacks(int tier) {
-        // Included higher tiers on the off chance they actually work without blowing things up lmao
-        return tier > 9 ? MAX : Math.min(maxStacks[tier], MAX);
-    }
-
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEChestBufferGui(this).build(guiData, syncManager, uiSettings);

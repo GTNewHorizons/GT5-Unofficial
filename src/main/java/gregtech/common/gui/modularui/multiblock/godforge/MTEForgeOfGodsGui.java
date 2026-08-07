@@ -156,7 +156,7 @@ public class MTEForgeOfGodsGui extends TTMultiblockBaseGui<MTEForgeOfGods> {
                     .color(Color.WHITE.main)
                     .alignment(Alignment.CENTER)
                     .asWidget()
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                     .marginTop(4)
                     .fullWidth()));
     }

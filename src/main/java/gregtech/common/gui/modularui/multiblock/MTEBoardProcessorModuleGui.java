@@ -164,9 +164,9 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
             .childPadding(4)
             .child(new TextWidget<>(translateToLocal("GT5U.gui.text.nac.module.boardprocessor.flush_tank_auto") + ":"))
             .child(
-                new TextFieldWidget().setNumbers(1, 100)
+                new TextFieldWidget().numbersInt(1, 100)
                     .setTextAlignment(Alignment.CENTER)
-                    .setDefaultNumber(100)
+                    .defaultNumber(100)
                     .value(automationPercentage)
                     .size(60, 18))
             .child(new TextWidget<>(translateToLocal("GT5U.gui.text.nac.module.boardprocessor.impurity")));

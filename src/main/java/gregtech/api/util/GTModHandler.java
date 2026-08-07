@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import net.minecraft.enchantment.Enchantment;
@@ -107,8 +108,8 @@ public class GTModHandler {
     private static final Object2IntOpenCustomHashMap<ItemStack> delayedRemovalByOutputFlags = new Object2IntOpenCustomHashMap<>(
         512,
         GTItemStack.ITEMSTACK_HASH_STRATEGY2);
-    private static final int DELAYED_REMOVAL_KEEP_SHAPELESS = 1 << 0;
-    private static final int DELAYED_REMOVAL_ONLY_REMOVE_NATIVE = 1 << 1;
+    private static final int DELAYED_REMOVAL_KEEP_SHAPELESS = 1;
+    private static final int DELAYED_REMOVAL_ONLY_REMOVE_NATIVE = 2;
 
     private static final List<InventoryCrafting> delayedRemovalByRecipe = new ArrayList<>();
 
@@ -183,6 +184,7 @@ public class GTModHandler {
      *
      * @deprecated Use {@link gregtech.api.enums.Materials} instead.
      */
+    @Deprecated
     public static FluidStack getWater(long aAmount) {
         return Materials.Water.getFluid(aAmount);
     }
@@ -225,6 +227,7 @@ public class GTModHandler {
      *
      * @deprecated Use {@link gregtech.api.enums.Materials} instead.
      */
+    @Deprecated
     public static FluidStack getLava(long aAmount) {
         return Materials.Lava.getFluid(aAmount);
     }
@@ -1077,40 +1080,43 @@ public class GTModHandler {
             }
             Character chr = (Character) aRecipe[idx];
             Object in = aRecipe[idx + 1];
-            if (in instanceof ItemStack is) {
-                tItemStackMap.put(chr, GTUtility.copyOrNull(is));
-                tItemDataMap.put(chr, GTOreDictUnificator.getItemData(is));
-            } else if (in instanceof ItemData) {
-                String tString = in.toString();
-                switch (tString) {
-                    case "plankWood" -> tItemDataMap.put(chr, new ItemData(Materials.Wood, M));
-                    case "stoneNetherrack" -> tItemDataMap.put(chr, new ItemData(Materials.Netherrack, M));
-                    case "stoneObsidian" -> tItemDataMap.put(chr, new ItemData(Materials.Obsidian, M));
-                    case "stoneEndstone" -> tItemDataMap.put(chr, new ItemData(Materials.Endstone, M));
-                    default -> tItemDataMap.put(chr, (ItemData) in);
+            switch (in) {
+                case ItemStack is -> {
+                    tItemStackMap.put(chr, GTUtility.copyOrNull(is));
+                    tItemDataMap.put(chr, GTOreDictUnificator.getItemData(is));
                 }
-                ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
-                if (tStack == null) tRemoveRecipe = false;
-                else tItemStackMap.put(chr, tStack);
-                in = aRecipe[idx + 1] = in.toString();
-            } else if (in instanceof String) {
-                if (in.equals(OreDictNames.craftingChest.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Wood, M * 8));
-                else if (in.equals(OreDictNames.craftingBook.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Paper, M * 3));
-                else if (in.equals(OreDictNames.craftingPiston.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 4, Materials.Wood, M * 3));
-                else if (in.equals(OreDictNames.craftingFurnace.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 8));
-                else if (in.equals(OreDictNames.craftingIndustrialDiamond.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
-                else if (in.equals(OreDictNames.craftingAnvil.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
-                ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
-                if (tStack == null) tRemoveRecipe = false;
-                else tItemStackMap.put(chr, tStack);
-            } else {
-                throw new IllegalArgumentException();
+                case ItemData itemData -> {
+                    String tString = in.toString();
+                    switch (tString) {
+                        case "plankWood" -> tItemDataMap.put(chr, new ItemData(Materials.Wood, M));
+                        case "stoneNetherrack" -> tItemDataMap.put(chr, new ItemData(Materials.Netherrack, M));
+                        case "stoneObsidian" -> tItemDataMap.put(chr, new ItemData(Materials.Obsidian, M));
+                        case "stoneEndstone" -> tItemDataMap.put(chr, new ItemData(Materials.Endstone, M));
+                        default -> tItemDataMap.put(chr, itemData);
+                    }
+                    ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
+                    if (tStack == null) tRemoveRecipe = false;
+                    else tItemStackMap.put(chr, tStack);
+                    in = aRecipe[idx + 1] = in.toString();
+                }
+                case String s -> {
+                    if (in.equals(OreDictNames.craftingChest.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Wood, M * 8));
+                    else if (in.equals(OreDictNames.craftingBook.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Paper, M * 3));
+                    else if (in.equals(OreDictNames.craftingPiston.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 4, Materials.Wood, M * 3));
+                    else if (in.equals(OreDictNames.craftingFurnace.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 8));
+                    else if (in.equals(OreDictNames.craftingIndustrialDiamond.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
+                    else if (in.equals(OreDictNames.craftingAnvil.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
+                    ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
+                    if (tStack == null) tRemoveRecipe = false;
+                    else tItemStackMap.put(chr, tStack);
+                }
+                case null, default -> throw new IllegalArgumentException();
             }
         }
 
@@ -1206,6 +1212,14 @@ public class GTModHandler {
      * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
      */
     public static boolean addShapelessCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
+        return addShapelessCraftingRecipe(aResult, aBitMask, grid -> true, aRecipe);
+    }
+
+    /**
+     * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
+     */
+    public static boolean addShapelessCraftingRecipe(ItemStack aResult, long aBitMask,
+        Predicate<InventoryCrafting> inputValidator, Object[] aRecipe) {
         return addShapelessCraftingRecipe(
             aResult,
             null,
@@ -1214,6 +1228,7 @@ public class GTModHandler {
             (aBitMask & RecipeBits.KEEPNBT) != 0,
             (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
             (aBitMask & RecipeBits.OVERWRITE_NBT) != 0,
+            inputValidator,
             aRecipe);
     }
 
@@ -1222,7 +1237,7 @@ public class GTModHandler {
      */
     private static boolean addShapelessCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
         int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aKeepNBT, boolean aRemovable, boolean overwriteNBT,
-        Object[] aRecipe) {
+        Predicate<InventoryCrafting> inputValidator, Object[] aRecipe) {
         aResult = GTOreDictUnificator.get(true, aResult);
         if (aRecipe == null || aRecipe.length == 0) return false;
         for (byte i = 0; i < aRecipe.length; i++) {
@@ -1235,19 +1250,23 @@ public class GTModHandler {
 
         ItemStack[] tRecipe = new ItemStack[9];
         int i = 0;
+        label:
         for (Object tObject : aRecipe) {
-            if (tObject == null) {
-                if (D1) GTLog.err.println(
-                    "WARNING: Missing Item for shapeless Recipe: "
-                        + (aResult == null ? "null" : aResult.getDisplayName()));
-                for (Object tContent : aRecipe) GTLog.err.println(tContent);
-                return false;
-            }
-            if (tObject instanceof ItemStack) {
-                tRecipe[i] = (ItemStack) tObject;
-            } else if (tObject instanceof String) {
-                tRecipe[i] = GTOreDictUnificator.getFirstOre(tObject, 1);
-                if (tRecipe[i] == null) break;
+            switch (tObject) {
+                case null -> {
+                    if (GTValues.D1) GTLog.err.println(
+                        "WARNING: Missing Item for shapeless Recipe: "
+                            + (aResult == null ? "null" : aResult.getDisplayName()));
+                    for (Object tContent : aRecipe) GTLog.err.println(tContent);
+                    return false;
+                }
+                case ItemStack itemStack -> tRecipe[i] = itemStack;
+                case String s -> {
+                    tRecipe[i] = GTOreDictUnificator.getFirstOre(tObject, 1);
+                    if (tRecipe[i] == null) break label;
+                }
+                default -> {
+                }
             }
             i++;
         }
@@ -1269,6 +1288,7 @@ public class GTModHandler {
                 overwriteNBT,
                 aEnchantmentsAdded,
                 aEnchantmentLevelsAdded,
+                inputValidator,
                 aRecipe));
         else GameRegistry.addRecipe(
             new GTShapelessRecipe(
@@ -1278,6 +1298,7 @@ public class GTModHandler {
                 overwriteNBT,
                 aEnchantmentsAdded,
                 aEnchantmentLevelsAdded,
+                inputValidator,
                 aRecipe));
         return true;
     }
@@ -2091,7 +2112,7 @@ public class GTModHandler {
      * array containing [ current_charge, maximum_charge ] on success.
      */
     public static Optional<Long[]> getElectricItemCharge(ItemStack aStack) {
-        if (aStack == null || !isElectricItem(aStack)) {
+        if (!isElectricItem(aStack)) {
             return Optional.empty();
         }
 

@@ -198,7 +198,7 @@ public class ManualInsertionPanel {
                 .alignment(Alignment.CENTER)
                 .scale(0.8f)
                 .asWidget()
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                 .size(18)
                 .setEnabledIf(
                     $ -> hasExtraCost(upgradeSyncer, index)

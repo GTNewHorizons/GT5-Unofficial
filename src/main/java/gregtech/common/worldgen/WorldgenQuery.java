@@ -114,7 +114,7 @@ public class WorldgenQuery<TLayer extends IWorldgenLayer> {
         for (TLayer layer : matches) {
             remainingAmount -= layer.getWeight();
 
-            if (remainingAmount <= 0) return layer;
+            if (remainingAmount < 0) return layer;
         }
 
         return null;
@@ -138,7 +138,7 @@ public class WorldgenQuery<TLayer extends IWorldgenLayer> {
 
             remainingAmount--;
 
-            if (remainingAmount <= 0) return layer;
+            if (remainingAmount < 0) return layer;
         }
 
         return null;
@@ -167,7 +167,7 @@ public class WorldgenQuery<TLayer extends IWorldgenLayer> {
                 }
             }
 
-            if (!any) return false;
+            return any;
         }
 
         return true;

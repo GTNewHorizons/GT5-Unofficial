@@ -192,7 +192,7 @@ public class MTEHatchCapacitor extends MTEHatch {
             this.energyMax = energyMax;
             componentBinds.put(unlocalizedName, this);
             if (ConfigHandler.debug.DEBUG_MODE) {
-                TecTech.LOGGER.info("Tesla Capacitor registered: " + unlocalizedName);
+                TecTech.LOGGER.info("Tesla Capacitor registered: {}", unlocalizedName);
             }
         }
 
@@ -208,5 +208,11 @@ public class MTEHatchCapacitor extends MTEHatch {
             }
             return false;
         }
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return itemStack != null && componentBinds.containsKey(TTUtility.getUniqueIdentifier(itemStack))
+            && super.isItemValidForSlot(index, itemStack);
     }
 }

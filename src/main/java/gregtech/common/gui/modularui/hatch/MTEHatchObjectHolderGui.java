@@ -1,8 +1,8 @@
 package gregtech.common.gui.modularui.hatch;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.StatCollector;
 
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -12,7 +12,6 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import tectech.thing.metaTileEntity.hatch.MTEHatchObjectHolder;
 
@@ -40,9 +39,9 @@ public class MTEHatchObjectHolderGui extends MTEHatchBaseGui<MTEHatchObjectHolde
                         .tooltipAutoUpdate(true)
                         .tooltipDynamic(
                             t -> t.addLine(
-                                GTUtility.translate(
+                                StatCollector.translateToLocalFormatted(
                                     "tt.gui.text.hatch.status",
-                                    GTUtility.translate(
+                                    StatCollector.translateToLocal(
                                         isActiveSyncer.getBoolValue() ? "tt.gui.text.hatch.status.active"
                                             : "tt.gui.text.hatch.status.inactive")))));
 
@@ -72,11 +71,6 @@ public class MTEHatchObjectHolderGui extends MTEHatchBaseGui<MTEHatchObjectHolde
     @Override
     protected boolean supportsBottomRowOverlap() {
         return true;
-    }
-
-    @Override
-    protected IDrawable.DrawableWidget createLogo() {
-        return new IDrawable.DrawableWidget(GTGuiTextures.TT_PICTURE_TECTECH_LOGO).size(18);
     }
 
     @Override

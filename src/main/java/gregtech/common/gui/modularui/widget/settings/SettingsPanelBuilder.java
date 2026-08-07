@@ -18,162 +18,165 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.value.sync.IValueSyncHandler;
+import com.cleanroommc.modularui.api.value.IBoolValue;
+import com.cleanroommc.modularui.api.value.IIntValue;
+import com.cleanroommc.modularui.api.value.IStringValue;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.DAM;
+import com.cleanroommc.modularui.utils.MathUtils;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.value.sync.SyncHandler;
+import com.cleanroommc.modularui.value.sync.ValueSyncHandler;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
-import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import gregtech.common.gui.modularui.widget.EnumCycleButtonWidget;
 import gregtech.common.gui.modularui.widget.WidgetConfigurator;
 
-@SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class SettingsPanelBuilder {
 
     private final List<ISettingRow<?>> rows = new ArrayList<>();
-
-    private Function<SettingsPanel, Integer> dividerPosition;
-    private String syncName = "settings-panel";
-
-    public SettingsPanelBuilder setDividerPosition(int dividerPosition) {
-        this.dividerPosition = ignored -> dividerPosition;
-        return this;
-    }
-
-    public SettingsPanelBuilder setDividerPosition(Function<SettingsPanel, Integer> dividerPosition) {
-        this.dividerPosition = dividerPosition;
-        return this;
-    }
+    private String syncName = "settingsPanel";
 
     public SettingsPanelBuilder setSyncName(String syncName) {
         this.syncName = syncName;
         return this;
     }
 
-    public SettingsPanelBuilder addHeader(IKey header) {
-        rows.add(new HeaderSettingRow(header));
-
-        return this;
-    }
-
-    public <S extends SyncHandler & IValueSyncHandler<T>, T> SettingsPanelBuilder addReadout(IKey label, S value,
+    public <S extends ValueSyncHandler<T, ?>, T> SettingsPanelBuilder addReadout(IKey label, S value,
         Function<T, IKey> format) {
         rows.add(new ReadoutSettingRow<>(label, value, format));
 
         return this;
     }
 
-    public SettingsPanelBuilder addIntEditor(IKey label, IntSupplier getter, IntConsumer setter) {
-        addIntEditor(label, getter, setter, null);
-
-        return this;
+    public SettingsPanelBuilder addIntEditor(IKey label, IntSupplier getter, IntConsumer setter,
+        MathUtils.UnaryIntOperator validator) {
+        return addIntEditor(label, getter, setter, validator, null);
     }
 
     public SettingsPanelBuilder addIntEditor(IKey label, IntSupplier getter, IntConsumer setter,
-        WidgetConfigurator<TextFieldWidget> configure) {
-        addTextField(label, (panel, syncManager, textField) -> {
-            textField.value(new IntSyncValue(getter, setter).allowC2S());
-            textField.setFormatAsInteger(true);
-            textField.setNumbers();
-            if (configure != null) configure.configure(panel, syncManager, textField);
-        });
-
-        return this;
+        MathUtils.UnaryIntOperator validator, WidgetConfigurator<TextFieldWidget> configure) {
+        return addIntEditor(label, new IntSyncValue(getter, setter).allowC2S(), validator, configure);
     }
 
-    public SettingsPanelBuilder addLongEditor(IKey label, LongSupplier getter, LongConsumer setter) {
-        addLongEditor(label, getter, setter, null);
+    public SettingsPanelBuilder addIntEditor(IKey label, IStringValue<Integer> value,
+        MathUtils.UnaryIntOperator validator) {
+        return addIntEditor(label, value, validator, null);
+    }
 
-        return this;
+    public SettingsPanelBuilder addIntEditor(IKey label, IStringValue<Integer> value,
+        MathUtils.UnaryIntOperator validator, WidgetConfigurator<TextFieldWidget> configure) {
+        return addTextField(label, value, (panel, syncManager, widget) -> {
+            widget.numbersInt(validator);
+            widget.formatAsInteger(true);
+            if (configure != null) configure.configure(panel, syncManager, widget);
+        });
     }
 
     public SettingsPanelBuilder addLongEditor(IKey label, LongSupplier getter, LongConsumer setter,
-        WidgetConfigurator<TextFieldWidget> configure) {
-        addTextField(label, (panel, syncManager, textField) -> {
-            textField.value(new LongSyncValue(getter, setter).allowC2S());
-            textField.setFormatAsInteger(true);
-            textField.setNumbers();
-            if (configure != null) configure.configure(panel, syncManager, textField);
-        });
-
-        return this;
+        MathUtils.UnaryLongOperator validator) {
+        return addLongEditor(label, getter, setter, validator, null);
     }
 
-    public SettingsPanelBuilder addDoubleEditor(IKey label, DoubleSupplier getter, DoubleConsumer setter) {
-        addDoubleEditor(label, getter, setter, null);
+    public SettingsPanelBuilder addLongEditor(IKey label, LongSupplier getter, LongConsumer setter,
+        MathUtils.UnaryLongOperator validator, WidgetConfigurator<TextFieldWidget> configure) {
+        return addLongEditor(label, new LongSyncValue(getter, setter).allowC2S(), validator, configure);
+    }
 
-        return this;
+    public SettingsPanelBuilder addLongEditor(IKey label, IStringValue<Long> value,
+        MathUtils.UnaryLongOperator validator) {
+
+        return addLongEditor(label, value, validator, null);
+    }
+
+    public SettingsPanelBuilder addLongEditor(IKey label, IStringValue<Long> value,
+        MathUtils.UnaryLongOperator validator, WidgetConfigurator<TextFieldWidget> configure) {
+        return addTextField(label, value, (panel, syncManager, widget) -> {
+            widget.numbersLong(validator);
+            widget.formatAsInteger(true);
+            if (configure != null) configure.configure(panel, syncManager, widget);
+        });
     }
 
     public SettingsPanelBuilder addDoubleEditor(IKey label, DoubleSupplier getter, DoubleConsumer setter,
-        WidgetConfigurator<TextFieldWidget> configure) {
-        addTextField(label, (panel, syncManager, textField) -> {
-            textField.value(new DoubleSyncValue(getter, setter) {
+        DAM.UnaryDoubleOperator validator) {
+        return addDoubleEditor(label, getter, setter, validator, null);
+    }
 
-                @Override
-                public String getStringValue() {
-                    return NumberFormatUtil.formatNumber(this.getValue());
-                }
-            }.allowC2S());
-            textField.setNumbers();
-            if (configure != null) configure.configure(panel, syncManager, textField);
+    public SettingsPanelBuilder addDoubleEditor(IKey label, DoubleSupplier getter, DoubleConsumer setter,
+        DAM.UnaryDoubleOperator validator, WidgetConfigurator<TextFieldWidget> configure) {
+        return addDoubleEditor(label, new DoubleSyncValue(getter, setter).allowC2S(), validator, configure);
+    }
+
+    public SettingsPanelBuilder addDoubleEditor(IKey label, IStringValue<Double> value,
+        DAM.UnaryDoubleOperator validator) {
+        return addDoubleEditor(label, value, validator, null);
+    }
+
+    public SettingsPanelBuilder addDoubleEditor(IKey label, IStringValue<Double> value,
+        DAM.UnaryDoubleOperator validator, WidgetConfigurator<TextFieldWidget> configure) {
+        return addTextField(label, value, (panel, syncManager, widget) -> {
+            widget.numbersDouble(validator);
+            if (configure != null) configure.configure(panel, syncManager, widget);
         });
-
-        return this;
     }
 
     public SettingsPanelBuilder addStringEditor(IKey label, Supplier<String> getter, Consumer<String> setter) {
-        addStringEditor(label, getter, setter, null);
-
-        return this;
+        return addStringEditor(label, getter, setter, null);
     }
 
     public SettingsPanelBuilder addStringEditor(IKey label, Supplier<String> getter, Consumer<String> setter,
         WidgetConfigurator<TextFieldWidget> configure) {
-        addTextField(label, (panel, syncManager, textField) -> {
-            textField.value(new StringSyncValue(getter, setter).allowC2S());
-            if (configure != null) configure.configure(panel, syncManager, textField);
-        });
-
-        return this;
+        return addStringEditor(label, new StringSyncValue(getter, setter).allowC2S(), configure);
     }
 
-    public SettingsPanelBuilder addTextField(IKey label, WidgetConfigurator<TextFieldWidget> configure) {
-        rows.add(
-            new TextFieldSettingRow(
-                label,
-                (panel, syncManager, textField) -> {
-                    if (configure != null) configure.configure(panel, syncManager, textField);
-                }));
+    public SettingsPanelBuilder addStringEditor(IKey label, IStringValue<String> value) {
+        return addStringEditor(label, value, null);
+    }
+
+    public SettingsPanelBuilder addStringEditor(IKey label, IStringValue<String> value,
+        WidgetConfigurator<TextFieldWidget> configure) {
+        return addTextField(label, value, configure);
+    }
+
+    private SettingsPanelBuilder addTextField(IKey label, IStringValue<?> value,
+        WidgetConfigurator<TextFieldWidget> configure) {
+        rows.add(new TextFieldSettingRow(label, value, configure));
 
         return this;
     }
 
     public <E extends Enum<E>> SettingsPanelBuilder addEnumCycleButton(IKey label, Class<E> clazz, Supplier<E> getter,
         Consumer<E> setter) {
-        rows.add(new EnumCycleSettingRow<>(label, clazz, getter, setter, null));
-
-        return this;
+        return addEnumCycleButton(label, clazz, getter, setter, null);
     }
 
     public <E extends Enum<E>> SettingsPanelBuilder addEnumCycleButton(IKey label, Class<E> clazz, Supplier<E> getter,
         Consumer<E> setter, WidgetConfigurator<EnumCycleButtonWidget<E>> configure) {
-        rows.add(new EnumCycleSettingRow<>(label, clazz, getter, setter, configure));
+        return addEnumCycleButton(label, clazz, new EnumSyncValue<>(clazz, getter, setter).allowC2S(), configure);
+    }
+
+    public <E extends Enum<E>> SettingsPanelBuilder addEnumCycleButton(IKey label, Class<E> clazz, IIntValue<?> value) {
+        return addEnumCycleButton(label, clazz, value, null);
+    }
+
+    public <E extends Enum<E>> SettingsPanelBuilder addEnumCycleButton(IKey label, Class<E> clazz, IIntValue<?> value,
+        WidgetConfigurator<EnumCycleButtonWidget<E>> configure) {
+        rows.add(new EnumCycleSettingRow<>(label, clazz, value, configure));
 
         return this;
     }
 
     public SettingsPanelBuilder addPhantomFluidSlot(IKey label, Supplier<Fluid> getter, Consumer<Fluid> setter) {
-        addPhantomFluidSlot(label, getter, setter, null);
-
-        return this;
+        return addPhantomFluidSlot(label, getter, setter, null);
     }
 
     public SettingsPanelBuilder addPhantomFluidSlot(IKey label, Supplier<Fluid> getter, Consumer<Fluid> setter,
@@ -219,24 +222,47 @@ public class SettingsPanelBuilder {
             }
         };
 
-        rows.add(
-            new PhantomFluidSettingRow(
-                label,
-                configure,
-                new FluidSlotSyncHandler(fakeTank).phantom(true)
-                    .controlsAmount(false)));
+        return addPhantomFluidSlot(
+            label,
+            new FluidSlotSyncHandler(fakeTank).phantom(true)
+                .controlsAmount(false),
+            configure);
+    }
 
-        return this;
+    public SettingsPanelBuilder addPhantomFluidSlot(IKey label, FluidSlotSyncHandler value) {
+        return addPhantomFluidSlot(label, value, null);
     }
 
     public SettingsPanelBuilder addPhantomFluidSlot(IKey label, FluidSlotSyncHandler value,
         WidgetConfigurator<FluidSlot> configure) {
-        rows.add(new PhantomFluidSettingRow(label, configure, value));
+        rows.add(new PhantomFluidSettingRow(label, value, configure));
 
         return this;
     }
 
-    public SettingsPanel build(ModularPanel panel, PanelSyncManager syncManager) {
-        return new SettingsPanel(panel, syncManager, rows, dividerPosition, syncName);
+    public SettingsPanelBuilder addToggleButton(IKey label, IBoolValue<?> value) {
+        rows.add(new ToggleButtonSettingRow(label, value, null));
+
+        return this;
+    }
+
+    public SettingsPanelBuilder addToggleButton(IKey label, IBoolValue<?> value,
+        WidgetConfigurator<ToggleButton> configure) {
+        rows.add(new ToggleButtonSettingRow(label, value, configure));
+
+        return this;
+    }
+
+    public SettingsPanelBuilder addButton(IKey label) {
+        return addButton(label, null);
+    }
+
+    public SettingsPanelBuilder addButton(IKey label, WidgetConfigurator<ButtonWidget<?>> configure) {
+        rows.add(new ButtonSettingRow(label, configure));
+        return this;
+    }
+
+    public SettingsPanel build(ModularPanel panel, PanelSyncManager syncManager, int maxHeight) {
+        return new SettingsPanel(panel, syncManager, rows, syncName, maxHeight);
     }
 }

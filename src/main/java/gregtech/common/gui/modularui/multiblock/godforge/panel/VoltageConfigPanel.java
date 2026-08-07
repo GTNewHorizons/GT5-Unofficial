@@ -94,12 +94,12 @@ public class VoltageConfigPanel {
 
         // Max parallel text field
         row.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersInt(
                     () -> alwaysMaxParallelSyncer.getBoolValue() ? maxParallelSyncer.getIntValue() : 1,
                     maxParallelSyncer::getIntValue)
                 .value(new IntValue.Dynamic(setMaxParallelSyncer::getIntValue, setMaxParallelSyncer::setIntValue))
-                .setScrollValues(1, 4, 64)
+                .scrollValues(1, 64, 4, 16)
                 .setTextAlignment(Alignment.CENTER)
                 .tooltipDynamic(t -> {
                     int maxParallel = maxParallelSyncer.getIntValue();
@@ -171,11 +171,11 @@ public class VoltageConfigPanel {
 
         // Voltage per parallel text field
         column.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbersLong(() -> 2_000_000_000L, () -> Long.MAX_VALUE)
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersLong(() -> 2_000_000_000L, () -> Long.MAX_VALUE)
                 .value(
                     new LongValue.Dynamic(processingVoltageSyncer::getLongValue, processingVoltageSyncer::setLongValue))
-                .setScrollValues(1, 4, 64)
+                .scrollValues(1, 64, 4, 16)
                 .setTextAlignment(Alignment.CENTER)
                 .size(130, 18)
                 .setTooltipOverride(true)

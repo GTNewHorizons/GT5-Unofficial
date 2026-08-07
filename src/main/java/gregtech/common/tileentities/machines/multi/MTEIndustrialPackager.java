@@ -14,6 +14,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
@@ -35,18 +36,23 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipTier;
@@ -56,7 +62,7 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEIndustrialPackager>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static IStructureDefinition<MTEIndustrialPackager> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -129,27 +135,20 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.SupplyDepotCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCAAmazonPackagerActive)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAAmazonPackagerActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.SupplyDepotCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCAAmazonPackager)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAAmazonPackagerGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.SupplyDepotCasing.getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCAAmazonPackager,
+            TexturesGtBlock.oMCAAmazonPackagerGlow,
+            TexturesGtBlock.oMCAAmazonPackagerActive,
+            TexturesGtBlock.oMCAAmazonPackagerActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.SupplyDepotCasing.getCasingTexture();
     }
 
     @Override
@@ -164,17 +163,18 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 3, 3, true)
             .addController("Front right, 2nd layer")
-            .addCasingInfoMin("Supply Depot Casing", 4, false)
-            .addCasingInfoExactly("Item Pipe", 3, true)
-            .addCasingInfoExactly("Iron Frame Box", 2, false)
-            .addCasingInfoExactly("Any Tiered Glass", 3, true)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
+            .addCasing("4-15", "Supply Depot Casing", false)
+            .addCasing("3", "Item Pipe Casing", true)
+            .addCasing("3", "Any Tiered Glass", false)
+            .addCasing("2", "Iron Frame Box", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMufflerHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Oasis_Cactus")
             .toolTipFinisher();
         return tt;
@@ -182,9 +182,54 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setMaxParallelSupplier(this::getTrueParallel)
+        return new ProcessingLogic() {
+
+            @Nonnull
+            @Override
+            protected Stream<GTRecipe> findRecipeMatches(RecipeMap<?> map) {
+                Stream<GTRecipe> recipes = super.findRecipeMatches(map);
+                if (map != RecipeMaps.packagerRecipes) return recipes;
+                GTRecipe schematicRecipe = findSchematicRecipe(inputItems);
+                return schematicRecipe == null ? recipes : Stream.concat(recipes, Stream.of(schematicRecipe));
+            }
+        }.setMaxParallelSupplier(this::getTrueParallel)
             .setEuModifier(EU_EFFICIENCY)
             .setSpeedBonusSupplier(this::getSpeedBonus);
+    }
+
+    private static GTRecipe findSchematicRecipe(ItemStack[] inputs) {
+        ItemStack schematic = null;
+        int size = 0;
+        for (ItemStack input : inputs) {
+            if (ItemList.Schematic_1by1.isStackEqual(input)) size = 1;
+            else if (ItemList.Schematic_2by2.isStackEqual(input)) size = 2;
+            else if (ItemList.Schematic_3by3.isStackEqual(input)) size = 3;
+            else continue;
+            schematic = input;
+            break;
+        }
+        if (schematic == null) return null;
+
+        for (ItemStack input : inputs) {
+            if (GTUtility.isStackInvalid(input) || input == schematic
+                || GTUtility.getContainerItem(input, true) != null) continue;
+            ItemStack output = switch (size) {
+                case 1 -> GTModHandler.getRecipeOutput(input);
+                case 2 -> GTModHandler.getRecipeOutput(input, input, null, input, input);
+                case 3 -> GTModHandler.getRecipeOutput(input, input, input, input, input, input, input, input, input);
+                default -> null;
+            };
+            if (output == null) continue;
+            return GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(size * size, input), GTUtility.copyAmount(0, schematic))
+                .itemOutputs(output)
+                .duration(16 << (size - 1))
+                .eut(30)
+                .nbtSensitive()
+                .build()
+                .orElse(null);
+        }
+        return null;
     }
 
     @Override
@@ -309,11 +354,6 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     public boolean supportsMachineModeSwitch() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

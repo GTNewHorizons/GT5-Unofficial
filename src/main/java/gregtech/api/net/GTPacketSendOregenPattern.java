@@ -49,7 +49,7 @@ public class GTPacketSendOregenPattern extends GTPacket {
 
     @Override
     public void process(IBlockAccess aWorld) {
-        GTWorldgenerator.oregenPattern = this.pattern;
+        GTWorldgenerator.setClientOregenPattern(this.pattern);
     }
 
 }

@@ -50,7 +50,11 @@ public class BlockCasings10 extends BlockCasingsAbstract {
             case 2 -> Textures.BlockIcons.BLOCK_QUARK_CONTAINMENT_CASING.getIcon();
             case 3 -> Textures.BlockIcons.MACHINE_CASING_AUTOCLAVE.getIcon();
             case 4 -> Textures.BlockIcons.COMPRESSOR_CASING.getIcon();
-            case 5 -> Textures.BlockIcons.COMPRESSOR_PIPE_CASING.getIcon();
+            case 5 -> {
+                if (ordinalSide == 0 || ordinalSide == 1)
+                    yield Textures.BlockIcons.COMPRESSOR_PIPE_CASING_TOP.getIcon();
+                yield Textures.BlockIcons.COMPRESSOR_PIPE_CASING.getIcon();
+            }
             case 6 -> Textures.BlockIcons.NEUTRONIUM_CASING.getIcon();
             case 7 -> Textures.BlockIcons.NEUTRONIUM_ACTIVE_CASING.getIcon();
             case 8 -> Textures.BlockIcons.NEUTRONIUM_STABLE_CASING.getIcon();

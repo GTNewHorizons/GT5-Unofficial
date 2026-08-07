@@ -386,7 +386,7 @@ public class GTAchievements {
         }
 
         if (!StatCollector.canTranslate(name)) {
-            GTLog.out.println(desc + "=Pickup this item to see the recipe in NEI");
+            GTLog.out.println(desc + "=Pick up this item to see the recipe in NEI");
         }
         this.achievementList.put(textId, achievement);
         return achievement;

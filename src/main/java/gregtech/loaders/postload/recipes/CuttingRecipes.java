@@ -21,7 +21,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.OreDictItemStack;
-import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
@@ -565,10 +564,16 @@ public class CuttingRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(inputs)
             .itemOutputs(outputs)
-            .fluidInputs(
-                new SubstituteFluidStack(
-                    Materials.Water.getFluid(Math.max(4, Math.min(1000, duration * eut / 320))),
-                    GTModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * eut / 426)))))
+            .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, duration * eut / 320))))
+            .duration(2 * duration)
+            .eut(eut)
+            .metadata(GTRecipeConstants.CLEANROOM, cleanroomRequired)
+            .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(inputs)
+            .itemOutputs(outputs)
+            .fluidInputs(GTModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * eut / 426))))
             .duration(2 * duration)
             .eut(eut)
             .metadata(GTRecipeConstants.CLEANROOM, cleanroomRequired)

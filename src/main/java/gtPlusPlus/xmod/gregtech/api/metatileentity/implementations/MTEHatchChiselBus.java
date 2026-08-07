@@ -49,7 +49,6 @@ public class MTEHatchChiselBus extends MTEHatchInputBus {
 
     public static int getGhostTargetCount(int aTier) {
         return switch (aTier) {
-            case 1 -> 1;
             case 2 -> 4;
             case 3 -> 9;
             default -> 1;
@@ -87,7 +86,7 @@ public class MTEHatchChiselBus extends MTEHatchInputBus {
         return Utils.splitLocalizedFormattedWithAuthor(
             "gt.blockmachines.input_bus_chisel.desc",
             GTAuthors.AuthorQuetz4l,
+            getGhostTargetCount(this.mTier),
             getSlots(this.mTier));
     }
-
 }

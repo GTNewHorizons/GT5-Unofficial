@@ -1,13 +1,11 @@
 package gregtech.common.gui.modularui.widget.settings;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.value.IStringValue;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.Alignment.MainAxis;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.Widget;
-import com.cleanroommc.modularui.widgets.TextWidget;
-import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.github.bsideup.jabel.Desugar;
 
@@ -15,39 +13,17 @@ import gregtech.common.gui.modularui.widget.WidgetConfigurator;
 import it.unimi.dsi.fastutil.Pair;
 
 @Desugar
-record TextFieldSettingRow(IKey label, WidgetConfigurator<TextFieldWidget> configure)
-    implements ISettingRow<TextFieldSettingRow.TextFieldWidgets> {
-
-    @Desugar
-    public record TextFieldWidgets(TextWidget<?> labelWidget, TextFieldWidget editor) {
-
-    }
+record TextFieldSettingRow(IKey label, IStringValue<?> value, WidgetConfigurator<TextFieldWidget> configure)
+    implements ISettingRow<TextFieldWidget> {
 
     @Override
-    public Pair<TextFieldWidgets, Widget<?>> build(ModularPanel panel, PanelSyncManager syncManager,
+    public @NotNull Pair<IKey, TextFieldWidget> build(ModularPanel panel, PanelSyncManager syncManager,
         SettingsPanel settings) {
-        TextFieldWidgets w = new TextFieldWidgets(
-            label.asWidget()
-                .textAlign(Alignment.CenterRight),
-            new TextFieldWidget().marginLeft(6)
-                .marginRight(2)
-                .width(80)
-                .expanded());
+        TextFieldWidget textFieldWidget = new TextFieldWidget().value(value)
+            .width(80);
 
-        if (configure != null) configure.configure(panel, syncManager, w.editor);
+        if (configure != null) configure.configure(panel, syncManager, textFieldWidget);
 
-        return Pair.of(
-            w,
-            Flow.row()
-                .mainAxisAlignment(MainAxis.START)
-                .widthRel(1f)
-                .height(22)
-                .child(w.labelWidget)
-                .child(w.editor));
-    }
-
-    @Override
-    public void resize(SettingsPanel settings, TextFieldWidgets w, Widget<?> widget, int dividerPosition) {
-        w.labelWidget.width(dividerPosition);
+        return Pair.of(label, textFieldWidget);
     }
 }

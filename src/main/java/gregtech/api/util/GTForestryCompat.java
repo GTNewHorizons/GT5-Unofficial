@@ -18,6 +18,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
@@ -172,7 +173,7 @@ public class GTForestryCompat {
                 }
                 recipeBuilder.fluidOutputs(tRecipe.getFluidOutput())
                     .duration(1 * SECONDS + 12 * TICKS)
-                    .eut(8)
+                    .eut(TierEU.RECIPE_ULV)
                     .addTo(RecipeMaps.fluidExtractionRecipes);
             }
         }

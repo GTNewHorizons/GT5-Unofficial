@@ -72,8 +72,8 @@ public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
             .marginBottom(4)
             .child(
                 makeNumberField(50).value(thresholdSyncer)
-                    .setDefaultNumber(0)
-                    .setNumbers(0, Integer.MAX_VALUE)
+                    .defaultNumber(0)
+                    .numbersInt(0, Integer.MAX_VALUE)
                     .marginRight(2))
             .child(
                 IKey.lang("gt.interact.desc.itemthreshold")
@@ -98,8 +98,8 @@ public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
     private IWidget createSlotInputField(IntSyncValue slotSyncer) {
         // number field with 'Any' goes here
         return makeNumberField(50).value(slotSyncer)
-            .setDefaultNumber(-1)
-            .setNumbers(
+            .defaultNumber(-1)
+            .numbersInt(
                 -1,
                 cover.getTile()
                     .getSizeInventory() - 1)

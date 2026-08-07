@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
@@ -14,7 +15,6 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import gregtech.api.util.GTUtility;
 import gregtech.common.items.ItemVolumetricFlask;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 
@@ -59,16 +59,17 @@ public class VolumetricFlaskGui {
         textRow.child(
             new TextFieldWidget().width(80)
                 .value(cap)
-                .setFormatAsInteger(true)
-                .setNumbers(1, maxCapacity)
+                .formatAsInteger(true)
+                .numbersInt(1, maxCapacity)
                 .setMaxLength(10)
                 .tooltipShowUpTimer(5)
                 .tooltip(
                     t -> t.addLine(
                         EnumChatFormatting.GRAY + ""
                             + EnumChatFormatting.ITALIC
-                            + GTUtility
-                                .translate("GT5U.gui.text.volumetric_flask.max_capacity", formatNumber(maxCapacity)))));
+                            + StatCollector.translateToLocalFormatted(
+                                "GT5U.gui.text.volumetric_flask.max_capacity",
+                                formatNumber(maxCapacity)))));
 
         textRow.child(
             IKey.lang("GT5U.gui.text.volumetric_flask.capacity")
