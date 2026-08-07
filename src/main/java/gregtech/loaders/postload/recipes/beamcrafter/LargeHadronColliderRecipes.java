@@ -51,13 +51,13 @@ public class LargeHadronColliderRecipes implements Runnable {
             .eut(TierEU.RECIPE_UV)
             .ignoreCollision()
             .addTo(largeHadronColliderRecipes);
-        
+
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.ATLASCasing.get(1))
             .metadata(
                 LARGE_HADRON_COLLIDER_METADATA,
                 LargeHadronColliderMetadata.builder()
-                    .particleList(LHCModule.Weak.acceptedParticles.subList(16, 24))
+                    .particleList(LHCModule.Weak.acceptedParticles.subList(16, 17))
                     .progressBarTextureIndex(1)
                     .build())
             .duration(1 * SECONDS)
@@ -77,13 +77,13 @@ public class LargeHadronColliderRecipes implements Runnable {
             .eut(TierEU.RECIPE_UV)
             .ignoreCollision()
             .addTo(largeHadronColliderRecipes);
-        
+
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.ALICECasing.get(1))
             .metadata(
                 LARGE_HADRON_COLLIDER_METADATA,
                 LargeHadronColliderMetadata.builder()
-                    .particleList(LHCModule.Strong.acceptedParticles.subList(8, 16))
+                    .particleList(LHCModule.Strong.acceptedParticles.subList(8, 9))
                     .progressBarTextureIndex(2)
                     .build())
             .duration(1 * SECONDS)
