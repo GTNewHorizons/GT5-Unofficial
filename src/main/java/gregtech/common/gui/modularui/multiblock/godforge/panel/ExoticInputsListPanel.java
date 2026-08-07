@@ -133,7 +133,7 @@ public class ExoticInputsListPanel {
                 .key(
                     'S',
                     index -> new FluidSlot().syncHandler(
-                        new FluidSlotSyncHandler(hypervisor.getModule(Modules.EXOTIC).fluidTanks[index])
+                        new FluidSlotSyncHandler(hypervisor.getModule(Modules.EXOTIC).fluidTanks[index + 4])
                             .canFillSlot(false)
                             .canDrainSlot(false)))
                 .build());
