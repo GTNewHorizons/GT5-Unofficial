@@ -118,6 +118,7 @@ import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 import gregtech.common.tileentities.machines.basic.MTEBoxinator;
 import gregtech.common.tileentities.machines.basic.MTECharger;
 import gregtech.common.tileentities.machines.basic.MTEDrawerFramer;
+import gregtech.common.tileentities.machines.basic.MTEIceCreamMachine;
 import gregtech.common.tileentities.machines.basic.MTEIndustrialApiary;
 import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
@@ -10062,6 +10063,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTENameRemover(NAME_REMOVER.ID, "fix.name.remover", "Name Remover", 0).getStackForm(1L));
     }
 
+    private static void registerIceCreamMachine() {
+        ItemList.Ice_Cream_Machine.set(
+            new MTEIceCreamMachine(ICE_CREAM_MACHINE.ID, "gt.icecreammachine", "Ice Cream Machine", 2)
+                .getStackForm(1L));
+    }
+
     private static void registerModificationTable() {
         ItemList.ModificationTable.set(
             new MTEModificationTable(MODIFICATION_TABLE.ID, "modificationtable", "Modification Table")
@@ -10231,6 +10238,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerPrinter();
         registerOven();
         registerNameRemover();
+        registerIceCreamMachine();
         registerModificationTable();
         registerAirFilters();
         registerNacHatches();
