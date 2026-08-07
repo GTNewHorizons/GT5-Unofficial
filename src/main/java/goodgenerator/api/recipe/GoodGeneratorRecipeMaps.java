@@ -77,4 +77,18 @@ public class GoodGeneratorRecipeMaps {
         .addSpecialTexture(70, 11, 72, 40, GGUITextures.PICTURE_COMPONENT_ASSLINE)
         .frontend(ComponentAssemblyLineFrontend::new)
         .build();
+    public static final RecipeMap<RecipeMapBackend> antimatterForgeRecipes = RecipeMapBuilder
+        .of("gg.recipe.antimatter_forge")
+        .maxIO(0, 0, 5, 1)
+        .minInputs(0, 1)
+        .dontUseProgressBar()
+        .logoPos(152, 101)
+        .neiTransferRect(170, 120, 1, 1) // disable "show recipes" hitbox
+        .neiRecipeBackgroundSize(170, 120)
+        .addSpecialTexture(33, 21, 106, 94, GGUITextures.PICTURE_ANTIMATTER_FORGE)
+        .neiSpecialInfoFormatter(
+            recipeInfo -> Collections
+                .singletonList(StatCollector.translateToLocal("gg.recipe.antimatter_forge.info.0")))
+        .frontend(AntimatterForgeFrontend::new)
+        .build();
 }
