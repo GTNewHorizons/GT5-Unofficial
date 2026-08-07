@@ -517,7 +517,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         checkFrequency();
 
-        mMaxProgresstime = 20;
+        mMaxProgresstime = 1;
         mEfficiency = Math.max(0, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000));
 
         if (doRandomMaintenanceDamage()) {
