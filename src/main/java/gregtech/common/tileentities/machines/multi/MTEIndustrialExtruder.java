@@ -70,7 +70,7 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
                     onElementPass(
                         x -> ++x.casingAmountStainless,
                         Casings.CleanStainlessSteelMachineCasing.asElement())))
-        .addElement('D', Casings.ChemicallyInertMachineCasing.asElement())
+        .addElement('D', Casings.ElectricCompressorCasing.asElement())
         .build();
 
     public MTEIndustrialExtruder(final int aID, final String aName, final String aNameRegional) {
@@ -95,7 +95,7 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
             .beginStructureBlock(4, 4, 9, false)
             .addController("Front right, 2nd layer")
             .addCasing("8-33", "Pressure Containment Casing", false)
-            .addCasing("24", "Chemically Inert Machine Casing", false)
+            .addCasing("24", "Electric Compressor Casing", false)
             .addCasing("20", "Forming Core", false)
             .addCasing("3-7", "Clean Stainless Steel Machine Casing", false)
             .addEnergyHatch("1+", "Any containment or stainless steel casing", 1)
