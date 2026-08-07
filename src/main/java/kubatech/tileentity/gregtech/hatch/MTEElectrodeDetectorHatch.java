@@ -1,10 +1,8 @@
 package kubatech.tileentity.gregtech.hatch;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -17,18 +15,17 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
 import kubatech.tileentity.gregtech.gui.MTEElectrodeDetectorHatchGui;
 
-public class MTEElectrodeDetectorHatch extends MTEHatch {
+public class MTEElectrodeDetectorHatch extends MTEHatchRedstoneBase {
 
     private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR;
     private static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
 
     private int threshold = 0;
     private boolean inverted = false;
-    private boolean isOn = false;
     private ThresholdType thresholdType = ThresholdType.DURABILITY;
 
     public MTEElectrodeDetectorHatch(int aID, String aName, String aNameRegional) {
@@ -56,7 +53,6 @@ public class MTEElectrodeDetectorHatch extends MTEHatch {
     public void loadNBTData(NBTTagCompound aNBT) {
         threshold = aNBT.getInteger("mThreshold");
         inverted = aNBT.getBoolean("mInverted");
-        isOn = aNBT.getBoolean("mIsOn");
         thresholdType = ThresholdType.values[aNBT.getInteger("mThresholdType")];
         super.loadNBTData(aNBT);
     }
@@ -65,13 +61,17 @@ public class MTEElectrodeDetectorHatch extends MTEHatch {
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("mThreshold", threshold);
         aNBT.setBoolean("mInverted", inverted);
-        aNBT.setBoolean("mIsOn", isOn);
         aNBT.setInteger("mThresholdType", thresholdType.ordinal());
         super.saveNBTData(aNBT);
     }
 
     public void updateRedstoneOutput(int durability, int maxDurability) {
-        isOn = (getComparatorValue(durability, maxDurability) >= threshold) ^ inverted;
+        setFacingSideRedstoneSignal(getComparatorValue(durability, maxDurability) >= threshold, true);
+    }
+
+    @Override
+    public void setRedstoneSignalOnFace(int facing, byte signal, boolean turnOtherFacesOff) {
+        super.setRedstoneSignalOnFace(facing, redstoneSignalFromOn((signal > 0) ^ inverted), turnOtherFacesOff);
     }
 
     public int getComparatorValue(int durability, int maxDurability) {
@@ -79,29 +79,6 @@ public class MTEElectrodeDetectorHatch extends MTEHatch {
             return maxDurability == 0 ? 0 : (int) (((float) durability / maxDurability) * 100);
         }
         return durability;
-    }
-
-    @Override
-    public boolean allowGeneralRedstoneOutput() {
-        return true;
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
-        if (!baseMetaTileEntity.isServerSide()) {
-            super.onPostTick(baseMetaTileEntity, tick);
-            return;
-        }
-        if (isOn) {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                baseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 15);
-            }
-        } else {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                baseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 0);
-            }
-        }
-        super.onPostTick(baseMetaTileEntity, tick);
     }
 
     @Override
@@ -131,33 +108,6 @@ public class MTEElectrodeDetectorHatch extends MTEHatch {
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont) };
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return false;
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public void initDefaultModes(NBTTagCompound aNBT) {
-        getBaseMetaTileEntity().setActive(true);
     }
 
     public int getThreshold() {
