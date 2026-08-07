@@ -33,7 +33,10 @@ import gregtech.api.util.PassthroughChainWalker;
 import gregtech.api.util.PassthroughChainWalker.StepKind;
 import gregtech.common.config.MachineStats;
 import gregtech.crossmod.logisticspipes.CleanroomPassthroughLPConnection;
+import logisticspipes.pipes.basic.CoreRoutedPipe;
 import logisticspipes.pipes.basic.LogisticsTileGenericPipe;
+import logisticspipes.routing.ItemRoutingInformation;
+import logisticspipes.utils.item.ItemIdentifierStack;
 
 /**
  * A machine hull that also carries an ME network and Logistics Pipes routing through a cleanroom wall. Everything a
@@ -43,6 +46,11 @@ import logisticspipes.pipes.basic.LogisticsTileGenericPipe;
 public class MTECleanroomPassthroughHull extends MTEBasicHull implements IGridProxyable {
 
     protected @Nullable AENetworkProxy gridProxy = null;
+
+    /** Axis face LP last inserted an item on; the relay exits the opposite face. */
+    protected ForgeDirection lpArrivalSide = ForgeDirection.UNKNOWN;
+    protected @Nullable ItemIdentifierStack pendingRoutingStack = null;
+    protected @Nullable ItemRoutingInformation pendingRoutingInfo = null;
 
     public MTECleanroomPassthroughHull(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -169,31 +177,68 @@ public class MTECleanroomPassthroughHull extends MTEBasicHull implements IGridPr
     }
 
     /**
-     * Pushes the buffered stack out of the far axis face when that side leads to an LP pipe. Without an LP neighbour
+     * Pushes the buffered stack out of the axis face opposite the one it arrived on. Without a recorded LP arrival
      * this never fires and the block stays a passive buffer, exactly like a basic hull.
      */
     protected void relayToLogisticsPipes(IGregTechTileEntity base) {
         ItemStack stack = mInventory[0];
         if (stack == null || stack.stackSize <= 0) return;
+        // Never guess a direction: without a known arrival side we would push the item back where it came from.
+        if (lpArrivalSide == ForgeDirection.UNKNOWN) return;
 
-        ForgeDirection front = base.getFrontFacing();
-        for (ForgeDirection side : new ForgeDirection[] { front, front.getOpposite() }) {
-            TileEntity neighbour = base.getTileEntityAtSide(side);
-            // Only relay onward - never back into whatever inserted the stack.
-            if (!(neighbour instanceof LogisticsTileGenericPipe) && !isChainableHull(neighbour, side)) continue;
-            LogisticsTileGenericPipe target = CleanroomPassthroughLPConnection.findPipe((TileEntity) base, side);
-            if (target == null) continue;
-            if (target.injectItem(stack, true, side.getOpposite()) == stack.stackSize) {
-                mInventory[0] = null;
-                return;
-            }
+        ForgeDirection exit = lpArrivalSide.getOpposite();
+        if (!isAxisFace(exit)) return;
+
+        LogisticsTileGenericPipe target = CleanroomPassthroughLPConnection.findPipe((TileEntity) base, exit);
+        if (target == null) return;
+
+        // The far pipe needs the routing information before the item shows up, or it arrives unrouted.
+        if (pendingRoutingInfo != null && target.pipe instanceof CoreRoutedPipe routed) {
+            routed.queueUnroutedItemInformation(pendingRoutingStack, pendingRoutingInfo);
         }
+        if (target.injectItem(stack, true, exit.getOpposite()) == stack.stackSize) {
+            mInventory[0] = null;
+            clearPendingRoutingInfo();
+        }
+    }
+
+    /** Called by the LP connection handler when an item reaches this hull, before LP inserts it. */
+    public void queuePendingRoutingInfo(ItemIdentifierStack stack, ItemRoutingInformation info) {
+        this.pendingRoutingStack = stack;
+        this.pendingRoutingInfo = info;
+    }
+
+    protected void clearPendingRoutingInfo() {
+        this.pendingRoutingStack = null;
+        this.pendingRoutingInfo = null;
+        this.lpArrivalSide = ForgeDirection.UNKNOWN;
+    }
+
+    @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        if (!super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack)) return false;
+        // Remember where LP handed the item in so the relay knows which way is "onward".
+        if (isAxisFace(side) && aBaseMetaTileEntity.getTileEntityAtSide(side) instanceof LogisticsTileGenericPipe) {
+            lpArrivalSide = side;
+        }
+        return true;
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         getProxy().writeToNBT(aNBT);
+
+        // Persist the in-flight LP transfer, otherwise a save mid-relay drops the item's destination.
+        if (lpArrivalSide != ForgeDirection.UNKNOWN) {
+            aNBT.setInteger("lpArrivalSide", lpArrivalSide.ordinal());
+        }
+        if (pendingRoutingInfo != null && pendingRoutingInfo.getItem() != null) {
+            NBTTagCompound routing = new NBTTagCompound();
+            pendingRoutingInfo.writeToNBT(routing);
+            aNBT.setTag("lpRoutingInfo", routing);
+        }
     }
 
     @Override
@@ -201,6 +246,16 @@ public class MTECleanroomPassthroughHull extends MTEBasicHull implements IGridPr
         super.loadNBTData(aNBT);
         if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
+
+        lpArrivalSide = aNBT.hasKey("lpArrivalSide") ? ForgeDirection.getOrientation(aNBT.getInteger("lpArrivalSide"))
+            : ForgeDirection.UNKNOWN;
+        if (aNBT.hasKey("lpRoutingInfo")) {
+            ItemRoutingInformation info = new ItemRoutingInformation();
+            info.readFromNBT(aNBT.getCompoundTag("lpRoutingInfo"));
+            // destinationint is re-resolved from destinationUUID by LP when the item is handed over.
+            pendingRoutingInfo = info;
+            pendingRoutingStack = info.getItem();
+        }
     }
 
     // ---------------------------------------------------------------- Display

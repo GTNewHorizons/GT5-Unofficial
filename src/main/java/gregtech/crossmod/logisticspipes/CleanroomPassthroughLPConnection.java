@@ -57,13 +57,14 @@ public class CleanroomPassthroughLPConnection implements ISpecialTileConnection 
 
     @Override
     public void transmit(TileEntity tile, IRoutedItem arrivingItem) {
-        for (TileEntity end : getConnections(tile)) {
-            if (end instanceof LogisticsTileGenericPipe pipe && pipe.pipe instanceof CoreRoutedPipe routed) {
-                routed.queueUnroutedItemInformation(
-                    arrivingItem.getItemIdentifierStack()
-                        .clone(),
-                    arrivingItem.getInfo());
-            }
+        // Hand the routing info to the hull rather than queueing it on a pipe here: which pipe is the *exit* depends
+        // on the side LP inserts the item on, which is not known until after this call.
+        if (tile instanceof IGregTechTileEntity gte
+            && gte.getMetaTileEntity() instanceof MTECleanroomPassthroughHull hull) {
+            hull.queuePendingRoutingInfo(
+                arrivingItem.getItemIdentifierStack()
+                    .clone(),
+                arrivingItem.getInfo());
         }
     }
 
