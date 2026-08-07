@@ -10,10 +10,12 @@ import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.ADVANCED_NIT
 import static gtnhlanth.common.beamline.Particle.ELECTRON;
 import static gtnhlanth.common.beamline.Particle.ELECTRONNEUTRINO;
 import static gtnhlanth.common.beamline.Particle.ETA;
+import static gtnhlanth.common.beamline.Particle.GLUEBALL;
 import static gtnhlanth.common.beamline.Particle.GRAVITON;
 import static gtnhlanth.common.beamline.Particle.HIGGS;
 import static gtnhlanth.common.beamline.Particle.JPSI;
 import static gtnhlanth.common.beamline.Particle.LAMBDA;
+import static gtnhlanth.common.beamline.Particle.PION;
 import static gtnhlanth.common.beamline.Particle.MUON;
 import static gtnhlanth.common.beamline.Particle.MUONNEUTRINO;
 import static gtnhlanth.common.beamline.Particle.NEUTRON;
@@ -150,7 +152,7 @@ public class BeamCrafterRecipes implements Runnable {
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
-                    .particleID_A(UPSILON.getId())
+                    .particleID_A(GLUEBALL.getId())
                     .particleID_B(OMEGA.getId())
                     .amount_A(750)
                     .amount_B(750)
@@ -203,7 +205,7 @@ public class BeamCrafterRecipes implements Runnable {
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
                     .particleID_A(PROTON.getId())
-                    .particleID_B(LAMBDA.getId())
+                    .particleID_B(PION.getId())
                     .amount_A(1000)
                     .amount_B(1000)
                     .build())
@@ -219,7 +221,7 @@ public class BeamCrafterRecipes implements Runnable {
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
                     .particleID_A(NEUTRON.getId())
-                    .particleID_B(LAMBDA.getId())
+                    .particleID_B(PION.getId())
                     .amount_A(1000)
                     .amount_B(1000)
                     .build())
@@ -347,9 +349,9 @@ public class BeamCrafterRecipes implements Runnable {
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
                     .particleID_A(GRAVITON.getId())
-                    .particleID_B(GRAVITON.getId())
+                    .particleID_B(GLUEBALL.getId())
                     .amount_A(20)
-                    .amount_B(20)
+                    .amount_B(30)
                     .build())
             .eut(TierEU.RECIPE_UHV)
             .duration(2 * SECONDS)
