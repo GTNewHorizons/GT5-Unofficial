@@ -13,6 +13,11 @@ on:
       - labeled
       - unlabeled
       - ready_for_review
+  workflow_run:
+    workflows:
+      - Label Test Review Refresh
+    types:
+      - completed
 
 permissions:
   contents: read
@@ -20,6 +25,7 @@ permissions:
 jobs:
   label-test:
     permissions:
+      actions: read
       contents: read
       checks: write
       issues: write
@@ -29,4 +35,6 @@ jobs:
     with:
       label_sync_repository: GTNewHorizons/Label-Sync-GTNH
       label_sync_ref: master
+      review_signal_run_id: ${{ github.event.workflow_run.id || 0 }}
+      review_signal_head_sha: ${{ github.event.workflow_run.head_sha || '' }}
     secrets: inherit

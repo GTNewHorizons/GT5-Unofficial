@@ -2,6 +2,15 @@ package tectech.thing.metaTileEntity.multi.godforge;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.casing.Casings.BoundlessGravitationallySeveredStructureCasing;
+import static gregtech.api.casing.Casings.CelestialMatterGuidanceCasing;
+import static gregtech.api.casing.Casings.CentralGravitonFlowModulator;
+import static gregtech.api.casing.Casings.MedialGravitonFlowModulator;
+import static gregtech.api.casing.Casings.RemoteGravitonFlowModulator;
+import static gregtech.api.casing.Casings.SingularityReinforcedStellarShieldingCasing;
+import static gregtech.api.casing.Casings.SpatiallyTranscendentGravitationalLens;
+import static gregtech.api.casing.Casings.StellarEnergySiphonCasing;
+import static gregtech.api.casing.Casings.TranscendentallyAmplifiedMagneticConfinementCasing;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
@@ -42,6 +51,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -791,86 +801,46 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Stellar Forge")
-            .addInfo(EnumChatFormatting.ITALIC + "Also known as Godforge or Gorge for short")
-            .addSeparator(EnumChatFormatting.AQUA, 73)
-            .addInfo("A massive structure harnessing the thermal, gravitational and")
-            .addInfo("kinetic energy of a stabilised neutron star for material processing")
-            .addInfo(
-                "This multiblock can house " + EnumChatFormatting.RED
-                    + "up to 16 modules "
-                    + EnumChatFormatting.GRAY
-                    + "which utilize the star to energize materials")
-            .addInfo("to varying degrees, ranging from regular smelting to matter degeneration")
-            .addInfo("EU requirements for all modules are handled via wireless energy directly")
-            .addSeparator(EnumChatFormatting.AQUA, 73)
-            .addInfo(
-                "This multiblock has an " + EnumChatFormatting.GOLD
-                    + "extensive upgrade tree "
-                    + EnumChatFormatting.GRAY
-                    + "which influences all of its functions,")
-            .addInfo(
-                "such as " + EnumChatFormatting.GOLD
-                    + "unlocking new module types"
-                    + EnumChatFormatting.GRAY
-                    + ", "
-                    + EnumChatFormatting.GOLD
-                    + "increasing heat levels "
-                    + EnumChatFormatting.GRAY
-                    + "and "
-                    + EnumChatFormatting.GOLD
-                    + "granting")
-            .addInfo(
-                EnumChatFormatting.GOLD + "various processing speed bonuses"
-                    + EnumChatFormatting.GRAY
-                    + ". "
-                    + EnumChatFormatting.GRAY
-                    + "These upgrades can be unlocked by reaching")
-            .addInfo("certain milestones and/or spending materials")
-            .addSeparator(EnumChatFormatting.AQUA, 73)
-            .addInfo(
-                EnumChatFormatting.GREEN
-                    + "Clicking on the logo in the controller gui opens an extensive information window"
-                    + EnumChatFormatting.GRAY
-                    + ",")
-            .addInfo("explaining everything there is to know about this multiblock")
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.stellar_forge"))
+            .addMarkdown(new ResourceLocation("gregtech", "forge-of-gods"))
             .beginStructureBlock(127, 29, 186, true)
-            .addController("Front center, 15th layer")
-            .addInputHatch("1", "Around controller", 1)
-            .addInputBus("1", "Around controller", 1)
-            .addOutputBus("1", "Around controller (ME only)", 1)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_15th_layer"))
+            .addInputHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.around_controller"), 1)
+            .addInputBus("1", StatCollector.translateToLocal("gt.mbtt.structure.around_controller"), 1)
+            .addOutputBus("1", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.output-bus-pos"), 1)
             .addStructureInfo("")
-            .addStructureInfo(
-                StatCollector.translateToLocal("GT5U.MBTT.Structure.Base") + EnumChatFormatting.AQUA + " (T1)")
-            .addCasing("3949", "Transcendentally Amplified Magnetic Confinement Casing", false)
-            .addCasing("2799-2815", "Singularity Reinforced Stellar Shielding Casing", false)
-            .addCasing("345", "Remote Graviton Flow Modulator", false)
-            .addCasing("272", "Celestial Matter Guidance Casing", false)
-            .addCasing("130", "Boundless Gravitationally Severed Structure Casing", false)
-            .addCasing("36", "Stellar Energy Casing", false)
-            .addCasing("9", "Spatially Transcendent Gravitational Lens Block", false)
-            .addMiscHatch("0-8", "Forge of the Gods Module", "Any side center shielding casing", 2)
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base") + EnumChatFormatting.AQUA + " (T1)")
+            .addCasing("3949", TranscendentallyAmplifiedMagneticConfinementCasing.getLocalizedName(), false)
+            .addCasing("2799-2815", SingularityReinforcedStellarShieldingCasing.getLocalizedName(), false)
+            .addCasing("345", RemoteGravitonFlowModulator.getLocalizedName(), false)
+            .addCasing("272", CelestialMatterGuidanceCasing.getLocalizedName(), false)
+            .addCasing("130", BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), false)
+            .addCasing("36", StellarEnergySiphonCasing.getLocalizedName(), false)
+            .addCasing("9", SpatiallyTranscendentGravitationalLens.getLocalizedName(), false)
+            .addMiscHatch("0-8", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module"), StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module-pos"), 2)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Second Ring" + EnumChatFormatting.AQUA + " (T2)")
-            .addCasing("3336", "Transcendentally Amplified Magnetic Confinement Casing", false)
-            .addCasing("2012", "Singularity Reinforced Stellar Shielding Casing", false)
-            .addCasing("357", "Medial Graviton Flow Modulator", false)
-            .addCasing("240", "Celestial Matter Guidance Casing", false)
-            .addCasing("45", "Spatially Transcendent Gravitational Lens Block", false)
-            .addCasing("14", "Boundless Gravitationally Severed Structure Casing", false)
-            .addMiscHatch("0-12", "Forge of the Gods Module", "Any side center shielding casing", 2)
+            .addStructureInfo(EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.second-ring") + EnumChatFormatting.AQUA + " (T2)")
+            .addCasing("3336", TranscendentallyAmplifiedMagneticConfinementCasing.getLocalizedName(), false)
+            .addCasing("2012", SingularityReinforcedStellarShieldingCasing.getLocalizedName(), false)
+            .addCasing("357", MedialGravitonFlowModulator.getLocalizedName(), false)
+            .addCasing("240", CelestialMatterGuidanceCasing.getLocalizedName(), false)
+            .addCasing("45", SpatiallyTranscendentGravitationalLens.getLocalizedName(), false)
+            .addCasing("14", BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), false)
+            .addMiscHatch("0-12", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module"), StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module-pos"), 2)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Third Ring" + EnumChatFormatting.AQUA + " (T3)")
-            .addCasing("3728", "Transcendentally Amplified Magnetic Confinement Casing", false)
-            .addCasing("1736", "Singularity Reinforced Stellar Shielding Casing", false)
-            .addCasing("397", "Central Graviton Flow Modulator", false)
-            .addCasing("312", "Celestial Matter Guidance Casing", false)
-            .addCasing("101", "Spatially Transcendent Gravitational Lens Block", false)
-            .addCasing("14", "Boundless Gravitationally Severed Structure Casing", false)
-            .addMiscHatch("0-16", "Forge of the Gods Module", "Any side center shielding casing", 2)
+            .addStructureInfo(EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.third-ring") + EnumChatFormatting.AQUA + " (T3)")
+            .addCasing("3728", TranscendentallyAmplifiedMagneticConfinementCasing.getLocalizedName(), false)
+            .addCasing("1736", SingularityReinforcedStellarShieldingCasing.getLocalizedName(), false)
+            .addCasing("397", CentralGravitonFlowModulator.getLocalizedName(), false)
+            .addCasing("312", CelestialMatterGuidanceCasing.getLocalizedName(), false)
+            .addCasing("101", SpatiallyTranscendentGravitationalLens.getLocalizedName(), false)
+            .addCasing("14", BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), false)
+            .addMiscHatch("0-16", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module"), StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module-pos"), 2)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.rings"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
