@@ -19,9 +19,12 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S23PacketBlockChange;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
@@ -264,7 +267,8 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 throw new GTItsNotMyFaultException(
                     "Failed to set the MetaValue of the Block even though World.setBlock returned true. It COULD be MCPC/Bukkit causing that. In case you really have that installed, don't report this Bug to me, I don't know how to fix it.");
             }
-            final IGregTechTileEntity tTileEntity = (IGregTechTileEntity) aWorld.getTileEntity(aX, aY, aZ);
+            final TileEntity tile = aWorld.getTileEntity(aX, aY, aZ);
+            final IGregTechTileEntity tTileEntity = (IGregTechTileEntity) tile;
             if (tTileEntity != null) {
                 tTileEntity.setInitialValuesAsNBT(tTileEntity.isServerSide() ? aStack.getTagCompound() : null, tDamage);
                 if (aPlayer != null) {
@@ -295,6 +299,16 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 }
                 tTileEntity.getMetaTileEntity()
                     .initDefaultModes(aStack.getTagCompound());
+                // Backhand and fast swap fix:
+                // Due to markBlockForUpdate will delay a full tick (50ms), we need to send this packet earlier to
+                // prevent desync.
+                if (aPlayer instanceof EntityPlayerMP player && player.playerNetServerHandler != null) {
+                    player.playerNetServerHandler.sendPacket(new S23PacketBlockChange(aX, aY, aZ, aWorld));
+                    Packet tePacket = tile.getDescriptionPacket();
+                    if (tePacket != null) {
+                        player.playerNetServerHandler.sendPacket(tePacket);
+                    }
+                }
             }
         } else if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, tDamage, 3)) {
             return false;
