@@ -39,7 +39,6 @@ import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.common.covers.Cover;
 import gregtech.common.render.GTRendererBlock;
 
 public class BlockFrameBox extends BlockContainer implements IBlockWithTextures {
@@ -414,7 +413,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         // If there is one, grab all attached covers and drop them
         if (tempTe != null) {
             for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                if(tempTe.hasCoverAtSide(side)) tempTe.dropCover(side, side);
+                if (tempTe.hasCoverAtSide(side)) tempTe.dropCover(side, side);
             }
         }
         // Make sure to clear the temporary TE
