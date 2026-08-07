@@ -226,7 +226,6 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
         int extraSlices;
 
         if (getCoilTier() >= HeatingCoilLevel.MAX.getTier() + 1) {
