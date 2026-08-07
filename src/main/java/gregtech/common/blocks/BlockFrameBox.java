@@ -413,12 +413,8 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
         drops.add(getStackForm(1, metadata & MATERIAL_MASK));
         // If there is one, grab all attached covers and drop them
         if (tempTe != null) {
-            for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-                ItemStack coverItem = tempTe.getCoverItemAtSide(direction);
-                Cover cover = tempTe.getCoverAtSide(direction);
-
-                if (coverItem != null) drops.add(coverItem);
-                if (cover.isValid()) cover.onBaseTEDestroyed();
+            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                if(tempTe.hasCoverAtSide(side)) tempTe.dropCover(side, side);
             }
         }
         // Make sure to clear the temporary TE
