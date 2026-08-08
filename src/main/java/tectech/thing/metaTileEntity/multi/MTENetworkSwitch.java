@@ -265,6 +265,7 @@ public class MTENetworkSwitch extends TTMultiblockBase
                     continue;
                 }
                 pack = pack.unifyPacketWith(hatch.q);
+                hatch.setContents(null);
                 if (pack == null) {
                     return;
                 }

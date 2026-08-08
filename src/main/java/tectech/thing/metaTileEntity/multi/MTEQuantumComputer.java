@@ -346,6 +346,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                 if (hatch.q == null || hatch.q.contains(pos)) {
                     continue;
                 }
+                hatch.setContents(null);
                 pack = pack.unifyPacketWith(hatch.q);
                 if (pack == null) return;
             }
