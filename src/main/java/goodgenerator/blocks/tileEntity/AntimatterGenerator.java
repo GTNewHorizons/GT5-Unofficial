@@ -485,7 +485,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-                                int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setLong("curProducedEU", euLastCycle);
         tag.setFloat("curEff", annihilationEfficiency);
