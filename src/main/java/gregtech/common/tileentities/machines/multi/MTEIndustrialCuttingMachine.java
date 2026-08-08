@@ -353,7 +353,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         if (sawbladeTier.maxAllowedEnergyHatchTier == Integer.MAX_VALUE) return true;
 
         for (MTEHatchEnergy hatch : mEnergyHatches) {
-            if (hatch.mTier > sawbladeTier.maxAllowedEnergyHatchTier) return false;
+            if (hatch.getTierForStructure() > sawbladeTier.maxAllowedEnergyHatchTier) return false;
         }
         return true;
     }
