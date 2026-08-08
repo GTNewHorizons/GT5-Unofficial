@@ -1,5 +1,9 @@
 name: Optimize images
 
+permissions: 
+  contents: write
+  pull-requests: write
+
 on:
   pull_request:
     branches: [ master, main, release/** ]
