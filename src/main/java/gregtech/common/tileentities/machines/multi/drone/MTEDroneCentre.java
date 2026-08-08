@@ -426,25 +426,24 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("connectionCount", connectionList.size());
-        if (droneLevel != 0) tag.setInteger("droneLevel", droneLevel);
+        if (droneLevel != 0) {
+            tag.setInteger("droneLevel", droneLevel);
+        }
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             EnumChatFormatting.AQUA + StatCollector
                 .translateToLocalFormatted("GT5U.waila.drone_downlink.droneLevel", tag.getInteger("droneLevel")));
-        currenttip.add(
+        list.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.waila.drone_downlink.connectionCount",
                 tag.getInteger("connectionCount")));
-        super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
     @Override

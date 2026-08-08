@@ -455,17 +455,16 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        currentTip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector
                 .translateToLocalFormatted("gui.AntimatterGenerator.0.s", formatNumber(this.energyProducedCache)));
-        currentTip.add(
+        list.add(
             StatCollector.translateToLocalFormatted(
                 "gui.AntimatterGenerator.1.s",
                 formatNumber(Math.ceil(this.efficiencyCache * 100))));
-        currentTip.add(
+        list.add(
             StatCollector.translateToLocalFormatted(
                 "gui.AntimatterGenerator.2.s",
                 formatNumber(Math.ceil(this.avgEffCache * 100))));

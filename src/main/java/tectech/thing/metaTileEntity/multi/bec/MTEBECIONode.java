@@ -806,24 +806,17 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-
         tag.setFloat("speed", getProcessingSpeed());
         tag.setInteger("slowdowns", slowdowns);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-
-        NBTTagCompound tag = accessor.getNBTData();
-
-        currenttip
-            .add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-processing-speed", tag.getFloat("speed")));
-        currenttip.add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-slowdowns", tag.getInteger("slowdowns")));
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-processing-speed", tag.getFloat("speed")));
+        list.add(StatCollector.translateToLocalFormatted("GT5U.chat.bec-slowdowns", tag.getInteger("slowdowns")));
     }
 
     @Override
