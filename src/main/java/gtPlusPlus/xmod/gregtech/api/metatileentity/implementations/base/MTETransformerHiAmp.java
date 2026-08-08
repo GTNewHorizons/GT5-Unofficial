@@ -99,7 +99,9 @@ public class MTETransformerHiAmp extends MTETransformer {
             super.getDescription()[0],
             "gt.blockmachines.transformer_advanced.desc",
             4,
-            16);
+            16,
+            2,
+            8);
     }
 
     @Override
