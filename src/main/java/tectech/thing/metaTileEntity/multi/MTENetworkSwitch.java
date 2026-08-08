@@ -66,6 +66,8 @@ public class MTENetworkSwitch extends TTMultiblockBase
     protected Parameters.Group.ParameterIn[] dst;
     protected Parameters.Group.ParameterIn[] weight;
 
+    private long pendingComputation;
+
     public MTENetworkSwitch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
 
@@ -225,6 +227,8 @@ public class MTENetworkSwitch extends TTMultiblockBase
         for (MTEHatchDataInput di : eInputData) {
             if (di.q != null) {
                 thingsActive++;
+                pendingComputation += di.q.getContent();
+                di.setContents(null);
             }
         }
 
@@ -256,19 +260,10 @@ public class MTENetworkSwitch extends TTMultiblockBase
                 getBaseMetaTileEntity().getYCoord(),
                 getBaseMetaTileEntity().getZCoord());
 
-            QuantumDataPacket pack = new QuantumDataPacket(0L).unifyTraceWith(pos);
+            QuantumDataPacket pack = new QuantumDataPacket(pendingComputation).unifyTraceWith(pos);
+            pendingComputation = 0;
             if (pack == null) {
                 return;
-            }
-            for (MTEHatchDataInput hatch : eInputData) {
-                if (hatch.q == null || hatch.q.contains(pos)) {
-                    continue;
-                }
-                pack = pack.unifyPacketWith(hatch.q);
-                hatch.setContents(null);
-                if (pack == null) {
-                    return;
-                }
             }
 
             long remaining = pack.getContent();
