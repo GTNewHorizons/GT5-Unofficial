@@ -1,9 +1,12 @@
 package gregtech.api.interfaces.tileentity;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
 import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.IOutputBus;
@@ -54,8 +57,12 @@ public interface IVoidable {
      * @param toOutput List of fluids this machine is going to output.
      * @return List of slots available for fluid outputs.
      */
-    default List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
+    default List<IOutputHatch> getOutputHatches(@NotNull List<FluidStack> toOutput) {
         return getOutputHatches();
+    }
+
+    default List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
+        return getOutputHatches(Arrays.asList(toOutput));
     }
 
     /**
