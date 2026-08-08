@@ -349,9 +349,9 @@ public class BeamCrafterRecipes implements Runnable {
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
                     .particleID_A(GRAVITON.getId())
-                    .particleID_B(GLUEBALL.getId())
+                    .particleID_B(GRAVITON.getId())
                     .amount_A(20)
-                    .amount_B(30)
+                    .amount_B(20)
                     .build())
             .eut(TierEU.RECIPE_UHV)
             .duration(2 * SECONDS)
