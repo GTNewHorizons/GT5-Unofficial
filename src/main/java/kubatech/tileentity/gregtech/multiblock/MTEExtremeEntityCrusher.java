@@ -939,7 +939,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         checkHasEnergyHatch(errors);
         for (MTEHatchEnergy hatch : mEnergyHatches) {
             if (hatch.getTierForStructure() > glassTier) {
-                errors.add(StructureErrors.glassTierNotEnough(hatch.mTier));
+                errors.add(StructureErrors.glassTierNotEnough(hatch.getTierForStructure()));
                 break;
             }
         }
