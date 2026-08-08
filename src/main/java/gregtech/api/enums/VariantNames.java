@@ -1,7 +1,18 @@
 package gregtech.api.enums;
 
-public class VariantNames {
+public enum VariantNames {
 
-    public static final String NO_ROCKET = "NO_ROCKET";
+    NoRocket("NO_ROCKET"),
 
+    ;
+
+    public final String ID;
+
+    VariantNames(String ID) {
+        this.ID = ID;
+    }
+
+    public String getID() {
+        return ID;
+    };
 }
