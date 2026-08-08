@@ -2,12 +2,12 @@ package gregtech.api.enums.materials;
 
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 
+import com.ruling_0.materiallib.api.EmptyContainerHandle;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
-/// Fluid-in-container [Shape] declarations for cells. Empty container is IC2's cell (`IC2:itemCellEmpty`), resolved
-/// once at MaterialLib's init -- after IC2's own preInit has registered it -- via the deferred-by-name mechanism, since
-/// IC2 loads and registers items independently of MaterialLib's own preInit-time resolve.
+/// Fluid-in-container [Shape] declarations for cells. Every cell shape drains to [#emptyCell], a gregtech-owned
+/// standalone empty container item registered through MaterialLib alongside the shapes themselves.
 ///
 /// `cellPlasma` needs two shapes sharing one oredict prefix: legacy plasma cells hold [GTRecipeBuilder#INGOTS] (144 mB)
 /// when the material also has a molten fluid (metal plasmas), or 1000 mB otherwise (gas/element plasmas) -- a
@@ -15,7 +15,9 @@ import com.ruling_0.materiallib.api.Shape;
 /// to one prefix.
 public class CellShapes {
 
-    private static final String EMPTY_CELL = "IC2:itemCellEmpty";
+    /// The empty cell every cell shape drains to, rebound onto `ItemList.Cell_Empty` during GTProxy's preInit.
+    /// Renders through the same [#CELL_BASE] art as the filled cells.
+    public static EmptyContainerHandle emptyCell;
 
     /// Untinted container base for [#cell] and the six cracked-cell shapes, converted from the legacy
     /// `cell_OVERLAY.png` shared by 61 of 66 material icon sets. The `cellHydroCracked*`/`cellSteamCracked*`
@@ -42,10 +44,12 @@ public class CellShapes {
     // spotless:on
 
     public static void init() {
+        emptyCell = MaterialLibAPI.registerEmptyContainer("gregtech", "cellEmpty", CELL_BASE);
+
         cell = MaterialLibAPI.newFluidInContainerShape("gregtech", "cell")
             .displayName("%s Cell")
             .fluid(FluidShapes.fluidLiquid, FluidShapes.fluidGas)
-            .emptyContainer(EMPTY_CELL, 0)
+            .emptyContainer(emptyCell)
             .volume(1000)
             .emptyIcon(CELL_BASE)
             .build();
@@ -53,14 +57,14 @@ public class CellShapes {
         cellPlasma = MaterialLibAPI.newFluidInContainerShape("gregtech", "cellPlasma")
             .displayName("%s Plasma Cell")
             .fluid(FluidShapes.fluidPlasma)
-            .emptyContainer(EMPTY_CELL, 0)
+            .emptyContainer(emptyCell)
             .volume(INGOTS)
             .emptyIcon(CELL_PLASMA_BASE)
             .build();
         cellPlasmaLight = MaterialLibAPI.newFluidInContainerShape("gregtech", "cellPlasmaLight")
             .displayName("%s Plasma Cell")
             .fluid(FluidShapes.fluidPlasma)
-            .emptyContainer(EMPTY_CELL, 0)
+            .emptyContainer(emptyCell)
             .volume(1000)
             .oreDict("cellPlasma")
             .emptyIcon(CELL_PLASMA_BASE)
@@ -69,7 +73,7 @@ public class CellShapes {
         cellMolten = MaterialLibAPI.newFluidInContainerShape("gregtech", "cellMolten")
             .displayName("Molten %s Cell")
             .fluid(FluidShapes.fluidMolten)
-            .emptyContainer(EMPTY_CELL, 0)
+            .emptyContainer(emptyCell)
             .volume(INGOTS)
             .emptyIcon(CELL_PLASMA_BASE)
             .build();
@@ -104,7 +108,7 @@ public class CellShapes {
         return MaterialLibAPI.newFluidInContainerShape("gregtech", name)
             .displayName(displayFormat)
             .fluid(fluidShape)
-            .emptyContainer(EMPTY_CELL, 0)
+            .emptyContainer(emptyCell)
             .volume(1000)
             .emptyIcon(CELL_BASE)
             .build();

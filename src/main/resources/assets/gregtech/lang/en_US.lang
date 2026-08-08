@@ -951,6 +951,7 @@ gt.blackholerenderer.name=Black Hole Renderer
 gt.dronerenderer.name=Drone Renderer
 gt.nanoforgerenderer.name=Nano Forge Renderer
 gt.wormholerenderer.name=Wormhole Renderer
+item.gregtech.cellEmpty.name=Empty Cell
 item.gt.comb.name=Comb
 item.gt.drop.name=Drop
 item.gt.pollen.name=Pollen

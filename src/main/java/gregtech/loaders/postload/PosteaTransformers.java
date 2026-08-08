@@ -188,6 +188,18 @@ public class PosteaTransformers implements Runnable {
         registerGtppOreCutoverTransformers();
         registerGtppFrameCutoverTransformers();
         registerPipeCutoverTransformers();
+        registerEmptyCellCutoverTransformer();
+    }
+
+    /// Migrates saved IC2 empty cells (`IC2:itemCellEmpty`) onto the gregtech-owned empty cell every cell shape
+    /// drains to ([ItemList#Cell_Empty]). Keyed on meta 0 alone: metas 1-14 of that id are IC2's own filled cells,
+    /// which keep their meaning.
+    private static void registerEmptyCellCutoverTransformer() {
+        ItemStack cutover = ItemList.Cell_Empty.get(1);
+        if (cutover == null) {
+            throw new IllegalStateException("No MaterialLib stack for the empty cell cutover");
+        }
+        addItemReplacement("IC2:itemCellEmpty", 0, cutover.getItem(), cutover.getItemDamage());
     }
 
     /// Migrates saved legacy pipe-family instances (per-material wire/cable/fluid-pipe/item-pipe MTE ids,
