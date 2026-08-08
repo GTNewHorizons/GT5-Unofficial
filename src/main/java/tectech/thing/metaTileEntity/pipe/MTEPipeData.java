@@ -10,7 +10,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
+import org.jetbrains.annotations.ApiStatus;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
@@ -20,25 +21,23 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import tectech.TecTech;
-import tectech.loader.NetworkDispatcher;
-import tectech.mechanics.pipe.IActivePipe;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
-import tectech.mechanics.pipe.PipeActivityMessage;
 import tectech.util.CommonValues;
 
 /**
  * Created by Tec on 26.02.2017.
  */
-public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, IActivePipe {
+public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
 
     private static IIconContainer EMpipe;
     private static IIconContainer EMbar, EMbarActive;
     public byte connectionCount = 0;
 
     private boolean active;
+    private boolean computingActivity;
 
     public MTEPipeData(int aID, String aName, String aNameRegional) {
         super(aID, aName, 0);
@@ -128,11 +127,8 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
         }
     }
 
-    public void updateNetwork(boolean nestedCall) {
-        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
-
-        active = false;
-
+    @ApiStatus.OverrideOnly
+    public void updateSelf(IGregTechTileEntity aBaseMetaTileEntity) {
         mConnections = 0;
         connectionCount = 0;
 
@@ -167,8 +163,27 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
                 }
             }
         }
+    }
+
+    public void updateNetwork(boolean nestedCall) {
+        IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
+        if (aBaseMetaTileEntity.isClientSide()) return;
+
+        computingActivity = true;
+        boolean prevActive = active;
+        active = false;
+
+        updateSelf(aBaseMetaTileEntity);
 
         if (!nestedCall) updateNeighboringNetworks();
+        if (aBaseMetaTileEntity instanceof BaseMetaPipeEntity base) {
+            base.updateConnections();
+            base.syncConnectionToClient();
+        }
+        if (prevActive != active) {
+            aBaseMetaTileEntity.issueTileUpdate();
+        }
+        computingActivity = false;
     }
 
     @Override
@@ -195,6 +210,11 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
     }
 
     @Override
+    public void checkConnections() {
+        updateNetwork(false);
+    }
+
+    @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         this.updateNetwork(false);
         super.onFirstTick(aBaseMetaTileEntity);
@@ -207,19 +227,8 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if ((aTick & 31) == 31) {
-                if (TecTech.RANDOM.nextInt(15) == 0) {
-                    NetworkDispatcher.INSTANCE.sendToAllAround(
-                        new PipeActivityMessage.PipeActivityData(this),
-                        new NetworkRegistry.TargetPoint(
-                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                            aBaseMetaTileEntity.getXCoord(),
-                            aBaseMetaTileEntity.getYCoord(),
-                            aBaseMetaTileEntity.getZCoord(),
-                            256));
-                }
-            }
+        if (aBaseMetaTileEntity.isServerSide() && aTick > 1) {
+            aBaseMetaTileEntity.tryDisableTicking();
         }
     }
 
@@ -273,22 +282,28 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
         return getBaseMetaTileEntity().getColorization();
     }
 
-    @Override
     public void markUsed() {
-        this.active = true;
-    }
-
-    @Override
-    public void setActive(boolean state) {
-        if (state != active) {
-            active = state;
-            getBaseMetaTileEntity().issueTextureUpdate();
+        if (active) return;
+        active = true;
+        if (!computingActivity) {
+            getBaseMetaTileEntity().issueTileUpdate();
         }
     }
 
-    @Override
     public boolean getActive() {
         return active;
+    }
+
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("pipeActive", active);
+        return tag;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound tag) {
+        active = tag.getBoolean("pipeActive");
     }
 
 }

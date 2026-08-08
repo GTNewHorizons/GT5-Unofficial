@@ -167,6 +167,8 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
 
     default void setShutDownReason(@Nonnull ShutDownReason reason) {}
 
+    boolean isTickDisabled();
+
     void enableTicking();
 
     void tryDisableTicking();

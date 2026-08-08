@@ -71,7 +71,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        LASER = !LASER;
+        toggleLaser();
         GTUtility.sendChatTrans(
             aPlayer,
             "tt.chat.debug.generator",
@@ -275,7 +275,34 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
 
     public void setLASER(boolean LASER) {
         this.LASER = LASER;
-        getBaseMetaTileEntity().issueTextureUpdate();
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null) return;
+        if (base.isServerSide()) {
+            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                IGregTechTileEntity igte = base.getIGregTechTileEntityAtSide(side);
+                if (igte == null) continue;
+                IMetaTileEntity imte = igte.getMetaTileEntity();
+                if (imte instanceof MTEPipeLaser laser) {
+                    laser.updateNetwork(true);
+                }
+            }
+        } else {
+            base.issueTextureUpdate();
+        }
+    }
+
+    @Override
+    public byte getUpdateData() {
+        return LASER ? (byte) 1 : (byte) 0;
+    }
+
+    @Override
+    public void onValueUpdate(byte data) {
+        LASER = data == 1;
+    }
+
+    public void toggleLaser() {
+        setLASER(!isLASER());
     }
 
     public boolean isProducing() {
