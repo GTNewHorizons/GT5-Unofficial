@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CLEANROOM_PASSTHROUGH_HULL;
 
 import java.util.EnumSet;
 
@@ -266,7 +266,7 @@ public class MTECleanroomPassthroughHull extends MTEBasicHull implements IGridPr
         ITexture casing = Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1];
         if (side == aFacing || side == aFacing.getOpposite()) {
             // TODO custom texture?
-            return new ITexture[] { casing, TextureFactory.of(OVERLAY_ME_INPUT_HATCH) };
+            return new ITexture[] { casing, TextureFactory.of(OVERLAY_CLEANROOM_PASSTHROUGH_HULL) };
         }
         return new ITexture[] { casing };
     }
