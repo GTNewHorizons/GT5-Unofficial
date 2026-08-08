@@ -20,7 +20,7 @@ public enum Particle {
     WBOSON(true, 2, 80369.20f, 0, "wboson", "W\u207A", 1, null, 110, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_WBOSON),
     GLUEBALL(false, 3, 2395.00f, 0, "glueball", "G", 0, null, 80, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_GLUEBALL),
     HIGGS(false, 4, 125110.00f, 0, "higgs", "H\u2070", 0, null, 15, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_HIGGS),
-    GRAVITON(false, 5, 0, 0, "graviton", "G", 0, null, 50, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_GRAVITON),
+    GRAVITON(false, 5, 0, 0, "graviton", "G", 0, null, 60, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_GRAVITON),
     // Leptons
     ELECTRON(true, 6, 0.511f, 5000, "electron", "e\u207B", -1, null, 800,
         GTGuiTextures.OVERLAY_BUTTON_PARTICLE_ELECTRON),
