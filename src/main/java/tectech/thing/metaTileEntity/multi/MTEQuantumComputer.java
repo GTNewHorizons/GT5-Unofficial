@@ -120,6 +120,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     protected Parameters.Group.ParameterIn overclock, overvolt;
     protected Parameters.Group.ParameterOut maxCurrentTemp, availableData;
 
+    private long pendingComputation;
+
     private static final INameFunction<MTEQuantumComputer> OC_NAME = (base,
         p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.0"); // Overclock ratio
     private static final INameFunction<MTEQuantumComputer> OV_NAME = (base,
@@ -302,6 +304,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                 if (di.q != null) // ok for power losses
                 {
                     thingsActive++;
+                    pendingComputation += di.q.getContent();
+                    di.setContents(null);
                 }
             }
 
@@ -314,6 +318,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                 availableData.set(eAvailableData);
                 return SimpleCheckRecipeResult.ofSuccess("computing");
             } else {
+                pendingComputation = 0;
                 eAvailableData = 0;
                 mEUt = -(int) V[7];
                 eAmpereFlow = 1;
@@ -335,23 +340,17 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                 getBaseMetaTileEntity().getYCoord(),
                 getBaseMetaTileEntity().getZCoord());
 
-            int eHatchData = 0;
-
-            for (MTEHatchDataInput hatch : eInputData) {
-                if (hatch.q == null || hatch.q.contains(pos)) {
-                    continue;
-                }
-                eHatchData += hatch.q.getContent();
-            }
-
-            QuantumDataPacket pack = new QuantumDataPacket((eAvailableData + eHatchData) / eOutputData.size())
+            QuantumDataPacket pack = new QuantumDataPacket(eAvailableData)
                 .unifyTraceWith(pos);
+
             if (pack == null) {
                 return;
             }
+            long packetSize = pendingComputation / eOutputData.size();
+            pendingComputation = 0;
 
             for (MTEHatchDataOutput o : eOutputData) {
-                o.providePacket(pack);
+                o.providePacket(new QuantumDataPacket(packetSize).unifyTraceWith(pack));
             }
         }
     }
