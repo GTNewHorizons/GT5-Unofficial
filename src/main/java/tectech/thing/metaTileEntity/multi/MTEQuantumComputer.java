@@ -335,23 +335,27 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                 getBaseMetaTileEntity().getYCoord(),
                 getBaseMetaTileEntity().getZCoord());
 
-            int eHatchData = 0;
+            QuantumDataPacket pack = new QuantumDataPacket(eAvailableData)
+                .unifyTraceWith(pos);
+
+            if (pack == null) {
+                return;
+            }
 
             for (MTEHatchDataInput hatch : eInputData) {
                 if (hatch.q == null || hatch.q.contains(pos)) {
                     continue;
                 }
-                eHatchData += hatch.q.getContent();
+                pack = pack.unifyPacketWith(hatch.q);
+                if (pack == null) return;
             }
 
-            QuantumDataPacket pack = new QuantumDataPacket((eAvailableData + eHatchData) / eOutputData.size())
-                .unifyTraceWith(pos);
-            if (pack == null) {
-                return;
-            }
+            long amt = pack.getContent();
+            long size = eOutputData.size();
+            long packetSize = amt / size;
 
             for (MTEHatchDataOutput o : eOutputData) {
-                o.providePacket(pack);
+                o.providePacket(new QuantumDataPacket(packetSize).unifyTraceWith(pack));
             }
         }
     }
