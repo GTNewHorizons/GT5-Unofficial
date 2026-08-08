@@ -68,7 +68,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 wirelessEUt = (long) recipe.mEUt * getActualParallel();
-                if (getUserEU(userUUID).compareTo(BigInteger.valueOf(wirelessEUt * recipe.mDuration)) < 0) {
+                if (getUserEU(userUUID).compareTo(BigInteger.valueOf(wirelessEUt).multiply(BigInteger.valueOf(recipe.mDuration))) < 0) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
                 }
                 if (recipe.getMetadataOrDefault(FOG_PLASMA_TIER, 0) > getPlasmaTier()
