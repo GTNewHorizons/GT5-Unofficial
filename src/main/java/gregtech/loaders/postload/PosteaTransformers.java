@@ -189,6 +189,7 @@ public class PosteaTransformers implements Runnable {
         registerGtppFrameCutoverTransformers();
         registerPipeCutoverTransformers();
         registerEmptyCellCutoverTransformer();
+        registerGtppIC2CellCutoverTransformers();
     }
 
     /// Migrates saved IC2 empty cells (`IC2:itemCellEmpty`) onto the gregtech-owned empty cell every cell shape
@@ -200,6 +201,22 @@ public class PosteaTransformers implements Runnable {
             throw new IllegalStateException("No MaterialLib stack for the empty cell cutover");
         }
         addItemReplacement("IC2:itemCellEmpty", 0, cutover.getItem(), cutover.getItemDamage());
+    }
+
+    /// Migrates the filled cells gtpp minted onto IC2's cell item, which no longer register: the hydrofluoric
+    /// acid cell (meta 15) becomes the MaterialLib hydrofluoric acid cell -- half the contained acid, since the
+    /// gtpp cell held the double-density industrial fluid -- and the five acid cells no recipe ever consumed
+    /// (metas 16-20) revert to empty cells.
+    private static void registerGtppIC2CellCutoverTransformers() {
+        ItemStack hydrofluoric = MaterialParts.cell(Materials.HydrofluoricAcidGT5U, 1);
+        if (hydrofluoric == null) {
+            throw new IllegalStateException("No MaterialLib cell stack for the gtpp hydrofluoric acid cutover");
+        }
+        addItemReplacement("IC2:itemCellEmpty", 15, hydrofluoric.getItem(), hydrofluoric.getItemDamage());
+        ItemStack empty = ItemList.Cell_Empty.get(1);
+        for (int meta = 16; meta <= 20; meta++) {
+            addItemReplacement("IC2:itemCellEmpty", meta, empty.getItem(), empty.getItemDamage());
+        }
     }
 
     /// Migrates saved legacy pipe-family instances (per-material wire/cable/fluid-pipe/item-pipe MTE ids,

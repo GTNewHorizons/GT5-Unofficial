@@ -38,7 +38,6 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class RecipeLoaderNuclear {
@@ -169,17 +168,6 @@ public class RecipeLoaderNuclear {
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
-
-        // Ammonium Bifluoride
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1))
-            .circuit(3)
-            .itemOutputs(ItemList.Cell_Empty.get(1))
-            .fluidInputs(MaterialUtils.anyFluid(Materials.Ammonia, 1_000))
-            .fluidOutputs(MaterialUtils.anyFluid(Materials.AmmoniumBifluoride, 4 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
 
         // Ammonium Bifluoride
         GTValues.RA.stdBuilder()
@@ -355,14 +343,12 @@ public class RecipeLoaderNuclear {
         // (NH4)2BeF4 → 2 NH3 + 2 HF + BeF2
         // Ammonium tetrafluoroberyllate uses fluid rule because it is not a molten form of a solid
         // Beryllium fluoride uses solid rule
-        // Industrial strength hydrofluoric acid follows its usual convention where it is twice as dense as regular
-        // hydrofluoric acid
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Cell_Empty.get(3))
+            .itemInputs(ItemList.Cell_Empty.get(4))
             .circuit(17)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Ammonia, CellShapes.cell, 2),
-                ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
+                MaterialLibAPI.getStack(Materials.HydrofluoricAcidGT5U, CellShapes.cell, 2),
                 MaterialLibAPI.getStack(Materials.BerylliumFluoride, Shapes.dust, 3))
             .fluidInputs(MaterialUtils.anyFluid(Materials.AmmoniumTetrafluoroberyllate, 1_000))
             .eut(TierEU.RECIPE_MV)

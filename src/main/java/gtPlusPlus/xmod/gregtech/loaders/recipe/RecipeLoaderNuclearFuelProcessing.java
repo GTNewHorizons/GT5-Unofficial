@@ -25,7 +25,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialUtils;
 import gtPlusPlus.core.fluids.GTPPFluids;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeLoaderNuclearFuelProcessing {
 
@@ -220,12 +219,14 @@ public class RecipeLoaderNuclearFuelProcessing {
 
         // UF6 -> UF4 reduction
         // UF6 + LiFBeF2 + H2 -> LiFBeF2UF4 + HF
+        // 2 industrial strength hydrofluoric acid at twice regular density, so 4 cells of the regular acid
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.UraniumHexafluoride, CellShapes.cellMolten, 1),
-                MaterialLibAPI.getStack(Materials.StableMoltenSaltBase, CellShapes.cellMolten, 1))
+                MaterialLibAPI.getStack(Materials.StableMoltenSaltBase, CellShapes.cellMolten, 1),
+                ItemList.Cell_Empty.get(2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 2_000))
-            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.HydrofluoricAcidGT5U, CellShapes.cell, 4))
             .fluidOutputs(MaterialUtils.anyFluid(Materials.LFTRFuelBase, 3000))
             .duration(2 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
