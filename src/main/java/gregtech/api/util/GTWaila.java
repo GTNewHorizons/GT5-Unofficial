@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import net.minecraft.util.StatCollector;
 
+import gregtech.common.config.Client;
 import mcp.mobius.waila.api.SpecialChars;
 
 public abstract class GTWaila {
@@ -22,8 +23,17 @@ public abstract class GTWaila {
     public static String getMachineProgressString(boolean isActive, boolean isAllowedToWork, long maxProgresstime,
         long progresstime) {
 
-        if (!isAllowedToWork && !isActive) return StatCollector.translateToLocal("GT5U.waila.machine.working_disabled");
-        if (!isActive) return StatCollector.translateToLocal("GT5U.waila.machine.idle");
+        if (Client.waila.showWorkingDisable) {
+            if (!isAllowedToWork && !isActive) {
+                return StatCollector.translateToLocal("GT5U.waila.machine.working_disabled");
+            }
+        }
+
+        if (Client.waila.showIdle) {
+            if (!isActive) {
+                return StatCollector.translateToLocal("GT5U.waila.machine.idle");
+            }
+        }
 
         return SpecialChars
             .getRenderString("waila.gt.progress", progresstime + "", maxProgresstime + "", isAllowedToWork + "");

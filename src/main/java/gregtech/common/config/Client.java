@@ -329,6 +329,18 @@ public class Client {
         @Config.Comment({ "The color preset of the waila progress bar", "Set to Custom to specify your own color" })
         @Config.DefaultEnum("Green")
         public TTRenderGTProgressBar.ProgressBarColor ProgressBarColor = TTRenderGTProgressBar.ProgressBarColor.Green;
+
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Facing")
+        public boolean showFacing;
+
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Idle")
+        public boolean showIdle;
+
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Working Disable")
+        public boolean showWorkingDisable;
     }
 
     @Config.LangKey("GT5U.gui.config.client.nei")
