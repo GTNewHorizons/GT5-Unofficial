@@ -270,8 +270,6 @@ public class AdditionalRecipes {
                 .addTo(BartWorksRecipeMaps.acidGenFuels);
         }
         List<Pair<Fluid, Integer>> liquidOtherFuels = Arrays.asList(
-            ImmutablePair.of(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 320),
-            ImmutablePair.of(GTPPFluids.IndustrialStrengthHydrogenChloride, 224),
             ImmutablePair.of(GTPPFluids.PropionicAcid, 150),
             ImmutablePair.of(
                 MaterialUtils.molten(Materials.Redstone, 1)
