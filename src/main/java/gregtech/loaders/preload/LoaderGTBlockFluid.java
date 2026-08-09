@@ -919,23 +919,12 @@ public class LoaderGTBlockFluid implements Runnable {
         FMLInterModComms.sendMessage(AppliedEnergistics2.ID, "whitelist-spatial", TileEntityOres.class.getName());
 
         GTLog.out.println("GTMod: Registering Fluids.");
-        Fluid constructionFoamFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("CFCell", 1L), true)
-            .getFluid();
-        MaterialUtils
-            .recordSlotFluid(Materials.ConstructionFoam, MaterialUtils.FluidState.LIQUID, constructionFoamFluid);
-        // UUMatter is GT-owned but its fluid is IC2's, resolved from the filled cell at runtime (no static
-        // LEGACY_FLUIDS name to port). Bind MaterialUtils' slot store from the resolved IC2 fluid directly.
-        Fluid uuMatterFluid = GTUtility.getFluidForFilledItem(GTModHandler.getIC2Item("uuMatterCell", 1L), true)
-            .getFluid();
-        MaterialUtils.recordSlotFluid(Materials.UUMatter, MaterialUtils.FluidState.LIQUID, uuMatterFluid);
-
         GTFluidFactory.builder("Air")
             .withDefaultLocalName("Air")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
             .configureMaterials(Materials.Air)
-            .addLocalizedName(Materials.Air)
-            .registerContainers(ItemList.Cell_Air.get(1L), ItemList.Cell_Empty.get(1L), 2000);
+            .addLocalizedName(Materials.Air);
         GTFluidFactory.builder("LiquidOxygen")
             .withDefaultLocalName("Liquid Oxygen")
             .withStateAndTemperature(GAS, 60)
@@ -1101,8 +1090,8 @@ public class LoaderGTBlockFluid implements Runnable {
         Fluid steamFluid = FluidRegistry.getFluid("steam");
         MaterialUtils.recordSlotFluid(Materials.Steam, MaterialUtils.FluidState.GAS, steamFluid);
 
-        // Water carries no LEGACY_FLUIDS liquid row of its own; record its fluid->material entry here against
-        // the vanilla "water" fluid so the getFluidDisplayStack reverse lookup resolves it.
+        // Water's fluid is registered by vanilla rather than by a GTFluid, so nothing records its
+        // fluid->material entry; record it here so the getFluidDisplayStack reverse lookup resolves it.
         MaterialUtils.recordFluidMaterial(FluidRegistry.getFluid("water"), Materials.Water);
 
         GTValues.RA.stdBuilder()

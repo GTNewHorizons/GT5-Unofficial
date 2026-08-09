@@ -909,9 +909,9 @@ public class GTProxy implements IFuelHandler {
 
         ItemList.Cell_Universal_Fluid.set(GTModHandler.getIC2Item("FluidCell", 1L));
         ItemList.Cell_Empty.set(CellShapes.emptyCell.getStack(1));
-        ItemList.Cell_Water.set(GTModHandler.getIC2Item("waterCell", 1L, GTModHandler.getIC2Item("cellWater", 1L)));
-        ItemList.Cell_Lava.set(GTModHandler.getIC2Item("lavaCell", 1L, GTModHandler.getIC2Item("cellLava", 1L)));
-        ItemList.Cell_Air.set(GTModHandler.getIC2Item("airCell", 1L, GTModHandler.getIC2Item("cellAir", 1L, GTModHandler.getIC2Item("cellOxygen", 1L))));
+        ItemList.Cell_Water.set(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1));
+        ItemList.Cell_Lava.set(MaterialLibAPI.getStack(Materials.Lava, CellShapes.cell, 1));
+        ItemList.Cell_Air.set(MaterialLibAPI.getStack(Materials.Air, CellShapes.cell, 1));
 
         ItemList.IC2_Item_Casing_Iron.set(GTModHandler.getIC2Item("casingiron", 1L));
         ItemList.IC2_Item_Casing_Gold.set(GTModHandler.getIC2Item("casinggold", 1L));

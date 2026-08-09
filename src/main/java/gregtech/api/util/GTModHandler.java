@@ -2338,10 +2338,6 @@ public class GTModHandler {
             return 1;
         }
 
-        if (GTUtility.areStacksEqual(aStack, getIC2Item("waterCell", 1, WILDCARD))) {
-            return 1;
-        }
-
         for (OrePrefixes cellType : OrePrefixes.CELL_TYPES) {
             if (cellType.contains(aStack)) {
                 return 1;

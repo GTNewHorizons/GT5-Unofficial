@@ -14,12 +14,15 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TieredItems;
+import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.util.GTLog;
@@ -42,16 +45,28 @@ public class LoaderGTOreDictionary implements Runnable {
                 1L,
                 GTModHandler.getIC2Item("cellEmpty", 1L, GTModHandler.getIC2Item("emptyCell", 1L))));
         GTOreDictUnificator.set(OrePrefixes.cell, Materials.Lava, ItemList.Cell_Lava.get(1L));
-        GTOreDictUnificator.set(OrePrefixes.cell, Materials.Lava, GTModHandler.getIC2Item("lavaCell", 1L));
         GTOreDictUnificator.set(OrePrefixes.cell, Materials.Water, ItemList.Cell_Water.get(1L));
-        GTOreDictUnificator.set(OrePrefixes.cell, Materials.Water, GTModHandler.getIC2Item("waterCell", 1L));
         GTOreDictUnificator.set(
             OrePrefixes.cell,
             Materials.Creosote,
             GTModHandler.getModItem(Railcraft.ID, "fluid.creosote.cell", 1L));
 
-        GTOreDictUnificator.set(OrePrefixes.cell, Materials.UUMatter, GTModHandler.getIC2Item("uuMatterCell", 1L));
-        GTOreDictUnificator.set(OrePrefixes.cell, Materials.ConstructionFoam, GTModHandler.getIC2Item("CFCell", 1L));
+        GTOreDictUnificator
+            .set(OrePrefixes.cell, Materials.Air, MaterialLibAPI.getStack(Materials.Air, CellShapes.cell, 1));
+        GTOreDictUnificator
+            .set(OrePrefixes.cell, Materials.UUMatter, MaterialLibAPI.getStack(Materials.UUMatter, CellShapes.cell, 1));
+        GTOreDictUnificator.set(
+            OrePrefixes.cell,
+            Materials.ConstructionFoam,
+            MaterialLibAPI.getStack(Materials.ConstructionFoam, CellShapes.cell, 1));
+        // registerOre, not set: IC2 keeps minting these filled cells, so they must keep matching cell recipes,
+        // but the MaterialLib cells stay the unification targets.
+        GTOreDictUnificator.registerOre(OrePrefixes.cell, Materials.Water, GTModHandler.getIC2Item("waterCell", 1L));
+        GTOreDictUnificator.registerOre(OrePrefixes.cell, Materials.Lava, GTModHandler.getIC2Item("lavaCell", 1L));
+        GTOreDictUnificator
+            .registerOre(OrePrefixes.cell, Materials.UUMatter, GTModHandler.getIC2Item("uuMatterCell", 1L));
+        GTOreDictUnificator
+            .registerOre(OrePrefixes.cell, Materials.ConstructionFoam, GTModHandler.getIC2Item("CFCell", 1L));
 
         GTOreDictUnificator.set(OrePrefixes.bucket, Materials.Empty, new ItemStack(Items.bucket, 1, 0));
         GTOreDictUnificator.set(OrePrefixes.bucket, Materials.Water, new ItemStack(Items.water_bucket, 1, 0));
