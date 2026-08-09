@@ -45,6 +45,7 @@ import gregtech.api.util.GTLog;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.blocks.FrameShapeBlock;
 import gregtech.common.blocks.PipeShapeBlock;
+import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.loaders.postload.GtppItemCutoverTable.Entry;
 import vexatos.tgregworks.reference.Mods;
@@ -189,18 +190,44 @@ public class PosteaTransformers implements Runnable {
         registerGtppFrameCutoverTransformers();
         registerPipeCutoverTransformers();
         registerEmptyCellCutoverTransformer();
+        registerIC2FilledCellCutoverTransformers();
         registerGtppIC2CellCutoverTransformers();
     }
 
     /// Migrates saved IC2 empty cells (`IC2:itemCellEmpty`) onto the gregtech-owned empty cell every cell shape
-    /// drains to ([ItemList#Cell_Empty]). Keyed on meta 0 alone: metas 1-14 of that id are IC2's own filled cells,
-    /// which keep their meaning.
+    /// drains to ([ItemList#Cell_Empty]). Keyed on meta 0 alone: metas 6-13 of that id are IC2's own filled cells,
+    /// which keep their meaning, and the metas gregtech took over are handled by
+    /// [#registerIC2FilledCellCutoverTransformers].
     private static void registerEmptyCellCutoverTransformer() {
         ItemStack cutover = ItemList.Cell_Empty.get(1);
         if (cutover == null) {
             throw new IllegalStateException("No MaterialLib stack for the empty cell cutover");
         }
         addItemReplacement("IC2:itemCellEmpty", 0, cutover.getItem(), cutover.getItemDamage());
+    }
+
+    /// Migrates the IC2 filled cells gregtech took over onto the equivalent gregtech cell:
+    /// water (meta 1), lava (2), UU-Matter (3), construction foam (4) and air (5) become MaterialLib cells, and
+    /// steam (meta 14) becomes [MetaGeneratedItem98.FluidCell#STEAM]. Air is lossy -- the IC2 cell held 2000 mB
+    /// against the MaterialLib cell's 1000 mB -- the same halving the meta-15 remap in
+    /// [#registerGtppIC2CellCutoverTransformers] takes.
+    private static void registerIC2FilledCellCutoverTransformers() {
+        remapIC2Cell(1, Materials.Water);
+        remapIC2Cell(2, Materials.Lava);
+        remapIC2Cell(3, Materials.UUMatter);
+        remapIC2Cell(4, Materials.ConstructionFoam);
+        remapIC2Cell(5, Materials.Air);
+        ItemStack steam = MetaGeneratedItem98.FluidCell.STEAM.get();
+        addItemReplacement("IC2:itemCellEmpty", 14, steam.getItem(), steam.getItemDamage());
+    }
+
+    private static void remapIC2Cell(int meta, Material material) {
+        ItemStack cutover = MaterialParts.cell(material, 1);
+        if (cutover == null) {
+            throw new IllegalStateException(
+                "No MaterialLib cell stack for the IC2 cell cutover of " + material.getName());
+        }
+        addItemReplacement("IC2:itemCellEmpty", meta, cutover.getItem(), cutover.getItemDamage());
     }
 
     /// Migrates the filled cells gtpp minted onto IC2's cell item, which no longer register: the hydrofluoric
