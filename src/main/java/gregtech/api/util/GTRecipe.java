@@ -52,10 +52,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
     private static ItemStack dataStick;
     private static ItemStack dataOrb;
-    private static ItemStack ic2FluidCell;
 
     public static void setItemStacks() {
-        ic2FluidCell = ItemList.Cell_Universal_Fluid.get(1);
         dataStick = ItemList.Tool_DataStick.get(1L);
         dataOrb = ItemList.Tool_DataOrb.get(1L);
     }
@@ -444,10 +442,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
      * href=https://github.com/GTNewHorizons/GT5-Unofficial/pull/183>the PR</a>.
      *
      * <p>
-     * It looks like it controls checking NBT. At this point, since we are still using universal fluid cells which store
-     * their fluids in NBT, it probably will not be safe to disable the NBT checks in the near future. Data sticks may
-     * be another case. Anyway, we probably can't get rid of this without some significant changes to clean up recipe
-     * inputs.
+     * It looks like it controls checking NBT, which is now limited to data sticks and data orbs. Anyway, we probably
+     * can't get rid of this without some significant changes to clean up recipe inputs.
      */
     public static boolean GTppRecipeHelper;
 
@@ -767,8 +763,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
      */
     private static boolean shouldCheckNBT(ItemStack item) {
         if (GTppRecipeHelper) {
-            return GTUtility.areStacksEqual(item, ic2FluidCell, true) || GTUtility.areStacksEqual(item, dataStick, true)
-                || GTUtility.areStacksEqual(item, dataOrb, true);
+            return GTUtility.areStacksEqual(item, dataStick, true) || GTUtility.areStacksEqual(item, dataOrb, true);
         }
         return false;
     }

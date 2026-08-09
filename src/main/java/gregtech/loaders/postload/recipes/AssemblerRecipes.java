@@ -1657,13 +1657,6 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Tin, Shapes.itemCasing, 4))
-            .itemOutputs(ItemList.Cell_Universal_Fluid.get(1))
-            .duration(6 * SECONDS + 8 * TICKS)
-            .eut(TierEU.RECIPE_ULV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Food_Baked_Cake.get(1), new ItemStack(Items.egg, 1, 0))
             .itemOutputs(new ItemStack(Items.cake, 1, 0))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Milk, FluidShapes.fluidLiquid, 3_000))

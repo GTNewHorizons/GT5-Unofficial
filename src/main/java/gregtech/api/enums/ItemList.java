@@ -196,7 +196,6 @@ public enum ItemList implements IItemContainer {
     Coin_Gold_Ancient,
     Coin_Doge,
     Coin_Chocolate,
-    Cell_Universal_Fluid,
     Cell_Empty,
     Cell_Water,
     Cell_Lava,

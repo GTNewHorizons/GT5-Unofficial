@@ -907,7 +907,6 @@ public class GTProxy implements IFuelHandler {
 
         ItemList.Bottle_Empty.set(new ItemStack(Items.glass_bottle, 1));
 
-        ItemList.Cell_Universal_Fluid.set(GTModHandler.getIC2Item("FluidCell", 1L));
         ItemList.Cell_Empty.set(CellShapes.emptyCell.getStack(1));
         ItemList.Cell_Water.set(MaterialLibAPI.getStack(Materials.Water, CellShapes.cell, 1));
         ItemList.Cell_Lava.set(MaterialLibAPI.getStack(Materials.Lava, CellShapes.cell, 1));
