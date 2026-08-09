@@ -21,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
@@ -304,7 +303,8 @@ public class MTENetworkSwitch extends TTMultiblockBase
                             if (remainingComputation > 0) {
                                 out.q = new QuantumDataPacket(part).unifyTraceWith(pendingPacket);
                             } else if (part + remainingComputation > 0) {
-                                out.q = new QuantumDataPacket(part + remainingComputation).unifyTraceWith(pendingPacket);
+                                out.q = new QuantumDataPacket(part + remainingComputation)
+                                    .unifyTraceWith(pendingPacket);
                                 break;
                             } else {
                                 break;

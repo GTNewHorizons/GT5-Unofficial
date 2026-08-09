@@ -1,9 +1,10 @@
 package tectech.mechanics.dataTransport;
 
-import gregtech.api.util.GTUtility;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+
+import gregtech.api.util.GTUtility;
 
 public class QuantumDataPacket extends DataPacket<Long> {
 
