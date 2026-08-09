@@ -237,7 +237,7 @@ public class BeamCrafterRecipes implements Runnable {
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
                     .particleID_A(JPSI.getId())
-                    .particleID_B(LAMBDA.getId())
+                    .particleID_B(JPSI.getId())
                     .amount_A(1000)
                     .amount_B(1000)
                     .build())
@@ -253,7 +253,7 @@ public class BeamCrafterRecipes implements Runnable {
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
                     .particleID_A(ETA.getId())
-                    .particleID_B(ETA.getId())
+                    .particleID_B(LAMBDA.getId())
                     .amount_A(1000)
                     .amount_B(1000)
                     .build())
