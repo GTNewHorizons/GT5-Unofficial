@@ -562,7 +562,7 @@ public class SingleRecipeCheck {
                             .collect(Collectors.joining(", ")));
                 }
                 if (recipe.mFluidInputs != null && recipe.mFluidInputs.length > 0) {
-                    if (inputSb.length() > 0) {
+                    if (!inputSb.isEmpty()) {
                         inputSb.append(" | ");
                     }
                     inputSb.append("Fluid Inputs: ");
@@ -574,7 +574,7 @@ public class SingleRecipeCheck {
                                     + (showStackAmounts ? " (" + fluid.amount + "L)" : ""))
                             .collect(Collectors.joining(", ")));
                 }
-                if (inputSb.length() > 0) {
+                if (!inputSb.isEmpty()) {
                     sb.append(inputSb);
                     addedSomething = true;
                 }
@@ -590,7 +590,7 @@ public class SingleRecipeCheck {
                             .collect(Collectors.joining(", ")));
                 }
                 if (recipe.mFluidOutputs != null && recipe.mFluidOutputs.length > 0) {
-                    if (outputSb.length() > 0) {
+                    if (!outputSb.isEmpty()) {
                         outputSb.append(" | ");
                     }
                     outputSb.append("Fluid Outputs: ");
@@ -602,7 +602,7 @@ public class SingleRecipeCheck {
                                     + (showStackAmounts ? " (" + fluid.amount + "L)" : ""))
                             .collect(Collectors.joining(", ")));
                 }
-                if (outputSb.length() > 0) {
+                if (!outputSb.isEmpty()) {
                     if (addedSomething) {
                         sb.append(" => ");
                     }

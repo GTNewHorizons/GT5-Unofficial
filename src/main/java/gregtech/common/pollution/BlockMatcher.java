@@ -34,14 +34,14 @@ public class BlockMatcher {
         whiteList.clear();
         blackList.clear();
         for (String line : cfg) {
-            GTMod.GT_FML_LOGGER.info("Checking for block:" + line);
+            GTMod.GT_FML_LOGGER.info("Checking for block:{}", line);
             String[] lines = line.split(":");
             ColorOverrideType type = null;
             if (lines.length > 1) {
                 try {
                     type = ColorOverrideType.fromName(lines[1].trim());
                 } catch (NumberFormatException e) {
-                    GTMod.GT_FML_LOGGER.error(String.format("Invalid type [%s]", line));
+                    GTMod.GT_FML_LOGGER.error("Invalid type [{}]", line);
                     continue;
                 }
             }
@@ -49,17 +49,17 @@ public class BlockMatcher {
             if (lines[0].startsWith("-")) {
                 try {
                     blackList.add(Class.forName(lines[0].substring(1)));
-                    GTMod.GT_FML_LOGGER.info("\t added blacklist:" + lines[0].substring(1));
+                    GTMod.GT_FML_LOGGER.info("\t added blacklist:{}", lines[0].substring(1));
                 } catch (ClassNotFoundException ignored) {}
             } else {
                 if (type == null) {
-                    GTMod.GT_FML_LOGGER.error(String.format("Invalid type [%s]", line));
+                    GTMod.GT_FML_LOGGER.error("Invalid type [{}]", line);
                     continue;
                 }
 
                 try {
                     whiteList.put(Class.forName(lines[0]), type);
-                    GTMod.GT_FML_LOGGER.info("\t added whitelist:" + lines[0]);
+                    GTMod.GT_FML_LOGGER.info("\t added whitelist:{}", lines[0]);
                 } catch (ClassNotFoundException ignored) {}
             }
         }

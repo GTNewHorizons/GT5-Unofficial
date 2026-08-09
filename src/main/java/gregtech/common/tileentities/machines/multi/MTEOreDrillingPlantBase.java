@@ -259,6 +259,15 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         this.mEfficiency = getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         int tier = Math.max(1, GTUtility.getTier(getMaxInputVoltage()));
+        int maxUsefulTier = 1;
+        int baseTime = (workState == WorkState.DOWNWARD || workState == WorkState.AT_BOTTOM) ? getBaseProgressTime()
+            : 80;
+        while ((baseTime >> maxUsefulTier) > 1) {
+            maxUsefulTier++;
+        }
+        if (tier > maxUsefulTier) {
+            tier = maxUsefulTier;
+        }
         this.mEUt = -3 * (1 << (tier << 1));
         this.mMaxProgresstime = calculateMaxProgressTime(tier);
     }

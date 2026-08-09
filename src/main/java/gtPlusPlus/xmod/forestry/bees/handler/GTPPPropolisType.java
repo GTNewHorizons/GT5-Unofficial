@@ -33,13 +33,13 @@ public enum GTPPPropolisType {
         this.mID = aID;
         this.mName = aName;
         this.mNameUnlocal = aName.toLowerCase()
-            .replaceAll(" ", "");
+            .replace(" ", "");
         this.mShowInList = aShow;
         this.mColour = aColour;
         map(aID, this);
         this.mMaterial = GTPP_Bees.sMaterialMappings.get(
             aName.toLowerCase()
-                .replaceAll(" ", ""));
+                .replace(" ", ""));
         GTLanguageManager.addStringLocalization("gtplusplus.propolis." + this.mNameUnlocal, this.mName + " Propolis");
     }
 

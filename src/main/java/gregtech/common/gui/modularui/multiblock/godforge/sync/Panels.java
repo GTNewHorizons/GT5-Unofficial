@@ -99,7 +99,6 @@ public enum Panels {
             hypervisor.setModularPanel(fromModule, this, panel);
             hypervisor.setSyncManager(fromModule, this, p_syncManager);
 
-            // noinspection ConstantConditions
             return panelSupplier.apply(hypervisor, fromModule);
         });
     }

@@ -7,6 +7,5 @@ Additional overclocks are increasingly more expensive
 {aqua:Multiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)}
 {aqua:Power usage = Multiplier × (Active Slices) × (Recipe EU/t)}
 Overclocking assumes all recipe slices are active
-{bold:Does not overclock beyond 1 tick}
 {gold:{hr:67}}
 Constructed identically to the Assembly Line

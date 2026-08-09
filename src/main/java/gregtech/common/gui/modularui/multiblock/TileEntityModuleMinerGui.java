@@ -342,7 +342,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                 .filter(
                     asteroid -> asteroid.second()
                         .getMetadata(IGRecipeMaps.MODULE_TIER) <= multiblock.getModuleTier())
-                .collect(toList());
+                .toList();
             for (Pair<Integer, GTRecipe> asteroid : asteroidsAtDistance) {
                 if (visited.contains(asteroid.first())) continue;
                 if (Arrays.stream(asteroid.second().mOutputs)
@@ -442,7 +442,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                 .filter(
                     asteroid -> asteroid.second()
                         .getMetadata(IGRecipeMaps.MODULE_TIER) <= multiblock.getModuleTier())
-                .collect(toList());
+                .toList();
 
             for (Pair<Integer, GTRecipe> asteroid : asteroidsAtDistance) visited.add(asteroid.first());
         }
