@@ -230,7 +230,7 @@ public class VacuumFreezerRecipes implements Runnable {
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getIC2Item("airCell", 1L))
+                .itemInputs(ItemList.Cell_Air.get(1))
                 .itemOutputs(MaterialLibAPI.getStack(Materials.LiquidAir, CellShapes.cell, 1))
                 .duration(1 * SECONDS + 8 * TICKS)
                 .eut(TierEU.RECIPE_HV)

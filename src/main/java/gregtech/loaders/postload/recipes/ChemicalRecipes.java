@@ -3452,11 +3452,11 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Cell_Air.get(1))
+            .itemInputs(ItemList.Cell_Air.get(2))
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.RawRubber, Shapes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Isoprene, FluidShapes.fluidLiquid, 144))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -3562,10 +3562,10 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumSulfide, Shapes.dust, 3), ItemList.Cell_Air.get(8))
+            .itemInputs(MaterialLibAPI.getStack(Materials.SodiumSulfide, Shapes.dust, 3), ItemList.Cell_Air.get(16))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Salt, Shapes.dust, 4),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 8))
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 16))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Dichlorobenzene, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.PolyphenyleneSulfide, FluidShapes.fluidMolten, 1_000))
             .duration(12 * SECONDS)
@@ -4188,9 +4188,9 @@ public class ChemicalRecipes implements Runnable {
     public void addDefaultPolymerizationRecipes(Fluid aBasicMaterial, Fluid aPolymer) {
         // Oxygen/Titaniumtetrafluoride -> +50% Output each
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Cell_Air.get(1))
+            .itemInputs(ItemList.Cell_Air.get(2))
             .circuit(1)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 2))
             .fluidInputs(new FluidStack(aBasicMaterial, 1 * INGOTS))
             .fluidOutputs(new FluidStack(aPolymer, 1 * INGOTS))
             .duration(8 * SECONDS)
@@ -4208,9 +4208,9 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Cell_Air.get(8))
+            .itemInputs(ItemList.Cell_Air.get(16))
             .circuit(9)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 8))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 16))
             .fluidInputs(new FluidStack(aBasicMaterial, 8 * INGOTS))
             .fluidOutputs(new FluidStack(aPolymer, 8 * INGOTS))
             .duration(56 * SECONDS)
@@ -4835,10 +4835,10 @@ public class ChemicalRecipes implements Runnable {
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Butadiene, CellShapes.cell, 1), ItemList.Cell_Air.get(5))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Butadiene, CellShapes.cell, 1), ItemList.Cell_Air.get(10))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.RawStyreneButadieneRubber, Shapes.dust, 9),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 6))
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 11))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Styrene, FluidShapes.fluidLiquid, 350))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)

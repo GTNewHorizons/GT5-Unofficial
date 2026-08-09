@@ -91,14 +91,9 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             continue;
                         }
 
-                        ItemStack tStack;
-                        if (tMat.mMaterial == Materials.Air) {
-                            tStack = ItemList.Cell_Air.get(tMat.mAmount * tDensityMultiplier / 2L);
-                        } else {
-                            tStack = GTOreDictUnificator.get(OrePrefixes.dust, tMat.mMaterial, tMat.mAmount);
-                            if (tStack == null) {
-                                tStack = GTOreDictUnificator.get(OrePrefixes.cell, tMat.mMaterial, tMat.mAmount);
-                            }
+                        ItemStack tStack = GTOreDictUnificator.get(OrePrefixes.dust, tMat.mMaterial, tMat.mAmount);
+                        if (tStack == null) {
+                            tStack = GTOreDictUnificator.get(OrePrefixes.cell, tMat.mMaterial, tMat.mAmount);
                         }
                         if (tItemAmount + tMat.mAmount * 3628800L
                             > stack.getMaxStackSize() * MaterialUtils.density(material)) {

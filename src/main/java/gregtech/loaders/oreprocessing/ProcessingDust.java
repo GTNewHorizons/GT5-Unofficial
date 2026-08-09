@@ -225,13 +225,9 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         : 1L;
                     ArrayList<ItemStack> tList = new ArrayList<>();
                     for (MaterialStack tMat : tMaterialList) if (tMat.mAmount > 0L) {
-                        if (tMat.mMaterial == Materials.Air) {
-                            tDustStack = ItemList.Cell_Air.get(tMat.mAmount / 2L);
-                        } else {
-                            tDustStack = GTOreDictUnificator.get(OrePrefixes.dust, tMat.mMaterial, tMat.mAmount);
-                            if (tDustStack == null)
-                                tDustStack = GTOreDictUnificator.get(OrePrefixes.cell, tMat.mMaterial, tMat.mAmount);
-                        }
+                        tDustStack = GTOreDictUnificator.get(OrePrefixes.dust, tMat.mMaterial, tMat.mAmount);
+                        if (tDustStack == null)
+                            tDustStack = GTOreDictUnificator.get(OrePrefixes.cell, tMat.mMaterial, tMat.mAmount);
                         if (tItemAmount + tMat.mAmount * 3628800L
                             <= stack.getMaxStackSize() * MaterialUtils.density(material)) {
                             tItemAmount += tMat.mAmount * 3628800L;
@@ -261,8 +257,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         FluidStack tFluid = null;
                         int tList_sS = tList.size();
                         for (int i = 0; i < tList_sS; i++) {
-                            if ((!ItemList.Cell_Air.isStackEqual(tList.get(i)))
-                                && ((tFluid = GTUtility.getFluidForFilledItem(tList.get(i), true)) != null)) {
+                            if ((tFluid = GTUtility.getFluidForFilledItem(tList.get(i), true)) != null) {
                                 tFluid.amount *= tList.get(i).stackSize;
                                 tCapsuleCount -= GTModHandler
                                     .getCapsuleCellContainerCountMultipliedWithStackSize(tList.get(i));
