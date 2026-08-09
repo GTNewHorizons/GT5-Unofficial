@@ -17,8 +17,11 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.common.configs.Configuration;
 import gregtech.api.GregTechAPI;
+import gregtech.loaders.postload.LegacyPipeCutoverTable;
 
 public class BWWorldGenUtil {
 
@@ -90,7 +93,11 @@ public class BWWorldGenUtil {
         return meta;
     }
 
-    public static int getCable(Random rand, int tier) {
+    /// The pipe shape and material a Ross Ruin of `tier` runs its cable line in. The config stores the legacy
+    /// per-material pipe MTE id, which no longer names a registered MetaTileEntity, so the id is resolved through
+    /// [LegacyPipeCutoverTable] -- the same table [gregtech.loaders.postload.PosteaTransformers] migrates saved
+    /// pipes with -- instead of through [GregTechAPI#METATILEENTITIES].
+    public static LegacyPipeCutoverTable.Entry getCable(Random rand, int tier) {
         int meta, randomIndex;
         switch (tier) {
             case 0 -> {
@@ -115,11 +122,25 @@ public class BWWorldGenUtil {
             }
             default -> throw new IllegalStateException("tier " + tier + " is not allowed for Ross Ruins.");
         }
-        if (GregTechAPI.METATILEENTITIES[meta] == null) {
+        LegacyPipeCutoverTable.Entry entry = LegacyPipeCutoverTable.entries()
+            .get(meta);
+        if (entry == null) {
             throw new IllegalStateException("MetaID " + meta + " is null, please remove it from the Ross Ruin config");
         }
+        if (MaterialLibAPI.getBlock(entry.shape()) == null || !entry.material()
+            .hasShape(entry.shape())) {
+            throw new IllegalStateException(
+                "MetaID " + meta
+                    + " resolves to the unavailable pipe shape "
+                    + entry.shape()
+                        .getName()
+                    + " of "
+                    + entry.material()
+                        .getName()
+                    + ", please remove it from the Ross Ruin config");
+        }
 
-        return meta;
+        return entry;
     }
 
     public static int getMachine(Random rand, int tier) {

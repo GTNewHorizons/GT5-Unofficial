@@ -30,6 +30,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.common.configs.Configuration;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -38,6 +40,8 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.threads.RunnableMachineUpdate;
+import gregtech.common.blocks.PipeShapeBlock;
+import gregtech.loaders.postload.LegacyPipeCutoverTable;
 
 public abstract class MapGenRuins extends WorldGenerator {
 
@@ -136,9 +140,10 @@ public abstract class MapGenRuins extends WorldGenerator {
         } else this.setBlock(worldObj, x, y, z, Blocks.air, 0);
     }
 
-    protected void setGTCablekWChance(World worldObj, int x, int y, int z, Random rand, int airchance, int meta) {
+    protected void setGTCablekWChance(World worldObj, int x, int y, int z, Random rand, int airchance,
+        LegacyPipeCutoverTable.Entry cable) {
         if (rand.nextInt(100) > airchance) {
-            this.setGTCable(worldObj, x, y, z, meta);
+            this.setGTCable(worldObj, x, y, z, cable);
         } else this.setBlock(worldObj, x, y, z, Blocks.air, 0);
     }
 
@@ -179,21 +184,33 @@ public abstract class MapGenRuins extends WorldGenerator {
         BTE.setFrontFacing(facing);
     }
 
-    protected void setGTCable(World worldObj, int x, int y, int z, int meta) {
+    /// Places one cable of the ruin's power line: a [PipeShapeBlock] at the material's index, carrying the
+    /// material-agnostic pipe MTE the shape binds, wired west/east along the line and north into the machine
+    /// row when one already stands there.
+    protected void setGTCable(World worldObj, int x, int y, int z, LegacyPipeCutoverTable.Entry cable) {
         try {
             RunnableMachineUpdate.setDisabled();
         } catch (Exception ignored) {}
-        BaseMetaPipeEntity BTE = (BaseMetaPipeEntity) this.setGTMachineBlock(worldObj, x, y, z, meta);
-        MetaPipeEntity MPE = (MetaPipeEntity) BTE.getMetaTileEntity();
+        PipeShapeBlock block = (PipeShapeBlock) MaterialLibAPI.getBlock(cable.shape());
+        this.setBlockAndNotifyAdequately(
+            worldObj,
+            x,
+            y,
+            z,
+            block,
+            cable.material()
+                .getIndex());
+        BaseMetaPipeEntity BTE = (BaseMetaPipeEntity) worldObj.getTileEntity(x, y, z);
+        BTE.setInitialValuesAsNBT(null, (short) block.getMteId());
         BTE.mConnections |= (byte) (1 << (byte) 4);
         BTE.mConnections |= (byte) (1 << ForgeDirection.getOrientation(4)
             .getOpposite()
             .ordinal());
-        BaseMetaTileEntity BPE = (BaseMetaTileEntity) worldObj.getTileEntity(x, y, z - 1);
+        TileEntity BPE = worldObj.getTileEntity(x, y, z - 1);
         if (BPE != null) {
             BTE.mConnections |= (byte) (1 << (byte) 2);
         }
-        MPE.mConnections = BTE.mConnections;
+        ((MetaPipeEntity) BTE.getMetaTileEntity()).mConnections = BTE.mConnections;
         try {
             RunnableMachineUpdate.setEnabled();
         } catch (Exception ignored) {}
@@ -229,7 +246,7 @@ public abstract class MapGenRuins extends WorldGenerator {
             boolean useColor = rand.nextBoolean();
             byte set = 0;
             byte toSet = (byte) (rand.nextInt(Configuration.RossRuinMetas.maxTierRoss - tier) + 1);
-            int cablemeta = BWWorldGenUtil.getCable(secureRandom, tier);
+            LegacyPipeCutoverTable.Entry cable = BWWorldGenUtil.getCable(secureRandom, tier);
             byte treeinaRow = 0;
             boolean lastset = rand.nextBoolean();
             for (int dx = -6; dx <= 6; dx++) {
@@ -337,10 +354,10 @@ public abstract class MapGenRuins extends WorldGenerator {
                                             owner,
                                             ForgeDirection.WEST);
                                     } else {
-                                        this.setGTCablekWChance(worldObj, x + dx, y + dy, z + dz, rand, 33, cablemeta);
+                                        this.setGTCablekWChance(worldObj, x + dx, y + dy, z + dz, rand, 33, cable);
                                     }
                                 } else if (dx < 3 && dx > -5 && dz == 4) {
-                                    this.setGTCablekWChance(worldObj, x + dx, y + dy, z + dz, rand, 33, cablemeta);
+                                    this.setGTCablekWChance(worldObj, x + dx, y + dy, z + dz, rand, 33, cable);
                                 } else if (dx < 3 && dx > -5 && dz == 3 && set < toSet) {
                                     if (!lastset || treeinaRow > 2) {
                                         int meta = BWWorldGenUtil.getMachine(secureRandom, tier);
