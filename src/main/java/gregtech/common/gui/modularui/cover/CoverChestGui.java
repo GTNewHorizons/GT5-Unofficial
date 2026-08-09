@@ -42,7 +42,7 @@ public class CoverChestGui extends CoverBaseGui<CoverChest> {
 
         IItemHandlerModifiable handler = cover.getItems();
 
-        syncManager.registerSlotGroup(SLOT_GROUP_NAME, 3);
+        syncManager.registerSlotGroup(SLOT_GROUP_NAME, 3, 200);
 
         column.horizontalCenter()
             .child(
