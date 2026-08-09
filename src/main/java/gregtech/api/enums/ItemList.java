@@ -2252,6 +2252,7 @@ public enum ItemList implements IItemContainer {
     CasingMixer,
     FormingCore,
     TensionResistantMachineCasing,
+    ExtruderMachineCasing,
     CasingHearth,
     CasingFridge,
     CasingNaquadahReinforcedDistillation,

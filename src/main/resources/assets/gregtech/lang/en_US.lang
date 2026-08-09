@@ -8656,7 +8656,6 @@ gt.blockcasings12.4.name=Nanochip Firewall Projection Casing
 gt.blockcasings12.5.name=Strengthened Inanimate Machine Casing
 gt.blockcasings12.6.name=Precise Stationary Machine Casing
 gt.blockcasings12.7.name=Ultimately Static Machine Casing
-gt.blockcasings12.8.name=Tension Resistant Machine Casing
 gt.blockcasings12.9.name=Vibration-Safe Casing
 gt.blockcasings12.10.name=Alchemically Resistant Thaumium Casing
 gt.blockcasings12.11.name=Alchemically Inert Void Casing
@@ -8685,7 +8684,8 @@ gt.blockcasings13.15.name=Naquadah Reactor Casing
 gt.blockcasings14.3.name=Hearth Casing
 gt.blockcasings14.4.name=Fridge Casing
 gt.blockcasings14.5.name=Naquadah Reinforced Distillation Casing
-
+gt.blockcasings14.6.name=Extruder Machine Casing
+gt.blockcasings14.7.name=Tension Resistant Machine Casing
 
 gt.blockcasingsNH.0.name=Air Filter Turbine Casing
 gt.blockcasingsNH.1.name=Air Filter Vent Casing
