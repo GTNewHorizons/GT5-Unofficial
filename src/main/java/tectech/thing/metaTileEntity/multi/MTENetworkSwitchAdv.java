@@ -73,7 +73,9 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     protected final StructureWrapperInstanceInfo<MTENetworkSwitchAdv> structureInstanceInfo;
 
     private int length;
-    private long pendingComputation, wastedComputation;
+    private QuantumDataPacket pendingPacket;
+    private long displayedComputation; // MUI1 stuff, remove this field and migrate to SyncValue in MUI2
+    private long wastedComputation;
 
     public MTENetworkSwitchAdv(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -337,18 +339,22 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         mMaxProgresstime = 0;
         mEfficiencyIncrease = 0;
 
-        pendingComputation = 0;
+        pendingPacket = new QuantumDataPacket(0L).unifyTraceWith(getPos());
 
         for (MTEHatchDataInput di : validMTEList(eInputData)) {
             if (di.q != null) {
-                pendingComputation += di.q.getContent();
+                if (di.q.contains(getPos())) {
+                    return SimpleCheckRecipeResult.ofFailure("no_routing");
+                }
+                pendingPacket = pendingPacket.unifyPacketWith(di.q);
+                if (pendingPacket == null) {
+                    return SimpleCheckRecipeResult.ofFailure("no_routing");
+                }
                 di.setContents(null);
             }
         }
 
-        if (pendingComputation < 0) pendingComputation = Long.MAX_VALUE;
-
-        if (pendingComputation == 0) {
+        if (pendingPacket.getContent() == 0) {
             return SimpleCheckRecipeResult.ofFailure("no_routing");
         }
 
@@ -363,10 +369,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     public void outputAfterRecipe_EM() {
         super.outputAfterRecipe_EM();
 
-        Vec3Impl pos = new Vec3Impl(
-            getBaseMetaTileEntity().getXCoord(),
-            getBaseMetaTileEntity().getYCoord(),
-            getBaseMetaTileEntity().getZCoord());
+        long pendingComputation = pendingPacket.getContent();
 
         for (MTEHatchDataOutput output : validMTEList(eOutputData)) {
             if (pendingComputation <= 0) break;
@@ -374,11 +377,16 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
             long toConsume = Math.min(pendingComputation, output.requestedComputation);
             pendingComputation -= toConsume;
 
-            output.providePacket(new QuantumDataPacket(toConsume).unifyTraceWith(pos));
+            output.providePacket(new QuantumDataPacket(toConsume).unifyTraceWith(pendingPacket));
         }
 
         wastedComputation = pendingComputation;
-        pendingComputation = 0;
+        pendingPacket = null;
+    }
+
+    private long getPendingComputation() {
+        if (pendingPacket == null) return 0;
+        return pendingPacket.getContent();
     }
 
     @Override
@@ -386,7 +394,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         super.drawTexts(screenElements, inventorySlot);
 
         screenElements
-            .widget(new FakeSyncWidget.LongSyncer(() -> pendingComputation, value -> pendingComputation = value));
+            .widget(new FakeSyncWidget.LongSyncer(this::getPendingComputation, value -> displayedComputation = value));
         screenElements
             .widget(new FakeSyncWidget.LongSyncer(() -> wastedComputation, value -> wastedComputation = value));
 
@@ -395,7 +403,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
                 .dynamicString(
                     () -> StatCollector.translateToLocalFormatted(
                         "GT5U.machines.computation_hatch.pending_computation",
-                        formatNumber(pendingComputation)))
+                        formatNumber(displayedComputation)))
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> mMaxProgresstime > 0));

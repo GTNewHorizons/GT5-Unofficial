@@ -1,5 +1,6 @@
 package tectech.mechanics.dataTransport;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
@@ -33,7 +34,7 @@ public class QuantumDataPacket extends DataPacket<Long> {
 
     @Override
     protected Long unifyContentWith(Long content) {
-        return this.content + content;
+        return GTUtility.addSafe(this.content, content);
     }
 
     public QuantumDataPacket unifyTraceWith(Vec3Impl... positions) {
