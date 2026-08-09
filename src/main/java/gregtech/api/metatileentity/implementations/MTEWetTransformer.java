@@ -72,7 +72,9 @@ public class MTEWetTransformer extends MTETransformer {
             super.getDescription()[0],
             CommonValues.TEC_MARK_GENERAL,
             16,
-            64);
+            64,
+            8,
+            32);
     }
 
     @Override
