@@ -12,6 +12,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_NANITE_SINGULARITY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
@@ -902,6 +903,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity == null) return false;
             if (aMetaTileEntity instanceof MTEHatchInput) {
+                addIfSmartInput(aMetaTileEntity);
                 ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 ((MTEHatchInput) aMetaTileEntity).mRecipeMap = null;
                 compatMode.coolantHatch = (MTEHatchInput) aMetaTileEntity;
@@ -920,6 +922,11 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (tileEntity == null) return false;
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
         if (metaTileEntity instanceof MTEHatchNanite naniteBus) {
+            if (naniteBus.getBaseMetaTileEntity()
+                .getMetaTileID() == HATCH_NANITE_SINGULARITY.ID) {
+                return false;
+            }
+            addIfSmartInput(naniteBus);
             naniteBus.updateTexture(baseCasingIndex);
             this.naniteBuses.add(naniteBus);
             return true;

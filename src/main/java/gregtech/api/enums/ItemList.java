@@ -2715,6 +2715,7 @@ public enum ItemList implements IItemContainer {
     Casing_Pyrolyse,
     NameRemover,
     Hatch_Nanite,
+    Hatch_Nanite_Singularity,
     Hatch_Catalyst_Bulk,
     Machine_Multi_AirFilterT1,
     Machine_Multi_AirFilterT2,
@@ -3402,7 +3403,7 @@ public enum ItemList implements IItemContainer {
                 tWord.substring(1)
                     .toLowerCase(Locale.US));
         }
-        if (tCamelCasedDisplayNameBuilder.length() == 0) {
+        if (tCamelCasedDisplayNameBuilder.isEmpty()) {
             // CamelCased DisplayName is empty, so use hash of aDisplayName
             tCamelCasedDisplayNameBuilder.append(((Long) (long) aDisplayName.hashCode()));
         }

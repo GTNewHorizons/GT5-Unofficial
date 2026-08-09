@@ -19,6 +19,7 @@ import net.minecraft.util.Tuple;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
@@ -52,49 +53,53 @@ public class GTUtil {
     public static NBTTagCompound makeNBT(Tuple... tags) {
         final NBTTagCompound nbt = new NBTTagCompound();
         for (Tuple t : tags) {
-            if (t.getSecond() == null) continue;
+            switch (t.getSecond()) {
+                case null -> {
+                    continue;
+                }
+                case Boolean b -> nbt.setBoolean(
+                    t.getFirst()
+                        .toString(),
+                    b);
+                case Byte b -> nbt.setByte(
+                    t.getFirst()
+                        .toString(),
+                    b);
+                case Short i -> nbt.setShort(
+                    t.getFirst()
+                        .toString(),
+                    i);
+                case Integer i -> nbt.setInteger(
+                    t.getFirst()
+                        .toString(),
+                    i);
+                case Long l -> nbt.setLong(
+                    t.getFirst()
+                        .toString(),
+                    l);
+                case Float v -> nbt.setFloat(
+                    t.getFirst()
+                        .toString(),
+                    v);
+                case Double v -> nbt.setDouble(
+                    t.getFirst()
+                        .toString(),
+                    v);
+                case String s -> nbt.setString(
+                    t.getFirst()
+                        .toString(),
+                    s);
+                case NBTBase nbtBase -> nbt.setTag(
+                    t.getFirst()
+                        .toString(),
+                    nbtBase);
+                default -> nbt.setString(
+                    t.getFirst()
+                        .toString(),
+                    t.getSecond()
+                        .toString());
+            }
 
-            if (t.getSecond() instanceof Boolean) nbt.setBoolean(
-                t.getFirst()
-                    .toString(),
-                (Boolean) t.getSecond());
-            else if (t.getSecond() instanceof Byte) nbt.setByte(
-                t.getFirst()
-                    .toString(),
-                (Byte) t.getSecond());
-            else if (t.getSecond() instanceof Short) nbt.setShort(
-                t.getFirst()
-                    .toString(),
-                (Short) t.getSecond());
-            else if (t.getSecond() instanceof Integer) nbt.setInteger(
-                t.getFirst()
-                    .toString(),
-                (Integer) t.getSecond());
-            else if (t.getSecond() instanceof Long) nbt.setLong(
-                t.getFirst()
-                    .toString(),
-                (Long) t.getSecond());
-            else if (t.getSecond() instanceof Float) nbt.setFloat(
-                t.getFirst()
-                    .toString(),
-                (Float) t.getSecond());
-            else if (t.getSecond() instanceof Double) nbt.setDouble(
-                t.getFirst()
-                    .toString(),
-                (Double) t.getSecond());
-            else if (t.getSecond() instanceof String) nbt.setString(
-                t.getFirst()
-                    .toString(),
-                (String) t.getSecond());
-            else if (t.getSecond() instanceof NBTBase) nbt.setTag(
-                t.getFirst()
-                    .toString(),
-                (NBTBase) t.getSecond());
-            else nbt.setString(
-                t.getFirst()
-                    .toString(),
-                t.getSecond()
-                    .toString());
         }
 
         return nbt;
@@ -302,10 +307,10 @@ public class GTUtil {
             tag.getTagList("mDualInputHatches", Constants.NBT.TAG_COMPOUND),
             player,
             dualInputHatches)) {
-            if (!loadConfigurationFromDataStick(
+            return loadConfigurationFromDataStick(
                 tag.getTagList("mDualInputHatches", Constants.NBT.TAG_COMPOUND),
                 player,
-                dualInputHatches)) return false;
+                dualInputHatches);
         }
 
         return true;
@@ -356,5 +361,38 @@ public class GTUtil {
                 .equals(tag.getString("type"))) return false;
         }
         return true;
+    }
+
+    /**
+     * Set the direction of a vanilla large chest. return false when the new direction is invalid
+     * 
+     * @param dryRun pass in true to prevent actually setting block metadata
+     */
+    public static boolean setVanillaChestDirection(World world, int x, int y, int z, int newSide, Block currentBlock,
+        boolean dryRun) {
+        ForgeDirection newDirection = ForgeDirection.getOrientation(newSide);
+        if (newDirection.offsetY != 0) return false; // cannot face up/down
+        if (currentBlock == null) currentBlock = world.getBlock(x, y, z);
+        if (world.getBlock(x + newDirection.offsetX, y + newDirection.offsetY, z + newDirection.offsetZ) == currentBlock
+            || world.getBlock(x - newDirection.offsetX, y - newDirection.offsetY, z - newDirection.offsetZ)
+                == currentBlock) {
+            // new direction would face towards/away from another chest. not good
+            return false;
+        }
+        if (dryRun) return true;
+        ForgeDirection sideway = ForgeDirection
+            .getOrientation(ForgeDirection.ROTATION_MATRIX[ForgeDirection.UP.ordinal()][newSide]);
+        boolean result = true;
+        if (world.getBlock(x + sideway.offsetX, y + sideway.offsetY, z + sideway.offsetZ) == currentBlock) {
+            result &= world
+                .setBlockMetadataWithNotify(x + sideway.offsetX, y + sideway.offsetY, z + sideway.offsetZ, newSide, 3);
+        } else if (world.getBlock(x - sideway.offsetX, y - sideway.offsetY, z - sideway.offsetZ) == currentBlock) {
+            result &= world
+                .setBlockMetadataWithNotify(x - sideway.offsetX, y - sideway.offsetY, z - sideway.offsetZ, newSide, 3);
+        }
+        if (!result) {
+            return false;
+        }
+        return world.setBlockMetadataWithNotify(x, y, z, newSide, 3);
     }
 }

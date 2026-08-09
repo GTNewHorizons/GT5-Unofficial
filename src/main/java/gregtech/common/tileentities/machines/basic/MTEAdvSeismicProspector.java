@@ -30,6 +30,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.OreManager;
 import ic2.core.Ic2Items;
@@ -72,8 +73,8 @@ public class MTEAdvSeismicProspector extends MTEBasicMachine {
 
     @Override
     public String[] getDescription() {
-        return GTUtility
-            .translateMultiline("gt.blockmachines.basicmachine.seismicprospector.tooltip", radius * 2, radius * 2);
+        return GTSplit
+            .splitLocalizedFormatted("gt.blockmachines.basicmachine.seismicprospector.tooltip", radius * 2, radius * 2);
     }
 
     protected MTEAdvSeismicProspector(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,

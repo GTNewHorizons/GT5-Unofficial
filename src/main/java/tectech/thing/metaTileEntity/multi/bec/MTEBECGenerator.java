@@ -28,6 +28,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -47,6 +48,7 @@ import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
 
     public MTEBECGenerator(int aID, String aName) {
@@ -89,7 +91,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         StructureWrapperTooltipBuilder<MTEBECGenerator> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("BEC Generator, Condensate Entangler, Input Hatch")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-generator"))
+            .addMarkdown(new ResourceLocation(Mods.ModIDs.GREG_TECH, "bec-generator"))
             .addSupportAny();
 
         tt.beginStructureBlock(19, 19, 34, true)

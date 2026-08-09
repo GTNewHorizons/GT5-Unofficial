@@ -363,7 +363,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
         float subY, float subZ) {
         if (!world.isRemote) {
             if (player.capabilities.isCreativeMode && player.isSneaking() && player.getHeldItem() == null) {
-                try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z);) {
+                try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z)) {
                     info.isNatural = !info.isNatural;
 
                     world.setBlockMetadataWithNotify(

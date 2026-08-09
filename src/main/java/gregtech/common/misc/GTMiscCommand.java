@@ -25,6 +25,7 @@ import com.gtnewhorizon.structurelib.StructureLib;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.util.FakeCleanroom;
 import gregtech.api.util.GTMusicSystem;
@@ -43,7 +44,7 @@ public final class GTMiscCommand extends GTBaseCommand {
 
     @Override
     public String getCommandName() {
-        return "gregtech";
+        return Mods.ModIDs.GREG_TECH;
     }
 
     @Override

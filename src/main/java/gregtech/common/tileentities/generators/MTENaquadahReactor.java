@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.generators;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_BACK;
 import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_BACK_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_BACK_ACTIVE_GLOW;
@@ -31,7 +32,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTSplit;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTENaquadahReactor extends MTEBasicGenerator {
@@ -39,14 +40,14 @@ public class MTENaquadahReactor extends MTEBasicGenerator {
     public MTENaquadahReactor(int aID, String aName, String[] aDescription, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, (String) null);
         if (aTier > 8 || aTier < 4) {
-            new Exception("Tier without Recipe Map!").printStackTrace();
+            GT_FML_LOGGER.error(new Exception("Tier without Recipe Map!"));
         }
     }
 
     public MTENaquadahReactor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         if (aTier > 8 || aTier < 4) {
-            new Exception("Tier without Recipe Map!").printStackTrace();
+            GT_FML_LOGGER.error(new Exception("Tier without Recipe Map!"));
         }
     }
 
@@ -65,7 +66,7 @@ public class MTENaquadahReactor extends MTEBasicGenerator {
 
     @Override
     protected String[] getTooltipLines() {
-        return GTUtility.translateMultiline("gt.blockmachines." + mName + ".tooltip");
+        return GTSplit.splitLocalized("gt.blockmachines." + mName + ".tooltip");
     }
 
     @Override

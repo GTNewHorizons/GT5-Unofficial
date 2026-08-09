@@ -80,6 +80,7 @@ import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputMEGui;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -170,9 +171,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         if (igte == null || !igte.isAllowedToWork()) return false;
 
         this.proxyCheckup();
-        if (!getProxy().isActive()) return false;
-
-        return true;
+        return getProxy().isActive();
     }
 
     @Override
@@ -350,6 +349,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     @Override
     public void removeWatcher(IHatchWatcher watcher) {
         watchers.remove(watcher);
+    }
+
+    @Override
+    public boolean needsPeriodicChecks() {
+        return !MachineStats.machines.useStackWatcher;
     }
 
     @Override
@@ -1057,9 +1061,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     private void configureWatchers() {
         if (this.watcher != null) {
             this.watcher.clear();
-            for (Slot slot : slots) {
-                if (slot != null && slot.config != null) {
-                    watcher.add(AEFluidStack.create(slot.config));
+            if (MachineStats.machines.useStackWatcher) {
+                for (Slot slot : slots) {
+                    if (slot != null && slot.config != null) {
+                        watcher.add(AEFluidStack.create(slot.config));
+                    }
                 }
             }
             scheduleRecipeCheck(RecipeCheckReason.THROTTLED);

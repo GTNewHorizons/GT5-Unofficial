@@ -315,10 +315,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         IIconContainer MAIN_OVERLAY;
         IIconContainer GLOW_OVERLAY;
         switch (blackHoleStatus) {
-            default -> {
-                MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE;
-                GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_GLOW;
-            }
             case 2, 4 -> {
                 MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE;
                 GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE_GLOW;
@@ -326,6 +322,10 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             case 3 -> {
                 MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_UNSTABLE;
                 GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_UNSTABLE_GLOW;
+            }
+            default -> {
+                MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE;
+                GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_GLOW;
             }
         }
 
@@ -661,6 +661,11 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     // Asynchronous timer to destroy render block after collapse animation is done playing.
     // This might not sync perfectly to the renderer but this is very low stakes
     private int collapseTimer = -1;
+
+    @Override
+    public boolean needsClientTick() {
+        return true;
+    }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {

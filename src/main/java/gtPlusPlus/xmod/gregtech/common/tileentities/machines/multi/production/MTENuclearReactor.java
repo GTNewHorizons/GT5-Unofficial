@@ -486,6 +486,11 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     }
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.getWorld().isRemote) {
             if (aBaseMetaTileEntity.isActive()) {

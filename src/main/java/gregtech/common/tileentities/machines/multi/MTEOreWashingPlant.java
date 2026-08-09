@@ -208,14 +208,8 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        switch (machineMode) {
-            case MACHINEMODE_OREWASH -> {
-                return RecipeMaps.oreWasherRecipes;
-            }
-            default -> {
-                return RecipeMaps.simpleWasherRecipes;
-            }
-        }
+        if (machineMode == MACHINEMODE_OREWASH) return RecipeMaps.oreWasherRecipes;
+        return RecipeMaps.simpleWasherRecipes;
     }
 
     @Nonnull
@@ -285,11 +279,6 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

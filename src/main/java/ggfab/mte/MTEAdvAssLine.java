@@ -26,6 +26,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
@@ -319,18 +320,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("ggfab.tt.advassline.machine_type"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc1"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc2"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc3"))
-            .addSeparator(EnumChatFormatting.GOLD, 67)
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc4"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc5"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc6"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc7"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc8"))
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc9"))
-            .addSeparator(EnumChatFormatting.GOLD, 67)
-            .addInfo(StatCollector.translateToLocal("ggfab.tt.advassline.desc10"))
+            .addMarkdown(new ResourceLocation("gregtech", "advanced-assembly-line"))
             .addSupportAny()
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
             .addController(StatCollector.translateToLocal("ggfab.tt.advassline.structure.controller"))
@@ -437,12 +427,12 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         RecipeAssemblyLine recipe = null;
 
         if (aNBT.hasKey(TAG_KEY_CURRENT_RECIPE, Constants.NBT.TAG_COMPOUND)) {
-            recipe = AssemblyLineUtils
-                .assertSingleRecipe(AssemblyLineUtils.loadRecipe(aNBT.getCompoundTag(TAG_KEY_CURRENT_RECIPE)));
+            recipe = selectRecipe(AssemblyLineUtils.loadRecipe(aNBT.getCompoundTag(TAG_KEY_CURRENT_RECIPE)), aNBT);
         } else if (aNBT.hasKey(TAG_KEY_CURRENT_STICK, Constants.NBT.TAG_COMPOUND)) {
-            recipe = AssemblyLineUtils.assertSingleRecipe(
+            recipe = selectRecipe(
                 AssemblyLineUtils.findALRecipeFromDataStick(
-                    ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(TAG_KEY_CURRENT_STICK))));
+                    ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(TAG_KEY_CURRENT_STICK))),
+                aNBT);
         }
 
         if (recipe != null) {
@@ -468,6 +458,20 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         } else {
             setCurrentRecipe(recipe);
         }
+    }
+
+    // Outputs aren't unique so pick by hash; on a miss return the first candidate so the
+    // caller's hash check fails loudly instead of null silently clearing the recipe.
+    private static RecipeAssemblyLine selectRecipe(Collection<RecipeAssemblyLine> candidates, NBTTagCompound aNBT) {
+        if (candidates.isEmpty()) return null;
+        if (aNBT.hasKey(TAG_KEY_RECIPE_HASH, Constants.NBT.TAG_INT)) {
+            int hash = aNBT.getInteger(TAG_KEY_RECIPE_HASH);
+            for (RecipeAssemblyLine candidate : candidates) {
+                if (candidate.getPersistentHash() == hash) return candidate;
+            }
+        }
+        return candidates.iterator()
+            .next();
     }
 
     /**
@@ -736,7 +740,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         }
 
         if (GTValues.D1) {
-            GT_FML_LOGGER.info("Stick accepted, " + availableRecipes.size() + " Data Sticks found");
+            GT_FML_LOGGER.info("Stick accepted, {} Data Sticks found", availableRecipes.size());
         }
 
         for (RecipeAssemblyLine recipe : availableRecipes) {
@@ -770,20 +774,14 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
 
             int maxRegularOverclock = getTier(inputVoltage) - getTier(recipe.mEUt);
 
-            // Delete this one before enable overclocking under one tick.
-            int maxOverclockTo1Tick = GTUtility.log2(recipe.mDuration / recipe.mInputs.length);
-
             OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
                 .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
                 .setParallel(originalMaxParallel)
                 .setEUt(inputEUt / recipe.mInputs.length)
                 .setLaserOC(true)
-                .setMaxRegularOverclocks(Math.min(maxRegularOverclock, maxOverclockTo1Tick));
+                .setMaxRegularOverclocks(maxRegularOverclock);
 
-            // Disabled to disable overclocking under one tick.
-            /*
-             * maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
-             */
+            maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
 
             int maxParallelBeforeBatchMode = maxParallel;
             if (isBatchModeEnabled()) {

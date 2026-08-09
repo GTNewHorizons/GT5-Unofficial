@@ -325,7 +325,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
+            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name") + ", SPASS")
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.desc0"))
                 .addInfo(
                     EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
@@ -409,7 +409,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
+            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name") + ", SPASS")
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.desc0"))
                 .addInfo(
                     EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
@@ -493,7 +493,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
+            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name") + ", SPASS")
                 .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.desc0"))
                 .addInfo(
                     EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
