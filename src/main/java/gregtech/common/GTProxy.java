@@ -2572,7 +2572,7 @@ public class GTProxy implements IFuelHandler {
                 .addTo(crackingRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getIC2Item("steamCell", 1L))
+                .itemInputs(MetaGeneratedItem98.FluidCell.STEAM.get(1))
                 .circuit(i + 1)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
                 .fluidInputs(new FluidStack(uncrackedFluid, 1_000))

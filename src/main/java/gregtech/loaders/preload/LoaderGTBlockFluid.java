@@ -1077,10 +1077,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .withStateAndTemperature(GAS, 375)
             .buildAndRegister()
             .configureMaterials(Materials.Water)
-            .addLocalizedName(Materials.Water)
-            .registerBContainers(
-                GTModHandler.getIC2Item("steamCell", 1),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L));
+            .addLocalizedName(Materials.Water);
 
         // The dedicated Steam material carries no LEGACY_FLUIDS gas row (see Materials.Steam), so
         // point MaterialUtils' gas slot at the "steam" Forge fluid registered above -- the same fluid
@@ -1096,7 +1093,7 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
-            .itemOutputs(GTModHandler.getIC2Item("steamCell", 1))
+            .itemOutputs(MetaGeneratedItem98.FluidCell.STEAM.get(1))
             .fluidInputs(MaterialUtils.gas(Materials.Steam, 1_000))
             .duration(16 * TICKS)
             .eut(1)

@@ -30,7 +30,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
@@ -318,9 +317,7 @@ public class MetaGeneratedItem98 extends MetaGeneratedItem {
         // cell items won't have an associated material. So only a rare few cell items will need to
         // be registered.
 
-        // Register IC2 steam cell and Railcraft steam cell as synonyms.
-        // There is no steam material, so we'll use Water.cellMolten instead.
-        GTOreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, GTModHandler.getIC2Item("steamCell", 1L));
+        // Register the steam cell. There is no steam material, so we'll use Water.cellMolten instead.
         GTOreDictUnificator.add(OrePrefixes.cellMolten, Materials.Water, FluidCell.STEAM.getNoCopy());
     }
 
