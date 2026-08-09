@@ -370,6 +370,8 @@ public enum Casings implements ICasing {
         (()->GregTechAPI.sBlockCasings12,6,gt(16,5,6)),
     UltimateStaticCasing
         (()->GregTechAPI.sBlockCasings12,7,gt(16,5,7)),
+    TensionResistantMachineCasing
+        (() -> GregTechAPI.sBlockCasings12, 8, gt(16, 5, 8)),
     VibrationSafeCasing
         (() -> GregTechAPI.sBlockCasings12, 9, gt(16, 5, 9)),
     AlchemicallyResistantThaumiumCasing

@@ -7,9 +7,11 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
 import java.util.List;
 
+import gregtech.api.enums.Materials;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -57,9 +59,9 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
         .addElement(
             'A',
             buildHatchAdder(MTEIndustrialExtruder.class).atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                .casingIndex(Casings.PressureContainmentCasing.textureId)
+                .casingIndex(Casings.TensionResistantMachineCasing.textureId)
                 .hint(1)
-                .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.PressureContainmentCasing.asElement())))
+                .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.TensionResistantMachineCasing.asElement())))
         .addElement('B', Casings.FormingCore.asElement())
         .addElement(
             'C',
@@ -70,7 +72,7 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
                     onElementPass(
                         x -> ++x.casingAmountStainless,
                         Casings.CleanStainlessSteelMachineCasing.asElement())))
-        .addElement('D', Casings.ElectricCompressorCasing.asElement())
+        .addElement('D', ofSheetMetal(Materials.Tungsten))
         .build();
 
     public MTEIndustrialExtruder(final int aID, final String aName, final String aNameRegional) {
@@ -94,8 +96,8 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(4, 4, 9, false)
             .addController("Front right, 2nd layer")
-            .addCasing("8-33", "Pressure Containment Casing", false)
-            .addCasing("24", "Electric Compressor Casing", false)
+            .addCasing("8-33", "Tension Resistant Machine Casing", false)
+            .addCasing("24", "Tungsten Sheetmetal", false)
             .addCasing("20", "Forming Core", false)
             .addCasing("3-7", "Clean Stainless Steel Machine Casing", false)
             .addEnergyHatch("1+", "Any containment or stainless steel casing", 1)

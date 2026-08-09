@@ -1595,6 +1595,14 @@ public class MTERecipeLoader implements Runnable {
                 MaterialsAlloy.MARAGING250.getPlate(1), 'F',
                 OrePrefixes.frameGt.get(Materials.Polytetrafluoroethylene) });
 
+        // Extruder Tension Resistant machine casing, move if there is a better place for it
+        GTModHandler.addCraftingRecipe(
+            ItemList.TensionResistantMachineCasing.get(1),
+            BUFFERED,
+            new Object[] { "PhP", "SFS", "PwP", 'P', MaterialsAlloy.INCONEL_690.getPlate(1), 'S',
+                Materials.HSSG.getPlates(1), 'F',
+                OrePrefixes.frameGt.get(Materials.Titanium) });
+
         // Forming Core
         GTModHandler.addCraftingRecipe(
             ItemList.FormingCore.get(1),
