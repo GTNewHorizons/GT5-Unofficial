@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -66,7 +67,7 @@ public class MTENetworkSwitch extends TTMultiblockBase
     protected Parameters.Group.ParameterIn[] dst;
     protected Parameters.Group.ParameterIn[] weight;
 
-    private QuantumDataPacket pendingPacket;
+    private @Nullable QuantumDataPacket pendingPacket;
 
     public MTENetworkSwitch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -241,6 +242,9 @@ public class MTENetworkSwitch extends TTMultiblockBase
     protected CheckRecipeResult checkProcessing_EM() {
         short thingsActive = 0;
         pendingPacket = new QuantumDataPacket(0L).unifyTraceWith(getPos());
+        if (pendingPacket == null) {
+            return SimpleCheckRecipeResult.ofFailure("no_routing");
+        }
         for (MTEHatchDataInput di : eInputData) {
             if (di.q != null) {
                 thingsActive++;

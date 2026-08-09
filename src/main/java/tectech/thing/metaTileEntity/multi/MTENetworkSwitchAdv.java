@@ -21,6 +21,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -73,7 +74,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     protected final StructureWrapperInstanceInfo<MTENetworkSwitchAdv> structureInstanceInfo;
 
     private int length;
-    private QuantumDataPacket pendingPacket;
+    private @Nullable QuantumDataPacket pendingPacket;
     private long displayedComputation; // MUI1 stuff, remove this field and migrate to SyncValue in MUI2
     private long wastedComputation;
 
@@ -340,6 +341,9 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         mEfficiencyIncrease = 0;
 
         pendingPacket = new QuantumDataPacket(0L).unifyTraceWith(getPos());
+        if (pendingPacket == null) {
+            return SimpleCheckRecipeResult.ofFailure("no_routing");
+        }
 
         for (MTEHatchDataInput di : validMTEList(eInputData)) {
             if (di.q != null) {
@@ -368,6 +372,11 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     @Override
     public void outputAfterRecipe_EM() {
         super.outputAfterRecipe_EM();
+
+        if (pendingPacket == null) {
+            wastedComputation = 0;
+            return;
+        }
 
         long pendingComputation = pendingPacket.getContent();
 

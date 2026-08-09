@@ -28,6 +28,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
@@ -119,7 +120,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     protected Parameters.Group.ParameterIn overclock, overvolt;
     protected Parameters.Group.ParameterOut maxCurrentTemp, availableData;
 
-    private QuantumDataPacket pendingPacket;
+    private @Nullable QuantumDataPacket pendingPacket;
 
     private static final INameFunction<MTEQuantumComputer> OC_NAME = (base,
         p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.0"); // Overclock ratio
