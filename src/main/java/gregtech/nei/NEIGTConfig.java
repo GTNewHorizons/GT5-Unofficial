@@ -8,6 +8,9 @@ import java.util.Map;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.google.common.collect.ImmutableListMultimap;
@@ -58,6 +61,7 @@ import gregtech.nei.dumper.TurbineRotorDumper;
 import gregtech.nei.dumper.VoidProtectionSupportDumper;
 import gregtech.nei.searchprovider.ChemicalFormulaFilter;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import ic2.core.item.ItemFluidCell;
 
 public class NEIGTConfig implements IConfigureNEI {
 
@@ -220,6 +224,18 @@ public class NEIGTConfig implements IConfigureNEI {
         BWOreAdapter.INSTANCE.hideOres();
         LoaderLegacyBartworksBlocks.hideSupersededSlots();
         hideEmptyLegacyCells();
+        hideFilledUniversalCells();
+    }
+
+    /// Hides the filled forms of IC2's universal fluid cell, whose `getSubItems` lists one filled cell per
+    /// registered fluid. GT uses none of them, so only the empty cell stays visible. The hidden stacks are
+    /// filled with [Integer#MAX_VALUE] to mirror how IC2 builds its subitem stacks.
+    private static void hideFilledUniversalCells() {
+        for (Fluid fluid : FluidRegistry.getRegisteredFluids()
+            .values()) {
+            if (fluid == null) continue;
+            API.hideItem(ItemFluidCell.getUniversalFluidCell(new FluidStack(fluid, Integer.MAX_VALUE)));
+        }
     }
 
     /// Hides [MetaGeneratedItem99] while it registers nothing. NEI fills its item panel by probing damage values
