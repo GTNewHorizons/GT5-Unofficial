@@ -1577,16 +1577,8 @@ public class RecipesGregTech {
             .addTo(GTRecipeConstants.Fuel);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(2, Ic2Items.lavaCell))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Lava, CellShapes.cell, 2))
             .metadata(FUEL_VALUE, 32)
-            .metadata(FUEL_TYPE, 2)
-            .duration(0)
-            .eut(0)
-            .addTo(GTRecipeConstants.Fuel);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(Ic2Items.pahoehoelavaCell.copy())
-            .metadata(FUEL_VALUE, 24)
             .metadata(FUEL_TYPE, 2)
             .duration(0)
             .eut(0)
