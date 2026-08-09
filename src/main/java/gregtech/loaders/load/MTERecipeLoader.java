@@ -1600,8 +1600,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.TensionResistantMachineCasing.get(1),
             BUFFERED,
             new Object[] { "PhP", "SFS", "PwP", 'P', MaterialsAlloy.INCONEL_690.getPlate(1), 'S',
-                Materials.HSSG.getPlates(1), 'F',
-                OrePrefixes.frameGt.get(Materials.Titanium) });
+                Materials.HSSG.getPlates(1), 'F', OrePrefixes.frameGt.get(Materials.Titanium) });
 
         // Forming Core
         GTModHandler.addCraftingRecipe(
