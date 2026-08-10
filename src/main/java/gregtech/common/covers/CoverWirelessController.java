@@ -13,6 +13,7 @@ import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.common.covers.conditions.RedstoneCondition;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverBase;
@@ -65,10 +66,17 @@ public class CoverWirelessController extends CoverAdvancedRedstoneReceiverBase {
 
     private void readLegacyData(int legacyData, boolean privateChannel) {
         setFrequency(Integer.toString(legacyData & LEGACY_FREQUENCY_MASK));
-        // The old private data has no recoverable owner UUID. Keep it isolated until the player rebinds it in the GUI.
-        setUuid(privateChannel ? UNBOUND_LEGACY_PRIVATE_UUID : null);
+        setUuid(privateChannel ? getTileOwnerUuid() : null);
         setMode(GateMode.SINGLE_SOURCE);
         state = State.ENABLE_WITH_SIGNAL;
+    }
+
+    private UUID getTileOwnerUuid() {
+        if (coveredTile.get() instanceof IGregTechTileEntity tile) {
+            UUID ownerUuid = tile.getOwnerUuid();
+            if (ownerUuid != null) return ownerUuid;
+        }
+        return UNBOUND_LEGACY_PRIVATE_UUID;
     }
 
     @Override

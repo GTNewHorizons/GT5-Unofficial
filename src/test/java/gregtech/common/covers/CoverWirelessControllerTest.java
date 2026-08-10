@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.reflect.Proxy;
 import java.util.UUID;
 
 import net.minecraft.nbt.NBTBase;
@@ -15,6 +16,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.junit.jupiter.api.Test;
 
 import gregtech.api.covers.CoverContext;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.covers.conditions.RedstoneCondition;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverBase.GateMode;
 
@@ -22,35 +24,51 @@ class CoverWirelessControllerTest {
 
     @Test
     void loadsLegacyIntegerData() {
-        CoverWirelessController cover = createCover();
+        UUID ownerUuid = UUID.fromString("c2b6fb14-a10f-4224-a733-d4c98599db24");
+        CoverWirelessController cover = createCover(ownerUuid);
 
         cover.readFromNbt(wrapData(new NBTTagInt(0xABCD002A)));
 
-        assertMigratedLegacyData(cover, "42", true);
-        assertCurrentDataFormat(cover, "42", true);
+        assertMigratedLegacyData(cover, "42", ownerUuid);
+        assertCurrentDataFormat(cover, "42", ownerUuid);
     }
 
     @Test
     void loadsLegacyPublicIntegerData() {
-        CoverWirelessController cover = createCover();
+        UUID ownerUuid = UUID.fromString("86144021-0f69-4727-84f9-d9151b8420e9");
+        CoverWirelessController cover = createCover(ownerUuid);
 
         cover.readFromNbt(wrapData(new NBTTagInt(0xFFFF)));
 
-        assertMigratedLegacyData(cover, "65535", false);
-        assertCurrentDataFormat(cover, "65535", false);
+        assertMigratedLegacyData(cover, "65535", null);
+        assertCurrentDataFormat(cover, "65535", null);
     }
 
     @Test
     void loadsLegacyCompoundData() {
-        CoverWirelessController cover = createCover();
+        UUID ownerUuid = UUID.fromString("096676a6-e02a-4b5f-b236-2fa80bb8c058");
+        CoverWirelessController cover = createCover(ownerUuid);
         NBTTagCompound legacyData = new NBTTagCompound();
         legacyData.setInteger("frequency", 1234);
         legacyData.setBoolean("privateChannel", true);
 
         cover.readFromNbt(wrapData(legacyData));
 
-        assertMigratedLegacyData(cover, "1234", true);
-        assertCurrentDataFormat(cover, "1234", true);
+        assertMigratedLegacyData(cover, "1234", ownerUuid);
+        assertCurrentDataFormat(cover, "1234", ownerUuid);
+    }
+
+    @Test
+    void keepsLegacyPrivateDataPrivateWithoutATileOwner() {
+        CoverWirelessController cover = createCover();
+
+        cover.readFromNbt(wrapData(new NBTTagInt(0x1002A)));
+
+        assertEquals("42", cover.getFrequency());
+        assertTrue(cover.getPrivacyState());
+        assertEquals(GateMode.SINGLE_SOURCE, cover.getGateMode());
+        assertEquals(RedstoneCondition.ENABLE_WITH_REDSTONE, cover.getRedstoneCondition());
+        assertCurrentDataFormat(cover, "42", cover.getUuid());
     }
 
     @Test
@@ -92,27 +110,34 @@ class CoverWirelessControllerTest {
         return new CoverWirelessController(new CoverContext(null, ForgeDirection.NORTH, null), null);
     }
 
+    private static CoverWirelessController createCover(UUID ownerUuid) {
+        IGregTechTileEntity tile = (IGregTechTileEntity) Proxy.newProxyInstance(
+            CoverWirelessControllerTest.class.getClassLoader(),
+            new Class<?>[] { IGregTechTileEntity.class },
+            (proxy, method, args) -> method.getName()
+                .equals("getOwnerUuid") ? ownerUuid : null);
+        return new CoverWirelessController(new CoverContext(null, ForgeDirection.NORTH, tile), null);
+    }
+
     private static NBTTagCompound wrapData(NBTBase data) {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setTag("d", data);
         return tag;
     }
 
-    private static void assertMigratedLegacyData(CoverWirelessController cover, String frequency,
-        boolean privateChannel) {
+    private static void assertMigratedLegacyData(CoverWirelessController cover, String frequency, UUID uuid) {
         assertEquals(frequency, cover.getFrequency());
-        assertEquals(privateChannel, cover.getPrivacyState());
+        assertEquals(uuid, cover.getUuid());
         assertEquals(GateMode.SINGLE_SOURCE, cover.getGateMode());
         assertEquals(RedstoneCondition.ENABLE_WITH_REDSTONE, cover.getRedstoneCondition());
         assertFalse(cover.isSafeMode());
     }
 
-    private static void assertCurrentDataFormat(CoverWirelessController cover, String frequency,
-        boolean privateChannel) {
+    private static void assertCurrentDataFormat(CoverWirelessController cover, String frequency, UUID uuid) {
         NBTTagCompound data = cover.writeToNBT(new NBTTagCompound())
             .getCompoundTag("d");
         assertEquals(frequency, data.getString("frequency"));
-        assertEquals(privateChannel, data.hasKey("uuid"));
+        assertEquals(uuid == null ? "" : uuid.toString(), data.getString("uuid"));
         assertEquals(GateMode.SINGLE_SOURCE.ordinal(), data.getByte("mode"));
         assertEquals(0, data.getByte("state"));
     }
