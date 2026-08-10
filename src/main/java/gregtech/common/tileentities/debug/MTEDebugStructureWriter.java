@@ -6,8 +6,8 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -278,7 +278,7 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock {
                 return;
             }
 
-            EntityPlayerSP p = mc.thePlayer;
+            EntityLivingBase p = mc.renderViewEntity;
             double doubleX = p.lastTickPosX + (p.posX - p.lastTickPosX) * event.partialTicks;
             double doubleY = p.lastTickPosY + (p.posY - p.lastTickPosY) * event.partialTicks;
             double doubleZ = p.lastTickPosZ + (p.posZ - p.lastTickPosZ) * event.partialTicks;
