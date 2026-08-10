@@ -1,5 +1,7 @@
 package goodgenerator.api.recipe;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -53,8 +55,8 @@ public class AntimatterForgeFrontend extends RecipeMapFrontend {
                             .setShadow(true)
                             .setAlignment(NEIClientUtils.Alignment.TopRight));
                 } else {
-                    String consumptionExponent = String
-                        .format("%.2f", AntimatterForge.getFluidConsumptionExponents()[inputIndex - 1]);
+                    String consumptionExponent = formatNumber(
+                        AntimatterForge.getFluidConsumptionExponents()[inputIndex - 1]);
                     fixed.setCustomBadge(
                         new Badge(
                             consumptionExponent,
