@@ -14,7 +14,8 @@ public class AugmentBuilder extends ArmorPartBuilder<AugmentBuilder> {
         Protection,
         Movement,
         Utility,
-        Prismatic
+        Prismatic;
+        public static final AugmentCategory[] VALUES = values();
     }
 
     private AugmentCategory category = AugmentCategory.Protection;
