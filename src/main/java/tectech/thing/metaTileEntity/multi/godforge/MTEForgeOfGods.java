@@ -450,8 +450,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                         if (allowModuleConnection(module, data)) {
                             module.connect();
                             calculateMaxHeatForModules(module, data);
-                            calculateSpeedBonusForModules(module, data);
+                            // parallel depend on heat
                             calculateMaxParallelForModules(module, data);
+                            // speed bonus depend on max parallel and heat
+                            calculateSpeedBonusForModules(module, data);
                             calculateEnergyDiscountForModules(module, data);
                             setMiscModuleParameters(module, data);
                             queryMilestoneStats(module, data);
