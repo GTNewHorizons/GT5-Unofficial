@@ -108,6 +108,17 @@ public class MTEDiode extends MTEBasicHull {
         super.loadNBTData(aNBT);
     }
 
+    // Diodes only pass energy, the tank inherited from the hull has no use here.
+    @Override
+    public int getCapacity() {
+        return 0;
+    }
+
+    @Override
+    public boolean canTankBeFilled() {
+        return false;
+    }
+
     @Override
     public long maxAmperesOut() {
         return this.aAmps;
