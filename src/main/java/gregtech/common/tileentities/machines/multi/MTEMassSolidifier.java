@@ -244,7 +244,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
         glassTier = -1;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-            if (mEnergyHatch.mTier > glassTier) {
+            if (mEnergyHatch.getTierForStructure() > glassTier) {
                 errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
                 break;
             }

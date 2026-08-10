@@ -71,6 +71,11 @@ public class ConfigHandler {
         @Config.RequiresMcRestart
         public EOHNumberFormat EOH_NOTATION = EOHNumberFormat.Scientific;
 
+        @Config.Comment({ "Eye of Harmony planet rendering cache size." })
+        @Config.DefaultInt(128)
+        @Config.RangeInt(min = 1, max = 1024)
+        public int EOH_ORBIT_MESH_CACHE_SIZE;
+
         public enum EOHNumberFormat {
             Numerical,
             Scientific,
