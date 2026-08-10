@@ -19,6 +19,7 @@ import micdoodle8.mods.galacticraft.core.util.Annotations;
 public class TileEntitySpaceElevatorCable extends TileEntityAdvanced {
 
     public enum ClimberAnimation {
+
         /** Let the climber sit on its spot */
         NO_ANIMATION,
         /** Animation that drives the climber into orbit, pauses a bit and then drives down */
