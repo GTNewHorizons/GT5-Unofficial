@@ -17,6 +17,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.Contract;
 
+import com.LazyFlesh.variablehorizons.variants.VariantNames;
+
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
@@ -752,6 +754,25 @@ public class GTRecipeBuilder {
 
     public GTRecipeBuilder requiresLowGravity() {
         return metadata(GTRecipeConstants.LOW_GRAVITY, true);
+    }
+
+    /**
+     * Specifies whether a variant modifies this recipe. If any of the listed variants are loaded, all the operations
+     * for this builder will be ignored. If Variable Horizons is not loaded, this does nothing.
+     *
+     * @param variantNames Variant(s) modifying this recipe.
+     */
+    public GTRecipeBuilder modifiedByVariant(String... variantNames) {
+        if (!Mods.VariableHorizons.isModLoaded()) {
+            return this;
+        }
+        for (final String name : variantNames) {
+            if (VariantNames.activeContains(name)) {
+                skip = true;
+                return this;
+            }
+        }
+        return this;
     }
 
     // endregion
