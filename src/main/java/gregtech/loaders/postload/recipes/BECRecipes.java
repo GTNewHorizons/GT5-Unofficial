@@ -59,7 +59,8 @@ public class BECRecipes implements Runnable {
     private static final Materials[] TIER_MATS = { Materials.Netherite, Materials.ProtoHalkonite,
         Materials.SixPhasedCopper, Materials.TranscendentMetal, Materials.Mellion, Materials.Creon, Materials.SpaceTime,
         Materials.Hexanite, Materials.Eternity };
-    private static final int[] EOH_TIMES = { 10_000_000, 20_000_000, 30_000_000, 40_000_000, 100_000, 120_000, 140_000, 160_000, 180_000 };
+    private static final int[] EOH_TIMES = { 10_000_000, 20_000_000, 30_000_000, 40_000_000, 100_000, 120_000, 140_000,
+        160_000, 180_000 };
 
     @Override
     public void run() {
