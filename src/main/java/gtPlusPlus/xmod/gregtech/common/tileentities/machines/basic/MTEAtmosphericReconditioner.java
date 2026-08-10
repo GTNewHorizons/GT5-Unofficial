@@ -8,6 +8,7 @@ import java.util.Arrays;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -40,6 +41,7 @@ import gregtech.common.gui.modularui.hatch.MTEAtmosphericReconditionerGui;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.item.general.ItemBasicScrubberTurbine;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -459,7 +461,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 return false;
             }
         } catch (Exception t) {
-            t.printStackTrace();
+            GTplusplus.logger.error(t);
         }
         return false;
     }
@@ -762,7 +764,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
         GTUtility.sendChatTrans(
             entityPlayer,
             "gtpp.chat.atmospheric_reconditioner.efficiency",
-            GTUtility.translate(
+            StatCollector.translateToLocal(
                 mSaveRotor ? "gtpp.chat.atmospheric_reconditioner.efficiency.low"
                     : "gtpp.chat.atmospheric_reconditioner.efficiency.high"));
         return true;

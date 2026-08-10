@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gtnhlanth.Tags;
+import gregtech.api.enums.Mods;
 
 public class BlockCasing extends Block {
 
@@ -23,14 +23,14 @@ public class BlockCasing extends Block {
     public BlockCasing(String name) {
         super(Material.iron);
         this.name = name;
-        this.setBlockTextureName(Tags.MODID + ":casing." + name);
+        this.setBlockTextureName(Mods.ModIDs.G_T_N_H_LANTHANIDES + ":casing." + name);
         GregTechAPI.registerMachineBlock(this, -1);
     }
 
     public BlockCasing(String name, Material material) {
         super(material);
         this.name = name;
-        this.setBlockTextureName(Tags.MODID + ":casing." + name);
+        this.setBlockTextureName(Mods.ModIDs.G_T_N_H_LANTHANIDES + ":casing." + name);
         GregTechAPI.registerMachineBlock(this, -1);
     }
 

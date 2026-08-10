@@ -6,7 +6,6 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -79,6 +78,7 @@ import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputBusMEGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -99,7 +99,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     protected int autoPullRefreshTime = 100;
     protected boolean additionalConnection = false;
     protected boolean justHadNewItems = false;
-    private final List<IHatchWatcher> watchers = new ArrayList<>();
     /**
      * The cached activity for this bus. Only valid while processing a recipe. This avoids several expensive operations.
      */
@@ -163,9 +162,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
         AENetworkProxy proxy = getProxy();
 
-        if (!proxy.isActive()) return false;
-
-        return true;
+        return proxy.isActive();
     }
 
     @Override
@@ -603,6 +600,11 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     @Override
     public void removeWatcher(IHatchWatcher watcher) {
         watchers.remove(watcher);
+    }
+
+    @Override
+    public boolean needsPeriodicChecks() {
+        return !MachineStats.machines.useStackWatcher;
     }
 
     @Override
@@ -1092,9 +1094,11 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     private void configureWatchers() {
         if (this.watcher != null) {
             this.watcher.clear();
-            for (Slot slot : slots) {
-                if (slot != null && slot.config != null) {
-                    watcher.add(AEItemStack.create(slot.config));
+            if (MachineStats.machines.useStackWatcher) {
+                for (Slot slot : slots) {
+                    if (slot != null && slot.config != null) {
+                        watcher.add(AEItemStack.create(slot.config));
+                    }
                 }
             }
             scheduleRecipeCheck(RecipeCheckReason.THROTTLED);

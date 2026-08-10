@@ -160,7 +160,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
                     + EnumChatFormatting.GRAY
                     + " to hold fluids and molds in the same hatch")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
-            .beginStructureBlock(9, 5, 6, false)
+            .beginStructureBlock(5, 6, 9, false)
             .addController("Front bottom center")
             .addCasing(MIN_CASINGS + "-73", "Solidifier Casing", false)
             .addCasing("42", "Any Tiered Glass", true)
@@ -244,7 +244,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
         glassTier = -1;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-            if (mEnergyHatch.mTier > glassTier) {
+            if (mEnergyHatch.getTierForStructure() > glassTier) {
                 errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
                 break;
             }
@@ -346,11 +346,6 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

@@ -2715,6 +2715,7 @@ public enum ItemList implements IItemContainer {
     Casing_Pyrolyse,
     NameRemover,
     Hatch_Nanite,
+    Hatch_Nanite_Singularity,
     Hatch_Catalyst_Bulk,
     Machine_Multi_AirFilterT1,
     Machine_Multi_AirFilterT2,
@@ -2867,10 +2868,13 @@ public enum ItemList implements IItemContainer {
     Augment_StepAssist,
     Augment_GogglesOfRevealing,
     Augment_InertiaCanceling,
+    Augment_EldritchStriders,
     Augment_OmniMovement,
+    Augment_ArchmageStriders,
     Augment_Hazmat,
     Augment_Apiarist,
     Augment_SwimSpeed,
+    Augment_ApprenticeStriders,
     Augment_KnockbackResistance,
     Augment_SpeedBoost,
     Augment_JumpBoost,
@@ -2880,7 +2884,6 @@ public enum ItemList implements IItemContainer {
     Augment_WaterBreathing,
     Augment_MilkInfusion,
     Augment_HoloInventory,
-    Augment_Travelers,
     Augment_Terrasteel,
 
     CompressedOutputBusLuV,
@@ -3400,7 +3403,7 @@ public enum ItemList implements IItemContainer {
                 tWord.substring(1)
                     .toLowerCase(Locale.US));
         }
-        if (tCamelCasedDisplayNameBuilder.length() == 0) {
+        if (tCamelCasedDisplayNameBuilder.isEmpty()) {
             // CamelCased DisplayName is empty, so use hash of aDisplayName
             tCamelCasedDisplayNameBuilder.append(((Long) (long) aDisplayName.hashCode()));
         }

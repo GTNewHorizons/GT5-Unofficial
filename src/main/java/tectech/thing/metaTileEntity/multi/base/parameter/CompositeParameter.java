@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +20,6 @@ import com.cleanroommc.modularui.value.sync.SyncHandler;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.WidgetConfigurator;
 import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
 import gregtech.common.gui.modularui.widget.settings.SettingsPanelBuilder;
@@ -113,7 +113,7 @@ public class CompositeParameter extends Parameter<@UnmodifiableView List<Paramet
                     t -> t.addStringLines(
                         parameter.getValue()
                             .stream()
-                            .map(p -> GTUtility.translate(p.getLangKey(), p.getLangArgs()))
+                            .map(p -> StatCollector.translateToLocalFormatted(p.getLangKey(), p.getLangArgs()))
                             .collect(Collectors.toList())));
         };
     }

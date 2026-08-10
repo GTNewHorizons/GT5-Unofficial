@@ -151,9 +151,10 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         final Dyes color = getDye(stack);
 
         if (color == Dyes.MACHINE_METAL) {
-            return GTUtility.translate("item.GT5U.infinite_spray_can.name.solvent", lBracket, rBracket);
+            return StatCollector
+                .translateToLocalFormatted("item.GT5U.infinite_spray_can.name.solvent", lBracket, rBracket);
         } else {
-            return GTUtility.translate(
+            return StatCollector.translateToLocalFormatted(
                 "item.GT5U.infinite_spray_can.name.colored",
                 lBracket,
                 color.getLocalizedDyeName(),

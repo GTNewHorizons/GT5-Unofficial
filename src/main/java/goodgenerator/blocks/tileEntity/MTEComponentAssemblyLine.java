@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -227,7 +228,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             .addInfo(EnumChatFormatting.ITALIC + "Much more efficient than other competing brands!")
             .addSupportAny()
             .addUnlimitedTierSkips()
-            .beginStructureBlock(33, 9, 10, true)
+            .beginStructureBlock(9, 10, 33, true)
             .addController("Front center, 8th layer")
             .addCasing("516-646", "Advanced Iridium Plated Machine Casing", false)
             .addCasing("280", "UV+ Tiered Glass", false)
@@ -264,7 +265,8 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         System.arraycopy(origin, 0, ret, 0, origin.length);
         ret[origin.length] = IGregTechDeviceInformation.encode(
             "scanner.info.CASS.tier",
-            casingTier >= 0 ? GTValues.VN[casingTier + 1] : GTUtility.translate("scanner.info.CASS.tier.none"));
+            casingTier >= 0 ? GTValues.VN[casingTier + 1]
+                : StatCollector.translateToLocal("scanner.info.CASS.tier.none"));
         return ret;
     }
 

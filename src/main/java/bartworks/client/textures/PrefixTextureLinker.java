@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import bartworks.MainMod;
 import bartworks.system.material.Werkstoff;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -52,7 +53,7 @@ public class PrefixTextureLinker implements Runnable {
                                         .substring(4),
                                     "/" + prefixes.getName()));
                         } catch (IllegalAccessException e) {
-                            e.printStackTrace();
+                            MainMod.LOGGER.error(e);
                         }
                     });
                 texMapBlocks.put(prefixes, curr);
@@ -79,7 +80,7 @@ public class PrefixTextureLinker implements Runnable {
                                         .substring(4),
                                     "/" + prefixes.getName()));
                         } catch (IllegalAccessException e) {
-                            e.printStackTrace();
+                            MainMod.LOGGER.error(e);
                         }
                     });
                 texMap.put(prefixes, curr);

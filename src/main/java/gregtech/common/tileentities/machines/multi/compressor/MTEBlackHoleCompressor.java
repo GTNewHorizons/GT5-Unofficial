@@ -315,10 +315,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         IIconContainer MAIN_OVERLAY;
         IIconContainer GLOW_OVERLAY;
         switch (blackHoleStatus) {
-            default -> {
-                MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE;
-                GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_GLOW;
-            }
             case 2, 4 -> {
                 MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE;
                 GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE_GLOW;
@@ -326,6 +322,10 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             case 3 -> {
                 MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_UNSTABLE;
                 GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_UNSTABLE_GLOW;
+            }
+            default -> {
+                MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE;
+                GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_GLOW;
             }
         }
 
@@ -418,7 +418,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 EnumChatFormatting.RED
                     + "Recipe tier is limited to hatch tier + 1. Will not perform overclocks above the hatch tier")
             .addInfo(EnumChatFormatting.RED + "Limited to one energy hatch if using a Multi-Amp or Laser hatch")
-            .beginStructureBlock(35, 33, 35, true)
+            .beginStructureBlock(33, 35, 35, true)
             .addController("Middle of structure, 6th layer")
             .addCasing("3667-3671", "Extreme Density Space-Bending Casing", false)
             .addCasing("950-985", "Background Radiation Absorbent Casing", false)
@@ -663,8 +663,16 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     private int collapseTimer = -1;
 
     @Override
+    public boolean needsClientTick() {
+        return true;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
+
+        // Do not run black hole logic during startup where recipe do not progress
+        if (mStartUpCheck >= 0) return;
 
         if (collapseTimer != -1) {
             if (collapseTimer == 0) {
@@ -680,11 +688,19 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         }
 
         // Run stability checks once per second if a black hole is open
-        if (blackHoleStatus == 1 || aTick % 20 != 0) return;
+        if (blackHoleStatus == 1) return;
 
         // Update all the utility hatches
+        // Redstone pulse will be 5 ticks (0.25s)
+        if (aTick % 20 == 5) {
+            for (MTEBlackHoleUtility hatch : utilityHatches) {
+                hatch.cycleMiddle();
+            }
+        }
+
+        if (aTick % 20 != 0) return;
         for (MTEBlackHoleUtility hatch : utilityHatches) {
-            hatch.updateRedstoneOutput(true);
+            hatch.cycleStart();
         }
 
         // Black hole is superstable, just do rendering, no need for decay or drain logic
@@ -748,7 +764,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
         collapseTimer = 40;
         for (MTEBlackHoleUtility hatch : utilityHatches) {
-            hatch.updateRedstoneOutput(false);
+            hatch.blackHoleClosed();
         }
     }
 

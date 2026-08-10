@@ -12,6 +12,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.MetaTileEntityIDs.HATCH_NANITE_SINGULARITY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
@@ -729,7 +730,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 + (mCoolingTower == null ? ""
                     : " Cooling Tower Tier " + EnumChatFormatting.GOLD + (mCoolingTower.isTier1 ? "1" : "2"))
                 + (mBioChamber == null && mCoolingTower == null ? EnumChatFormatting.RED + "None" : ""),
-            /* 8 */ GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
+            /* 8 */ StatCollector
+                .translateToLocalFormatted("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
     @Override
@@ -769,7 +771,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             .addInfo("Trace size can be changed to modify the material usage and machine speed")
             .addInfo("Configure Trace Size in UI")
             .addSupportAny()
-            .beginStructureBlock(7, 7, 6, true)
+            .beginStructureBlock(7, 6, 7, true)
             .addController("Front bottom center")
             .addEnergyHatch("1-2", "Any lower back casing", 1)
             .addMaintenanceHatch("1", "Any lower back casing", 1)
@@ -901,6 +903,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity == null) return false;
             if (aMetaTileEntity instanceof MTEHatchInput) {
+                addIfSmartInput(aMetaTileEntity);
                 ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
                 ((MTEHatchInput) aMetaTileEntity).mRecipeMap = null;
                 compatMode.coolantHatch = (MTEHatchInput) aMetaTileEntity;
@@ -919,6 +922,11 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (tileEntity == null) return false;
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
         if (metaTileEntity instanceof MTEHatchNanite naniteBus) {
+            if (naniteBus.getBaseMetaTileEntity()
+                .getMetaTileID() == HATCH_NANITE_SINGULARITY.ID) {
+                return false;
+            }
+            addIfSmartInput(naniteBus);
             naniteBus.updateTexture(baseCasingIndex);
             this.naniteBuses.add(naniteBus);
             return true;

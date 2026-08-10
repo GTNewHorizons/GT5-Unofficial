@@ -6,7 +6,6 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH_ACTIVE;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -81,6 +80,7 @@ import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputMEGui;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -108,7 +108,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     private int autoPullRefreshTime = 100;
     protected boolean processingRecipe = false;
     private boolean justHadNewFluids = false;
-    private final List<IHatchWatcher> watchers = new ArrayList<>();
     /**
      * The cached activity for this hatch. Only valid while processing a recipe. This avoids several
      * operations.
@@ -172,9 +171,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         if (igte == null || !igte.isAllowedToWork()) return false;
 
         this.proxyCheckup();
-        if (!getProxy().isActive()) return false;
-
-        return true;
+        return getProxy().isActive();
     }
 
     @Override
@@ -355,6 +352,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     @Override
+    public boolean needsPeriodicChecks() {
+        return !MachineStats.machines.useStackWatcher;
+    }
+
+    @Override
     public FluidStack drain(ForgeDirection side, FluidStack fluid, boolean doDrain) {
         return drain(side, fluid, fluid == null ? 0 : fluid.amount, doDrain);
     }
@@ -383,6 +385,9 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             // Outside of processing a recipe, we need to extract everything manually
             Slot slot = getMatchingSlot(fluid, false);
             if (slot == null) return null;
+            // AE can't use 0 for exist check, just assume exist
+            // Other hatch also don't have existence check
+            if (amount == 0) return new FluidStack(fluid, 0);
 
             IAEFluidStack request = AEFluidStack.create(fluid);
             request.setStackSize(amount);
@@ -1056,9 +1061,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     private void configureWatchers() {
         if (this.watcher != null) {
             this.watcher.clear();
-            for (Slot slot : slots) {
-                if (slot != null && slot.config != null) {
-                    watcher.add(AEFluidStack.create(slot.config));
+            if (MachineStats.machines.useStackWatcher) {
+                for (Slot slot : slots) {
+                    if (slot != null && slot.config != null) {
+                        watcher.add(AEFluidStack.create(slot.config));
+                    }
                 }
             }
             scheduleRecipeCheck(RecipeCheckReason.THROTTLED);

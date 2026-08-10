@@ -70,13 +70,12 @@ public class GTCLSCompat {
             }
             if (nextBakingMsgAt < now) {
                 nextBakingMsgAt = now + bakingMsgEvery;
-                GTMod.GT_FML_LOGGER
-                    .info(String.format("%s - Baking: %d%%", materialsType, currentStep * 100 / sizeStep));
+                GTMod.GT_FML_LOGGER.info("{} - Baking: {}%", materialsType, currentStep * 100 / sizeStep);
             }
             action.accept(m);
             currentStep += 1;
         }
-        GTMod.GT_FML_LOGGER.info(String.format("%s - Baking: Done", materialsType));
+        GTMod.GT_FML_LOGGER.info("{} - Baking: Done", materialsType);
         try {
             progressBarStep.set(progressBar, currentStep);
         } catch (IllegalAccessException iae) {
@@ -112,7 +111,7 @@ public class GTCLSCompat {
         MinecraftDisplayer.isReplacingVanillaMaterials = false;
         try {
             ProgressDisplayer.displayProgress(
-                StatCollector.translateToLocal("gt.loading.progress.post-init.loading-gt"),
+                StatCollector.translateToLocal("gt.loading.progress.post_init.loading_gt"),
                 MinecraftDisplayer.getLastPercent());
         } catch (IOException e) {
             GTMod.GT_FML_LOGGER.error("Exception caught when updating loading screen", e);

@@ -152,13 +152,19 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
+    public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.COKE_OVEN;
     }
 
     @Override
     protected @NotNull MTECokeOvenGui getGui() {
         return new MTECokeOvenGui(this);
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        hatches.clear();
     }
 
     @Override
@@ -302,11 +308,11 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
 
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
-        if (baseMetaTileEntity.isClientSide()) onPostTickClient(baseMetaTileEntity, tick);
         if (baseMetaTileEntity.isServerSide()) onPostTickServer(baseMetaTileEntity, tick);
     }
 
-    private void onPostTickClient(IGregTechTileEntity baseMetaTileEntity, long tick) {
+    @Override
+    public void onClientSoundStateChanged() {
         doActivitySound(SoundResource.GTCEU_LOOP_FURNACE);
     }
 
@@ -488,7 +494,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
         if (tileEntity == null) return false;
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
         if (metaTileEntity == null) return false;
-        if (metaTileEntity instanceof MTEHatchCokeOven hatch) {
+        if (metaTileEntity instanceof MTEHatchCokeOven hatch && !hatches.contains(hatch)) {
             hatch.addController(this);
             return hatches.add(hatch);
         }

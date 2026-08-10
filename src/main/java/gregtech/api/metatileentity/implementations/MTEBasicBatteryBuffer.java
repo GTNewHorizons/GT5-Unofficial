@@ -186,7 +186,7 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3 || forceCharge();;
+            mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3 || forceCharge();
             mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3 && !forceCharge();
             mBatteryCount = 0;
             mChargeableCount = 0;

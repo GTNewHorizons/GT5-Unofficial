@@ -846,7 +846,7 @@ public final class RecipeMaps {
         .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
         .neiHandlerInfo(
             builder -> builder.setShiftY(8)
-                .setHeight(156))
+                .setHeight(166))
         .frontend(LargeNEIFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> transcendentPlasmaMixerRecipes = RecipeMapBuilder
@@ -1843,6 +1843,7 @@ public final class RecipeMaps {
                 .validateOutputCount(1, 1)
                 .validateOutputFluidCount(-1, 0)
                 .validateInputFluidCount(1, 4)
+                .ignoreCollision()
                 .buildWithAlt();
             // noinspection SimplifyOptionalCallChains
             if (!rr.isPresent()) return Collections.emptyList();
@@ -1869,7 +1870,7 @@ public final class RecipeMaps {
                 .map(
                     val -> Arrays.stream(val)
                         .collect(Collectors.toList()))
-                .collect(Collectors.toList());
+                .toList();
             slots.stream()
                 .reduce(
                     Stream.of(new ArrayList<ItemStack>()),

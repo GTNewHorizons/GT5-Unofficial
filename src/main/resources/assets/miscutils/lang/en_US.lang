@@ -60,7 +60,9 @@ GTPP.machines.chisel_slot.tooltip=Target Slot
 GTPP.machines.chisel_slot.tooltip.1=§7Put chiseled item to specify output
 GTPP.core.GT_Tooltip=Added by: %s §7- §c[GT++]
 GTPP.core.GT_Tooltip_Builder=%s §7- §c[GT++]
-GTPP.core.GT_Tooltip_Radioactive=§7Warning: §aRadioactive! §6 Avoid direct handling without hazmat protection. | Level: %s
+GTPP.core.GT_Tooltip_Radioactive=§7Warning: §aRadioactive!
+GTPP.core.GT_Tooltip_Toxic=§7Warning: §2Toxic!
+GTPP.core.GT_Tooltip_HazmatWarning=§6Avoid direct handling without hazmat protection.
 
 # Thermal Foundation Stuff
 item.MiscUtils.bucket.bucketPyrotheum.name=Blazing Pyrotheum Bucket
@@ -158,34 +160,34 @@ miscutils.blockcasings.name=Machine Casing
 MU-metatool.01.name=Hand Pump
 
 # Fuel Blocks
-tile.blockCactusCharcoal.name=Cactus Charcoal
-tile.blockCactusCharcoal.0.name=Cactus Charcoal
-tile.blockCactusCharcoal.1.name=Compressed Cactus Charcoal
-tile.blockCactusCharcoal.2.name=Double Compressed Cactus Charcoal
-tile.blockCactusCharcoal.3.name=Triple Compressed Cactus Charcoal
-tile.blockCactusCharcoal.4.name=Quadruple Compressed Cactus Charcoal
-tile.blockCactusCharcoal.5.name=Quintuple Compressed Cactus Charcoal
-tile.blockCactusCoke.name=Cactus Coke
-tile.blockCactusCoke.0.name=Cactus Coke
-tile.blockCactusCoke.1.name=Compressed Cactus Coke
-tile.blockCactusCoke.2.name=Double Compressed Cactus Coke
-tile.blockCactusCoke.3.name=Triple Compressed Cactus Coke
-tile.blockCactusCoke.4.name=Quadruple Compressed Cactus Coke
-tile.blockCactusCoke.5.name=Quintuple Compressed Cactus Coke
-tile.blockSugarCharcoal.name=Sugar Charcoal
-tile.blockSugarCharcoal.0.name=Sugar Charcoal
-tile.blockSugarCharcoal.1.name=Compressed Sugar Charcoal
-tile.blockSugarCharcoal.2.name=Double Compressed Sugar Charcoal
-tile.blockSugarCharcoal.3.name=Triple Compressed Sugar Charcoal
-tile.blockSugarCharcoal.4.name=Quadruple Compressed Sugar Charcoal
-tile.blockSugarCharcoal.5.name=Quintuple Compressed Sugar Charcoal
-tile.blockSugarCoke.name=Sugar Coke
-tile.blockSugarCoke.0.name=Sugar Coke
-tile.blockSugarCoke.1.name=Compressed Sugar Coke
-tile.blockSugarCoke.2.name=Double Compressed Sugar Coke
-tile.blockSugarCoke.3.name=Triple Compressed Sugar Coke
-tile.blockSugarCoke.4.name=Quadruple Compressed Sugar Coke
-tile.blockSugarCoke.5.name=Quintuple Compressed Sugar Coke
+tile.blockCactusCharcoal.name=Block of Cactus Charcoal
+tile.blockCactusCharcoal.0.name=Block of Cactus Charcoal
+tile.blockCactusCharcoal.1.name=Block of Compressed Cactus Charcoal
+tile.blockCactusCharcoal.2.name=Block of Double Compressed Cactus Charcoal
+tile.blockCactusCharcoal.3.name=Block of Triple Compressed Cactus Charcoal
+tile.blockCactusCharcoal.4.name=Block of Quadruple Compressed Cactus Charcoal
+tile.blockCactusCharcoal.5.name=Block of Quintuple Compressed Cactus Charcoal
+tile.blockCactusCoke.name=Block of Cactus Coke
+tile.blockCactusCoke.0.name=Block of Cactus Coke
+tile.blockCactusCoke.1.name=Block of Compressed Cactus Coke
+tile.blockCactusCoke.2.name=Block of Double Compressed Cactus Coke
+tile.blockCactusCoke.3.name=Block of Triple Compressed Cactus Coke
+tile.blockCactusCoke.4.name=Block of Quadruple Compressed Cactus Coke
+tile.blockCactusCoke.5.name=Block of Quintuple Compressed Cactus Coke
+tile.blockSugarCharcoal.name=Block of Sugar Charcoal
+tile.blockSugarCharcoal.0.name=Block of Sugar Charcoal
+tile.blockSugarCharcoal.1.name=Block of Compressed Sugar Charcoal
+tile.blockSugarCharcoal.2.name=Block of Double Compressed Sugar Charcoal
+tile.blockSugarCharcoal.3.name=Block of Triple Compressed Sugar Charcoal
+tile.blockSugarCharcoal.4.name=Block of Quadruple Compressed Sugar Charcoal
+tile.blockSugarCharcoal.5.name=Block of Quintuple Compressed Sugar Charcoal
+tile.blockSugarCoke.name=Block of Sugar Coke
+tile.blockSugarCoke.0.name=Block of Sugar Coke
+tile.blockSugarCoke.1.name=Block of Compressed Sugar Coke
+tile.blockSugarCoke.2.name=Block of Double Compressed Sugar Coke
+tile.blockSugarCoke.3.name=Block of Triple Compressed Sugar Coke
+tile.blockSugarCoke.4.name=Block of Quadruple Compressed Sugar Coke
+tile.blockSugarCoke.5.name=Block of Quintuple Compressed Sugar Coke
 
 
 # GT++ Items
@@ -3817,7 +3819,7 @@ item.BasicGenericChemItem.14.name=Solid-Acid Catalyst
 item.BasicGenericChemItem.15.name=Infinite Mutation Catalyst
 
 # Added 23/10/22
-miscutils.machines.QFTFluidMode=Quantum Force Transformer Fluid Output Mode
+miscutils.machines.QFTFluidMode=Quantum Force Transformer Fluid Output Mode: %s
 
 # Added 16/11/22
 item.BasicGenericChemItem.16.name=Platinum Group Catalyst

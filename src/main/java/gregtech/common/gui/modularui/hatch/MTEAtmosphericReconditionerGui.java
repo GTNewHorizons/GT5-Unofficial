@@ -3,6 +3,8 @@ package gregtech.common.gui.modularui.hatch;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
@@ -16,7 +18,6 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEAtmosphericReconditioner;
 
@@ -40,7 +41,7 @@ public class MTEAtmosphericReconditionerGui extends MTEBasicMachineBaseGui<MTEAt
                 .tooltipAutoUpdate(true)
                 .tooltipDynamic(
                     t -> t.addLine(
-                        GTUtility.translate(
+                        StatCollector.translateToLocalFormatted(
                             "gtpp.gui.atmospheric_reconditioner.tooltip.reduction",
                             formatNumber(reductionSyncer.getIntValue())))));
     }
@@ -67,22 +68,22 @@ public class MTEAtmosphericReconditionerGui extends MTEBasicMachineBaseGui<MTEAt
                 .tooltip(
                     0,
                     t -> t.addLine(
-                        GTUtility.translate(
+                        StatCollector.translateToLocalFormatted(
                             "gtpp.chat.atmospheric_reconditioner.efficiency",
-                            GTUtility.translate("gtpp.chat.atmospheric_reconditioner.efficiency.low"))))
+                            StatCollector.translateToLocal("gtpp.chat.atmospheric_reconditioner.efficiency.low"))))
                 .tooltip(
                     1,
                     t -> t.addLine(
-                        GTUtility.translate(
+                        StatCollector.translateToLocalFormatted(
                             "gtpp.chat.atmospheric_reconditioner.efficiency",
-                            GTUtility.translate("gtpp.chat.atmospheric_reconditioner.efficiency.high")))));
+                            StatCollector.translateToLocal("gtpp.chat.atmospheric_reconditioner.efficiency.high")))));
     }
 
     @Override
     protected ItemSlot createSpecialSlot() {
         return super.createSpecialSlot().tooltip(
             t -> t.clearText()
-                .addLine(GTUtility.translate("gtpp.gui.atmospheric_reconditioner.slot.conveyor"))
-                .addLine(GTUtility.translate("gtpp.gui.atmospheric_reconditioner.slot.conveyor.1")));
+                .addLine(StatCollector.translateToLocal("gtpp.gui.atmospheric_reconditioner.slot.conveyor"))
+                .addLine(StatCollector.translateToLocal("gtpp.gui.atmospheric_reconditioner.slot.conveyor.1")));
     }
 }

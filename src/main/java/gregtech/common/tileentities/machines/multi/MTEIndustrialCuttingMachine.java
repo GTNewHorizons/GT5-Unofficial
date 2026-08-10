@@ -26,6 +26,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -124,11 +125,11 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
         public static String buildSawbladeTooltip(SawbladeTiers sawblade) {
             String hatchTierLimit = sawblade.maxAllowedEnergyHatchTier == Integer.MAX_VALUE
-                ? GTUtility.translate("gt.sawblade.tooltip.hatch_tier_unlimited")
-                : GTUtility.translate(
+                ? StatCollector.translateToLocal("gt.sawblade.tooltip.hatch_tier_unlimited")
+                : StatCollector.translateToLocalFormatted(
                     "gt.sawblade.tooltip.hatch_tier_limit",
                     GTUtility.getColoredTierNameFromTier((byte) sawblade.maxAllowedEnergyHatchTier));
-            String tooltip = GTUtility.translate(
+            String tooltip = StatCollector.translateToLocalFormatted(
                 "gt.sawblade.tooltip.base",
                 hatchTierLimit,
                 sawblade.parallelPerVoltageTier,
@@ -136,7 +137,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
                 Math.round(sawblade.euModifier * 100));
 
             if (sawblade.supportsExotic) {
-                tooltip = tooltip + "\\n" + GTUtility.translate("gt.sawblade.tooltip.exotic");
+                tooltip = tooltip + "\\n" + StatCollector.translateToLocal("gt.sawblade.tooltip.exotic");
             }
 
             return tooltip;
@@ -176,7 +177,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
                     + ", one multi-amp hatch is allowed")
             .addInfo("Use screwdriver to disable sawblade rendering")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 9, 4, false)
+            .beginStructureBlock(9, 4, 3, false)
             .addController("Front left, 2nd layer")
             .addCasing("10-29", "Cutting Factory Frame", false)
             .addCasing("18", "Tantalum Carbide Frame Box", false)
@@ -349,10 +350,9 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
     private boolean canSawbladeAcceptEnergyHatches(SawbladeTiers sawbladeTier) {
         if (!mExoticEnergyHatches.isEmpty()) return sawbladeTier.supportsExotic;
-        if (sawbladeTier.maxAllowedEnergyHatchTier == Integer.MAX_VALUE) return true;
 
         for (MTEHatchEnergy hatch : mEnergyHatches) {
-            if (hatch.mTier > sawbladeTier.maxAllowedEnergyHatchTier) return false;
+            if (hatch.getTierForStructure() > sawbladeTier.maxAllowedEnergyHatchTier) return false;
         }
         return true;
     }
@@ -368,17 +368,17 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     public boolean supportsVoidProtection() {
         return true;
     }
 
     @Override
     public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
+    public boolean needsClientTick() {
         return true;
     }
 
@@ -501,7 +501,11 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         float angle = (float) getRenderBladeRotation(timeSinceLastTick);
 
         GL11.glPushMatrix();
-        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+        GL11.glPushAttrib(
+            GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT
+                | GL11.GL_CURRENT_BIT
+                | GL11.GL_TRANSFORM_BIT
+                | GL11.GL_TEXTURE_BIT);
 
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_CULL_FACE);

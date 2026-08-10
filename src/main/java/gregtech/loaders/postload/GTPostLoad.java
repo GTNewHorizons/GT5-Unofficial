@@ -69,7 +69,7 @@ public class GTPostLoad {
 
         // noinspection UnstableApiUsage// Stable enough for this project
         GTMod.GT_FML_LOGGER
-            .info("Congratulations, you have been waiting long enough (" + stopwatch.stop() + "). Have a Cake.");
+            .info("Congratulations, you have been waiting long enough ({}). Have a Cake.", stopwatch.stop());
         GTLog.out.println(
             "GTMod: List of Lists of Tool Recipes: " + GTModHandler.sSingleNonBlockDamagableRecipeList_list.toString());
         GTLog.out.println(
@@ -102,7 +102,7 @@ public class GTPostLoad {
         // Remove all IC2
         GTModHandler.removeAllIC2Recipes();
         // noinspection UnstableApiUsage// Stable enough for this project
-        GTMod.GT_FML_LOGGER.info("IC2 Removal (" + stopwatch.stop() + "). Have a Cake.");
+        GTMod.GT_FML_LOGGER.info("IC2 Removal ({}). Have a Cake.", stopwatch.stop());
     }
 
     public static void registerFluidCannerRecipes() {
@@ -396,7 +396,7 @@ public class GTPostLoad {
         }
         ProgressManager.pop(progressBar);
         // noinspection UnstableApiUsage// stable enough for project
-        GTMod.GT_FML_LOGGER.info("Replaced Vanilla Materials (" + stopwatch.stop() + "). Have a Cake.");
+        GTMod.GT_FML_LOGGER.info("Replaced Vanilla Materials ({}). Have a Cake.", stopwatch.stop());
     }
 
     public static void doActualRegistration(Materials m) {

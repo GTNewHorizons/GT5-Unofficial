@@ -1,6 +1,7 @@
 package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.CharExchanger.formatNumber;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -443,7 +444,7 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
             .addInfo("The max fluid cell tier is limited by the glass tier")
             .addInfo("HV glass for T1, EV glass for T2, IV glass for T3. . .")
             .addInfo("The max height of the cell blocks is 15")
-            .beginVariableStructureBlock(5, 5, 5, 5, 5, 19, false)
+            .beginVariableStructureBlock(5, 5, 5, 19, 5, 5, false)
             .addController("Front center, 2nd layer")
             .addMiscHatch("0-1", "YOTHatch", "Any bottom center casing (replaces other hatches)", 2)
             .addInputHatch("1+", "Any top center casing", 1)
@@ -681,8 +682,12 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
 
         screenElements
             .widget(
-                new TextWidget().setStringSupplier(
-                    () -> StatCollector.translateToLocal("gui.YOTTank.0") + " " + numberFormat.format(mStorage) + " L")
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocal("gui.YOTTank.0") + " "
+                            + numberFormat.format(mStorage)
+                            + " "
+                            + getFluidUnit())
                     .setTextAlignment(Alignment.CenterLeft)
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> getErrorDisplayID() == 0))
@@ -700,7 +705,8 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
                         () -> StatCollector.translateToLocal("gui.YOTTank.2") + " "
                             + numberFormat.format(mStorageCurrent)
                             + EnumChatFormatting.RESET
-                            + " L"
+                            + " "
+                            + getFluidUnit()
                             + " ("
                             + EnumChatFormatting.GREEN
                             + getPercent()

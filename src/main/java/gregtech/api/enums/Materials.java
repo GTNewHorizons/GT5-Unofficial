@@ -1318,7 +1318,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
             mChemicalFormula = materialList.stream()
                 .map(MaterialStack::toString)
                 .collect(Collectors.joining())
-                .replaceAll("_", "-");
+                .replace("_", "-");
         }
 
         // Set texture and colors
@@ -1818,14 +1818,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
      */
     public String getName() {
         return mName;
-    }
-
-    /**
-     * @deprecated Always returns false, apparently.
-     */
-    @Deprecated
-    public boolean isRadioactive() {
-        return false;
     }
 
     public long getProtons() {

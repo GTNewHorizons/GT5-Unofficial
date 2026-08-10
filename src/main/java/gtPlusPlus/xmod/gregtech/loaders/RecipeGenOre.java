@@ -313,12 +313,11 @@ public class RecipeGenOre extends RecipeGenBase {
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getCell(f.getKey());
                         mCellCount += f.getKey();
-                        mTotalCount += f.getKey();
                     } else {
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getDust(f.getKey());
-                        mTotalCount += f.getKey();
                     }
+                    mTotalCount += f.getKey();
                 }
 
                 // Build Output Array
@@ -382,12 +381,11 @@ public class RecipeGenOre extends RecipeGenBase {
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getCell(f.getKey());
                         mCellCount += f.getKey();
-                        mTotalCount += f.getKey();
                     } else {
                         mInternalOutputs[mCounter++] = f.getValue()
                             .getDust(f.getKey());
-                        mTotalCount += f.getKey();
                     }
+                    mTotalCount += f.getKey();
                 }
 
                 // Build Output Array

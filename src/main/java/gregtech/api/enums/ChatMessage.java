@@ -2,6 +2,7 @@ package gregtech.api.enums;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.StatCollector;
 
 import gregtech.GTMod;
 import gregtech.api.net.GTPacketChat;
@@ -65,7 +66,7 @@ public enum ChatMessage {
     }
 
     private static Localizer localized(String key) {
-        return args -> GTUtility.translate(key, Localized.processArgs(args));
+        return args -> StatCollector.translateToLocalFormatted(key, Localized.processArgs(args));
     }
 
     private static Localizer plural(String singular, String plural, int pluralIndex) {
@@ -108,7 +109,7 @@ public enum ChatMessage {
 
             String key = value == 1 ? singular : plural;
 
-            return GTUtility.translate(key, Localized.processArgs(args));
+            return StatCollector.translateToLocalFormatted(key, Localized.processArgs(args));
         };
     }
 }

@@ -6,7 +6,6 @@ import static gregtech.api.enums.Mods.AE2FluidCraft;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.EternalSingularity;
-import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
 import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -65,7 +64,7 @@ public class BECRecipes implements Runnable {
     public void run() {
         addBECCasingRecipes();
         if (NewHorizonsCoreMod.isModLoaded()) addGodforgeRecipes();
-        if (Avaritia.isModLoaded() && ExtraUtilities.isModLoaded() && AE2FluidCraft.isModLoaded()) {
+        if (Avaritia.isModLoaded() && AE2FluidCraft.isModLoaded()) {
             addEyeOfHarmonyRecipes();
         }
 
@@ -268,7 +267,7 @@ public class BECRecipes implements Runnable {
             new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 2),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Creon, 18),
                 new ItemStack(Blocks.tfftStorageField, 2, 9), ItemList.Tesseract.get(12),
-                ItemList.MetaMaterial_ResonanceChamber1.get(4), ItemList.Thermal_Superconductor.get(9),
+                ItemList.Relativistic_Heat_Capacitor.get(6), ItemList.Thermal_Superconductor.get(9),
                 ItemList.Field_Generator_UEV.get(6),
                 GTOreDictUnificator.get(OrePrefixes.bolt, Materials.SixPhasedCopper, 36) },
             nanites(1, 1, 2, 3, 4, 3, 2, 1),
@@ -419,10 +418,12 @@ public class BECRecipes implements Runnable {
                 CustomItemList.StabilisationFieldGeneratorTier8.get(48),
                 CustomItemList.TimeAccelerationFieldGeneratorTier8.get(64),
                 CustomItemList.TimeAccelerationFieldGeneratorTier8.get(64),
-                CustomItemList.TimeAccelerationFieldGeneratorTier8.get(40), ItemList.Field_Generator_UMV.get(8),
+                CustomItemList.TimeAccelerationFieldGeneratorTier8.get(40),
+                CustomItemList.EOH_Infinite_Energy_Casing.get(32),
                 CustomItemList.EOH_Reinforced_Temporal_Casing.get(64),
-                CustomItemList.EOH_Reinforced_Spatial_Casing.get(64), CustomItemList.EOH_Infinite_Energy_Casing.get(32),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 16),
+                CustomItemList.EOH_Reinforced_Spatial_Casing.get(64),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.WhiteDwarfMatter, 2),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.BlackDwarfMatter, 2),
                 ItemList.Transdimensional_Alignment_Matrix.get(1), ItemList.MetaMaterial_Shielding3.get(16),
                 ItemList.MetaMaterial_ElectrograviticValve3.get(16), ItemList.MetaMaterial_FieldManipulator4.get(32) },
             nanites(6, 6, 6, 8, 6, 6, 6, 3, 1, 1, 2, 9, 10, 4, 5, 7),
@@ -442,10 +443,10 @@ public class BECRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.ProtoHalkonite, 32),
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Hexanite, 8),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 48),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Bedrockium, 1),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.CosmicNeutronium, 1),
-                GGMaterial.shirabon.get(OrePrefixes.plateSuperdense, 1),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Infinity, 1),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Bedrockium, 2),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.CosmicNeutronium, 2),
+                GGMaterial.shirabon.get(OrePrefixes.plateSuperdense, 2),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Infinity, 2),
                 ItemList.Machine_UV_SolarPanel.get(1), ItemList.AcceleratorUV.get(4),
                 getModItem(GraviSuite.ID, "itemSimpleItem", 64, 3), ItemList.EnergisedTesseract.get(1) },
             nanites(4, 1, 1, 2, 1, 1, 4, 1, 1, 1, 1, 2),
@@ -462,10 +463,10 @@ public class BECRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.ProtoHalkonite, 32),
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Hexanite, 8),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 48),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Bedrockium, 1),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.CosmicNeutronium, 1),
-                GGMaterial.shirabon.get(OrePrefixes.plateSuperdense, 1),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Infinity, 1),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Bedrockium, 2),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.CosmicNeutronium, 2),
+                GGMaterial.shirabon.get(OrePrefixes.plateSuperdense, 2),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Infinity, 2),
                 ItemList.Machine_UV_SolarPanel.get(1), ItemList.Quantum_Chest_IV.get(1),
                 getModItem(GraviSuite.ID, "itemSimpleItem", 64, 3), ItemList.EnergisedTesseract.get(1) },
             nanites(4, 1, 1, 2, 1, 1, 4, 1, 1, 1, 1, 2),
