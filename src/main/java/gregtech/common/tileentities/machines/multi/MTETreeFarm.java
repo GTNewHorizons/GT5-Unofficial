@@ -350,6 +350,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
      * Valid processing modes (types of output) for the Tree Growth Simulator.
      */
     public enum Mode {
+
         LOG,
         SAPLING,
         LEAVES,

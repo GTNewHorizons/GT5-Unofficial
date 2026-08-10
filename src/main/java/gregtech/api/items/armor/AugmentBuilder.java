@@ -10,11 +10,13 @@ import gregtech.api.items.armor.MechArmorAugmentRegistries.ArmorType;
 public class AugmentBuilder extends ArmorPartBuilder<AugmentBuilder> {
 
     public enum AugmentCategory {
+
         // Order sensitive - do not rearrange
         Protection,
         Movement,
         Utility,
         Prismatic;
+
         public static final AugmentCategory[] VALUES = values();
     }
 
