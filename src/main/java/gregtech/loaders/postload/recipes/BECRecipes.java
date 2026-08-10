@@ -363,7 +363,7 @@ public class BECRecipes implements Runnable {
         // Condensate Guidance Coil
         addBec(
             ItemList.CondensateGuidanceCoil.get(1),
-            new ItemStack[] { ItemRefer.Field_Restriction_Coil_T3.get(1),
+            new ItemStack[] { ItemRefer.Field_Restriction_Coil_T2.get(1),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(4), ItemList.MetaMaterial_Waveguide1.get(2),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Churitsu, 1),
                 GGMaterial.tairitsu.get(OrePrefixes.screw, 16),
