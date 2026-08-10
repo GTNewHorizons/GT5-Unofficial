@@ -774,16 +774,17 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             isValid = false;
             this.queenStack = queenStack.copy();
             this.queenStack.stackSize = 1;
-            generate(world, t);
-            isValid = true;
-            queenStack.stackSize--;
+            if (generate(world, t)) {
+                isValid = true;
+                queenStack.stackSize--;
+            }
         }
 
-        public void generate(World world, float t) {
+        public boolean generate(World world, float t) {
             if (mode == null) mode = beeRoot.getBeekeepingMode(world);
             drops.clear();
             specialDrops.clear();
-            if (beeRoot.getType(this.queenStack) != EnumBeeType.QUEEN) return;
+            if (beeRoot.getType(this.queenStack) != EnumBeeType.QUEEN) return false;
             IBee queen = beeRoot.getMember(this.queenStack);
             IBeeModifier beeModifier = mode.getBeeModifier();
             float mod = beeModifier.getLifespanModifier(null, null, 1.f);
@@ -809,6 +810,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 .forEach((key, value) -> drops.add(new BeeDrop(key, value / 2.f, beeSpeed, t)));
             primary.getSpecialtyChances()
                 .forEach((key, value) -> specialDrops.add(new BeeDrop(key, value, beeSpeed, t)));
+            return true;
         }
 
         public BeeSimulator(NBTTagCompound tag) {

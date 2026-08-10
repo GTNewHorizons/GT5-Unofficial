@@ -160,7 +160,10 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     protected void fillStacksIntoFirstSlots() {
-        GTUtility.compactInventory(Arrays.asList(mInventory), 0, mInventory.length - 1);
+        // Don't compact busses with fewer than 2 slots since there's no point
+        if (mInventory.length > 1) {
+            GTUtility.compactInventory(Arrays.asList(mInventory), 0, mInventory.length - 1);
+        }
     }
 
     @Override

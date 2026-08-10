@@ -200,7 +200,7 @@ gt.voltage.tier=-тир
 gt.blockmachines.cable.desc=Макс. вольтаж: %s\nМакс. ампераж: %s\nПотеря на блок/ампер: %s
 gt.blockmachines.gt_frame.desc.format=Просто что-то, на что можно надеть модуль.
 gt.blockmachines.transformer.desc=%s -> %s (Используй Киянку для инвертации)
-gt.blockmachines.transformer_advanced.desc=Преобразует %sА в %sА\nПереключение полу-режима 2A/8A с помощью отвёртки
+gt.blockmachines.transformer_advanced.desc=Преобразует %sА в %sА\nПереключение полу-режима %sA/%sA с помощью отвёртки
 gt.blockmachines.bronze_hull.desc=Для ваших первых паровых машин
 gt.blockmachines.highpressure_hull.desc=Для улучшенных паровых машин
 gt.blockmachines.basic_hull.desc=§rВоспользуйтесь §5В§dо§4о§cб§eр§aа§bж§3е§9н§1и§5е§rм§r для его использования.
@@ -1679,17 +1679,21 @@ GT5U.MBTT.Structure.GlassEnergyLimitTier=-тир разблокирует всё
 GT5U.MBTT.Structure.NoTierSkips=Этот механизм может выполнять только те рецепты, которые соответствуют ее среднему тиру энерговвода
 GT5U.MBTT.Structure.MaxTierSkips=Этот механизм может выполнять рецепты на %d тиров выше своего среднего тира энерговвода
 GT5U.MBTT.Structure.UnlimitedTierSkips=Этот механизм может выполнять рецепты независимо от тира, если ей дать достаточно энергии
-gt.mbtt.structure.front_center=Спереди в центре
+
 gt.mbtt.structure.back_center=Сзади посередине
-gt.mbtt.structure.front_center_2nd_layer=Спереди в центре, 2-й слой
 gt.mbtt.structure.front_bottom_center=Спереди внизу
+gt.mbtt.structure.front_center=Спереди в центре
+gt.mbtt.structure.front_center_2nd_layer=Спереди в центре, 2-й слой
+gt.mbtt.structure.front_center_9th_layer=Спереди в центре, 9-й слой
+gt.mbtt.structure.front_center_17th_layer=Спереди в центре, 17-й слой
 gt.mbtt.structure.any_casing=Любой блок корпуса
 gt.mbtt.structure.interior=Внутри структуры
 gt.mbtt.structure.any_tiered_glass=Стекло любого тира
 gt.mbtt.structure.min_tiered_glass=Стекло тира %s+
 gt.mbtt.structure.any_bottom_casing=Любой нижний блок корпуса
 gt.mbtt.structure.back_center_casing=Сзади посередине
-gt.mbtt.structure.front_center_9th_layer=Спереди в центре, 9-й слой
+
+gt.mbtt.machine_type.spacetime_manipulator=Пространственно-временной манипулятор, EOH
 GT5U.MBTT.HatchInfo=Любой %s
 GT5U.MBTT.HatchHint= (Подсказка: %s)
 GT5U.MBTT.BoroGlassAny=Боросиликатное стекло (любое, смешанное)
@@ -7273,6 +7277,7 @@ GT5U.scanner.crop_info_5=Обнаружил: %s
 GT5U.tooltip.drone_remote_disconnected=Shift-right-click an active Drone Centre to connect
 GT5U.tooltip.drone_remote_connected=Connected to centre: %s, %s, %s, on dim%s
 GT5U.tooltip.drone_remote_not_found=Дрон-станция: x: %s y: %s z: %s в dim%s не найдена!
+
 
 # info data
 GT5U.infodata.no_network=Нет сети
