@@ -394,7 +394,7 @@ gg.recipe.precise_assembler=Precise Assembler
 gg.recipe.componentassemblyline=Component Assembly Line
 gg.recipe.antimatter_forge=Semi-Stable Antimatter Stabilization Sequencer
 gg.recipe.antimatter_forge.info.0=10,000,000 EU/t base draw
-gg.recipe.antimatter_forge.protomatter_tooltip=Consumption equivalent antimatter yield
+gg.recipe.antimatter_forge.protomatter_tooltip=Consumption equivalent to antimatter yield
 gg.recipe.antimatter_forge.stabilizer_tooltip=Exponent used for consumption
 gg.recipe.antimatter_forge.antimatter_tooltip=Production boosted by stabilizers
 
