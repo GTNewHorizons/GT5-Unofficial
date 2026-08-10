@@ -33,8 +33,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.cleanroommc.modularui.utils.fluid.FluidTanksHandler;
-import com.cleanroommc.modularui.utils.fluid.IFluidTanksHandler;
+import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -74,15 +73,25 @@ public class MTEExoticModule extends MTEBaseModule {
     private FluidStack[] randomizedFluidInput = GTValues.emptyFluidStackArray;
     private ItemStack[] randomizedItemInput = GTValues.emptyItemStackArray;
     private GTRecipe plasmaRecipe = null;
-    public final IFluidTanksHandler tankHandler = new FluidTanksHandler(NUMBER_OF_INPUTS, 128000);
+    private final FluidStack[] fluidStacks = new FluidStack[NUMBER_OF_INPUTS];
+    public final FluidStackTank[] fluidTanks = new FluidStackTank[NUMBER_OF_INPUTS];
     private BigInteger powerForRecipe = BigInteger.ZERO;
 
     public MTEExoticModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        initialize();
     }
 
     public MTEExoticModule(String aName) {
         super(aName);
+        initialize();
+    }
+
+    private void initialize() {
+        for (int i = 0; i < fluidTanks.length; i++) {
+            final int ii = i;
+            fluidTanks[i] = new FluidStackTank(() -> fluidStacks[ii], val -> fluidStacks[ii] = val, 128000);
+        }
     }
 
     @Override
@@ -259,15 +268,15 @@ public class MTEExoticModule extends MTEBaseModule {
 
         for (int i = 0; i < NUMBER_OF_INPUTS; i++) {
             if (plasmaRecipe == null) {
-                tankHandler.setFluidInTank(i, null, 0);
+                fluidStacks[i] = null;
                 continue;
             }
 
             if (i < plasmaRecipe.mFluidInputs.length) {
                 FluidStack plasma = plasmaRecipe.mFluidInputs[i];
-                tankHandler.setFluidInTank(i, plasma.getFluid(), plasma.amount);
+                fluidStacks[i] = new FluidStack(plasma.getFluid(), plasma.amount);
             } else {
-                tankHandler.setFluidInTank(i, null, 0);
+                fluidStacks[i] = null;
             }
         }
     }
