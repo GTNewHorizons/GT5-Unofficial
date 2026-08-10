@@ -2221,20 +2221,6 @@ public class ResearchStationAssemblyLine implements Runnable {
             60 * SECONDS,
             (int) TierEU.RECIPE_UV);
 
-        // Beamcrafter controller
-        TTRecipeAdder.addResearchableAssemblylineRecipe(
-            LanthItemList.TARGET_CHAMBER,
-            64_000,
-            128,
-            (int) TierEU.RECIPE_ZPM,
-            4,
-            new Object[] { LanthItemList.TARGET_CHAMBER, ItemList.Field_Generator_ZPM.get(4),
-                new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_CASING, 32), ItemList.LargeMolecularAssembler.get(2) },
-            new FluidStack[] { Materials.UUMatter.getFluid(8000) },
-            ItemList.BeamCrafter.get(1),
-            60 * SECONDS,
-            (int) TierEU.RECIPE_UV);
-
         // Beamcrafter splitter
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             CustomItemList.Machine_Multi_Switch.get(1),
@@ -2322,7 +2308,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTModHandler.getModItem(Railcraft.ID, "machine.eta", 6, 8),
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.ProtoHalkonite, 12),
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Churitsu, 6),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Shijima, 48), ItemList.Sensor_UIV.get(2),
+                GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Shijima, 48), ItemList.Sensor_UIV.get(2),
                 ItemList.Emitter_UIV.get(2) },
             new FluidStack[] { CHRONOMATIC_GLASS.getFluidStack(384 * INGOTS), Materials.Infinity.getMolten(48 * INGOTS),
                 MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(48 * INGOTS),
