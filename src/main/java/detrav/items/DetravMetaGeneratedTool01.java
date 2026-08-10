@@ -1,5 +1,6 @@
 package detrav.items;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerLuV;
 import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerUHV;
 import static detrav.enums.IDDetraveMetaGeneratedTool01.ElectricProspectorScannerUV;
@@ -48,7 +49,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         INSTANCE = this;
         addTool(
             ProspectorScannerLV.ID,
-            "Prospector's Scanner(LV)",
+            "Prospector's Scanner (LV)",
             "",
             new DetravProspector(1),
             DetravToolDictNames.craftingToolProspector.toString(),
@@ -57,7 +58,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
             ProspectorScannerMV.ID,
-            "Prospector's Scanner(MV)",
+            "Prospector's Scanner (MV)",
             "",
             new DetravProspector(2),
             DetravToolDictNames.craftingToolProspector.toString(),
@@ -66,7 +67,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
             ProspectorScannerHV.ID,
-            "Prospector's Scanner(HV)",
+            "Prospector's Scanner (HV)",
             "",
             new DetravProspector(3),
             DetravToolDictNames.craftingToolProspector.toString(),
@@ -75,7 +76,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
             ProspectorScannerEV.ID,
-            "Prospector's Scanner(EV)",
+            "Prospector's Scanner (EV)",
             "",
             new DetravProspector(4),
             DetravToolDictNames.craftingToolProspector.toString(),
@@ -84,7 +85,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
             ProspectorScannerIV.ID,
-            "Prospector's Scanner(IV)",
+            "Prospector's Scanner (IV)",
             "",
             new DetravProspector(5),
             DetravToolDictNames.craftingToolProspector.toString(),
@@ -93,7 +94,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
             ProspectorScannerLuV.ID,
-            "Prospector's Scanner(LuV)",
+            "Prospector's Scanner (LuV)",
             "",
             new DetravProspector(6),
             DetravToolDictNames.craftingToolProspector.toString(),
@@ -102,7 +103,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
             ProspectorScannerZPM.ID,
-            "Prospector's Scanner(ZPM)",
+            "Prospector's Scanner (ZPM)",
             "",
             new DetravProspector(7),
             DetravToolDictNames.craftingToolProspector.toString(),
@@ -111,7 +112,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
             ProspectorScannerUV.ID,
-            "Prospector's Scanner(UV)",
+            "Prospector's Scanner (UV)",
             "",
             new DetravProspector(8),
             DetravToolDictNames.craftingToolProspector.toString(),
@@ -120,7 +121,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
             new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 4L));
         addTool(
             ProspectorScannerUHV.ID,
-            "Prospector's Scanner(UHV)",
+            "Prospector's Scanner (UHV)",
             "",
             new DetravProspector(9),
             DetravToolDictNames.craftingToolProspector.toString(),
@@ -186,19 +187,19 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         if (meta < 100) {
             aList.add(
                 tOffset,
-                EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.durability")
-                    + EnumChatFormatting.GREEN
-                    + (tMaxDamage - getToolDamage(aStack))
-                    + " / "
-                    + tMaxDamage
-                    + EnumChatFormatting.GRAY);
+                EnumChatFormatting.GREEN + StatCollector.translateToLocalFormatted(
+                    "tooltip.detrav.scanner.durability",
+                    formatNumber(tMaxDamage - getToolDamage(aStack)),
+                    formatNumber(tMaxDamage)));
             aList.add(
                 tOffset + 1,
                 EnumChatFormatting.WHITE + tMaterial.getLocalizedNameForItem("%material") + EnumChatFormatting.GRAY);
             aList.add(
                 tOffset + 2,
-                EnumChatFormatting.WHITE + StatCollector
-                    .translateToLocal("tooltip.detrav.scanner.range") + range + "x" + range + EnumChatFormatting.GRAY);
+                EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                    "tooltip.detrav.scanner.range",
+                    formatNumber(range),
+                    formatNumber(range)));
             aList.add(
                 tOffset + 3,
                 EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.0")
@@ -209,11 +210,11 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
                     + EnumChatFormatting.GRAY);
             aList.add(
                 tOffset + 5,
-                EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.success.chance")
-                    + EnumChatFormatting.RESET
-                    + (Math.min(((1 + meta) * 8), 100))
-                    + EnumChatFormatting.GRAY
-                    + "%");
+                EnumChatFormatting.GRAY + ""
+                    + EnumChatFormatting.ITALIC
+                    + StatCollector.translateToLocalFormatted(
+                        "tooltip.detrav.scanner.success.chance",
+                        EnumChatFormatting.RESET + formatNumber(Math.min(((1 + meta) * 8), 100))));
             aList.add(
                 tOffset + 6,
                 EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.distance.0"));
@@ -221,29 +222,22 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
                 tOffset + 7,
                 EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.distance.1"));
             return;
-
         }
 
         // from here, it's for the electric prospector scanners
         aList.add(
-            tOffset + 0,
-            EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.durability")
-                + EnumChatFormatting.GREEN
-                + (tMaxDamage - getToolDamage(aStack))
-                + " / "
-                + tMaxDamage
-                + EnumChatFormatting.GRAY);
+            tOffset,
+            EnumChatFormatting.GREEN + StatCollector.translateToLocalFormatted(
+                "tooltip.detrav.scanner.durability",
+                formatNumber(tMaxDamage - getToolDamage(aStack)),
+                formatNumber(tMaxDamage)));
         aList.add(
             tOffset + 1,
             EnumChatFormatting.WHITE + tMaterial.getLocalizedNameForItem("%material") + EnumChatFormatting.GRAY);
         aList.add(
             tOffset + 2,
-            EnumChatFormatting.WHITE + StatCollector.translateToLocal("tooltip.detrav.scanner.range")
-                + EnumChatFormatting.YELLOW
-                + (getHarvestLevel(aStack, "") * 2 + 1)
-                + "x"
-                + (getHarvestLevel(aStack, "") * 2 + 1)
-                + EnumChatFormatting.GRAY);
+            EnumChatFormatting.WHITE + StatCollector
+                .translateToLocalFormatted("tooltip.detrav.scanner.range", formatNumber(range), formatNumber(range)));
         aList.add(
             tOffset + 3,
             EnumChatFormatting.ITALIC + StatCollector.translateToLocal("tooltip.detrav.scanner.usage.0"));
