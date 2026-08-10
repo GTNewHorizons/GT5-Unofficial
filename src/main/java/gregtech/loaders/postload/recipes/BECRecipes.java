@@ -59,6 +59,7 @@ public class BECRecipes implements Runnable {
     private static final Materials[] TIER_MATS = { Materials.Netherite, Materials.ProtoHalkonite,
         Materials.SixPhasedCopper, Materials.TranscendentMetal, Materials.Mellion, Materials.Creon, Materials.SpaceTime,
         Materials.Hexanite, Materials.Eternity };
+    private static final int[] EOH_TIMES = { 1_000_000, 2_000_000, 3_000_000, 4_000_000, 100_000, 120_000, 140_000, 160_000, 180_000 };
 
     @Override
     public void run() {
@@ -436,6 +437,7 @@ public class BECRecipes implements Runnable {
 
     private void addEyeOfHarmonyCasings() {
 
+        final int casingTime = 2_000_000 * SECONDS;
         // Reinforced Temporal Structure Casing
         addBec(
             CustomItemList.EOH_Reinforced_Temporal_Casing.get(4),
@@ -453,7 +455,7 @@ public class BECRecipes implements Runnable {
             new FluidStack[] { CondensateType.Neutronium.getEntangled(512 * INGOTS),
                 CondensateType.CosmicNeutronium.getEntangled(512 * INGOTS),
                 CondensateType.Bedrockium.getEntangled(256 * INGOTS), CondensateType.Time.getEntangled(10 * INGOTS) },
-            3600 * SECONDS,
+            casingTime,
             TierEU.RECIPE_UMV);
 
         // Reinforced Spatial Structure Casing
@@ -473,7 +475,7 @@ public class BECRecipes implements Runnable {
             new FluidStack[] { CondensateType.Neutronium.getEntangled(512 * INGOTS),
                 CondensateType.CosmicNeutronium.getEntangled(512 * INGOTS),
                 CondensateType.Bedrockium.getEntangled(256 * INGOTS), CondensateType.Space.getEntangled(10 * INGOTS) },
-            3600 * SECONDS,
+            casingTime,
             TierEU.RECIPE_UMV);
 
         // Infinite Spacetime Boundary Casing
@@ -498,7 +500,7 @@ public class BECRecipes implements Runnable {
                 CondensateType.CosmicNeutronium.getEntangled(1024 * INGOTS),
                 CondensateType.Bedrockium.getEntangled(256 * INGOTS),
                 CondensateType.SpaceTime.getEntangled(128 * INGOTS) },
-            3600 * SECONDS,
+            casingTime,
             TierEU.RECIPE_UMV);
     }
 
@@ -530,7 +532,7 @@ public class BECRecipes implements Runnable {
             FluidStack[] condensates = { cosmicSolder(t), CondensateType.Time.getEntangled(10 * tp1 * INGOTS),
                 CondensateType.SpaceTime.getEntangled(10 * INGOTS),
                 CondensateType.DimensionallyShiftedSuperfluid.getEntangled(3_000 * tp1) };
-            addBec(outputs[t].get(1), inputs, nanites, condensates, 3600 * SECONDS, TierEU.RECIPE_UMV);
+            addBec(outputs[t].get(1), inputs, nanites, condensates, EOH_TIMES[t], TierEU.RECIPE_UMV);
         }
     }
 
@@ -572,7 +574,7 @@ public class BECRecipes implements Runnable {
             FluidStack[] condensates = { cosmicSolder(t), CondensateType.Space.getEntangled(10 * tp1 * INGOTS),
                 CondensateType.SpaceTime.getEntangled(10 * INGOTS),
                 CondensateType.Hypogen.getEntangled(20 * tp1 * INGOTS) };
-            addBec(outputs[t].get(1), inputs, nanites, condensates, 3600 * SECONDS, TierEU.RECIPE_UMV);
+            addBec(outputs[t].get(1), inputs, nanites, condensates, EOH_TIMES[t], TierEU.RECIPE_UMV);
         }
     }
 
@@ -628,7 +630,7 @@ public class BECRecipes implements Runnable {
             FluidStack[] condensates = { cosmicSolder(t), CondensateType.Time.getEntangled(10 * tp1 * INGOTS),
                 CondensateType.Space.getEntangled(10 * tp1 * INGOTS),
                 CondensateType.SpaceTime.getEntangled(10 * INGOTS) };
-            addBec(outputs[t].get(1), inputs, nanites, condensates, 3600 * SECONDS, TierEU.RECIPE_UMV);
+            addBec(outputs[t].get(1), inputs, nanites, condensates, EOH_TIMES[t], TierEU.RECIPE_UMV);
         }
     }
 
