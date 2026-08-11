@@ -11,6 +11,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_ZPM;
 import static gregtech.api.recipe.RecipeMaps.simpleWasherRecipes;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gtnhlanth.util.LanthanidesRecipeOutputs.convertDecomposition;
 
 import net.minecraft.item.ItemStack;
 
@@ -125,8 +126,8 @@ public class GregtechSimpleWasher {
             dustClean = GTOreDictUnificator.get(OrePrefixes.dust, v, 1L);
             dustDirty = GTOreDictUnificator.get(OrePrefixes.dustImpure, v, 1L);
             dustPure = GTOreDictUnificator.get(OrePrefixes.dustPure, v, 1L);
-            addSimpleWashRecipe(dustDirty, dustClean);
-            addSimpleWashRecipe(dustPure, dustClean);
+            addSimpleWashRecipe(dustDirty, convertDecomposition(v, dustClean)[0]);
+            addSimpleWashRecipe(dustPure, convertDecomposition(v, dustClean)[0]);
         }
 
         for (Werkstoff v : Werkstoff.werkstoffHashSet) {
