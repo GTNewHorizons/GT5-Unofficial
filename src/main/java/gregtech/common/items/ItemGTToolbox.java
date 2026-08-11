@@ -147,7 +147,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                             true
                         );
 
-                        for (final ToolboxSlot slot : ToolboxSlot.values()) {
+                        for (final ToolboxSlot slot : ToolboxSlot.VALUES) {
                             if (slot == ToolboxSlot.BATTERY) {
                                 continue;
                             }
