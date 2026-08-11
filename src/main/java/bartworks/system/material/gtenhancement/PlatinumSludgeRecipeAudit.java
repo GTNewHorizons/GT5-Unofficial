@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -70,33 +71,53 @@ public final class PlatinumSludgeRecipeAudit {
 
         for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
             for (GTRecipe recipe : map.getAllRecipes()) {
-                add(snapshot, occurrences, "machine", map.unlocalizedName, recipe, machineRecipe(map, recipe));
+                add(
+                    snapshot,
+                    occurrences,
+                    "machine",
+                    map.unlocalizedName,
+                    recipe,
+                    safely("machine", map.unlocalizedName, recipe.getClass(), () -> machineRecipe(map, recipe)));
             }
         }
 
         for (Map.Entry<ItemStack, ItemStack> entry : FurnaceRecipes.smelting()
             .getSmeltingList()
             .entrySet()) {
-            JsonObject record = record(
-                "furnace",
-                null,
-                entry.getValue() == null ? null
-                    : entry.getValue()
-                        .getClass());
-            record.add("input", item(entry.getKey()));
-            record.add("output", item(entry.getValue()));
+            JsonObject record = safely("furnace", null, null, () -> {
+                JsonObject furnace = record("furnace", null, null);
+                furnace.add("input", item(entry.getKey()));
+                furnace.add("output", item(entry.getValue()));
+                return furnace;
+            });
             add(snapshot, occurrences, "furnace", "", entry.getKey(), record);
         }
 
         for (Object candidate : CraftingManager.getInstance()
             .getRecipeList()) {
             if (candidate instanceof IRecipe recipe) {
-                add(snapshot, occurrences, "crafting", "", recipe, craftingRecipe("crafting", recipe));
+                add(
+                    snapshot,
+                    occurrences,
+                    "crafting",
+                    "",
+                    recipe,
+                    safely("crafting", null, recipe.getClass(), () -> craftingRecipe("crafting", recipe)));
             }
         }
 
         for (IRecipe recipe : GTModHandler.sBufferRecipeList) {
-            add(snapshot, occurrences, "gt-crafting-buffer", "", recipe, craftingRecipe("gt-crafting-buffer", recipe));
+            add(
+                snapshot,
+                occurrences,
+                "gt-crafting-buffer",
+                "",
+                recipe,
+                safely(
+                    "gt-crafting-buffer",
+                    null,
+                    recipe.getClass(),
+                    () -> craftingRecipe("gt-crafting-buffer", recipe)));
         }
 
         return snapshot;
@@ -151,6 +172,20 @@ public final class PlatinumSludgeRecipeAudit {
         return record;
     }
 
+    private static JsonObject safely(String registry, String map, Class<?> recipeClass,
+        Supplier<JsonObject> serializer) {
+        try {
+            return serializer.get();
+        } catch (RuntimeException e) {
+            JsonObject record = record(registry, map, recipeClass);
+            record.addProperty(
+                "serializationError",
+                e.getClass()
+                    .getName());
+            return record;
+        }
+    }
+
     private static JsonElement ingredient(Object value, boolean sortList) {
         if (value == null) return JsonNull.INSTANCE;
         if (value instanceof ItemStack stack) return item(stack);
@@ -185,13 +220,18 @@ public final class PlatinumSludgeRecipeAudit {
     private static JsonElement item(ItemStack stack) {
         if (stack == null) return JsonNull.INSTANCE;
         JsonObject result = new JsonObject();
-        GameRegistry.UniqueIdentifier identifier = GameRegistry.findUniqueIdentifierFor(stack.getItem());
+        Item stackItem = stack.getItem();
+        if (stackItem == null) {
+            result.addProperty("invalid", "null-item");
+            result.addProperty("amount", stack.stackSize);
+            return result;
+        }
+        GameRegistry.UniqueIdentifier identifier = GameRegistry.findUniqueIdentifierFor(stackItem);
         result.addProperty(
             "id",
-            identifier == null ? stack.getItem()
-                .getClass()
+            identifier == null ? stackItem.getClass()
                 .getName() + ":"
-                + Item.getIdFromItem(stack.getItem()) : identifier.toString());
+                + Item.getIdFromItem(stackItem) : identifier.toString());
         result.addProperty("damage", stack.getItemDamage());
         result.addProperty("amount", stack.stackSize);
         if (stack.hasTagCompound()) result.addProperty(
