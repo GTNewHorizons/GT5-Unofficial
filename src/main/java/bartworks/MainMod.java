@@ -50,6 +50,7 @@ import bartworks.system.material.CircuitGeneration.CircuitWraps;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
+import bartworks.system.material.gtenhancement.PlatinumSludgeRecipeAudit;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.ResultWrongSievert;
 import bartworks.util.log.DebugLog;
@@ -208,7 +209,7 @@ public final class MainMod {
     @Mod.EventHandler
     public void onModLoadingComplete(FMLLoadCompleteEvent event) {
         StaticRecipeChangeLoaders.addElectricImplosionCompressorRecipes();
-        PlatinumSludgeOverHaul.replacePureElements();
+        PlatinumSludgeRecipeAudit.run(PlatinumSludgeOverHaul::replacePureElements);
 
         runOnServerStarted();
         StaticRecipeChangeLoaders.unificationRecipeEnforcer();
