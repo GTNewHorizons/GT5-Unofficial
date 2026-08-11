@@ -72,7 +72,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.CasingTier;
 import gregtech.api.util.GlassTier;
-import gregtech.api.util.RecipeChangeAudit;
 import tectech.loader.recipe.Godforge;
 
 @Mod(
@@ -209,7 +208,7 @@ public final class MainMod {
     @Mod.EventHandler
     public void onModLoadingComplete(FMLLoadCompleteEvent event) {
         StaticRecipeChangeLoaders.addElectricImplosionCompressorRecipes();
-        RecipeChangeAudit.run("platinum-sludge-overhaul", "Platinum Sludge Overhaul", PlatinumSludgeRecipes::register);
+        PlatinumSludgeRecipes.register();
 
         runOnServerStarted();
         StaticRecipeChangeLoaders.unificationRecipeEnforcer();
