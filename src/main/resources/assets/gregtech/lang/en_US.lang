@@ -8393,7 +8393,7 @@ achievement.item.PolychromeChevron=Stargate Chevron of Polychrome Contest
 achievement.item.PolychromeChevron.desc=Pick up this item to see the recipe in NEI
 achievement.item.PolychromeFramePart=Stargate Frame Part of Polychrome Contest
 achievement.item.PolychromeFramePart.desc=Pick up this item to see the recipe in NEI
-achievement.gt.blockmachines.hatch.nanite-detector=Nanite Detector Hatch
+achievement.gt.blockmachines.hatch.nanite-detector=Nanite Tier Detector Hatch
 achievement.gt.blockmachines.hatch.nanite-detector.desc=Pick up this item to see the recipe in NEI
 achievement.gt.blockmachines.hatch.bec=Bose-Einstein Condensate Hatch
 achievement.gt.blockmachines.hatch.bec.desc=Pick up this item to see the recipe in NEI
@@ -9083,7 +9083,7 @@ gt.item.meta_material.waveguide.pristine.name=Pristine Waveguide
 
 # BEC Machines
 gt.blockmachines.hatch.bec.name=Bose-Einstein Condensate Hatch
-gt.blockmachines.hatch.nanite-detector.name=Nanite Detector Hatch
+gt.blockmachines.hatch.nanite-detector.name=Nanite Tier Detector Hatch
 gt.blockmachines.hatch.io-node-controller.name=Teleportation Node Controller Hatch
 gt.blockmachines.hatch.condensate-detector.name=Bose-Einstein Condensate Detector Hatch
 gt.blockmachines.hatch.line-of-sight-connector.name=Line-Of-Sight Connector Hatch
