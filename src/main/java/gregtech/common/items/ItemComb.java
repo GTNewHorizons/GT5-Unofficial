@@ -95,7 +95,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
-        for (CombType type : CombType.values()) {
+        for (CombType type : CombType.VALUES) {
             if (type.showInList) {
                 list.add(this.getStackForType(type));
             }
@@ -1146,7 +1146,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
     }
 
     public void registerOreDict() {
-        for (CombType comb : CombType.values()) {
+        for (CombType comb : CombType.VALUES) {
             ItemStack tComb = getStackForType(comb);
             GTOreDictUnificator.registerOre(OrePrefixes.beeComb.getName(), tComb);
             OrePrefixes.beeComb.add(tComb);
