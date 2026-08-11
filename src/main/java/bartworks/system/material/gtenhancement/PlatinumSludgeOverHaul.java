@@ -15,18 +15,21 @@ package bartworks.system.material.gtenhancement;
 
 import bartworks.util.BWUtil;
 import gregtech.api.enums.Materials;
+import gregtech.api.util.GTLog;
 
 public class PlatinumSludgeOverHaul {
 
     private PlatinumSludgeOverHaul() {}
 
     public static void replacePureElements() {
+        long start = System.nanoTime();
         PlatinumSludgeRecipeRewriter.rewriteLegacyRecipes();
         PlatinumSludgeRecipes.registerHVCircuitSupportRecipe();
         // fix HV tier
         PlatinumSludgeRecipeRewriter.replaceHVCircuitInputs();
         // add new recipes
         PlatinumSludgeRecipes.registerProcessRecipes();
+        GTLog.out.println("Platinum Sludge Overhaul took " + (System.nanoTime() - start) / 1_000_000.0 + " ms");
     }
 
     @Deprecated
