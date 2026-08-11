@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convert;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -134,7 +135,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                 }
                 GTValues.RA.stdBuilder()
                     .itemInputs(inputs)
-                    .itemOutputs(internalOutputs.toArray(new ItemStack[0]))
+                    .itemOutputs(convert(internalOutputs.toArray(new ItemStack[0])))
                     .outputChances(chances)
                     .eut(tVoltageMultiplier)
                     .duration((tVoltageMultiplier / 10) * SECONDS)
@@ -201,7 +202,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(inputs)
-                    .itemOutputs(internalOutputs.toArray(new ItemStack[0]))
+                    .itemOutputs(convert(internalOutputs.toArray(new ItemStack[0])))
                     .outputChances(chances)
                     .eut(tVoltageMultiplier)
                     .duration(20 * (tVoltageMultiplier / 10))
