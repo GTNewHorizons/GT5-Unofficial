@@ -52,17 +52,38 @@ public final class LanthanidesRecipeOutputs {
             ItemStack output = outputs[i];
             if (!GTUtility.isStackValid(output)) continue;
 
-            ItemData association = GTOreDictUnificator.getAssociation(output);
-            if (association == null || association.mPrefix == null || association.mMaterial == null) continue;
+            Werkstoff replacement = null;
+            OrePrefixes prefix = null;
+            if (GTUtility.areStacksEqual(output, Materials.Cerium.getDust(1), true)) {
+                replacement = WerkstoffMaterialPool.CeriumRichMixture;
+                prefix = dust;
+            } else if (GTUtility.areStacksEqual(output, Materials.Cerium.getDustSmall(1), true)) {
+                replacement = WerkstoffMaterialPool.CeriumRichMixture;
+                prefix = dustSmall;
+            } else if (GTUtility.areStacksEqual(output, Materials.Cerium.getDustTiny(1), true)) {
+                replacement = WerkstoffMaterialPool.CeriumRichMixture;
+                prefix = dustTiny;
+            } else if (GTUtility.areStacksEqual(output, Materials.Samarium.getDust(1), true)) {
+                replacement = WerkstoffMaterialPool.SamariumOreConcentrate;
+                prefix = dust;
+            } else if (GTUtility.areStacksEqual(output, Materials.Samarium.getDustSmall(1), true)) {
+                replacement = WerkstoffMaterialPool.SamariumOreConcentrate;
+                prefix = dustSmall;
+            } else if (GTUtility.areStacksEqual(output, Materials.Samarium.getDustTiny(1), true)) {
+                replacement = WerkstoffMaterialPool.SamariumOreConcentrate;
+                prefix = dustTiny;
+            } else {
+                ItemData association = GTOreDictUnificator.getAssociation(output);
+                if (association == null || association.mPrefix == null || association.mMaterial == null) continue;
+                replacement = association.mMaterial.mMaterial == Materials.Cerium
+                    ? WerkstoffMaterialPool.CeriumRichMixture
+                    : association.mMaterial.mMaterial == Materials.Samarium
+                        ? WerkstoffMaterialPool.SamariumOreConcentrate
+                        : null;
+                prefix = association.mPrefix;
+            }
 
-            Werkstoff replacement = association.mMaterial.mMaterial == Materials.Cerium
-                ? WerkstoffMaterialPool.CeriumRichMixture
-                : association.mMaterial.mMaterial == Materials.Samarium
-                    ? WerkstoffMaterialPool.SamariumOreConcentrate
-                    : null;
             if (replacement == null) continue;
-
-            OrePrefixes prefix = association.mPrefix;
             if (prefix != dust && prefix != dustSmall && prefix != dustTiny) continue;
             outputs[i] = replacement.get(prefix, output.stackSize * multiplier);
         }
