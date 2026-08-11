@@ -136,6 +136,7 @@ public class GregtechSimpleWasher {
             dustClean = v.hasItemType(OrePrefixes.dust) ? v.get(OrePrefixes.dust) : null;
             dustDirty = v.hasItemType(OrePrefixes.dustImpure) ? v.get(OrePrefixes.dustImpure) : null;
             dustPure = v.hasItemType(OrePrefixes.dustPure) ? v.get(OrePrefixes.dustPure) : null;
+            if (isLanthanidesDust(dustClean)) continue;
             addSimpleWashRecipe(dustDirty, dustClean);
             addSimpleWashRecipe(dustPure, dustClean);
         }
@@ -160,6 +161,18 @@ public class GregtechSimpleWasher {
             ItemStack replacement = convertDecomposition(material, clean)[0];
             addSimpleWashRecipe(GTOreDictUnificator.get(OrePrefixes.dustImpure, material, 1L), replacement);
             addSimpleWashRecipe(GTOreDictUnificator.get(OrePrefixes.dustPure, material, 1L), replacement);
+        }
+        for (Werkstoff material : Werkstoff.werkstoffHashSet) {
+            ItemStack clean = material.hasItemType(OrePrefixes.dust) ? material.get(OrePrefixes.dust) : null;
+            if (!isLanthanidesDust(clean)) continue;
+
+            ItemStack replacement = convertDecomposition(clean)[0];
+            addSimpleWashRecipe(
+                material.hasItemType(OrePrefixes.dustImpure) ? material.get(OrePrefixes.dustImpure) : null,
+                replacement);
+            addSimpleWashRecipe(
+                material.hasItemType(OrePrefixes.dustPure) ? material.get(OrePrefixes.dustPure) : null,
+                replacement);
         }
     }
 
