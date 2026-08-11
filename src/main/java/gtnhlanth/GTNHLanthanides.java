@@ -75,7 +75,7 @@ public class GTNHLanthanides {
     public static void onModLoadingComplete(FMLLoadCompleteEvent e) {
 
         RecipeChangeAudit
-            .run("lanthanides-cerium-sources", "Lanthanides Cerium Sources", RecipeLoader::replaceHaumeaCeriumSource);
+            .run("lanthanides-cerium-sources", "Lanthanides Cerium Sources", RecipeLoader::replaceExternalRecipeOutputs);
 
     }
 }

@@ -30,11 +30,14 @@ import org.apache.commons.lang3.tuple.Pair;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
+import gtnhlanth.common.register.WerkstoffMaterialPool;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
+import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.MaterialsOres;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.state.MaterialState;
@@ -318,8 +321,7 @@ public class RecipeGenOre extends RecipeGenBase {
                             .getCell(f.getKey());
                         mCellCount += f.getKey();
                     } else {
-                        mInternalOutputs[mCounter++] = f.getValue()
-                            .getDust(f.getKey());
+                        mInternalOutputs[mCounter++] = getDust(f.getValue(), f.getKey());
                     }
                     mTotalCount += f.getKey();
                 }
@@ -389,8 +391,7 @@ public class RecipeGenOre extends RecipeGenBase {
                             .getCell(f.getKey());
                         mCellCount += f.getKey();
                     } else {
-                        mInternalOutputs[mCounter++] = f.getValue()
-                            .getDust(f.getKey());
+                        mInternalOutputs[mCounter++] = getDust(f.getValue(), f.getKey());
                     }
                     mTotalCount += f.getKey();
                 }
@@ -514,10 +515,16 @@ public class RecipeGenOre extends RecipeGenBase {
     }
 
     public static ItemStack getDust(Material m) {
-        ItemStack x = m.getDust(1);
+        ItemStack x = getDust(m, 1);
         if (x == null) {
             x = mStone.getDust(1);
         }
         return x;
+    }
+
+    public static ItemStack getDust(Material material, int amount) {
+        return material == MaterialsElements.getInstance().IODINE
+            ? WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, amount)
+            : material.getDust(amount);
     }
 }
