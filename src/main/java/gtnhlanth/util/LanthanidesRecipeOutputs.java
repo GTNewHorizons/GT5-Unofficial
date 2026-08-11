@@ -47,15 +47,6 @@ public final class LanthanidesRecipeOutputs {
         return output;
     }
 
-    public static boolean isLanthanidesDust(ItemStack output) {
-        if (!GTUtility.isStackValid(output)) return false;
-        ItemData association = GTOreDictUnificator.getAssociation(output);
-        return association != null && association.mPrefix == dust
-            && association.mMaterial != null
-            && (association.mMaterial.mMaterial == Materials.Cerium
-                || association.mMaterial.mMaterial == Materials.Samarium);
-    }
-
     private static ItemStack[] convert(int multiplier, ItemStack... outputs) {
         for (int i = 0; i < outputs.length; i++) {
             ItemStack output = outputs[i];
