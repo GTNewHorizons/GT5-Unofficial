@@ -102,7 +102,7 @@ public final class PlatinumSludgeRecipeAudit {
                 furnace.add("output", item(entry.getValue()));
                 return furnace;
             });
-            add(snapshot, occurrences, "furnace", "", entry.getKey(), record);
+            addSemantic(snapshot, "furnace", "", GSON.toJson(record.get("input")), record);
         }
 
         for (Object candidate : CraftingManager.getInstance()
@@ -320,7 +320,12 @@ public final class PlatinumSludgeRecipeAudit {
         Map<String, Integer> identityOccurrences = occurrences.computeIfAbsent(identity, ignored -> new HashMap<>());
         String scope = registry + '\0' + location;
         int occurrence = identityOccurrences.merge(scope, 1, Integer::sum) - 1;
-        snapshot.records.put(new IdentityKey(registry, location, identity, occurrence), record);
+        snapshot.records.put(new IdentityKey(registry, location, identity, occurrence, false), record);
+    }
+
+    private static void addSemantic(Snapshot snapshot, String registry, String location, Object identity,
+        JsonObject record) {
+        snapshot.records.put(new IdentityKey(registry, location, identity, 0, true), record);
     }
 
     private static List<JsonObject> changes(Snapshot before, Snapshot after) {
@@ -362,17 +367,21 @@ public final class PlatinumSludgeRecipeAudit {
         private final String location;
         private final Object identity;
         private final int occurrence;
+        private final boolean semanticIdentity;
 
-        private IdentityKey(String registry, String location, Object identity, int occurrence) {
+        private IdentityKey(String registry, String location, Object identity, int occurrence,
+            boolean semanticIdentity) {
             this.registry = registry;
             this.location = location;
             this.identity = identity;
             this.occurrence = occurrence;
+            this.semanticIdentity = semanticIdentity;
         }
 
         @Override
         public boolean equals(Object other) {
-            return other instanceof IdentityKey key && identity == key.identity
+            return other instanceof IdentityKey key && semanticIdentity == key.semanticIdentity
+                && (semanticIdentity ? identity.equals(key.identity) : identity == key.identity)
                 && occurrence == key.occurrence
                 && registry.equals(key.registry)
                 && location.equals(key.location);
@@ -380,7 +389,12 @@ public final class PlatinumSludgeRecipeAudit {
 
         @Override
         public int hashCode() {
-            return Objects.hash(registry, location, System.identityHashCode(identity), occurrence);
+            return Objects.hash(
+                registry,
+                location,
+                semanticIdentity ? identity : System.identityHashCode(identity),
+                occurrence,
+                semanticIdentity);
         }
     }
 }
