@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convert;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_IV;
@@ -142,8 +141,8 @@ public class GregtechSimpleWasher {
             dustClean = v.getDust(1);
             dustDirty = v.getDustImpure(1);
             dustPure = v.getDustPurified(1);
-            addSimpleWashRecipe(dustDirty, convert(dustClean));
-            addSimpleWashRecipe(dustPure, convert(dustClean));
+            addSimpleWashRecipe(dustDirty, convertDecomposition(dustClean)[0]);
+            addSimpleWashRecipe(dustPure, convertDecomposition(dustClean)[0]);
         }
 
         return simpleWasherRecipes.getAllRecipes()
