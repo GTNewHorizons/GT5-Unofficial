@@ -3,10 +3,7 @@ package goodgenerator.blocks.tileEntity.GTMetaTileEntity;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -19,11 +16,11 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTENeutronSensorGui;
+import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
 
-public class MTENeutronSensor extends MTEHatch {
+public class MTENeutronSensor extends MTEHatchRedstoneBase {
 
     private static final IIconContainer textureFont = Textures.BlockIcons.custom("icons/NeutronSensorFont");
     private static final IIconContainer textureFont_Glow = Textures.BlockIcons
@@ -31,7 +28,6 @@ public class MTENeutronSensor extends MTEHatch {
 
     protected int threshold = 0;
     protected boolean inverted = false;
-    boolean isOn = false;
 
     public MTENeutronSensor(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Detect Neutron Kinetic Energy.");
@@ -130,35 +126,18 @@ public class MTENeutronSensor extends MTEHatch {
         super.saveNBTData(aNBT);
     }
 
-    @Override
-    public void initDefaultModes(NBTTagCompound aNBT) {
-        getBaseMetaTileEntity().setActive(true);
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return false;
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
-        openGui(aPlayer);
-        return true;
-    }
-
     /**
      * Updates redstone output strength based on the eV of the multiblock.
      *
      * @param eV Amount of eV to compare.
      */
     public void updateRedstoneOutput(int eV) {
-        isOn = (eV >= threshold) ^ inverted;
+        setFacingSideRedstoneSignal(eV >= threshold, true);
+    }
+
+    @Override
+    public void setRedstoneSignalOnFace(int facing, byte signal, boolean turnOtherFacesOff) {
+        super.setRedstoneSignalOnFace(facing, redstoneSignalFromOn((signal > 0) ^ inverted), turnOtherFacesOff);
     }
 
     @Override
@@ -175,39 +154,8 @@ public class MTENeutronSensor extends MTEHatch {
     }
 
     @Override
-    public boolean allowGeneralRedstoneOutput() {
-        return true;
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (isOn) {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 15);
-            }
-        } else {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 0);
-            }
-        }
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTENeutronSensor(mName, mTier, mDescriptionArray, mTextures);
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
     }
 
     @Override

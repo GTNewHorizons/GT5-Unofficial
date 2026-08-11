@@ -1,9 +1,6 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -15,11 +12,11 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEHatchPHSensorGui;
+import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
 
-public class MTEHatchPHSensor extends MTEHatch {
+public class MTEHatchPHSensor extends MTEHatchRedstoneBase {
 
     // This implementation was largely copied from the neutron sensor hatch
 
@@ -36,45 +33,6 @@ public class MTEHatchPHSensor extends MTEHatch {
 
     public MTEHatchPHSensor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return false;
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean allowGeneralRedstoneOutput() {
-        return true;
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection Side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public void initDefaultModes(NBTTagCompound aNBT) {
-        getBaseMetaTileEntity().setActive(true);
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
-        openGui(aPlayer);
-        return true;
     }
 
     @Override
@@ -102,21 +60,12 @@ public class MTEHatchPHSensor extends MTEHatch {
      * Updates redstone output strength based on the pH of the multiblock.
      */
     public void updateRedstoneOutput(double pH) {
-        isOn = (pH > threshold) ^ inverted;
+        setFacingSideRedstoneSignal(pH > threshold, true);
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (isOn) {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, (byte) 15);
-            }
-        } else {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, (byte) 0);
-            }
-        }
-        super.onPostTick(aBaseMetaTileEntity, aTick);
+    public void setRedstoneSignalOnFace(int facing, byte signal, boolean turnOtherFacesOff) {
+        super.setRedstoneSignalOnFace(facing, redstoneSignalFromOn((signal > 0) ^ inverted), turnOtherFacesOff);
     }
 
     @Override

@@ -405,7 +405,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
 
         // Update all the sensors
         for (MTEHeatSensor hatch : sensorHatches) {
-            hatch.setHeatValue(heat);
+            hatch.updateRedstoneOutput(heat);
         }
 
     }
