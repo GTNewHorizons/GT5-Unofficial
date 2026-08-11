@@ -208,21 +208,18 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setBoolean("installed", laserSource != null);
         tag.setInteger("laserAmps", laserAmps);
         tag.setInteger("laserTier", laserTier);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
         if (tag.getBoolean("installed")) {
-            currentTip.add(
+            list.add(
                 EnumChatFormatting.LIGHT_PURPLE + translateToLocal("GT5U.tooltip.nac.module.etching_array.installed")
                     + ": "
                     + tag.getInteger("laserAmps")
