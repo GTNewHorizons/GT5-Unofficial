@@ -14,6 +14,7 @@ public final class ConsumerCell {
 
     static void register() {
         ShapeConsumerSupport.delegate(CellShapes.cell, OrePrefixes.cell, () -> ProcessingCell.INSTANCE);
+        ShapeConsumerSupport.delegate(CellShapes.cellGas, OrePrefixes.cell, () -> ProcessingCell.INSTANCE);
         ShapeConsumerSupport.delegate(CellShapes.cellPlasma, OrePrefixes.cellPlasma, () -> ProcessingCell.INSTANCE);
         ShapeConsumerSupport
             .delegate(CellShapes.cellPlasmaLight, OrePrefixes.cellPlasma, () -> ProcessingCell.INSTANCE);

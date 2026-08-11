@@ -10,10 +10,11 @@ import gregtech.loaders.oreprocessing.ProcessingRecycling;
 /// 0 && isContainer()`, mirrored here instead of hand-listing the nine cell-family prefixes it matches),
 /// scoped to prefixes with a MaterialLib shape via [MaterialParts#shape]. `cellPlasma` additionally generates
 /// [CellShapes#cellPlasmaLight] for materials with no molten fluid (see [MaterialParts]'s javadoc on its
-/// ordered-candidate-list exception), so it is registered as a second target explicitly; every other matching
-/// prefix has exactly one candidate shape. `bucket`/`bucketClay`/`bottle`/`capsule`/`capsuleMolten`/
-/// `blockCasing`/`blockCasingAdvanced` also match the legacy filter but have no MaterialLib shape and keep
-/// serving foreign mods exclusively through the legacy oredict path.
+/// ordered-candidate-list exception) and `cell` additionally generates [CellShapes#cellGas] for gas materials,
+/// so each is registered as a second target explicitly; every other matching prefix has exactly one candidate
+/// shape. `bucket`/`bucketClay`/`bottle`/`capsule`/`capsuleMolten`/`blockCasing`/`blockCasingAdvanced` also
+/// match the legacy filter but have no MaterialLib shape and keep serving foreign mods exclusively through
+/// the legacy oredict path.
 public final class ConsumerRecycling {
 
     private ConsumerRecycling() {}
@@ -25,5 +26,6 @@ public final class ConsumerRecycling {
         }
         ShapeConsumerSupport
             .delegate(CellShapes.cellPlasmaLight, OrePrefixes.cellPlasma, () -> ProcessingRecycling.INSTANCE);
+        ShapeConsumerSupport.delegate(CellShapes.cellGas, OrePrefixes.cell, () -> ProcessingRecycling.INSTANCE);
     }
 }

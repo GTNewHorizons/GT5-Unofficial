@@ -113,7 +113,7 @@ public class Families {
             .generateShapes(FluidShapes.fluidLiquid, CellShapes.cell)
             .build();
         gases = MaterialLibAPI.newFamily("gregtech", "Gases")
-            .generateShapes(FluidShapes.fluidGas, CellShapes.cell)
+            .generateShapes(FluidShapes.fluidGas, CellShapes.cellGas)
             .build();
         moltens = MaterialLibAPI.newFamily("gregtech", "Moltens")
             .generateShapes(FluidShapes.fluidMolten, CellShapes.cellMolten)

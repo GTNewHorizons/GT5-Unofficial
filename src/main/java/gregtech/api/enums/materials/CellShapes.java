@@ -13,6 +13,10 @@ import com.ruling_0.materiallib.api.Shape;
 /// when the material also has a molten fluid (metal plasmas), or 1000 mB otherwise (gas/element plasmas) -- a
 /// per-material volume MaterialLib's container shape does not support directly. [MaterialParts] resolves the two back
 /// to one prefix.
+///
+/// `cell` and `cellGas` share the `cell` prefix the same way: a plain cell holds a material's liquid or its gas, a
+/// MaterialLib container binds one fluid shape, and the legacy liquid and gas fluid names are frozen in world NBT --
+/// so gas materials fill [#cellGas] and [MaterialParts] resolves it back to the `cell` prefix.
 public class CellShapes {
 
     /// The empty cell every cell shape drains to, rebound onto `ItemList.Cell_Empty` during GTProxy's preInit.
@@ -32,6 +36,7 @@ public class CellShapes {
 
     // spotless:off
     public static Shape cell;
+    public static Shape cellGas;
     public static Shape cellPlasma;
     public static Shape cellPlasmaLight;
     public static Shape cellMolten;
@@ -48,9 +53,17 @@ public class CellShapes {
 
         cell = MaterialLibAPI.newFluidInContainerShape("gregtech", "cell")
             .displayName("%s Cell")
-            .fluid(FluidShapes.fluidLiquid, FluidShapes.fluidGas)
+            .fluid(FluidShapes.fluidLiquid)
             .emptyContainer(emptyCell)
             .volume(1000)
+            .emptyIcon(CELL_BASE)
+            .build();
+        cellGas = MaterialLibAPI.newFluidInContainerShape("gregtech", "cellGas")
+            .displayName("%s Cell")
+            .fluid(FluidShapes.fluidGas)
+            .emptyContainer(emptyCell)
+            .volume(1000)
+            .oreDict("cell")
             .emptyIcon(CELL_BASE)
             .build();
 

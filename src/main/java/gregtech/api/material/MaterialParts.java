@@ -50,9 +50,10 @@ public class MaterialParts {
 
     private MaterialParts() {}
 
-    /// A material's full cell, falling back to `cellMolten` when it carries no plain `cell`: a gtPlusPlus
-    /// material whose single fluid claimed the molten shape rather than a liquid or gas slot holds its cell
-    /// only under `cellMolten`. Null when the material carries neither, or is itself null.
+    /// A material's full cell, resolving `cell`, then `cellGas`, then `cellMolten`: a gas material holds its
+    /// plain cell under `cellGas` (see [CellShapes]), and a gtPlusPlus material whose single fluid claimed the
+    /// molten shape rather than a liquid or gas slot holds its cell only under `cellMolten`. Null when the
+    /// material carries none of the three, or is itself null.
     ///
     /// [gregtech.loaders.oreprocessing.ProcessingDustGeneration#stackOf]'s ore-dictionary fallback is
     /// deliberately not used here: for a material with no plain `cell` shape it resolves the legacy gtPlusPlus
@@ -61,6 +62,9 @@ public class MaterialParts {
         if (material == null) return null;
         if (material.hasShape(CellShapes.cell)) {
             return MaterialLibAPI.getStack(material, CellShapes.cell, (int) amount);
+        }
+        if (material.hasShape(CellShapes.cellGas)) {
+            return MaterialLibAPI.getStack(material, CellShapes.cellGas, (int) amount);
         }
         if (material.hasShape(CellShapes.cellMolten)) {
             return MaterialLibAPI.getStack(material, CellShapes.cellMolten, (int) amount);
@@ -73,6 +77,9 @@ public class MaterialParts {
     public static ItemStack requireCell(Material material, long amount) {
         if (material.hasShape(CellShapes.cell)) {
             return MaterialLibAPI.getStack(material, CellShapes.cell, (int) amount);
+        }
+        if (material.hasShape(CellShapes.cellGas)) {
+            return MaterialLibAPI.getStack(material, CellShapes.cellGas, (int) amount);
         }
         throw new IllegalStateException(material.getName() + " carries no plain cell shape");
     }
