@@ -142,6 +142,7 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSimpleWasher;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
 import gtnhlanth.common.register.LanthItemList;
@@ -875,6 +876,8 @@ public class RecipeLoader {
     }
 
     public static void loadGeneral() {
+
+        GregtechSimpleWasher.generateLanthanidesDustRecipes();
 
         /* ZIRCONIUM */
         // ZrCl4

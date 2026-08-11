@@ -12,6 +12,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_ZPM;
 import static gregtech.api.recipe.RecipeMaps.simpleWasherRecipes;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtnhlanth.util.LanthanidesRecipeOutputs.convertDecomposition;
+import static gtnhlanth.util.LanthanidesRecipeOutputs.isLanthanidesDust;
 
 import net.minecraft.item.ItemStack;
 
@@ -126,8 +127,9 @@ public class GregtechSimpleWasher {
             dustClean = GTOreDictUnificator.get(OrePrefixes.dust, v, 1L);
             dustDirty = GTOreDictUnificator.get(OrePrefixes.dustImpure, v, 1L);
             dustPure = GTOreDictUnificator.get(OrePrefixes.dustPure, v, 1L);
-            addSimpleWashRecipe(dustDirty, convertDecomposition(v, dustClean)[0]);
-            addSimpleWashRecipe(dustPure, convertDecomposition(v, dustClean)[0]);
+            if (isLanthanidesDust(dustClean)) continue;
+            addSimpleWashRecipe(dustDirty, dustClean);
+            addSimpleWashRecipe(dustPure, dustClean);
         }
 
         for (Werkstoff v : Werkstoff.werkstoffHashSet) {
@@ -148,6 +150,17 @@ public class GregtechSimpleWasher {
 
         return simpleWasherRecipes.getAllRecipes()
             .size() > mRecipeCount;
+    }
+
+    public static void generateLanthanidesDustRecipes() {
+        for (Materials material : Materials.values()) {
+            ItemStack clean = GTOreDictUnificator.get(OrePrefixes.dust, material, 1L);
+            if (!isLanthanidesDust(clean)) continue;
+
+            ItemStack replacement = convertDecomposition(material, clean)[0];
+            addSimpleWashRecipe(GTOreDictUnificator.get(OrePrefixes.dustImpure, material, 1L), replacement);
+            addSimpleWashRecipe(GTOreDictUnificator.get(OrePrefixes.dustPure, material, 1L), replacement);
+        }
     }
 
     private static boolean generateDirtyCrushedRecipes() {
