@@ -1063,7 +1063,8 @@ public class WerkstoffLoader {
         new short[] { 0xc7, 0xc7, 0xc7 },
         "Ruthenium Tetroxide",
         subscriptNumbers("Ru?O?") + "??",
-        new Werkstoff.Stats().setMeltingPoint(313),
+        new Werkstoff.Stats().setMeltingPoint(313)
+            .setMass(165),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
