@@ -68,6 +68,15 @@ public class MaterialParts {
         return null;
     }
 
+    /// The throwing counterpart of [#cell] for call sites declaring that a specific material must carry a
+    /// plain cell. Throws [IllegalStateException] naming the material when it carries none.
+    public static ItemStack requireCell(Material material, long amount) {
+        if (material.hasShape(CellShapes.cell)) {
+            return MaterialLibAPI.getStack(material, CellShapes.cell, (int) amount);
+        }
+        throw new IllegalStateException(material.getName() + " carries no plain cell shape");
+    }
+
     private static Map<String, List<Shape>> prefixToShapes;
 
     /// The MaterialLib shape a legacy item [OrePrefixes] cuts over to, or null if that prefix is not part of

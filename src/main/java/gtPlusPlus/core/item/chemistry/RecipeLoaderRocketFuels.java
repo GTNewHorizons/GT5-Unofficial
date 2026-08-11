@@ -18,10 +18,10 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -117,7 +117,7 @@ public class RecipeLoaderRocketFuels {
 
     private static void createLOH() {
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 1))
+            .itemInputs(MaterialParts.requireCell(Materials.Hydrogen, 1))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellLiquidHydrogen", 1))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_MV)

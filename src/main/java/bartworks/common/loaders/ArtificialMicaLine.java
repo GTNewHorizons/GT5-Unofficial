@@ -18,10 +18,10 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -45,7 +45,7 @@ public class ArtificialMicaLine {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Silicon, Shapes.dust, 1),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 4))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 4))
+            .itemOutputs(MaterialParts.requireCell(Materials.Hydrogen, 4))
             .fluidInputs(MaterialUtils.fluid(Materials.HydrofluoricAcidGT5U, 6_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.HexafluorosilicicAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(20 * SECONDS)
@@ -76,7 +76,7 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Potassium, Shapes.dust, 2),
-                MaterialLibAPI.getStack(Materials.CarbonDioxide, CellShapes.cell, 1))
+                MaterialParts.requireCell(Materials.CarbonDioxide, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.PotassiumCarbonate, Shapes.dust, 6),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
@@ -89,7 +89,7 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.Potash, Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials.CarbonDioxide, CellShapes.cell, 1))
+                MaterialParts.requireCell(Materials.CarbonDioxide, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.PotassiumCarbonate, Shapes.dust, 6),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))

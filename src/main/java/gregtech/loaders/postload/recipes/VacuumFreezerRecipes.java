@@ -21,6 +21,7 @@ import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -216,15 +217,15 @@ public class VacuumFreezerRecipes implements Runnable {
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cell, 1))
-                .itemOutputs(MaterialLibAPI.getStack(Materials.LiquidOxygen, CellShapes.cell, 1))
+                .itemInputs(MaterialParts.requireCell(Materials.Oxygen, 1))
+                .itemOutputs(MaterialParts.requireCell(Materials.LiquidOxygen, 1))
                 .duration(1 * MINUTES)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(Materials.Nitrogen, CellShapes.cell, 1))
-                .itemOutputs(MaterialLibAPI.getStack(Materials.LiquidNitrogen, CellShapes.cell, 1))
+                .itemInputs(MaterialParts.requireCell(Materials.Nitrogen, 1))
+                .itemOutputs(MaterialParts.requireCell(Materials.LiquidNitrogen, 1))
                 .duration(1 * MINUTES)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(vacuumFreezerRecipes);

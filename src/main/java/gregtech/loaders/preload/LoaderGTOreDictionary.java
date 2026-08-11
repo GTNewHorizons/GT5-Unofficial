@@ -25,6 +25,7 @@ import gregtech.api.enums.TieredItems;
 import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.RecognitionMaterials;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -51,8 +52,7 @@ public class LoaderGTOreDictionary implements Runnable {
             Materials.Creosote,
             GTModHandler.getModItem(Railcraft.ID, "fluid.creosote.cell", 1L));
 
-        GTOreDictUnificator
-            .set(OrePrefixes.cell, Materials.Air, MaterialLibAPI.getStack(Materials.Air, CellShapes.cell, 1));
+        GTOreDictUnificator.set(OrePrefixes.cell, Materials.Air, MaterialParts.requireCell(Materials.Air, 1));
         GTOreDictUnificator
             .set(OrePrefixes.cell, Materials.UUMatter, MaterialLibAPI.getStack(Materials.UUMatter, CellShapes.cell, 1));
         GTOreDictUnificator.set(

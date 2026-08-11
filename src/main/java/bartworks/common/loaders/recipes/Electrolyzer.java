@@ -10,10 +10,10 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class Electrolyzer implements Runnable {
@@ -78,7 +78,7 @@ public class Electrolyzer implements Runnable {
                 MaterialLibAPI.getStack(Materials.Potassium, Shapes.dust, (int) (1L)),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Alumina, 3L),
                 MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, (int) (3L)),
-                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 2))
+                MaterialParts.requireCell(Materials.Hydrogen, 2))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 2_000))
             .duration(19 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
@@ -90,7 +90,7 @@ public class Electrolyzer implements Runnable {
                 MaterialLibAPI.getStack(Materials.Potassium, Shapes.dust, (int) (1L)),
                 MaterialLibAPI.getStack(Materials.Chrome, Shapes.dust, (int) (3L)),
                 MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, (int) (3L)),
-                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 2))
+                MaterialParts.requireCell(Materials.Hydrogen, 2))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 2_000))
             .duration(23 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -106,7 +106,7 @@ public class Electrolyzer implements Runnable {
                 MaterialLibAPI.getStack(Materials.Magnalium, Shapes.dust, (int) (6L)),
                 MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 6),
                 MaterialLibAPI.getStack(Materials.Boron, Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 3))
+                MaterialParts.requireCell(Materials.Hydrogen, 3))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 19_000))
             .duration(35 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
@@ -122,7 +122,7 @@ public class Electrolyzer implements Runnable {
                 MaterialLibAPI.getStack(Materials.Magnalium, Shapes.dust, (int) (6L)),
                 MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 6),
                 MaterialLibAPI.getStack(Materials.Boron, Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 3))
+                MaterialParts.requireCell(Materials.Hydrogen, 3))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 19_000))
             .duration(36 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -136,7 +136,7 @@ public class Electrolyzer implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Alumina, 6L),
                 MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 6),
                 MaterialLibAPI.getStack(Materials.Boron, Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials.Fluorine, CellShapes.cell, 3))
+                MaterialParts.requireCell(Materials.Fluorine, 3))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 6_000))
             .duration(36 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
@@ -149,7 +149,7 @@ public class Electrolyzer implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Alumina, 9L),
                 MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, (int) (6L)),
                 MaterialLibAPI.getStack(Materials.Boron, Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 1))
+                MaterialParts.requireCell(Materials.Hydrogen, 1))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
             .duration(39 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)

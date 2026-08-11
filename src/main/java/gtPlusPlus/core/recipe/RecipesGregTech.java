@@ -72,6 +72,7 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -1218,7 +1219,7 @@ public class RecipesGregTech {
             .circuit(17)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Styrene, CellShapes.cell, 1),
-                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 2))
+                MaterialParts.requireCell(Materials.Hydrogen, 2))
             .fluidInputs(new FluidStack(GTPPFluids.Ethylbenzene, 1_000))
             .eut(TierEU.RECIPE_LV)
             .duration(3 * SECONDS)

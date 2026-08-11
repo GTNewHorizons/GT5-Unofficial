@@ -19,6 +19,7 @@ import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -33,7 +34,7 @@ public class ElectrolyzerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Cell_Empty.get(1L))
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cell, 1))
+            .itemOutputs(MaterialParts.requireCell(Materials.Oxygen, 1))
             .fluidInputs(GTUtility.getWater(1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 2_000))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -43,7 +44,7 @@ public class ElectrolyzerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Cell_Empty.get(1L))
             .circuit(2)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cell, 1))
+            .itemOutputs(MaterialParts.requireCell(Materials.Oxygen, 1))
             .fluidInputs(GTModHandler.getDistilledWater(1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 2_000))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -53,7 +54,7 @@ public class ElectrolyzerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Cell_Empty.get(2L))
             .circuit(3)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 2))
+            .itemOutputs(MaterialParts.requireCell(Materials.Hydrogen, 2))
             .fluidInputs(GTUtility.getWater(1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -63,7 +64,7 @@ public class ElectrolyzerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Cell_Empty.get(2L))
             .circuit(4)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 2))
+            .itemOutputs(MaterialParts.requireCell(Materials.Hydrogen, 2))
             .fluidInputs(GTModHandler.getDistilledWater(1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -73,8 +74,8 @@ public class ElectrolyzerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L), ItemList.Cell_Empty.get(2L))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 2),
-                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cell, 1))
+                MaterialParts.requireCell(Materials.Hydrogen, 2),
+                MaterialParts.requireCell(Materials.Oxygen, 1))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(electrolyzerRecipes);
@@ -126,7 +127,7 @@ public class ElectrolyzerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 1))
+                MaterialParts.requireCell(Materials.Hydrogen, 1))
             .outputChances(10000, 10000)
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 1_000))
             .duration(50 * SECONDS)
@@ -157,7 +158,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .circuit(11)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cell, 2))
+                MaterialParts.requireCell(Materials.Oxygen, 2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CarbonDioxide, FluidShapes.fluidGas, 1_000))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -178,17 +179,17 @@ public class ElectrolyzerRecipes implements Runnable {
             .circuit(11)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cell, 1))
+                MaterialParts.requireCell(Materials.Oxygen, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 1_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.CarbonMonoxide, CellShapes.cell, 1))
+            .itemInputs(MaterialParts.requireCell(Materials.CarbonMonoxide, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Carbon, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cell, 1))
+                MaterialParts.requireCell(Materials.Oxygen, 1))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
@@ -716,9 +717,9 @@ public class ElectrolyzerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 2))
+                MaterialParts.requireCell(Materials.Hydrogen, 2))
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.HydricSulfide, CellShapes.cell, 1),
+                MaterialParts.requireCell(Materials.HydricSulfide, 1),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
             .duration(3 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_MV)
@@ -740,7 +741,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .circuit(11)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Sulfur, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cell, 2))
+                MaterialParts.requireCell(Materials.Oxygen, 2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SulfurDioxide, FluidShapes.fluidGas, 1_000))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -761,7 +762,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 1))
+                MaterialParts.requireCell(Materials.Hydrogen, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SaltWater, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 1_000))
             .duration(36 * SECONDS)
@@ -773,7 +774,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .circuit(11)
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.SodiumHydroxideGT5U, Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cell, 1))
+                MaterialParts.requireCell(Materials.Chlorine, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SaltWater, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1_000))
             .duration(36 * SECONDS)
@@ -784,7 +785,7 @@ public class ElectrolyzerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 1))
+            .itemOutputs(MaterialParts.requireCell(Materials.Hydrogen, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 1_000))
             .duration(36 * SECONDS)
@@ -794,7 +795,7 @@ public class ElectrolyzerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
             .circuit(11)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cell, 1))
+            .itemOutputs(MaterialParts.requireCell(Materials.Chlorine, 1))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1_000))
             .duration(36 * SECONDS)
@@ -804,7 +805,7 @@ public class ElectrolyzerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 1))
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 1))
+            .itemOutputs(MaterialParts.requireCell(Materials.Hydrogen, 1))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 1_000))
             .duration(36 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -813,7 +814,7 @@ public class ElectrolyzerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.HydrochloricAcidGT5U, CellShapes.cell, 1))
             .circuit(11)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Chlorine, CellShapes.cell, 1))
+            .itemOutputs(MaterialParts.requireCell(Materials.Chlorine, 1))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 1_000))
             .duration(36 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -824,7 +825,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .itemInputs(
                 MaterialLibAPI.getStack(Materials.SodiumBisulfate, Shapes.dust, 14),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 2))
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 2))
+            .itemOutputs(MaterialParts.requireCell(Materials.Hydrogen, 2))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SodiumPersulfate, FluidShapes.fluidLiquid, 1_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -846,7 +847,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .itemInputs(ItemList.Cell_Empty.get(1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Copper, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cell, 1))
+                MaterialParts.requireCell(Materials.Oxygen, 1))
             .fluidInputs(new FluidStack(ItemList.sBlueVitriol, 2000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(45 * SECONDS)
@@ -857,7 +858,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .itemInputs(ItemList.Cell_Empty.get(1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Nickel, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cell, 1))
+                MaterialParts.requireCell(Materials.Oxygen, 1))
             .fluidInputs(new FluidStack(ItemList.sNickelSulfate, 2000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(45 * SECONDS)
@@ -868,7 +869,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .itemInputs(ItemList.Cell_Empty.get(1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.Iron, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cell, 1))
+                MaterialParts.requireCell(Materials.Oxygen, 1))
             .fluidInputs(new FluidStack(ItemList.sGreenVitriol, 2000))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.SulfuricAcid, FluidShapes.fluidLiquid, 1_000))
             .duration(45 * SECONDS)
@@ -880,9 +881,9 @@ public class ElectrolyzerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.PhosphoricAcidGT5U, CellShapes.cell, 1),
                 ItemList.Cell_Empty.get(6L))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Hydrogen, CellShapes.cell, 3),
+                MaterialParts.requireCell(Materials.Hydrogen, 3),
                 MaterialLibAPI.getStack(Materials.Phosphorus, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Oxygen, CellShapes.cell, 4))
+                MaterialParts.requireCell(Materials.Oxygen, 4))
             .duration(27 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
