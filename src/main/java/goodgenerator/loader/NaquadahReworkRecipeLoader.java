@@ -35,7 +35,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import bartworks.system.material.WerkstoffLoader;
-import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
+import bartworks.util.BWUtil;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
@@ -1035,17 +1035,17 @@ public class NaquadahReworkRecipeLoader {
         Object input = mutableRecipe.gt5u$getRecipeInputs();
 
         if (GTUtility.areStacksEqual(result, Materials.Naquadah.getDust(1), true)) {
-            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Naquadah)) {
+            if (BWUtil.areCraftingInputsOnlyMaterial(input, Materials.Naquadah)) {
                 return;
             }
             mutableRecipe.gt5u$setRecipeOutputItem(GGMaterial.naquadahEarth.get(OrePrefixes.dust, 2));
         } else if (GTUtility.areStacksEqual(result, Materials.NaquadahEnriched.getDust(1), true)) {
-            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.NaquadahEnriched)) {
+            if (BWUtil.areCraftingInputsOnlyMaterial(input, Materials.NaquadahEnriched)) {
                 return;
             }
             mutableRecipe.gt5u$setRecipeOutputItem(GGMaterial.enrichedNaquadahEarth.get(OrePrefixes.dust, 2));
         } else if (GTUtility.areStacksEqual(result, Materials.Naquadria.getDust(1), true)) {
-            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Naquadria)) {
+            if (BWUtil.areCraftingInputsOnlyMaterial(input, Materials.Naquadria)) {
                 return;
             }
             mutableRecipe.gt5u$setRecipeOutputItem(GGMaterial.naquadriaEarth.get(OrePrefixes.dust, 2));
