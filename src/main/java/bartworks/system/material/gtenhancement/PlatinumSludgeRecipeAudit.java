@@ -32,6 +32,7 @@ import com.google.gson.JsonPrimitive;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
@@ -45,23 +46,34 @@ public final class PlatinumSludgeRecipeAudit {
     private PlatinumSludgeRecipeAudit() {}
 
     public static void run(Runnable overhaul) {
-        Snapshot before = capture();
-        overhaul.run();
-        Snapshot after = capture();
-
-        Path output = Loader.instance()
-            .getConfigDir()
-            .toPath()
-            .getParent()
-            .resolve("dumps")
-            .resolve(OUTPUT_DIRECTORY);
+        Snapshot before;
         try {
+            before = capture();
+        } catch (RuntimeException e) {
+            GTLog.err
+                .println("Failed to capture recipes before Platinum Sludge Overhaul; running overhaul without dump");
+            e.printStackTrace(GTLog.err);
+            overhaul.run();
+            return;
+        }
+
+        overhaul.run();
+
+        try {
+            Snapshot after = capture();
+            Path output = Loader.instance()
+                .getConfigDir()
+                .toPath()
+                .getParent()
+                .resolve("dumps")
+                .resolve(OUTPUT_DIRECTORY);
             Files.createDirectories(output);
             write(output.resolve("before.jsonl"), before.records.values());
             write(output.resolve("after.jsonl"), after.records.values());
             write(output.resolve("changes.jsonl"), changes(before, after));
-        } catch (IOException e) {
-            throw new IllegalStateException("Failed to dump Platinum Sludge Overhaul recipes", e);
+        } catch (IOException | RuntimeException e) {
+            GTLog.err.println("Failed to dump Platinum Sludge Overhaul recipes");
+            e.printStackTrace(GTLog.err);
         }
     }
 
