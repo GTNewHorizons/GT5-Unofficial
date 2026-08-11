@@ -1018,9 +1018,10 @@ public class AssemblerRecipes implements Runnable {
             .itemInputs(
                 ItemList.Hull_HV.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Gold, 2L),
-                getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 2L, 24),
-                getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 2L, 22),
-                ItemList.Circuit_Chip_ILC.get(4L))
+                ItemList.Circuit_Chip_ILC.get(4L),
+                getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 4L, 24),
+                getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 4L, 22),
+                getModItem(AppliedEnergistics2.ID, "item.ItemMultiPart", 1L, 16))
             .itemOutputs(ItemList.Hull_Cleanroom_Passthrough.get(1L))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)

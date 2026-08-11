@@ -77,7 +77,7 @@ public class MTECleanroomPassthroughHull extends MTEBasicHull implements IGridPr
             && gte.getMetaTileEntity() instanceof MTECleanroomPassthroughHull;
     }
 
-    /** Chains are straight lines: a neighbouring hull only counts if its own facing lies on the same axis. */
+    /** only counts if its own facing lies on the same axis. */
     public static boolean isChainableHull(TileEntity tile, ForgeDirection axis) {
         if (!isPassthroughHull(tile)) return false;
         ForgeDirection front = ((IGregTechTileEntity) tile).getFrontFacing();
@@ -90,7 +90,7 @@ public class MTECleanroomPassthroughHull extends MTEBasicHull implements IGridPr
     public @NotNull AENetworkProxy getProxy() {
         if (gridProxy == null) {
             gridProxy = new AENetworkProxy(this, "proxy", ItemList.Hull_Cleanroom_Passthrough.get(1), true);
-            // No REQUIRE_CHANNEL: this is infrastructure. Consumes no channel, carries AE2's default 8.
+            // no channel, carries AE2's default 8.
             gridProxy.setFlags();
             gridProxy.setIdlePowerUsage(0);
             updateValidGridProxySides();
@@ -171,14 +171,13 @@ public class MTECleanroomPassthroughHull extends MTEBasicHull implements IGridPr
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (!aBaseMetaTileEntity.isServerSide()) return;
-        // MetaTileEntity has no neighbour-change hook, so re-check the endpoints periodically.
+        // re-check the endpoints periodically
         if (aTick % 20 == 0) updateValidGridProxySides();
         relayToLogisticsPipes(aBaseMetaTileEntity);
     }
 
     /**
-     * Pushes the buffered stack out of the axis face opposite the one it arrived on. Without a recorded LP arrival
-     * this never fires and the block stays a passive buffer, exactly like a basic hull.
+     * Pushes the buffered stack out of the axis face opposite the one it arrived on.
      */
     protected void relayToLogisticsPipes(IGregTechTileEntity base) {
         ItemStack stack = mInventory[0];
