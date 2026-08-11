@@ -8,6 +8,9 @@ import java.util.Comparator;
 
 import net.minecraft.util.StatCollector;
 
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
+
+import goodgenerator.blocks.tileEntity.AntimatterForge;
 import goodgenerator.client.GUI.GGUITextures;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -87,8 +90,11 @@ public class GoodGeneratorRecipeMaps {
         .neiRecipeBackgroundSize(170, 120)
         .addSpecialTexture(33, 21, 106, 94, GGUITextures.PICTURE_ANTIMATTER_FORGE)
         .neiSpecialInfoFormatter(
-            recipeInfo -> Collections
-                .singletonList(StatCollector.translateToLocal("gg.recipe.antimatter_forge.info.0")))
+            recipeInfo -> Collections.singletonList(
+                StatCollector.translateToLocalFormatted(
+                    "gg.recipe.antimatter_forge.info.0",
+                    formatNumber(AntimatterForge.getBaseConsumption()),
+                    NumberFormatUtil.getEnergyUnit())))
         .frontend(AntimatterForgeFrontend::new)
         .build();
 }

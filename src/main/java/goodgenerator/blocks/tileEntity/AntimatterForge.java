@@ -733,6 +733,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         return fluidConsumptionExponents;
     }
 
+    public static int getBaseConsumption() {
+        return BASE_CONSUMPTION;
+    }
+
     public long getAntimatterAmount() {
         return this.guiAntimatterAmount;
     }
