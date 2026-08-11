@@ -651,7 +651,8 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     public void setCheckConnections() {
-        if (getBaseMetaTileEntity().isTickDisabled()) {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base.isTickDisabled() && base.isServerSide()) {
             checkConnections();
         } else {
             mCheckConnections = true;
