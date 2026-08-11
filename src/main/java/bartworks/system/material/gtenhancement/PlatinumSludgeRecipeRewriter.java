@@ -24,6 +24,7 @@ import static bartworks.system.material.WerkstoffLoader.PTConcentrate;
 import static bartworks.system.material.WerkstoffLoader.PTMetallicPowder;
 import static bartworks.system.material.WerkstoffLoader.Rhodium;
 import static bartworks.system.material.WerkstoffLoader.Ruthenium;
+import static gregtech.api.enums.Mods.ExtraBees;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
@@ -39,20 +40,12 @@ import static gregtech.api.enums.OrePrefixes.dustTiny;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.nugget;
 import static gregtech.api.enums.OrePrefixes.rawOre;
-import static gregtech.api.recipe.RecipeMaps.alloyBlastSmelterRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.circuitAssemblerRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
-import static gregtech.api.recipe.RecipeMaps.fusionRecipes;
+import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
-import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
-import static gregtech.api.recipe.RecipeMaps.quantumForceTransformerRecipes;
-import static gregtech.api.recipe.RecipeMaps.replicatorRecipes;
-import static gregtech.api.recipe.RecipeMaps.unpackagerRecipes;
-import static gregtech.api.recipe.RecipeMaps.vacuumFurnaceRecipes;
 import static gtPlusPlus.core.material.MaterialsAlloy.HELICOPTER;
-import static kubatech.loaders.HTGRLoader.HTGRRecipes;
-import static tectech.recipe.TecTechRecipeMaps.eyeOfHarmonyRecipes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -116,18 +109,6 @@ final class PlatinumSludgeRecipeRewriter {
 
     private PlatinumSludgeRecipeRewriter() {}
 
-    private static boolean isMapIgnored(RecipeMap<?> map) {
-        return map == fusionRecipes || map == unpackagerRecipes
-            || map == packagerRecipes
-            || map == replicatorRecipes
-            || map == eyeOfHarmonyRecipes
-            || map == quantumForceTransformerRecipes
-            || map == fluidExtractionRecipes
-            || map == alloyBlastSmelterRecipes
-            || map == HTGRRecipes
-            || map == vacuumFurnaceRecipes;
-    }
-
     private static String displayRecipe(GTRecipe recipe) {
         StringBuilder result = new StringBuilder();
         // item inputs
@@ -179,8 +160,8 @@ final class PlatinumSludgeRecipeRewriter {
 
     static void rewriteLegacyRecipes() {
         final ArrayList<ItemStack> availableItemList = collectAvailableItemList();
-        replaceFurnaceRecipes(availableItemList);
-        replaceCraftingRecipes();
+        if (GalaxySpace.isModLoaded()) replaceFurnaceRecipes(availableItemList);
+        if (ExtraBees.isModLoaded()) replaceCraftingRecipes();
         replaceMachineRecipes(availableItemList);
     }
 
@@ -246,9 +227,8 @@ final class PlatinumSludgeRecipeRewriter {
 
     private static void replaceMachineRecipes(List<ItemStack> availableItemList) {
         // gt machines
-        maploop: for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
-            if (isMapIgnored(map)) continue;
-
+        maploop: for (RecipeMap<?> map : List
+            .of(maceratorRecipes, centrifugeRecipes, chemicalReactorRecipes, multiblockChemicalReactorRecipes)) {
             GTLog.out.println("Processing recipe map: " + map.unlocalizedName);
 
             ArrayList<GTRecipe> toDelete = new ArrayList<>();
