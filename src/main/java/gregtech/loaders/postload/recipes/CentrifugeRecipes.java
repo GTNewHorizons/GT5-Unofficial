@@ -1,6 +1,5 @@
 package gregtech.loaders.postload.recipes;
 
-import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convert;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.Forestry;
@@ -87,14 +86,12 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.PlatinumGroupSludge, 3))
             .itemOutputs(
-                convert(
-                    Materials.PlatinumGroupSludge,
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 3),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 3),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 1),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 1)))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 3),
+                WerkstoffLoader.PTMetallicPowder.get(OrePrefixes.dust, 6),
+                WerkstoffLoader.PDMetallicPowder.get(OrePrefixes.dust, 2),
+                WerkstoffLoader.IrLeachResidue.get(OrePrefixes.dust, 2),
+                WerkstoffLoader.IrOsLeachResidue.get(OrePrefixes.dust, 2))
             .outputChances(10000, 10000, 10000, 9500, 9000, 8500)
             .duration(2 * MINUTES + 15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -537,11 +534,9 @@ public class CentrifugeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 36))
             .itemOutputs(
-                convert(
-                    Materials.Endstone,
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungstate, 3),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1),
-                    new ItemStack(Blocks.sand, 36)))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungstate, 3),
+                WerkstoffLoader.PTMetallicPowder.get(OrePrefixes.dust, 2),
+                new ItemStack(Blocks.sand, 36))
             .outputChances(3750, 2500, 9000)
             .fluidOutputs(Materials.Helium.getGas(4_320))
             .duration(9 * MINUTES + 36 * SECONDS)
