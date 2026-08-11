@@ -75,11 +75,12 @@ public final class LanthanidesRecipeOutputs {
             } else {
                 ItemData association = GTOreDictUnificator.getAssociation(output);
                 if (association == null || association.mPrefix == null || association.mMaterial == null) continue;
-                replacement = association.mMaterial.mMaterial == Materials.Cerium
-                    ? WerkstoffMaterialPool.CeriumRichMixture
-                    : association.mMaterial.mMaterial == Materials.Samarium
-                        ? WerkstoffMaterialPool.SamariumOreConcentrate
-                        : null;
+                Materials material = association.mMaterial.mMaterial;
+                if (material == Materials.Cerium) {
+                    replacement = WerkstoffMaterialPool.CeriumRichMixture;
+                } else if (material == Materials.Samarium) {
+                    replacement = WerkstoffMaterialPool.SamariumOreConcentrate;
+                }
                 prefix = association.mPrefix;
             }
 

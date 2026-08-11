@@ -226,9 +226,12 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                 }
                                 if (!tList.isEmpty()) {
                                     ItemStack[] outputsArray = tList.toArray(new ItemStack[Math.min(tList.size(), 6)]);
-                                    recipeBuilder.itemOutputs(
-                                        aMaterial == Materials.Bastnasite ? convertDecomposition(aMaterial, outputsArray)
-                                            : convert(aMaterial, outputsArray));
+                                    if (aMaterial == Materials.Bastnasite) {
+                                        outputsArray = convertDecomposition(aMaterial, outputsArray);
+                                    } else {
+                                        outputsArray = convert(aMaterial, outputsArray);
+                                    }
+                                    recipeBuilder.itemOutputs(outputsArray);
                                 }
                                 if (tFluid != null) {
                                     recipeBuilder.fluidOutputs(tFluid);

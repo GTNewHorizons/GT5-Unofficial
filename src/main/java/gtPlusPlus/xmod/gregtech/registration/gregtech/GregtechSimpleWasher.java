@@ -125,24 +125,27 @@ public class GregtechSimpleWasher {
             dustClean = GTOreDictUnificator.get(OrePrefixes.dust, v, 1L);
             dustDirty = GTOreDictUnificator.get(OrePrefixes.dustImpure, v, 1L);
             dustPure = GTOreDictUnificator.get(OrePrefixes.dustPure, v, 1L);
-            addSimpleWashRecipe(dustDirty, convertDecomposition(v, dustClean)[0]);
-            addSimpleWashRecipe(dustPure, convertDecomposition(v, dustClean)[0]);
+            dustClean = convertDecomposition(v, dustClean)[0];
+            addSimpleWashRecipe(dustDirty, dustClean);
+            addSimpleWashRecipe(dustPure, dustClean);
         }
 
         for (Werkstoff v : Werkstoff.werkstoffHashSet) {
             dustClean = v.hasItemType(OrePrefixes.dust) ? v.get(OrePrefixes.dust) : null;
             dustDirty = v.hasItemType(OrePrefixes.dustImpure) ? v.get(OrePrefixes.dustImpure) : null;
             dustPure = v.hasItemType(OrePrefixes.dustPure) ? v.get(OrePrefixes.dustPure) : null;
-            addSimpleWashRecipe(dustDirty, convertDecomposition(dustClean)[0]);
-            addSimpleWashRecipe(dustPure, convertDecomposition(dustClean)[0]);
+            dustClean = convertDecomposition(dustClean)[0];
+            addSimpleWashRecipe(dustDirty, dustClean);
+            addSimpleWashRecipe(dustPure, dustClean);
         }
 
         for (Material v : Material.mMaterialMap) {
             dustClean = v.getDust(1);
             dustDirty = v.getDustImpure(1);
             dustPure = v.getDustPurified(1);
-            addSimpleWashRecipe(dustDirty, convertDecomposition(dustClean)[0]);
-            addSimpleWashRecipe(dustPure, convertDecomposition(dustClean)[0]);
+            dustClean = convertDecomposition(dustClean)[0];
+            addSimpleWashRecipe(dustDirty, dustClean);
+            addSimpleWashRecipe(dustPure, dustClean);
         }
 
         return simpleWasherRecipes.getAllRecipes()

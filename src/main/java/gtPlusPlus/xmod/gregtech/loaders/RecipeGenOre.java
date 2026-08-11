@@ -356,6 +356,12 @@ public class RecipeGenOre extends RecipeGenBase {
                 internalOutputs.removeIf(Objects::isNull);
                 int[] chances = new int[internalOutputs.size()];
                 System.arraycopy(mChances, 0, chances, 0, internalOutputs.size());
+                ItemStack[] outputs = internalOutputs.toArray(new ItemStack[0]);
+                if (usesLanthanidesElectrolyzerOutputs(material)) {
+                    outputs = convertDecomposition(outputs);
+                } else {
+                    outputs = convert(outputs);
+                }
                 ItemStack[] inputs;
                 if (emptyCell == null) {
                     inputs = new ItemStack[] { mainDust };
@@ -364,10 +370,7 @@ public class RecipeGenOre extends RecipeGenBase {
                 }
                 GTValues.RA.stdBuilder()
                     .itemInputs(inputs)
-                    .itemOutputs(
-                        usesLanthanidesElectrolyzerOutputs(material)
-                            ? convertDecomposition(internalOutputs.toArray(new ItemStack[0]))
-                            : convert(internalOutputs.toArray(new ItemStack[0])))
+                    .itemOutputs(outputs)
                     .outputChances(chances)
                     .duration(Math.max(material.getMass() * 3L * 1, 1))
                     .eut(tVoltageMultiplier)
@@ -426,6 +429,12 @@ public class RecipeGenOre extends RecipeGenBase {
                 internalOutputs.removeIf(Objects::isNull);
                 int[] chances = new int[internalOutputs.size()];
                 System.arraycopy(mChances, 0, chances, 0, internalOutputs.size());
+                ItemStack[] outputs = internalOutputs.toArray(new ItemStack[0]);
+                if (usesLanthanidesDehydratorOutputs(material)) {
+                    outputs = convertDecomposition(outputs);
+                } else {
+                    outputs = convert(outputs);
+                }
 
                 ItemStack[] inputs;
                 if (emptyCell == null) {
@@ -436,10 +445,7 @@ public class RecipeGenOre extends RecipeGenBase {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(inputs)
-                    .itemOutputs(
-                        usesLanthanidesDehydratorOutputs(material)
-                            ? convertDecomposition(internalOutputs.toArray(new ItemStack[0]))
-                            : convert(internalOutputs.toArray(new ItemStack[0])))
+                    .itemOutputs(outputs)
                     .outputChances(chances)
                     .eut(tVoltageMultiplier)
                     .duration((int) Math.max(material.getMass() * 4L * 1, 1))
@@ -523,8 +529,9 @@ public class RecipeGenOre extends RecipeGenBase {
     }
 
     public static ItemStack getDust(Material material, int amount) {
-        return material == MaterialsElements.getInstance().IODINE
-            ? WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, amount)
-            : material.getDust(amount);
+        if (material == MaterialsElements.getInstance().IODINE) {
+            return WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, amount);
+        }
+        return material.getDust(amount);
     }
 }
