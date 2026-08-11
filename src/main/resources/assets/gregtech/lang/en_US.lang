@@ -2,7 +2,7 @@
 # ================================================================================
 #
 # Notice to whomever might work on this file, localization or on material rework.
-# Please read thru docs\FutureLocalization.md
+# Please read thru docs\Localization.md
 #
 # ================================================================================
 # ================================================================================
@@ -9285,7 +9285,7 @@ gt.alias.mechanical_armor=Mechanical Armor
 
 # ================================================================================
 # ================================================================================
-# New lang system according to docs\FutureLocalization.md
+# New lang system according to docs\Localization.md
 # Insert new keys under
 # ================================================================================
 # ================================================================================
@@ -9442,6 +9442,7 @@ gt.alias.mechanical_armor=Mechanical Armor
 ## Errors
 ## Warnings
 ## Info
+## Death Messages
 
 # Entities
 
