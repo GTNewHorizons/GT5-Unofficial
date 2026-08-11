@@ -9091,7 +9091,7 @@ gt.blockmachines.hatch.line-of-sight-connector.name=Line-Of-Sight Connector Hatc
 gt.blockmachines.multi.bec.generator.name=Bose-Einstein Condensate Entanglement Apparatus
 gt.blockmachines.multi.bec.storage.name=Bose-Einstein Condensate Containment Field
 gt.blockmachines.multi.bec.assembler.name=Bose-Einstein Condensate Observation Array
-gt.blockmachines.multi.bec.io-node.name=Observation Array Teleportation Node
+gt.blockmachines.multi.bec.io-node.name=Bose-Einstein Condensate Teleportation Node
 gt.blockmachines.multi.bec.diode.name=Bose-Einstein Condensate Maxwell Gate
 
 gt.blockmachines.pipe.bec.name=Bose-Einstein Condensate Conduit
