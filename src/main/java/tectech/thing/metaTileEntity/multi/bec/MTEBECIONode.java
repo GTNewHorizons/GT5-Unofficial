@@ -386,6 +386,10 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         loadRequiredNanites(recipe.mDuration, Arrays.asList(this.requiredNanites));
 
         state = NodeState.Crafting;
+
+        if (losHatch != null) {
+            losHatch.setBeamActive(true);
+        }
     }
 
     private void clearCurrentRecipe() {
@@ -396,6 +400,10 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         assemblerEUt = 0;
         state = NodeState.Idle;
         setRequiredTier(null);
+
+        if (losHatch != null) {
+            losHatch.setBeamActive(false);
+        }
     }
 
     @Nonnegative
