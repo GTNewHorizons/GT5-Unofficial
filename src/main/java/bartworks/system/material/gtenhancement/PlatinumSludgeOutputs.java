@@ -66,14 +66,24 @@ public final class PlatinumSludgeOutputs {
         ItemData association = GTOreDictUnificator.getAssociation(output);
         if (association == null || association.mPrefix == null || association.mMaterial == null) return output;
 
-        Werkstoff replacement = association.mMaterial.mMaterial == Materials.Platinum ? PTMetallicPowder
-            : association.mMaterial.mMaterial == Materials.Palladium ? PDMetallicPowder
-                : association.mMaterial.mMaterial == Materials.Iridium ? IrLeachResidue
-                    : association.mMaterial.mMaterial == Materials.Osmium ? IrOsLeachResidue : null;
-        OrePrefixes prefix = association.mPrefix == dust || association.mPrefix == dustImpure
-            || association.mPrefix == dustPure ? dust
-                : association.mPrefix == dustSmall ? dustSmall : association.mPrefix == dustTiny ? dustTiny : null;
-        return replacement == null || prefix == null ? output : replacement.get(prefix, output.stackSize * 2);
+        Werkstoff replacement;
+        if (association.mMaterial.mMaterial == Materials.Platinum) replacement = PTMetallicPowder;
+        else if (association.mMaterial.mMaterial == Materials.Palladium) replacement = PDMetallicPowder;
+        else if (association.mMaterial.mMaterial == Materials.Iridium) replacement = IrLeachResidue;
+        else if (association.mMaterial.mMaterial == Materials.Osmium) replacement = IrOsLeachResidue;
+        else return output;
+
+        OrePrefixes prefix;
+        if (association.mPrefix == dust || association.mPrefix == dustImpure || association.mPrefix == dustPure) {
+            prefix = dust;
+        } else if (association.mPrefix == dustSmall) {
+            prefix = dustSmall;
+        } else if (association.mPrefix == dustTiny) {
+            prefix = dustTiny;
+        } else {
+            return output;
+        }
+        return replacement.get(prefix, output.stackSize * 2);
     }
 
     private static boolean matchesDust(Werkstoff material, ItemStack stack) {
