@@ -16,7 +16,6 @@ import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
-import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
@@ -115,10 +114,8 @@ import static gtnhlanth.common.register.WerkstoffMaterialPool.ThuliumOreConcentr
 import static gtnhlanth.common.register.WerkstoffMaterialPool.YtterbiumChlorideConcentrate;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.YtterbiumExtractingNanoResin;
 import static gtnhlanth.common.register.WerkstoffMaterialPool.YtterbiumOreConcentrate;
-import static gtnhlanth.util.LanthanidesRecipeOutputs.convertOre;
 
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -138,7 +135,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -3485,34 +3481,6 @@ public class RecipeLoader {
             Materials.Samarium,
             WerkstoffMaterialPool.SamariumOreConcentrate.getBridgeMaterial());
         GTLog.out.println(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing cauldron washing recipes done!");
-    }
-
-    public static void replaceExternalRecipeOutputs() {
-        ItemStack input = GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HaumeaStoneDust", 36L, 0);
-        if (GTUtility.isStackValid(input)) {
-            GTRecipe recipe = centrifugeRecipes.findRecipeQuery()
-                .items(input)
-                .find();
-            if (recipe != null) convertOre(recipe.mOutputs);
-        }
-
-        GTRecipe emeraldRecipe = centrifugeRecipes.findRecipeQuery()
-            .items(new ItemStack(Items.emerald))
-            .filter(recipe -> recipe.mDuration == 1_200 && recipe.mEUt == 5 && recipe.mOutputs.length == 1)
-            .find();
-        if (emeraldRecipe != null) {
-            emeraldRecipe.mOutputs[0] = GTModHandler.getModItem(Mods.MagicBees.ID, "beeNugget", 9L, 6);
-        }
-
-        input = GTModHandler.getModItem(Mods.GalacticraftCore.ID, "tile.fallenMeteor", 1L, 0);
-        if (GTUtility.isStackValid(input)) {
-            GTRecipe recipe = maceratorRecipes.findRecipeQuery()
-                .items(input)
-                .find();
-            if (recipe != null) {
-                recipe.mOutputs[0] = GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.MeteoricIron, 2L);
-            }
-        }
     }
 
 }
