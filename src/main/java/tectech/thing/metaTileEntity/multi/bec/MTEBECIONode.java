@@ -548,11 +548,6 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         this.slowdowns = assembler.getSlowdowns(requiredCondensate.keySet());
 
-        if (this.slowdowns > 3) {
-            this.stopMachine(CLOGGED);
-            return;
-        }
-
         int parallelsDivisor = this.parallelRecipesInProgress;
         int aboveTierDivisor = 1 << Math.abs(this.requiredTier.tier - providedTier.tier);
         int slowdownDivisor = Math.max(this.slowdowns + 1, this.speedDivisorParameter.getValue());
@@ -607,6 +602,14 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             if (nextStep != null) {
                 nextProgress = Math.min(nextProgress, nextStep.start);
             }
+        }
+
+        // This has to be done after the step pausing logic, to prevent erroneous clogging shutdowns
+        // We can safely stop the machine here because we only get to this point if we're incremeting the progress
+        // (subtick or otherwise).
+        if (this.slowdowns > 3) {
+            this.stopMachine(CLOGGED);
+            return;
         }
 
         for (var required : this.requiredCondensate.object2LongEntrySet()) {
