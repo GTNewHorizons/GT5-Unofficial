@@ -89,7 +89,12 @@ public final class PlatinumSludgeRecipes {
 
     private PlatinumSludgeRecipes() {}
 
-    static void registerProcessRecipes() {
+    public static void register() {
+        registerHVCircuitSupportRecipe();
+        registerProcessRecipes();
+    }
+
+    private static void registerProcessRecipes() {
         registerReagentRecipes();
         registerConcentrateFeedRecipes();
         registerPlatinumRecipes();
@@ -100,7 +105,7 @@ public final class PlatinumSludgeRecipes {
         registerRhodiumRecipes();
     }
 
-    static void registerHVCircuitSupportRecipe() {
+    private static void registerHVCircuitSupportRecipe() {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Redstone.getDust(1), Materials.Electrum.getDust(1))
             .circuit(1)
