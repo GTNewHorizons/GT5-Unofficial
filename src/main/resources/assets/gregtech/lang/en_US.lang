@@ -9121,6 +9121,8 @@ GT5U.gui.text.pause-next-step=Pause Next Step
 GT5U.gui.text.providing-nanites=Providing Nanites:
 GT5U.gui.text.available-condensate=Available Condensate:
 GT5U.gui.text.bec-stored-condensate=Stored Condensate:
+GT5U.gui.text.nanite-detector-analog=Analog
+GT5U.gui.text.nanite-detector-tier=Tier %s
 
 # BEC I/O Node Structure Hints
 GT5U.tooltip.bec-ionode.controller-pos=Front center, 12th layer

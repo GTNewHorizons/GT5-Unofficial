@@ -49,6 +49,10 @@ public abstract class MTEHatchConfigurableBase extends MTEBaseFactoryHatch imple
     }
 
     public void setOutput(boolean active) {
+        setOutput(active ? 15 : 0);
+    }
+
+    public void setOutput(int power) {
         IGregTechTileEntity igte = getBaseMetaTileEntity();
 
         if (igte == null || igte.isDead()) return;
@@ -57,8 +61,8 @@ public abstract class MTEHatchConfigurableBase extends MTEBaseFactoryHatch imple
             igte.setStrongOutputRedstoneSignal(dir, (byte) 0);
         }
 
-        igte.setStrongOutputRedstoneSignal(igte.getFrontFacing(), (byte) (active ? 15 : 0));
-        igte.setActive(active);
+        igte.setStrongOutputRedstoneSignal(igte.getFrontFacing(), (byte) (power));
+        igte.setActive(power > 0);
     }
 
     @Override
