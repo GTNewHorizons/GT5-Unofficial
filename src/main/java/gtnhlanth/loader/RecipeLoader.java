@@ -132,7 +132,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import bartworks.system.material.BWGTMaterialReference;
 import bartworks.system.material.WerkstoffLoader;
-import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
+import bartworks.util.BWUtil;
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.Dyes;
@@ -4116,13 +4116,13 @@ public class RecipeLoader {
         Object input = mutableRecipe.gt5u$getRecipeInputs();
 
         if (GTUtility.areStacksEqual(result, Materials.Cerium.getDust(1), true)) {
-            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Cerium)) {
+            if (BWUtil.areCraftingInputsOnlyMaterial(input, Materials.Cerium)) {
                 return;
             }
             GTLog.out.println("replacing crafting recipe of Cerium dust by Cerium Rich Mixture");
             mutableRecipe.gt5u$setRecipeOutputItem(WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 2));
         } else if (GTUtility.areStacksEqual(result, Materials.Samarium.getDust(1), true)) {
-            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Samarium)) {
+            if (BWUtil.areCraftingInputsOnlyMaterial(input, Materials.Samarium)) {
                 return;
             }
             mutableRecipe

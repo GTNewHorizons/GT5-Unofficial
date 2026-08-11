@@ -62,7 +62,8 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     protected int times = 1;
     private UUID owner_uuid;
     private boolean wirelessEnabled = false;
-    private boolean canUseWireless = true;
+    private long lastCycleTick = 0;
+
     private long euLastCycle = 0;
     private float annihilationEfficiency = 0f;
     public static final long ANTIMATTER_FUEL_VALUE = 1_000_000_000_000L;
@@ -106,6 +107,15 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
 
     public AntimatterGenerator(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
+    }
+
+    @Override
+    public boolean shouldCheckRecipeThisTick(long tick) {
+        if (tick - lastCycleTick >= 100) {
+            lastCycleTick = tick;
+            return true;
+        }
+        return false;
     }
 
     @Override

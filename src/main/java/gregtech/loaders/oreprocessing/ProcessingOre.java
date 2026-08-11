@@ -1,5 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
+import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convert;
+import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convertSmelting;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
@@ -146,7 +148,10 @@ public class ProcessingOre implements IOreRecipeRegistrator {
             } else {
                 tHasSmelting = GTModHandler.addSmeltingRecipe(
                     aOreStack,
-                    GTUtility.copyAmount(aMultiplier * aMaterial.mSmeltingMultiplier, tSmeltInto));
+                    convertSmelting(
+                        aMaterial,
+                        aPrefix,
+                        GTUtility.copyAmount(aMultiplier * aMaterial.mSmeltingMultiplier, tSmeltInto)));
             }
 
             if (aMaterial.contains(SubTag.BLASTFURNACE_CALCITE_TRIPLE)) {
@@ -209,16 +214,20 @@ public class ProcessingOre implements IOreRecipeRegistrator {
         if (!tHasSmelting) {
             GTModHandler.addSmeltingRecipe(
                 aOreStack,
-                GTOreDictUnificator.get(
-                    OrePrefixes.gem,
-                    tMaterial.mDirectSmelting,
-                    Math.max(1, aMultiplier * aMaterial.mSmeltingMultiplier / 2)));
+                convertSmelting(
+                    aMaterial,
+                    aPrefix,
+                    GTOreDictUnificator.get(
+                        OrePrefixes.gem,
+                        tMaterial.mDirectSmelting,
+                        Math.max(1, aMultiplier * aMaterial.mSmeltingMultiplier / 2))));
         }
 
         if (tCrushed != null && aMaterial != Materials.Knightmetal) {
             GTValues.RA.stdBuilder()
                 .itemInputs(aOreStack)
-                .itemOutputs(GTUtility.copy(GTUtility.copyAmount(tCrushed.stackSize, tGem), tCrushed))
+                .itemOutputs(
+                    convert(aMaterial, GTUtility.copy(GTUtility.copyAmount(tCrushed.stackSize, tGem), tCrushed)))
                 .duration(10)
                 .eut(TierEU.RECIPE_LV / 2)
                 .addTo(hammerRecipes);
@@ -247,7 +256,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
             chanceOre2 = 100 * chanceOre2; // converting to the GT format, 100% is 10000
             GTValues.RA.stdBuilder()
                 .itemInputs(aOreStack)
-                .itemOutputs(GTUtility.mul(2, tCrushed), byproduct, stoneDust)
+                .itemOutputs(convert(aMaterial, GTUtility.mul(2, tCrushed), byproduct, stoneDust))
                 .outputChances(10000, chanceOre2, 5000)
                 .duration(20 * SECONDS)
                 .nbtSensitive()
