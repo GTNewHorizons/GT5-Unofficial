@@ -81,8 +81,6 @@ import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
-import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
 
 public final class PlatinumSludgeRecipes {
@@ -265,41 +263,37 @@ public final class PlatinumSludgeRecipes {
                     .addTo(UniversalChemical);
             }
         }
-        for (Materials material : Materials.values()) {
-            if (materialsContains(material, Materials.Sulfur)
-                && (materialsContains(material, Materials.Copper) || materialsContains(material, Materials.Nickel))) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get(crushedPurified, material, 1))
-                    .circuit(1)
-                    .fluidInputs(AquaRegia.getFluidOrGas(300))
-                    .fluidOutputs(PTConcentrate.getFluidOrGas(300))
-                    .duration(12 * SECONDS + 10 * TICKS)
-                    .eut(TierEU.RECIPE_LV)
-                    .addTo(UniversalChemical);
-                GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get(crushedPurified, material, 9))
-                    .circuit(9)
-                    .fluidInputs(AquaRegia.getFluidOrGas(2_700))
-                    .fluidOutputs(PTConcentrate.getFluidOrGas(2_700))
-                    .duration(1 * MINUTES + 52 * SECONDS + 10 * TICKS)
-                    .eut(TierEU.RECIPE_LV)
-                    .addTo(UniversalChemical);
-                GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get(crushedPurified, material, 9), PTMetallicPowder.get(dust, 9))
-                    .itemOutputs(PTResidue.get(dust))
-                    .fluidInputs(AquaRegia.getFluidOrGas(20_700))
-                    .fluidOutputs(PTConcentrate.getFluidOrGas(20_700))
-                    .duration(1 * MINUTES + 52 * SECONDS + 10 * TICKS)
-                    .eut(TierEU.RECIPE_LV)
-                    .addTo(UniversalChemical);
-            }
-        }
+        registerConcentrateFeedRecipes(Materials.Cooperite);
+        registerConcentrateFeedRecipes(Materials.Tetrahedrite);
+        registerConcentrateFeedRecipes(Materials.Chalcopyrite);
+        registerConcentrateFeedRecipes(Materials.Pentlandite);
     }
 
-    private static boolean materialsContains(Materials one, ISubTagContainer other) {
-        if (one == null || one.mMaterialList == null || one.mMaterialList.isEmpty()) return false;
-        for (MaterialStack stack : one.mMaterialList) if (stack.mMaterial == other) return true;
-        return false;
+    private static void registerConcentrateFeedRecipes(Materials material) {
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(crushedPurified, material, 1))
+            .circuit(1)
+            .fluidInputs(AquaRegia.getFluidOrGas(300))
+            .fluidOutputs(PTConcentrate.getFluidOrGas(300))
+            .duration(12 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(crushedPurified, material, 9))
+            .circuit(9)
+            .fluidInputs(AquaRegia.getFluidOrGas(2_700))
+            .fluidOutputs(PTConcentrate.getFluidOrGas(2_700))
+            .duration(1 * MINUTES + 52 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(crushedPurified, material, 9), PTMetallicPowder.get(dust, 9))
+            .itemOutputs(PTResidue.get(dust))
+            .fluidInputs(AquaRegia.getFluidOrGas(20_700))
+            .fluidOutputs(PTConcentrate.getFluidOrGas(20_700))
+            .duration(1 * MINUTES + 52 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
     }
 
     private static void registerPlatinumRecipes() {
