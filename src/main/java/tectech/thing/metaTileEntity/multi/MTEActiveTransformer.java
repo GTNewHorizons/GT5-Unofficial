@@ -58,7 +58,6 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     // of one structure check to finish your hotswap before it deforms.
     private boolean grace = false;
 
-    private double transferBuffer = 0d;
     private int transferSamples = 0;
 
     private double transferredLast5Secs = 0d;
@@ -153,7 +152,6 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         super.onPostPowerPass(eu);
         // Called once per tick
 
-        transferBuffer += eu;
         transferSamples++;
 
         // Only update the samples once every second

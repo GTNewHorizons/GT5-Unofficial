@@ -3,6 +3,8 @@ package tectech.thing.metaTileEntity.hatch;
 import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.ArrayList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,6 +32,13 @@ import tectech.util.CommonValues;
  */
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnectsToEnergyTunnel {
+
+    private static final MTEPipeLaser[] NO_PIPES = new MTEPipeLaser[0];
+
+    private MTEHatchEnergyTunnel cachedTarget;
+    private MTEPipeLaser[] cachedPipes;
+    private byte cachedColor;
+    private ForgeDirection cachedFront;
 
     public MTEHatchDynamoTunnel(int ID, String unlocalisedName, String localisedName, int tier, int amps) {
         super(ID, unlocalisedName, localisedName, tier, 0, null, amps);
@@ -112,10 +121,21 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
     private void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
         byte color = getBaseMetaTileEntity().getColorization();
         if (color < 0) {
+            clearCachedRoute();
             return;
         }
         final ForgeDirection front = aBaseMetaTileEntity.getFrontFacing();
+        if (isCachedRouteValid(color, front)) {
+            if (!transferEnergy(aBaseMetaTileEntity, cachedTarget)) {
+                clearCachedRoute();
+            }
+            return;
+        }
+        clearCachedRoute();
+
         ForgeDirection opposite = front.getOpposite();
+        ArrayList<MTEPipeLaser> pipes = null;
+        boolean cacheable = true;
         for (short dist = 1; dist < 1000; dist++) {
 
             IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity
@@ -125,6 +145,7 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
                 if (aMetaTileEntity != null) {
                     // If we hit a mirror, use the mirror's view instead
                     if (aMetaTileEntity instanceof MTEPipeLaserMirror tMirror) {
+                        cacheable = false;
 
                         tGTTileEntity = tMirror.bendAround(opposite);
                         if (tGTTileEntity == null) {
@@ -135,32 +156,24 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
                         }
                     }
 
-                    if (aMetaTileEntity instanceof MTEHatchEnergyTunnel && opposite == tGTTileEntity.getFrontFacing()) {
-                        if (maxEUOutput() > ((MTEHatchEnergyTunnel) aMetaTileEntity).maxEUInput()) {
-                            aMetaTileEntity.doExplosion(maxEUOutput());
-                            setEUVar(aBaseMetaTileEntity.getStoredEU() - maxEUOutput());
-                            return;
-                        } else if (maxEUOutput() == ((MTEHatchEnergyTunnel) aMetaTileEntity).maxEUInput()) {
-                            long diff = Math.min(
-                                Amperes * 20L * maxEUOutput(),
-                                Math.min(
-                                    ((MTEHatchEnergyTunnel) aMetaTileEntity).maxEUStore()
-                                        - aMetaTileEntity.getBaseMetaTileEntity()
-                                            .getStoredEU(),
-                                    aBaseMetaTileEntity.getStoredEU()));
-
-                            setEUVar(aBaseMetaTileEntity.getStoredEU() - diff);
-
-                            ((MTEHatchEnergyTunnel) aMetaTileEntity).setEUVar(
-                                aMetaTileEntity.getBaseMetaTileEntity()
-                                    .getStoredEU() + diff);
+                    if (aMetaTileEntity instanceof MTEHatchEnergyTunnel target
+                        && opposite == tGTTileEntity.getFrontFacing()) {
+                        if (transferEnergy(aBaseMetaTileEntity, target) && cacheable) {
+                            cachedTarget = target;
+                            cachedPipes = pipes == null ? NO_PIPES : pipes.toArray(new MTEPipeLaser[0]);
+                            cachedColor = color;
+                            cachedFront = front;
                         }
                         return;
-                    } else if (aMetaTileEntity instanceof MTEPipeLaser) {
-                        if (((MTEPipeLaser) aMetaTileEntity).connectionCount < 2) {
+                    } else if (aMetaTileEntity instanceof MTEPipeLaser pipe) {
+                        if (pipe.connectionCount < 2) {
                             return;
                         } else {
-                            ((MTEPipeLaser) aMetaTileEntity).markUsed();
+                            pipe.markUsed();
+                            if (cacheable) {
+                                if (pipes == null) pipes = new ArrayList<>();
+                                pipes.add(pipe);
+                            }
                         }
                     } else {
                         return;
@@ -172,6 +185,59 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
                 return;
             }
         }
+    }
+
+    // Cached route members can't drift: a TileEntity's coordinates are immutable, and both breaking a block and
+    // unloading its chunk mark the BaseMetaTileEntity dead, so isValid() covers removal, replacement and unload.
+    private boolean isCachedRouteValid(byte color, ForgeDirection front) {
+        if (cachedTarget == null || cachedPipes == null
+            || cachedColor != color
+            || cachedFront != front
+            || !cachedTarget.isValid()) {
+            return false;
+        }
+
+        IGregTechTileEntity target = cachedTarget.getBaseMetaTileEntity();
+        if (target.getColorization() != color || target.getFrontFacing() != front.getOpposite()) {
+            return false;
+        }
+
+        for (MTEPipeLaser pipe : cachedPipes) {
+            IGregTechTileEntity pipeBase = pipe.getBaseMetaTileEntity();
+            if (pipeBase == null || pipeBase.isDead()
+                || pipeBase.getMetaTileEntity() != pipe
+                || pipe.connectionCount < 2
+                || pipeBase.getColorization() != color) {
+                return false;
+            }
+            pipe.markUsed();
+        }
+
+        return true;
+    }
+
+    /** @return false if the target was blown up, meaning the route must not be cached. */
+    private boolean transferEnergy(IGregTechTileEntity source, MTEHatchEnergyTunnel target) {
+        long outputVoltage = maxEUOutput();
+        if (outputVoltage > target.maxEUInput()) {
+            target.doExplosion(outputVoltage);
+            setEUVar(source.getStoredEU() - outputVoltage);
+            return false;
+        } else if (outputVoltage == target.maxEUInput()) {
+            IGregTechTileEntity targetBase = target.getBaseMetaTileEntity();
+            long diff = Math.min(
+                Amperes * 20L * outputVoltage,
+                Math.min(target.maxEUStore() - targetBase.getStoredEU(), source.getStoredEU()));
+
+            setEUVar(source.getStoredEU() - diff);
+            target.setEUVar(targetBase.getStoredEU() + diff);
+        }
+        return true;
+    }
+
+    private void clearCachedRoute() {
+        cachedTarget = null;
+        cachedPipes = null;
     }
 
     @Override
