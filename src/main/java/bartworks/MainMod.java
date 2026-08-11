@@ -50,7 +50,6 @@ import bartworks.system.material.CircuitGeneration.CircuitWraps;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
-import bartworks.system.material.gtenhancement.PlatinumSludgeRecipeAudit;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.ResultWrongSievert;
 import bartworks.util.log.DebugLog;
@@ -73,6 +72,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.CasingTier;
 import gregtech.api.util.GlassTier;
+import gregtech.api.util.RecipeChangeAudit;
 import tectech.loader.recipe.Godforge;
 
 @Mod(
@@ -209,7 +209,8 @@ public final class MainMod {
     @Mod.EventHandler
     public void onModLoadingComplete(FMLLoadCompleteEvent event) {
         StaticRecipeChangeLoaders.addElectricImplosionCompressorRecipes();
-        PlatinumSludgeRecipeAudit.run(PlatinumSludgeOverHaul::replacePureElements);
+        RecipeChangeAudit
+            .run("platinum-sludge-overhaul", "Platinum Sludge Overhaul", PlatinumSludgeOverHaul::replacePureElements);
 
         runOnServerStarted();
         StaticRecipeChangeLoaders.unificationRecipeEnforcer();

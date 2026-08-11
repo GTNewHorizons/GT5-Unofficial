@@ -1,4 +1,4 @@
-package bartworks.system.material.gtenhancement;
+package gregtech.api.util;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -33,33 +33,27 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GTLog;
-import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 
-/** Temporary audit used to verify the removal of {@link PlatinumSludgeOverHaul}. */
-public final class PlatinumSludgeRecipeAudit {
+/** Dumps recipe state before and after a change, plus their difference, as JSON Lines. */
+public final class RecipeChangeAudit {
 
     private static final Gson GSON = new Gson();
-    private static final String OUTPUT_DIRECTORY = "platinum-sludge-overhaul";
 
-    private PlatinumSludgeRecipeAudit() {}
+    private RecipeChangeAudit() {}
 
-    public static void run(Runnable overhaul) {
+    public static void run(String outputDirectory, String description, Runnable change) {
         Snapshot before;
         try {
             before = capture();
         } catch (RuntimeException e) {
-            GTLog.err
-                .println("Failed to capture recipes before Platinum Sludge Overhaul; running overhaul without dump");
+            GTLog.err.println("Failed to capture recipes before " + description + "; running change without dump");
             e.printStackTrace(GTLog.err);
-            overhaul.run();
+            change.run();
             return;
         }
 
-        overhaul.run();
+        change.run();
 
         try {
             Snapshot after = capture();
@@ -68,13 +62,13 @@ public final class PlatinumSludgeRecipeAudit {
                 .toPath()
                 .getParent()
                 .resolve("dumps")
-                .resolve(OUTPUT_DIRECTORY);
+                .resolve(outputDirectory);
             Files.createDirectories(output);
             write(output.resolve("before.jsonl"), before.records.values());
             write(output.resolve("after.jsonl"), after.records.values());
             write(output.resolve("changes.jsonl"), changes(before, after));
         } catch (IOException | RuntimeException e) {
-            GTLog.err.println("Failed to dump Platinum Sludge Overhaul recipes");
+            GTLog.err.println("Failed to dump " + description + " recipes");
             e.printStackTrace(GTLog.err);
         }
     }
@@ -276,7 +270,7 @@ public final class PlatinumSludgeRecipeAudit {
     private static JsonArray items(ItemStack[] stacks) {
         JsonArray result = new JsonArray();
         if (stacks != null) Arrays.stream(stacks)
-            .map(PlatinumSludgeRecipeAudit::item)
+            .map(RecipeChangeAudit::item)
             .forEach(result::add);
         return result;
     }
@@ -284,7 +278,7 @@ public final class PlatinumSludgeRecipeAudit {
     private static JsonArray fluids(FluidStack[] stacks) {
         JsonArray result = new JsonArray();
         if (stacks != null) Arrays.stream(stacks)
-            .map(PlatinumSludgeRecipeAudit::fluid)
+            .map(RecipeChangeAudit::fluid)
             .forEach(result::add);
         return result;
     }
