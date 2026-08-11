@@ -1,5 +1,8 @@
 package gregtech.common.items;
 
+import static bartworks.system.material.WerkstoffLoader.AcidicIridiumSolution;
+import static bartworks.system.material.WerkstoffLoader.AcidicOsmiumSolution;
+import static bartworks.system.material.WerkstoffLoader.PTConcentrate;
 import static gregtech.api.enums.GTValues.NF;
 import static gregtech.api.enums.GTValues.NI;
 import static gregtech.api.enums.GTValues.V;
@@ -1016,7 +1019,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                         combInput = GTUtility.copyAmount(4, tComb);
                         combOutput = Materials.Osmium.getNuggets(1);
                         fluidInput = volt.getFluidAccordingToCombTier();
-                        fluidOutput = Materials.Osmium.getMolten(2 * INGOTS);
+                        fluidOutput = AcidicOsmiumSolution.getFluidOrGas(1_000);
                         durationTicks = volt.getComplexTime() * 17;
                         eut = volt.getChemicalEnergy();
                         requiresCleanroom = volt.compareTo(Voltage.IV) > 0;
@@ -1025,7 +1028,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                         combInput = GTUtility.copyAmount(4, tComb);
                         combOutput = Materials.Platinum.getNuggets(1);
                         fluidInput = volt.getFluidAccordingToCombTier();
-                        fluidOutput = Materials.Platinum.getMolten(2 * INGOTS);
+                        fluidOutput = PTConcentrate.getFluidOrGas(2_000);
                         durationTicks = volt.getComplexTime() * 10;
                         eut = volt.getChemicalEnergy();
                         requiresCleanroom = volt.compareTo(Voltage.HV) > 0;
@@ -1034,7 +1037,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                         combInput = GTUtility.copyAmount(4, tComb);
                         combOutput = Materials.Iridium.getNuggets(1);
                         fluidInput = volt.getFluidAccordingToCombTier();
-                        fluidOutput = Materials.Iridium.getMolten(2 * INGOTS);
+                        fluidOutput = AcidicIridiumSolution.getFluidOrGas(1_000);
                         durationTicks = volt.getComplexTime() * 14;
                         eut = volt.getChemicalEnergy();
                         requiresCleanroom = volt.compareTo(Voltage.EV) > 0;
