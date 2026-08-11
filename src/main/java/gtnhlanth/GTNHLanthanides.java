@@ -7,11 +7,9 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.api.enums.Mods;
-import gregtech.api.util.RecipeChangeAudit;
 import gtnhlanth.common.CommonProxy;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
 import gtnhlanth.common.register.LanthItemList;
@@ -69,10 +67,5 @@ public class GTNHLanthanides {
         BotRecipes.addGTRecipe();
         proxy.postInit(e);
 
-    }
-
-    @EventHandler
-    public static void onModLoadingComplete(FMLLoadCompleteEvent e) {
-        RecipeChangeAudit.run("lanthanides-cerium-sources-inlined", "inlined cerium source replacements", () -> {});
     }
 }
