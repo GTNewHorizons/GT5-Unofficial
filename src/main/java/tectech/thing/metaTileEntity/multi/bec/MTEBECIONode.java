@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -1103,7 +1104,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                 setMaxParallel(value);
             }
         };
-        speedDivisorParameter = new IntegerParameter(
+        speedDivisorParameter = new SpeedDivisorParameter(
             1,
             "GT5U.gui.text.bec-speed-divisor",
             SPEED_DIVISOR_PARAMETER,
@@ -1117,5 +1118,22 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     @Override
     public List<Parameter<?, ?>> getParameters() {
         return List.of(minParallelParameter, maxParallelParameter, speedDivisorParameter);
+    }
+
+    private class SpeedDivisorParameter extends IntegerParameter {
+
+        public SpeedDivisorParameter(Integer value, String langKey, String nbtKey, Supplier<Integer> min,
+            Supplier<Integer> max, Object... langArgs) {
+            super(value, langKey, nbtKey, min, max, langArgs);
+        }
+
+        @Override
+        public void setValue(Integer value) {
+            super.setValue(value);
+
+            // Reset the subtick counter to avoid tick accumulation exploits (set speed divisor high, put first step
+            // nanite, wait, set speed divisor low - finishes recipe on next tick).
+            MTEBECIONode.this.subtickCounter = 0;
+        }
     }
 }
