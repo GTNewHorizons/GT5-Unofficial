@@ -143,7 +143,7 @@ itemGroup.GregTech.Materials=Materials
 Lang keys live in a single global namespace shared by every mod (and vanilla) that's loaded.
 
 ### 4.2 Case & Separators
-- All lowercase except the `gt` prefix.
+- All lowercase.
 - Use `.` as separator between segments.
 - Use `_` as separator within a segment word (snake_case within a segment).
 
