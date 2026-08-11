@@ -1053,75 +1053,23 @@ public class PlatinumSludgeOverHaul {
         ItemStack output = recipe.getRecipeOutput();
 
         if (GTUtility.areStacksEqual(output, Materials.Platinum.getDust(1), true)) {
-            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Platinum)) return;
+            if (BWUtil.areCraftingInputsOnlyMaterial(input, Materials.Platinum)) return;
             mutableRecipe.gt5u$setRecipeOutputItem(PTMetallicPowder.get(dust, output.stackSize * 2));
         } else if (GTUtility.areStacksEqual(output, Materials.Palladium.getDust(1), true)) {
-            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Palladium)) return;
+            if (BWUtil.areCraftingInputsOnlyMaterial(input, Materials.Palladium)) return;
             mutableRecipe.gt5u$setRecipeOutputItem(PDMetallicPowder.get(dust, output.stackSize * 2));
         } else if (GTUtility.areStacksEqual(output, Materials.Iridium.getDust(1), true)) {
-            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Iridium)) return;
+            if (BWUtil.areCraftingInputsOnlyMaterial(input, Materials.Iridium)) return;
             mutableRecipe.gt5u$setRecipeOutputItem(IrLeachResidue.get(dust, output.stackSize));
         } else if (GTUtility.areStacksEqual(output, Materials.Osmium.getDust(1), true)) {
-            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Osmium)) return;
+            if (BWUtil.areCraftingInputsOnlyMaterial(input, Materials.Osmium)) return;
             mutableRecipe.gt5u$setRecipeOutputItem(IrOsLeachResidue.get(dust, output.stackSize));
         }
     }
 
+    @Deprecated
     public static boolean checkRecipe(Object input, Materials material) {
-        if (!(input instanceof List<?>) && !(input instanceof Object[])) {
-            return false;
-        }
-
-        ArrayList<List<?>> lists = new ArrayList<>();
-        ArrayList<ItemStack> stacks = new ArrayList<>();
-
-        if (input instanceof List<?>listInput) {
-            for (Object entry : listInput) {
-                if (entry instanceof List<?>list) {
-                    lists.add(list);
-                } else if (entry instanceof ItemStack stack) {
-                    stacks.add(stack);
-                }
-            }
-        } else if (input instanceof Object[]arrayInput) {
-            for (Object entry : arrayInput) {
-                if (entry instanceof List<?>list) {
-                    lists.add(list);
-                } else if (entry instanceof ItemStack stack) {
-                    stacks.add(stack);
-                }
-            }
-        }
-
-        for (List<?> list : lists) {
-            if (list.isEmpty()) {
-                continue;
-            }
-
-            Object first = list.get(0);
-            if (!(first instanceof ItemStack stack)) {
-                return false;
-            }
-
-            stacks.add(stack);
-        }
-
-        if (stacks.isEmpty()) {
-            return false;
-        }
-
-        for (ItemStack stack : stacks) {
-            ItemData association = GTOreDictUnificator.getAssociation(stack);
-            if (!BWUtil.checkStackAndPrefix(association)) {
-                return false;
-            }
-
-            if (association.mMaterial.mMaterial != material) {
-                return false;
-            }
-        }
-
-        return true;
+        return BWUtil.areCraftingInputsOnlyMaterial(input, material);
     }
 
     private static boolean isInBlackList(ItemStack stack, List<ItemStack> availableItemList) {
