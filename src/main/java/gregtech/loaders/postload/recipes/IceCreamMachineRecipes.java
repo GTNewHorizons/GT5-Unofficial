@@ -43,9 +43,10 @@ public class IceCreamMachineRecipes implements Runnable {
         addRecipe(ItemList.Ice_Cream_Blueberry);
         addRecipe(ItemList.Ice_Cream_Brownie);
         addRecipe(ItemList.Ice_Cream_ButterPecan);
+        addRecipe(ItemList.Ice_Cream_Butterscotch);
         addRecipe(ItemList.Ice_Cream_Caramel);
-        addRecipe(ItemList.Ice_Cream_ChocolateChip);
         addRecipe(ItemList.Ice_Cream_Chocolate);
+        addRecipe(ItemList.Ice_Cream_ChocolateChip);
         addRecipe(ItemList.Ice_Cream_Coffee);
         addRecipe(ItemList.Ice_Cream_CookieDough);
         addRecipe(ItemList.Ice_Cream_CookiesAndCream);
@@ -60,11 +61,21 @@ public class IceCreamMachineRecipes implements Runnable {
         addRecipe(ItemList.Ice_Cream_NoFlavor);
         addRecipe(ItemList.Ice_Cream_PeanutButter);
         addRecipe(ItemList.Ice_Cream_Pistachio);
+        addRecipe(ItemList.Ice_Cream_Radioactive);
         addRecipe(ItemList.Ice_Cream_SaltedCaramel);
+        addRecipe(ItemList.Ice_Cream_Spaghetti);
         addRecipe(ItemList.Ice_Cream_Sprinkles);
         addRecipe(ItemList.Ice_Cream_Strawberry);
         addRecipe(ItemList.Ice_Cream_ToffeeButter);
         addRecipe(ItemList.Ice_Cream_Vanilla);
+        addRecipe(ItemList.Ice_Cream_Sandwich);
+        addRecipe(ItemList.Ice_Cream_Sandwich_Chocolate);
+        addRecipe(ItemList.Ice_Cream_Popsicle_Chocolate);
+        addRecipe(ItemList.Ice_Cream_Popsicle_Fruit);
+        addRecipe(ItemList.Ice_Cream_Popsicle_Double);
+        addRecipe(ItemList.Ice_Cream_Sorbet_Raspberry);
+        addRecipe(ItemList.Ice_Cream_BananaSplit);
+        addRecipe(ItemList.Ice_Cream_Sorbet_RainbowStellar);
     }
 
     private void addRecipe(ItemList flavor) {
