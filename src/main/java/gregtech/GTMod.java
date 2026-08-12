@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 
@@ -230,6 +231,22 @@ public class GTMod {
 
     public static GTAchievements achievements;
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
+    public static final Logger GT_EXPLOSION_LOGGER = LogManager.getLogger("GregTech Explosions");
+    public static final Logger GT_ORE_DICT_LOGGER = LogManager.getLogger("GregTech Ore Dictionary");
+
+    static {
+        File minecraftHome = Launch.minecraftHome == null ? new File(".") : Launch.minecraftHome;
+        try {
+            GTLog.configureExplosionLogger(minecraftHome);
+        } catch (RuntimeException e) {
+            GT_FML_LOGGER.error("Failed to configure explosion logger", e);
+        }
+        try {
+            GTLog.configureOreDictLogger(minecraftHome);
+        } catch (RuntimeException e) {
+            GT_FML_LOGGER.error("Failed to configure ore dictionary logger", e);
+        }
+    }
 
     public GTMod() {
         GTValues.DW = new GTDummyWorld();
@@ -339,6 +356,7 @@ public class GTMod {
         GTPreLoad.sortToTheEnd();
         GregTechAPI.sPreloadFinished = true;
         GTLog.out.println("GTMod: Preload-Phase finished!");
+        GT_ORE_DICT_LOGGER.info("GTMod: Preload-Phase finished!");
 
         GTUIInfos.init();
 
@@ -402,6 +420,7 @@ public class GTMod {
 
         GregTechAPI.sLoadFinished = true;
         GTLog.out.println("GTMod: Load-Phase finished!");
+        GT_ORE_DICT_LOGGER.info("GTMod: Load-Phase finished!");
 
         for (Runnable tRunnable : GregTechAPI.sAfterGTLoad) {
             tRunnable.run();
@@ -554,6 +573,7 @@ public class GTMod {
         GTLanguageManager.sEnglishFile.save();
         GregTechAPI.sPostloadFinished = true;
         GTLog.out.println("GTMod: PostLoad-Phase finished!");
+        GT_ORE_DICT_LOGGER.info("GTMod: PostLoad-Phase finished!");
         for (Runnable tRunnable : GregTechAPI.sAfterGTPostload) {
             tRunnable.run();
         }
@@ -738,6 +758,7 @@ public class GTMod {
         }
         GregTechAPI.mServerStarted = true;
         GTLog.out.println("GTMod: ServerStarting-Phase finished!");
+        GT_ORE_DICT_LOGGER.info("GTMod: ServerStarting-Phase finished!");
 
         for (Runnable tRunnable : GregTechAPI.sAfterGTServerstart) {
             tRunnable.run();

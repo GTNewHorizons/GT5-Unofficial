@@ -1569,7 +1569,7 @@ public class GTProxy implements IFuelHandler {
             if (aOriginalMod.equals(GregTech.ID)) {
                 aOriginalMod = "UNKNOWN";
             }
-            GTLog.writeOreLog(
+            GTMod.GT_ORE_DICT_LOGGER.info(
                 aOriginalMod
                     + " did something very bad! The registration is too invalid to even be shown properly. This happens only if you register null, invalid Items, empty Strings or even nonexisting Events to the OreDict.");
             throw new IllegalArgumentException(
@@ -1595,7 +1595,7 @@ public class GTProxy implements IFuelHandler {
             this.mRegisteredOres.add(aEvent.Ore);
             if (this.mIgnoredItems.contains(aEvent.Name)) {
                 if ((aEvent.Name.startsWith("item"))) {
-                    GTLog.writeOreLog(tModToName);
+                    GTMod.GT_ORE_DICT_LOGGER.info(tModToName);
                     if (aEvent.Name.equals("itemCopperWire")) {
                         GTOreDictUnificator.registerOre(OreDictNames.craftingWireCopper, aEvent.Ore);
                     }
@@ -1605,7 +1605,7 @@ public class GTProxy implements IFuelHandler {
                     return;
                 }
             } else if (this.mIgnoredNames.contains(aEvent.Name)) {
-                GTLog.writeOreLog(tModToName + " is getting ignored via hardcode.");
+                GTMod.GT_ORE_DICT_LOGGER.info(tModToName + " is getting ignored via hardcode.");
                 return;
             } else if (aEvent.Name.equals("stone")) {
                 GTOreDictUnificator.registerOre("stoneSmooth", aEvent.Ore);
@@ -1617,8 +1617,8 @@ public class GTProxy implements IFuelHandler {
                 || (aEvent.Name.contains(":"))
                 || (aEvent.Name.contains("."))
                 || (aEvent.Name.contains("$"))) {
-                    GTLog.writeOreLog(
-                        tModToName + " is using a private Prefix and is therefor getting ignored properly.");
+                    GTMod.GT_ORE_DICT_LOGGER
+                        .info(tModToName + " is using a private Prefix and is therefor getting ignored properly.");
                     return;
                 } else if (aEvent.Name.equals("copperWire")) {
                     GTOreDictUnificator.registerOre(OreDictNames.craftingWireCopper, aEvent.Ore);
@@ -1669,13 +1669,13 @@ public class GTProxy implements IFuelHandler {
                     GTOreDictUnificator.registerOre(OrePrefixes.compressed, Materials.Aluminium, aEvent.Ore);
                     return;
                 } else if (aEvent.Name.contains(" ")) {
-                    GTLog.writeOreLog(
+                    GTMod.GT_ORE_DICT_LOGGER.info(
                         tModToName + " is getting re-registered because the OreDict Name containing invalid spaces.");
                     GTOreDictUnificator.registerOre(aEvent.Name.replace(" ", ""), GTUtility.copyAmount(1, aEvent.Ore));
                     aEvent.Ore.setStackDisplayName("Invalid OreDictionary Tag");
                     return;
                 } else if (this.mInvalidNames.contains(aEvent.Name)) {
-                    GTLog.writeOreLog(tModToName + " is wrongly registered and therefor getting ignored.");
+                    GTMod.GT_ORE_DICT_LOGGER.info(tModToName + " is wrongly registered and therefor getting ignored.");
 
                     return;
                 }
@@ -1690,14 +1690,15 @@ public class GTProxy implements IFuelHandler {
             if (aPrefix == null) {
                 if (aEvent.Name.toLowerCase()
                     .equals(aEvent.Name)) {
-                    GTLog.writeOreLog(tModToName + " is invalid due to being solely lowercased.");
+                    GTMod.GT_ORE_DICT_LOGGER.info(tModToName + " is invalid due to being solely lowercased.");
                     return;
                 } else if (aEvent.Name.toUpperCase()
                     .equals(aEvent.Name)) {
-                        GTLog.writeOreLog(tModToName + " is invalid due to being solely uppercased.");
+                        GTMod.GT_ORE_DICT_LOGGER.info(tModToName + " is invalid due to being solely uppercased.");
                         return;
                     } else if (Character.isUpperCase(aEvent.Name.charAt(0))) {
-                        GTLog.writeOreLog(tModToName + " is invalid due to the first character being uppercased.");
+                        GTMod.GT_ORE_DICT_LOGGER
+                            .info(tModToName + " is invalid due to the first character being uppercased.");
                     }
             } else {
                 if (aPrefix.skipActiveUnification()) {
@@ -1706,7 +1707,7 @@ public class GTProxy implements IFuelHandler {
                 if (aPrefix != aPrefix.mPrefixInto) {
                     String tNewName = aEvent.Name.replaceFirst(aPrefix.toString(), aPrefix.mPrefixInto.toString());
                     if (!GTOreDictUnificator.isRegisteringOres()) {
-                        GTLog.writeOreLog(
+                        GTMod.GT_ORE_DICT_LOGGER.info(
                             tModToName + " uses a depricated Prefix, and is getting re-registered as " + tNewName);
                     }
                     GTOreDictUnificator.registerOre(tNewName, aEvent.Ore);
@@ -1723,7 +1724,7 @@ public class GTProxy implements IFuelHandler {
                             if (aMaterial != aMaterial.mMaterialInto) {
                                 GTOreDictUnificator.registerOre(aPrefix, aMaterial.mMaterialInto, aEvent.Ore);
                                 if (!GTOreDictUnificator.isRegisteringOres()) {
-                                    GTLog.writeOreLog(
+                                    GTMod.GT_ORE_DICT_LOGGER.info(
                                         tModToName + " uses a deprecated Material and is getting re-registered as "
                                             + aPrefix.get(aMaterial.mMaterialInto));
                                 }
@@ -1918,7 +1919,7 @@ public class GTProxy implements IFuelHandler {
                                         tDye.name()
                                             .replaceFirst("dye", ""))) {
                                         GTOreDictUnificator.addToBlacklist(aEvent.Ore);
-                                        GTLog.writeOreLog(
+                                        GTMod.GT_ORE_DICT_LOGGER.info(
                                             tModToName
                                                 + " Oh man, why the fuck would anyone need a OreDictified Color for this, that is even too much for GregTech... do not report this, this is just a random Comment about how ridiculous this is.");
                                         return;
@@ -1928,7 +1929,7 @@ public class GTProxy implements IFuelHandler {
                                 // !!!Unknown Material detected!!! Please report to GregTech Intergalactical for
                                 // additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is just
                                 // an Information, which you should pass to me.");
-                                // GTLog.writeOreLog(tModToName + " uses an unknown
+                                // GTMod.GT_ORE_DICT_LOGGER.info(tModToName + " uses an unknown
                                 // Material. Report this to GregTech.");
                                 return;
                             }
@@ -1939,7 +1940,8 @@ public class GTProxy implements IFuelHandler {
                 } else if (aPrefix.isSelfReferencing()) {
                     aPrefix.add(GTUtility.copyAmount(1, aEvent.Ore));
                 } else {
-                    GTLog.writeOreLog(tModToName + " uses a Prefix as full OreDict Name, and is therefor invalid.");
+                    GTMod.GT_ORE_DICT_LOGGER
+                        .info(tModToName + " uses a Prefix as full OreDict Name, and is therefor invalid.");
                     aEvent.Ore.setStackDisplayName("Invalid OreDictionary Tag");
                     return;
                 }
@@ -1989,7 +1991,7 @@ public class GTProxy implements IFuelHandler {
                     default -> {}
                 }
             }
-            GTLog.writeOreLog(tModToName);
+            GTMod.GT_ORE_DICT_LOGGER.info(tModToName);
 
             OreDictEventContainer tOre = new OreDictEventContainer(aEvent, aPrefix, aMaterial, aMod);
             if ((!this.mOreDictActivated) || (!GregTechAPI.sUnificationEntriesRegistered)) {
