@@ -893,10 +893,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> currentTip, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
         String machineProgressString = GTWaila.getMachineProgressString(
             tag.getBoolean("isActive"),
             tag.getBoolean("isAllowedToWork"),
@@ -928,10 +926,11 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        if (currentRecipe == null || !getBaseMetaTileEntity().isActive()) return;
+        if (currentRecipe == null || getBaseMetaTileEntity() == null || !getBaseMetaTileEntity().isActive()) {
+            return;
+        }
         NBTTagList l = new NBTTagList();
         for (int i = 0; i < currentInputLength; i++) {
             l.appendTag(new NBTTagInt(slices[i].progress));
