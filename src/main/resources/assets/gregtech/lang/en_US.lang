@@ -8693,10 +8693,6 @@ gt.blockcasings14.3.name=Hearth Casing
 gt.blockcasings14.4.name=Fridge Casing
 gt.blockcasings14.5.name=Naquadah Reinforced Distillation Casing
 
-gt.blockcasingswindmill.0.name=Windmill Base Casing
-gt.blockcasingswindmill.1.name=Windmill Shaft Casing
-gt.blockcasingswindmill.2.name=Windmill Grindstone Housing
-
 gt.blockcasingsNH.0.name=Air Filter Turbine Casing
 gt.blockcasingsNH.1.name=Air Filter Vent Casing
 gt.blockcasingsNH.2.name=Pyrolyse Oven Casing

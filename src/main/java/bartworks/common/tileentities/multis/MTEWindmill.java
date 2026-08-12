@@ -19,7 +19,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofTileAdder;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.GregTechAPI.sBlockCasingsWindmill;
 import static gregtech.api.enums.GTAuthors.AuthorMilkFox;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR;
@@ -56,7 +55,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.common.items.ItemStonageRotors;
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.common.tileentities.classic.TileEntityRotorBlock;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -91,7 +89,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     private TileEntityRotorBlock rotorBlock;
     private int mDoor = 0;
     private int mHardenedClay = 0;
-    private int mShaftBlocks = 0;
 
     private enum windLevel {
         NON_EXISTENT,
@@ -103,12 +100,10 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String STRUCTURE_PIECE_LEGACY = "legacy";
 
-    private static final int VERTICAL_OFFSET = 9;
+    private static final int VERTICAL_OFFSET = 11;
     private static final int HORIZONTAL_OFFSET = 3;
     private static final int DEPTH_OFFSET = 0;
-    private static final int MILLSTONE_META = 2;
     private static final int RECIPE_DURATION_MULTI = 8;
 
     private final OverclockDescriber overclockDescriber;
@@ -165,8 +160,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     private static final IStructureDefinition<MTEWindmill> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEWindmill>builder()
         // spotless:off
-        // TODO: remove legacy structure by 2.10/2.11
-        .addShape(STRUCTURE_PIECE_LEGACY, transpose(new String[][] {
+        .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
             { "       ", "       ", "       ", "   p   ", "       ", "       ", "       " },
             { "       ", "       ", "  ppp  ", "  p p  ", "  ppp  ", "       ", "       " },
             { "       ", " ppppp ", " p   p ", " p   p ", " p   p ", " ppppp ", "       " },
@@ -179,17 +173,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
             { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
             { " bb~bb ", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", " bbbbb " }}))
-        .addShape(STRUCTURE_PIECE_MAIN, transpose(new String[][] {
-            { "       ", "       ", "   p   ", "  ppp  ", "   p   ", "       ", "       " },
-            { "       ", "       ", "  ppp  ", "  p p  ", "  ppp  ", "       ", "       " },
-            { "       ", "  ppp  ", " p   p ", " p   p ", " p   p ", "  ppp  ", "       " },
-            { "       ", " pprpp ", " p   p ", " p   p ", " p   p ", " ppppp ", "       " },
-            { "       ", " ppppp ", " p   p ", " p   p ", " p   p ", " ppppp ", "       " },
-            { "       ", "  sss  ", " s   s ", " s   s ", " s   s ", "  sss  ", "       " },
-            { "       ", "  sss  ", " s   s ", " s   s ", " s   s ", "  sss  ", "       " },
-            { "       ", "  sss  ", " s   s ", " s   s ", " s   s ", "  sss  ", "       " },
-            { "       ", "  sss  ", " s   s ", " s h s ", " s   s ", "  sss  ", "       " },
-            { "  a~a  ", " aaaaa ", "aaaaaaa", "aaaaaaa", "aaaaaaa", " aaaaa ", "  aaa  " }}))
         // spotless:on
         .addElement('p', ofBlockAnyMeta(Blocks.planks))
         .addElement(
@@ -246,28 +229,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                 return BlocksToPlace.create(new ItemStack(ItemRegistry.ROTORBLOCK));
             }
         })
-        .addElement('a', ofBlock(sBlockCasingsWindmill, 0))
-        .addElement('h', ofBlock(sBlockCasingsWindmill, MILLSTONE_META))
-        .addElement(
-            's',
-            ofChain(
-                onElementPass(t -> t.mShaftBlocks++, ofBlock(sBlockCasingsWindmill, 1)),
-                ofTileAdder(MTEWindmill::addDispenserToOutputSet, sBlockCasingsWindmill, 1),
-                onElementPass(t -> t.mDoor++, new IStructureElementNoPlacement<MTEWindmill>() {
-
-                    private final IStructureElement<MTEWindmill> delegate = ofBlock(Blocks.wooden_door, 0);
-
-                    @Override
-                    public boolean check(MTEWindmill gt_tileEntity_windmill, World world, int x, int y, int z) {
-                        return this.delegate.check(gt_tileEntity_windmill, world, x, y, z);
-                    }
-
-                    @Override
-                    public boolean spawnHint(MTEWindmill gt_tileEntity_windmill, World world, int x, int y, int z,
-                        ItemStack trigger) {
-                        return this.delegate.spawnHint(gt_tileEntity_windmill, world, x, y, z, trigger);
-                    }
-                })))
         .build();
 
     @Override
@@ -285,8 +246,10 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Windmill, Macerator")
             .addInfo("A primitive Grinder powered by " + EnumChatFormatting.AQUA + "Kinetic Energy")
-            .addInfo("Macerates up to" + EnumChatFormatting.RED + " 16 " + EnumChatFormatting.GRAY + "items at a time")
-            .addInfo("Amount of parallels based on " + EnumChatFormatting.AQUA + "Wind Speed")
+            .addInfo("Macerates up to" + EnumChatFormatting.GOLD + " 16 " + EnumChatFormatting.GRAY + "items at a time")
+            .addInfo("The amount of parallels is determined by " + EnumChatFormatting.AQUA + "Wind Speed")
+            .addInfo("The amount of parallels determines how many items are processed at the same time")
+            .addInfo(EnumChatFormatting.RED + "12.5% " + EnumChatFormatting.GRAY + "speed")
             .addInfo("Processing time is the same regardless of parallels")
             .addInfo(
                 EnumChatFormatting.AQUA + "Wind Speed "
@@ -297,38 +260,36 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             .addInfo("Rotor can be put in the " + EnumChatFormatting.BLUE + "Primitive Kinetic Shaftbox")
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.RED + "2"
+                EnumChatFormatting.GOLD + "2"
                     + EnumChatFormatting.GRAY
                     + " parallels: "
                     + EnumChatFormatting.WHITE
                     + "Low")
             .addInfo(
-                EnumChatFormatting.RED + "4"
+                EnumChatFormatting.GOLD + "4"
                     + EnumChatFormatting.GRAY
                     + " parallels: "
                     + EnumChatFormatting.DARK_GREEN
                     + "Common")
             .addInfo(
-                EnumChatFormatting.RED + "8"
+                EnumChatFormatting.GOLD + "8"
                     + EnumChatFormatting.GRAY
                     + " parallels: "
                     + EnumChatFormatting.GOLD
                     + "Rather strong")
             .addInfo(
-                EnumChatFormatting.RED + "16"
+                EnumChatFormatting.GOLD + "16"
                     + EnumChatFormatting.GRAY
                     + " parallels: "
                     + EnumChatFormatting.DARK_RED
                     + "Very Strong")
             .beginStructureBlock(7, 10, 7, false)
             .addController("Front bottom center")
-            .addCasingInfoExactly("Windmill Base Casing", 36, false)
-            .addCasingInfoMin("Windmill Shaft Casing", 40, false)
-            .addCasingInfoExactly("Wooden Planks (any)", 56, false)
-            .addCasingInfoExactly("Primitive Kinetic Shaftbox", 1, false)
-            .addCasingInfoExactly("Windmill Grindstone Housing", 1, false)
-            .addOtherStructurePart("Dispenser", "Any Hardened Clay Block")
-            .addOtherStructurePart("0-1 Wooden door", "Any Hardened Clay Block")
+            .addCasing("44", "Bricks", false)
+            .addCasing("40-47", "Terracotta", false)
+            .addCasing("100", "Wooden Planks (any)", false)
+            .addCasing("1", "Primitive Kinetic Shaftbox", false)
+            .addOtherStructurePart("Dispenser", "Any Terracotta", 1)
             .addStructureHint("tile.BWRotorBlock.0.name", 1)
             .toolTipFinisher(AuthorMilkFox);
         return tt;
@@ -470,39 +431,22 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
         List<StructureError> errors) {
+
         this.tileEntityDispensers.clear();
         this.mDoor = 0;
         this.mHardenedClay = 0;
 
-        if (this.checkPiece(STRUCTURE_PIECE_LEGACY, 3, 11, 0, null)) {
-            checkCasingMin(errors, this.mHardenedClay, 40);
-            if (this.tileEntityDispensers.isEmpty()) {
-                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_dispenser"));
-            }
-            if (this.mDoor > 2) {
-                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.too_many_doors"));
-            }
-            if (this.rotorBlock != null && this.rotorBlock.rotorSlot.isEmpty()) {
-                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_rotor"));
-            }
-            return;
+        this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors);
+
+        checkCasingMin(errors, this.mHardenedClay, 40);
+        if (this.tileEntityDispensers.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_dispenser"));
         }
-
-        this.tileEntityDispensers.clear();
-        this.mDoor = 0;
-        this.mHardenedClay = 0;
-
-        if (this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) {
-            checkCasingMin(errors, this.mShaftBlocks, 40);
-            if (this.tileEntityDispensers.isEmpty()) {
-                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_dispenser"));
-            }
-            if (this.mDoor > 2) {
-                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.too_many_doors"));
-            }
-            if (this.rotorBlock != null && this.rotorBlock.rotorSlot.isEmpty()) {
-                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_rotor"));
-            }
+        if (this.mDoor > 2) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.too_many_doors"));
+        }
+        if (this.rotorBlock != null && this.rotorBlock.rotorSlot.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_rotor"));
         }
     }
 
@@ -536,13 +480,12 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         int aColorIndex, boolean aActive, boolean aRedstone) {
 
         if (facing == side) {
-            return new ITexture[] { TextureFactory.of(Textures.BlockIcons.WINDMILL_BASE_CASING),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_TOP_STEAM_MACERATOR)
-                    .extFacing()
-                    .build() };
+            return new ITexture[] { TextureFactory.of(Blocks.brick_block), TextureFactory.builder()
+                .addIcon(OVERLAY_TOP_STEAM_MACERATOR)
+                .extFacing()
+                .build() };
         } else {
-            return new ITexture[] { TextureFactory.of(Textures.BlockIcons.WINDMILL_BASE_CASING) };
+            return new ITexture[] { TextureFactory.of(Blocks.brick_block) };
         }
     }
 
@@ -606,8 +549,8 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
-    protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.PRIMITIVE;
+    public GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.COKE_OVEN;
     }
 
     @Override

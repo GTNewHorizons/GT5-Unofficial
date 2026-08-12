@@ -86,7 +86,7 @@ public class ItemRegistry {
         1.15f,
         1,
         50,
-        8_000_000,
+        10000000,
         IKineticRotor.GearboxType.WIND,
         new ResourceLocation(MainMod.MOD_ID, "textures/items/rotors/rotorLeather.png"),
         "BW_LeatherRotor",
@@ -98,7 +98,7 @@ public class ItemRegistry {
         1.35f,
         1,
         50,
-        4_000_000,
+        9000000,
         IKineticRotor.GearboxType.WIND,
         new ResourceLocation(MainMod.MOD_ID, "textures/items/rotors/rotorWool.png"),
         "BW_WoolRotor",
@@ -110,7 +110,7 @@ public class ItemRegistry {
         0.9f,
         1,
         50,
-        2_000_000,
+        800000,
         IKineticRotor.GearboxType.WIND,
         new ResourceLocation(MainMod.MOD_ID, "textures/items/rotors/rotorPaper.png"),
         "BW_PaperRotor",
@@ -122,23 +122,11 @@ public class ItemRegistry {
         1.05f,
         1,
         50,
-        20_000_000,
+        6000000,
         IKineticRotor.GearboxType.WIND,
         new ResourceLocation(MainMod.MOD_ID, "textures/items/rotors/rotorCombined.png"),
         "BW_CombinedRotor",
         "rotors/itemRotorCombined");
-    public static final Item REINFORCED_ROTOR = new ItemStonageRotors(
-        9,
-        0.2f,
-        10,
-        1f,
-        1,
-        50,
-        20_000_000,
-        IKineticRotor.GearboxType.WIND,
-        new ResourceLocation(MainMod.MOD_ID, "textures/items/rotors/rotorReinforced.png"),
-        "BW_ReinforcedRotor",
-        "rotors/itemRotorReinforced");
     public static final Item CRAFTING_PARTS = new SimpleSubItemClass(
         "grindstone_top",
         "grindstone_bottom",
@@ -146,8 +134,7 @@ public class ItemRegistry {
         "rotors/leatherParts",
         "rotors/woolParts",
         "rotors/paperParts",
-        "rotors/combinedParts",
-        "rotors/reinforcedParts");
+        "rotors/combinedParts");
     public static final Item TAB = new SimpleIconItem("GT2Coin");
     public static final Item WINDMETER = new ItemSimpleWindMeter();
     public static final Block PUMPBLOCK = new BWTileEntityContainer(
@@ -244,7 +231,6 @@ public class ItemRegistry {
         GameRegistry.registerItem(ItemRegistry.WOOL_ROTOR, "BW_WoolRotor");
         GameRegistry.registerItem(ItemRegistry.PAPER_ROTOR, "BW_PaperRotor");
         GameRegistry.registerItem(ItemRegistry.COMBINED_ROTOR, "BW_CombinedRotor");
-        GameRegistry.registerItem(ItemRegistry.REINFORCED_ROTOR, "BW_ReinforcedRotor");
         GameRegistry.registerItem(ItemRegistry.CRAFTING_PARTS, "craftingParts");
         GameRegistry.registerTileEntity(TileEntityRotorBlock.class, "BWRotorBlockTE");
         GameRegistry.registerBlock(ItemRegistry.ROTORBLOCK, BWItemBlocks.class, "BWRotorBlock");
