@@ -10,7 +10,6 @@ import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
-import static gregtech.api.util.GTRecipeBuilder.*;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtnhlanth.util.LanthanidesRecipeOutputs.convertDecomposition;
@@ -24,6 +23,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -33,6 +33,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
@@ -326,6 +327,8 @@ public class RecipeGenOre extends RecipeGenBase {
                     mTotalCount += f.getKey();
                 }
 
+                mInternalOutputs = mergeItemStack(mInternalOutputs);
+
                 // Build Output Array
                 for (int g = 0; g < mInternalOutputs.length; g++) {
                     mChances[g] = (mInternalOutputs[g] != null ? 10000 : 0);
@@ -510,6 +513,50 @@ public class RecipeGenOre extends RecipeGenBase {
             || material == MaterialsOres.GADOLINITE_Y
             || material == MaterialsOres.POLYCRASE
             || material == MaterialsOres.ZIRKELITE;
+    }
+
+    private static ItemStack[] mergeItemStack(ItemStack[] input) {
+        List<ItemStack> merged = new ArrayList<>();
+        for (ItemStack curris : input) {
+            if (curris == null) {
+                continue;
+            }
+
+            boolean flag = false;
+            for (ItemStack mergedis : merged) {
+                if (GTUtility.areStacksEqual(curris, mergedis, true)) {
+                    mergedis.stackSize += curris.stackSize;
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) {
+                merged.add(curris.copy());
+            }
+        }
+        return merged.toArray(new ItemStack[0]);
+    }
+
+    private static FluidStack[] mergeFluidStack(FluidStack[] input) {
+        List<FluidStack> merged = new ArrayList<>();
+        for (FluidStack currfs : input) {
+            if (currfs == null) {
+                continue;
+            }
+
+            boolean flag = false;
+            for (FluidStack mergedfs : merged) {
+                if (GTUtility.areFluidsEqual(currfs, mergedfs, true)) {
+                    mergedfs.amount += currfs.amount;
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) {
+                merged.add(currfs.copy());
+            }
+        }
+        return merged.toArray(new FluidStack[0]);
     }
 
     public static ItemStack getTinyDust(Material m) {
