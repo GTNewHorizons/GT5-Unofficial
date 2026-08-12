@@ -1000,11 +1000,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 .beginStructureBlock(1, 5, 2, false)
                 .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addMiscHatch(
-                    "0+",
-                    StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"),
-                    StatCollector.translateToLocal("gt.mbtt.structure.any_casing"),
-                    1)
+                .addMiscHatch("0+", StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
                 .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
                 .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
                 .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)

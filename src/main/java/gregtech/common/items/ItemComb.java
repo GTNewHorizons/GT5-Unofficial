@@ -1134,6 +1134,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             }
             Product.put(aItem[i], chance[i] / 10000.0f);
         }
+        GTOreDictUnificator.setStackArray(true, true, aItem);
 
         if (volt.compareTo(Voltage.MV) < 0) {
             RecipeManagers.centrifugeManager.addRecipe(40, tComb, Product.build());

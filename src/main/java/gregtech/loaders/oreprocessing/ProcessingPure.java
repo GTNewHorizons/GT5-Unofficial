@@ -1,9 +1,10 @@
 package gregtech.loaders.oreprocessing;
 
-import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convert;
+import static goodgenerator.util.NaquadahRecipeOutputs.convert;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gtnhlanth.util.LanthanidesRecipeOutputs.convertOre;
 
 import net.minecraft.item.ItemStack;
 
@@ -40,7 +41,7 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, aStack))
             .itemOutputs(
-                convert(
+                convertOre(
                     aMaterial,
                     GTOreDictUnificator.get(
                         OrePrefixes.dustPure,
