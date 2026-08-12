@@ -109,11 +109,13 @@ public class GTLog {
     }
 
     public static void writeExplosionLog(String message) {
+        if (!Gregtech.general.loggingExplosions) return;
         EXPLOSION_LOGGER.info(message);
     }
 
     public static void writeExplosionLog(String dimension, int x, int y, int z, String blockName, String ownerName,
         String details) {
+        if (!Gregtech.general.loggingExplosions) return;
         EXPLOSION_LOGGER
             .info("DIM {} ({},{},{}): {} (built by {}) {}", dimension, x, y, z, blockName, ownerName, details);
     }
