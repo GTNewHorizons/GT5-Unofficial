@@ -103,6 +103,12 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
     }
 
     @Override
+    public void onUnload() {
+        clearCachedRoute();
+        super.onUnload();
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         if (Amperes != maxAmperes) {
