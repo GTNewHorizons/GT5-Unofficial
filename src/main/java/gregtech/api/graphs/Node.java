@@ -1,17 +1,14 @@
 package gregtech.api.graphs;
 
-import java.util.ArrayList;
-
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 
-import gregtech.api.graphs.consumers.ConsumerNode;
 import gregtech.api.graphs.paths.NodePath;
 
 // base Node class
 public class Node {
 
-    public Node(int aNodeValue, TileEntity aTileEntity, ArrayList<ConsumerNode> aConsumers) {
+    public Node(int aNodeValue, TileEntity aTileEntity, ConsumerList aConsumers) {
         this.mNodeValue = aNodeValue;
         this.mTileEntity = aTileEntity;
         this.mConsumers = aConsumers;
@@ -27,7 +24,7 @@ public class Node {
     public Lock[] locks = new Lock[6];
     public ReturnPair returnValues = new ReturnPair();
     public NodePath mSelfPath;
-    public ArrayList<ConsumerNode> mConsumers;
+    public ConsumerList mConsumers;
     public int mCreationTime;
     public int mNodeValue;
     public int mHighestNodeValue;

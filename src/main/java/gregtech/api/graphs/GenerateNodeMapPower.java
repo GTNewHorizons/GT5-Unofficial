@@ -1,6 +1,5 @@
 package gregtech.api.graphs;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import net.minecraft.tileentity.TileEntity;
@@ -29,7 +28,7 @@ import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 public class GenerateNodeMapPower extends GenerateNodeMap {
 
     public GenerateNodeMapPower(BaseMetaPipeEntity aTileEntity) {
-        generateNode(aTileEntity, null, 1, null, ForgeDirection.UNKNOWN, new ArrayList<>(), new HashSet<>());
+        generateNode(aTileEntity, null, 1, null, ForgeDirection.UNKNOWN, new ConsumerList(), new HashSet<>());
     }
 
     @Override
@@ -39,7 +38,7 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
 
     @Override
     protected boolean addConsumer(TileEntity aTileEntity, ForgeDirection side, int aNodeValue,
-        ArrayList<ConsumerNode> aConsumers) {
+        ConsumerList aConsumers) {
         if (aTileEntity instanceof BaseMetaTileEntity tBaseTileEntity) {
             if (tBaseTileEntity.inputEnergyFrom(side, false)) {
                 ConsumerNode tConsumerNode = new NodeGTBaseMetaTile(aNodeValue, tBaseTileEntity, side, aConsumers);
@@ -94,16 +93,14 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
 
     // used to apply voltage on dead ends
     @Override
-    protected Node getEmptyNode(int aNodeValue, ForgeDirection side, TileEntity aTileEntity,
-        ArrayList<ConsumerNode> aConsumers) {
+    protected Node getEmptyNode(int aNodeValue, ForgeDirection side, TileEntity aTileEntity, ConsumerList aConsumers) {
         ConsumerNode tNode = new EmptyPowerConsumer(aNodeValue, aTileEntity, side, aConsumers);
         aConsumers.add(tNode);
         return tNode;
     }
 
     @Override
-    protected Node getPipeNode(int aNodeValue, ForgeDirection side, TileEntity aTileEntity,
-        ArrayList<ConsumerNode> aConsumers) {
+    protected Node getPipeNode(int aNodeValue, ForgeDirection side, TileEntity aTileEntity, ConsumerList aConsumers) {
         return new PowerNode(aNodeValue, aTileEntity, aConsumers);
     }
 }

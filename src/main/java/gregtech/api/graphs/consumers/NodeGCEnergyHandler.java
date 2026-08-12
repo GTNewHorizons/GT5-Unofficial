@@ -1,10 +1,9 @@
 package gregtech.api.graphs.consumers;
 
-import java.util.ArrayList;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.graphs.ConsumerList;
 import micdoodle8.mods.galacticraft.api.power.EnergySource;
 import micdoodle8.mods.galacticraft.api.power.IEnergyHandlerGC;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
@@ -14,7 +13,7 @@ public class NodeGCEnergyHandler extends ConsumerNode {
     float restGJ = 0;
 
     public NodeGCEnergyHandler(int nodeValue, IEnergyHandlerGC tileEntity, ForgeDirection side,
-        ArrayList<ConsumerNode> aConsumers) {
+        ConsumerList aConsumers) {
         super(nodeValue, (TileEntity) tileEntity, side, aConsumers);
     }
 

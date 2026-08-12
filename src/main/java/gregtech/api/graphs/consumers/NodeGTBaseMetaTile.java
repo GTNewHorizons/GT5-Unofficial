@@ -1,9 +1,8 @@
 package gregtech.api.graphs.consumers;
 
-import java.util.ArrayList;
-
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.graphs.ConsumerList;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 
@@ -11,7 +10,7 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 public class NodeGTBaseMetaTile extends ConsumerNode {
 
     public NodeGTBaseMetaTile(int aNodeValue, BaseMetaTileEntity aTileEntity, ForgeDirection side,
-        ArrayList<ConsumerNode> aConsumers) {
+        ConsumerList aConsumers) {
         super(aNodeValue, aTileEntity, side, aConsumers);
     }
 
