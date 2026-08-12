@@ -80,7 +80,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
     private final ArrayList<MTEHatchInputBus> mMaskInputBusses = new ArrayList<>();
     private GTRecipe lastRecipe;
-    private float lastTCRecipeRate;
+    private int lastTCRecipeRate;
     private float lastTCRecipeMinFocus;
     private float lastTCRecipeMinEnergy;
     private float lastTCRecipeMaxEnergy;
@@ -163,7 +163,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setFloat("lastTCRecipeRate", this.lastTCRecipeRate);
+        aNBT.setInteger("lastTCRecipeRate", this.lastTCRecipeRate);
         aNBT.setFloat("lastTCRecipeMinFocus", this.lastTCRecipeMinFocus);
         aNBT.setFloat("lastTCRecipeMinEnergy", this.lastTCRecipeMinEnergy);
         aNBT.setFloat("lastTCRecipeMaxEnergy", this.lastTCRecipeMaxEnergy);
@@ -173,7 +173,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.lastTCRecipeRate = aNBT.getFloat("lastTCRecipeRate");
+        this.lastTCRecipeRate = aNBT.getInteger("lastTCRecipeRate");
         this.lastTCRecipeMinFocus = aNBT.getFloat("lastTCRecipeMinFocus");
         this.lastTCRecipeMinEnergy = aNBT.getFloat("lastTCRecipeMinEnergy");
         this.lastTCRecipeMaxEnergy = aNBT.getFloat("lastTCRecipeMaxEnergy");
@@ -341,7 +341,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         BeamInformation inputInfo = this.getInputInformation();
         if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;
         float inputEnergy = inputInfo.getEnergy();
-        float inputRate = inputInfo.getRate();
+        int inputRate = inputInfo.getRate();
         int inputParticle = inputInfo.getParticleId();
         float inputFocus = inputInfo.getFocus();
 
