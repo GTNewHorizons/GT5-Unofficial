@@ -790,7 +790,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     // region waila
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
         tag.setFloat("efficiency", this.mEfficiency / 100.0F);
@@ -801,12 +801,10 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(StatCollector.translateToLocal(getMachineModeKey(tag.getInteger("machineMode"))));
-        currentTip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(StatCollector.translateToLocal(getMachineModeKey(tag.getInteger("machineMode"))));
+        list.add(
             StatCollector.translateToLocalFormatted(
                 "gt.blockmachines.multimachine.em.research.computation",
                 tag.getInteger("computation"),
