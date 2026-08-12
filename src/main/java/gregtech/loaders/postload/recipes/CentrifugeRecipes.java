@@ -88,10 +88,10 @@ public class CentrifugeRecipes implements Runnable {
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 3),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 3),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 1))
+                WerkstoffLoader.PTMetallicPowder.get(OrePrefixes.dust, 6),
+                WerkstoffLoader.PDMetallicPowder.get(OrePrefixes.dust, 2),
+                WerkstoffLoader.IrLeachResidue.get(OrePrefixes.dust, 2),
+                WerkstoffLoader.IrOsLeachResidue.get(OrePrefixes.dust, 2))
             .outputChances(10000, 10000, 10000, 9500, 9000, 8500)
             .duration(2 * MINUTES + 15 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -535,7 +535,7 @@ public class CentrifugeRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 36))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungstate, 3),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1),
+                WerkstoffLoader.PTMetallicPowder.get(OrePrefixes.dust, 2),
                 new ItemStack(Blocks.sand, 36))
             .outputChances(3750, 2500, 9000)
             .fluidOutputs(Materials.Helium.getGas(4_320))
