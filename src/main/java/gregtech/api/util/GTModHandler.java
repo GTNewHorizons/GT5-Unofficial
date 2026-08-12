@@ -570,6 +570,7 @@ public class GTModHandler {
             false,
             false,
             true,
+            true,
             aRecipe);
     }
 
@@ -630,6 +631,7 @@ public class GTModHandler {
             (aBitMask & RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0,
             (aBitMask & RecipeBits.ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT) != 0,
             (aBitMask & RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL) != 0,
+            (aBitMask & RecipeBits.DONT_UNIFY_OUTPUT) == 0,
             aRecipe);
     }
 
@@ -959,9 +961,10 @@ public class GTModHandler {
         boolean aReversible, boolean aRemoveAllOthersWithSameOutput,
         boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput,
         boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions,
-        boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
+        boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, boolean unifyOutput,
+        Object[] aRecipe) {
 
-        aResult = GTOreDictUnificator.get(true, aResult);
+        if (unifyOutput) aResult = GTOreDictUnificator.get(true, aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return false;
         if (aResult != null && Items.feather.getDamage(aResult) == WILDCARD) Items.feather.setDamage(aResult, 0);
         if (aRecipe == null || aRecipe.length == 0) return false;
@@ -1228,6 +1231,7 @@ public class GTModHandler {
             (aBitMask & RecipeBits.KEEPNBT) != 0,
             (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
             (aBitMask & RecipeBits.OVERWRITE_NBT) != 0,
+            (aBitMask & RecipeBits.DONT_UNIFY_OUTPUT) == 0,
             inputValidator,
             aRecipe);
     }
@@ -1237,8 +1241,8 @@ public class GTModHandler {
      */
     private static boolean addShapelessCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
         int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aKeepNBT, boolean aRemovable, boolean overwriteNBT,
-        Predicate<InventoryCrafting> inputValidator, Object[] aRecipe) {
-        aResult = GTOreDictUnificator.get(true, aResult);
+        boolean unifyOutput, Predicate<InventoryCrafting> inputValidator, Object[] aRecipe) {
+        if (unifyOutput) aResult = GTOreDictUnificator.get(true, aResult);
         if (aRecipe == null || aRecipe.length == 0) return false;
         for (byte i = 0; i < aRecipe.length; i++) {
             if (aRecipe[i] instanceof IItemContainer) aRecipe[i] = ((IItemContainer) aRecipe[i]).get(1);
@@ -2236,6 +2240,10 @@ public class GTModHandler {
          * tags with output item's NBT tags if exists
          */
         public static final long OVERWRITE_NBT = B[14];
+        /**
+         * Keeps the supplied crafting recipe output instead of ore-dictionary-unifying it.
+         */
+        public static final long DONT_UNIFY_OUTPUT = B[15];
         /**
          * Combination of common bits. NOT_REMOVABLE, REVERSIBLE, and BUFFERED
          */
