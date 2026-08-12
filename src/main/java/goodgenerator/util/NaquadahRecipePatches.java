@@ -25,13 +25,13 @@ public final class NaquadahRecipePatches {
 
     public static void patchCropsNhRecipes() {
         if (!Mods.CropsNH.isModLoaded()) return;
-        patchMap(chemicalReactorRecipes);
-        patchMap(multiblockChemicalReactorRecipes);
-    }
-
-    private static void patchMap(RecipeMap<?> recipeMap) {
         Item materialLeaf = GameRegistry.findItem(Mods.ModIDs.CROPS_NH, "materialLeaf");
         if (materialLeaf == null) return;
+        patchMap(chemicalReactorRecipes, materialLeaf);
+        patchMap(multiblockChemicalReactorRecipes, materialLeaf);
+    }
+
+    private static void patchMap(RecipeMap<?> recipeMap, Item materialLeaf) {
 
         HashSet<GTRecipe> remove = new HashSet<>();
         HashSet<GTRecipe> reAdd = new HashSet<>();
@@ -40,17 +40,9 @@ public final class NaquadahRecipePatches {
             GTRecipe patched = recipe.copy();
             boolean modified = false;
             for (int i = 0; i < patched.mFluidOutputs.length; i++) {
-                FluidStack output = patched.mFluidOutputs[i];
-                if (output == null) continue;
-                if (output.isFluidEqual(Materials.Naquadah.getMolten(1))) {
-                    patched.mFluidOutputs[i] = GGMaterial.naquadahGoo.getFluidOrGas(output.amount * 2);
-                } else if (output.isFluidEqual(Materials.NaquadahEnriched.getMolten(1))) {
-                    patched.mFluidOutputs[i] = GGMaterial.enrichedNaquadahGoo.getFluidOrGas(output.amount * 2);
-                } else if (output.isFluidEqual(Materials.Naquadria.getMolten(1))) {
-                    patched.mFluidOutputs[i] = GGMaterial.naquadriaGoo.getFluidOrGas(output.amount * 2);
-                } else {
-                    continue;
-                }
+                FluidStack replacement = replaceNaquadahOutput(patched.mFluidOutputs[i]);
+                if (replacement == null) continue;
+                patched.mFluidOutputs[i] = replacement;
                 modified = true;
             }
             if (modified) {
@@ -61,6 +53,20 @@ public final class NaquadahRecipePatches {
         recipeMap.getBackend().removeRecipes(remove);
         reAdd.forEach(recipeMap::add);
         if (!remove.isEmpty()) recipeMap.getBackend().reInit();
+    }
+
+    private static FluidStack replaceNaquadahOutput(FluidStack output) {
+        if (output == null) return null;
+        if (output.isFluidEqual(Materials.Naquadah.getMolten(1))) {
+            return GGMaterial.naquadahGoo.getFluidOrGas(output.amount * 2);
+        }
+        if (output.isFluidEqual(Materials.NaquadahEnriched.getMolten(1))) {
+            return GGMaterial.enrichedNaquadahGoo.getFluidOrGas(output.amount * 2);
+        }
+        if (output.isFluidEqual(Materials.Naquadria.getMolten(1))) {
+            return GGMaterial.naquadriaGoo.getFluidOrGas(output.amount * 2);
+        }
+        return null;
     }
 
     private static boolean isCropsNhRecipe(GTRecipe recipe, Item materialLeaf) {
