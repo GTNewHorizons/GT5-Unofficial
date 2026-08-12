@@ -153,23 +153,6 @@ public class GTPreLoad {
             GTLog.out = GTLog.err = new PrintStream(GTLog.mLogFile);
         } catch (FileNotFoundException ignored) {}
 
-        if (Gregtech.debug.logRegisterIcons) {
-            GTLog.mRegisterIconsLog = new File(parentFile, "logs/RegisterIcon.log");
-
-            try {
-                List<String> tList = ((GTLog.LogBuffer) GTLog.ico).lineBuffer;
-
-                GTLog.ico = new PrintStream(GTLog.mRegisterIconsLog);
-
-                GTLog.ico.println("*****************************************************************");
-                GTLog.ico.println("* This is the log of texture icons registered in GT5-Unofficial *");
-                GTLog.ico.println("* First column R|O tells if resource is (Required or Optional)  *");
-                GTLog.ico.println("* Second column is the resource path                            *");
-                GTLog.ico.println("*****************************************************************");
-
-                tList.forEach(GTLog.ico::println);
-            } catch (Exception ignored) {}
-        }
     }
 
     public static void runMineTweakerCompat() {

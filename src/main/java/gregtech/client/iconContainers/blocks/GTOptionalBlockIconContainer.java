@@ -1,5 +1,7 @@
 package gregtech.client.iconContainers.blocks;
 
+import static gregtech.GTMod.Loggers.GT_ICON_LOGGER;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -8,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.client.ResourceUtils;
 
 public class GTOptionalBlockIconContainer extends GTBlockIconContainer {
@@ -25,7 +26,7 @@ public class GTOptionalBlockIconContainer extends GTBlockIconContainer {
 
     @Override
     protected void logRegisterIcon() {
-        GTLog.ico.println("O " + iconResource);
+        GT_ICON_LOGGER.info("O {}", iconResource);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package gregtech.client.iconContainers.blocks;
 
+import static gregtech.GTMod.Loggers.GT_ICON_LOGGER;
 import static gregtech.api.enums.Textures.OverlaySuffix;
 import static gregtech.api.enums.Textures.TextureSetFallback;
 import static gregtech.client.iconContainers.items.GTTextureSetItemIconContainer.createIconName;
@@ -18,10 +19,8 @@ import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.client.ResourceUtils;
 import gregtech.client.iconContainers.items.GTTextureSetItemIconContainer.TextureSetIconType;
-import gregtech.common.config.Gregtech;
 
 public class GTTextureSetBlockIconContainer extends AbstractBlockIconContainer implements Runnable {
 
@@ -54,7 +53,7 @@ public class GTTextureSetBlockIconContainer extends AbstractBlockIconContainer i
         } else {
             GregTechAPI.sGTBlockIconload.add(this);
         }
-        if (Gregtech.debug.logRegisterIcons) logRegisterIcons();
+        logRegisterIcons();
     }
 
     // 2026-13-05: Counted 1782 unique Block TextureSetIcons, so 2.5K will avoid resize until 1920 entries
@@ -73,8 +72,8 @@ public class GTTextureSetBlockIconContainer extends AbstractBlockIconContainer i
     }
 
     protected void logRegisterIcons() {
-        GTLog.ico.println("R " + iconResource);
-        GTLog.ico.println("O " + iconOverlayResource);
+        GT_ICON_LOGGER.info("R {}", iconResource);
+        GT_ICON_LOGGER.info("O {}", iconOverlayResource);
     }
 
     @Override

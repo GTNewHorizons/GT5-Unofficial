@@ -1,13 +1,11 @@
 package gregtech.api.util;
 
-import static gregtech.GTMod.GT_EXPLOSION_LOGGER;
-import static gregtech.GTMod.GT_ORE_DICT_LOGGER;
+import static gregtech.GTMod.Loggers.GT_EXPLOSION_LOGGER;
+import static gregtech.GTMod.Loggers.GT_ICON_LOGGER;
+import static gregtech.GTMod.Loggers.GT_ORE_DICT_LOGGER;
 
 import java.io.File;
-import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
@@ -31,9 +29,7 @@ public class GTLog {
 
     public static PrintStream out = System.out;
     public static PrintStream err = System.err;
-    public static PrintStream ico = Gregtech.debug.logRegisterIcons ? new LogBuffer() : new VoidLogger();
     public static File mLogFile;
-    public static File mRegisterIconsLog;
 
     public static void configureExplosionLogger(File parentFile) {
         configureRollingLogger(
@@ -59,6 +55,22 @@ public class GTLog {
         GT_ORE_DICT_LOGGER.info("* entries and errors are being logged. If you see an error please raise an   *");
         GT_ORE_DICT_LOGGER.info("* issue at https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues.  *");
         GT_ORE_DICT_LOGGER.info("******************************************************************************");
+    }
+
+    public static void configureIconLogger(File parentFile) {
+        boolean configured = configureRollingLogger(
+            GT_ICON_LOGGER,
+            Gregtech.debug.logRegisterIcons,
+            new File(parentFile, "logs/RegisterIcon.log"),
+            new File(parentFile, "logs/RegisterIcon-%i.log"),
+            "GregTechIconFile");
+        if (!configured) return;
+
+        GT_ICON_LOGGER.info("*****************************************************************");
+        GT_ICON_LOGGER.info("* This is the log of texture icons registered in GT5-Unofficial *");
+        GT_ICON_LOGGER.info("* First column R|O tells if resource is (Required or Optional)  *");
+        GT_ICON_LOGGER.info("* Second column is the resource path                            *");
+        GT_ICON_LOGGER.info("*****************************************************************");
     }
 
     private static void configureLogger(Logger apiLogger, boolean enabled) {
@@ -101,44 +113,6 @@ public class GTLog {
         appender.start();
         logger.addAppender(appender);
         return true;
-    }
-
-    public static class LogBuffer extends PrintStream {
-
-        public final List<String> lineBuffer = new ArrayList<>();
-
-        public LogBuffer() {
-            super(new OutputStream() {
-
-                @Override
-                public void write(int arg0) {
-                    /* Do nothing */
-                }
-            });
-        }
-
-        @Override
-        public void println(String aString) {
-            lineBuffer.add(aString);
-        }
-    }
-
-    public static class VoidLogger extends PrintStream {
-
-        public VoidLogger() {
-            super(new OutputStream() {
-
-                @Override
-                public void write(int arg0) {
-                    /* Do nothing */
-                }
-            });
-        }
-
-        @Override
-        public void println(String aString) {
-            /* Do nothing */
-        }
     }
 
     public static void writeExplosionLog(String dimension, int x, int y, int z, String blockName, String ownerName,

@@ -231,8 +231,24 @@ public class GTMod {
 
     public static GTAchievements achievements;
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
-    public static final Logger GT_EXPLOSION_LOGGER = LogManager.getLogger("GregTech Explosions");
-    public static final Logger GT_ORE_DICT_LOGGER = LogManager.getLogger("GregTech Ore Dictionary");
+    public static final Logger GT_EXPLOSION_LOGGER = Loggers.GT_EXPLOSION_LOGGER;
+    public static final Logger GT_ICON_LOGGER = Loggers.GT_ICON_LOGGER;
+    public static final Logger GT_ORE_DICT_LOGGER = Loggers.GT_ORE_DICT_LOGGER;
+
+    public static final class Loggers {
+
+        public static final Logger GT_EXPLOSION_LOGGER = disabledLogger("GregTech Explosions");
+        public static final Logger GT_ICON_LOGGER = disabledLogger("GregTech Icons");
+        public static final Logger GT_ORE_DICT_LOGGER = disabledLogger("GregTech Ore Dictionary");
+
+        private static Logger disabledLogger(String name) {
+            org.apache.logging.log4j.core.Logger logger = (org.apache.logging.log4j.core.Logger) LogManager
+                .getLogger(name);
+            logger.setAdditive(false);
+            logger.setLevel(org.apache.logging.log4j.Level.OFF);
+            return logger;
+        }
+    }
 
     static {
         File minecraftHome = Launch.minecraftHome == null ? new File(".") : Launch.minecraftHome;
@@ -245,6 +261,11 @@ public class GTMod {
             GTLog.configureOreDictLogger(minecraftHome);
         } catch (RuntimeException e) {
             GT_FML_LOGGER.error("Failed to configure ore dictionary logger", e);
+        }
+        try {
+            GTLog.configureIconLogger(minecraftHome);
+        } catch (RuntimeException e) {
+            GT_FML_LOGGER.error("Failed to configure icon logger", e);
         }
     }
 
