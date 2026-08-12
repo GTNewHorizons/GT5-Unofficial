@@ -59,7 +59,7 @@ public class BECRecipes implements Runnable {
     private static final Materials[] TIER_MATS = { Materials.Netherite, Materials.ProtoHalkonite,
         Materials.SixPhasedCopper, Materials.TranscendentMetal, Materials.Mellion, Materials.Creon, Materials.SpaceTime,
         Materials.Hexanite, Materials.Eternity };
-    private static final int[] EOH_TIMES = { 10_000_000, 20_000_000, 30_000_000, 40_000_000, 100_000, 120_000, 140_000,
+    private static final int[] EOH_TIMES = { 2_000_000, 3_000_000, 4_000_000, 5_000_000, 100_000, 120_000, 140_000,
         160_000, 180_000 };
 
     @Override
@@ -438,7 +438,7 @@ public class BECRecipes implements Runnable {
 
     private void addEyeOfHarmonyCasings() {
 
-        final int casingTime = 2_000_000 * SECONDS;
+        final int casingTime = 40_000 * SECONDS;
         // Reinforced Temporal Structure Casing
         addBec(
             CustomItemList.EOH_Reinforced_Temporal_Casing.get(4),
