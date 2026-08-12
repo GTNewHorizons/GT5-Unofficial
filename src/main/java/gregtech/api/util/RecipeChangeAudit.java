@@ -35,6 +35,8 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 /**
  * Optional recipe-state dumper for auditing a recipe mutation.
  *
@@ -64,8 +66,8 @@ public final class RecipeChangeAudit {
         try {
             before = capture();
         } catch (RuntimeException e) {
-            GTLog.err.println("Failed to capture recipes before " + description + "; running change without dump");
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error("Failed to capture recipes before {}; running change without dump", description);
+            GT_FML_LOGGER.error(e);
             long started = System.nanoTime();
             try {
                 change.run();
@@ -90,8 +92,8 @@ public final class RecipeChangeAudit {
             write(output.resolve("after.jsonl"), after.records.values());
             write(output.resolve("changes.jsonl"), changes(before, after));
         } catch (IOException | RuntimeException e) {
-            GTLog.err.println("Failed to dump " + description + " recipes");
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error("Failed to dump {} recipes", description);
+            GT_FML_LOGGER.error(e);
         }
     }
 
@@ -105,8 +107,8 @@ public final class RecipeChangeAudit {
             timing.addProperty("elapsedMillis", elapsedNanos / 1_000_000.0);
             Files.writeString(output.resolve("timing.json"), GSON.toJson(timing), StandardCharsets.UTF_8);
         } catch (IOException | RuntimeException e) {
-            GTLog.err.println("Failed to dump " + description + " timing");
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error("Failed to dump {} timing", description);
+            GT_FML_LOGGER.error(e);
         }
     }
 

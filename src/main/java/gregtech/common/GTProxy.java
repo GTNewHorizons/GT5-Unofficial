@@ -1543,7 +1543,7 @@ public class GTProxy implements IFuelHandler {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
 

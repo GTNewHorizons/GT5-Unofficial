@@ -13,6 +13,7 @@
 
 package bartworks.util;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.M;
@@ -514,10 +515,8 @@ public class BWUtil {
         for (; idx < aRecipe.length; idx += 2) {
             if (aRecipe[idx] == null || aRecipe[idx + 1] == null) {
                 if (D1) {
-                    GTLog.err.println(
-                        "WARNING: Missing Item for shaped Recipe: "
-                            + (aResult == null ? "null" : aResult.getDisplayName()));
-                    for (Object tContent : aRecipe) GTLog.err.println(tContent);
+                    GT_FML_LOGGER.error("WARNING: Missing Item for shaped Recipe: {}", aResult == null ? "null" : aResult.getDisplayName());
+                    for (Object tContent : aRecipe) GT_FML_LOGGER.error(tContent);
                 }
                 return null;
             }

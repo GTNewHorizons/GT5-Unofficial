@@ -1,5 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
@@ -218,10 +219,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 AE2addNewAttunement(aStack);
             }
             default -> {
-                GTLog.err.println(
-                    "OrePrefix " + aPrefix.getName()
-                        + " cannot be registered as a cable for Material "
-                        + aMaterial.mName);
+                GT_FML_LOGGER.error("OrePrefix {} cannot be registered as a cable for Material {}", aPrefix.getName(), aMaterial.mName);
                 return;
             }
         }

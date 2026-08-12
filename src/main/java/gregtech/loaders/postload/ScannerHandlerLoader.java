@@ -1,5 +1,6 @@
 package gregtech.loaders.postload;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -116,7 +117,7 @@ public class ScannerHandlerLoader {
             return new GTScannerResult(eut, duration, aInput.stackSize, 0, fluidConsume, output);
         } catch (Exception e) {
             if (D1) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
         return GTScannerResult.NOT_FOUND;

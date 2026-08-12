@@ -19,6 +19,8 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
 
     /**
@@ -58,7 +60,7 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
         final TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileEntityCircuitProgrammer) {

@@ -259,7 +259,7 @@ public class GTUtility {
                 .getDeclaredField(aField);
             rField.setAccessible(true);
         } catch (Exception e) {
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return rField;
     }
@@ -270,7 +270,7 @@ public class GTUtility {
             field.setAccessible(true);
             return field;
         } catch (Exception e) {
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return null;
     }
@@ -285,7 +285,7 @@ public class GTUtility {
             if (aPrivate) tField.setAccessible(true);
             return tField;
         } catch (Exception e) {
-            if (aLogErrors) e.printStackTrace(GTLog.err);
+            if (aLogErrors) GT_FML_LOGGER.error(e);
         }
         return null;
     }
@@ -300,7 +300,7 @@ public class GTUtility {
             if (aPrivate) tField.setAccessible(true);
             return tField.get(aObject instanceof Class || aObject instanceof String ? null : aObject);
         } catch (Exception e) {
-            if (aLogErrors) e.printStackTrace(GTLog.err);
+            if (aLogErrors) GT_FML_LOGGER.error(e);
         }
         return null;
     }
@@ -341,7 +341,7 @@ public class GTUtility {
             if (aPrivate) tMethod.setAccessible(true);
             return tMethod.invoke(aObject, aParameters);
         } catch (Exception e) {
-            if (aLogErrors) e.printStackTrace(GTLog.err);
+            if (aLogErrors) GT_FML_LOGGER.error(e);
         }
         return null;
     }
@@ -354,17 +354,17 @@ public class GTUtility {
                     try {
                         return tConstructor.newInstance(aParameters);
                     } catch (Exception e) {
-                        if (D1) e.printStackTrace(GTLog.err);
+                        if (D1) GT_FML_LOGGER.error(e);
                     }
                 }
             } catch (Exception e) {
-                if (aLogErrors) e.printStackTrace(GTLog.err);
+                if (aLogErrors) GT_FML_LOGGER.error(e);
             }
         } else {
             try {
                 return aClass.getConstructors()[aConstructorIndex].newInstance(aParameters);
             } catch (Exception e) {
-                if (aLogErrors) e.printStackTrace(GTLog.err);
+                if (aLogErrors) GT_FML_LOGGER.error(e);
             }
         }
         return aReplacementObject;
@@ -1488,9 +1488,9 @@ public class GTUtility {
             aPages[i] = pageText.replace("\\n", "\n");
             if (i < 48) {
                 if (aPages[i].length() < 256) tNBTList.appendTag(new NBTTagString(aPages[i]));
-                else GTLog.err.println("WARNING: String for written Book too long! -> " + aPages[i]);
+                else GT_FML_LOGGER.error("WARNING: String for written Book too long! -> {}", aPages[i]);
             } else {
-                GTLog.err.println("WARNING: Too much Pages for written Book! -> " + aTitle);
+                GT_FML_LOGGER.error("WARNING: Too much Pages for written Book! -> {}", aTitle);
                 break;
             }
         }

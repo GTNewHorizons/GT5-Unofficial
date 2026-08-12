@@ -1,6 +1,7 @@
 package gregtech.api.util.scanner;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.util.GTUtility.getFluidName;
@@ -242,7 +243,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_base_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
     }
 
@@ -266,7 +267,7 @@ public class ScannerHelper {
         } catch (Exception e) {
             list.add(
                 transComp("error_fluid_handler_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return euAmount;
     }
@@ -288,7 +289,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_reactor_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return euAmount;
     }
@@ -307,7 +308,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_debug_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return euAmount;
     }
@@ -323,7 +324,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_machine_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
     }
 
@@ -339,7 +340,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_custom_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
     }
 
@@ -356,7 +357,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_side_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return euAmount;
     }
@@ -378,7 +379,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_wrench_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return euAmount;
     }
@@ -406,7 +407,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_ic2_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return euAmount;
     }
@@ -425,7 +426,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_cover_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return euAmount;
     }
@@ -451,7 +452,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_energy_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
     }
 
@@ -471,7 +472,7 @@ public class ScannerHelper {
             }
         } catch (Exception e) {
             list.add(transComp("error_leaves_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
         return euAmount;
     }

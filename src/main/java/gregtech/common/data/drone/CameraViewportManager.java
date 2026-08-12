@@ -35,6 +35,8 @@ import gregtech.api.util.GTLog;
 import gregtech.common.entity.EntityDrone;
 import gregtech.common.items.ItemDroneRemoteInterface;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 public class CameraViewportManager {
 
     public static final long NULL_COORD = Long.MAX_VALUE;
@@ -166,7 +168,7 @@ public class CameraViewportManager {
                 }
                 removePlayerMethod.setAccessible(true);
             } catch (Exception e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
 
@@ -178,7 +180,7 @@ public class CameraViewportManager {
                     addPlayerMethod.invoke(playerInstance, player);
                 }
             } catch (Exception e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
 
@@ -190,7 +192,7 @@ public class CameraViewportManager {
                     removePlayerMethod.invoke(playerInstance, player);
                 }
             } catch (Exception e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
 

@@ -20,6 +20,8 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 public class ItemBlockGtBlock extends ItemBlock {
 
     private int sRadiation;
@@ -60,7 +62,7 @@ public class ItemBlockGtBlock extends ItemBlock {
                     BlockBaseModular g = (BlockBaseModular) thisBlock;
                     this.mMaterial = g.getMaterialEx();
                 } catch (Exception e) {
-                    e.printStackTrace(GTLog.err);
+                    GT_FML_LOGGER.error(e);
                 }
                 // list.add("Material is Null.");
             }

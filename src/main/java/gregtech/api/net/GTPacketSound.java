@@ -12,6 +12,8 @@ import gregtech.api.util.GTUtility;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 public class GTPacketSound extends GTPacket {
 
     private double mX, mY, mZ;
@@ -43,7 +45,7 @@ public class GTPacketSound extends GTPacket {
             byteOutputStream.writeDouble(mZ);
         } catch (IOException e) {
             // this really shouldn't happen, but whatever
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
     }
 

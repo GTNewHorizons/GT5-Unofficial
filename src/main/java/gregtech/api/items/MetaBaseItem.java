@@ -1,6 +1,7 @@
 package gregtech.api.items;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -683,7 +684,7 @@ public abstract class MetaBaseItem extends GTGenericItem
                 }
             }
         } catch (Exception e) {
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
 
         return false;

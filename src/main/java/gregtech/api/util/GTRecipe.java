@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.D2;
 
 import java.util.ArrayList;
@@ -395,13 +396,13 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         if (tInputAmount < tOutputAmount) {
             if (!Materials.Tin.contains(mInputs)) {
-                GTLog.err.println("You get more Cells, than you put in? There must be something wrong.");
-                new Exception().printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("You get more Cells, than you put in? There must be something wrong.");
+                GT_FML_LOGGER.error(new Exception());
             }
         } else if (tInputAmount > tOutputAmount) {
             if (!Materials.Tin.contains(mOutputs)) {
-                GTLog.err.println("You get less Cells, than you put in? GT Machines usually don't destroy Cells.");
-                new Exception().printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("You get less Cells, than you put in? GT Machines usually don't destroy Cells.");
+                GT_FML_LOGGER.error(new Exception());
             }
         }
     }
@@ -1087,11 +1088,11 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         private static void checkInvalidRecipes() {
             int invalidCount = 0;
-            GTLog.out.println("Started assline validation");
+            GT_FML_LOGGER.error("Started assline validation");
             for (RecipeAssemblyLine recipe : sAssemblylineRecipes) {
                 if (recipe.getPersistentHash() == 0) {
                     invalidCount++;
-                    GTLog.err.printf("Invalid recipe: %s%n", recipe);
+                    GT_FML_LOGGER.error("Invalid recipe: {}", recipe);
                 }
             }
             if (invalidCount > 0) throw new RuntimeException(
@@ -1164,7 +1165,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         public int getPersistentHash() {
             if (mPersistentHash == 0)
-                GTLog.err.println("Assline recipe persistent hash has not been set! Recipe: " + mOutput);
+                GT_FML_LOGGER.error("Assline recipe persistent hash has not been set! Recipe: {}", mOutput);
             return mPersistentHash;
         }
 

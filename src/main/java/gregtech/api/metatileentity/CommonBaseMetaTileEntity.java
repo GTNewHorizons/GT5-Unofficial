@@ -75,7 +75,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     protected boolean createNewMetatileEntity(short aID) {
         if (aID <= 0 || aID >= GregTechAPI.METATILEENTITIES.length || GregTechAPI.METATILEENTITIES[aID] == null) {
-            GTLog.err.println("MetaID " + aID + " not loadable => locking TileEntity!");
+            GT_FML_LOGGER.error("MetaID {} not loadable => locking TileEntity!", aID);
         } else {
             if (hasValidMetaTileEntity()) getMetaTileEntity().setBaseMetaTileEntity(null);
             GregTechAPI.METATILEENTITIES[aID].newMetaEntity(this)

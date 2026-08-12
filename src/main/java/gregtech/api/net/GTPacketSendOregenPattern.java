@@ -9,6 +9,8 @@ import gregtech.common.GTWorldgenerator;
 import gregtech.common.GTWorldgenerator.OregenPattern;
 import io.netty.buffer.ByteBuf;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 public class GTPacketSendOregenPattern extends GTPacket {
 
     protected OregenPattern pattern = OregenPattern.AXISSYMMETRICAL;
@@ -35,8 +37,8 @@ public class GTPacketSendOregenPattern extends GTPacket {
             return new GTPacketSendOregenPattern(OregenPattern.values()[ordinal]);
         }
         // invalid data, default to AXISSYMMETRICAL:
-        GTLog.err.printf(
-            "Received invalid data! Received %d but value must be between 0 and %d! Default (0) will be used.%n",
+        GT_FML_LOGGER.error(
+            "Received invalid data! Received {} but value must be between 0 and {}! Default (0) will be used.",
             ordinal,
             OregenPattern.values().length - 1);
         return new GTPacketSendOregenPattern();

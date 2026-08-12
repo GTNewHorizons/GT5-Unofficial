@@ -31,6 +31,8 @@ import gregtech.api.enums.Mods;
 import gregtech.api.net.cape.GTPacketBroadcastCapes;
 import gregtech.api.util.GTLog;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 @EventBusSubscriber
 @ParametersAreNonnullByDefault
 public class GTCapesLoader implements Runnable {
@@ -109,7 +111,7 @@ public class GTCapesLoader implements Runnable {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
     }
 
@@ -120,7 +122,7 @@ public class GTCapesLoader implements Runnable {
                 putName(scanner.nextLine());
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
     }
 
@@ -133,11 +135,11 @@ public class GTCapesLoader implements Runnable {
                 if (parts.length == 2) {
                     putName(parts[0], parts[1] + "GC");
                 } else {
-                    GTLog.err.println("Invalid cape mapping: " + line);
+                    GT_FML_LOGGER.error("Invalid cape mapping: {}", line);
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
     }
 
@@ -150,11 +152,11 @@ public class GTCapesLoader implements Runnable {
                 if (parts.length == 2) {
                     putName(parts[0], parts[1] + "GS");
                 } else {
-                    GTLog.err.println("Invalid cape mapping: " + line);
+                    GT_FML_LOGGER.error("Invalid cape mapping: {}", line);
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
     }
 

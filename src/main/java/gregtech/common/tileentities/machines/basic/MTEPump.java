@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.debugBlockPump;
 
 import java.util.ArrayDeque;
@@ -581,9 +582,9 @@ public class MTEPump extends MTEBasicMachine {
 
         if (debugBlockPump) {
             if (foundPipe) {
-                GTLog.out.println("PUMP: Using 1 pipe");
+                GT_FML_LOGGER.error("PUMP: Using 1 pipe");
             } else {
-                GTLog.err.println("PUMP: Lowered pipe but could not find pipe in input");
+                GT_FML_LOGGER.error("PUMP: Lowered pipe but could not find pipe in input");
             }
         }
 

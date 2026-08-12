@@ -8,6 +8,8 @@ import net.minecraft.client.resources.data.IMetadataSection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 @SideOnly(Side.CLIENT)
 public class ColorsMetadataSection implements IMetadataSection {
 
@@ -37,7 +39,7 @@ public class ColorsMetadataSection implements IMetadataSection {
             try {
                 if (!hex.isEmpty()) colorValue = Integer.parseUnsignedInt(hex, 16);
             } catch (final NumberFormatException e) {
-                GTLog.err.println("Couldn't format color correctly of " + key + " -> " + hex);
+                GT_FML_LOGGER.error("Couldn't format color correctly of {} -> {}", key, hex);
             }
             intMap.put(key, colorValue);
         }

@@ -1,5 +1,6 @@
 package gregtech.common;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.debugOrevein;
 import static gregtech.api.enums.GTValues.debugWorldGen;
 import static gregtech.api.enums.GTValues.oreveinAttempts;
@@ -428,7 +429,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                                 + oreseedX
                                 + " oreseedZ="
                                 + oreseedZ);
-                        e.printStackTrace(GTLog.err);
+                        GT_FML_LOGGER.error(e);
                     }
 
                     switch (placementResult) {
@@ -573,7 +574,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                         this.mChunkProvider);
                 }
             } catch (Exception e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
 
             long stonegenTime = System.nanoTime();
@@ -603,7 +604,7 @@ public class GTWorldgenerator implements IWorldGenerator {
             long endTime = System.nanoTime();
 
             if (debugWorldGen || profileWorldGen) {
-                GTMod.GT_FML_LOGGER.info(
+                GT_FML_LOGGER.info(
                     " Oregen took {}us Stonegen took {}us Worldgen took {}us",
                     (oregenTime - stonegenTime) / 1e3,
                     (stonegenTime - startTime) / 1e3,

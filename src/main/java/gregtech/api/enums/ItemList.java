@@ -1,5 +1,6 @@
 package gregtech.api.enums;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.NI;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
@@ -3347,7 +3348,7 @@ public enum ItemList implements IItemContainer {
     @Override
     public boolean isStackEqual(Object aStack, boolean aWildcard, boolean aIgnoreNBT) {
         if (mDeprecated && !mWarned) {
-            new Exception(this + " is now deprecated").printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(new Exception(this + " is now deprecated"));
             // warn only once
             mWarned = true;
         }
@@ -3464,7 +3465,7 @@ public enum ItemList implements IItemContainer {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         if (mDeprecated && !mWarned) {
-            new Exception(this + " is now deprecated").printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(new Exception(this + " is now deprecated"));
             // warn only once
             mWarned = true;
         }

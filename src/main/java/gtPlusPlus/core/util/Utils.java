@@ -17,6 +17,8 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 public class Utils {
 
     public static boolean isClient() {
@@ -75,10 +77,10 @@ public class Utils {
                 if (pages[i].length() < 256) {
                     NBTList.appendTag(new NBTTagString(pages[i]));
                 } else {
-                    GTLog.err.println("WARNING: String for written Book too long! -> " + pages[i]);
+                    GT_FML_LOGGER.error("WARNING: String for written Book too long! -> {}", pages[i]);
                 }
             } else {
-                GTLog.err.println("WARNING: Too much Pages for written Book! -> " + titleKey);
+                GT_FML_LOGGER.error("WARNING: Too much Pages for written Book! -> {}", titleKey);
                 break;
             }
         }

@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.io.DataInput;
@@ -198,8 +199,8 @@ public abstract class GTChunkAssociatedData<T extends GTChunkAssociatedData.IDat
                 try {
                     f.get();
                 } catch (Exception e) {
-                    GTLog.err.println("Data save error: " + mId);
-                    e.printStackTrace(GTLog.err);
+                    GT_FML_LOGGER.error("Data save error: {}", mId);
+                    GT_FML_LOGGER.error(e);
                 }
             });
     }
@@ -233,8 +234,8 @@ public abstract class GTChunkAssociatedData<T extends GTChunkAssociatedData.IDat
      * Be aware of the memory consumption though.
      */
     protected void loadAll(World w) {
-        if (GTValues.debugWorldData && masterMap.containsKey(w.provider.dimensionId)) GTLog.err.println(
-            "Reloading ChunkAssociatedData " + mId + " for world " + w.provider.dimensionId + " discards old data!");
+        if (GTValues.debugWorldData && masterMap.containsKey(w.provider.dimensionId))
+            GT_FML_LOGGER.error("Reloading ChunkAssociatedData {} for world {} discards old data!", mId, w.provider.dimensionId);
         if (!getSaveDirectory(w).isDirectory())
             // nothing to load...
             return;
@@ -255,8 +256,8 @@ public abstract class GTChunkAssociatedData<T extends GTChunkAssociatedData.IDat
                     try {
                         return f.get();
                     } catch (Exception e) {
-                        GTLog.err.println("Error loading region");
-                        e.printStackTrace(GTLog.err);
+                        GT_FML_LOGGER.error("Error loading region");
+                        GT_FML_LOGGER.error(e);
                         return null;
                     }
                 })
@@ -264,8 +265,8 @@ public abstract class GTChunkAssociatedData<T extends GTChunkAssociatedData.IDat
                 .collect(Collectors.toMap(SuperRegion::getCoord, Function.identity()));
             masterMap.put(w.provider.dimensionId, worldData);
         } catch (IOException | UncheckedIOException e) {
-            GTLog.err.println("Error loading all region");
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error("Error loading all region");
+            GT_FML_LOGGER.error(e);
         }
     }
 
@@ -369,8 +370,8 @@ public abstract class GTChunkAssociatedData<T extends GTChunkAssociatedData.IDat
             try {
                 save0();
             } catch (IOException e) {
-                GTLog.err.println("Error saving data " + backingStorage.getPath());
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("Error saving data {}", backingStorage.getPath());
+                GT_FML_LOGGER.error(e);
             }
         }
 
@@ -422,14 +423,14 @@ public abstract class GTChunkAssociatedData<T extends GTChunkAssociatedData.IDat
             try {
                 loadFromFile(backingStorage);
             } catch (IOException | RuntimeException e) {
-                GTLog.err.println("Primary storage file broken in " + backingStorage.getPath());
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("Primary storage file broken in {}", backingStorage.getPath());
+                GT_FML_LOGGER.error(e);
                 // in case the primary storage is broken
                 try {
                     loadFromFile(getTmpFile());
                 } catch (IOException | RuntimeException e2) {
-                    GTLog.err.println("Backup storage file broken in " + backingStorage.getPath());
-                    e2.printStackTrace(GTLog.err);
+                    GT_FML_LOGGER.error("Backup storage file broken in {}", backingStorage.getPath());
+                    GT_FML_LOGGER.error(e2);
                 }
             }
         }
@@ -441,7 +442,7 @@ public abstract class GTChunkAssociatedData<T extends GTChunkAssociatedData.IDat
                 if (b == 0) {
                     loadV0(input, world);
                 } else {
-                    GTLog.err.printf("Unknown ChunkAssociatedData version %d\n", b);
+                    GT_FML_LOGGER.error("Unknown ChunkAssociatedData version {}", b);
                 }
             }
         }

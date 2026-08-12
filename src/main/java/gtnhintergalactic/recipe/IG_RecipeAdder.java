@@ -13,6 +13,8 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.common.RecipeAdder;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 /**
  * GT recipe adder of GTNH-Intergalactic
  *
@@ -170,22 +172,17 @@ public class IG_RecipeAdder extends RecipeAdder {
             return false;
         }
         if (recipeWeight <= 0) {
-            GTLog.err
-                .println("Weight of mining recipe for main material " + aItemOutputs[0].getUnlocalizedName() + " is 0");
+            GT_FML_LOGGER.error("Weight of mining recipe for main material {} is 0", aItemOutputs[0].getUnlocalizedName());
         }
         if (aChances != null) {
             if (aChances.length < aItemOutputs.length) {
                 return false;
             } else if (aChances.length > aItemOutputs.length) {
-                GTLog.err.println(
-                    "Chances and outputs of mining recipe for main material " + aItemOutputs[0].getUnlocalizedName()
-                        + " have different length!");
+                GT_FML_LOGGER.error("Chances and outputs of mining recipe for main material {} have different length!", aItemOutputs[0].getUnlocalizedName());
             }
             if (Arrays.stream(aChances)
                 .sum() != 10000) {
-                GTLog.err.println(
-                    "Sum of chances in mining recipe for main material " + aItemOutputs[0].getUnlocalizedName()
-                        + " is not 100%! This will lead to no issue but might be unintentional");
+                GT_FML_LOGGER.error("Sum of chances in mining recipe for main material {} is not 100%! This will lead to no issue but might be unintentional", aItemOutputs[0].getUnlocalizedName());
             }
         } else {
             aChances = new int[aItemOutputs.length];

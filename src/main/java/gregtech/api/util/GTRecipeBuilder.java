@@ -31,6 +31,8 @@ import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.recipe.metadata.RecipeMetadataStorage;
 import gregtech.api.util.extensions.ArrayExt;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class GTRecipeBuilder {
 
@@ -190,9 +192,8 @@ public class GTRecipeBuilder {
 
     private static void handleNullRecipeComponents(String componentType) {
         // place a breakpoint here to catch all these issues
-        GTLog.err.print("null detected in ");
-        GTLog.err.println(componentType);
-        new NullPointerException().printStackTrace(GTLog.err);
+        GT_FML_LOGGER.error("null detected in {}",componentType);
+        GT_FML_LOGGER.error(new NullPointerException());
         if (PANIC_MODE_NULL) {
             throw new IllegalArgumentException("null in argument");
         }
@@ -207,8 +208,8 @@ public class GTRecipeBuilder {
             return;
         }
         // place a breakpoint here to catch all these issues
-        GTLog.err.print("invalid recipe");
-        new IllegalArgumentException().printStackTrace(GTLog.err);
+        GT_FML_LOGGER.error("invalid recipe");
+        GT_FML_LOGGER.error(new IllegalArgumentException());
         if (PANIC_MODE_INVALID) {
             throw new IllegalArgumentException("invalid recipe");
         }
@@ -219,8 +220,8 @@ public class GTRecipeBuilder {
             return;
         }
         // place a breakpoint here to catch all these issues
-        GTLog.err.println("invalid recipe: not enough input fluids");
-        new IllegalArgumentException().printStackTrace(GTLog.err);
+        GT_FML_LOGGER.error("invalid recipe: not enough input fluids");
+        GT_FML_LOGGER.error(new IllegalArgumentException());
         if (PANIC_MODE_INVALID) {
             throw new IllegalArgumentException("invalid recipe");
         }
@@ -231,8 +232,8 @@ public class GTRecipeBuilder {
             return;
         }
         // place a breakpoint here to catch all these issues
-        GTLog.err.println("invalid recipe: not enough input items");
-        new IllegalArgumentException().printStackTrace(GTLog.err);
+        GT_FML_LOGGER.error("invalid recipe: not enough input items");
+        GT_FML_LOGGER.error(new IllegalArgumentException());
         if (PANIC_MODE_INVALID) {
             throw new IllegalArgumentException("invalid recipe");
         }
@@ -242,13 +243,12 @@ public class GTRecipeBuilder {
         if (!DEBUG_MODE_COLLISION && !PANIC_MODE_COLLISION) {
             return;
         }
-        GTLog.err.print("Recipe collision resulting in recipe loss detected with ");
-        GTLog.err.println(details);
+        GT_FML_LOGGER.error("Recipe collision resulting in recipe loss detected with {}", details);
         if (PANIC_MODE_COLLISION) {
             throw new IllegalArgumentException("Recipe Collision");
         } else {
             // place a breakpoint here to catch all these issues
-            new IllegalArgumentException().printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(new IllegalArgumentException());
         }
     }
 
@@ -391,8 +391,7 @@ public class GTRecipeBuilder {
                     ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(ods.mOreName);
                     if (ores.isEmpty()) {
                         alts[i] = GTValues.emptyItemStackArray;
-                        GTLog.err
-                            .println("Warning: OreDict entry \"" + ods.mOreName + "\" is empty; recipe will be skipped.");
+                        GT_FML_LOGGER.error("Warning: OreDict entry \"{}\" is empty; recipe will be skipped.", ods.mOreName);
                         if (debugNull()) handleNullRecipeComponents("itemInputs empty ore dict");
                         continue;
                     }
@@ -411,7 +410,7 @@ public class GTRecipeBuilder {
                     ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(arr[0]);
                     if (ores.isEmpty()) {
                         alts[i] = GTValues.emptyItemStackArray;
-                        GTLog.err.println("Warning: OreDict entry \"" + arr[0] + "\" is empty; recipe will be skipped.");
+                        GT_FML_LOGGER.error("Warning: OreDict entry \"{}\" is empty; recipe will be skipped.", arr[0]);
                         if (debugNull()) handleNullRecipeComponents("itemInputs empty ore dict");
                         continue;
                     }
@@ -619,9 +618,8 @@ public class GTRecipeBuilder {
             // Ignores ULV voltage
             for (int i = 1; i < GTValues.VP.length; i++) {
                 if (eut <= GTValues.V[i] && eut > GTValues.VP[i]) {
-                    GTLog.err.println(
-                        "EUt > Practical Voltage detected. EUt: " + eut + ", Practical Voltage: " + GTValues.VP[i]);
-                    new IllegalArgumentException().printStackTrace(GTLog.err);
+                    GT_FML_LOGGER.error("EUt > Practical Voltage detected. EUt: {}, Practical Voltage: {}", eut, GTValues.VP[i]);
+                    GT_FML_LOGGER.error(new IllegalArgumentException());
                     break;
                 }
             }

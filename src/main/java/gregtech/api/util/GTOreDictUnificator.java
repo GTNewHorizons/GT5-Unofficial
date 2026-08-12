@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
@@ -129,7 +130,7 @@ public class GTOreDictUnificator {
         final ItemStack stackFromName = sName2StackMap.get(aName.toString());
         if (stackFromName != null) return GTUtility.copyAmount(aAmount, stackFromName);
         if (aMentionPossibleTypos) {
-            GTLog.err.println("Unknown Key for Unification, Typo? " + aName);
+            GT_FML_LOGGER.error("Unknown Key for Unification, Typo? {}", aName);
         }
         final ItemStack stackFirstOre = getFirstOre(aName, aAmount);
         if (stackFirstOre != null) return GTUtility.copyAmount(aAmount, stackFirstOre);

@@ -28,7 +28,6 @@ import gregtech.common.config.Gregtech;
 public class GTLog {
 
     public static PrintStream out = System.out;
-    public static PrintStream err = System.err;
     public static File mLogFile;
 
     public static void configureExplosionLogger(File parentFile) {

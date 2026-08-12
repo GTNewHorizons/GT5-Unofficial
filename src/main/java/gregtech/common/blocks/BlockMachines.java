@@ -365,7 +365,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
         GTLog.out.println("GTMod: Starting Block Icon Load Phase");
         GT_FML_LOGGER.info("GTMod: Starting Block Icon Load Phase");
@@ -374,7 +374,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 tRunnable.run();
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
         GTLog.out.println("GTMod: Finished Block Icon Load Phase");
         GT_FML_LOGGER.info("GTMod: Finished Block Icon Load Phase");

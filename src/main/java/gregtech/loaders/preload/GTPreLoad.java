@@ -150,7 +150,7 @@ public class GTPreLoad {
             } catch (Exception ignored) {}
         }
         try {
-            GTLog.out = GTLog.err = new PrintStream(GTLog.mLogFile);
+            GTLog.out = new PrintStream(GTLog.mLogFile);
         } catch (FileNotFoundException ignored) {}
 
     }
@@ -310,7 +310,7 @@ public class GTPreLoad {
                     .clear();
         } catch (Exception e) {
             if (GTValues.D1) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
         GTLog.out.println("GTMod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
