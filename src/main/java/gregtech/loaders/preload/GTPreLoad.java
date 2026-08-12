@@ -178,17 +178,6 @@ public class GTPreLoad {
             GTLog.ore.println("******************************************************************************");
             tList.forEach(GTLog.ore::println);
         }
-        if (Gregtech.general.loggingExplosions) {
-            GTLog.mExplosionLog = new File(parentFile, "logs/Explosion.log");
-            if (!GTLog.mExplosionLog.exists()) {
-                try {
-                    GTLog.mExplosionLog.createNewFile();
-                } catch (Exception ignored) {}
-            }
-            try {
-                GTLog.exp = new PrintStream(GTLog.mExplosionLog);
-            } catch (Exception ignored) {}
-        }
         if (Gregtech.debug.logRegisterIcons) {
             GTLog.mRegisterIconsLog = new File(parentFile, "logs/RegisterIcon.log");
 
