@@ -743,11 +743,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             .addCasing("88", StatCollector.translateToLocal("ig.elevator.structure.Motor"), true)
             .addCasing("56", StatCollector.translateToLocal("ig.elevator.structure.FrameNeutronium"), false)
             .addCasing("1", StatCollector.translateToLocal("gt.blockcasings.ig.cable.name"), false)
-            .addMiscHatch(
-                "0+",
-                StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"),
-                StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_center_casing"),
-                1)
+            .addMiscHatch("0+", StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_center_casing"), 1)
             .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_center_casing"), 1)
             .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_bottom_center_casing"), 1)
             .addStructureInfo("")
@@ -755,21 +751,13 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             .addCasing("800", StatCollector.translateToLocal("tile.DysonSwarmFloor.name"), false)
             .addCasing("593-783", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
             .addCasing("360", StatCollector.translateToLocal("gt.blockcasings.ig.2.name"), false)
-            .addMiscHatch(
-                "0-12",
-                StatCollector.translateToLocal("gt.blockmachines.module.name"),
-                StatCollector.translateToLocal("gt.mbtt.structure.surrounding_central_column"),
-                2)
+            .addMiscHatch("0-12", StatCollector.translateToLocal("gt.blockmachines.module.name"), StatCollector.translateToLocal("gt.mbtt.structure.surrounding_central_column"), 2)
             .addStructureInfo("")
             .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Extended"))
             .addCasing("1232", StatCollector.translateToLocal("tile.DysonSwarmFloor.name"), false)
             .addCasing("593-903", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
             .addCasing("548", StatCollector.translateToLocal("gt.blockcasings.ig.2.name"), false)
-            .addMiscHatch(
-                "0-24",
-                StatCollector.translateToLocal("gt.blockmachines.module.name"),
-                StatCollector.translateToLocal("gt.mbtt.structure.surrounding_central_column"),
-                2)
+            .addMiscHatch("0-24", StatCollector.translateToLocal("gt.blockmachines.module.name"), StatCollector.translateToLocal("gt.mbtt.structure.surrounding_central_column"), 2)
             .addStructureInfo("")
             .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SwitchToExtended"))
             .addSubChannel(GTStructureChannels.SE_MOTOR)
