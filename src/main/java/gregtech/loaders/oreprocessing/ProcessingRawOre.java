@@ -8,6 +8,7 @@ import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gtnhlanth.util.LanthanidesRecipeOutputs.convertOre;
 
 import net.minecraft.item.ItemStack;
 
@@ -216,7 +217,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
             GTValues.RA.stdBuilder()
                 .itemInputs(aOreStack)
                 .itemOutputs(
-                    convert(
+                    convertOre(
                         aMaterial,
                         GTUtility.mul(2, tCrushed),
                         tMaterial.contains(SubTag.PULVERIZING_CINNABAR)
