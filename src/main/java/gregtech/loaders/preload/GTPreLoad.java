@@ -159,24 +159,10 @@ public class GTPreLoad {
             GT_FML_LOGGER.error("Failed to configure explosion logger", e);
         }
 
-        if (Gregtech.general.loggingOreDict) {
-            GTLog.mOreDictLogFile = new File(parentFile, "logs/OreDict.log");
-            if (!GTLog.mOreDictLogFile.exists()) {
-                try {
-                    GTLog.mOreDictLogFile.createNewFile();
-                } catch (Exception ignored) {}
-            }
-            List<String> tList = ((GTLog.LogBuffer) GTLog.ore).lineBuffer;
-            try {
-                GTLog.ore = new PrintStream(GTLog.mOreDictLogFile);
-            } catch (Exception ignored) {}
-            GTLog.ore.println("******************************************************************************");
-            GTLog.ore.println("* This is the complete log of the GT5-Unofficial OreDictionary Handler. It   *");
-            GTLog.ore.println("* processes all OreDictionary entries and can sometimes cause errors. All    *");
-            GTLog.ore.println("* entries and errors are being logged. If you see an error please raise an   *");
-            GTLog.ore.println("* issue at https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues.  *");
-            GTLog.ore.println("******************************************************************************");
-            tList.forEach(GTLog.ore::println);
+        try {
+            GTLog.configureOreDictLogger(parentFile);
+        } catch (RuntimeException e) {
+            GT_FML_LOGGER.error("Failed to configure ore dictionary logger", e);
         }
         if (Gregtech.debug.logRegisterIcons) {
             GTLog.mRegisterIconsLog = new File(parentFile, "logs/RegisterIcon.log");

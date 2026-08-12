@@ -339,7 +339,6 @@ public class GTMod {
         GTPreLoad.sortToTheEnd();
         GregTechAPI.sPreloadFinished = true;
         GTLog.out.println("GTMod: Preload-Phase finished!");
-        GTLog.ore.println("GTMod: Preload-Phase finished!");
 
         GTUIInfos.init();
 
@@ -403,7 +402,6 @@ public class GTMod {
 
         GregTechAPI.sLoadFinished = true;
         GTLog.out.println("GTMod: Load-Phase finished!");
-        GTLog.ore.println("GTMod: Load-Phase finished!");
 
         for (Runnable tRunnable : GregTechAPI.sAfterGTLoad) {
             tRunnable.run();
@@ -556,7 +554,6 @@ public class GTMod {
         GTLanguageManager.sEnglishFile.save();
         GregTechAPI.sPostloadFinished = true;
         GTLog.out.println("GTMod: PostLoad-Phase finished!");
-        GTLog.ore.println("GTMod: PostLoad-Phase finished!");
         for (Runnable tRunnable : GregTechAPI.sAfterGTPostload) {
             tRunnable.run();
         }
@@ -741,7 +738,6 @@ public class GTMod {
         }
         GregTechAPI.mServerStarted = true;
         GTLog.out.println("GTMod: ServerStarting-Phase finished!");
-        GTLog.ore.println("GTMod: ServerStarting-Phase finished!");
 
         for (Runnable tRunnable : GregTechAPI.sAfterGTServerstart) {
             tRunnable.run();

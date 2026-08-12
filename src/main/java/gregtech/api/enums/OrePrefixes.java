@@ -3061,7 +3061,7 @@ public class OrePrefixes {
 
         for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
             if (D2) {
-                GTLog.ore.println(
+                GTLog.writeOreLog(
                     "Processing '" + aOreDictName
                         + "' with the Prefix '"
                         + name

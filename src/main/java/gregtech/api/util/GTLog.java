@@ -28,19 +28,49 @@ import gregtech.common.config.Gregtech;
 public class GTLog {
 
     public static final Logger EXPLOSION_LOGGER = LogManager.getLogger("GregTech Explosions");
+    public static final Logger ORE_DICT_LOGGER = LogManager.getLogger("GregTech Ore Dictionary");
     public static PrintStream out = System.out;
     public static PrintStream err = System.err;
-    public static PrintStream ore = Gregtech.general.loggingOreDict ? new LogBuffer() : new VoidLogger();
     public static PrintStream ico = Gregtech.debug.logRegisterIcons ? new LogBuffer() : new VoidLogger();
     public static File mLogFile;
-    public static File mOreDictLogFile;
     public static File mRegisterIconsLog;
+    private static final List<String> ORE_LOG_BUFFER = new ArrayList<>();
+    private static boolean oreLoggerConfigured;
 
     public static void configureExplosionLogger(File parentFile) {
-        org.apache.logging.log4j.core.Logger logger = (org.apache.logging.log4j.core.Logger) EXPLOSION_LOGGER;
+        configureRollingLogger(
+            EXPLOSION_LOGGER,
+            Gregtech.general.loggingExplosions,
+            new File(parentFile, "logs/explosions.log"),
+            new File(parentFile, "logs/explosions-%i.log"),
+            "GregTechExplosionFile");
+    }
+
+    public static void configureOreDictLogger(File parentFile) {
+        oreLoggerConfigured = configureRollingLogger(
+            ORE_DICT_LOGGER,
+            Gregtech.general.loggingOreDict,
+            new File(parentFile, "logs/OreDict.log"),
+            new File(parentFile, "logs/OreDict-%i.log"),
+            "GregTechOreDictFile");
+        if (!oreLoggerConfigured) return;
+
+        writeOreLog("******************************************************************************");
+        writeOreLog("* This is the complete log of the GT5-Unofficial OreDictionary Handler. It   *");
+        writeOreLog("* processes all OreDictionary entries and can sometimes cause errors. All    *");
+        writeOreLog("* entries and errors are being logged. If you see an error please raise an   *");
+        writeOreLog("* issue at https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues.  *");
+        writeOreLog("******************************************************************************");
+        ORE_LOG_BUFFER.forEach(ORE_DICT_LOGGER::info);
+        ORE_LOG_BUFFER.clear();
+    }
+
+    private static boolean configureRollingLogger(Logger apiLogger, boolean enabled, File file, File filePattern,
+        String appenderName) {
+        org.apache.logging.log4j.core.Logger logger = (org.apache.logging.log4j.core.Logger) apiLogger;
         logger.setAdditive(false);
         logger.setLevel(Level.INFO);
-        if (!Gregtech.general.loggingExplosions) return;
+        if (!enabled) return false;
 
         Configuration configuration = logger.getContext()
             .getConfiguration();
@@ -51,10 +81,10 @@ public class GTLog {
         DefaultRolloverStrategy strategy = DefaultRolloverStrategy
             .createStrategy("3", null, "max", null, configuration);
         RollingRandomAccessFileAppender appender = RollingRandomAccessFileAppender.createAppender(
-            new File(parentFile, "logs/explosions.log").getPath(),
-            new File(parentFile, "logs/explosions-%i.log").getPath(),
+            file.getPath(),
+            filePattern.getPath(),
             "true",
-            "GregTechExplosionFile",
+            appenderName,
             "true",
             policy,
             strategy,
@@ -64,10 +94,11 @@ public class GTLog {
             "false",
             null,
             configuration);
-        if (appender == null) throw new IllegalStateException("Failed to create explosion log appender");
+        if (appender == null) throw new IllegalStateException("Failed to create " + appenderName);
 
         appender.start();
         logger.addAppender(appender);
+        return true;
     }
 
     public static class LogBuffer extends PrintStream {
@@ -111,6 +142,15 @@ public class GTLog {
     public static void writeExplosionLog(String message) {
         if (!Gregtech.general.loggingExplosions) return;
         EXPLOSION_LOGGER.info(message);
+    }
+
+    public static void writeOreLog(String message) {
+        if (!Gregtech.general.loggingOreDict) return;
+        if (oreLoggerConfigured) {
+            ORE_DICT_LOGGER.info(message);
+        } else {
+            ORE_LOG_BUFFER.add(message);
+        }
     }
 
     public static void writeExplosionLog(String dimension, int x, int y, int z, String blockName, String ownerName,
