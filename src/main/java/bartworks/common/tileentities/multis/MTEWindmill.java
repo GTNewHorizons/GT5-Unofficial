@@ -19,7 +19,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofTileAdder;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTAuthors.AuthorMilkFox;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR;
 
@@ -283,7 +282,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                     + " parallels: "
                     + EnumChatFormatting.DARK_RED
                     + "Very Strong")
-            .beginStructureBlock(7, 10, 7, false)
+            .beginStructureBlock(7, 12, 7, false)
             .addController("Front bottom center")
             .addCasing("44", "Bricks", false)
             .addCasing("40-47", "Terracotta", false)
@@ -291,7 +290,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             .addCasing("1", "Primitive Kinetic Shaftbox", false)
             .addOtherStructurePart("Dispenser", "Any Terracotta", 1)
             .addStructureHint("tile.BWRotorBlock.0.name", 1)
-            .toolTipFinisher(AuthorMilkFox);
+            .toolTipFinisher();
         return tt;
     }
 
