@@ -1,11 +1,14 @@
 package gregtech.loaders.oreprocessing;
 
+import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convert;
+import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convertSmelting;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gtnhlanth.util.LanthanidesRecipeOutputs.convertOre;
 
 import net.minecraft.item.ItemStack;
 
@@ -118,8 +121,12 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
             if ((aMaterial.mBlastFurnaceRequired) || (aMaterial.mDirectSmelting.mBlastFurnaceRequired)) {
                 GTModHandler.removeFurnaceSmelting(aOreStack);
             } else {
-                tHasSmelting = GTModHandler
-                    .addSmeltingRecipe(aOreStack, GTUtility.copyAmount(aMaterial.mSmeltingMultiplier, tSmeltInto));
+                tHasSmelting = GTModHandler.addSmeltingRecipe(
+                    aOreStack,
+                    convertSmelting(
+                        aMaterial,
+                        aPrefix,
+                        GTUtility.copyAmount(aMaterial.mSmeltingMultiplier, tSmeltInto)));
             }
 
             if (aMaterial.contains(SubTag.BLASTFURNACE_CALCITE_TRIPLE)) {
@@ -182,8 +189,13 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
         if (!tHasSmelting) {
             GTModHandler.addSmeltingRecipe(
                 aOreStack,
-                GTOreDictUnificator
-                    .get(OrePrefixes.gem, tMaterial.mDirectSmelting, Math.max(1, aMaterial.mSmeltingMultiplier / 2)));
+                convertSmelting(
+                    aMaterial,
+                    aPrefix,
+                    GTOreDictUnificator.get(
+                        OrePrefixes.gem,
+                        tMaterial.mDirectSmelting,
+                        Math.max(1, aMaterial.mSmeltingMultiplier / 2))));
         }
 
         if (tCrushed != null) {
@@ -193,7 +205,8 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
 
             GTValues.RA.stdBuilder()
                 .itemInputs(aOreStack)
-                .itemOutputs(GTUtility.copy(GTUtility.copyAmount(tCrushed.stackSize, tGem), tCrushed))
+                .itemOutputs(
+                    convert(aMaterial, GTUtility.copy(GTUtility.copyAmount(tCrushed.stackSize, tGem), tCrushed)))
                 .duration(10)
                 .eut(TierEU.RECIPE_LV / 2)
                 .addTo(hammerRecipes);
@@ -204,16 +217,25 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
             GTValues.RA.stdBuilder()
                 .itemInputs(aOreStack)
                 .itemOutputs(
-                    GTUtility.mul(2, tCrushed),
-                    tMaterial.contains(SubTag.PULVERIZING_CINNABAR) ? GTOreDictUnificator.get(
-                        OrePrefixes.crystal,
-                        Materials.Cinnabar,
-                        GTOreDictUnificator
-                            .get(OrePrefixes.gem, tPrimaryByMaterial, GTUtility.copyAmount(1, tPrimaryByProduct), 1L),
-                        1L)
-                        : GTOreDictUnificator
-                            .get(OrePrefixes.gem, tPrimaryByMaterial, GTUtility.copyAmount(1, tPrimaryByProduct), 1L),
-                    GTOreDictUnificator.getDust(aPrefix.mSecondaryMaterial))
+                    convertOre(
+                        aMaterial,
+                        GTUtility.mul(2, tCrushed),
+                        tMaterial.contains(SubTag.PULVERIZING_CINNABAR)
+                            ? GTOreDictUnificator.get(
+                                OrePrefixes.crystal,
+                                Materials.Cinnabar,
+                                GTOreDictUnificator.get(
+                                    OrePrefixes.gem,
+                                    tPrimaryByMaterial,
+                                    GTUtility.copyAmount(1, tPrimaryByProduct),
+                                    1L),
+                                1L)
+                            : GTOreDictUnificator.get(
+                                OrePrefixes.gem,
+                                tPrimaryByMaterial,
+                                GTUtility.copyAmount(1, tPrimaryByProduct),
+                                1L),
+                        GTOreDictUnificator.getDust(aPrefix.mSecondaryMaterial)))
                 .outputChances(10000, chanceOre2, 5000)
                 .duration(20 * SECONDS)
                 .eut(2)

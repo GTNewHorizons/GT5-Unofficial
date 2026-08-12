@@ -62,7 +62,8 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     protected int times = 1;
     private UUID owner_uuid;
     private boolean wirelessEnabled = false;
-    private boolean canUseWireless = true;
+    private long lastCycleTick = 0;
+
     private long euLastCycle = 0;
     private float annihilationEfficiency = 0f;
     public static final long ANTIMATTER_FUEL_VALUE = 1_000_000_000_000L;
@@ -106,6 +107,15 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
 
     public AntimatterGenerator(int id, String name, String nameRegional) {
         super(id, name, nameRegional);
+    }
+
+    @Override
+    public boolean shouldCheckRecipeThisTick(long tick) {
+        if (tick - lastCycleTick >= 100) {
+            lastCycleTick = tick;
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -455,17 +465,16 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        currentTip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector
                 .translateToLocalFormatted("gui.AntimatterGenerator.0.s", formatNumber(this.energyProducedCache)));
-        currentTip.add(
+        list.add(
             StatCollector.translateToLocalFormatted(
                 "gui.AntimatterGenerator.1.s",
                 formatNumber(Math.ceil(this.efficiencyCache * 100))));
-        currentTip.add(
+        list.add(
             StatCollector.translateToLocalFormatted(
                 "gui.AntimatterGenerator.2.s",
                 formatNumber(Math.ceil(this.avgEffCache * 100))));
