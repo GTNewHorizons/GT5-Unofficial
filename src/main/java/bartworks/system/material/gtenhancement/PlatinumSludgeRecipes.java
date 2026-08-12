@@ -639,6 +639,17 @@ public final class PlatinumSludgeRecipes {
             .duration(8 * TICKS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(UniversalChemical);
+        // NaOH + HNO3 = NaNO3 + H2O
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.SodiumHydroxide.getDust(3))
+            .itemOutputs(SodiumNitrate.get(dust, 5))
+            .fluidInputs(Materials.NitricAcid.getFluid(1_000))
+            .fluidOutputs(Materials.Water.getFluid(1_000))
+            .circuit(7)
+            .duration(1 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(UniversalChemical);
+
         GTValues.RA.stdBuilder()
             .itemInputs(RHNitrate.get(dust))
             .itemOutputs(
