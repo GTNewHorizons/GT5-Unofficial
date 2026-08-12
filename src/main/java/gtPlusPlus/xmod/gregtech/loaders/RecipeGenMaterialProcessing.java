@@ -89,8 +89,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                             .getCell(f.getKey());
                         mCellCount += f.getKey();
                     } else {
-                        mInternalOutputs[mCounter++] = f.getValue()
-                            .getDust(f.getKey());
+                        mInternalOutputs[mCounter++] = RecipeGenOre.getDust(f.getValue(), f.getKey());
                     }
                     mTotalCount += f.getKey();
                 }
@@ -157,8 +156,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
                             .getCell(f.getKey());
                         mCellCount += f.getKey();
                     } else {
-                        mInternalOutputs[mCounter++] = f.getValue()
-                            .getDust(f.getKey());
+                        mInternalOutputs[mCounter++] = RecipeGenOre.getDust(f.getValue(), f.getKey());
                     }
                     mTotalCount += f.getKey();
                 }
