@@ -50,9 +50,11 @@ public final class NaquadahRecipePatches {
                 reAdd.add(patched);
             }
         }
-        recipeMap.getBackend().removeRecipes(remove);
+        recipeMap.getBackend()
+            .removeRecipes(remove);
         reAdd.forEach(recipeMap::add);
-        if (!remove.isEmpty()) recipeMap.getBackend().reInit();
+        if (!remove.isEmpty()) recipeMap.getBackend()
+            .reInit();
     }
 
     private static FluidStack replaceNaquadahOutput(FluidStack output) {
@@ -71,17 +73,18 @@ public final class NaquadahRecipePatches {
 
     private static boolean isCropsNhRecipe(GTRecipe recipe, Item materialLeaf) {
         if (recipe.mInputs.length == 0 || recipe.mInputs[0] == null
-            || recipe.mInputs[0].getItem() != materialLeaf || recipe.mInputs[0].getItemDamage() != 18) return false;
+            || recipe.mInputs[0].getItem() != materialLeaf
+            || recipe.mInputs[0].getItemDamage() != 18) return false;
         for (ItemStack input : recipe.mInputs) {
-            if (GTUtility.areStacksEqual(input, GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Naquadah, 1), true)
+            if (GTUtility
+                .areStacksEqual(input, GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Naquadah, 1), true)
                 || GTUtility.areStacksEqual(
                     input,
                     GTOreDictUnificator.get(OrePrefixes.crushed, Materials.NaquadahEnriched, 1),
                     true)
-                || GTUtility.areStacksEqual(
-                    input,
-                    GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Naquadria, 1),
-                    true)) return true;
+                || GTUtility
+                    .areStacksEqual(input, GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Naquadria, 1), true))
+                return true;
         }
         return false;
     }

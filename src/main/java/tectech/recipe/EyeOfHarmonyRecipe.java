@@ -20,10 +20,10 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 import bartworks.system.material.Werkstoff;
-import goodgenerator.util.NaquadahRecipeOutputs;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
+import goodgenerator.util.NaquadahRecipeOutputs;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
