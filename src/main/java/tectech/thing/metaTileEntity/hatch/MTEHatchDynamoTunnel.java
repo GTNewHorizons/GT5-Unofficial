@@ -129,8 +129,8 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
 
         // An intact pipe prefix lets the scan resume past it instead of reading those blocks from the world again.
         short startDist = 1;
-        if (isCachedPrefixValid(color, front)) {
-            if (cachedTarget != null && isCachedTargetValid(color, front)) {
+        if (isCachedPrefixValid(aBaseMetaTileEntity, color, front)) {
+            if (cachedTarget != null && isCachedTargetValid(aBaseMetaTileEntity, color, front)) {
                 if (!transferEnergy(aBaseMetaTileEntity, cachedTarget)) {
                     clearCachedRoute();
                 }
@@ -210,25 +210,26 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
         }
     }
 
-    private boolean isCachedTargetValid(byte color, ForgeDirection front) {
+    private boolean isCachedTargetValid(IGregTechTileEntity source, byte color, ForgeDirection front) {
         if (!cachedTarget.isValid()) {
             return false;
         }
         IGregTechTileEntity target = cachedTarget.getBaseMetaTileEntity();
-        return target.getColorization() == color && target.getFrontFacing() == front.getOpposite();
+        return isAtDistance(source, target, front, cachedPipes.length + 1) && target.getColorization() == color
+            && target.getFrontFacing() == front.getOpposite();
     }
 
-    // No position check needed: a TileEntity's coordinates are immutable, and breaking a block or unloading its chunk
-    // marks the BaseMetaTileEntity dead.
-    private boolean isCachedPrefixValid(byte color, ForgeDirection front) {
+    private boolean isCachedPrefixValid(IGregTechTileEntity source, byte color, ForgeDirection front) {
         if (cachedColor != color || cachedFront != front) {
             return false;
         }
 
-        for (MTEPipeLaser pipe : cachedPipes) {
+        for (int i = 0; i < cachedPipes.length; i++) {
+            MTEPipeLaser pipe = cachedPipes[i];
             IGregTechTileEntity pipeBase = pipe.getBaseMetaTileEntity();
             if (pipeBase == null || pipeBase.isDead()
                 || pipeBase.getMetaTileEntity() != pipe
+                || !isAtDistance(source, pipeBase, front, i + 1)
                 || pipe.connectionCount < 2
                 || pipeBase.getColorization() != color) {
                 return false;
@@ -237,6 +238,14 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
         }
 
         return true;
+    }
+
+    private static boolean isAtDistance(IGregTechTileEntity source, IGregTechTileEntity tile, ForgeDirection direction,
+        int distance) {
+        return tile.getWorld() == source.getWorld()
+            && tile.getXCoord() == source.getXCoord() + direction.offsetX * distance
+            && tile.getYCoord() == source.getYCoord() + direction.offsetY * distance
+            && tile.getZCoord() == source.getZCoord() + direction.offsetZ * distance;
     }
 
     /** @return false if the target was blown up, meaning the route must not be cached. */
