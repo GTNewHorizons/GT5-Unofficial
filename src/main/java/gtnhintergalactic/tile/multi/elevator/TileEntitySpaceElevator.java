@@ -733,7 +733,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.name"));
-        if (TooltipUtil.elevatorLoreText != null) tt.addInfo(ITALIC + addFormattedString(TooltipUtil.elevatorLoreText));
+        if (TooltipUtil.elevatorLoreText != null) tt.addInfo(ITALIC + TooltipUtil.elevatorLoreText);
         // spotless:off
         tt.addMarkdown(new ResourceLocation("gregtech", "space-elevator"))
             .addSupportAny()
