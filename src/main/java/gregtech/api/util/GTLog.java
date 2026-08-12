@@ -8,6 +8,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.appender.RollingRandomAccessFileAppender;
+import org.apache.logging.log4j.core.appender.rolling.CompositeTriggeringPolicy;
+import org.apache.logging.log4j.core.appender.rolling.DefaultRolloverStrategy;
+import org.apache.logging.log4j.core.appender.rolling.OnStartupTriggeringPolicy;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.layout.PatternLayout;
+
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.config.Gregtech;
@@ -19,6 +29,7 @@ import gregtech.common.config.Gregtech;
  */
 public class GTLog {
 
+    public static final Logger EXPLOSION_LOGGER = LogManager.getLogger("GregTech Explosions");
     public static PrintStream out = System.out;
     public static PrintStream err = System.err;
     public static PrintStream ore = Gregtech.general.loggingOreDict ? new LogBuffer() : new VoidLogger();
@@ -28,6 +39,40 @@ public class GTLog {
     public static File mOreDictLogFile;
     public static File mExplosionLog;
     public static File mRegisterIconsLog;
+
+    public static void configureExplosionLogger(File parentFile) {
+        org.apache.logging.log4j.core.Logger logger = (org.apache.logging.log4j.core.Logger) EXPLOSION_LOGGER;
+        logger.setAdditive(false);
+        logger.setLevel(Level.INFO);
+        if (!Gregtech.general.loggingExplosions) return;
+
+        Configuration configuration = logger.getContext()
+            .getConfiguration();
+        PatternLayout layout = PatternLayout
+            .createLayout("[%d{yyyy-MM-dd HH:mm:ss}] %msg%n", configuration, null, null, null);
+        CompositeTriggeringPolicy policy = CompositeTriggeringPolicy
+            .createPolicy(OnStartupTriggeringPolicy.createPolicy());
+        DefaultRolloverStrategy strategy = DefaultRolloverStrategy
+            .createStrategy("3", null, "max", null, configuration);
+        RollingRandomAccessFileAppender appender = RollingRandomAccessFileAppender.createAppender(
+            new File(parentFile, "logs/explosions.log").getPath(),
+            new File(parentFile, "logs/explosions-%i.log").getPath(),
+            "true",
+            "GregTechExplosionFile",
+            "true",
+            policy,
+            strategy,
+            layout,
+            null,
+            "true",
+            "false",
+            null,
+            configuration);
+        if (appender == null) throw new IllegalStateException("Failed to create explosion log appender");
+
+        appender.start();
+        logger.addAppender(appender);
+    }
 
     public static class LogBuffer extends PrintStream {
 

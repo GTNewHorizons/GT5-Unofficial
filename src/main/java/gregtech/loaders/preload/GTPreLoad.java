@@ -153,6 +153,12 @@ public class GTPreLoad {
             GTLog.out = GTLog.err = new PrintStream(GTLog.mLogFile);
         } catch (FileNotFoundException ignored) {}
 
+        try {
+            GTLog.configureExplosionLogger(parentFile);
+        } catch (RuntimeException e) {
+            GT_FML_LOGGER.error("Failed to configure explosion logger", e);
+        }
+
         if (Gregtech.general.loggingOreDict) {
             GTLog.mOreDictLogFile = new File(parentFile, "logs/OreDict.log");
             if (!GTLog.mOreDictLogFile.exists()) {
