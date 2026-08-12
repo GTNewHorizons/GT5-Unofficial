@@ -38,15 +38,19 @@ import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 /**
  * Optional recipe-state dumper for auditing a recipe mutation.
  *
- * <p>Usage: call {@link #run(String, String, Runnable)} around the mutation:</p>
+ * <p>
+ * Usage: call {@link #run(String, String, Runnable)} around the mutation:
+ * </p>
  *
  * <pre>
  * RecipeChangeAudit.run("audit-name", "Audit description", recipeLoader::applyChanges);
  * </pre>
  *
- * <p>Writes {@code before.jsonl}, {@code after.jsonl}, {@code changes.jsonl}, and
+ * <p>
+ * Writes {@code before.jsonl}, {@code after.jsonl}, {@code changes.jsonl}, and
  * {@code timing.json} below the instance {@code dumps/outputDirectory} directory.
- * The dumper is intentionally not invoked during normal startup.</p>
+ * The dumper is intentionally not invoked during normal startup.
+ * </p>
  */
 @SuppressWarnings("unused")
 public final class RecipeChangeAudit {

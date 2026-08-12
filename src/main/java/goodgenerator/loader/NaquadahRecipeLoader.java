@@ -45,9 +45,7 @@ public class NaquadahRecipeLoader {
 
     public static void RecipeLoad() {
         registerCauldronCleaningFor(Materials.Naquadah, GGMaterial.naquadahEarth.getBridgeMaterial());
-        registerCauldronCleaningFor(
-            Materials.NaquadahEnriched,
-            GGMaterial.enrichedNaquadahEarth.getBridgeMaterial());
+        registerCauldronCleaningFor(Materials.NaquadahEnriched, GGMaterial.enrichedNaquadahEarth.getBridgeMaterial());
         registerCauldronCleaningFor(Materials.Naquadria, GGMaterial.naquadriaEarth.getBridgeMaterial());
 
         // Naquadah (UEV)
