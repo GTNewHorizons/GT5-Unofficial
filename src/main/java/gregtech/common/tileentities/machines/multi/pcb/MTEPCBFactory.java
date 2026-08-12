@@ -1011,14 +1011,13 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
 
         // Display linked controller in Waila.
         if (tag.hasKey("mBioChamber")) {
             NBTTagCompound bioChamber = tag.getCompoundTag("mBioChamber");
-            currenttip.add(
+            list.add(
                 EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                     "GT5U.waila.pcb.linked_to_bio_chamber_at",
                     bioChamber.getInteger("x"),
@@ -1027,7 +1026,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         }
         if (tag.hasKey("mCoolingTower")) {
             NBTTagCompound coolingTower = tag.getCompoundTag("mCoolingTower");
-            currenttip.add(
+            list.add(
                 EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                     "GT5U.waila.pcb.linked_to_colling_tower_at",
                     coolingTower.getInteger("x"),
@@ -1037,14 +1036,13 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (tag.hasKey("compatMode")) {
             CompatMode compat = new CompatMode(tag);
             if (compat.isSet) {
-                currenttip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.pcb.compat_mode"));
+                list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.pcb.compat_mode"));
             }
         }
-        super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         if (mBioChamber != null) {
             NBTTagCompound bioChamber = new NBTTagCompound();
@@ -1063,7 +1061,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (compatMode.isSet) {
             compatMode.saveNBTData(tag);
         }
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
     @Override

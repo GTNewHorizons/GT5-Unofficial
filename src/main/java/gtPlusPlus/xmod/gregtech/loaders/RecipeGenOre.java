@@ -13,6 +13,8 @@ import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.*;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gtnhlanth.util.LanthanidesRecipeOutputs.convertDecomposition;
+import static gtnhlanth.util.LanthanidesRecipeOutputs.convertOre;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,15 +30,19 @@ import org.apache.commons.lang3.tuple.Pair;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
+import gtPlusPlus.core.material.MaterialsElements;
+import gtPlusPlus.core.material.MaterialsOres;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 public class RecipeGenOre extends RecipeGenBase {
 
@@ -154,7 +160,7 @@ public class RecipeGenOre extends RecipeGenBase {
         // Macerate ore to Crushed
         GTValues.RA.stdBuilder()
             .itemInputs(material.getOre(1))
-            .itemOutputs(convert(material.getCrushed(2), matDustA, dustStone))
+            .itemOutputs(convertOre(material.getCrushed(2), matDustA, dustStone))
             .outputChances(100_00, 10_00, 50_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
@@ -163,7 +169,7 @@ public class RecipeGenOre extends RecipeGenBase {
         // Macerate raw ore to Crushed
         GTValues.RA.stdBuilder()
             .itemInputs(material.getRawOre(1))
-            .itemOutputs(convert(material.getCrushed(2), matDustA, dustStone))
+            .itemOutputs(convertOre(material.getCrushed(2), matDustA, dustStone))
             .outputChances(100_00, 5_00, 50_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
@@ -172,7 +178,7 @@ public class RecipeGenOre extends RecipeGenBase {
         // Macerate Crushed to Impure Dust
         GTValues.RA.stdBuilder()
             .itemInputs(material.getCrushed(1))
-            .itemOutputs(convert(material.getDustImpure(1), matDustA))
+            .itemOutputs(convertOre(material.getDustImpure(1), matDustA))
             .outputChances(100_00, 10_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
@@ -181,7 +187,7 @@ public class RecipeGenOre extends RecipeGenBase {
         // Macerate Washed to Purified Dust
         GTValues.RA.stdBuilder()
             .itemInputs(material.getCrushedPurified(1))
-            .itemOutputs(convert(material.getDustPurified(1), matDustA))
+            .itemOutputs(convertOre(material.getDustPurified(1), matDustA))
             .outputChances(100_00, 10_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
@@ -190,7 +196,7 @@ public class RecipeGenOre extends RecipeGenBase {
         // Macerate Centrifuged to Pure Dust
         GTValues.RA.stdBuilder()
             .itemInputs(material.getCrushedCentrifuged(1))
-            .itemOutputs(convert(matDust, matDustA))
+            .itemOutputs(convertOre(matDust, matDustA))
             .outputChances(100_00, 10_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
@@ -199,7 +205,7 @@ public class RecipeGenOre extends RecipeGenBase {
         // Wash
         RA.stdBuilder()
             .itemInputs(material.getCrushed(1))
-            .itemOutputs(convert(material.getCrushedPurified(1), matDustA, dustStone))
+            .itemOutputs(convertOre(material.getCrushedPurified(1), matDustA, dustStone))
             .outputChances(100_00, 11_11, 100_00)
             .fluidInputs(Materials.Water.getFluid(1_000))
             .duration(25 * SECONDS)
@@ -208,7 +214,7 @@ public class RecipeGenOre extends RecipeGenBase {
 
         RA.stdBuilder()
             .itemInputs(material.getCrushed(1))
-            .itemOutputs(convert(material.getCrushedPurified(1), matDustA, dustStone))
+            .itemOutputs(convertOre(material.getCrushedPurified(1), matDustA, dustStone))
             .outputChances(100_00, 11_11, 100_00)
             .fluidInputs(GTModHandler.getDistilledWater(200))
             .duration(15 * SECONDS)
@@ -231,7 +237,7 @@ public class RecipeGenOre extends RecipeGenBase {
 
         GTValues.RA.stdBuilder()
             .itemInputs(material.getCrushed(1))
-            .itemOutputs(convert(material.getCrushedCentrifuged(1), matDustB, dustStone))
+            .itemOutputs(convertOre(material.getCrushedCentrifuged(1), matDustB, dustStone))
             .outputChances(100_00, 11_11, 100_00)
             .duration(25 * SECONDS)
             .eut(48)
@@ -239,7 +245,7 @@ public class RecipeGenOre extends RecipeGenBase {
 
         GTValues.RA.stdBuilder()
             .itemInputs(material.getCrushedPurified(1))
-            .itemOutputs(convert(material.getCrushedCentrifuged(1), matDustA, dustStone))
+            .itemOutputs(convertOre(material.getCrushedCentrifuged(1), matDustA, dustStone))
             .outputChances(100_00, 11_11, 100_00)
             .duration(25 * SECONDS)
             .eut(48)
@@ -280,7 +286,7 @@ public class RecipeGenOre extends RecipeGenBase {
         // Purified Dust to Clean
         GTValues.RA.stdBuilder()
             .itemInputs(material.getDustPurified(1))
-            .itemOutputs(convert(matDust, matDustA))
+            .itemOutputs(convertOre(matDust, matDustA))
             .outputChances(100_00, 11_11)
             .eut(tVoltageMultiplier / 2)
             .duration((int) Math.max(1L, material.getMass() * 8L))
@@ -289,7 +295,7 @@ public class RecipeGenOre extends RecipeGenBase {
         // Impure Dust to Clean
         GTValues.RA.stdBuilder()
             .itemInputs(material.getDustImpure(1))
-            .itemOutputs(convert(matDust, matDustB))
+            .itemOutputs(convertOre(matDust, matDustB))
             .outputChances(100_00, 11_11)
             .eut(tVoltageMultiplier / 2)
             .duration((int) Math.max(1L, material.getMass() * 8L))
@@ -315,8 +321,7 @@ public class RecipeGenOre extends RecipeGenBase {
                             .getCell(f.getKey());
                         mCellCount += f.getKey();
                     } else {
-                        mInternalOutputs[mCounter++] = f.getValue()
-                            .getDust(f.getKey());
+                        mInternalOutputs[mCounter++] = getDust(f.getValue(), f.getKey());
                     }
                     mTotalCount += f.getKey();
                 }
@@ -351,6 +356,12 @@ public class RecipeGenOre extends RecipeGenBase {
                 internalOutputs.removeIf(Objects::isNull);
                 int[] chances = new int[internalOutputs.size()];
                 System.arraycopy(mChances, 0, chances, 0, internalOutputs.size());
+                ItemStack[] outputs = internalOutputs.toArray(new ItemStack[0]);
+                if (usesLanthanidesElectrolyzerOutputs(material)) {
+                    outputs = convertDecomposition(outputs);
+                } else {
+                    outputs = convert(outputs);
+                }
                 ItemStack[] inputs;
                 if (emptyCell == null) {
                     inputs = new ItemStack[] { mainDust };
@@ -359,7 +370,7 @@ public class RecipeGenOre extends RecipeGenBase {
                 }
                 GTValues.RA.stdBuilder()
                     .itemInputs(inputs)
-                    .itemOutputs(convert(internalOutputs.toArray(new ItemStack[0])))
+                    .itemOutputs(outputs)
                     .outputChances(chances)
                     .duration(Math.max(material.getMass() * 3L * 1, 1))
                     .eut(tVoltageMultiplier)
@@ -383,8 +394,7 @@ public class RecipeGenOre extends RecipeGenBase {
                             .getCell(f.getKey());
                         mCellCount += f.getKey();
                     } else {
-                        mInternalOutputs[mCounter++] = f.getValue()
-                            .getDust(f.getKey());
+                        mInternalOutputs[mCounter++] = getDust(f.getValue(), f.getKey());
                     }
                     mTotalCount += f.getKey();
                 }
@@ -419,6 +429,12 @@ public class RecipeGenOre extends RecipeGenBase {
                 internalOutputs.removeIf(Objects::isNull);
                 int[] chances = new int[internalOutputs.size()];
                 System.arraycopy(mChances, 0, chances, 0, internalOutputs.size());
+                ItemStack[] outputs = internalOutputs.toArray(new ItemStack[0]);
+                if (usesLanthanidesDehydratorOutputs(material)) {
+                    outputs = convertDecomposition(outputs);
+                } else {
+                    outputs = convert(outputs);
+                }
 
                 ItemStack[] inputs;
                 if (emptyCell == null) {
@@ -429,7 +445,7 @@ public class RecipeGenOre extends RecipeGenBase {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(inputs)
-                    .itemOutputs(convert(internalOutputs.toArray(new ItemStack[0])))
+                    .itemOutputs(outputs)
                     .outputChances(chances)
                     .eut(tVoltageMultiplier)
                     .duration((int) Math.max(material.getMass() * 4L * 1, 1))
@@ -481,6 +497,21 @@ public class RecipeGenOre extends RecipeGenBase {
         }
     }
 
+    private static boolean usesLanthanidesElectrolyzerOutputs(Material material) {
+        return material == MaterialsOres.FLORENCITE || material == MaterialsOres.HIBONITE
+            || material == MaterialsOres.LANTHANITE_CE
+            || material == MaterialsOres.YTTROCERITE
+            || material == MaterialsOres.ZIRCONILITE;
+    }
+
+    private static boolean usesLanthanidesDehydratorOutputs(Material material) {
+        return material == MaterialsOres.CERITE || material == MaterialsOres.FLUORCAPHITE
+            || material == MaterialsOres.GADOLINITE_CE
+            || material == MaterialsOres.GADOLINITE_Y
+            || material == MaterialsOres.POLYCRASE
+            || material == MaterialsOres.ZIRKELITE;
+    }
+
     public static ItemStack getTinyDust(Material m) {
         ItemStack x = m.getTinyDust(1);
         if (x == null) {
@@ -490,10 +521,17 @@ public class RecipeGenOre extends RecipeGenBase {
     }
 
     public static ItemStack getDust(Material m) {
-        ItemStack x = m.getDust(1);
+        ItemStack x = getDust(m, 1);
         if (x == null) {
             x = mStone.getDust(1);
         }
         return x;
+    }
+
+    public static ItemStack getDust(Material material, int amount) {
+        if (material == MaterialsElements.getInstance().IODINE) {
+            return WerkstoffMaterialPool.Iodine.get(OrePrefixes.dust, amount);
+        }
+        return material.getDust(amount);
     }
 }
