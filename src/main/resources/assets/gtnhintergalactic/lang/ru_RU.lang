@@ -215,12 +215,6 @@ gt.blockmachines.multimachine.ig.dyson.lore4=Изобретено свободн
 
 # Space Elevator
 gt.blockmachines.multimachine.ig.elevator.name=Космический лифт
-gt.blockmachines.multimachine.ig.elevator.desc2=Может быть оснащёно до 12 модулей космического лифта
-gt.blockmachines.multimachine.ig.elevator.desc3=Тир мотора ограничивает уровень модуля и количество возможных модулей
-gt.blockmachines.multimachine.ig.elevator.desc4=Каждый модуль имеет свое собственное пространство для ввода-вывода, за исключением энергии
-gt.blockmachines.multimachine.ig.elevator.desc5=Энергия поступает на этот контроллер и распределяется
-gt.blockmachines.multimachine.ig.elevator.desc6=Начиная с MK-III Моторов, структура может быть расширена до 24 модулей
-gt.blockmachines.multimachine.ig.elevator.desc7=Отключение этого контроллера также приостанавливает работу всех модулей
 gt.blockmachines.multimachine.ig.elevator.lore0=10:Поднимает в космос
 gt.blockmachines.multimachine.ig.elevator.lore1=10:Что вам больше всего нравится в космосе? Мне больше всего нравится космос.
 gt.blockmachines.multimachine.ig.elevator.lore2=10:Putting all those VMs out of jobs
@@ -246,20 +240,12 @@ gt.blockmachines.multimachine.project.ig.motorT5=Для работы нужен 
 gt.blockmachines.multimachine.project.ig.assembler.t1.name=Космический модуль сборки MK-I
 gt.blockmachines.multimachine.project.ig.assembler.t2.name=Космический модуль сборки MK-II
 gt.blockmachines.multimachine.project.ig.assembler.t3.name=Космический модуль сборки MK-III
-gt.blockmachines.multimachine.project.ig.assembler.desc0=Модуль, добавляющий космический сборщик к космическому лифту
-gt.blockmachines.multimachine.project.ig.assembler.t1.desc1=Почему мне снова нужно собирать вещи в космосе?
-gt.blockmachines.multimachine.project.ig.assembler.t2.desc1=Это действительно необходимо?
-gt.blockmachines.multimachine.project.ig.assembler.t3.desc1=Я предполагаю, мы никогда не узнаем.
-gt.blockmachines.multimachine.project.ig.assembler.t1.desc2=Работает в UHV до 4 параллелей
-gt.blockmachines.multimachine.project.ig.assembler.t2.desc2=Работает в UIV до 16 параллелей
-gt.blockmachines.multimachine.project.ig.assembler.t3.desc2=Работает в UXV до 64 параллелей
 gt.blockmachines.multimachine.project.ig.assembler.cfgi.0=Макс. параллелей
 
 # Module Miner
 gt.blockmachines.multimachine.project.ig.miner.t1.name=Космический шахтёрский модуль MK-I
 gt.blockmachines.multimachine.project.ig.miner.t2.name=Космический шахтёрский модуль MK-II
 gt.blockmachines.multimachine.project.ig.miner.t3.name=Космический шахтёрский модуль MK-III
-gt.blockmachines.multimachine.project.ig.miner.desc0=Модуль, добавляющий Космические шахтерские операции к космическому лифту
 gt.blockmachines.multimachine.project.ig.miner.cfgi.0=Дистанция
 gt.blockmachines.multimachine.project.ig.miner.cfgi.1=Макс. параллелей
 gt.blockmachines.multimachine.project.ig.miner.cfgi.2=Перегрузка
@@ -269,17 +255,6 @@ gt.blockmachines.multimachine.project.ig.miner.cfgi.4.2=Цикл
 gt.blockmachines.multimachine.project.ig.miner.cfgi.5=Дальность
 gt.blockmachines.multimachine.project.ig.miner.cfgi.6=Шаг
 gt.blockmachines.multimachine.project.ig.cfgo.0=Энергии накоплено
-gt.blockmachines.multimachine.project.ig.miner.t1.desc1=Вас ждут несметные сокровища, превосходящие ваше воображение!
-gt.blockmachines.multimachine.project.ig.miner.t2.desc1=Нарушает ли это права владельцев дронов?
-gt.blockmachines.multimachine.project.ig.miner.t3.desc1=Это определенно нарушает права дронов.
-gt.blockmachines.multimachine.project.ig.miner.desc3=Для работы требуется плазма (825L Гелий/ 550L Висмут/ 375L Радон/ 250L Технеций/ 150L Плутоний-241).
-gt.blockmachines.multimachine.project.ig.miner.desc4=Более высокий тир плазмы увеличивает шансы добычи более крупных астероидов и сокращает время добычи.
-gt.blockmachines.multimachine.project.ig.miner.desc5=Для работы требуется подавать вычисления.
-gt.blockmachines.multimachine.project.ig.miner.desc5.1=Шахтёрские дроны необходимо поместить в обычный входной люк (не связанный и не входной люк снабжения).
-gt.blockmachines.multimachine.project.ig.miner.t1.desc5=Работает в UV до 2 параллелей
-gt.blockmachines.multimachine.project.ig.miner.t2.desc5=Работает в UHV до 4 параллелей
-gt.blockmachines.multimachine.project.ig.miner.t3.desc5=Работает в UEV до 8 параллелей
-gt.blockmachines.multimachine.project.ig.miner.desc6=Руды можно занести в черный/белый список, поместив их во входной люк
 gt.blockmachines.multimachine.project.ig.miner.activedronetiers=Активный тир дрона
 gt.blockmachines.multimachine.project.ig.miner.asteroidsummaries.0=Возможные астероиды на текущем расстоянии и дроны
 gt.blockmachines.multimachine.project.ig.miner.asteroidchance=операция
@@ -290,16 +265,6 @@ gt.blockmachines.multimachine.project.ig.miner.asteroidmaxparallels=до
 gt.blockmachines.multimachine.project.ig.pump.t1.name=Модуль космической помпы MK-I
 gt.blockmachines.multimachine.project.ig.pump.t2.name=Модуль космической помпы MK-II
 gt.blockmachines.multimachine.project.ig.pump.t3.name=Модуль космической помпы MK-III
-gt.blockmachines.multimachine.project.ig.pump.desc0=Модуль, добавляющий Космические насосные операции к космическому лифту
-gt.blockmachines.multimachine.project.ig.pump.t1.desc1=Всасывание целых газовых планет никогда не было таким простым
-gt.blockmachines.multimachine.project.ig.pump.t2.desc1=Буквально сосёт
-gt.blockmachines.multimachine.project.ig.pump.t3.desc1=С О С Ё Т
-gt.blockmachines.multimachine.project.ig.pump.desc3=Установите Планету и Тип газа, чтобы определить перекачиваемую жидкость
-gt.blockmachines.multimachine.project.ig.pump.desc4=Может быть защищен от войда путём блокировки выходных люков
-gt.blockmachines.multimachine.project.ig.pump.t1.desc5=Работает в UHV до 4 параллелей
-gt.blockmachines.multimachine.project.ig.pump.t2.desc5=Работает в UEV до 8 параллелей на рецепт
-gt.blockmachines.multimachine.project.ig.pump.t3.desc5=Работает в UXV до 64 параллелей на рецепт
-gt.blockmachines.multimachine.project.ig.pump.t2.desc6=Обрабатывает до 4 различных рецептов одновременно
 gt.blockmachines.multimachine.project.ig.pump.cfgi.0=Тип планеты
 gt.blockmachines.multimachine.project.ig.pump.cfgi.1=Тип газа
 gt.blockmachines.multimachine.project.ig.pump.cfgi.2=Параллелей
@@ -307,13 +272,9 @@ gt.blockmachines.multimachine.project.ig.pump.cfgi.3=Размер партии
 
 # Module Manager
 gt.blockmachines.multimachine.project.ig.manager.t1.name=Менеджер космических проектов
-gt.blockmachines.multimachine.project.ig.manager.desc0=Модуль, позволяющий управлять вашими космическими проектами
-gt.blockmachines.multimachine.project.ig.manager.desc1=Начало чего-то большого
 
 # Module Research
 gt.blockmachines.multimachine.project.ig.research.t1.name=Модуль космических исследований
-gt.blockmachines.multimachine.project.ig.research.desc0=Модуль, позволяющий исследовать звездные объекты
-gt.blockmachines.multimachine.project.ig.research.desc1=Не смотрите прямо на солнце
 
 # RecipeMaps
 gt.recipe.spaceMining=Шахтерский модуль
