@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convert;
+import static goodgenerator.util.NaquadahRecipeOutputs.convert;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -150,6 +150,7 @@ public class GTForestryCompat {
                     .copy();
                 i++;
             }
+            GTOreDictUnificator.setStackArray(true, true, tOutputs);
             GTValues.RA.stdBuilder()
                 .itemInputs(tRecipe.getInput())
                 .itemOutputs(convert(tOutputs))

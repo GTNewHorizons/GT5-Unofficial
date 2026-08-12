@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convert;
+import static goodgenerator.util.NaquadahRecipeOutputs.convert;
 import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convertSmelting;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;

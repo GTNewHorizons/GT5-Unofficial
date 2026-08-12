@@ -20,6 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 import bartworks.system.material.Werkstoff;
+import goodgenerator.util.NaquadahRecipeOutputs;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
@@ -550,7 +551,8 @@ public class EyeOfHarmonyRecipe {
         for (Pair<IOreMaterial, Long> pair : planetList) {
             final IOreMaterial mat = pair.getLeft();
             final ItemStack dust;
-            if (mat instanceof Materials) dust = getUnificatedOreDictStack(((Materials) mat).getDust(1));
+            if (mat instanceof Materials material)
+                dust = NaquadahRecipeOutputs.convert(getUnificatedOreDictStack(material.getDust(1)));
             else if (mat instanceof Material) dust = ((Material) mat).getDust(1);
             else dust = null;
             if (dust != null) {
