@@ -24,6 +24,7 @@ import static gregtech.api.util.GTRecipeConstants.NKE_RANGE;
 import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST;
 import static gregtech.api.util.GTRecipeConstants.QFT_FOCUS_TIER;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
+import static gregtech.common.items.MetaGeneratedItem01.registerCauldronCleaningFor;
 
 import net.minecraftforge.fluids.FluidStack;
 
@@ -43,6 +44,11 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 public class NaquadahRecipeLoader {
 
     public static void RecipeLoad() {
+        registerCauldronCleaningFor(Materials.Naquadah, GGMaterial.naquadahEarth.getBridgeMaterial());
+        registerCauldronCleaningFor(
+            Materials.NaquadahEnriched,
+            GGMaterial.enrichedNaquadahEarth.getBridgeMaterial());
+        registerCauldronCleaningFor(Materials.Naquadria, GGMaterial.naquadriaEarth.getBridgeMaterial());
 
         // Naquadah (UEV)
         GTValues.RA.stdBuilder()
