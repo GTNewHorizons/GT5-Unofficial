@@ -35,7 +35,20 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 
-/** Dumps recipe state before and after a change, plus their difference, as JSON Lines. */
+/**
+ * Optional recipe-state dumper for auditing a recipe mutation.
+ *
+ * <p>Usage: call {@link #run(String, String, Runnable)} around the mutation:</p>
+ *
+ * <pre>
+ * RecipeChangeAudit.run("audit-name", "Audit description", recipeLoader::applyChanges);
+ * </pre>
+ *
+ * <p>Writes {@code before.jsonl}, {@code after.jsonl}, {@code changes.jsonl}, and
+ * {@code timing.json} below the instance {@code dumps/outputDirectory} directory.
+ * The dumper is intentionally not invoked during normal startup.</p>
+ */
+@SuppressWarnings("unused")
 public final class RecipeChangeAudit {
 
     private static final Gson GSON = new Gson();

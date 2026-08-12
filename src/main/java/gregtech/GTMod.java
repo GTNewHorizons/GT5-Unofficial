@@ -82,7 +82,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.RecipeChangeAudit;
 import gregtech.common.GTCapesLoader;
 import gregtech.common.GTClient;
 import gregtech.common.GTDummyWorld;
@@ -573,7 +572,7 @@ public class GTMod {
         }
 
         GTPostLoad.addSolidFakeLargeBoilerFuels();
-        RecipeChangeAudit.run("naquadah-rework", "Naquadah Rework", NaquadahRecipePatches::patchCropsNhRecipes);
+        NaquadahRecipePatches.patchCropsNhRecipes();
         RecipeLoader.registerCauldronRemaps();
         GTPostLoad.addCauldronRecipe();
         GTPostLoad.identifyAnySteam();
