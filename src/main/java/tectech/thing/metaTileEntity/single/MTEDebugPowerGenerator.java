@@ -210,8 +210,16 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
 
     @Override
     public long maxEUStore() {
-        // should not be increased to avoid overflow
-        return getActualVoltage() * amperage << (LASER ? 2 : 3);
+        long eut = getActualVoltage() * amperage;
+        try {
+            if (LASER) {
+                return Math.multiplyExact(eut, 24L);
+            } else {
+                return Math.multiplyExact(eut, 4L);
+            }
+        } catch (ArithmeticException e) {
+            return Long.MAX_VALUE;
+        }
     }
 
     @Override
