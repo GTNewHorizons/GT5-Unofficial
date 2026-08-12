@@ -40,6 +40,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
+import tectech.TecTech;
 import tectech.loader.ConfigHandler;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -122,7 +123,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
             return remove;
         } catch (Exception e) {
             if (ConfigHandler.debug.DEBUG_MODE) {
-                e.printStackTrace();
+                TecTech.LOGGER.error(e);
             }
         }
         return 0;
@@ -141,7 +142,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
             return RF;
         } catch (Exception e) {
             if (ConfigHandler.debug.DEBUG_MODE) {
-                e.printStackTrace();
+                TecTech.LOGGER.error(e);
             }
         }
         return 0;

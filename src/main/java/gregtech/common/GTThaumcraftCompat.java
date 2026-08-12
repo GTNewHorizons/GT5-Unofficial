@@ -144,7 +144,7 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
             1);
     }
 
-    public class LocalizedCustomAspectName extends Aspect {
+    public static class LocalizedCustomAspectName extends Aspect {
 
         public LocalizedCustomAspectName(String tag, int color, Aspect[] components, ResourceLocation image,
             int blend) {

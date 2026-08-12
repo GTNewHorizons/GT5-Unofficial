@@ -7,9 +7,9 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import gregtech.api.enums.Mods;
 import gtnhlanth.common.CommonProxy;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
 import gtnhlanth.common.register.LanthItemList;
@@ -19,7 +19,7 @@ import gtnhlanth.loader.BotRecipes;
 import gtnhlanth.loader.RecipeLoader;
 
 @Mod(
-    modid = Tags.MODID,
+    modid = Mods.ModIDs.G_T_N_H_LANTHANIDES,
     version = Tags.VERSION,
     name = Tags.MODNAME,
     dependencies = "required-after:IC2; " + "required-after:gregtech; "
@@ -30,7 +30,7 @@ public class GTNHLanthanides {
 
     public static Logger LOG = Logger.getLogger("GTNH:Lanthanides");
 
-    @Mod.Instance(Tags.MODID)
+    @Mod.Instance(Mods.ModIDs.G_T_N_H_LANTHANIDES)
     public static GTNHLanthanides instance;
 
     @SidedProxy(clientSide = "gtnhlanth.client.ClientProxy", serverSide = "gtnhlanth.common.CommonProxy")
@@ -66,13 +66,6 @@ public class GTNHLanthanides {
 
         BotRecipes.addGTRecipe();
         proxy.postInit(e);
-
-    }
-
-    @EventHandler
-    public static void onModLoadingComplete(FMLLoadCompleteEvent e) {
-
-        RecipeLoader.removeCeriumSources();
 
     }
 }

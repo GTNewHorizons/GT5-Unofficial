@@ -234,30 +234,29 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         }
 
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
-        }
-
-        if (aMetaTileEntity instanceof MTEHatchWirelessDataItemsOutput) {
-            ((MTEHatchWirelessDataItemsOutput) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eWirelessStacksDataOutputs.add((MTEHatchWirelessDataItemsOutput) aMetaTileEntity);
-        }
-
-        if (aMetaTileEntity instanceof MTEHatchDataItemsOutput) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eStacksDataOutputs.add((MTEHatchDataItemsOutput) aMetaTileEntity);
-        }
-
-        if (aMetaTileEntity instanceof MTEHatchDataAccess hatch
-            && !(aMetaTileEntity instanceof MTEHatchDataItemsInput)) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eDataAccessHatches.add(hatch);
-        }
-
-        if (aMetaTileEntity instanceof MTEHatchDataItemsInput hatch) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            slave = true;
-            return eDataAccessHatches.add(hatch);
+        switch (aMetaTileEntity) {
+            case null -> {
+                return false;
+            }
+            case MTEHatchWirelessDataItemsOutput mteHatchWirelessDataItemsOutput -> {
+                mteHatchWirelessDataItemsOutput.updateTexture(aBaseCasingIndex);
+                return eWirelessStacksDataOutputs.add(mteHatchWirelessDataItemsOutput);
+            }
+            case MTEHatchDataItemsOutput mteHatchDataItemsOutput -> {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return eStacksDataOutputs.add(mteHatchDataItemsOutput);
+            }
+            case MTEHatchDataAccess hatch when !(aMetaTileEntity instanceof MTEHatchDataItemsInput) -> {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                return eDataAccessHatches.add(hatch);
+            }
+            case MTEHatchDataItemsInput hatch -> {
+                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+                slave = true;
+                return eDataAccessHatches.add(hatch);
+            }
+            default -> {
+            }
         }
 
         return false;

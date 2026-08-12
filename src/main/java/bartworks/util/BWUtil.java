@@ -523,50 +523,53 @@ public class BWUtil {
             }
             Character chr = (Character) aRecipe[idx];
             Object in = aRecipe[idx + 1];
-            if (in instanceof ItemStack) {
-                tItemStackMap.put(chr, GTUtility.copy(in));
-                tItemDataMap.put(chr, GTOreDictUnificator.getItemData((ItemStack) in));
-            } else if (in instanceof ItemData) {
-                String tString = in.toString();
-                switch (tString) {
-                    case "plankWood":
-                        tItemDataMap.put(chr, new ItemData(Materials.Wood, M));
-                        break;
-                    case "stoneNetherrack":
-                        tItemDataMap.put(chr, new ItemData(Materials.Netherrack, M));
-                        break;
-                    case "stoneObsidian":
-                        tItemDataMap.put(chr, new ItemData(Materials.Obsidian, M));
-                        break;
-                    case "stoneEndstone":
-                        tItemDataMap.put(chr, new ItemData(Materials.Endstone, M));
-                        break;
-                    default:
-                        tItemDataMap.put(chr, (ItemData) in);
-                        break;
+            switch (in) {
+                case ItemStack itemStack -> {
+                    tItemStackMap.put(chr, GTUtility.copy(in));
+                    tItemDataMap.put(chr, GTOreDictUnificator.getItemData(itemStack));
                 }
-                ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
-                if (tStack == null) tRemoveRecipe = false;
-                else tItemStackMap.put(chr, tStack);
-                aRecipe[idx + 1] = in.toString();
-            } else if (in instanceof String) {
-                if (in.equals(OreDictNames.craftingChest.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Wood, M * 8));
-                else if (in.equals(OreDictNames.craftingBook.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Paper, M * 3));
-                else if (in.equals(OreDictNames.craftingPiston.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 4, Materials.Wood, M * 3));
-                else if (in.equals(OreDictNames.craftingFurnace.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 8));
-                else if (in.equals(OreDictNames.craftingIndustrialDiamond.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
-                else if (in.equals(OreDictNames.craftingAnvil.toString()))
-                    tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
-                ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
-                if (tStack == null) tRemoveRecipe = false;
-                else tItemStackMap.put(chr, tStack);
-            } else {
-                throw new IllegalArgumentException();
+                case ItemData itemData -> {
+                    String tString = in.toString();
+                    switch (tString) {
+                        case "plankWood":
+                            tItemDataMap.put(chr, new ItemData(Materials.Wood, M));
+                            break;
+                        case "stoneNetherrack":
+                            tItemDataMap.put(chr, new ItemData(Materials.Netherrack, M));
+                            break;
+                        case "stoneObsidian":
+                            tItemDataMap.put(chr, new ItemData(Materials.Obsidian, M));
+                            break;
+                        case "stoneEndstone":
+                            tItemDataMap.put(chr, new ItemData(Materials.Endstone, M));
+                            break;
+                        default:
+                            tItemDataMap.put(chr, itemData);
+                            break;
+                    }
+                    ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
+                    if (tStack == null) tRemoveRecipe = false;
+                    else tItemStackMap.put(chr, tStack);
+                    aRecipe[idx + 1] = in.toString();
+                }
+                case String s -> {
+                    if (in.equals(OreDictNames.craftingChest.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Wood, M * 8));
+                    else if (in.equals(OreDictNames.craftingBook.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Paper, M * 3));
+                    else if (in.equals(OreDictNames.craftingPiston.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 4, Materials.Wood, M * 3));
+                    else if (in.equals(OreDictNames.craftingFurnace.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Stone, M * 8));
+                    else if (in.equals(OreDictNames.craftingIndustrialDiamond.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Diamond, M));
+                    else if (in.equals(OreDictNames.craftingAnvil.toString()))
+                        tItemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
+                    ItemStack tStack = GTOreDictUnificator.getFirstOre(in, 1);
+                    if (tStack == null) tRemoveRecipe = false;
+                    else tItemStackMap.put(chr, tStack);
+                }
+                case null, default -> throw new IllegalArgumentException();
             }
         }
 
@@ -636,6 +639,63 @@ public class BWUtil {
             aEnchantmentsAdded,
             aEnchantmentLevelsAdded,
             aRecipe).setMirrored(aMirrored);
+    }
+
+    public static boolean areCraftingInputsOnlyMaterial(Object input, Materials material) {
+        if (!(input instanceof List<?>) && !(input instanceof Object[])) {
+            return false;
+        }
+
+        ArrayList<List<?>> lists = new ArrayList<>();
+        ArrayList<ItemStack> stacks = new ArrayList<>();
+
+        if (input instanceof List<?>listInput) {
+            for (Object entry : listInput) {
+                if (entry instanceof List<?>list) {
+                    lists.add(list);
+                } else if (entry instanceof ItemStack stack) {
+                    stacks.add(stack);
+                }
+            }
+        } else if (input instanceof Object[]arrayInput) {
+            for (Object entry : arrayInput) {
+                if (entry instanceof List<?>list) {
+                    lists.add(list);
+                } else if (entry instanceof ItemStack stack) {
+                    stacks.add(stack);
+                }
+            }
+        }
+
+        for (List<?> list : lists) {
+            if (list.isEmpty()) {
+                continue;
+            }
+
+            Object first = list.get(0);
+            if (!(first instanceof ItemStack stack)) {
+                return false;
+            }
+
+            stacks.add(stack);
+        }
+
+        if (stacks.isEmpty()) {
+            return false;
+        }
+
+        for (ItemStack stack : stacks) {
+            ItemData association = GTOreDictUnificator.getAssociation(stack);
+            if (!BWUtil.checkStackAndPrefix(association)) {
+                return false;
+            }
+
+            if (association.mMaterial.mMaterial != material) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public static void shortSleep(long nanos) {

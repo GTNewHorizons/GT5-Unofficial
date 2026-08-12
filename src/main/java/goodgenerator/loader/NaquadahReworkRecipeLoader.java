@@ -35,9 +35,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import bartworks.system.material.WerkstoffLoader;
-import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
+import bartworks.util.BWUtil;
 import goodgenerator.items.GGMaterial;
-import goodgenerator.main.GoodGenerator;
 import goodgenerator.util.CrackRecipeAdder;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.GTValues;
@@ -608,7 +607,8 @@ public class NaquadahReworkRecipeLoader {
 
     public static void Remover() {
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Begin to remove pure Naquadah, Enriched Naquadah and Naquadria.\n");
+        GTLog.out
+            .print(Mods.ModIDs.GOOD_GENERATOR + ": Begin to remove pure Naquadah, Enriched Naquadah and Naquadria.\n");
 
         HashSet<GTRecipe> remove = new HashSet<>(5000);
         HashSet<GTRecipe> reAdd = new HashSet<>(5000);
@@ -637,7 +637,7 @@ public class NaquadahReworkRecipeLoader {
         RecipeMaps.maceratorRecipes.getBackend()
             .reInit();
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace " + remove.size() + "! ");
 
         remove.clear();
         reAdd.clear();
@@ -666,7 +666,7 @@ public class NaquadahReworkRecipeLoader {
         RecipeMaps.oreWasherRecipes.getBackend()
             .reInit();
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace " + remove.size() + "! ");
 
         remove.clear();
         reAdd.clear();
@@ -693,7 +693,7 @@ public class NaquadahReworkRecipeLoader {
         RecipeMaps.thermalCentrifugeRecipes.getBackend()
             .reInit();
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace " + remove.size() + "! ");
 
         remove.clear();
         reAdd.clear();
@@ -796,7 +796,7 @@ public class NaquadahReworkRecipeLoader {
         RecipeMaps.centrifugeRecipes.getBackend()
             .reInit();
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace " + remove.size() + "! ");
 
         remove.clear();
         reAdd.clear();
@@ -822,7 +822,7 @@ public class NaquadahReworkRecipeLoader {
         RecipeMaps.hammerRecipes.getBackend()
             .reInit();
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace " + remove.size() + "! ");
 
         remove.clear();
         reAdd.clear();
@@ -872,7 +872,7 @@ public class NaquadahReworkRecipeLoader {
         RecipeMaps.chemicalReactorRecipes.getBackend()
             .reInit();
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace " + remove.size() + "! ");
 
         remove.clear();
         reAdd.clear();
@@ -922,7 +922,7 @@ public class NaquadahReworkRecipeLoader {
         RecipeMaps.multiblockChemicalReactorRecipes.getBackend()
             .reInit();
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace " + remove.size() + "! ");
 
         remove.clear();
         reAdd.clear();
@@ -975,7 +975,7 @@ public class NaquadahReworkRecipeLoader {
         RecipeMaps.simpleWasherRecipes.getBackend()
             .reInit();
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace " + remove.size() + "! ");
 
         remove.clear();
         reAdd.clear();
@@ -986,7 +986,7 @@ public class NaquadahReworkRecipeLoader {
         registerCauldronCleaningFor(Materials.Naquadah, GGMaterial.naquadahEarth.getBridgeMaterial());
         registerCauldronCleaningFor(Materials.NaquadahEnriched, GGMaterial.enrichedNaquadahEarth.getBridgeMaterial());
         registerCauldronCleaningFor(Materials.Naquadria, GGMaterial.naquadriaEarth.getBridgeMaterial());
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace 3! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace 3! ");
         GTLog.out.print("Cauldron Wash done!\n");
 
         // For Crafting Table
@@ -994,7 +994,7 @@ public class NaquadahReworkRecipeLoader {
             .getRecipeList()
             .forEach(NaquadahReworkRecipeLoader::replaceInCraftTable);
 
-        GTLog.out.print(GoodGenerator.MOD_ID + ": Replace Unknown! ");
+        GTLog.out.print(Mods.ModIDs.GOOD_GENERATOR + ": Replace Unknown! ");
         GTLog.out.print("Crafting Table done!\n");
     }
 
@@ -1035,17 +1035,17 @@ public class NaquadahReworkRecipeLoader {
         Object input = mutableRecipe.gt5u$getRecipeInputs();
 
         if (GTUtility.areStacksEqual(result, Materials.Naquadah.getDust(1), true)) {
-            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Naquadah)) {
+            if (BWUtil.areCraftingInputsOnlyMaterial(input, Materials.Naquadah)) {
                 return;
             }
             mutableRecipe.gt5u$setRecipeOutputItem(GGMaterial.naquadahEarth.get(OrePrefixes.dust, 2));
         } else if (GTUtility.areStacksEqual(result, Materials.NaquadahEnriched.getDust(1), true)) {
-            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.NaquadahEnriched)) {
+            if (BWUtil.areCraftingInputsOnlyMaterial(input, Materials.NaquadahEnriched)) {
                 return;
             }
             mutableRecipe.gt5u$setRecipeOutputItem(GGMaterial.enrichedNaquadahEarth.get(OrePrefixes.dust, 2));
         } else if (GTUtility.areStacksEqual(result, Materials.Naquadria.getDust(1), true)) {
-            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Naquadria)) {
+            if (BWUtil.areCraftingInputsOnlyMaterial(input, Materials.Naquadria)) {
                 return;
             }
             mutableRecipe.gt5u$setRecipeOutputItem(GGMaterial.naquadriaEarth.get(OrePrefixes.dust, 2));

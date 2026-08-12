@@ -103,9 +103,9 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                 {"        FFF    ","     EAEFDF    ","    E F EFFFFF ","   E  H  EFFBFF","   AFHCHFAFBDBF","   E  H  EFFBFF","    E F E  FFF ","     EAE       ","               "},
                 {"               ","     GGG D     ","    G   G      ","   G  H  G  B  ","   G HCH G BDB ","   G  H  G  B  ","    G   G      ","     GGG       ","               "},
                 {"               ","     EAE D     "," F  E   E    F "," F E  H  E  BF "," FFA HCH A BDB "," F E  H  E  BF "," F  E   E    F ","     EAE       ","               "},
-                {"               ","     EAE DDD   "," F  E   E    F ","H  E  H  E  B B","HHHHHHCH A BDBB","H  E  H  E  B B"," F  E   E    F ","     EAE       ","               "},
-                {"               ","     GGG   D   "," F  G   G    F ","HHHHHHH  G  BBB","3CCCCCCH G BDD2","HHHHHHH  G  BBB"," F  G   G    F ","     GGG       ","               "},
-                {"               ","     EAE   D   "," F  E   E    F ","H  E     E  B B","HHHHHHH  A BDBB","H  E     E  B B"," F  E   E    F ","     EAE       ","               "},
+                {"               ","     EAE DDD   "," F  E   E    F ","7  E  H  E  B B","7HHHHHCH A BDBB","7  E  H  E  B B"," F  E   E    F ","     EAE       ","               "},
+                {"               ","     GGG   D   "," F  G   G    F ","7HHHHHH  G  BBB","3CCCCCCH G BDD2","7HHHHHH  G  BBB"," F  G   G    F ","     GGG       ","               "},
+                {"               ","     EAE   D   "," F  E   E    F ","7  E     E  B B","7HHHHHH  A BDBB","7  E     E  B B"," F  E   E    F ","     EAE       ","               "},
                 {"     GGG   G   ","    GEAEG GDG  "," F GE   EGEGEF "," FGE     EGEBE "," FAA     AGBDB "," FGE     EGEBE "," F GE   EG   F ","    GEAEG      ","     GGG       "},
                 {"  EEG111GE111  "," EEEE   EEEDEE ","EEEE     EEEEEE","1EE       EEBE1","111       1BDB1","1EE       EEBE1","EEEE     EE1EEE"," EEEE   EEE1EE ","  EEG111GE111  "},
                 {" GEEG111GEGGGE "," E         D E ","EE           EE","G             G","G           D G","G             G","EE           EE"," E           E "," GEEG111GEGGGE "},
@@ -172,6 +172,12 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                     .casingIndex(Casings.BronzePipeCasing.textureId)
                     .hint(3)
                     .buildAndChain(Casings.BronzePipeCasing.asElement()))
+            .addElement(
+                '7',
+                buildHatchAdder(MTEMegaDistillationTower.class).atLeast(InputHatch)
+                    .casingIndex(Casings.BronzePlatedBricks.textureId)
+                    .hint(3)
+                    .buildAndChain(Casings.StrongBronzeMachineCasing.asElement()))
             // middle slice hatches
             .addElement(
                 '4',
@@ -537,11 +543,6 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     public boolean supportsBatchMode() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 

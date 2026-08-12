@@ -53,7 +53,6 @@ public enum GTStructureChannels implements IStructureChannels {
     LES_ESSENTIA_CELL("essentia_cell", "Large Essentia Smeltery Essentia Diffusion Cell Tier"),
     COKE_OVEN_CASING("coke_oven_casing", "Coke Oven Casing Tier");
     //
-    ;
 
     private final String channel;
     private final String defaultTooltip;

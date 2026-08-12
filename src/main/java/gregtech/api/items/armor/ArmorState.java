@@ -243,7 +243,7 @@ public class ArmorState {
 
         NBTTagCompound augmentTag = tag.getCompoundTag("augments");
 
-        for (AugmentCategory category : AugmentCategory.values()) {
+        for (AugmentCategory category : AugmentCategory.VALUES) {
             NBTTagCompound categoryTag = augmentTag.getCompoundTag(Integer.toString(category.ordinal()));
 
             for (Map.Entry<String, NBTBase> e : ((Map<String, NBTBase>) categoryTag.tagMap).entrySet()) {
@@ -326,7 +326,7 @@ public class ArmorState {
         NBTTagCompound augmentTag = new NBTTagCompound();
         tag.setTag("augments", augmentTag);
 
-        for (AugmentCategory category : AugmentCategory.values()) {
+        for (AugmentCategory category : AugmentCategory.VALUES) {
             augmentTag.setTag(Integer.toString(category.ordinal()), new NBTTagCompound());
         }
 

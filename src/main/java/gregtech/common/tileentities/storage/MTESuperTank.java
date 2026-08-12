@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.storage;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 
 import net.minecraft.util.EnumChatFormatting;
 
@@ -29,23 +29,20 @@ public class MTESuperTank extends MTEDigitalTankBase {
         if (mFluid == null) {
             return new String[] { "GT5U.infodata.super_tank.name", "GT5U.infodata.digital_tank.stored_fluid",
                 "GT5U.infodata.digital_tank.stored_fluid.empty",
-                EnumChatFormatting.GREEN + "0 L"
+                EnumChatFormatting.GREEN + formatFluid(0)
                     + EnumChatFormatting.RESET
                     + " "
                     + EnumChatFormatting.YELLOW
-                    + formatNumber(getCapacity())
-                    + " L"
+                    + formatFluid(getCapacity())
                     + EnumChatFormatting.RESET };
         }
         return new String[] { "GT5U.infodata.super_tank.name", "GT5U.infodata.digital_tank.stored_fluid",
             EnumChatFormatting.GOLD + mFluid.getLocalizedName() + EnumChatFormatting.RESET,
-            EnumChatFormatting.GREEN + formatNumber(mFluid.amount)
-                + " L"
+            EnumChatFormatting.GREEN + formatFluid(mFluid.amount)
                 + EnumChatFormatting.RESET
                 + " "
                 + EnumChatFormatting.YELLOW
-                + formatNumber(getCapacity())
-                + " L"
+                + formatFluid(getCapacity())
                 + EnumChatFormatting.RESET };
     }
 }
