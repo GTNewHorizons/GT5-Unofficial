@@ -112,7 +112,6 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
         ForgeDirection a = connectedSides[0];
         ForgeDirection b = connectedSides[1];
 
-        // Race condition of updateNetwork() and onPostTick()
         if (a == null || b == null) {
             return null;
         }
