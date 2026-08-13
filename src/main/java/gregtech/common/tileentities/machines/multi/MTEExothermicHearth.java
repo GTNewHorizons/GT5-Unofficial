@@ -377,29 +377,24 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         tag.setBoolean("pyrotheum", isPyroSupplied);
         tag.setInteger("drain", (int) Math.floor(parallelModifier * PYROTHEUM_DRAIN_BASE));
         tag.setFloat("parallelModifier", parallelModifier);
         tag.setInteger("heatingCapacity", heatingCapacity);
-
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
         boolean pyrotheumActive = tag.getBoolean("pyrotheum");
         float parallelModifier = tag.getFloat("parallelModifier");
-        currentTip.add(translateToLocalFormatted("GT5U.waila.mebf.parallel", formatNumber(parallelModifier)));
+        list.add(translateToLocalFormatted("GT5U.waila.mebf.parallel", formatNumber(parallelModifier)));
         if (pyrotheumActive) {
-            currentTip
-                .add(translateToLocalFormatted("GT5U.waila.mebf.pyrotheum", formatFluid(tag.getInteger("drain"))));
+            list.add(translateToLocalFormatted("GT5U.waila.mebf.pyrotheum", formatFluid(tag.getInteger("drain"))));
         }
-        currentTip.add(
+        list.add(
             StatCollector
                 .translateToLocalFormatted("GT5U.multiblock.heat", formatNumber(tag.getInteger("heatingCapacity"))));
     }

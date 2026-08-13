@@ -1,6 +1,5 @@
 package gregtech.common;
 
-import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convertCrafting;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.FluidState.LIQUID;
@@ -21,6 +20,7 @@ import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gtnhlanth.util.LanthanidesRecipeOutputs.convertCrafting;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import java.util.ArrayList;
