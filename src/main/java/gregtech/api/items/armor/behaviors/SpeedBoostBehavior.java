@@ -21,13 +21,11 @@ public class SpeedBoostBehavior implements IArmorBehavior {
 
     public static final SpeedBoostBehavior MECH_ARMOR_INSTANCE = new SpeedBoostBehavior(2.0F);
 
-    /// Somewhat arbitrary multiplier to make vertical flight speed comparable to horizontal flight speed
-    private static final double VERTICAL_SPEED_MULT = 2.5;
+    private static final float VERTICAL_SPEED_MULTI_INCREMENT = 0.5F;
+    private static final float VERTICAL_SPEED_MAX = 5.0F;
 
     public static final float SPEED_INCREMENT = 0.25F;
-
     private final float speedMaxMulti;
-
     private final float BASE_SPEED = 0.127F;
 
     public SpeedBoostBehavior(float speedUp) {
@@ -45,20 +43,44 @@ public class SpeedBoostBehavior implements IArmorBehavior {
 
         ArmorState state = context.getArmorState();
 
+        String messageKey = null;
+        double displayValue = 0;
+
         if (keyPressed == ArmorActionManager.getAction("speed_increase")
             .getKeybind()) {
             state.speedBoostMulti += SPEED_INCREMENT;
+            state.speedBoostMulti = MathUtils.clamp(state.speedBoostMulti, 1, speedMaxMulti);
+            messageKey = "GT5U.armor.message.speed_set";
+            displayValue = state.speedBoostMulti;
+
         } else if (keyPressed == ArmorActionManager.getAction("speed_decrease")
             .getKeybind()) {
                 state.speedBoostMulti -= SPEED_INCREMENT;
-            }
+                state.speedBoostMulti = MathUtils.clamp(state.speedBoostMulti, 1, speedMaxMulti);
+                messageKey = "GT5U.armor.message.speed_set";
+                displayValue = state.speedBoostMulti;
 
-        state.speedBoostMulti = MathUtils.clamp(state.speedBoostMulti, 1, speedMaxMulti);
+            } else if (keyPressed == ArmorActionManager.getAction("vertical_speed_increase")
+                .getKeybind()) {
+                    state.verticalSpeedBoostMulti += VERTICAL_SPEED_MULTI_INCREMENT;
+                    state.verticalSpeedBoostMulti = MathUtils
+                        .clamp(state.verticalSpeedBoostMulti, 0.5F, VERTICAL_SPEED_MAX);
+                    messageKey = "GT5U.armor.message.vertical_speed_set";
+                    displayValue = state.verticalSpeedBoostMulti;
 
-        if (context.getPlayer() instanceof EntityPlayerMP playerMP) {
+                } else if (keyPressed == ArmorActionManager.getAction("vertical_speed_decrease")
+                    .getKeybind()) {
+                        state.verticalSpeedBoostMulti -= VERTICAL_SPEED_MULTI_INCREMENT;
+                        state.verticalSpeedBoostMulti = MathUtils
+                            .clamp(state.verticalSpeedBoostMulti, 0.5F, VERTICAL_SPEED_MAX);
+                        messageKey = "GT5U.armor.message.vertical_speed_set";
+                        displayValue = state.verticalSpeedBoostMulti;
+                    }
+
+        if (messageKey != null && context.getPlayer() instanceof EntityPlayerMP playerMP) {
             ChatComponentTranslation chatComponent = new ChatComponentTranslation(
-                "GT5U.armor.message.speed_set",
-                "§f" + state.speedBoostMulti + "x§r");
+                messageKey,
+                "§f" + displayValue + "x§r");
             GTNHLib.proxy.sendMessageAboveHotbar(playerMP, chatComponent, 60, true, true);
         }
     }
@@ -67,11 +89,15 @@ public class SpeedBoostBehavior implements IArmorBehavior {
     public void configureArmorState(@NotNull ArmorContext context, @NotNull NBTTagCompound stackTag) {
         float savedBoost = stackTag.getFloat("speedBoostMulti");
         context.getArmorState().speedBoostMulti = Math.max(savedBoost, 1.0F);
+
+        float savedVerticalBoost = stackTag.getFloat("verticalSpeedBoostMulti");
+        context.getArmorState().verticalSpeedBoostMulti = Math.max(savedVerticalBoost, 0.5F);
     }
 
     @Override
     public void saveArmorState(@NotNull ArmorContext context, @NotNull NBTTagCompound stackTag) {
         stackTag.setFloat("speedBoostMulti", context.getArmorState().speedBoostMulti);
+        stackTag.setFloat("verticalSpeedBoostMulti", context.getArmorState().verticalSpeedBoostMulti);
     }
 
     @Override
@@ -88,8 +114,9 @@ public class SpeedBoostBehavior implements IArmorBehavior {
     @Override
     public void onArmorTick(@NotNull ArmorContext context) {
         EntityPlayer player = context.getPlayer();
+        ArmorState state = context.getArmorState();
 
-        float speed = (context.getArmorState().speedBoostMulti - 1.0F) * BASE_SPEED;
+        float speed = (state.speedBoostMulti - 1.0F) * BASE_SPEED;
         if (speed <= 0) return;
 
         if (player.capabilities.isFlying) {
@@ -123,7 +150,7 @@ public class SpeedBoostBehavior implements IArmorBehavior {
             if (player.moveStrafing < 0F) player.moveFlying(-1F, 0F, currentSpeed);
 
             if (player.capabilities.isFlying) {
-                float verticalSpeed = (float) (speed * VERTICAL_SPEED_MULT);
+                float verticalSpeed = (speed * state.verticalSpeedBoostMulti * 1.5F);
 
                 if (player.isSneaking()) {
                     player.moveEntity(0, -verticalSpeed, 0);
