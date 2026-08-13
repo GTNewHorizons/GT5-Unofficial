@@ -635,6 +635,17 @@ public class ElectrolyzerRecipes implements Runnable {
             .eut(60)
             .addTo(electrolyzerRecipes);
 
+        // C4H8O = 4C + 4H2 + 1/2 O2
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Empty.getCells(1))
+            .itemOutputs(Materials.Carbon.getDust(4), Materials.Oxygen.getCells(1))
+            .fluidInputs(Materials.Isobutyraldehyde.getFluid(1_000))
+            .fluidOutputs(Materials.Hydrogen.getGas(8_000))
+            .duration(15 * SECONDS + 12 * TICKS)
+            .eut(90)
+            .addTo(electrolyzerRecipes);
+
         // C8H10 = 8C + 5H2 (1,3-Dimethylbenzene)
 
         GTValues.RA.stdBuilder()

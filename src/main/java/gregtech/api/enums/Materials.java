@@ -1014,6 +1014,19 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
 
     // endregion
 
+    // region nButyllithium
+    public static Materials Butyraldehyde;
+    public static Materials Isobutyraldehyde;
+    public static Materials SodiumBorohydride;
+    public static Materials SodiumHydride;
+    public static Materials SodiumMethoxide;
+    public static Materials TrimethylBorate;
+    public static Materials RhodiumChloride;
+    public static Materials Triphenylphosphene;
+    public static Materials OrganorhodiumCatalyst;
+
+    // endregion
+
     // region Aluminium Ores
     public static Materials BauxiteSlurry;
     public static Materials HeatedBauxiteSlurry;
