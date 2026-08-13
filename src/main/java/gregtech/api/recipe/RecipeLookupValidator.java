@@ -139,7 +139,7 @@ public final class RecipeLookupValidator {
 
     private static String describeRecipeCategory(GTRecipe recipe) {
         RecipeCategory category = recipe.getRecipeCategory();
-        return category == null ? "<none>" : String.valueOf(category.unlocalizedName);
+        return category == null ? "<none>" : category.unlocalizedName;
     }
 
     private static String describeRecipeOwners(GTRecipe recipe) {
@@ -630,7 +630,7 @@ public final class RecipeLookupValidator {
     private String recipeConflictKey(List<GTRecipe> recipes, List<GTRecipe> conflictingMatches) {
         StringBuilder key = new StringBuilder();
         for (GTRecipe conflictingMatch : conflictingMatches) {
-            if (key.length() > 0) {
+            if (!key.isEmpty()) {
                 key.append(',');
             }
             key.append(indexOfRecipeIdentity(recipes, conflictingMatch));

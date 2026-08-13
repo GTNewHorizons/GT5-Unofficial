@@ -78,9 +78,9 @@ public class DustLoader implements IWerkstoffRunnable {
                 || werkstoff.getGenerationFeatures()
                     .hasChemicalRecipes()) {
 
-                if (werkstoff.getContents()
+                if (!werkstoff.getContents()
                     .getValue()
-                    .size() > 0) {
+                    .isEmpty()) {
 
                     for (Pair<ISubTagContainer, Integer> container : werkstoff.getContents()
                         .getValue()
@@ -207,7 +207,7 @@ public class DustLoader implements IWerkstoffRunnable {
                                 (int) Math.max(
                                     1L,
                                     Math.abs(
-                                        werkstoffStats.getProtons() / werkstoff.getContents()
+                                        werkstoffStats.getMass() / werkstoff.getContents()
                                             .getValue()
                                             .size())))
                             .eut(

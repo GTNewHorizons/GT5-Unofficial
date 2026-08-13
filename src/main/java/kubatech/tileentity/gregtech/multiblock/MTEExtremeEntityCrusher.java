@@ -63,6 +63,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
@@ -340,33 +341,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.machine_type"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc1"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc2"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc3"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc4"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc5"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc6"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc7"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc8"))
-            .addInfo(
-                StatCollector
-                    .translateToLocalFormatted("kubatech.multiblock.ExtremeEntityCrusher.desc9", MAX_LOOTING_LEVEL))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc10"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc11"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc12"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc13"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc14"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc15"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc16"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc17"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc18"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc19"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc20"))
-            .addInfo(StatCollector.translateToLocal("kubatech.multiblock.ExtremeEntityCrusher.desc21"))
+            .addMarkdown(new ResourceLocation("gregtech", "extreme-entity-crusher"))
             .addGlassEnergyLimitInfo()
             .beginStructureBlock(5, 7, 5, true)
             .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
@@ -963,8 +938,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
         for (MTEHatchEnergy hatch : mEnergyHatches) {
-            if (hatch.mTier > glassTier) {
-                errors.add(StructureErrors.glassTierNotEnough(hatch.mTier));
+            if (hatch.getTierForStructure() > glassTier) {
+                errors.add(StructureErrors.glassTierNotEnough(hatch.getTierForStructure()));
                 break;
             }
         }
@@ -1044,9 +1019,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         String mob = getCurrentMob();
         if (mob != null) {
             tag.setString("eecMobType", mob);
@@ -1058,24 +1032,22 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
 
         if (tag.hasKey("eecMobType", Constants.NBT.TAG_STRING)) {
             String mob = tag.getString("eecMobType");
             String mobKey = "entity." + mob + ".name";
             if (StatCollector.canTranslate(mobKey)) {
-                currentTip.add(
+                list.add(
                     StatCollector.translateToLocalFormatted(
                         "kubatech.waila.eec.mob_type",
                         StatCollector.translateToLocal(mobKey)));
             } else {
-                currentTip.add(StatCollector.translateToLocalFormatted("kubatech.waila.eec.mob_type", mob));
+                list.add(StatCollector.translateToLocalFormatted("kubatech.waila.eec.mob_type", mob));
             }
         } else {
-            currentTip.add(
+            list.add(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.waila.eec.mob_type",
                     StatCollector.translateToLocal("kubatech.waila.eec.no_mob")));
@@ -1083,11 +1055,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
         if (tag.hasKey("isInRitualMode") && tag.getBoolean("isInRitualMode")) {
             if (tag.hasKey("isRitualValid") && tag.getBoolean("isRitualValid")) {
-                currentTip.add(
+                list.add(
                     EnumChatFormatting.GREEN
                         + StatCollector.translateToLocal("kubatech.waila.eec.ritual_mode_connected"));
             } else {
-                currentTip.add(
+                list.add(
                     EnumChatFormatting.RED + StatCollector.translateToLocal("kubatech.waila.eec.ritual_mode_error"));
             }
         }

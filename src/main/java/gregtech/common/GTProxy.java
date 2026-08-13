@@ -20,6 +20,7 @@ import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gtnhlanth.util.LanthanidesRecipeOutputs.convertCrafting;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import java.util.ArrayList;
@@ -180,10 +181,12 @@ import gregtech.common.powergoggles.handlers.PowerGogglesEventHandler;
 import gregtech.common.recipes.CALImprintRecipe;
 import gregtech.common.recipes.MacerationStackConversionRecipe;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
 import gregtech.common.worldgen.HEEIslandScanner;
 import gregtech.nei.GTNEIDefaultHandler;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
 
 public class GTProxy implements IFuelHandler {
 
@@ -1133,7 +1136,7 @@ public class GTProxy implements IFuelHandler {
                 try {
                     GregTechAPI.METATILEENTITIES[i].onConfigLoad();
                 } catch (Exception e) {
-                    GT_FML_LOGGER.error("Could not load config for MTE " + GregTechAPI.METATILEENTITIES[i], e);
+                    GT_FML_LOGGER.error("Could not load config for MTE {}", GregTechAPI.METATILEENTITIES[i], e);
                 }
             }
         }
@@ -1142,16 +1145,22 @@ public class GTProxy implements IFuelHandler {
             if ((aMaterial.mUnifiable) && (aMaterial.mMaterialInto == aMaterial)) {
                 if (!aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
-                        GTModHandler.RecipeBits.BITS_STD,
+                        convertCrafting(
+                            aMaterial.mMacerateInto,
+                            GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L)),
+                        GTModHandler.RecipeBits.BITS_STD | GTModHandler.RecipeBits.DONT_UNIFY_OUTPUT,
                         new Object[] { "h", "X", 'X', OrePrefixes.crushedCentrifuged.get(aMaterial) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
-                        GTModHandler.RecipeBits.BITS_STD,
+                        convertCrafting(
+                            aMaterial.mMacerateInto,
+                            GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L)),
+                        GTModHandler.RecipeBits.BITS_STD | GTModHandler.RecipeBits.DONT_UNIFY_OUTPUT,
                         new Object[] { "h", "X", 'X', OrePrefixes.crystalline.get(aMaterial) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
-                        GTModHandler.RecipeBits.BITS_STD,
+                        convertCrafting(
+                            aMaterial.mMacerateInto,
+                            GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L)),
+                        GTModHandler.RecipeBits.BITS_STD | GTModHandler.RecipeBits.DONT_UNIFY_OUTPUT,
                         new Object[] { "h", "X", 'X', OrePrefixes.crystal.get(aMaterial) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1L),
@@ -1327,6 +1336,9 @@ public class GTProxy implements IFuelHandler {
             .onServerStopped(event);
         GTChunkManager.instance.onServerStopped();
         dimensionWisePollution.clear();
+
+        VacuumFactoryGrid.onServerClosed();
+        BECFactoryGrid.onServerClosed();
     }
 
     /**
@@ -1552,7 +1564,7 @@ public class GTProxy implements IFuelHandler {
             || (aEvent.Ore.getItem() == null)
             || (aEvent.Name == null)
             || (aEvent.Name.isEmpty())
-            || (aEvent.Name.replaceAll("_", "")
+            || (aEvent.Name.replace("_", "")
                 .length() - aEvent.Name.length() == 9)) {
             if (aOriginalMod.equals(GregTech.ID)) {
                 aOriginalMod = "UNKNOWN";
@@ -1659,8 +1671,7 @@ public class GTProxy implements IFuelHandler {
                 } else if (aEvent.Name.contains(" ")) {
                     GTLog.ore.println(
                         tModToName + " is getting re-registered because the OreDict Name containing invalid spaces.");
-                    GTOreDictUnificator
-                        .registerOre(aEvent.Name.replaceAll(" ", ""), GTUtility.copyAmount(1, aEvent.Ore));
+                    GTOreDictUnificator.registerOre(aEvent.Name.replace(" ", ""), GTUtility.copyAmount(1, aEvent.Ore));
                     aEvent.Ore.setStackDisplayName("Invalid OreDictionary Tag");
                     return;
                 } else if (this.mInvalidNames.contains(aEvent.Name)) {
@@ -1990,8 +2001,7 @@ public class GTProxy implements IFuelHandler {
                 OreDictEventContainer.registerRecipes(tOre);
             }
         } catch (Exception e) {
-            GT_FML_LOGGER
-                .error("Could not register ore (oredict name=" + aEvent.Name + ", item stack=" + aEvent.Ore + ")", e);
+            GT_FML_LOGGER.error("Could not register ore (oredict name={}, item stack={})", aEvent.Name, aEvent.Ore, e);
         }
     }
 
@@ -2473,7 +2483,7 @@ public class GTProxy implements IFuelHandler {
             event = i$.next();
             sizeStep--;
             if (sizeStep == 0) {
-                GT_FML_LOGGER.info("Baking : " + size + "%");
+                GT_FML_LOGGER.info("Baking : {}%", size);
                 sizeStep = oreDictEvents.size() / 20 - 1;
                 size += 5;
             }

@@ -71,11 +71,6 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
     }
 
     @Override
-    public boolean needsClientTick() {
-        return false;
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {
@@ -140,6 +135,12 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
 
         ForgeDirection a = connectedSides[0];
         ForgeDirection b = connectedSides[1];
+
+        // Race condition of updateNetwork() and onPostTick()
+        if (a == null || b == null) {
+            return null;
+        }
+
         if (dir == a) {
             chainedFrontFacing = b.getOpposite();
             return b;

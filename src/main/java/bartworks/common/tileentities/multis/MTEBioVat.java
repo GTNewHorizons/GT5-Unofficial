@@ -102,6 +102,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.Sievert;
 import gregtech.common.misc.GTStructureChannels;
+import gtPlusPlus.GTplusplus;
 
 public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
     implements ISurvivalConstructable, ICasingTextureProvider {
@@ -601,7 +602,10 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
                 this.mStack = aStack;
                 this.mCulture = lCulture;
                 if (this.needsVisualUpdate && aBaseMetaTileEntity.getTimer() % MTEBioVat.TIMERDIVIDER == 1) {
-                    if (aBaseMetaTileEntity.isClientSide()) new Throwable().printStackTrace();
+                    if (aBaseMetaTileEntity.isClientSide()) {
+                        GTplusplus.logger.error(new Throwable());
+                    }
+
                     this.placeFluid(xDir, zDir, offsetX_L, offsetY_L, offsetZ_L, offsetX_U, offsetY_U, offsetZ_U);
                     this.needsVisualUpdate = false;
                 }

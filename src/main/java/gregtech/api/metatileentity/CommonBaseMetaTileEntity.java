@@ -627,7 +627,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             }
         }
 
-        return suffix.length() > 0 ? suffix.toString() : null;
+        return !suffix.isEmpty() ? suffix.toString() : null;
     }
 
     @Override

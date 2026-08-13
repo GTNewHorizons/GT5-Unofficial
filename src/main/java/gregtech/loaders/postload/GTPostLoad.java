@@ -31,6 +31,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableSet;
 
+import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
@@ -69,7 +70,7 @@ public class GTPostLoad {
 
         // noinspection UnstableApiUsage// Stable enough for this project
         GTMod.GT_FML_LOGGER
-            .info("Congratulations, you have been waiting long enough (" + stopwatch.stop() + "). Have a Cake.");
+            .info("Congratulations, you have been waiting long enough ({}). Have a Cake.", stopwatch.stop());
         GTLog.out.println(
             "GTMod: List of Lists of Tool Recipes: " + GTModHandler.sSingleNonBlockDamagableRecipeList_list.toString());
         GTLog.out.println(
@@ -102,7 +103,7 @@ public class GTPostLoad {
         // Remove all IC2
         GTModHandler.removeAllIC2Recipes();
         // noinspection UnstableApiUsage// Stable enough for this project
-        GTMod.GT_FML_LOGGER.info("IC2 Removal (" + stopwatch.stop() + "). Have a Cake.");
+        GTMod.GT_FML_LOGGER.info("IC2 Removal ({}). Have a Cake.", stopwatch.stop());
     }
 
     public static void registerFluidCannerRecipes() {
@@ -121,6 +122,13 @@ public class GTPostLoad {
                 .duration((tData.fluid.amount / 62) * TICKS)
                 .eut(1)
                 .addTo(cannerRecipes);
+            if (GTUtility.areFluidsEqual(WerkstoffLoader.Ruthenium.getMolten(1), tData.fluid)
+                || GTUtility.areFluidsEqual(WerkstoffLoader.Rhodium.getMolten(1), tData.fluid)
+                || GTUtility.areFluidsEqual(Materials.Osmium.getMolten(1), tData.fluid)
+                || GTUtility.areFluidsEqual(Materials.Iridium.getMolten(1), tData.fluid)
+                || GTUtility.areFluidsEqual(Materials.Platinum.getMolten(1), tData.fluid)) {
+                continue;
+            }
             GTRecipeBuilder builder = GTValues.RA.stdBuilder()
                 .itemInputs(tData.filledContainer);
             if (tData.emptyContainer.stackSize > 0) {
@@ -396,7 +404,7 @@ public class GTPostLoad {
         }
         ProgressManager.pop(progressBar);
         // noinspection UnstableApiUsage// stable enough for project
-        GTMod.GT_FML_LOGGER.info("Replaced Vanilla Materials (" + stopwatch.stop() + "). Have a Cake.");
+        GTMod.GT_FML_LOGGER.info("Replaced Vanilla Materials ({}). Have a Cake.", stopwatch.stop());
     }
 
     public static void doActualRegistration(Materials m) {

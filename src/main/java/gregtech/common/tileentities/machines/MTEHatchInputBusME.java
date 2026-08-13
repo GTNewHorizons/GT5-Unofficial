@@ -166,9 +166,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
         AENetworkProxy proxy = getProxy();
 
-        if (!proxy.isActive()) return false;
-
-        return true;
+        return proxy.isActive();
     }
 
     @Override
