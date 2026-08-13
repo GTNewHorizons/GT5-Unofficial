@@ -21,6 +21,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.MTEHeatSensor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -71,12 +72,80 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("challengePhase", phase.ordinal());
+        if (lockedRecipe != null) {
+            aNBT.setTag("lockedRecipe", writeRecipe(lockedRecipe));
+        }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        phase = ChallengePhase.NEED_BOTH;
+        ChallengePhase[] values = ChallengePhase.values();
+        int idx = aNBT.getInteger("challengePhase");
+        phase = (idx >= 0 && idx < values.length) ? values[idx] : ChallengePhase.NEED_BOTH;
+        if (aNBT.hasKey("lockedRecipe")) {
+            lockedRecipe = readRecipe(aNBT.getCompoundTag("lockedRecipe"));
+        }
+        //default
+        if (lockedRecipe == null) {
+            phase = ChallengePhase.NEED_BOTH;
+        }
+    }
+
+    private static NBTTagCompound writeRecipe(GTRecipe r) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setTag("in", writeItems(r.mInputs));
+        tag.setTag("out", writeItems(r.mOutputs));
+        tag.setTag("fin", writeFluids(r.mFluidInputs));
+        tag.setTag("fout", writeFluids(r.mFluidOutputs));
+        if (r.mInputChances != null) tag.setIntArray("inC", r.mInputChances);
+        if (r.mOutputChances != null) tag.setIntArray("outC", r.mOutputChances);
+        if (r.mFluidInputChances != null) tag.setIntArray("finC", r.mFluidInputChances);
+        if (r.mFluidOutputChances != null) tag.setIntArray("foutC", r.mFluidOutputChances);
+        tag.setInteger("dur", r.mDuration);
+        tag.setInteger("eut", r.mEUt);
+        tag.setInteger("sv", r.mSpecialValue);
+        return tag;
+    }
+    private static GTRecipe readRecipe(NBTTagCompound tag) {
+        ItemStack[] in = readItems(tag.getTagList("in", 10));
+        ItemStack[] out = readItems(tag.getTagList("out", 10));
+        FluidStack[] fin = readFluids(tag.getTagList("fin", 10));
+        FluidStack[] fout = readFluids(tag.getTagList("fout", 10));
+        int[] inC = tag.hasKey("inC") ? tag.getIntArray("inC") : null;
+        int[] outC = tag.hasKey("outC") ? tag.getIntArray("outC") : null;
+        int[] finC = tag.hasKey("finC") ? tag.getIntArray("finC") : null;
+        int[] foutC = tag.hasKey("foutC") ? tag.getIntArray("foutC") : null;
+        return new GTRecipe(false, in, out, null, inC, outC, finC, foutC, fin, fout,
+            tag.getInteger("dur"), tag.getInteger("eut"), tag.getInteger("sv"));
+    }
+    private static NBTTagList writeItems(ItemStack[] l) {
+        NBTTagList out = new NBTTagList();
+        if (l != null) for (ItemStack s : l) {
+            NBTTagCompound c = new NBTTagCompound();
+            if (s != null) s.writeToNBT(c);
+            out.appendTag(c);
+        }
+        return out;
+    }
+    private static ItemStack[] readItems(NBTTagList l) {
+        ItemStack[] out = new ItemStack[l.tagCount()];
+        for (int i = 0; i < out.length; i++) out[i] = ItemStack.loadItemStackFromNBT(l.getCompoundTagAt(i));
+        return out;
+    }
+    private static NBTTagList writeFluids(FluidStack[] l) {
+        NBTTagList out = new NBTTagList();
+        if (l != null) for (FluidStack f : l) {
+            NBTTagCompound c = new NBTTagCompound();
+            if (f != null) f.writeToNBT(c);
+            out.appendTag(c);
+        }
+        return out;
+    }
+    private static FluidStack[] readFluids(NBTTagList l) {
+        FluidStack[] out = new FluidStack[l.tagCount()];
+        for (int i = 0; i < out.length; i++) out[i] = FluidStack.loadFluidStackFromNBT(l.getCompoundTagAt(i));
+        return out;
     }
 
     public MTECuringMachine(final int aID, final String aName, final String aNameRegional) {
