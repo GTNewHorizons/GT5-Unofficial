@@ -229,7 +229,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     public long transferElectricity(ForgeDirection side, long voltage, long amperage,
         HashSet<TileEntity> alreadyPassedSet) {
         if (amperage <= 0 || !getBaseMetaTileEntity().isServerSide()
-            || !isConnectedAtSide(side) && side != ForgeDirection.UNKNOWN) return 0;
+            || (!isConnectedAtSide(side) && side != ForgeDirection.UNKNOWN)) return 0;
         final BaseMetaPipeEntity tBase = (BaseMetaPipeEntity) getBaseMetaTileEntity();
         if (!(tBase.getNode() instanceof PowerNode tNode)) return 0;
         int tPlace = 0;
