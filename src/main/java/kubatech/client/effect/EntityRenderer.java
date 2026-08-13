@@ -250,7 +250,7 @@ public class EntityRenderer extends EntityFX {
             try {
                 tes.draw();
             } catch (Exception ignored) {}
-            LOG.error("[Renderer] Failed to render entity " + EntityList.getEntityString(entityToRender), ex);
+            LOG.error("[Renderer] Failed to render entity {}", EntityList.getEntityString(entityToRender), ex);
         }
 
         BossStatus.healthScale = healthScale;

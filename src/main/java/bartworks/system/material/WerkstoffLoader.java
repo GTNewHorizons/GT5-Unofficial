@@ -1719,7 +1719,7 @@ public class WerkstoffLoader {
             long timepre = System.nanoTime();
             ProgressManager.ProgressBar progressBar = ProgressManager
                 .push("Register BW Materials", Werkstoff.werkstoffHashSet.size() + 1);
-            MainMod.BW_DEBUG_LOGGER.info("Loading Recipes" + (System.nanoTime() - timepre));
+            MainMod.BW_DEBUG_LOGGER.info("Loading Recipes{}", System.nanoTime() - timepre);
             if (BetterLoadingScreen.isModLoaded()) {
                 CLSCompat.initCls();
             }
@@ -1733,10 +1733,7 @@ public class WerkstoffLoader {
             int pos = 0;
             for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
                 timepreone = System.nanoTime();
-                MainMod.BW_DEBUG_LOGGER.info(
-                    "Werkstoff is null or id < 0 ? " + (werkstoff == null || werkstoff.getmID() < 0)
-                        + " "
-                        + (System.nanoTime() - timepreone));
+                MainMod.BW_DEBUG_LOGGER.info("Werkstoff is null or id < 0 ? {} {}", werkstoff == null || werkstoff.getmID() < 0, System.nanoTime() - timepreone);
                 if (werkstoff == null || werkstoff.getmID() < 0) {
                     progressBar.step("");
                     continue;
@@ -1745,19 +1742,19 @@ public class WerkstoffLoader {
                     CLSCompat.updateDisplay(werkstoff, pos);
                 }
                 MainMod.BW_DEBUG_LOGGER
-                    .info("Werkstoff: " + werkstoff.getDefaultName() + " " + (System.nanoTime() - timepreone));
+                    .info("Werkstoff: {} {}", werkstoff.getDefaultName(), System.nanoTime() - timepreone);
                 for (IWerkstoffRunnable runnable : werkstoffRunnables) {
                     String loaderName = runnable.getClass()
                         .getSimpleName();
-                    MainMod.BW_DEBUG_LOGGER.info(loaderName + " started " + (System.nanoTime() - timepreone));
+                    MainMod.BW_DEBUG_LOGGER.info("{} started {}", loaderName, System.nanoTime() - timepreone);
                     runnable.run(werkstoff);
-                    MainMod.BW_DEBUG_LOGGER.info(loaderName + " done " + (System.nanoTime() - timepreone));
+                    MainMod.BW_DEBUG_LOGGER.info("{} done {}", loaderName, System.nanoTime() - timepreone);
                 }
-                MainMod.BW_DEBUG_LOGGER.info("Done" + " " + (System.nanoTime() - timepreone));
+                MainMod.BW_DEBUG_LOGGER.info("Done {}", System.nanoTime() - timepreone);
                 progressBar.step(werkstoff.getDefaultName());
                 pos++;
             }
-            MainMod.BW_DEBUG_LOGGER.info("Loading New Circuits" + " " + (System.nanoTime() - timepreone));
+            MainMod.BW_DEBUG_LOGGER.info("Loading New Circuits {}", System.nanoTime() - timepreone);
             CircuitPartsItem.init();
 
             if (BetterLoadingScreen.isModLoaded()) {
@@ -1857,7 +1854,7 @@ public class WerkstoffLoader {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
             if (werkstoff.hasItemType(cell)) {
                 if (!FluidRegistry.isFluidRegistered(werkstoff.getDefaultName())) {
-                    MainMod.BW_DEBUG_LOGGER.info("Adding new Fluid: " + werkstoff.getDefaultName());
+                    MainMod.BW_DEBUG_LOGGER.info("Adding new Fluid: {}", werkstoff.getDefaultName());
                     Fluid fluid = GTFluidFactory.builder(werkstoff.getDefaultName())
                         .withDefaultLocalName(werkstoff.getDefaultName())
                         .withStateAndTemperature(
@@ -1876,7 +1873,7 @@ public class WerkstoffLoader {
             }
             if (werkstoff.hasItemType(OrePrefixes.cellMolten)) {
                 if (!FluidRegistry.isFluidRegistered("molten." + werkstoff.getDefaultName())) {
-                    MainMod.BW_DEBUG_LOGGER.info("Adding new Molten: " + werkstoff.getDefaultName());
+                    MainMod.BW_DEBUG_LOGGER.info("Adding new Molten: {}", werkstoff.getDefaultName());
                     Fluid fluid = GTFluidFactory.builder("molten." + werkstoff.getDefaultName())
                         .withDefaultLocalName("Molten " + werkstoff.getDefaultName())
                         .withStateAndTemperature(
@@ -1898,17 +1895,14 @@ public class WerkstoffLoader {
                 && Materials.get(werkstoff.getDefaultName()).mMetaItemSubID != -1
                 && (werkstoff.getGenerationFeatures().toGenerate & p.getMaterialGenerationBits()) != 0
                 && OreDictHandler.getItemStack(werkstoff.getDefaultName(), p, 1) != null) {
-                    MainMod.BW_DEBUG_LOGGER.info(
-                        "Found: " + p
-                            + werkstoff.getVarName()
-                            + " in GT material system, disable and reroute my Items to that, also add a Tooltip.");
+                MainMod.BW_DEBUG_LOGGER.info("Found: {}{} in GT material system, disable and reroute my Items to that, also add a Tooltip.", p, werkstoff.getVarName());
                     werkstoff.getGenerationFeatures()
                         .removePrefix(p);
                 }
             WerkstoffLoader.toGenerateGlobal = WerkstoffLoader.toGenerateGlobal
                 | werkstoff.getGenerationFeatures().toGenerate;
         }
-        MainMod.BW_DEBUG_LOGGER.info("GlobalGeneration: " + WerkstoffLoader.toGenerateGlobal);
+        MainMod.BW_DEBUG_LOGGER.info("GlobalGeneration: {}", WerkstoffLoader.toGenerateGlobal);
         if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.DUSTS) != 0) {
             WerkstoffLoader.items.put(dust, new BWMetaGeneratedItems(dust));
             WerkstoffLoader.items.put(dustTiny, new BWMetaGeneratedItems(dustTiny));

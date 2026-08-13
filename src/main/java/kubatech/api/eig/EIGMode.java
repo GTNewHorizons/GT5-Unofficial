@@ -92,7 +92,7 @@ public abstract class EIGMode {
     private void dealWithDuplicateFactoryId(String factoryId) {
         if (this.factories.containsKey(factoryId)) {
             // TODO: Check with devs to see if they want a throw instead.
-            LOG.error("Duplicate EIG bucket index detected!!!: " + factoryId);
+            LOG.error("Duplicate EIG bucket index detected!!!: {}", factoryId);
             // remove duplicate from ordered list
             this.orderedFactories.remove(this.factories.get(factoryId));
         }
@@ -147,7 +147,7 @@ public abstract class EIGMode {
             String bucketType = bucketNBT.getString("type");
             IEIGBucketFactory factory = factories.getOrDefault(bucketType, null);
             if (factory == null) {
-                LOG.error("failed to find EIG bucket factory for type: " + bucketType);
+                LOG.error("failed to find EIG bucket factory for type: {}", bucketType);
                 continue;
             }
             // restore bucket

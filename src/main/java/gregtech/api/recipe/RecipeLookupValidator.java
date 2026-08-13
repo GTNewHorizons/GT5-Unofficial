@@ -796,49 +796,45 @@ public final class RecipeLookupValidator {
 
     private void logProgress(String phase) {
         long elapsedNanos = System.nanoTime() - startNanos;
-        double percent = totalRecipes == 0 ? 100.0 : processedRecipes * 100.0 / totalRecipes;
+        double percent = totalRecipes == 0 ? 100.0 : Math.round(processedRecipes * 1000.0 / totalRecipes) / 10.0;
         LOGGER.info(
-            String.format(
-                Locale.ROOT,
-                "GTRecipeLookupValidator: %s maps=%d/%d recipes=%d/%d %.1f%% elapsed=%s eta=%s issues=%d lookupMismatches=%d recipeConflicts=%d unresolvedOreDict=%d skippedDisabled=%d skippedFake=%d skippedNoLookup=%d",
-                phase,
-                processedMaps,
-                targets.size(),
-                processedRecipes,
-                totalRecipes,
-                percent,
-                formatDuration(elapsedNanos),
-                estimateEta(elapsedNanos),
-                totalIssueCount(),
-                issues.size(),
-                recipeConflictIssues.size(),
-                unresolvedOreDictIssues.size(),
-                skippedDisabledRecipes,
-                skippedFakeRecipes,
-                skippedNoLookupIngredientRecipes));
+            "GTRecipeLookupValidator: {} maps={}/{} recipes={}/{} {}% elapsed={} eta={} issues={} lookupMismatches={} recipeConflicts={} unresolvedOreDict={} skippedDisabled={} skippedFake={} skippedNoLookup={}",
+            phase,
+            processedMaps,
+            targets.size(),
+            processedRecipes,
+            totalRecipes,
+            percent,
+            formatDuration(elapsedNanos),
+            estimateEta(elapsedNanos),
+            totalIssueCount(),
+            issues.size(),
+            recipeConflictIssues.size(),
+            unresolvedOreDictIssues.size(),
+            skippedDisabledRecipes,
+            skippedFakeRecipes,
+            skippedNoLookupIngredientRecipes);
     }
 
     private void logMapProgress(String phase, RecipeLookupValidationTarget target, int mapRecipes, int mapIndex) {
         long elapsedNanos = System.nanoTime() - startNanos;
         LOGGER.info(
-            String.format(
-                Locale.ROOT,
-                "GTRecipeLookupValidator: %s map=%s mapRecipes=%d maps=%d/%d recipes=%d/%d elapsed=%s issues=%d lookupMismatches=%d recipeConflicts=%d unresolvedOreDict=%d skippedDisabled=%d skippedFake=%d skippedNoLookup=%d",
-                phase,
-                target.mapName,
-                mapRecipes,
-                mapIndex,
-                targets.size(),
-                processedRecipes,
-                totalRecipes,
-                formatDuration(elapsedNanos),
-                totalIssueCount(),
-                issues.size(),
-                recipeConflictIssues.size(),
-                unresolvedOreDictIssues.size(),
-                skippedDisabledRecipes,
-                skippedFakeRecipes,
-                skippedNoLookupIngredientRecipes));
+            "GTRecipeLookupValidator: {} map={} mapRecipes={} maps={}/{} recipes={}/{} elapsed={} issues={} lookupMismatches={} recipeConflicts={} unresolvedOreDict={} skippedDisabled={} skippedFake={} skippedNoLookup={}",
+            phase,
+            target.mapName,
+            mapRecipes,
+            mapIndex,
+            targets.size(),
+            processedRecipes,
+            totalRecipes,
+            formatDuration(elapsedNanos),
+            totalIssueCount(),
+            issues.size(),
+            recipeConflictIssues.size(),
+            unresolvedOreDictIssues.size(),
+            skippedDisabledRecipes,
+            skippedFakeRecipes,
+            skippedNoLookupIngredientRecipes);
     }
 
     private int totalIssueCount() {
