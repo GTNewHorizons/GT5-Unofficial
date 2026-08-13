@@ -286,7 +286,8 @@ public class MTEHatchInputBus extends MTEHatch
         for (int i = 0; i < getSizeInventory(); i++) {
             if (i == getCircuitSlot()) continue;
             ItemStack stack = getStackInSlot(i);
-            if (stack != null && nonConsumedIds.contains(GTUtility.ItemId.create(stack))) {
+            if (stack == null || GTUtility.isAnyIntegratedCircuit(stack)) continue;
+            if (nonConsumedIds.contains(GTUtility.ItemId.create(stack))) {
                 result.add(stack);
             }
         }

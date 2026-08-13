@@ -610,7 +610,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
         List<ItemStack> result = new ArrayList<>();
         for (Slot slot : slots) {
-            if (slot != null && slot.config != null && nonConsumedIds.contains(GTUtility.ItemId.create(slot.config))) {
+            if (slot == null || slot.config == null || GTUtility.isAnyIntegratedCircuit(slot.config)) continue;
+            if (nonConsumedIds.contains(GTUtility.ItemId.create(slot.config))) {
                 result.add(slot.config);
             }
         }
