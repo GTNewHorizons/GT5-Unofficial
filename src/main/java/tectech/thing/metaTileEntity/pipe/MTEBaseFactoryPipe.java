@@ -148,6 +148,11 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity {
     }
 
     @Override
+    protected boolean deferCheckConnection() {
+        return false;
+    }
+
+    @Override
     protected void checkConnections() {
         mCheckConnections = false;
     }

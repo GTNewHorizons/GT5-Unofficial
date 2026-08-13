@@ -166,6 +166,11 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     }
 
     @Override
+    protected boolean deferCheckConnection() {
+        return false;
+    }
+
+    @Override
     public void checkConnections() {
         mCheckConnections = false;
         updateNetwork(false);

@@ -210,6 +210,11 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
     }
 
     @Override
+    protected boolean deferCheckConnection() {
+        return false;
+    }
+
+    @Override
     public void checkConnections() {
         mCheckConnections = false;
         updateNetwork(false);
