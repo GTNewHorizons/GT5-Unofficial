@@ -326,49 +326,14 @@ public class ChemicalBathRecipes implements Runnable {
             .eut(384)
             .addTo(chemicalBathRecipes);
 
+        // TODO - move to kevlar multi once done
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DrawnKevlarFiber.get(8))
-            .itemOutputs(ItemList.SpunKevlarFiber.get(8))
-            .fluidInputs(Materials.Grade3PurifiedWater.getFluid(1_000))
-            .duration(120 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
-            .addTo(chemicalBathRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DrawnKevlarFiber.get(8))
-            .itemOutputs(ItemList.SpunKevlarFiber.get(8))
-            .fluidInputs(Materials.Grade4PurifiedWater.getFluid(1_000))
-            .duration(90 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
-            .addTo(chemicalBathRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DrawnKevlarFiber.get(8))
-            .itemOutputs(ItemList.SpunKevlarFiber.get(8))
-            .fluidInputs(Materials.Grade5PurifiedWater.getFluid(1_000))
+            .itemInputs(ItemList.WovenKevlar.get(1))
+            .itemOutputs(Materials.Kevlar.getPlates(1))
+            .fluidInputs(Materials.PolyurethaneResin.getFluid(1_000))
             .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
+            .eut(TierEU.RECIPE_LV)
             .addTo(chemicalBathRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DrawnKevlarFiber.get(8))
-            .itemOutputs(ItemList.SpunKevlarFiber.get(8))
-            .fluidInputs(Materials.Grade6PurifiedWater.getFluid(1_000))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
-            .addTo(chemicalBathRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DrawnKevlarFiber.get(16))
-            .itemOutputs(ItemList.SpunKevlarFiber.get(16))
-            .fluidInputs(Materials.Grade7PurifiedWater.getFluid(1_000))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
-            .addTo(chemicalBathRecipes);
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.DrawnKevlarFiber.get(32))
-            .itemOutputs(ItemList.SpunKevlarFiber.get(32))
-            .fluidInputs(Materials.Grade8PurifiedWater.getFluid(1_000))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
-            .addTo(chemicalBathRecipes);
-
 
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.CubicZirconia.get(OrePrefixes.gemExquisite, 1))

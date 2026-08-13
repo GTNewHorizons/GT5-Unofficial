@@ -3075,14 +3075,6 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.SpunKevlarFiber.get(8))
-            .circuit(8)
-            .itemOutputs(ItemList.WovenKevlar.get(1))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1),
                 ItemList.NC_SensorKit.get(1),

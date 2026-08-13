@@ -1389,15 +1389,6 @@ public class RecipeLoader {
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
 
-        // Woven Kevlar
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.SpunKevlarFiber.get(4))
-            .itemOutputs(ItemList.WovenKevlar.get(1))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
-            .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
     }
 
     public static void InitLoadRecipe() {

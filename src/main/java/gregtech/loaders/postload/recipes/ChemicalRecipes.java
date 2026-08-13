@@ -804,18 +804,6 @@ public class ChemicalRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalReactorRecipes);
 
-        // C2H4O + H2O = C2H6O2
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.EthyleneOxide, 1))
-            .circuit(1)
-            .itemOutputs(ItemList.Cell_Empty.get(1))
-            .fluidInputs(Materials.Water.getFluid(1_000))
-            .fluidOutputs(Materials.Ethyleneglycol.getFluid(1_000))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
-
         // Cu + O = CuO
 
         GTValues.RA.stdBuilder()
@@ -5296,30 +5284,6 @@ public class ChemicalRecipes implements Runnable {
                 Materials.DilutedSulfuricAcid.getFluid(3_000))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_IV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        // C6H7N + HNO3 =H2SO4,C4H6O3= C6H6N2O2 + H2O
-
-        GTValues.RA.stdBuilder()
-            .circuit(2)
-            .fluidInputs(
-                new FluidStack(FluidRegistry.getFluid("aniline"), 1_000),
-                new FluidStack(FluidRegistry.getFluid("molten.aceticanhydride"), 100),
-                Materials.NitrationMixture.getFluid(2_000))
-            .fluidOutputs(Materials.IVNitroaniline.getFluid(1_000), Materials.DilutedSulfuricAcid.getFluid(1_000))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .circuit(9)
-            .fluidInputs(
-                new FluidStack(FluidRegistry.getFluid("aniline"), 9_000),
-                new FluidStack(FluidRegistry.getFluid("molten.aceticanhydride"), 900),
-                Materials.NitrationMixture.getFluid(18_000))
-            .fluidOutputs(Materials.IVNitroaniline.getFluid(9_000), Materials.DilutedSulfuricAcid.getFluid(9_000))
-            .duration(1 * MINUTES + 40 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
         // C6H6N2O2 + 6H =Pd,NO2= C6H8N2 + 2H2O

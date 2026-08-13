@@ -50,6 +50,7 @@ import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import java.util.Arrays;
 import java.util.List;
 
+import gregtech.loaders.postload.chains.KevlarRecipes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -125,6 +126,7 @@ public class RecipesGregTech {
         RecipesRareEarthProcessing.init();
         NetheriteRecipes.run();
         AcidRecipes.run();
+        KevlarRecipes.run();
 
         addFuels();
 

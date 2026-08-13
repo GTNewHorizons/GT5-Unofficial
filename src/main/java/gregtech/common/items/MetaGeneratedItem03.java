@@ -1410,14 +1410,14 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.DrawnKevlarFiber.set(
             addItemWithLocalizationKeys(
                 DrawnKevlarFiber.ID,
-                "gt.item.kevlar_fiber.name",
-                "gt.item.kevlar_fiber.tooltip",
+                "gt.item.drawn_kevlar_fiber.name",
+                "gt.item.drawn_kevlar_fiber.tooltip",
                 o));
         ItemList.SpunKevlarFiber.set(
             addItemWithLocalizationKeys(
                 SpunKevlarFiber.ID,
-                "gt.item.kevlar_fiber.name",
-                "gt.item.kevlar_fiber.tooltip",
+                "gt.item.spun_kevlar_fiber.name",
+                "gt.item.spun_kevlar_fiber.tooltip",
                 o));
         ItemList.WovenKevlar.set(
             addItemWithLocalizationKeys(
