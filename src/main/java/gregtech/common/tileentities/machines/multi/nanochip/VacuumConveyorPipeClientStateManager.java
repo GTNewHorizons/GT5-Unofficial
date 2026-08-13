@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.client.Minecraft;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -50,6 +52,8 @@ public final class VacuumConveyorPipeClientStateManager {
     @SubscribeEvent
     public void update(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.START) return;
+        if (Minecraft.getMinecraft()
+            .isGamePaused()) return;
         tickCounter++;
         if (tickCounter >= pipes.length) {
             tickCounter = 0;
