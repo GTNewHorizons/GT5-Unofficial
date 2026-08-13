@@ -37,7 +37,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     private static IIconContainer CCPipe;
     private static IIconContainer CCBarOverlay, CCBarOverlayActive;
     public VacuumFactoryNetwork network;
-    private boolean clientActiveState;
+    private boolean clientRenderState;
 
     public MTEVacuumConveyorPipe(int aID, String aName) {
         super(aID, aName);
@@ -67,7 +67,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     }
 
     public final void toggleClientActiveState() {
-        clientActiveState = !clientActiveState;
+        clientRenderState = !clientRenderState;
         IGregTechTileEntity base = getBaseMetaTileEntity();
         if (base != null) {
             base.issueTextureUpdate();
@@ -79,7 +79,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
         int colorIndex, boolean aConnected, boolean aRedstone) {
         return new ITexture[] { TextureFactory.of(CCPipe),
             TextureFactory.of(
-                clientActiveState ? CCBarOverlayActive : CCBarOverlay,
+                clientRenderState ? CCBarOverlayActive : CCBarOverlay,
                 Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
     }
 
