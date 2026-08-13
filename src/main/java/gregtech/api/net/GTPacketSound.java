@@ -12,7 +12,7 @@ import gregtech.api.util.GTUtility;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class GTPacketSound extends GTPacket {
 

@@ -1,6 +1,6 @@
 package gregtech.api.net;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 import java.io.IOException;
 

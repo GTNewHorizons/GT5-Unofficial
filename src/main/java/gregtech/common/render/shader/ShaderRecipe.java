@@ -1,6 +1,6 @@
 package gregtech.common.render.shader;
 
-import static gregtech.GTMod.GT_SHADER_LOGGER;
+import static gregtech.GTLoggers.GT_SHADER_LOGGER;
 
 import java.util.ArrayList;
 import java.util.Arrays;

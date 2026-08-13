@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IOreMaterial;
@@ -3061,7 +3061,7 @@ public class OrePrefixes {
 
         for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
             if (D2) {
-                GTMod.GT_ORE_DICT_LOGGER.info("Processing '{}' with the Prefix '{}' and the Material '{}' at {}", aOreDictName, name, aMaterial.mName, GTUtility.getClassName(tRegistrator));
+                GTLoggers.GT_ORE_DICT_LOGGER.info("Processing '{}' with the Prefix '{}' and the Material '{}' at {}", aOreDictName, name, aMaterial.mName, GTUtility.getClassName(tRegistrator));
             }
             tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GTUtility.copyAmount(1, aStack));
         }

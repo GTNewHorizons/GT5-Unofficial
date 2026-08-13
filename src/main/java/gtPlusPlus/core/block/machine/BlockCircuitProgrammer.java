@@ -19,7 +19,7 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
 

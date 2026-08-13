@@ -13,7 +13,7 @@
 
 package bartworks.system.material.werkstoff_loaders.recipe;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.OrePrefixes.cell;
 import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;

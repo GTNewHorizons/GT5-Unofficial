@@ -21,6 +21,7 @@ import forestry.api.genetics.IGenome;
 import forestry.api.genetics.IMutationCondition;
 import forestry.core.genetics.alleles.Allele;
 import forestry.core.utils.StringUtil;
+import gregtech.GTLoggers;
 import gregtech.GTMod;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.common.bees.GTAlleleHelper;
@@ -100,10 +101,10 @@ public class GTBees {
         machineBoostEffect = new GTEffectMachineBoost();
 
         if (GalaxySpace.isModLoaded() && TwilightForest.isModLoaded()) {
-            GTMod.GT_FML_LOGGER.info("treetwisterEffect: GalaxySpace and TwilightForest loaded, using default impl");
+            GTLoggers.GT_FML_LOGGER.info("treetwisterEffect: GalaxySpace and TwilightForest loaded, using default impl");
             treetwisterEffect = new GTEffectTreeTwister();
         } else {
-            GTMod.GT_FML_LOGGER
+            GTLoggers.GT_FML_LOGGER
                 .info("treetwisterEffect: GalaxySpace or TwilightForest was not loaded, using fallback impl");
             treetwisterEffect = GTAlleleEffect.FORESTRY_BASE_EFFECT;
         }

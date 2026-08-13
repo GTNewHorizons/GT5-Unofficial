@@ -35,7 +35,7 @@ import gregtech.api.util.GTLog;
 import gregtech.common.entity.EntityDrone;
 import gregtech.common.items.ItemDroneRemoteInterface;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class CameraViewportManager {
 

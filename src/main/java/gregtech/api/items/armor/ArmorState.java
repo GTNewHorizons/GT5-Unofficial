@@ -27,7 +27,7 @@ import net.minecraftforge.common.util.Constants.NBT;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.items.armor.ArmorContext.ArmorContextImpl;
 import gregtech.api.items.armor.AugmentBuilder.AugmentCategory;
@@ -288,7 +288,7 @@ public class ArmorState {
                     state.activeBehaviors.add(name);
                 }
             } catch (IllegalArgumentException e) {
-                GTMod.GT_FML_LOGGER.error("Could not load active behavior: {}", str.func_150285_a_(), e);
+                GTLoggers.GT_FML_LOGGER.error("Could not load active behavior: {}", str.func_150285_a_(), e);
             }
         }
 

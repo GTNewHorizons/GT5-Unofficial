@@ -21,7 +21,7 @@ import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
 import gtPlusPlus.core.tileentities.general.TileEntityVolumetricFlaskSetter;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
 

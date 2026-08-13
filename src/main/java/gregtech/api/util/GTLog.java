@@ -1,8 +1,8 @@
 package gregtech.api.util;
 
-import static gregtech.GTMod.Loggers.GT_EXPLOSION_LOGGER;
-import static gregtech.GTMod.Loggers.GT_ICON_LOGGER;
-import static gregtech.GTMod.Loggers.GT_ORE_DICT_LOGGER;
+import static gregtech.GTLoggers.GT_EXPLOSION_LOGGER;
+import static gregtech.GTLoggers.GT_ICON_LOGGER;
+import static gregtech.GTLoggers.GT_ORE_DICT_LOGGER;
 
 import java.io.File;
 

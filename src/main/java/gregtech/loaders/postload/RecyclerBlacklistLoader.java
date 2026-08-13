@@ -1,6 +1,6 @@
 package gregtech.loaders.postload;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.Chisel;
 import static gregtech.api.util.GTModHandler.addToRecyclerBlackList;
 

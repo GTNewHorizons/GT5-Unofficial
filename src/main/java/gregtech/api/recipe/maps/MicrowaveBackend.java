@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SubTag;
@@ -71,7 +71,7 @@ public class MicrowaveBackend extends NonGTBackend {
                 || GTUtility.areStacksEqual(item, new ItemStack(Items.firework_charge, 1, WILDCARD), true)
                 || GTUtility.areStacksEqual(item, new ItemStack(Items.fireworks, 1, WILDCARD), true)
                 || GTUtility.areStacksEqual(item, new ItemStack(Items.fire_charge, 1, WILDCARD), true)) {
-                GTMod.GT_EXPLOSION_LOGGER
+                GTLoggers.GT_EXPLOSION_LOGGER
                     .info("Microwave Explosion due to TNT || EGG || FIREWORKCHARGE || FIREWORK || FIRE CHARGE");
                 return GTRecipeBuilder.empty()
                     .metadata(EXPLODE, true)
@@ -84,14 +84,14 @@ public class MicrowaveBackend extends NonGTBackend {
                 if (itemData.mMaterial != null && itemData.mMaterial.mMaterial != null) {
                     if (itemData.mMaterial.mMaterial.contains(SubTag.METAL)
                         || itemData.mMaterial.mMaterial.contains(SubTag.EXPLOSIVE)) {
-                        GTMod.GT_EXPLOSION_LOGGER.info("Microwave Explosion due to METAL insertion");
+                        GTLoggers.GT_EXPLOSION_LOGGER.info("Microwave Explosion due to METAL insertion");
                         return GTRecipeBuilder.empty()
                             .metadata(EXPLODE, true)
                             .build()
                             .orElse(null);
                     }
                     if (itemData.mMaterial.mMaterial.contains(SubTag.FLAMMABLE)) {
-                        GTMod.GT_EXPLOSION_LOGGER.info("Microwave INFLAMMATION due to FLAMMABLE insertion");
+                        GTLoggers.GT_EXPLOSION_LOGGER.info("Microwave INFLAMMATION due to FLAMMABLE insertion");
                         return GTRecipeBuilder.empty()
                             .metadata(ON_FIRE, true)
                             .build()
@@ -102,14 +102,14 @@ public class MicrowaveBackend extends NonGTBackend {
                     if (materialStack == null) continue;
                     if (materialStack.mMaterial.contains(SubTag.METAL)
                         || materialStack.mMaterial.contains(SubTag.EXPLOSIVE)) {
-                        GTMod.GT_EXPLOSION_LOGGER.info("Microwave Explosion due to METAL insertion");
+                        GTLoggers.GT_EXPLOSION_LOGGER.info("Microwave Explosion due to METAL insertion");
                         return GTRecipeBuilder.empty()
                             .metadata(EXPLODE, true)
                             .build()
                             .orElse(null);
                     }
                     if (materialStack.mMaterial.contains(SubTag.FLAMMABLE)) {
-                        GTMod.GT_EXPLOSION_LOGGER.info("Microwave INFLAMMATION due to FLAMMABLE insertion");
+                        GTLoggers.GT_EXPLOSION_LOGGER.info("Microwave INFLAMMATION due to FLAMMABLE insertion");
                         return GTRecipeBuilder.empty()
                             .metadata(ON_FIRE, true)
                             .build()
@@ -118,7 +118,7 @@ public class MicrowaveBackend extends NonGTBackend {
                 }
             }
             if (TileEntityFurnace.getItemBurnTime(item) > 0) {
-                GTMod.GT_EXPLOSION_LOGGER.info("Microwave INFLAMMATION due to BURNABLE insertion");
+                GTLoggers.GT_EXPLOSION_LOGGER.info("Microwave INFLAMMATION due to BURNABLE insertion");
                 return GTRecipeBuilder.empty()
                     .metadata(ON_FIRE, true)
                     .build()

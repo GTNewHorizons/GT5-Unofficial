@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.debugBlockPump;
 
 import java.util.ArrayDeque;

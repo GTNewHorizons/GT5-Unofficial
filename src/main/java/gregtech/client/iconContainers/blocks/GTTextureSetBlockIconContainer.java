@@ -1,6 +1,6 @@
 package gregtech.client.iconContainers.blocks;
 
-import static gregtech.GTMod.Loggers.GT_ICON_LOGGER;
+import static gregtech.GTLoggers.GT_ICON_LOGGER;
 import static gregtech.api.enums.Textures.OverlaySuffix;
 import static gregtech.api.enums.Textures.TextureSetFallback;
 import static gregtech.client.iconContainers.items.GTTextureSetItemIconContainer.createIconName;

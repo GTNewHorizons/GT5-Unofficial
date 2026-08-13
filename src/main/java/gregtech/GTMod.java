@@ -3,6 +3,8 @@ package gregtech;
 import static gregtech.GT_Version.VERSION_MAJOR;
 import static gregtech.GT_Version.VERSION_MINOR;
 import static gregtech.GT_Version.VERSION_PATCH;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_ORE_DICT_LOGGER;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.util.GTRecipe.setItemStacks;
 
@@ -25,7 +27,6 @@ import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.falsepattern.chunk.api.DataRegistry;
@@ -230,22 +231,6 @@ public class GTMod {
     public static final boolean DEBUG = Boolean.getBoolean("gt.debug");
 
     public static GTAchievements achievements;
-    public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
-    public static final Logger GT_EXPLOSION_LOGGER = Loggers.GT_EXPLOSION_LOGGER;
-    public static final Logger GT_ICON_LOGGER = Loggers.GT_ICON_LOGGER;
-    public static final Logger GT_ORE_DICT_LOGGER = Loggers.GT_ORE_DICT_LOGGER;
-    public static final Logger GT_SHADER_LOGGER = LogManager.getLogger("ShaderAPI");
-
-    public static final class Loggers {
-
-        public static final Logger GT_EXPLOSION_LOGGER = disabledLogger("GregTech Explosions");
-        public static final Logger GT_ICON_LOGGER = disabledLogger("GregTech Icons");
-        public static final Logger GT_ORE_DICT_LOGGER = disabledLogger("GregTech Ore Dictionary");
-
-        private static Logger disabledLogger(String name) {
-            return GTLog.disabledLogger(name);
-        }
-    }
 
     static {
         File minecraftHome = Launch.minecraftHome == null ? new File(".") : Launch.minecraftHome;

@@ -1,7 +1,7 @@
 package gregtech.api.util;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
@@ -147,6 +147,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ModAPIManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import fox.spiteful.avaritia.items.ItemMatterCluster;
+import gregtech.GTLoggers;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.damagesources.GTDamageSources;
@@ -1972,7 +1973,7 @@ public class GTUtility {
             try {
                 return aEntity.attackEntityFrom(source, aDamage);
             } catch (Exception t) {
-                GTMod.GT_FML_LOGGER.error("Error damaging entity", t);
+                GTLoggers.GT_FML_LOGGER.error("Error damaging entity", t);
             }
         }
         return false;

@@ -1,6 +1,6 @@
 package gregtech.common;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.debugOrevein;
 import static gregtech.api.enums.GTValues.oreveinPlacerOres;
 import static gregtech.api.enums.GTValues.oreveinPlacerOresMultiplier;

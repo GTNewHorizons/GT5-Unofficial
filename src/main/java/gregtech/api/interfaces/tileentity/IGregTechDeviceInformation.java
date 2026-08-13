@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import gregtech.api.enums.GTValues;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 /**
  * You are allowed to include this File in your Download, as i will not change it.

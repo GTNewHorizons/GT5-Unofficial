@@ -9,7 +9,7 @@ import gregtech.common.GTWorldgenerator;
 import gregtech.common.GTWorldgenerator.OregenPattern;
 import io.netty.buffer.ByteBuf;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class GTPacketSendOregenPattern extends GTPacket {
 

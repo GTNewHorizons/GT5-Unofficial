@@ -1,6 +1,6 @@
 package gregtech.loaders.load;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.BloodMagic;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.recipe.RecipeMaps.extremeNaquadahReactorFuels;

@@ -11,7 +11,7 @@ import gregtech.common.redstonecircuits.CircuitRedstoneMeter;
 import gregtech.common.redstonecircuits.CircuitRepeater;
 import gregtech.common.redstonecircuits.CircuitTimer;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class LoaderCircuitBehaviors implements Runnable {
 

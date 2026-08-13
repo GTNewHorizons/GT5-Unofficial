@@ -1,7 +1,7 @@
 package gregtech.common.items;
 
 import static ggfab.GGItemList.SingleUseScrewdriver;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import bartworks.common.items.ItemCircuitProgrammer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -239,7 +239,7 @@ public class ItemIntegratedCircuit extends GTGenericItem
                 try {
                     tRunnable.run();
                 } catch (Exception e) {
-                    GTMod.GT_FML_LOGGER.error("Error registering icons", e);
+                    GTLoggers.GT_FML_LOGGER.error("Error registering icons", e);
                 }
             }
             GT_FML_LOGGER.debug("GTMod: Finished Item Icon Load Phase");

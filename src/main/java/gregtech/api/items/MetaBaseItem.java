@@ -1,7 +1,7 @@
 package gregtech.api.items;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -37,7 +37,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.KeyboardUtil;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
@@ -169,7 +169,7 @@ public abstract class MetaBaseItem extends GTGenericItem
                 return false;
             }
         } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error("Error left clicking entity", e);
+            GTLoggers.GT_FML_LOGGER.error("Error left clicking entity", e);
         }
         return false;
     }
@@ -191,7 +191,7 @@ public abstract class MetaBaseItem extends GTGenericItem
                 return false;
             }
         } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error("Error using item", e);
+            GTLoggers.GT_FML_LOGGER.error("Error using item", e);
         }
         return false;
     }
@@ -223,7 +223,7 @@ public abstract class MetaBaseItem extends GTGenericItem
                 return false;
             }
         } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error("Error using item", e);
+            GTLoggers.GT_FML_LOGGER.error("Error using item", e);
         }
         return false;
     }
@@ -237,7 +237,7 @@ public abstract class MetaBaseItem extends GTGenericItem
             if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList)
                 aStack = tBehavior.onItemRightClick(this, aStack, aWorld, aPlayer);
         } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error("Error right clicking item", e);
+            GTLoggers.GT_FML_LOGGER.error("Error right clicking item", e);
         }
         return aStack;
     }

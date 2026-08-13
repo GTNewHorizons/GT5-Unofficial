@@ -7,7 +7,7 @@ import gregtech.api.enums.SmallOres;
 import gregtech.api.util.GTLog;
 import gregtech.common.GTWorldgenerator;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class GTWorldgenloader implements Runnable {
 

@@ -44,7 +44,7 @@ import gregtech.loaders.oreprocessing.ProcessingToolOther;
 import gregtech.loaders.oreprocessing.ProcessingTransforming;
 import gregtech.loaders.oreprocessing.ProcessingWire;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class LoaderOreProcessing implements Runnable {
 

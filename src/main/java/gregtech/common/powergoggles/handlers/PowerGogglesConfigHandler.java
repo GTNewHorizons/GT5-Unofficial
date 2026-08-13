@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.gtnewhorizons.modularui.api.math.Color;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class PowerGogglesConfigHandler {
 
