@@ -5282,21 +5282,6 @@ public class ChemicalRecipes implements Runnable {
             .eut(TierEU.RECIPE_IV)
             .addTo(multiblockChemicalReactorRecipes);
 
-        // C6H6N2O2 + 6H =Pd,NO2= C6H8N2 + 2H2O
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1))
-            .circuit(1)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.ParaPhenylenediamine, 16))
-            .fluidInputs(
-                Materials.NitrogenDioxide.getGas(100),
-                Materials.Hydrogen.getGas(6_000),
-                Materials.IVNitroaniline.getFluid(1_000))
-            .fluidOutputs(Materials.Water.getFluid(2_000))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
-            .addTo(multiblockChemicalReactorRecipes);
-
         // Na2B4O7(H2O)10 + 2HCl = 2NaCl + 4H3BO3 + 5H2O
 
         GTValues.RA.stdBuilder()
