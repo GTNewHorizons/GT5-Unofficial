@@ -2052,6 +2052,7 @@ public enum ItemList implements IItemContainer {
     SpunKevlarFiber,
     WovenKevlar,
     Spinneret,
+    CuringMachine,
 
     GalliumArsenideCrystal,
     GalliumArsenideCrystalSmallPart,

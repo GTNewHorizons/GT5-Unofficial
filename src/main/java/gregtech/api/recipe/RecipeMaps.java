@@ -2206,6 +2206,11 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_MACERATE)
         .neiFluidInputsGetter(gtRecipe -> new FluidStack[] { Materials.Water.getFluid(0), Materials.Lava.getFluid(0) })
         .build();
+    public static final RecipeMap<RecipeMapBackend> curingMachineRecipes = RecipeMapBuilder
+        .of("gt.recipe.curingmachine")
+        .maxIO(2, 2, 2, 0)
+        .frontend(LargeNEIFrontend::new)
+        .build();
 
     private static void addElectricImplosionRecipe(GTRecipeBuilder sourceBuilder) {
         GTRecipeBuilder builder = sourceBuilder.copy()

@@ -188,7 +188,7 @@ public class KevlarRecipes {
         // Byproduct Super Glue
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.MethyleneDiphenylDiisocyanate.getDust(1))
+            .itemInputs(Materials.MethyleneDiphenylDiisocyanate.getDust(1))
             .fluidOutputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(1_000))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_UV)

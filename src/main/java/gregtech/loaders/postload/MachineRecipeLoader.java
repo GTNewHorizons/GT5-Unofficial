@@ -21,6 +21,7 @@ import gregtech.loaders.postload.recipes.ChemicalRecipes;
 import gregtech.loaders.postload.recipes.CircuitAssemblerRecipes;
 import gregtech.loaders.postload.recipes.CokeOvenRecipes;
 import gregtech.loaders.postload.recipes.CompressorRecipes;
+import gregtech.loaders.postload.recipes.CuringMachineRecipes;
 import gregtech.loaders.postload.recipes.CuttingRecipes;
 import gregtech.loaders.postload.recipes.DistilleryRecipes;
 import gregtech.loaders.postload.recipes.ElectrolyzerRecipes;
@@ -81,6 +82,7 @@ public class MachineRecipeLoader implements Runnable {
         new CircuitAssemblerRecipes().run();
         new CokeOvenRecipes().run();
         new CompressorRecipes().run();
+        new CuringMachineRecipes().run();
         new CuttingRecipes().run();
         new DistilleryRecipes().run();
         new ElectrolyzerRecipes().run();
