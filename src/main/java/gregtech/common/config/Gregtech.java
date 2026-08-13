@@ -384,7 +384,7 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean loggingOreDict;
 
-        @Config.Comment("if true, logs all the explosions in logs/Explosion.log.")
+        @Config.Comment("if true, logs all the explosions in logs/explosions.log.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
         public boolean loggingExplosions;

@@ -1,5 +1,6 @@
 package gregtech.loaders.load;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.BuildCraftFactory;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.Gendustry;
@@ -33,7 +34,6 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.loaders.postload.PCBFactoryMaterialLoader;
@@ -4411,7 +4411,7 @@ public class MTERecipeLoader implements Runnable {
     public void run() {
         registerShapelessCraftingRecipes();
         registerShapedCraftingRecipes();
-        GTLog.out.println("GTMod: Recipes for MetaTileEntities.");
+        GT_FML_LOGGER.debug("GTMod: Recipes for MetaTileEntities.");
         registerMachineTypes();
         PCBFactoryMaterialLoader.load();
         run4();

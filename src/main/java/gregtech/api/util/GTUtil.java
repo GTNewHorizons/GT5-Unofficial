@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.validMTEList;
 
@@ -156,8 +157,8 @@ public class GTUtil {
             world.getBlockMetadata(x, 0, z);
             aChunk = world.getChunkFromBlockCoords(x, z);
             if (aChunk == null) {
-                GTLog.err.println(
-                    "Some important Chunk does not exist for some reason at Coordinates X: " + x + " and Z: " + z);
+                GT_FML_LOGGER
+                    .error("Some important Chunk does not exist for some reason at Coordinates X: {} and Z: {}", x, z);
                 return false;
             }
         }
@@ -365,7 +366,7 @@ public class GTUtil {
 
     /**
      * Set the direction of a vanilla large chest. return false when the new direction is invalid
-     * 
+     *
      * @param dryRun pass in true to prevent actually setting block metadata
      */
     public static boolean setVanillaChestDirection(World world, int x, int y, int z, int newSide, Block currentBlock,

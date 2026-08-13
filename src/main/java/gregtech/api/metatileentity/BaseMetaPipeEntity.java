@@ -1,6 +1,6 @@
 package gregtech.api.metatileentity;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
