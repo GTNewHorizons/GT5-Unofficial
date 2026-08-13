@@ -832,7 +832,7 @@ public class GTProxy implements IFuelHandler {
 
     public void onPreInitialization(FMLPreInitializationEvent event) {
         // spotless:off
-        GTLog.out.println("GTMod: Preload-Phase started!");
+        GT_FML_LOGGER.debug("GTMod: Preload-Phase started!");
 
         if (Thaumcraft.isModLoaded()) {
             GregTechAPI.sThaumcraftCompat = new GTThaumcraftCompat();
@@ -846,7 +846,7 @@ public class GTProxy implements IFuelHandler {
                 break;
             }
         }
-        GTLog.out.println("GTMod: Getting required Items of other Mods.");
+        GT_FML_LOGGER.debug("GTMod: Getting required Items of other Mods.");
 
         ItemList.RC_ShuntingWire.set(GTModHandler.getModItem(Railcraft.ID, "machine.delta", 1L, 0));
         ItemList.RC_ShuntingWireFrame.set(GTModHandler.getModItem(Railcraft.ID, "frame", 1L, 0));
@@ -1042,7 +1042,7 @@ public class GTProxy implements IFuelHandler {
     }
 
     public void onInitialization(FMLInitializationEvent event) {
-        GTLog.out.println("GTMod: Beginning Load-Phase.");
+        GT_FML_LOGGER.debug("GTMod: Beginning Load-Phase.");
 
         // Clay buckets, which don't get registered until Iguana Tweaks pre-init
         if (IguanaTweaksTinkerConstruct.isModLoaded()) {
@@ -1113,7 +1113,7 @@ public class GTProxy implements IFuelHandler {
     }
 
     public void onPostInitialization(FMLPostInitializationEvent event) {
-        GTLog.out.println("GTMod: Beginning PostLoad-Phase.");
+        GT_FML_LOGGER.debug("GTMod: Beginning PostLoad-Phase.");
         GregTechAPI.sPostloadStarted = true;
 
         // This needs to happen late enough that all of the fluids we need have been registered.
@@ -1130,7 +1130,7 @@ public class GTProxy implements IFuelHandler {
                 break;
             }
         }
-        GTLog.out.println("GTMod: Adding Configs specific for MetaTileEntities");
+        GT_FML_LOGGER.debug("GTMod: Adding Configs specific for MetaTileEntities");
         for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
             if (GregTechAPI.METATILEENTITIES[i] != null) {
                 try {
@@ -1140,7 +1140,7 @@ public class GTProxy implements IFuelHandler {
                 }
             }
         }
-        GTLog.out.println("GTMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
+        GT_FML_LOGGER.debug("GTMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
         for (Materials aMaterial : Materials.values()) {
             if ((aMaterial.mUnifiable) && (aMaterial.mMaterialInto == aMaterial)) {
                 if (!aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
@@ -1222,7 +1222,7 @@ public class GTProxy implements IFuelHandler {
 
     public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
         // spotless:off
-        GTLog.out.println("GTMod: firing FMLServerAboutToStartEvent !");
+        GT_FML_LOGGER.debug("GTMod: firing FMLServerAboutToStartEvent !");
         GTChunkAssociatedData.clearAll();
         PLAYERS_BY_UUID = new HashMap<>();
         UUID_BY_NAME = new HashMap<>();
@@ -1248,7 +1248,7 @@ public class GTProxy implements IFuelHandler {
     }
 
     public void onServerStarting(FMLServerStartingEvent event) {
-        GTLog.out.println("GTMod: firing FMLServerStartingEvent !");
+        GT_FML_LOGGER.debug("GTMod: firing FMLServerStartingEvent !");
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
                 tData.fluid.amount = 0;
@@ -1268,7 +1268,7 @@ public class GTProxy implements IFuelHandler {
 
     public void onServerStarted(FMLServerStartedEvent event) {
         MTEDroneCentre.getCentreMap().clear();
-        GTLog.out.println("GTMod: Cleaning up all OreDict Crafting Recipes, which have an empty List in them, since they are never meeting any Condition.");
+        GT_FML_LOGGER.debug("GTMod: Cleaning up all OreDict Crafting Recipes, which have an empty List in them, since they are never meeting any Condition.");
         List<IRecipe> tList = CraftingManager.getInstance().getRecipeList();
         for (int i = 0; i < tList.size(); i++) {
             if ((tList.get(i) instanceof ShapedOreRecipe)) {
@@ -2047,7 +2047,7 @@ public class GTProxy implements IFuelHandler {
             long startTime = System.nanoTime();
             double oldX = 0, oldY = 0, oldZ = 0;
             if (debugEntityCramming && (!aEvent.world.loadedEntityList.isEmpty())) {
-                GTLog.out.println("CRAM: Entity list size " + aEvent.world.loadedEntityList.size());
+                GT_FML_LOGGER.debug("CRAM: Entity list size {}", aEvent.world.loadedEntityList.size());
             }
             for (int i = 0; i < aEvent.world.loadedEntityList.size(); i++) {
                 if ((aEvent.world.loadedEntityList.get(i) instanceof Entity)) {
@@ -2076,14 +2076,7 @@ public class GTProxy implements IFuelHandler {
                                     // Cheeseball way of not receiving a bunch of spam caused by 1 location
                                     // obviously fails if there are crammed entities in more than one spot.
                                     if (tEntity.posX != oldX && tEntity.posY != oldY && tEntity.posZ != oldZ) {
-                                        GTLog.out.println(
-                                            "CRAM: Excess entities: " + tEntityCount
-                                                + " at X "
-                                                + tEntity.posX
-                                                + " Y "
-                                                + tEntity.posY
-                                                + " Z "
-                                                + tEntity.posZ);
+                                        GT_FML_LOGGER.debug("CRAM: Excess entities: {} at X {} Y {} Z {}", tEntityCount, tEntity.posX, tEntity.posY, tEntity.posZ);
                                         oldX = tEntity.posX;
                                         oldY = tEntity.posY;
                                         oldZ = tEntity.posZ;
@@ -2097,8 +2090,7 @@ public class GTProxy implements IFuelHandler {
                 }
             }
             if (debugEntityCramming && (!aEvent.world.loadedEntityList.isEmpty())) {
-                GTLog.out
-                    .println("CRAM: Time spent checking " + (System.nanoTime() - startTime) / 1000 + " microseconds");
+                GT_FML_LOGGER.debug("CRAM: Time spent checking {} microseconds", (System.nanoTime() - startTime) / 1000);
             }
         }
 

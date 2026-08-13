@@ -168,8 +168,8 @@ public abstract class GTChunkAssociatedData<T extends GTChunkAssociatedData.IDat
                         .stream())
                 .filter(SuperRegion::isDirty)
                 .count();
-            if (dirtyRegionCount > 0) GTLog.out.println(
-                "Clearing ChunkAssociatedData with " + dirtyRegionCount + " regions dirty. Data might have been lost!");
+            if (dirtyRegionCount > 0)
+                GT_FML_LOGGER.debug("Clearing ChunkAssociatedData with {} regions dirty. Data might have been lost!", dirtyRegionCount);
         }
         masterMap.clear();
     }

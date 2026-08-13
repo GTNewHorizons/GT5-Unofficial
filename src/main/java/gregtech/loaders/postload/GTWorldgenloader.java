@@ -7,6 +7,8 @@ import gregtech.api.enums.SmallOres;
 import gregtech.api.util.GTLog;
 import gregtech.common.GTWorldgenerator;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 public class GTWorldgenloader implements Runnable {
 
     @Override
@@ -29,6 +31,6 @@ public class GTWorldgenloader implements Runnable {
             oreMix.addGTOreLayer();
         }
 
-        GTLog.out.println("Started Galactic Greg ore gen code");
+        GT_FML_LOGGER.debug("Started Galactic Greg ore gen code");
     }
 }

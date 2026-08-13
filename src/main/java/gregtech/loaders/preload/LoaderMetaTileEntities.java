@@ -2,6 +2,7 @@ package gregtech.loaders.preload;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.ElectroMagicTools;
 import static gregtech.api.enums.Mods.Forestry;
@@ -10120,7 +10121,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Registering MetaTileEntities.");
+        GT_FML_LOGGER.debug("GTMod: Registering MetaTileEntities.");
         registerMachineHull();
         registerTransformer();
         registerDynamoHatch();

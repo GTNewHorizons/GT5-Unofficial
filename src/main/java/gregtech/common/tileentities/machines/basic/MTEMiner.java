@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.debugBlockMiner;
 
@@ -205,7 +206,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
         if (!aBaseMetaTileEntity.isAllowedToWork()) {
             mMaxProgresstime = 0;
             if (debugBlockMiner) {
-                GTLog.out.println("MINER: Disabled");
+                GT_FML_LOGGER.debug("MINER: Disabled");
             }
             return;
         }
@@ -213,7 +214,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
         if (!hasFreeSpace()) {
             mMaxProgresstime = 0;
             if (debugBlockMiner) {
-                GTLog.out.println("MINER: No free space");
+                GT_FML_LOGGER.debug("MINER: No free space");
             }
             return;
         }
@@ -221,10 +222,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
         if (!aBaseMetaTileEntity.isUniversalEnergyStored((long) ENERGY[mTier] * (mSpeed - mProgresstime))) {
             mMaxProgresstime = 0;
             if (debugBlockMiner) {
-                GTLog.out.println(
-                    "MINER: Not enough energy yet, want " + (ENERGY[mTier] * mSpeed)
-                        + " have "
-                        + aBaseMetaTileEntity.getUniversalEnergyStored());
+                GT_FML_LOGGER.debug("MINER: Not enough energy yet, want {} have {}", ENERGY[mTier] * mSpeed, aBaseMetaTileEntity.getUniversalEnergyStored());
             }
             return;
         }

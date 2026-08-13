@@ -1,5 +1,6 @@
 package gregtech.loaders.postload;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.Chisel;
 import static gregtech.api.util.GTModHandler.addToRecyclerBlackList;
 
@@ -18,7 +19,7 @@ public class RecyclerBlacklistLoader implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Adding Stuff to the Recycler Blacklist.");
+        GT_FML_LOGGER.debug("GTMod: Adding Stuff to the Recycler Blacklist.");
         addToRecyclerBlackList(new ItemStack(Items.arrow, 1, 0));
         addToRecyclerBlackList(new ItemStack(Items.bone, 1, 0));
         addToRecyclerBlackList(ItemList.Dye_Bonemeal.get(1L));

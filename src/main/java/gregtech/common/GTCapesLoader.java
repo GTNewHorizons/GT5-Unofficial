@@ -43,7 +43,7 @@ public class GTCapesLoader implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Downloading Cape List");
+        GT_FML_LOGGER.debug("GTMod: Downloading Cape List");
         downloadGTNHUUIDCapes();
         downloadGregoriusCapes();
         if (Mods.GalacticraftCore.isModLoaded()) {

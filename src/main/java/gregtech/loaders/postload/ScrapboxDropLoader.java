@@ -11,11 +11,13 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 public class ScrapboxDropLoader implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: (re-)adding Scrapbox Drops.");
+        GT_FML_LOGGER.debug("GTMod: (re-)adding Scrapbox Drops.");
 
         GTModHandler.addScrapboxDrop(9.5F, new ItemStack(Items.wooden_hoe));
         GTModHandler.addScrapboxDrop(2.0F, new ItemStack(Items.wooden_axe));

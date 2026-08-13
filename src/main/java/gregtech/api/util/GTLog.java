@@ -27,7 +27,7 @@ import gregtech.common.config.Gregtech;
  */
 public class GTLog {
 
-    public static PrintStream out = System.out;
+    @Deprecated
     public static File mLogFile;
 
     public static void configureExplosionLogger(File parentFile) {

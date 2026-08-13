@@ -96,7 +96,7 @@ public class Utils {
             mapping,
             titleKey,
             author);
-        GTLog.out.println(logMessage);
+        GT_FML_LOGGER.debug(logMessage);
 
         NBTUtils.createIntegerTagCompound(stack, "stats", "mMeta", ID);
         GTPPCore.sBookList.put(mapping, stack);

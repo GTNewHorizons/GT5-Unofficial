@@ -7,12 +7,14 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.util.GTLog;
 import gregtech.common.blocks.ItemMachines;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 public class MachineTooltipsLoader implements Runnable {
 
     @Override
     public void run() {
         if (!GTMod.GT.isClientSide()) return;
-        GTLog.out.println("GT Mod: Register Block Machine's tooltips");
+        GT_FML_LOGGER.debug("GT Mod: Register Block Machine's tooltips");
         for (int i = 0; i < 32768; i++) {
             ItemStack tStack = new ItemStack(GregTechAPI.sBlockMachines, 1, i);
             if (tStack.getItem() != null && tStack.getItem() instanceof ItemMachines) {

@@ -12,11 +12,13 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 public class BookAndLootLoader implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Adding worldgenerated Chest Content.");
+        GT_FML_LOGGER.debug("GTMod: Adding worldgenerated Chest Content.");
         if (GTMod.proxy.mIncreaseDungeonLoot) {
             ChestGenHooks tChest = ChestGenHooks.getInfo("bonusChest");
             tChest.setMax(tChest.getMax() + 8);

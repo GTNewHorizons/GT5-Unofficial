@@ -1,5 +1,6 @@
 package gregtech.loaders.load;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.BuildCraftFactory;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.Gendustry;
@@ -4411,7 +4412,7 @@ public class MTERecipeLoader implements Runnable {
     public void run() {
         registerShapelessCraftingRecipes();
         registerShapedCraftingRecipes();
-        GTLog.out.println("GTMod: Recipes for MetaTileEntities.");
+        GT_FML_LOGGER.debug("GTMod: Recipes for MetaTileEntities.");
         registerMachineTypes();
         PCBFactoryMaterialLoader.load();
         run4();

@@ -11,11 +11,13 @@ import gregtech.common.redstonecircuits.CircuitRedstoneMeter;
 import gregtech.common.redstonecircuits.CircuitRepeater;
 import gregtech.common.redstonecircuits.CircuitTimer;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 public class LoaderCircuitBehaviors implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Register Redstone Circuit behaviours.");
+        GT_FML_LOGGER.debug("GTMod: Register Redstone Circuit behaviours.");
         new CircuitTimer(0);
         new CircuitBasicLogic(1);
         new CircuitRepeater(2);

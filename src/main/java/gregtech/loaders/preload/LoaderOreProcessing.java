@@ -44,11 +44,13 @@ import gregtech.loaders.oreprocessing.ProcessingToolOther;
 import gregtech.loaders.oreprocessing.ProcessingTransforming;
 import gregtech.loaders.oreprocessing.ProcessingWire;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 public class LoaderOreProcessing implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Register Ore processing.");
+        GT_FML_LOGGER.debug("GTMod: Register Ore processing.");
         new ProcessingAll();
         new ProcessingBlock();
         new ProcessingBolt();

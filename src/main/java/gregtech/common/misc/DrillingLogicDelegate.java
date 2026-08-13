@@ -1,5 +1,6 @@
 package gregtech.common.misc;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.debugBlockMiner;
 
 import java.util.List;
@@ -64,13 +65,13 @@ public class DrillingLogicDelegate {
             te.disableWorking();
             if (debugBlockMiner) {
                 if (isHitsTheVoid) {
-                    GTLog.out.println("MINER: Hit bottom");
+                    GT_FML_LOGGER.debug("MINER: Hit bottom");
                 }
                 if (isHitsBedrock) {
-                    GTLog.out.println("MINER: Hit block with -1 hardness");
+                    GT_FML_LOGGER.debug("MINER: Hit block with -1 hardness");
                 }
                 if (!isFakePlayerAllowed) {
-                    GTLog.out.println("MINER: Unable to set mining pipe tip");
+                    GT_FML_LOGGER.debug("MINER: Unable to set mining pipe tip");
                 }
             }
             return false;

@@ -354,10 +354,10 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     @Override
     public void registerBlockIcons(IIconRegister aIconRegister) {
         if (!GregTechAPI.sPostloadFinished) return;
-        GTLog.out.println("GTMod: Setting up Icon Register for Blocks");
+        GT_FML_LOGGER.debug("GTMod: Setting up Icon Register for Blocks");
         GregTechAPI.setBlockIconRegister(aIconRegister);
 
-        GTLog.out.println("GTMod: Registering MetaTileEntity specific Textures");
+        GT_FML_LOGGER.debug("GTMod: Registering MetaTileEntity specific Textures");
         try {
             for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
                 if (GregTechAPI.METATILEENTITIES[i] != null) {
@@ -367,7 +367,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         } catch (Exception e) {
             GT_FML_LOGGER.error(e);
         }
-        GTLog.out.println("GTMod: Starting Block Icon Load Phase");
+        GT_FML_LOGGER.debug("GTMod: Starting Block Icon Load Phase");
         GT_FML_LOGGER.info("GTMod: Starting Block Icon Load Phase");
         try {
             for (Runnable tRunnable : GregTechAPI.sGTBlockIconload) {
@@ -376,7 +376,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         } catch (Exception e) {
             GT_FML_LOGGER.error(e);
         }
-        GTLog.out.println("GTMod: Finished Block Icon Load Phase");
+        GT_FML_LOGGER.debug("GTMod: Finished Block Icon Load Phase");
         GT_FML_LOGGER.info("GTMod: Finished Block Icon Load Phase");
     }
 

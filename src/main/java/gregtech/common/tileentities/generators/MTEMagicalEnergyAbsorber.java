@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.generators;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_DRAGONEGG;
@@ -763,7 +764,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
             int tTier = (mTier + aOffset + tNumTiers) % tNumTiers;
             int tTrueTier = setTier(tTier);
             if (tTier != tTrueTier) {
-                GTLog.out.format("Absorber's BB Tier set to %d was capped to %d", tTier, tTrueTier);
+                GT_FML_LOGGER.debug("Absorber's BB Tier set to {} was capped to {}", tTier, tTrueTier);
             }
         }
     }

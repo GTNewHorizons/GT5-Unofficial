@@ -1,5 +1,6 @@
 package gregtech.loaders.preload;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
@@ -27,7 +28,7 @@ public class LoaderGTOreDictionary implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Register OreDict Entries of Non-GT-Items.");
+        GT_FML_LOGGER.debug("GTMod: Register OreDict Entries of Non-GT-Items.");
         GTOreDictUnificator.set(OrePrefixes.cell, Materials.Empty, ItemList.Cell_Empty.get(1L));
         GTOreDictUnificator.set(OrePrefixes.cell, Materials.Lava, ItemList.Cell_Lava.get(1L));
         GTOreDictUnificator.set(OrePrefixes.cell, Materials.Lava, GTModHandler.getIC2Item("lavaCell", 1L));

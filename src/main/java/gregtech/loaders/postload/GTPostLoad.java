@@ -1,5 +1,6 @@
 package gregtech.loaders.postload;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.BetterLoadingScreen;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
@@ -69,16 +70,11 @@ public class GTPostLoad {
         GTMod.proxy.activateOreDictHandler();
 
         // noinspection UnstableApiUsage// Stable enough for this project
-        GTMod.GT_FML_LOGGER
+        GT_FML_LOGGER
             .info("Congratulations, you have been waiting long enough ({}). Have a Cake.", stopwatch.stop());
-        GTLog.out.println(
-            "GTMod: List of Lists of Tool Recipes: " + GTModHandler.sSingleNonBlockDamagableRecipeList_list.toString());
-        GTLog.out.println(
-            "GTMod: Vanilla Recipe List -> Outputs null or stackSize <=0: "
-                + GTModHandler.sVanillaRecipeList_warntOutput.toString());
-        GTLog.out.println(
-            "GTMod: Single Non Block Damageable Recipe List -> Outputs null or stackSize <=0: "
-                + GTModHandler.sSingleNonBlockDamagableRecipeList_warntOutput.toString());
+        GT_FML_LOGGER.debug("GTMod: List of Lists of Tool Recipes: {}", GTModHandler.sSingleNonBlockDamagableRecipeList_list.toString());
+        GT_FML_LOGGER.debug("GTMod: Vanilla Recipe List -> Outputs null or stackSize <=0: {}", GTModHandler.sVanillaRecipeList_warntOutput.toString());
+        GT_FML_LOGGER.debug("GTMod: Single Non Block Damageable Recipe List -> Outputs null or stackSize <=0: {}", GTModHandler.sSingleNonBlockDamagableRecipeList_warntOutput.toString());
     }
 
     public static void removeIc2Recipes(Map<IRecipeInput, RecipeOutput> aMaceratorRecipeList,
@@ -103,7 +99,7 @@ public class GTPostLoad {
         // Remove all IC2
         GTModHandler.removeAllIC2Recipes();
         // noinspection UnstableApiUsage// Stable enough for this project
-        GTMod.GT_FML_LOGGER.info("IC2 Removal ({}). Have a Cake.", stopwatch.stop());
+        GT_FML_LOGGER.debug("IC2 Removal ({}). Have a Cake.", stopwatch.stop());
     }
 
     public static void registerFluidCannerRecipes() {
@@ -142,7 +138,7 @@ public class GTPostLoad {
     }
 
     public static void addFakeRecipes() {
-        GTLog.out.println("GTMod: Adding Fake Recipes for NEI");
+        GT_FML_LOGGER.debug("GTMod: Adding Fake Recipes for NEI");
 
         if (Forestry.isModLoaded()) {
             GTForestryCompat.populateFakeNeiRecipes();
@@ -375,7 +371,7 @@ public class GTPostLoad {
             return;
         }
 
-        GTLog.out.println("GTMod: Updating Vanilla Wooden Tools");
+        GT_FML_LOGGER.debug("GTMod: Updating Vanilla Wooden Tools");
         Items.wooden_sword.setMaxDamage(64);
         Items.wooden_pickaxe.setMaxDamage(64);
         Items.wooden_shovel.setMaxDamage(64);
@@ -386,7 +382,7 @@ public class GTPostLoad {
     public static void replaceVanillaMaterials() {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
-        GTMod.GT_FML_LOGGER.info("Replacing Vanilla Materials in recipes, please wait.");
+        GT_FML_LOGGER.debug("Replacing Vanilla Materials in recipes, please wait.");
         Set<Materials> replaceVanillaItemsSet = Arrays.stream(Materials.values())
             .filter(GTRecipeRegistrator::hasVanillaRecipes)
             .collect(Collectors.toSet());
@@ -404,7 +400,7 @@ public class GTPostLoad {
         }
         ProgressManager.pop(progressBar);
         // noinspection UnstableApiUsage// stable enough for project
-        GTMod.GT_FML_LOGGER.info("Replaced Vanilla Materials ({}). Have a Cake.", stopwatch.stop());
+        GT_FML_LOGGER.debug("Replaced Vanilla Materials ({}). Have a Cake.", stopwatch.stop());
     }
 
     public static void doActualRegistration(Materials m) {

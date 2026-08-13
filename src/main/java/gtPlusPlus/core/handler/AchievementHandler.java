@@ -1,5 +1,6 @@
 package gtPlusPlus.core.handler;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 
@@ -199,8 +200,8 @@ public class AchievementHandler {
 
         achievement.registerStat();
         if (GTPPCore.DEVENV) {
-            GTLog.out.println("achievement." + textId + "=");
-            GTLog.out.println("achievement." + textId + ".desc=");
+            GT_FML_LOGGER.debug("achievement.{}=", textId);
+            GT_FML_LOGGER.debug("achievement.{}.desc=", textId);
         }
 
         this.achievementList.put(textId, achievement);

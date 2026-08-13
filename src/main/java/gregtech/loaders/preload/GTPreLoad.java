@@ -149,10 +149,6 @@ public class GTPreLoad {
                 GTLog.mLogFile.createNewFile();
             } catch (Exception ignored) {}
         }
-        try {
-            GTLog.out = new PrintStream(GTLog.mLogFile);
-        } catch (FileNotFoundException ignored) {}
-
     }
 
     public static void runMineTweakerCompat() {
@@ -313,7 +309,7 @@ public class GTPreLoad {
                 GT_FML_LOGGER.error(e);
             }
         }
-        GTLog.out.println("GTMod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
+        GT_FML_LOGGER.debug("GTMod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
         GTModHandler.addScrapboxDrop(200.0F, ItemList.IC2_Scrap.get(1L));
     }
 

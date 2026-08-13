@@ -324,7 +324,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
      * Re-unificates all the items present in recipes.
      */
     public static void reInit() {
-        GTLog.out.println("GTMod: Re-Unificating Recipes.");
+        GT_FML_LOGGER.debug("GTMod: Re-Unificating Recipes.");
         for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
             map.getBackend()
                 .reInit();
@@ -1083,7 +1083,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
         static {
             if (!Boolean.getBoolean("com.gtnh.gt5u.ignore-invalid-assline-recipe"))
                 GregTechAPI.sFirstWorldTick.add(RecipeAssemblyLine::checkInvalidRecipes);
-            else GTLog.out.println("NOT CHECKING INVALID ASSLINE RECIPE.");
+            else GT_FML_LOGGER.debug("NOT CHECKING INVALID ASSLINE RECIPE.");
         }
 
         private static void checkInvalidRecipes() {

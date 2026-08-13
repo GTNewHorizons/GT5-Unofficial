@@ -194,13 +194,7 @@ public class MTEPump extends MTEBasicMachine {
     public void saveNBTData(NBTTagCompound aNBT) {
         boolean wasPumping = this.wasPumping || !this.mPumpList.isEmpty();
         if (debugBlockPump) {
-            GTLog.out.println(
-                "PUMP: NBT:Save - WasPumping - " + wasPumping
-                    + " blocks ("
-                    + this.mPrimaryPumpedBlock
-                    + ", "
-                    + this.mSecondaryPumpedBlock
-                    + ")");
+            GT_FML_LOGGER.debug("PUMP: NBT:Save - WasPumping - {} blocks ({}, {})", wasPumping, this.mPrimaryPumpedBlock, this.mSecondaryPumpedBlock);
         }
         super.saveNBTData(aNBT);
         aNBT.setString(
@@ -252,12 +246,7 @@ public class MTEPump extends MTEBasicMachine {
         }
 
         if (debugBlockPump) {
-            GTLog.out.println(
-                "PUMP: NBT:Load - WasPumping - " + this.wasPumping
-                    + "("
-                    + aNBT.getString("mPumpedBlock1")
-                    + ") "
-                    + this.mPrimaryPumpedBlock);
+            GT_FML_LOGGER.debug("PUMP: NBT:Load - WasPumping - {}({}) {}", this.wasPumping, aNBT.getString("mPumpedBlock1"), this.mPrimaryPumpedBlock);
         }
     }
 
@@ -333,7 +322,7 @@ public class MTEPump extends MTEBasicMachine {
                 }
             }
             if (debugBlockPump && (this.mPumpCountBelow != 0)) {
-                GTLog.out.println("PUMP: Detected " + this.mPumpCountBelow + " pumps below this pump.");
+                GT_FML_LOGGER.debug("PUMP: Detected {} pumps below this pump.", this.mPumpCountBelow);
             }
             if (this.mPumpCountBelow <= 0) {
                 // Only the bottom most pump does anything
@@ -351,20 +340,20 @@ public class MTEPump extends MTEBasicMachine {
                                         Math.max(getYOfPumpHead() - 1, 1),
                                         getBaseMetaTileEntity().getZCoord())) {
                                         if (debugBlockPump) {
-                                            GTLog.out.println("PUMP: No pipe left. Idle for a little longer.");
+                                            GT_FML_LOGGER.debug("PUMP: No pipe left. Idle for a little longer.");
                                         }
                                         this.mPumpTimer = 160;
                                     } else {
                                         getBaseMetaTileEntity().disableWorking();
                                         if (debugBlockPump) {
-                                            GTLog.out.println("PUMP: Can't move. Retracting in next few ticks");
+                                            GT_FML_LOGGER.debug("PUMP: Can't move. Retracting in next few ticks");
                                         }
                                     }
                                 } else if (debugBlockPump) {
-                                    GTLog.out.println("PUMP: Moved down");
+                                    GT_FML_LOGGER.debug("PUMP: Moved down");
                                 }
                             } else if (debugBlockPump) {
-                                GTLog.out.println("PUMP: Was pumping, didn't move down");
+                                GT_FML_LOGGER.debug("PUMP: Was pumping, didn't move down");
                             }
                         }
                         int x = getBaseMetaTileEntity().getXCoord(), z = getBaseMetaTileEntity().getZCoord();
@@ -374,12 +363,7 @@ public class MTEPump extends MTEBasicMachine {
                             int y = getYOfPumpHead();
 
                             if (debugBlockPump && this.mPrimaryPumpedBlock != null) {
-                                GTLog.out.println(
-                                    "PUMP: Had an invalid pump block. Trying to find a fluid at Y: " + y
-                                        + " Previous blocks 1: "
-                                        + this.mPrimaryPumpedBlock
-                                        + " 2: "
-                                        + this.mSecondaryPumpedBlock);
+                                GT_FML_LOGGER.debug("PUMP: Had an invalid pump block. Trying to find a fluid at Y: {} Previous blocks 1: {} 2: {}", y, this.mPrimaryPumpedBlock, this.mSecondaryPumpedBlock);
                             }
                             // First look down
                             checkForFluidToPump(x, y - 1, z);
@@ -407,19 +391,14 @@ public class MTEPump extends MTEBasicMachine {
                                 // 3) We have an empty queue and enough time has passed
                                 // 4) A long while has passed
                                 if (debugBlockPump) {
-                                    GTLog.out.println(
-                                        "PUMP: Rebuilding pump list - Size " + this.mPumpList.size()
-                                            + " WasPumping: "
-                                            + this.wasPumping
-                                            + " Timer "
-                                            + getBaseMetaTileEntity().getTimer());
+                                    GT_FML_LOGGER.debug("PUMP: Rebuilding pump list - Size {} WasPumping: {} Timer {}", this.mPumpList.size(), this.wasPumping, getBaseMetaTileEntity().getTimer());
                                 }
                                 int yPump = getBaseMetaTileEntity().getYCoord() - 1, yHead = getYOfPumpHead();
 
                                 this.rebuildPumpQueue(x, yPump, z, yHead);
 
                                 if (debugBlockPump) {
-                                    GTLog.out.println("PUMP: Rebuilt pump list - Size " + this.mPumpList.size());
+                                    GT_FML_LOGGER.debug("PUMP: Rebuilt pump list - Size {}", this.mPumpList.size());
                                 }
                             }
                             if ((!tMovedOneDown) && (this.mPumpTimer <= 0)) {
@@ -443,7 +422,7 @@ public class MTEPump extends MTEBasicMachine {
                             this.clearQueue(false);
                         }
                     } else if (debugBlockPump) {
-                        GTLog.out.println("PUMP: Not enough energy? Free space?");
+                        GT_FML_LOGGER.debug("PUMP: Not enough energy? Free space?");
                     }
                 } else {
                     mMaxProgresstime = 0;
@@ -476,12 +455,12 @@ public class MTEPump extends MTEBasicMachine {
                             }
 
                             if (debugBlockPump) {
-                                GTLog.out.println("PUMP: Retracted one pipe");
+                                GT_FML_LOGGER.debug("PUMP: Retracted one pipe");
                             }
                         } else {
                             mRetractDone = true;
                             if (debugBlockPump) {
-                                GTLog.out.println("PUMP: Retract done");
+                                GT_FML_LOGGER.debug("PUMP: Retract done");
                             }
                         }
                     }
@@ -517,7 +496,7 @@ public class MTEPump extends MTEBasicMachine {
         if (!foundPipe) {
             // No mining pipes
             if (debugBlockPump) {
-                GTLog.out.println("PUMP: No mining pipes");
+                GT_FML_LOGGER.debug("PUMP: No mining pipes");
             }
             return false;
         }
@@ -526,7 +505,7 @@ public class MTEPump extends MTEBasicMachine {
         if (yHead <= 1) {
             // Let's not punch through bedrock
             if (debugBlockPump) {
-                GTLog.out.println("PUMP: At bottom");
+                GT_FML_LOGGER.debug("PUMP: At bottom");
             }
             return false;
         }
@@ -541,7 +520,7 @@ public class MTEPump extends MTEBasicMachine {
         if (!canReplaceBlock || (isFluid(aBlock) && !consumeFluid(x, yHead - 1, z) && !isWater(aBlock))) {
             // Either we didn't consume a fluid, or it's a non-replaceable block, or it's water.
             if (debugBlockPump) {
-                GTLog.out.println("PUMP: Did not consume fluid, or non-replaceable block found");
+                GT_FML_LOGGER.debug("PUMP: Did not consume fluid, or non-replaceable block found");
             }
             return false;
         }
@@ -555,7 +534,7 @@ public class MTEPump extends MTEBasicMachine {
             0,
             false)) {
             if (debugBlockPump) {
-                GTLog.out.println("PUMP: Could not set block below to new tip");
+                GT_FML_LOGGER.debug("PUMP: Could not set block below to new tip");
             }
             return false;
         }
@@ -610,7 +589,7 @@ public class MTEPump extends MTEBasicMachine {
                     getBaseMetaTileEntity().getWorld()
                         .setBlock(x, y, z, MINING_PIPE_BLOCK);
                     if (debugBlockPump) {
-                        GTLog.out.println("PUMP: Hit pipes already in place, trying to merge");
+                        GT_FML_LOGGER.debug("PUMP: Hit pipes already in place, trying to merge");
                     }
                 }
                 y--;
@@ -629,7 +608,7 @@ public class MTEPump extends MTEBasicMachine {
                 getBaseMetaTileEntity().getWorld()
                     .setBlock(x, y + 1, z, MINING_PIPE_TIP_BLOCK);
                 if (debugBlockPump) {
-                    GTLog.out.println("PUMP: Did not find a tip at bottom, setting last pipe as tip");
+                    GT_FML_LOGGER.debug("PUMP: Did not find a tip at bottom, setting last pipe as tip");
                 }
             }
             return y + 1;
@@ -754,7 +733,7 @@ public class MTEPump extends MTEBasicMachine {
                 // Water/Lava that isn't a source block - do nothing here, but set the block to air and consume energy
                 // below
                 if (debugBlockPump) {
-                    GTLog.out.println("PUMP: Water/Lava - Not a source block");
+                    GT_FML_LOGGER.debug("PUMP: Water/Lava - Not a source block");
                 }
 
             } else if (getDrainableStack() == null) {
@@ -780,7 +759,7 @@ public class MTEPump extends MTEBasicMachine {
 
                     } else {
                         if (debugBlockPump) {
-                            GTLog.out.println("PUMP: Couldn't consume " + aBlock);
+                            GT_FML_LOGGER.debug("PUMP: Couldn't consume {}", aBlock);
                         }
                         // We didn't do anything
                         return false;

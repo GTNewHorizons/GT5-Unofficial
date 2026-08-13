@@ -1,5 +1,6 @@
 package gregtech.loaders.preload;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Forestry;
@@ -29,7 +30,7 @@ public class LoaderGTItemData implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Loading Item Data Tags");
+        GT_FML_LOGGER.debug("GTMod: Loading Item Data Tags");
         GTOreDictUnificator.addItemData(
             GTModHandler.getModItem(TwilightForest.ID, "item.giantPick", 1L, 0),
             new ItemData(Materials.Stone, 696729600L, new MaterialStack(Materials.Wood, 464486400L)));

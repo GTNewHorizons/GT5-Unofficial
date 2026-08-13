@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
@@ -1114,9 +1115,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             for (int i = 0; i < mOutputItems.length; i++) if (mOutputItems[i] != null
                 && getBaseMetaTileEntity().getRandomNumber(10000) > cleanroom.getCleanness()) {
                     if (debugCleanroom) {
-                        GTLog.out.println(
-                            "BasicMachine: Voiding output due to cleanness failure. Cleanness = "
-                                + cleanroom.getCleanness());
+                        GT_FML_LOGGER.debug("BasicMachine: Voiding output due to cleanness failure. Cleanness = {}", cleanroom.getCleanness());
                     }
                     mOutputItems[i] = null;
                 }
