@@ -356,28 +356,6 @@ public class ElectrolyzerRecipes implements Runnable {
             .eut(60)
             .addTo(electrolyzerRecipes);
 
-        // CH5N = C + 5H + N
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Empty.getCells(1))
-            .itemOutputs(Materials.Carbon.getDust(1), Materials.Nitrogen.getCells(1))
-            .fluidInputs(Materials.Methylamine.getGas(1_000))
-            .fluidOutputs(Materials.Hydrogen.getGas(5_000))
-            .duration(5 * SECONDS + 12 * TICKS)
-            .eut(90)
-            .addTo(electrolyzerRecipes);
-
-        // C3H9N = 3C + 9H + N
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Empty.getCells(1))
-            .itemOutputs(Materials.Carbon.getDust(3), Materials.Nitrogen.getCells(1))
-            .fluidInputs(Materials.Trimethylamine.getGas(1_000))
-            .fluidOutputs(Materials.Hydrogen.getGas(9_000))
-            .duration(10 * SECONDS + 8 * TICKS)
-            .eut(90)
-            .addTo(electrolyzerRecipes);
-
         // C2H4O2 = 2C + 2H2 + O2
 
         GTValues.RA.stdBuilder()
@@ -655,17 +633,6 @@ public class ElectrolyzerRecipes implements Runnable {
             .fluidOutputs(Materials.Hydrogen.getGas(10_000))
             .duration(21 * SECONDS + 12 * TICKS)
             .eut(60)
-            .addTo(electrolyzerRecipes);
-
-        // C4H8O = 4C + 4H2 + 1/2 O2
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Empty.getCells(1))
-            .itemOutputs(Materials.Carbon.getDust(4), Materials.Oxygen.getCells(1))
-            .fluidInputs(Materials.Isobutyraldehyde.getFluid(1_000))
-            .fluidOutputs(Materials.Hydrogen.getGas(8_000))
-            .duration(15 * SECONDS + 12 * TICKS)
-            .eut(90)
             .addTo(electrolyzerRecipes);
 
         // C8H10 = 8C + 5H2 (1,3-Dimethylbenzene)
