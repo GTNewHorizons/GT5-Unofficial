@@ -714,7 +714,7 @@ public abstract class MetaBaseItem extends GTGenericItem
                 }
             }
         } catch (Exception e) {
-            if (D1) e.printStackTrace(GTLog.err);
+            if (D1) GT_FML_LOGGER.error(e);
         }
 
         return builder.build();
