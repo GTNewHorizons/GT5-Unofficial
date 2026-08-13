@@ -234,6 +234,7 @@ public class GTMod {
     public static final Logger GT_EXPLOSION_LOGGER = Loggers.GT_EXPLOSION_LOGGER;
     public static final Logger GT_ICON_LOGGER = Loggers.GT_ICON_LOGGER;
     public static final Logger GT_ORE_DICT_LOGGER = Loggers.GT_ORE_DICT_LOGGER;
+    public static final Logger GT_SHADER_LOGGER = LogManager.getLogger("ShaderAPI");
 
     public static final class Loggers {
 

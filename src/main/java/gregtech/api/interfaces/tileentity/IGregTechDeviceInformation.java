@@ -14,12 +14,12 @@ import org.apache.logging.log4j.Logger;
 
 import gregtech.api.enums.GTValues;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 /**
  * You are allowed to include this File in your Download, as i will not change it.
  */
 public interface IGregTechDeviceInformation {
-
-    Logger LOG = LogManager.getLogger(IGregTechDeviceInformation.class);
 
     /**
      * Is this even a TileEntity which allows GregTech Sensor Kits? I need things like this Function for
@@ -136,7 +136,7 @@ public interface IGregTechDeviceInformation {
         try {
             return String.format(translated, (Object[]) args);
         } catch (Exception e) {
-            LOG.warn("IGregTechDeviceInformation.decode: failed to format key '{}': {}", parts[0], e.getMessage());
+            GT_FML_LOGGER.warn("IGregTechDeviceInformation.decode: failed to format key '{}': {}", parts[0], e.getMessage());
             StringBuilder sb = new StringBuilder(translated);
             for (int i = 1; i < parts.length; i++) sb.append(" ")
                 .append(parts[i]);

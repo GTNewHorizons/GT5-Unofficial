@@ -30,7 +30,7 @@ import gregtech.api.util.GTUtility;
 
 public final class RecipeLookupValidator {
 
-    private static final Logger LOGGER = LogManager.getLogger("GregTech GTNH");
+    private static final Logger LOGGER = LogManager.getLogger("GT Recipe lookup validator");
 
     public static final String VALIDATE_LOOKUP_PROPERTY = "gt.recipe.lookup.validate";
     public static final String CAPTURE_CALLSITE_PROPERTY = VALIDATE_LOOKUP_PROPERTY + ".capture_callsite";
