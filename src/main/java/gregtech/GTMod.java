@@ -212,6 +212,23 @@ public class GTMod {
         } catch (ConfigException e) {
             throw new RuntimeException(e);
         }
+
+        File minecraftHome = Launch.minecraftHome == null ? new File(".") : Launch.minecraftHome;
+        try {
+            GTLog.configureExplosionLogger(minecraftHome);
+        } catch (RuntimeException e) {
+            GT_FML_LOGGER.error("Failed to configure explosion logger", e);
+        }
+        try {
+            GTLog.configureOreDictLogger(minecraftHome);
+        } catch (RuntimeException e) {
+            GT_FML_LOGGER.error("Failed to configure ore dictionary logger", e);
+        }
+        try {
+            GTLog.configureIconLogger(minecraftHome);
+        } catch (RuntimeException e) {
+            GT_FML_LOGGER.error("Failed to configure icon logger", e);
+        }
     }
 
     public static final int NBT_VERSION = calculateTotalGTVersion(VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
@@ -231,25 +248,6 @@ public class GTMod {
     public static final boolean DEBUG = Boolean.getBoolean("gt.debug");
 
     public static GTAchievements achievements;
-
-    static {
-        File minecraftHome = Launch.minecraftHome == null ? new File(".") : Launch.minecraftHome;
-        try {
-            GTLog.configureExplosionLogger(minecraftHome);
-        } catch (RuntimeException e) {
-            GT_FML_LOGGER.error("Failed to configure explosion logger", e);
-        }
-        try {
-            GTLog.configureOreDictLogger(minecraftHome);
-        } catch (RuntimeException e) {
-            GT_FML_LOGGER.error("Failed to configure ore dictionary logger", e);
-        }
-        try {
-            GTLog.configureIconLogger(minecraftHome);
-        } catch (RuntimeException e) {
-            GT_FML_LOGGER.error("Failed to configure icon logger", e);
-        }
-    }
 
     public GTMod() {
         GTValues.DW = new GTDummyWorld();
