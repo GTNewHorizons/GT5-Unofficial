@@ -327,7 +327,9 @@ public class RecipeGenOre extends RecipeGenBase {
                     mTotalCount += f.getKey();
                 }
 
-                mInternalOutputs = mergeItemStack(mInternalOutputs);
+                if (material.getRecipeMergeFlag()) {
+                    mInternalOutputs = mergeItemStack(mInternalOutputs);
+                }
 
                 // Build Output Array
                 for (int g = 0; g < mInternalOutputs.length; g++) {

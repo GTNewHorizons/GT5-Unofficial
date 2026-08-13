@@ -391,7 +391,7 @@ public final class MaterialsOres {
             new MaterialStack(MaterialsElements.getInstance().OXYGEN, 3),
             new MaterialStack(MaterialsElements.getInstance().CALCIUM, 3),
             new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 2),
-            new MaterialStack(MaterialsElements.getInstance().OXYGEN, 1), });
+            new MaterialStack(MaterialsElements.getInstance().OXYGEN, 1), }).setRecipeMergeFlag(true);
 
     public static final Material LANTHANITE_LA = new Material(
         "Lanthanite (La)", // Material Name
@@ -408,7 +408,7 @@ public final class MaterialsOres {
             new MaterialStack(MaterialsElements.getInstance().OXYGEN, 3),
             new MaterialStack(MaterialsElements.getInstance().CALCIUM, 3),
             new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 2),
-            new MaterialStack(MaterialsElements.getInstance().OXYGEN, 1), });
+            new MaterialStack(MaterialsElements.getInstance().OXYGEN, 1), }).setRecipeMergeFlag(true);
 
     public static final Material LANTHANITE_ND = new Material(
         "Lanthanite (Nd)", // Material Name
@@ -425,7 +425,7 @@ public final class MaterialsOres {
             new MaterialStack(MaterialsElements.getInstance().OXYGEN, 3),
             new MaterialStack(MaterialsElements.getInstance().CALCIUM, 3),
             new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 2),
-            new MaterialStack(MaterialsElements.getInstance().OXYGEN, 1), });
+            new MaterialStack(MaterialsElements.getInstance().OXYGEN, 1), }).setRecipeMergeFlag(true);
 
     // Iodine Source
     public static final Material LAUTARITE = new Material(
