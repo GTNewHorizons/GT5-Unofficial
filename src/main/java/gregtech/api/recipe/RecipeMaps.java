@@ -2208,7 +2208,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> curingMachineRecipes = RecipeMapBuilder
         .of("gt.recipe.curingmachine")
-        .maxIO(2, 2, 2, 0)
+        .maxIO(1, 1, 1, 0)
         .frontend(LargeNEIFrontend::new)
         .build();
 

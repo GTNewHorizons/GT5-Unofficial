@@ -17,7 +17,7 @@ public class CuringMachineRecipes implements Runnable {
             .itemInputs(ItemList.WovenKevlar.get(1))
             .fluidInputs(Materials.PolyurethaneResin.getFluid(1000))
             .itemOutputs(Materials.Kevlar.getPlates(1))
-            .duration(6 * SECONDS + 8 * TICKS)
+            .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(curingMachineRecipes);
     }
