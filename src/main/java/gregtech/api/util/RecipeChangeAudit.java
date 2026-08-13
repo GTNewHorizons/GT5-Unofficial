@@ -35,7 +35,24 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 
-/** Dumps recipe state before and after a change, plus their difference, as JSON Lines. */
+/**
+ * Optional recipe-state dumper for auditing a recipe mutation.
+ *
+ * <p>
+ * Usage: call {@link #run(String, String, Runnable)} around the mutation:
+ * </p>
+ *
+ * <pre>
+ * RecipeChangeAudit.run("audit-name", "Audit description", recipeLoader::applyChanges);
+ * </pre>
+ *
+ * <p>
+ * Writes {@code before.jsonl}, {@code after.jsonl}, {@code changes.jsonl}, and
+ * {@code timing.json} below the instance {@code dumps/outputDirectory} directory.
+ * The dumper is intentionally not invoked during normal startup.
+ * </p>
+ */
+@SuppressWarnings("unused")
 public final class RecipeChangeAudit {
 
     private static final Gson GSON = new Gson();
@@ -49,20 +66,25 @@ public final class RecipeChangeAudit {
         } catch (RuntimeException e) {
             GTLog.err.println("Failed to capture recipes before " + description + "; running change without dump");
             e.printStackTrace(GTLog.err);
-            change.run();
+            long started = System.nanoTime();
+            try {
+                change.run();
+            } finally {
+                writeTiming(outputDirectory, description, System.nanoTime() - started);
+            }
             return;
         }
 
-        change.run();
+        long started = System.nanoTime();
+        try {
+            change.run();
+        } finally {
+            writeTiming(outputDirectory, description, System.nanoTime() - started);
+        }
 
         try {
             Snapshot after = capture();
-            Path output = Loader.instance()
-                .getConfigDir()
-                .toPath()
-                .getParent()
-                .resolve("dumps")
-                .resolve(outputDirectory);
+            Path output = outputPath(outputDirectory);
             Files.createDirectories(output);
             write(output.resolve("before.jsonl"), before.records.values());
             write(output.resolve("after.jsonl"), after.records.values());
@@ -71,6 +93,30 @@ public final class RecipeChangeAudit {
             GTLog.err.println("Failed to dump " + description + " recipes");
             e.printStackTrace(GTLog.err);
         }
+    }
+
+    private static void writeTiming(String outputDirectory, String description, long elapsedNanos) {
+        try {
+            Path output = outputPath(outputDirectory);
+            Files.createDirectories(output);
+            JsonObject timing = new JsonObject();
+            timing.addProperty("description", description);
+            timing.addProperty("elapsedNanos", elapsedNanos);
+            timing.addProperty("elapsedMillis", elapsedNanos / 1_000_000.0);
+            Files.writeString(output.resolve("timing.json"), GSON.toJson(timing), StandardCharsets.UTF_8);
+        } catch (IOException | RuntimeException e) {
+            GTLog.err.println("Failed to dump " + description + " timing");
+            e.printStackTrace(GTLog.err);
+        }
+    }
+
+    private static Path outputPath(String outputDirectory) {
+        return Loader.instance()
+            .getConfigDir()
+            .toPath()
+            .getParent()
+            .resolve("dumps")
+            .resolve(outputDirectory);
     }
 
     private static Snapshot capture() {
