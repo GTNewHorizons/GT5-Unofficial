@@ -24,7 +24,7 @@ import gregtech.common.config.Gregtech;
 /** GregTech's dedicated logger configuration and explosion logging helpers. */
 public class GTLog {
 
-    public static Logger disabledLogger(String name) {
+    public static Logger conditionalLogger(String name) {
         Logger logger = LogManager.getLogger(name);
         configureLogger(logger, false);
         return logger;

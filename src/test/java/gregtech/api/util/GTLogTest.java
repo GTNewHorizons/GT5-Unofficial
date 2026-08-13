@@ -12,12 +12,12 @@ import org.junit.jupiter.api.Test;
 class GTLogTest {
 
     @Test
-    void disabledLoggerLevelSurvivesLoggerUpdates() {
+    void conditionalLoggerLevelSurvivesLoggerUpdates() {
         String suffix = UUID.randomUUID()
             .toString();
-        Logger logger = GTLog.disabledLogger("GTLogTest.first." + suffix);
+        Logger logger = GTLog.conditionalLogger("GTLogTest.first." + suffix);
 
-        GTLog.disabledLogger("GTLogTest.second." + suffix);
+        GTLog.conditionalLogger("GTLogTest.second." + suffix);
 
         assertEquals(Level.OFF, ((org.apache.logging.log4j.core.Logger) logger).getLevel());
         assertFalse(logger.isInfoEnabled());
