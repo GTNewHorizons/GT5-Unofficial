@@ -56,6 +56,12 @@ public class ConnectedBlocksChecker {
 
         int wID = w.provider.dimensionId;
 
+        if (this.hashset.contains(new Coords(x, y, z, wID))) {
+            return ret;
+        }
+
+        this.hashset.add(new Coords(x, y, z, wID));
+
         byte sides = this.check_sourroundings(w, x, y, z, b);
 
         if ((sides | 0b111011) == 0b111111 && !this.hashset.contains(new Coords(x + 1, y, z, wID))) {
@@ -95,10 +101,6 @@ public class ConnectedBlocksChecker {
 
         byte ret = 0;
         int wID = w.provider.dimensionId;
-
-        if (this.hashset.contains(new Coords(x, y, z, wID))) return ret;
-
-        this.hashset.add(new Coords(x, y, z, wID));
 
         if (w.getBlock(x + 1, y, z)
             .equals(b)) ret = (byte) (ret | 0b000100);
