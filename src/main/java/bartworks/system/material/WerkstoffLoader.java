@@ -182,6 +182,7 @@ public class WerkstoffLoader {
         "Zirconium",
         "Zr",
         new Werkstoff.Stats().setProtons(40)
+            .setMass(91)
             .setBlastFurnace(true)
             .setMeltingPoint(2130)
             .setMeltingVoltage(480),

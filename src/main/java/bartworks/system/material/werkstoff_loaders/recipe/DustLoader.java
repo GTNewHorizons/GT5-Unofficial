@@ -207,7 +207,7 @@ public class DustLoader implements IWerkstoffRunnable {
                                 (int) Math.max(
                                     1L,
                                     Math.abs(
-                                        werkstoffStats.getProtons() / werkstoff.getContents()
+                                        werkstoffStats.getMass() / werkstoff.getContents()
                                             .getValue()
                                             .size())))
                             .eut(
