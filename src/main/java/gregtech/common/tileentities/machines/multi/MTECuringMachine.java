@@ -16,6 +16,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.MTEHeatSensor;
 import net.minecraft.item.ItemStack;
@@ -283,7 +284,7 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return OverclockCalculator.ofNoOverclock(recipe);
+                return super.createOverclockCalculator(recipe).setNoOverclock(true);
             }
 
             @NotNull
@@ -296,6 +297,33 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
             }
         }
         .setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    private void resetMachine(){
+        phase = ChallengePhase.NEED_BOTH;
+        emitSignal(0);
+    }
+
+    @NotNull
+    @Override
+    public CheckRecipeResult checkProcessing() {
+        CheckRecipeResult result = super.checkProcessing();
+        if (!result.wasSuccessful() && phase != ChallengePhase.NEED_BOTH) {
+            resetMachine();
+        }
+        return result;
+    }
+
+    @Override
+    public void stopMachine(@NotNull ShutDownReason reason) {
+        resetMachine();
+        super.stopMachine(reason);
+    }
+
+    @Override
+    public void onDisableWorking() {
+        resetMachine();
+        super.onDisableWorking();
     }
 
     private static int phaseSignal(ChallengePhase p) {
