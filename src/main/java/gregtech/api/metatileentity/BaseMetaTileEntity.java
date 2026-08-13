@@ -1,7 +1,7 @@
 package gregtech.api.metatileentity;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
@@ -737,9 +737,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             try {
                 mMetaTileEntity.receiveClientEvent((byte) aEventID, (byte) aValue);
             } catch (Exception e) {
-                GTLog.err.println(
+                GT_FML_LOGGER.error(
                     "Encountered Exception while receiving Data from the Server, the Client should've been crashed by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
 
@@ -1663,9 +1663,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             if (!aPlayer.isSneaking() && hasValidMetaTileEntity())
                 return mMetaTileEntity.onRightclick(this, aPlayer, side, aX, aY, aZ);
         } catch (Exception e) {
-            GTLog.err.println(
+            GT_FML_LOGGER.error(
                 "Encountered Exception while rightclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
             GT_FML_LOGGER.error(e);
         }
 
@@ -1677,9 +1677,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         try {
             if (aPlayer != null && hasValidMetaTileEntity()) mMetaTileEntity.onLeftclick(this, aPlayer);
         } catch (Exception e) {
-            GTLog.err.println(
+            GT_FML_LOGGER.error(
                 "Encountered Exception while leftclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
     }
 
