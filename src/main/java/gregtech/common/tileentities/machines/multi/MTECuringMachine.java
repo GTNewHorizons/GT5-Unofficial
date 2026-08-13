@@ -5,9 +5,12 @@ import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -20,6 +23,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ILayerProducer;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
@@ -29,9 +33,10 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.MTELayerSignal;
 
 public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMachine>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ILayerProducer {
 
     private static IStructureDefinition<MTECuringMachine> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -129,7 +134,13 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
                 .addElement(
                     'E',
                     buildHatchAdder(MTECuringMachine.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch)
+                        .atLeast(
+                            InputBus,
+                            OutputBus,
+                            Maintenance,
+                            Energy,
+                            InputHatch,
+                            MTELayerSignal.LayerSignalHatchElement.LayerSignal)
                         .casingIndex(Casings.RadiantNaquadahAlloyCasing.textureId)
                         .hint(1)
                         .buildAndChain(
@@ -143,6 +154,8 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
         }
         return STRUCTURE_DEFINITION;
     }
+
+    private final ArrayList<MTELayerSignal> signalHatches = new ArrayList<>();
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
@@ -175,6 +188,11 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
             .addCasing("8", "High Energy Ultraviolet Emitter Casing", false)
             .addCasing("8", "UV Solenoid Superconductor Coil", false)
             .addCasing("12", "Solidifier Radiator", false)
+            .addMiscHatch(
+                "0+",
+                StatCollector.translateToLocal("GT5U.tooltip.structure.layer_signal_hatch"),
+                "Any casing",
+                1)
             .addEnergyHatch("1+", "Any casing", 1)
             .addMaintenanceHatch("1", "Any casing", 1)
             .addInputBus("1+", "Any casing", 1)
@@ -227,13 +245,27 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0, errors)) return;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 6);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
         checkHasInputHatch(errors);
         checkHasOutputBus(errors);
+    }
+
+    @Override
+    public List<MTELayerSignal> getLayerSignalHatches() {
+        return Collections.unmodifiableList(signalHatches);
+    }
+
+    @Override
+    public boolean addLayerSignalHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity != null && aTileEntity.getMetaTileEntity() instanceof MTELayerSignal sensor) {
+            sensor.updateTexture(aBaseCasingIndex);
+            return signalHatches.add(sensor);
+        }
+        return false;
     }
 
     @Override

@@ -779,6 +779,7 @@ public enum MetaTileEntityIDs {
     BEAM_SPLITTER(3017),
     BEAM_STABILIZER(3018),
     TOXIC_RESIDUE_DETECTOR_HATCH(3019),
+    LAYER_SIGNAL_HATCH(3020),
     DraconicEvolutionFusionCrafterController(5001),
     CHEST_BUFFER_ULV(9230),
     CHEST_BUFFER_LV(9231),

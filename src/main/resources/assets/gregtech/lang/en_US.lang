@@ -7371,6 +7371,7 @@ GT5U.tooltip.structure.electromagnet_housing=Electromagnet Housing
 GT5U.tooltip.structure.laser_source_hatch=Laser Source Hatch
 GT5U.tooltip.structure.heating_coil=Heating Coil
 GT5U.tooltip.structure.heat_sensor_hatch=Heat Sensor Hatch
+GT5U.tooltip.structure.layer_signal_hatch=Layer Signal Hatch
 GT5U.tooltip.structure.degasser_control_hatch=Degasser Control Hatch
 GT5U.tooltip.structure.input_hatch_ozone=Input Hatch (Ozone)
 GT5U.tooltip.structure.input_hatch_water=Input Hatch (Water)

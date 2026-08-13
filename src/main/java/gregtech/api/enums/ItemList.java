@@ -1096,6 +1096,7 @@ public enum ItemList implements IItemContainer {
     Hatch_DataAccess_UV,
 
     Hatch_HeatSensor,
+    Hatch_LayerSignal,
     Hatch_ToxicResidueSensor,
     Hatch_BlackHoleUtility,
 
