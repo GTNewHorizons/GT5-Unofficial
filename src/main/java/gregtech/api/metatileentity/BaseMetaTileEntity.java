@@ -1904,15 +1904,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         return mMetaTileEntity.getEUVar() < mMetaTileEntity.maxEUStore();
     }
 
-    /**
-     * @return whether {@link #injectEnergyUnits} could still take an ampere this tick
-     * @deprecated Use {@link #canAcceptEnergyThisTick()} when deciding whether to emit energy.
-     */
-    @Deprecated
-    public boolean canAcceptAmperesThisTick() {
-        return canAccessData() && mMetaTileEntity.maxAmperesIn() > mAcceptedAmperes;
-    }
-
     @Override
     public boolean drainEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage) {
         if (!canAccessData() || !mMetaTileEntity.isElectric()
