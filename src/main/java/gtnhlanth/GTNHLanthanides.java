@@ -27,9 +27,6 @@ import gtnhlanth.loader.RecipeLoader;
         + "required-after:GoodGenerator; "
         + "before:miscutils; ")
 public class GTNHLanthanides {
-
-    public static Logger LOG = Logger.getLogger("GTNH:Lanthanides");
-
     @Mod.Instance(Mods.ModIDs.G_T_N_H_LANTHANIDES)
     public static GTNHLanthanides instance;
 
