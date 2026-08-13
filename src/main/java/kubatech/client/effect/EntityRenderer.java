@@ -24,6 +24,7 @@ import static net.minecraft.client.renderer.entity.RenderManager.instance;
 import static net.minecraft.client.renderer.entity.RenderManager.renderPosX;
 import static net.minecraft.client.renderer.entity.RenderManager.renderPosY;
 import static net.minecraft.client.renderer.entity.RenderManager.renderPosZ;
+import static kubatech.kubatech.LOG;
 
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -35,8 +36,6 @@ import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.joml.AxisAngle4f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
@@ -49,14 +48,12 @@ import com.kuba6000.mobsinfo.api.utils.MobUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
 import kubatech.config.Config;
 
 @SideOnly(Side.CLIENT)
 public class EntityRenderer extends EntityFX {
 
-    private static final Logger LOG = LogManager.getLogger(Mods.ModIDs.KUBA_TECH + "[Entity Renderer]");
     private Vector3f verticalAxis;
     private Vector3f horizontalAxis;
     private EntityLiving entityToRender = null;
@@ -253,6 +250,7 @@ public class EntityRenderer extends EntityFX {
             try {
                 tes.draw();
             } catch (Exception ignored) {}
+            LOG.error("[Renderer] Failed to render entity " + EntityList.getEntityString(entityToRender), ex);
         }
 
         BossStatus.healthScale = healthScale;
