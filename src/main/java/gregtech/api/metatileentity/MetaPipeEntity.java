@@ -746,6 +746,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     protected void checkConnections() {
+        mCheckConnections = false;
         // Verify connections around us. If GT6 style cables are not enabled then revert to old behavior and try
         // connecting to everything around us
         for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
@@ -753,7 +754,6 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
                 disconnect(side);
             }
         }
-        mCheckConnections = false;
     }
 
     private void connectAtSide(ForgeDirection side) {

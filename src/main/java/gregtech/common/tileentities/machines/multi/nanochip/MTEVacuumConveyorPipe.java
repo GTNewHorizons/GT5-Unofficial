@@ -173,6 +173,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
 
     @Override
     protected void checkConnections() {
+        mCheckConnections = false;
         mConnections = 0;
 
         IGregTechTileEntity base = getBaseMetaTileEntity();

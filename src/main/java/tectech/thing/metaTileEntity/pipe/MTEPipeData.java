@@ -211,6 +211,7 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
 
     @Override
     public void checkConnections() {
+        mCheckConnections = false;
         updateNetwork(false);
     }
 

@@ -76,6 +76,7 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
 
     @Override
     protected void checkConnections() {
+        mCheckConnections = false;
         mConnections = 0;
 
         IGregTechTileEntity base = getBaseMetaTileEntity();

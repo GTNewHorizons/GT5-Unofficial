@@ -133,6 +133,7 @@ public class MTEPipeBEC extends MTEBaseFactoryPipe implements BECFactoryElement 
 
     @Override
     protected void checkConnections() {
+        mCheckConnections = false;
         mConnections = 0;
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
