@@ -96,7 +96,7 @@ public final class MainMod {
     public static final String MOD_ID = Mods.ModIDs.BART_WORKS;
     public static final String APIVERSION = "11";
     public static final Logger LOGGER = LogManager.getLogger(MainMod.NAME);
-    public static final Logger BW_DEBUG_LOGGER = LogManager.getLogger("BartWorks Debug");
+    public static final Logger BW_DEBUG_LOGGER = GTLog.disabledLogger("BartWorks Debug");
     public static final CreativeTabs GT2 = new GT2Tab("GT2C");
     public static final CreativeTabs BIO_TAB = new BioTab("BioTab");
     public static final CreativeTabs BWT = new BartWorksTab(BartWorks.ID);

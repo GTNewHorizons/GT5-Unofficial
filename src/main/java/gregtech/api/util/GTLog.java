@@ -7,24 +7,28 @@ import static gregtech.GTMod.Loggers.GT_ORE_DICT_LOGGER;
 import java.io.File;
 
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.appender.RollingRandomAccessFileAppender;
 import org.apache.logging.log4j.core.appender.rolling.CompositeTriggeringPolicy;
 import org.apache.logging.log4j.core.appender.rolling.DefaultRolloverStrategy;
 import org.apache.logging.log4j.core.appender.rolling.OnStartupTriggeringPolicy;
 import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.config.Gregtech;
 
-/**
- * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
- * <p/>
- * Just a simple Logging Function. If on Server, then this will point to System.out and System.err
- */
+/** GregTech's dedicated logger configuration and explosion logging helpers. */
 public class GTLog {
+
+    public static Logger disabledLogger(String name) {
+        Logger logger = LogManager.getLogger(name);
+        configureLogger(logger, false);
+        return logger;
+    }
 
     public static void configureExplosionLogger(File parentFile) {
         configureRollingLogger(
@@ -71,12 +75,17 @@ public class GTLog {
     private static void configureLogger(Logger apiLogger, boolean enabled) {
         org.apache.logging.log4j.core.Logger logger = (org.apache.logging.log4j.core.Logger) apiLogger;
         logger.setAdditive(false);
-        logger.setLevel(enabled ? Level.INFO : Level.OFF);
+        LoggerConfig loggerConfig = logger.getContext()
+            .getConfiguration()
+            .getLoggerConfig(logger.getName());
+        loggerConfig.setLevel(enabled ? Level.INFO : Level.OFF);
+        logger.getContext()
+            .updateLoggers();
     }
 
     public static boolean configureRollingLogger(Logger apiLogger, boolean enabled, File file, File filePattern,
         String appenderName) {
-        configureLogger(apiLogger, enabled);
+        configureLogger(apiLogger, false);
         if (!enabled) return false;
 
         org.apache.logging.log4j.core.Logger logger = (org.apache.logging.log4j.core.Logger) apiLogger;
@@ -105,8 +114,14 @@ public class GTLog {
             configuration);
         if (appender == null) throw new IllegalStateException("Failed to create " + appenderName);
 
-        appender.start();
-        logger.addAppender(appender);
+        try {
+            appender.start();
+            logger.addAppender(appender);
+        } catch (RuntimeException e) {
+            appender.stop();
+            throw e;
+        }
+        configureLogger(apiLogger, true);
         return true;
     }
 

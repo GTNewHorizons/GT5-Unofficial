@@ -243,11 +243,7 @@ public class GTMod {
         public static final Logger GT_ORE_DICT_LOGGER = disabledLogger("GregTech Ore Dictionary");
 
         private static Logger disabledLogger(String name) {
-            org.apache.logging.log4j.core.Logger logger = (org.apache.logging.log4j.core.Logger) LogManager
-                .getLogger(name);
-            logger.setAdditive(false);
-            logger.setLevel(org.apache.logging.log4j.Level.OFF);
-            return logger;
+            return GTLog.disabledLogger(name);
         }
     }
 
