@@ -57,12 +57,11 @@ public final class VacuumConveyorPipeClientStateManager {
         Iterator<MTEVacuumConveyorPipe> iter = pipes[tickCounter].iterator();
         while (iter.hasNext()) {
             MTEVacuumConveyorPipe pipe = iter.next();
-            if (toUnregister.contains(pipe)) {
+            if (toUnregister.remove(pipe)) {
                 iter.remove();
                 continue;
             }
             pipe.toggleClientActiveState();
         }
-        toUnregister.clear();
     }
 }
