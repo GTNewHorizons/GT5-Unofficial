@@ -24,7 +24,7 @@ public class MTELayerSignal extends MTEHatch {
     protected static final IIconContainer TEXTURE_FRONT = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR;
     protected static final IIconContainer TEXTURE_FRONT_GLOW = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
 
-    protected int layer = 0;
+    protected int strength = 0;
 
     public MTELayerSignal(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Detects current layer from a machine.");
@@ -74,18 +74,18 @@ public class MTELayerSignal extends MTEHatch {
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        layer = aNBT.getInteger("layer");
+        strength = aNBT.getInteger("strength");
         super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("layer", layer);
+        aNBT.setInteger("strength", strength);
         super.saveNBTData(aNBT);
     }
 
-    public void setLayerValue(int layer) {
-        this.layer = layer;
+    public void setLayerValue(int strength) {
+        this.strength = strength;
     }
 
     @Override
@@ -94,7 +94,7 @@ public class MTELayerSignal extends MTEHatch {
         ForgeDirection facing = getBaseMetaTileEntity().getFrontFacing();
         if (aBaseMetaTileEntity.isServerSide()) {
             for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setStrongOutputRedstoneSignal(direction, direction == facing ? (byte) layer : 0);
+                aBaseMetaTileEntity.setStrongOutputRedstoneSignal(direction, direction == facing ? (byte) strength : 0);
             }
         }
     }

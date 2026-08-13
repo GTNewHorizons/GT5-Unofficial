@@ -3,13 +3,23 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTStructureUtility.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.tileentities.machines.MTEHeatSensor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -34,6 +44,9 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTELayerSignal;
+import net.minecraftforge.fluids.FluidStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMachine>
     implements ISurvivalConstructable, ILayerProducer {
@@ -48,6 +61,22 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
     private static final int PARALLEL_PER_TIER = 4;
     private static final float SPEED = 1f;
     private static final float EU_EFFICIENCY = 1f;
+
+    public enum ChallengePhase { NEED_BOTH, NEED_ITEM, NEED_FLUID }
+    private ChallengePhase phase = ChallengePhase.NEED_BOTH;
+    private GTRecipe lockedRecipe;
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("challengePhase", phase.ordinal());
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        phase = ChallengePhase.NEED_BOTH;
+    }
 
     public MTECuringMachine(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -206,9 +235,118 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setEuModifier(EU_EFFICIENCY)
-            .setSpeedBonus(1F / SPEED)
-            .setMaxParallelSupplier(this::getTrueParallel);
+        return new ProcessingLogic(){
+
+            @NotNull
+            @Override
+            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+                switch (phase) {
+                    case NEED_ITEM:
+                        return lockedRecipe == null ? Stream.empty() : Stream.of(itemOnly(lockedRecipe));
+                    case NEED_FLUID:
+                        return lockedRecipe == null ? Stream.empty() : Stream.of(fluidOnly(lockedRecipe));
+                    case NEED_BOTH:
+                    default:
+                        return super.findRecipeMatches(map); // normal map query with both inputs
+                }
+            }
+
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                setSpeedBonus(1F / SPEED);
+                setEuModifier(EU_EFFICIENCY);
+
+                boolean recipeItem  = recipe.mInputs != null && recipe.mInputs.length > 0;
+                boolean recipeFluid = recipe.mFluidInputs != null && recipe.mFluidInputs.length > 0;
+
+                boolean haveItem  = anyItem(MTECuringMachine.this.getStoredInputs());
+                boolean haveFluid = anyFluid(MTECuringMachine.this.getStoredFluids());
+
+                switch (phase) {
+                    case NEED_BOTH:
+                        if (!(recipeItem && recipeFluid)) return CheckRecipeResultRegistry.NO_RECIPE;
+                        lockedRecipe = recipe;
+                        break;
+                    case NEED_ITEM:
+                        if (!(recipeItem && !recipeFluid)) return CheckRecipeResultRegistry.NO_RECIPE;
+                        if (haveFluid) return CheckRecipeResultRegistry.NO_RECIPE; // enforce ONLY item
+                        break;
+                    case NEED_FLUID:
+                        if (!(recipeFluid && !recipeItem)) return CheckRecipeResultRegistry.NO_RECIPE;
+                        if (haveItem) return CheckRecipeResultRegistry.NO_RECIPE;  // enforce ONLY fluid
+                        break;
+                }
+                return super.validateRecipe(recipe);
+            }
+
+            @NotNull
+            @Override
+            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return OverclockCalculator.ofNoOverclock(recipe);
+            }
+
+            @NotNull
+            @Override
+            protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
+                // this cycle is committed - telegraph what the NEXT cycle demands
+                phase = pickNextPhase();
+                emitSignal(phaseSignal(phase));
+                return super.onRecipeStart(recipe);
+            }
+        }
+        .setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    private static int phaseSignal(ChallengePhase p) {
+        switch (p) {
+            case NEED_ITEM:
+                return 1;
+            case NEED_FLUID:
+                return 2;
+            default:
+                return 0; // NEED_BOTH
+        }
+    }
+
+    private ChallengePhase pickNextPhase() {
+        // on current cycle, select and output signal for next cycle
+        return XSTR_INSTANCE.nextBoolean() ? ChallengePhase.NEED_ITEM : ChallengePhase.NEED_FLUID;
+    }
+
+    private void emitSignal(int strength) {
+        for (MTELayerSignal hatch : signalHatches) {
+            hatch.setLayerValue(strength);
+        }
+    }
+
+    private static GTRecipe itemOnly(GTRecipe base) {
+        return new GTRecipe(false, base.mInputs, base.mOutputs, base.mSpecialItems, base.mInputChances,
+            base.mOutputChances,base.mFluidInputChances,base.mFluidOutputChances,
+            null, base.mFluidOutputs, base.mDuration, base.mEUt, base.mSpecialValue);
+    }
+    private static GTRecipe fluidOnly(GTRecipe base) {
+        return new GTRecipe(false, null, base.mOutputs, base.mSpecialItems, base.mInputChances,
+            base.mOutputChances,base.mFluidInputChances,base.mFluidOutputChances,
+            base.mFluidInputs, base.mFluidOutputs, base.mDuration, base.mEUt, base.mSpecialValue);
+    }
+
+    private static boolean anyItem(List<ItemStack> l) {
+        if (l == null) return false;
+        for (ItemStack s : l) if (s != null && s.stackSize > 0) return true;
+        return false;
+    }
+
+    private static boolean anyFluid(List<FluidStack> l) {
+        if (l == null) return false;
+        for (FluidStack f : l) if (f != null && f.amount > 0) return true;
+        return false;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide() && (aTick % 20 == 0)) emitSignal(phaseSignal(phase));
     }
 
     @Override
@@ -245,6 +383,7 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
+        signalHatches.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 6);
         checkHasEnergyHatch(errors);
@@ -274,17 +413,7 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
     }
 
     @Override
-    public boolean supportsBatchMode() {
-        return true;
-    }
-
-    @Override
     public boolean supportsVoidProtection() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsInputSeparation() {
         return true;
     }
 }
