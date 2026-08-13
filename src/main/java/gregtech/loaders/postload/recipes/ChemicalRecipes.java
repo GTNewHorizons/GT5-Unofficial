@@ -884,6 +884,29 @@ public class ChemicalRecipes implements Runnable {
             .eut(TierEU.RECIPE_MV)
             .addTo(UniversalChemical);
 
+        // Na + H = NaH
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Sodium.getDust(1))
+            .circuit(2)
+            .itemOutputs(Materials.SodiumHydride.getDust(2))
+            .fluidInputs(Materials.Hydrogen.getGas(1_000))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(UniversalChemical);
+
+        // CH3ONa + H2O = CH4O + NaOH
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.SodiumMethoxide.getDust(6))
+            .circuit(1)
+            .itemOutputs(Materials.SodiumHydroxide.getDust(3))
+            .fluidInputs(Materials.Water.getFluid(1_000))
+            .fluidOutputs(Materials.Methanol.getFluid(1_000))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(UniversalChemical);
+
         // K + HNO3 = KNO3 + H (not real, but gameplay
 
         GTValues.RA.stdBuilder()
@@ -4441,6 +4464,32 @@ public class ChemicalRecipes implements Runnable {
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
 
+        // 2CO + 2C3H6 + 4H =RhHCO(P(C6H5)3)3= C4H8O + C4H8O
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.OrganorhodiumCatalyst.getDustTiny(1))
+            .circuit(4)
+            .fluidInputs(
+                Materials.Hydrogen.getGas(4_000),
+                Materials.Propene.getGas(2_000),
+                Materials.CarbonMonoxide.getGas(2_000))
+            .fluidOutputs(Materials.Butyraldehyde.getFluid(1_000), Materials.Isobutyraldehyde.getFluid(1_000))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.OrganorhodiumCatalyst.getDust(1))
+            .circuit(9)
+            .fluidInputs(
+                Materials.Hydrogen.getGas(36_000),
+                Materials.Propene.getGas(18_000),
+                Materials.CarbonMonoxide.getGas(18_000))
+            .fluidOutputs(Materials.Butyraldehyde.getFluid(9_000), Materials.Isobutyraldehyde.getFluid(9_000))
+            .duration(1 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(multiblockChemicalReactorRecipes);
+
         // C2H4 + O =Al2O3,Ag= C2H4O
 
         GTValues.RA.stdBuilder()
@@ -4535,6 +4584,41 @@ public class ChemicalRecipes implements Runnable {
             .fluidInputs(Materials.Oxygen.getGas(27_000), Materials.DilutedSulfuricAcid.getFluid(27_000))
             .fluidOutputs(Materials.SulfuricAcid.getFluid(27_000))
             .duration(11 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        // PCl3 + 3C6H5Cl + 6Na = 6NaCl + C18H15P
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 6))
+            .circuit(1)
+            .itemOutputs(Materials.Triphenylphosphene.getDust(34), Materials.Salt.getDust(12))
+            .fluidInputs(Materials.PhosphorusTrichloride.getFluid(1_000), Materials.Chlorobenzene.getFluid(3_000))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        // 4NaH + C3H9BO3 = NaBH4 + 3CH3ONa
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.SodiumHydride.getDust(8))
+            .circuit(1)
+            .itemOutputs(Materials.SodiumBorohydride.getDust(6), Materials.SodiumMethoxide.getDust(18))
+            .fluidInputs(Materials.TrimethylBorate.getFluid(1_000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.SodiumHydride.getDust(64))
+            .circuit(9)
+            .itemOutputs(
+                Materials.SodiumBorohydride.getDust(48),
+                Materials.SodiumMethoxide.getDust(64),
+                Materials.SodiumMethoxide.getDust(64),
+                Materials.SodiumMethoxide.getDust(16))
+            .fluidInputs(Materials.TrimethylBorate.getFluid(8_000))
+            .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
@@ -5292,6 +5376,72 @@ public class ChemicalRecipes implements Runnable {
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("boricacid"), 4_000), Materials.Water.getFluid(5_000))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        // H3BO3 + 3CH4O =H2SO4= C3H9BO3 + 3H2O
+
+        GTValues.RA.stdBuilder()
+            .circuit(1)
+            .fluidInputs(
+                Materials.Methanol.getFluid(3_000),
+                new FluidStack(FluidRegistry.getFluid("boricacid"), 1_000),
+                Materials.SulfuricAcid.getFluid(6_000))
+            .fluidOutputs(Materials.DilutedSulfuricAcid.getFluid(6_000), Materials.TrimethylBorate.getFluid(1_000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .circuit(9)
+            .fluidInputs(
+                Materials.Methanol.getFluid(27_000),
+                new FluidStack(FluidRegistry.getFluid("boricacid"), 9_000),
+                Materials.SulfuricAcid.getFluid(54_000))
+            .fluidOutputs(Materials.DilutedSulfuricAcid.getFluid(54_000), Materials.TrimethylBorate.getFluid(9_000))
+            .duration(3 * MINUTES + 45 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        // RhCl3 + 3C18H15P + 3NaBH4 + CO = RhC55H46P3O + 3NaCl + 3B + 11H
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RhodiumChloride, 4),
+                Materials.Triphenylphosphene.getDust(64),
+                Materials.Triphenylphosphene.getDust(38),
+                Materials.SodiumBorohydride.getDust(18))
+            .circuit(1)
+            .itemOutputs(
+                Materials.OrganorhodiumCatalyst.getDust(64),
+                Materials.OrganorhodiumCatalyst.getDust(42),
+                Materials.Salt.getDust(6),
+                Materials.Boron.getDust(3))
+            .fluidInputs(Materials.CarbonMonoxide.getGas(1_000))
+            .fluidOutputs(Materials.Hydrogen.getGas(11_000))
+            .duration(40 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        // 2NaOH + N2H4 =Mn= 2N + 2H2O + 2NaH
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.SodiumHydroxide.getDust(6), Materials.Manganese.getDustTiny(1))
+            .circuit(9)
+            .itemOutputs(Materials.SodiumHydride.getDust(4))
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("fluid.hydrazine"), 1_000))
+            .fluidOutputs(Materials.Nitrogen.getGas(2_000), Materials.Water.getFluid(2_000))
+            .duration(10 * TICKS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.SodiumHydroxide.getDust(54), Materials.Manganese.getDust(1))
+            .circuit(18)
+            .itemOutputs(Materials.SodiumHydride.getDust(36))
+            .fluidInputs(new FluidStack(FluidRegistry.getFluid("fluid.hydrazine"), 9_000))
+            .fluidOutputs(Materials.Nitrogen.getGas(18_000), Materials.Water.getFluid(18_000))
+            .duration(3 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
         // Flawless Amalgatite

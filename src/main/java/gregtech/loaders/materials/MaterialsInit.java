@@ -61,6 +61,7 @@ public class MaterialsInit {
         loadMagicMaterials();
         loadBotaniaMaterials();
         loadKevlarLine();
+        loadnButyllithium();
         loadAluminiumOres();
         loadUEVPlusMaterials();
         loadGTNHMaterials();
@@ -15007,6 +15008,145 @@ public class MaterialsInit {
             .addMaterial(Materials.Hydrogen, 10)
             .addMaterial(Materials.Nitrogen, 2)
             .addMaterial(Materials.Oxygen, 2)
+            .constructMaterial();
+    }
+
+    private static void loadnButyllithium() {
+        Materials.Butyraldehyde = loadButyraldehyde();
+        Materials.Isobutyraldehyde = loadIsobutyraldehyde();
+        Materials.SodiumBorohydride = loadSodiumBorohydride();
+        Materials.SodiumHydride = loadSodiumHydride();
+        Materials.SodiumMethoxide = loadSodiumMethoxide();
+        Materials.TrimethylBorate = loadTrimethylBorate();
+        Materials.RhodiumChloride = loadRhodiumChloride();
+        Materials.Triphenylphosphene = loadTriphenylphosphene();
+        Materials.OrganorhodiumCatalyst = loadOrganorhodiumCatalyst();
+    }
+
+    private static Materials loadButyraldehyde() {
+        return new MaterialBuilder().setName("Butyraldehyde")
+            .setDefaultLocalName("Butyraldehyde")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .addCell()
+            .addFluid()
+            .setMeltingPoint(176)
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.IGNIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadIsobutyraldehyde() {
+        return new MaterialBuilder().setName("Isobutyraldehyde")
+            .setDefaultLocalName("Isobutyraldehyde")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .addCell()
+            .addFluid()
+            .setMeltingPoint(208)
+            .addElectrolyzerRecipe()
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 8)
+            .addMaterial(Materials.Oxygen, 1)
+            .addAspect(TCAspects.AQUA, 1)
+            .addAspect(TCAspects.IGNIS, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadOrganorhodiumCatalyst() {
+        return new MaterialBuilder().setName("OrganorhodiumCatalyst")
+            .setDefaultLocalName("Organorhodium Catalyst")
+            .setChemicalFormula("RhHCO(P(C₆H₅)₃)₃")
+            .setIconSet(TextureSet.SET_POWDER)
+            .setColor(Dyes.dyeRed)
+            .setARGB(0x00aa0000)
+            .addDustItems()
+            .setMeltingPoint(373)
+            .addMaterial(Materials.Cobalt, 1)
+            .addMaterial(Materials.NitricAcid, 2)
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumBorohydride() {
+        return new MaterialBuilder().setName("SodiumBorohydride")
+            .setDefaultLocalName("Sodium Borohydride")
+            .setIconSet(TextureSet.SET_POWDER)
+            .setColor(Dyes.dyeWhite)
+            .addDustItems()
+            .setMeltingPoint(673)
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Boron, 1)
+            .addMaterial(Materials.Hydrogen, 4)
+            .constructMaterial();
+    }
+
+    private static Materials loadRhodiumChloride() {
+        return new MaterialBuilder().setName("RhodiumChloride")
+            .setDefaultLocalName("Rhodium Chloride")
+            .setChemicalFormula("RhCl₃")
+            .setIconSet(TextureSet.SET_POWDER)
+            .setColor(Dyes.dyeRed)
+            .setARGB(0x00800000)
+            .addDustItems()
+            .setMeltingPoint(723)
+            .constructMaterial();
+    }
+
+    private static Materials loadTriphenylphosphene() {
+        return new MaterialBuilder().setName("Triphenylphosphene")
+            .setDefaultLocalName("Triphenylphosphine")
+            .setIconSet(TextureSet.SET_POWDER)
+            .setColor(Dyes.dyeWhite)
+            .addDustItems()
+            .setMeltingPoint(353)
+            .addMaterial(Materials.Carbon, 18)
+            .addMaterial(Materials.Hydrogen, 15)
+            .addMaterial(Materials.Phosphorus, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumHydride() {
+        return new MaterialBuilder().setName("SodiumHydride")
+            .setDefaultLocalName("Sodium Hydride")
+            .setIconSet(TextureSet.SET_POWDER)
+            .setColor(Dyes.dyeLightGray)
+            .setARGB(0x00c0c0c0)
+            .addDustItems()
+            .setMeltingPoint(911)
+            .addMaterial(Materials.Sodium, 1)
+            .addMaterial(Materials.Hydrogen, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadTrimethylBorate() {
+        return new MaterialBuilder().setName("TrimethylBorate")
+            .setDefaultLocalName("Trimethyl Borate")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .addCell()
+            .addFluid()
+            .setMeltingPoint(239)
+            .addMaterial(Materials.Carbon, 3)
+            .addMaterial(Materials.Hydrogen, 9)
+            .addMaterial(Materials.Boron, 1)
+            .addMaterial(Materials.Oxygen, 3)
+            .constructMaterial();
+    }
+
+    private static Materials loadSodiumMethoxide() {
+        return new MaterialBuilder().setName("SodiumMethoxide")
+            .setDefaultLocalName("Sodium Methoxide")
+            .setIconSet(TextureSet.SET_POWDER)
+            .setColor(Dyes.dyeWhite)
+            .addDustItems()
+            .setMeltingPoint(400)
+            .addMaterial(Materials.Carbon, 1)
+            .addMaterial(Materials.Hydrogen, 3)
+            .addMaterial(Materials.Oxygen, 1)
+            .addMaterial(Materials.Sodium, 1)
             .constructMaterial();
     }
 

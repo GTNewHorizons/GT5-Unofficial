@@ -15,6 +15,7 @@ import static gregtech.api.util.GTRecipeConstants.NO_GAS_CIRCUIT_CONFIG;
 import net.minecraft.item.ItemStack;
 
 import bartworks.common.loaders.ItemRegistry;
+import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
@@ -597,6 +598,18 @@ public class BlastFurnaceRecipes implements Runnable {
             .duration(3 * MINUTES)
             .eut(TierEU.RECIPE_UIV)
             .metadata(COIL_HEAT, 11701)
+            .addTo(blastFurnaceRecipes);
+
+        // Rh + 3Cl = RhCl3
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 1, 78))
+            .circuit(2)
+            .itemOutputs(Materials.RhodiumChloride.getDust(4))
+            .fluidInputs(Materials.Chlorine.getGas(3_000))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .metadata(COIL_HEAT, 573)
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
