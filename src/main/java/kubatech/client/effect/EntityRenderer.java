@@ -20,11 +20,11 @@
 
 package kubatech.client.effect;
 
+import static kubatech.kubatech.LOG;
 import static net.minecraft.client.renderer.entity.RenderManager.instance;
 import static net.minecraft.client.renderer.entity.RenderManager.renderPosX;
 import static net.minecraft.client.renderer.entity.RenderManager.renderPosY;
 import static net.minecraft.client.renderer.entity.RenderManager.renderPosZ;
-import static kubatech.kubatech.LOG;
 
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.OpenGlHelper;

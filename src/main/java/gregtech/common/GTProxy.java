@@ -150,7 +150,6 @@ import gregtech.api.util.GTCLSCompat;
 import gregtech.api.util.GTChunkAssociatedData;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTOreDictUnificator;
@@ -1570,7 +1569,9 @@ public class GTProxy implements IFuelHandler {
             if (aOriginalMod.equals(GregTech.ID)) {
                 aOriginalMod = "UNKNOWN";
             }
-            GTLoggers.GT_ORE_DICT_LOGGER.info("{} did something very bad! The registration is too invalid to even be shown properly. This happens only if you register null, invalid Items, empty Strings or even nonexisting Events to the OreDict.", aOriginalMod);
+            GTLoggers.GT_ORE_DICT_LOGGER.info(
+                "{} did something very bad! The registration is too invalid to even be shown properly. This happens only if you register null, invalid Items, empty Strings or even nonexisting Events to the OreDict.",
+                aOriginalMod);
             throw new IllegalArgumentException(
                 aOriginalMod
                     + " did something very bad! The registration is too invalid to even be shown properly. This happens only if you register null, invalid Items, empty Strings or even nonexisting Events to the OreDict.");
@@ -1616,8 +1617,8 @@ public class GTProxy implements IFuelHandler {
                 || (aEvent.Name.contains(":"))
                 || (aEvent.Name.contains("."))
                 || (aEvent.Name.contains("$"))) {
-                GTLoggers.GT_ORE_DICT_LOGGER
-                    .info("{} is using a private Prefix and is therefor getting ignored properly.", tModToName);
+                    GTLoggers.GT_ORE_DICT_LOGGER
+                        .info("{} is using a private Prefix and is therefor getting ignored properly.", tModToName);
                     return;
                 } else if (aEvent.Name.equals("copperWire")) {
                     GTOreDictUnificator.registerOre(OreDictNames.craftingWireCopper, aEvent.Ore);
@@ -1668,12 +1669,15 @@ public class GTProxy implements IFuelHandler {
                     GTOreDictUnificator.registerOre(OrePrefixes.compressed, Materials.Aluminium, aEvent.Ore);
                     return;
                 } else if (aEvent.Name.contains(" ")) {
-                GTLoggers.GT_ORE_DICT_LOGGER.info("{} is getting re-registered because the OreDict Name containing invalid spaces.", tModToName);
+                    GTLoggers.GT_ORE_DICT_LOGGER.info(
+                        "{} is getting re-registered because the OreDict Name containing invalid spaces.",
+                        tModToName);
                     GTOreDictUnificator.registerOre(aEvent.Name.replace(" ", ""), GTUtility.copyAmount(1, aEvent.Ore));
                     aEvent.Ore.setStackDisplayName("Invalid OreDictionary Tag");
                     return;
                 } else if (this.mInvalidNames.contains(aEvent.Name)) {
-                GTLoggers.GT_ORE_DICT_LOGGER.info("{} is wrongly registered and therefor getting ignored.", tModToName);
+                    GTLoggers.GT_ORE_DICT_LOGGER
+                        .info("{} is wrongly registered and therefor getting ignored.", tModToName);
 
                     return;
                 }
@@ -1692,11 +1696,11 @@ public class GTProxy implements IFuelHandler {
                     return;
                 } else if (aEvent.Name.toUpperCase()
                     .equals(aEvent.Name)) {
-                    GTLoggers.GT_ORE_DICT_LOGGER.info("{} is invalid due to being solely uppercased.", tModToName);
+                        GTLoggers.GT_ORE_DICT_LOGGER.info("{} is invalid due to being solely uppercased.", tModToName);
                         return;
                     } else if (Character.isUpperCase(aEvent.Name.charAt(0))) {
-                    GTLoggers.GT_ORE_DICT_LOGGER
-                        .info("{} is invalid due to the first character being uppercased.", tModToName);
+                        GTLoggers.GT_ORE_DICT_LOGGER
+                            .info("{} is invalid due to the first character being uppercased.", tModToName);
                     }
             } else {
                 if (aPrefix.skipActiveUnification()) {
@@ -1705,7 +1709,10 @@ public class GTProxy implements IFuelHandler {
                 if (aPrefix != aPrefix.mPrefixInto) {
                     String tNewName = aEvent.Name.replaceFirst(aPrefix.toString(), aPrefix.mPrefixInto.toString());
                     if (!GTOreDictUnificator.isRegisteringOres()) {
-                        GTLoggers.GT_ORE_DICT_LOGGER.info("{} uses a depricated Prefix, and is getting re-registered as {}", tModToName, tNewName);
+                        GTLoggers.GT_ORE_DICT_LOGGER.info(
+                            "{} uses a depricated Prefix, and is getting re-registered as {}",
+                            tModToName,
+                            tNewName);
                     }
                     GTOreDictUnificator.registerOre(tNewName, aEvent.Ore);
                     return;
@@ -1721,7 +1728,10 @@ public class GTProxy implements IFuelHandler {
                             if (aMaterial != aMaterial.mMaterialInto) {
                                 GTOreDictUnificator.registerOre(aPrefix, aMaterial.mMaterialInto, aEvent.Ore);
                                 if (!GTOreDictUnificator.isRegisteringOres()) {
-                                    GTLoggers.GT_ORE_DICT_LOGGER.info("{} uses a deprecated Material and is getting re-registered as {}", tModToName, aPrefix.get(aMaterial.mMaterialInto));
+                                    GTLoggers.GT_ORE_DICT_LOGGER.info(
+                                        "{} uses a deprecated Material and is getting re-registered as {}",
+                                        tModToName,
+                                        aPrefix.get(aMaterial.mMaterialInto));
                                 }
                                 return;
                             }
@@ -1914,7 +1924,9 @@ public class GTProxy implements IFuelHandler {
                                         tDye.name()
                                             .replaceFirst("dye", ""))) {
                                         GTOreDictUnificator.addToBlacklist(aEvent.Ore);
-                                        GTLoggers.GT_ORE_DICT_LOGGER.info("{} Oh man, why the fuck would anyone need a OreDictified Color for this, that is even too much for GregTech... do not report this, this is just a random Comment about how ridiculous this is.", tModToName);
+                                        GTLoggers.GT_ORE_DICT_LOGGER.info(
+                                            "{} Oh man, why the fuck would anyone need a OreDictified Color for this, that is even too much for GregTech... do not report this, this is just a random Comment about how ridiculous this is.",
+                                            tModToName);
                                         return;
                                     }
                                 }
@@ -2069,7 +2081,12 @@ public class GTProxy implements IFuelHandler {
                                     // Cheeseball way of not receiving a bunch of spam caused by 1 location
                                     // obviously fails if there are crammed entities in more than one spot.
                                     if (tEntity.posX != oldX && tEntity.posY != oldY && tEntity.posZ != oldZ) {
-                                        GT_FML_LOGGER.debug("CRAM: Excess entities: {} at X {} Y {} Z {}", tEntityCount, tEntity.posX, tEntity.posY, tEntity.posZ);
+                                        GT_FML_LOGGER.debug(
+                                            "CRAM: Excess entities: {} at X {} Y {} Z {}",
+                                            tEntityCount,
+                                            tEntity.posX,
+                                            tEntity.posY,
+                                            tEntity.posZ);
                                         oldX = tEntity.posX;
                                         oldY = tEntity.posY;
                                         oldZ = tEntity.posZ;
@@ -2083,7 +2100,8 @@ public class GTProxy implements IFuelHandler {
                 }
             }
             if (debugEntityCramming && (!aEvent.world.loadedEntityList.isEmpty())) {
-                GT_FML_LOGGER.debug("CRAM: Time spent checking {} microseconds", (System.nanoTime() - startTime) / 1000);
+                GT_FML_LOGGER
+                    .debug("CRAM: Time spent checking {} microseconds", (System.nanoTime() - startTime) / 1000);
             }
         }
 

@@ -12,7 +12,6 @@ import com.glodblock.github.loader.ItemAndBlockHolder;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 
 public class RecyclerBlacklistLoader implements Runnable {

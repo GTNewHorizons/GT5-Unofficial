@@ -53,7 +53,6 @@ import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTShapedRecipe;

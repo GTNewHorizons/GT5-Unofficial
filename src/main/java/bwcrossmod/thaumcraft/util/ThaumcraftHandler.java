@@ -43,7 +43,12 @@ public class ThaumcraftHandler {
             for (Pair<Object, Integer> a : aspectPair) {
                 Aspect aspect = (Aspect) a.getKey();
                 int amount = a.getValue();
-                BW_DEBUG_LOGGER.info("Stack:{} Damage:{} aspectPair: {} / {}", stack.getDisplayName(), stack.getItemDamage(), aspect.getName(), amount);
+                BW_DEBUG_LOGGER.info(
+                    "Stack:{} Damage:{} aspectPair: {} / {}",
+                    stack.getDisplayName(),
+                    stack.getItemDamage(),
+                    aspect.getName(),
+                    amount);
                 aspectList.add(aspect, amount);
             }
             ThaumcraftApi.registerObjectTag(stack, aspectList);

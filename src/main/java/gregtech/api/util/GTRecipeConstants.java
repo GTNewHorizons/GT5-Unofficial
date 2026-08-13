@@ -579,7 +579,10 @@ public class GTRecipeConstants {
             ItemStack[] alts = mOreDictAlt[i];
             Object input = inputs[i];
             if (input == null) {
-                GT_FML_LOGGER.error("addAssemblingLineRecipe {} --> {} there is some null item in that recipe", aResearchItem.getDisplayName(), aOutput.getUnlocalizedName());
+                GT_FML_LOGGER.error(
+                    "addAssemblingLineRecipe {} --> {} there is some null item in that recipe",
+                    aResearchItem.getDisplayName(),
+                    aOutput.getUnlocalizedName());
             }
             if (input instanceof ItemStack) {
                 tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash((ItemStack) input, true, false);
@@ -587,7 +590,10 @@ public class GTRecipeConstants {
                 for (ItemStack alt : ((ItemStack[]) input)) {
                     tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(alt, true, false);
                     if (alt == null) {
-                        GT_FML_LOGGER.error("addAssemblingLineRecipe {} --> {} there is some null alt item in that recipe", aResearchItem.getDisplayName(), aOutput.getUnlocalizedName());
+                        GT_FML_LOGGER.error(
+                            "addAssemblingLineRecipe {} --> {} there is some null alt item in that recipe",
+                            aResearchItem.getDisplayName(),
+                            aOutput.getUnlocalizedName());
                     }
                 }
                 tPersistentHash *= 31;

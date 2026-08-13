@@ -1,6 +1,7 @@
 package gregtech.loaders.preload;
 
-import gregtech.api.util.GTLog;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import gregtech.common.redstonecircuits.CircuitBasicLogic;
 import gregtech.common.redstonecircuits.CircuitBitAnd;
 import gregtech.common.redstonecircuits.CircuitCombinationLock;
@@ -10,8 +11,6 @@ import gregtech.common.redstonecircuits.CircuitRandomizer;
 import gregtech.common.redstonecircuits.CircuitRedstoneMeter;
 import gregtech.common.redstonecircuits.CircuitRepeater;
 import gregtech.common.redstonecircuits.CircuitTimer;
-
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class LoaderCircuitBehaviors implements Runnable {
 

@@ -1,5 +1,7 @@
 package gregtech.common.data.drone;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,11 +33,8 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
 import gregtech.api.net.PacketObserveMachine;
 import gregtech.api.objects.GTChunkManager;
-import gregtech.api.util.GTLog;
 import gregtech.common.entity.EntityDrone;
 import gregtech.common.items.ItemDroneRemoteInterface;
-
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class CameraViewportManager {
 

@@ -133,7 +133,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
@@ -3475,8 +3474,8 @@ public class RecipeLoader {
     }
 
     public static void registerCauldronRemaps() {
-        GT_FML_LOGGER.debug(
-            Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing cauldron washing recipes to replace cerium sources");
+        GT_FML_LOGGER
+            .debug(Mods.ModIDs.G_T_N_H_LANTHANIDES + ": processing cauldron washing recipes to replace cerium sources");
         registerCauldronCleaningFor(Materials.Cerium, WerkstoffMaterialPool.CeriumRichMixture.getBridgeMaterial());
         registerCauldronCleaningFor(
             Materials.Samarium,

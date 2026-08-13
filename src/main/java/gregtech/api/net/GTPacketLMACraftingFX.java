@@ -13,7 +13,6 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.util.item.AEItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GTLog;
 import gregtech.client.LMACraftingFX;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

@@ -19,7 +19,6 @@ import com.google.common.collect.ImmutableList;
 import gregtech.GTMod;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;

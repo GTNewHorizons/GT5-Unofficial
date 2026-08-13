@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,8 +9,6 @@ import net.minecraft.client.resources.data.IMetadataSection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 @SideOnly(Side.CLIENT)
 public class ColorsMetadataSection implements IMetadataSection {

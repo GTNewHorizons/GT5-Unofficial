@@ -158,12 +158,8 @@ public final class ShaderRecipe {
 
         final ShaderProgram program = new ShaderProgram(domain, vert, frag);
         if (program.getProgram() == 0) {
-            GT_SHADER_LOGGER.error(
-                "Shader {} [{}]: {} + {} did not compile, link or validate",
-                id(),
-                profile,
-                vert,
-                frag);
+            GT_SHADER_LOGGER
+                .error("Shader {} [{}]: {} + {} did not compile, link or validate", id(), profile, vert, frag);
             program.close();
             return null;
         }
@@ -199,8 +195,7 @@ public final class ShaderRecipe {
             final String name = attributeNames.get(i);
             final int location = GL20.glGetAttribLocation(program, name);
             if (location < 0) {
-                GT_SHADER_LOGGER
-                    .error("Shader {} [{}]: vertex attribute {} is missing or unused", id(), profile, name);
+                GT_SHADER_LOGGER.error("Shader {} [{}]: vertex attribute {} is missing or unused", id(), profile, name);
                 return null;
             }
             final VertexAttribute kind = attributeKinds.get(i);

@@ -36,7 +36,6 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTSplit;
 
 @IMetaTileEntity.SkipGenerateDescription

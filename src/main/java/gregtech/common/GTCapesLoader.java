@@ -1,5 +1,7 @@
 package gregtech.common;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
@@ -29,9 +31,6 @@ import cpw.mods.fml.common.network.FMLNetworkEvent.ServerDisconnectionFromClient
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.net.cape.GTPacketBroadcastCapes;
-import gregtech.api.util.GTLog;
-
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 @EventBusSubscriber
 @ParametersAreNonnullByDefault

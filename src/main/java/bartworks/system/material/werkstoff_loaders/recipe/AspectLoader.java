@@ -38,7 +38,10 @@ public class AspectLoader implements IWerkstoffRunnable {
         for (OrePrefixes enabledOrePrefixes : WerkstoffLoader.ENABLED_ORE_PREFIXES) {
             if (werkstoff.hasItemType(enabledOrePrefixes)) {
                 if (enabledOrePrefixes.getMaterialAmount() >= 3628800L || enabledOrePrefixes == OrePrefixes.ore) {
-                    MainMod.BW_DEBUG_LOGGER.info("OrePrefix: {} Material Amount: {}", enabledOrePrefixes.getName(), enabledOrePrefixes.getMaterialAmount() / 3628800L);
+                    MainMod.BW_DEBUG_LOGGER.info(
+                        "OrePrefix: {} Material Amount: {}",
+                        enabledOrePrefixes.getName(),
+                        enabledOrePrefixes.getMaterialAmount() / 3628800L);
                     if (Objects.nonNull(WerkstoffLoader.items.get(enabledOrePrefixes)))
                         ThaumcraftHandler.AspectAdder.addAspectViaBW(
                             werkstoff.get(enabledOrePrefixes),

@@ -1,7 +1,5 @@
 package gtnhlanth;
 
-import java.util.logging.Logger;
-
 import bartworks.API.WerkstoffAdderRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -27,6 +25,7 @@ import gtnhlanth.loader.RecipeLoader;
         + "required-after:GoodGenerator; "
         + "before:miscutils; ")
 public class GTNHLanthanides {
+
     @Mod.Instance(Mods.ModIDs.G_T_N_H_LANTHANIDES)
     public static GTNHLanthanides instance;
 

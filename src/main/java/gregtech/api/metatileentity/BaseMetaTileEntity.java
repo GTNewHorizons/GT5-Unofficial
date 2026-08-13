@@ -737,7 +737,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             try {
                 mMetaTileEntity.receiveClientEvent((byte) aEventID, (byte) aValue);
             } catch (Exception e) {
-                GT_FML_LOGGER.error("Encountered Exception while receiving Data from the Server, the Client should've been crashed by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
+                GT_FML_LOGGER.error(
+                    "Encountered Exception while receiving Data from the Server, the Client should've been crashed by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
                 GT_FML_LOGGER.error(e);
             }
         }

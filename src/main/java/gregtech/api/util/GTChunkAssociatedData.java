@@ -168,8 +168,9 @@ public abstract class GTChunkAssociatedData<T extends GTChunkAssociatedData.IDat
                         .stream())
                 .filter(SuperRegion::isDirty)
                 .count();
-            if (dirtyRegionCount > 0)
-                GT_FML_LOGGER.debug("Clearing ChunkAssociatedData with {} regions dirty. Data might have been lost!", dirtyRegionCount);
+            if (dirtyRegionCount > 0) GT_FML_LOGGER.debug(
+                "Clearing ChunkAssociatedData with {} regions dirty. Data might have been lost!",
+                dirtyRegionCount);
         }
         masterMap.clear();
     }
@@ -234,8 +235,8 @@ public abstract class GTChunkAssociatedData<T extends GTChunkAssociatedData.IDat
      * Be aware of the memory consumption though.
      */
     protected void loadAll(World w) {
-        if (GTValues.debugWorldData && masterMap.containsKey(w.provider.dimensionId))
-            GT_FML_LOGGER.error("Reloading ChunkAssociatedData {} for world {} discards old data!", mId, w.provider.dimensionId);
+        if (GTValues.debugWorldData && masterMap.containsKey(w.provider.dimensionId)) GT_FML_LOGGER
+            .error("Reloading ChunkAssociatedData {} for world {} discards old data!", mId, w.provider.dimensionId);
         if (!getSaveDirectory(w).isDirectory())
             // nothing to load...
             return;

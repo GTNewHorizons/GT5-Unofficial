@@ -89,7 +89,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.FakeCleanroom;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTItemTransfer;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTTooltipDataCache;
@@ -1115,7 +1114,9 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             for (int i = 0; i < mOutputItems.length; i++) if (mOutputItems[i] != null
                 && getBaseMetaTileEntity().getRandomNumber(10000) > cleanroom.getCleanness()) {
                     if (debugCleanroom) {
-                        GT_FML_LOGGER.debug("BasicMachine: Voiding output due to cleanness failure. Cleanness = {}", cleanroom.getCleanness());
+                        GT_FML_LOGGER.debug(
+                            "BasicMachine: Voiding output due to cleanness failure. Cleanness = {}",
+                            cleanroom.getCleanness());
                     }
                     mOutputItems[i] = null;
                 }

@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,8 +32,6 @@ import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.recipe.metadata.RecipeMetadataStorage;
 import gregtech.api.util.extensions.ArrayExt;
-
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class GTRecipeBuilder {
@@ -192,7 +192,7 @@ public class GTRecipeBuilder {
 
     private static void handleNullRecipeComponents(String componentType) {
         // place a breakpoint here to catch all these issues
-        GT_FML_LOGGER.error("null detected in {}",componentType);
+        GT_FML_LOGGER.error("null detected in {}", componentType);
         GT_FML_LOGGER.error(new NullPointerException());
         if (PANIC_MODE_NULL) {
             throw new IllegalArgumentException("null in argument");
@@ -618,7 +618,8 @@ public class GTRecipeBuilder {
             // Ignores ULV voltage
             for (int i = 1; i < GTValues.VP.length; i++) {
                 if (eut <= GTValues.V[i] && eut > GTValues.VP[i]) {
-                    GT_FML_LOGGER.error("EUt > Practical Voltage detected. EUt: {}, Practical Voltage: {}", eut, GTValues.VP[i]);
+                    GT_FML_LOGGER
+                        .error("EUt > Practical Voltage detected. EUt: {}, Practical Voltage: {}", eut, GTValues.VP[i]);
                     GT_FML_LOGGER.error(new IllegalArgumentException());
                     break;
                 }

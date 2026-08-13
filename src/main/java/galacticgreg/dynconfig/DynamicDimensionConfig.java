@@ -77,7 +77,10 @@ public class DynamicDimensionConfig {
                         break;
                     }
                     if (AsteroidProperties == null) {
-                        LOGGER.error("Something went wrong! no properties are existing for Asteroid dim: {} from mod container {}", mdd.getDimensionName(), mc.getModName());
+                        LOGGER.error(
+                            "Something went wrong! no properties are existing for Asteroid dim: {} from mod container {}",
+                            mdd.getDimensionName(),
+                            mc.getModName());
                         continue;
                     }
 

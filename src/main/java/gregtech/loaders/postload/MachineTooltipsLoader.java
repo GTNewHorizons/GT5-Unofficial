@@ -1,13 +1,12 @@
 package gregtech.loaders.postload;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.util.GTLog;
 import gregtech.common.blocks.ItemMachines;
-
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class MachineTooltipsLoader implements Runnable {
 

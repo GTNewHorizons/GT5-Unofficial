@@ -1733,7 +1733,10 @@ public class WerkstoffLoader {
             int pos = 0;
             for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
                 timepreone = System.nanoTime();
-                MainMod.BW_DEBUG_LOGGER.info("Werkstoff is null or id < 0 ? {} {}", werkstoff == null || werkstoff.getmID() < 0, System.nanoTime() - timepreone);
+                MainMod.BW_DEBUG_LOGGER.info(
+                    "Werkstoff is null or id < 0 ? {} {}",
+                    werkstoff == null || werkstoff.getmID() < 0,
+                    System.nanoTime() - timepreone);
                 if (werkstoff == null || werkstoff.getmID() < 0) {
                     progressBar.step("");
                     continue;
@@ -1895,7 +1898,10 @@ public class WerkstoffLoader {
                 && Materials.get(werkstoff.getDefaultName()).mMetaItemSubID != -1
                 && (werkstoff.getGenerationFeatures().toGenerate & p.getMaterialGenerationBits()) != 0
                 && OreDictHandler.getItemStack(werkstoff.getDefaultName(), p, 1) != null) {
-                MainMod.BW_DEBUG_LOGGER.info("Found: {}{} in GT material system, disable and reroute my Items to that, also add a Tooltip.", p, werkstoff.getVarName());
+                    MainMod.BW_DEBUG_LOGGER.info(
+                        "Found: {}{} in GT material system, disable and reroute my Items to that, also add a Tooltip.",
+                        p,
+                        werkstoff.getVarName());
                     werkstoff.getGenerationFeatures()
                         .removePrefix(p);
                 }

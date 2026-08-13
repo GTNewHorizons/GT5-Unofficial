@@ -394,8 +394,7 @@ public class GTModHandler {
             if (PANIC_MODE_NULL) {
                 GT_FML_LOGGER.fatal(log_message);
                 GT_FML_LOGGER.fatal(new Exception());
-            }
-            else{
+            } else {
                 GT_FML_LOGGER.info(log_message);
                 GT_FML_LOGGER.info(new Exception());
             }

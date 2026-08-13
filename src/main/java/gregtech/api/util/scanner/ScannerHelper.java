@@ -42,7 +42,6 @@ import gregtech.api.interfaces.tileentity.IBasicEnergyContainer;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GTLog;
 import gregtech.common.pollution.Pollution;
 import ic2.api.energy.tile.IEnergyConductor;
 import ic2.api.reactor.IReactor;

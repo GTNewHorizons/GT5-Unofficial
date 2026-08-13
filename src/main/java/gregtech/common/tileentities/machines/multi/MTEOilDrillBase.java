@@ -58,7 +58,6 @@ import gregtech.api.objects.GTChunkManager;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ValidationResult;
@@ -670,7 +669,12 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             // towards zero.
             int zChunk = Math.floorDiv(tChunk.chunkZPos, range) * range;
             if (debugDriller) {
-                GT_FML_LOGGER.debug("tChunk.chunkXPos = {} tChunk.chunkZPos = {} xChunk = {} zChunk = {}", tChunk.chunkXPos, tChunk.chunkZPos, xChunk, zChunk);
+                GT_FML_LOGGER.debug(
+                    "tChunk.chunkXPos = {} tChunk.chunkZPos = {} xChunk = {} zChunk = {}",
+                    tChunk.chunkXPos,
+                    tChunk.chunkZPos,
+                    xChunk,
+                    zChunk);
             }
 
             for (int i = 0; i < range; i++) {

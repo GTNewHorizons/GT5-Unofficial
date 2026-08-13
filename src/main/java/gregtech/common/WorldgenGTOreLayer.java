@@ -27,7 +27,6 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.ores.OreManager;
 import gregtech.common.worldgen.IWorldgenLayer;
@@ -349,7 +348,15 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         int limitEastX, int limitNorthZ, int limitSouthZ) {
 
         if (debugOrevein && !dryRun) {
-            GT_FML_LOGGER.debug("Trying Orevein:{} Dimension={} mX={} mZ={} oreseedX={} oreseedZ={} cY={}", this.mWorldGenName, world.provider.getDimensionName(), chunkX / 16, chunkZ / 16, seedX / 16, seedZ / 16, veinMinY);
+            GT_FML_LOGGER.debug(
+                "Trying Orevein:{} Dimension={} mX={} mZ={} oreseedX={} oreseedZ={} cY={}",
+                this.mWorldGenName,
+                world.provider.getDimensionName(),
+                chunkX / 16,
+                chunkZ / 16,
+                seedX / 16,
+                seedZ / 16,
+                veinMinY);
         }
         double dx = chunkX / 16 - seedX / 16;
         double dz = chunkZ / 16 - seedZ / 16;
@@ -435,7 +442,18 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
             }
         }
         if (debugOrevein && !dryRun) {
-            GT_FML_LOGGER.debug(" wXVein{} eXVein{} nZVein{} sZVein{} locDen={} Den={} Sec={} Spo={} Bet={} Pri={}", veinWestX, veinEastX, veinNorthZ, veinSouthZ, localDensity, this.mDensity, placeCount[1], placeCount[3], placeCount[2], placeCount[0]);
+            GT_FML_LOGGER.debug(
+                " wXVein{} eXVein{} nZVein{} sZVein{} locDen={} Den={} Sec={} Spo={} Bet={} Pri={}",
+                veinWestX,
+                veinEastX,
+                veinNorthZ,
+                veinSouthZ,
+                localDensity,
+                this.mDensity,
+                placeCount[1],
+                placeCount[3],
+                placeCount[2],
+                placeCount[0]);
         }
         // Something (at least the bottom layer must have 1 block) must have been placed, return true
         return ORE_PLACED;

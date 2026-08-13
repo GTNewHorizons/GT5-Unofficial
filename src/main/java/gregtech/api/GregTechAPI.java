@@ -40,7 +40,6 @@ import gregtech.api.threads.RunnableCableUpdate;
 import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.CircuitryBehavior;
 import gregtech.api.util.GTCreativeTab;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -249,8 +248,10 @@ public class GregTechAPI {
      *         Null-Pointer into it.
      */
     public static ItemStack getUnificatedOreDictStack(ItemStack aOreStack) {
-        if (!GregTechAPI.sPreloadFinished)
-            GT_FML_LOGGER.error("GregTechAPI ERROR: {}.{} - OreDict Unification Entries are not registered now, please call it in the postload phase.", aOreStack.getItem(), aOreStack.getItemDamage());
+        if (!GregTechAPI.sPreloadFinished) GT_FML_LOGGER.error(
+            "GregTechAPI ERROR: {}.{} - OreDict Unification Entries are not registered now, please call it in the postload phase.",
+            aOreStack.getItem(),
+            aOreStack.getItemDamage());
         return GTOreDictUnificator.get(true, aOreStack);
     }
 

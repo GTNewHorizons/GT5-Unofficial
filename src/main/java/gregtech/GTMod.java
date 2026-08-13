@@ -1,10 +1,10 @@
 package gregtech;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_ORE_DICT_LOGGER;
 import static gregtech.GT_Version.VERSION_MAJOR;
 import static gregtech.GT_Version.VERSION_MINOR;
 import static gregtech.GT_Version.VERSION_PATCH;
-import static gregtech.GTLoggers.GT_FML_LOGGER;
-import static gregtech.GTLoggers.GT_ORE_DICT_LOGGER;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.util.GTRecipe.setItemStacks;
 
@@ -518,8 +518,10 @@ public class GTMod {
 
         if (GTValues.D1) {
             GTModHandler.sSingleNonBlockDamagableRecipeList.forEach(
-                iRecipe -> GT_FML_LOGGER.debug("=> {}", iRecipe.getRecipeOutput()
-                    .getDisplayName()));
+                iRecipe -> GT_FML_LOGGER.debug(
+                    "=> {}",
+                    iRecipe.getRecipeOutput()
+                        .getDisplayName()));
         }
         new CraftingRecipeLoader().run();
         GTModHandler.removeRecipeByOutput(ItemList.IC2_ForgeHammer.getWildcard(1L));

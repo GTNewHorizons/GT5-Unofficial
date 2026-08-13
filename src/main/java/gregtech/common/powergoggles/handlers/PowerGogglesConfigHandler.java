@@ -1,15 +1,12 @@
 package gregtech.common.powergoggles.handlers;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.gtnewhorizons.modularui.api.math.Color;
-
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class PowerGogglesConfigHandler {
 

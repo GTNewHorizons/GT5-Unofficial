@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -34,8 +36,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
-
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 /**
  * Optional recipe-state dumper for auditing a recipe mutation.

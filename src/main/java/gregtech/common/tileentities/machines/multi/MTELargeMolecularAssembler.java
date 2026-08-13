@@ -82,7 +82,6 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.net.GTPacketLMACraftingFX;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTELargeMolecularAssemblerGui;

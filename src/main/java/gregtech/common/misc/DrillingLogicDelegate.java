@@ -14,7 +14,6 @@ import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ores.OreManager;

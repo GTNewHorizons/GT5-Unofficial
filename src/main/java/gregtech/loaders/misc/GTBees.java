@@ -101,7 +101,8 @@ public class GTBees {
         machineBoostEffect = new GTEffectMachineBoost();
 
         if (GalaxySpace.isModLoaded() && TwilightForest.isModLoaded()) {
-            GTLoggers.GT_FML_LOGGER.info("treetwisterEffect: GalaxySpace and TwilightForest loaded, using default impl");
+            GTLoggers.GT_FML_LOGGER
+                .info("treetwisterEffect: GalaxySpace and TwilightForest loaded, using default impl");
             treetwisterEffect = new GTEffectTreeTwister();
         } else {
             GTLoggers.GT_FML_LOGGER

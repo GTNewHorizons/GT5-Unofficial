@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.machine;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,7 +14,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GTLog;
 import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.block.base.BasicTileBlockWithTooltip;
@@ -20,8 +21,6 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
 import gtPlusPlus.core.tileentities.general.TileEntityVolumetricFlaskSetter;
-
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
 

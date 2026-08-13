@@ -80,7 +80,6 @@ import gregtech.api.metatileentity.implementations.MTETransformer;
 import gregtech.api.metatileentity.implementations.MTEWetTransformer;
 import gregtech.api.metatileentity.implementations.MTEWirelessEnergy;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTLog;
 import gregtech.common.tileentities.automation.MTEChestBuffer;
 import gregtech.common.tileentities.automation.MTEFilter;
 import gregtech.common.tileentities.automation.MTEItemDistributor;

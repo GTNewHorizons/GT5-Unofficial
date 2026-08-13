@@ -55,7 +55,6 @@ import gregtech.api.structure.error.PositionedStructureError;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.config.MachineStats;
@@ -402,8 +401,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
                 return true;
 
             case INVALID:
-                if (debugCleanroom)
-                    GT_FML_LOGGER.debug("Cleanroom: Invalid block at offset ({}, {}, {}).", dx, dy, dz);
+                if (debugCleanroom) GT_FML_LOGGER.debug("Cleanroom: Invalid block at offset ({}, {}, {}).", dx, dy, dz);
                 errors.add(
                     new PositionedStructureError(
                         aBaseMetaTileEntity.getXCoord() + dx,
@@ -480,8 +478,8 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             return false;
         }
 
-        if (debugCleanroom)
-            GT_FML_LOGGER.debug("Cleanroom: dxMin = {}, dxMax = {}, dzMin = {}, dzMax = {}.", dxMin, dxMax, dzMin, dzMax);
+        if (debugCleanroom) GT_FML_LOGGER
+            .debug("Cleanroom: dxMin = {}, dxMax = {}, dzMin = {}, dzMax = {}.", dxMin, dxMax, dzMin, dzMax);
         return true;
     }
 
@@ -645,8 +643,8 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
         }
         mHeight = -dyMin + 1;
 
-        if (debugCleanroom)
-            GT_FML_LOGGER.debug("Cleanroom: Structure complete. Found {} casings, {} other blocks.", casingCount, otherCount);
+        if (debugCleanroom) GT_FML_LOGGER
+            .debug("Cleanroom: Structure complete. Found {} casings, {} other blocks.", casingCount, otherCount);
 
         // Validate structure.
         if (this.mEnergyHatches.size() != 1) {

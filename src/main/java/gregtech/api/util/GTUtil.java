@@ -157,7 +157,8 @@ public class GTUtil {
             world.getBlockMetadata(x, 0, z);
             aChunk = world.getChunkFromBlockCoords(x, z);
             if (aChunk == null) {
-                GT_FML_LOGGER.error("Some important Chunk does not exist for some reason at Coordinates X: {} and Z: {}", x, z);
+                GT_FML_LOGGER
+                    .error("Some important Chunk does not exist for some reason at Coordinates X: {} and Z: {}", x, z);
                 return false;
             }
         }

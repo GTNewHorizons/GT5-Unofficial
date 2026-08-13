@@ -1,5 +1,7 @@
 package gregtech.api.objects;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,9 +23,6 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GTLog;
-
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 /**
  * Handles re-initialization of chunks after a server restart.
@@ -130,8 +129,11 @@ public class GTChunkManager implements OrderedLoadingCallback, PlayerOrderedLoad
                     GT_FML_LOGGER.debug("GTChunkManager: ForgeChunkManager.requestTicket failed");
                 return false;
             }
-            if (GTValues.debugChunkloaders)
-                GT_FML_LOGGER.debug("GTChunkManager: ticket issued for machine at: ({}, {}, {})", owner.xCoord, owner.yCoord, owner.zCoord);
+            if (GTValues.debugChunkloaders) GT_FML_LOGGER.debug(
+                "GTChunkManager: ticket issued for machine at: ({}, {}, {})",
+                owner.xCoord,
+                owner.yCoord,
+                owner.zCoord);
             NBTTagCompound tag = ticket.getModData();
             tag.setInteger("OwnerX", owner.xCoord);
             tag.setInteger("OwnerY", owner.yCoord);
@@ -168,7 +170,11 @@ public class GTChunkManager implements OrderedLoadingCallback, PlayerOrderedLoad
         Ticket ticket = instance.registeredTickets.get(owner);
         if (ticket != null) {
             if (GTValues.debugChunkloaders) {
-                GT_FML_LOGGER.debug("GTChunkManager: ticket released by machine at: ({}, {}, {})", owner.xCoord, owner.yCoord, owner.zCoord);
+                GT_FML_LOGGER.debug(
+                    "GTChunkManager: ticket released by machine at: ({}, {}, {})",
+                    owner.xCoord,
+                    owner.yCoord,
+                    owner.zCoord);
                 for (ChunkCoordIntPair chunk : ticket.getChunkList())
                     GT_FML_LOGGER.debug("GTChunkManager: Chunk release: ({}, {})", chunk.chunkXPos, chunk.chunkZPos);
             }
@@ -180,7 +186,11 @@ public class GTChunkManager implements OrderedLoadingCallback, PlayerOrderedLoad
     public static void printTickets() {
         GT_FML_LOGGER.debug("GTChunkManager: Start forced chunks dump:");
         instance.registeredTickets.forEach((machine, ticket) -> {
-            GT_FML_LOGGER.debug("GTChunkManager: Chunks forced by the machine at ({}, {}, {})", machine.xCoord, machine.yCoord, machine.zCoord);
+            GT_FML_LOGGER.debug(
+                "GTChunkManager: Chunks forced by the machine at ({}, {}, {})",
+                machine.xCoord,
+                machine.yCoord,
+                machine.zCoord);
             if (ticket.isPlayerTicket()) GT_FML_LOGGER.debug(" Owner: {}", ticket.getPlayerName());
             for (ChunkCoordIntPair c : ticket.getChunkList()) {
                 GT_FML_LOGGER.debug("({}, {}), ", c.chunkXPos, c.chunkZPos);

@@ -75,7 +75,7 @@ public class RadioHatchCompat {
                     RadioHatchCompat.TranslateSet.add(translate);
                     MainMod.BW_DEBUG_LOGGER.info(translate);
                     MainMod.BW_DEBUG_LOGGER
-                            .info("Generate: {}{}", BaseItemComponent.ComponentTypes.ROD, mats.getUnlocalizedName());
+                        .info("Generate: {}{}", BaseItemComponent.ComponentTypes.ROD, mats.getUnlocalizedName());
                 }
 
                 if (OreDictionary.getOres("stickLong" + mats.getUnlocalizedName())
@@ -85,7 +85,7 @@ public class RadioHatchCompat {
                     GameRegistry.UniqueIdentifier ui2 = GameRegistry.findUniqueIdentifierFor(itemRodLong);
                     ownerItems.replace(ui2, bartworks, gtpp);
                     MainMod.BW_DEBUG_LOGGER
-                            .info("Generate: {}{}", BaseItemComponent.ComponentTypes.RODLONG, mats.getUnlocalizedName());
+                        .info("Generate: {}{}", BaseItemComponent.ComponentTypes.RODLONG, mats.getUnlocalizedName());
                 }
 
             }

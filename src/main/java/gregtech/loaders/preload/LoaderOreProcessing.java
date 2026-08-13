@@ -1,6 +1,7 @@
 package gregtech.loaders.preload;
 
-import gregtech.api.util.GTLog;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import gregtech.loaders.oreprocessing.ProcessingAll;
 import gregtech.loaders.oreprocessing.ProcessingBlock;
 import gregtech.loaders.oreprocessing.ProcessingBolt;
@@ -43,8 +44,6 @@ import gregtech.loaders.oreprocessing.ProcessingToolHead;
 import gregtech.loaders.oreprocessing.ProcessingToolOther;
 import gregtech.loaders.oreprocessing.ProcessingTransforming;
 import gregtech.loaders.oreprocessing.ProcessingWire;
-
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class LoaderOreProcessing implements Runnable {
 

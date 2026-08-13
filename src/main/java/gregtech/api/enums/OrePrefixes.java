@@ -3061,7 +3061,12 @@ public class OrePrefixes {
 
         for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
             if (D2) {
-                GTLoggers.GT_ORE_DICT_LOGGER.info("Processing '{}' with the Prefix '{}' and the Material '{}' at {}", aOreDictName, name, aMaterial.mName, GTUtility.getClassName(tRegistrator));
+                GTLoggers.GT_ORE_DICT_LOGGER.info(
+                    "Processing '{}' with the Prefix '{}' and the Material '{}' at {}",
+                    aOreDictName,
+                    name,
+                    aMaterial.mName,
+                    GTUtility.getClassName(tRegistrator));
             }
             tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GTUtility.copyAmount(1, aStack));
         }

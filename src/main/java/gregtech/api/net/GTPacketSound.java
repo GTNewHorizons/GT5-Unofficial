@@ -1,5 +1,7 @@
 package gregtech.api.net;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.io.IOException;
 
 import net.minecraft.util.ResourceLocation;
@@ -7,12 +9,9 @@ import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufOutputStream;
-
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class GTPacketSound extends GTPacket {
 

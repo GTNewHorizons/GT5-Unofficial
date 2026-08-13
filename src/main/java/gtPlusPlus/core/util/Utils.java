@@ -1,5 +1,7 @@
 package gtPlusPlus.core.util;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.io.File;
 
 import net.minecraft.client.Minecraft;
@@ -10,14 +12,11 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
-
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class Utils {
 

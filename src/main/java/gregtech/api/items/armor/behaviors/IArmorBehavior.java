@@ -115,7 +115,8 @@ public interface IArmorBehavior {
      */
     @NotNull
     default IArmorBehavior merge(@NotNull IArmorBehavior other) {
-        GTLoggers.GT_FML_LOGGER.warn("Tried to merge armor behavior that does not support stacking! {} -> {}", other, this);
+        GTLoggers.GT_FML_LOGGER
+            .warn("Tried to merge armor behavior that does not support stacking! {} -> {}", other, this);
         return this;
     }
 

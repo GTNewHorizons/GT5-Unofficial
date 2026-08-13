@@ -16,7 +16,6 @@ import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.ores.OreManager;
@@ -140,7 +139,13 @@ public class WorldgenGTOreSmallPieces extends GTWorldgen implements IWorldgenLay
             }
         }
         if (debugSmallOres) {
-            GT_FML_LOGGER.debug("Small Ore:{} @ DimName={} mX={} mZ={} ore={}", this.mWorldGenName, world.provider.getDimensionName(), chunkX / 16, chunkZ / 16, count);
+            GT_FML_LOGGER.debug(
+                "Small Ore:{} @ DimName={} mX={} mZ={} ore={}",
+                this.mWorldGenName,
+                world.provider.getDimensionName(),
+                chunkX / 16,
+                chunkZ / 16,
+                count);
         }
         return true;
     }

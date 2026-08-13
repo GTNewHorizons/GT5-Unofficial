@@ -1499,7 +1499,11 @@ public class GTUtility {
             new NBTTagString(StatCollector.translateToLocalFormatted("gt.book.credits", aAuthor, sBookCount)));
         tNBT.setTag("pages", tNBTList);
         rStack.setTagCompound(tNBT);
-        GT_FML_LOGGER.debug("GTMod: Added Book to Book List  -  Mapping: '{}'  -  Name: '{}'  -  Author: '{}'", aMapping, aTitle, aAuthor);
+        GT_FML_LOGGER.debug(
+            "GTMod: Added Book to Book List  -  Mapping: '{}'  -  Name: '{}'  -  Author: '{}'",
+            aMapping,
+            aTitle,
+            aAuthor);
         GregTechAPI.sBookList.put(aMapping, rStack);
         return copyOrNull(rStack);
     }

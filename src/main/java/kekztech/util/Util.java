@@ -10,11 +10,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import kekztech.KekzCore;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import kekztech.KekzCore;
 import kekztech.common.items.ErrorItem;
 
 public class Util {

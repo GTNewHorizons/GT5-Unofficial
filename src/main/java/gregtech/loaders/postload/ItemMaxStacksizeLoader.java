@@ -1,5 +1,7 @@
 package gregtech.loaders.postload;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -7,9 +9,6 @@ import net.minecraft.item.Item;
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTLog;
-
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 public class ItemMaxStacksizeLoader implements Runnable {
 

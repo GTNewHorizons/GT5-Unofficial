@@ -78,10 +78,7 @@ public enum ShaderProfile {
             .get(Mods.ModIDs.ANGELICA)
             .getProcessedVersion();
         if (found.compareTo(new DefaultArtifactVersion(MIN_ANGELICA)) < 0) {
-            GT_SHADER_LOGGER.info(
-                "Angelica {} version lower than required {}",
-                found.getVersionString(),
-                MIN_ANGELICA);
+            GT_SHADER_LOGGER.info("Angelica {} version lower than required {}", found.getVersionString(), MIN_ANGELICA);
             return false;
         }
         return true;

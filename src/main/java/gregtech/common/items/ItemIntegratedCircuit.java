@@ -49,7 +49,6 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTConfig;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.gui.modularui.item.IntegratedCircuitGui;
 import gregtech.common.items.toolbox.ToolboxUtil;

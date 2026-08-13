@@ -40,7 +40,6 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
@@ -194,7 +193,11 @@ public class MTEPump extends MTEBasicMachine {
     public void saveNBTData(NBTTagCompound aNBT) {
         boolean wasPumping = this.wasPumping || !this.mPumpList.isEmpty();
         if (debugBlockPump) {
-            GT_FML_LOGGER.debug("PUMP: NBT:Save - WasPumping - {} blocks ({}, {})", wasPumping, this.mPrimaryPumpedBlock, this.mSecondaryPumpedBlock);
+            GT_FML_LOGGER.debug(
+                "PUMP: NBT:Save - WasPumping - {} blocks ({}, {})",
+                wasPumping,
+                this.mPrimaryPumpedBlock,
+                this.mSecondaryPumpedBlock);
         }
         super.saveNBTData(aNBT);
         aNBT.setString(
@@ -246,7 +249,11 @@ public class MTEPump extends MTEBasicMachine {
         }
 
         if (debugBlockPump) {
-            GT_FML_LOGGER.debug("PUMP: NBT:Load - WasPumping - {}({}) {}", this.wasPumping, aNBT.getString("mPumpedBlock1"), this.mPrimaryPumpedBlock);
+            GT_FML_LOGGER.debug(
+                "PUMP: NBT:Load - WasPumping - {}({}) {}",
+                this.wasPumping,
+                aNBT.getString("mPumpedBlock1"),
+                this.mPrimaryPumpedBlock);
         }
     }
 
@@ -363,7 +370,11 @@ public class MTEPump extends MTEBasicMachine {
                             int y = getYOfPumpHead();
 
                             if (debugBlockPump && this.mPrimaryPumpedBlock != null) {
-                                GT_FML_LOGGER.debug("PUMP: Had an invalid pump block. Trying to find a fluid at Y: {} Previous blocks 1: {} 2: {}", y, this.mPrimaryPumpedBlock, this.mSecondaryPumpedBlock);
+                                GT_FML_LOGGER.debug(
+                                    "PUMP: Had an invalid pump block. Trying to find a fluid at Y: {} Previous blocks 1: {} 2: {}",
+                                    y,
+                                    this.mPrimaryPumpedBlock,
+                                    this.mSecondaryPumpedBlock);
                             }
                             // First look down
                             checkForFluidToPump(x, y - 1, z);
@@ -391,7 +402,11 @@ public class MTEPump extends MTEBasicMachine {
                                 // 3) We have an empty queue and enough time has passed
                                 // 4) A long while has passed
                                 if (debugBlockPump) {
-                                    GT_FML_LOGGER.debug("PUMP: Rebuilding pump list - Size {} WasPumping: {} Timer {}", this.mPumpList.size(), this.wasPumping, getBaseMetaTileEntity().getTimer());
+                                    GT_FML_LOGGER.debug(
+                                        "PUMP: Rebuilding pump list - Size {} WasPumping: {} Timer {}",
+                                        this.mPumpList.size(),
+                                        this.wasPumping,
+                                        getBaseMetaTileEntity().getTimer());
                                 }
                                 int yPump = getBaseMetaTileEntity().getYCoord() - 1, yHead = getYOfPumpHead();
 

@@ -32,7 +32,6 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
@@ -222,7 +221,10 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
         if (!aBaseMetaTileEntity.isUniversalEnergyStored((long) ENERGY[mTier] * (mSpeed - mProgresstime))) {
             mMaxProgresstime = 0;
             if (debugBlockMiner) {
-                GT_FML_LOGGER.debug("MINER: Not enough energy yet, want {} have {}", ENERGY[mTier] * mSpeed, aBaseMetaTileEntity.getUniversalEnergyStored());
+                GT_FML_LOGGER.debug(
+                    "MINER: Not enough energy yet, want {} have {}",
+                    ENERGY[mTier] * mSpeed,
+                    aBaseMetaTileEntity.getUniversalEnergyStored());
             }
             return;
         }

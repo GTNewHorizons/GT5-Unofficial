@@ -46,7 +46,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTCLSCompat;
 import gregtech.api.util.GTForestryCompat;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
@@ -70,11 +69,16 @@ public class GTPostLoad {
         GTMod.proxy.activateOreDictHandler();
 
         // noinspection UnstableApiUsage// Stable enough for this project
-        GT_FML_LOGGER
-            .info("Congratulations, you have been waiting long enough ({}). Have a Cake.", stopwatch.stop());
-        GT_FML_LOGGER.debug("GTMod: List of Lists of Tool Recipes: {}", GTModHandler.sSingleNonBlockDamagableRecipeList_list.toString());
-        GT_FML_LOGGER.debug("GTMod: Vanilla Recipe List -> Outputs null or stackSize <=0: {}", GTModHandler.sVanillaRecipeList_warntOutput.toString());
-        GT_FML_LOGGER.debug("GTMod: Single Non Block Damageable Recipe List -> Outputs null or stackSize <=0: {}", GTModHandler.sSingleNonBlockDamagableRecipeList_warntOutput.toString());
+        GT_FML_LOGGER.info("Congratulations, you have been waiting long enough ({}). Have a Cake.", stopwatch.stop());
+        GT_FML_LOGGER.debug(
+            "GTMod: List of Lists of Tool Recipes: {}",
+            GTModHandler.sSingleNonBlockDamagableRecipeList_list.toString());
+        GT_FML_LOGGER.debug(
+            "GTMod: Vanilla Recipe List -> Outputs null or stackSize <=0: {}",
+            GTModHandler.sVanillaRecipeList_warntOutput.toString());
+        GT_FML_LOGGER.debug(
+            "GTMod: Single Non Block Damageable Recipe List -> Outputs null or stackSize <=0: {}",
+            GTModHandler.sSingleNonBlockDamagableRecipeList_warntOutput.toString());
     }
 
     public static void removeIc2Recipes(Map<IRecipeInput, RecipeOutput> aMaceratorRecipeList,

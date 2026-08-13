@@ -16,7 +16,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
@@ -103,8 +102,8 @@ public class WorldgenStone extends GTWorldgen {
                         validStoneSeeds.put(hash, new StoneSeeds(true));
                         // Add to generation list
                         stones.add(new ValidSeeds(x, z));
-                        if (debugStones)
-                            GT_FML_LOGGER.debug("New stoneseed={} x={} z={} realSize={}", mWorldGenName, x, z, realSize);
+                        if (debugStones) GT_FML_LOGGER
+                            .debug("New stoneseed={} x={} z={} realSize={}", mWorldGenName, x, z, realSize);
                     } else {
                         validStoneSeeds.put(hash, new StoneSeeds(false));
                     }
