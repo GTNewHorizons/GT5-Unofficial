@@ -78,7 +78,6 @@ public final class MaterialsOres {
             new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 12) });
 
     // Alburnite
-    // Ag8GeTe2S4
     public static final Material ALBURNITE = new Material(
         "Alburnite", // Material Name
         MaterialState.ORE, // State
@@ -89,7 +88,7 @@ public final class MaterialsOres {
         -1,
         -1,
         0, // Radiation
-        new MaterialStack[] { // Na3AlF6
+        new MaterialStack[] { // Ag8GeTe2S4
             new MaterialStack(MaterialsElements.getInstance().GOLD, 8),
             new MaterialStack(MaterialsElements.getInstance().GERMANIUM, 1),
             new MaterialStack(MaterialsElements.getInstance().TELLURIUM, 2),
@@ -116,7 +115,6 @@ public final class MaterialsOres {
             new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 4) });
 
     // Comancheite
-    // Hg55N24(NH2,OH)4(Cl,Br)34
     public static final Material COMANCHEITE = new Material(
         "Comancheite", // Material Name
         MaterialState.ORE, // State
@@ -127,7 +125,7 @@ public final class MaterialsOres {
         -1,
         -1,
         0, // Radiation
-        new MaterialStack[] { // Na3AlF6
+        new MaterialStack[] { // Hg55N24(NH2,OH)4(Cl,Br)34
             new MaterialStack(MaterialsElements.getInstance().MERCURY, 54 / 4),
             new MaterialStack(MaterialsElements.getInstance().NITROGEN, 28 / 4),
             new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 12 / 4),
@@ -166,7 +164,6 @@ public final class MaterialsOres {
             new MaterialStack(MaterialsElements.getInstance().FLUORINE, 6) });
 
     // Demicheleite-(Br)
-    // BiSBr
     public static final Material DEMICHELEITE_BR = new Material(
         "Demicheleite (Br)", // Material Name
         MaterialState.ORE, // State
@@ -177,7 +174,7 @@ public final class MaterialsOres {
         -1,
         -1,
         -1, // Radiation
-        new MaterialStack[] { // Na3AlF6
+        new MaterialStack[] { // BiSBr
             new MaterialStack(MaterialsElements.getInstance().BISMUTH, 13),
             new MaterialStack(MaterialsElements.getInstance().SULFUR, 11),
             new MaterialStack(MaterialsElements.getInstance().BROMINE, 1) });
@@ -306,7 +303,6 @@ public final class MaterialsOres {
             new MaterialStack(MaterialsElements.getInstance().OXYGEN, 19), });
 
     // Honeaite
-    // Au3TlTe2
     public static final Material HONEAITE = new Material(
         "Honeaite", // Material Name
         MaterialState.ORE, // State
@@ -317,13 +313,12 @@ public final class MaterialsOres {
         -1,
         -1,
         0, // Radiation
-        new MaterialStack[] { // Na3AlF6
+        new MaterialStack[] { // Au3TlTe2
             new MaterialStack(MaterialsElements.getInstance().GOLD, 3),
             new MaterialStack(MaterialsElements.getInstance().THALLIUM, 1),
             new MaterialStack(MaterialsElements.getInstance().TELLURIUM, 2) });
 
     // Irarsite
-    // (Ir,Ru,Rh,Pt)AsS
     public static final Material IRARSITE = new Material(
         "Irarsite", // Material Name
         MaterialState.ORE, // State
@@ -334,7 +329,7 @@ public final class MaterialsOres {
         -1,
         -1,
         0, // Radiation
-        new MaterialStack[] { // Na3AlF6
+        new MaterialStack[] { // (Ir,Ru,Rh,Pt)AsS
             new MaterialStack(MaterialsElements.getInstance().IRIDIUM, 1),
             new MaterialStack(MaterialsElements.getInstance().RUTHENIUM, 1),
             new MaterialStack(MaterialsElements.getInstance().RHODIUM, 1),
@@ -344,7 +339,6 @@ public final class MaterialsOres {
             new MaterialStack(MaterialsElements.getInstance().OXYGEN, 1) });
 
     // Kashinite
-    // (Ir,Rh)2S3
     public static final Material KASHINITE = new Material(
         "Kashinite", // Material Name
         MaterialState.ORE, // State
@@ -355,12 +349,11 @@ public final class MaterialsOres {
         -1,
         -1,
         0, // Radiation
-        new MaterialStack[] { // Na3AlF6
+        new MaterialStack[] { // (Ir,Rh)2S3
             new MaterialStack(MaterialsElements.getInstance().IRIDIUM, 2),
             new MaterialStack(MaterialsElements.getInstance().RHODIUM, 2),
             new MaterialStack(MaterialsElements.getInstance().SULFUR, 3) });
 
-    // Tl(Cl,Br)
     public static final Material LAFOSSAITE = new Material(
         "Lafossaite", // Material Name
         MaterialState.ORE, // State
@@ -371,7 +364,7 @@ public final class MaterialsOres {
         -1,
         -1,
         -1, // Radiation
-        new MaterialStack[] { // Na3AlF6
+        new MaterialStack[] { // Tl(Cl,Br)
             new MaterialStack(MaterialsElements.getInstance().CHLORINE, 1),
             new MaterialStack(MaterialsElements.getInstance().BROMINE, 1),
             new MaterialStack(MaterialsElements.getInstance().THALLIUM, 1) });
@@ -388,10 +381,9 @@ public final class MaterialsOres {
         -1, // Radiation
         new MaterialStack[] { // (Ce)2(CO3)3·8(H2O)
             new MaterialStack(MaterialsElements.getInstance().CERIUM, 2),
-            new MaterialStack(MaterialsElements.getInstance().OXYGEN, 3),
-            new MaterialStack(MaterialsElements.getInstance().CALCIUM, 3),
-            new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 2),
-            new MaterialStack(MaterialsElements.getInstance().OXYGEN, 1), }).setRecipeMergeFlag(true);
+            new MaterialStack(MaterialsElements.getInstance().CARBON, 3),
+            new MaterialStack(MaterialsElements.getInstance().OXYGEN, 17),
+            new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 16) });
 
     public static final Material LANTHANITE_LA = new Material(
         "Lanthanite (La)", // Material Name
@@ -405,10 +397,9 @@ public final class MaterialsOres {
         -1, // Radiation
         new MaterialStack[] { // (La)2(CO3)3·8(H2O)
             new MaterialStack(MaterialsElements.getInstance().LANTHANUM, 2),
-            new MaterialStack(MaterialsElements.getInstance().OXYGEN, 3),
-            new MaterialStack(MaterialsElements.getInstance().CALCIUM, 3),
-            new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 2),
-            new MaterialStack(MaterialsElements.getInstance().OXYGEN, 1), }).setRecipeMergeFlag(true);
+            new MaterialStack(MaterialsElements.getInstance().CARBON, 3),
+            new MaterialStack(MaterialsElements.getInstance().OXYGEN, 17),
+            new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 16) });
 
     public static final Material LANTHANITE_ND = new Material(
         "Lanthanite (Nd)", // Material Name
@@ -422,10 +413,9 @@ public final class MaterialsOres {
         -1, // Radiation
         new MaterialStack[] { // (Nd)2(CO3)3·8(H2O)
             new MaterialStack(MaterialsElements.getInstance().NEODYMIUM, 2),
-            new MaterialStack(MaterialsElements.getInstance().OXYGEN, 3),
-            new MaterialStack(MaterialsElements.getInstance().CALCIUM, 3),
-            new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 2),
-            new MaterialStack(MaterialsElements.getInstance().OXYGEN, 1), }).setRecipeMergeFlag(true);
+            new MaterialStack(MaterialsElements.getInstance().CARBON, 3),
+            new MaterialStack(MaterialsElements.getInstance().OXYGEN, 17),
+            new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 16) });
 
     // Iodine Source
     public static final Material LAUTARITE = new Material(
@@ -438,7 +428,7 @@ public final class MaterialsOres {
         -1,
         -1,
         -1, // Radiation
-        new MaterialStack[] { // Na3AlF6
+        new MaterialStack[] { // Ca(IO3)2
             new MaterialStack(MaterialsElements.getInstance().CALCIUM, 1),
             new MaterialStack(MaterialsElements.getInstance().IODINE, 2),
             new MaterialStack(MaterialsElements.getInstance().OXYGEN, 6) });
@@ -462,7 +452,6 @@ public final class MaterialsOres {
             new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 24) });
 
     // Miessiite
-    // Pd11Te2Se2
     public static final Material MIESSIITE = new Material(
         "Miessiite", // Material Name
         MaterialState.ORE, // State
@@ -473,7 +462,7 @@ public final class MaterialsOres {
         -1,
         -1,
         0, // Radiation
-        new MaterialStack[] { // Na3AlF6
+        new MaterialStack[] { // Pd11Te2Se2
             new MaterialStack(MaterialsElements.getInstance().PALLADIUM, 11),
             new MaterialStack(MaterialsElements.getInstance().TELLURIUM, 2),
             new MaterialStack(MaterialsElements.getInstance().SELENIUM, 2) });
@@ -496,7 +485,6 @@ public final class MaterialsOres {
             new MaterialStack(MaterialsElements.getInstance().OXYGEN, 8) });
 
     // Perroudite
-    // Hg5Ag4S5(I,Br)2Cl2
     public static final Material PERROUDITE = new Material(
         "Perroudite", // Material Name
         MaterialState.ORE, // State
@@ -507,7 +495,8 @@ public final class MaterialsOres {
         -1,
         -1,
         0, // Radiation
-        new MaterialStack[] { new MaterialStack(MaterialsElements.getInstance().SULFUR, 5),
+        new MaterialStack[] { // Hg5Ag4S5(I,Br)2Cl2
+            new MaterialStack(MaterialsElements.getInstance().SULFUR, 5),
             new MaterialStack(MaterialsElements.getInstance().SILVER, 4),
             new MaterialStack(MaterialsElements.getInstance().IODINE, 2),
             new MaterialStack(MaterialsElements.getInstance().MERCURY, 5),
@@ -535,7 +524,6 @@ public final class MaterialsOres {
             new MaterialStack(MaterialsElements.getInstance().OXYGEN, 6) });
 
     // Radiobarite
-    // Radium, Barium, Barite?
     public static final Material RADIOBARITE = new Material(
         "Barite (Ra)", // Material Name
         MaterialState.ORE, // State
@@ -546,7 +534,7 @@ public final class MaterialsOres {
         -1,
         -1,
         0, // Radiation
-        new MaterialStack[] { // Na3AlF6
+        new MaterialStack[] { // Radium, Barium, Barite?
             new MaterialStack(MaterialsElements.getInstance().BARIUM, 32),
             new MaterialStack(MaterialsElements.getInstance().RADIUM, 1),
             new MaterialStack(MaterialsElements.getInstance().SULFUR, 16),
@@ -766,7 +754,7 @@ public final class MaterialsOres {
         -1,
         -1,
         4, // Radiation
-        new MaterialStack[] { // Na3AlF6
+        new MaterialStack[] {
             new MaterialStack(MaterialsElements.getInstance().RADON, 2),
             new MaterialStack(MaterialsElements.getInstance().RADIUM, 1),
             new MaterialStack(MaterialsElements.getInstance().URANIUM235, 1),

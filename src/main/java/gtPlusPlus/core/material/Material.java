@@ -99,8 +99,6 @@ public class Material implements IOreMaterial {
 
     private boolean hasOre;
 
-    private boolean mMerge;
-
     public Material(final String materialName, final MaterialState defaultState, final MaterialStack... inputs) {
         this(materialName, defaultState, null, 0, null, -1, -1, -1, -1, false, "", 0, false, false, inputs);
     }
@@ -337,8 +335,6 @@ public class Material implements IOreMaterial {
         final TextureSet set, final long durability, short[] rgba, final int meltingPoint, final int boilingPoint,
         final long protons, final long neutrons, final boolean blastFurnace, String chemicalSymbol,
         final int radiationLevel, boolean generateCells, boolean generateFluid, final MaterialStack... inputs) {
-
-        mMerge = false;
 
         mMaterialMap.add(this);
 
@@ -1635,14 +1631,5 @@ public class Material implements IOreMaterial {
             list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Radioactive"));
             list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_HazmatWarning"));
         }
-    }
-
-    public boolean getRecipeMergeFlag() {
-        return this.mMerge;
-    }
-
-    public Material setRecipeMergeFlag(boolean tFlag) {
-        this.mMerge = tFlag;
-        return this;
     }
 }
