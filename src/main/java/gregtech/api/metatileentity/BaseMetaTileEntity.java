@@ -1901,8 +1901,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     /** @return whether {@link #injectEnergyUnits} could still accept energy this tick. */
     public boolean canAcceptEnergyThisTick() {
         if (!canAccessData() || mMetaTileEntity.maxAmperesIn() <= mAcceptedAmperes) return false;
-        long capacity = mMetaTileEntity.maxEUStore();
-        return Math.min(mMetaTileEntity.getEUVar(), capacity) < capacity;
+        return mMetaTileEntity.getEUVar() < mMetaTileEntity.maxEUStore();
     }
 
     /**
