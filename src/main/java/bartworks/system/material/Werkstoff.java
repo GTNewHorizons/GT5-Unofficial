@@ -478,8 +478,10 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             case COMPOUND:
             case MIXTURE:
             case BIOLOGICAL: {
-                for (int i = 0; i < this.CONTENTS.toArray().length; i++) {
-                    ret += (int) this.CONTENTS.toArray(new Pair[0])[i].getValue();
+                Pair<ISubTagContainer, Integer>[] tArray = this.CONTENTS.toArray(new Pair[0]);
+                int arrayLen = tArray.length;
+                for (int i = 0; i < arrayLen; i++) {
+                    ret += tArray[i].getValue();
                 }
                 break;
             }
