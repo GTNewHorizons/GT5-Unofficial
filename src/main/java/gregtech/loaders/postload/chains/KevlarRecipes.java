@@ -4,6 +4,7 @@ import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.preciseAssemblerR
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
+import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerNonCellRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
@@ -19,6 +20,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gtPlusPlus.core.fluids.GTPPFluids;
+import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class KevlarRecipes {
@@ -48,8 +50,8 @@ public class KevlarRecipes {
         // TerephthaloylChloride
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.RedMetalCatalyst.get(0))
-            .fluidInputs(Materials.Hexachloroxylene.getFluid(1000),Materials.TerephthalicAcid.getFluid(1000))
-            .fluidOutputs(Materials.TerephthaloylChloride.getFluid(2000),Materials.HydrochloricAcid.getFluid(2000))
+            .fluidInputs(Materials.Hexachloroxylene.getFluid(1000), Materials.TerephthalicAcid.getFluid(1000))
+            .fluidOutputs(Materials.TerephthaloylChloride.getFluid(2000), Materials.HydrochloricAcid.getFluid(2000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
@@ -75,14 +77,13 @@ public class KevlarRecipes {
 
         // Liquid Crystal Kevlar
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.ParaPhenylenediamine.getFluid(1000),Materials.TerephthaloylChloride.getFluid(1000))
+            .fluidInputs(Materials.ParaPhenylenediamine.getFluid(1000), Materials.TerephthaloylChloride.getFluid(1000))
             .fluidOutputs(Materials.LiquidCrystalKevlar.getFluid(1296L), Materials.HydrochloricAcid.getFluid(2000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
         // Part 2
-
 
         // Phosgenated MDI Mixture
         GTValues.RA.stdBuilder()
@@ -183,6 +184,15 @@ public class KevlarRecipes {
             .eut(TierEU.RECIPE_EV)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 2)
             .addTo(preciseAssemblerRecipes);
+
+        // Byproduct Super Glue
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.MethyleneDiphenylDiisocyanate.getDust(1))
+            .fluidOutputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(1_000))
+            .duration(4 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(fluidHeaterRecipes);
 
     }
 

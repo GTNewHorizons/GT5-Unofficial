@@ -13,9 +13,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static gtPlusPlus.core.fluids.GTPPFluids.Formaldehyde;
-import static gtPlusPlus.core.material.MaterialMisc.SODIUM_NITRATE;
-import static gtPlusPlus.core.util.minecraft.FluidUtils.getFilledCellFromFluidName;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import java.util.Locale;
@@ -41,7 +38,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ChemicalRecipes implements Runnable {
