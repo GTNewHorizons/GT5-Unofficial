@@ -143,12 +143,6 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     }
 
     @Override
-    public void onColorChangeServer(byte aColor) {
-        this.updateNetwork(false);
-        super.onColorChangeServer(aColor);
-    }
-
-    @Override
     public void onBlockDestroyed() {
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
 

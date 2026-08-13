@@ -187,12 +187,6 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe {
     }
 
     @Override
-    public void onColorChangeServer(byte aColor) {
-        this.updateNetwork(false);
-        super.onColorChangeServer(aColor);
-    }
-
-    @Override
     public void onBlockDestroyed() {
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
 

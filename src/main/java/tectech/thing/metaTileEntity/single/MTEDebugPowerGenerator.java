@@ -136,6 +136,15 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock implements ICo
     }
 
     @Override
+    public void onFirstTick(IGregTechTileEntity base) {
+        super.onFirstTick(base);
+        IGregTechTileEntity front = base.getIGregTechTileEntityAtSide(base.getFrontFacing());
+        if (front != null && front.getMetaTileEntity() instanceof MTEPipeLaser laser) {
+            laser.setCheckConnections();
+        }
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.isServerSide()) {
             if (!LASER) {
