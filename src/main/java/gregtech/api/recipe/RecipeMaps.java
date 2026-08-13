@@ -2209,7 +2209,6 @@ public final class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> curingMachineRecipes = RecipeMapBuilder
         .of("gt.recipe.curingmachine")
         .maxIO(1, 1, 1, 0)
-        .frontend(LargeNEIFrontend::new)
         .build();
 
     private static void addElectricImplosionRecipe(GTRecipeBuilder sourceBuilder) {
