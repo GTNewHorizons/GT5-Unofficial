@@ -9162,7 +9162,7 @@ GT5U.tooltip.bec-diode.bec-hatch-pos=Center left casing (input), center right ca
 
 # BEC Assembler Structure Hints
 GT5U.tooltip.bec-assembler.controller-pos=Front center, 16th layer
-GT5U.tooltip.bec-assembler.hatch-pos=Any electromagnetically-isolated casing
+GT5U.tooltip.bec-assembler.hatch-pos=Any outer electromagnetically-isolated casing, every other IO port ring 
 GT5U.tooltip.bec-assembler.bec-hatch-pos=Center left or right casing
 GT5U.tooltip.bec-assembler.los-hatch-pos=Center side casing of each ring
 
