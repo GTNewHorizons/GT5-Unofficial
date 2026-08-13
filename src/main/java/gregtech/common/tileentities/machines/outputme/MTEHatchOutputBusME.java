@@ -51,7 +51,7 @@ import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OutputBusType;
 import gregtech.api.interfaces.IMEConnectable;
@@ -454,7 +454,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                     s.setStackSize(tag.getLong("size"));
                     provider.addToCache(s);
                 } else {
-                    GTMod.GT_FML_LOGGER.warn(
+                    GTLoggers.GT_FML_LOGGER.warn(
                         "An error occurred while loading contents of ME Output Bus. This item has been voided: {}",
                         tagItemStack);
                 }
