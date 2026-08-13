@@ -39,7 +39,9 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -258,6 +260,7 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
                             OutputBus,
                             Maintenance,
                             Energy,
+                            MultiAmpEnergy,
                             InputHatch,
                             MTELayerSignal.LayerSignalHatchElement.LayerSignal)
                         .casingIndex(Casings.RadiantNaquadahAlloyCasing.textureId)
@@ -307,6 +310,7 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
             .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip7"))
             .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip8"))
             .addSeparator()
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip9"))
             .addBulkMachineInfo(PARALLEL_PER_TIER, SPEED, EU_EFFICIENCY)
             .beginStructureBlock(5, 6, 8, false)
             .addController("Front center, 2nd layer")
@@ -536,7 +540,14 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
         signalHatches.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 6);
-        checkHasEnergyHatch(errors);
+        if (!mExoticEnergyHatches.isEmpty()) {
+            int count = mEnergyHatches.size() + mExoticEnergyHatches.size();
+            if (count != 1) {
+                errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, Energy, count, 1));
+            }
+        } else {
+            checkHasEnergyHatch(errors);
+        }
         checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
         checkHasInputHatch(errors);

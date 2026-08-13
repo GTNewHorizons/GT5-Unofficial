@@ -3542,6 +3542,7 @@ gt.blockmachines.multimachine.curingmachine.tooltip5=If the signal strength is �
 gt.blockmachines.multimachine.curingmachine.tooltip6=If the signal strength is §d2§7, the next craft requires only the §dfluid§7 input
 gt.blockmachines.multimachine.curingmachine.tooltip7=If an input type is provided that is not required, the next craft will not
 gt.blockmachines.multimachine.curingmachine.tooltip8=be discounted, and the machine will reset
+gt.blockmachines.multimachine.curingmachine.tooltip9=Accepts exactly one Multi-amp energy hatch, or multiple regular energy hatches
 
 
 
