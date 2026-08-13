@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convert;
+import static goodgenerator.util.NaquadahRecipeOutputs.convert;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;

@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.gtenhancement.PlatinumSludgeOutputs;
+import goodgenerator.util.NaquadahRecipeOutputs;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
@@ -20,23 +21,24 @@ public final class LanthanidesRecipeOutputs {
     private LanthanidesRecipeOutputs() {}
 
     public static ItemStack[] convertOre(Materials inputMaterial, ItemStack... outputs) {
-        return convert(2, PlatinumSludgeOutputs.convert(inputMaterial, outputs));
+        return convert(2, NaquadahRecipeOutputs.convert(inputMaterial, outputs));
     }
 
     public static ItemStack[] convertOre(ItemStack... outputs) {
-        return convert(2, PlatinumSludgeOutputs.convert(outputs));
+        return convert(2, NaquadahRecipeOutputs.convert(outputs));
     }
 
     public static ItemStack[] convertDecomposition(Materials inputMaterial, ItemStack... outputs) {
-        return convert(1, PlatinumSludgeOutputs.convert(inputMaterial, outputs));
+        return convert(1, NaquadahRecipeOutputs.convertDecomposition(inputMaterial, outputs));
     }
 
     public static ItemStack[] convertDecomposition(ItemStack... outputs) {
-        return convert(1, PlatinumSludgeOutputs.convert(outputs));
+        return convert(1, NaquadahRecipeOutputs.convertDecomposition(outputs));
     }
 
     public static ItemStack convertCrafting(Materials material, ItemStack output) {
         output = PlatinumSludgeOutputs.convertCrafting(material, output);
+        output = NaquadahRecipeOutputs.convert(output);
         if (!GTUtility.isStackValid(output)) return output;
         if (material == Materials.Cerium) {
             return WerkstoffMaterialPool.CeriumRichMixture.get(dust, output.stackSize * 2);
