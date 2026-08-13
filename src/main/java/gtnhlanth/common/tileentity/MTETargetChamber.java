@@ -24,6 +24,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -79,6 +80,11 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
     private final ArrayList<MTEHatchInputBus> mMaskInputBusses = new ArrayList<>();
     private GTRecipe lastRecipe;
+    private int lastTCRecipeRate;
+    private float lastTCRecipeMinFocus;
+    private float lastTCRecipeMinEnergy;
+    private float lastTCRecipeMaxEnergy;
+    private int lastTCRecipeInputParticle = -1;
 
     // spotless:off
     static {
@@ -128,6 +134,52 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         bus.updateTexture(casingIndex);
         bus.updateCraftingIcon(getMachineCraftingIcon());
         return mMaskInputBusses.add(bus);
+    }
+
+    @Override
+    protected void incrementProgressTime() {
+        if (this.lastTCRecipeInputParticle >= 0) {
+            BeamInformation inputInfo = this.getInputInformation();
+            if (inputInfo == null) return;
+            float inputEnergy = inputInfo.getEnergy();
+            float inputRate = inputInfo.getRate();
+            int inputParticle = inputInfo.getParticleId();
+            float inputFocus = inputInfo.getFocus();
+
+            if (inputEnergy < this.lastTCRecipeMinEnergy) {
+                return;
+            } else if (inputEnergy > this.lastTCRecipeMaxEnergy) {
+                return;
+            }
+            if (inputFocus < this.lastTCRecipeMinFocus) return;
+            if (inputParticle != this.lastTCRecipeInputParticle) return;
+            if (inputRate < this.lastTCRecipeRate) return;
+            mProgresstime++;
+            return;
+        }
+        mProgresstime++;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("lastTCRecipeRate", this.lastTCRecipeRate);
+        aNBT.setFloat("lastTCRecipeMinFocus", this.lastTCRecipeMinFocus);
+        aNBT.setFloat("lastTCRecipeMinEnergy", this.lastTCRecipeMinEnergy);
+        aNBT.setFloat("lastTCRecipeMaxEnergy", this.lastTCRecipeMaxEnergy);
+        aNBT.setInteger("lastTCRecipeInputParticle", this.lastTCRecipeInputParticle);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        this.lastTCRecipeRate = aNBT.getInteger("lastTCRecipeRate");
+        this.lastTCRecipeMinFocus = aNBT.getFloat("lastTCRecipeMinFocus");
+        this.lastTCRecipeMinEnergy = aNBT.getFloat("lastTCRecipeMinEnergy");
+        this.lastTCRecipeMaxEnergy = aNBT.getFloat("lastTCRecipeMaxEnergy");
+        this.lastTCRecipeInputParticle = aNBT.hasKey("lastTCRecipeInputParticle")
+            ? aNBT.getInteger("lastTCRecipeInputParticle")
+            : -1;
     }
 
     @Override
@@ -289,7 +341,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         BeamInformation inputInfo = this.getInputInformation();
         if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;
         float inputEnergy = inputInfo.getEnergy();
-        float inputRate = inputInfo.getRate();
+        int inputRate = inputInfo.getRate();
         int inputParticle = inputInfo.getParticleId();
         float inputFocus = inputInfo.getFocus();
 
@@ -300,6 +352,12 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         }
         if (inputFocus < metadata.minFocus) return CheckRecipeResultRegistry.NO_RECIPE;
         if (inputParticle != metadata.particleID) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        this.lastTCRecipeMinFocus = metadata.minFocus;
+        this.lastTCRecipeMinEnergy = metadata.minEnergy;
+        this.lastTCRecipeMaxEnergy = metadata.maxEnergy;
+        this.lastTCRecipeInputParticle = metadata.particleID;
+        this.lastTCRecipeRate = inputRate;
 
         // 5 seconds per integer multiple over the rate
         float progressTime = metadata.amount / inputRate * 5 * TickTime.SECOND;
