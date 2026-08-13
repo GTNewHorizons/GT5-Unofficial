@@ -754,8 +754,7 @@ public final class MaterialsOres {
         -1,
         -1,
         4, // Radiation
-        new MaterialStack[] {
-            new MaterialStack(MaterialsElements.getInstance().RADON, 2),
+        new MaterialStack[] { new MaterialStack(MaterialsElements.getInstance().RADON, 2),
             new MaterialStack(MaterialsElements.getInstance().RADIUM, 1),
             new MaterialStack(MaterialsElements.getInstance().URANIUM235, 1),
             new MaterialStack(MaterialsElements.getInstance().URANIUM238, 10),
