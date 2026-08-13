@@ -3533,6 +3533,18 @@ gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description2=R
 gt.blockmachines.multimachine.beamcrafting.beamstabilizer.gui.targetbeamrate=Target Beam Rate:
 gt.blockmachines.multimachine.beamcrafting.machineoff=Machine is off
 
+gt.blockmachines.multimachine.curingmachine.machinetype=Curing Machine
+gt.blockmachines.multimachine.curingmachine.tooltip1=The Keuring Machine crafts items in layers, with an effective
+gt.blockmachines.multimachine.curingmachine.tooltip2=§f50%§7 material discount for continuous use
+gt.blockmachines.multimachine.curingmachine.tooltip3=During each craft, the machine outputs a random redstone signal of strength
+gt.blockmachines.multimachine.curingmachine.tooltip4=§61§7 or §d2§7 via the layer signal hatch, affecting the subsequent craft
+gt.blockmachines.multimachine.curingmachine.tooltip5=If the signal strength is §61§7, the next craft requires only the §6item§7 input
+gt.blockmachines.multimachine.curingmachine.tooltip6=If the signal strength is §d2§7, the next craft requires only the §dfluid§7 input
+gt.blockmachines.multimachine.curingmachine.tooltip7=If an input type is provided that is not required, the next craft will not
+gt.blockmachines.multimachine.curingmachine.tooltip8=be discounted, and the machine will reset
+
+
+
 GT5U.gui.text.contributors.panel.open=Open Contributor List
 GT5U.gui.text.contributors.header=Contributors
 GT5U.gui.text.contributors.projectlead=Project Lead

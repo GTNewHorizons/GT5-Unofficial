@@ -4,7 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
-import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTStructureUtility.*;
 
 import java.util.ArrayList;
@@ -12,18 +11,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.shutdown.ShutDownReason;
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.tileentities.machines.MTEHeatSensor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -40,15 +36,17 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTELayerSignal;
-import net.minecraftforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMachine>
     implements ISurvivalConstructable, ILayerProducer {
@@ -64,7 +62,12 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
     private static final float SPEED = 1f;
     private static final float EU_EFFICIENCY = 1f;
 
-    public enum ChallengePhase { NEED_BOTH, NEED_ITEM, NEED_FLUID }
+    public enum ChallengePhase {
+        NEED_BOTH,
+        NEED_ITEM,
+        NEED_FLUID
+    }
+
     private ChallengePhase phase = ChallengePhase.NEED_BOTH;
     private GTRecipe lockedRecipe;
 
@@ -86,7 +89,7 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
         if (aNBT.hasKey("lockedRecipe")) {
             lockedRecipe = readRecipe(aNBT.getCompoundTag("lockedRecipe"));
         }
-        //default
+        // default
         if (lockedRecipe == null) {
             phase = ChallengePhase.NEED_BOTH;
         }
@@ -107,6 +110,7 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
         tag.setInteger("sv", r.mSpecialValue);
         return tag;
     }
+
     private static GTRecipe readRecipe(NBTTagCompound tag) {
         ItemStack[] in = readItems(tag.getTagList("in", 10));
         ItemStack[] out = readItems(tag.getTagList("out", 10));
@@ -116,9 +120,22 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
         int[] outC = tag.hasKey("outC") ? tag.getIntArray("outC") : null;
         int[] finC = tag.hasKey("finC") ? tag.getIntArray("finC") : null;
         int[] foutC = tag.hasKey("foutC") ? tag.getIntArray("foutC") : null;
-        return new GTRecipe(false, in, out, null, inC, outC, finC, foutC, fin, fout,
-            tag.getInteger("dur"), tag.getInteger("eut"), tag.getInteger("sv"));
+        return new GTRecipe(
+            false,
+            in,
+            out,
+            null,
+            inC,
+            outC,
+            finC,
+            foutC,
+            fin,
+            fout,
+            tag.getInteger("dur"),
+            tag.getInteger("eut"),
+            tag.getInteger("sv"));
     }
+
     private static NBTTagList writeItems(ItemStack[] l) {
         NBTTagList out = new NBTTagList();
         if (l != null) for (ItemStack s : l) {
@@ -128,11 +145,13 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
         }
         return out;
     }
+
     private static ItemStack[] readItems(NBTTagList l) {
         ItemStack[] out = new ItemStack[l.tagCount()];
         for (int i = 0; i < out.length; i++) out[i] = ItemStack.loadItemStackFromNBT(l.getCompoundTagAt(i));
         return out;
     }
+
     private static NBTTagList writeFluids(FluidStack[] l) {
         NBTTagList out = new NBTTagList();
         if (l != null) for (FluidStack f : l) {
@@ -142,6 +161,7 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
         }
         return out;
     }
+
     private static FluidStack[] readFluids(NBTTagList l) {
         FluidStack[] out = new FluidStack[l.tagCount()];
         for (int i = 0; i < out.length; i++) out[i] = FluidStack.loadFluidStackFromNBT(l.getCompoundTagAt(i));
@@ -275,7 +295,18 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
 
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Curing Machine")
+        tt.addMachineType(
+            StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.machinetype"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip1"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip2"))
+            .addSeparator()
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip3"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip4"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip5"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip6"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip7"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip8"))
+            .addSeparator()
             .addBulkMachineInfo(PARALLEL_PER_TIER, SPEED, EU_EFFICIENCY)
             .beginStructureBlock(5, 6, 8, false)
             .addController("Front center, 2nd layer")
@@ -305,7 +336,7 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic(){
+        return new ProcessingLogic() {
 
             @NotNull
             @Override
@@ -327,10 +358,10 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
                 setSpeedBonus(1F / SPEED);
                 setEuModifier(EU_EFFICIENCY);
 
-                boolean recipeItem  = recipe.mInputs != null && recipe.mInputs.length > 0;
+                boolean recipeItem = recipe.mInputs != null && recipe.mInputs.length > 0;
                 boolean recipeFluid = recipe.mFluidInputs != null && recipe.mFluidInputs.length > 0;
 
-                boolean haveItem  = anyItem(MTECuringMachine.this.getStoredInputs());
+                boolean haveItem = anyItem(MTECuringMachine.this.getStoredInputs());
                 boolean haveFluid = anyFluid(MTECuringMachine.this.getStoredFluids());
 
                 switch (phase) {
@@ -344,7 +375,7 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
                         break;
                     case NEED_FLUID:
                         if (!(recipeFluid && !recipeItem)) return CheckRecipeResultRegistry.NO_RECIPE;
-                        if (haveItem) return CheckRecipeResultRegistry.NO_RECIPE;  // enforce ONLY fluid
+                        if (haveItem) return CheckRecipeResultRegistry.NO_RECIPE; // enforce ONLY fluid
                         break;
                 }
                 return super.validateRecipe(recipe);
@@ -364,11 +395,10 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
                 emitSignal(phaseSignal(phase));
                 return super.onRecipeStart(recipe);
             }
-        }
-        .setMaxParallelSupplier(this::getTrueParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
-    private void resetMachine(){
+    private void resetMachine() {
         phase = ChallengePhase.NEED_BOTH;
         emitSignal(0);
     }
@@ -418,14 +448,37 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
     }
 
     private static GTRecipe itemOnly(GTRecipe base) {
-        return new GTRecipe(false, base.mInputs, base.mOutputs, base.mSpecialItems, base.mInputChances,
-            base.mOutputChances,base.mFluidInputChances,base.mFluidOutputChances,
-            null, base.mFluidOutputs, base.mDuration, base.mEUt, base.mSpecialValue);
+        return new GTRecipe(
+            false,
+            base.mInputs,
+            base.mOutputs,
+            base.mSpecialItems,
+            base.mInputChances,
+            base.mOutputChances,
+            base.mFluidInputChances,
+            base.mFluidOutputChances,
+            null,
+            base.mFluidOutputs,
+            base.mDuration,
+            base.mEUt,
+            base.mSpecialValue);
     }
+
     private static GTRecipe fluidOnly(GTRecipe base) {
-        return new GTRecipe(false, null, base.mOutputs, base.mSpecialItems, base.mInputChances,
-            base.mOutputChances,base.mFluidInputChances,base.mFluidOutputChances,
-            base.mFluidInputs, base.mFluidOutputs, base.mDuration, base.mEUt, base.mSpecialValue);
+        return new GTRecipe(
+            false,
+            null,
+            base.mOutputs,
+            base.mSpecialItems,
+            base.mInputChances,
+            base.mOutputChances,
+            base.mFluidInputChances,
+            base.mFluidOutputChances,
+            base.mFluidInputs,
+            base.mFluidOutputs,
+            base.mDuration,
+            base.mEUt,
+            base.mSpecialValue);
     }
 
     private static boolean anyItem(List<ItemStack> l) {

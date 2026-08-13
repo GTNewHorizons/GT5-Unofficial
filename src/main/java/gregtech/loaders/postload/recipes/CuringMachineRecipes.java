@@ -2,7 +2,6 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.curingMachineRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
