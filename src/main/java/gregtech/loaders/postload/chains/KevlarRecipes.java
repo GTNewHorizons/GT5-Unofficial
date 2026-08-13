@@ -12,6 +12,8 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.PRECISE_ASSEMBLER_CASING_TIER;
 
+import gregtech.common.items.CombType;
+import gregtech.loaders.misc.GTBees;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
@@ -194,6 +196,25 @@ public class KevlarRecipes {
             .eut(TierEU.RECIPE_UV)
             .addTo(fluidHeaterRecipes);
 
+        // Improved/Boosted recipes
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.SpunKevlarFiber.get(24),GTBees.combs.getStackForType(CombType.KEVLAR, 16))
+            .circuit(23)
+            .itemOutputs(ItemList.WovenKevlar.get(2))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 2)
+            .addTo(preciseAssemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .circuit(1)
+            .itemInputs(Materials.MethyleneDiphenylDiisocyanate.getDust(1),GTBees.combs.getStackForType(CombType.KEVLAR, 16))
+            .fluidInputs(Materials.Ethyleneglycol.getFluid(1000))
+            .fluidOutputs(Materials.PolyurethaneResin.getFluid(2000))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(multiblockChemicalReactorRecipes);
     }
 
 }
