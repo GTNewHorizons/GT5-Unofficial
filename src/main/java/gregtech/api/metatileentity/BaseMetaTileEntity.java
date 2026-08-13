@@ -1898,6 +1898,22 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         return 0;
     }
 
+    /** @return whether {@link #injectEnergyUnits} could still accept energy this tick. */
+    public boolean canAcceptEnergyThisTick() {
+        if (!canAccessData() || mMetaTileEntity.maxAmperesIn() <= mAcceptedAmperes) return false;
+        long capacity = mMetaTileEntity.maxEUStore();
+        return Math.min(mMetaTileEntity.getEUVar(), capacity) < capacity;
+    }
+
+    /**
+     * @return whether {@link #injectEnergyUnits} could still take an ampere this tick
+     * @deprecated Use {@link #canAcceptEnergyThisTick()} when deciding whether to emit energy.
+     */
+    @Deprecated
+    public boolean canAcceptAmperesThisTick() {
+        return canAccessData() && mMetaTileEntity.maxAmperesIn() > mAcceptedAmperes;
+    }
+
     @Override
     public boolean drainEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage) {
         if (!canAccessData() || !mMetaTileEntity.isElectric()
