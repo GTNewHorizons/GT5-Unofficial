@@ -281,7 +281,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Spinneret.get(0L))
-            .itemOutputs(ItemList.KevlarFiber.get(8L))
+            .itemOutputs(ItemList.DrawnKevlarFiber.get(8L))
             .fluidInputs(Materials.LiquidCrystalKevlar.getFluid(1 * INGOTS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_EV)

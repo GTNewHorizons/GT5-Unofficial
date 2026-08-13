@@ -5,6 +5,7 @@ import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
@@ -1385,6 +1386,16 @@ public class RecipeLoader {
                 Materials.PrismaticNaquadah.getMolten(72))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
+            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
+            .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
+
+        // Woven Kevlar
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.SpunKevlarFiber.get(4))
+            .itemOutputs(ItemList.WovenKevlar.get(1))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
             .metadata(PRECISE_ASSEMBLER_CASING_TIER, 1)
             .addTo(GoodGeneratorRecipeMaps.preciseAssemblerRecipes);
     }

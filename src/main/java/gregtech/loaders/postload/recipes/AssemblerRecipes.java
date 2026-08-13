@@ -3075,7 +3075,7 @@ public class AssemblerRecipes implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.KevlarFiber.get(8))
+            .itemInputs(ItemList.SpunKevlarFiber.get(8))
             .circuit(8)
             .itemOutputs(ItemList.WovenKevlar.get(1))
             .duration(15 * SECONDS)

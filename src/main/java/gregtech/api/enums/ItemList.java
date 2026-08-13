@@ -2048,9 +2048,11 @@ public enum ItemList implements IItemContainer {
     Circuit_Parts_Chip_Bioware,
 
     Tube_Wires,
-    KevlarFiber,
+    DrawnKevlarFiber,
+    SpunKevlarFiber,
     WovenKevlar,
     Spinneret,
+
     GalliumArsenideCrystal,
     GalliumArsenideCrystalSmallPart,
 

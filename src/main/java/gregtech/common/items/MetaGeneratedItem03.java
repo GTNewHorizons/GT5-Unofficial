@@ -224,7 +224,8 @@ import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_TERRIT
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_UNLIGHT;
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_WINTER;
 import static gregtech.common.items.IDMetaItem03.Intensely_Bonded_Netherite_Nanoparticles;
-import static gregtech.common.items.IDMetaItem03.KevlarFiber;
+import static gregtech.common.items.IDMetaItem03.DrawnKevlarFiber;
+import static gregtech.common.items.IDMetaItem03.SpunKevlarFiber;
 import static gregtech.common.items.IDMetaItem03.LV_Coil;
 import static gregtech.common.items.IDMetaItem03.LuV_Coil;
 import static gregtech.common.items.IDMetaItem03.MAX_Coil;
@@ -1406,9 +1407,15 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.small_gallium_arsenide_crystal.name",
                 "gt.item.small_gallium_arsenide_crystal.tooltip",
                 o));
-        ItemList.KevlarFiber.set(
+        ItemList.DrawnKevlarFiber.set(
             addItemWithLocalizationKeys(
-                KevlarFiber.ID,
+                DrawnKevlarFiber.ID,
+                "gt.item.kevlar_fiber.name",
+                "gt.item.kevlar_fiber.tooltip",
+                o));
+        ItemList.SpunKevlarFiber.set(
+            addItemWithLocalizationKeys(
+                SpunKevlarFiber.ID,
                 "gt.item.kevlar_fiber.name",
                 "gt.item.kevlar_fiber.tooltip",
                 o));
