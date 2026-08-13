@@ -5,7 +5,6 @@ import static gregtech.GTMod.Loggers.GT_ICON_LOGGER;
 import static gregtech.GTMod.Loggers.GT_ORE_DICT_LOGGER;
 
 import java.io.File;
-import java.io.PrintStream;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
@@ -26,9 +25,6 @@ import gregtech.common.config.Gregtech;
  * Just a simple Logging Function. If on Server, then this will point to System.out and System.err
  */
 public class GTLog {
-
-    @Deprecated
-    public static File mLogFile;
 
     public static void configureExplosionLogger(File parentFile) {
         configureRollingLogger(

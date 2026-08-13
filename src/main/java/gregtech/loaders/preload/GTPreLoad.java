@@ -7,9 +7,7 @@ import static gregtech.api.enums.Mods.GregTech;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +34,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
@@ -140,15 +137,6 @@ public class GTPreLoad {
         GTConfig.undergroundFluidsFile = new Configuration(tFile);
         GTConfig.undergroundFluidsFile.load();
         GTConfig.undergroundFluidsFile.save();
-    }
-
-    public static void createLogFiles(File parentFile) {
-        GTLog.mLogFile = new File(parentFile, "logs/GregTech.log");
-        if (!GTLog.mLogFile.exists()) {
-            try {
-                GTLog.mLogFile.createNewFile();
-            } catch (Exception ignored) {}
-        }
     }
 
     public static void runMineTweakerCompat() {

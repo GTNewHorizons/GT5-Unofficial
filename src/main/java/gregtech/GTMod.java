@@ -328,9 +328,6 @@ public class GTMod {
         }
 
         GTPreLoad.getConfiguration(event.getModConfigurationDirectory());
-        GTPreLoad.createLogFiles(
-            event.getModConfigurationDirectory()
-                .getParentFile());
 
         PowerGogglesConfigHandler.init(new File(event.getModConfigurationDirectory() + "/GregTech/Goggles.cfg"));
 
