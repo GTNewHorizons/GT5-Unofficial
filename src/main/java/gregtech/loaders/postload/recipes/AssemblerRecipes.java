@@ -2769,7 +2769,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Netherite, 4),
+                GTOreDictUnificator.get(OrePrefixes.plate, ItemList.WovenKevlar, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 4),
                 ItemList.Casing_Fusion.get(1))
             .itemOutputs(ItemList.Casing_Fusion2.get(1))
