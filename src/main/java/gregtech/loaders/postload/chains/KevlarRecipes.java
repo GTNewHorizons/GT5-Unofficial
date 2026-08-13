@@ -12,18 +12,24 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.PRECISE_ASSEMBLER_CASING_TIER;
 
-import gregtech.common.items.CombType;
-import gregtech.loaders.misc.GTBees;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
+import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TierEU;
+import gregtech.common.items.CombType;
+import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.common.config.ConfigItems;
+import thaumcraft.common.items.ItemEssence;
 
 public class KevlarRecipes {
 
@@ -79,6 +85,7 @@ public class KevlarRecipes {
 
         // Liquid Crystal Kevlar
         GTValues.RA.stdBuilder()
+            .circuit(24)
             .fluidInputs(Materials.ParaPhenylenediamine.getFluid(1000), Materials.TerephthaloylChloride.getFluid(1000))
             .fluidOutputs(Materials.LiquidCrystalKevlar.getFluid(1296L), Materials.HydrochloricAcid.getFluid(2000))
             .duration(5 * SECONDS)
@@ -109,6 +116,7 @@ public class KevlarRecipes {
 
         // Polyurethane Resin
         GTValues.RA.stdBuilder()
+            .circuit(24)
             .itemInputs(Materials.MethyleneDiphenylDiisocyanate.getDust(1))
             .fluidInputs(Materials.Ethyleneglycol.getFluid(1000))
             .fluidOutputs(Materials.PolyurethaneResin.getFluid(1000))
@@ -197,24 +205,47 @@ public class KevlarRecipes {
             .addTo(fluidHeaterRecipes);
 
         // Improved/Boosted recipes
+        // Bees
+        if (Mods.Forestry.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.SpunKevlarFiber.get(24), GTBees.combs.getStackForType(CombType.KEVLAR, 48))
+                .circuit(23)
+                .itemOutputs(ItemList.WovenKevlar.get(2))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_EV)
+                .metadata(PRECISE_ASSEMBLER_CASING_TIER, 2)
+                .addTo(preciseAssemblerRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.SpunKevlarFiber.get(24),GTBees.combs.getStackForType(CombType.KEVLAR, 16))
-            .circuit(23)
-            .itemOutputs(ItemList.WovenKevlar.get(2))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 2)
-            .addTo(preciseAssemblerRecipes);
+            GTValues.RA.stdBuilder()
+                .circuit(23)
+                .itemInputs(
+                    Materials.MethyleneDiphenylDiisocyanate.getDust(1),
+                    GTBees.combs.getStackForType(CombType.KEVLAR, 16))
+                .fluidInputs(Materials.Ethyleneglycol.getFluid(1000))
+                .fluidOutputs(Materials.PolyurethaneResin.getFluid(2000))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_UHV)
+                .addTo(multiblockChemicalReactorRecipes);
+        }
+        // Magic
+        if (Mods.Thaumcraft.isModLoaded()) {
+            final ItemStack filledPhial = new ItemStack(ConfigItems.itemEssence, 1, 1);
+            final AspectList phialContent = new AspectList().add(TCAspects.GELUM.getAspect(), 8);
+            ((ItemEssence) ConfigItems.itemEssence).setAspects(filledPhial, phialContent);
 
-        GTValues.RA.stdBuilder()
-            .circuit(1)
-            .itemInputs(Materials.MethyleneDiphenylDiisocyanate.getDust(1),GTBees.combs.getStackForType(CombType.KEVLAR, 16))
-            .fluidInputs(Materials.Ethyleneglycol.getFluid(1000))
-            .fluidOutputs(Materials.PolyurethaneResin.getFluid(2000))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_UHV)
-            .addTo(multiblockChemicalReactorRecipes);
+            GTValues.RA.stdBuilder()
+                .circuit(23)
+                .itemInputs(filledPhial)
+                .fluidInputs(
+                    Materials.ParaPhenylenediamine.getFluid(1000),
+                    Materials.TerephthaloylChloride.getFluid(1000))
+                .fluidOutputs(
+                    Materials.LiquidCrystalKevlar.getFluid(2 * 1296L),
+                    Materials.HydrochloricAcid.getFluid(2000))
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_EV)
+                .addTo(multiblockChemicalReactorRecipes);
+        }
     }
 
 }
