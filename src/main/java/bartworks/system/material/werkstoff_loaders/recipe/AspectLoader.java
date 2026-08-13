@@ -19,10 +19,10 @@ import java.util.Objects;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import bartworks.MainMod;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
-import bartworks.util.log.DebugLog;
 import bwcrossmod.thaumcraft.util.ThaumcraftHandler;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
@@ -38,7 +38,7 @@ public class AspectLoader implements IWerkstoffRunnable {
         for (OrePrefixes enabledOrePrefixes : WerkstoffLoader.ENABLED_ORE_PREFIXES) {
             if (werkstoff.hasItemType(enabledOrePrefixes)) {
                 if (enabledOrePrefixes.getMaterialAmount() >= 3628800L || enabledOrePrefixes == OrePrefixes.ore) {
-                    DebugLog.log(
+                    MainMod.BW_DEBUG_LOGGER.info(
                         "OrePrefix: " + enabledOrePrefixes.getName()
                             + " Material Amount: "
                             + enabledOrePrefixes.getMaterialAmount() / 3628800L);

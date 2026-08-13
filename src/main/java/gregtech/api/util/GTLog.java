@@ -78,7 +78,7 @@ public class GTLog {
         logger.setLevel(enabled ? Level.INFO : Level.OFF);
     }
 
-    private static boolean configureRollingLogger(Logger apiLogger, boolean enabled, File file, File filePattern,
+    public static boolean configureRollingLogger(Logger apiLogger, boolean enabled, File file, File filePattern,
         String appenderName) {
         configureLogger(apiLogger, enabled);
         if (!enabled) return false;

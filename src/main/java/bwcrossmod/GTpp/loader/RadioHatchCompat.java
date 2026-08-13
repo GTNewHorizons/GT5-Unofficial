@@ -22,7 +22,6 @@ import net.minecraft.util.RegistryNamespaced;
 import net.minecraftforge.oredict.OreDictionary;
 
 import bartworks.MainMod;
-import bartworks.util.log.DebugLog;
 import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -40,7 +39,7 @@ public class RadioHatchCompat {
 
     @SuppressWarnings("unchecked")
     public static void run() {
-        DebugLog.log("Starting Generation of missing GT++ rods/longrods");
+        MainMod.BW_DEBUG_LOGGER.info("Starting Generation of missing GT++ rods/longrods");
         try {
             Field cOwners = GameData.class.getDeclaredField("customOwners");
             cOwners.setAccessible(true);
@@ -74,8 +73,9 @@ public class RadioHatchCompat {
                     ownerItems.replace(ui, bartworks, gtpp);
                     String translate = itemRod.getUnlocalizedName() + ".name=" + mats.getDefaultLocalName() + " Rod";
                     RadioHatchCompat.TranslateSet.add(translate);
-                    DebugLog.log(translate);
-                    DebugLog.log("Generate: " + BaseItemComponent.ComponentTypes.ROD + mats.getUnlocalizedName());
+                    MainMod.BW_DEBUG_LOGGER.info(translate);
+                    MainMod.BW_DEBUG_LOGGER
+                        .info("Generate: " + BaseItemComponent.ComponentTypes.ROD + mats.getUnlocalizedName());
                 }
 
                 if (OreDictionary.getOres("stickLong" + mats.getUnlocalizedName())
@@ -84,7 +84,8 @@ public class RadioHatchCompat {
                     UniqueIdentifierMap.replace(itemRodLong, "miscutils:" + itemRodLong.getUnlocalizedName());
                     GameRegistry.UniqueIdentifier ui2 = GameRegistry.findUniqueIdentifierFor(itemRodLong);
                     ownerItems.replace(ui2, bartworks, gtpp);
-                    DebugLog.log("Generate: " + BaseItemComponent.ComponentTypes.RODLONG + mats.getUnlocalizedName());
+                    MainMod.BW_DEBUG_LOGGER
+                        .info("Generate: " + BaseItemComponent.ComponentTypes.RODLONG + mats.getUnlocalizedName());
                 }
 
             }
