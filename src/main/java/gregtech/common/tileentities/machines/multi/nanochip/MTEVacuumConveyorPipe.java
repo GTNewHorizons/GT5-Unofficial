@@ -66,7 +66,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
         super.registerIcons(aBlockIconRegister);
     }
 
-    public final void toggleClientActiveState() {
+    public final void toggleClientRenderState() {
         clientRenderState = !clientRenderState;
         IGregTechTileEntity base = getBaseMetaTileEntity();
         if (base != null) {

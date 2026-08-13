@@ -65,7 +65,7 @@ public final class VacuumConveyorPipeClientStateManager {
                 iter.remove();
                 continue;
             }
-            pipe.toggleClientActiveState();
+            pipe.toggleClientRenderState();
         }
     }
 }
