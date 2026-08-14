@@ -954,7 +954,8 @@ public class GTModHandler {
             // spotless:on
         }
 
-        if (!GTModHandler.addCraftingRecipe(aResult, aBitMask, aRecipe)) {
+        if (!GTModHandler
+            .addCraftingRecipe(aResult, aBitMask, aRecipe)) {
             throw new IllegalArgumentException("INVALID CRAFTING RECIPE FOR: " + aResult.getDisplayName());
         }
     }
@@ -1232,6 +1233,7 @@ public class GTModHandler {
             null,
             null,
             (aBitMask & RecipeBits.BUFFERED) != 0,
+            (aBitMask & RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0,
             (aBitMask & RecipeBits.KEEPNBT) != 0,
             (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
             (aBitMask & RecipeBits.OVERWRITE_NBT) != 0,
@@ -1244,8 +1246,9 @@ public class GTModHandler {
      * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
      */
     private static boolean addShapelessCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
-        int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aKeepNBT, boolean aRemovable, boolean overwriteNBT,
-        boolean unifyOutput, Predicate<InventoryCrafting> inputValidator, Object[] aRecipe) {
+        int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aCheckForCollisions, boolean aKeepNBT,
+        boolean aRemovable, boolean overwriteNBT, boolean unifyOutput, Predicate<InventoryCrafting> inputValidator,
+        Object[] aRecipe) {
         if (unifyOutput) aResult = GTOreDictUnificator.get(true, aResult);
         if (aRecipe == null || aRecipe.length == 0) return false;
         for (byte i = 0; i < aRecipe.length; i++) {
@@ -1277,8 +1280,10 @@ public class GTModHandler {
             }
             i++;
         }
-        if (sBufferCraftingRecipes && aBuffered) removeRecipeDelayed(tRecipe);
-        else removeRecipe(tRecipe);
+        if (aCheckForCollisions) {
+            if (sBufferCraftingRecipes && aBuffered) removeRecipeDelayed(tRecipe);
+            else removeRecipe(tRecipe);
+        }
 
         if (aResult == null || aResult.stackSize <= 0) return false;
 
