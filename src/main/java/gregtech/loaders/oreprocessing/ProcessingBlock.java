@@ -1,5 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
@@ -202,7 +203,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (aMaterial.mName.equals("Mercury")) {
-            System.err.println(
+            GT_FML_LOGGER.error(
                 "'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block? On Pluto Greg :)");
         }
     }
