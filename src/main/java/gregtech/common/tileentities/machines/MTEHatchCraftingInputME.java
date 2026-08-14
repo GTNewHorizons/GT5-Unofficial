@@ -35,6 +35,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
@@ -1110,8 +1111,12 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
-        if (tag.hasKey("name"))
-            currenttip.add(EnumChatFormatting.AQUA + tag.getString("name") + EnumChatFormatting.RESET);
+        if (tag.hasKey("nameLines")) {
+            NBTTagList nameLines = tag.getTagList("nameLines", Constants.NBT.TAG_STRING);
+            for (int i = 0; i < nameLines.tagCount(); i++) {
+                currenttip.add(EnumChatFormatting.AQUA + nameLines.getStringTagAt(i) + EnumChatFormatting.RESET);
+            }
+        }
         currenttip.add(
             StatCollector.translateToLocal(
                 "GT5U.infodata.hatch.crafting_input_me.show_pattern." + (showPattern ? "enable" : "disabled")));
@@ -1129,6 +1134,45 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             }
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
+    }
+
+    /**
+     * Same content as {@link #getName()}, but with the circuit numbers and every displayed item on separate lines.
+     */
+    private List<String> getWailaNameLines() {
+        if (hasCustomName()) return Collections.singletonList(getCustomName());
+
+        List<String> lines = new ArrayList<>();
+        StringBuilder head = new StringBuilder(
+            getCrafterIcon() != null ? getCrafterIcon().getDisplayName() : getLocalName());
+
+        List<Integer> circuitNumbers = new ArrayList<>();
+        ItemStack ghostCircuit = getStackInSlot(getCircuitSlot());
+        if (allowSelectCircuit() && ghostCircuit != null && ghostCircuit.getItemDamage() > 0) {
+            circuitNumbers.add(ghostCircuit.getItemDamage());
+        }
+        circuitNumbers.addAll(getPhysicalCircuitNumbers());
+        if (!circuitNumbers.isEmpty()) {
+            try {
+                head.append(
+                    String.format(
+                        Gregtech.machines.ghostCircuitSuffixFormat,
+                        circuitNumbers.stream()
+                            .map(String::valueOf)
+                            .collect(Collectors.joining(", "))));
+            } catch (IllegalFormatException ignored) {}
+        }
+        lines.add(head.toString());
+
+        for (ItemStack item : getNonConsumedInputDisplayItems()) {
+            lines.add(item.getDisplayName());
+        }
+        for (int i = SLOT_MANUAL_START; i < SLOT_MANUAL_START + SLOT_MANUAL_SIZE; i++) {
+            if (mInventory[i] != null) {
+                lines.add(mInventory[i].getDisplayName());
+            }
+        }
+        return lines;
     }
 
     @Override
@@ -1161,7 +1205,12 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
 
         tag.setTag("inventory", inventory);
         if (!Objects.equals(getName(), getLocalName())) {
-            tag.setString("name", getName());
+            // Send the name split into parts, so WAILA can put each one on its own line
+            NBTTagList nameLines = new NBTTagList();
+            for (String line : getWailaNameLines()) {
+                nameLines.appendTag(new NBTTagString(line));
+            }
+            tag.setTag("nameLines", nameLines);
         }
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
