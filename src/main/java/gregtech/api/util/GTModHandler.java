@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicIntegerArray;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -113,6 +114,9 @@ public class GTModHandler {
     private static final int DELAYED_REMOVAL_ONLY_REMOVE_NATIVE = 2;
 
     private static final List<InventoryCrafting> delayedRemovalByRecipe = new ArrayList<>();
+    private static final boolean DEBUG_USELESS_DELAYED_RECIPE_REMOVALS = Boolean
+        .getBoolean("gt.recipe.remove_delayed.debug");
+    private static final List<Exception> delayedRemovalCallsites = new ArrayList<>();
 
     public static Collection<String> sNativeRecipeClasses = new HashSet<>();
     public static Collection<String> sSpecialRecipeClasses = new HashSet<>();
@@ -552,6 +556,7 @@ public class GTModHandler {
         delayedRemovalByOutput.clear();
         delayedRemovalByOutputFlags.clear();
         delayedRemovalByRecipe.clear();
+        delayedRemovalCallsites.clear();
         sBufferRecipeList.clear();
     }
 
@@ -1384,6 +1389,9 @@ public class GTModHandler {
         }
 
         delayedRemovalByRecipe.add(craftMatrix);
+        if (DEBUG_USELESS_DELAYED_RECIPE_REMOVALS) {
+            delayedRemovalCallsites.add(new Exception("removeRecipeDelayed shape: " + Arrays.toString(shape)));
+        }
     }
 
     private static void bulkRemoveByRecipe() {
@@ -1392,13 +1400,17 @@ public class GTModHandler {
         GT_FML_LOGGER
             .info("BulkRemoveByRecipe: allRecipes: {}; toRemove: {}", allRecipes.size(), delayedRemovalByRecipe.size());
 
+        AtomicIntegerArray matchedDelayedRemovals = DEBUG_USELESS_DELAYED_RECIPE_REMOVALS
+            ? new AtomicIntegerArray(delayedRemovalByRecipe.size())
+            : null;
         Set<IRecipe> listToRemove = allRecipes.parallelStream()
             .filter(recipe -> {
                 if (recipe instanceof IGTCraftingRecipe craftingRecipe && !craftingRecipe.isRemovable()) {
                     return false;
                 }
-                for (InventoryCrafting crafting : delayedRemovalByRecipe) {
-                    if (recipe.matches(crafting, DW)) {
+                for (int i = 0; i < delayedRemovalByRecipe.size(); i++) {
+                    if (recipe.matches(delayedRemovalByRecipe.get(i), DW)) {
+                        if (matchedDelayedRemovals != null) matchedDelayedRemovals.set(i, 1);
                         return true;
                     }
                 }
@@ -1407,6 +1419,15 @@ public class GTModHandler {
             .collect(Collectors.toSet());
 
         allRecipes.removeIf(listToRemove::contains);
+
+        if (matchedDelayedRemovals != null) {
+            for (int i = 0; i < matchedDelayedRemovals.length(); i++) {
+                if (matchedDelayedRemovals.get(i) == 0) {
+                    GT_FML_LOGGER
+                        .warn("removeRecipeDelayed call matched no removable recipe", delayedRemovalCallsites.get(i));
+                }
+            }
+        }
     }
 
     public static boolean removeRecipeByOutputDelayed(ItemStack aOutput) {
