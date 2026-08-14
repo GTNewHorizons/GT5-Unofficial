@@ -1937,7 +1937,7 @@ public class CraftingRecipeLoader implements Runnable {
             new Object[] { Materials.Brick.getDust(1), Materials.Clay.getDust(1) });
 
         GTModHandler.addCraftingRecipe(
-            ItemList.Casing_Advanced_Rhodium_Palladium.get(1L),
+            ItemList.Casing_Secure_Rhodium_Palladium.get(1L),
             bits,
             new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
                 new ItemStack(WerkstoffLoader.items.get(OrePrefixes.plate), 1, 88), 'F',
