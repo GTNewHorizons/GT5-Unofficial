@@ -382,6 +382,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     public void stopMachine(@NotNull ShutDownReason reason) {
         IGregTechTileEntity tileEntity = this.getBaseMetaTileEntity();
         tileEntity.setShutDownReason(reason);
+        tileEntity.setShutdownStatus(true);
         tileEntity.disableWorking();
     }
 
