@@ -529,7 +529,8 @@ public class GTMod {
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("machine", 1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE,
+                | GTModHandler.RecipeBits.REVERSIBLE
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "RRR", "RwR", "RRR", 'R', OrePrefixes.plate.get(Materials.Iron) });
 
         GTPostLoad.registerFluidCannerRecipes();
