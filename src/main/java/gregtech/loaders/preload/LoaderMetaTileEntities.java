@@ -150,7 +150,7 @@ import gregtech.common.tileentities.machines.multi.MTECokeOven;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller1;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller2;
 import gregtech.common.tileentities.machines.multi.MTECryogenicFreezer;
-import gregtech.common.tileentities.machines.multi.MTECuringMachine;
+import gregtech.common.tileentities.machines.multi.MTELayeringMachine;
 import gregtech.common.tileentities.machines.multi.MTEDecayWarehouse;
 import gregtech.common.tileentities.machines.multi.MTEDieselEngineLegacy;
 import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
@@ -965,8 +965,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "multimachine.mega-chemical-reactor",
                 "Mega Chemical Reactor").getStackForm(1));
 
-        ItemList.CuringMachine.set(
-            new MTECuringMachine(CuringMachine.ID, "curingmachine.controller.tier.single", "Keuring Machine")
+        ItemList.LayeringMachine.set(
+            new MTELayeringMachine(LayeringMachine.ID, "Layeringmachine.controller.tier.single", "Sequential Layering Device")
                 .getStackForm(1));
 
         ItemList.IndustrialCuttingMachine.set(

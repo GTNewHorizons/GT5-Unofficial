@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.recipe.RecipeMaps.curingMachineRecipes;
+import static gregtech.api.recipe.RecipeMaps.layeringMachineRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import gregtech.api.enums.GTValues;
@@ -8,7 +8,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 
-public class CuringMachineRecipes implements Runnable {
+public class LayeringMachineRecipes implements Runnable {
 
     @Override
     public void run() {
@@ -18,6 +18,6 @@ public class CuringMachineRecipes implements Runnable {
             .itemOutputs(Materials.Kevlar.getPlates(1))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
-            .addTo(curingMachineRecipes);
+            .addTo(layeringMachineRecipes);
     }
 }

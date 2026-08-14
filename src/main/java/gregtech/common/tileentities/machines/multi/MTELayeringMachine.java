@@ -53,10 +53,10 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTELayerSignal;
 
-public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMachine>
+public class MTELayeringMachine extends MTEExtendedPowerMultiBlockBase<MTELayeringMachine>
     implements ISurvivalConstructable, ICasingTextureProvider, ILayerProducer {
 
-    private static IStructureDefinition<MTECuringMachine> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTELayeringMachine> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private static final int OFFSET_X = 6;
@@ -173,23 +173,23 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
         return out;
     }
 
-    public MTECuringMachine(final int aID, final String aName, final String aNameRegional) {
+    public MTELayeringMachine(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTECuringMachine(final String aName) {
+    public MTELayeringMachine(final String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTECuringMachine(this.mName);
+        return new MTELayeringMachine(this.mName);
     }
 
     @Override
-    public IStructureDefinition<MTECuringMachine> getStructureDefinition() {
+    public IStructureDefinition<MTELayeringMachine> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTECuringMachine>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTELayeringMachine>builder()
                 .addShape(
                     STRUCTURE_PIECE_MAIN,
                     transpose(
@@ -208,7 +208,7 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
                 .addElement('D', Casings.MotorMachineCasing.asElement())
                 .addElement(
                     'E',
-                    buildHatchAdder(MTECuringMachine.class)
+                    buildHatchAdder(MTELayeringMachine.class)
                         .atLeast(Maintenance, Energy, MTELayerSignal.LayerSignalHatchElement.LayerSignal)
                         .casingIndex(Casings.SecureRhodiumPlatedPalladiumMachineCasing.textureId)
                         .hint(1)
@@ -224,7 +224,7 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
                 .addElement('K', Casings.IncoloyDSFluidContainmentBlock.asElement())
                 .addElement(
                     '1',
-                    buildHatchAdder(MTECuringMachine.class).atLeast(InputHatch)
+                    buildHatchAdder(MTELayeringMachine.class).atLeast(InputHatch)
                         .casingIndex(Casings.SecureRhodiumPlatedPalladiumMachineCasing.textureId)
                         .hint(2)
                         .buildAndChain(
@@ -233,7 +233,7 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
                                 Casings.SecureRhodiumPlatedPalladiumMachineCasing.asElement())))
                 .addElement(
                     '2',
-                    buildHatchAdder(MTECuringMachine.class).atLeast(InputBus)
+                    buildHatchAdder(MTELayeringMachine.class).atLeast(InputBus)
                         .casingIndex(Casings.SecureRhodiumPlatedPalladiumMachineCasing.textureId)
                         .hint(3)
                         .buildAndChain(
@@ -242,7 +242,7 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
                                 Casings.SecureRhodiumPlatedPalladiumMachineCasing.asElement())))
                 .addElement(
                     '3',
-                    buildHatchAdder(MTECuringMachine.class).atLeast(OutputBus)
+                    buildHatchAdder(MTELayeringMachine.class).atLeast(OutputBus)
                         .casingIndex(Casings.SecureRhodiumPlatedPalladiumMachineCasing.textureId)
                         .hint(4)
                         .buildAndChain(
@@ -278,18 +278,18 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(
-            StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.machinetype"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip1"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip2"))
+            StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.layeringmachine.machinetype"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.layeringmachine.tooltip1"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.layeringmachine.tooltip2"))
             .addSeparator()
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip3"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip4"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip5"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip6"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip7"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip8"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.layeringmachine.tooltip3"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.layeringmachine.tooltip4"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.layeringmachine.tooltip5"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.layeringmachine.tooltip6"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.layeringmachine.tooltip7"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.layeringmachine.tooltip8"))
             .addSeparator()
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.curingmachine.tooltip9"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.layeringmachine.tooltip9"))
             .addBulkMachineInfo(PARALLEL_PER_TIER, SPEED, EU_EFFICIENCY)
             .beginStructureBlock(5, 6, 8, false)
             .addController("Front center, 2nd layer")
@@ -344,8 +344,8 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
                 boolean recipeItem = recipe.mInputs != null && recipe.mInputs.length > 0;
                 boolean recipeFluid = recipe.mFluidInputs != null && recipe.mFluidInputs.length > 0;
 
-                boolean haveItem = anyItem(MTECuringMachine.this.getStoredInputs());
-                boolean haveFluid = anyFluid(MTECuringMachine.this.getStoredFluids());
+                boolean haveItem = anyItem(MTELayeringMachine.this.getStoredInputs());
+                boolean haveFluid = anyFluid(MTELayeringMachine.this.getStoredFluids());
 
                 switch (phase) {
                     case NEED_BOTH:
@@ -549,7 +549,7 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.curingMachineRecipes;
+        return RecipeMaps.layeringMachineRecipes;
     }
 
     @Override
