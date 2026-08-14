@@ -1390,7 +1390,8 @@ public class GTModHandler {
 
         delayedRemovalByRecipe.add(craftMatrix);
         if (GT_RECIPE_REMOVAL_LOGGER_ENABLED) {
-            delayedRemovalCallsites.add(new Exception("removeRecipeDelayed shape: " + Arrays.toString(shape)));
+            delayedRemovalCallsites
+                .add(new Exception("Queued crafting inputs (not an existing recipe): " + Arrays.toString(shape)));
         }
     }
 
@@ -1423,8 +1424,9 @@ public class GTModHandler {
         if (matchedDelayedRemovals != null) {
             for (int i = 0; i < matchedDelayedRemovals.length(); i++) {
                 if (matchedDelayedRemovals.get(i) == 0) {
-                    GT_RECIPE_REMOVAL_LOGGER
-                        .warn("removeRecipeDelayed call matched no removable recipe", delayedRemovalCallsites.get(i));
+                    GT_RECIPE_REMOVAL_LOGGER.warn(
+                        "No existing removable crafting recipe matched these queued inputs; removal call site follows",
+                        delayedRemovalCallsites.get(i));
                 }
             }
         }
