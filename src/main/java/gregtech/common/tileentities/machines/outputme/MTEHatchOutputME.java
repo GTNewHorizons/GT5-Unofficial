@@ -51,7 +51,7 @@ import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OutputHatchType;
@@ -335,7 +335,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                     s.setStackSize(tag.getLong("size"));
                     provider.addToCache(s);
                 } else {
-                    GTMod.GT_FML_LOGGER.warn(
+                    GTLoggers.GT_FML_LOGGER.warn(
                         "An error occurred while loading contents of ME Output Hatch. This fluid has been voided: {}",
                         tagFluidStack);
                 }

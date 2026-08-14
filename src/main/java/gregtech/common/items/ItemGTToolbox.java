@@ -48,6 +48,7 @@ import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.api.tool.ITool;
+import gregtech.GTLoggers;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
@@ -410,7 +411,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                     }
 
                     if (toolbox == null) {
-                        GTMod.GT_FML_LOGGER.warn("Tried to save the toolbox, but it could not be found.");
+                        GTLoggers.GT_FML_LOGGER.warn("Tried to save the toolbox, but it could not be found.");
                         return;
                     }
 

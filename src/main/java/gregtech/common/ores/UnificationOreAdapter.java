@@ -24,7 +24,7 @@ import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 
 import bartworks.system.material.BWMetaGeneratedOres;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
@@ -198,7 +198,7 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
             return bm.getBlock()
                 .getDrops(mockWorld, 0, 0, 0, bm.getBlockMeta(), fortune);
         } catch (Throwable t) {
-            GTMod.GT_FML_LOGGER.error("Could not get drops for ore block: {}", bm, t);
+            GTLoggers.GT_FML_LOGGER.error("Could not get drops for ore block: {}", bm, t);
 
             return new ArrayList<>();
         }
