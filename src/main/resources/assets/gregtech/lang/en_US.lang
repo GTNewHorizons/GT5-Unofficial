@@ -3534,7 +3534,7 @@ gt.blockmachines.multimachine.beamcrafting.beamstabilizer.gui.targetbeamrate=Tar
 gt.blockmachines.multimachine.beamcrafting.machineoff=Machine is off
 
 gt.blockmachines.multimachine.layeringmachine.machinetype=Sequential Layering Device
-gt.blockmachines.multimachine.layeringmachine.tooltip1=The Sequential Layering Device grants a powerful material discount for continous
+gt.blockmachines.multimachine.layeringmachine.tooltip1=The Sequential Layering Device grants a powerful material discount for continuous
 gt.blockmachines.multimachine.layeringmachine.tooltip2=repeated crafts of the same recipe, through a §bLayering Sequence§7
 gt.blockmachines.multimachine.layeringmachine.tooltip3=During the §bSequence§7, the machine outputs a §credstone signal§7 of random strength
 gt.blockmachines.multimachine.layeringmachine.tooltip4=from §61§7 to §f8§7 via the §clayer signal hatch§7, affecting the subsequent craft
