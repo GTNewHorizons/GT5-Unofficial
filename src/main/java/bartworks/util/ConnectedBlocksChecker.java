@@ -13,7 +13,9 @@
 
 package bartworks.util;
 
+import java.util.ArrayDeque;
 import java.util.HashSet;
+import java.util.Queue;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
@@ -56,42 +58,35 @@ public class ConnectedBlocksChecker {
 
         int wID = w.provider.dimensionId;
 
-        if (this.hashset.contains(new Coords(x, y, z, wID))) {
-            return ret;
-        }
-
-        this.hashset.add(new Coords(x, y, z, wID));
-
-        byte sides = this.check_sourroundings(w, x, y, z, b);
-
-        if ((sides | 0b111011) == 0b111111 && !this.hashset.contains(new Coords(x + 1, y, z, wID))) {
+        // BFS starting node
+        Queue<Coords> toVisit = new ArrayDeque<>();
+        toVisit.add(new Coords(x, y, z, wID));
+        while (!toVisit.isEmpty()) {
+            Coords curr = toVisit.poll();
+            if (this.hashset.contains(curr)) {
+                continue;
+            }
+            this.hashset.add(curr);
             ret++;
-            ret += this.get_connected(w, x + 1, y, z, b);
-        }
-
-        if ((sides | 0b110111) == 0b111111 && !this.hashset.contains(new Coords(x - 1, y, z, wID))) {
-            ret++;
-            ret += this.get_connected(w, x - 1, y, z, b);
-        }
-
-        if ((sides | 0b101111) == 0b111111 && !this.hashset.contains(new Coords(x, y, z + 1, wID))) {
-            ret++;
-            ret += this.get_connected(w, x, y, z + 1, b);
-        }
-
-        if ((sides | 0b011111) == 0b111111 && !this.hashset.contains(new Coords(x, y, z - 1, wID))) {
-            ret++;
-            ret += this.get_connected(w, x, y, z - 1, b);
-        }
-
-        if ((sides | 0b111110) == 0b111111 && !this.hashset.contains(new Coords(x, y + 1, z, wID))) {
-            ret++;
-            ret += this.get_connected(w, x, y + 1, z, b);
-        }
-
-        if ((sides | 0b111101) == 0b111111 && !this.hashset.contains(new Coords(x, y - 1, z, wID))) {
-            ret++;
-            ret += this.get_connected(w, x, y - 1, z, b);
+            byte res = check_sourroundings(w, curr.x, curr.y, curr.z, b);
+            if ((res | 0b111011) == 0b111111) {
+                toVisit.add(new Coords(curr.x + 1, curr.y, curr.z, curr.wID));
+            }
+            if ((res | 0b110111) == 0b111111) {
+                toVisit.add(new Coords(curr.x - 1, curr.y, curr.z, curr.wID));
+            }
+            if ((res | 0b101111) == 0b111111) {
+                toVisit.add(new Coords(curr.x, curr.y, curr.z + 1, curr.wID));
+            }
+            if ((res | 0b011111) == 0b111111) {
+                toVisit.add(new Coords(curr.x, curr.y, curr.z - 1, curr.wID));
+            }
+            if ((res | 0b111110) == 0b111111) {
+                toVisit.add(new Coords(curr.x, curr.y + 1, curr.z, curr.wID));
+            }
+            if ((res | 0b111101) == 0b111111) {
+                toVisit.add(new Coords(curr.x, curr.y - 1, curr.z, curr.wID));
+            }
         }
 
         return ret;
