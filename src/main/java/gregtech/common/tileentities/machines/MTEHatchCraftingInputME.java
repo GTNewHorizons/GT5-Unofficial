@@ -103,7 +103,7 @@ import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import appeng.util.ScheduledReason;
 import appeng.util.inv.MEInventoryCrafting;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -168,7 +168,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
                         itemInventory.add(item);
                     }
                 } else {
-                    GTMod.GT_FML_LOGGER.warn(
+                    GTLoggers.GT_FML_LOGGER.warn(
                         "An error occurred while loading contents of ME Crafting Input Bus. This item has been voided: {}",
                         tagItemStack);
                 }
@@ -182,7 +182,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
                         fluidInventory.add(fluid);
                     }
                 } else {
-                    GTMod.GT_FML_LOGGER.warn(
+                    GTLoggers.GT_FML_LOGGER.warn(
                         "An error occurred while loading contents of ME Crafting Input Bus. This fluid has been voided: {}",
                         tagFluidStack);
                 }
@@ -814,7 +814,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             if (pattern != null) {
                 internalInventory[patternSlot] = new PatternSlot<>(pattern, patternSlotNBT, this);
             } else {
-                GTMod.GT_FML_LOGGER.warn(
+                GTLoggers.GT_FML_LOGGER.warn(
                     "An error occurred while loading contents of ME Crafting Input Bus. This pattern has been voided: {}",
                     patternSlotNBT);
             }
@@ -1174,7 +1174,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             if (slot == null) continue;
             ICraftingPatternDetails details = slot.getPatternDetails();
             if (details == null) {
-                GTMod.GT_FML_LOGGER.warn(
+                GTLoggers.GT_FML_LOGGER.warn(
                     "Found an invalid pattern at {} in dim {}",
                     getBaseMetaTileEntity().getCoords(),
                     getBaseMetaTileEntity().getWorld().provider.dimensionId);

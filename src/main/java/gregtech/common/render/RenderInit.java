@@ -11,7 +11,7 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.common.render.shader.ShaderProfile;
 import gregtech.common.render.shader.SharedShaders;
 import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
@@ -77,7 +77,7 @@ public final class RenderInit implements IResourceManagerReloadListener {
             try {
                 hook.run();
             } catch (Throwable t) {
-                GTMod.GT_FML_LOGGER.error("Renderer asset load failed", t);
+                GTLoggers.GT_FML_LOGGER.error("Renderer asset load failed", t);
             }
         }
     }

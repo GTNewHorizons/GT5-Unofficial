@@ -200,7 +200,7 @@ gt.voltage.tier=-tier
 gt.blockmachines.cable.desc=Max Voltage: %s\nMax Amperage: %s\nLoss/Meter/Ampere: %s
 gt.blockmachines.gt_frame.desc.format=Just something you can put covers on.
 gt.blockmachines.transformer.desc=%s -> %s (Use Soft Mallet to invert)
-gt.blockmachines.transformer_advanced.desc=Accepts %sA and outputs %sA\nToggle 2A/8A half-mode with Screwdriver
+gt.blockmachines.transformer_advanced.desc=Accepts %sA and outputs %sA\nToggle %sA/%sA half-mode with Screwdriver
 gt.blockmachines.bronze_hull.desc=For your first Steam Machines
 gt.blockmachines.highpressure_hull.desc=For improved Steam Machines
 gt.blockmachines.basic_hull.desc=§rYou just need §5I§dm§4a§cg§ei§an§ba§3t§9i§1o§5n§r to use this.
@@ -1719,6 +1719,9 @@ gt.mbtt.structure.any_front_bottom_casing=Any front bottom casing
 gt.mbtt.structure.around_controller=Around controller
 gt.mbtt.structure.any_back_center_casing=Any back center casing
 gt.mbtt.structure.any_front_shielding_casing=Any front shielding casing
+gt.mbtt.structure.front_center_of_central_column_4th_layer=Front center of central column, 4th layer
+gt.mbtt.structure.any_bottom_center_casing=Any bottom center casing
+gt.mbtt.structure.surrounding_central_column=Surrounding central column
 
 # Generic machine types
 gt.mbtt.machine_type.spacetime_manipulator=Spacetime Manipulator, EOH
@@ -9159,7 +9162,7 @@ GT5U.tooltip.bec-diode.bec-hatch-pos=Center left casing (input), center right ca
 
 # BEC Assembler Structure Hints
 GT5U.tooltip.bec-assembler.controller-pos=Front center, 16th layer
-GT5U.tooltip.bec-assembler.hatch-pos=Any electromagnetically-isolated casing
+GT5U.tooltip.bec-assembler.hatch-pos=Any outer electromagnetically-isolated casing, every other IO port ring 
 GT5U.tooltip.bec-assembler.bec-hatch-pos=Center left or right casing
 GT5U.tooltip.bec-assembler.los-hatch-pos=Center side casing of each ring
 
