@@ -3698,7 +3698,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                                     truncatedFluidName,
                                     shortenedCount) + rateShort).setTextAlignment(Alignment.CenterLeft)
                                         .addTooltip(lineTooltip)
-                                        .setSize(100, 8)
                                         .setPos(10, 1)));
 
             }
@@ -3799,8 +3798,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         if (supportsMachineModeSwitch()) {
             screenElements.widget(
-                TextWidget
-                    .dynamicString(() -> translateToLocalFormatted("gt.interact.desc.mb.mode", getMachineModeName()))
+                new TextWidget(translateToLocalFormatted("gt.interact.desc.mb.mode", getMachineModeName()))
                     .setTextAlignment(Alignment.CenterLeft));
         }
         screenElements
