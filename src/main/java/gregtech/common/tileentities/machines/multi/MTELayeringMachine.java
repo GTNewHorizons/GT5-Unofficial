@@ -343,10 +343,8 @@ public class MTELayeringMachine extends MTEExtendedPowerMultiBlockBase<MTELayeri
                     lockedRecipe = recipe;
                 } else {
                     if (lockedRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
-                    if (!otherSlotsAbsent(requiredSignal)) return CheckRecipeResultRegistry.NO_RECIPE; // stall if any
-                                                                                                       // incorrect
-                                                                                                       // inputs are
-                                                                                                       // provided
+                    // stall if any inputs other than the ones required by the current slice are provided
+                    if (hasUnexpectedInputs(requiredSignal)) return CheckRecipeResultRegistry.NO_RECIPE;
                 }
                 return super.validateRecipe(recipe);
             }
@@ -464,44 +462,28 @@ public class MTELayeringMachine extends MTEExtendedPowerMultiBlockBase<MTELayeri
         return new int[] { chances[idx] };
     }
 
-    private boolean otherSlotsAbsent(int signal) {
-        if (lockedRecipe == null) return false;
+    private boolean hasUnexpectedInputs(int signal) {
+        if (lockedRecipe == null) return true;
         int itemIdx = (signal >= SIGNAL_ITEM_MIN && signal <= SIGNAL_ITEM_MAX) ? signal - SIGNAL_ITEM_MIN : -1;
         int fluidIdx = (signal >= SIGNAL_FLUID_MIN && signal <= SIGNAL_FLUID_MAX) ? signal - SIGNAL_FLUID_MIN : -1;
 
-        ItemStack[] items = lockedRecipe.mInputs;
-        if (items != null) {
-            List<ItemStack> stored = getStoredInputs();
-            for (int i = 0; i < items.length; i++) {
-                if (i == itemIdx || items[i] == null) continue;
-                if (containsItem(stored, items[i])) {
-                    return false;
-                }
-            }
-        }
-        FluidStack[] fluids = lockedRecipe.mFluidInputs;
-        if (fluids != null) {
-            List<FluidStack> stored = getStoredFluids();
-            for (int j = 0; j < fluids.length; j++) {
-                if (j == fluidIdx || fluids[j] == null) continue;
-                if (containsFluid(stored, fluids[j])) return false;
-            }
-        }
-        return true;
-    }
+        ItemStack expectedItem = null;
+        FluidStack expectedFluid = null;
 
-    private static boolean containsItem(List<ItemStack> stored, ItemStack target) {
-        if (stored == null) return false;
-        for (ItemStack s : stored) {
-            if (s != null && s.stackSize > 0 && GTUtility.areStacksEqual(s, target)) return true;
+        if (itemIdx >= 0 && lockedRecipe.mInputs != null && itemIdx < lockedRecipe.mInputs.length) {
+            expectedItem = lockedRecipe.mInputs[itemIdx];
         }
-        return false;
-    }
+        if (fluidIdx >= 0 && lockedRecipe.mFluidInputs != null && fluidIdx < lockedRecipe.mFluidInputs.length) {
+            expectedFluid = lockedRecipe.mFluidInputs[fluidIdx];
+        }
 
-    private static boolean containsFluid(List<FluidStack> stored, FluidStack target) {
-        if (stored == null) return false;
-        for (FluidStack s : stored) {
-            if (s != null && s.amount > 0 && GTUtility.areFluidsEqual(s, target)) return true;
+        for (ItemStack stored : getStoredInputs()) {
+            if (stored == null || stored.stackSize <= 0) continue;
+            if (expectedItem == null || !GTUtility.areStacksEqual(stored, expectedItem)) return true;
+        }
+        for (FluidStack stored : getStoredFluids()) {
+            if (stored == null || stored.amount <= 0) continue;
+            if (expectedFluid == null || !GTUtility.areFluidsEqual(stored, expectedFluid)) return true;
         }
         return false;
     }
