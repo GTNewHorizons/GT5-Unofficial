@@ -360,7 +360,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         this.lastTCRecipeRate = inputRate;
 
         // 5 seconds per integer multiple over the rate
-        float progressTime = metadata.amount / inputRate * 5 * TickTime.SECOND;
+        float progressTime = calculateProgressTime(metadata.amount, inputRate);
         int batchAmount = 1;
         if (progressTime < 1) { // Subticking
             batchAmount = (int) Math.round(1.0 / progressTime);
@@ -416,6 +416,10 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         this.updateSlots();
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    private static float calculateProgressTime(int particleAmount, int particleRate) {
+        return (float) particleAmount / particleRate * 5 * TickTime.SECOND;
     }
 
     @Nullable
