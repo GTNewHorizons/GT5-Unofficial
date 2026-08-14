@@ -13,6 +13,7 @@ import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.PRECISE_ASSEMBLER_CASING_TIER;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
@@ -29,7 +30,6 @@ import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.ItemEssence;
 
 public class KevlarRecipes {
 
@@ -229,13 +229,18 @@ public class KevlarRecipes {
         }
         // Magic
         if (Mods.Thaumcraft.isModLoaded()) {
-            final ItemStack filledPhial = new ItemStack(ConfigItems.itemEssence, 1, 1);
-            final AspectList phialContent = new AspectList().add(TCAspects.GELUM.getAspect(), 8);
-            ((ItemEssence) ConfigItems.itemEssence).setAspects(filledPhial, phialContent);
+            final ItemStack crystalGelum = new ItemStack(ConfigItems.itemCrystalEssence, 8, 1);
+            NBTTagCompound nbt = crystalGelum.getTagCompound();
+            if (nbt == null) {
+                nbt = new NBTTagCompound();
+            }
+            AspectList aspectGelum = new AspectList().add(TCAspects.GELUM.getAspect(), 1);
+            aspectGelum.writeToNBT(nbt);
+            crystalGelum.setTagCompound(nbt);
 
             GTValues.RA.stdBuilder()
                 .circuit(23)
-                .itemInputs(filledPhial)
+                .itemInputs(crystalGelum)
                 .fluidInputs(
                     Materials.ParaPhenylenediamine.getFluid(1000),
                     Materials.TerephthaloylChloride.getFluid(1000))
