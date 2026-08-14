@@ -548,7 +548,7 @@ public class Loaders {
         RecipeLoader.InitLoadRecipe();
         RecipeLoader2.InitLoadRecipe();
         FuelRecipeLoader.RegisterFuel();
-        NaquadahReworkRecipeLoader.RecipeLoad();
+        NaquadahRecipeLoader.RecipeLoad();
     }
 
     public static void postInitLoad() {

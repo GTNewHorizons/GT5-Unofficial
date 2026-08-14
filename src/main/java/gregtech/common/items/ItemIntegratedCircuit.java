@@ -1,7 +1,7 @@
 package gregtech.common.items;
 
 import static ggfab.GGItemList.SingleUseScrewdriver;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import bartworks.common.items.ItemCircuitProgrammer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -49,7 +49,6 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTConfig;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.gui.modularui.item.IntegratedCircuitGui;
 import gregtech.common.items.toolbox.ToolboxUtil;
@@ -232,17 +231,17 @@ public class ItemIntegratedCircuit extends GTGenericItem
                 .registerIcon(GregTech.getResourcePath(GTConfig.troll ? "troll" : getUnlocalizedName() + "/" + i));
         }
         if (GregTechAPI.sPostloadFinished) {
-            GTLog.out.println("GTMod: Starting Item Icon Load Phase");
+            GT_FML_LOGGER.debug("GTMod: Starting Item Icon Load Phase");
             GT_FML_LOGGER.info("GTMod: Starting Item Icon Load Phase");
             GregTechAPI.sItemIcons = aIconRegister;
             for (Runnable tRunnable : GregTechAPI.sGTItemIconload) {
                 try {
                     tRunnable.run();
                 } catch (Exception e) {
-                    GTMod.GT_FML_LOGGER.error("Error registering icons", e);
+                    GTLoggers.GT_FML_LOGGER.error("Error registering icons", e);
                 }
             }
-            GTLog.out.println("GTMod: Finished Item Icon Load Phase");
+            GT_FML_LOGGER.debug("GTMod: Finished Item Icon Load Phase");
             GT_FML_LOGGER.info("GTMod: Finished Item Icon Load Phase");
         }
     }

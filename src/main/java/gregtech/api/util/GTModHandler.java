@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.B;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.DW;
@@ -11,6 +11,7 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
+import static gregtech.api.util.GTRecipeBuilder.PANIC_MODE_NULL;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
@@ -316,11 +317,11 @@ public class GTModHandler {
      */
     public static ItemStack getIC2Item(String aItem, long aAmount, ItemStack aReplacement) {
         if (GTUtility.isStringInvalid(aItem) || !GregTechAPI.sPreloadStarted) return null;
-        // if (D1) GTLog.out.println("Requested the Item '" + aItem + "' from the IC2-API");
+        // if (D1) GT_FML_LOGGER.debug("Requested the Item '" + aItem + "' from the IC2-API");
         if (!sIC2ItemMap.containsKey(aItem)) {
             ItemStack tStack = IC2Items.getItem(aItem);
             sIC2ItemMap.put(aItem, tStack);
-            if (tStack == null && D1) GTLog.err.println(aItem + " is not found in the IC2 Items!");
+            if (tStack == null && D1) GT_FML_LOGGER.error("{} is not found in the IC2 Items!", aItem);
         }
         return GTUtility.copyAmount(aAmount, sIC2ItemMap.get(aItem), aReplacement);
     }
@@ -390,8 +391,13 @@ public class GTModHandler {
                 + aModID
                 + "\" has returned null because "
                 + reason;
-            GTLog.out.println(log_message);
-            new Exception().printStackTrace(GTLog.out);
+            if (PANIC_MODE_NULL) {
+                GT_FML_LOGGER.fatal(log_message);
+                GT_FML_LOGGER.fatal(new Exception());
+            } else {
+                GT_FML_LOGGER.info(log_message);
+                GT_FML_LOGGER.info(new Exception());
+            }
         }
         return result;
     }
@@ -570,6 +576,7 @@ public class GTModHandler {
             false,
             false,
             true,
+            true,
             aRecipe);
     }
 
@@ -630,6 +637,7 @@ public class GTModHandler {
             (aBitMask & RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0,
             (aBitMask & RecipeBits.ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT) != 0,
             (aBitMask & RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL) != 0,
+            (aBitMask & RecipeBits.DONT_UNIFY_OUTPUT) == 0,
             aRecipe);
     }
 
@@ -959,9 +967,10 @@ public class GTModHandler {
         boolean aReversible, boolean aRemoveAllOthersWithSameOutput,
         boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput,
         boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions,
-        boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
+        boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, boolean unifyOutput,
+        Object[] aRecipe) {
 
-        aResult = GTOreDictUnificator.get(true, aResult);
+        if (unifyOutput) aResult = GTOreDictUnificator.get(true, aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return false;
         if (aResult != null && Items.feather.getDamage(aResult) == WILDCARD) Items.feather.setDamage(aResult, 0);
         if (aRecipe == null || aRecipe.length == 0) return false;
@@ -1071,10 +1080,8 @@ public class GTModHandler {
         for (; idx < aRecipe.length; idx += 2) {
             if (aRecipe[idx] == null || aRecipe[idx + 1] == null) {
                 if (D1) {
-                    GTLog.err.println(
-                        "WARNING: Missing Item for shaped Recipe: "
-                            + (aResult == null ? "null" : aResult.getDisplayName()));
-                    for (Object tContent : aRecipe) GTLog.err.println(tContent);
+                    GT_FML_LOGGER.error("WARNING: Missing Item for shaped Recipe: {}", aResult == null ? "null" : aResult.getDisplayName());
+                    for (Object tContent : aRecipe) GT_FML_LOGGER.error(tContent);
                 }
                 return false;
             }
@@ -1228,6 +1235,7 @@ public class GTModHandler {
             (aBitMask & RecipeBits.KEEPNBT) != 0,
             (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
             (aBitMask & RecipeBits.OVERWRITE_NBT) != 0,
+            (aBitMask & RecipeBits.DONT_UNIFY_OUTPUT) == 0,
             inputValidator,
             aRecipe);
     }
@@ -1237,8 +1245,8 @@ public class GTModHandler {
      */
     private static boolean addShapelessCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
         int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aKeepNBT, boolean aRemovable, boolean overwriteNBT,
-        Predicate<InventoryCrafting> inputValidator, Object[] aRecipe) {
-        aResult = GTOreDictUnificator.get(true, aResult);
+        boolean unifyOutput, Predicate<InventoryCrafting> inputValidator, Object[] aRecipe) {
+        if (unifyOutput) aResult = GTOreDictUnificator.get(true, aResult);
         if (aRecipe == null || aRecipe.length == 0) return false;
         for (byte i = 0; i < aRecipe.length; i++) {
             if (aRecipe[i] instanceof IItemContainer) aRecipe[i] = ((IItemContainer) aRecipe[i]).get(1);
@@ -1254,10 +1262,9 @@ public class GTModHandler {
         for (Object tObject : aRecipe) {
             switch (tObject) {
                 case null -> {
-                    if (GTValues.D1) GTLog.err.println(
-                        "WARNING: Missing Item for shapeless Recipe: "
-                            + (aResult == null ? "null" : aResult.getDisplayName()));
-                    for (Object tContent : aRecipe) GTLog.err.println(tContent);
+                    if (GTValues.D1)
+                        GT_FML_LOGGER.error("WARNING: Missing Item for shapeless Recipe: {}", aResult == null ? "null" : aResult.getDisplayName());
+                    for (Object tContent : aRecipe) GT_FML_LOGGER.error(tContent);
                     return false;
                 }
                 case ItemStack itemStack -> tRecipe[i] = itemStack;
@@ -2236,6 +2243,10 @@ public class GTModHandler {
          * tags with output item's NBT tags if exists
          */
         public static final long OVERWRITE_NBT = B[14];
+        /**
+         * Keeps the supplied crafting recipe output instead of ore-dictionary-unifying it.
+         */
+        public static final long DONT_UNIFY_OUTPUT = B[15];
         /**
          * Combination of common bits. NOT_REMOVABLE, REVERSIBLE, and BUFFERED
          */

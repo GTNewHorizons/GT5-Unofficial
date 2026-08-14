@@ -938,8 +938,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
         for (MTEHatchEnergy hatch : mEnergyHatches) {
-            if (hatch.mTier > glassTier) {
-                errors.add(StructureErrors.glassTierNotEnough(hatch.mTier));
+            if (hatch.getTierForStructure() > glassTier) {
+                errors.add(StructureErrors.glassTierNotEnough(hatch.getTierForStructure()));
                 break;
             }
         }
@@ -1019,9 +1019,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         String mob = getCurrentMob();
         if (mob != null) {
             tag.setString("eecMobType", mob);
@@ -1033,24 +1032,22 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
 
         if (tag.hasKey("eecMobType", Constants.NBT.TAG_STRING)) {
             String mob = tag.getString("eecMobType");
             String mobKey = "entity." + mob + ".name";
             if (StatCollector.canTranslate(mobKey)) {
-                currentTip.add(
+                list.add(
                     StatCollector.translateToLocalFormatted(
                         "kubatech.waila.eec.mob_type",
                         StatCollector.translateToLocal(mobKey)));
             } else {
-                currentTip.add(StatCollector.translateToLocalFormatted("kubatech.waila.eec.mob_type", mob));
+                list.add(StatCollector.translateToLocalFormatted("kubatech.waila.eec.mob_type", mob));
             }
         } else {
-            currentTip.add(
+            list.add(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.waila.eec.mob_type",
                     StatCollector.translateToLocal("kubatech.waila.eec.no_mob")));
@@ -1058,11 +1055,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
         if (tag.hasKey("isInRitualMode") && tag.getBoolean("isInRitualMode")) {
             if (tag.hasKey("isRitualValid") && tag.getBoolean("isRitualValid")) {
-                currentTip.add(
+                list.add(
                     EnumChatFormatting.GREEN
                         + StatCollector.translateToLocal("kubatech.waila.eec.ritual_mode_connected"));
             } else {
-                currentTip.add(
+                list.add(
                     EnumChatFormatting.RED + StatCollector.translateToLocal("kubatech.waila.eec.ritual_mode_error"));
             }
         }

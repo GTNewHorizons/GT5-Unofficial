@@ -238,21 +238,18 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setLong("Computation", eAvailableData);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        final long computation = accessor.getNBTData()
-            .getLong("Computation");
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        final long computation = tag.getLong("Computation");
         if (computation > 0) {
-            currentTip.add(translateToLocalFormatted("tt.waila.multi.computation", formatNumber(computation)));
+            list.add(translateToLocalFormatted("tt.waila.multi.computation", formatNumber(computation)));
         }
-        super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package gregtech.api.util;
 
 import static cpw.mods.fml.common.registry.GameRegistry.findBlock;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.BloodArsenal;
