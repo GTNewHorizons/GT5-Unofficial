@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.machine;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,7 +14,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GTLog;
 import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.block.base.BasicTileBlockWithTooltip;
@@ -66,7 +67,7 @@ public class BlockFlaskSetter extends BasicTileBlockWithTooltip {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
         final TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileEntityVolumetricFlaskSetter) {

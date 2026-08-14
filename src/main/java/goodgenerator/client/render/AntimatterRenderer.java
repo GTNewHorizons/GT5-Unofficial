@@ -16,7 +16,7 @@ import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import goodgenerator.blocks.tileEntity.render.TileAntimatter;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.common.render.shader.RenderState;
 import gregtech.common.render.shader.ShaderHandle;
 import gregtech.common.render.shader.ShaderRecipe;
@@ -143,7 +143,7 @@ public class AntimatterRenderer extends TileEntitySpecialRenderer {
     }
 
     private static void fail(String stage, Throwable t) {
-        GTMod.GT_FML_LOGGER.error("Failed to initialize antimatter forge render ({})", stage, t);
+        GTLoggers.GT_FML_LOGGER.error("Failed to initialize antimatter forge render ({})", stage, t);
         release();
         hasFailed = true;
     }

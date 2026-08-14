@@ -1,5 +1,7 @@
 package gregtech.client.iconContainers.blocks;
 
+import static gregtech.GTLoggers.GT_ICON_LOGGER;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -8,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.client.ResourceUtils;
 
 public class GTCustomOptionalBlockIconContainer extends GTCustomBlockIconContainer {
@@ -19,8 +20,8 @@ public class GTCustomOptionalBlockIconContainer extends GTCustomBlockIconContain
 
     @Override
     protected void logRegisterIcons() {
-        GTLog.ico.println("O " + iconResource);
-        GTLog.ico.println("O " + overlayResource);
+        GT_ICON_LOGGER.info("O {}", iconResource);
+        GT_ICON_LOGGER.info("O {}", overlayResource);
     }
 
     // 2026-02-03: Counted 3723 unique Block Custom Optional Icons, so 5K will avoid resize until 3840 entries
