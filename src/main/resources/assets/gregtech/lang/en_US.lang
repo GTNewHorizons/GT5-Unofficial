@@ -3534,15 +3534,18 @@ gt.blockmachines.multimachine.beamcrafting.beamstabilizer.gui.targetbeamrate=Tar
 gt.blockmachines.multimachine.beamcrafting.machineoff=Machine is off
 
 gt.blockmachines.multimachine.layeringmachine.machinetype=Sequential Layering Device
-gt.blockmachines.multimachine.layeringmachine.tooltip1=The Sequential Layering Device crafts items in layers, with an effective
-gt.blockmachines.multimachine.layeringmachine.tooltip2=§f50%§7 material discount for continuous use
-gt.blockmachines.multimachine.layeringmachine.tooltip3=During each craft, the machine outputs a random redstone signal of strength
-gt.blockmachines.multimachine.layeringmachine.tooltip4=§61§7 or §d2§7 via the layer signal hatch, affecting the subsequent craft
-gt.blockmachines.multimachine.layeringmachine.tooltip5=If the signal strength is §61§7, the next craft requires only the §6item§7 input
-gt.blockmachines.multimachine.layeringmachine.tooltip6=If the signal strength is §d2§7, the next craft requires only the §dfluid§7 input
-gt.blockmachines.multimachine.layeringmachine.tooltip7=If an input type is provided that is not required, the next craft will not
-gt.blockmachines.multimachine.layeringmachine.tooltip8=be discounted, and the machine will reset
-gt.blockmachines.multimachine.layeringmachine.tooltip9=Accepts exactly one Multi-amp energy hatch, or multiple regular energy hatches
+gt.blockmachines.multimachine.layeringmachine.tooltip1=The Sequential Layering Device grants a powerful material discount for continous
+gt.blockmachines.multimachine.layeringmachine.tooltip2=repeated crafts of the same recipe, through a §bLayering Sequence§7
+gt.blockmachines.multimachine.layeringmachine.tooltip3=During the §bSequence§7, the machine outputs a §credstone signal§7 of random strength
+gt.blockmachines.multimachine.layeringmachine.tooltip4=from §61§7 to §f8§7 via the §clayer signal hatch§7, affecting the subsequent craft
+gt.blockmachines.multimachine.layeringmachine.tooltip5=For the next craft, only the input corresponding to the §csignal§7 value 
+gt.blockmachines.multimachine.layeringmachine.tooltip6=needs to be provided
+gt.blockmachines.multimachine.layeringmachine.tooltip7=§cSignals§7 from §61§7 to §e4§7 correspond to the §6item§7 inputs
+gt.blockmachines.multimachine.layeringmachine.tooltip8=§cSignals§7 from §a5§7 to §f8§7 correspond to the §9fluid§7 inputs
+gt.blockmachines.multimachine.layeringmachine.tooltip9=The machine will not output §cSignals§7 that correspond to empty slots
+gt.blockmachines.multimachine.layeringmachine.tooltip10=The initial craft of a §bLayering Sequence§7 always requires all inputs
+gt.blockmachines.multimachine.layeringmachine.tooltip11=If unexpected inputs are present, or expected inputs are absent, the §bSequence§7 ends
+gt.blockmachines.multimachine.layeringmachine.tooltip12=Accepts exactly one Multi-amp energy hatch, or multiple regular energy hatches
 
 
 
