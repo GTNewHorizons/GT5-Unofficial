@@ -1368,13 +1368,19 @@ public class GTModHandler {
     }
 
     public static void removeRecipeDelayed(ItemStack... shape) {
+        if (shape == null || isAllNulls(shape)) {
+            if (GT_RECIPE_REMOVAL_LOGGER_ENABLED) {
+                GT_RECIPE_REMOVAL_LOGGER.error(
+                    "removeRecipeDelayed rejected empty or null-only crafting inputs; call site follows",
+                    new Exception("Rejected crafting inputs: " + Arrays.toString(shape)));
+            }
+            return;
+        }
+
         if (!sBufferCraftingRecipes) {
             removeRecipe(shape);
             return;
         }
-
-        if (shape == null) return;
-        if (isAllNulls(shape)) return;
 
         InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
 
