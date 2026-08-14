@@ -207,7 +207,11 @@ public class MTELayeringMachine extends MTEExtendedPowerMultiBlockBase<MTELayeri
                 .addElement(
                     'E',
                     buildHatchAdder(MTELayeringMachine.class)
-                        .atLeast(Maintenance, Energy, MTELayerSignal.LayerSignalHatchElement.LayerSignal)
+                        .atLeast(
+                            Maintenance,
+                            Energy,
+                            MultiAmpEnergy,
+                            MTELayerSignal.LayerSignalHatchElement.LayerSignal)
                         .casingIndex(Casings.SecureRhodiumPlatedPalladiumMachineCasing.textureId)
                         .hint(1)
                         .buildAndChain(
@@ -295,7 +299,7 @@ public class MTELayeringMachine extends MTEExtendedPowerMultiBlockBase<MTELayeri
             .addBulkMachineInfo(PARALLEL_PER_TIER, SPEED, EU_EFFICIENCY)
             .beginStructureBlock(13, 5, 9, false)
             .addController("Front center, 2nd layer")
-            .addCasing("0-110", "Secure Rhodium Plated Palladium Machine Casing", false)
+            .addCasing("6-110", "Secure Rhodium Plated Palladium Machine Casing", false)
             .addCasing("94", "Advanced Iridium Plated Machine Casing", false)
             .addCasing("56", "Rhodium Plated Palladium Frame Box", false)
             .addCasing("43", "Any Tiered Glass", false)
