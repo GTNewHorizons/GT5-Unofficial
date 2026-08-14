@@ -3798,7 +3798,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         if (supportsMachineModeSwitch()) {
             screenElements.widget(
-                new TextWidget(translateToLocalFormatted("gt.interact.desc.mb.mode", getMachineModeName()))
+                TextWidget
+                    .dynamicString(() -> translateToLocalFormatted("gt.interact.desc.mb.mode", getMachineModeName()))
                     .setTextAlignment(Alignment.CenterLeft));
         }
         screenElements
