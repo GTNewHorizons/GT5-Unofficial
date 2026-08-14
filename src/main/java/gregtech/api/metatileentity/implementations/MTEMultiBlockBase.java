@@ -1784,7 +1784,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     /**
      * Returns the amount that is actually drained
-     * 
+     *
      * @param aLiquid  The liquid to drain, will not be modified.
      * @param simulate Whether to perform the draining
      * @return The amount that is drained
@@ -3645,15 +3645,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                                     .setSize(8, 8)
                                     .setPos(0, 0))
                         .addChild(
-                            TextWidget
-                                .dynamicString(
-                                    () -> translateToLocalFormatted(
-                                        "GT5U.gui.text.item_amount_display",
-                                        truncatedItemName,
-                                        shortenedCount) + rateShort)
-                                .setTextAlignment(Alignment.CenterLeft)
-                                .addTooltip(lineTooltip)
-                                .setPos(10, 1)));
+                            new TextWidget(
+                                translateToLocalFormatted(
+                                    "GT5U.gui.text.item_amount_display",
+                                    truncatedItemName,
+                                    shortenedCount) + rateShort).setTextAlignment(Alignment.CenterLeft)
+                                        .addTooltip(lineTooltip)
+                                        .setPos(10, 1)));
             }
         }
         if (mOutputFluids != null) {
@@ -3694,15 +3692,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                             .setSize(8, 8)
                             .setPos(0, 0))
                         .addChild(
-                            TextWidget
-                                .dynamicString(
-                                    () -> translateToLocalFormatted(
-                                        "GT5U.gui.text.fluid_amount_display",
-                                        truncatedFluidName,
-                                        shortenedCount) + rateShort)
-                                .setTextAlignment(Alignment.CenterLeft)
-                                .addTooltip(lineTooltip)
-                                .setPos(10, 1)));
+                            new TextWidget(
+                                translateToLocalFormatted(
+                                    "GT5U.gui.text.fluid_amount_display",
+                                    truncatedFluidName,
+                                    shortenedCount) + rateShort).setTextAlignment(Alignment.CenterLeft)
+                                        .addTooltip(lineTooltip)
+                                        .setSize(100, 8)
+                                        .setPos(10, 1)));
 
             }
         }
