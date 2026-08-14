@@ -1,6 +1,8 @@
 package gregtech.api.util;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_RECIPE_REMOVAL_LOGGER;
+import static gregtech.GTLoggers.GT_RECIPE_REMOVAL_LOGGER_ENABLED;
 import static gregtech.api.enums.GTValues.B;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.DW;
@@ -114,8 +116,6 @@ public class GTModHandler {
     private static final int DELAYED_REMOVAL_ONLY_REMOVE_NATIVE = 2;
 
     private static final List<InventoryCrafting> delayedRemovalByRecipe = new ArrayList<>();
-    private static final boolean DEBUG_USELESS_DELAYED_RECIPE_REMOVALS = Boolean
-        .getBoolean("gt.recipe.remove_delayed.debug");
     private static final List<Exception> delayedRemovalCallsites = new ArrayList<>();
 
     public static Collection<String> sNativeRecipeClasses = new HashSet<>();
@@ -1389,7 +1389,7 @@ public class GTModHandler {
         }
 
         delayedRemovalByRecipe.add(craftMatrix);
-        if (DEBUG_USELESS_DELAYED_RECIPE_REMOVALS) {
+        if (GT_RECIPE_REMOVAL_LOGGER_ENABLED) {
             delayedRemovalCallsites.add(new Exception("removeRecipeDelayed shape: " + Arrays.toString(shape)));
         }
     }
@@ -1400,7 +1400,7 @@ public class GTModHandler {
         GT_FML_LOGGER
             .info("BulkRemoveByRecipe: allRecipes: {}; toRemove: {}", allRecipes.size(), delayedRemovalByRecipe.size());
 
-        AtomicIntegerArray matchedDelayedRemovals = DEBUG_USELESS_DELAYED_RECIPE_REMOVALS
+        AtomicIntegerArray matchedDelayedRemovals = GT_RECIPE_REMOVAL_LOGGER_ENABLED
             ? new AtomicIntegerArray(delayedRemovalByRecipe.size())
             : null;
         Set<IRecipe> listToRemove = allRecipes.parallelStream()
@@ -1423,7 +1423,7 @@ public class GTModHandler {
         if (matchedDelayedRemovals != null) {
             for (int i = 0; i < matchedDelayedRemovals.length(); i++) {
                 if (matchedDelayedRemovals.get(i) == 0) {
-                    GT_FML_LOGGER
+                    GT_RECIPE_REMOVAL_LOGGER
                         .warn("removeRecipeDelayed call matched no removable recipe", delayedRemovalCallsites.get(i));
                 }
             }
