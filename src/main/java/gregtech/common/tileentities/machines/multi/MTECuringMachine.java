@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
@@ -26,10 +27,13 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILayerProducer;
 import gregtech.api.logic.ProcessingLogic;
@@ -38,7 +42,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
@@ -51,14 +54,14 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTELayerSignal;
 
 public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMachine>
-    implements ISurvivalConstructable, ILayerProducer {
+    implements ISurvivalConstructable, ICasingTextureProvider, ILayerProducer {
 
     private static IStructureDefinition<MTECuringMachine> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    private static final int OFFSET_X = 2;
+    private static final int OFFSET_X = 6;
     private static final int OFFSET_Y = 4;
-    private static final int OFFSET_Z = 0;
+    private static final int OFFSET_Z = 2;
 
     private static final int PARALLEL_PER_TIER = 4;
     private static final float SPEED = 1f;
@@ -189,89 +192,63 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
             STRUCTURE_DEFINITION = StructureDefinition.<MTECuringMachine>builder()
                 .addShape(
                     STRUCTURE_PIECE_MAIN,
-                    // spotless:off
-                    new String[][]{{
-                        "     ",
-                        " EEE ",
-                        "     ",
-                        "     ",
-                        " E~E ",
-                        " EEE "
-                    },{
-                        " EEE ",
-                        "EFFFE",
-                        " AAA ",
-                        " AAA ",
-                        "EGGGE",
-                        "EEEEE"
-                    },{
-                        "EEEEE",
-                        "EFDFE",
-                        " A A ",
-                        " A A ",
-                        "EGCGE",
-                        "EEEEE"
-                    },{
-                        "EEEEE",
-                        "EFFFE",
-                        " AAA ",
-                        "EAAAE",
-                        "EGGGE",
-                        "EEEEE"
-                    },{
-                        "EEEEE",
-                        "E   E",
-                        "EBBBE",
-                        "EBBBE",
-                        "E   E",
-                        "EEEEE"
-                    },{
-                        "EEEEE",
-                        "EE EE",
-                        "H B H",
-                        "H B H",
-                        "EE EE",
-                        "EEEEE"
-                    },{
-                        "EEEEE",
-                        "E   E",
-                        "EB BE",
-                        "EB BE",
-                        "E E E",
-                        "EEEEE"
-                    },{
-                        " EEE ",
-                        " EEE ",
-                        " EHE ",
-                        " EHE ",
-                        " EEE ",
-                        " EEE "
-                    }})
+                    transpose(
+                        // spotless:off
+                    new String[][]{
+                        {"AEA       AEA", "EFE       EFE", "EFEAAEEEAAEFE", "EFE EFFFE EFE", "EFE EFFFE EFE", "EFE EFFFE EFE", "EFEAAEEEAAEFE", "EFE       EFE", "AEA       AEA"},
+                        {"AJA       AJA", "FHF       FHF", "IKI EIIIE IBI", "FHF F   F FHF", "IKI F   F IBI", "FHF F   F FHF", "IKI EG3GE IBI", "FHF       FHF", "AJA       AJA"},
+                        {"AJA       AJA", "1CF       FD2", "ICI EIIIE IDI", "1CCCC   DDDD2", "IKKKK   BBBBI", "1CCCC   DDDD2", "ICI EG3GE IDI", "1CF       FD2", "AJA       AJA"},
+                        {"AJA       AJA", "FHF       FHF", "IKI EIIIE IBI", "FHF F   F FHF", "IKI F   F IBI", "FHF F   F FHF", "IKI EG3GE IBI", "FHF       FHF", "AJA       AJA"},
+                        {"AEA       AEA", "EFE       EFE", "EFEAAE~EAAEFE", "EFE EFFFE EFE", "EFE EFFFE EFE", "EFE EFFFE EFE", "EFEAAEEEAAEFE", "EFE       EFE", "AEA       AEA"},
+                    }))
                 // spotless:on
-                .addElement('A', chainAllGlasses())
-                .addElement('B', Casings.SolidifierRadiator.asElement())
-                .addElement('C', Casings.FluxedElectrumItemPipeCasing.asElement())
-                .addElement('D', Casings.TungstensteelPipeCasing.asElement())
+                .addElement('A', ofFrame(Materials.Chrome)) // todo: Replace with RPP frames
+                .addElement('B', Casings.AssemblyLineCasing.asElement())
+                .addElement('C', Casings.PumpMachineCasing.asElement())
+                .addElement('D', Casings.MotorMachineCasing.asElement())
                 .addElement(
                     'E',
                     buildHatchAdder(MTECuringMachine.class)
-                        .atLeast(
-                            InputBus,
-                            OutputBus,
-                            Maintenance,
-                            Energy,
-                            MultiAmpEnergy,
-                            InputHatch,
-                            MTELayerSignal.LayerSignalHatchElement.LayerSignal)
-                        .casingIndex(Casings.RadiantNaquadahAlloyCasing.textureId)
+                        .atLeast(Maintenance, Energy, MTELayerSignal.LayerSignalHatchElement.LayerSignal)
+                        .casingIndex(Casings.SecureRhodiumPlatedPalladiumMachineCasing.textureId)
                         .hint(1)
                         .buildAndChain(
                             onElementPass(
-                                MTECuringMachine::onCasingAdded,
-                                Casings.RadiantNaquadahAlloyCasing.asElement())))
-                .addElement('F', Casings.HighEnergyUltravioletEmitterCasing.asElement())
-                .addElement('G', Casings.UVSolenoidSuperconductorCoil.asElement())
+                                x -> ++x.casingAmount,
+                                Casings.SecureRhodiumPlatedPalladiumMachineCasing.asElement())))
+                .addElement('F', Casings.AdvancedIridiumPlatedMachineCasing.asElement())
+                .addElement('G', Casings.AdvancedFilterCasing.asElement())
                 .addElement('H', ofFrame(Materials.Infinity))
+                .addElement('I', chainAllGlasses())
+                .addElement('J', ofSheetMetal(Materials.Neutronium))
+                .addElement('K', Casings.IncoloyDSFluidContainmentBlock.asElement())
+                .addElement(
+                    '1',
+                    buildHatchAdder(MTECuringMachine.class).atLeast(InputHatch)
+                        .casingIndex(Casings.SecureRhodiumPlatedPalladiumMachineCasing.textureId)
+                        .hint(2)
+                        .buildAndChain(
+                            onElementPass(
+                                x -> ++x.casingAmount,
+                                Casings.SecureRhodiumPlatedPalladiumMachineCasing.asElement())))
+                .addElement(
+                    '2',
+                    buildHatchAdder(MTECuringMachine.class).atLeast(InputBus)
+                        .casingIndex(Casings.SecureRhodiumPlatedPalladiumMachineCasing.textureId)
+                        .hint(3)
+                        .buildAndChain(
+                            onElementPass(
+                                x -> ++x.casingAmount,
+                                Casings.SecureRhodiumPlatedPalladiumMachineCasing.asElement())))
+                .addElement(
+                    '3',
+                    buildHatchAdder(MTECuringMachine.class).atLeast(OutputBus)
+                        .casingIndex(Casings.SecureRhodiumPlatedPalladiumMachineCasing.textureId)
+                        .hint(4)
+                        .buildAndChain(
+                            onElementPass(
+                                x -> ++x.casingAmount,
+                                Casings.SecureRhodiumPlatedPalladiumMachineCasing.asElement())))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -282,18 +259,20 @@ public class MTECuringMachine extends MTEExtendedPowerMultiBlockBase<MTECuringMa
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.RadiantNaquadahAlloyCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE)
-                    .extFacing()
-                    .build() };
-            return new ITexture[] { Casings.RadiantNaquadahAlloyCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_MULTI_BREWERY)
-                .extFacing()
-                .build() };
-        }
-        return new ITexture[] { Casings.RadiantNaquadahAlloyCasing.getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_MULTI_AUTOCLAVE,
+            OVERLAY_FRONT_MULTI_AUTOCLAVE_GLOW,
+            OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE,
+            OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 6));
     }
 
     protected MultiblockTooltipBuilder createTooltip() {

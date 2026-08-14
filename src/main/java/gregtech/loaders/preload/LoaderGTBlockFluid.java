@@ -868,10 +868,10 @@ public class LoaderGTBlockFluid implements Runnable {
 
         GregTechAPI.sBlockMetal9 = new BlockMetal(
             "gt.blockmetal9",
-            new Materials[] { Materials.Cryolite, Materials.SiliconSG, Materials.Kevlar, Materials.SpaceTime, Materials.TranscendentMetal,
-                Materials.Oriharukon, Materials.WhiteDwarfMatter, Materials.BlackDwarfMatter, Materials.Universium,
-                Materials.Eternity, Materials.MagMatter, Materials.SixPhasedCopper, Materials.HellishMetal,
-                Materials.MHDCSM, Materials.Hexanite },
+            new Materials[] { Materials.Cryolite, Materials.SiliconSG, Materials.Kevlar, Materials.SpaceTime,
+                Materials.TranscendentMetal, Materials.Oriharukon, Materials.WhiteDwarfMatter,
+                Materials.BlackDwarfMatter, Materials.Universium, Materials.Eternity, Materials.MagMatter,
+                Materials.SixPhasedCopper, Materials.HellishMetal, Materials.MHDCSM, Materials.Hexanite },
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
 
