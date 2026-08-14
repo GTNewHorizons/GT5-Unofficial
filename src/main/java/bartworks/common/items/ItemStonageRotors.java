@@ -120,14 +120,6 @@ public class ItemStonageRotors extends Item implements IKineticRotor {
         return gearboxType.equals(this.type);
     }
 
-    public int getSpeed() {
-        return this.speed;
-    }
-
-    public float getmRotor() {
-        return this.mRotor;
-    }
-
     public void setDamageForStack(ItemStack stack, int advDmg) {
         ItemStackNBT.setInteger(stack, "DmgEx", advDmg);
         if (this.maxDamageEx > 0) {

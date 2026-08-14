@@ -20,7 +20,7 @@ import gregtech.common.modularui2.widget.GTProgressWidget;
 
 public class MTEWindmillGui extends MTEMultiBlockBaseGui<MTEWindmill> {
 
-    private static final int MACHINE_ROW_HEIGHT = 76;
+    private static final int MACHINE_ROW_HEIGHT = 84;
 
     public MTEWindmillGui(MTEWindmill windmill) {
         super(windmill);
@@ -30,10 +30,10 @@ public class MTEWindmillGui extends MTEMultiBlockBaseGui<MTEWindmill> {
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         registerSyncValues(syncManager);
 
-        final ProgressWidget progressGrinder = new GTProgressWidget()
+        final ProgressWidget progressGrinder = new GTProgressWidget().neiTransferRect(multiblock.getRecipeMap())
             .value(new DoubleSyncValue(() -> (double) multiblock.mProgresstime / multiblock.mMaxProgresstime))
             .texture(GTGuiTextures.PROGRESSBAR_WINDMILL_GRINDSTONE, 64)
-            .size(64, 64);
+            .size(64);
 
         final ItemSlot inputSlot = new ItemSlot()
             .slot(
@@ -56,7 +56,7 @@ public class MTEWindmillGui extends MTEMultiBlockBaseGui<MTEWindmill> {
                         .isEmpty())
                     .horizontalCenter())
             .child(
-                createMachineRow(progressGrinder, inputSlot).setEnabledIf(
+                createMachineRow(progressGrinder, inputSlot, syncManager).setEnabledIf(
                     _ -> error.getValue()
                         .isEmpty())
                     .horizontalCenter())
@@ -70,10 +70,11 @@ public class MTEWindmillGui extends MTEMultiBlockBaseGui<MTEWindmill> {
                     .getWidget());
     }
 
-    protected Flow createMachineRow(ProgressWidget progressGrinder, ItemSlot inputSlot) {
-        return Flow.row()
+    protected Flow createMachineRow(ProgressWidget progressGrinder, ItemSlot inputSlot, PanelSyncManager syncManager) {
+        return Flow.col()
             .horizontalCenter()
-            .size(72, MACHINE_ROW_HEIGHT)
+            .size(110, MACHINE_ROW_HEIGHT)
+            .child(createShutdownReasonWidget(syncManager).resizer().anchorBottom(0).getWidget())
             .child(progressGrinder.center())
             .child(inputSlot.center());
     }

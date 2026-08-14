@@ -67,7 +67,6 @@ import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
@@ -76,6 +75,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.MTEWindmillGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.nei.RecipeDisplayInfo;
@@ -89,7 +89,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     private int mDoor = 0;
     private int mHardenedClay = 0;
 
-    private enum windLevel {
+    private enum WindLevel {
         NON_EXISTENT,
         PRETTY_LOW,
         COMMON,
@@ -247,8 +247,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             .addInfo("A primitive Grinder powered by " + EnumChatFormatting.AQUA + "Kinetic Energy")
             .addInfo("Macerates up to" + EnumChatFormatting.GOLD + " 16 " + EnumChatFormatting.GRAY + "items at a time")
             .addInfo("The amount of parallels is determined by " + EnumChatFormatting.AQUA + "Wind Speed")
-            .addInfo("The amount of parallels determines how many items are processed at the same time")
-            .addInfo(EnumChatFormatting.RED + "12.5% " + EnumChatFormatting.GRAY + "speed")
+            .addInfo("Parallels determine how many items are processed per recipe")
             .addInfo("Processing time is the same regardless of parallels")
             .addInfo(
                 EnumChatFormatting.AQUA + "Wind Speed "
@@ -257,6 +256,8 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                     + EnumChatFormatting.YELLOW
                     + "Simple Wind Meter")
             .addInfo("Rotor can be put in the " + EnumChatFormatting.BLUE + "Primitive Kinetic Shaftbox")
+            .addInfo("Will not work if wind is non-existent or too strong")
+            .addInfo(EnumChatFormatting.RED + "12.5% " + EnumChatFormatting.GRAY + "speed")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.GOLD + "2"
@@ -282,7 +283,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                     + " parallels: "
                     + EnumChatFormatting.DARK_RED
                     + "Very Strong")
-            .beginStructureBlock(7, 12, 7, false)
+            .beginStructureBlock(7, 12, 7, true)
             .addController("Front bottom center")
             .addCasing("44", "Bricks", false)
             .addCasing("40-47", "Terracotta", false)
@@ -302,21 +303,20 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (this.rotorBlock != null && this.rotorBlock.rotorSlot.isEmpty()) {
-            checkStructure(true, aBaseMetaTileEntity);
+        if (this.rotorBlock != null) {
+            if (this.isAllowedToWork()) {
+                if (this.rotorBlock.rotorSlot.isEmpty()) stopMachine(ShutDownReasonRegistry.NO_ROTOR);
+                if (getWindLevel(this.rotorBlock) == WindLevel.TOO_STRONG) stopMachine(ShutDownReasonRegistry.WIND_HIGH);
+                if (getWindLevel(this.rotorBlock) == WindLevel.NON_EXISTENT) stopMachine(ShutDownReasonRegistry.WIND_LOW);
+            }
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     @Override
     protected @NotNull CheckRecipeResult doCheckRecipe() {
-        if (this.rotorBlock.rotorSlot.isEmpty()) return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
         processingLogic.setInputItems(getControllerSlot());
-        return switch (getWindLevel(this.rotorBlock)) {
-            case NON_EXISTENT -> CheckRecipeResultRegistry.WIND_LOW;
-            case TOO_STRONG -> CheckRecipeResultRegistry.WIND_HIGH;
-            default -> processingLogic.process();
-        };
+        return processingLogic.process();
     }
 
     @Override
@@ -341,6 +341,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         logic.setMaxTierSkips(0);
     }
 
+    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.maceratorRecipes;
     }
@@ -379,8 +380,9 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
 
     @Override
     public void stopMachine(@NotNull ShutDownReason reason) {
-        this.getBaseMetaTileEntity()
-            .disableWorking();
+        IGregTechTileEntity tileEntity = this.getBaseMetaTileEntity();
+        tileEntity.setShutDownReason(reason);
+        tileEntity.disableWorking();
     }
 
     public boolean addDispenserToOutputSet(TileEntity aTileEntity) {
@@ -411,9 +413,10 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                     if (stack.stackSize <= 0) break;
 
                     if (tHatch.getStackInSlot(i) == null) {
-                        // automatically truncates to 64
-                        tHatch.setInventorySlotContents(i, stack.copy());
-                        stack.stackSize -= Math.min(stack.getMaxStackSize(), stack.stackSize);
+                        ItemStack insertStack = stack.copy();
+                        insertStack.stackSize = Math.min(insertStack.getMaxStackSize(), insertStack.stackSize);
+                        tHatch.setInventorySlotContents(i, insertStack);
+                        stack.stackSize -= insertStack.stackSize;
                     } else if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)
                         && (tHatch.getStackInSlot(i).stackSize < stack.getMaxStackSize())) {
                             ItemStack otherStack = tHatch.getStackInSlot(i);
@@ -443,9 +446,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         }
         if (this.mDoor > 2) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.too_many_doors"));
-        }
-        if (this.rotorBlock != null && this.rotorBlock.rotorSlot.isEmpty()) {
-            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_rotor"));
         }
     }
 
@@ -509,7 +509,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     private int getParallels() {
-        windLevel wind = getWindLevel(this.rotorBlock);
+        WindLevel wind = getWindLevel(this.rotorBlock);
         if (invalidWindLevel()) return 0;
         return (int) Math.pow(2, wind.ordinal());
     }
@@ -519,18 +519,18 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         return rotorBlock.getWindStrength();
     }
 
-    private windLevel getWindLevel(TileEntityRotorBlock rotorBlock) {
+    private WindLevel getWindLevel(TileEntityRotorBlock rotorBlock) {
         float windSpeed = currentWind(rotorBlock);
-        return windSpeed < 1f ? windLevel.NON_EXISTENT
-            : windSpeed < 10f ? windLevel.PRETTY_LOW
-                : windSpeed < 20f ? windLevel.COMMON
-                    : windSpeed < 30f ? windLevel.RATHER_STRONG
-                        : windSpeed < 50f ? windLevel.VERY_STRONG : windLevel.TOO_STRONG;
+        return windSpeed < 1f ? WindLevel.NON_EXISTENT
+            : windSpeed < 10f ? WindLevel.PRETTY_LOW
+                : windSpeed < 20f ? WindLevel.COMMON
+                    : windSpeed < 30f ? WindLevel.RATHER_STRONG
+                        : windSpeed < 50f ? WindLevel.VERY_STRONG : WindLevel.TOO_STRONG;
     }
 
     private boolean invalidWindLevel() {
-        return getWindLevel(this.rotorBlock) == windLevel.NON_EXISTENT
-            || getWindLevel(this.rotorBlock) == windLevel.TOO_STRONG;
+        return getWindLevel(this.rotorBlock) == WindLevel.NON_EXISTENT
+            || getWindLevel(this.rotorBlock) == WindLevel.TOO_STRONG;
     }
 
     public void setRotorDamage(TileEntityRotorBlock rotorBlock, int damage) {
