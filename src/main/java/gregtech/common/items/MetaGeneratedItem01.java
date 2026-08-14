@@ -751,13 +751,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         GTModHandler.addCraftingRecipe(
             ItemList.Component_Minecart_Wheels_Iron.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE,
+                | GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { " h ", "RSR", " w ", 'R', OrePrefixes.ring.get(Materials.AnyIron), 'S',
                 OrePrefixes.stick.get(Materials.AnyIron) });
         GTModHandler.addCraftingRecipe(
             ItemList.Component_Minecart_Wheels_Steel.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE,
+                | GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { " h ", "RSR", " w ", 'R', OrePrefixes.ring.get(Materials.Steel), 'S',
                 OrePrefixes.stick.get(Materials.Steel) });
 
@@ -4637,42 +4637,42 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         GTModHandler.addCraftingRecipe(
             ItemList.Shape_Slicer_Flat.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE,
+                | GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "hXS", aTextShape, "fXd", 'P', ItemList.Shape_Extruder_Block, 'X',
                 OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
                 OrePrefixes.screw.get(Materials.StainlessSteel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Shape_Slicer_Stripes.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE,
+                | GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Block, 'X',
                 OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
                 OrePrefixes.screw.get(Materials.StainlessSteel) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Fuel_Can_Plastic_Empty.get(7L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { " PP", "P P", "PPP", 'P', OrePrefixes.plate.get(Materials.Polyethylene) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_1by1.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "d  ", aTextShape, aTextEmptyRow, 'P', ItemList.Schematic });
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_2by2.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { " d ", aTextShape, aTextEmptyRow, 'P', ItemList.Schematic });
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_3by3.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "  d", aTextShape, aTextEmptyRow, 'P', ItemList.Schematic });
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_Dust.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { aTextEmptyRow, aTextShape, "  d", 'P', ItemList.Schematic });
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_Dust_Small.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { aTextEmptyRow, aTextShape, " d ", 'P', ItemList.Schematic });
 
         GTModHandler.addCraftingRecipe(
@@ -4959,7 +4959,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     private void craftingShapelessRecipes() {
 
         GTModHandler.addShapelessCraftingRecipe(
-            ItemList.Coin_Chocolate.get(1L),
+            ItemList.Coin_Chocolate.get(1L), GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { OrePrefixes.dust.get(Materials.Cocoa), OrePrefixes.dust.get(Materials.Milk),
                 OrePrefixes.dust.get(Materials.Sugar), OrePrefixes.foil.get(Materials.Gold) });
 
@@ -5087,27 +5087,27 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Schematic.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { ItemList.Schematic_Crafting });
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Schematic.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { ItemList.Schematic_1by1 });
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Schematic.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { ItemList.Schematic_2by2 });
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Schematic.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { ItemList.Schematic_3by3 });
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Schematic.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { ItemList.Schematic_Dust });
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Schematic.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { ItemList.Schematic_Dust_Small });
 
         GTModHandler.addShapelessCraftingRecipe(
@@ -5121,10 +5121,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             new Object[] { ItemList.Tool_DataStick.get(1L) });
 
         GTModHandler.addShapelessCraftingRecipe(
-            ItemList.ItemFilter_Export.get(1L),
+            ItemList.ItemFilter_Export.get(1L), GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { ItemList.ItemFilter_Import.get(1L) });
         GTModHandler.addShapelessCraftingRecipe(
-            ItemList.ItemFilter_Import.get(1L),
+            ItemList.ItemFilter_Import.get(1L), GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { ItemList.ItemFilter_Export.get(1L) });
 
     }
