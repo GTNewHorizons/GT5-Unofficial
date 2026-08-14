@@ -435,7 +435,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         this.mDoor = 0;
         this.mHardenedClay = 0;
 
-        this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors);
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
 
         checkCasingMin(errors, this.mHardenedClay, 40);
         if (this.tileEntityDispensers.isEmpty()) {
