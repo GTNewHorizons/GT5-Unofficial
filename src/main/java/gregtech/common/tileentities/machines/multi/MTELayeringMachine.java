@@ -67,19 +67,19 @@ public class MTELayeringMachine extends MTEExtendedPowerMultiBlockBase<MTELayeri
     private static final float SPEED = 1f;
     private static final float EU_EFFICIENCY = 1f;
 
-    public enum ChallengePhase {
-        NEED_BOTH,
-        NEED_ITEM,
-        NEED_FLUID
-    }
+    private static final int SIGNAL_NEED_ALL = 0;
+    private static final int SIGNAL_ITEM_MIN = 1;
+    private static final int SIGNAL_ITEM_MAX = 4;
+    private static final int SIGNAL_FLUID_MIN = 5;
+    private static final int SIGNAL_FLUID_MAX = 8;
 
-    private ChallengePhase phase = ChallengePhase.NEED_BOTH;
+    private int requiredSignal = SIGNAL_NEED_ALL;
     private GTRecipe lockedRecipe;
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("challengePhase", phase.ordinal());
+        aNBT.setInteger("requiredSignal", requiredSignal);
         if (lockedRecipe != null) {
             aNBT.setTag("lockedRecipe", writeRecipe(lockedRecipe));
         }
@@ -88,15 +88,13 @@ public class MTELayeringMachine extends MTEExtendedPowerMultiBlockBase<MTELayeri
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        ChallengePhase[] values = ChallengePhase.values();
-        int idx = aNBT.getInteger("challengePhase");
-        phase = (idx >= 0 && idx < values.length) ? values[idx] : ChallengePhase.NEED_BOTH;
+        requiredSignal = aNBT.getInteger("requiredSignal");
         if (aNBT.hasKey("lockedRecipe")) {
             lockedRecipe = readRecipe(aNBT.getCompoundTag("lockedRecipe"));
         }
         // default
         if (lockedRecipe == null) {
-            phase = ChallengePhase.NEED_BOTH;
+            requiredSignal = SIGNAL_NEED_ALL;
         }
     }
 
@@ -327,15 +325,12 @@ public class MTELayeringMachine extends MTEExtendedPowerMultiBlockBase<MTELayeri
             @NotNull
             @Override
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                switch (phase) {
-                    case NEED_ITEM:
-                        return lockedRecipe == null ? Stream.empty() : Stream.of(itemOnly(lockedRecipe));
-                    case NEED_FLUID:
-                        return lockedRecipe == null ? Stream.empty() : Stream.of(fluidOnly(lockedRecipe));
-                    case NEED_BOTH:
-                    default:
-                        return super.findRecipeMatches(map); // normal map query with both inputs
+                if (requiredSignal == SIGNAL_NEED_ALL) {
+                    return super.findRecipeMatches(map);
                 }
+                if (lockedRecipe == null) return Stream.empty();
+                GTRecipe variant = singleSlotRecipe(lockedRecipe, requiredSignal);
+                return variant == null ? Stream.empty() : Stream.of(variant);
             }
 
             @NotNull
@@ -344,25 +339,14 @@ public class MTELayeringMachine extends MTEExtendedPowerMultiBlockBase<MTELayeri
                 setSpeedBonus(1F / SPEED);
                 setEuModifier(EU_EFFICIENCY);
 
-                boolean recipeItem = recipe.mInputs != null && recipe.mInputs.length > 0;
-                boolean recipeFluid = recipe.mFluidInputs != null && recipe.mFluidInputs.length > 0;
-
-                boolean haveItem = anyItem(MTELayeringMachine.this.getStoredInputs());
-                boolean haveFluid = anyFluid(MTELayeringMachine.this.getStoredFluids());
-
-                switch (phase) {
-                    case NEED_BOTH:
-                        if (!(recipeItem && recipeFluid)) return CheckRecipeResultRegistry.NO_RECIPE;
-                        lockedRecipe = recipe;
-                        break;
-                    case NEED_ITEM:
-                        if (!(recipeItem && !recipeFluid)) return CheckRecipeResultRegistry.NO_RECIPE;
-                        if (haveFluid) return CheckRecipeResultRegistry.NO_RECIPE; // enforce ONLY item
-                        break;
-                    case NEED_FLUID:
-                        if (!(recipeFluid && !recipeItem)) return CheckRecipeResultRegistry.NO_RECIPE;
-                        if (haveItem) return CheckRecipeResultRegistry.NO_RECIPE; // enforce ONLY fluid
-                        break;
+                if (requiredSignal == SIGNAL_NEED_ALL) {
+                    lockedRecipe = recipe;
+                } else {
+                    if (lockedRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
+                    if (!otherSlotsAbsent(requiredSignal)) return CheckRecipeResultRegistry.NO_RECIPE; // stall if any
+                                                                                                       // incorrect
+                                                                                                       // inputs are
+                                                                                                       // provided
                 }
                 return super.validateRecipe(recipe);
             }
@@ -377,23 +361,23 @@ public class MTELayeringMachine extends MTEExtendedPowerMultiBlockBase<MTELayeri
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
                 // this cycle is committed - telegraph what the NEXT cycle demands
-                phase = pickNextPhase();
-                emitSignal(phaseSignal(phase));
+                requiredSignal = pickNextSignal(lockedRecipe);
+                emitSignal(requiredSignal);
                 return super.onRecipeStart(recipe);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     private void resetMachine() {
-        phase = ChallengePhase.NEED_BOTH;
-        emitSignal(0);
+        requiredSignal = SIGNAL_NEED_ALL;
+        emitSignal(SIGNAL_NEED_ALL);
     }
 
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
         CheckRecipeResult result = super.checkProcessing();
-        if (!result.wasSuccessful() && phase != ChallengePhase.NEED_BOTH) {
+        if (!result.wasSuccessful() && requiredSignal != SIGNAL_NEED_ALL) {
             resetMachine();
         }
         return result;
@@ -411,20 +395,17 @@ public class MTELayeringMachine extends MTEExtendedPowerMultiBlockBase<MTELayeri
         super.onDisableWorking();
     }
 
-    private static int phaseSignal(ChallengePhase p) {
-        switch (p) {
-            case NEED_ITEM:
-                return 1;
-            case NEED_FLUID:
-                return 2;
-            default:
-                return 0; // NEED_BOTH
-        }
-    }
-
-    private ChallengePhase pickNextPhase() {
-        // on current cycle, select and output signal for next cycle
-        return XSTR_INSTANCE.nextBoolean() ? ChallengePhase.NEED_ITEM : ChallengePhase.NEED_FLUID;
+    private int pickNextSignal(GTRecipe recipe) {
+        int itemCount = recipe.mInputs == null ? 0 : recipe.mInputs.length;
+        int fluidCount = recipe.mFluidInputs == null ? 0 : recipe.mFluidInputs.length;
+        int total = itemCount + fluidCount;
+        if (total <= 0) return SIGNAL_NEED_ALL;
+        // generate a number from range [1, total number of inputs]
+        int r = XSTR_INSTANCE.nextInt(total) + 1;
+        if (r <= itemCount) return r;
+        // if r corresponds to a fluid, offset the signal so that the signal is in the range
+        // [SIGNAL_FLUID_MIN,SIGNAL_FLUID_MAX]
+        return r - itemCount + SIGNAL_FLUID_MIN - 1;
     }
 
     private void emitSignal(int strength) {
@@ -433,56 +414,102 @@ public class MTELayeringMachine extends MTEExtendedPowerMultiBlockBase<MTELayeri
         }
     }
 
-    private static GTRecipe itemOnly(GTRecipe base) {
-        return new GTRecipe(
-            false,
-            base.mInputs,
-            base.mOutputs,
-            base.mSpecialItems,
-            base.mInputChances,
-            base.mOutputChances,
-            base.mFluidInputChances,
-            base.mFluidOutputChances,
-            null,
-            base.mFluidOutputs,
-            base.mDuration,
-            base.mEUt,
-            base.mSpecialValue);
+    @Nullable
+    private static GTRecipe singleSlotRecipe(GTRecipe base, int signal) {
+        if (signal >= SIGNAL_ITEM_MIN && signal <= SIGNAL_ITEM_MAX) {
+            int idx = signal - SIGNAL_ITEM_MIN;
+            if (base.mInputs == null || idx >= base.mInputs.length) return null;
+            GTRecipe recipe = new GTRecipe(
+                false,
+                new ItemStack[] { base.mInputs[idx] },
+                base.mOutputs,
+                base.mSpecialItems,
+                sliceChance(base.mInputChances, idx),
+                base.mOutputChances,
+                null,
+                base.mFluidOutputChances,
+                null,
+                base.mFluidOutputs,
+                base.mDuration,
+                base.mEUt,
+                base.mSpecialValue);
+            recipe.mCanBeBuffered = false;
+            return recipe;
+        }
+        if (signal >= SIGNAL_FLUID_MIN && signal <= SIGNAL_FLUID_MAX) {
+            int idx = signal - SIGNAL_FLUID_MIN;
+            if (base.mFluidInputs == null || idx >= base.mFluidInputs.length) return null;
+            GTRecipe recipe = new GTRecipe(
+                false,
+                null,
+                base.mOutputs,
+                base.mSpecialItems,
+                null,
+                base.mOutputChances,
+                sliceChance(base.mFluidInputChances, idx),
+                base.mFluidOutputChances,
+                new FluidStack[] { base.mFluidInputs[idx] },
+                base.mFluidOutputs,
+                base.mDuration,
+                base.mEUt,
+                base.mSpecialValue);
+            recipe.mCanBeBuffered = false;
+            return recipe;
+        }
+        return null;
     }
 
-    private static GTRecipe fluidOnly(GTRecipe base) {
-        return new GTRecipe(
-            false,
-            null,
-            base.mOutputs,
-            base.mSpecialItems,
-            base.mInputChances,
-            base.mOutputChances,
-            base.mFluidInputChances,
-            base.mFluidOutputChances,
-            base.mFluidInputs,
-            base.mFluidOutputs,
-            base.mDuration,
-            base.mEUt,
-            base.mSpecialValue);
+    private static int @Nullable [] sliceChance(int @Nullable [] chances, int idx) {
+        if (chances == null || idx >= chances.length) return null;
+        return new int[] { chances[idx] };
     }
 
-    private static boolean anyItem(List<ItemStack> l) {
-        if (l == null) return false;
-        for (ItemStack s : l) if (s != null && s.stackSize > 0) return true;
+    private boolean otherSlotsAbsent(int signal) {
+        if (lockedRecipe == null) return false;
+        int itemIdx = (signal >= SIGNAL_ITEM_MIN && signal <= SIGNAL_ITEM_MAX) ? signal - SIGNAL_ITEM_MIN : -1;
+        int fluidIdx = (signal >= SIGNAL_FLUID_MIN && signal <= SIGNAL_FLUID_MAX) ? signal - SIGNAL_FLUID_MIN : -1;
+
+        ItemStack[] items = lockedRecipe.mInputs;
+        if (items != null) {
+            List<ItemStack> stored = getStoredInputs();
+            for (int i = 0; i < items.length; i++) {
+                if (i == itemIdx || items[i] == null) continue;
+                if (containsItem(stored, items[i])) {
+                    return false;
+                }
+            }
+        }
+        FluidStack[] fluids = lockedRecipe.mFluidInputs;
+        if (fluids != null) {
+            List<FluidStack> stored = getStoredFluids();
+            for (int j = 0; j < fluids.length; j++) {
+                if (j == fluidIdx || fluids[j] == null) continue;
+                if (containsFluid(stored, fluids[j])) return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean containsItem(List<ItemStack> stored, ItemStack target) {
+        if (stored == null) return false;
+        for (ItemStack s : stored) {
+            if (s != null && s.stackSize > 0 && GTUtility.areStacksEqual(s, target)) return true;
+        }
         return false;
     }
 
-    private static boolean anyFluid(List<FluidStack> l) {
-        if (l == null) return false;
-        for (FluidStack f : l) if (f != null && f.amount > 0) return true;
+    private static boolean containsFluid(List<FluidStack> stored, FluidStack target) {
+        if (stored == null) return false;
+        for (FluidStack s : stored) {
+            if (s != null && s.amount > 0 && GTUtility.areFluidsEqual(s, target)) return true;
+        }
         return false;
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide() && (aTick % 20 == 0)) emitSignal(phaseSignal(phase));
+        if (aBaseMetaTileEntity.isServerSide() && (aTick % 20 == 0)) emitSignal(requiredSignal);
     }
 
     @Override
