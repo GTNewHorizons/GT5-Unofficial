@@ -623,6 +623,7 @@ public class GTMod {
         }
         GregTechAPI.sGTCompleteLoad = null;
         GregTechAPI.sFullLoadFinished = true;
+        GT_FML_LOGGER.fatal("machine recipe added: {}", GTModHandler.callCount);
     }
 
     @Mod.EventHandler

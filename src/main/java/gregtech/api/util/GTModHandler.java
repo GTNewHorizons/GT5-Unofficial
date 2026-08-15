@@ -132,7 +132,7 @@ public class GTModHandler {
     public static List<Integer> sVanillaRecipeList_warntOutput = new ArrayList<>(50);
     public static List<Integer> sAnySteamFluidIDs = new ArrayList<>();
     public static List<Integer> sSuperHeatedSteamFluidIDs = new ArrayList<>();
-
+    public static int callCount = 0;
     static {
         sNativeRecipeClasses.add(ShapedRecipes.class.getName());
         sNativeRecipeClasses.add(ShapedOreRecipe.class.getName());
@@ -959,9 +959,11 @@ public class GTModHandler {
             // spotless:on
         }
 
-        if (!GTModHandler.addCraftingRecipe(aResult, aBitMask, aRecipe)) {
+        boolean added = GTModHandler.addCraftingRecipe(aResult, aBitMask, aRecipe);
+        if (!added) {
             throw new IllegalArgumentException("INVALID CRAFTING RECIPE FOR: " + aResult.getDisplayName());
         }
+        callCount+=1;
     }
 
     /**
