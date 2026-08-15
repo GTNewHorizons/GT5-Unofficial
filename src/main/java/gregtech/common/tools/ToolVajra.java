@@ -174,7 +174,8 @@ public class ToolVajra extends ItemTool implements IElectricItem {
                 target.harvestBlock(world, player, x, y, z, metaData);
             }
         }
-        if (Mods.Backhand.isModLoaded()) {
+        // FMP & Backhand interaction: don't place if removal doesn't actually succeed
+        if (Mods.Backhand.isModLoaded() && world.isAirBlock(x, y, z)) {
             BackhandUtils.useOffhandItem(player, () -> {
                 ItemStack offhand = player.getHeldItem();
                 if (offhand != null && offhand.getItem() instanceof ItemBlock itemBlock) {
