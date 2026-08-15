@@ -11,8 +11,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
@@ -23,18 +23,14 @@ import net.minecraft.world.World;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
-import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
 import gregtech.api.items.ItemTool;
-import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.BaseTileEntity;
-import gregtech.common.blocks.BlockFrameBox;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
-import mods.railcraft.common.blocks.machine.TileMultiBlock;
 import thaumcraft.common.tiles.TileOwned;
+import xonin.backhand.api.core.BackhandUtils;
 
 public class ToolVajra extends ItemTool implements IElectricItem {
 
@@ -147,9 +143,9 @@ public class ToolVajra extends ItemTool implements IElectricItem {
 
     @Override
     public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
-        // When sneaking, skip block activation so onItemUse is called directly by the pipeline.
-        // This prevents the wrong C08 packet format (air-click) that would occur if we mined
-        // the block inside onItemUseFirst (which sends face=255 to the server when returning true).
+        // GTGenericItem overrode this to true, we return false here so that sneak right click never trigger any block
+        // activations, as shift right click should always break the target block, and not any sneaky right click
+        // interactions.
         return false;
     }
 
@@ -163,8 +159,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
         if (target.blockHardness < 0) return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
         if (!ElectricItem.manager.canUse(stack, baseCost))
             return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
-        if (!isHarvestableTileEntity(tileEntity, target, player) && !player.isSneaking()
-            || !isHarvestableOwned(tileEntity, player))
+        if (blockThaumcraftHarvest(tileEntity, player))
             return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
 
         if (world.isRemote) {
@@ -175,50 +170,28 @@ public class ToolVajra extends ItemTool implements IElectricItem {
             if (target.removedByPlayer(world, player, x, y, z, true)) {
                 target.onBlockDestroyedByPlayer(world, x, y, z, metaData);
                 target.harvestBlock(world, player, x, y, z, metaData);
-                world.notifyBlocksOfNeighborChange(x, y, z, target);
             }
         }
-        stack.getTagCompound()
-            .setBoolean("harvested", true); // prevent onItemRightClick from going through
+        if (Mods.Backhand.isModLoaded()) {
+            int tmp = BackhandUtils.swapToOffhand(player);
+            ItemStack offhand = player.getHeldItem();
+            if (offhand != null && offhand.getItem() instanceof ItemBlock itemBlock) {
+                itemBlock.onItemUse(offhand, player, world, x, y, z, side, hitX, hitY, hitZ);
+            }
+            BackhandUtils.swapBack(player, tmp);
+        }
         ElectricItem.manager.use(stack, baseCost, player);
-        // Return true so Forge sends C08 with real block coordinates (not the air-click face=255
-        // format that would be used if we returned true from onItemUseFirst). This ensures the
-        // server processes the packet via activateBlockOrUseItem → onItemUse, not onItemRightClick.
         return true;
     }
 
-    private boolean isHarvestableOwned(TileEntity tileEntity, EntityPlayer player) {
-        if (!Mods.Thaumcraft.isModLoaded() || !(tileEntity instanceof TileOwned owned)) return true;
-        return owned.owner.equals(player.getDisplayName());
-    }
-
-    private boolean isHarvestableTileEntity(TileEntity tileEntity, Block target, EntityPlayer player) {
-        if (Mods.Railcraft.isModLoaded() && isUnformedRCMulti(tileEntity)) return true;
-        if (tileEntity instanceof IInventory inv && inv.getSizeInventory() > 0) return false;
-        if (isHarvestableGTSpecial(target, tileEntity) && !player.isSneaking()) return true;
-        if (tileEntity instanceof BaseTileEntity bte && bte.useModularUI()) return false;
-        return true;
-    }
-
-    @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
-    private boolean isUnformedRCMulti(TileEntity tileEntity) {
-        return tileEntity instanceof TileMultiBlock tmb && !tmb.isStructureValid();
-    }
-
-    private boolean isHarvestableGTSpecial(Block target, TileEntity tileEntity) {
-        if (target instanceof BlockFrameBox) return tileEntity == null;
-
-        // Cables extend BaseMetaPipeEntity (???)
-        if (tileEntity instanceof BaseMetaPipeEntity) return true;
-        return false;
+    private boolean blockThaumcraftHarvest(TileEntity tileEntity, EntityPlayer player) {
+        if (!Mods.Thaumcraft.isModLoaded()) return false;
+        if (!(tileEntity instanceof TileOwned owned)) return false;
+        return !owned.owner.equals(player.getDisplayName());
     }
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World worldIn, EntityPlayer player) {
-        if (ItemStackNBT.getBoolean(stack, "harvested")) {
-            ItemStackNBT.removeTag(stack, "harvested");
-            return super.onItemRightClick(stack, worldIn, player);
-        }
         if (!worldIn.isRemote && player.isSneaking()) {
             if (ItemStackNBT.hasKey(stack, "ench")) {
                 ItemStackNBT.removeTag(stack, "ench");
