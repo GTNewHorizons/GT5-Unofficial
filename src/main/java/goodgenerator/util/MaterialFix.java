@@ -182,7 +182,7 @@ public class MaterialFix {
                     .addTo(benderRecipes);
                 GTModHandler.addCraftingRecipe(
                     tMaterial.get(OrePrefixes.plateTriple, 1),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "B", "P", "h", 'P', tMaterial.get(OrePrefixes.plate, 1), 'B',
                         tMaterial.get(OrePrefixes.plateDouble, 1) });
             }
