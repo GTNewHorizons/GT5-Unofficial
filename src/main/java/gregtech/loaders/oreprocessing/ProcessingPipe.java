@@ -20,6 +20,10 @@ import gregtech.api.util.GTUtility;
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static int countPipeHugeLargeMediumSmallTiny = 0;
+    public static int countPipeQuadruple = 0;
+    public static int countPipeNonuple = 0;
+
     public ProcessingPipe() {
         OrePrefixes.pipeHuge.add(this);
         OrePrefixes.pipeLarge.add(this);
@@ -41,6 +45,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
         switch (aPrefix.getName()) {
             case "pipeHuge", "pipeLarge", "pipeMedium", "pipeSmall", "pipeTiny" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+                    countPipeHugeLargeMediumSmallTiny+=1;
 
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial, 8L),
@@ -102,7 +107,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             }
             case "pipeQuadruple" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-
+                    countPipeQuadruple+=1;
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
                         GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
@@ -119,7 +124,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             }
             case "pipeNonuple" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-
+                    countPipeNonuple+=1;
                     GTModHandler.addCraftingRecipe(
                         GTUtility.copyAmount(1, aStack),
                         GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
