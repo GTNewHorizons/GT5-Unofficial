@@ -220,7 +220,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
 
         GTModHandler.addCraftingRecipe(
             GTUtility.copyOrNull(slabOutput),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "sP", 'P', plankInput });
     }
 
