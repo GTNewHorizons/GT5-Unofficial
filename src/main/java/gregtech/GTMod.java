@@ -785,7 +785,6 @@ public class GTMod {
                 .bus()
                 .register(new RecipeLookupValidationServerTickHandler());
         }
-        RecipeChangeAudit.run("pipes", "pipe recipe checking", () -> {});
     }
 
     public static final class RecipeLookupValidationServerTickHandler {
