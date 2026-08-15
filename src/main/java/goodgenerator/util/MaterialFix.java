@@ -20,7 +20,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class MaterialFix {
-
+    public static int counterTriplePlate = 0;
     public static void MaterialFluidExtractionFix(Werkstoff material) {
         if (material.hasItemType(OrePrefixes.gearGtSmall)) {
             GTValues.RA.stdBuilder()
@@ -180,6 +180,7 @@ public class MaterialFix {
                             1L) * TICKS)
                     .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
+                counterTriplePlate+=1;
                 GTModHandler.addCraftingRecipe(
                     tMaterial.get(OrePrefixes.plateTriple, 1),
                     GTModHandler.RecipeBits.BUFFERED,

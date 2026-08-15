@@ -99,6 +99,7 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
  */
 public class GTModHandler {
 
+    public static int counterMachine=0;
     public static final List<IRecipe> sSingleNonBlockDamagableRecipeList = new ArrayList<>(1000);
     private static final Map<String, ItemStack> sIC2ItemMap = new HashMap<>();
 
@@ -959,6 +960,7 @@ public class GTModHandler {
             // spotless:on
         }
 
+        counterMachine+=1;
         if (!GTModHandler.addCraftingRecipe(aResult, aBitMask, aRecipe)) {
             throw new IllegalArgumentException("INVALID CRAFTING RECIPE FOR: " + aResult.getDisplayName());
         }
