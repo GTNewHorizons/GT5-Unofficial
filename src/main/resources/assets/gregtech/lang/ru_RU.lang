@@ -3629,10 +3629,10 @@ GT5U.item.pipe.swap.no_longer_restrictive=Больше не ограничите
 
 # Modular Armor
 
-item.itemHelmetMech.name=Mechanical Helmet
-item.itemChestplateMech.name=Mechanical Chestplate
-item.itemLeggingsMech.name=Mechanical Leggings
-item.itemBootsMech.name=Mechanical Boots
+item.itemHelmetMech.name=Механический шлем
+item.itemChestplateMech.name=Механический нагрудник
+item.itemLeggingsMech.name=Механические поножи
+item.itemBootsMech.name=Механические сапоги
 
 GT5U.armor.part.name.Light=Лёгкий механический каркас брони
 GT5U.armor.part.name.Medium=Средний механический каркас брони
@@ -3676,7 +3676,7 @@ GT5U.armor.part.name.OmniMovement=Аугмент: регуляторы всен�
 GT5U.armor.part.name.WaterBreathing=Аугмент: ребризер
 GT5U.armor.part.name.MilkInfusion=Аугмент: молочная инфузия
 GT5U.armor.part.name.HoloInventory=Аугмент: голографический инвентарь
-GT5U.armor.part.name.Travelers=Augment: Thaumic Accelerators
+GT5U.armor.part.name.Travelers=Аугмент: таумические ускорители
 
 GT5U.armor.part.tooltip.NightVision=Позволяет видеть чётко ночью и в темноте
 GT5U.armor.part.tooltip.CreativeFlight=Предоставляет пользователю полёт в режиме творчества
@@ -3699,7 +3699,7 @@ GT5U.armor.part.tooltip.OmniMovement=Позволяет двигаться с п
 GT5U.armor.part.tooltip.WaterBreathing=Восстанавливает запас воздуха при нахождении под водой
 GT5U.armor.part.tooltip.MilkInfusion=Снимает негативные эффекты зелий
 GT5U.armor.part.tooltip.HoloInventory=Открывает голографический вид соседних инвентарей
-GT5U.armor.part.tooltip.Travelers=Grants the user a more powerful version of Boots of the Traveler
+GT5U.armor.part.tooltip.Travelers=Предоставляет пользователю более мощную версию сапог путешественника
 
 GT5U.armor.behavior.NightVision=Ночное зрение
 GT5U.armor.behavior.GogglesOfRevealing=Тауматическое зрение
