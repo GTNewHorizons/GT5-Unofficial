@@ -20,6 +20,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
@@ -173,12 +175,23 @@ public class ToolVajra extends ItemTool implements IElectricItem {
             }
         }
         if (Mods.Backhand.isModLoaded()) {
-            int tmp = BackhandUtils.swapToOffhand(player);
-            ItemStack offhand = player.getHeldItem();
-            if (offhand != null && offhand.getItem() instanceof ItemBlock itemBlock) {
-                itemBlock.onItemUse(offhand, player, world, x, y, z, side, hitX, hitY, hitZ);
-            }
-            BackhandUtils.swapBack(player, tmp);
+            BackhandUtils.useOffhandItem(player, () -> {
+                ItemStack offhand = player.getHeldItem();
+                if (offhand != null && offhand.getItem() instanceof ItemBlock itemBlock) {
+                    int damage = offhand.getItemDamage();
+                    int stackSize = offhand.stackSize;
+                    itemBlock.onItemUse(offhand, player, world, x, y, z, side, hitX, hitY, hitZ);
+                    if (player.capabilities.isCreativeMode) {
+                        offhand.setItemDamage(damage);
+                        offhand.stackSize = stackSize;
+                    } else {
+                        if (offhand.stackSize <= 0) {
+                            MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, offhand));
+                            player.inventory.mainInventory[player.inventory.currentItem] = null;
+                        }
+                    }
+                }
+            });
         }
         ElectricItem.manager.use(stack, baseCost, player);
         return true;
