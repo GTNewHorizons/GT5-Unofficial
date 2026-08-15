@@ -59,7 +59,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftMallet
                                 : ToolDictNames.craftingToolHardHammer,
                             'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
-                            : ToolDictNames.craftingToolWrench });
+                                : ToolDictNames.craftingToolWrench });
                 }
             }
             case "pipeMedium" -> {
@@ -74,7 +74,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftMallet
                                 : ToolDictNames.craftingToolHardHammer,
                             'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
-                            : ToolDictNames.craftingToolWrench });
+                                : ToolDictNames.craftingToolWrench });
                 }
             }
             case "pipeSmall" -> {
@@ -89,7 +89,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftMallet
                                 : ToolDictNames.craftingToolHardHammer,
                             'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
-                            : ToolDictNames.craftingToolWrench });
+                                : ToolDictNames.craftingToolWrench });
                 }
             }
             case "pipeTiny" -> {

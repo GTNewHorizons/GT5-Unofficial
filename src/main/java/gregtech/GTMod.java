@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 
-import gregtech.api.util.RecipeChangeAudit;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
