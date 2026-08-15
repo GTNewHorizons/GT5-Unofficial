@@ -39,35 +39,16 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
         switch (aPrefix.getName()) {
-            case "pipeHuge", "pipeLarge", "pipeMedium", "pipeSmall", "pipeTiny" -> {
+            case "pipeHuge" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial, 8L),
+                        GTOreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial, 1L),
                         GTModHandler.RecipeBits.BUFFERED,
-                        new Object[] { "PPP", "h w", "PPP", 'P', OrePrefixes.plate.get(aMaterial) });
-                    GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 6L),
-                        GTModHandler.RecipeBits.BUFFERED,
-                        new Object[] { "PWP", "P P", "PHP", 'P',
-                            aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
-                                : OrePrefixes.plate.get(aMaterial),
-                            'H',
-                            aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftMallet
-                                : ToolDictNames.craftingToolHardHammer,
-                            'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
-                                : ToolDictNames.craftingToolWrench });
-                    GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 2L),
-                        GTModHandler.RecipeBits.BUFFERED,
-                        new Object[] { "PPP", "W H", "PPP", 'P',
-                            aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
-                                : OrePrefixes.plate.get(aMaterial),
-                            'H',
-                            aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftMallet
-                                : ToolDictNames.craftingToolHardHammer,
-                            'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
-                                : ToolDictNames.craftingToolWrench });
+                        new Object[] { "DhD", "D D", "DwD", 'D', OrePrefixes.plateDouble.get(aMaterial) });
+                }
+            }
+            case "pipeLarge" -> {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial, 1L),
                         GTModHandler.RecipeBits.BUFFERED,
@@ -78,11 +59,45 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                             aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftMallet
                                 : ToolDictNames.craftingToolHardHammer,
                             'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
-                                : ToolDictNames.craftingToolWrench });
+                            : ToolDictNames.craftingToolWrench });
+                }
+            }
+            case "pipeMedium" -> {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial, 1L),
+                        GTOreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 2L),
                         GTModHandler.RecipeBits.BUFFERED,
-                        new Object[] { "DhD", "D D", "DwD", 'D', OrePrefixes.plateDouble.get(aMaterial) });
+                        new Object[] { "PPP", "W H", "PPP", 'P',
+                            aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
+                                : OrePrefixes.plate.get(aMaterial),
+                            'H',
+                            aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftMallet
+                                : ToolDictNames.craftingToolHardHammer,
+                            'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
+                            : ToolDictNames.craftingToolWrench });
+                }
+            }
+            case "pipeSmall" -> {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+                    GTModHandler.addCraftingRecipe(
+                        GTOreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 6L),
+                        GTModHandler.RecipeBits.BUFFERED,
+                        new Object[] { "PWP", "P P", "PHP", 'P',
+                            aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
+                                : OrePrefixes.plate.get(aMaterial),
+                            'H',
+                            aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftMallet
+                                : ToolDictNames.craftingToolHardHammer,
+                            'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
+                            : ToolDictNames.craftingToolWrench });
+                }
+            }
+            case "pipeTiny" -> {
+                if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+                    GTModHandler.addCraftingRecipe(
+                        GTOreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial, 8L),
+                        GTModHandler.RecipeBits.BUFFERED,
+                        new Object[] { "PPP", "h w", "PPP", 'P', OrePrefixes.plate.get(aMaterial) });
                 }
             }
             case "pipeRestrictiveHuge", "pipeRestrictiveLarge", "pipeRestrictiveMedium", "pipeRestrictiveSmall", "pipeRestrictiveTiny" -> {
