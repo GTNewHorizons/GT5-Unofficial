@@ -1,6 +1,8 @@
 package gregtech.api.util;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_RECIPE_REMOVAL_LOGGER;
+import static gregtech.GTLoggers.GT_RECIPE_REMOVAL_LOGGER_ENABLED;
 import static gregtech.api.enums.GTValues.B;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.DW;
@@ -26,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicIntegerArray;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -113,6 +116,7 @@ public class GTModHandler {
     private static final int DELAYED_REMOVAL_ONLY_REMOVE_NATIVE = 2;
 
     private static final List<InventoryCrafting> delayedRemovalByRecipe = new ArrayList<>();
+    private static final List<Exception> delayedRemovalCallsites = new ArrayList<>();
 
     public static Collection<String> sNativeRecipeClasses = new HashSet<>();
     public static Collection<String> sSpecialRecipeClasses = new HashSet<>();
@@ -552,6 +556,7 @@ public class GTModHandler {
         delayedRemovalByOutput.clear();
         delayedRemovalByOutputFlags.clear();
         delayedRemovalByRecipe.clear();
+        delayedRemovalCallsites.clear();
         sBufferRecipeList.clear();
     }
 
@@ -1367,13 +1372,19 @@ public class GTModHandler {
     }
 
     public static void removeRecipeDelayed(ItemStack... shape) {
+        if (shape == null || isAllNulls(shape)) {
+            if (GT_RECIPE_REMOVAL_LOGGER_ENABLED) {
+                GT_RECIPE_REMOVAL_LOGGER.error(
+                    "removeRecipeDelayed rejected empty or null-only crafting inputs; call site follows",
+                    new Exception("Rejected crafting inputs: " + Arrays.toString(shape)));
+            }
+            return;
+        }
+
         if (!sBufferCraftingRecipes) {
             removeRecipe(shape);
             return;
         }
-
-        if (shape == null) return;
-        if (isAllNulls(shape)) return;
 
         InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
 
@@ -1388,6 +1399,10 @@ public class GTModHandler {
         }
 
         delayedRemovalByRecipe.add(craftMatrix);
+        if (GT_RECIPE_REMOVAL_LOGGER_ENABLED) {
+            delayedRemovalCallsites
+                .add(new Exception("Queued crafting inputs (not an existing recipe): " + Arrays.toString(shape)));
+        }
     }
 
     private static void bulkRemoveByRecipe() {
@@ -1396,13 +1411,17 @@ public class GTModHandler {
         GT_FML_LOGGER
             .info("BulkRemoveByRecipe: allRecipes: {}; toRemove: {}", allRecipes.size(), delayedRemovalByRecipe.size());
 
+        AtomicIntegerArray matchedDelayedRemovals = GT_RECIPE_REMOVAL_LOGGER_ENABLED
+            ? new AtomicIntegerArray(delayedRemovalByRecipe.size())
+            : null;
         Set<IRecipe> listToRemove = allRecipes.parallelStream()
             .filter(recipe -> {
                 if (recipe instanceof IGTCraftingRecipe craftingRecipe && !craftingRecipe.isRemovable()) {
                     return false;
                 }
-                for (InventoryCrafting crafting : delayedRemovalByRecipe) {
-                    if (recipe.matches(crafting, DW)) {
+                for (int i = 0; i < delayedRemovalByRecipe.size(); i++) {
+                    if (recipe.matches(delayedRemovalByRecipe.get(i), DW)) {
+                        if (matchedDelayedRemovals != null) matchedDelayedRemovals.set(i, 1);
                         return true;
                     }
                 }
@@ -1411,6 +1430,16 @@ public class GTModHandler {
             .collect(Collectors.toSet());
 
         allRecipes.removeIf(listToRemove::contains);
+
+        if (matchedDelayedRemovals != null) {
+            for (int i = 0; i < matchedDelayedRemovals.length(); i++) {
+                if (matchedDelayedRemovals.get(i) == 0) {
+                    GT_RECIPE_REMOVAL_LOGGER.warn(
+                        "No existing removable crafting recipe matched these queued inputs; removal call site follows",
+                        delayedRemovalCallsites.get(i));
+                }
+            }
+        }
     }
 
     public static boolean removeRecipeByOutputDelayed(ItemStack aOutput) {
