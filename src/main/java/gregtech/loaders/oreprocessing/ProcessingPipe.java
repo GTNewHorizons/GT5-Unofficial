@@ -20,8 +20,6 @@ import gregtech.api.util.GTUtility;
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static int counterTiny, counterSmall, counterNormal, counterLarge, counterHuge;
-
     public ProcessingPipe() {
         OrePrefixes.pipeHuge.add(this);
         OrePrefixes.pipeLarge.add(this);
@@ -43,7 +41,6 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
         switch (aPrefix.getName()) {
             case "pipeHuge" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                    counterHuge+=1;
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial, 1L),
                         GTModHandler.RecipeBits.BUFFERED,
@@ -52,7 +49,6 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             }
             case "pipeLarge" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                    counterLarge+=1;
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial, 1L),
                         GTModHandler.RecipeBits.BUFFERED,
@@ -68,7 +64,6 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             }
             case "pipeMedium" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                    counterNormal+=1;
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 2L),
                         GTModHandler.RecipeBits.BUFFERED,
@@ -84,7 +79,6 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             }
             case "pipeSmall" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                    counterSmall+=1;
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 6L),
                         GTModHandler.RecipeBits.BUFFERED,
@@ -100,7 +94,6 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             }
             case "pipeTiny" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                    counterTiny+=1;
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial, 8L),
                         GTModHandler.RecipeBits.BUFFERED,

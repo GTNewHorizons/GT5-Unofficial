@@ -33,8 +33,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTEFluidP
 
 public class GregtechConduits {
 
-    public static int counter2x, counter4x, counter8x, counter12x, counter16x, counter1to2, counter2to4, counter4to8, counter8to12, counter12to16, counter8to16, counter1to4, counter1to8;
-    public static int counterPipeHuge;
     public enum PipeStats {
 
         Staballoy(TextureSet.SET_ROUGH, 4, 68, 75, 66, 0, "Staballoy"),
@@ -713,7 +711,6 @@ public class GregtechConduits {
         if ((eut < 512) && !output.equals("Void")) {
             ItemStack pipePlateDouble = ItemUtils.getItemStackOfAmountFromOreDict("plateDouble" + output, 1);
             if (pipePlateDouble != null) {
-                counterPipeHuge+=1;
                 GTModHandler.addCraftingRecipe(
                     ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Huge" + output, 1),
                     GTModHandler.RecipeBits.BUFFERED,
@@ -955,7 +952,6 @@ public class GregtechConduits {
         // Shapeless Down-Crafting
         // 2x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
-            counter2x+=1;
             GTModHandler.addShapelessCraftingRecipe(
                 aMaterial.getWire01(2),
                 GTModHandler.RecipeBits.BUFFERED,
@@ -964,7 +960,6 @@ public class GregtechConduits {
 
         // 4x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire04 })) {
-            counter4x+=1;
             GTModHandler.addShapelessCraftingRecipe(
                 aMaterial.getWire01(4),
                 GTModHandler.RecipeBits.BUFFERED,
@@ -973,7 +968,6 @@ public class GregtechConduits {
 
         // 8x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire08 })) {
-            counter8x+=1;
             GTModHandler.addShapelessCraftingRecipe(
                 aMaterial.getWire01(8),
                 GTModHandler.RecipeBits.BUFFERED,
@@ -982,7 +976,6 @@ public class GregtechConduits {
 
         // 12x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire12 })) {
-            counter12x+=1;
             GTModHandler.addShapelessCraftingRecipe(
                 aMaterial.getWire01(12),
                 GTModHandler.RecipeBits.BUFFERED,
@@ -991,7 +984,6 @@ public class GregtechConduits {
 
         // 16x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire16 })) {
-            counter16x+=1;
             GTModHandler.addShapelessCraftingRecipe(
                 aMaterial.getWire01(16),
                 GTModHandler.RecipeBits.BUFFERED,
@@ -1000,7 +992,6 @@ public class GregtechConduits {
 
         // 1x -> 2x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire02 })) {
-            counter1to2+=1;
             GTModHandler.addShapelessCraftingRecipe(
                 aWire02,
                 GTModHandler.RecipeBits.BUFFERED,
@@ -1009,7 +1000,6 @@ public class GregtechConduits {
 
         // 2x -> 4x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire02, aWire04 })) {
-            counter2to4+=1;
             GTModHandler.addShapelessCraftingRecipe(
                 aWire04,
                 GTModHandler.RecipeBits.BUFFERED,
@@ -1018,7 +1008,6 @@ public class GregtechConduits {
 
         // 4x -> 8x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire04, aWire08 })) {
-            counter4to8+=1;
             GTModHandler.addShapelessCraftingRecipe(
                 aWire08,
                 GTModHandler.RecipeBits.BUFFERED,
@@ -1027,7 +1016,6 @@ public class GregtechConduits {
 
         // 8x -> 12x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire04, aWire08, aWire12 })) {
-            counter8to12+=1;
             GTModHandler.addShapelessCraftingRecipe(
                 aWire12,
                 GTModHandler.RecipeBits.BUFFERED,
@@ -1036,7 +1024,6 @@ public class GregtechConduits {
 
         // 12x -> 16x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire04, aWire12, aWire16 })) {
-            counter12to16+=1;
             GTModHandler.addShapelessCraftingRecipe(
                 aWire16,
                 GTModHandler.RecipeBits.BUFFERED,
@@ -1045,7 +1032,6 @@ public class GregtechConduits {
 
         // 8x -> 16x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire08, aWire16 })) {
-            counter8to16+=1;
             GTModHandler.addShapelessCraftingRecipe(
                 aWire16,
                 GTModHandler.RecipeBits.BUFFERED,
@@ -1054,7 +1040,6 @@ public class GregtechConduits {
 
         // 1x -> 4x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire04 })) {
-            counter1to4+=1;
             GTModHandler.addShapelessCraftingRecipe(
                 aWire04,
                 GTModHandler.RecipeBits.BUFFERED,
@@ -1063,7 +1048,6 @@ public class GregtechConduits {
 
         // 1x -> 8x
         if (ItemUtils.checkForInvalidItems(new ItemStack[] { aWire01, aWire08 })) {
-            counter1to8+=1;
             GTModHandler.addShapelessCraftingRecipe(
                 aWire08,
                 GTModHandler.RecipeBits.BUFFERED,

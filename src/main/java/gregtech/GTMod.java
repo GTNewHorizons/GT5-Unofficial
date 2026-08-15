@@ -16,9 +16,6 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 
-import goodgenerator.util.MaterialFix;
-import gregtech.loaders.oreprocessing.ProcessingPipe;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -626,28 +623,6 @@ public class GTMod {
         }
         GregTechAPI.sGTCompleteLoad = null;
         GregTechAPI.sFullLoadFinished = true;
-
-        GT_FML_LOGGER.fatal("count pipe huge: {}", GregtechConduits.counterPipeHuge);
-        GT_FML_LOGGER.fatal("count counter2x: {}", GregtechConduits.counter2x);
-        GT_FML_LOGGER.fatal("count counter4x: {}", GregtechConduits.counter4x);
-        GT_FML_LOGGER.fatal("count counter8x: {}", GregtechConduits.counter8x);
-        GT_FML_LOGGER.fatal("count counter12x: {}", GregtechConduits.counter12x);
-        GT_FML_LOGGER.fatal("count counter16x: {}", GregtechConduits.counter16x);
-        GT_FML_LOGGER.fatal("count counter1to2: {}", GregtechConduits.counter1to2);
-        GT_FML_LOGGER.fatal("count counter2to4: {}", GregtechConduits.counter2to4);
-        GT_FML_LOGGER.fatal("count counter4to8: {}", GregtechConduits.counter4to8);
-        GT_FML_LOGGER.fatal("count counter8to12: {}", GregtechConduits.counter8to12);
-        GT_FML_LOGGER.fatal("count counter12to16: {}", GregtechConduits.counter12to16);
-        GT_FML_LOGGER.fatal("count counter8to16: {}", GregtechConduits.counter8to16);
-        GT_FML_LOGGER.fatal("count counter1to4: {}", GregtechConduits.counter1to4);
-        GT_FML_LOGGER.fatal("count counter1to8: {}", GregtechConduits.counter1to8);
-        GT_FML_LOGGER.fatal("count machines: {}", GTModHandler.counterMachine);
-        GT_FML_LOGGER.fatal("count triple plates: {}", MaterialFix.counterTriplePlate);
-        GT_FML_LOGGER.fatal("count counterTiny: {}", ProcessingPipe.counterTiny);
-        GT_FML_LOGGER.fatal("count counterSmall: {}", ProcessingPipe.counterSmall);
-        GT_FML_LOGGER.fatal("count counterNormal: {}", ProcessingPipe.counterNormal);
-        GT_FML_LOGGER.fatal("count counterLarge: {}", ProcessingPipe.counterLarge);
-        GT_FML_LOGGER.fatal("count counterHuge: {}", ProcessingPipe.counterHuge);
     }
 
     @Mod.EventHandler
