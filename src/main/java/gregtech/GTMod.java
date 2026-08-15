@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -623,6 +624,7 @@ public class GTMod {
         }
         GregTechAPI.sGTCompleteLoad = null;
         GregTechAPI.sFullLoadFinished = true;
+        GT_FML_LOGGER.fatal("amount of calls: {}", RecipeGenDustGeneration.count);
     }
 
     @Mod.EventHandler
