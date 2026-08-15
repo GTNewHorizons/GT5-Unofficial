@@ -77,6 +77,8 @@ import ic2.api.reactor.IReactorComponent;
  */
 public class GTRecipeRegistrator {
 
+    public static int counterThreeStick = 0;
+    public static int counterDefaultStick = 0;
     private static Supplier<RecipeCategory> arcFurnaceRecyclingCategorySupplier = () -> RecipeCategories.arcFurnaceRecycling;
 
     /**
@@ -712,16 +714,22 @@ public class GTRecipeRegistrator {
                                 GTModHandler.RecipeBits.BUFFERED,
                                 new Object[] { sShapesA[i][1], s_P.charAt(0), aPlate, s_R.charAt(0),
                                     OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
-                            case 3 -> GTModHandler.addCraftingRecipe(
+                            case 3 -> {
+                                counterThreeStick+=1;
+                                GTModHandler.addCraftingRecipe(
                                 tStack,
                                 GTModHandler.RecipeBits.BUFFERED,
                                 new Object[] { sShapesA[i][1], sShapesA[i][2], s_P.charAt(0), aPlate, s_R.charAt(0),
                                     OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
-                            default -> GTModHandler.addCraftingRecipe(
+                            }
+                            default -> {
+                                counterDefaultStick+=1;
+                                GTModHandler.addCraftingRecipe(
                                 tStack,
                                 GTModHandler.RecipeBits.BUFFERED,
                                 new Object[] { sShapesA[i][1], sShapesA[i][2], sShapesA[i][3], s_P.charAt(0), aPlate,
                                     s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
+                            }
                         }
                     }
                 }

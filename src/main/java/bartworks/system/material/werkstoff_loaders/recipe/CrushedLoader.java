@@ -48,7 +48,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class CrushedLoader implements IWerkstoffRunnable {
-
+    public static int counterCrushed = 0;
     @Override
     public void run(Werkstoff werkstoff) {
         if (!werkstoff.hasItemType(ore) || !werkstoff.hasItemType(dust)) return;
@@ -71,6 +71,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
 
         if (werkstoff.getStats()
             .getProcessingMaterialTierEU() < TierEU.IV) {
+            counterCrushed+=1;
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(dustImpure),
                 GTModHandler.RecipeBits.BUFFERED,

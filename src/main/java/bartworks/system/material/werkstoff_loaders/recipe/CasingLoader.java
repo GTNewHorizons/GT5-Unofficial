@@ -34,6 +34,7 @@ import gregtech.api.util.GTModHandler;
 
 public class CasingLoader implements IWerkstoffRunnable {
 
+    public static int countCasing = 0;
     @Override
     public void run(Werkstoff werkstoff) {
         if (werkstoff == BWGTMaterialReference.Wood /* || werkstoff == BW_GT_MaterialReference.WoodSealed */) {
@@ -50,6 +51,7 @@ public class CasingLoader implements IWerkstoffRunnable {
     }
 
     private static void addCasingRecipes(Werkstoff werkstoff, OrePrefixes reboltedCasingsOuterStuff) {
+        countCasing+=1;
         GTModHandler.addCraftingRecipe(
             werkstoff.get(blockCasing),
             GTModHandler.RecipeBits.BUFFERED,
