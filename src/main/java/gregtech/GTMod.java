@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 
-import gregtech.loaders.oreprocessing.ProcessingPipe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -624,8 +623,6 @@ public class GTMod {
         }
         GregTechAPI.sGTCompleteLoad = null;
         GregTechAPI.sFullLoadFinished = true;
-
-        GT_FML_LOGGER.fatal("Pipes Huge<->Tiny:{}. Pipes quadruple:{}. Pipes nonuple:{}", ProcessingPipe.countPipeHugeLargeMediumSmallTiny, ProcessingPipe.countPipeQuadruple, ProcessingPipe.countPipeNonuple);
     }
 
     @Mod.EventHandler
