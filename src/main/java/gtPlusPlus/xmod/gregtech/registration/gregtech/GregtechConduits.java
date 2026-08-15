@@ -643,22 +643,22 @@ public class GregtechConduits {
             // Add the Four Shaped Recipes First
             GTModHandler.addCraftingRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Tiny" + output, 8),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "PPP", "h w", "PPP", 'P', pipePlate });
 
             GTModHandler.addCraftingRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 6),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "PwP", "P P", "PhP", 'P', pipePlate });
 
             GTModHandler.addCraftingRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 2),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "PPP", "w h", "PPP", 'P', pipePlate });
 
             GTModHandler.addCraftingRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "PhP", "P P", "PwP", 'P', pipePlate });
         }
 
