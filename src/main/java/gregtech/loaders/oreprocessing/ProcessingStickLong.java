@@ -19,6 +19,8 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static int countStickLong = 0;
+
     public ProcessingStickLong() {
         OrePrefixes.stickLong.add(this);
     }
@@ -27,6 +29,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
         if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
+            countStickLong+=1;
             GTModHandler.addCraftingRecipe(
                 GTOreDictUnificator.get(OrePrefixes.spring, aMaterial, 1L),
                 GTModHandler.RecipeBits.BUFFERED,

@@ -23,6 +23,7 @@ import gregtech.common.blocks.BlockFrameBox;
 
 public final class LoaderMetaPipeEntities implements Runnable {
 
+    public static int counterFrameIV = 0;
     @Override
     public void run() {
         registerFrames();
@@ -43,6 +44,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 BlockFrameBox block = (BlockFrameBox) GregTechAPI.sBlockFrames;
                 GTOreDictUnificator.registerOre(OrePrefixes.frameGt, material, block.getStackForm(1, meta));
                 if (material.getProcessingMaterialTierEU() < TierEU.IV) {
+                    counterFrameIV+=1;
                     GTModHandler.addCraftingRecipe(
                         block.getStackForm(2, meta),
                         GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,

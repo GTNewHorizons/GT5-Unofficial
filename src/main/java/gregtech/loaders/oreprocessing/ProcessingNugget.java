@@ -23,6 +23,7 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static int countNugget = 0;
     public ProcessingNugget() {
         OrePrefixes.nugget.add(this);
     }
@@ -82,6 +83,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                 .recipeCategory(RecipeCategories.alloySmelterMolding)
                 .addTo(alloySmelterRecipes);
             if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV && aMaterial != Materials.Unstable) {
+                countNugget +=1;
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.nugget, aMaterial, 8L),
                     GTModHandler.RecipeBits.BUFFERED,
