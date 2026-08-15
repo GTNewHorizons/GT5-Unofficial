@@ -132,7 +132,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             if (aMaterial == Materials.Paper) {
                 GTModHandler.addCraftingRecipe(
                     GTUtility.copyAmount(2, aStack),
-                    BUFFERED,
+                    BUFFERED | DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD) });
             }
         }
