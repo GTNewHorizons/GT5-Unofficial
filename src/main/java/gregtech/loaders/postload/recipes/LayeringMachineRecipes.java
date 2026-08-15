@@ -6,7 +6,9 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.GTOreDictUnificator;
 
 public class LayeringMachineRecipes implements Runnable {
 
@@ -15,7 +17,8 @@ public class LayeringMachineRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.WovenKevlar.get(1))
             .fluidInputs(Materials.PolyurethaneResin.getFluid(1000))
-            .itemOutputs(Materials.Kevlar.getPlates(1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Kevlar, 1L))
+            .circuit(1)
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(layeringMachineRecipes);

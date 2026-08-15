@@ -14888,11 +14888,11 @@ public class MaterialsInit {
             .setARGB(0x00f0f078)
             .addDustItems()
             .addMetalItems()
-            .addGearItems()
             .addSubTag(SubTag.FLAMMABLE)
             .addSubTag(SubTag.MULTI_PLATE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STRETCHY)
+            .addSubTag(SubTag.NO_RECIPES)
             .constructMaterial();
     }
 

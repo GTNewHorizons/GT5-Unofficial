@@ -244,7 +244,7 @@ public class MTELayeringMachine extends MTEExtendedPowerMultiBlockBase<MTELayeri
                                 Casings.SecureRhodiumPlatedPalladiumMachineCasing.asElement())))
                 .addElement(
                     '3',
-                    buildHatchAdder(MTELayeringMachine.class).atLeast(OutputBus)
+                    buildHatchAdder(MTELayeringMachine.class).atLeast(OutputBus, OutputHatch)
                         .casingIndex(Casings.SecureRhodiumPlatedPalladiumMachineCasing.textureId)
                         .hint(4)
                         .buildAndChain(
