@@ -1,5 +1,6 @@
 package gregtech.api.enums;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.NI;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
@@ -18,7 +19,6 @@ import com.google.common.collect.ImmutableList;
 import gregtech.GTMod;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -2715,6 +2715,7 @@ public enum ItemList implements IItemContainer {
     Casing_Pyrolyse,
     NameRemover,
     Hatch_Nanite,
+    Hatch_Nanite_Singularity,
     Hatch_Catalyst_Bulk,
     Machine_Multi_AirFilterT1,
     Machine_Multi_AirFilterT2,
@@ -3346,7 +3347,7 @@ public enum ItemList implements IItemContainer {
     @Override
     public boolean isStackEqual(Object aStack, boolean aWildcard, boolean aIgnoreNBT) {
         if (mDeprecated && !mWarned) {
-            new Exception(this + " is now deprecated").printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(new Exception(this + " is now deprecated"));
             // warn only once
             mWarned = true;
         }
@@ -3358,8 +3359,8 @@ public enum ItemList implements IItemContainer {
     public ItemStack get(long aAmount, Object... aReplacements) {
         sanityCheck();
         if (GTUtility.isStackInvalid(mStack)) {
-            GTLog.out.println("Object in the ItemList is null at:");
-            new NullPointerException().printStackTrace(GTLog.out);
+            GT_FML_LOGGER.debug("Object in the ItemList is null at:");
+            GT_FML_LOGGER.debug(new NullPointerException());
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
         return GTUtility.copyAmount(aAmount, GTOreDictUnificator.get(mStack));
@@ -3463,7 +3464,7 @@ public enum ItemList implements IItemContainer {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         if (mDeprecated && !mWarned) {
-            new Exception(this + " is now deprecated").printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(new Exception(this + " is now deprecated"));
             // warn only once
             mWarned = true;
         }

@@ -2,6 +2,7 @@ package gregtech.loaders.preload;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.ElectroMagicTools;
 import static gregtech.api.enums.Mods.Forestry;
@@ -79,7 +80,6 @@ import gregtech.api.metatileentity.implementations.MTETransformer;
 import gregtech.api.metatileentity.implementations.MTEWetTransformer;
 import gregtech.api.metatileentity.implementations.MTEWirelessEnergy;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTLog;
 import gregtech.common.tileentities.automation.MTEChestBuffer;
 import gregtech.common.tileentities.automation.MTEFilter;
 import gregtech.common.tileentities.automation.MTEItemDistributor;
@@ -10120,7 +10120,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Registering MetaTileEntities.");
+        GT_FML_LOGGER.debug("GTMod: Registering MetaTileEntities.");
         registerMachineHull();
         registerTransformer();
         registerDynamoHatch();
@@ -10289,6 +10289,13 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1L));
         ItemList.Hatch_Nanite.set(
             new MTEHatchNanite(HATCH_NANITE.ID, "hatch.nanite", "Nanite Containment Bus", 9, 2048).getStackForm(1));
+        ItemList.Hatch_Nanite_Singularity.set(
+            new MTEHatchNanite(
+                HATCH_NANITE_SINGULARITY.ID,
+                "hatch.nanite.singularity",
+                "Singularity Nanite Containment Bus",
+                11,
+                Integer.MAX_VALUE).getStackForm(1));
         ItemList.Hatch_Catalyst_Bulk.set(
             new MTEHatchBulkCatalystHousing(
                 HATCH_CATALYST_BULK.ID,
