@@ -1,5 +1,6 @@
 package gregtech.client.iconContainers.items;
 
+import static gregtech.GTLoggers.GT_ICON_LOGGER;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Textures.OverlaySuffix;
 import static gregtech.api.enums.Textures.TextureMaterialIconDirectory;
@@ -20,9 +21,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.InvisibleIcon;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.client.ResourceUtils;
-import gregtech.common.config.Gregtech;
 
 public class GTTextureSetItemIconContainer extends AbstractItemIconContainer implements Runnable {
 
@@ -55,7 +54,7 @@ public class GTTextureSetItemIconContainer extends AbstractItemIconContainer imp
         } else {
             GregTechAPI.sGTItemIconload.add(this);
         }
-        if (Gregtech.debug.logRegisterIcons) logRegisterIcons();
+        logRegisterIcons();
     }
 
     public static String createIconName(String setName, String prefix) {
@@ -79,8 +78,8 @@ public class GTTextureSetItemIconContainer extends AbstractItemIconContainer imp
     }
 
     protected void logRegisterIcons() {
-        GTLog.ico.println("R " + iconResource);
-        GTLog.ico.println("O " + iconOverlayResource);
+        GT_ICON_LOGGER.info("R {}", iconResource);
+        GT_ICON_LOGGER.info("O {}", iconOverlayResource);
     }
 
     @Override

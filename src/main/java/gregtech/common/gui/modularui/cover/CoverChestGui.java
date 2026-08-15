@@ -17,6 +17,8 @@ import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 
 public class CoverChestGui extends CoverBaseGui<CoverChest> {
 
+    private static final String SLOT_GROUP_NAME = "cover_chest_items";
+
     /**
      * The side of the block this GUI is representing the cover for.
      */
@@ -40,11 +42,13 @@ public class CoverChestGui extends CoverBaseGui<CoverChest> {
 
         IItemHandlerModifiable handler = cover.getItems();
 
+        syncManager.registerSlotGroup(SLOT_GROUP_NAME, 3, 200);
+
         column.horizontalCenter()
             .child(
                 SlotGroupWidget.builder()
                     .matrix(matrix)
-                    .key('x', i -> new ItemSlot().slot(new ModularSlot(handler, i)))
+                    .key('x', i -> new ItemSlot().slot(new ModularSlot(handler, i).slotGroup(SLOT_GROUP_NAME)))
                     .build());
     }
 

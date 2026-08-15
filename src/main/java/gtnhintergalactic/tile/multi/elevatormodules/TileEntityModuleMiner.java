@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -933,6 +933,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
      *
      * @author minecraft7771
      */
+    @IMetaTileEntity.SkipGenerateDescription
     public static class TileEntityModuleMinerT1 extends TileEntityModuleMiner {
 
         /** Voltage tier of this module */
@@ -993,41 +994,20 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            // spotless:off
             tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
-                // that
-                // adds Space
-                // Mining
-                // Operations to the
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t1.desc1")) // Does
-                // this
-                // violate
-                // drone rights?
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.desc2"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc3"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc4"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc5"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t1.desc5"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT1"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc6"))
+                .addMarkdown(new ResourceLocation("gregtech", "space-mining-module-mk1"))
                 .beginStructureBlock(1, 5, 2, false)
-                .addController("Front center, 4th layer")
+                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
-                .addMiscHatch(
-                    "0+",
-                    StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"),
-                    "Any casing",
-                    1)
-                .addInputBus("1+", "Any casing", 1)
-                .addInputHatch("0+", "Any casing", 1)
-                .addOutputBus("1+", "Any casing", 1)
+                .addMiscHatch("0+", StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"), StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+                .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+                .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+                .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedResources"))
                 .toolTipFinisher();
+            // spotless:on
             return tt;
         }
     }
@@ -1037,6 +1017,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
      *
      * @author minecraft7771
      */
+    @IMetaTileEntity.SkipGenerateDescription
     public static class TileEntityModuleMinerT2 extends TileEntityModuleMiner {
 
         /** Voltage tier of this module */
@@ -1097,41 +1078,24 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            // spotless:off
             tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
-                // that
-                // adds Space
-                // Mining
-                // Operations to the
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t2.desc1")) // This
-                // definitely
-                // violates
-                // drone rights.
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.desc2"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc3"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc4"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc5"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t2.desc5"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT2"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc6"))
+                .addMarkdown(new ResourceLocation("gregtech", "space-mining-module-mk2"))
                 .beginStructureBlock(1, 5, 2, false)
-                .addController("Front center, 4th layer")
+                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
                 .addMiscHatch(
                     "0+",
                     StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"),
-                    "Any casing",
+                    StatCollector.translateToLocal("gt.mbtt.structure.any_casing"),
                     1)
-                .addInputBus("1+", "Any casing", 1)
-                .addInputHatch("0+", "Any casing", 1)
-                .addOutputBus("1+", "Any casing", 1)
+                .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+                .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+                .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedResources"))
                 .toolTipFinisher();
+            // spotless:on
             return tt;
         }
     }
@@ -1141,6 +1105,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
      *
      * @author minecraft7771
      */
+    @IMetaTileEntity.SkipGenerateDescription
     public static class TileEntityModuleMinerT3 extends TileEntityModuleMiner {
 
         /** Voltage tier of this module */
@@ -1201,41 +1166,24 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            // spotless:off
             tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
-                // that
-                // adds Space
-                // Mining
-                // Operations to the
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t3.desc1")) // Great
-                // treasures
-                // beyond
-                // your imagination await!
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.desc2"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc3"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc4"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc5"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t3.desc5"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT3"))
-                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc6"))
+                .addMarkdown(new ResourceLocation("gregtech", "space-mining-module-mk3"))
                 .beginStructureBlock(1, 5, 2, false)
-                .addController("Front center, 4th layer")
+                .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
                 .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
                 .addMiscHatch(
                     "0+",
                     StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"),
-                    "Any casing",
+                    StatCollector.translateToLocal("gt.mbtt.structure.any_casing"),
                     1)
-                .addInputBus("1+", "Any casing", 1)
-                .addInputHatch("0+", "Any casing", 1)
-                .addOutputBus("1+", "Any casing", 1)
+                .addInputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+                .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
+                .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_casing"), 1)
                 .addStructureInfo("")
                 .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedResources"))
                 .toolTipFinisher();
+            // spotless:on
             return tt;
         }
     }

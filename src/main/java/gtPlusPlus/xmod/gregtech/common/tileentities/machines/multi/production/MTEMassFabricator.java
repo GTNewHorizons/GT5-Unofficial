@@ -304,9 +304,8 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setString("mode", getMachineModeName());
     }
 

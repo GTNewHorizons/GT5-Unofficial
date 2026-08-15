@@ -62,6 +62,7 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.11:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.63:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.10.36:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:EnderStorage:1.8.7:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.11.32:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.4.32-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.12.40-GTNH:dev") { transitive = false }
@@ -99,6 +100,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:BloodMagic:1.9.11:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:CraftTweaker:3.4.8:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.7.9-GTNH:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Variable-Horizons:0.0.01:dev") { transitive = false }
     compileOnly rfg.deobf("curse.maven:biomes-o-plenty-220318:2499612")
 
     compileOnly('com.github.GTNewHorizons:SC2:2.3.14:dev') {transitive=false}
