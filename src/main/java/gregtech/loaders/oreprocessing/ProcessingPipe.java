@@ -41,7 +41,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
         switch (aPrefix.getName()) {
             case "pipeHuge", "pipeLarge", "pipeMedium", "pipeSmall", "pipeTiny" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-
+                    //todo: understand why there are only 180/183 empty recipe removal for tiny/small/medium/large pipes
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial, 8L),
                         GTModHandler.RecipeBits.BUFFERED,
@@ -79,6 +79,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                                 : ToolDictNames.craftingToolHardHammer,
                             'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
                                 : ToolDictNames.craftingToolWrench });
+                    // todo: understand why there are only 167/183 empty recipe removal for huge pipes
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial, 1L),
                         GTModHandler.RecipeBits.BUFFERED,
@@ -105,7 +106,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
 
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
-                        GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
+                        GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                         new Object[] { "MM ", "MM ", "   ", 'M',
                             GTOreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1) });
                 }
@@ -122,7 +123,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
 
                     GTModHandler.addCraftingRecipe(
                         GTUtility.copyAmount(1, aStack),
-                        GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
+                        GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                         new Object[] { "PPP", "PPP", "PPP", 'P', GTOreDictUnificator
                             .get(aOreDictName.replaceFirst("Nonuple", "Small"), null, 1L, false, true) });
                 }
