@@ -954,8 +954,7 @@ public class GTModHandler {
             // spotless:on
         }
 
-        if (!GTModHandler
-            .addCraftingRecipe(aResult, aBitMask, aRecipe)) {
+        if (!GTModHandler.addCraftingRecipe(aResult, aBitMask, aRecipe)) {
             throw new IllegalArgumentException("INVALID CRAFTING RECIPE FOR: " + aResult.getDisplayName());
         }
     }
