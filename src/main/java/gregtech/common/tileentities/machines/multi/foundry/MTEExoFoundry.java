@@ -64,7 +64,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -858,7 +858,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         // spotless:off
         ringShader = FOUNDRY.bake();
         if (!ringShader.isValid()) {
-            GTMod.GT_FML_LOGGER.error("Failed to initialize exo foundry shader");
+            GTLoggers.GT_FML_LOGGER.error("Failed to initialize exo foundry shader");
             releaseRender();
             return;
         }
@@ -871,7 +871,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             ring = WavefrontVBOBuilder.compileToVBO(model, ringShader.vertexFormat());
             ffpRing = WavefrontVBOBuilder.compileToVBO(model);
         } catch (RuntimeException e) {
-            GTMod.GT_FML_LOGGER.error("Failed to load exo foundry ring model", e);
+            GTLoggers.GT_FML_LOGGER.error("Failed to load exo foundry ring model", e);
             releaseRender();
             return;
         }

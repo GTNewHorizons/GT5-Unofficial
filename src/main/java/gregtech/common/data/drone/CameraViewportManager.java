@@ -1,5 +1,7 @@
 package gregtech.common.data.drone;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +33,6 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
 import gregtech.api.net.PacketObserveMachine;
 import gregtech.api.objects.GTChunkManager;
-import gregtech.api.util.GTLog;
 import gregtech.common.entity.EntityDrone;
 import gregtech.common.items.ItemDroneRemoteInterface;
 
@@ -166,7 +167,7 @@ public class CameraViewportManager {
                 }
                 removePlayerMethod.setAccessible(true);
             } catch (Exception e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
 
@@ -178,7 +179,7 @@ public class CameraViewportManager {
                     addPlayerMethod.invoke(playerInstance, player);
                 }
             } catch (Exception e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
 
@@ -190,7 +191,7 @@ public class CameraViewportManager {
                     removePlayerMethod.invoke(playerInstance, player);
                 }
             } catch (Exception e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
 
