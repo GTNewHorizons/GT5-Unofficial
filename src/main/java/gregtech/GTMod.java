@@ -16,12 +16,6 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 
-import bartworks.system.material.werkstoff_loaders.recipe.CasingLoader;
-import bartworks.system.material.werkstoff_loaders.recipe.CrushedLoader;
-import bartworks.system.material.werkstoff_loaders.recipe.GemLoader;
-import goodgenerator.util.MaterialFix;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -629,18 +623,6 @@ public class GTMod {
         }
         GregTechAPI.sGTCompleteLoad = null;
         GregTechAPI.sFullLoadFinished = true;
-
-        GT_FML_LOGGER.fatal("count casing: {}", CasingLoader.countCasing);
-        GT_FML_LOGGER.fatal("count crushed: {}", CrushedLoader.counterCrushed);
-        GT_FML_LOGGER.fatal("count gems: {}", GemLoader.counterGems);
-        GT_FML_LOGGER.fatal("count conduits: {}", GregtechConduits.counterConduits);
-        GT_FML_LOGGER.fatal("count registrator 3 sticks: {}", GTRecipeRegistrator.counterThreeStick);
-        GT_FML_LOGGER.fatal("count registrator default sticks: {}", GTRecipeRegistrator.counterDefaultStick);
-        GT_FML_LOGGER.fatal("count special dusts: {}", ItemUtils.counterSpecialDusts);
-        GT_FML_LOGGER.fatal("count double plates: {}", MaterialFix.counterDoublePlate);
-        GT_FML_LOGGER.fatal("count long sticks: {}", MaterialFix.counterStickLong);
-        GT_FML_LOGGER.fatal("count spring: {}", MaterialFix.counterSpring);
-        GT_FML_LOGGER.fatal("count small spring: {}", MaterialFix.counterSmallSpring);
     }
 
     @Mod.EventHandler

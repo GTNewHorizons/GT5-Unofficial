@@ -69,7 +69,6 @@ public class GregtechConduits {
         }
     }
 
-    public static int counterConduits = 0;
     // 30000-30999
     private static final int BaseWireID = 30600;
     private static final int BasePipeID = 30700;
@@ -641,7 +640,6 @@ public class GregtechConduits {
         int eut = (int) (8 * voltageMultiplier);
 
         if (material != null && material.voltageMultiplier < TierEU.IV) {
-            counterConduits += 1;
             // Add the Four Shaped Recipes First
             GTModHandler.addCraftingRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Tiny" + output, 8),

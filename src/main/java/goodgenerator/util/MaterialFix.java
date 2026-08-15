@@ -21,10 +21,6 @@ import gregtech.api.util.GTOreDictUnificator;
 
 public class MaterialFix {
 
-    public static int counterDoublePlate = 0;
-    public static int counterStickLong = 0;
-    public static int counterSpring = 0;
-    public static int counterSmallSpring = 0;
     public static void MaterialFluidExtractionFix(Werkstoff material) {
         if (material.hasItemType(OrePrefixes.gearGtSmall)) {
             GTValues.RA.stdBuilder()
@@ -156,7 +152,6 @@ public class MaterialFix {
                             1L) * TICKS)
                     .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
-                counterDoublePlate+=1;
                 GTModHandler.addCraftingRecipe(
                     tMaterial.get(OrePrefixes.plateDouble, 1),
                     GTModHandler.RecipeBits.BUFFERED,
@@ -231,7 +226,6 @@ public class MaterialFix {
             }
             if (tMaterial.hasItemType(OrePrefixes.stickLong)) {
                 if (tMaterial.hasItemType(OrePrefixes.stick)) {
-                    counterStickLong+=1;
                     GTModHandler.addCraftingRecipe(
                         tMaterial.get(OrePrefixes.stickLong, 1),
                         GTModHandler.RecipeBits.BUFFERED,
@@ -239,7 +233,6 @@ public class MaterialFix {
                 }
             }
             if (tMaterial.hasItemType(OrePrefixes.spring)) {
-                counterSpring+=1;
                 GTModHandler.addCraftingRecipe(
                     tMaterial.get(OrePrefixes.spring, 1),
                     GTModHandler.RecipeBits.BUFFERED,
@@ -257,7 +250,6 @@ public class MaterialFix {
                     .addTo(benderRecipes);
             }
             if (tMaterial.hasItemType(OrePrefixes.springSmall)) {
-                counterSmallSpring+=1;
                 GTModHandler.addCraftingRecipe(
                     tMaterial.get(OrePrefixes.springSmall, 1),
                     GTModHandler.RecipeBits.BUFFERED,

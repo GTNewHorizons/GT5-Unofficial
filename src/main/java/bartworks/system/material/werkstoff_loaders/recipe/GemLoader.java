@@ -57,7 +57,6 @@ import gregtech.api.util.GTOreDictUnificator;
 
 public class GemLoader implements IWerkstoffRunnable {
 
-    public static int counterGems = 0;
     @Override
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(gem)) {
@@ -88,7 +87,6 @@ public class GemLoader implements IWerkstoffRunnable {
             }
             if (werkstoff.getStats()
                 .getProcessingMaterialTierEU() < TierEU.IV) {
-                counterGems+=1;
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(gemFlawless, 2),
                     GTModHandler.RecipeBits.BUFFERED,

@@ -35,7 +35,6 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 
 public class ItemUtils {
 
-    public static int counterSpecialDusts = 0;
     public static ItemStack getItemStackOfAmountFromOreDict(String oredictName, final int amount) {
         String mTemp = oredictName;
         if (oredictName.contains("-") || oredictName.contains("_")) {
@@ -129,7 +128,7 @@ public class ItemUtils {
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(packagerRecipes);
-        counterSpecialDusts += 1;
+
         // Tiny Dusts
         GTModHandler.addCraftingRecipe(
             normalDust,
