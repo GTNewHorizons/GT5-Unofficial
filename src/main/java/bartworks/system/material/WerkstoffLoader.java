@@ -15,6 +15,7 @@ package bartworks.system.material;
 
 import static bartworks.util.BWUtil.subscriptNumbers;
 import static bartworks.util.BWUtil.superscriptNumbers;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.BetterLoadingScreen;
 import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.bolt;
@@ -1732,7 +1733,11 @@ public class WerkstoffLoader {
 
             long timepreone = 0;
             int pos = 0;
+            int belowIVCount = 0;
             for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
+                if (werkstoff.getStats().getProcessingMaterialTierEU() < TierEU.IV && werkstoff.hasItemType(dust)){
+                    belowIVCount += 1;
+                }
                 timepreone = System.nanoTime();
                 MainMod.BW_DEBUG_LOGGER.info(
                     "Werkstoff is null or id < 0 ? {} {}",
@@ -1758,6 +1763,7 @@ public class WerkstoffLoader {
                 progressBar.step(werkstoff.getDefaultName());
                 pos++;
             }
+            GT_FML_LOGGER.fatal("Materials below IV count: {}", belowIVCount);
             MainMod.BW_DEBUG_LOGGER.info("Loading New Circuits {}", System.nanoTime() - timepreone);
             CircuitPartsItem.init();
 
