@@ -26,7 +26,6 @@ import gtPlusPlus.core.material.state.MaterialState;
 
 public class RecipeGenDustGeneration extends RecipeGenBase {
 
-    public static int count = 0;
     public static final Set<Runnable> mRecipeGenMap = new HashSet<>();
 
     static {
@@ -38,7 +37,6 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
     }
 
     public RecipeGenDustGeneration(final Material M, final boolean O) {
-        count += 1;
         this.toGenerate = M;
         this.disableOptional = O;
         mRecipeGenMap.add(this);
