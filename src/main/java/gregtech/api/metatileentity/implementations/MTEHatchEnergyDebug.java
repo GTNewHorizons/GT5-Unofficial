@@ -37,6 +37,11 @@ public class MTEHatchEnergyDebug extends MTEHatchEnergy {
     }
 
     @Override
+    public byte getTierForStructure() {
+        return (byte) voltageTier;
+    }
+
+    @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory.of(Textures.BlockIcons.OVERLAY_ENERGY_IN_DEBUG) };
     }

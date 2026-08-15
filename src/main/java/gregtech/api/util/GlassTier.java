@@ -1,11 +1,12 @@
 package gregtech.api.util;
 
 import static cpw.mods.fml.common.registry.GameRegistry.findBlock;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.BloodArsenal;
 import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.EnderIO;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.util.GTUtility.getColoredTierNameFromTier;
 
@@ -51,11 +52,12 @@ public class GlassTier {
     private static final HashMap<Pair<Block, Integer>, Pair<Integer, Integer>> glassToTierAndIndex = new HashMap<>();
     // For default tier ordering, so the primary (borosilicate) glasses come before the variants
     private static final int minTier = VoltageIndex.HV;
-    private static final int maxTier = VoltageIndex.UMV;
+    private static final int maxTier = VoltageIndex.UXV;
     private static final Pair<Integer, Integer> defaultGlassTier = Pair.of(null, 0);
     private static final List<Pair<Block, Integer>> mainGlass = new ArrayList<>(
         Collections.nCopies(maxTier + 1 - minTier, null));
     private static final List<Pair<Block, Integer>> glassList = new ArrayList<>();
+    private static final List<String> tierLangKeys = new ArrayList<>();
 
     /**
      * Register a glass as a tiered glass.
@@ -71,11 +73,12 @@ public class GlassTier {
         if (block != null) {
             addCustomGlass(block, meta, tier, subtier);
         } else {
-            new IllegalArgumentException(
-                "Block: " + unlocalisedBlockName
-                    + " of the Mod: "
-                    + modname
-                    + " was NOT found when attempting to register a glass!").printStackTrace();
+            GT_FML_LOGGER.error(
+                new IllegalArgumentException(
+                    "Block: " + unlocalisedBlockName
+                        + " of the Mod: "
+                        + modname
+                        + " was NOT found when attempting to register a glass!"));
         }
     }
 
@@ -86,6 +89,17 @@ public class GlassTier {
         if (subtier == 0) {
             mainGlass.set(tier - minTier, Pair.of(block, meta));
         }
+    }
+
+    /**
+     * Used for determining maximum tier of a multiblock, extra glass type should not be considered tiered.
+     */
+    public static int getMaxTierIndex() {
+        return maxTier - minTier + 1;
+    }
+
+    public static List<String> getTierLangKeys() {
+        return tierLangKeys;
     }
 
     /**
@@ -132,7 +146,8 @@ public class GlassTier {
                     .registerAsIndicator(new ItemStack(glass.getLeft(), 1, glass.getRight()), ctr);
                 ctr++;
             }
-            glassList.add(mainGlass.get(mainGlass.size() - 1));
+            // Re-add the highest tier borosilicate to the end of the list so the max slider value is maximum tier glass
+            glassList.add(mainGlass.getLast());
         }
         return glassList;
     }
@@ -143,12 +158,13 @@ public class GlassTier {
         public static void run() {
             registerGlassAsTiered();
             registerGlassOreDicts();
+            registerGlassLangKeys();
         }
 
         private static void registerGlassAsTiered() {
 
             // --- HV ---
-            addCustomGlass(ItemRegistry.bw_realglas, 0, 3, 0);
+            addCustomGlass(ItemRegistry.bw_realglas, 0, 3, 0); // Borosilicate
             addCustomGlass(Blocks.glass, 0, 3, 1);
             if (EnderIO.isModLoaded()) {
                 for (int i = 0; i < 6; i++) {
@@ -161,58 +177,70 @@ public class GlassTier {
             }
 
             // --- EV ---
-            addCustomGlass(ItemRegistry.bw_realglas, 1, 4, 0);
+            addCustomGlass(ItemRegistry.bw_realglas, 1, 4, 0); // Titanium Borosilicate
             addCustomGlass(GregTechAPI.sBlockGlass1, 0, 4, 1);
-            for (int i = 0; i < 4; i++) {
-                addCustomGlass(GregTechAPI.sBlockTintedGlass, i, 4, i + 2);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 10, 4, 2);
+            if (AppliedEnergistics2.isModLoaded()) {
+                addCustomGlass(AppliedEnergistics2.ID, "tile.BlockQuartzGlass", 0, 4, 3);
+                addCustomGlass(AppliedEnergistics2.ID, "tile.BlockQuartzLamp", 0, 4, 4);
             }
-            addCustomGlass(IndustrialCraft2.ID, "blockAlloyGlass", 0, 4, 6);
             if (BloodArsenal.isModLoaded()) {
-                addCustomGlass(BloodArsenal.ID, "blood_stained_glass", 0, 4, 7);
+                addCustomGlass(BloodArsenal.ID, "blood_stained_glass", 0, 4, 5);
             }
             if (Botania.isModLoaded()) {
-                addCustomGlass(Botania.ID, "manaGlass", 0, 4, 8);
+                addCustomGlass(Botania.ID, "manaGlass", 0, 4, 6);
+            }
+            for (int i = 0; i < 16; i++) {
+                addCustomGlass(GregTechAPI.sBlockTintedGlass, i, 4, i + 7);
             }
 
             // --- IV ---
-            addCustomGlass(ItemRegistry.bw_realglas, 2, 5, 0);
-            // Thorium-Yttrium
-            addCustomGlass(ItemRegistry.bw_realglas, 12, 5, 1);
+            addCustomGlass(ItemRegistry.bw_realglas, 2, 5, 0); // Tungstensteel Borosilicate
+            addCustomGlass(ItemRegistry.bw_realglas2, 0, 5, 1); // Thorium-Yttrium
             if (Botania.isModLoaded()) {
                 addCustomGlass(Botania.ID, "elfGlass", 0, 5, 2);
                 addCustomGlass(Botania.ID, "bifrostPerm", 0, 5, 3);
             }
 
             // --- LuV ---
-            addCustomGlass(ItemRegistry.bw_realglas, 3, 6, 0);
+            addCustomGlass(ItemRegistry.bw_realglas, 3, 6, 0); // RPP Borosilicate
 
             // --- ZPM ---
-            addCustomGlass(ItemRegistry.bw_realglas, 4, 7, 0);
+            addCustomGlass(ItemRegistry.bw_realglas, 4, 7, 0); // Iridium Borosilicate
 
             // --- UV ---
-            addCustomGlass(ItemRegistry.bw_realglas, 5, 8, 0);
+            addCustomGlass(ItemRegistry.bw_realglas, 5, 8, 0); // Osmium Borosilicate
             addCustomGlass(BlockQuantumGlass.INSTANCE, 0, 8, 1);
 
             // --- UHV ---
-            addCustomGlass(ItemRegistry.bw_realglas, 13, 9, 0);
-            addCustomGlass(GregTechAPI.sBlockGlass1, 1, 9, 1);
-            addCustomGlass(GregTechAPI.sBlockGlass1, 2, 9, 2);
+            addCustomGlass(ItemRegistry.bw_realglas, 6, 9, 0); // Neutronium Borosilicate
+            addCustomGlass(ItemRegistry.bw_realglas2, 1, 9, 1); // Neutronium Borosilicate Transparent
+            addCustomGlass(GregTechAPI.sBlockGlass1, 1, 9, 2);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 2, 9, 3);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 7, 9, 4);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 8, 9, 5);
 
             // --- UEV ---
-            addCustomGlass(ItemRegistry.bw_realglas, 14, 10, 0);
-            addCustomGlass(GregTechAPI.sBlockGlass1, 7, 10, 1);
+            addCustomGlass(ItemRegistry.bw_realglas, 7, 10, 0); // Infinity Borosilicate
+            addCustomGlass(ItemRegistry.bw_realglas2, 2, 10, 1); // Infinity Borosilicate Transparent
             addCustomGlass(GregTechAPI.sBlockGlass1, 3, 10, 2);
 
             // --- UIV ---
-            addCustomGlass(ItemRegistry.bw_realglas, 15, 11, 0);
-            addCustomGlass(GregTechAPI.sBlockGlass1, 4, 11, 1);
-            addCustomGlass(GregTechAPI.sBlockGlass1, 9, 11, 1);
+            addCustomGlass(ItemRegistry.bw_realglas, 8, 11, 0); // Transmetal Borosilicate
+            addCustomGlass(ItemRegistry.bw_realglas2, 3, 11, 1); // Transmetal Borosilicate Transparent
+            addCustomGlass(GregTechAPI.sBlockGlass1, 4, 11, 2);
+            addCustomGlass(Loaders.antimatterContainmentCasing, 0, 11, 3);
 
             // --- UMV ---
-            addCustomGlass(ItemRegistry.bw_realglas2, 0, 12, 0);
-            addCustomGlass(BlockGodforgeGlass.INSTANCE, 0, 12, 1);
-            addCustomGlass(Loaders.antimatterContainmentCasing, 0, 12, 2);
-            addCustomGlass(GregTechAPI.sBlockGlass1, 5, 12, 3);
+            addCustomGlass(ItemRegistry.bw_realglas, 9, 12, 0); // Hexanite Borosilicate
+            addCustomGlass(ItemRegistry.bw_realglas2, 4, 12, 1); // Hexanite Borosilicate Transparent
+            addCustomGlass(BlockGodforgeGlass.INSTANCE, 0, 12, 2);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 9, 12, 3);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 5, 12, 4);
+
+            // --- UXV ---
+            addCustomGlass(ItemRegistry.bw_realglas, 10, 13, 0); // Universium Borosilicate
+            addCustomGlass(ItemRegistry.bw_realglas2, 5, 13, 1); // Universium Borosilicate Transparent
         }
 
         private static void registerGlassOreDicts() {
@@ -228,6 +256,15 @@ public class GlassTier {
                     entry.getKey()
                         .getRight());
                 OreDictionary.registerOre(oreName, itemStack);
+            }
+        }
+
+        private static void registerGlassLangKeys() {
+            for (int i = 0; i < minTier; i++) {
+                tierLangKeys.add("");
+            }
+            for (int i = minTier; i <= maxTier; i++) {
+                tierLangKeys.add("GT5U.MBTT.Glass." + String.format("%02d", i));
             }
         }
     }

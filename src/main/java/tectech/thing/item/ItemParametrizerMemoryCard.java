@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
@@ -68,7 +69,7 @@ public final class ItemParametrizerMemoryCard extends Item {
         IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
         if (metaTE instanceof TTMultiblockBase controller && controller instanceof IParametrized parametrized) {
             NBTTagCompound tNBT = ItemStackNBT.get(aStack);
-            List<Parameter<?>> parameterList = parametrized.getParameters();
+            List<Parameter<?, ?>> parameterList = parametrized.getParameters();
 
             if (aStack.getItemDamage() == 1) {
                 // Prevent pasting configuration from a different multiblock
@@ -103,7 +104,7 @@ public final class ItemParametrizerMemoryCard extends Item {
                 // read from controller
                 NBTTagCompound newTag = new NBTTagCompound();
                 NBTTagList tagList = new NBTTagList();
-                for (Parameter<?> parameter : parameterList) {
+                for (Parameter<?, ?> parameter : parameterList) {
                     NBTTagCompound parameterTag = new NBTTagCompound();
                     parameter.saveToParameterCard(parameterTag);
                     tagList.appendTag(parameterTag);
@@ -125,7 +126,7 @@ public final class ItemParametrizerMemoryCard extends Item {
         return false;
     }
 
-    private boolean hasIdenticalParameterList(String key, List<Parameter<?>> controllerParameters,
+    private boolean hasIdenticalParameterList(String key, List<Parameter<?, ?>> controllerParameters,
         NBTTagCompound tNBT) {
         if (tNBT.hasKey(key, Constants.NBT.TAG_LIST)) {
             NBTTagList tagList = tNBT.getTagList(key, Constants.NBT.TAG_COMPOUND);
@@ -134,7 +135,7 @@ public final class ItemParametrizerMemoryCard extends Item {
 
             for (int i = 0; i < tagList.tagList.size(); i++) {
                 NBTTagCompound tag = tagList.getCompoundTagAt(i);
-                Parameter<?> parameter = controllerParameters.get(i);
+                Parameter<?, ?> parameter = controllerParameters.get(i);
                 if (!tag.getString("langKey")
                     .equals(parameter.getLangKey())) return false;
                 if (parameter instanceof CompositeParameter compositeParameter
@@ -235,6 +236,8 @@ public final class ItemParametrizerMemoryCard extends Item {
                 for (int i = 0; i < parameters.tagCount(); i++)
                     infoLines.addAll(getInfoLines(parameters.getCompoundTagAt(i), offset + 2));
             }
+            case "enum", "fluid" -> infoLines.add(getInfoLine(tag, offset, tag.getString("displayName")));
+            case "long" -> infoLines.add(getInfoLine(tag, offset, String.valueOf(tag.getLong("value"))));
             default -> {}
         }
 
@@ -250,7 +253,7 @@ public final class ItemParametrizerMemoryCard extends Item {
             .toArray(Object[]::new);
 
         return Strings.repeat(" ", offset) + EnumChatFormatting.AQUA
-            + GTUtility.translate(tag.getString("langKey"), args)
+            + StatCollector.translateToLocalFormatted(tag.getString("langKey"), args)
             + ": "
             + EnumChatFormatting.GRAY
             + value;

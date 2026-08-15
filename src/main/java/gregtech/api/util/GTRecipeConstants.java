@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTRecipeMapUtil.convertCellToFluid;
 
@@ -246,10 +247,10 @@ public class GTRecipeConstants {
         .create(Integer.class, "sparge_max_byproduct");
 
     /**
-     * Research Station data.
+     * Research Station data, upper 48 bits are for minimum computation, lower 16 bit for research amps
      */
-    public static final RecipeMetadataKey<Integer> RESEARCH_STATION_DATA = SimpleRecipeMetadataKey
-        .create(Integer.class, "research_station_data");
+    public static final RecipeMetadataKey<Long> RESEARCH_STATION_DATA = SimpleRecipeMetadataKey
+        .create(Long.class, "research_station_data");
 
     /**
      * sievert data required for the biovat recipes.
@@ -265,6 +266,12 @@ public class GTRecipeConstants {
      * Whether non-gas recipe should be generated together with gas recipes.
      */
     public static final RecipeMetadataKey<Boolean> NO_GAS = SimpleRecipeMetadataKey.create(Boolean.class, "no_gas");
+
+    /**
+     * Prevents automatic generation of a non-cell multiblock variant from this recipe.
+     */
+    public static final RecipeMetadataKey<Boolean> SKIP_CELL_RECIPE_GENERATION = SimpleRecipeMetadataKey
+        .create(Boolean.class, "skip_cell_recipe_generation");
 
     /**
      * Circuit config in non-gas recipe. No integrated circuit applied if this is set to -1 (default).
@@ -572,11 +579,10 @@ public class GTRecipeConstants {
             ItemStack[] alts = mOreDictAlt[i];
             Object input = inputs[i];
             if (input == null) {
-                GTLog.err.println(
-                    "addAssemblingLineRecipe " + aResearchItem.getDisplayName()
-                        + " --> "
-                        + aOutput.getUnlocalizedName()
-                        + " there is some null item in that recipe");
+                GT_FML_LOGGER.error(
+                    "addAssemblingLineRecipe {} --> {} there is some null item in that recipe",
+                    aResearchItem.getDisplayName(),
+                    aOutput.getUnlocalizedName());
             }
             if (input instanceof ItemStack) {
                 tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash((ItemStack) input, true, false);
@@ -584,11 +590,10 @@ public class GTRecipeConstants {
                 for (ItemStack alt : ((ItemStack[]) input)) {
                     tPersistentHash = tPersistentHash * 31 + GTUtility.persistentHash(alt, true, false);
                     if (alt == null) {
-                        GTLog.err.println(
-                            "addAssemblingLineRecipe " + aResearchItem.getDisplayName()
-                                + " --> "
-                                + aOutput.getUnlocalizedName()
-                                + " there is some null alt item in that recipe");
+                        GT_FML_LOGGER.error(
+                            "addAssemblingLineRecipe {} --> {} there is some null alt item in that recipe",
+                            aResearchItem.getDisplayName(),
+                            aOutput.getUnlocalizedName());
                     }
                 }
                 tPersistentHash *= 31;

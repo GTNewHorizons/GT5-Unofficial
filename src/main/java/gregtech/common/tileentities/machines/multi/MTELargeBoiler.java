@@ -42,8 +42,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
@@ -51,7 +51,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.maps.LargeBoilerFuelBackend;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -62,7 +61,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 
 // TODO remove after structure rework cycle, only used for backwards-compatibility
 public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeBoiler>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final ClassValue<IStructureDefinition<MTELargeBoiler>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -153,18 +152,19 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 "Diesel fuels have 1/4 efficiency - Takes %s seconds to heat up",
                 formatNumber(500.0 / getEfficiencyIncrease()))) // ? check semifluid again
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 5, 3, false)
-            .addController("Front bottom center")
-            .addCasingInfoRange(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24, 31, false) // ?
-            .addOtherStructurePart(getCasingMaterial() + " Firebox Casing", "Bottom layer, 3 minimum")
-            .addOtherStructurePart(getCasingMaterial() + " Pipe Casing Block", "Inner 3 blocks")
-            .addMaintenanceHatch("Any Firebox Casing", 1)
-            .addMufflerHatch("Any Firebox Casing", 1)
-            .addInputBus("Solid fuel, any Firebox Casing", 1)
-            .addInputHatch("Liquid fuel, any Firebox Casing", 1)
-            .addStructureInfo("You can use either, or both")
-            .addInputHatch("Water, any Firebox Casing", 1)
-            .addOutputHatch("Steam, any Casing", 2)
+            .beginStructureBlock(5, 6, 3, false)
+            .addController("Front bottom center, 2nd layer")
+            .addCasing("20-28", getCasingMaterial() + " " + getCasingBlockType(), false)
+            .addCasing("5-15", getCasingMaterial() + " Firebox Casing", false)
+            .addCasing("4", getCasingMaterial() + " Pipe Casing", false)
+            .addMaintenanceHatch("1", "Any machine or firebox casing", 1)
+            .addMufflerHatch("1", "Any machine or firebox casing", 1)
+            .addInputBus("0+", "Any machine or firebox casing", 1)
+            .addInputHatch("1+", "Any machine or firebox casing", 1)
+            .addOutputHatch("1+", "Any machine or firebox casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter("Use solid fuel, liquid fuel, or both")
+            .addStructureFooter("Use regular or distilled water")
             .toolTipFinisher();
 
         return tt;
@@ -209,28 +209,20 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { BlockIcons.getCasingTextureForId(getCasingTextureIndex()),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_BOILER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { BlockIcons.getCasingTextureForId(getCasingTextureIndex()), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_LARGE_BOILER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_BOILER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_LARGE_BOILER,
+            OVERLAY_FRONT_LARGE_BOILER_GLOW,
+            OVERLAY_FRONT_LARGE_BOILER_ACTIVE,
+            OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex());
     }
 
     boolean isFuelValid() {
@@ -400,7 +392,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                         || depleteInput(GTModHandler.getDistilledWater(amount / superToNormalSteam))) {
                         // Outputs Superheated Steam instead of Steam, at one third of the amount (equivalent in power
                         // output to the normal Steam amount).
-                        addOutput(
+                        addOutputPartial(
                             FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU / superToNormalSteam));
                     } else {
                         GTLog.writeExplosionLog(this, "Boiler had no water");
@@ -409,7 +401,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 } else {
                     if (depleteInput(Materials.Water.getFluid(amount))
                         || depleteInput(GTModHandler.getDistilledWater(amount))) {
-                        addOutput(Materials.Steam.getGas(tGeneratedEU));
+                        addOutputPartial(Materials.Steam.getGas(tGeneratedEU));
                     } else {
                         GTLog.writeExplosionLog(this, "Boiler had no water");
                         explodeMultiblock();

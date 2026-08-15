@@ -13,8 +13,6 @@
 
 package bartworks.common.tileentities.multis;
 
-import static gregtech.api.enums.GTValues.VN;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
+import bartworks.MainMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
@@ -85,14 +84,10 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        String casings = this.getCasingBlockItem()
-            .get(0)
-            .getDisplayName();
         tt.addMachineType("Geothermal Heat Pump, DEHP")
             .addInfo("Consumes " + TierEU.RECIPE_HV + "EU/t")
-            .addInfo("Has 2 Modes, use the Screwdriver to change them:");
-
-        tt.addInfo("Direct Steam and Coolant Heating")
+            .addInfo("Has 2 Modes, use the Screwdriver to change them:")
+            .addInfo("Direct Steam and Coolant Heating")
             .addInfo(
                 "Direct Steam Mode: Consumes " + EnumChatFormatting.BLUE
                     + "Distilled Water"
@@ -115,18 +110,17 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                     + "Hot Coolant")
             .addInfo("Each maintenance issue lowers output efficiency by " + EnumChatFormatting.GREEN + "10%")
             .addInfo("Explodes when it runs out of Distilled Water/Coolant")
-            .addInfo("Base cycle time: 1 tick");
-
-        tt.beginStructureBlock(3, 7, 3, false)
+            .addInfo("Base cycle time: 1 tick")
+            .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom center")
-            .addOtherStructurePart(casings, "form the 3x1x3 Base")
-            .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
-            .addOtherStructurePart(this.getFrameMaterial().mName + " Frame Box", "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch(VN[this.getMinTier()] + "+, any base Casing")
-            .addMaintenanceHatch("Any base Casing")
-            .addInputBus("Mining Pipes, optional, any base Casing")
-            .addInputHatch("Any base Casing")
-            .addOutputHatch("Any base Casing")
+            .addCasing("15", "Tungsten Frame Box", false)
+            .addCasing("3-7", "Heat Proof Machine Casing", false)
+            .addEnergyHatch("1+", "Any bottom casing (HV+)", 1)
+            .addMaintenanceHatch("1", "Any bottom casing", 1)
+            .addInputBus("0+", "Any bottom casing", 1)
+            .addInputHatch("1+", "Any bottom casing", 1)
+            .addOutputBus("0+", "Any bottom casing", 1)
+            .addOutputHatch("1+", "Any bottom casing", 1)
             .toolTipFinisher(
                 EnumChatFormatting.GREEN + "bartimaeusnek"
                     + EnumChatFormatting.GRAY
@@ -179,10 +173,10 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
 
     @Override
     protected void checkHatches(List<StructureError> errors) {
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
-        checkHasMaintenanceHatch(errors);
-        checkHasEnergyHatch(errors);
     }
 
     private long getFluidFromHatches(Fluid f) {
@@ -249,7 +243,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                     GTModHandler.getDistilledWater(1)
                         .getFluid(),
                     waterConsume);
-                this.addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", (int) steamProduced));
+                this.addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", (int) steamProduced));
             } else {
                 this.explodeMultiblock();
                 return false;
@@ -264,7 +258,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
                     GTModHandler.getIC2Coolant(0)
                         .getFluid(),
                     coolantConverted);
-                this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
+                this.addOutputPartial(FluidRegistry.getFluidStack("ic2hotcoolant", (int) coolantConverted));
             } else {
                 this.explodeMultiblock();
                 return false;
@@ -316,7 +310,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
         try {
             this.mEUt = this.isPickingPipes ? -60 : -((int) TierEU.RECIPE_HV);
         } catch (ArithmeticException e) {
-            e.printStackTrace();
+            MainMod.LOGGER.error(e);
             this.mEUt = Integer.MAX_VALUE - 7;
         }
         this.mProgresstime = 0;

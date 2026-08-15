@@ -260,7 +260,7 @@ public class GTRecipeRegistrator {
             || aMaterialAmount <= 0
             || aMaterial.contains(SubTag.NO_SMELTING)
             || (aMaterialAmount > M && aMaterial.contains(SubTag.METAL))
-            || (aMaterial.getProcessingMaterialTierEU() > TierEU.IV)) return;
+            || (aMaterial.getProcessingMaterialTierEU() >= TierEU.IV)) return;
         if (aMaterial == Materials.Naquadah || aMaterial == Materials.NaquadahEnriched) return;
 
         aMaterialAmount /= aStack.stackSize;
@@ -559,14 +559,14 @@ public class GTRecipeRegistrator {
                             tCrafted,
                             new ItemData(aItemData.mMaterial.mMaterial, aItemData.mMaterial.mAmount * tRecipe.amount1));
                         //
-                        // GTLog.out.println("###################################################################################");
-                        // GTLog.out.println("registerUsagesForMaterials used aPlate: "+aPlate);
-                        // GTLog.out.println("registerUsagesForMaterials used aPlate:
+                        // GT_FML_LOGGER.debug("###################################################################################");
+                        // GT_FML_LOGGER.debug("registerUsagesForMaterials used aPlate: "+aPlate);
+                        // GT_FML_LOGGER.debug("registerUsagesForMaterials used aPlate:
                         // "+aMat.getUnlocalizedName());
-                        // GTLog.out.println("registerUsagesForMaterials used aPlate:
+                        // GT_FML_LOGGER.debug("registerUsagesForMaterials used aPlate:
                         // "+aMat.getDisplayName());
                         //
-                        // GTLog.out.println("###################################################################################");
+                        // GT_FML_LOGGER.debug("###################################################################################");
                     }
                 }
             }

@@ -128,15 +128,17 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Inconel Reinforced Casing", 8, false)
-            .addOtherStructurePart("Integral Encasement V", "Middle Layer")
-            .addOtherStructurePart("Heating Coil", "Above and below Integral Encasements")
-            .addInputBus("Any Inconel Reinforced Casing", 1)
-            .addOutputBus("Any Inconel Reinforced Casing", 1)
-            .addEnergyHatch("Any Inconel Reinforced Casing", 1)
-            .addMaintenanceHatch("Any Inconel Reinforced Casing", 1)
-            .addMufflerHatch("Any Inconel Reinforced Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addCasing("16", "Heating Coil", true)
+            .addCasing("5-12", "Inconel Reinforced Casing", false)
+            .addCasing("8", "Integral Encasement V", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMufflerHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -188,10 +190,11 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
         if (getCoilLevel() == HeatingCoilLevel.None) {
             errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
         }
-        checkCasingMin(errors, mCasing, 8);
+        checkCasingMin(errors, mCasing, 5);
         mLevel = getCoilLevel().getTier() + 1;
-        checkHatch(errors);
         checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
     }
@@ -237,20 +240,17 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setFloat("speedBonus", getSpeedBonus());
     }
 
     private static final DecimalFormat dfNone = new DecimalFormat("#");
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
                 + EnumChatFormatting.WHITE
                 + dfNone.format(Math.max(0, 100 / tag.getFloat("speedBonus")))

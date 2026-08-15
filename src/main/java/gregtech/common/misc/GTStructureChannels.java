@@ -44,7 +44,7 @@ public enum GTStructureChannels implements IStructureChannels {
     EOH_DILATION("time_dilation", "Time Dilation Field Generator Tier"),
     HATCH("gt_hatch", "Hatch placement"),
     TFFT_FIELD("field", "Storage Field Tier"),
-    EIC_PISTON("piston_block", "Metal Block Tier"),
+    EIC_PISTON("piston_block", "Containment Block Tier"),
     ALCHEMICAL_CASING("casing", "Alchemical Casing Tier"),
     ALCHEMICAL_CONSTRUCT("construct", "Alchemical Construct Tier"),
     SUPER_CHEST("super_chest", "Super Chest Tier"),
@@ -53,7 +53,6 @@ public enum GTStructureChannels implements IStructureChannels {
     LES_ESSENTIA_CELL("essentia_cell", "Large Essentia Smeltery Essentia Diffusion Cell Tier"),
     COKE_OVEN_CASING("coke_oven_casing", "Coke Oven Casing Tier");
     //
-    ;
 
     private final String channel;
     private final String defaultTooltip;

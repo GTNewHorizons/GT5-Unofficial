@@ -54,6 +54,6 @@ public class MTELargeBoilerTungstenSteel extends MTELargeBoilerBase {
 
     @Override
     int runtimeBoost(int mTime) {
-        return mTime * 120 / 750;
+        return mTime * 15 / 100;
     }
 }

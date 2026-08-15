@@ -6,12 +6,13 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import net.minecraft.util.StatCollector;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.api.widget.Interactable;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
@@ -31,6 +32,7 @@ import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.api.modularui2.common.CommonWidgets;
 import gregtech.api.util.GTTooltipDataCache;
@@ -194,16 +196,12 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
             .coverChildren()
             .verticalCenter()
             .rightRel(0)
-            .childIf(this.doesAddGregTechLogo(), this::createLogo)
+            .childIf(this.doesAddGregTechLogo(), this::makeLogoWidget)
             .childIf(this.doesAddCircuitSlot(), () -> this.createCircuitSlot(syncManager));
     }
 
     protected boolean doesAddGregTechLogo() {
         return true;
-    }
-
-    protected UITexture getLogoTexture() {
-        return GTGuiTextures.OVERLAY_GREGTECH_LOGO;
     }
 
     protected IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
@@ -218,14 +216,6 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         return true;
     }
 
-    // by default, adds an empty widget, things can override this to add anything in the bottom right corner
-    // typically, this is used for the 'special slot' on singleblocks
-    protected Widget<? extends Widget<?>> createSpecialSlot() {
-        return IDrawable.EMPTY.asWidget()
-            .size(SLOT_SIZE)
-            .marginTop(4);
-    }
-
     protected boolean supportsPowerSwitch() {
         return true;
     }
@@ -234,8 +224,9 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         return true;
     }
 
-    protected IDrawable.DrawableWidget createLogo() {
-        return new IDrawable.DrawableWidget(getLogoTexture()).size(SLOT_SIZE);
+    protected Widget<?> makeLogoWidget() {
+        return new IDrawable.DrawableWidget(IDrawable.EMPTY).size(SLOT_SIZE)
+            .widgetTheme(GTWidgetThemes.PICTURE_LOGO);
     }
 
     // will add if the machine is an instance of IConfigurationCircuitSupport
@@ -243,7 +234,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         return machine instanceof IConfigurationCircuitSupport cc && cc.allowSelectCircuit();
     }
 
-    protected Widget<? extends Widget<?>> createCircuitSlot(PanelSyncManager syncManager) {
+    protected Widget<?> createCircuitSlot(PanelSyncManager syncManager) {
         return CommonWidgets.createCircuitSlot(syncManager, machine)
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
@@ -275,12 +266,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     }
 
     protected ItemSlot createChargerSlot() {
-        return new ItemSlot()
-            .slot(
-                new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()).changeListener(
-                    (newItem, onlyAmountChanged, client, init) -> {
-                        if (!client && !init) baseMetaTileEntity.markInventoryBeenModified();
-                    }))
+        return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()))
             .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CHARGER)
             .tooltip(this::createTooltipForChargerSlot)
             .tooltipShowUpTimer(TOOLTIP_DELAY);
@@ -289,9 +275,9 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     protected void createTooltipForChargerSlot(RichTooltip tooltip) {
         final byte machineTier = machine.mTier;
         String tierName = GTUtility.getColoredTierNameFromTier(machineTier);
-        tooltip.addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip"))
-            .addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip.1", tierName))
-            .addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip.2", tierName));
+        tooltip.addLine(StatCollector.translateToLocal("GT5U.machines.battery_slot.tooltip"))
+            .addLine(StatCollector.translateToLocalFormatted("GT5U.machines.battery_slot.tooltip.1", tierName))
+            .addLine(StatCollector.translateToLocalFormatted("GT5U.machines.battery_slot.tooltip.2", tierName));
     }
 
     /// Sets a static tooltip using the machine's tooltip cache. This means the tooltip **can not** change while the Gui
@@ -300,7 +286,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     /// Accounts for extended tooltips shown when shift is held down.
     protected Consumer<RichTooltip> configureTooltip(String key, Object... args) {
         GTTooltipDataCache.TooltipData data = machine.mTooltipCache.getData(key, args);
-        return addToRichTooltip(() -> data);
+        return addTooltipDataToRichTooltip(() -> data);
     }
 
     /// Sets a dynamic tooltip without saving it to the machine's tooltip cache. This means the tooltip **can** change
@@ -309,7 +295,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     /// Accounts for extended tooltips shown when shift is held down.
     @SafeVarargs
     protected final Consumer<RichTooltip> configureDynamicTooltip(String key, Supplier<Object>... args) {
-        return addToRichTooltip(
+        return addTooltipDataToRichTooltip(
             () -> machine.mTooltipCache.getUncachedTooltipData(
                 key,
                 Arrays.stream(args)
@@ -317,7 +303,8 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
                     .toArray()));
     }
 
-    private static @NotNull Consumer<RichTooltip> addToRichTooltip(Supplier<GTTooltipDataCache.TooltipData> data) {
+    protected static @NotNull Consumer<RichTooltip> addTooltipDataToRichTooltip(
+        Supplier<GTTooltipDataCache.TooltipData> data) {
         return t -> t.addStringLines(Interactable.hasShiftDown() ? data.get().shiftText : data.get().text)
             .titleMargin(2);
     }

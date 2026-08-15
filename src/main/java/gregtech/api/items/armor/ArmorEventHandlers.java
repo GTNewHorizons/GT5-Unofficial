@@ -7,7 +7,6 @@ import java.util.WeakHashMap;
 
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.FakePlayer;
@@ -97,6 +96,10 @@ public class ArmorEventHandlers {
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         EntityPlayer player = event.player;
 
+        if (event.phase != TickEvent.Phase.START || player == null || player.isDead) {
+            return;
+        }
+
         // Step Assist
         // for some reason, doing this in ticking and on unequip is not sufficient, this value is somewhat sticky
         if (!player.isSneaking()) {
@@ -116,8 +119,8 @@ public class ArmorEventHandlers {
                 }
             }
         }
-        if (player.stepHeight == MAGIC_STEP_HEIGHT) {
-            player.stepHeight = savedStepHeight.getOrDefault(player, 0.6f);
+        if (savedStepHeight.containsKey(player)) {
+            player.stepHeight = savedStepHeight.get(player);
             savedStepHeight.remove(player);
         }
     }
@@ -133,7 +136,16 @@ public class ArmorEventHandlers {
 
             ArmorContext context = MechArmorBase.load(player, boots);
 
-            float jumpBoost = context.getArmorState().jumpBoost;
+            float displayLevel = context.getArmorState().jumpBoostMulti;
+
+            float effectiveLevel = displayLevel - 1.0f;
+            float jumpBoost = 0.0f;
+
+            if (effectiveLevel > 0) {
+                float baseBoost = 0.275f;
+                jumpBoost = baseBoost * (float) Math.pow(effectiveLevel, 1.08f);
+            }
+
             if (jumpBoost > 0 && context.drainEnergy(50)) {
                 player.motionY += jumpBoost;
                 player.fallDistance = player.fallDistance - (jumpBoost * 10);
@@ -144,8 +156,7 @@ public class ArmorEventHandlers {
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onLivingFall(LivingFallEvent event) {
-        if (event.entityLiving instanceof EntityPlayerMP player) {
-
+        if (event.entityLiving instanceof EntityPlayer player) {
             ItemStack chest = player.getCurrentArmor(SLOT_CHEST);
             if (chest != null && chest.getItem() instanceof MechArmorBase) {
                 ArmorContext chestContext = MechArmorBase.load(player, chest);
@@ -156,7 +167,7 @@ public class ArmorEventHandlers {
                 }
             }
 
-            if (player.fallDistance < 3.2f) {
+            if (event.distance < 3.2f) {
                 return;
             }
             ItemStack boots = player.getCurrentArmor(SLOT_BOOTS);
@@ -168,9 +179,13 @@ public class ArmorEventHandlers {
 
             if (context.hasBehavior(BehaviorName.FallProtection)
                 && context.drainEnergy(500 * (player.fallDistance - 1.2f))) {
+                event.distance = 0;
                 player.fallDistance = 0;
                 event.setCanceled(true);
-                context.save();
+
+                if (!player.worldObj.isRemote) {
+                    context.save();
+                }
             }
         }
     }

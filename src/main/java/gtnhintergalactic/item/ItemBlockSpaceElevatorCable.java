@@ -7,8 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-
-import gregtech.api.util.GTUtility;
+import net.minecraft.util.StatCollector;
 
 /**
  * Items of the space elevator cable
@@ -48,9 +47,9 @@ public class ItemBlockSpaceElevatorCable extends ItemBlock {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List tooltip, boolean f3_h) {
-        tooltip.add(GTUtility.translate("gt.blockcasings.ig.cable.desc0"));
+        tooltip.add(StatCollector.translateToLocal("gt.blockcasings.ig.cable.desc0"));
         tooltip.add(
             EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                + GTUtility.translate("gt.blockcasings.ig.cable.desc1"));
+                + StatCollector.translateToLocal("gt.blockcasings.ig.cable.desc1"));
     }
 }

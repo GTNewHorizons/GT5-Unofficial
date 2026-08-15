@@ -78,6 +78,7 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
         }
         werkstoffBridgeMaterial.mMaterialInto = werkstoffBridgeMaterial;
         werkstoffBridgeMaterial.mHandleMaterial = getHandleMaterial(werkstoff, werkstoffBridgeMaterial.mDurability);
+        werkstoffBridgeMaterial.setProcessingMaterialTierEU(stats.getProcessingMaterialTierEU());
 
         if (stats.isRadioactive()) {
             werkstoffBridgeMaterial

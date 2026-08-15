@@ -500,8 +500,6 @@ gt.blockmachines.multimachine.em.transformer.desc.2=只有0.004%的能量损失,
 gt.blockmachines.multimachine.em.transformer.desc.3=运行时被破坏会发生爆炸
 
 gt.blockmachines.multimachine.tm.microwave.name=微波发生仪
-gt.blockmachines.multimachine.tm.microwave.hint.0=1 - 基础仓室或洁净不锈钢机械方块
-gt.blockmachines.multimachine.tm.microwave.hint.1=也像个漏斗,所以给它个输出总线吧
 gt.blockmachines.multimachine.tm.microwave.desc.0=微波发生仪的控制器方块
 gt.blockmachines.multimachine.tm.microwave.desc.1=机器启动时开启一个计时器
 gt.blockmachines.multimachine.tm.microwave.desc.2=计时器运行时, 机器中的一切都会受到伤害
@@ -514,13 +512,6 @@ gt.blockmachines.multimachine.tm.microwave.cfgo.0=时间
 gt.blockmachines.multimachine.tm.microwave.cfgo.1=剩余时间
 
 gt.blockmachines.multimachine.tm.teslaCoil.name=特斯拉电塔
-gt.blockmachines.multimachine.tm.teslaCoil.hint.0=1 - 基础仓室, 电容仓或特斯拉基座机械方块
-gt.blockmachines.multimachine.tm.teslaCoil.hint.1=2 - 钛框架
-gt.blockmachines.multimachine.tm.teslaCoil.desc.0=特斯拉电塔的控制器方块
-gt.blockmachines.multimachine.tm.teslaCoil.desc.1=用于向特斯拉线圈帽和特斯拉收发器传输电力
-gt.blockmachines.multimachine.tm.teslaCoil.desc.2=可加入氦/氮/氡等离子体增大范围
-gt.blockmachines.multimachine.tm.teslaCoil.desc.3=传输电压取决于使用的特斯拉电容等级
-gt.blockmachines.multimachine.tm.teslaCoil.desc.4=需要至少与特斯拉电容相同等级的初级特斯拉绕组
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0=迟滞低设置
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.1=迟滞高设置
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.2=特斯拉电塔传输半径设置
@@ -543,14 +534,11 @@ gt.blockmachines.multimachine.tm.teslaCoil.cfgo.8=扫描时间显示
 gt.blockmachines.multimachine.tm.teslaCoil.cfgo.9=最高输出电流显示
 
 gt.blockmachines.multimachine.em.switch.name=QoS网络交换机
-gt.blockmachines.multimachine.em.switch.hint=1 - 基础仓室、光学接口或电子计算机机械方块
 gt.blockmachines.multimachine.em.switch.desc.0=QoS网络交换机的控制器方块
 gt.blockmachines.multimachine.em.switch.desc.1=用于路由和分发算力
 
 
 gt.blockmachines.multimachine.em.computer.name=量子计算机
-gt.blockmachines.multimachine.em.computer.hint.0=1 - 基础仓室、光学接口或电子计算机机械方块
-gt.blockmachines.multimachine.em.computer.hint.1=2 - 计算机箱或进阶电子计算机械方块
 gt.blockmachines.multimachine.em.computer.desc=你需要它来处理上面的这串数字
 gt.blockmachines.multimachine.em.computer.cfgi.0=超频比
 gt.blockmachines.multimachine.em.computer.cfgi.1=过压比
@@ -560,8 +548,6 @@ gt.blockmachines.multimachine.em.computer.desc.0=量子计算机的控制器方�
 gt.blockmachines.multimachine.em.computer.desc.1=用于生成算力(以及热量)
 
 gt.blockmachines.multimachine.em.databank.name=数据库
-gt.blockmachines.multimachine.em.databank.hint.0=1 - 基础仓室或超能机械方块
-gt.blockmachines.multimachine.em.databank.hint.1=2 - 数据访问仓、数据库主接口或电子计算机械方块
 gt.blockmachines.multimachine.em.databank.desc.0=数据库的控制器方块
 gt.blockmachines.multimachine.em.databank.desc.1=为装配线提供更多闪存
 gt.blockmachines.multimachine.em.databank.desc.2=还可使多条装配线访问同一闪存
@@ -613,9 +599,6 @@ gt.blockmachines.multimachine.em.scanner.desc.0=元物质扫描仪的控制器�
 gt.blockmachines.multimachine.em.research.name=研究站
 gt.blockmachines.multimachine.em.research.hint.0=1 - 基础仓室、光学接口或电子计算机械方块
 gt.blockmachines.multimachine.em.research.hint.1=2 - 物品固定容器
-gt.blockmachines.multimachine.em.research.desc.1=用于扫描物品, 生成装配线配方闪存
-gt.blockmachines.multimachine.em.research.desc.2=需要为其提供算力
-gt.blockmachines.multimachine.em.research.desc.3=在完成闪存写入之前不会消耗物品
 
 gt.blockmachines.multimachine.em.collider.name=物质对撞机
 gt.blockmachines.multimachine.em.collider.hint.0=1 - 基础仓室或超能机械方块
@@ -634,7 +617,6 @@ gt.blockmachines.multimachine.em.collider.mode.3=从属于其他控制器
 gt.blockmachines.multimachine.em.collider.Structure.AdditionalCollider=需要与之镜像的另一台物质对撞机
 
 gt.blockmachines.multimachine.em.infuser.name=能量注入仪
-gt.blockmachines.multimachine.em.infuser.hint=1 - 基础仓室或超能机械方块
 gt.blockmachines.multimachine.em.infuser.desc.0=能量注入仪的控制器方块
 gt.blockmachines.multimachine.em.infuser.desc.1=可用于为物品充电(无损)
 gt.blockmachines.multimachine.em.infuser.desc.2=提供UU物质可修复物品
@@ -659,8 +641,6 @@ gt.blockmachines.multimachine.em.stabilizer.hint.1=2 - 元物质输入/出仓或
 gt.blockmachines.multimachine.em.stabilizer.desc.0=元物质稳定器的控制器方块
 
 gt.blockmachines.multimachine.em.wormhole.name=虫洞
-gt.blockmachines.multimachine.em.wormhole.hint.0=1 - 基础仓室或超能机械方块
-gt.blockmachines.multimachine.em.wormhole.hint.1=2 - 元物质输入/出仓或分子机械方块
 gt.blockmachines.multimachine.em.wormhole.desc.0=虫洞的控制器方块
 
 gt.blockmachines.multimachine.em.decay.name=衰变发电机

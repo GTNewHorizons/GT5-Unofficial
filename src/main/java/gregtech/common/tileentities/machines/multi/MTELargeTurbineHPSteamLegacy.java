@@ -144,7 +144,7 @@ public class MTELargeTurbineHPSteamLegacy extends MTELargeTurbineLegacy {
         }
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
-        addOutput(Materials.Steam.getGas(totalFlow));
+        addOutputPartial(Materials.Steam.getGas(totalFlow));
         if (totalFlow == (GTUtility.safeInt((long) realOptFlow))) {
             tEU = GTUtility
                 .safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));

@@ -3,11 +3,15 @@ package gtPlusPlus.core.recipe;
 import static gregtech.api.enums.Mods.Backpack;
 import static gregtech.api.enums.Mods.Baubles;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.recipe.RecipeMaps.alloyBlastSmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.brewingRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
+import static gregtech.api.recipe.RecipeMaps.cyclotronRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
@@ -20,6 +24,7 @@ import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.thermalBoilerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
@@ -41,11 +46,6 @@ import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cyclotronRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.thermalBoilerRecipes;
 
 import java.util.Arrays;
 import java.util.List;
@@ -162,15 +162,11 @@ public class RecipesGregTech {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.PurpleMetalCatalyst.get(0),
-                new ItemStack(Blocks.sandstone, 64),
-                new ItemStack(Blocks.sandstone, 64))
+                new ItemStack(Blocks.sand, 64),
+                new ItemStack(Blocks.sand, 64))
             .circuit(17)
-            .itemOutputs(
-                MaterialsFluorides.FLUORITE.getOre(8),
-                MaterialsFluorides.FLUORITE.getOre(4),
-                MaterialsFluorides.FLUORITE.getOre(4),
-                MaterialsFluorides.FLUORITE.getOre(4))
-            .fluidInputs(Materials.NitricAcid.getFluid(4_000), Materials.Air.getGas(8_000))
+            .itemOutputs(MaterialsFluorides.FLUORITE.getRawOre(10))
+            .fluidInputs(Materials.NitricAcid.getFluid(5_000), Materials.Air.getGas(12_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 5)
@@ -180,15 +176,11 @@ public class RecipesGregTech {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.PurpleMetalCatalyst.get(0),
-                new ItemStack(Blocks.sand, 64),
-                new ItemStack(Blocks.sand, 64))
+                new ItemStack(Blocks.sandstone, 64),
+                new ItemStack(Blocks.sandstone, 64))
             .circuit(17)
-            .itemOutputs(
-                MaterialsFluorides.FLUORITE.getOre(4),
-                MaterialsFluorides.FLUORITE.getOre(2),
-                MaterialsFluorides.FLUORITE.getOre(2),
-                MaterialsFluorides.FLUORITE.getOre(2))
-            .fluidInputs(Materials.NitricAcid.getFluid(5_000), Materials.Air.getGas(12_000))
+            .itemOutputs(MaterialsFluorides.FLUORITE.getRawOre(20))
+            .fluidInputs(Materials.NitricAcid.getFluid(4_000), Materials.Air.getGas(8_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 5)
@@ -1119,6 +1111,27 @@ public class RecipesGregTech {
             .fluidOutputs(Materials.MoltenProtoHalkoniteBase.getFluid(8 * INGOTS))
             .eut(TierEU.RECIPE_UEV)
             .duration(60 * SECONDS)
+            .addTo(alloyBlastSmelterRecipes);
+
+        // Computation Base
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                Materials.SuperconductorEVBase.getDust(61),
+                Materials.SuperconductorIVBase.getDust(59),
+                Materials.SuperconductorLuVBase.getDust(53),
+                Materials.SuperconductorZPMBase.getDust(47),
+                Materials.SuperconductorUVBase.getDust(43),
+                Materials.SuperconductorUHVBase.getDust(41),
+                Materials.SuperconductorUEVBase.getDust(37),
+                Materials.SuperconductorUIVBase.getDust(31),
+                Materials.SuperconductorUMVBase.getDust(29))
+            .fluidInputs(
+                MaterialsAlloy.INDALLOY_140.getFluidStack(1_000_000),
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(100_000),
+                Materials.BoundlessCosmicSolder.getFluid(1_000))
+            .fluidOutputs(Materials.ComputationBase.getMolten(100_000))
+            .eut(TierEU.RECIPE_UXV)
+            .duration(600 * SECONDS)
             .addTo(alloyBlastSmelterRecipes);
 
         // Incoloy-903

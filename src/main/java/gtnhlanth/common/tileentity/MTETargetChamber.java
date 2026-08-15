@@ -6,7 +6,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAd
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.BeamlineInput;
 import static gregtech.api.enums.HatchElement.Energy;
-import static gregtech.api.enums.HatchElement.FocusInput;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
@@ -15,8 +14,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.TARGET_CHAMBER_METADATA;
-import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,9 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -39,16 +40,20 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
@@ -56,21 +61,30 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
+import gtnhlanth.common.item.ItemPhotolithographicMask;
 import gtnhlanth.common.register.LanthItemList;
 import gtnhlanth.common.tileentity.recipe.beamline.TargetChamberMetadata;
-import gtnhlanth.util.DescTextLocalization;
 
-public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber> implements ISurvivalConstructable {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final IStructureDefinition<MTETargetChamber> STRUCTURE_DEFINITION;
 
     private static final int GrateMachineCasingTextureID = Casings.GrateMachineCasing.getTextureId();
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
+    private final ArrayList<MTEHatchInputBus> mMaskInputBusses = new ArrayList<>();
     private GTRecipe lastRecipe;
+    private int lastTCRecipeRate;
+    private float lastTCRecipeMinFocus;
+    private float lastTCRecipeMinEnergy;
+    private float lastTCRecipeMaxEnergy;
+    private int lastTCRecipeInputParticle = -1;
 
     // spotless:off
     static {
@@ -89,13 +103,13 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     			.addElement(
     					'f',
     					buildHatchAdder(MTETargetChamber.class).atLeast(Maintenance, Energy)
-    					.casingIndex(GrateMachineCasingTextureID).hint(2).buildAndChain(Casings.GrateMachineCasing.asElement()))
+    					.casingIndex(GrateMachineCasingTextureID).hint(4).buildAndChain(Casings.GrateMachineCasing.asElement()))
 
     			.addElement('j', ofBlockAdder(MTETargetChamber::addGlass, ItemRegistry.bw_glasses[0], 1))
-    			.addElement('b', buildHatchAdder(MTETargetChamber.class).atLeast(BeamlineInput).casingIndex(ShieldedAccCasingTextureID).hint(5).build())
+    			.addElement('b', buildHatchAdder(MTETargetChamber.class).atLeast(BeamlineInput).casingIndex(ShieldedAccCasingTextureID).hint(1).build())
     			.addElement('c', Casings.ShieldedAcceleratorCasing.asElement())
 
-    			.addElement('l', buildHatchAdder(MTETargetChamber.class).atLeast(FocusInput).casingIndex(ShieldedAccCasingTextureID).hint(1).build())
+    			.addElement('l', buildHatchAdder(MTETargetChamber.class).atLeast(InputBus).adder(MTETargetChamber::addMaskInputBus).casingIndex(ShieldedAccCasingTextureID).hint(2).build())
 
     			.addElement('t', buildHatchAdder(MTETargetChamber.class).atLeast(InputBus).casingIndex(ShieldedAccCasingTextureID).hint(3).build())
     			.addElement('s', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
@@ -103,13 +117,89 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     			.addElement('h', ofBlock(LanthItemList.FOCUS_HOLDER, 0))
     			.addElement('u', ofBlock(LanthItemList.TARGET_RECEPTACLE_CASING, 0))
     			.addElement('i', ofBlock(LanthItemList.TARGET_HOLDER, 0))
-    			.addElement('o', buildHatchAdder(MTETargetChamber.class).atLeast(OutputBus).casingIndex(ShieldedAccCasingTextureID).hint(4).build())
+    			.addElement('o', buildHatchAdder(MTETargetChamber.class).atLeast(OutputBus).casingIndex(ShieldedAccCasingTextureID).hint(5).build())
     			.build();
     }
     //spotless:on
 
     private boolean addGlass(Block block, int meta) {
         return block == ItemRegistry.bw_glasses[0];
+    }
+
+    // distinct bus registration in order to check masks only in one hatch
+    private boolean addMaskInputBus(IGregTechTileEntity te, int casingIndex) {
+        if (te == null) return false;
+        var mte = te.getMetaTileEntity();
+        if (!(mte instanceof MTEHatchInputBus bus)) return false;
+        bus.updateTexture(casingIndex);
+        bus.updateCraftingIcon(getMachineCraftingIcon());
+        return mMaskInputBusses.add(bus);
+    }
+
+    @Override
+    protected void incrementProgressTime() {
+        if (this.lastTCRecipeInputParticle >= 0) {
+            BeamInformation inputInfo = this.getInputInformation();
+            if (inputInfo == null) return;
+            float inputEnergy = inputInfo.getEnergy();
+            float inputRate = inputInfo.getRate();
+            int inputParticle = inputInfo.getParticleId();
+            float inputFocus = inputInfo.getFocus();
+
+            if (inputEnergy < this.lastTCRecipeMinEnergy) {
+                return;
+            } else if (inputEnergy > this.lastTCRecipeMaxEnergy) {
+                return;
+            }
+            if (inputFocus < this.lastTCRecipeMinFocus) return;
+            if (inputParticle != this.lastTCRecipeInputParticle) return;
+            if (inputRate < this.lastTCRecipeRate) return;
+            mProgresstime++;
+            return;
+        }
+        mProgresstime++;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("lastTCRecipeRate", this.lastTCRecipeRate);
+        aNBT.setFloat("lastTCRecipeMinFocus", this.lastTCRecipeMinFocus);
+        aNBT.setFloat("lastTCRecipeMinEnergy", this.lastTCRecipeMinEnergy);
+        aNBT.setFloat("lastTCRecipeMaxEnergy", this.lastTCRecipeMaxEnergy);
+        aNBT.setInteger("lastTCRecipeInputParticle", this.lastTCRecipeInputParticle);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        this.lastTCRecipeRate = aNBT.getInteger("lastTCRecipeRate");
+        this.lastTCRecipeMinFocus = aNBT.getFloat("lastTCRecipeMinFocus");
+        this.lastTCRecipeMinEnergy = aNBT.getFloat("lastTCRecipeMinEnergy");
+        this.lastTCRecipeMaxEnergy = aNBT.getFloat("lastTCRecipeMaxEnergy");
+        this.lastTCRecipeInputParticle = aNBT.hasKey("lastTCRecipeInputParticle")
+            ? aNBT.getInteger("lastTCRecipeInputParticle")
+            : -1;
+    }
+
+    @Override
+    public void updateSlots() {
+        super.updateSlots();
+        for (MTEHatchInputBus bus : validMTEList(mMaskInputBusses)) {
+            bus.updateSlots();
+        }
+    }
+
+    private ArrayList<ItemStack> getMaskItemStack() {
+        ArrayList<ItemStack> out = new ArrayList<>();
+        for (MTEHatchInputBus bus : validMTEList(mMaskInputBusses)) {
+            IGregTechTileEntity base = bus.getBaseMetaTileEntity();
+            for (int i = 0; i < base.getSizeInventory(); i++) {
+                ItemStack s = base.getStackInSlot(i);
+                if (s != null) out.add(s);
+            }
+        }
+        return out;
     }
 
     public MTETargetChamber(int id, String name, String nameRegional) {
@@ -131,66 +221,50 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-        // Placeholder
-        if (side == facing) {
-            if (active) return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_OIL_CRACKER,
+            OVERLAY_FRONT_OIL_CRACKER_GLOW,
+            OVERLAY_FRONT_OIL_CRACKER_ACTIVE,
+            OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.RobustTungstenSteelMachineCasing.getCasingTexture();
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.tc.machinetype"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info1"))
-            .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info2"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info3"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info4"))
-            .addSeparator()
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info5"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info6"))
-            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info7"))
+            .addMarkdown(new ResourceLocation("gregtech", "target-chamber"))
             .beginStructureBlock(5, 5, 6, true)
-            .addController("Front bottom center")
-            .addCasingInfoExactly(Casings.GrateMachineCasing.getLocalizedName(), 29, false)
-            .addCasingInfoExactly(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 28, false)
-            .addCasingInfoExactly("Any Tiered Glass", 16, false)
-            .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 34, false)
-            .addCasingInfoExactly(LanthItemList.TARGET_RECEPTACLE_CASING.getLocalizedName(), 4, false)
-            .addCasingInfoExactly(LanthItemList.FOCUS_MANIPULATION_CASING.getLocalizedName(), 4, false)
-            .addCasingInfoExactly(LanthItemList.FOCUS_HOLDER.getLocalizedName(), 1, false)
-            .addCasingInfoExactly(LanthItemList.TARGET_HOLDER.getLocalizedName(), 1, false)
-            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.focus"), addHintNumber(1))
-            .addMaintenanceHatch(addHintNumber(2))
-            .addEnergyHatch(addHintNumber(2))
-            .addInputBus(addHintNumber(3))
-            .addOutputBus(addHintNumber(4))
-            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), addHintNumber(5))
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_bottom_center"))
+            .addCasing("34", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), false)
+            .addCasing("27-29", Casings.GrateMachineCasing.getLocalizedName(), false)
+            .addCasing("28", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
+            .addCasing("16", StatCollector.translateToLocalFormatted("gt.mbtt.structure.min_tiered_glass", GTValues.VN[VoltageIndex.LuV]), false)
+            .addCasing("4", LanthItemList.TARGET_RECEPTACLE_CASING.getLocalizedName(), false)
+            .addCasing("4", LanthItemList.FOCUS_MANIPULATION_CASING.getLocalizedName(), false)
+            .addCasing("1", LanthItemList.TARGET_HOLDER.getLocalizedName(), false)
+            .addCasing("1", LanthItemList.FOCUS_HOLDER.getLocalizedName(), false)
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), StatCollector.translateToLocal("gt.mbtt.structure.front_center_casing"), 1)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_bottom_casing"), 4)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.any_front_bottom_casing"), 4)
+            .addInputBus("2", StatCollector.translateToLocal("gtnhlanth.tt.tc.structure.input_bus_pos"), 2, 3)
+            .addOutputBus("1", StatCollector.translateToLocal("gt.mbtt.structure.back_center_casing"), 5)
+            .addAir(StatCollector.translateToLocal("gt.mbtt.structure.interior"))
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -219,16 +293,22 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     @Override
     public CheckRecipeResult checkProcessing() {
         ArrayList<ItemStack> tItems = this.getStoredInputs();
-        ArrayList<ItemStack> tFocusItemArray = this.getFocusItemStack();
-
-        ItemStack tFocusItemZeroDamage;
-        ArrayList<ItemStack> tItemsWithFocusItem = new ArrayList<>();
-        if (tFocusItemArray != null) {
-            tFocusItemZeroDamage = tFocusItemArray.get(0)
-                .copy();
-            tFocusItemZeroDamage.setItemDamage(0);
-            tItemsWithFocusItem.add(tFocusItemZeroDamage);
+        // renamed in order to not confuse with focus bus
+        ArrayList<ItemStack> tMaskItemArray = this.getMaskItemStack();
+        // run recipe only if masks present in bus for masks
+        for (ItemStack stack : tMaskItemArray) {
+            if (stack != null && !(stack.getItem() instanceof ItemPhotolithographicMask)) {
+                return CheckRecipeResultRegistry.NO_RECIPE;
+            }
         }
+        for (ItemStack stack : tItems) {
+            if (stack != null && stack.getItem() instanceof ItemPhotolithographicMask) {
+                return CheckRecipeResultRegistry.NO_RECIPE;
+            }
+        }
+
+        ArrayList<ItemStack> tItemsWithFocusItem = new ArrayList<>();
+        tItemsWithFocusItem.addAll(tMaskItemArray);
         tItemsWithFocusItem.addAll(tItems);
         ItemStack[] tItemsWithFocusItemArray = tItemsWithFocusItem.toArray(new ItemStack[0]);
 
@@ -261,23 +341,26 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         BeamInformation inputInfo = this.getInputInformation();
         if (inputInfo == null) return CheckRecipeResultRegistry.NO_RECIPE;
         float inputEnergy = inputInfo.getEnergy();
-        float inputRate = inputInfo.getRate();
+        int inputRate = inputInfo.getRate();
         int inputParticle = inputInfo.getParticleId();
         float inputFocus = inputInfo.getFocus();
 
-        if (inputEnergy < metadata.minEnergy || inputEnergy > metadata.maxEnergy)
-            return CheckRecipeResultRegistry.NO_RECIPE;
+        if (inputEnergy < metadata.minEnergy) {
+            return CheckRecipeResultRegistry.LOW_ENERGY;
+        } else if (inputEnergy > metadata.maxEnergy) {
+            return CheckRecipeResultRegistry.HIGH_ENERGY;
+        }
         if (inputFocus < metadata.minFocus) return CheckRecipeResultRegistry.NO_RECIPE;
         if (inputParticle != metadata.particleID) return CheckRecipeResultRegistry.NO_RECIPE;
-        if (metadata.focusItem != null) {
-            if (tFocusItemArray != null) {
-                if (tFocusItemArray.get(0) != null && metadata.focusItem.getItem() != tFocusItemArray.get(0)
-                    .getItem()) return CheckRecipeResultRegistry.NO_RECIPE;
-            }
-        }
+
+        this.lastTCRecipeMinFocus = metadata.minFocus;
+        this.lastTCRecipeMinEnergy = metadata.minEnergy;
+        this.lastTCRecipeMaxEnergy = metadata.maxEnergy;
+        this.lastTCRecipeInputParticle = metadata.particleID;
+        this.lastTCRecipeRate = inputRate;
 
         // 5 seconds per integer multiple over the rate
-        float progressTime = metadata.amount / inputRate * 5 * TickTime.SECOND;
+        float progressTime = calculateProgressTime(metadata.amount, inputRate);
         int batchAmount = 1;
         if (progressTime < 1) { // Subticking
             batchAmount = (int) Math.round(1.0 / progressTime);
@@ -285,9 +368,9 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             if (metadata.focusItem != null) {
                 int maskLimit = 0;
 
-                if (tFocusItemArray != null) {
-                    for (ItemStack focus : tFocusItemArray) {
-                        maskLimit += focus.getMaxDamage() - focus.getItemDamage() + 1;
+                if (tMaskItemArray != null) {
+                    for (ItemStack t : tMaskItemArray) {
+                        maskLimit += t.stackSize;
                     }
                 }
 
@@ -330,21 +413,13 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         mEUt = (int) -tVoltageActual;
         if (this.mEUt > 0) this.mEUt = (-this.mEUt);
 
-        int focusDurabilityDepletion = batchAmount;
-        if (tFocusItemArray != null) {
-            for (ItemStack stack : tFocusItemArray) {
-                if (focusDurabilityDepletion + stack.getItemDamage() >= stack.getMaxDamage() + 1) {
-                    focusDurabilityDepletion -= stack.getMaxDamage() + 1 - stack.getItemDamage();
-                    stack.stackSize--;
-                } else {
-                    stack.setItemDamage(stack.getItemDamage() + focusDurabilityDepletion);
-                    break;
-                }
-            }
-        }
-
         this.updateSlots();
+
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    private static float calculateProgressTime(int particleAmount, int particleRate) {
+        return (float) particleAmount / particleRate * 5 * TickTime.SECOND;
     }
 
     @Nullable
@@ -356,32 +431,17 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
         return null;
     }
 
-    @Nullable
-    private ArrayList<ItemStack> getFocusItemStack() {
-        if (this.mFocusInputBuses.isEmpty()) return null;
-        if (this.mFocusInputBuses.get(0)
-            .getContentUsageSlots()
-            .isEmpty()) return null;
-        return this.mFocusInputBuses.get(0)
-            .getContentUsageSlots();
-    }
-
     @Override
     public void checkMachine(IGregTechTileEntity arg0, ItemStack arg1, List<StructureError> errors) {
         this.lastRecipe = null;
         if (!checkPiece("base", 2, 4, 0, errors)) return;
-        checkOneMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
+        checkOneMaintenanceHatch(errors);
         checkHatchExact(errors, InputBus, 1);
-        checkHatchExact(errors, OutputBus, 1);
-        if (this.mFocusInputBuses.size() != 1) {
+        if (this.mMaskInputBusses.size() != 1) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.need_exactly_one_focus_input"));
         }
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack arg0) {
-        return DescTextLocalization.addText("TargetChamber.hint", 13);
+        checkHatchExact(errors, OutputBus, 1);
     }
 
     @Override
@@ -405,80 +465,60 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
 
         return new String[] {
             // from super()
-            /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(getActualEnergyUsage())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(getMaxInputVoltage())
-                + EnumChatFormatting.RESET
-                + " EU/t(*2A) "
-                + StatCollector.translateToLocal("GT5U.machines.tier")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[GTUtility.getTier(getMaxInputVoltage())]
-                + EnumChatFormatting.RESET,
-            /* 5 */ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
+            /* 1 */ IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.Progress.fmt.s",
+                formatNumber(mProgresstime / 20),
+                formatNumber(mMaxProgresstime / 20)),
+            /* 2 */ IGregTechDeviceInformation
+                .encode("GT5U.multiblock.energy.fmt", formatNumber(storedEnergy), formatNumber(maxEnergy)),
+            /* 3 */ IGregTechDeviceInformation
+                .encode("GT5U.multiblock.usage.fmt", formatNumber(getActualEnergyUsage())),
+            /* 4 */ IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.mei.fmt.2A",
+                formatNumber(getMaxInputVoltage()),
+                VN[GTUtility.getTier(getMaxInputVoltage())]),
+            /* 5 */ IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.problems.efficiency.fmt",
+                getIdealStatus() - getRepairStatus(),
+                mEfficiency / 100.0F + " %"),
             /* 6 Pollution not included */
             // Beamline-specific
-            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.in_pre")
-                + ": "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"
-                + EnumChatFormatting.GOLD
-                + Particle.getParticleFromId(information.getParticleId())
-                    .getLocalisedName() // e.g. "Electron
-                                        // (e-)"
-                + " "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
-                + EnumChatFormatting.DARK_RED
-                + information.getEnergy() * 1000 // In line with the synchrotron's output
-                + EnumChatFormatting.RESET
-                + " eV", // e.g. "10240 eV"
-            StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
-                + EnumChatFormatting.BLUE
-                + information.getFocus()
-                + " "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
-                + EnumChatFormatting.LIGHT_PURPLE
-                + information.getRate() };
+            "beamline.in_pre.hdr", Particle.getParticleFromId(information.getParticleId())
+                .encodeInfoData(),
+            IGregTechDeviceInformation.encode("beamline.energy.eV.fmt", information.getEnergy() * 1000),
+            IGregTechDeviceInformation.encode("beamline.focus.fmt", information.getFocus()),
+            IGregTechDeviceInformation.encode("beamline.amount.fmt", information.getRate()) };
     }
 
     @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
+    }
+
+    @Override
+    public void startRecipeProcessing() {
+        super.startRecipeProcessing();
+        for (MTEHatchInputBus hatch : validMTEList(mMaskInputBusses)) {
+            if (hatch instanceof IRecipeProcessingAwareHatch aware) {
+                aware.startRecipeProcessing();
+            }
+        }
+    }
+
+    @Override
+    public void endRecipeProcessing() {
+        for (MTEHatchInputBus hatch : validMTEList(mMaskInputBusses)) {
+            if (hatch instanceof IRecipeProcessingAwareHatch aware) {
+                setResultIfFailure(aware.endRecipeProcessing(this));
+            }
+        }
+        super.endRecipeProcessing();
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        mMaskInputBusses.clear();
     }
 
     private String createMaskText(String text) {
@@ -492,5 +532,4 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     private String createFocusText(String text) {
         return String.format("%s%s%s", EnumChatFormatting.RED, text, EnumChatFormatting.GRAY);
     }
-
 }

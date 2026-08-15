@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.COVER_WOOD_PLATE;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ADVANCED_WIRELESS_CONTROLLER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ARM;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CONTROLLER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CONVEYOR;
@@ -134,6 +135,7 @@ import static gregtech.common.items.IDMetaItem01.Conveyor_Module_UV;
 import static gregtech.common.items.IDMetaItem01.Conveyor_Module_UXV;
 import static gregtech.common.items.IDMetaItem01.Conveyor_Module_ZPM;
 import static gregtech.common.items.IDMetaItem01.Cover_ActivityDetector;
+import static gregtech.common.items.IDMetaItem01.Cover_AdvancedWirelessController;
 import static gregtech.common.items.IDMetaItem01.Cover_Chest_Advanced;
 import static gregtech.common.items.IDMetaItem01.Cover_Chest_Basic;
 import static gregtech.common.items.IDMetaItem01.Cover_Chest_Good;
@@ -481,8 +483,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import codechicken.enderstorage.api.EnderStorageDyeTool;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverPlacer;
@@ -510,7 +514,9 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Client;
 import gregtech.common.config.Other;
+import gregtech.common.covers.CoverAdvancedWirelessController;
 import gregtech.common.covers.CoverArm;
 import gregtech.common.covers.CoverChest;
 import gregtech.common.covers.CoverControlsWork;
@@ -558,10 +564,15 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialCuttingMachine.S
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.Interface(
-    iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
-    modid = Mods.ModIDs.RAILCRAFT)
-public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFirestoneBurning {
+@Optional.InterfaceList(
+    value = {
+        @Optional.Interface(
+            iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
+            modid = Mods.ModIDs.RAILCRAFT),
+        @Optional.Interface(
+            iface = "codechicken.enderstorage.api.EnderStorageDyeTool",
+            modid = Mods.ModIDs.ENDER_STORAGE), })
+public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFirestoneBurning, EnderStorageDyeTool {
 
     public static MetaGeneratedItem01 INSTANCE;
     private static final String aTextEmptyRow = "   ";
@@ -1280,7 +1291,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Spray_Color_Infinite.ID,
                 BehaviourSprayColorInfinite::getNameWithColor,
-                $ -> GTUtility.translate("gt.item.spray_can.infinite.tooltip"),
+                $ -> StatCollector.translateToLocal("gt.item.spray_can.infinite.tooltip"),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 16),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 8),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 8),
@@ -3256,14 +3267,14 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.T1Sawblade.set(
             addItem(
                 T1Sawblade.ID,
-                $ -> GTUtility.translate("gt.item.t1sawblade.name"),
+                $ -> StatCollector.translateToLocal("gt.item.t1sawblade.name"),
                 $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.TungstenTitaniumCarbide),
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L)));
         ItemList.T2Sawblade.set(
             addItem(
                 T2Sawblade.ID,
-                $ -> GTUtility.translate("gt.item.t2sawblade.name"),
+                $ -> StatCollector.translateToLocal("gt.item.t2sawblade.name"),
                 $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.MysteriousCrystal),
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 3L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 3L)));
@@ -3271,7 +3282,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItem(
                     T3Sawblade.ID,
-                    $ -> GTUtility.translate("gt.item.t3sawblade.name"),
+                    $ -> StatCollector.translateToLocal("gt.item.t3sawblade.name"),
                     $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.Neutronium),
                     new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 4L),
                     new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 4L)))
@@ -3280,7 +3291,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItem(
                     T4Sawblade.ID,
-                    $ -> GTUtility.translate("gt.item.t4sawblade.name"),
+                    $ -> StatCollector.translateToLocal("gt.item.t4sawblade.name"),
                     $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.TranscendentMetal),
                     new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 5L),
                     new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 5L)))
@@ -3397,8 +3408,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     "gt.item.wireless_energy_cover.name",
                     new Object[] { GTValues.VN[i] },
                     "gt.item.wireless_energy_cover.tooltip",
-                    new Object[] { GTUtility.translate("gt.tileentity.amperage", EnumChatFormatting.YELLOW + "2"),
-                        GTUtility.translate(
+                    new Object[] {
+                        StatCollector
+                            .translateToLocalFormatted("gt.tileentity.amperage", EnumChatFormatting.YELLOW + "2"),
+                        StatCollector.translateToLocalFormatted(
                             "gt.tileentity.eup_in",
                             EnumChatFormatting.GREEN + formatNumber(GTValues.V[i])
                                 + " ("
@@ -3595,6 +3608,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.cover.wireless_controller.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
+        ItemList.Cover_AdvancedWirelessController.set(
+            addItemWithLocalizationKeys(
+                Cover_AdvancedWirelessController.ID,
+                "gt.item.cover.advanced_wireless_controller.name",
+                "gt.item.cover.advanced_wireless_controller.tooltip",
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
 
         ItemList.Cover_NeedsMaintainance.set(
             addItemWithLocalizationKeys(
@@ -3662,31 +3682,31 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electromagnet_Iron.set(
             addItem(
                 Electromagnet_Iron.ID,
-                $ -> GTUtility.translate("gt.item.electromagnet.iron.name"),
+                $ -> StatCollector.translateToLocal("gt.item.electromagnet.iron.name"),
                 $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Iron),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 8)));
         ItemList.Electromagnet_Steel.set(
             addItem(
                 Electromagnet_Steel.ID,
-                $ -> GTUtility.translate("gt.item.electromagnet.steel.name"),
+                $ -> StatCollector.translateToLocal("gt.item.electromagnet.steel.name"),
                 $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Steel),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 16)));
         ItemList.Electromagnet_Neodymium.set(
             addItem(
                 Electromagnet_Neodymium.ID,
-                $ -> GTUtility.translate("gt.item.electromagnet.neodymium.name"),
+                $ -> StatCollector.translateToLocal("gt.item.electromagnet.neodymium.name"),
                 $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Neodymium),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 24)));
         ItemList.Electromagnet_Samarium.set(
             addItem(
                 Electromagnet_Samarium.ID,
-                $ -> GTUtility.translate("gt.item.electromagnet.samarium.name"),
+                $ -> StatCollector.translateToLocal("gt.item.electromagnet.samarium.name"),
                 $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Samarium),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 32)));
         ItemList.Electromagnet_Tengam.set(
             addItem(
                 Electromagnet_Tengam.ID,
-                $ -> GTUtility.translate("gt.item.electromagnet.tengam.name"),
+                $ -> StatCollector.translateToLocal("gt.item.electromagnet.tengam.name"),
                 $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Tengam),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 40)));
 
@@ -4058,12 +4078,19 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials._NULL)) {
                 OrePrefixes aPrefix = this.mGeneratedPrefixList[(aDamage / 1000)];
                 if ((aPrefix == OrePrefixes.dustImpure) || (aPrefix == OrePrefixes.dustPure)) {
-                    aList.add(GTUtility.translate("GT5U.tooltip.purify.1"));
+                    aList.add(StatCollector.translateToLocal("GT5U.tooltip.purify.1"));
                 }
                 if (aPrefix == OrePrefixes.dust && aMaterial == Materials.Wheat) {
-                    aList.add(GTUtility.translate("GT5U.tooltip.flour.cauldron"));
+                    aList.add(StatCollector.translateToLocal("GT5U.tooltip.flour.cauldron"));
+                }
+                if (aPrefix == OrePrefixes.ingotHot && Client.tooltip.showHotIngotText) {
+                    aList.add(StatCollector.translateToLocal("gtpp.tooltip.ingot.very_hot"));
                 }
             }
+        }
+        if (Client.tooltip.showRadioactiveText && GTUtility.getRadioactivityLevel(aStack) > 0) {
+            aList.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Radioactive"));
+            aList.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_HazmatWarning"));
         }
     }
 
@@ -4538,6 +4565,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_CONTROLLER)),
             context -> new CoverWirelessController(context, TextureFactory.of(OVERLAY_WIRELESS_CONTROLLER)),
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
+        CoverRegistry.registerCover(
+            ItemList.Cover_AdvancedWirelessController.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_WIRELESS_CONTROLLER)),
+            context -> new CoverAdvancedWirelessController(
+                context,
+                TextureFactory.of(OVERLAY_ADVANCED_WIRELESS_CONTROLLER)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
 
         CoverRegistry.registerCover(
             ItemList.Steam_Regulator_LV.get(1L),
@@ -4592,7 +4626,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
     private void craftingShapedRecipes() {
         ItemStack tStack = new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID);
-        tStack.setStackDisplayName(GTUtility.translate("gt.item.sengir_planks.name"));
+        tStack.setStackDisplayName(StatCollector.translateToLocal("gt.item.sengir_planks.name"));
         GTUtility.ItemNBT.addEnchantment(tStack, Enchantment.smite, 10);
         GTModHandler.addCraftingRecipe(
             tStack,
@@ -5261,5 +5295,36 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             || data.mPrefix == OrePrefixes.crushedPurified
             || data.mPrefix == OrePrefixes.crushedCentrifuged
             || data.mPrefix == OrePrefixes.gem;
+    }
+
+    @Override
+    public int getDye(final ItemStack itemStack) {
+        if (Mods.EnderStorage.isModLoaded()) {
+            final List<Integer> results = mapEachBehavior(itemStack, behavior -> {
+                if (behavior instanceof final EnderStorageDyeTool dyeTool) {
+                    return dyeTool.getDye(itemStack);
+                }
+
+                return null;
+            });
+
+            if (!results.isEmpty()) {
+                return results.getFirst();
+            }
+        }
+
+        return -1;
+    }
+
+    @Override
+    public void expendToolUse(final ItemStack itemStack) {
+        if (Mods.EnderStorage.isModLoaded()) {
+            forEachBehavior(itemStack, behavior -> {
+                if (behavior instanceof final EnderStorageDyeTool dyeTool) {
+                    dyeTool.expendToolUse(itemStack);
+                }
+                return false;
+            });
+        }
     }
 }

@@ -14,8 +14,8 @@
 package bartworks.system.material.CircuitGeneration;
 
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
+import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
@@ -44,6 +44,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 
 /**
@@ -77,14 +78,13 @@ public class CircuitPartsItem extends Item {
             .addTo(formingPressRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.RawImprintBoard.get(1))
+            .itemInputs(ItemList.RawImprintBoard.get(1), new OreDictItemStack("craftingLensYellow", 0))
             .itemOutputs(ItemList.ImprintBoard.get(1))
-            .outputChances(75_00)
             .fluidInputs(Materials.SolderingAlloy.getMolten(4 * INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .requiresCleanRoom()
-            .addTo(autoclaveRecipes);
+            .addTo(laserEngraverRecipes);
 
         GameRegistry.addRecipe(new DeprecatedPartsMigrationRecipe());
         API.hideItem(INSTANCE.getStack(0));

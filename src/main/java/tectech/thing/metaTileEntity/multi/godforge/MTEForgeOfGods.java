@@ -1,6 +1,16 @@
 package tectech.thing.metaTileEntity.multi.godforge;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static gregtech.api.casing.Casings.BoundlessGravitationallySeveredStructureCasing;
+import static gregtech.api.casing.Casings.CelestialMatterGuidanceCasing;
+import static gregtech.api.casing.Casings.CentralGravitonFlowModulator;
+import static gregtech.api.casing.Casings.MedialGravitonFlowModulator;
+import static gregtech.api.casing.Casings.RemoteGravitonFlowModulator;
+import static gregtech.api.casing.Casings.SingularityReinforcedStellarShieldingCasing;
+import static gregtech.api.casing.Casings.SpatiallyTranscendentGravitationalLens;
+import static gregtech.api.casing.Casings.StellarEnergySiphonCasing;
+import static gregtech.api.casing.Casings.TranscendentallyAmplifiedMagneticConfinementCasing;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
@@ -8,7 +18,6 @@ import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
-import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 import static tectech.thing.casing.TTCasingsContainer.forgeOfGodsRenderBlock;
 import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade.*;
@@ -42,6 +51,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -63,6 +73,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -201,7 +212,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                 .hint(2)
                 .buildAndChain(GodforgeCasings, 0))
         .addElement('K', ofBlock(GodforgeCasings, 6))
-        .addElement('L', ofBlock(Blocks.air, 0))
+        .addElement('L', isAir())
         .build();
 
     public MTEForgeOfGods(int aID, String aName, String aNameRegional) {
@@ -286,8 +297,17 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
         if (data.getInternalBattery() != 0 && !data.isRenderActive() && !data.isRendererDisabled()) {
             createRenderer();
         }
-        // Check there is 1 input bus
+
+        // Make sure there are no energy hatches
+        {
+            if (!mEnergyHatches.isEmpty()) {
+                errors.add(StructureErrorRegistry.NO_ENERGY_HATCH_NEEDED);
+            } else if (!mExoticEnergyHatches.isEmpty()) {
+                errors.add(StructureErrorRegistry.NO_ENERGY_HATCH_NEEDED);
+            }
+        }
         checkHatchExact(errors, InputBus, 1);
+        checkHatchExact(errors, InputHatch, 1);
 
         // Check there is 1 me output bus
         {
@@ -297,17 +317,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                 errors.add(StructureErrors.missingHatch(ItemList.Hatch_Output_Bus_ME.get(1)));
             }
         }
-        // Make sure there are no energy hatches
-        {
-            if (!mEnergyHatches.isEmpty()) {
-                errors.add(StructureErrorRegistry.NO_ENERGY_HATCH_NEEDED);
-            } else if (!mExoticEnergyHatches.isEmpty()) {
-                errors.add(StructureErrorRegistry.NO_ENERGY_HATCH_NEEDED);
-            }
-        }
-
-        // Make sure there is 1 input hatch
-        checkHatchExact(errors, InputHatch, 1);
 
         if (!errors.isEmpty()) return;
 
@@ -441,8 +450,10 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                         if (allowModuleConnection(module, data)) {
                             module.connect();
                             calculateMaxHeatForModules(module, data);
-                            calculateSpeedBonusForModules(module, data);
+                            // parallel depend on heat
                             calculateMaxParallelForModules(module, data);
+                            // speed bonus depend on max parallel and heat
+                            calculateSpeedBonusForModules(module, data);
                             calculateEnergyDiscountForModules(module, data);
                             setMiscModuleParameters(module, data);
                             queryMilestoneStats(module, data);
@@ -733,20 +744,13 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>(Arrays.asList(super.getInfoData()));
         str.add(SCANNER_INFO_BAR);
+        str.add(IGregTechDeviceInformation.encode("tt.infodata.fog.rings", data.getRingAmount()));
         str.add(
-            StatCollector.translateToLocalFormatted(
-                "tt.infodata.fog.rings",
-                "" + EnumChatFormatting.GOLD + data.getRingAmount()));
-        str.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "tt.infodata.fog.upgrades.unlocked",
-                "" + EnumChatFormatting.GOLD
-                    + data.getUpgrades()
-                        .getTotalActiveUpgrades()));
-        str.add(
-            StatCollector.translateToLocalFormatted(
-                "tt.infodata.fog.connected",
-                "" + EnumChatFormatting.GOLD + moduleHatches.size()));
+                data.getUpgrades()
+                    .getTotalActiveUpgrades()));
+        str.add(IGregTechDeviceInformation.encode("tt.infodata.fog.connected", moduleHatches.size()));
         str.add(SCANNER_INFO_BAR);
         return str.toArray(new String[0]);
     }
@@ -799,68 +803,46 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Stellar Forge")
-            .addInfo(EnumChatFormatting.ITALIC + "Also known as Godforge or Gorge for short")
-            .addSeparator(EnumChatFormatting.AQUA, 73)
-            .addInfo("A massive structure harnessing the thermal, gravitational and")
-            .addInfo("kinetic energy of a stabilised neutron star for material processing")
-            .addInfo(
-                "This multiblock can house " + EnumChatFormatting.RED
-                    + "up to 16 modules "
-                    + EnumChatFormatting.GRAY
-                    + "which utilize the star to energize materials")
-            .addInfo("to varying degrees, ranging from regular smelting to matter degeneration")
-            .addInfo("EU requirements for all modules are handled via wireless energy directly")
-            .addSeparator(EnumChatFormatting.AQUA, 73)
-            .addInfo(
-                "This multiblock has an " + EnumChatFormatting.GOLD
-                    + "extensive upgrade tree "
-                    + EnumChatFormatting.GRAY
-                    + "which influences all of its functions,")
-            .addInfo(
-                "such as " + EnumChatFormatting.GOLD
-                    + "unlocking new module types"
-                    + EnumChatFormatting.GRAY
-                    + ", "
-                    + EnumChatFormatting.GOLD
-                    + "increasing heat levels "
-                    + EnumChatFormatting.GRAY
-                    + "and "
-                    + EnumChatFormatting.GOLD
-                    + "granting")
-            .addInfo(
-                EnumChatFormatting.GOLD + "various processing speed bonuses"
-                    + EnumChatFormatting.GRAY
-                    + ". "
-                    + EnumChatFormatting.GRAY
-                    + "These upgrades can be unlocked by reaching")
-            .addInfo("certain milestones and/or spending materials")
-            .addSeparator(EnumChatFormatting.AQUA, 73)
-            .addInfo(
-                EnumChatFormatting.GREEN
-                    + "Clicking on the logo in the controller gui opens an extensive information window"
-                    + EnumChatFormatting.GRAY
-                    + ",")
-            .addInfo("explaining everything there is to know about this multiblock")
-            .beginStructureBlock(127, 29, 186, false)
-            .addController("Front center")
-            .addStructureInfo("Total blocks needed for the structure with " + getRingText("1", "2", "3") + "rings:")
-            .addStructureInfo(
-                getRingText("3943", "7279", "11005") + "Transcendentally Amplified Magnetic Confinement Casing")
-            .addStructureInfo(getRingText("2818", "4831", "6567") + "Singularity Reinforced Stellar Shielding Casing")
-            .addStructureInfo(getRingText("272", "512", "824") + "Celestial Matter Guidance Casing")
-            .addStructureInfo(getRingText("130", "144", "158") + "Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(getRingText("9", "54", "155") + "Spatially Transcendent Gravitational Lens Block")
-            .addStructureInfo(
-                getRingText("345", "357", "397") + getRingText("Remote", "Medial", "Central")
-                    + "Graviton Flow Modulator")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "36" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .addStructureInfoSeparator()
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Input Hatch")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Bus (ME)")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Input Bus")
-            .toolTipFinisher(EnumChatFormatting.AQUA, 73);
+        // spotless:off
+        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.stellar_forge"))
+            .addMarkdown(new ResourceLocation("gregtech", "forge-of-gods"))
+            .beginStructureBlock(127, 29, 186, true)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_15th_layer"))
+            .addInputHatch("1", StatCollector.translateToLocal("gt.mbtt.structure.around_controller"), 1)
+            .addInputBus("1", StatCollector.translateToLocal("gt.mbtt.structure.around_controller"), 1)
+            .addOutputBus("1", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.output-bus-pos"), 1)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base") + EnumChatFormatting.AQUA + " (T1)")
+            .addCasing("3949", TranscendentallyAmplifiedMagneticConfinementCasing.getLocalizedName(), false)
+            .addCasing("2799-2815", SingularityReinforcedStellarShieldingCasing.getLocalizedName(), false)
+            .addCasing("345", RemoteGravitonFlowModulator.getLocalizedName(), false)
+            .addCasing("272", CelestialMatterGuidanceCasing.getLocalizedName(), false)
+            .addCasing("130", BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), false)
+            .addCasing("36", StellarEnergySiphonCasing.getLocalizedName(), false)
+            .addCasing("9", SpatiallyTranscendentGravitationalLens.getLocalizedName(), false)
+            .addMiscHatch("0-8", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module"), StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module-pos"), 2)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.second-ring") + EnumChatFormatting.AQUA + " (T2)")
+            .addCasing("3336", TranscendentallyAmplifiedMagneticConfinementCasing.getLocalizedName(), false)
+            .addCasing("2012", SingularityReinforcedStellarShieldingCasing.getLocalizedName(), false)
+            .addCasing("357", MedialGravitonFlowModulator.getLocalizedName(), false)
+            .addCasing("240", CelestialMatterGuidanceCasing.getLocalizedName(), false)
+            .addCasing("45", SpatiallyTranscendentGravitationalLens.getLocalizedName(), false)
+            .addCasing("14", BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), false)
+            .addMiscHatch("0-12", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module"), StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module-pos"), 2)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.third-ring") + EnumChatFormatting.AQUA + " (T3)")
+            .addCasing("3728", TranscendentallyAmplifiedMagneticConfinementCasing.getLocalizedName(), false)
+            .addCasing("1736", SingularityReinforcedStellarShieldingCasing.getLocalizedName(), false)
+            .addCasing("397", CentralGravitonFlowModulator.getLocalizedName(), false)
+            .addCasing("312", CelestialMatterGuidanceCasing.getLocalizedName(), false)
+            .addCasing("101", SpatiallyTranscendentGravitationalLens.getLocalizedName(), false)
+            .addCasing("14", BoundlessGravitationallySeveredStructureCasing.getLocalizedName(), false)
+            .addMiscHatch("0-16", StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module"), StatCollector.translateToLocal("GT5U.tooltip.forge-of-gods.module-pos"), 2)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.rings"))
+            .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
@@ -881,13 +863,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     @Override
     public boolean energyFlowOnRunningTick(ItemStack aStack, boolean allowProduction) {
         return true;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return new String[] { EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-            translateToLocal("gt.blockmachines.multimachine.FOG.hint.0"),
-            translateToLocal("gt.blockmachines.multimachine.FOG.hint.1") };
     }
 
     public ForgeOfGodsData getData() {
@@ -988,18 +963,18 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
         }
     }
 
-    private void increaseBattery(int amount) {
-        // Written to be careful of potential overflow
-        long newCharge = Long.sum(data.getInternalBattery(), amount);
+    private void increaseBattery(long amount) {
+        long currentCharge = data.getInternalBattery();
+        long newCharge = Long.MAX_VALUE - currentCharge < amount ? Long.MAX_VALUE : currentCharge + amount;
         if (newCharge <= data.getMaxBatteryCharge()) {
-            data.setInternalBattery((int) newCharge);
+            data.setInternalBattery(newCharge);
         } else {
             data.setInternalBattery(data.getMaxBatteryCharge());
             data.setBatteryCharging(false);
         }
     }
 
-    public void reduceBattery(int amount) {
+    public void reduceBattery(long amount) {
         if (data.getInternalBattery() - amount <= 0) {
             data.setInternalBattery(0);
             if (!moduleHatches.isEmpty()) {

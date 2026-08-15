@@ -81,8 +81,7 @@ public class BaseItemComponent extends Item {
         } else {
             aFormattedNameForFluids = unlocalName;
         }
-        Material aTempMaterial = Material.mMaterialCache.get(localName.toLowerCase());
-        this.componentMaterial = aTempMaterial;
+        this.componentMaterial = Material.mMaterialCache.get(localName.toLowerCase());
         this.unlocalName = "itemCell" + aFormattedNameForFluids;
         this.materialName = localName;
         this.materialKey = fluid.getUnlocalizedName();
@@ -180,14 +179,14 @@ public class BaseItemComponent extends Item {
                         list.add(
                             EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                                 "GTPP.tooltip.material.radioactivity",
-                                this.componentMaterial.vRadiationLevel));
+                                this.componentMaterial.radiationLevel));
                     } else {
                         list.add(
                             EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
                     }
                 }
             }
-        } catch (Exception t) {}
+        } catch (Exception ignored) {}
 
         super.addInformation(stack, aPlayer, list, bool);
     }
@@ -198,7 +197,7 @@ public class BaseItemComponent extends Item {
         if (this.componentMaterial != null) {
             EntityUtils.applyRadiationDamageToEntity(
                 iStack.stackSize,
-                this.componentMaterial.vRadiationLevel,
+                this.componentMaterial.radiationLevel,
                 world,
                 entityHolding);
         }

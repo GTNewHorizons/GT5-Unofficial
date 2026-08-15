@@ -1,56 +1,46 @@
 package gregtech.common.gui.modularui.widget.settings;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.Widget;
-import com.cleanroommc.modularui.widgets.layout.Column;
-import com.github.bsideup.jabel.Desugar;
+import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
+import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.layout.Grid;
 
 import it.unimi.dsi.fastutil.Pair;
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
-public class SettingsPanel extends Column {
-
-    @Desugar
-    private record RowData(Object state, ISettingRow row, Widget widget) {
-
-    }
-
-    private final List<RowData> rows = new ArrayList<>();
-
-    private final Function<SettingsPanel, Integer> dividerPosition;
+public class SettingsPanel extends ListWidget<IWidget, SettingsPanel> {
 
     final String syncName;
-    int nextSyncId = 1;
+    int nextSyncId = 0;
 
-    SettingsPanel(ModularPanel panel, PanelSyncManager syncManager, List<ISettingRow<?>> rows,
-        Function<SettingsPanel, Integer> dividerPosition, String syncName) {
-        this.dividerPosition = dividerPosition;
+    SettingsPanel(ModularPanel panel, PanelSyncManager syncManager, List<ISettingRow<?>> rows, String syncName,
+        int maxHeight) {
         this.syncName = syncName;
 
-        for (ISettingRow row : rows) {
-            Pair<Object, Widget<?>> p = row.build(panel, syncManager, this);
+        scrollDirection(new VerticalScrollData());
+        coverChildrenWidth();
+        maxSize(maxHeight);
 
-            child(p.right());
+        Grid mainGrid = new Grid().coverChildren()
+            .minElementMargin(2)
+            .columnAlignments(new Alignment[] { Alignment.CenterRight, Alignment.CenterLeft });
 
-            this.rows.add(new RowData(p.left(), row, p.right()));
+        for (ISettingRow<?> sr : rows) {
+            Pair<IKey, ? extends IWidget> p = sr.build(panel, syncManager, this);
+
+            mainGrid.nextRow()
+                .child(
+                    p.left()
+                        .asWidget())
+                .child(p.right());
         }
-    }
 
-    @Override
-    public void beforeResize(boolean onOpen) {
-        super.beforeResize(onOpen);
-
-        int div = dividerPosition.apply(this);
-
-        for (RowData p : rows) {
-            p.row()
-                .resize(this, p.state(), p.widget(), div);
-        }
+        child(mainGrid);
     }
 
     public static SettingsPanelBuilder builder() {

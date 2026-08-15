@@ -8,7 +8,6 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.metatileentity.implementations.MTEHatchMagnet;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
-import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
 
 public class MTEHatchMagnetGui extends MTEHatchBaseGui<MTEHatchMagnet> {
 
@@ -19,9 +18,7 @@ public class MTEHatchMagnetGui extends MTEHatchBaseGui<MTEHatchMagnet> {
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createContentSection(panel, syncManager).child(
-            new ItemSlot().slot(
-                new ModularSlot(machine.inventoryHandler, 0).singletonSlotGroup()
-                    .filter(MTEIndustrialElectromagneticSeparator::isValidElectromagnet))
+            new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, 0).singletonSlotGroup())
                 .center());
     }
 

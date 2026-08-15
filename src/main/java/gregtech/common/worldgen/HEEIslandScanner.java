@@ -9,7 +9,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.LRUCache;
 import gregtech.mixin.interfaces.accessors.HEEChunkProviderAccessor;
 import gregtech.mixin.interfaces.accessors.MapGenIslandAccessor;
-import it.unimi.dsi.fastutil.ints.IntIntMutablePair;
+import it.unimi.dsi.fastutil.ints.IntIntImmutablePair;
 import it.unimi.dsi.fastutil.ints.IntIntPair;
 
 /**
@@ -96,8 +96,6 @@ public class HEEIslandScanner {
         return info;
     }
 
-    private static final IntIntMutablePair POOLED_COORD = IntIntMutablePair.of(0, 0);
-
     public static boolean isWithinRangeOfIsland(int chunkX, int chunkZ) {
         int chunkMinX = chunkX - ISLAND_RADIUS;
         int chunkMaxX = chunkX + ISLAND_RADIUS;
@@ -111,10 +109,7 @@ public class HEEIslandScanner {
 
         for (int z = regionMinZ; z <= regionMaxZ; z++) {
             for (int x = regionMinX; x <= regionMaxX; x++) {
-                POOLED_COORD.left(x)
-                    .right(z);
-
-                RegionInfo region = PER_REGION_CACHE.get(POOLED_COORD);
+                RegionInfo region = PER_REGION_CACHE.get(IntIntImmutablePair.of(x, z));
 
                 if (region.check(chunkMinX, chunkMaxX, chunkMinZ, chunkMaxZ)) return true;
             }

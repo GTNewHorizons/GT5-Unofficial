@@ -103,7 +103,7 @@ import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import appeng.util.ScheduledReason;
 import appeng.util.inv.MEInventoryCrafting;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -112,7 +112,7 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -127,9 +127,8 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchCraftingInputME extends MTEHatchInputBus
-    implements IAddGregtechLogo, IPowerChannelState, ICraftingProvider, IGridProxyable, IDualInputHatchWithPattern,
-    ICustomNameObject, IInterfaceViewable, IMEConnectable {
+public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerChannelState, ICraftingProvider,
+    IGridProxyable, IDualInputHatchWithPattern, ICustomNameObject, IInterfaceViewable, IMEConnectable {
 
     // Each pattern slot in the crafting input hatch has its own internal inventory
     public static class PatternSlot<P extends IMetaTileEntity & IDualInputHatch>
@@ -169,9 +168,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                         itemInventory.add(item);
                     }
                 } else {
-                    GTMod.GT_FML_LOGGER.warn(
-                        "An error occurred while loading contents of ME Crafting Input Bus. This item has been voided: "
-                            + tagItemStack);
+                    GTLoggers.GT_FML_LOGGER.warn(
+                        "An error occurred while loading contents of ME Crafting Input Bus. This item has been voided: {}",
+                        tagItemStack);
                 }
             }
             NBTTagList fluidInv = nbt.getTagList("fluidInventory", Constants.NBT.TAG_COMPOUND);
@@ -183,9 +182,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                         fluidInventory.add(fluid);
                     }
                 } else {
-                    GTMod.GT_FML_LOGGER.warn(
-                        "An error occurred while loading contents of ME Crafting Input Bus. This fluid has been voided: "
-                            + tagFluidStack);
+                    GTLoggers.GT_FML_LOGGER.warn(
+                        "An error occurred while loading contents of ME Crafting Input Bus. This fluid has been voided: {}",
+                        tagFluidStack);
                 }
             }
         }
@@ -256,11 +255,14 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
             if (patternDetails != null) {
                 for (IAEStack<?> singleInput : patternDetails.getAEInputs()) {
-                    if (singleInput == null) continue;
-                    if (singleInput instanceof IAEItemStack ais) {
-                        inputItems = ArrayUtils.addAll(inputItems, ais.getItemStack());
-                    } else if (singleInput instanceof IAEFluidStack ifs) {
-                        inputFluids = ArrayUtils.addAll(inputFluids, ifs.getFluidStack());
+                    switch (singleInput) {
+                        case null -> {
+                            continue;
+                        }
+                        case IAEItemStack ais -> inputItems = ArrayUtils.addAll(inputItems, ais.getItemStack());
+                        case IAEFluidStack ifs -> inputFluids = ArrayUtils.addAll(inputFluids, ifs.getFluidStack());
+                        default -> {
+                        }
                     }
                 }
             }
@@ -351,20 +353,21 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                     world.spawnEntityInWorld(entityItem);
                 }
             }
+
+            // Delete zero size stacks
+            this.isEmpty();
         }
 
         private void insertItem(IAEItemStack inserted) {
             final List<ItemStack> temp = new ArrayList<>();
+            final ItemStack compareStack = inserted.getItemStack();
             for (ItemStack itemStack : itemInventory) {
-                if (GTUtility.areStacksEqual(inserted.getItemStack(), itemStack)) {
-                    if (itemStack.stackSize > Integer.MAX_VALUE - inserted.getStackSize()) {
+                if (itemStack.stackSize == Integer.MAX_VALUE) continue;
+                if (GTUtility.areStacksEqual(compareStack, itemStack)) {
+                    if (inserted.getStackSize() > Integer.MAX_VALUE
+                        || itemStack.stackSize > Integer.MAX_VALUE - inserted.getStackSize()) {
                         inserted.decStackSize(Integer.MAX_VALUE - itemStack.stackSize);
                         itemStack.stackSize = Integer.MAX_VALUE;
-
-                        if (inserted.getStackSize() > Integer.MAX_VALUE) {
-                            inserted.decStackSize(Integer.MAX_VALUE);
-                            temp.add(itemStack.copy());
-                        }
                     } else {
                         itemStack.stackSize += (int) inserted.getStackSize();
                         return;
@@ -386,16 +389,14 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
         private void insertFluid(IAEFluidStack inserted) {
             final List<FluidStack> temp = new ArrayList<>();
+            final FluidStack compareStack = inserted.getFluidStack();
             for (FluidStack fluidStack : fluidInventory) {
-                if (GTUtility.areFluidsEqual(inserted.getFluidStack(), fluidStack)) {
-                    if (fluidStack.amount > Integer.MAX_VALUE - inserted.getStackSize()) {
+                if (fluidStack.amount == Integer.MAX_VALUE) continue;
+                if (GTUtility.areFluidsEqual(compareStack, fluidStack)) {
+                    if (inserted.getStackSize() > Integer.MAX_VALUE
+                        || fluidStack.amount > Integer.MAX_VALUE - inserted.getStackSize()) {
                         inserted.decStackSize(Integer.MAX_VALUE - fluidStack.amount);
                         fluidStack.amount = Integer.MAX_VALUE;
-
-                        if (inserted.getStackSize() > Integer.MAX_VALUE) {
-                            inserted.decStackSize(Integer.MAX_VALUE);
-                            temp.add(fluidStack.copy());
-                        }
                     } else {
                         fluidStack.amount += (int) inserted.getStackSize();
                         return;
@@ -418,13 +419,18 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         public boolean insertItemsAndFluids(MEInventoryCrafting inventoryCrafting) {
             for (int i = 0; i < inventoryCrafting.getSizeInventory(); ++i) {
                 final IAEStack<?> aes = inventoryCrafting.getAEStackInSlot(i);
-                if (aes == null) continue;
-
-                if (aes instanceof IAEFluidStack ifs) { // insert fluid
-                    insertFluid(ifs);
-                } else if (aes instanceof IAEItemStack ais) { // insert item
-                    insertItem(ais);
+                switch (aes) {
+                    case null -> {
+                        continue;
+                    }
+                    case IAEFluidStack ifs ->  // insert fluid
+                        insertFluid(ifs);
+                    case IAEItemStack ais ->  // insert item
+                        insertItem(ais);
+                    default -> {
+                    }
                 }
+
             }
             return true;
         }
@@ -517,6 +523,15 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             }
             if (aTimer % 20 == 0) {
                 getBaseMetaTileEntity().setActive(isActive());
+            }
+            if (justHadNewItems) {
+                for (IHatchWatcher watcher : watchers) {
+                    watcher.scheduleRecipeCheckImmediate();
+                }
+                for (MTEHatchCraftingInputSlave slave : proxyHatches) {
+                    slave.onParentInvChange();
+                }
+                justHadNewItems = false;
             }
         }
     }
@@ -635,9 +650,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             gridProxy = new AENetworkProxy(this, "proxy", ItemList.Hatch_CraftingInput_Bus_ME.get(1), true);
             gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
             updateValidGridProxySides();
-            if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
-                getBaseMetaTileEntity().getWorld()
-                    .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
         }
 
         return this.gridProxy;
@@ -698,6 +710,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
     @Override
     public String getNameSuffix() {
+        if (hasCustomName()) return "";
+
         StringBuilder suffix = new StringBuilder();
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
@@ -714,7 +728,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         }
         if (manualSlots.length() > 0) {
             try {
-                suffix.append(String.format(Gregtech.machines.cibManualSlotsSuffixFormat, manualSlots));
+                suffix.append(String.format(Gregtech.machines.itemSlotsSuffixFormat, manualSlots));
             } catch (IllegalFormatException ignored) {}
         }
 
@@ -800,9 +814,9 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             if (pattern != null) {
                 internalInventory[patternSlot] = new PatternSlot<>(pattern, patternSlotNBT, this);
             } else {
-                GTMod.GT_FML_LOGGER.warn(
-                    "An error occurred while loading contents of ME Crafting Input Bus. This pattern has been voided: "
-                        + patternSlotNBT);
+                GTLoggers.GT_FML_LOGGER.warn(
+                    "An error occurred while loading contents of ME Crafting Input Bus. This pattern has been voided: {}",
+                    patternSlotNBT);
             }
         }
 
@@ -832,7 +846,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         disablePatternOptimization = aNBT.getBoolean("disablePatternOptimization");
         if (aNBT.hasKey("showPattern")) showPattern = aNBT.getBoolean("showPattern");
 
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
 
         // Sync inventories to ensure that the real inventory matches what AE2 is seeing.
@@ -859,15 +873,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     public String[] getInfoData() {
         List<String> ret = new ArrayList<>();
         ret.add(
-            (getProxy() != null && getProxy().isActive())
-                ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
-                : StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.hatch.crafting_input_me.bus.offline",
-                    getAEDiagnostics()));
-        ret.add(
-            StatCollector.translateToLocal(
-                "GT5U.infodata.hatch.crafting_input_me.show_pattern." + (showPattern ? "enable" : "disabled")));
-        ret.add(StatCollector.translateToLocal("GT5U.infodata.hatch.internal_inventory"));
+            (getProxy() != null && getProxy().isActive()) ? "GT5U.infodata.hatch.crafting_input_me.bus.online"
+                : IGregTechDeviceInformation
+                    .encode("GT5U.infodata.hatch.crafting_input_me.bus.offline", getAEDiagnostics()));
+        ret.add("GT5U.infodata.hatch.crafting_input_me.show_pattern." + (showPattern ? "enable" : "disabled"));
+        ret.add("GT5U.infodata.hatch.internal_inventory");
         int i = 0;
         for (PatternSlot<MTEHatchCraftingInputME> slot : internalInventory) {
             if (slot == null) continue;
@@ -876,7 +886,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
             i += 1;
             ret.add(
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation.encode(
                     "GT5U.infodata.hatch.internal_inventory.slot",
                     i,
                     EnumChatFormatting.BLUE + describePattern(slot.getPatternDetails()) + EnumChatFormatting.RESET));
@@ -1164,10 +1174,10 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             if (slot == null) continue;
             ICraftingPatternDetails details = slot.getPatternDetails();
             if (details == null) {
-                GTMod.GT_FML_LOGGER.warn(
-                    "Found an invalid pattern at " + getBaseMetaTileEntity().getCoords()
-                        + " in dim "
-                        + getBaseMetaTileEntity().getWorld().provider.dimensionId);
+                GTLoggers.GT_FML_LOGGER.warn(
+                    "Found an invalid pattern at {} in dim {}",
+                    getBaseMetaTileEntity().getCoords(),
+                    getBaseMetaTileEntity().getWorld().provider.dimensionId);
                 continue;
             }
             craftingTracker.addCraftingOption(this, details);
@@ -1241,10 +1251,13 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     }
 
     @Override
-    public boolean justUpdated() {
-        boolean ret = justHadNewItems;
-        justHadNewItems = false;
-        return ret;
+    public void addWatcher(IHatchWatcher watcher) {
+        watchers.add(watcher);
+    }
+
+    @Override
+    public void removeWatcher(IHatchWatcher watcher) {
+        watchers.remove(watcher);
     }
 
     @Override
@@ -1423,5 +1436,20 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             TIER_COLORS[6] + VN[6],
             StatCollector.translateToLocal("gt.blockmachines.input_bus_crafting_me.not_support_fluid.desc")
                 + GTSplit.LB);
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        if (index < SLOT_CIRCUIT) {
+            // if its a pattern slot, only accept patterns
+            return itemStack != null && itemStack.getItem() instanceof ICraftingPatternItem
+                && super.isItemValidForSlot(index, itemStack);
+        }
+        return super.isItemValidForSlot(index, itemStack);
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 1;
     }
 }

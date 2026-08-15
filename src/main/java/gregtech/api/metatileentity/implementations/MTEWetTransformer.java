@@ -72,7 +72,9 @@ public class MTEWetTransformer extends MTETransformer {
             super.getDescription()[0],
             CommonValues.TEC_MARK_GENERAL,
             16,
-            64);
+            64,
+            8,
+            32);
     }
 
     @Override
@@ -94,6 +96,14 @@ public class MTEWetTransformer extends MTETransformer {
             return getBaseMetaTileEntity().isAllowedToWork() ? 10 : 40;
         }
         return getBaseMetaTileEntity().isAllowedToWork() ? 20 : 80;
+    }
+
+    @Override
+    public long displayedAmperesIn() {
+        if (mHalfMode) {
+            return getBaseMetaTileEntity().isAllowedToWork() ? 8 : 32;
+        }
+        return getBaseMetaTileEntity().isAllowedToWork() ? 16 : 64;
     }
 
     @Override

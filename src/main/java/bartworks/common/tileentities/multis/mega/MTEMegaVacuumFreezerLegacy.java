@@ -35,7 +35,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -50,14 +49,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
@@ -68,7 +69,7 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasingsAbstract;
 
 public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuumFreezerLegacy>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     public MTEMegaVacuumFreezerLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -242,7 +243,7 @@ public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuum
                     EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addSeparator()
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addUnlimitedTierSkips()
             .addSeparator()
             .addInfo("Upgrade to Tier 2 to unlock " + EnumChatFormatting.DARK_AQUA + "Subspace Cooling.")
@@ -449,50 +450,37 @@ public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuum
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int aColorIndex, boolean aActive, boolean aRedstone) {
-        ITexture[] rTexture;
-        if (side == facing) {
-            if (aActive) {
-                rTexture = new ITexture[] { casingTexturePages[0][17], TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] { casingTexturePages[0][17], TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_VACUUM_FREEZER)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { casingTexturePages[0][17] };
-        }
-        return rTexture;
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_VACUUM_FREEZER,
+            OVERLAY_FRONT_VACUUM_FREEZER_GLOW,
+            OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE,
+            OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return casingTexturePages[0][17];
     }
 
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add(StatCollector.translateToLocalFormatted("BW.infoData.mega_vacuum_freezer.tier", mTier));
+        info.add(IGregTechDeviceInformation.encode("BW.infoData.mega_vacuum_freezer.tier", mTier));
         if (mTier == 2) {
             if (currentCoolingFluid != null) {
                 info.add(
-                    StatCollector.translateToLocalFormatted(
+                    IGregTechDeviceInformation.encode(
                         "BW.infoData.mega_vacuum_freezer.subspace_cooling.active",
                         currentCoolingFluid.getStack()
                             .getLocalizedName()));
             } else {
-                info.add(StatCollector.translateToLocal("BW.infoData.mega_vacuum_freezer.subspace_cooling.inactive"));
+                info.add("BW.infoData.mega_vacuum_freezer.subspace_cooling.inactive");
             }
         }
         return info.toArray(new String[] {});

@@ -22,11 +22,12 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants.NBT;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.GTValues;
 import gregtech.api.items.armor.ArmorContext.ArmorContextImpl;
 import gregtech.api.items.armor.AugmentBuilder.AugmentCategory;
@@ -35,7 +36,6 @@ import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
-import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
@@ -55,23 +55,28 @@ public class ArmorState {
     public double charge;
 
     public int visDiscount;
-    public float speedBoost, jumpBoost;
+    public float manaDiscount;
+    public float speedBoostMulti, jumpBoostMulti;
 
     public void addArmorInformation(ArmorContext context, List<String> tooltip) {
         boolean showAllInfo = ArmorHelper.isShiftPressed();
 
         if (!showAllInfo) {
-            tooltip.add(GRAY + GTUtility.translate("GT5U.armor.tooltip.hold_shift"));
+            tooltip.add(GRAY + StatCollector.translateToLocal("GT5U.armor.tooltip.hold_shift"));
         }
 
         if (showAllInfo) {
             if (frame != null) {
-                tooltip.add(GRAY + GTUtility.translate("GT5U.armor.tooltip.armorframe", frame.getLocalizedName()));
+                tooltip.add(
+                    GRAY + StatCollector
+                        .translateToLocalFormatted("GT5U.armor.tooltip.armorframe", frame.getLocalizedName()));
                 tooltip.add("");
             }
 
             if (core != null) {
-                tooltip.add(GRAY + GTUtility.translate("GT5U.armor.tooltip.energycorelabel", core.getLocalizedName()));
+                tooltip.add(
+                    GRAY + StatCollector
+                        .translateToLocalFormatted("GT5U.armor.tooltip.energycorelabel", core.getLocalizedName()));
                 tooltip.add("");
             }
 
@@ -82,7 +87,7 @@ public class ArmorState {
 
                 if (!printedHeader) {
                     printedHeader = true;
-                    tooltip.add(GRAY + GTUtility.translate("GT5U.armor.tooltip.installed_augments"));
+                    tooltip.add(GRAY + StatCollector.translateToLocal("GT5U.armor.tooltip.installed_augments"));
                 }
 
                 tooltip.add(GRAY + "- " + behavior.getDisplayName());
@@ -97,7 +102,7 @@ public class ArmorState {
 
                 if (!printedHeader) {
                     printedHeader = true;
-                    tooltip.add(GREEN + GTUtility.translate("GT5U.armor.tooltip.active_augments"));
+                    tooltip.add(GREEN + StatCollector.translateToLocal("GT5U.armor.tooltip.active_augments"));
                 }
 
                 tooltip.add("- " + behavior.getDisplayName());
@@ -119,7 +124,9 @@ public class ArmorState {
             String capacity = infinite ? "∞" : formatNumber(core.getChargeMax());
             String voltage = formatNumber(GTValues.V[core.getChargeTier()]);
 
-            tooltip.add(AQUA + GTUtility.translate("item.itemBaseEuItem.tooltip.3", stored, capacity, voltage));
+            tooltip.add(
+                AQUA + StatCollector
+                    .translateToLocalFormatted("item.itemBaseEuItem.tooltip.3", stored, capacity, voltage));
         }
 
         if (showAllInfo) addSeparatorIfNeeded(tooltip);
@@ -236,7 +243,7 @@ public class ArmorState {
 
         NBTTagCompound augmentTag = tag.getCompoundTag("augments");
 
-        for (AugmentCategory category : AugmentCategory.values()) {
+        for (AugmentCategory category : AugmentCategory.VALUES) {
             NBTTagCompound categoryTag = augmentTag.getCompoundTag(Integer.toString(category.ordinal()));
 
             for (Map.Entry<String, NBTBase> e : ((Map<String, NBTBase>) categoryTag.tagMap).entrySet()) {
@@ -276,9 +283,12 @@ public class ArmorState {
         // noinspection unchecked
         for (NBTTagString str : (List<NBTTagString>) tag.getTagList("active", NBT.TAG_STRING).tagList) {
             try {
-                state.activeBehaviors.add(BehaviorName.valueOf(str.func_150285_a_()));
+                BehaviorName name = BehaviorName.valueOf(str.func_150285_a_());
+                if (state.behaviors.containsKey(name)) {
+                    state.activeBehaviors.add(name);
+                }
             } catch (IllegalArgumentException e) {
-                GTMod.GT_FML_LOGGER.error("Could not load active behavior: {}", str.func_150285_a_(), e);
+                GTLoggers.GT_FML_LOGGER.error("Could not load active behavior: {}", str.func_150285_a_(), e);
             }
         }
 
@@ -316,7 +326,7 @@ public class ArmorState {
         NBTTagCompound augmentTag = new NBTTagCompound();
         tag.setTag("augments", augmentTag);
 
-        for (AugmentCategory category : AugmentCategory.values()) {
+        for (AugmentCategory category : AugmentCategory.VALUES) {
             augmentTag.setTag(Integer.toString(category.ordinal()), new NBTTagCompound());
         }
 

@@ -6,9 +6,9 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -23,10 +23,10 @@ import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
@@ -38,7 +38,7 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
     private Comparison comparison = Comparison.EQ;
 
     public MTEHatchNaniteDetector(int aID, String aName) {
-        super(aID, aName, VoltageIndex.UEV, null);
+        super(aID, aName, VoltageIndex.UIV, null);
     }
 
     protected MTEHatchNaniteDetector(MTEHatchNaniteDetector prototype) {
@@ -101,6 +101,11 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
         return new Gui().build(data, syncManager, uiSettings);
     }
 
+    @Override
+    public GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TECTECH_STANDARD;
+    }
+
     private class Gui extends MTEHatchBaseGui<MTEHatchNaniteDetector> {
 
         public Gui() {
@@ -108,39 +113,30 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
         }
 
         @Override
-        protected UITexture getLogoTexture() {
-            return GTGuiTextures.TT_PICTURE_TECTECH_LOGO;
-        }
-
-        @Override
         protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
             // spotless:off
             return super.createContentSection(panel, syncManager)
                 .child(SettingsPanel.builder()
-                    .setDividerPosition(60)
                     .addEnumCycleButton(
                         IKey.lang("GT5U.gui.text.bec-operation"),
                         Comparison.class,
                         () -> comparison,
                         v -> comparison = v)
-                    .addLongEditor(
+                    .addIntEditor(
                         IKey.lang("GT5U.gui.text.bec-threshold"),
                         () -> configuredTier,
-                        l -> configuredTier = (int) l,
-                        (panel1, syncManager1, widget) -> {
-                            widget.numbersInt(1, Arrays.stream(NaniteTier.values()).mapToInt(NaniteTier::getTier).max().getAsInt());
-                        })
+                        i -> configuredTier = i,
+                    i -> Math.clamp(i, 1, Arrays.stream(NaniteTier.values()).mapToInt(NaniteTier::getTier).max().getAsInt()))
                     .addReadout(
                         IKey.lang("GT5U.gui.text.bec-current"),
                         new IntSyncValue(() -> requiredTier == null ? -1 : requiredTier.ordinal()),
                         nanite -> {
                             NaniteTier tier = GTDataUtils.getIndexSafe(NaniteTier.values(), nanite);
 
-                            return IKey.str(tier == null ? GTUtility.translate("GT5U.gui.text.nil") : tier.describe());
+                            return IKey.str(tier == null ? StatCollector.translateToLocal("GT5U.gui.text.nil") : tier.describe());
                         })
-                    .build(panel, syncManager)
-                    .widthRel(1)
-                    .coverChildrenHeight());
+                    .build(panel, syncManager, getContentHolderHeight())
+                    .horizontalCenter());
             // spotless:on
         }
     }

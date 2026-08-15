@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -320,9 +322,11 @@ class GTRecipeLookupBuilderTest {
         }
         try {
             Field field = Items.class.getDeclaredField("feather");
-            Object base = UNSAFE.staticFieldBase(field);
-            long offset = UNSAFE.staticFieldOffset(field);
-            UNSAFE.putObject(base, offset, new Item());
+
+            VarHandle handle = MethodHandles.privateLookupIn(Items.class, MethodHandles.lookup())
+                .unreflectVarHandle(field);
+
+            handle.set(new Item());
         } catch (ReflectiveOperationException e) {
             throw new AssertionError(e);
         }

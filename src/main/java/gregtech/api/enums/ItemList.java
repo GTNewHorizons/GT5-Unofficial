@@ -1,5 +1,6 @@
 package gregtech.api.enums;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.NI;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
@@ -18,7 +19,6 @@ import com.google.common.collect.ImmutableList;
 import gregtech.GTMod;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -108,6 +108,7 @@ public enum ItemList implements IItemContainer {
     IC2_LapotronCrystal,
     Tool_Vajra,
     Vajra_Core,
+    NetworkAnalyzer,
     Magnetron,
     Item_Power_Goggles,
     Shape_Empty,
@@ -172,6 +173,11 @@ public enum ItemList implements IItemContainer {
     Shape_Extruder_Turbine_Blade,
     Shape_Extruder_Small_Gear,
     Shape_Extruder_ToolHeadDrill,
+
+    // IC2 Replacements
+    PadBouncy,
+    PadSticky,
+    FenceIron,
 
     Credit_Copper,
     Credit_Iron,
@@ -1680,6 +1686,7 @@ public enum ItemList implements IItemContainer {
     Cover_RedstoneTransmitterInternal,
     Cover_RedstoneReceiver,
     Cover_WirelessController,
+    Cover_AdvancedWirelessController,
 
     LargeSteamTurbine,
     LargeGasTurbine,
@@ -1760,6 +1767,8 @@ public enum ItemList implements IItemContainer {
     CondensateGuidanceCoil,
     ElectromagneticWaveguide,
 
+    ReinforcedGlass,
+
     MobRep_LV,
     MobRep_MV,
     MobRep_HV,
@@ -1775,6 +1784,7 @@ public enum ItemList implements IItemContainer {
     MagLevPython_HV,
     MagLevPython_EV,
 
+    Block_ReinforcedConcrete,
     Block_BronzePlate,
     Block_SteelPlate,
     Block_TitaniumPlate,
@@ -2199,6 +2209,18 @@ public enum ItemList implements IItemContainer {
     GlassTintedIndustrialLightGray,
     GlassTintedIndustrialGray,
     GlassTintedIndustrialBlack,
+    GlassTintedIndustrialBrown,
+    GlassTintedIndustrialRed,
+    GlassTintedIndustrialOrange,
+    GlassTintedIndustrialYellow,
+    GlassTintedIndustrialLime,
+    GlassTintedIndustrialGreen,
+    GlassTintedIndustrialCyan,
+    GlassTintedIndustrialLightBlue,
+    GlassTintedIndustrialBlue,
+    GlassTintedIndustrialPurple,
+    GlassTintedIndustrialMagenta,
+    GlassTintedIndustrialPink,
     BlockIndustrialWaterPlantCasing,
     BlockSterileWaterPlantCasing,
     BlockFlocculationCasing,
@@ -2693,6 +2715,7 @@ public enum ItemList implements IItemContainer {
     Casing_Pyrolyse,
     NameRemover,
     Hatch_Nanite,
+    Hatch_Nanite_Singularity,
     Hatch_Catalyst_Bulk,
     Machine_Multi_AirFilterT1,
     Machine_Multi_AirFilterT2,
@@ -2768,6 +2791,9 @@ public enum ItemList implements IItemContainer {
     UHTResistantMesh,
     TaHfNanoparticles,
     NtNanoparticles,
+    DroneCase,
+    Femtocontroller,
+    FuelPellet,
 
     PrecisionFieldSyncCasing,
     MagneticAnchorCasing,
@@ -2842,10 +2868,13 @@ public enum ItemList implements IItemContainer {
     Augment_StepAssist,
     Augment_GogglesOfRevealing,
     Augment_InertiaCanceling,
+    Augment_EldritchStriders,
     Augment_OmniMovement,
+    Augment_ArchmageStriders,
     Augment_Hazmat,
     Augment_Apiarist,
     Augment_SwimSpeed,
+    Augment_ApprenticeStriders,
     Augment_KnockbackResistance,
     Augment_SpeedBoost,
     Augment_JumpBoost,
@@ -2855,7 +2884,7 @@ public enum ItemList implements IItemContainer {
     Augment_WaterBreathing,
     Augment_MilkInfusion,
     Augment_HoloInventory,
-    Augment_Travelers,
+    Augment_Terrasteel,
 
     CompressedOutputBusLuV,
     CompressedOutputBusZPM,
@@ -3100,6 +3129,68 @@ public enum ItemList implements IItemContainer {
     Gravitational_Lens,
     Planck_Manifold,
 
+    CultureNullBioCulture,
+    CultureSaccharomycesCerevisiae,
+    CultureSaccharomycesCerevisiaeVarBayanus,
+    CultureSaccharomycesCerevisiaeVarCerevisiae,
+    CultureEscherichiaCadaver,
+    CultureEscherichiaKoli,
+    CulturePseudomonasVeronii,
+    CultureSaccharomycesEscherichia,
+    CultureBarnadafisArboriatoris,
+    CultureTcetieisFucusSerratus,
+    CultureXenoxeneXenoxsis,
+    CultureOvaEvolutionis,
+    CultureDerivanturCellulaEvolutionis,
+    CultureCellulaBiologicumEvolutione,
+    CultureBinniGrowthMedium,
+    CultureBinniBacteria,
+    CultureCorynebacteriumSludgeMarsensis,
+    CultureMutagenBacteriaASpatio,
+
+    DNABetaLactamase,
+    DNASaccharomycesCerevisiae,
+    DNANull,
+    DNASaccharomycesCerevisiaeVarBayanus,
+    DNASaccharomycesCerevisiaeVarCerevisiae,
+    DNAEscherichiaKoli,
+    DNAPseudomonasVeronii,
+    DNAPseudomonasVeronii2,
+    DNABarnadafisArboriatoris,
+    DNATcetieisFucusSerratus,
+    DNAOvumbac,
+    DNAStemcellbac,
+    DNABiocellbac,
+    DNABinnigrowthmedium,
+    DNABinnibacteria,
+    DNABacterialsludgebac,
+    DNAMutagen,
+
+    PlasmidBetaLactamase,
+    PlasmidSaccharomycesCerevisiae,
+    PlasmidNull,
+    PlasmidSaccharomycesCerevisiaeVarBayanus,
+    PlasmidSaccharomycesCerevisiaeVarCerevisiae,
+    PlasmidEscherichiaKoli,
+    PlasmidPseudomonasVeronii,
+    PlasmidPseudomonasVeronii2,
+    PlasmidBarnadafisArboriatoris,
+    PlasmidTcetieisFucusSerratus,
+    PlasmidOvumbac,
+    PlasmidStemcellbac,
+    PlasmidBiocellbac,
+    PlasmidBinnigrowthmedium,
+    PlasmidBinnibacteria,
+    PlasmidBacterialsludgebac,
+    PlasmidMutagen,
+
+    EmptyPetriDish,
+    EmptyPlasmid,
+    EmptyDNAFlask,
+    DetergentPowder,
+    Agarose,
+    IncubationModule,
+    PlasmaMembrane,
     MetaMaterial_Shielding1,
     MetaMaterial_Shielding2,
     MetaMaterial_Shielding3,
@@ -3143,14 +3234,20 @@ public enum ItemList implements IItemContainer {
             Spray_Color_Used_14, Spray_Color_Used_15 },
         TRANSFORMERS = { Transformer_LV_ULV, Transformer_MV_LV, Transformer_HV_MV, Transformer_EV_HV, Transformer_IV_EV,
             Transformer_LuV_IV, Transformer_ZPM_LuV, Transformer_UV_ZPM, Transformer_MAX_UV },
+        POWER_TRANSFORMERS = { WetTransformer_LV_ULV, WetTransformer_MV_LV, WetTransformer_HV_MV, WetTransformer_EV_HV,
+            WetTransformer_IV_EV, WetTransformer_LuV_IV, WetTransformer_ZPM_LuV, WetTransformer_UV_ZPM,
+            WetTransformer_UHV_UV, WetTransformer_UEV_UHV, WetTransformer_UIV_UEV, WetTransformer_UMV_UIV,
+            WetTransformer_UXV_UMV, WetTransformer_MAX_UXV },
         MACHINE_HULLS = { Hull_ULV, Hull_LV, Hull_MV, Hull_HV, Hull_EV, Hull_IV, Hull_LuV, Hull_ZPM, Hull_UV, Hull_MAX,
             Hull_UEV, Hull_UIV, Hull_UMV, Hull_UXV, Hull_MAXV },
         MACHINE_CASINGS = { Casing_ULV, Casing_LV, Casing_MV, Casing_HV, Casing_EV, Casing_IV, Casing_LuV, Casing_ZPM,
             Casing_UV, Casing_MAX, Casing_UEV, Casing_UIV, Casing_UMV, Casing_UXV, Casing_MAXV },
         HATCHES_DYNAMO = { Hatch_Dynamo_ULV, Hatch_Dynamo_LV, Hatch_Dynamo_MV, Hatch_Dynamo_HV, Hatch_Dynamo_EV,
-            Hatch_Dynamo_IV, Hatch_Dynamo_LuV, Hatch_Dynamo_ZPM, Hatch_Dynamo_UV, Hatch_Dynamo_UHV },
+            Hatch_Dynamo_IV, Hatch_Dynamo_LuV, Hatch_Dynamo_ZPM, Hatch_Dynamo_UV, Hatch_Dynamo_UHV, Hatch_Dynamo_UEV,
+            Hatch_Dynamo_UIV, Hatch_Dynamo_UMV, Hatch_Dynamo_UXV },
         HATCHES_ENERGY = { Hatch_Energy_ULV, Hatch_Energy_LV, Hatch_Energy_MV, Hatch_Energy_HV, Hatch_Energy_EV,
-            Hatch_Energy_IV, Hatch_Energy_LuV, Hatch_Energy_ZPM, Hatch_Energy_UV, Hatch_Energy_UHV },
+            Hatch_Energy_IV, Hatch_Energy_LuV, Hatch_Energy_ZPM, Hatch_Energy_UV, Hatch_Energy_UHV, Hatch_Energy_UEV,
+            Hatch_Energy_UIV, Hatch_Energy_UMV, Hatch_Energy_UXV },
         HATCHES_INPUT = { Hatch_Input_ULV, Hatch_Input_LV, Hatch_Input_MV, Hatch_Input_HV, Hatch_Input_EV,
             Hatch_Input_IV, Hatch_Input_LuV, Hatch_Input_ZPM, Hatch_Input_UV, Hatch_Input_UHV },
         HATCHES_INPUT_BUS = { Hatch_Input_Bus_ULV, Hatch_Input_Bus_LV, Hatch_Input_Bus_MV, Hatch_Input_Bus_HV,
@@ -3250,7 +3347,7 @@ public enum ItemList implements IItemContainer {
     @Override
     public boolean isStackEqual(Object aStack, boolean aWildcard, boolean aIgnoreNBT) {
         if (mDeprecated && !mWarned) {
-            new Exception(this + " is now deprecated").printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(new Exception(this + " is now deprecated"));
             // warn only once
             mWarned = true;
         }
@@ -3262,8 +3359,8 @@ public enum ItemList implements IItemContainer {
     public ItemStack get(long aAmount, Object... aReplacements) {
         sanityCheck();
         if (GTUtility.isStackInvalid(mStack)) {
-            GTLog.out.println("Object in the ItemList is null at:");
-            new NullPointerException().printStackTrace(GTLog.out);
+            GT_FML_LOGGER.debug("Object in the ItemList is null at:");
+            GT_FML_LOGGER.debug(new NullPointerException());
             return GTUtility.copyAmount(aAmount, aReplacements);
         }
         return GTUtility.copyAmount(aAmount, GTOreDictUnificator.get(mStack));
@@ -3306,7 +3403,7 @@ public enum ItemList implements IItemContainer {
                 tWord.substring(1)
                     .toLowerCase(Locale.US));
         }
-        if (tCamelCasedDisplayNameBuilder.length() == 0) {
+        if (tCamelCasedDisplayNameBuilder.isEmpty()) {
             // CamelCased DisplayName is empty, so use hash of aDisplayName
             tCamelCasedDisplayNameBuilder.append(((Long) (long) aDisplayName.hashCode()));
         }
@@ -3367,7 +3464,7 @@ public enum ItemList implements IItemContainer {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         if (mDeprecated && !mWarned) {
-            new Exception(this + " is now deprecated").printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(new Exception(this + " is now deprecated"));
             // warn only once
             mWarned = true;
         }

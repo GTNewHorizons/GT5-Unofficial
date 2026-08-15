@@ -29,13 +29,13 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -228,11 +228,18 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            updateSoundLoops(playBoiling);
+    public void onClientSoundStateChanged() {
+        if (mBoilingSound != null && mBoilingSound.isDonePlaying()) {
+            mBoilingSound = null;
         }
+        if (mHeatingSound != null && mHeatingSound.isDonePlaying()) {
+            mHeatingSound = null;
+        }
+        updateSoundLoops(playBoiling);
+    }
 
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         pollute(aTick);
 
         if (isNotAllowedToWork(aBaseMetaTileEntity, aTick)) return;
@@ -468,7 +475,9 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     protected abstract void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
 
     @Override
-    protected abstract GTGuiTheme getGuiTheme();
+    public GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TIERED_VARIANTS.get(getTieredVariant());
+    }
 
     // this is the mui1 fluid tank, but mui2 has compat with it
     public FluidStackTank getFluidStackTank() {
@@ -489,9 +498,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     }
 
     public com.cleanroommc.modularui.widget.Widget<?> createFuelSlot() {
-        return new ItemSlot().slot(
-            new ModularSlot(inventoryHandler, 2).slotGroup("item_inv")
-                .filter(this::isItemValidFuel))
+        return new ItemSlot().slot(new ModularSlot(inventoryHandler, 2).slotGroup("item_inv"))
             .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_COAL);
     }
 
@@ -506,11 +513,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
             .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST);
     }
 
-    @Override
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.BRONZE;
-    }
-
     public boolean isValidFluidInputSlotItem(@NotNull ItemStack stack) {
         return GTUtility.fillFluidContainer(Materials.Steam.getGas(getSteamCapacity()), stack, false, true) != null
             || isFluidInputAllowed(GTUtility.getFluidForFilledItem(stack, true));
@@ -521,12 +523,13 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     }
 
     @Override
-    public GUITextureSet getGUITextureSet() {
-        return GUITextureSet.STEAM.apply(getSteamVariant());
+    public int getTitleColor() {
+        return getTieredVariant() == TieredVariant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
     }
 
     @Override
-    public int getTitleColor() {
-        return getSteamVariant() == SteamVariant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return (index == 0 && isValidFluidInputSlotItem(itemStack) || index == 2 && isItemValidFuel(itemStack))
+            && super.isItemValidForSlot(index, itemStack);
     }
 }

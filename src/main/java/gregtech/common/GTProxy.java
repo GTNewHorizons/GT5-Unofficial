@@ -1,6 +1,6 @@
 package gregtech.common;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.FluidState.LIQUID;
 import static gregtech.api.enums.FluidState.MOLTEN;
@@ -20,6 +20,7 @@ import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gtnhlanth.util.LanthanidesRecipeOutputs.convertCrafting;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import java.util.ArrayList;
@@ -86,6 +87,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+import com.gtnewhorizon.gtnhlib.teams.TeamDataRegistry;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IFuelHandler;
@@ -109,7 +111,9 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.GTLoggers;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
@@ -132,8 +136,8 @@ import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorEventHandlers;
-import gregtech.api.items.armor.ArmorKeybinds;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
@@ -146,7 +150,6 @@ import gregtech.api.util.GTCLSCompat;
 import gregtech.api.util.GTChunkAssociatedData;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTMusicSystem;
 import gregtech.api.util.GTOreDictUnificator;
@@ -160,7 +163,10 @@ import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.config.OPStuff;
 import gregtech.common.data.GTPowerfailTracker;
+import gregtech.common.data.WirelessEnergyHatchManager;
+import gregtech.common.data.drone.CameraViewportManager;
 import gregtech.common.data.maglev.TetherManager;
+import gregtech.common.entity.EntityDrone;
 import gregtech.common.handlers.OffhandToolFunctionalityHandler;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.MetaGeneratedItem98;
@@ -168,15 +174,19 @@ import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.WirelessChargerManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
+import gregtech.common.networkanalyzer.events.NetworkAnalyzerPlayerTracker;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.powergoggles.PowerGogglesWorldSavedData;
 import gregtech.common.powergoggles.handlers.PowerGogglesEventHandler;
 import gregtech.common.recipes.CALImprintRecipe;
+import gregtech.common.recipes.MacerationStackConversionRecipe;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
 import gregtech.common.worldgen.HEEIslandScanner;
 import gregtech.nei.GTNEIDefaultHandler;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
 
 public class GTProxy implements IFuelHandler {
 
@@ -548,7 +558,6 @@ public class GTProxy implements IFuelHandler {
     public boolean mSurvivalIntoAdventure = false;
     public boolean mNerfedWoodPlank = true;
     public boolean mChangeWoodenVanillaTools = true;
-    public boolean mHungerEffect = true;
     public boolean mIgnoreTcon = true;
     public boolean mAchievements = true;
     private boolean mOreDictActivated = false;
@@ -728,7 +737,9 @@ public class GTProxy implements IFuelHandler {
     public WirelessChargerManager wirelessChargerManager;
     public GTSpawnEventHandler spawnEventHandler;
     public GTPowerfailTracker powerfailTracker;
+    public CameraViewportManager cameraViewportManager;
     public TetherManager tetherManager;
+    public WirelessEnergyHatchManager wirelessEnergyHatchManager;
 
     public SyncedKeybind TOOL_MODE_SWITCH_KEYBIND;
     public SyncedKeybind CTRL_KEYBIND;
@@ -821,7 +832,7 @@ public class GTProxy implements IFuelHandler {
 
     public void onPreInitialization(FMLPreInitializationEvent event) {
         // spotless:off
-        GTLog.out.println("GTMod: Preload-Phase started!");
+        GT_FML_LOGGER.debug("GTMod: Preload-Phase started!");
 
         if (Thaumcraft.isModLoaded()) {
             GregTechAPI.sThaumcraftCompat = new GTThaumcraftCompat();
@@ -835,7 +846,7 @@ public class GTProxy implements IFuelHandler {
                 break;
             }
         }
-        GTLog.out.println("GTMod: Getting required Items of other Mods.");
+        GT_FML_LOGGER.debug("GTMod: Getting required Items of other Mods.");
 
         ItemList.RC_ShuntingWire.set(GTModHandler.getModItem(Railcraft.ID, "machine.delta", 1L, 0));
         ItemList.RC_ShuntingWireFrame.set(GTModHandler.getModItem(Railcraft.ID, "frame", 1L, 0));
@@ -1026,10 +1037,12 @@ public class GTProxy implements IFuelHandler {
         // Register chunk manager with Forge
         GTChunkManager.init();
         // spotless:on
+
+        ArmorActionManager.init();
     }
 
     public void onInitialization(FMLInitializationEvent event) {
-        GTLog.out.println("GTMod: Beginning Load-Phase.");
+        GT_FML_LOGGER.debug("GTMod: Beginning Load-Phase.");
 
         // Clay buckets, which don't get registered until Iguana Tweaks pre-init
         if (IguanaTweaksTinkerConstruct.isModLoaded()) {
@@ -1081,6 +1094,7 @@ public class GTProxy implements IFuelHandler {
             .register(PowerGogglesEventHandler.getInstance());
         MinecraftForge.EVENT_BUS.register(PowerGogglesEventHandler.getInstance());
         MinecraftForge.EVENT_BUS.register(new OffhandToolFunctionalityHandler());
+        NetworkAnalyzerPlayerTracker.init();
         TOOL_MODE_SWITCH_KEYBIND = SyncedKeybind
             .createConfigurable("key.gt.tool_mode_switch", "Gregtech", Keyboard.KEY_PERIOD)
             .registerGlobalListener(MetaGeneratedTool::switchCurrentToolMode)
@@ -1099,10 +1113,8 @@ public class GTProxy implements IFuelHandler {
     }
 
     public void onPostInitialization(FMLPostInitializationEvent event) {
-        GTLog.out.println("GTMod: Beginning PostLoad-Phase.");
+        GT_FML_LOGGER.debug("GTMod: Beginning PostLoad-Phase.");
         GregTechAPI.sPostloadStarted = true;
-
-        new ArmorKeybinds();
 
         // This needs to happen late enough that all of the fluids we need have been registered.
         // onInitialization() seems to be too early, as the New Horizons Core Mod registers some fluids in post-load.
@@ -1118,31 +1130,37 @@ public class GTProxy implements IFuelHandler {
                 break;
             }
         }
-        GTLog.out.println("GTMod: Adding Configs specific for MetaTileEntities");
+        GT_FML_LOGGER.debug("GTMod: Adding Configs specific for MetaTileEntities");
         for (int i = 1; i < GregTechAPI.METATILEENTITIES.length; i++) {
             if (GregTechAPI.METATILEENTITIES[i] != null) {
                 try {
                     GregTechAPI.METATILEENTITIES[i].onConfigLoad();
                 } catch (Exception e) {
-                    GT_FML_LOGGER.error("Could not load config for MTE " + GregTechAPI.METATILEENTITIES[i], e);
+                    GT_FML_LOGGER.error("Could not load config for MTE {}", GregTechAPI.METATILEENTITIES[i], e);
                 }
             }
         }
-        GTLog.out.println("GTMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
+        GT_FML_LOGGER.debug("GTMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
         for (Materials aMaterial : Materials.values()) {
             if ((aMaterial.mUnifiable) && (aMaterial.mMaterialInto == aMaterial)) {
                 if (!aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
-                        GTModHandler.RecipeBits.BITS_STD,
+                        convertCrafting(
+                            aMaterial.mMacerateInto,
+                            GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L)),
+                        GTModHandler.RecipeBits.BITS_STD | GTModHandler.RecipeBits.DONT_UNIFY_OUTPUT,
                         new Object[] { "h", "X", 'X', OrePrefixes.crushedCentrifuged.get(aMaterial) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
-                        GTModHandler.RecipeBits.BITS_STD,
+                        convertCrafting(
+                            aMaterial.mMacerateInto,
+                            GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L)),
+                        GTModHandler.RecipeBits.BITS_STD | GTModHandler.RecipeBits.DONT_UNIFY_OUTPUT,
                         new Object[] { "h", "X", 'X', OrePrefixes.crystalline.get(aMaterial) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
-                        GTModHandler.RecipeBits.BITS_STD,
+                        convertCrafting(
+                            aMaterial.mMacerateInto,
+                            GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L)),
+                        GTModHandler.RecipeBits.BITS_STD | GTModHandler.RecipeBits.DONT_UNIFY_OUTPUT,
                         new Object[] { "h", "X", 'X', OrePrefixes.crystal.get(aMaterial) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1L),
@@ -1196,13 +1214,15 @@ public class GTProxy implements IFuelHandler {
         // MUI2, but for the time being it stays here. -- miozune
         CoverRegistry.reloadCoverColorOverrides();
         CALImprintRecipe.register();
+        EntityRegistry.registerModEntity(EntityDrone.class, "GTDrone", 1, GTMod.GT, 64, 3, true);
+        MacerationStackConversionRecipe.register();
     }
 
     public void onLoadComplete(FMLLoadCompleteEvent event) {}
 
     public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
         // spotless:off
-        GTLog.out.println("GTMod: firing FMLServerAboutToStartEvent !");
+        GT_FML_LOGGER.debug("GTMod: firing FMLServerAboutToStartEvent !");
         GTChunkAssociatedData.clearAll();
         PLAYERS_BY_UUID = new HashMap<>();
         UUID_BY_NAME = new HashMap<>();
@@ -1211,18 +1231,24 @@ public class GTProxy implements IFuelHandler {
         wirelessChargerManager = new WirelessChargerManager();
         spawnEventHandler = new GTSpawnEventHandler();
         powerfailTracker = new GTPowerfailTracker();
+        if (cameraViewportManager == null) cameraViewportManager = new CameraViewportManager();
         tetherManager = new TetherManager();
+        wirelessEnergyHatchManager = new WirelessEnergyHatchManager();
         FMLCommonHandler.instance().bus().register(wirelessChargerManager);
         MinecraftForge.EVENT_BUS.register(spawnEventHandler);
         FMLCommonHandler.instance().bus().register(powerfailTracker);
         MinecraftForge.EVENT_BUS.register(powerfailTracker);
+        TeamDataRegistry.register(GTPowerfailTracker.DATA_NAME, GTPowerfailTracker.PowerfailData::new);
         FMLCommonHandler.instance().bus().register(tetherManager);
         MinecraftForge.EVENT_BUS.register(tetherManager);
+        FMLCommonHandler.instance().bus().register(cameraViewportManager);
+        MinecraftForge.EVENT_BUS.register(cameraViewportManager);
+        FMLCommonHandler.instance().bus().register(wirelessEnergyHatchManager);
         // spotless:off
     }
 
     public void onServerStarting(FMLServerStartingEvent event) {
-        GTLog.out.println("GTMod: firing FMLServerStartingEvent !");
+        GT_FML_LOGGER.debug("GTMod: firing FMLServerStartingEvent !");
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
             if ((tData.filledContainer.getItem() == Items.potionitem) && (tData.filledContainer.getItemDamage() == 0)) {
                 tData.fluid.amount = 0;
@@ -1242,7 +1268,7 @@ public class GTProxy implements IFuelHandler {
 
     public void onServerStarted(FMLServerStartedEvent event) {
         MTEDroneCentre.getCentreMap().clear();
-        GTLog.out.println("GTMod: Cleaning up all OreDict Crafting Recipes, which have an empty List in them, since they are never meeting any Condition.");
+        GT_FML_LOGGER.debug("GTMod: Cleaning up all OreDict Crafting Recipes, which have an empty List in them, since they are never meeting any Condition.");
         List<IRecipe> tList = CraftingManager.getInstance().getRecipeList();
         for (int i = 0; i < tList.size(); i++) {
             if ((tList.get(i) instanceof ShapedOreRecipe)) {
@@ -1284,14 +1310,23 @@ public class GTProxy implements IFuelHandler {
             FMLCommonHandler.instance().bus().unregister(powerfailTracker);
             MinecraftForge.EVENT_BUS.unregister(powerfailTracker);
         }
+        if (cameraViewportManager != null) {
+            FMLCommonHandler.instance().bus().unregister(cameraViewportManager);
+            MinecraftForge.EVENT_BUS.unregister(cameraViewportManager);
+            cameraViewportManager.resetStatus();
+        }
         if (tetherManager != null) {
             FMLCommonHandler.instance().bus().unregister(tetherManager);
             MinecraftForge.EVENT_BUS.unregister(tetherManager);
+        }
+        if (wirelessEnergyHatchManager != null) {
+            FMLCommonHandler.instance().bus().unregister(wirelessEnergyHatchManager);
         }
         wirelessChargerManager = null;
         spawnEventHandler = null;
         powerfailTracker = null;
         tetherManager = null;
+        wirelessEnergyHatchManager = null;
         PLAYERS_BY_UUID = null;
         UUID_BY_NAME = null;
         // spotless:on
@@ -1301,6 +1336,9 @@ public class GTProxy implements IFuelHandler {
             .onServerStopped(event);
         GTChunkManager.instance.onServerStopped();
         dimensionWisePollution.clear();
+
+        VacuumFactoryGrid.onServerClosed();
+        BECFactoryGrid.onServerClosed();
     }
 
     /**
@@ -1505,7 +1543,7 @@ public class GTProxy implements IFuelHandler {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
 
@@ -1526,14 +1564,14 @@ public class GTProxy implements IFuelHandler {
             || (aEvent.Ore.getItem() == null)
             || (aEvent.Name == null)
             || (aEvent.Name.isEmpty())
-            || (aEvent.Name.replaceAll("_", "")
+            || (aEvent.Name.replace("_", "")
                 .length() - aEvent.Name.length() == 9)) {
             if (aOriginalMod.equals(GregTech.ID)) {
                 aOriginalMod = "UNKNOWN";
             }
-            GTLog.ore.println(
-                aOriginalMod
-                    + " did something very bad! The registration is too invalid to even be shown properly. This happens only if you register null, invalid Items, empty Strings or even nonexisting Events to the OreDict.");
+            GTLoggers.GT_ORE_DICT_LOGGER.info(
+                "{} did something very bad! The registration is too invalid to even be shown properly. This happens only if you register null, invalid Items, empty Strings or even nonexisting Events to the OreDict.",
+                aOriginalMod);
             throw new IllegalArgumentException(
                 aOriginalMod
                     + " did something very bad! The registration is too invalid to even be shown properly. This happens only if you register null, invalid Items, empty Strings or even nonexisting Events to the OreDict.");
@@ -1557,7 +1595,7 @@ public class GTProxy implements IFuelHandler {
             this.mRegisteredOres.add(aEvent.Ore);
             if (this.mIgnoredItems.contains(aEvent.Name)) {
                 if ((aEvent.Name.startsWith("item"))) {
-                    GTLog.ore.println(tModToName);
+                    GTLoggers.GT_ORE_DICT_LOGGER.info(tModToName);
                     if (aEvent.Name.equals("itemCopperWire")) {
                         GTOreDictUnificator.registerOre(OreDictNames.craftingWireCopper, aEvent.Ore);
                     }
@@ -1567,7 +1605,7 @@ public class GTProxy implements IFuelHandler {
                     return;
                 }
             } else if (this.mIgnoredNames.contains(aEvent.Name)) {
-                GTLog.ore.println(tModToName + " is getting ignored via hardcode.");
+                GTLoggers.GT_ORE_DICT_LOGGER.info("{} is getting ignored via hardcode.", tModToName);
                 return;
             } else if (aEvent.Name.equals("stone")) {
                 GTOreDictUnificator.registerOre("stoneSmooth", aEvent.Ore);
@@ -1579,8 +1617,8 @@ public class GTProxy implements IFuelHandler {
                 || (aEvent.Name.contains(":"))
                 || (aEvent.Name.contains("."))
                 || (aEvent.Name.contains("$"))) {
-                    GTLog.ore
-                        .println(tModToName + " is using a private Prefix and is therefor getting ignored properly.");
+                    GTLoggers.GT_ORE_DICT_LOGGER
+                        .info("{} is using a private Prefix and is therefor getting ignored properly.", tModToName);
                     return;
                 } else if (aEvent.Name.equals("copperWire")) {
                     GTOreDictUnificator.registerOre(OreDictNames.craftingWireCopper, aEvent.Ore);
@@ -1631,14 +1669,15 @@ public class GTProxy implements IFuelHandler {
                     GTOreDictUnificator.registerOre(OrePrefixes.compressed, Materials.Aluminium, aEvent.Ore);
                     return;
                 } else if (aEvent.Name.contains(" ")) {
-                    GTLog.ore.println(
-                        tModToName + " is getting re-registered because the OreDict Name containing invalid spaces.");
-                    GTOreDictUnificator
-                        .registerOre(aEvent.Name.replaceAll(" ", ""), GTUtility.copyAmount(1, aEvent.Ore));
+                    GTLoggers.GT_ORE_DICT_LOGGER.info(
+                        "{} is getting re-registered because the OreDict Name containing invalid spaces.",
+                        tModToName);
+                    GTOreDictUnificator.registerOre(aEvent.Name.replace(" ", ""), GTUtility.copyAmount(1, aEvent.Ore));
                     aEvent.Ore.setStackDisplayName("Invalid OreDictionary Tag");
                     return;
                 } else if (this.mInvalidNames.contains(aEvent.Name)) {
-                    GTLog.ore.println(tModToName + " is wrongly registered and therefor getting ignored.");
+                    GTLoggers.GT_ORE_DICT_LOGGER
+                        .info("{} is wrongly registered and therefor getting ignored.", tModToName);
 
                     return;
                 }
@@ -1653,14 +1692,15 @@ public class GTProxy implements IFuelHandler {
             if (aPrefix == null) {
                 if (aEvent.Name.toLowerCase()
                     .equals(aEvent.Name)) {
-                    GTLog.ore.println(tModToName + " is invalid due to being solely lowercased.");
+                    GTLoggers.GT_ORE_DICT_LOGGER.info("{} is invalid due to being solely lowercased.", tModToName);
                     return;
                 } else if (aEvent.Name.toUpperCase()
                     .equals(aEvent.Name)) {
-                        GTLog.ore.println(tModToName + " is invalid due to being solely uppercased.");
+                        GTLoggers.GT_ORE_DICT_LOGGER.info("{} is invalid due to being solely uppercased.", tModToName);
                         return;
                     } else if (Character.isUpperCase(aEvent.Name.charAt(0))) {
-                        GTLog.ore.println(tModToName + " is invalid due to the first character being uppercased.");
+                        GTLoggers.GT_ORE_DICT_LOGGER
+                            .info("{} is invalid due to the first character being uppercased.", tModToName);
                     }
             } else {
                 if (aPrefix.skipActiveUnification()) {
@@ -1669,8 +1709,10 @@ public class GTProxy implements IFuelHandler {
                 if (aPrefix != aPrefix.mPrefixInto) {
                     String tNewName = aEvent.Name.replaceFirst(aPrefix.toString(), aPrefix.mPrefixInto.toString());
                     if (!GTOreDictUnificator.isRegisteringOres()) {
-                        GTLog.ore.println(
-                            tModToName + " uses a depricated Prefix, and is getting re-registered as " + tNewName);
+                        GTLoggers.GT_ORE_DICT_LOGGER.info(
+                            "{} uses a depricated Prefix, and is getting re-registered as {}",
+                            tModToName,
+                            tNewName);
                     }
                     GTOreDictUnificator.registerOre(tNewName, aEvent.Ore);
                     return;
@@ -1686,9 +1728,10 @@ public class GTProxy implements IFuelHandler {
                             if (aMaterial != aMaterial.mMaterialInto) {
                                 GTOreDictUnificator.registerOre(aPrefix, aMaterial.mMaterialInto, aEvent.Ore);
                                 if (!GTOreDictUnificator.isRegisteringOres()) {
-                                    GTLog.ore.println(
-                                        tModToName + " uses a deprecated Material and is getting re-registered as "
-                                            + aPrefix.get(aMaterial.mMaterialInto));
+                                    GTLoggers.GT_ORE_DICT_LOGGER.info(
+                                        "{} uses a deprecated Material and is getting re-registered as {}",
+                                        tModToName,
+                                        aPrefix.get(aMaterial.mMaterialInto));
                                 }
                                 return;
                             }
@@ -1881,9 +1924,9 @@ public class GTProxy implements IFuelHandler {
                                         tDye.name()
                                             .replaceFirst("dye", ""))) {
                                         GTOreDictUnificator.addToBlacklist(aEvent.Ore);
-                                        GTLog.ore.println(
-                                            tModToName
-                                                + " Oh man, why the fuck would anyone need a OreDictified Color for this, that is even too much for GregTech... do not report this, this is just a random Comment about how ridiculous this is.");
+                                        GTLoggers.GT_ORE_DICT_LOGGER.info(
+                                            "{} Oh man, why the fuck would anyone need a OreDictified Color for this, that is even too much for GregTech... do not report this, this is just a random Comment about how ridiculous this is.",
+                                            tModToName);
                                         return;
                                     }
                                 }
@@ -1891,7 +1934,7 @@ public class GTProxy implements IFuelHandler {
                                 // !!!Unknown Material detected!!! Please report to GregTech Intergalactical for
                                 // additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is just
                                 // an Information, which you should pass to me.");
-                                // GTLog.ore.println(tModToName + " uses an unknown
+                                // GTLoggers.GT_ORE_DICT_LOGGER.info(tModToName + " uses an unknown
                                 // Material. Report this to GregTech.");
                                 return;
                             }
@@ -1902,7 +1945,8 @@ public class GTProxy implements IFuelHandler {
                 } else if (aPrefix.isSelfReferencing()) {
                     aPrefix.add(GTUtility.copyAmount(1, aEvent.Ore));
                 } else {
-                    GTLog.ore.println(tModToName + " uses a Prefix as full OreDict Name, and is therefor invalid.");
+                    GTLoggers.GT_ORE_DICT_LOGGER
+                        .info("{} uses a Prefix as full OreDict Name, and is therefor invalid.", tModToName);
                     aEvent.Ore.setStackDisplayName("Invalid OreDictionary Tag");
                     return;
                 }
@@ -1952,7 +1996,7 @@ public class GTProxy implements IFuelHandler {
                     default -> {}
                 }
             }
-            GTLog.ore.println(tModToName);
+            GTLoggers.GT_ORE_DICT_LOGGER.info(tModToName);
 
             OreDictEventContainer tOre = new OreDictEventContainer(aEvent, aPrefix, aMaterial, aMod);
             if ((!this.mOreDictActivated) || (!GregTechAPI.sUnificationEntriesRegistered)) {
@@ -1964,8 +2008,7 @@ public class GTProxy implements IFuelHandler {
                 OreDictEventContainer.registerRecipes(tOre);
             }
         } catch (Exception e) {
-            GT_FML_LOGGER
-                .error("Could not register ore (oredict name=" + aEvent.Name + ", item stack=" + aEvent.Ore + ")", e);
+            GT_FML_LOGGER.error("Could not register ore (oredict name={}, item stack={})", aEvent.Name, aEvent.Ore, e);
         }
     }
 
@@ -2009,7 +2052,7 @@ public class GTProxy implements IFuelHandler {
             long startTime = System.nanoTime();
             double oldX = 0, oldY = 0, oldZ = 0;
             if (debugEntityCramming && (!aEvent.world.loadedEntityList.isEmpty())) {
-                GTLog.out.println("CRAM: Entity list size " + aEvent.world.loadedEntityList.size());
+                GT_FML_LOGGER.debug("CRAM: Entity list size {}", aEvent.world.loadedEntityList.size());
             }
             for (int i = 0; i < aEvent.world.loadedEntityList.size(); i++) {
                 if ((aEvent.world.loadedEntityList.get(i) instanceof Entity)) {
@@ -2038,14 +2081,12 @@ public class GTProxy implements IFuelHandler {
                                     // Cheeseball way of not receiving a bunch of spam caused by 1 location
                                     // obviously fails if there are crammed entities in more than one spot.
                                     if (tEntity.posX != oldX && tEntity.posY != oldY && tEntity.posZ != oldZ) {
-                                        GTLog.out.println(
-                                            "CRAM: Excess entities: " + tEntityCount
-                                                + " at X "
-                                                + tEntity.posX
-                                                + " Y "
-                                                + tEntity.posY
-                                                + " Z "
-                                                + tEntity.posZ);
+                                        GT_FML_LOGGER.debug(
+                                            "CRAM: Excess entities: {} at X {} Y {} Z {}",
+                                            tEntityCount,
+                                            tEntity.posX,
+                                            tEntity.posY,
+                                            tEntity.posZ);
                                         oldX = tEntity.posX;
                                         oldY = tEntity.posY;
                                         oldZ = tEntity.posZ;
@@ -2059,8 +2100,8 @@ public class GTProxy implements IFuelHandler {
                 }
             }
             if (debugEntityCramming && (!aEvent.world.loadedEntityList.isEmpty())) {
-                GTLog.out
-                    .println("CRAM: Time spent checking " + (System.nanoTime() - startTime) / 1000 + " microseconds");
+                GT_FML_LOGGER
+                    .debug("CRAM: Time spent checking {} microseconds", (System.nanoTime() - startTime) / 1000);
             }
         }
 
@@ -2077,64 +2118,37 @@ public class GTProxy implements IFuelHandler {
     }
 
     @SubscribeEvent
-    public void onPlayerTickEventServer(TickEvent.PlayerTickEvent aEvent) {
-        if ((!aEvent.side.isServer()) || (aEvent.phase == TickEvent.Phase.END) || (aEvent.player.isDead)) {
+    public void onPlayerTickEventServer(TickEvent.PlayerTickEvent event) {
+        final EntityPlayer player = event.player;
+        if (!event.side.isServer() || event.phase == TickEvent.Phase.END
+            || player.isDead
+            || player.ticksExisted % 120 != 0) {
             return;
         }
 
-        final boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);
-
-        if (aEvent.player.ticksExisted % 120 != 0) {
-            return;
-        }
-
-        int tCount = 64;
-        final ItemStack[] mainInventory = aEvent.player.inventory.mainInventory;
-        for (ItemStack tStack : mainInventory) {
-            if (tStack == null) {
-                continue;
-            }
-            if (!aEvent.player.capabilities.isCreativeMode) {
-                GTUtility.applyRadioactivity(aEvent.player, GTUtility.getRadioactivityLevel(tStack), tStack.stackSize);
-                final float tHeat = GTUtility.getHeatDamageFromItem(tStack);
-                if (tHeat != 0.0F) {
-                    if (tHeat > 0.0F) {
-                        GTUtility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
-                    } else {
-                        GTUtility.applyFrostDamage(aEvent.player, -tHeat);
-                    }
-                }
-            }
-            if (tHungerEffect) {
-                tCount += tStack.stackSize * 64 / Math.max(1, tStack.getMaxStackSize());
-            }
+        final ItemStack[] mainInventory = player.inventory.mainInventory;
+        for (ItemStack stack : mainInventory) {
+            applyItemEffects(player, stack);
             if (this.mInventoryUnification) {
-                GTOreDictUnificator.setStack(true, tStack);
+                GTOreDictUnificator.setStack(true, stack);
             }
+        }
+        final ItemStack[] armorInventory = player.inventory.armorInventory;
+        for (final ItemStack stack : armorInventory) {
+            applyItemEffects(player, stack);
+        }
+    }
 
+    private static void applyItemEffects(EntityPlayer player, ItemStack stack) {
+        if (stack == null || player.capabilities.isCreativeMode) {
+            return;
         }
-        final ItemStack[] armorInventory = aEvent.player.inventory.armorInventory;
-        for (final ItemStack tStack : armorInventory) {
-            if (tStack == null) {
-                continue;
-            }
-            if (!aEvent.player.capabilities.isCreativeMode) {
-                GTUtility.applyRadioactivity(aEvent.player, GTUtility.getRadioactivityLevel(tStack), tStack.stackSize);
-                final float tHeat = GTUtility.getHeatDamageFromItem(tStack);
-                if (tHeat != 0.0F) {
-                    if (tHeat > 0.0F) {
-                        GTUtility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
-                    } else {
-                        GTUtility.applyFrostDamage(aEvent.player, -tHeat);
-                    }
-                }
-            }
-            if (tHungerEffect) {
-                tCount += 256;
-            }
-        }
-        if (tHungerEffect) {
-            aEvent.player.addExhaustion(Math.max(1.0F, tCount / 666.6F));
+        GTUtility.applyRadioactivity(player, GTUtility.getRadioactivityLevel(stack), stack.stackSize);
+        final float heat = GTUtility.getHeatDamageFromItem(stack);
+        if (heat > 0.0F) {
+            GTUtility.applyHeatDamageFromItem(player, heat, stack);
+        } else if (heat < 0.0F) {
+            GTUtility.applyFrostDamage(player, -heat);
         }
     }
 
@@ -2474,7 +2488,7 @@ public class GTProxy implements IFuelHandler {
             event = i$.next();
             sizeStep--;
             if (sizeStep == 0) {
-                GT_FML_LOGGER.info("Baking : " + size + "%");
+                GT_FML_LOGGER.info("Baking : {}%", size);
                 sizeStep = oreDictEvents.size() / 20 - 1;
                 size += 5;
             }
@@ -2510,12 +2524,6 @@ public class GTProxy implements IFuelHandler {
                     aEvent);
             }
         }
-    }
-
-    @SubscribeEvent
-    public void onBlockEvent(BlockEvent event) {
-        if (event.block.getUnlocalizedName()
-            .equals("blockAlloyGlass")) GregTechAPI.causeMachineUpdate(event.world, event.x, event.y, event.z);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

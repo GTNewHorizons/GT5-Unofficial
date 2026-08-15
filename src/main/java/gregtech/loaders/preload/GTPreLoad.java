@@ -1,15 +1,13 @@
 package gregtech.loaders.preload;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.CraftTweaker;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +34,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
@@ -91,7 +88,7 @@ public class GTPreLoad {
                 .getCurrentLanguage()
                 .getLanguageCode();
             GTLanguageManager.LanguageCode = userLang;
-            GT_FML_LOGGER.info("User lang is " + userLang);
+            GT_FML_LOGGER.info("User lang is {}", userLang);
             if (userLang.equals("en_US")) {
                 GT_FML_LOGGER.info("Loading GregTech.lang");
                 GTLanguageManager.isEN_US = true;
@@ -100,10 +97,10 @@ public class GTPreLoad {
                 String l10nFileName = "GregTech_" + userLang + ".lang";
                 File l10nFile = new File(languageDir, l10nFileName);
                 if (l10nFile.isFile()) {
-                    GT_FML_LOGGER.info("Loading l10n file: " + l10nFileName);
+                    GT_FML_LOGGER.info("Loading l10n file: {}", l10nFileName);
                     GTLanguageManager.sEnglishFile = new Configuration(l10nFile);
                 } else {
-                    GT_FML_LOGGER.info("Cannot find l10n file " + l10nFileName + ", fallback to GregTech.lang");
+                    GT_FML_LOGGER.info("Cannot find l10n file {}, fallback to GregTech.lang", l10nFileName);
                     GTLanguageManager.isEN_US = true;
                     GTLanguageManager.sEnglishFile = new Configuration(new File(languageDir, "GregTech.lang"));
                 }
@@ -142,66 +139,6 @@ public class GTPreLoad {
         GTConfig.undergroundFluidsFile.save();
     }
 
-    public static void createLogFiles(File parentFile) {
-        GTLog.mLogFile = new File(parentFile, "logs/GregTech.log");
-        if (!GTLog.mLogFile.exists()) {
-            try {
-                GTLog.mLogFile.createNewFile();
-            } catch (Exception ignored) {}
-        }
-        try {
-            GTLog.out = GTLog.err = new PrintStream(GTLog.mLogFile);
-        } catch (FileNotFoundException ignored) {}
-
-        if (Gregtech.general.loggingOreDict) {
-            GTLog.mOreDictLogFile = new File(parentFile, "logs/OreDict.log");
-            if (!GTLog.mOreDictLogFile.exists()) {
-                try {
-                    GTLog.mOreDictLogFile.createNewFile();
-                } catch (Exception ignored) {}
-            }
-            List<String> tList = ((GTLog.LogBuffer) GTLog.ore).lineBuffer;
-            try {
-                GTLog.ore = new PrintStream(GTLog.mOreDictLogFile);
-            } catch (Exception ignored) {}
-            GTLog.ore.println("******************************************************************************");
-            GTLog.ore.println("* This is the complete log of the GT5-Unofficial OreDictionary Handler. It   *");
-            GTLog.ore.println("* processes all OreDictionary entries and can sometimes cause errors. All    *");
-            GTLog.ore.println("* entries and errors are being logged. If you see an error please raise an   *");
-            GTLog.ore.println("* issue at https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues.  *");
-            GTLog.ore.println("******************************************************************************");
-            tList.forEach(GTLog.ore::println);
-        }
-        if (Gregtech.general.loggingExplosions) {
-            GTLog.mExplosionLog = new File(parentFile, "logs/Explosion.log");
-            if (!GTLog.mExplosionLog.exists()) {
-                try {
-                    GTLog.mExplosionLog.createNewFile();
-                } catch (Exception ignored) {}
-            }
-            try {
-                GTLog.exp = new PrintStream(GTLog.mExplosionLog);
-            } catch (Exception ignored) {}
-        }
-        if (Gregtech.debug.logRegisterIcons) {
-            GTLog.mRegisterIconsLog = new File(parentFile, "logs/RegisterIcon.log");
-
-            try {
-                List<String> tList = ((GTLog.LogBuffer) GTLog.ico).lineBuffer;
-
-                GTLog.ico = new PrintStream(GTLog.mRegisterIconsLog);
-
-                GTLog.ico.println("*****************************************************************");
-                GTLog.ico.println("* This is the log of texture icons registered in GT5-Unofficial *");
-                GTLog.ico.println("* First column R|O tells if resource is (Required or Optional)  *");
-                GTLog.ico.println("* Second column is the resource path                            *");
-                GTLog.ico.println("*****************************************************************");
-
-                tList.forEach(GTLog.ico::println);
-            } catch (Exception ignored) {}
-        }
-    }
-
     public static void runMineTweakerCompat() {
         if (!CraftTweaker.isModLoaded()) return;
 
@@ -219,7 +156,7 @@ public class GTPreLoad {
                             scripts.add(line);
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        GT_FML_LOGGER.error(e);;
                     }
                 }
             }
@@ -253,7 +190,7 @@ public class GTPreLoad {
                                 hit = hit.substring(2);
                                 meta = Integer.parseInt(hit);
                             } catch (Exception e) {
-                                GT_FML_LOGGER.info("parseError: " + hit);
+                                GT_FML_LOGGER.info("parseError: {}", hit);
                             }
                             if (meta > 0 && meta < 32000) {
                                 int prefix = meta / 1000;
@@ -266,13 +203,13 @@ public class GTPreLoad {
                                 if (GregTechAPI.sGeneratedMaterials[material] != null) {
                                     final String tag;
                                     if (tags.length > prefix) {
-                                        tag = tags[prefix] + GregTechAPI.sGeneratedMaterials[material].mName;;
+                                        tag = tags[prefix] + GregTechAPI.sGeneratedMaterials[material].mName;
                                     } else {
                                         tag = GregTechAPI.sGeneratedMaterials[material].mName;
                                     }
                                     if (!oreTags.contains(tag)) oreTags.add(tag);
                                 } else if (material > 0) {
-                                    GT_FML_LOGGER.info("MaterialDisabled: " + material + " " + m.group(1));
+                                    GT_FML_LOGGER.info("MaterialDisabled: {} {}", material, m.group(1));
                                 }
                             }
                         }
@@ -299,7 +236,7 @@ public class GTPreLoad {
             final String str = oreTags.get(i);
             if (StringUtils.startsWithAny(str, preS)) {
                 mMTTags.add(str);
-                if (GTValues.D1) GT_FML_LOGGER.info("oretag: " + str);
+                if (GTValues.D1) GT_FML_LOGGER.info("oretag: {}", str);
             }
         }
 
@@ -342,7 +279,7 @@ public class GTPreLoad {
                     OrePrefixes.ring.mGeneratedItems.add(tName);
                 }
             } else {
-                GT_FML_LOGGER.info("noPrefix " + reEnable);
+                GT_FML_LOGGER.info("noPrefix {}", reEnable);
             }
         }
     }
@@ -357,10 +294,10 @@ public class GTPreLoad {
                     .clear();
         } catch (Exception e) {
             if (GTValues.D1) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
-        GTLog.out.println("GTMod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
+        GT_FML_LOGGER.debug("GTMod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
         GTModHandler.addScrapboxDrop(200.0F, ItemList.IC2_Scrap.get(1L));
     }
 
@@ -397,7 +334,6 @@ public class GTPreLoad {
         GTMod.proxy.mIncreaseDungeonLoot = Gregtech.general.increaseDungeonLoot;
         GTMod.proxy.mAxeWhenAdventure = Gregtech.general.axeWhenAdventure;
         GTMod.proxy.mSurvivalIntoAdventure = Gregtech.general.survivalIntoAdventure;
-        GTMod.proxy.mHungerEffect = Gregtech.general.hungerEffect;
         GTMod.proxy.mInventoryUnification = Gregtech.general.inventoryUnification;
         GTMod.proxy.mGTBees = Gregtech.general.GTBees;
         GTMod.proxy.mCraftingUnification = Gregtech.general.craftingUnification;

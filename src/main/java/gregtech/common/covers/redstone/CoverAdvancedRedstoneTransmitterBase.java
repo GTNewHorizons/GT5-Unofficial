@@ -79,7 +79,7 @@ public abstract class CoverAdvancedRedstoneTransmitterBase extends CoverAdvanced
         byteBuf.writeBoolean(invert);
     }
 
-    private void unregisterSignal() {
+    public void unregisterSignal() {
         unregisterSignal(uuid, frequency);
     }
 

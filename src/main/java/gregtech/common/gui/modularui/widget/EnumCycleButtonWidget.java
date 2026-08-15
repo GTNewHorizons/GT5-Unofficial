@@ -14,11 +14,13 @@ import gregtech.api.util.GTDataUtils;
 public class EnumCycleButtonWidget<E extends Enum<E>> extends AbstractCycleButtonWidget<EnumCycleButtonWidget<E>> {
 
     private final Class<E> clazz;
+    private boolean hasDefaultOverlay;
 
     public EnumCycleButtonWidget(Class<E> clazz) {
         this.clazz = clazz;
 
         overlay(e -> IKey.str(e.toString()));
+        hasDefaultOverlay = true;
     }
 
     @Override
@@ -32,6 +34,7 @@ public class EnumCycleButtonWidget<E extends Enum<E>> extends AbstractCycleButto
 
     public EnumCycleButtonWidget<E> overlay(Function<E, IDrawable> overlay) {
         this.overlay = GTDataUtils.mapToArray(clazz.getEnumConstants(), IDrawable[]::new, overlay);
+        hasDefaultOverlay = false;
         return this;
     }
 
@@ -53,5 +56,9 @@ public class EnumCycleButtonWidget<E extends Enum<E>> extends AbstractCycleButto
     public EnumCycleButtonWidget<E> tooltip(Function<E, RichTooltip> overlay) {
         this.tooltip = GTDataUtils.mapToArray(clazz.getEnumConstants(), RichTooltip[]::new, overlay);
         return this;
+    }
+
+    public boolean hasDefaultOverlay() {
+        return hasDefaultOverlay;
     }
 }

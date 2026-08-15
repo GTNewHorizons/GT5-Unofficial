@@ -39,6 +39,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
@@ -109,30 +110,38 @@ public class MTEDieselEngineLegacy extends MTEEnhancedMultiBlockBase<MTEDieselEn
         String boostedEfficiency = TooltipHelper.effText(1.5f);
         String waitPower = TooltipHelper.effText(3.0f);
 
-        tt.addMachineType(GTUtility.translate("gt.multiblock.DieselEngine.machine_type"))
+        tt.addMachineType(StatCollector.translateToLocal("gt.multiblock.DieselEngine.machine_type"))
             .addStructureDeprecatedLine()
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.desc1", lubricantRate))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.desc2", oxygenRate))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.default_output", defaultOutput, defaultEfficiency))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.boosted_output", boostedOutput, boostedEfficiency))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.wait_power", waitPower))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.intake_warning"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.desc1", lubricantRate))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.desc2", oxygenRate))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.DieselEngine.default_output",
+                    defaultOutput,
+                    defaultEfficiency))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.DieselEngine.boosted_output",
+                    boostedOutput,
+                    boostedEfficiency))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.wait_power", waitPower))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.DieselEngine.intake_warning"))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 4, false)
-            .addController(GTUtility.translate("gt.mbtt.structure.front_center"))
-            .addCasingInfoRange(GTUtility.translate("gt.blockcasings4.Casing_StableTitanium"), 16, 22, false)
+            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center"))
+            .addCasingInfoRange(StatCollector.translateToLocal("gt.blockcasings4.Casing_StableTitanium"), 16, 22, false)
             .addOtherStructurePart(
-                GTUtility.translate("gt.blockcasings2.Casing_Gearbox_Titanium"),
-                GTUtility.translate("gt.multiblock.DieselEngine.gear_box_inner"))
+                StatCollector.translateToLocal("gt.blockcasings2.Casing_Gearbox_Titanium"),
+                StatCollector.translateToLocal("gt.multiblock.DieselEngine.gear_box_inner"))
             .addOtherStructurePart(
-                GTUtility.translate("gt.blockcasings4.Casing_EngineIntake"),
-                GTUtility.translate("gt.multiblock.DieselEngine.engine_intake_ring"))
-            .addDynamoHatch(GTUtility.translate("gt.mbtt.structure.back_center"), 2)
-            .addMaintenanceHatch(GTUtility.translate("gt.multiblock.DieselEngine.maintenance_hatch"), 1)
-            .addMufflerHatch(GTUtility.translate("gt.multiblock.DieselEngine.muffler_hatch"), 1)
-            .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.diesel_fuel"), 1)
-            .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.lubricant"), 1)
-            .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.oxygen_optional"), 1)
+                StatCollector.translateToLocal("gt.blockcasings4.Casing_EngineIntake"),
+                StatCollector.translateToLocal("gt.multiblock.DieselEngine.engine_intake_ring"))
+            .addDynamoHatch(StatCollector.translateToLocal("gt.mbtt.structure.back_center"), 2)
+            .addMaintenanceHatch(StatCollector.translateToLocal("gt.multiblock.DieselEngine.maintenance_hatch"), 1)
+            .addMufflerHatch(StatCollector.translateToLocal("gt.multiblock.DieselEngine.muffler_hatch"), 1)
+            .addInputHatch(StatCollector.translateToLocal("gt.multiblock.DieselEngine.diesel_fuel"), 1)
+            .addInputHatch(StatCollector.translateToLocal("gt.multiblock.DieselEngine.lubricant"), 1)
+            .addInputHatch(StatCollector.translateToLocal("gt.multiblock.DieselEngine.oxygen_optional"), 1)
             .toolTipFinisher();
         return tt;
     }
@@ -377,57 +386,37 @@ public class MTEDieselEngineLegacy extends MTEEnhancedMultiBlockBase<MTEDieselEn
                 .getEUCapacity();
         }
 
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.diesel_engine")
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
+        return new String[] { "GT5U.infodata.diesel_engine.hdr",
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.energy",
+                EnumChatFormatting.GREEN + formatNumber(storedEnergy) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(maxEnergy) + EnumChatFormatting.RESET),
             getIdealStatus() == getRepairStatus()
-                ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.maintenance.false")
+                ? EnumChatFormatting.GREEN + IGregTechDeviceInformation.decode("GT5U.turbine.maintenance.false")
                     + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.maintenance.true")
+                : EnumChatFormatting.RED + IGregTechDeviceInformation.decode("GT5U.turbine.maintenance.true")
                     + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.engine.output") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(((long) mEUt * mEfficiency / 10000))
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.engine.consumption") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(fuelConsumption)
-                + EnumChatFormatting.RESET
-                + " L/t",
-            StatCollector.translateToLocal("GT5U.engine.value") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(fuelValue)
-                + EnumChatFormatting.RESET
-                + " EU/L",
-            StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
-                + EnumChatFormatting.GOLD
-                + formatNumber(fuelRemaining)
-                + EnumChatFormatting.RESET
-                + " L",
-            StatCollector.translateToLocal("GT5U.engine.efficiency") + ": "
-                + EnumChatFormatting.YELLOW
-                + (mEfficiency / 100F)
-                + EnumChatFormatting.YELLOW
-                + " %",
-            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-                + EnumChatFormatting.GREEN
-                + getAveragePollutionPercentage()
-                + EnumChatFormatting.RESET
-                + " %",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.engine.output",
+                EnumChatFormatting.RED + formatNumber(((long) mEUt * mEfficiency / 10000)) + EnumChatFormatting.RESET),
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.engine.consumption",
+                EnumChatFormatting.YELLOW + formatNumber(fuelConsumption) + EnumChatFormatting.RESET),
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.engine.value",
+                EnumChatFormatting.YELLOW + formatNumber(fuelValue) + EnumChatFormatting.RESET),
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.turbine.fuel",
+                EnumChatFormatting.GOLD + formatNumber(fuelRemaining) + EnumChatFormatting.RESET),
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.engine.efficiency",
+                EnumChatFormatting.YELLOW + "" + (mEfficiency / 100F) + EnumChatFormatting.RESET),
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.turbine.pollution",
+                EnumChatFormatting.GREEN + "" + getAveragePollutionPercentage() + EnumChatFormatting.RESET),
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.recipesDone.fmt",
+                EnumChatFormatting.GREEN + formatNumber(recipesDone) + EnumChatFormatting.RESET) };
     }
 
     @Override

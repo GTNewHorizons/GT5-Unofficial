@@ -33,22 +33,22 @@ item.kekztech_crafting_item.14.name=YSZ Керамическая пластин�
 item.kekztech_crafting_item.15.name=GDC Керамическая пластина
 
 # -------- TFFT: Structure Blocks
-tile.kekztech_tfftstoragefield_block.name=T.F.F.T Корпус/Блок хранения жидкостей
-tile.kekztech_tfftstoragefield_block.0.name=T.F.F.T Корпус
-tile.kekztech_tfftstoragefield_block.1.name=T.F.F.T Блок хранения жидкостей T1
-tile.kekztech_tfftstoragefield_block.2.name=T.F.F.T Блок хранения жидкостей T2
-tile.kekztech_tfftstoragefield_block.3.name=T.F.F.T Блок хранения жидкостей T3
-tile.kekztech_tfftstoragefield_block.4.name=T.F.F.T Блок хранения жидкостей T4
-tile.kekztech_tfftstoragefield_block.5.name=T.F.F.T Блок хранения жидкостей T5
-tile.kekztech_tfftstoragefield_block.6.name=T.F.F.T Блок хранения жидкостей T6
-tile.kekztech_tfftstoragefield_block.7.name=T.F.F.T Блок хранения жидкостей T7
-tile.kekztech_tfftstoragefield_block.8.name=T.F.F.T Блок хранения жидкостей T8
-tile.kekztech_tfftstoragefield_block.9.name=T.F.F.T Блок хранения жидкостей T9
-tile.kekztech_tfftstoragefield_block.10.name=T.F.F.T Блок хранения жидкостей T10
+tile.kekztech_tfftstoragefield_block.name=TFFT Корпус/Блок хранения жидкостей
+tile.kekztech_tfftstoragefield_block.0.name=TFFT Корпус
+tile.kekztech_tfftstoragefield_block.1.name=TFFT Блок хранения жидкостей T1
+tile.kekztech_tfftstoragefield_block.2.name=TFFT Блок хранения жидкостей T2
+tile.kekztech_tfftstoragefield_block.3.name=TFFT Блок хранения жидкостей T3
+tile.kekztech_tfftstoragefield_block.4.name=TFFT Блок хранения жидкостей T4
+tile.kekztech_tfftstoragefield_block.5.name=TFFT Блок хранения жидкостей T5
+tile.kekztech_tfftstoragefield_block.6.name=TFFT Блок хранения жидкостей T6
+tile.kekztech_tfftstoragefield_block.7.name=TFFT Блок хранения жидкостей T7
+tile.kekztech_tfftstoragefield_block.8.name=TFFT Блок хранения жидкостей T8
+tile.kekztech_tfftstoragefield_block.9.name=TFFT Блок хранения жидкостей T9
+tile.kekztech_tfftstoragefield_block.10.name=TFFT Блок хранения жидкостей T10
 tile.kekztech_tfftstoragefield_block.desc=Это не резервуар для жидкости.
-tile.kekztech_tfftstoragefield_block.hint.1=Подсказка 1 точка: T.F.F.T Корпус
-tile.kekztech_tfftstoragefield_block.hint.2=Подсказка 2 точки: T.F.F.T Корпус, Люк техобслуживания, T.F.F.T Мульти I/O шлюз, Входной/Выходной шлюз, Энерговвод
-tile.kekztech_tfftstoragefield_block.hint.3=Подсказка 3 точки: EV+ тировое стекло, T.F.F.T Мульти I/O шлюз, Входной/Выходной шлюз
+tile.kekztech_tfftstoragefield_block.hint.1=Подсказка 1 точка: TFFT Корпус
+tile.kekztech_tfftstoragefield_block.hint.2=Подсказка 2 точки: TFFT Корпус, Люк техобслуживания, TFFT Мульти I/O шлюз, Входной/Выходной шлюз, Энерговвод
+tile.kekztech_tfftstoragefield_block.hint.3=Подсказка 3 точки: EV+ тировое стекло, TFFT Мульти I/O шлюз, Входной/Выходной шлюз
 tile.kekztech_tfftstoragefield_block.hint.4=Подсказка 4 точки: EV+ тировое стекло
 
 # -------- Lapotronic Super Capacitor: Structure Blocks
@@ -127,10 +127,10 @@ tooltip.kekztech.tfft.power_draw=Потребление энергии: §9%d§7
 tooltip.kekztech.wrong=НАПОМИНАЕМ: Рецепты KekzTech проверены только для работы в GTNH!\nЗамещающий предмет на случай, если что-то пошло не так.\nЕсли этот предмет появится в GTNH, вы можете сообщить об этом по адресу:\nhttps://github.com/kekzdealer/KekzTech
 
 # -------- InfoData
-kekztech.infodata.operational_data=Эксплуатационные данные:
+kekztech.infodata.operational_data=§eЭксплуатационные данные:§r
 kekztech.infodata.multi.maintenance_status=Статус техобслуживания: %s
-kekztech.infodata.multi.maintenance_status.ok=Работает отлично
-kekztech.infodata.multi.maintenance_status.bad=Есть проблемы
+kekztech.infodata.multi.maintenance_status.ok=Статус техобслуживания: §aРаботает отлично§r
+kekztech.infodata.multi.maintenance_status.bad=Статус техобслуживания: §cЕсть проблемы§r
 kekztech.infodata.lapotronic_super_capacitor.eu_stored=EU хранится: %s EU
 kekztech.infodata.lapotronic_super_capacitor.used_capacity=Использованная ёмкость: %s
 kekztech.infodata.lapotronic_super_capacitor.total_capacity=Общая ёмкость: %s EU
@@ -147,11 +147,11 @@ kekztech.infodata.lapotronic_super_capacitor.time_to.full=Время до зап
 kekztech.infodata.lapotronic_super_capacitor.time_to.sth=Время до чего-то: Бесконечные годы
 kekztech.infodata.lapotronic_super_capacitor.time_to.empty=Время до опустошения: %s
 kekztech.infodata.lapotronic_super_capacitor.wireless_mode=Беспроводной режим: %s
-kekztech.infodata.lapotronic_super_capacitor.wireless_mode.enabled=включён
-kekztech.infodata.lapotronic_super_capacitor.wireless_mode.disabled=отключён
+kekztech.infodata.lapotronic_super_capacitor.wireless_mode.enabled=Беспроводной режим: §aвключён§r
+kekztech.infodata.lapotronic_super_capacitor.wireless_mode.disabled=Беспроводной режим: §cотключён§r
 kekztech.infodata.lapotronic_super_capacitor.capacitors=%s Обнаружено конденсаторов: %d
 kekztech.infodata.lapotronic_super_capacitor.wireless_eu=Всего в беспроводной EU сети: %s EU
-kekztech.infodata.tank.tfft.stored_fluids=Хранимые жидкости:
+kekztech.infodata.tank.tfft.stored_fluids=§eХранимые жидкости:§r
 kekztech.infodata.tank.tfft.stored_fluids.null=NULL
 kekztech.infodata.tank.tfft.used=Использованная ёмкость: %sЛ
 kekztech.infodata.tank.tfft.total=Общая ёмкость: %sЛ
@@ -159,4 +159,20 @@ kekztech.infodata.tank.tfft.per_fluid_capacity=По объему жидкост�
 kekztech.infodata.tank.tfft.running_cost=Расход при работе: %dEU/t
 kekztech.infodata.tank.tfft.auto_voiding=Авто-уничтожение: %b
 
-kekztech.structure.glass_incompatible=§cНесовместимая конфигурация стекла 
+kekztech.structure.glass_incompatible=§cНесовместимая конфигурация стекла
+
+kekztech.multiblock.LapotronicSuperCapacitor.machine_type=Хранилище энергии, LSC
+kekztech.multiblock.LapotronicSuperCapacitor.casing=Лазуротроновый корпус суперконденсатора
+kekztech.multiblock.LapotronicSuperCapacitor.capacitor=Лазуротроновый конденсатор
+kekztech.multiblock.LapotronicSuperCapacitor.structure_footer=Не менее 50% конденсаторов должны быть непустыми
+
+kekztech.multiblock.SOFuelCell.machine_type=Газовая турбина, SOFC
+kekztech.multiblock.SOFuelCellMK1.electrolyte_unit=Керамический электролитный блок YSZ
+kekztech.multiblock.SOFuelCellMK2.electrolyte_unit=Керамический электролитный блок GDC
+
+kekztech.multiblock.TankTFFT.machine_type=Жидкостный резервуар
+kekztech.multiblock.TankTFFT.multi_io_hatch=T.F.F.T Мульти I/O шлюз
+kekztech.multiblock.TankTFFT.any_casing_glass_adjacent=Любой блок корпуса/стекла, соприкасающийся с блоком хранения жидкости
+kekztech.multiblock.TankTFFT.field_storage_block=Блок хранения жидкостей
+kekztech.multiblock.TankTFFT.footer1=Воздушные зазоры не допускаются, но блоки хранения могут быть разных тиров
+kekztech.multiblock.TankTFFT.footer2=Разместите жидкостную шину хранения на Мульти I/O шлюзе, чтобы работать со всеми жидкостями одновременно 

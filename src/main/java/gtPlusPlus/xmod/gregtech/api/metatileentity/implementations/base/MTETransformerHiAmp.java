@@ -49,6 +49,14 @@ public class MTETransformerHiAmp extends MTETransformer {
     }
 
     @Override
+    public long displayedAmperesIn() {
+        if (this.mHalfMode) {
+            return ((getBaseMetaTileEntity().isAllowedToWork()) ? 2L : 8L);
+        }
+        return ((getBaseMetaTileEntity().isAllowedToWork()) ? 4L : 16L);
+    }
+
+    @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[12][17][];
         for (byte i = -1; i < 16; i++) {
@@ -91,7 +99,9 @@ public class MTETransformerHiAmp extends MTETransformer {
             super.getDescription()[0],
             "gt.blockmachines.transformer_advanced.desc",
             4,
-            16);
+            16,
+            2,
+            8);
     }
 
     @Override

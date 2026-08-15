@@ -41,6 +41,7 @@ import gregtech.api.items.armor.behaviors.JetpackHoverBehavior;
 import gregtech.api.items.armor.behaviors.JetpackPerfectHoverBehavior;
 import gregtech.api.items.armor.behaviors.JumpBoostBehavior;
 import gregtech.api.items.armor.behaviors.KnockbackResistBehavior;
+import gregtech.api.items.armor.behaviors.LevitationBehavior;
 import gregtech.api.items.armor.behaviors.MilkInfusionBehavior;
 import gregtech.api.items.armor.behaviors.NightVisionBehavior;
 import gregtech.api.items.armor.behaviors.OmniMovementBehavior;
@@ -48,6 +49,7 @@ import gregtech.api.items.armor.behaviors.SpaceSuitBehavior;
 import gregtech.api.items.armor.behaviors.SpeedBoostBehavior;
 import gregtech.api.items.armor.behaviors.StepAssistBehavior;
 import gregtech.api.items.armor.behaviors.SwimSpeedBehavior;
+import gregtech.api.items.armor.behaviors.TerrasteelBehavior;
 import gregtech.api.items.armor.behaviors.VisDiscountBehavior;
 import gregtech.api.items.armor.behaviors.WaterBreathingBehavior;
 
@@ -97,7 +99,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(1, 2, 0, 0)
             .setColor(new short[] {103, 90, 104, 0})
             .setRarity(EnumRarity.common)
-            .setProtection(8)
+            .setProtection(0.7f)
         ),
         Medium(ItemList.Armor_Frame_Medium, new FrameBuilder()
             .setId("Medium")
@@ -105,7 +107,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(1, 0, 2, 0)
             .setColor(new short[] {146, 153, 171, 0})
             .setRarity(EnumRarity.common)
-            .setProtection(11)
+            .setProtection(0.75f)
         ),
         Heavy(ItemList.Armor_Frame_Heavy, new FrameBuilder()
             .setId("Heavy")
@@ -113,7 +115,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(2, 0, 1, 0)
             .setColor(new short[] {74, 78, 87, 0})
             .setRarity(EnumRarity.common)
-            .setProtection(15)
+            .setProtection(0.8f)
         ),
 
         Nimble(ItemList.Armor_Frame_Nimble, new FrameBuilder()
@@ -122,7 +124,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(1, 3, 1, 0)
             .setColor(new short[] {182, 35, 40, 0})
             .setRarity(EnumRarity.uncommon)
-            .setProtection(10)
+            .setProtection(0.8f)
         ),
         Adaptive(ItemList.Armor_Frame_Adaptive, new FrameBuilder()
             .setId("Adaptive")
@@ -130,7 +132,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(2, 1, 1, 1)
             .setColor(new short[] {93, 115, 35, 0})
             .setRarity(EnumRarity.uncommon)
-            .setProtection(13)
+            .setProtection(0.85f)
         ),
         Tough(ItemList.Armor_Frame_Tough, new FrameBuilder()
             .setId("Tough")
@@ -138,7 +140,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(3, 0, 2, 0)
             .setColor(new short[] {44, 33, 35, 0})
             .setRarity(EnumRarity.uncommon)
-            .setProtection(17)
+            .setProtection(0.9f)
         ),
 
         Lightning(ItemList.Armor_Frame_Lightning, new FrameBuilder()
@@ -147,7 +149,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(1, 4, 1, 1)
             .setColor(new short[] {121, 84, 206, 0})
             .setRarity(EnumRarity.rare)
-            .setProtection(15)
+            .setProtection(0.9f)
         ),
         Morphic(ItemList.Armor_Frame_Morphic, new FrameBuilder()
             .setId("Morphic")
@@ -155,7 +157,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(2, 1, 2, 2)
             .setColor(new short[] {156, 212, 227, 0})
             .setRarity(EnumRarity.rare)
-            .setProtection(17)
+            .setProtection(0.95f)
         ),
         Bulwark(ItemList.Armor_Frame_Bulwark, new FrameBuilder()
             .setId("Bulwark")
@@ -163,7 +165,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(4, 1, 1, 1)
             .setColor(new short[] {113, 88, 78, 0})
             .setRarity(EnumRarity.rare)
-            .setProtection(20)
+            .setProtection(0.99f)
         ),
 
         Infinity(ItemList.Armor_Frame_Infinity, new FrameBuilder()
@@ -172,7 +174,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(5, 5, 5, 5)
             .setColor(Materials.Infinity.mRGBa)
             .setRarity(EnumRarity.epic)
-            .setProtection(30)
+            .setProtection(1)
         );
         // spotless:on
 
@@ -238,6 +240,11 @@ public class MechArmorAugmentRegistries {
             return this.builder.getIncompatibleBehaviors();
         }
 
+        @Override
+        public Collection<ItemList> getIncompatibleAugments() {
+            return this.builder.getIncompatibleAugments();
+        }
+
         public int getProtectionSlots() {
             return this.builder.getProtectionSlots();
         }
@@ -258,7 +265,7 @@ public class MechArmorAugmentRegistries {
             return this.builder.getColor();
         }
 
-        public int getProtection() {
+        public float getProtection() {
             return this.builder.getProtection();
         }
 
@@ -367,6 +374,11 @@ public class MechArmorAugmentRegistries {
             return this.builder.getIncompatibleBehaviors();
         }
 
+        @Override
+        public Collection<ItemList> getIncompatibleAugments() {
+            return this.builder.getIncompatibleAugments();
+        }
+
         public int getTier() {
             return builder.getTier();
         }
@@ -387,159 +399,184 @@ public class MechArmorAugmentRegistries {
     public enum Augments implements IArmorPart {
 
         // spotless:off
-        NightVision(ItemList.Augment_NightVision, new AugmentBuilder()
-            .setId("NightVision")
-            .setItemId("augmentnightvision")
-            .fitsInto(ArmorType.Helmet)
-            .setTexture(() -> nightVisionAugment)
-            .providesBehaviors(NightVisionBehavior.INSTANCE)
-            .setCategory(AugmentCategory.Utility)
-            .setRarity(EnumRarity.common)
-        ),
-        CreativeFlight(ItemList.Augment_CreativeFlight, new AugmentBuilder()
-            .setId("CreativeFlight")
-            .setItemId("augmentcreativeflight")
-            .fitsInto(ArmorType.Chestplate)
-            .setTexture(() -> creativeFlightAugment)
-            .providesBehaviors(CreativeFlightBehavior.INSTANCE)
-            .incompatibleBehaviors(BehaviorName.Jetpack)
-            .setCategory(AugmentCategory.Movement)
-            .setMinimumCore(2)
-            .setRarity(EnumRarity.epic)
-        ),
-        Jetpack(ItemList.Augment_Jetpack, new AugmentBuilder()
-            .setId("Jetpack")
-            .setItemId("augmentjetpack")
-            .fitsInto(ArmorType.Chestplate)
-            .setTexture(() -> jetpackAugment)
-            .providesBehaviors(JetpackBehavior.INSTANCE, JetpackHoverBehavior.INSTANCE)
-            .incompatibleBehaviors(BehaviorName.CreativeFlight)
-            .setCategory(AugmentCategory.Movement)
-            .setRarity(EnumRarity.uncommon)
-        ),
-        JetpackPerfectHover(ItemList.Augment_Jetpack_PerfectHover, new AugmentBuilder()
-            .setId("JetpackPerfectHover")
-            .setItemId("augmentjetpackperfecthover")
-            .fitsInto(ArmorType.Chestplate)
-            .providesBehaviors(JetpackPerfectHoverBehavior.INSTANCE)
-            .requiresBehaviors(BehaviorName.Jetpack)
-            .setCategory(AugmentCategory.Movement)
-            .setMinimumCore(1)
-            .setRarity(EnumRarity.rare)
-        ),
-        FireImmunity(ItemList.Augment_FireImmunity, new AugmentBuilder()
-            .setId("FireImmunity")
-            .setItemId("augmentfireimmunity")
-            .fitsInto(ArmorType.Leggings)
-            .providesBehaviors(FireImmunityBehavior.INSTANCE)
-            .setCategory(AugmentCategory.Protection)
-            .setMinimumCore(1)
-            .setRarity(EnumRarity.common)
-        ),
-        StepAssist(ItemList.Augment_StepAssist, new AugmentBuilder()
-            .setId("StepAssist")
-            .setItemId("augmentstepassist")
-            .fitsInto(ArmorType.Boots)
-            .providesBehaviors(StepAssistBehavior.INSTANCE)
-            .setCategory(AugmentCategory.Movement)
-            .setMinimumCore(1)
-            .setRarity(EnumRarity.common)
-        ),
-        GogglesOfRevealing(ItemList.Augment_GogglesOfRevealing, new AugmentBuilder()
-            .setId("GogglesOfRevealing")
-            .setItemId("augmentgogglesofrevealing")
-            .fitsInto(ArmorType.Helmet)
-            .setTexture(() -> revealingAugment)
-            .providesBehaviors(GogglesOfRevealingBehavior.INSTANCE, new VisDiscountBehavior(7))
-            .setCategory(AugmentCategory.Utility)
-            .setRarity(EnumRarity.uncommon)
-        ),
-        InertiaCanceling(ItemList.Augment_InertiaCanceling, new AugmentBuilder()
-            .setId("InertiaCanceling")
-            .setItemId("augmentinertiacanceling")
-            .fitsInto(ArmorType.Chestplate)
-            .providesBehaviors(InertiaCancelingBehavior.INSTANCE)
-            .requiresBehaviors(BehaviorName.CreativeFlight)
-            .setCategory(AugmentCategory.Movement)
-            .setMinimumCore(2)
-            .setRarity(EnumRarity.rare)
-        ),
+
+        // When adding new augments please sort them here according to tier and category.
+        // This sorts the registration order and therefore the order in which they appear in NEI.
+
+        // Tier 1 - Protection
         Hazmat(ItemList.Augment_Hazmat, new AugmentBuilder()
             .setId("Hazmat")
             .setItemId("augmenthazmat")
             .providesBehaviors(HazmatBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Protection)
-            .setRarity(EnumRarity.common)
-        ),
-        Apiarist(ItemList.Augment_Apiarist, new AugmentBuilder()
-            .setId("Apiarist")
-            .setItemId("augmentapiarist")
-            .providesBehaviors(ApiaristBehavior.INSTANCE)
-            .setCategory(AugmentCategory.Utility)
-            .setRarity(EnumRarity.uncommon)
-        ),
-        SwimSpeed(ItemList.Augment_SwimSpeed, new AugmentBuilder()
-            .setId("SwimSpeed")
-            .setItemId("augmentswimspeed")
-            .fitsInto(ArmorType.Boots)
-            .providesBehaviors(SwimSpeedBehavior.INSTANCE)
-            .setCategory(AugmentCategory.Movement)
-            .setMaxStack(2)
-            .setRarity(EnumRarity.common)
-        ),
-        KnockbackResistance(ItemList.Augment_KnockbackResistance, new AugmentBuilder()
-            .setId("KnockbackResistance")
-            .setItemId("augmentknockbackresistance")
-            .fitsInto(ArmorType.Leggings)
-            .providesBehaviors(KnockbackResistBehavior.INSTANCE)
-            .setCategory(AugmentCategory.Protection)
-            .setRarity(EnumRarity.uncommon)
-        ),
-        SpeedBoost(ItemList.Augment_SpeedBoost, new AugmentBuilder()
-            .setId("SpeedBoost")
-            .setItemId("augmentspeedboost")
-            .fitsInto(ArmorType.Boots)
-            .providesBehaviors(SpeedBoostBehavior.MECH_ARMOR_INSTANCE)
-            .setCategory(AugmentCategory.Movement)
-            .setMinimumCore(1)
-            .setMaxStack(3)
-            .setRarity(EnumRarity.common)
-        ),
-        JumpBoost(ItemList.Augment_JumpBoost, new AugmentBuilder()
-            .setId("JumpBoost")
-            .setItemId("augmentjumpboost")
-            .fitsInto(ArmorType.Boots)
-            .providesBehaviors(JumpBoostBehavior.MECH_ARMOR_INSTANCE)
-            .setCategory(AugmentCategory.Movement)
-            .setMinimumCore(1)
-            .setMaxStack(2)
-            .setRarity(EnumRarity.common)
         ),
         FallProtection(ItemList.Augment_FallProtection, new AugmentBuilder()
             .setId("FallProtection")
             .setItemId("augmentfallprotection")
             .fitsInto(ArmorType.Boots)
             .providesBehaviors(FallProtectionBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Protection)
-            .setRarity(EnumRarity.uncommon)
         ),
         SpaceSuit(ItemList.Augment_SpaceSuit, new AugmentBuilder()
             .setId("SpaceSuit")
             .setItemId("augmentspacesuit")
             .providesBehaviors(SpaceSuitBehavior.INSTANCE)
-            .setMinimumCore(1)
+            .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Protection)
-            .setRarity(EnumRarity.rare)
         ),
-        ForceField(ItemList.Augment_ForceField, new AugmentBuilder()
-            .setId("ForceField")
-            .setItemId("augmentforcefield")
-            .fitsInto(ArmorType.Chestplate)
-            .setTexture(() ->forceFieldAugment)
-            .providesBehaviors(ForceFieldBehavior.INSTANCE)
-            .setMinimumCore(2)
+        WaterBreathing(ItemList.Augment_WaterBreathing, new AugmentBuilder()
+            .setId("WaterBreathing")
+            .setItemId("augmentwaterbreathing")
+            .fitsInto(ArmorType.Helmet)
+            .setTexture(ArmorType.Helmet, () -> rebreatherAugment)
+            .providesBehaviors(WaterBreathingBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Protection)
-            .setRarity(EnumRarity.epic)
+        ),
+
+        // Tier 1 - Movement
+        Jetpack(ItemList.Augment_Jetpack, new AugmentBuilder()
+            .setId("Jetpack")
+            .setItemId("augmentjetpack")
+            .fitsInto(ArmorType.Chestplate)
+            .setTexture(ArmorType.Chestplate, () -> jetpackAugment)
+            .providesBehaviors(JetpackBehavior.INSTANCE, JetpackHoverBehavior.INSTANCE)
+            .incompatibleBehaviors(BehaviorName.CreativeFlight)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Movement)
+        ),
+        SwimSpeed(ItemList.Augment_SwimSpeed, new AugmentBuilder()
+            .setId("SwimSpeed")
+            .setItemId("augmentswimspeed")
+            .fitsInto(ArmorType.Leggings)
+            .providesBehaviors(SwimSpeedBehavior.INSTANCE)
+            .setCategory(AugmentCategory.Movement)
+            .setMinimumCoreTier(1)
+            .setMaxStack(2)
+        ),
+        ApprenticeStriders(ItemList.Augment_ApprenticeStriders, new AugmentBuilder()
+            .setId("ApprenticeStriders")
+            .setItemId("augmentapprenticestriders")
+            .fitsInto(ArmorType.Boots)
+            .providesBehaviors(
+                new SpeedBoostBehavior(3.0F),
+                new JumpBoostBehavior(3.0F),
+                StepAssistBehavior.INSTANCE,
+                new VisDiscountBehavior(4)
+            )
+            .incompatibleAugments(
+                ItemList.Augment_ArchmageStriders,
+                ItemList.Augment_EldritchStriders,
+                ItemList.Augment_StepAssist
+            )
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Movement)
+        ),
+
+        // Tier 1 - Utility
+        NightVision(ItemList.Augment_NightVision, new AugmentBuilder()
+            .setId("NightVision")
+            .setItemId("augmentnightvision")
+            .fitsInto(ArmorType.Helmet)
+            .setTexture(ArmorType.Helmet, () -> nightVisionAugment)
+            .providesBehaviors(NightVisionBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Utility)
+        ),
+        GogglesOfRevealing(ItemList.Augment_GogglesOfRevealing, new AugmentBuilder()
+            .setId("GogglesOfRevealing")
+            .setItemId("augmentgogglesofrevealing")
+            .fitsInto(ArmorType.Helmet)
+            .setTexture(ArmorType.Helmet, () -> revealingAugment)
+            .providesBehaviors(GogglesOfRevealingBehavior.INSTANCE, new VisDiscountBehavior(7))
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Utility)
+        ),
+        Apiarist(ItemList.Augment_Apiarist, new AugmentBuilder()
+            .setId("Apiarist")
+            .setItemId("augmentapiarist")
+            .providesBehaviors(ApiaristBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Utility)
+        ),
+        HoloInventory(ItemList.Augment_HoloInventory, new AugmentBuilder()
+            .setId("HoloInventory")
+            .setItemId("augmentholoinventory")
+            .providesBehaviors(HoloInventoryBehavior.INSTANCE)
+            .setTexture(ArmorType.Helmet,() -> holoInventoryAugment)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Utility)
+        ),
+        TerrasteelAugment(ItemList.Augment_Terrasteel, new AugmentBuilder()
+            .setId("Terrasteel")
+            .setItemId("augmentterrasteel")
+            .providesBehaviors(TerrasteelBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Utility)
+        ),
+
+        // Tier 2 - Protection
+        FireImmunity(ItemList.Augment_FireImmunity, new AugmentBuilder()
+            .setId("FireImmunity")
+            .setItemId("augmentfireimmunity")
+            .fitsInto(ArmorType.Leggings)
+            .providesBehaviors(FireImmunityBehavior.INSTANCE)
+            .setMinimumCoreTier(2)
+            .setCategory(AugmentCategory.Protection)
+        ),
+        KnockbackResistance(ItemList.Augment_KnockbackResistance, new AugmentBuilder()
+            .setId("KnockbackResistance")
+            .setItemId("augmentknockbackresistance")
+            .fitsInto(ArmorType.Leggings)
+            .providesBehaviors(KnockbackResistBehavior.INSTANCE)
+            .setMinimumCoreTier(2)
+            .setCategory(AugmentCategory.Protection)
+        ),
+
+        // Tier 2 - Movement
+        JetpackPerfectHover(ItemList.Augment_Jetpack_PerfectHover, new AugmentBuilder()
+            .setId("JetpackPerfectHover")
+            .setItemId("augmentjetpackperfecthover")
+            .fitsInto(ArmorType.Chestplate)
+            .providesBehaviors(JetpackPerfectHoverBehavior.INSTANCE)
+            .requiresBehaviors(BehaviorName.Jetpack)
+            .setMinimumCoreTier(2)
+            .setCategory(AugmentCategory.Movement)
+        ),
+        StepAssist(ItemList.Augment_StepAssist, new AugmentBuilder()
+            .setId("StepAssist")
+            .setItemId("augmentstepassist")
+            .fitsInto(ArmorType.Boots)
+            .providesBehaviors(StepAssistBehavior.INSTANCE)
+            .incompatibleAugments(
+                ItemList.Augment_ArchmageStriders,
+                ItemList.Augment_ApprenticeStriders,
+                ItemList.Augment_EldritchStriders
+            )
+            .setMinimumCoreTier(2)
+            .setCategory(AugmentCategory.Movement)
+        ),
+        SpeedBoost(ItemList.Augment_SpeedBoost, new AugmentBuilder()
+            .setId("SpeedBoost")
+            .setItemId("augmentspeedboost")
+            .fitsInto(ArmorType.Boots)
+            .providesBehaviors(SpeedBoostBehavior.MECH_ARMOR_INSTANCE)
+            .incompatibleAugments(ItemList.Augment_EldritchStriders)
+            .setMinimumCoreTier(2)
+            .setMaxStack(2)
+            .setCategory(AugmentCategory.Movement)
+        ),
+        JumpBoost(ItemList.Augment_JumpBoost, new AugmentBuilder()
+            .setId("JumpBoost")
+            .setItemId("augmentjumpboost")
+            .fitsInto(ArmorType.Boots)
+            .providesBehaviors(JumpBoostBehavior.MECH_ARMOR_INSTANCE)
+            .incompatibleAugments(ItemList.Augment_EldritchStriders)
+            .setMinimumCoreTier(2)
+            .setMaxStack(2)
+            .setCategory(AugmentCategory.Movement)
         ),
         OmniMovement(ItemList.Augment_OmniMovement, new AugmentBuilder()
             .setId("OmniMovement")
@@ -547,48 +584,96 @@ public class MechArmorAugmentRegistries {
             .fitsInto(ArmorType.Boots)
             .providesBehaviors(OmniMovementBehavior.INSTANCE)
             .requiresBehaviors(BehaviorName.SpeedBoost)
-            .setMinimumCore(1)
+            .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Movement)
-            .setRarity(EnumRarity.rare)
         ),
-        WaterBreathing(ItemList.Augment_WaterBreathing, new AugmentBuilder()
-            .setId("WaterBreathing")
-            .setItemId("augmentwaterbreathing")
-            .fitsInto(ArmorType.Helmet)
-            .setTexture(() -> rebreatherAugment)
-            .providesBehaviors(WaterBreathingBehavior.INSTANCE)
-            .setCategory(AugmentCategory.Protection)
-            .setRarity(EnumRarity.uncommon)
+        ArchmageStriders(ItemList.Augment_ArchmageStriders, new AugmentBuilder()
+            .setId("ArchmageStriders")
+            .setItemId("augmentarchmagestriders")
+            .fitsInto(ArmorType.Boots)
+            .providesBehaviors(
+                new SpeedBoostBehavior(5.0F),
+                new JumpBoostBehavior(4.0F),
+                StepAssistBehavior.INSTANCE,
+                new VisDiscountBehavior(5)
+            )
+            .incompatibleAugments(
+                ItemList.Augment_ApprenticeStriders,
+                ItemList.Augment_EldritchStriders,
+                ItemList.Augment_StepAssist
+            )
+            .setMinimumCoreTier(2)
+            .setCategory(AugmentCategory.Movement)
         ),
+
+        // Tier 2 - Utility
         MilkInfusion(ItemList.Augment_MilkInfusion, new AugmentBuilder()
             .setId("MilkInfusion")
             .setItemId("augmentmilkinfusion")
             .fitsInto(ArmorType.Helmet)
             .providesBehaviors(MilkInfusionBehavior.INSTANCE)
-            .setMinimumCore(1)
+            .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Utility)
-            .setRarity(EnumRarity.uncommon)
         ),
-        HoloInventory(ItemList.Augment_HoloInventory, new AugmentBuilder()
-            .setId("HoloInventory")
-            .setItemId("augmentholoinventory")
-            .providesBehaviors(HoloInventoryBehavior.INSTANCE)
-            .setTexture(() -> holoInventoryAugment)
-            .setCategory(AugmentCategory.Utility)
-            .setRarity(EnumRarity.uncommon)
+
+        // Tier 3 - Protection
+        ForceField(ItemList.Augment_ForceField, new AugmentBuilder()
+            .setId("ForceField")
+            .setItemId("augmentforcefield")
+            .fitsInto(ArmorType.Chestplate)
+            .setTexture(ArmorType.Chestplate,() ->forceFieldAugment)
+            .providesBehaviors(ForceFieldBehavior.INSTANCE)
+            .setMinimumCoreTier(3)
+            .setCategory(AugmentCategory.Protection)
         ),
-        TravelersBoots(ItemList.Augment_Travelers, new AugmentBuilder()
-            .setId("Travelers")
-            .setItemId("augmenttravelers")
-            .fitsInto(ArmorType.Boots)
-            .providesBehaviors(new JumpBoostBehavior(0.6F),
-                new SpeedBoostBehavior(0.15F),
-                StepAssistBehavior.INSTANCE,
-                new VisDiscountBehavior(4))
+
+        // Tier 3 - Movement
+        CreativeFlight(ItemList.Augment_CreativeFlight, new AugmentBuilder()
+            .setId("CreativeFlight")
+            .setItemId("augmentcreativeflight")
+            .fitsInto(ArmorType.Chestplate)
+            .setTexture(ArmorType.Chestplate, () -> creativeFlightAugment)
+            .providesBehaviors(
+                CreativeFlightBehavior.INSTANCE,
+                LevitationBehavior.INSTANCE
+            )
+            .incompatibleBehaviors(BehaviorName.Jetpack)
+            .setMinimumCoreTier(3)
             .setCategory(AugmentCategory.Movement)
-            .setMinimumCore(0)
-            .setRarity(EnumRarity.common)
+        ),
+        InertiaCanceling(ItemList.Augment_InertiaCanceling, new AugmentBuilder()
+            .setId("InertiaCanceling")
+            .setItemId("augmentinertiacanceling")
+            .fitsInto(ArmorType.Chestplate)
+            .providesBehaviors(InertiaCancelingBehavior.INSTANCE)
+            .requiresBehaviors(BehaviorName.CreativeFlight)
+            .setMinimumCoreTier(3)
+            .setCategory(AugmentCategory.Movement)
+        ),
+        EldritchStriders(ItemList.Augment_EldritchStriders, new AugmentBuilder()
+            .setId("EldritchStriders")
+            .setItemId("augmenteldritchstriders")
+            .fitsInto(ArmorType.Boots)
+            .providesBehaviors(
+                new SpeedBoostBehavior(10.0F),
+                new JumpBoostBehavior(5.0F),
+                StepAssistBehavior.INSTANCE,
+                new VisDiscountBehavior(10)
+            )
+            .incompatibleAugments(
+                ItemList.Augment_ApprenticeStriders,
+                ItemList.Augment_ArchmageStriders,
+                ItemList.Augment_SpeedBoost,
+                ItemList.Augment_JumpBoost,
+                ItemList.Augment_StepAssist
+            )
+            .setMinimumCoreTier(3)
+            .setCategory(AugmentCategory.Movement)
         );
+
+        // Tier 3 - Utility
+
+
         // spotless:on
 
         private final ItemList item;
@@ -606,6 +691,10 @@ public class MechArmorAugmentRegistries {
         @Override
         public ItemStack getItem(int amount) {
             return item.get(amount);
+        }
+
+        public ItemList getListItem() {
+            return item;
         }
 
         @Override
@@ -653,8 +742,13 @@ public class MechArmorAugmentRegistries {
             return this.builder.getIncompatibleBehaviors();
         }
 
-        public IIcon getTexture() {
-            return this.builder.getTexture();
+        @Override
+        public Collection<ItemList> getIncompatibleAugments() {
+            return this.builder.getIncompatibleAugments();
+        }
+
+        public IIcon getTexture(ArmorType armorType) {
+            return this.builder.getTexture(armorType);
         }
 
         public AugmentCategory getCategory() {
@@ -662,7 +756,11 @@ public class MechArmorAugmentRegistries {
         }
 
         public Cores getMinimumCore() {
-            return Cores.values()[this.builder.getMinimumCore()];
+            int minTier = this.builder.getMinimumCoreTier();
+            for (Cores core : Cores.values()) {
+                if (core.getTier() == minTier) return core;
+            }
+            return Cores.Nano;
         }
 
         public int getMaxStack() {

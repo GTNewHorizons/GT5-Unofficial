@@ -1,5 +1,7 @@
 package gtPlusPlus.core.proxy;
 
+import static gregtech.api.enums.Mods.Angelica;
+
 import java.util.ArrayList;
 
 import net.minecraft.client.Minecraft;
@@ -50,12 +52,14 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(new MachineBlockRenderer());
         new FlaskRenderer();
         MinecraftForge.EVENT_BUS.register(PowerGogglesHudHandler.getInstance());
-        AnimatedBlockTextureHandler animatedBlockTextureHandler = new AnimatedBlockTextureHandler();
-        FMLCommonHandler.instance()
-            .bus()
-            .register(animatedBlockTextureHandler);
-        ((IReloadableResourceManager) Minecraft.getMinecraft()
-            .getResourceManager()).registerReloadListener(animatedBlockTextureHandler);
+        if (Angelica.isModLoaded()) {
+            AnimatedBlockTextureHandler animatedBlockTextureHandler = new AnimatedBlockTextureHandler();
+            FMLCommonHandler.instance()
+                .bus()
+                .register(animatedBlockTextureHandler);
+            ((IReloadableResourceManager) Minecraft.getMinecraft()
+                .getResourceManager()).registerReloadListener(animatedBlockTextureHandler);
+        }
         PowerGogglesKeybindHandler.init();
         if (Mods.AdvancedSolarPanel.isModLoaded()) {
             MinecraftForge.EVENT_BUS.register(new MolecularTransformerTooltipNotice());

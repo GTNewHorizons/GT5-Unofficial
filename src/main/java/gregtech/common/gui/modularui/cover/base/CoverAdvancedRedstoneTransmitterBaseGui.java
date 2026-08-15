@@ -7,6 +7,7 @@ import java.util.UUID;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -19,6 +20,22 @@ public class CoverAdvancedRedstoneTransmitterBaseGui<T extends CoverAdvancedReds
 
     public CoverAdvancedRedstoneTransmitterBaseGui(T cover) {
         super(cover, false);
+    }
+
+    @Override
+    protected StringSyncValue createFrequencySyncer() {
+        return new StringSyncValue(cover::getFrequency, frequency -> {
+            cover.unregisterSignal();
+            cover.setFrequency(frequency);
+        }).allowC2S();
+    }
+
+    @Override
+    protected BooleanSyncValue createPrivacySyncer(UUID uuid) {
+        return new BooleanSyncValue(cover::getPrivacyState, b -> {
+            cover.unregisterSignal();
+            cover.syncPrivacyState(b, uuid);
+        }).allowC2S();
     }
 
     @Override

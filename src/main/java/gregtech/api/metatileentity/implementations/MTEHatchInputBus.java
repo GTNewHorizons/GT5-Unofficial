@@ -5,8 +5,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_COLORS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -31,6 +34,8 @@ import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import gregtech.GTMod;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.INonConsumedItemDisplay;
+import gregtech.api.interfaces.IPhysicalCircuitDisplay;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -43,11 +48,13 @@ import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputBusGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitSupport {
+public class MTEHatchInputBus extends MTEHatch
+    implements IConfigurationCircuitSupport, ISmartInputHatch, IPhysicalCircuitDisplay, INonConsumedItemDisplay {
 
     private static final String SORTING_MODE_TOOLTIP = "GT5U.machines.sorting_mode.tooltip";
     private static final String ONE_STACK_LIMIT_TOOLTIP = "GT5U.machines.one_stack_limit.tooltip";
@@ -147,6 +154,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aBaseMetaTileEntity.isServerSide()) {
+            detectInventoryChange();
             updateSlots();
         }
     }
@@ -158,7 +166,10 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     }
 
     protected void fillStacksIntoFirstSlots() {
-        GTUtility.compactInventory(Arrays.asList(mInventory), 0, mInventory.length - 1);
+        // Don't compact busses with fewer than 2 slots since there's no point
+        if (mInventory.length > 1) {
+            GTUtility.compactInventory(Arrays.asList(mInventory), 0, mInventory.length - 1);
+        }
     }
 
     @Override
@@ -253,6 +264,37 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
     @Override
     public int getCircuitSlot() {
         return getSlots(mTier);
+    }
+
+    @Override
+    public List<Integer> getPhysicalCircuitNumbers() {
+        List<Integer> numbers = new ArrayList<>();
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (i == getCircuitSlot()) continue;
+            ItemStack stack = getStackInSlot(i);
+            if (GTUtility.isAnyIntegratedCircuit(stack)) {
+                numbers.add(stack.getItemDamage());
+            }
+        }
+        return numbers;
+    }
+
+    @Override
+    public List<ItemStack> getNonConsumedInputDisplayItems() {
+        if (mRecipeMap == null) return Collections.emptyList();
+        Set<GTUtility.ItemId> nonConsumedIds = mRecipeMap.getNonConsumedInputItemIds();
+        if (nonConsumedIds.isEmpty()) return Collections.emptyList();
+
+        List<ItemStack> result = new ArrayList<>();
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (i == getCircuitSlot()) continue;
+            ItemStack stack = getStackInSlot(i);
+            if (stack == null || GTUtility.isAnyIntegratedCircuit(stack)) continue;
+            if (nonConsumedIds.contains(GTUtility.ItemId.create(stack))) {
+                result.add(stack);
+            }
+        }
+        return result;
     }
 
     @Override

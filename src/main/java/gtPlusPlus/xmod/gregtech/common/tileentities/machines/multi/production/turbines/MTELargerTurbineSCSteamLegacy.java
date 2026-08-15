@@ -105,9 +105,9 @@ public class MTELargerTurbineSCSteamLegacy extends MTELargerTurbineBaseLegacy {
         if (totalFlow <= 0) return 0;
         tEU = totalFlow; // SC Steam has 1 EU per litre so the flow equals base EU produced
         if (isUsingDenseSteam) {
-            addOutput(Materials.DenseSuperheatedSteam.getGas((long) steamFlowForNextSteam));
+            addOutputPartial(Materials.DenseSuperheatedSteam.getGas((long) steamFlowForNextSteam));
         } else {
-            addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));
+            addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));
 
         }
         if (totalFlow != realOptFlow) {

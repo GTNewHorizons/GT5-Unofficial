@@ -113,7 +113,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     }
 
     public boolean isItemStackTurbine(ItemStack aStack) {
-        if (aStack.getItem() instanceof MetaGeneratedTool) {
+        if (aStack != null && aStack.getItem() instanceof MetaGeneratedTool) {
             return aStack.getItemDamage() >= 170 && aStack.getItemDamage() <= 176;
         }
         return false;
@@ -207,4 +207,8 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
         return false;
     }
 
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return isItemStackTurbine(itemStack) && super.isItemValidForSlot(index, itemStack);
+    }
 }

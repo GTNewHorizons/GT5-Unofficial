@@ -3,7 +3,7 @@ package gregtech.common.gui.modularui.singleblock;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
-import com.cleanroommc.modularui.widget.Widget;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
@@ -19,8 +19,8 @@ public class MTEAutoChiselGui extends MTEBasicMachineBaseGui<MTEAutoChisel> {
     }
 
     @Override
-    protected Widget<? extends Widget<?>> createSpecialSlot() {
-        return new PhantomItemSlot().marginRight(9)
+    protected ItemSlot createSpecialSlot() {
+        return new PhantomItemSlot().marginRight(SLOT_SIZE / 2)
             .slot(new ModularSlot(machine.inventoryHandler, machine.getSpecialSlotIndex()).singletonSlotGroup(1000))
             .backgroundOverlay(
                 properties.useSpecialSlot ? slotOverlayFunction.apply(0, false, false, true) : IDrawable.NONE)

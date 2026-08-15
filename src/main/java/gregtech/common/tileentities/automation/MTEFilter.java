@@ -101,4 +101,9 @@ public class MTEFilter extends MTEFilterBase {
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEFilterGui(this).build(guiData, syncManager, uiSettings);
     }
+
+    @Override
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return FILTER_SLOT_INDEX <= index && index < FILTER_SLOT_INDEX + NUM_FILTER_SLOTS;
+    }
 }

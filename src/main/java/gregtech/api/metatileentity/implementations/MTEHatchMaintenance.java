@@ -475,9 +475,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
             for (int i = 0; i < getSizeInventory(); i++) if (GTUtility.areStacksEqual(
                 GTOreDictUnificator.get(false, aStack),
                 GTOreDictUnificator.get(false, getStackInSlot(i)))) return i == aIndex;
-            if (IsAutoMaintenanceInput(aStack)) {
-                return true;
-            }
+            return IsAutoMaintenanceInput(aStack);
         }
         return false;
     }
@@ -550,5 +548,10 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchMaintenanceGui(this, mAuto).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return IsAutoMaintenanceInput(itemStack) && super.isItemValidForSlot(index, itemStack);
     }
 }

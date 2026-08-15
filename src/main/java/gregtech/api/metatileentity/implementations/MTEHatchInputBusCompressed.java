@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -42,7 +43,7 @@ import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.util.item.AEItemStack;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -186,7 +187,7 @@ public class MTEHatchInputBusCompressed extends MTEHatchInputBus
                 if (delta == 0) continue;
 
                 if (delta < 0) {
-                    GTMod.GT_FML_LOGGER.error(
+                    GTLoggers.GT_FML_LOGGER.error(
                         "Compressed input bus somehow has more items in it than was original stored; this recipe will be cancelled (slot index={}, original={}, contained={}, delta={})",
                         slotIndex,
                         original,
@@ -199,7 +200,7 @@ public class MTEHatchInputBusCompressed extends MTEHatchInputBus
                 IAEItemStack stack = inventory.getAEStackInSlot(slotIndex);
 
                 if (stack == null || delta > stack.getStackSize()) {
-                    GTMod.GT_FML_LOGGER.error(
+                    GTLoggers.GT_FML_LOGGER.error(
                         "Compressed input bus somehow consumed more items than were available for this slot; this recipe will be cancelled (slot index={}, original={}, contained={}, delta={})",
                         slotIndex,
                         original,
@@ -381,7 +382,7 @@ public class MTEHatchInputBusCompressed extends MTEHatchInputBus
                     tooltip.add(stored.getDisplayName() + " x " + GOLD + formatNumber(stored.getStackSize()));
                 }
             } else {
-                tooltip.add(GTUtility.translate("GT5U.gui.text.compressed_bus_stored_items"));
+                tooltip.add(StatCollector.translateToLocal("GT5U.gui.text.compressed_bus_stored_items"));
             }
             tooltip.add("");
         }

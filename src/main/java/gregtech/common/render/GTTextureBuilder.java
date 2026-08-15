@@ -47,7 +47,12 @@ public final class GTTextureBuilder implements ITextureBuilder {
 
     @Override
     public ITextureBuilder glow() {
-        glow = true;
+        return glow(true);
+    }
+
+    @Override
+    public ITextureBuilder glow(boolean glow) {
+        this.glow = glow;
         return this;
     }
 
