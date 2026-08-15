@@ -61,7 +61,6 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
     private static final HashSet<String> sProcessedPlanks = new HashSet<>();
     private static final HashSet<Item> sGroupedOakSlabItems = new HashSet<>();
 
-    public static int countPlank = 0;
     public ProcessingPlank() {
         OrePrefixes.plank.add(this);
     }
@@ -190,7 +189,6 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
     }
 
     private void addSlabRecipes(ItemStack plankInput, ItemStack slabOutput) {
-        countPlank+=1;
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, plankInput))
             .itemOutputs(slabOutput)

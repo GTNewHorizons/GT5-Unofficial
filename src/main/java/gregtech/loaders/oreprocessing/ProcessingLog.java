@@ -17,7 +17,6 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static int counterLog = 0;
     public ProcessingLog() {
         OrePrefixes.log.add(this);
     }
@@ -48,7 +47,6 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                 } else {
                     ItemStack tPlanks = GTUtility.copyOrNull(tStack);
                     if (tPlanks != null) {
-                        counterLog+=1;
                         tPlanks.stackSize = (tPlanks.stackSize * 3 / 2);
                         GTValues.RA.stdBuilder()
                             .itemInputs(new ItemStack(aStack.getItem(), 1, i))

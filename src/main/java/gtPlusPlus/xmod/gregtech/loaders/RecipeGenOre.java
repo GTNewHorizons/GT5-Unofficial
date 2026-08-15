@@ -46,7 +46,6 @@ import gtnhlanth.common.register.WerkstoffMaterialPool;
 public class RecipeGenOre extends RecipeGenBase {
 
     public static final Set<Runnable> mRecipeGenMap = new HashSet<>();
-    public static int countRecipeGenOre = 0;
 
     static {
         MaterialGenerator.mRecipeMapsToGenerate.add(mRecipeGenMap);
@@ -70,7 +69,7 @@ public class RecipeGenOre extends RecipeGenBase {
     private static Material mStone;
 
     private void generateRecipes(final Material material, final boolean disableOptional) {
-        countRecipeGenOre+=1;
+
         if (mStone == null) {
             mStone = MaterialUtils.generateMaterialFromGtENUM(Materials.Stone);
         }

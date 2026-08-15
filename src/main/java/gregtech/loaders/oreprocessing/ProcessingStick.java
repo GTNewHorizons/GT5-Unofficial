@@ -21,8 +21,6 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    public static int counterStick = 0;
-
     public ProcessingStick() {
         OrePrefixes.stick.add(this);
     }
@@ -37,7 +35,6 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
             || aMaterial == Materials.Magnesia) return;
 
         if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-            counterStick+=1;
             GTModHandler.addCraftingRecipe(
                 GTOreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 1L),
                 GTModHandler.RecipeBits.BUFFERED,

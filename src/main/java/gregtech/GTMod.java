@@ -16,12 +16,6 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 
-import gregtech.loaders.oreprocessing.ProcessingLog;
-import gregtech.loaders.oreprocessing.ProcessingNugget;
-import gregtech.loaders.oreprocessing.ProcessingPlank;
-import gregtech.loaders.oreprocessing.ProcessingStick;
-import gregtech.loaders.oreprocessing.ProcessingStickLong;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenOre;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -629,13 +623,6 @@ public class GTMod {
         }
         GregTechAPI.sGTCompleteLoad = null;
         GregTechAPI.sFullLoadFinished = true;
-        GT_FML_LOGGER.fatal("counter frame {}", LoaderMetaPipeEntities.counterFrameIV);
-        GT_FML_LOGGER.fatal("counter log {}", ProcessingLog.counterLog);
-        GT_FML_LOGGER.fatal("counter nugger {}", ProcessingNugget.countNugget);
-        GT_FML_LOGGER.fatal("counter plank {}", ProcessingPlank.countPlank);
-        GT_FML_LOGGER.fatal("counter stick {}", ProcessingStick.counterStick);
-        GT_FML_LOGGER.fatal("counter sticklong {}", ProcessingStickLong.countStickLong);
-        GT_FML_LOGGER.fatal("counter GenOre {}", RecipeGenOre.countRecipeGenOre);
     }
 
     @Mod.EventHandler
