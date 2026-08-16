@@ -1,5 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.GTLoggers.GT_RECIPE_REMOVAL_LOGGER;
 import static gregtech.api.enums.GTValues.NI;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
@@ -24,7 +25,9 @@ import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
+import static gregtech.loaders.oreprocessing.ProcessingUtils.itemStackKey;
 
+import gregtech.GTLoggers;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -97,7 +100,9 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         registerCover(aMaterial, aStack);
 
         GTModHandler.removeRecipeByOutputDelayed(aStack);
-        GTModHandler.removeRecipeDelayed(aStack);
+        GT_RECIPE_REMOVAL_LOGGER.fatal("removing plate key: {}", itemStackKey(aStack));
+        GTModHandler.removeRecipe(aStack);
+        GT_RECIPE_REMOVAL_LOGGER.fatal("done!");
 
         GTUtility.removeSimpleIC2MachineRecipe(
             GTUtility.copyAmount(9, aStack),
