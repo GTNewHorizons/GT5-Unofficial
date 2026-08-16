@@ -1336,33 +1336,6 @@ public class GTModHandler {
     }
 
     /**
-     * Checks the current crafting list for a removable recipe matching the supplied grid.
-     */
-    public static boolean hasRemovableRecipe(ItemStack... shape) {
-        if (shape == null || isAllNulls(shape)) return false;
-
-        InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
-
-            @Override
-            public boolean canInteractWith(EntityPlayer player) {
-                return false;
-            }
-        }, 3, 3);
-
-        for (int i = 0; i < shape.length && i < 9; i++) {
-            craftMatrix.setInventorySlotContents(i, shape[i]);
-        }
-
-        List<IRecipe> allRecipes = CraftingManager.getInstance()
-            .getRecipeList();
-        for (IRecipe recipe : allRecipes) {
-            if (recipe instanceof IGTCraftingRecipe craftingRecipe && !craftingRecipe.isRemovable()) continue;
-            if (recipe.matches(craftMatrix, DW)) return true;
-        }
-        return false;
-    }
-
-    /**
      * Removes a Crafting Recipe and gives you the former output of it.
      *
      * @param shape The content of the Crafting Grid as ItemStackArray with length 9

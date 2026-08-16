@@ -104,13 +104,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             return;
         }
 
-        removeRecipeIfPresent(input, input, input, input, input, input, input, input, input);
-    }
-
-    private static void removeRecipeIfPresent(ItemStack... shape) {
-        if (!GTModHandler.hasRemovableRecipe(shape)) return;
-        if (GTModHandler.isBufferingCraftingRecipes()) GTModHandler.removeRecipeDelayed(shape);
-        else GTModHandler.removeRecipe(shape);
+        GTModHandler.removeRecipeDelayed(input, input, input, input, input, input, input, input, input);
     }
 
     @Override
@@ -238,7 +232,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         ItemStack dust = GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L);
 
         int recipeRemovals = RECIPE_REMOVALS.getOrDefault(aMaterial, 0);
-        if ((recipeRemovals & BLOCK_RECIPE_REMOVAL) != 0) removeRecipeIfPresent(GTUtility.copyAmount(1, aStack));
+        if ((recipeRemovals & BLOCK_RECIPE_REMOVAL) != 0) GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, aStack));
         if ((recipeRemovals & INGOT_RECIPE_REMOVAL) != 0) removePackingRecipe(ingot);
         if ((recipeRemovals & GEM_RECIPE_REMOVAL) != 0) removePackingRecipe(gem);
         if ((recipeRemovals & DUST_RECIPE_REMOVAL) != 0) removePackingRecipe(dust);
