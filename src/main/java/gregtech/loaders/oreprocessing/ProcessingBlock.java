@@ -23,6 +23,7 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static int counterRem, counterIngot, counterGem, counterDust;
     public ProcessingBlock() {
         OrePrefixes.block.add(this);
     }
@@ -151,15 +152,19 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         ItemStack gem = GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
         ItemStack dust = GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L);
 
+        counterRem+=1;
         GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, aStack));
 
         if (ingot != null) {
+            counterIngot+=1;
             GTModHandler.removeRecipeDelayed(ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot);
         }
         if (gem != null) {
+            counterGem+=1;
             GTModHandler.removeRecipeDelayed(gem, gem, gem, gem, gem, gem, gem, gem, gem);
         }
         if (dust != null) {
+            counterDust+=1;
             GTModHandler.removeRecipeDelayed(dust, dust, dust, dust, dust, dust, dust, dust, dust);
         }
 

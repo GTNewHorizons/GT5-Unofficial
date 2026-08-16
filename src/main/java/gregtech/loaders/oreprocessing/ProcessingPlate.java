@@ -48,6 +48,7 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static int counterPlate;
     public ProcessingPlate() {
         OrePrefixes.plate.add(this);
         OrePrefixes.plateDouble.add(this);
@@ -96,6 +97,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         registerCover(aMaterial, aStack);
 
+        counterPlate +=1;
         GTModHandler.removeRecipeByOutputDelayed(aStack);
         GTModHandler.removeRecipeDelayed(aStack);
 

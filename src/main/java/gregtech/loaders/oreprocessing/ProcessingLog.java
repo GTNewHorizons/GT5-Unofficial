@@ -17,6 +17,7 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static int counterLog;
     public ProcessingLog() {
         OrePrefixes.log.add(this);
     }
@@ -153,6 +154,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                         .duration(20 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
                         .addTo(cutterRecipes);
+                    counterLog+=1;
                     GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, aStack));
                     GTModHandler.addCraftingRecipe(
                         GTUtility.copyAmount(
