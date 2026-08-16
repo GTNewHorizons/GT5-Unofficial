@@ -125,6 +125,7 @@ import gregtech.loaders.postload.ItemMaxStacksizeLoader;
 import gregtech.loaders.postload.MachineRecipeLoader;
 import gregtech.loaders.postload.MachineTooltipsLoader;
 import gregtech.loaders.postload.MissingMappingsHandler;
+import gregtech.loaders.postload.OreProcessingTagLoader;
 import gregtech.loaders.postload.PosteaTransformers;
 import gregtech.loaders.postload.RecyclerBlacklistLoader;
 import gregtech.loaders.postload.ScannerHandlerLoader;
@@ -620,6 +621,7 @@ public class GTMod {
         for (Runnable tRunnable : GregTechAPI.sGTCompleteLoad) {
             tRunnable.run();
         }
+        new OreProcessingTagLoader().run();
         GregTechAPI.sGTCompleteLoad = null;
         GregTechAPI.sFullLoadFinished = true;
     }
