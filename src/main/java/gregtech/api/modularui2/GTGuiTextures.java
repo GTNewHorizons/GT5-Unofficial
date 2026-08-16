@@ -216,6 +216,8 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_COMPUTATION_LOSS = UITexture
         .fullImage(GregTech.ID, "gui/icons/stalled_computation");
     public static final UITexture OVERLAY_UNPOWERED = UITexture.fullImage(GregTech.ID, "gui/icons/unpowered");
+    public static final UITexture OVERLAY_ROTOR = UITexture.fullImage(GregTech.ID, "gui/picture/noRotor");
+    public static final UITexture OVERLAY_WIND = UITexture.fullImage(GregTech.ID, "gui/picture/wind");
 
     public static final UITexture OVERLAY_NO_MAINTENANCE_ISSUES = UITexture
         .fullImage(GregTech.ID, "gui/icons/maintenance_none");

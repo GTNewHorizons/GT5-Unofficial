@@ -3247,6 +3247,9 @@ GT5U.gui.hoverable.powerloss=Lost Power.
 GT5U.gui.hoverable.norepair=Machine too damaged.
 GT5U.gui.hoverable.manualshutdown=Manual shutdown (get it?).
 GT5U.gui.hoverable.computation_loss=Out of computation.
+GT5U.gui.hoverable.norotor=No rotor
+GT5U.gui.hoverable.windlow=There is not enough wind here
+GT5U.gui.hoverable.windhigh=The wind here is too strong
 GT5U.gui.hoverable.error=ERROR! REPORT ME!
 
 GT5U.gui.config.client=Client

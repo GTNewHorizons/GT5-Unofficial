@@ -306,8 +306,10 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         if (this.rotorBlock != null) {
             if (this.isAllowedToWork()) {
                 if (this.rotorBlock.rotorSlot.isEmpty()) stopMachine(ShutDownReasonRegistry.NO_ROTOR);
-                if (getWindLevel(this.rotorBlock) == WindLevel.TOO_STRONG) stopMachine(ShutDownReasonRegistry.WIND_HIGH);
-                if (getWindLevel(this.rotorBlock) == WindLevel.NON_EXISTENT) stopMachine(ShutDownReasonRegistry.WIND_LOW);
+                if (getWindLevel(this.rotorBlock) == WindLevel.TOO_STRONG)
+                    stopMachine(ShutDownReasonRegistry.WIND_HIGH);
+                if (getWindLevel(this.rotorBlock) == WindLevel.NON_EXISTENT)
+                    stopMachine(ShutDownReasonRegistry.WIND_LOW);
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);

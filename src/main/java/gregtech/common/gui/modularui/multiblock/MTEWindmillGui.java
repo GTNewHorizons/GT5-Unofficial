@@ -3,9 +3,11 @@ package gregtech.common.gui.modularui.multiblock;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
@@ -20,7 +22,7 @@ import gregtech.common.modularui2.widget.GTProgressWidget;
 
 public class MTEWindmillGui extends MTEMultiBlockBaseGui<MTEWindmill> {
 
-    private static final int MACHINE_ROW_HEIGHT = 84;
+    private static final int MACHINE_ROW_HEIGHT = 66;
 
     public MTEWindmillGui(MTEWindmill windmill) {
         super(windmill);
@@ -48,43 +50,65 @@ public class MTEWindmillGui extends MTEMultiBlockBaseGui<MTEWindmill> {
         GenericListSyncHandler<StructureError> error = syncManager
             .findSyncHandler("structureErrors", GenericListSyncHandler.class);
 
-        return new GTBaseGuiBuilder(multiblock, guiData, syncManager, uiSettings).moveGregtechLogoPos(8, 63)
+        return new GTBaseGuiBuilder(multiblock, guiData, syncManager, uiSettings).moveGregtechLogoPos(8, 66)
+            .setHeight(170)
             .build()
             .child(
-                createMachineRowIncomplete(syncManager, inputSlotIncomplete).setEnabledIf(
-                    _ -> !error.getValue()
-                        .isEmpty())
-                    .horizontalCenter())
-            .child(
-                createMachineRow(progressGrinder, inputSlot, syncManager).setEnabledIf(
-                    _ -> error.getValue()
-                        .isEmpty())
-                    .horizontalCenter())
-            .child(
-                createStructureUpdateButton(syncManager).resizer()
-                    .pos(131, 63)
-                    .getWidget())
-            .child(
-                createPowerSwitchButton().resizer()
-                    .pos(151, 63)
-                    .getWidget());
+                Flow.col()
+                    .width(176)
+                    .child(
+                        new ListWidget<>().fullWidth()
+                            .coverChildrenHeight()
+                            .child(
+                                createMachineRowIncomplete(syncManager, inputSlotIncomplete)
+                                    .setEnabledIf(
+                                        _ -> !error.getValue()
+                                            .isEmpty())
+                                    .horizontalCenter())
+                            .child(
+                                createMachineRow(progressGrinder, inputSlot, syncManager)
+                                    .setEnabledIf(
+                                        _ -> error.getValue()
+                                            .isEmpty())
+                                    .horizontalCenter()))
+                    .child(createButtonRow(syncManager))
+                    .child(
+                        inputSlotIncomplete.setEnabledIf(
+                            _ -> !error.getValue()
+                                .isEmpty())
+                            .pos(30, 66)));
     }
 
     protected Flow createMachineRow(ProgressWidget progressGrinder, ItemSlot inputSlot, PanelSyncManager syncManager) {
         return Flow.col()
-            .horizontalCenter()
-            .size(110, MACHINE_ROW_HEIGHT)
-            .child(createShutdownReasonWidget(syncManager).resizer().anchorBottom(0).getWidget())
+            .height(MACHINE_ROW_HEIGHT)
+            .paddingTop(4)
+            .child(progressCol(progressGrinder, inputSlot).center());
+    }
+
+    protected Flow progressCol(ProgressWidget progressGrinder, ItemSlot inputSlot) {
+        return Flow.row()
+            .size(64)
             .child(progressGrinder.center())
             .child(inputSlot.center());
     }
 
     protected Flow createMachineRowIncomplete(PanelSyncManager syncManager, ItemSlot inputSlot) {
-        return Flow.col()
+        return Flow.row()
             .fullWidth()
             .height(MACHINE_ROW_HEIGHT)
             .padding(6, 6, 10, 0)
-            .child((createStructureErrorWidget(syncManager)))
-            .child(inputSlot.pos(30, 63));
+            .child((createStructureErrorWidget(syncManager)));
+    }
+
+    protected Flow createButtonRow(PanelSyncManager syncManager) {
+        return Flow.row()
+            .coverChildrenHeight()
+            .childPadding(2)
+            .paddingRight(8)
+            .mainAxisAlignment(Alignment.MainAxis.END)
+            .child(createShutdownReasonHoverableTerminal(syncManager))
+            .child(createStructureUpdateButton(syncManager))
+            .child(createPowerSwitchButton());
     }
 }
