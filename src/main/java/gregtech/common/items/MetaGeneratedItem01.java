@@ -5143,7 +5143,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             new Object[] { ItemList.ItemFilter_Import.get(1L) });
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.ItemFilter_Import.get(1L),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { ItemList.ItemFilter_Export.get(1L) });
 
     }
