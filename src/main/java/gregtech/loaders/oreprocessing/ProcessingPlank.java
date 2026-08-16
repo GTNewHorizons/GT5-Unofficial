@@ -24,7 +24,7 @@ import gregtech.api.util.GTUtility;
 
 @SuppressWarnings("ControlFlowStatementWithoutBraces")
 public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegistrator {
-    public static int counterPlank;
+
     /**
      * Sometimes automatically searching for recipes is not enough to ensure that the corresponding slab is correctly
      * assigned. These Special lists exist to provide a direct mapping from plank to slab in such cases.
@@ -155,7 +155,6 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             return SlabRecipeResult.OAK_SLAB_FALLBACK;
         }
 
-        counterPlank+=1;
         GTModHandler.removeRecipeDelayed(aStack, aStack, aStack);
         if (tSkipRecipeCreation) {
             return SlabRecipeResult.SKIPPED;

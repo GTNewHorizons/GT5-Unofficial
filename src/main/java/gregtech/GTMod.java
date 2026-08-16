@@ -16,10 +16,6 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 
-import gregtech.loaders.oreprocessing.ProcessingBlock;
-import gregtech.loaders.oreprocessing.ProcessingLog;
-import gregtech.loaders.oreprocessing.ProcessingPlank;
-import gregtech.loaders.oreprocessing.ProcessingPlate;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -627,14 +623,6 @@ public class GTMod {
         }
         GregTechAPI.sGTCompleteLoad = null;
         GregTechAPI.sFullLoadFinished = true;
-
-        GT_FML_LOGGER.fatal("delete count direct removal: {}", ProcessingBlock.counterRem);
-        GT_FML_LOGGER.fatal("delete count ingot removal: {}", ProcessingBlock.counterIngot);
-        GT_FML_LOGGER.fatal("delete count gem removal: {}", ProcessingBlock.counterGem);
-        GT_FML_LOGGER.fatal("delete count dust removal: {}", ProcessingBlock.counterDust);
-        GT_FML_LOGGER.fatal("delete count log removal: {}", ProcessingLog.counterLog);
-        GT_FML_LOGGER.fatal("delete count plank removal: {}", ProcessingPlank.counterPlank);
-        GT_FML_LOGGER.fatal("delete count plate removal: {}", ProcessingPlate.counterPlate);
     }
 
     @Mod.EventHandler
