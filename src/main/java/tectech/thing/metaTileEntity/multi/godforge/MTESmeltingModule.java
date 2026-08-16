@@ -74,8 +74,6 @@ public class MTESmeltingModule extends MTEBaseModule {
         return -10;
     }
 
-    long wirelessEUt = 0;
-
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
@@ -92,11 +90,11 @@ public class MTESmeltingModule extends MTEBaseModule {
                     return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 }
 
-                wirelessEUt = (long) recipe.mEUt * getActualParallel();
-                BigInteger powerForRecipe = BigInteger.valueOf(wirelessEUt)
+                BigInteger powerForRecipe = BigInteger.valueOf(getSafeProcessingVoltage())
+                    .multiply(BigInteger.valueOf(getActualParallel()))
                     .multiply(BigInteger.valueOf(recipe.mDuration));
                 if (getUserEU(userUUID).compareTo(powerForRecipe) < 0) {
-                    return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
+                    return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }

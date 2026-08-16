@@ -58,8 +58,6 @@ public class MTEPlasmaModule extends MTEBaseModule {
         return new MTEPlasmaModule(mName);
     }
 
-    long wirelessEUt = 0;
-
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
@@ -67,11 +65,11 @@ public class MTEPlasmaModule extends MTEBaseModule {
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                wirelessEUt = (long) recipe.mEUt * getActualParallel();
-                BigInteger powerForRecipe = BigInteger.valueOf(wirelessEUt)
+                BigInteger powerForRecipe = BigInteger.valueOf(getSafeProcessingVoltage())
+                    .multiply(BigInteger.valueOf(getActualParallel()))
                     .multiply(BigInteger.valueOf(recipe.mDuration));
                 if (getUserEU(userUUID).compareTo(powerForRecipe) < 0) {
-                    return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
+                    return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }
                 if (recipe.getMetadataOrDefault(FOG_PLASMA_TIER, 0) > getPlasmaTier()
                     || (recipe.getMetadataOrDefault(FOG_PLASMA_MULTISTEP, false) && !isMultiStepPlasmaCapable)) {
@@ -83,11 +81,10 @@ public class MTEPlasmaModule extends MTEBaseModule {
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
-                wirelessEUt = (long) recipe.mEUt * maxParallel;
                 BigInteger powerForRecipe = BigInteger.valueOf(calculatedEut)
                     .multiply(BigInteger.valueOf(duration));
                 if (!addEUToGlobalEnergyMap(userUUID, powerForRecipe.negate())) {
-                    return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
+                    return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }
                 addToPowerTally(powerForRecipe);
                 addToRecipeTally(calculatedParallels);
