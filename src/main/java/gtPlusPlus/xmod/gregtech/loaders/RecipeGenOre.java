@@ -457,17 +457,17 @@ public class RecipeGenOre extends RecipeGenBase {
 
         GTModHandler.addCraftingRecipe(
             material.getDustPurified(1),
-            GTModHandler.RecipeBits.BUFFERED |GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "h  ", "P  ", "   ", 'P', material.getCrushedPurified(1) });
 
         GTModHandler.addCraftingRecipe(
             material.getDustImpure(1),
-            GTModHandler.RecipeBits.BUFFERED |GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "h  ", "C  ", "   ", 'C', material.getCrushed(1) });
 
         GTModHandler.addCraftingRecipe(
             matDust,
-            GTModHandler.RecipeBits.BUFFERED |GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "h  ", "C  ", "   ", 'C', material.getCrushedCentrifuged(1) });
 
         final ItemStack smallDust = material.getSmallDust(1);
@@ -476,22 +476,22 @@ public class RecipeGenOre extends RecipeGenBase {
         if (tinyDust != null) {
             GTModHandler.addCraftingRecipe(
                 matDust,
-                GTModHandler.RecipeBits.BUFFERED |GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
             GTModHandler.addCraftingRecipe(
                 material.getTinyDust(9),
-                GTModHandler.RecipeBits.BUFFERED |GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "D  ", "   ", "   ", 'D', matDust });
         }
 
         if (smallDust != null) {
             GTModHandler.addCraftingRecipe(
                 matDust,
-                GTModHandler.RecipeBits.BUFFERED |GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
             GTModHandler.addCraftingRecipe(
                 material.getSmallDust(4),
-                GTModHandler.RecipeBits.BUFFERED |GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { " D ", "   ", "   ", 'D', matDust });
         }
     }
