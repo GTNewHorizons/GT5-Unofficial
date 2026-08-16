@@ -10,7 +10,12 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.minecraft.item.ItemStack;
+
+import com.google.common.collect.ImmutableMap;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -23,8 +28,89 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    private static final int BLOCK_RECIPE_REMOVAL = 1;
+    private static final int INGOT_RECIPE_REMOVAL = 1 << 1;
+    private static final int GEM_RECIPE_REMOVAL = 1 << 2;
+    private static final int DUST_RECIPE_REMOVAL = 1 << 3;
+
+    private static final ImmutableMap<Materials, Integer> RECIPE_REMOVALS = ImmutableMap.<Materials, Integer>builder()
+        .put(Materials.Aluminium, BLOCK_RECIPE_REMOVAL)
+        .put(Materials.AluminiumBrass, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.Alumite, BLOCK_RECIPE_REMOVAL)
+        .put(Materials.Amber, BLOCK_RECIPE_REMOVAL | GEM_RECIPE_REMOVAL)
+        .put(Materials.Ardite, BLOCK_RECIPE_REMOVAL)
+        .put(Materials.BloodInfusedIron, BLOCK_RECIPE_REMOVAL)
+        .put(Materials.Bronze, BLOCK_RECIPE_REMOVAL)
+        .put(Materials.ClayCompound, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.Coal, BLOCK_RECIPE_REMOVAL | GEM_RECIPE_REMOVAL)
+        .put(Materials.Cobalt, BLOCK_RECIPE_REMOVAL)
+        .put(Materials.ConductiveIron, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.Copper, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.CosmicNeutronium, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.CrystallineAlloy, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.CrystallinePinkSlime, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.DarkSteel, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.Diamond, BLOCK_RECIPE_REMOVAL | GEM_RECIPE_REMOVAL)
+        .put(Materials.ElectricalSteel, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.Electrotine, BLOCK_RECIPE_REMOVAL | DUST_RECIPE_REMOVAL)
+        .put(Materials.Emerald, BLOCK_RECIPE_REMOVAL | GEM_RECIPE_REMOVAL)
+        .put(Materials.EndSteel, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.EnergeticAlloy, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.EnergeticSilver, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.Galgadorian, BLOCK_RECIPE_REMOVAL)
+        .put(Materials.GalgadorianEnhanced, BLOCK_RECIPE_REMOVAL)
+        .put(Materials.Gold, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.Infinity, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.Iron, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.Lapis, BLOCK_RECIPE_REMOVAL | GEM_RECIPE_REMOVAL)
+        .put(Materials.Lead, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.Malachite, BLOCK_RECIPE_REMOVAL | GEM_RECIPE_REMOVAL)
+        .put(Materials.Manyullyn, BLOCK_RECIPE_REMOVAL)
+        .put(Materials.MelodicAlloy, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.NaquadahAlloy, INGOT_RECIPE_REMOVAL)
+        .put(Materials.NetherStar, BLOCK_RECIPE_REMOVAL | GEM_RECIPE_REMOVAL)
+        .put(Materials.Olivine, BLOCK_RECIPE_REMOVAL)
+        .put(Materials.PulsatingIron, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.Redstone, BLOCK_RECIPE_REMOVAL | DUST_RECIPE_REMOVAL)
+        .put(Materials.RedstoneAlloy, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.Reinforced, BLOCK_RECIPE_REMOVAL)
+        .put(Materials.Ruby, BLOCK_RECIPE_REMOVAL | GEM_RECIPE_REMOVAL)
+        .put(Materials.Salt, BLOCK_RECIPE_REMOVAL)
+        .put(Materials.Sapphire, BLOCK_RECIPE_REMOVAL | GEM_RECIPE_REMOVAL)
+        .put(Materials.Shadow, BLOCK_RECIPE_REMOVAL)
+        .put(Materials.Silver, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.Soularium, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.Steel, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.StellarAlloy, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.Tanzanite, BLOCK_RECIPE_REMOVAL | GEM_RECIPE_REMOVAL)
+        .put(Materials.Thaumium, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.Tin, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.Topaz, BLOCK_RECIPE_REMOVAL | GEM_RECIPE_REMOVAL)
+        .put(Materials.Unstable, INGOT_RECIPE_REMOVAL)
+        .put(Materials.VibrantAlloy, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.VividAlloy, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .put(Materials.Void, BLOCK_RECIPE_REMOVAL | INGOT_RECIPE_REMOVAL)
+        .build();
+
+    private final Set<GTUtility.ItemId> queuedPackingRemovals = new HashSet<>();
+
     public ProcessingBlock() {
         OrePrefixes.block.add(this);
+    }
+
+    private void removePackingRecipe(ItemStack input) {
+        if (input == null || (GTModHandler.isBufferingCraftingRecipes()
+            && !queuedPackingRemovals.add(GTUtility.ItemId.createWithStackSize(input)))) {
+            return;
+        }
+
+        removeRecipeIfPresent(input, input, input, input, input, input, input, input, input);
+    }
+
+    private static void removeRecipeIfPresent(ItemStack... shape) {
+        if (!GTModHandler.hasRemovableRecipe(shape)) return;
+        if (GTModHandler.isBufferingCraftingRecipes()) GTModHandler.removeRecipeDelayed(shape);
+        else GTModHandler.removeRecipe(shape);
     }
 
     @Override
@@ -151,17 +237,11 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         ItemStack gem = GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
         ItemStack dust = GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L);
 
-        GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, aStack));
-
-        if (ingot != null) {
-            GTModHandler.removeRecipeDelayed(ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot);
-        }
-        if (gem != null) {
-            GTModHandler.removeRecipeDelayed(gem, gem, gem, gem, gem, gem, gem, gem, gem);
-        }
-        if (dust != null) {
-            GTModHandler.removeRecipeDelayed(dust, dust, dust, dust, dust, dust, dust, dust, dust);
-        }
+        int recipeRemovals = RECIPE_REMOVALS.getOrDefault(aMaterial, 0);
+        if ((recipeRemovals & BLOCK_RECIPE_REMOVAL) != 0) removeRecipeIfPresent(GTUtility.copyAmount(1, aStack));
+        if ((recipeRemovals & INGOT_RECIPE_REMOVAL) != 0) removePackingRecipe(ingot);
+        if ((recipeRemovals & GEM_RECIPE_REMOVAL) != 0) removePackingRecipe(gem);
+        if ((recipeRemovals & DUST_RECIPE_REMOVAL) != 0) removePackingRecipe(dust);
 
         if (aMaterial.mStandardMoltenFluid != null) {
             if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron

@@ -546,6 +546,10 @@ public class GTModHandler {
         return Recipes.oreWashing.getRecipes();
     }
 
+    public static boolean isBufferingCraftingRecipes() {
+        return sBufferCraftingRecipes;
+    }
+
     public static void stopBufferingCraftingRecipes() {
         sBufferCraftingRecipes = false;
 
@@ -1329,6 +1333,33 @@ public class GTModHandler {
         return FurnaceRecipes.smelting()
             .getSmeltingList()
             .remove(input) != null;
+    }
+
+    /**
+     * Checks the current crafting list for a removable recipe matching the supplied grid.
+     */
+    public static boolean hasRemovableRecipe(ItemStack... shape) {
+        if (shape == null || isAllNulls(shape)) return false;
+
+        InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
+
+            @Override
+            public boolean canInteractWith(EntityPlayer player) {
+                return false;
+            }
+        }, 3, 3);
+
+        for (int i = 0; i < shape.length && i < 9; i++) {
+            craftMatrix.setInventorySlotContents(i, shape[i]);
+        }
+
+        List<IRecipe> allRecipes = CraftingManager.getInstance()
+            .getRecipeList();
+        for (IRecipe recipe : allRecipes) {
+            if (recipe instanceof IGTCraftingRecipe craftingRecipe && !craftingRecipe.isRemovable()) continue;
+            if (recipe.matches(craftMatrix, DW)) return true;
+        }
+        return false;
     }
 
     /**
