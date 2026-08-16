@@ -100,9 +100,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         registerCover(aMaterial, aStack);
 
         GTModHandler.removeRecipeByOutputDelayed(aStack);
-        GT_RECIPE_REMOVAL_LOGGER.fatal("removing plate key: {}", itemStackKey(aStack));
-        GTModHandler.removeRecipe(aStack);
-        GT_RECIPE_REMOVAL_LOGGER.fatal("done!");
+        // The only plate that has a valid recipe to remove
+        if (aMaterial == Materials.Wood) GTModHandler.removeRecipeDelayed(aStack);
 
         GTUtility.removeSimpleIC2MachineRecipe(
             GTUtility.copyAmount(9, aStack),
