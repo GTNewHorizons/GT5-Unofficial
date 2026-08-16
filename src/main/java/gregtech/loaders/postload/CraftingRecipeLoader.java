@@ -1744,7 +1744,6 @@ public class CraftingRecipeLoader implements Runnable {
                     1,
                     WILDCARD) });
 
-        GTModHandler.removeRecipeDelayed(GTModHandler.getIC2Item("miningPipe", 8));
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("miningPipe", 1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -1762,37 +1761,6 @@ public class CraftingRecipeLoader implements Runnable {
             new Object[] { "RTR", "GHG", "GGG", 'H', OrePrefixes.cell.get(Materials.Mercury), 'T',
                 OrePrefixes.ingot.get(Materials.Tin), 'R', OrePrefixes.ingot.get(Materials.AnyIron), 'G',
                 new ItemStack(Blocks.glass, 1) });
-
-        GTModHandler.removeRecipeDelayed(
-            tStack = GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L),
-            tStack,
-            tStack,
-            tStack,
-            new ItemStack(Items.coal, 1, 0),
-            tStack,
-            tStack,
-            tStack,
-            tStack);
-        GTModHandler.removeRecipeDelayed(
-            tStack = GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L),
-            tStack,
-            tStack,
-            tStack,
-            new ItemStack(Items.coal, 1, 1),
-            tStack,
-            tStack,
-            tStack,
-            tStack);
-        GTModHandler.removeRecipeDelayed(
-            null,
-            tStack = new ItemStack(Items.coal, 1),
-            null,
-            tStack,
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L),
-            tStack,
-            null,
-            tStack,
-            null);
 
         GTModHandler.removeFurnaceSmelting(new ItemStack(Blocks.hopper));
 
