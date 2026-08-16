@@ -76,7 +76,7 @@ public class MTESmeltingModule extends MTEBaseModule {
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new GorgeModuleProcessingLogic() {
 
             @NotNull
             @Override
@@ -90,9 +90,7 @@ public class MTESmeltingModule extends MTEBaseModule {
                     return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 }
 
-                BigInteger powerForRecipe = BigInteger.valueOf(getSafeProcessingVoltage())
-                    .multiply(BigInteger.valueOf(getActualParallel()))
-                    .multiply(BigInteger.valueOf(recipe.mDuration));
+                BigInteger powerForRecipe = predictDrainedEnergy(recipe);
                 if (getUserEU(userUUID).compareTo(powerForRecipe) < 0) {
                     return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }

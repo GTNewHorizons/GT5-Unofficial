@@ -30,13 +30,17 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
@@ -440,5 +444,18 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements ISurviva
     @Override
     public GTGuiTheme getGuiTheme() {
         return GTGuiThemes.GORGE;
+    }
+
+    protected class GorgeModuleProcessingLogic extends ProcessingLogic {
+
+        protected final BigInteger predictDrainedEnergy(GTRecipe recipe) {
+            OverclockCalculator calculator = this.createOverclockCalculator(recipe);
+            int parallel = GTUtility
+                .safeInt((long) (getActualParallel() * calculator.calculateMultiplierUnderOneTick()), 0);
+            int inputParallel = (int) recipe.maxParallelCalculatedByInputs(parallel, this.inputFluids, this.inputItems);
+            calculator.setCurrentParallel(inputParallel);
+            return BigInteger.valueOf(calculator.getConsumption())
+                .multiply(BigInteger.valueOf(calculator.getDuration()));
+        }
     }
 }
