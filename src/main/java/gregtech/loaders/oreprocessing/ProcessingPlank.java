@@ -6,7 +6,6 @@ import static gregtech.loaders.oreprocessing.ProcessingUtils.itemStackKey;
 
 import java.util.HashSet;
 
-import gregtech.GTLoggers;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemMultiTexture;
@@ -14,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.github.bsideup.jabel.Desugar;
+import com.google.common.collect.ImmutableSet;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
@@ -59,6 +59,16 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
         "GalacticraftAmunRa:tile.wood1:2", "GalacticraftAmunRa:tile.wood1:3", "etfuturum:wood_planks" };
     private static final String[] SPECIAL_SLABS = new String[] { "witchery:witchwoodslab",
         "GalacticraftAmunRa:tile.woodSlab:1", "GalacticraftAmunRa:tile.woodSlab:0", "etfuturum:wood_slab" };
+
+    /**
+     * set of keys provided by {@link ProcessingUtils#itemStackKey(ItemStack)} that will cause the recipe removal of
+     * slab recipes to be skipped. The complete blacklist is completed with witchery's witchwood planks, but that has
+     * its own test, see {@link #isSlabRecipeRemovalBlacklisted(ItemStack)}.
+     */
+    private static final ImmutableSet<String> SLAB_RECIPE_REMOVAL_BLACKLIST = ImmutableSet.of(
+        "etfuturum:wood_planks@3",
+        "GalacticraftAmunRa:tile.wood1@2",
+        "GalacticraftAmunRa:tile.wood1@3");
 
     private static final HashSet<String> sProcessedPlanks = new HashSet<>();
     private static final HashSet<Item> sGroupedOakSlabItems = new HashSet<>();
@@ -157,15 +167,22 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             return SlabRecipeResult.OAK_SLAB_FALLBACK;
         }
 
-        GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("removing recipe for slab with key: {}", itemStackKey(aStack));
-        GTModHandler.removeRecipe(aStack, aStack, aStack);
-        GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("done!");
+        if (!isSlabRecipeRemovalBlacklisted(aStack)) {
+            GTModHandler.removeRecipeDelayed(aStack, aStack, aStack);
+        }
         if (tSkipRecipeCreation) {
             return SlabRecipeResult.SKIPPED;
         }
 
         addSlabRecipes(aStack, GTUtility.copyAmount(tOutput.stackSize / 3, tOutput));
         return SlabRecipeResult.CREATED;
+    }
+
+    private static boolean isSlabRecipeRemovalBlacklisted(ItemStack stack) {
+        if ("witchery:witchwood".equals(stack.getItem().delegate.name())) return true;
+        String key = itemStackKey(stack);
+        if (key==null) return true; // invalid items
+        return SLAB_RECIPE_REMOVAL_BLACKLIST.contains(key);
     }
 
     private static boolean isGenericOakSlabFallback(ItemStack plank, ItemStack slab) {
