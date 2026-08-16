@@ -36,12 +36,12 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
     }
 
     /*
-     This was constructed based on data observation: somehow the materials for the corresponding prefixes
-     have some manually defined recipes somewhere
-    */
-    private static long getPipeBits(OrePrefixes orePrefixes, Materials materials){
+     * This was constructed based on data observation: somehow the materials for the corresponding prefixes
+     * have some manually defined recipes somewhere
+     */
+    private static long getPipeBits(OrePrefixes orePrefixes, Materials materials) {
         String name = materials.getName();
-        switch (orePrefixes.getName()){
+        switch (orePrefixes.getName()) {
             case "pipeHuge" -> {
                 if ("Incoloy-903".equals(name) || "NetherStar".equals(name)) return GTModHandler.RecipeBits.BUFFERED;
                 return GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS;
@@ -53,11 +53,12 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             case "pipeTiny" -> {
                 return GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS;
             }
-            case "pipeRestrictiveHuge", "pipeRestrictiveLarge", "pipeRestrictiveMedium", "pipeRestrictiveSmall", "pipeRestrictiveTiny"->{
+            case "pipeRestrictiveHuge", "pipeRestrictiveLarge", "pipeRestrictiveMedium", "pipeRestrictiveSmall", "pipeRestrictiveTiny" -> {
                 return 0;
             }
             case "pipeQuadruple", "pipeNonuple" -> {
-                return GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS;
+                return GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED
+                    | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS;
             }
             default -> {
                 return 0;
@@ -74,14 +75,16 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             case "pipeHuge" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial, 1L), bits,
+                        GTOreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial, 1L),
+                        bits,
                         new Object[] { "DhD", "D D", "DwD", 'D', OrePrefixes.plateDouble.get(aMaterial) });
                 }
             }
             case "pipeLarge" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial, 1L), bits,
+                        GTOreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial, 1L),
+                        bits,
                         new Object[] { "PHP", "P P", "PWP", 'P',
                             aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
                                 : OrePrefixes.plate.get(aMaterial),
@@ -95,7 +98,8 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             case "pipeMedium" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 2L), bits,
+                        GTOreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 2L),
+                        bits,
                         new Object[] { "PPP", "W H", "PPP", 'P',
                             aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
                                 : OrePrefixes.plate.get(aMaterial),
@@ -109,7 +113,8 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             case "pipeSmall" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 6L), bits,
+                        GTOreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 6L),
+                        bits,
                         new Object[] { "PWP", "P P", "PHP", 'P',
                             aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
                                 : OrePrefixes.plate.get(aMaterial),
@@ -123,7 +128,8 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             case "pipeTiny" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial, 8L), bits,
+                        GTOreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial, 8L),
+                        bits,
                         new Object[] { "PPP", "h w", "PPP", 'P', OrePrefixes.plate.get(aMaterial) });
                 }
             }
@@ -146,7 +152,8 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1), bits,
+                        GTOreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
+                        bits,
                         new Object[] { "MM ", "MM ", "   ", 'M',
                             GTOreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1) });
                 }
@@ -162,7 +169,8 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
                     GTModHandler.addCraftingRecipe(
-                        GTUtility.copyAmount(1, aStack), bits,
+                        GTUtility.copyAmount(1, aStack),
+                        bits,
                         new Object[] { "PPP", "PPP", "PPP", 'P', GTOreDictUnificator
                             .get(aOreDictName.replaceFirst("Nonuple", "Small"), null, 1L, false, true) });
                 }

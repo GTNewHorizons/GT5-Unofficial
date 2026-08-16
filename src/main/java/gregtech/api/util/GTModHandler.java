@@ -647,7 +647,11 @@ public class GTModHandler {
     }
 
     public static void addMachineCraftingRecipe(ItemStack aResult, Object @Nullable [] aRecipe, int machineTier) {
-        addMachineCraftingRecipe(aResult, RecipeBits.BITS | RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS, aRecipe, machineTier);
+        addMachineCraftingRecipe(
+            aResult,
+            RecipeBits.BITS | RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            aRecipe,
+            machineTier);
     }
 
     public static void addMachineCraftingRecipe(ItemStack aResult, long aBitMask, Object @Nullable [] aRecipe,
