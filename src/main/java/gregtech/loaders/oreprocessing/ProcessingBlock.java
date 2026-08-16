@@ -9,6 +9,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
+import static gregtech.loaders.oreprocessing.ProcessingUtils.itemStackKey;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -150,17 +151,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         OrePrefixes.block.add(this);
     }
 
-    private static String blockKey(ItemStack stack) {
-        if (stack == null || stack.getItem() == null) return null;
-
-        UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(stack.getItem());
-        if (id == null) return null;
-
-        String key = id + "@" + Items.feather.getDamage(stack);
-        if (stack.hasTagCompound()) key += "#nbt=" + NBTPersist.toJsonObjectExact(stack.getTagCompound());
-        return key;
-    }
-
     private void removePackingRecipe(ItemStack input) {
         if (input == null || (GTModHandler.isBufferingCraftingRecipes()
             && !queuedPackingRemovals.add(GTUtility.ItemId.createWithStackSize(input)))) {
@@ -294,7 +284,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         ItemStack gem = GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
         ItemStack dust = GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L);
 
-        if (BLOCK_RECIPE_REMOVALS.contains(blockKey(aStack))) {
+        if (BLOCK_RECIPE_REMOVALS.contains(itemStackKey(aStack))) {
             GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, aStack));
         }
 
