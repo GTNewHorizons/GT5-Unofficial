@@ -229,7 +229,7 @@ public class KevlarRecipes {
         }
         // Magic
         if (Mods.Thaumcraft.isModLoaded()) {
-            final ItemStack crystalGelum = new ItemStack(ConfigItems.itemCrystalEssence, 8, 1);
+            final ItemStack crystalGelum = new ItemStack(ConfigItems.itemCrystalEssence, 8, 0);
             NBTTagCompound nbt = crystalGelum.getTagCompound();
             if (nbt == null) {
                 nbt = new NBTTagCompound();
