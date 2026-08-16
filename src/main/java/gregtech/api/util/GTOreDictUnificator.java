@@ -42,15 +42,9 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 /// P.S. It is intended to be named "Unificator" and not "Unifier", because that sounds more awesome.
 ///
 /// Two maps: which stack is canonical for an ore-dictionary name, and what material any stack is made of
-/// ([ItemData]). MaterialLib has an `OreDictUnificator` of its own that does the first job for the names its
-/// own shapes back, but not the second and not for names it does not back, so this stays. It is the index
-/// that lets [GTRecipeRegistrator] generate recycling for other mods' items; see [ItemData].
-///
-/// This class is the single ore-dictionary unification authority in a pack that ships both mods. MaterialLib's
-/// unificator answers for a strictly narrower set of names and knows nothing of the material associations the
-/// recycling and recipe-lookup paths here depend on, so it ships disabled (`unifyOreDict=false`) and nothing
-/// here consults it. Turning it back on would create a second authority over the same slots with neither
-/// consulting the other.
+/// ([ItemData]) -- the index that lets [GTRecipeRegistrator] generate recycling for other mods' items. This
+/// class is the single ore-dictionary unification authority: MaterialLib-backed names unify here like every
+/// other name.
 ///
 /// Keyed by [OrePrefixes] throughout, because an association starts from an ore-dictionary name. That is the
 /// permanent shape of this class, not a step toward being keyed by
