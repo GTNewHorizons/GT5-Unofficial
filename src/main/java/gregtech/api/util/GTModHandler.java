@@ -546,6 +546,10 @@ public class GTModHandler {
         return Recipes.oreWashing.getRecipes();
     }
 
+    public static boolean isBufferingCraftingRecipes() {
+        return sBufferCraftingRecipes;
+    }
+
     public static void stopBufferingCraftingRecipes() {
         sBufferCraftingRecipes = false;
 
@@ -647,7 +651,11 @@ public class GTModHandler {
     }
 
     public static void addMachineCraftingRecipe(ItemStack aResult, Object @Nullable [] aRecipe, int machineTier) {
-        addMachineCraftingRecipe(aResult, RecipeBits.BITS, aRecipe, machineTier);
+        addMachineCraftingRecipe(
+            aResult,
+            RecipeBits.BITS | RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            aRecipe,
+            machineTier);
     }
 
     public static void addMachineCraftingRecipe(ItemStack aResult, long aBitMask, Object @Nullable [] aRecipe,
@@ -1237,6 +1245,7 @@ public class GTModHandler {
             null,
             null,
             (aBitMask & RecipeBits.BUFFERED) != 0,
+            (aBitMask & RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0,
             (aBitMask & RecipeBits.KEEPNBT) != 0,
             (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
             (aBitMask & RecipeBits.OVERWRITE_NBT) != 0,
@@ -1249,8 +1258,9 @@ public class GTModHandler {
      * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
      */
     private static boolean addShapelessCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
-        int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aKeepNBT, boolean aRemovable, boolean overwriteNBT,
-        boolean unifyOutput, Predicate<InventoryCrafting> inputValidator, Object[] aRecipe) {
+        int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aCheckForCollisions, boolean aKeepNBT,
+        boolean aRemovable, boolean overwriteNBT, boolean unifyOutput, Predicate<InventoryCrafting> inputValidator,
+        Object[] aRecipe) {
         if (unifyOutput) aResult = GTOreDictUnificator.get(true, aResult);
         if (aRecipe == null || aRecipe.length == 0) return false;
         for (byte i = 0; i < aRecipe.length; i++) {
@@ -1282,8 +1292,10 @@ public class GTModHandler {
             }
             i++;
         }
-        if (sBufferCraftingRecipes && aBuffered) removeRecipeDelayed(tRecipe);
-        else removeRecipe(tRecipe);
+        if (aCheckForCollisions) {
+            if (sBufferCraftingRecipes && aBuffered) removeRecipeDelayed(tRecipe);
+            else removeRecipe(tRecipe);
+        }
 
         if (aResult == null || aResult.stackSize <= 0) return false;
 
@@ -1334,8 +1346,14 @@ public class GTModHandler {
      * @return the output of the old Recipe or null if there was nothing.
      */
     public static ItemStack removeRecipe(ItemStack... shape) {
-        if (shape == null) return null;
-        if (isAllNulls(shape)) return null;
+        if (shape == null || isAllNulls(shape)) {
+            if (GT_RECIPE_REMOVAL_LOGGER_ENABLED) {
+                GT_RECIPE_REMOVAL_LOGGER.error(
+                    "removeRecipe rejected empty or null-only crafting inputs; call site follows",
+                    new Exception("Rejected crafting inputs: " + Arrays.toString(shape)));
+            }
+            return null;
+        }
 
         ItemStack rReturn = null;
         InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
@@ -1363,6 +1381,12 @@ public class GTModHandler {
                 rReturn = recipe.getCraftingResult(craftMatrix);
                 allRecipes.remove(i--);
             }
+        }
+
+        if (rReturn == null) {
+            GT_RECIPE_REMOVAL_LOGGER.warn(
+                "No existing removable crafting recipe matched these inputs; removal call site follows",
+                new Exception("Direct crafting inputs (not an existing recipe): " + Arrays.toString(shape)));
         }
         return rReturn;
     }
@@ -1406,7 +1430,7 @@ public class GTModHandler {
             .getRecipeList();
         GT_FML_LOGGER
             .info("BulkRemoveByRecipe: allRecipes: {}; toRemove: {}", allRecipes.size(), delayedRemovalByRecipe.size());
-
+        long start = System.currentTimeMillis();
         AtomicIntegerArray matchedDelayedRemovals = GT_RECIPE_REMOVAL_LOGGER_ENABLED
             ? new AtomicIntegerArray(delayedRemovalByRecipe.size())
             : null;
@@ -1426,7 +1450,7 @@ public class GTModHandler {
             .collect(Collectors.toSet());
 
         allRecipes.removeIf(listToRemove::contains);
-
+        GT_FML_LOGGER.info("BulkRemoveByRecipe processed in {} ms!", System.currentTimeMillis() - start);
         if (matchedDelayedRemovals != null) {
             for (int i = 0; i < matchedDelayedRemovals.length(); i++) {
                 if (matchedDelayedRemovals.get(i) == 0) {

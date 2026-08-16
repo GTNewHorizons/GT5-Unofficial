@@ -313,20 +313,20 @@ public class DustLoader implements IWerkstoffRunnable {
                 .getProcessingMaterialTierEU() < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(dust),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "TTT", "TTT", "TTT", 'T', werkstoff.get(dustTiny) });
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(dust),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "TT ", "TT ", 'T',
                         WerkstoffLoader.getCorrespondingItemStack(dustSmall, werkstoff) });
                 GTModHandler.addCraftingRecipe(
                     WerkstoffLoader.getCorrespondingItemStack(dustSmall, werkstoff, 4),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { " T ", 'T', werkstoff.get(dust) });
                 GTModHandler.addCraftingRecipe(
                     WerkstoffLoader.getCorrespondingItemStack(dustTiny, werkstoff, 9),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "T  ", 'T', werkstoff.get(dust) });
             }
 
