@@ -1338,14 +1338,8 @@ public class GTModHandler {
      * @return the output of the old Recipe or null if there was nothing.
      */
     public static ItemStack removeRecipe(ItemStack... shape) {
-        if (shape == null || isAllNulls(shape)) {
-            if (GT_RECIPE_REMOVAL_LOGGER_ENABLED) {
-                GT_RECIPE_REMOVAL_LOGGER.error(
-                    "removeRecipe rejected empty or null-only crafting inputs; call site follows",
-                    new Exception("Rejected crafting inputs: " + Arrays.toString(shape)));
-            }
-            return null;
-        }
+        if (shape == null) return null;
+        if (isAllNulls(shape)) return null;
 
         ItemStack rReturn = null;
         InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
@@ -1373,11 +1367,6 @@ public class GTModHandler {
                 rReturn = recipe.getCraftingResult(craftMatrix);
                 allRecipes.remove(i--);
             }
-        }
-        if (rReturn == null){
-            GT_RECIPE_REMOVAL_LOGGER.warn(
-                "No existing removable crafting recipe matched these queued inputs; removal call site follows",
-                new Exception("Crafting inputs (not an existing recipe): " + Arrays.toString(shape)));
         }
         return rReturn;
     }

@@ -5,7 +5,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
-import gregtech.GTLoggers;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
@@ -74,16 +73,13 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
         switch (aPrefix.getName()) {
             case "pipeHuge" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                    GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("Adding {} for material {}", aPrefix.getName(), aMaterial.getName());
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial, 1L), bits,
                         new Object[] { "DhD", "D D", "DwD", 'D', OrePrefixes.plateDouble.get(aMaterial) });
-                    GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("Finished adding {} for material {}", aPrefix.getName(), aMaterial.getName());
                 }
             }
             case "pipeLarge" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                    GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("Adding {} for material {}", aPrefix.getName(), aMaterial.getName());
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial, 1L), bits,
                         new Object[] { "PHP", "P P", "PWP", 'P',
@@ -94,12 +90,10 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                                 : ToolDictNames.craftingToolHardHammer,
                             'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
                                 : ToolDictNames.craftingToolWrench });
-                    GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("Finished adding {} for material {}", aPrefix.getName(), aMaterial.getName());
                 }
             }
             case "pipeMedium" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                    GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("Adding {} for material {}", aPrefix.getName(), aMaterial.getName());
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 2L), bits,
                         new Object[] { "PPP", "W H", "PPP", 'P',
@@ -110,12 +104,10 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                                 : ToolDictNames.craftingToolHardHammer,
                             'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
                                 : ToolDictNames.craftingToolWrench });
-                    GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("Finished adding {} for material {}", aPrefix.getName(), aMaterial.getName());
                 }
             }
             case "pipeSmall" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                    GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("Adding {} for material {}", aPrefix.getName(), aMaterial.getName());
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 6L), bits,
                         new Object[] { "PWP", "P P", "PHP", 'P',
@@ -126,16 +118,13 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                                 : ToolDictNames.craftingToolHardHammer,
                             'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
                                 : ToolDictNames.craftingToolWrench });
-                    GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("Finished adding {} for material {}", aPrefix.getName(), aMaterial.getName());
                 }
             }
             case "pipeTiny" -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                    GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("Adding {} for material {}", aPrefix.getName(), aMaterial.getName());
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial, 8L), bits,
                         new Object[] { "PPP", "h w", "PPP", 'P', OrePrefixes.plate.get(aMaterial) });
-                    GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("Finished adding {} for material {}", aPrefix.getName(), aMaterial.getName());
                 }
             }
             case "pipeRestrictiveHuge", "pipeRestrictiveLarge", "pipeRestrictiveMedium", "pipeRestrictiveSmall", "pipeRestrictiveTiny" -> {
