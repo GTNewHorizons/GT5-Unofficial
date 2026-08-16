@@ -2,9 +2,11 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.loaders.oreprocessing.ProcessingUtils.itemStackKey;
 
 import java.util.HashSet;
 
+import gregtech.GTLoggers;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemMultiTexture;
@@ -155,7 +157,9 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             return SlabRecipeResult.OAK_SLAB_FALLBACK;
         }
 
-        GTModHandler.removeRecipeDelayed(aStack, aStack, aStack);
+        GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("removing recipe for slab with key: {}", itemStackKey(aStack));
+        GTModHandler.removeRecipe(aStack, aStack, aStack);
+        GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("done!");
         if (tSkipRecipeCreation) {
             return SlabRecipeResult.SKIPPED;
         }
