@@ -125,7 +125,6 @@ public class GTMaterialProperties {
     /// The exact ARGB color declared for a material's molten-state tint; see [#ARGB]. Absent when it would
     /// equal [#ARGB], i.e. no separate molten tint was declared for the material.
     public static final Property<Integer> MOLTEN_ARGB = Property.of("gregtech", "moltenArgb");
-    public static final Property<Integer> MOLTEN_TINT = Property.of("gregtech", "moltenTint");
     public static final Property<Integer> OLD_SUB_ID = Property.of("gregtech", "oldSubId");
     public static final Property<Integer> ORE_MULTIPLIER = Property.of("gregtech", "oreMultiplier", 1);
     public static final Property<List<MaterialRefStack>> ORE_BYPRODUCTS = Property.of("gregtech", "oreByProducts");
