@@ -1441,7 +1441,7 @@ public class GTModHandler {
             .getRecipeList();
         GT_FML_LOGGER
             .info("BulkRemoveByRecipe: allRecipes: {}; toRemove: {}", allRecipes.size(), delayedRemovalByRecipe.size());
-
+        long start = System.currentTimeMillis();
         AtomicIntegerArray matchedDelayedRemovals = GT_RECIPE_REMOVAL_LOGGER_ENABLED
             ? new AtomicIntegerArray(delayedRemovalByRecipe.size())
             : null;
@@ -1461,7 +1461,7 @@ public class GTModHandler {
             .collect(Collectors.toSet());
 
         allRecipes.removeIf(listToRemove::contains);
-
+        GT_FML_LOGGER.info("BulkRemoveByRecipe processed in {} ms!", System.currentTimeMillis()-start);
         if (matchedDelayedRemovals != null) {
             for (int i = 0; i < matchedDelayedRemovals.length(); i++) {
                 if (matchedDelayedRemovals.get(i) == 0) {
