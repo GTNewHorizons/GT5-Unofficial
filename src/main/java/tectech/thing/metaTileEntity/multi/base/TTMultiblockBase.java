@@ -194,6 +194,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     /** Flag if the new long power variable should be used */
     protected boolean useLongPower = false;
 
+    private Vec3Impl pos;
+
     // Locale-aware formatting of numbers.
     protected static NumberFormatMUI numberFormat;
     static {
@@ -853,6 +855,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     @Override
     public final void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         isFacingValid(aBaseMetaTileEntity.getFrontFacing());
+        pos = new Vec3Impl(
+            aBaseMetaTileEntity.getXCoord(),
+            aBaseMetaTileEntity.getYCoord(),
+            aBaseMetaTileEntity.getZCoord());
         onFirstTick_EM(aBaseMetaTileEntity);
     }
 
@@ -1248,6 +1254,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     @Override
     public int getRepairStatus() {
         return super.getRepairStatus() + (eCertainStatus == 0 ? 1 : 0) + (eParameters ? 1 : 0);
+    }
+
+    public Vec3Impl getPos() {
+        return pos;
     }
 
     // endregion

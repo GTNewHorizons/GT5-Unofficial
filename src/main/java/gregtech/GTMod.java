@@ -229,6 +229,11 @@ public class GTMod {
         } catch (RuntimeException e) {
             GT_FML_LOGGER.error("Failed to configure icon logger", e);
         }
+        try {
+            GTLog.configureRecipeRemovalLogger(minecraftHome);
+        } catch (RuntimeException e) {
+            GT_FML_LOGGER.error("Failed to configure recipe removal logger", e);
+        }
     }
 
     public static final int NBT_VERSION = calculateTotalGTVersion(VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
