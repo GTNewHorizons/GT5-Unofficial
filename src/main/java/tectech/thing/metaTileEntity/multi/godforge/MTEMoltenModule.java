@@ -69,7 +69,7 @@ public class MTEMoltenModule extends MTEBaseModule {
 
                 wirelessEUt = (long) recipe.mEUt * getActualParallel();
                 BigInteger powerForRecipe = BigInteger.valueOf(wirelessEUt)
-                    .multiply(BigInteger.valueOf(duration));
+                    .multiply(BigInteger.valueOf(recipe.mDuration));
                 if (getUserEU(userUUID).compareTo(powerForRecipe) < 0) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
                 }

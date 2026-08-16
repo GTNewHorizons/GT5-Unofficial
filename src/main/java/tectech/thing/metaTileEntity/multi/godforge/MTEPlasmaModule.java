@@ -6,7 +6,6 @@ import static gregtech.api.casing.Casings.CelestialMatterGuidanceCasing;
 import static gregtech.api.casing.Casings.HarmonicPhononTransmissionConduit;
 import static gregtech.api.casing.Casings.SingularityReinforcedStellarShieldingCasing;
 import static gregtech.api.casing.Casings.StellarEnergySiphonCasing;
-import static gregtech.api.recipe.RecipeMaps.BEAMCRAFTER_METADATA;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_MULTISTEP;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_TIER;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
@@ -19,8 +18,6 @@ import static net.minecraft.util.EnumChatFormatting.YELLOW;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-import gregtech.api.util.ParallelHelper;
-import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
@@ -72,7 +69,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 wirelessEUt = (long) recipe.mEUt * getActualParallel();
                 BigInteger powerForRecipe = BigInteger.valueOf(wirelessEUt)
-                    .multiply(BigInteger.valueOf(duration));
+                    .multiply(BigInteger.valueOf(recipe.mDuration));
                 if (getUserEU(userUUID).compareTo(powerForRecipe) < 0) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
                 }
