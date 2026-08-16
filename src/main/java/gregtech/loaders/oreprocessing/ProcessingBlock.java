@@ -10,6 +10,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
+import gregtech.GTLoggers;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
@@ -153,19 +154,26 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         ItemStack dust = GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L);
 
         counterRem+=1;
-        GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, aStack));
-
+        GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("removing block recipe for material {}", aMaterial.getName());
+        GTModHandler.removeRecipe(GTUtility.copyAmount(1, aStack));
+        GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("done!");
         if (ingot != null) {
             counterIngot+=1;
-            GTModHandler.removeRecipeDelayed(ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot);
+            GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("removing ingot recipe for material {}", aMaterial.getName());
+            GTModHandler.removeRecipe(ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot);
+            GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("done!");
         }
         if (gem != null) {
             counterGem+=1;
-            GTModHandler.removeRecipeDelayed(gem, gem, gem, gem, gem, gem, gem, gem, gem);
+            GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("removing gem recipe for material {}", aMaterial.getName());
+            GTModHandler.removeRecipe(gem, gem, gem, gem, gem, gem, gem, gem, gem);
+            GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("done!");
         }
         if (dust != null) {
             counterDust+=1;
-            GTModHandler.removeRecipeDelayed(dust, dust, dust, dust, dust, dust, dust, dust, dust);
+            GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("removing dust recipe for material {}", aMaterial.getName());
+            GTModHandler.removeRecipe(dust, dust, dust, dust, dust, dust, dust, dust, dust);
+            GTLoggers.GT_RECIPE_REMOVAL_LOGGER.fatal("done!");
         }
 
         if (aMaterial.mStandardMoltenFluid != null) {
