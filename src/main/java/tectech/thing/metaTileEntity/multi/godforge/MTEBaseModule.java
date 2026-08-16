@@ -454,6 +454,7 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements ISurviva
                 .safeInt((long) (getActualParallel() * calculator.calculateMultiplierUnderOneTick()), 0);
             int inputParallel = (int) recipe.maxParallelCalculatedByInputs(parallel, this.inputFluids, this.inputItems);
             calculator.setCurrentParallel(inputParallel);
+            calculator.calculate();
             return BigInteger.valueOf(calculator.getConsumption())
                 .multiply(BigInteger.valueOf(calculator.getDuration()));
         }
