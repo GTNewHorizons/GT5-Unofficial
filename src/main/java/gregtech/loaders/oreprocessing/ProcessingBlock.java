@@ -1,6 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_RECIPE_REMOVAL_LOGGER;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
@@ -13,10 +14,13 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.ImmutableMap;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -25,6 +29,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.NBTPersist;
 
 public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -96,6 +101,17 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
     public ProcessingBlock() {
         OrePrefixes.block.add(this);
+    }
+
+    private static String blockKey(ItemStack stack) {
+        if (stack == null || stack.getItem() == null) return null;
+
+        UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(stack.getItem());
+        if (id == null) return null;
+
+        String key = id + "@" + Items.feather.getDamage(stack);
+        if (stack.hasTagCompound()) key+= "#nbt=" + NBTPersist.toJsonObjectExact(stack.getTagCompound());
+        return key;
     }
 
     private void removePackingRecipe(ItemStack input) {
@@ -232,7 +248,11 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         ItemStack dust = GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L);
 
         int recipeRemovals = RECIPE_REMOVALS.getOrDefault(aMaterial, 0);
-        if ((recipeRemovals & BLOCK_RECIPE_REMOVAL) != 0) GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, aStack));
+        if ((recipeRemovals & BLOCK_RECIPE_REMOVAL) != 0) {
+            GT_RECIPE_REMOVAL_LOGGER.fatal("removing block key: {}", blockKey(aStack));
+            GTModHandler.removeRecipe(GTUtility.copyAmount(1, aStack));
+            GT_RECIPE_REMOVAL_LOGGER.fatal("done!");
+        }
         if ((recipeRemovals & INGOT_RECIPE_REMOVAL) != 0) removePackingRecipe(ingot);
         if ((recipeRemovals & GEM_RECIPE_REMOVAL) != 0) removePackingRecipe(gem);
         if ((recipeRemovals & DUST_RECIPE_REMOVAL) != 0) removePackingRecipe(dust);
