@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 import net.minecraft.enchantment.Enchantment;
@@ -21,6 +22,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.gtnewhorizon.gtnhlib.color.ColorResource;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.MaterialRef;
@@ -362,10 +364,16 @@ public class MaterialUtils {
     /// `(argb >>> 8) & 0xFF` / `(argb) & 0xFF` / `(argb >>> 24) & 0xFF` for r/g/b/a respectively. Unlike
     /// [com.ruling_0.materiallib.api.StandardProperties#TINT], preserves alpha `0x00` (see
     /// [GTMaterialProperties#ARGB]'s javadoc) -- do not substitute this for TINT in ML-side rendering code.
+    /// Resolved through a [ColorResource] on every call, so a per-draw read follows a resource pack override
+    /// while a value captured once at load keeps the coded default.
     public static @Nullable short[] rgba(@Nullable Material material) {
         if (material == null) return null;
-        Integer argb = material.getProperty(GTMaterialProperties.ARGB);
-        if (argb == null) return null;
+        Integer declared = material.getProperty(GTMaterialProperties.ARGB);
+        if (declared == null) return null;
+        int argb = tintColors.computeIfAbsent(
+            material,
+            key -> new ColorResource("materiallib", key.getName() + ".tint", String.format("0x%08X", declared), true))
+            .getColor();
         return new short[] { (short) ((argb >>> 16) & 0xFF), (short) ((argb >>> 8) & 0xFF), (short) (argb & 0xFF),
             (short) ((argb >>> 24) & 0xFF) };
     }
@@ -374,15 +382,26 @@ public class MaterialUtils {
     /// autogen passes to `withColorRGBA`. Unpacks [GTMaterialProperties#MOLTEN_ARGB] when present;
     /// otherwise falls back to [#rgba], and to `{255, 255, 255, 0}` when neither is present. Never null,
     /// unlike [#rgba].
+    /// Resolved through a [ColorResource] on every call, so a per-draw read follows a resource pack override
+    /// while a value captured once at load keeps the coded default.
     public static short[] moltenRgba(@Nullable Material material) {
-        Integer moltenArgb = material == null ? null : material.getProperty(GTMaterialProperties.MOLTEN_ARGB);
-        if (moltenArgb == null) {
+        Integer declared = material == null ? null : material.getProperty(GTMaterialProperties.MOLTEN_ARGB);
+        if (declared == null) {
             short[] rgba = rgba(material);
             return rgba != null ? rgba : new short[] { 255, 255, 255, 0 };
         }
+        int moltenArgb = moltenColors.computeIfAbsent(
+            material,
+            key -> new ColorResource("gregtech", key.getName() + ".molten", String.format("0x%08X", declared), true))
+            .getColor();
         return new short[] { (short) ((moltenArgb >>> 16) & 0xFF), (short) ((moltenArgb >>> 8) & 0xFF),
             (short) (moltenArgb & 0xFF), (short) ((moltenArgb >>> 24) & 0xFF) };
     }
+
+    /// The strong references [ColorResource]'s weak instance registry needs to keep re-resolving these colors
+    /// on a resource reload.
+    private static final Map<Material, ColorResource> tintColors = new ConcurrentHashMap<>();
+    private static final Map<Material, ColorResource> moltenColors = new ConcurrentHashMap<>();
 
     /// The name of a material's [StandardProperties#TEXTURE_SET], i.e. the folder its art lives in under
     /// `textures/{items,blocks}/materials/`. Null when `material` is null.
