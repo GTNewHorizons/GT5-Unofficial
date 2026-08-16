@@ -65,10 +65,8 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
      * slab recipes to be skipped. The complete blacklist is completed with witchery's witchwood planks, but that has
      * its own test, see {@link #isSlabRecipeRemovalBlacklisted(ItemStack)}.
      */
-    private static final ImmutableSet<String> SLAB_RECIPE_REMOVAL_BLACKLIST = ImmutableSet.of(
-        "etfuturum:wood_planks@3",
-        "GalacticraftAmunRa:tile.wood1@2",
-        "GalacticraftAmunRa:tile.wood1@3");
+    private static final ImmutableSet<String> SLAB_RECIPE_REMOVAL_BLACKLIST = ImmutableSet
+        .of("etfuturum:wood_planks@3", "GalacticraftAmunRa:tile.wood1@2", "GalacticraftAmunRa:tile.wood1@3");
 
     private static final HashSet<String> sProcessedPlanks = new HashSet<>();
     private static final HashSet<Item> sGroupedOakSlabItems = new HashSet<>();
@@ -181,7 +179,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
     private static boolean isSlabRecipeRemovalBlacklisted(ItemStack stack) {
         if ("witchery:witchwood".equals(stack.getItem().delegate.name())) return true;
         String key = itemStackKey(stack);
-        if (key==null) return true; // invalid items
+        if (key == null) return true; // invalid items
         return SLAB_RECIPE_REMOVAL_BLACKLIST.contains(key);
     }
 

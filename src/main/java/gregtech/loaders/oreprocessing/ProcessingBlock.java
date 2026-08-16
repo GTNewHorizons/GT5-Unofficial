@@ -14,14 +14,11 @@ import static gregtech.loaders.oreprocessing.ProcessingUtils.itemStackKey;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -30,7 +27,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.NBTPersist;
 
 public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegistrator {
 

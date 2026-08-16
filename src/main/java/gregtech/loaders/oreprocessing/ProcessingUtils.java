@@ -1,11 +1,12 @@
 package gregtech.loaders.oreprocessing;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.util.NBTPersist;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.util.NBTPersist;
+
 public class ProcessingUtils {
+
     public static String itemStackKey(ItemStack stack) {
         if (stack == null || stack.getItem() == null) return null;
 

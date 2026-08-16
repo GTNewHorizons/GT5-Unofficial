@@ -52,7 +52,7 @@ public class CasingLoader implements IWerkstoffRunnable {
     private static void addCasingRecipes(Werkstoff werkstoff, OrePrefixes reboltedCasingsOuterStuff) {
         GTModHandler.addCraftingRecipe(
             werkstoff.get(blockCasing),
-            GTModHandler.RecipeBits.BUFFERED  | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PSP", "PGP", "PSP", 'P', werkstoff.get(plate), 'S', werkstoff.get(screw), 'G',
                 werkstoff.get(gearGtSmall) });
 

@@ -34,6 +34,9 @@ public class NBTPersistTest {
         tag.setString("z", "last");
         tag.setString("a", "first");
 
-        assertEquals("{\"a\":\"sfirst\",\"z\":\"slast\"}", NBTPersist.toJsonObjectExact(tag).toString());
+        assertEquals(
+            "{\"a\":\"sfirst\",\"z\":\"slast\"}",
+            NBTPersist.toJsonObjectExact(tag)
+                .toString());
     }
 }
