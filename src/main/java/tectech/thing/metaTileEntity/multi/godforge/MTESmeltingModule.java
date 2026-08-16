@@ -93,7 +93,9 @@ public class MTESmeltingModule extends MTEBaseModule {
                 }
 
                 wirelessEUt = (long) recipe.mEUt * getActualParallel();
-                if (getUserEU(userUUID).compareTo(BigInteger.valueOf(wirelessEUt * recipe.mDuration)) < 0) {
+                BigInteger powerForRecipe = BigInteger.valueOf(wirelessEUt)
+                    .multiply(BigInteger.valueOf(duration));
+                if (getUserEU(userUUID).compareTo(powerForRecipe) < 0) {
                     return CheckRecipeResultRegistry.insufficientPower(wirelessEUt * recipe.mDuration);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
