@@ -26,6 +26,11 @@ public class RainbowOverlayRenderer extends GeneratedMaterialRenderer {
 
     @Override
     protected void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor) {
+        if (hasOverrideIcon(aStack)) {
+            super.renderRegularItem(type, aStack, icon, shouldModulateColor);
+            return;
+        }
+
         final GTClient clientProxy = GTMod.clientProxy();
         float animationTicks = clientProxy.getAnimationRenderTicks();
 

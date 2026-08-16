@@ -7,6 +7,7 @@ import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceRes
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
+import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
 import static gregtech.api.util.GTUtility.isFlowingWater;
 import static gregtech.api.util.GTUtility.isWater;
 
@@ -67,6 +68,7 @@ import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IHeatingCoil;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
@@ -222,13 +224,14 @@ public class GTStructureUtility {
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 short[] rgba = MaterialUtils.rgba(material);
                 if (material == null || rgba == null) return false;
-                if (mIcons == null && FMLLaunchHandler.side()
+                if (FMLLaunchHandler.side()
                     .isClient()) {
-                    mIcons = new IIcon[6];
-                    Arrays.fill(
-                        mIcons,
-                        GTMaterialIcons.block("sheetmetal", material)
-                            .getIcon());
+                    IIconContainer sheetmetal = GTMaterialIcons.block("sheetmetal", material);
+                    if (mIcons == null) {
+                        mIcons = new IIcon[6];
+                        Arrays.fill(mIcons, sheetmetal.getIcon());
+                    }
+                    if (sheetmetal.hasOverrideIcon()) rgba = UNCOLORED_RGBA;
                 }
                 StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, rgba);
                 return true;
@@ -334,13 +337,14 @@ public class GTStructureUtility {
                 com.ruling_0.materiallib.api.Material material = materialSupplier.get();
                 short[] rgba = MaterialUtils.rgba(material);
                 if (material == null || rgba == null) return false;
-                if (mIcons == null && FMLLaunchHandler.side()
+                if (FMLLaunchHandler.side()
                     .isClient()) {
-                    mIcons = new IIcon[6];
-                    Arrays.fill(
-                        mIcons,
-                        GTMaterialIcons.block("frameGt", material)
-                            .getIcon());
+                    IIconContainer frame = GTMaterialIcons.block("frameGt", material);
+                    if (mIcons == null) {
+                        mIcons = new IIcon[6];
+                        Arrays.fill(mIcons, frame.getIcon());
+                    }
+                    if (frame.hasOverrideIcon()) rgba = UNCOLORED_RGBA;
                 }
                 StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, rgba);
                 return true;

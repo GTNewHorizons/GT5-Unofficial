@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.ALL_VALID_SIDES;
+import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
 import static gregtech.api.enums.Textures.BlockIcons.PIPE_RESTRICTOR;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials.PipeProperties;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityItemPipe;
@@ -169,11 +171,12 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
         int aColorIndex, boolean aConnected, boolean redstoneLevel) {
         final Material material = getMaterial();
-        final short[] rgba = MaterialUtils.rgba(material);
-        if (material == null || rgba == null) return Textures.BlockIcons.ERROR_RENDERING;
+        final short[] materialRgba = MaterialUtils.rgba(material);
+        if (material == null || materialRgba == null) return Textures.BlockIcons.ERROR_RENDERING;
         String iconName = aConnected ? getShapeHost().getName() : "pipeSide";
-        ITexture body = TextureFactory
-            .of(GTMaterialIcons.block(iconName, material), Dyes.getModulation(aColorIndex, rgba));
+        final IIconContainer bodyIcon = GTMaterialIcons.block(iconName, material);
+        final short[] rgba = bodyIcon.hasOverrideIcon() ? UNCOLORED_RGBA : materialRgba;
+        ITexture body = TextureFactory.of(bodyIcon, Dyes.getModulation(aColorIndex, rgba));
         if (mIsRestrictive) return new ITexture[] { body, TextureFactory.of(PIPE_RESTRICTOR) };
         return new ITexture[] { body };
     }

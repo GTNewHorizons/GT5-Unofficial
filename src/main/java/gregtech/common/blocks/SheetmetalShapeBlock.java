@@ -73,8 +73,11 @@ public class SheetmetalShapeBlock extends ShapeBlock implements IBlockWithTextur
             Material material = MaterialLibAPI.getMaterialByIndex(index);
             short[] rgba = MaterialUtils.rgba(material);
             if (material == null || rgba == null) return null;
-            ITexture[] texture = {
-                TextureFactory.of(GTMaterialIcons.block(getName(), material), Dyes.getModulation(-1, rgba)) };
+            ITexture[] texture = { TextureFactory.builder()
+                .addIcon(GTMaterialIcons.block(getName(), material))
+                .setRGBA(Dyes.getModulation(-1, rgba))
+                .untintOverrideIcon()
+                .build() };
             return new ITexture[][] { texture, texture, texture, texture, texture, texture };
         });
     }

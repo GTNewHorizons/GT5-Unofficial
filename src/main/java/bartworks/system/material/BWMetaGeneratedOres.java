@@ -13,6 +13,8 @@
 
 package bartworks.system.material;
 
+import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -38,6 +40,7 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IBlockWithTextures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.GTMaterialProperties;
@@ -181,8 +184,9 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
         ITexture oreTexture;
 
         if (material != null) {
+            IIconContainer icon = GTMaterialIcons.oreBlock(prefix.name(), material);
             oreTexture = TextureFactory
-                .of(GTMaterialIcons.oreBlock(prefix.name(), material), MaterialUtils.rgba(material));
+                .of(icon, icon.hasOverrideIcon() ? UNCOLORED_RGBA : MaterialUtils.rgba(material));
         } else {
             oreTexture = TextureFactory.of(GTMaterialIcons.oreBlock(prefix.name(), Materials.NULL));
         }

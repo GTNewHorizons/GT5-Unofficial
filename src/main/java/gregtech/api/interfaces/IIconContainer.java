@@ -46,6 +46,15 @@ public interface IIconContainer {
     @SideOnly(Side.CLIENT)
     ResourceLocation getTextureFile();
 
+    /**
+     * @return Whether this Icon came from a resource pack override location, which carries its own colors and is
+     *         drawn untinted. See {@link com.ruling_0.materiallib.api.ShapeItem#hasOverrideIcon}.
+     */
+    @SideOnly(Side.CLIENT)
+    default boolean hasOverrideIcon() {
+        return false;
+    }
+
     @SideOnly(Side.CLIENT)
     default short[] getIconColor(int aRenderPass) {
         return UNCOLORED_RGBA;

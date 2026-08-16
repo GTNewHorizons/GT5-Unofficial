@@ -49,6 +49,13 @@ public final class MLItemIconContainer extends AbstractItemIconContainer {
         return null;
     }
 
+    @Override
+    public boolean hasOverrideIcon() {
+        resolve();
+        if (shape != null) return shape.hasOverrideIcon(material);
+        return iconSet != null && iconSet.hasOverrideIcon(material);
+    }
+
     private void resolve() {
         if (resolved) return;
         resolved = true;

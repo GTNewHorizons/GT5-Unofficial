@@ -24,6 +24,10 @@ public class ProcessingCompressed implements IOreRecipeRegistrator {
         GTModHandler.removeRecipeByOutputDelayed(stack);
         CoverRegistry.registerDecorativeCover(
             stack,
-            TextureFactory.of(GTMaterialIcons.block("block2", material), MaterialUtils.rgba(material)));
+            TextureFactory.builder()
+                .addIcon(GTMaterialIcons.block("block2", material))
+                .setRGBA(MaterialUtils.rgba(material))
+                .untintOverrideIcon()
+                .build());
     }
 }

@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.ALL_VALID_SIDES;
+import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.enums.Mods.Translocator;
 import static gregtech.api.metatileentity.implementations.MTEFluidPipe.Border.BOTTOM;
@@ -185,10 +186,12 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     /// own shape's art, which already encodes the size the legacy thickness ladder used to select.
     protected ITexture getBaseTexture(boolean connected, int colorIndex) {
         Material material = getMaterial();
-        short[] rgba = MaterialUtils.rgba(material);
-        if (material == null || rgba == null) return Textures.BlockIcons.ERROR_RENDERING[0];
+        short[] materialRgba = MaterialUtils.rgba(material);
+        if (material == null || materialRgba == null) return Textures.BlockIcons.ERROR_RENDERING[0];
         String iconName = connected ? getShapeHost().getName() : "pipeSide";
-        return TextureFactory.of(GTMaterialIcons.block(iconName, material), Dyes.getModulation(colorIndex, rgba));
+        IIconContainer body = GTMaterialIcons.block(iconName, material);
+        short[] rgba = body.hasOverrideIcon() ? UNCOLORED_RGBA : materialRgba;
+        return TextureFactory.of(body, Dyes.getModulation(colorIndex, rgba));
     }
 
     protected static ITexture getRestrictorTexture(int borderMask) {

@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 
 import java.util.ArrayDeque;
@@ -108,14 +109,15 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         int facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         final Material material = getMaterial();
-        final short[] rgba = MaterialUtils.rgba(material);
-        if (material == null || rgba == null) {
+        final short[] materialRgba = MaterialUtils.rgba(material);
+        if (material == null || materialRgba == null) {
             if (mInsulated) return new ITexture[] { TextureFactory.of(
                 Textures.BlockIcons.INSULATION_FULL,
                 Dyes.getModulation(colorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             return Textures.BlockIcons.ERROR_RENDERING;
         }
         final IIconContainer wire = GTMaterialIcons.block(getShapeHost().getName(), material);
+        final short[] rgba = wire.hasOverrideIcon() ? UNCOLORED_RGBA : materialRgba;
         if (!mInsulated) return new ITexture[] { TextureFactory.of(wire, Dyes.getModulation(colorIndex, rgba)) };
         if (active) {
             float tThickNess = getThickness();

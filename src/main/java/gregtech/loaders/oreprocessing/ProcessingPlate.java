@@ -590,6 +590,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     .addIcon(GTMaterialIcons.block("block1", material))
                     .setRGBA(MaterialUtils.rgba(material))
                     .stdOrient()
+                    .untintOverrideIcon()
                     .build()
                 :
                 // or copy Block texture

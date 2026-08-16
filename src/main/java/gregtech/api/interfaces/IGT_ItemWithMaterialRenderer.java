@@ -55,6 +55,15 @@ public interface IGT_ItemWithMaterialRenderer {
      */
     short[] getRGBa(ItemStack aStack);
 
+    /**
+     * @return Whether {@code stack} renders from a resource pack override icon, which carries its own colors and is
+     *         drawn untinted. See {@link ShapeItem#hasOverrideIcon}.
+     */
+    @SideOnly(Side.CLIENT)
+    default boolean hasOverrideIcon(ItemStack stack) {
+        return false;
+    }
+
     @SideOnly(Side.CLIENT)
     default int getSpriteNumber() {
         if (this instanceof Item) {

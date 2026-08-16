@@ -105,6 +105,15 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
         ItemRenderUtil.renderItem(type, icon);
     }
 
+    /**
+     * @return Whether {@code stack} renders from a resource pack override icon, which carries its own colors. See
+     *         {@link IGT_ItemWithMaterialRenderer#hasOverrideIcon}.
+     */
+    protected static boolean hasOverrideIcon(ItemStack stack) {
+        IGT_ItemWithMaterialRenderer item = IGT_ItemWithMaterialRenderer.resolve(stack);
+        return item != null && item.hasOverrideIcon(stack);
+    }
+
     protected void renderContainedFluid(ItemRenderType type, FluidStack aFluidStack, IIcon fluidIcon) {
         Fluid aFluid = aFluidStack.getFluid();
         int tColor = aFluid.getColor(aFluidStack);

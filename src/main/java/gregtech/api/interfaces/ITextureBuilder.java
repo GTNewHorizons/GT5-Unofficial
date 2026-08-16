@@ -59,5 +59,18 @@ public interface ITextureBuilder {
         return this;
     }
 
+    /**
+     * Texture drops its RGBA tint on any draw where the icon comes from a resource pack override location, which
+     * carries its own colors. Evaluated per draw, so the built {@link ITexture} may be cached across resource
+     * reloads. See {@link IIconContainer#hasOverrideIcon}.
+     *
+     * @return {@link ITextureBuilder} for chaining
+     *
+     * @implSpec Must be overridden to actually do something
+     */
+    default ITextureBuilder untintOverrideIcon() {
+        return this;
+    }
+
     ITextureBuilder glow();
 }

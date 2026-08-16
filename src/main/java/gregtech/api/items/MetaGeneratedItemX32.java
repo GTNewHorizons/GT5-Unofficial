@@ -1,5 +1,7 @@
 package gregtech.api.items;
 
+import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -92,6 +94,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
         if (!isMaterialItem(getDamage(aStack))) {
             return MaterialUtils.rgba(Materials.NULL);
         }
+        if (hasOverrideIcon(aStack)) return UNCOLORED_RGBA;
         Material tMaterial = LegacyMaterialIDIndex.get(getDamage(aStack) % 1000);
         short[] rgba = MaterialUtils.rgba(tMaterial);
         return rgba != null ? rgba : MaterialUtils.rgba(Materials.NULL);
@@ -155,6 +158,12 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean hasOverrideIcon(ItemStack stack) {
+        final IIconContainer container = getIconContainer(getDamage(stack));
+        return container != null && container.hasOverrideIcon();
     }
 
     @Override

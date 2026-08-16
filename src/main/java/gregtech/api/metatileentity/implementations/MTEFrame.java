@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -10,6 +12,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -66,10 +69,11 @@ public class MTEFrame extends MetaPipeEntity implements ILocalizedMetaPipeEntity
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection, int connections,
         int colorIndex, boolean active, boolean redstoneLevel) {
         final Material material = getMaterial();
-        final short[] rgba = MaterialUtils.rgba(material);
-        if (material == null || rgba == null) return Textures.BlockIcons.ERROR_RENDERING;
-        return new ITexture[] {
-            TextureFactory.of(GTMaterialIcons.block("frameGt", material), Dyes.getModulation(colorIndex, rgba)) };
+        final short[] materialRgba = MaterialUtils.rgba(material);
+        if (material == null || materialRgba == null) return Textures.BlockIcons.ERROR_RENDERING;
+        final IIconContainer frame = GTMaterialIcons.block("frameGt", material);
+        final short[] rgba = frame.hasOverrideIcon() ? UNCOLORED_RGBA : materialRgba;
+        return new ITexture[] { TextureFactory.of(frame, Dyes.getModulation(colorIndex, rgba)) };
     }
 
     @Override

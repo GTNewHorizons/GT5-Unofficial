@@ -14,6 +14,7 @@
 package bartworks.system.material;
 
 import static bartworks.system.material.BWMetaGeneratedOres.ORE_TAB;
+import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
 
 import java.util.ArrayList;
 
@@ -37,6 +38,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IBlockWithTextures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.GTMaterialProperties;
@@ -88,9 +90,13 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
     @Override
     public @Nullable ITexture[][] getTextures(int meta) {
         com.ruling_0.materiallib.api.Material mat = LegacyWerkstoffIndex.get(meta);
-        ITexture baseTexture = mat != null
-            ? TextureFactory.of(GTMaterialIcons.block(iconName(), mat), MaterialUtils.rgba(mat))
-            : TextureFactory.of(GTMaterialIcons.block(iconName(), Materials.NULL));
+        ITexture baseTexture;
+        if (mat != null) {
+            IIconContainer icon = GTMaterialIcons.block(iconName(), mat);
+            baseTexture = TextureFactory.of(icon, icon.hasOverrideIcon() ? UNCOLORED_RGBA : MaterialUtils.rgba(mat));
+        } else {
+            baseTexture = TextureFactory.of(GTMaterialIcons.block(iconName(), Materials.NULL));
+        }
 
         ITexture[] texture = new ITexture[] { TextureFactory.of(Blocks.iron_block), baseTexture };
 

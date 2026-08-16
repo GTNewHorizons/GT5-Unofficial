@@ -151,7 +151,7 @@ public class DetravOreMarkerRenderer {
 
         mc.getTextureManager()
             .bindTexture(textureFile);
-        iconQuad(plane, icon, half, color);
+        iconQuad(plane, icon, half, ore.hasOverrideIcon() ? 0xFFFFFF : color);
         IIcon overlay = ore.getOverlayIcon();
         if (overlay != null) iconQuad(plane, overlay, half, 0xFFFFFF);
         return true;

@@ -1,5 +1,6 @@
 package gregtech.common.render;
 
+import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
 import static gregtech.api.enums.Textures.InvisibleIcon.INVISIBLE_ICON;
 
 import net.minecraft.client.Minecraft;
@@ -110,7 +111,8 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
             if (icon != null) {
                 Minecraft.getMinecraft().renderEngine.bindTexture(iconContainer.getTextureFile());
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                short[] modulation = toolStats.getRGBa(isToolHead, stack);
+                short[] modulation = iconContainer.hasOverrideIcon() ? UNCOLORED_RGBA
+                    : toolStats.getRGBa(isToolHead, stack);
                 GL11.glColor3f(modulation[0] / 255.0F, modulation[1] / 255.0F, modulation[2] / 255.0F);
                 ItemRenderUtil.renderItem(type, icon);
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);

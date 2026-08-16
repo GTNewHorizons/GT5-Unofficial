@@ -46,6 +46,10 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
     private void registerCover(ItemStack stack, Material material) {
         CoverRegistry.registerDecorativeCover(
             stack,
-            TextureFactory.of(GTMaterialIcons.block("foil", material), MaterialUtils.rgba(material)));
+            TextureFactory.builder()
+                .addIcon(GTMaterialIcons.block("foil", material))
+                .setRGBA(MaterialUtils.rgba(material))
+                .untintOverrideIcon()
+                .build());
     }
 }

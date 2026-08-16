@@ -1,5 +1,7 @@
 package gregtech.common.blocks;
 
+import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,6 +40,7 @@ import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.events.OreInteractEvent;
 import gregtech.api.interfaces.IBlockWithTextures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
 import gregtech.api.items.GTGenericBlock;
@@ -213,9 +216,10 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
         final ITextureBuilder fgBuilder;
 
         if (mat != null) {
+            final IIconContainer oreIcon = GTMaterialIcons.oreBlock(small ? "oreSmall" : "ore", mat);
             fgBuilder = TextureFactory.builder()
-                .addIcon(GTMaterialIcons.oreBlock(small ? "oreSmall" : "ore", mat))
-                .setRGBA(MaterialUtils.rgba(mat))
+                .addIcon(oreIcon)
+                .setRGBA(oreIcon.hasOverrideIcon() ? UNCOLORED_RGBA : MaterialUtils.rgba(mat))
                 .glow(Boolean.TRUE.equals(mat.getProperty(GTMaterialProperties.HAS_GLOWING_ORE)));
         } else {
             fgBuilder = TextureFactory.builder()
