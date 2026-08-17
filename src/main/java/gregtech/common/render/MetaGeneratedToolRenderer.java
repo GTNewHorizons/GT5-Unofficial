@@ -116,6 +116,18 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
                 GL11.glColor3f(modulation[0] / 255.0F, modulation[1] / 255.0F, modulation[2] / 255.0F);
                 ItemRenderUtil.renderItem(type, icon);
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
+
+                // A non-null overlay is the stack's trailing layer, which the overlay branch below draws untinted.
+                int tintedLayers = overlay != null ? iconContainer.getIconPasses() - 1 : iconContainer.getIconPasses();
+                for (int layer = 1; layer < tintedLayers; layer++) {
+                    Minecraft.getMinecraft().renderEngine.bindTexture(iconContainer.getTextureFile());
+                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                    short[] layerColor = iconContainer.hasOverrideIcon() ? UNCOLORED_RGBA
+                        : iconContainer.getIconColor(layer);
+                    GL11.glColor3f(layerColor[0] / 255.0F, layerColor[1] / 255.0F, layerColor[2] / 255.0F);
+                    ItemRenderUtil.renderItem(type, iconContainer.getLayerIcon(layer));
+                    GL11.glColor3f(1.0F, 1.0F, 1.0F);
+                }
             }
             if (overlay != null && overlay != INVISIBLE_ICON) {
                 Minecraft.getMinecraft().renderEngine.bindTexture(iconContainer.getTextureFile());
