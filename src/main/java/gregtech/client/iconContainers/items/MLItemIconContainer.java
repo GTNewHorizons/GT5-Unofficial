@@ -44,11 +44,9 @@ public final class MLItemIconContainer extends AbstractItemIconContainer {
         return InvisibleIcon.INVISIBLE_ICON;
     }
 
+    /// Null: the stack's layers, its trailing overlay included, come through [#getLayerIcon].
     @Override
     public IIcon getOverlayIcon() {
-        resolve();
-        if (shape != null) return shape.getMaterialOverlayIcon(material);
-        if (iconSet != null) return iconSet.getOverlayIcon(material);
         return null;
     }
 
