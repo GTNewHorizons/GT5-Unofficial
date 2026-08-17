@@ -8,7 +8,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.client.iconContainers.LayerIconContainer;
 
 /// Builds the [ITexture] a material [IIconContainer] draws as: one texture per icon layer, composed bottom up, so
-/// every material block, frame and cover stacks its art the same way.
+/// every material block and frame stacks its art the same way. Decorative covers deliberately stay off this path
+/// and draw their single base texture.
 public final class GTMaterialTextures {
 
     private GTMaterialTextures() {}
@@ -19,7 +20,8 @@ public final class GTMaterialTextures {
     /// already resolved override art into `rgba` itself, where something outranks the white-out (a painted frame
     /// keeps its dye).
     public static ITexture of(IIconContainer container, short[] rgba, boolean glow, boolean untintOverrideArt) {
-        // A dedicated server builds cover textures too, and IIconContainer's layer accessors are client-only.
+        // IIconContainer's layer accessors are client-only, and the getTextures surfaces calling in carry no side
+        // annotation, so a dedicated server takes the single-texture path.
         if (!GTMod.proxy.isClientSide()) return layerTexture(container, rgba, glow, untintOverrideArt);
 
         int tintedLayers = container.getOverlayIcon() != null ? container.getIconPasses() - 1
