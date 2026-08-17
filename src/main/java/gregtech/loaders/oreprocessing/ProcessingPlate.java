@@ -45,6 +45,7 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.GTMaterialTextures;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
@@ -586,13 +587,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             // If there is an ItemStack of Block for Materials
             tStack == NI ?
             // Use the material's RGBA-dyed blocks/materials/MATERIALSET/block1 icons
-                TextureFactory.builder()
-                    .addIcon(GTMaterialIcons.block("block1", material))
-                    .setRGBA(MaterialUtils.rgba(material))
-                    .stdOrient()
-                    .untintOverrideIcon()
-                    .build()
-                :
+                GTMaterialTextures.of(GTMaterialIcons.block("block1", material), MaterialUtils.rgba(material)) :
                 // or copy Block texture
                 TextureFactory.of(Block.getBlockFromItem(tStack.getItem()), tStack.getItemDamage()));
     }

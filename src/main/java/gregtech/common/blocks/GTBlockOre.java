@@ -1,7 +1,5 @@
 package gregtech.common.blocks;
 
-import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,13 +38,12 @@ import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.events.OreInteractEvent;
 import gregtech.api.interfaces.IBlockWithTextures;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.ITextureBuilder;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialIcons;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.GTMaterialTextures;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
@@ -213,22 +210,21 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
         com.ruling_0.materiallib.api.Material mat = getMaterial(metadata);
         boolean small = isSmallOre(metadata);
 
-        final ITextureBuilder fgBuilder;
+        final ITexture fg;
 
         if (mat != null) {
-            final IIconContainer oreIcon = GTMaterialIcons.oreBlock(small ? "oreSmall" : "ore", mat);
-            fgBuilder = TextureFactory.builder()
-                .addIcon(oreIcon)
-                .setRGBA(oreIcon.hasOverrideIcon() ? UNCOLORED_RGBA : MaterialUtils.rgba(mat))
-                .glow(Boolean.TRUE.equals(mat.getProperty(GTMaterialProperties.HAS_GLOWING_ORE)));
+            fg = GTMaterialTextures.of(
+                GTMaterialIcons.oreBlock(small ? "oreSmall" : "ore", mat),
+                MaterialUtils.rgba(mat),
+                Boolean.TRUE.equals(mat.getProperty(GTMaterialProperties.HAS_GLOWING_ORE)));
         } else {
-            fgBuilder = TextureFactory.builder()
-                .addIcon(GTMaterialIcons.oreBlock("ore", Materials.NULL));
+            fg = TextureFactory.builder()
+                .addIcon(GTMaterialIcons.oreBlock("ore", Materials.NULL))
+                .stdOrient()
+                .build();
         }
 
         final ITexture bg = (stoneType == null ? StoneType.Stone : stoneType).getTexture(0);
-        final ITexture fg = fgBuilder.stdOrient()
-            .build();
 
         final ITexture[] textures = new ITexture[] { bg, fg };
 

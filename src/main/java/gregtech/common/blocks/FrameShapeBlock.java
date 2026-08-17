@@ -36,13 +36,13 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.material.GTMaterialIcons;
+import gregtech.api.material.GTMaterialTextures;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.implementations.MTEFrame;
-import gregtech.api.render.TextureFactory;
 import gregtech.common.render.GTRendererBlock;
 
 /// The block backing the frame-box MaterialLib shape: metadata is the material's global index, the raw index
@@ -419,11 +419,8 @@ public class FrameShapeBlock extends ShapeBlock implements IBlockWithTextures {
             Material material = MaterialLibAPI.getMaterialByIndex(index);
             short[] rgba = MaterialUtils.rgba(material);
             if (material == null || rgba == null) return null;
-            ITexture[] texture = { TextureFactory.builder()
-                .addIcon(GTMaterialIcons.block(getName(), material))
-                .setRGBA(Dyes.getModulation(-1, rgba))
-                .untintOverrideIcon()
-                .build() };
+            ITexture[] texture = {
+                GTMaterialTextures.of(GTMaterialIcons.block(getName(), material), Dyes.getModulation(-1, rgba)) };
             return new ITexture[][] { texture, texture, texture, texture, texture, texture };
         });
     }

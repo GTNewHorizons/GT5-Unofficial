@@ -16,8 +16,8 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.GTMaterialIcons;
+import gregtech.api.material.GTMaterialTextures;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.render.TextureFactory;
 import gregtech.common.render.GTRendererBlock;
 
 /// The block backing the `sheetmetal` MaterialLib shape: a decorative material block with no tile entity,
@@ -73,11 +73,8 @@ public class SheetmetalShapeBlock extends ShapeBlock implements IBlockWithTextur
             Material material = MaterialLibAPI.getMaterialByIndex(index);
             short[] rgba = MaterialUtils.rgba(material);
             if (material == null || rgba == null) return null;
-            ITexture[] texture = { TextureFactory.builder()
-                .addIcon(GTMaterialIcons.block(getName(), material))
-                .setRGBA(Dyes.getModulation(-1, rgba))
-                .untintOverrideIcon()
-                .build() };
+            ITexture[] texture = {
+                GTMaterialTextures.of(GTMaterialIcons.block(getName(), material), Dyes.getModulation(-1, rgba)) };
             return new ITexture[][] { texture, texture, texture, texture, texture, texture };
         });
     }
