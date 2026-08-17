@@ -35,6 +35,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTESmeltingModuleGui;
 
@@ -103,6 +104,7 @@ public class MTESmeltingModule extends MTEBaseModule {
                 BigInteger powerForRecipe = BigInteger.valueOf(calculatedEut)
                     .multiply(BigInteger.valueOf(duration));
                 if (!addEUToGlobalEnergyMap(userUUID, powerForRecipe.negate())) {
+                    stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                     return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }
                 addToPowerTally(powerForRecipe);

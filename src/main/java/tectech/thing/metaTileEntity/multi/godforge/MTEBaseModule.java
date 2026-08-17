@@ -454,6 +454,10 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements ISurviva
             helper.setConsumption(false);
             helper.setCalculator(calculator);
             helper.build();
+            if (!helper.getResult()
+                .wasSuccessful()) {
+                return BigInteger.ZERO;
+            }
             long eut = calculator.getConsumption();
             int duration = (int) calculateDuration(recipe, helper, calculator);
             return BigInteger.valueOf(eut)
