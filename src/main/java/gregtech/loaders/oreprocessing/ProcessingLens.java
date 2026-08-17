@@ -16,6 +16,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.material.GTMaterialTextures;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
@@ -98,8 +99,8 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                         .eut(TierEU.RECIPE_LV)
                         .addTo(latheRecipes);
                 }
-                final ITexture lensCoverTexture = TextureFactory
-                    .of(Textures.BlockIcons.OVERLAY_LENS, MaterialUtils.rgba(material));
+                final ITexture lensCoverTexture = GTMaterialTextures
+                    .stored(Textures.BlockIcons.OVERLAY_LENS, () -> MaterialUtils.rgba(material));
                 CoverRegistry.registerDecorativeCover(
                     stack,
                     TextureFactory.of(Textures.BlockIcons.MACHINE_CASINGS[2][0], lensCoverTexture));

@@ -12,8 +12,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialIcons;
+import gregtech.api.material.GTMaterialTextures;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -43,14 +43,9 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
             .addTo(benderRecipes);
     }
 
-    /// Covers draw the single base texture; a material's icon layer stack does not apply to cover art.
     private void registerCover(ItemStack stack, Material material) {
         CoverRegistry.registerDecorativeCover(
             stack,
-            TextureFactory.builder()
-                .addIcon(GTMaterialIcons.block("foil", material))
-                .setRGBA(MaterialUtils.rgba(material))
-                .untintOverrideIcon()
-                .build());
+            GTMaterialTextures.stored(GTMaterialIcons.block("foil", material), () -> MaterialUtils.rgba(material)));
     }
 }
