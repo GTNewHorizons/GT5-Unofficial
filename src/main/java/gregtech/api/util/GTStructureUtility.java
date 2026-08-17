@@ -206,8 +206,6 @@ public class GTStructureUtility {
         if (material == null) throw new IllegalArgumentException("material for sheet metal can not be null!");
         return new IStructureElement<>() {
 
-            private IIcon[] mIcons;
-
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
@@ -224,16 +222,15 @@ public class GTStructureUtility {
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 short[] rgba = MaterialUtils.rgba(material);
                 if (material == null || rgba == null) return false;
+                IIcon[] icons = null;
                 if (FMLLaunchHandler.side()
                     .isClient()) {
                     IIconContainer sheetmetal = GTMaterialIcons.block("sheetmetal", material);
-                    if (mIcons == null) {
-                        mIcons = new IIcon[6];
-                        Arrays.fill(mIcons, sheetmetal.getIcon());
-                    }
+                    icons = new IIcon[6];
+                    Arrays.fill(icons, sheetmetal.getIcon());
                     if (sheetmetal.hasOverrideIcon()) rgba = UNCOLORED_RGBA;
                 }
-                StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, rgba);
+                StructureLibAPI.hintParticleTinted(world, x, y, z, icons, rgba);
                 return true;
             }
 
@@ -317,8 +314,6 @@ public class GTStructureUtility {
         Supplier<com.ruling_0.materiallib.api.Material> materialSupplier) {
         return new IStructureElement<>() {
 
-            private IIcon[] mIcons;
-
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
@@ -337,16 +332,15 @@ public class GTStructureUtility {
                 com.ruling_0.materiallib.api.Material material = materialSupplier.get();
                 short[] rgba = MaterialUtils.rgba(material);
                 if (material == null || rgba == null) return false;
+                IIcon[] icons = null;
                 if (FMLLaunchHandler.side()
                     .isClient()) {
                     IIconContainer frame = GTMaterialIcons.block("frameGt", material);
-                    if (mIcons == null) {
-                        mIcons = new IIcon[6];
-                        Arrays.fill(mIcons, frame.getIcon());
-                    }
+                    icons = new IIcon[6];
+                    Arrays.fill(icons, frame.getIcon());
                     if (frame.hasOverrideIcon()) rgba = UNCOLORED_RGBA;
                 }
-                StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, rgba);
+                StructureLibAPI.hintParticleTinted(world, x, y, z, icons, rgba);
                 return true;
             }
 
