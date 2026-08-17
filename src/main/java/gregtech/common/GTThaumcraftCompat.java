@@ -1,5 +1,7 @@
 package gregtech.common;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -12,6 +14,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.util.GTLanguageManager;
@@ -30,6 +33,19 @@ import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
 
 public class GTThaumcraftCompat implements IThaumcraftCompat {
+
+    private static final boolean PROFILE_ASPECT_REGISTRATION = Boolean.getBoolean("gt.debug.thaumcraft_aspects");
+    private static long profileEmptyCalls;
+    private static long profileAdditiveCalls;
+    private static long profileNonAdditiveCalls;
+    private static long profilePreRegistered;
+    private static long profilePreMissing;
+    private static long profileMissingGeneratedPositive;
+    private static long profileExplicitRegistrations;
+    private static long profileExistsNanos;
+    private static long profileLookupNanos;
+    private static long profileHitLookupNanos;
+    private static long profileMissLookupNanos;
 
     public GTThaumcraftCompat() {
         TCAspects.AER.mAspect = Aspect.AIR;
@@ -142,6 +158,8 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
             new Aspect[] { Aspect.MAN, Aspect.TRAVEL },
             new ResourceLocation("gregtech:textures/aspects/" + TCAspects.GLORIA.name() + ".png"),
             1);
+
+        if (PROFILE_ASPECT_REGISTRATION) GregTechAPI.sGTCompleteLoad.add(GTThaumcraftCompat::logAspectProfile);
     }
 
     public static class LocalizedCustomAspectName extends Aspect {
@@ -165,6 +183,23 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
             tAspect = i$.next();
         }
         return rAspects;
+    }
+
+    private static void logAspectProfile() {
+        GT_FML_LOGGER.info(
+            "GT Thaumcraft aspect profile: emptyCalls={}, additiveCalls={}, nonAdditiveCalls={}, preRegistered={}, preMissing={}, missingGeneratedPositive={}, explicitRegistrations={}, existsMs={}, lookupMs={} (hitsMs={}, missesMs={}), objectTags={}",
+            profileEmptyCalls,
+            profileAdditiveCalls,
+            profileNonAdditiveCalls,
+            profilePreRegistered,
+            profilePreMissing,
+            profileMissingGeneratedPositive,
+            profileExplicitRegistrations,
+            profileExistsNanos / 1_000_000.0,
+            profileLookupNanos / 1_000_000.0,
+            profileHitLookupNanos / 1_000_000.0,
+            profileMissLookupNanos / 1_000_000.0,
+            ThaumcraftApi.objectTags.size());
     }
 
     @Override
@@ -303,13 +338,45 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
     @Override
     public boolean registerThaumcraftAspectsToItem(ItemStack aStack, List<TCAspects.TC_AspectStack> aAspects,
         boolean aAdditive) {
-        if (aAspects.isEmpty()) return false;
+        if (aAspects.isEmpty()) {
+            if (PROFILE_ASPECT_REGISTRATION) profileEmptyCalls++;
+            return false;
+        }
         if (aAdditive) {
+            if (PROFILE_ASPECT_REGISTRATION) profileAdditiveCalls++;
             ThaumcraftApi.registerComplexObjectTag(aStack, getAspectList(aAspects));
             return true;
         }
+        if (!PROFILE_ASPECT_REGISTRATION) {
+            AspectList tAlreadyRegisteredAspects = ThaumcraftApiHelper.getObjectAspects(aStack);
+            if (tAlreadyRegisteredAspects == null || tAlreadyRegisteredAspects.size() <= 0) {
+                ThaumcraftApi.registerObjectTag(aStack, getAspectList(aAspects));
+            }
+            return true;
+        }
+
+        profileNonAdditiveCalls++;
+        long started = System.nanoTime();
+        boolean wasRegistered = ThaumcraftApi.exists(aStack.getItem(), aStack.getItemDamage());
+        profileExistsNanos += System.nanoTime() - started;
+
+        started = System.nanoTime();
         AspectList tAlreadyRegisteredAspects = ThaumcraftApiHelper.getObjectAspects(aStack);
-        if (tAlreadyRegisteredAspects == null || tAlreadyRegisteredAspects.size() <= 0) {
+        long lookupNanos = System.nanoTime() - started;
+        profileLookupNanos += lookupNanos;
+
+        boolean hasPositiveAspects = tAlreadyRegisteredAspects != null && tAlreadyRegisteredAspects.size() > 0;
+        if (wasRegistered) {
+            profilePreRegistered++;
+            profileHitLookupNanos += lookupNanos;
+        } else {
+            profilePreMissing++;
+            profileMissLookupNanos += lookupNanos;
+            if (hasPositiveAspects) profileMissingGeneratedPositive++;
+        }
+
+        if (!hasPositiveAspects) {
+            profileExplicitRegistrations++;
             ThaumcraftApi.registerObjectTag(aStack, getAspectList(aAspects));
         }
         return true;
