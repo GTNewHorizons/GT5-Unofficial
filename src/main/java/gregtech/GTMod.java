@@ -6,6 +6,7 @@ import static gregtech.GT_Version.VERSION_MAJOR;
 import static gregtech.GT_Version.VERSION_MINOR;
 import static gregtech.GT_Version.VERSION_PATCH;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTRecipe.setItemStacks;
 
 import java.io.File;
@@ -573,6 +574,9 @@ public class GTMod {
         // noinspection UnstableApiUsage// Stable enough for this project
         GT_FML_LOGGER.info("Executed delayed Crafting Recipes ({}). Have a Cake.", stopwatch.stop());
 
+        GT_FML_LOGGER.debug("restarting recipe removal buffering for NHCore...");
+        GTModHandler.restartBufferingCraftingRecipe();
+
         GT_FML_LOGGER.debug("GTMod: Saving Lang File.");
         new MachineTooltipsLoader().run();
         GTLanguageManager.sEnglishFile.save();
@@ -620,6 +624,17 @@ public class GTMod {
         new BECRecipes().runLateRecipes();
         for (Runnable tRunnable : GregTechAPI.sGTCompleteLoad) {
             tRunnable.run();
+        }
+
+        if (!NewHorizonsCoreMod.isModLoaded()) {
+            GT_FML_LOGGER.debug("stopping second buffering pass, likely a dev env.");
+            @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
+            Stopwatch stopwatch = Stopwatch.createStarted();
+            GT_FML_LOGGER.debug("GTMod: Adding 2nd pass of buffered Recipes.");
+            GTModHandler.stopBufferingCraftingRecipes();
+            // noinspection UnstableApiUsage// Stable enough for this project
+            GT_FML_LOGGER
+                .info("Executed 2nd pass of delayed Crafting Recipes ({}). Have another Cake.", stopwatch.stop());
         }
         GregTechAPI.sGTCompleteLoad = null;
         GregTechAPI.sFullLoadFinished = true;
