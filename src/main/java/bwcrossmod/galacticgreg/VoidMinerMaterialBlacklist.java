@@ -18,7 +18,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 /// [VoidMinerUtility.DropMap] filters drops against. An ore block's metadata is the material's registry index,
 /// which moves whenever the material set changes, hence the indirection.
 ///
-/// The first call must come no earlier than the drop map build at FMLLoadComplete, once the MaterialLib
+/// The first call must come no earlier than the drop map build at gregtech postInit, once the MaterialLib
 /// registries are populated.
 public final class VoidMinerMaterialBlacklist {
 
