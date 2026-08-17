@@ -378,10 +378,6 @@ public class ProcessingLogic {
         return recipeMap;
     }
 
-    public int getMaxTierSkips() {
-        return this.maxTierSkips;
-    }
-
     /**
      * Executes the recipe check: Find recipe from recipemap, Calculate parallel, overclock and outputs.
      */
@@ -633,6 +629,10 @@ public class ProcessingLogic {
 
     public int getCurrentParallels() {
         return calculatedParallels;
+    }
+
+    public int getMaxTierSkips() {
+        return this.maxTierSkips;
     }
 
     // endregion

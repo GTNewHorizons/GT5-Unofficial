@@ -1676,6 +1676,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return ExoticEnergyInputHelper.getMaxWorkingInputAmpsMulti(mEnergyHatches);
     }
 
+    /**
+     * Sums up max input EU/t of energy hatches, amperage included,
+     * also includes exotic hatches.
+     */
     public long getMaxInputEu() {
         return ExoticEnergyInputHelper.getTotalEuMulti(mEnergyHatches);
     }
@@ -1689,20 +1693,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
             IGregTechTileEntity baseTile = tHatch.getBaseMetaTileEntity();
             eut += baseTile.getInputVoltage() * baseTile.getInputAmperage();
-        }
-        return eut;
-    }
-
-    /**
-     * Sums up max input EU/t of energy hatches, amperage included,
-     * also includes exotic hatches.
-     */
-    public long getMaxInputPowerWithExotic() {
-        long eut = getMaxInputPower();
-        for (MTEHatch tHatch : validMTEList(mExoticEnergyHatches)) {
-            long aVoltage = tHatch.maxEUInput();
-            long aPower = tHatch.maxWorkingAmperesIn() * aVoltage;
-            eut += aPower;
         }
         return eut;
     }
@@ -2608,8 +2598,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             // energy consumers
             if (!this.getExoticEnergyHatches()
                 .isEmpty()) {
-                long maximumHatchVoltage = this.getMaxHatchVoltageWithExotic();
-                long maximumInputPower = this.getMaxInputPowerWithExotic();
+                long maximumHatchVoltage = processingLogic.getAvailableVoltage();
+                long maximumInputPower = this.getMaxInputEu();
                 long powerAmps = ceilDiv2(maximumInputPower, maximumHatchVoltage);
                 long maximumVoltageTier = Math.min(
                     log4ceil(maximumInputPower / V[0]),
