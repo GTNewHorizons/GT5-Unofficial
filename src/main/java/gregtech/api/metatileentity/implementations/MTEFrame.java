@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -10,6 +12,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -68,8 +71,11 @@ public class MTEFrame extends MetaPipeEntity implements ILocalizedMetaPipeEntity
         final Material material = getMaterial();
         final short[] materialRgba = MaterialUtils.rgba(material);
         if (material == null || materialRgba == null) return Textures.BlockIcons.ERROR_RENDERING;
-        return new ITexture[] { GTMaterialTextures
-            .of(GTMaterialIcons.block("frameGt", material), Dyes.getModulation(colorIndex, materialRgba)) };
+        final IIconContainer frame = GTMaterialIcons.block("frameGt", material);
+        // The override white-out is resolved here, before the dye modulation, so a painted frame keeps its dye
+        // even over override art; the texture must not second-guess it per draw.
+        final short[] rgba = frame.hasOverrideIcon() ? UNCOLORED_RGBA : materialRgba;
+        return new ITexture[] { GTMaterialTextures.of(frame, Dyes.getModulation(colorIndex, rgba), false, false) };
     }
 
     @Override
