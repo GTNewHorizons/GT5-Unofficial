@@ -1,5 +1,7 @@
 package detrav.client;
 
+import static gregtech.api.enums.Textures.InvisibleIcon.INVISIBLE_ICON;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -138,9 +140,8 @@ public class DetravOreMarkerRenderer {
     }
 
     private boolean renderIcon(Plane plane, float half, int color, IIconContainer ore, IIcon background) {
-        IIcon icon = ore.getIcon();
         ResourceLocation textureFile = ore.getTextureFile();
-        if (icon == null || textureFile == null) return false;
+        if (ore.getLayerIcon(0) == null || textureFile == null) return false;
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         Minecraft mc = Minecraft.getMinecraft();
@@ -151,10 +152,20 @@ public class DetravOreMarkerRenderer {
 
         mc.getTextureManager()
             .bindTexture(textureFile);
-        iconQuad(plane, icon, half, ore.hasOverrideIcon() ? 0xFFFFFF : color);
-        IIcon overlay = ore.getOverlayIcon();
-        if (overlay != null) iconQuad(plane, overlay, half, 0xFFFFFF);
+        int passes = ore.getIconPasses();
+        for (int layer = 0; layer < passes; layer++) {
+            IIcon icon = ore.getLayerIcon(layer);
+            if (icon == null || icon == INVISIBLE_ICON) continue;
+            iconQuad(plane, icon, half, layerColor(ore, color, layer));
+        }
         return true;
+    }
+
+    /** The RGB {@code ore}'s layer draws with: the marker's colour for layer 0, the container's for a later one. */
+    private static int layerColor(IIconContainer ore, int color, int layer) {
+        if (layer == 0) return ore.hasOverrideIcon() ? 0xFFFFFF : color;
+        short[] rgba = ore.getIconColor(layer);
+        return (rgba[0] & 0xFF) << 16 | (rgba[1] & 0xFF) << 8 | (rgba[2] & 0xFF);
     }
 
     private static IIcon resolveBackground(World world) {
