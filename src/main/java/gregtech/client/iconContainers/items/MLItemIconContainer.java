@@ -1,5 +1,7 @@
 package gregtech.client.iconContainers.items;
 
+import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
+
 import net.minecraft.util.IIcon;
 
 import com.ruling_0.materiallib.api.IconSet;
@@ -10,6 +12,7 @@ import com.ruling_0.materiallib.api.ShapeRegistry;
 import gregtech.api.enums.Textures.InvisibleIcon;
 import gregtech.api.material.GTMaterialIconSets;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTUtil;
 
 /// One material's item-atlas icon, drawn from MaterialLib's texture-set resolution rather than owned outright.
 ///
@@ -47,6 +50,30 @@ public final class MLItemIconContainer extends AbstractItemIconContainer {
         if (shape != null) return shape.getMaterialOverlayIcon(material);
         if (iconSet != null) return iconSet.getOverlayIcon(material);
         return null;
+    }
+
+    @Override
+    public int getIconPasses() {
+        resolve();
+        if (shape != null) return shape.getMaterialLayerCount(material);
+        if (iconSet != null) return iconSet.getLayerCount(material);
+        return 1;
+    }
+
+    @Override
+    public IIcon getLayerIcon(int layer) {
+        resolve();
+        if (shape != null) return shape.getMaterialLayerIcon(material, layer);
+        if (iconSet != null) return iconSet.getLayerIcon(material, layer);
+        return InvisibleIcon.INVISIBLE_ICON;
+    }
+
+    @Override
+    public short[] getIconColor(int layer) {
+        resolve();
+        if (shape != null) return GTUtil.getRGBaArray(shape.getMaterialLayerColor(material, layer));
+        if (iconSet != null) return GTUtil.getRGBaArray(iconSet.getLayerColor(material, layer));
+        return UNCOLORED_RGBA;
     }
 
     @Override
