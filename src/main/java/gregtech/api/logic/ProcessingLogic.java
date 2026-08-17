@@ -631,8 +631,8 @@ public class ProcessingLogic {
         return calculatedParallels;
     }
 
-    public int getMaxTierSkips() {
-        return this.maxTierSkips;
+    public long getMaxAllowedRecipeEUt() {
+        return OverclockCalculator.getMaxAllowedRecipeEUt(availableVoltage, maxTierSkips);
     }
 
     // endregion
