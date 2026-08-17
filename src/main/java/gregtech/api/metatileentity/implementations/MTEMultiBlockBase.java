@@ -2585,11 +2585,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         .translateToLocalFormatted("GT5U.multiblock.scanner.mei", formatNumber(totalInputPower)));
             }
 
-            info.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.multiblock.scanner.mrv",
-                    formatNumber(maxRecipeEUt),
-                    VN[recipeTier]));
+            if (recipeTier == 15) {
+                info.add(StatCollector.translateToLocal("GT5U.multiblock.scanner.mrv_infinite"));
+            } else {
+                info.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.multiblock.scanner.mrv",
+                        formatNumber(maxRecipeEUt),
+                        VN[recipeTier]));
+            }
         }
 
         if (getActualEnergyUsage() > 0) {
