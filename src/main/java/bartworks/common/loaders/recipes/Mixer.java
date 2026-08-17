@@ -36,7 +36,7 @@ public class Mixer implements Runnable {
 
         if (Gendustry.isModLoaded()) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialParts.requireCell(Materials.Radon, (int) (1L)))
+                .itemInputs(MaterialParts.requireCell(Materials.Radon, 1))
                 .circuit(17)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1))
                 .fluidInputs(GTModHandler.getLiquidDNA(1_000))

@@ -93,7 +93,7 @@ public class GTWorldgenerator implements IWorldGenerator {
         return getOregenPattern();
     }
 
-    /** Called when the server syncs its pattern to the client; no-op when a local server is authoritative. */
+    /** Applies a pattern synced from a remote server. Ignored while a local server is running. */
     public static void setClientOregenPattern(OregenPattern pattern) {
         if (FMLCommonHandler.instance()
             .getMinecraftServerInstance() == null) {

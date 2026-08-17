@@ -342,8 +342,8 @@ public class MTEExoticModule extends MTEBaseModule {
 
     }
 
-    /// Resolves each dust `ItemStack` back to its unified material via [GTOreDictUnificator#getAssociation]
-    /// rather than parsing an OreDictionary name, matching [tectech.loader.recipe.Godforge#convertToFluid].
+    /// The plasma of each dust's material, `INGOTS * multiplier * stackSize` each. A dust whose material has
+    /// no plasma is skipped.
     private FluidStack[] convertItemToPlasma(ItemStack[] items, long multiplier) {
         List<FluidStack> plasmas = new ArrayList<>();
 

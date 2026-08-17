@@ -26,12 +26,10 @@ import gregtech.api.objects.MaterialStack;
 /// independently of the material taking it. This is where those values are declared; the shape-backed
 /// [gregtech.api.enums.OrePrefixes] take them from here at load.
 ///
-/// Set on the shape objects directly rather than through
-/// `com.ruling_0.materiallib.api.MaterialLibAPI#editShape`: these are GregTech's own shapes, so this
-/// declares their data. The edit path addresses a shape by name and applies after unification, which is
-/// what another mod changing someone else's shape needs and would wrongly let this beat a competing
-/// owner's declaration. Runs inside `com.ruling_0.materiallib.api.MaterialRegistrationEvent`, after the
-/// shape declarations and before shapes resolve, while the shapes are still mutable.
+/// The values are set on the shape objects directly, not through
+/// `com.ruling_0.materiallib.api.MaterialLibAPI#editShape`, which is the path for changing another mod's
+/// shape. Runs inside `com.ruling_0.materiallib.api.MaterialRegistrationEvent`, after the shape declarations
+/// and before shapes resolve, while the shapes are still mutable.
 ///
 /// A value equal to the [GTShapeProperties] key's default is omitted.
 public final class ShapeData {

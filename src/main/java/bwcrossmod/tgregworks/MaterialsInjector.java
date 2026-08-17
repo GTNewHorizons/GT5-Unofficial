@@ -17,11 +17,9 @@ import vexatos.tgregworks.TGregworks;
 import vexatos.tgregworks.item.ItemTGregPart;
 import vexatos.tgregworks.reference.Config;
 
-/// Adds the werkstoff-origin materials to TGregworks' tool material registry. TGregworks registers its own
-/// materials during preInit but only accepts the ones gregtech gave a meta-item sub id, so the materials whose
-/// parts come from the werkstoff part set alone are added here instead -- from init, which still lands before
-/// TGregworks' own init reads [vexatos.tgregworks.integration.TGregRegistry#toolMaterials] to register molten
-/// fluid types.
+/// Adds the werkstoff-origin materials to TGregworks' tool material registry, which TGregworks itself fills
+/// during preInit with only the materials gregtech gave a meta-item sub id. Runs from init, before TGregworks'
+/// own init reads [vexatos.tgregworks.integration.TGregRegistry#toolMaterials].
 @Mod(
     modid = MaterialsInjector.MOD_ID,
     name = MaterialsInjector.NAME,
@@ -53,8 +51,8 @@ public class MaterialsInjector {
                 continue;
             }
             if (MaterialUtils.durability(material) == 0) continue;
-            // Hafnium and Zirconium pass the durability gate only through the default the gtPlusPlus side of
-            // their declaration carries, not a bartworks-declared tool stat, so they stay out of the registry.
+            // Hafnium and Zirconium pass the durability gate only on the default their gtPlusPlus declaration
+            // carries, not on a bartworks-declared tool stat.
             if (material == Materials.Hafnium || material == Materials.Zirconium) continue;
             registerParts(material);
         }

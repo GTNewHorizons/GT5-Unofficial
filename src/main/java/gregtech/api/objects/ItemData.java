@@ -13,15 +13,12 @@ import gregtech.api.material.MaterialUtils;
 
 /// What material an [ItemStack] is made of and how much of it, for any item in the game.
 ///
-/// This is GregTech's cross-mod material index, and it is not scaffolding awaiting a MaterialLib replacement.
-/// A [com.ruling_0.materiallib.api.Shape] knows only the items MaterialLib itself generated; this answers for
-/// a foreign mod's items too, which is what lets [gregtech.api.util.GTRecipeRegistrator] derive recycling for
-/// them. The arc-furnace recipe turning a TConstruct metal block into nine nether bricks exists because that
-/// block picked up an association here.
+/// This is GregTech's cross-mod material index. A [com.ruling_0.materiallib.api.Shape] knows only the items
+/// MaterialLib itself generated; this answers for a foreign mod's items too, which is what lets
+/// [gregtech.api.util.GTRecipeRegistrator] derive recycling for them.
 ///
-/// Keyed by [OrePrefixes] rather than by shape for the same reason: the association is created from an
-/// ore-dictionary *name*, and a tenth of the prefixes named here have no shape at all. [#mMaterial]'s amount
-/// comes from [OrePrefixes#getMaterialAmount], which for a prefix a shape serves is the shape's own value; see
+/// Keyed by [OrePrefixes]: an association is created from an ore-dictionary name, and a tenth of the prefixes
+/// named here have no shape at all. [#mMaterial]'s amount comes from [OrePrefixes#getMaterialAmount]; see
 /// [OrePrefixes]'s class javadoc for how the two spaces divide.
 public class ItemData {
 

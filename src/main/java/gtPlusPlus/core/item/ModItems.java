@@ -310,9 +310,8 @@ public final class ModItems {
         GregtechItemList.MilledNetherite.set(
             BaseItemMilledOre.generate(Materials.Netherrack, TierEU.RECIPE_IV, new ItemStack(Blocks.netherrack, 256)));
 
-        // These items stay registered for save/item-ID stability (BaseOreComponent's oredict skip already
-        // defers the milled<Material> oredict name to MaterialLib once cut over), so only their NEI visibility
-        // needs to follow the cutover.
+        // The items stay registered for save and item-ID stability; BaseOreComponent already defers the
+        // milled oredict name to MaterialLib, so only NEI visibility follows the cutover.
         if (NotEnoughItems.isModLoaded()) {
             hideMilledIfCutOver(Materials.Sphalerite, GregtechItemList.MilledSphalerite);
             hideMilledIfCutOver(Materials.Chalcopyrite, GregtechItemList.MilledChalcopyrite);

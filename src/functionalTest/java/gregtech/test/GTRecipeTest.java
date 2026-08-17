@@ -70,9 +70,7 @@ class GTRecipeTest {
             .eut(0)
             .addTo(recipeMap);
 
-        // GTRecipeBuilder silently drops a null item input, so an unresolved circuit would degrade the
-        // two-input recipes here and in findWithExactSameInputs/findWithNBT to one input without failing
-        // any assertion.
+        // GTRecipeBuilder silently drops a null item input, leaving a two-input recipe with one input.
         assertNotNull(Circuits.HV.get(1), "the HV circuit ore-dictionary entry must resolve");
 
         RA.stdBuilder()

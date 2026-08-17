@@ -5,9 +5,6 @@ import gregtech.api.enums.materials.CellShapes;
 import gregtech.loaders.oreprocessing.ProcessingCell;
 
 /// Dispatches [ProcessingCell]'s `cell`/`cellPlasma` recipe generation for MaterialLib's cutover cell shapes.
-/// The one foreign-item-only fragment in [ProcessingCell]'s body (an `aModName.equalsIgnoreCase("AtomicScience")`
-/// gate on an empty-cell extractor recipe) simply never matches here, since delegated calls always pass
-/// `"materiallib"` -- correct, since that recipe was never meant for MaterialLib's own empty-cell stack either.
 public final class ConsumerCell {
 
     private ConsumerCell() {}

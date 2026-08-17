@@ -64,8 +64,7 @@ public class ProcessingNuclearDehydratorGtpp {
             .addTo(chemicalDehydratorRecipes);
     }
 
-    /// `FluoriteF`'s acid-leach byproduct recipe -- not membership-driven like [#ELIGIBLE], since gtpp
-    /// hand-wrote this one recipe rather than deriving it from the material's own fluid.
+    /// `FluoriteF`'s acid-leach byproduct recipe, hand-listed rather than driven by [#ELIGIBLE].
     private static void generateFluorite() {
         ItemStack input = ProcessingDustGeneration.stackOf(OrePrefixes.dust, Materials.FluoriteF, 37L);
         if (input == null) return;

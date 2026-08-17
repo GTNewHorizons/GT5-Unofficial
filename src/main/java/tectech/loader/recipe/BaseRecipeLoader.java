@@ -73,9 +73,7 @@ public class BaseRecipeLoader {
         runSafely("FoundryFakeModuleCostLoader", FoundryFakeModuleCostLoader::load);
     }
 
-    /// Runs one recipe loader in isolation: a thrown exception is logged with its full stack trace instead of
-    /// silently aborting every loader still queued after it in [#run], since these loaders register unrelated
-    /// recipe sets and a bug in one (e.g. a broken material lookup) should not take the others down with it.
+    /// Runs one recipe loader in isolation: a thrown exception is logged and the loaders queued after it still run.
     private static void runSafely(String name, Runnable loader) {
         try {
             loader.run();

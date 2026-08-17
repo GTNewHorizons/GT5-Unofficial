@@ -50,8 +50,7 @@ public class AnimatedBlockTextureHandler implements IResourceManagerReloadListen
 
     @Override
     public void onResourceManagerReload(IResourceManager resourceManager) {
-        // A reload re-stitches the atlas and reassigns each block's sprite, so the cached icons go stale; drop them
-        // and let the next tick re-resolve against the fresh sprites.
+        // A reload re-stitches the atlas and reassigns each block's sprite, so the cached icons go stale.
         icons = null;
     }
 

@@ -17,10 +17,8 @@ public class OreDictEventContainer {
     public final OrePrefixes mPrefix;
     public final Material mMaterial;
     /// The recognition marker this registration's census resolved through (see
-    /// `GTProxy#resolveCensusMaterial`), or null for a plain material-named registration. A marker carries no
-    /// composition of its own, so [#registerRecipes] dispatches ore processing through it directly instead of
-    /// through [#mMaterial]'s backing -- via the recognition-marker registrator entries (e.g. `ProcessingDust`,
-    /// `ProcessingCrystallized`).
+    /// `GTProxy#resolveCensusMaterial`), or null for a plain material-named registration. When set,
+    /// [#registerRecipes] dispatches ore processing through the marker rather than through [#mMaterial].
     public final Material mRecognitionMarker;
     public final String mModID;
 
@@ -56,13 +54,10 @@ public class OreDictEventContainer {
         }
     }
 
-    /// Whether `stack`'s item belongs to MaterialLib -- such stacks are already covered by
-    /// `gregtech.loaders.shapeconsumers` (dispatched once per (shape, material) at MaterialLib's init) and
-    /// would otherwise be double-processed here too, since MaterialLib's own oredict registrations replay
-    /// through this same path (see `GTProxy#catchUpPreExistingOreDictEntries`). Checked by the item's own
-    /// registered domain rather than `ore.mModID` (which identifies whichever mod's code happened to be active
-    /// when the underlying `OreDictionary.OreRegisterEvent` fired -- for the catch-up replay path that is
-    /// GregTech's own preInit, not MaterialLib).
+    /// Whether `stack`'s item belongs to MaterialLib. Such stacks are processed by
+    /// `gregtech.loaders.shapeconsumers` instead, once per (shape, material). The test is the item's own
+    /// registered domain, not `mModID`, which names whichever mod's code was active when the underlying
+    /// `OreDictionary.OreRegisterEvent` fired.
     private static boolean isMaterialLibItem(ItemStack stack) {
         GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(stack.getItem());
         return id != null && MaterialLib.MODID.equals(id.modId);

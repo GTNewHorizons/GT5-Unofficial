@@ -14,24 +14,17 @@ import com.ruling_0.materiallib.api.ShapeBlock;
 import gregtech.api.material.MaterialUtils;
 
 /// The `block` MaterialLib shape (compressed/storage blocks, e.g. "Block of Iron"), backing every cut-over
-/// material with metadata equal to the material's global index. Ports the behavior overrides legacy
-/// `gregtech.common.blocks.BlockStorage`/`BlockMetal` applied uniformly to every storage block regardless of
-/// material: pickaxe-only harvesting at level 1, beacon-base eligibility, and hardness/resistance matching
-/// vanilla's iron block. `BlockStorage` also overrode `damageDropped`/`getDamageValue`/`canBeReplacedByLeaves`/
-/// `isNormalCube`, but [ShapeBlock] and vanilla `Block` already default to the same values, so those are not
-/// repeated here.
+/// material with metadata equal to the material's global index. Every storage block harvests pickaxe-only at
+/// level 1, counts as a beacon base, and takes vanilla's iron block hardness and resistance.
 public class GTStorageShapeBlock extends ShapeBlock {
 
     public GTStorageShapeBlock(String modid, String name, String displayNameFormat, String... oreDicts) {
         super(modid, name, displayNameFormat, oreDicts);
     }
 
-    /// The per-material storage-block art, keyed by the material's legacy name rather than its MaterialLib
-    /// one: the art is per-material, not per-texture-set, and the two names can differ (a unified material takes
-    /// its canonical name from whichever legacy material won unification). [MaterialUtils#internalName] yields that
-    /// legacy
-    /// name (the legacy `mName`); a material whose converted art file does not exist falls back to this shape's
-    /// texture-set candidates.
+    /// The per-material storage-block art, keyed by [MaterialUtils#internalName] rather than the material's
+    /// MaterialLib name, since the art is per-material and the two names can differ. A material whose art file
+    /// does not exist falls back to this shape's texture-set candidates.
     @Override
     protected String iconPathFor(Material material) {
         return "gregtech:materials/blocks/" + MaterialUtils.internalName(material)

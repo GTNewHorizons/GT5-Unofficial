@@ -18,12 +18,11 @@ import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.api.util.CustomGlyphs;
 
-// Hand-maintained -- edit this file directly.
 /// The materials maintenance surface: one [Material] field per ported material (name matches the material's
 /// name where that is already a valid Java identifier, else a sanitized variant), then every material's
-/// complete declaration
-/// (tint, texture set, family membership, shape adds/removes, properties, fluids) as one contiguous statement run in
-/// `initPartN()` (split only to stay under the JVM's 64KB bytecode-per-method limit).
+/// complete declaration (tint, texture set, family membership, shape adds/removes, properties, fluids) as one
+/// contiguous statement run in `initPartN()` (split only to stay under the JVM's 64KB bytecode-per-method
+/// limit).
 public class Materials {
 
     // spotless:off
@@ -12492,10 +12491,8 @@ public class Materials {
             .setProperty(GTMaterialProperties.REMOVED_PREFIXES, List.of("bucket", "bucketClay"))
             .setProperty(GTMaterialProperties.DYE, "dyeOrange")
             .build();
-        // Steam carries no item/block/fluid shapes and no OLD_SUB_ID; its only backing is the "steam" Forge
-        // fluid GT hand-registers in LoaderGTBlockFluid, after material registration completes. That fluid is
-        // wired onto MaterialUtils' slot store there instead of through a LEGACY_FLUIDS gas row, since this material
-        // never sets one.
+        // Steam carries no item/block/fluid shapes and no OLD_SUB_ID: its only backing is the "steam" Forge
+        // fluid GT hand-registers in LoaderGTBlockFluid, which also wires it onto MaterialUtils' slot store.
         Materials.Steam = MaterialLibAPI.newMaterial("gregtech", "Steam", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFFFFFFFF)
             .addToFamily(Families.all)

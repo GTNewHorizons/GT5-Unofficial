@@ -25,14 +25,14 @@ import gregtech.api.util.GTOreDictUnificator;
 /// soldering-metal and toolbox bookkeeping), run after that constructor so the MaterialLib stack becomes
 /// the unificator's preferred one.
 ///
-/// The membership-driven prefixes get a second, shape-membership pass over each shape block's served
-/// materials, because the generic loop cannot reach their full material sets: the pipe-family legacy items
-/// were meta tile entities, never generated items, so `OrePrefixes#doGenerateItem` cannot gate them, and
-/// their material sets (superconductor markers included) live only in the MaterialLib registry; `sheetmetal`
-/// additionally serves bartworks-backed materials, which have no legacy sub-id for the [LegacyMaterialIDIndex]
-/// spine. Each
-/// `set` call makes the shape stack the prefix's unification target and adds the material association that
-/// drives the auto-generated recycling recipes.
+/// The membership-driven prefixes get a second pass over each shape block's served materials instead. The
+/// pipe-family legacy items were meta tile entities rather than generated items, so
+/// `OrePrefixes#doGenerateItem` cannot gate them and their material sets live only in the MaterialLib
+/// registry; `sheetmetal` additionally serves bartworks-backed materials, which carry no
+/// [LegacyMaterialIDIndex] sub-id.
+///
+/// Each `set` call makes the shape stack the prefix's unification target and adds the material association
+/// that drives the auto-generated recycling recipes.
 ///
 /// A material whose legacy name MaterialLib cannot accept as a registration name carries it as
 /// [GTMaterialProperties#LEGACY_NAME] and registers its stacks under the sanitized name instead, so its

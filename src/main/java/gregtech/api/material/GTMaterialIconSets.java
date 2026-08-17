@@ -18,10 +18,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 /// so neither can hang off a shape's own icons. A [IconSet] gives that art the full texture-set resolution -- chain,
 /// fallbacks, unification alternatives, `_OVERLAY` -- with no game object behind it.
 ///
-/// The names are declared here rather than on [IconSet] handles so that common code -- notably
-/// [GTMaterialIcons#hasItemIcon] -- can ask whether a name exists on a dedicated server, where MaterialLib's
-/// client-only icon API must never classload. [#register] creates the handles, and is reached only from GregTech's
-/// client proxy.
+/// The names are plain strings so that common code can ask whether one exists on a dedicated server, where
+/// MaterialLib's client-only icon API must never classload; [#register] creates the [IconSet] handles behind
+/// them client-side.
 public final class GTMaterialIconSets {
 
     private GTMaterialIconSets() {}
@@ -48,8 +47,7 @@ public final class GTMaterialIconSets {
     private static final Map<String, IconSet> itemSets = new HashMap<>();
     private static final Map<String, IconSet> blockSets = new HashMap<>();
 
-    /// Creates every icon set named above. Called from GregTech's client proxy during preInit, which is before the
-    /// first texture stitch, so the sets bind on the first stitch and on every resource reload after it.
+    /// Creates every icon set named above. Runs during preInit, ahead of the first texture stitch.
     @SideOnly(Side.CLIENT)
     public static void register() {
         for (String name : ITEM_NAMES) {

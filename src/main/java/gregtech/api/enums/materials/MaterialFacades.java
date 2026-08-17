@@ -18,8 +18,7 @@ import gregtech.api.material.GTMaterialProperties;
 
 /// The six wildcard markers (`AnyBronze`/`AnyCopper`/`AnyCarbon`/`AnyIron`/`AnyRubber`/`AnySyntheticRubber`):
 /// materials that back an ore-dictionary entry without carrying composition of their own, so an Iron ore entry
-/// also answers to `AnyIron`. Held as declared fields so call sites reference them directly instead of looking
-/// them up by registry name. [gregtech.api.enums.materials.RecognitionMaterials] holds the separate backings
+/// also answers to `AnyIron`. [gregtech.api.enums.materials.RecognitionMaterials] holds the separate backings
 /// for foreign mods' ore-dictionary names.
 public class MaterialFacades {
 

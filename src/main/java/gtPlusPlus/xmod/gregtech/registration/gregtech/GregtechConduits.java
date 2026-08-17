@@ -180,8 +180,7 @@ public class GregtechConduits {
         }
     }
 
-    /// Whether `material` carries the whole `wireGt01`..`wireGt16` ladder [PipeMaterials] grants as
-    /// one unit -- the precondition every wire block in [#generateWireRecipes] shares.
+    /// Whether `material` carries the whole `wireGt01`..`wireGt16` ladder [PipeMaterials] grants as one unit.
     private static boolean hasWireLadder(Material material) {
         for (Shape shape : PipeMaterials.wireShapes()) {
             if (!material.hasShape(shape)) return false;
@@ -189,17 +188,10 @@ public class GregtechConduits {
         return true;
     }
 
-    /// The wire recipes gtPlusPlus generated for its own conduit materials: the wiremill fine-wire pair, and
-    /// -- for a material carrying the wire ladder -- the wiremill wire ladders, the wire extruder recipe, the
-    /// shapeless size conversions, and the assembler wire-combining ladder.
-    ///
-    /// Fine wire is drawn straight from the ingot and the rod, so those two recipes depend only on
-    /// `ingot`/`stick`/`wireFine`; most callers carry none of the wire ladder and reach only those two.
-    /// Everything else needs the ladder, whose membership comes from [PipeMaterials]: it grants
-    /// `wireGt01`..`wireGt16` together, so [#hasWireLadder] covers every wire size below it. Cables are absent
-    /// by the same table -- it grants `cableGt01`..`cableGt16` only to its `WireCable` rows, and no caller here
-    /// is one. [gregtech.loaders.oreprocessing.ProcessingWire] owns wire-to-cable for the materials that have
-    /// cables.
+    /// Adds gtPlusPlus's conduit wire recipes for `material`: the wiremill fine-wire pair drawn from the ingot
+    /// and the rod, and -- when the material carries the wire ladder -- the wiremill wire ladders, the wire
+    /// extruder recipe, the shapeless size conversions, and the assembler wire-combining ladder.
+    /// Wire-to-cable belongs to [gregtech.loaders.oreprocessing.ProcessingWire].
     public static void generateWireRecipes(Material material) {
         boolean hasIngot = material.hasShape(Shapes.ingot);
         boolean hasStick = material.hasShape(Shapes.stick);

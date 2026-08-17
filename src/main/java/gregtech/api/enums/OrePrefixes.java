@@ -79,8 +79,7 @@ import it.unimi.dsi.fastutil.objects.ObjectSet;
 /// them. `___placeholder___` exists purely to hold an ordinal. Nothing may rename or reorder them.
 /// - **Only a prefix can read a foreign mod's oredict entry.** Another mod registering `plateCopper` gives
 /// GregTech a string; [#getOrePrefix] parses it back to a prefix, and the shape space cannot help, because
-/// a shape knows only the items MaterialLib itself generated. That is why the prefix keeps answering for
-/// its own data rather than deferring to the shape at every call.
+/// a shape knows only the items MaterialLib itself generated.
 ///
 /// Shape-side code should read the shape. Code holding a prefix at runtime -- the oredict handler, the save
 /// migrations, anything iterating [#VALUES] -- reads the prefix, and gets the shape's values for free wherever
@@ -1874,28 +1873,12 @@ public class OrePrefixes {
     }
 
     /// Copies the per-form data of every prefix a [Shape] serves off that shape, making the shape the one
-    /// declaration of it (see [ShapeData]). The 220 prefixes no shape
-    /// serves -- tool and armor forms, containers, the ore stone variants, the foreign-mod marker names -- keep
-    /// the values their own builder declared.
+    /// declaration of it (see [ShapeData]). Prefixes no shape serves -- tool and armor forms, containers, the
+    /// ore stone variants, the foreign-mod marker names -- keep the values their own builder declared.
     ///
-    /// This copy is permanent, not a step on the way to deleting it. A prefix still has to answer for its own
-    /// data because the oredict path holds a prefix and never a shape: a foreign mod registering `plateCopper`
-    /// reaches [gregtech.common.GTProxy#registerOre], which parses the name down to `plate` and then asks that
-    /// prefix whether it is material-based, unifiable, self-referencing, and whether to skip active
-    /// unification. Shapes cannot serve that path, so the prefix stays a view of the shape rather than
-    /// stopping at one.
-    ///
-    /// Copied once rather than read through on every access: these are the accessors under
-    /// [gregtech.api.objects.ItemData]'s constructor and several thousand
-    /// [gregtech.api.util.GTOreDictUnificator] lookups, and a copy keeps them plain field reads.
-    ///
-    /// Until this runs, a shape-backed prefix holds the [OrePrefixBuilder] defaults, and nothing distinguishes
-    /// those from real values. `GTMod` therefore calls it inside its `MaterialRegistrationEvent` handler, the
-    /// moment [ShapeData] has declared them and before any consumer or
-    /// loader can read a prefix -- MaterialLib fires that event from its own preInit, ahead of GregTech's. The
-    /// shapes have not resolved yet, which is deliberate: this copies GregTech's own declarations for its own
-    /// shapes, and waiting for resolution would leave the prefixes empty through every
-    /// `gregtech.loaders.shapeconsumers` registration.
+    /// Runs inside `GTMod`'s `MaterialRegistrationEvent` handler: the first point at which [ShapeData] has
+    /// declared the values, and still ahead of every consumer and loader that reads a prefix. The shapes have
+    /// not resolved by then, so this copies GregTech's own declarations for its own shapes.
     public static void copyDataFromShapes() {
         for (OrePrefixes prefix : VALUES) {
             List<Shape> shapes = MaterialParts.shapes(prefix);
@@ -2033,12 +2016,10 @@ public class OrePrefixes {
         cellSteamCracked2,
         cellSteamCracked3);
 
-    /// The subset of {@link OrePrefixes} static setup that references `Materials` constants. Split
-    /// out of a `static {}` block and called explicitly from GT's preInit, because {@code OrePrefixes} loads
-    /// earlier than that: {@code GTMod}'s own constructor touches
+    /// The subset of {@link OrePrefixes} static setup that references `Materials` constants, called explicitly
+    /// from GT's preInit and never from a `static {}` block: {@code GTMod}'s constructor touches
     /// {@link gregtech.common.ores.UnificationOreAdapter}, whose static initializer reads {@link #VALUES},
-    /// forcing this class to load before any mod's preInit runs -- well before `Materials` data can
-    /// resolve.
+    /// forcing this class to load before any mod's preInit runs -- well before `Materials` data can resolve.
     public static void lateStaticInit() {
         block.ignoreMaterials(
             Materials.Ice,
@@ -2415,13 +2396,10 @@ public class OrePrefixes {
         return false;
     }
 
-    /// Whether this prefix generates an item for `material`. The sub-ID and generation-group clauses are
-    /// computed from MaterialLib state: [MaterialUtils#oldSubId] for the block-form metadata index, and the
-    /// overlap between the material's [GTMaterialProperties#GENERATION_FLAGS] and the groups this prefix
-    /// accepts. The [#mGeneratedItems]/[#mNotGeneratedItems]/[#mDisabledItems] membership checks
-    /// read the [Material] directly, as those collections are ML-keyed. [#mCondition] evaluates against a
-    /// [MaterialSubTagView] over the [Material], so a prefix's [SubTag] condition reads the material's
-    /// MaterialLib FLAGS directly.
+    /// Whether this prefix generates an item for `material`: the material must carry a block-form metadata
+    /// index ([MaterialUtils#oldSubId]), its [GTMaterialProperties#GENERATION_FLAGS] must overlap the groups
+    /// this prefix accepts or it must be listed in [#mGeneratedItems], it must be in neither
+    /// [#mNotGeneratedItems] nor [#mDisabledItems], and it must satisfy [#mCondition].
     public boolean doGenerateItem(@Nullable Material material) {
         if (MaterialUtils.oldSubId(material) == -1) return false;
 
@@ -2506,15 +2484,12 @@ public class OrePrefixes {
     }
 
     /// The crafting ingredient for this prefix and `material`. Stringifies to the ore-dictionary name, and
-    /// additionally carries the material composition that reversible crafting recipes
-    /// ([gregtech.api.util.GTModHandler#addCraftingRecipe]) and
-    /// [gregtech.api.util.GTOreDictUnificator#addItemDataFromInputs] account against.
+    /// additionally carries the material composition that reversible crafting recipes account against.
     public ItemData ingredient(Material material) {
         return new ItemData(this, material);
     }
 
-    /// The ore-dictionary name for this prefix and `material`, carrying no composition. Use when the consumer
-    /// only needs the name -- registration, lookup, and logging.
+    /// The ore-dictionary name for this prefix and `material`, carrying no composition.
     public String oreDictName(Material material) {
         return name + MaterialUtils.internalName(material);
     }

@@ -26,10 +26,9 @@ public class GT5OreSmallHelper {
 
     public static final List<ItemStack> SMALL_ORE_LIST = new ArrayList<>();
     public static final HashMap<String, OreSmallWrapper> SMALL_ORES_BY_NAME = new HashMap<>();
-    /// Keyed by the material (see [OreSmallWrapper#material]).
-    public static final HashMap<Object, OreSmallWrapper> SMALL_ORES_BY_MAT = new HashMap<>();
-    public static final HashMap<String, Object> ORE_DROP_TO_MAT = new HashMap<>();
-    public static final HashMap<Object, List<ItemStack>> ORE_MAT_TO_DROPS = new HashMap<>();
+    public static final HashMap<Material, OreSmallWrapper> SMALL_ORES_BY_MAT = new HashMap<>();
+    public static final HashMap<String, Material> ORE_DROP_TO_MAT = new HashMap<>();
+    public static final HashMap<Material, List<ItemStack>> ORE_MAT_TO_DROPS = new HashMap<>();
     /** {abbr dim name: wrapper} */
     private static Map<String, SmallOreDimensionWrapper> SMALL_ORES_BY_DIM;
 
@@ -109,7 +108,6 @@ public class GT5OreSmallHelper {
     public static class OreSmallWrapper {
 
         public final String oreGenName;
-        /// The small ore's material, the same object the ore adapters dispatch on.
         public final Material material;
         public final String worldGenHeightRange;
         public final short amountPerChunk;

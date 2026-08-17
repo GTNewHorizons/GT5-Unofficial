@@ -67,14 +67,8 @@ public class Godforge implements Runnable {
     public static final List<ItemStack> magmatterSpaceFluidItemsForNEI = new ArrayList<>();
     public static final List<ItemStack> magmatterItemsForNEI = new ArrayList<>();
 
-    /// The molten fluid of each dust's material, index-aligned with `items`: every caller pairs the result
-    /// positionally with a same-index plasma output, so an entry the material has no molten fluid for must be
-    /// a null slot rather than a missing one.
-    ///
-    /// Resolves each dust `ItemStack` back to its unified material via [GTOreDictUnificator#getAssociation]
-    /// rather than parsing an OreDictionary name (`"dustIron"` -> `"Iron"`), so this does not depend on the
-    /// item having exactly one registered OreDictionary id in a particular order -- true for both legacy and
-    /// MaterialLib-cutover dust items, since both go through `addAssociation` on unification.
+    /// The molten fluid of each dust's material, index-aligned with `items`. An entry whose material has no
+    /// molten fluid is a null slot, not a missing one.
     private FluidStack[] convertToFluid(ItemStack[] items) {
         FluidStack[] molten = new FluidStack[items.length];
 

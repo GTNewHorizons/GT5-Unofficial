@@ -23,22 +23,9 @@ import gregtech.api.material.GTMaterialProperties;
 /// `gemCitrine`, `oreFluorite`, or `dustAgate` unifies against one of these instead of falling through unrecognized.
 ///
 /// Every entry is a shapeless MaterialLib [Material] registered by [#registerBackingMaterials], looked up through
-/// [#getRecognitionMarker]. Most carry only a name and whether an entry named for them unifies. A handful carry
-/// more because something besides name recognition reads them, and have a declared field here so the rest of the
-/// code can reference them directly: `Ammonium` names the same composition reference `AmmoniumChloride`'s
-/// contents use -- and is the one entry whose name already belongs to a real MaterialLib material, so it maps to
-/// that material instead of a registered backing; `Leather` and `Sand` are read by
-/// `gregtech.loaders.preload.LoaderGTItemData` as the material of an `ItemData`/`MaterialStack` for vanilla-item
-/// recycling; `Limestone` and `Prismarine` are read by `ItemComb`/`NetheriteRecipes`/
-/// `RecipeLoaderChemicalSkips` to fetch or register registered-ore stacks; `Fluix` and
-/// `Quartz` carry [GTMaterialProperties#FLAGS] and are steered by name in `GTProxy#registerRecognitionOre`, and
-/// `Fluix` additionally reaches `OrePrefixes#processRecognitionOre` so its crystal and dust recipes generate.
-/// `Advanced`
-/// names IC2's advanced alloy plate for `OrePrefixes#plateAlloy`, which is unifiable but not material-based: an
-/// entry registered under it without a material resolves to `Materials#NULL`
-/// (`GTProxy#resolveCensusMaterial`'s fallback), and every `plateAlloy` entry then contends for that one
-/// shared unification key in `GTProxy#registerUnificationEntries`, so such an entry unifies into whichever
-/// plate claims it first.
+/// [#getRecognitionMarker]. Most carry only a name and whether an entry named for them unifies; the handful that
+/// other code references directly also have a declared field here. `Ammonium` is the one entry whose name already
+/// belongs to a real MaterialLib material, so it maps to that material instead of a registered backing.
 public class RecognitionMaterials {
 
     public static Material Quartz;
@@ -57,8 +44,7 @@ public class RecognitionMaterials {
     private RecognitionMaterials() {}
 
     /// The declared name and properties of a recognition entry, read by [#registerBackingMaterials] to build or
-    /// find its backing [Material]. Carries no behaviour of its own -- it is pure declaration data, not part of
-    /// the marker's runtime identity.
+    /// find its backing [Material].
     private record MarkerSpec(String name, String localName, String textureSet, int tint, boolean unifiable,
         Set<SubTag> subTags) {
 
@@ -73,41 +59,12 @@ public class RecognitionMaterials {
         return RECOGNITION_MARKERS_BY_NAME.get(name);
     }
 
-    /// Fallback for a bare JUnit run, where [Materials#init] -- and so
-    /// [#registerBackingMaterials] -- never runs because nothing fires MaterialLib's registration event.
-    /// Resolves whatever MaterialLib already has registered under each marker name, without registering
-    /// anything itself; a name with nothing registered under it stays unresolved.
-    public static void load() {
-        for (Marker marker : MARKERS) {
-            Material ml = MaterialLibAPI.getMaterial(
-                "gregtech",
-                marker.spec()
-                    .name());
-            if (ml != null) {
-                marker.field()
-                    .accept(ml);
-                RECOGNITION_MARKERS_BY_NAME.put(
-                    marker.spec()
-                        .name(),
-                    ml);
-            }
-        }
-        for (MarkerSpec spec : RECOGNITION_MARKERS) {
-            Material ml = MaterialLibAPI.getMaterial("gregtech", spec.name());
-            if (ml != null) RECOGNITION_MARKERS_BY_NAME.put(spec.name(), ml);
-        }
-    }
-
     /// Registers a shapeless MaterialLib [Material] backing every marker in [#MARKERS] and [#RECOGNITION_MARKERS],
-    /// skipping any whose name already names a MaterialLib material (that name unifies into the existing
-    /// material, so a duplicate would merge its shapes into the marker) and logging every such skip, since a
-    /// silently-merged marker would otherwise steal that material's identity unnoticed -- `Ammonium` is the one
-    /// name this always applies to. Carries [GTMaterialProperties#UNIFIABLE] and, for a marker with [SubTag]s, a
-    /// [GTMaterialProperties#FLAGS] set of the identically-named [GTMaterialFlag] each [SubTag] maps to, which
-    /// `MaterialUtils#hasFlag` reads. Also populates the by-name lookup [#getRecognitionMarker] serves, and the 8
-    /// declared
-    /// fields, from the same registered-or-found material. Runs during material registration, after
-    /// [Materials#init], so the skip check sees every real material.
+    /// skipping and logging any whose name already names a MaterialLib material. Carries
+    /// [GTMaterialProperties#UNIFIABLE] and, for a marker with [SubTag]s, a [GTMaterialProperties#FLAGS] set of
+    /// the identically-named [GTMaterialFlag] each [SubTag] maps to. Populates the by-name lookup
+    /// [#getRecognitionMarker] serves and the declared fields from the same registered-or-found material. Runs
+    /// during material registration, after [Materials#init], so the skip check sees every real material.
     public static void registerBackingMaterials() {
         List<MarkerSpec> markers = Stream.concat(
             Stream.of(MARKERS)

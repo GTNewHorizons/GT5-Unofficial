@@ -114,9 +114,9 @@ public class RadioHatchMaterialLoader {
         for (Material material : MaterialLibAPI.getMaterials()) {
             if (!LegacyNameDomain.contains(material) || MaterialUtils.element(material) == null) continue;
 
-            boolean validProton = MaterialUtils.protons(material) >= 83 && material != Materials.Tritanium // No
-            // Tritanium
-                && material != Materials.Naquadah; // Naquadah needs spacial value
+            // Naquadah is handled below with a special value.
+            boolean validProton = MaterialUtils.protons(material) >= 83 && material != Materials.Tritanium
+                && material != Materials.Naquadah;
             if (validProton) {
                 int level = (int) MaterialUtils.protons(material);
                 if (GTOreDictUnificator.get(OrePrefixes.stick, material, 1) != null) {

@@ -4,9 +4,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.loaders.oreprocessing.ProcessingToolOther;
 
-/// Dispatches [ProcessingToolOther]'s `toolHeadHammer`-prefix recipe generation (a second, independent
-/// registrator on that prefix alongside [ProcessingToolHead], mirroring the legacy multi-registrator list) for
-/// MaterialLib's cutover hammer-head shape.
+/// Dispatches [ProcessingToolOther]'s `toolHeadHammer`-prefix recipe generation for MaterialLib's cutover
+/// hammer-head shape. A second, independent registrator on that prefix alongside [ProcessingToolHead].
 public final class ConsumerToolOther {
 
     private ConsumerToolOther() {}

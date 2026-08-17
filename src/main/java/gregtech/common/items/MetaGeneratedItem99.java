@@ -48,9 +48,8 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     private static final int NUM_CRACKED_CELL_TYPES = CRACKED_CELL_TYPES.size();
 
     /// The fluid fill and the two untinted containers, the same textures
-    /// [gregtech.api.enums.materials.CellShapes] gives the cell shapes. The fill is one shared texture rather than
-    /// the material's own: every set that ships bespoke cell art has cut over to those shapes, leaving only
-    /// materials whose fill is the plain rectangle this is.
+    /// [gregtech.api.enums.materials.CellShapes] gives the cell shapes. One fill serves every material here;
+    /// a material with bespoke cell art draws it from its own `CellShapes` shape instead.
     private static final String CELL_FILL = "gregtech:materials/NONE/cell";
     private static final String CELL_BASE = "gregtech:materials/cell_base";
     private static final String CELL_PLASMA_BASE = "gregtech:materials/cell_plasma_base";
@@ -61,9 +60,9 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
      */
     private final BitSet enabled = new BitSet();
 
-    /// The tinted fluid fill, drawn under an untinted container the way the legacy cell art paired them. Built
-    /// here rather than per lookup because a [gregtech.client.iconContainers.items.GTCustomItemIconContainer]
-    /// registers itself for the texture stitch when it is constructed, and nothing may be added after it.
+    /// The tinted fluid fill drawn under an untinted container. Built as a field, not per lookup, because a
+    /// [gregtech.client.iconContainers.items.GTCustomItemIconContainer] enters the texture stitch when it is
+    /// constructed and nothing may be added after the stitch.
     private final IIconContainer moltenCellIcon = Textures.ItemIcons.custom(CELL_FILL, CELL_PLASMA_BASE);
     private final IIconContainer crackedCellIcon = Textures.ItemIcons.custom(CELL_FILL, CELL_BASE);
 
@@ -175,9 +174,8 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         return null;
     }
 
-    /// Whether any metadata of this item is registered. Empty once every molten and cracked cell a material can
-    /// hold has cut over to its `CellShapes` shape, which is the state today; [gregtech.nei.NEIGTConfig] reads
-    /// this to keep NEI from filling its item panel with guesses.
+    /// Whether any metadata of this item is registered. False when every molten and cracked cell a material can
+    /// hold is served by its `CellShapes` shape instead.
     public boolean hasRegisteredItems() {
         return !enabled.isEmpty();
     }

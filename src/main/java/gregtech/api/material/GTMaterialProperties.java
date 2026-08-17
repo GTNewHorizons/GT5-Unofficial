@@ -52,12 +52,7 @@ public class GTMaterialProperties {
     public static final Property<Integer> GAS_TEMP = Property.of("gregtech", "gasTemp");
     public static final Property<Integer> FUEL_POWER = Property.of("gregtech", "fuelPower", 0);
     public static final Property<Integer> FUEL_TYPE = Property.of("gregtech", "fuelType", 0);
-    /// The single chemical-formula display string [MaterialFormulas] resolves, whichever origin it came from:
-    /// a werkstoff-backed material carries its own bartworks formula-tooltip string (it beat any same-name
-    /// gtpp value), a gregtech-dumped material the value declared in
-    /// [MaterialFormulas] (which also beat any same-name gtpp value), and a
-    /// remaining gtpp material its `Material#vChemicalFormula` as displayed (the legacy renderer's
-    /// `StringUtils#sanitizeStringKeepBrackets` cleanup baked in).
+    /// The single chemical-formula display string [MaterialFormulas] resolves, already cleaned up for display.
     public static final Property<String> FORMULA = Property.of("gregtech", "formula");
     /// Whether [#FORMULA] is a `GTLanguageManager` localization key rather than literal text (the legacy
     /// `setChemicalFormula` localized overload / the bartworks material's own localized-formula flag).
@@ -65,9 +60,7 @@ public class GTMaterialProperties {
     public static final Property<EnumSet<GTMaterialGenerationFlag>> GENERATION_FLAGS = Property
         .of("gregtech", "generationFlags");
     public static final Property<MaterialRef> HANDLE_MATERIAL = Property.of("gregtech", "handleMaterial");
-    /// Whether a chemical-reactor recipe assembles this material's dust from its [#COMPOSITION] (the werkstoff
-    /// facade's `GenerationFeatures#hasChemicalRecipes` marker). Read by
-    /// `gregtech.loaders.materialrecipes.LoaderChemicalRecipes`.
+    /// Whether a chemical-reactor recipe assembles this material's dust from its [#COMPOSITION].
     public static final Property<Boolean> HAS_CHEMICAL_RECIPE = Property.of("gregtech", "hasChemicalRecipe");
     public static final Property<Boolean> HAS_CENTRIFUGE_RECIPE = Property.of("gregtech", "hasCentrifugeRecipe", false);
     public static final Property<Boolean> HAS_CORRESPONDING_FLUID = Property
@@ -75,19 +68,13 @@ public class GTMaterialProperties {
     public static final Property<Boolean> HAS_CORRESPONDING_GAS = Property.of("gregtech", "hasCorrespondingGas", false);
     public static final Property<Boolean> HAS_ELECTROLYZER_RECIPE = Property
         .of("gregtech", "hasElectrolyzerRecipe", false);
-    /// Whether this material registers a gas-state fluid (the bartworks material's own gas-state flag), read
-    /// by the werkstoff facade's fluid-registration-temperature formula and composition-decomposition
-    /// item-vs-fluid split. Distinct from [#HAS_CORRESPONDING_GAS], which every cell-bearing werkstoff
-    /// carries unconditionally, and is not gated on this.
+    /// Whether this material registers a gas-state fluid. Distinct from [#HAS_CORRESPONDING_GAS], which every
+    /// cell-bearing werkstoff carries unconditionally and which is not gated on this.
     public static final Property<Boolean> HAS_GAS = Property.of("gregtech", "hasGas");
     public static final Property<Boolean> HAS_GLOWING_ORE = Property.of("gregtech", "hasGlowingOre");
-    /// Whether the auto-generated Mixer recipe (from [#COMPOSITION] plus [#MIX_CIRCUIT]) should be built (the
-    /// werkstoff facade's `GenerationFeatures#hasMixerRecipes` marker). Read by
-    /// `gregtech.loaders.materialrecipes.LoaderMixerRecipes`.
+    /// Whether the auto-generated Mixer recipe (from [#COMPOSITION] plus [#MIX_CIRCUIT]) should be built.
     public static final Property<Boolean> HAS_MIXER_RECIPE = Property.of("gregtech", "hasMixerRecipe");
-    /// Whether the auto-generated Sifter recipe (crushed ore -> gem grades) should be built (the werkstoff
-    /// facade's `GenerationFeatures#hasSifterRecipes` marker). Read by
-    /// `gregtech.loaders.materialrecipes.LoaderSifterRecipes`.
+    /// Whether the auto-generated Sifter recipe (crushed ore -> gem grades) should be built.
     public static final Property<Boolean> HAS_SIFTER_RECIPE = Property.of("gregtech", "hasSifterRecipe");
     public static final Property<Float> HEAT_DAMAGE = Property.of("gregtech", "heatDamage", 0f);
     /// Whether the material is radioactive, unifying the legacy bartworks material's own radioactivity flag and
@@ -97,15 +84,12 @@ public class GTMaterialProperties {
     /// wires unify under, carrying no composition of its own. Set on
     /// [gregtech.api.enums.materials.Families#superconductors].
     public static final Property<Boolean> IS_SUPERCONDUCTOR = Property.of("gregtech", "isSuperconductor", false);
-    /// The `FluidRegistry` name of a gtPlusPlus-originated material's plasma fluid, present only for the 37
-    /// materials where it is not [FluidNames#plasma] on [#LEGACY_FLUIDS]. A merged material's combined
-    /// `LEGACY_FLUIDS.plasma` may be a gregtech-side plasma sharing the slot, so the gtPlusPlus contribution
-    /// cannot be derived from that slot and is pinned here instead. Backs [MaterialUtils#legacyGtppPlasmaOf].
+    /// The `FluidRegistry` name of a gtPlusPlus-originated material's plasma fluid, pinned here because a
+    /// merged material's plasma slot may hold a gregtech-side plasma instead. Backs
+    /// [MaterialUtils#legacyGtppPlasmaOf].
     public static final Property<String> GTPP_PLASMA_NAME = Property.of("gregtech", "gtppPlasmaName");
-    /// The gtPlusPlus material state (`SOLID`/`LIQUID`/`GAS`/...). Like [#WERKSTOFF_IDS], this doubles as the
-    /// origin discriminator for its family -- its presence is the "this material carries gtPlusPlus data"
-    /// signal that `gregtech.common.ores.GTOreAdapter` and the shape gating read -- and is therefore
-    /// permanent, even though the state value itself has no other consumer.
+    /// The gtPlusPlus material state (`SOLID`/`LIQUID`/`GAS`/...). Like [#WERKSTOFF_IDS], its presence doubles
+    /// as the "this material carries gtPlusPlus data" signal, and is permanent for that reason.
     public static final Property<String> GTPP_STATE = Property.of("gregtech", "gtppState");
     public static final Property<String> LOCAL_NAME = Property.of("gregtech", "localName");
     public static final Property<MaterialRef> MACERATE_INTO = Property.of("gregtech", "macerateInto");
@@ -130,9 +114,7 @@ public class GTMaterialProperties {
     public static final Property<Integer> PROCESSING_MATERIAL_TIER_EU = Property
         .of("gregtech", "processingMaterialTierEU", 0);
     /// A declared proton count that replaces the [MaterialAtomics] composition formula for this material.
-    /// Radiation hatch sievert output reads protons verbatim, so materials whose recipes were balanced against
-    /// a differently derived count carry the balanced value here. Composition sums over components still use
-    /// their computed values.
+    /// Composition sums over components still use their computed values.
     public static final Property<Long> PROTONS = Property.of("gregtech", "protons");
     /// The radiation level a radioactive material's carried items/blocks inflict, unifying the legacy
     /// `Material.vRadiationLevel` with bartworks' equivalent (which carried no scalar level of its own -- see
@@ -142,12 +124,9 @@ public class GTMaterialProperties {
     public static final Property<MaterialRef> SMELT_INTO = Property.of("gregtech", "smeltInto");
     public static final Property<Integer> SMELTING_MULTIPLIER = Property.of("gregtech", "smeltingMultiplier", 1);
     public static final Property<Float> STEAM_MULTIPLIER = Property.of("gregtech", "steamMultiplier");
-    /// The explicitly-added `SubTag` names (contents-derived tags stay dynamic), elided when empty. From the
-    /// legacy bartworks material's own `SUBTAGS`, consulted broadly by recipe-gen/tooltip logic gating on a
-    /// material's kind (gas-type gating, no-blast gating, etc.).
+    /// The explicitly-added `SubTag` names (contents-derived tags stay dynamic), elided when empty.
     public static final Property<List<String>> SUB_TAGS = Property.of("gregtech", "subTags");
-    /// The legacy `Material.vTier`; no gregtech equivalent. Elided when `0`. Read by the Forestry bee-drop
-    /// classes (`GTPPComb`/`GTPPDrop`/`GTPPPropolis`) to set recipe EU cost/tier.
+    /// The legacy `Material.vTier`; no gregtech equivalent. Elided when `0`.
     public static final Property<Integer> TIER = Property.of("gregtech", "tier", 0);
     public static final Property<String> TOOL_ENCHANTMENT = Property.of("gregtech", "toolEnchantment");
     public static final Property<Integer> TOOL_ENCHANTMENT_LEVEL = Property.of("gregtech", "toolEnchantmentLevel");
@@ -158,21 +137,13 @@ public class GTMaterialProperties {
     public static final Property<Boolean> TOXIC = Property.of("gregtech", "toxic");
     public static final Property<Boolean> UNIFIABLE = Property.of("gregtech", "unifiable", true);
     /// Whether item resolution should skip [gregtech.api.util.GTOreDictUnificator]'s existing association and
-    /// forcibly re-`set` it to this material's own item for every prefix it carries (the werkstoff facade's
-    /// `GenerationFeatures#enforceUnification` marker, read by
-    /// `StaticRecipeChangeLoaders#unificationRecipeEnforcer` and
-    /// `bartworks.server.EventHandler.ServerEventHandler#onPlayerTickEventServer`). Opposite in spirit to
-    /// [#UNIFIABLE]`(false)` (which opts a material *out* of unification) -- this opts a material *in* to
-    /// forcibly winning the ore-dict slot, so the two are not interchangeable.
+    /// forcibly re-`set` it to this material's own item for every prefix it carries. Not the inverse of
+    /// [#UNIFIABLE]: that key opts a material out of unification, this one makes it win the ore-dict slot.
     public static final Property<Boolean> ENFORCE_ORE_DICT_UNIFICATION = Property
         .of("gregtech", "enforceOreDictUnification");
     /// The legacy `Material.vVoltageMultiplier`; no gregtech equivalent. Elided when `16` (the value every
     /// tier-0 material carries).
     public static final Property<Long> VOLTAGE_MULTIPLIER = Property.of("gregtech", "voltageMultiplier", 16L);
-    /// The bartworks-side data of a material that originated as (or merged with) a legacy bartworks material,
-    /// decomposed into individual keys rather than kept in one composite property so a reader needing a single
-    /// value does not depend on the whole record shape.
-    ///
     /// Every legacy werkstoff `mID` this material covers -- more than one when two same-name werkstoffe folded
     /// into one MaterialLib declaration. This property is PERMANENT: saved worlds address bartworks items and
     /// ore blocks by their legacy `mID`, so [LegacyWerkstoffIndex] must keep
@@ -180,10 +151,9 @@ public class GTMaterialProperties {
     /// is how the ore adapters and shape gating distinguish the werkstoff-origin materials from the gregtech
     /// and gtPlusPlus families.
     public static final Property<List<Integer>> WERKSTOFF_IDS = Property.of("gregtech", "werkstoffIds");
-    /// The frozen list of `OrePrefixes` names a werkstoff-backed material's legacy part set covered, read by
-    /// [gregtech.api.enums.materials.LegacyWerkstoffIndex#generatesPrefix]. `sheetmetal` and `frameGt` never
-    /// appear here: their membership is declared as a MaterialLib shape on the material itself
-    /// ([gregtech.api.enums.materials.Materials]), not through this property. Elided when empty.
+    /// The frozen list of `OrePrefixes` names a werkstoff-backed material's legacy part set covered, elided
+    /// when empty. `sheetmetal` and `frameGt` never appear here: their membership is declared as a MaterialLib
+    /// shape on the material itself ([gregtech.api.enums.materials.Materials]).
     public static final Property<List<String>> WERKSTOFF_PREFIXES = Property.of("gregtech", "werkstoffPrefixes");
     /// The legacy bartworks material-type enum constant name.
     public static final Property<String> WERKSTOFF_TYPE = Property.of("gregtech", "werkstoffType");

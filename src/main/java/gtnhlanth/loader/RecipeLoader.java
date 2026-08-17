@@ -1778,10 +1778,8 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.Copper, Shapes.dust, 1))
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials.TerbiumNitrate, Shapes.dust, 2),
-                MaterialLibAPI.getStack(Materials.SamaricResidue, Shapes.dust, 2) // Potentially
-                                                                                  // make
-            // only Samarium
-            )
+                // Potentially make only Samarium
+                MaterialLibAPI.getStack(Materials.SamaricResidue, Shapes.dust, 2))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(UniversalChemical);

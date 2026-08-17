@@ -10,13 +10,12 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.materials.Materials;
 
-/// The legacy material name domain: the single by-name resolution seam for every consumer that needs to
-/// resolve a legacy material name to its MaterialLib counterpart and treat a miss as a plain null
-/// (`GTProxy`'s ore-dictionary dispatch, the ore-adapter oredict indexing, the werkstoff and gtPlusPlus name
-/// chains). Resolving here instead of via [MaterialUtils#byLegacyName] is deliberate: `byLegacyName` also resolves
-/// names outside this domain (recognition-marker backings, sanitized MaterialLib registration names), which
-/// would reroute the callers' miss paths -- most critically the recognition-marker fallback in
-/// `GTProxy#registerOre`.
+/// The legacy material name domain: the by-name resolution seam for consumers that resolve a legacy material
+/// name to its MaterialLib counterpart and treat a miss as a plain null.
+///
+/// Distinct from [MaterialUtils#byLegacyName], which also resolves names outside this domain
+/// (recognition-marker backings, sanitized MaterialLib registration names); a consumer whose miss path carries
+/// its own fallback resolves here.
 ///
 /// Backed by [LegacyNameDomainTable], a frozen name -> MaterialLib-name table. A name in the domain resolves
 /// to its MaterialLib counterpart; every other name -- including a literal `"NULL"` and any name with no
@@ -36,8 +35,7 @@ public final class LegacyNameDomain {
     }
 
     /// Whether `material` is a gregtech-declared legacy material. Covers every [#lookup]-reachable material
-    /// plus the null sentinel ([Materials#NULL]): the sentinel is itself a declared material, but
-    /// stays unreachable by name so a foreign name can never resolve onto it through [#lookup].
+    /// plus the null sentinel ([Materials#NULL]), which is a declared material but unreachable by name.
     public static boolean contains(@Nullable Material material) {
         if (material == null) return false;
         return membership().contains(material);

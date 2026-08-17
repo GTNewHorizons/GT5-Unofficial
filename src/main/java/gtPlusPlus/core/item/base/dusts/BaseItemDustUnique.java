@@ -111,7 +111,6 @@ public class BaseItemDustUnique extends Item {
         return this.colour;
     }
 
-    /// Registers `name` as its own display name under [#nameKey].
     private static void registerLocalizedName(String name) {
         GTLanguageManager.addStringLocalization(nameKey(name), name);
     }
@@ -121,14 +120,11 @@ public class BaseItemDustUnique extends Item {
         return StatCollector.translateToLocal(nameKey(name));
     }
 
-    /// The lang key for a unique dust's display name. These dusts back no MaterialLib material, so their
-    /// names are free-form display strings ("Tumbaga Mix", "Cooked ZrCl4") rather than material names --
-    /// hence the non-alphanumeric stripping, which the material-backed
-    /// [gregtech.api.material.MaterialUtils#localizedNameKey] scheme does not do. The two schemes are not
-    /// interchangeable.
+    /// The lang key for a unique dust's free-form display name ("Tumbaga Mix", "Cooked ZrCl4"). Not
+    /// interchangeable with the material-backed [gregtech.api.material.MaterialUtils#localizedNameKey]
+    /// scheme, which does not strip non-alphanumerics.
     private static String nameKey(String name) {
         return "Material." + name.toLowerCase()
             .replaceAll("[^a-zA-Z0-9]", "");
     }
-
 }

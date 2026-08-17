@@ -148,8 +148,6 @@ public final class MainMod {
             .isClient()) {
             GregTechAPI.sAfterGTPostload.add(CircuitPartItemsRenderer::new);
         }
-        if (event.getSide()
-            .isClient()) {}
     }
 
     @Mod.EventHandler

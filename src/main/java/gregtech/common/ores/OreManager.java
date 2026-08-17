@@ -212,8 +212,7 @@ public final class OreManager {
         return getMaterial(itemBlock.field_150939_a, Items.feather.getDamage(stack));
     }
 
-    /// The MaterialLib [Material] that owns the ore at this block+meta, or null. Callers compare this against
-    /// the worldgen spine's own material identity (the NEI ore-vein tables, prospecting) by reference.
+    /// The MaterialLib [Material] that owns the ore at this block+meta, or null.
     public static Material getMaterial(Block block, int meta) {
         try (OreInfo info = getOreInfo(block, meta)) {
             if (info == null) return null;

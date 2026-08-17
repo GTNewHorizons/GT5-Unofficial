@@ -821,9 +821,8 @@ public class GTProxy implements IFuelHandler {
     }
 
     /// Registers oredict entries other mods (or Forge itself) already registered before this proxy was
-    /// constructed. Split out of the constructor and called explicitly from GT's preInit, after
-    /// {@link gregtech.loaders.materials.LoaderGTMaterialPasses#run}: the proxy is constructed during FML's
-    /// mod-construction phase, before {@link #registerOre}'s `Materials` data can resolve.
+    /// constructed. Must run after [gregtech.loaders.materials.LoaderGTMaterialPasses#run], whose material
+    /// data [#registerOre] resolves against.
     public void catchUpPreExistingOreDictEntries() {
         for (String tOreName : OreDictionary.getOreNames()) {
             for (ItemStack itemStack : OreDictionary.getOres(tOreName)) {
@@ -1894,12 +1893,8 @@ public class GTProxy implements IFuelHandler {
                                         return;
                                     }
                                 } else if (reconstructedMaterial(tName) != null) {
-                                    // aMaterial is null here (tName is outside the legacy name domain), so this
-                                    // branch exists only to keep tName out of the unknown-material drop below --
-                                    // the switch and aMaterial-keyed re-registration handling in the branch above
-                                    // never match a reconstructed werkstoff/gtpp material's identity in the first
-                                    // place. The common tail's census resolution re-resolves tName
-                                    // ML-registry-first regardless.
+                                    // Deliberately empty: this only keeps tName out of the unknown-material
+                                    // drop below. The common tail re-resolves tName ML-registry-first.
                                 } else {
                                     for (Dyes tDye : Dyes.VALUES) {
                                         if (aEvent.Name.endsWith(
@@ -1996,24 +1991,16 @@ public class GTProxy implements IFuelHandler {
         }
     }
 
-    /// Whether a recognition marker is both unifiable and CRYSTALLISABLE (only `Fluix`; a marker carries no
-    /// composition of its own, so no other marker routes into the census).
     private static boolean isCensusMarker(Material recognitionMarker) {
         return recognitionMarker != null && MaterialUtils.unifiable(recognitionMarker)
             && MaterialUtils.hasFlag(recognitionMarker, GTMaterialFlag.CRYSTALLISABLE);
     }
 
-    /// The MaterialLib material an ore-dictionary registration's event pipeline carries downstream (the
-    /// [OreDictEventContainer] census and [#registerUnificationEntries]) -- for a recognition marker that
-    /// [#isCensusMarker], that marker's own backing; otherwise resolved ML-registry-first, by the same raw
-    /// name [#registerOre] already stripped the prefix down to (`tName`), falling back to `aMaterial` (the
-    /// [LegacyNameDomain#lookup] result; a null resolves to the `NULL` placeholder material) when the registry
-    /// has nothing under that exact name, or when `tName` is one [DeclaredMaterialNameTable] freezes.
-    ///
-    /// That declared-name check keeps this in lockstep with [#registerOre]'s own upstream `aMaterial`
-    /// resolution: a declared name returns exactly what [LegacyNameDomain#lookup] resolved it to rather than
-    /// substituting an independent registry hit under the same string, while a reconstructed werkstoff/gtpp
-    /// material -- never a declared name -- keeps its census through the registry hit.
+    /// The MaterialLib material an ore-dictionary registration carries downstream to the
+    /// [OreDictEventContainer] census and [#registerUnificationEntries]. A recognition marker that
+    /// [#isCensusMarker] resolves to itself. Otherwise `tName` resolves ML-registry-first, falling back to
+    /// `aMaterial` (or the `NULL` placeholder) when the registry holds no shaped material under that name, or
+    /// when `tName` is one [DeclaredMaterialNameTable] freezes.
     private static Material resolveCensusMaterial(@Nullable String tName, @Nullable Material aMaterial,
         Material recognitionMarker) {
         if (isCensusMarker(recognitionMarker)) {
@@ -2021,8 +2008,8 @@ public class GTProxy implements IFuelHandler {
         }
         if (tName != null && !hasDeclaredMaterialsField(tName)) {
             Material ml = MaterialLibAPI.getMaterial("gregtech", tName);
-            // A shapeless registry hit is a recognition/wildcard backing; those names must keep
-            // resolving through the legacy path so name-only entries retain the miss semantics.
+            // A shapeless registry hit is a recognition/wildcard backing; those names resolve through the
+            // legacy path instead.
             if (ml != null && !ml.getShapes()
                 .isEmpty()) return ml;
         }
@@ -2030,18 +2017,11 @@ public class GTProxy implements IFuelHandler {
     }
 
     /// The reconstructed (werkstoff- or gtpp-owned) MaterialLib material registered under `tName`, or null when
-    /// the name must keep being dropped as unknown. Dispatches on [MaterialUtils#hasBridgeRegistration], which
-    /// `LoaderWerkstoffRegistrations` sets only once its own pass (bartworks' init) reaches a werkstoff-origin
-    /// material -- so an event processed before that pass runs, notably the entire
-    /// [#catchUpPreExistingOreDictEntries] preInit replay, is dropped here too.
-    ///
-    /// A gtPlusPlus-originated material never gets a [MaterialUtils#hasBridgeRegistration] record
-    /// (`LoaderWerkstoffRegistrations` only records materials carrying [GTMaterialProperties#WERKSTOFF_IDS]),
-    /// so it falls to the plain registry-and-shapes check [#resolveCensusMaterial] also uses, gated on
-    /// [GTMaterialProperties#GTPP_STATE] specifically (the same discriminator
-    /// `gregtech.common.ores.GTOreAdapter#isGtppFamily` uses): an ordinary bartworks werkstoff not yet
-    /// [MaterialUtils#hasBridgeRegistration]-recorded has its own working resolution path elsewhere and must keep
-    /// resolving to `_NULL` here, not be newly rescued by the GTPP_STATE fallback.
+    /// the name is dropped as unknown. A werkstoff-origin material qualifies once
+    /// [MaterialUtils#hasBridgeRegistration] records it, which `LoaderWerkstoffRegistrations` does at
+    /// bartworks' init; an event processed before that pass resolves to null. A gtPlusPlus-originated material
+    /// never gets that record and qualifies instead on [GTMaterialProperties#GTPP_STATE] plus a shaped
+    /// registry hit.
     private static @Nullable Material reconstructedMaterial(@Nullable String tName) {
         if (tName == null || hasDeclaredMaterialsField(tName)) return null;
         Material ml = MaterialLibAPI.getMaterial("gregtech", tName);
@@ -2052,17 +2032,13 @@ public class GTProxy implements IFuelHandler {
             .isEmpty() ? null : ml;
     }
 
-    /// Whether `name` is in the frozen domain [DeclaredMaterialNameTable] backs. See
-    /// [#resolveCensusMaterial] for how this steers between `aMaterial` and a direct MaterialLib registry hit.
+    /// Whether `name` is in the frozen domain [DeclaredMaterialNameTable] backs.
     private static boolean hasDeclaredMaterialsField(String name) {
         return DeclaredMaterialNameTable.NAMES.contains(name);
     }
 
     /// Unifies a foreign ore-dictionary entry whose name resolves to a recognition marker rather than to a
-    /// material in the legacy name domain (see [RecognitionMaterials#getRecognitionMarker]). A marker holds no
-    /// composition and re-registers into itself, so this contributes only the prefix add when unifiable, the
-    /// unconditional gear cross-registration for a `gearGt` entry, and -- for `Fluix` and `Quartz` specifically
-    /// -- the `crystal`/`gem`/`craftingQuartz` cross-registrations their names steer.
+    /// material in the legacy name domain (see [RecognitionMaterials#getRecognitionMarker]).
     private void registerRecognitionOre(OrePrefixes aPrefix, Material aMarker, OreDictionary.OreRegisterEvent aEvent) {
         if (MaterialUtils.unifiable(aMarker)) {
             aPrefix.add(GTUtility.copyAmount(1, aEvent.Ore));
@@ -2289,9 +2265,8 @@ public class GTProxy implements IFuelHandler {
 
     // ------------------------ Adds all fluids corresponding to materials ------------------------
 
-    /// The color for the autogenerated fluid, falling back to `{255, 255, 255, 0}` when the material carries no
-    /// [com.ruling_0.materiallib.api.StandardProperties#TINT] (`MaterialUtils#rgba` returns null there, but
-    /// `withColorRGBA` must not).
+    /// The color for the autogenerated fluid, falling back to `{255, 255, 255, 0}` when the material carries
+    /// no [com.ruling_0.materiallib.api.StandardProperties#TINT].
     private static short[] rgba(Material material) {
         short[] rgba = MaterialUtils.rgba(material);
         return rgba != null ? rgba : new short[] { 255, 255, 255, 0 };
@@ -2300,7 +2275,6 @@ public class GTProxy implements IFuelHandler {
     public Fluid addAutoGeneratedCorrespondingFluid(Material aMaterial) {
         Fluid fluid = MaterialUtils.fluidOf(aMaterial);
         if (fluid != null) {
-            // MaterialLib already registered and wired this material's fluid.
             registerCellContainer(OrePrefixes.cell, aMaterial, fluid, 1000);
             return fluid;
         }
@@ -2423,13 +2397,10 @@ public class GTProxy implements IFuelHandler {
             .asFluid();
     }
 
-    /// Registers a cell (fluid, filled item) pair for a material whose fluid MaterialLib already registered
-    /// (so no [IGTRegisteredFluid] wrapper exists to call that instance method on), matching
-    /// `GTFluid#registerContainers`'s canner-recipe fallback. Skipped when `cellPrefix` itself cut over for
-    /// `material` (see [MaterialParts]): MaterialLib's own `ShapeFluidInContainer#registerContainers` is then the sole
-    /// registration for that (fluid, filled) pair, registered later at MaterialLib's init -- registering it
-    /// again here first would make that later registration a rejected duplicate (Forge's
-    /// `FluidContainerRegistry` is a flat map keyed by the filled item).
+    /// Registers a (fluid, filled cell) pair for a material whose fluid MaterialLib already registered, falling
+    /// back to a canner recipe when Forge rejects the registration. Skipped when `cellPrefix` has cut over for
+    /// `material` (see [MaterialParts]): MaterialLib's `ShapeFluidInContainer#registerContainers` registers
+    /// that pair later, and Forge's `FluidContainerRegistry` keeps only one entry per filled item.
     private static void registerCellContainer(OrePrefixes cellPrefix, Material material, Fluid fluid, int amount) {
         if (MaterialParts.isCutOver(cellPrefix, material)) return;
         ItemStack filledCell = GTOreDictUnificator.get(cellPrefix, material, 1L);
@@ -2449,7 +2420,7 @@ public class GTProxy implements IFuelHandler {
     // ------------------------------------------------------------------------------------------------------------
 
     public void addAutoGeneratedHydroCrackedFluids(Material aMaterial) {
-        // MaterialLib already registered and wired these fluids when all three severities are present.
+        // MaterialLib registers all three severities together, so severity 0 answers for all of them.
         boolean owned = MaterialUtils.crackedFluid(aMaterial, MaterialUtils.CrackType.HYDRO, 0) != null;
         Fluid[] crackedFluids = new Fluid[3];
         String[] namePrefixes = { "lightlyhydrocracked.", "moderatelyhydrocracked.", "severelyhydrocracked." };

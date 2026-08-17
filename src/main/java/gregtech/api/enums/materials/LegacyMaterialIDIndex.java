@@ -42,9 +42,4 @@ public class LegacyMaterialIDIndex {
     public static @Nullable Material get(int id) {
         return id < 0 || id >= INDEX.length ? null : INDEX[id];
     }
-
-    /// The number of occupied slots.
-    public static int size() {
-        return size;
-    }
 }

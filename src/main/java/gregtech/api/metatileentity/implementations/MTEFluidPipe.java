@@ -183,7 +183,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     }
 
     /// The pipe body, or the smaller end-face art when this side connects to nothing. A connected pipe draws its
-    /// own shape's art, which already encodes the size the legacy thickness ladder used to select.
+    /// own shape's art, which already encodes the pipe size.
     protected ITexture getBaseTexture(boolean connected, int colorIndex) {
         Material material = getMaterial();
         short[] materialRgba = MaterialUtils.rgba(material);

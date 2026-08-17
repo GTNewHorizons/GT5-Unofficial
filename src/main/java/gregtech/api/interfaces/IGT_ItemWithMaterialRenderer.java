@@ -20,10 +20,9 @@ public interface IGT_ItemWithMaterialRenderer {
      */
     boolean shouldUseCustomRenderer(int aMetaData);
 
-    /// Resolves `stack`'s material-render surface: the stack's own {@link Item} directly when it already
-    /// implements this interface (the legacy `MetaGeneratedItem` path, unchanged), or an adapter over its
-    /// MaterialLib {@link ShapeItem} when the stack is a cut-over material part with no legacy implementor.
-    /// Returns null for neither, e.g. a plain vanilla item.
+    /// Resolves `stack`'s material-render surface: the stack's own {@link Item} directly when it implements
+    /// this interface, or an adapter over its MaterialLib {@link ShapeItem}. Returns null for neither, e.g. a
+    /// plain vanilla item.
     static IGT_ItemWithMaterialRenderer resolve(ItemStack stack) {
         if (stack.getItem() instanceof IGT_ItemWithMaterialRenderer legacy) return legacy;
         if (stack.getItem() instanceof ShapeItem shape) return new ShapeItemMaterialRenderAdapter(shape);

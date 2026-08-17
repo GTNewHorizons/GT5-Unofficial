@@ -25,9 +25,9 @@ import gregtech.api.util.GTUtility;
 /// [GTMaterialProperties#HAS_MIXER_RECIPE].
 ///
 /// Each carrier's [GTMaterialProperties#COMPOSITION] entries resolve to a dust input per entry
-/// ([MaterialUtils#compositionDust]), except a single gas-only entry (e.g. Hydrogen, Oxygen), which resolves to a fluid
-/// input instead ([MaterialUtils#compositionGas]) rather than an item; [#CARRIERS] never declares more than one such
-/// entry, so this carries no cell-item byproduct accounting. [GTMaterialProperties#MIX_CIRCUIT] adds an
+/// ([MaterialUtils#compositionDust]), except a single gas-only entry (e.g. Hydrogen, Oxygen), which resolves
+/// to a fluid input ([MaterialUtils#compositionGas]). [#CARRIERS] never declares more than one such entry, so
+/// this carries no cell-item byproduct accounting. [GTMaterialProperties#MIX_CIRCUIT] adds an
 /// integrated-circuit input when set to 1 or higher. Duration and EU scale off the carrier's own
 /// [MaterialAtomics#mass] and [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU], divided/multiplied by its
 /// composition's entry count.
@@ -100,12 +100,7 @@ public final class LoaderMixerRecipes {
             .itemOutputs(output)
             .fluidInputs(fluidInput == null ? new FluidStack[0] : new FluidStack[] { fluidInput })
             .duration((int) Math.max(1L, Math.abs(MaterialAtomics.mass(material) / componentCount)))
-            .eut(recipeEU(material, Math.min(4, componentCount) * 5))
+            .eut(GTUtility.calculateRecipeEU(material, Math.min(4, componentCount) * 5))
             .addTo(mixerRecipes);
-    }
-
-    private static int recipeEU(Material material, int defaultEuPerTick) {
-        Integer tier = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-        return tier != null && tier != 0 ? tier : defaultEuPerTick;
     }
 }

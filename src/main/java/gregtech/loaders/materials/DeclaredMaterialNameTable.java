@@ -4,13 +4,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-/// The frozen set of names GT reserves as its own declared materials, regardless of whether MaterialLib
-/// currently has anything registered under that name. Pinned so [gregtech.common.GTProxy]'s census-material
-/// resolution keeps a fixed boundary between these declared names and reconstructed werkstoff/gtPlusPlus
-/// names. A name here steers an ore-dictionary registration through the legacy resolution path rather than
-/// a MaterialLib registry hit; membership in this set alone is the signal -- not whether MaterialLib
-/// currently resolves the name -- so bridged names assigned later by bartworks/gtPlusPlus still count from
-/// the moment they appear here.
+/// The frozen set of names GT reserves as its own declared materials. Pinned so [gregtech.common.GTProxy]'s
+/// census-material resolution keeps a fixed boundary between these declared names and reconstructed
+/// werkstoff/gtPlusPlus names. A name here steers an ore-dictionary registration through the legacy
+/// resolution path rather than a MaterialLib registry hit; membership in this set is the whole signal,
+/// independent of what MaterialLib currently resolves the name to.
 ///
 /// This set and [LegacyNameDomainTable]'s are both applied to the same raw ore-dictionary name in
 /// `GTProxy#resolveCensusMaterial`, and they deliberately do not coincide. A name here is absent from the
@@ -18,8 +16,7 @@ import java.util.Set;
 ///
 /// - retired spellings that name nothing today (`"AluminiumFluoride"`, `"Aluminiumhydroxide"` and
 /// `"Aluminiumoxide"`, whose live counterparts `Aluminiumfluoride`/`AluminiumHydroxide`/`Alumina` carry the
-/// domain rows) -- kept because a foreign mod's ore-dictionary entry may still use the old spelling, and this
-/// set's job is to keep such a name on the legacy path rather than let it take an unrelated registry hit,
+/// domain rows), kept so an ore-dictionary entry still using the old spelling stays on the legacy path,
 /// - the superconductor wire markers, which resolve through the registry and never through the domain,
 /// - names whose MaterialLib registration name had to be sanitized (`"Computation Base"` ->
 /// `"ComputationBase"`), where the domain is keyed by the legacy name and this set holds the sanitized one,

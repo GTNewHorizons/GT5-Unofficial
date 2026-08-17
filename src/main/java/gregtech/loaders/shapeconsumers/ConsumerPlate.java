@@ -6,8 +6,8 @@ import gregtech.loaders.oreprocessing.ProcessingPlate;
 
 /// Dispatches [ProcessingPlate]'s recipe generation for MaterialLib's cutover plate-family and casing shapes.
 /// `plateAlloy` (the one prefix [ProcessingPlate] shares its body with whose logic is entirely foreign-item
-/// compat -- hardcoded IC2/`ReinforcedGlass` recipes keyed by oredict-name string) has no MaterialLib shape
-/// and keeps serving foreign mods exclusively through the legacy oredict path.
+/// compat -- hardcoded IC2/`ReinforcedGlass` recipes keyed by oredict-name string) has no MaterialLib
+/// shape.
 public final class ConsumerPlate {
 
     private ConsumerPlate() {}

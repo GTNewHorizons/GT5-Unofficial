@@ -51,7 +51,6 @@ public class ProcessingCellMolten implements IOreRecipeRegistrator {
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) return;
-        // A cellMolten shape without a resolvable molten fluid (an incomplete fold) has nothing to extract into.
         if (MaterialUtils.molten(material, INGOTS) == null) return;
 
         ItemStack ingot = GTOreDictUnificator.get(OrePrefixes.ingot, material, 1L);

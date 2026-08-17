@@ -228,8 +228,8 @@ public class NEIGTConfig implements IConfigureNEI {
     }
 
     /// Hides the filled forms of IC2's universal fluid cell, whose `getSubItems` lists one filled cell per
-    /// registered fluid. GT uses none of them, so only the empty cell stays visible. The hidden stacks are
-    /// filled with [Integer#MAX_VALUE] to mirror how IC2 builds its subitem stacks.
+    /// registered fluid. Only the empty cell stays visible. The hidden stacks are filled with
+    /// [Integer#MAX_VALUE] to mirror how IC2 builds its subitem stacks.
     private static void hideFilledUniversalCells() {
         for (Fluid fluid : FluidRegistry.getRegisteredFluids()
             .values()) {
@@ -238,9 +238,8 @@ public class NEIGTConfig implements IConfigureNEI {
         }
     }
 
-    /// Hides [MetaGeneratedItem99] while it registers nothing. NEI fills its item panel by probing damage values
-    /// when an item declares subtypes but lists none, so an item left registered only so that stacks saved before
-    /// the cutover still resolve otherwise shows up as one phantom cell per material id.
+    /// Hides [MetaGeneratedItem99] while it registers nothing, keeping NEI's damage-value probing of
+    /// subtype-declaring items from listing one phantom cell per material id.
     private static void hideEmptyLegacyCells() {
         MetaGeneratedItem99 item = MetaGeneratedItem99.INSTANCE;
         if (item == null || item.hasRegisteredItems()) return;

@@ -256,8 +256,8 @@ public class GTPostLoad {
                 GTOreDictUnificator.get(OrePrefixes.cell, material, 1L));
         }
 
-        // A reconstructed werkstoff material is outside LegacyNameDomain#contains, so the loop above skips it; this
-        // second pass covers the cell-bearing ones with the same scanner/replicator recipes.
+        // Reconstructed werkstoff materials are outside LegacyNameDomain#contains; the cell-bearing ones get the
+        // same scanner/replicator recipes here.
         for (Material material : MaterialLibAPI.getMaterials()) {
             if (LegacyNameDomain.contains(material)) continue;
             List<String> werkstoffPrefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);

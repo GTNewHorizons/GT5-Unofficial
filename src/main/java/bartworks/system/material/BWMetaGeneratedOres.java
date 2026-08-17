@@ -54,8 +54,7 @@ import gregtech.common.render.GTRendererBlock;
 
 public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
 
-    /// The creative tab the legacy bartworks ore blocks list under. They stay registered so saved worlds keep
-    /// resolving them, so they keep a tab of their own.
+    /// The creative tab the bartworks ore blocks list under.
     public static final CreativeTabs ORE_TAB = new CreativeTabs("bartworksMetaMaterials") {
 
         @Override

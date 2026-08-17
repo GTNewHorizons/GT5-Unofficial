@@ -217,9 +217,7 @@ public class GTClient extends GTProxy {
     }
 
     /// Registers the special item renderers a handful of materials carry, into both stores that resolve them:
-    /// [MaterialLibClient] serves MaterialLib's own shape items, while [MaterialParts]'s [Material]-keyed store serves
-    /// the
-    /// generated-item, fluid-display and electrode renderers.
+    /// [MaterialLibClient] for MaterialLib's own shape items, and [MaterialRenderers] for everything else.
     private static void registerMaterialItemRenderers() {
         registerMaterialItemRenderer(Materials.TranscendentMetal, new TranscendentMetalRenderer());
         registerMaterialItemRenderer(Materials.GaiaSpirit, new GaiaSpiritRenderer());

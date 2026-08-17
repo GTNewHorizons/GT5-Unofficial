@@ -34,8 +34,7 @@ public class RecipesRareEarthProcessing {
 
     public static void init() {
 
-        // Brine Check and assignment: another mod's "brine"-named fluid (e.g. Forestry) wins over gtpp's own,
-        // avoiding two competing registrations under the same name.
+        // Brine Check and assignment
         FluidStack mBrine = FluidRegistry.getFluidStack("brine", 1_000);
         if (mBrine == null) {
             mBrine = MaterialUtils.anyFluid(Materials.Brine, 1_000);

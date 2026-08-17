@@ -42,8 +42,7 @@ import gregtech.crossmod.backhand.Backhand;
 public class PipeShapeItemBlock extends ItemBlock {
 
     /// Display-name overrides keyed by legacy internal material name, replacing the material's own name in
-    /// the prefix format (the legacy `renameMaterial` names). The wooden and High Pressure names only occur
-    /// on fluid pipes and PVC only on item pipes, so one table serves both families.
+    /// the prefix format. One table serves both pipe families.
     private static final Map<String, String> MATERIAL_DISPLAY_OVERRIDES = Map.of(
         "Wood",
         "Wooden",
@@ -76,7 +75,7 @@ public class PipeShapeItemBlock extends ItemBlock {
 
     /// The language key overriding the material's display name in a pipe display-name format, or null when
     /// the material keeps its own name. `suffix` picks the per-family key (`.fluidpipe.newname` or
-    /// `.itempipe.newname`), matching the keys the legacy pipe registrations put the same names under.
+    /// `.itempipe.newname`).
     public static String overrideKeyFor(Material material, String suffix) {
         if (material == null) return null;
         String display = MATERIAL_DISPLAY_OVERRIDES.get(MaterialUtils.internalName(material));

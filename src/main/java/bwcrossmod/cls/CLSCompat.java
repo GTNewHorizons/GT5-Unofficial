@@ -19,9 +19,6 @@ public class CLSCompat {
 
     private CLSCompat() {}
 
-    private static final long MINIMAL_UPDATE_INTERVAL = 1000 / 30; // target 30 fps
-    private static long lastUpdate = 0;
-
     public static void initCls() {
         MinecraftDisplayer.isRegisteringBartWorks = true;
     }

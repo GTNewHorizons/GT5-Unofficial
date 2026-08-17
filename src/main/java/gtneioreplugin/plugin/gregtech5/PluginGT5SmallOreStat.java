@@ -44,7 +44,7 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
 
     @Override
     public void loadCraftingRecipes(ItemStack stack) {
-        Object mat = OreManager.getMaterial(stack);
+        Material mat = OreManager.getMaterial(stack);
 
         if (mat == null) {
             mat = GT5OreSmallHelper.ORE_DROP_TO_MAT.get(stack.getUnlocalizedName());
@@ -85,7 +85,7 @@ public class PluginGT5SmallOreStat extends PluginGT5OreBase {
         }
     }
 
-    private boolean loadSmallOre(Object material) {
+    private boolean loadSmallOre(Material material) {
         OreSmallWrapper smallOre = GT5OreSmallHelper.SMALL_ORES_BY_MAT.get(material);
 
         if (smallOre != null) {

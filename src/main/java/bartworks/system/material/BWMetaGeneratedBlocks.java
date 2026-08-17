@@ -80,9 +80,8 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
         return GTRendererBlock.RENDER_ID;
     }
 
-    /// The texture-set file this block's art lives in. The storage block keeps drawing the `block1` cover art
-    /// its prefix has always resolved to, rather than the `block` shape's own art, so a world full of placed
-    /// werkstoff blocks looks unchanged; the two casings draw art named after their prefix.
+    /// The texture-set file this block's art lives in: the storage block's cover art is named `block1`, the two
+    /// casings' art after their prefix.
     private String iconName() {
         return prefix == OrePrefixes.block ? "block1" : prefix.name();
     }

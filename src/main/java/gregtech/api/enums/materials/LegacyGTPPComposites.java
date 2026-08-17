@@ -7,9 +7,8 @@ import java.util.Map;
 import com.github.bsideup.jabel.Desugar;
 import com.ruling_0.materiallib.api.Material;
 
-/// Legacy support for old gregtechplusplus composition based processing, now in
-/// [gregtech.loaders.oreprocessing.ProcessingMixerGtpp] for the mixer recipe and
-/// [gregtech.loaders.oreprocessing.ProcessingAlloyBlastSmelter] for the composite-dust-to-molten-fluid recipe.
+/// Legacy gregtechplusplus composition data, kept as the source of the mixer and
+/// composite-dust-to-molten-fluid recipes generated for these materials.
 public final class LegacyGTPPComposites {
 
     @Desugar

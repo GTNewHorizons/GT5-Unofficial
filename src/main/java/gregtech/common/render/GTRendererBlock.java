@@ -241,8 +241,8 @@ public class GTRendererBlock implements ISimpleBlockRenderingHandler {
         ctx.doCleanup();
     }
 
-    /// Renders an MTE's inventory form; a pipe-shape block's stack encodes its material as the damage value,
-    /// which the material-agnostic canonical instance needs handed in to resolve its textures.
+    /// Renders an MTE's inventory form. A pipe-shape stack encodes its material in the damage value, which the
+    /// material-agnostic MTE takes as an argument.
     private static boolean renderMTEInInventory(ISBRInventoryContext ctx, Block block, int meta, IMetaTileEntity imte) {
         if (block instanceof PipeShapeBlock && imte instanceof MetaPipeEntity pipe) {
             return pipe.renderInInventory(ctx, MaterialLibAPI.getMaterialByIndex(meta));

@@ -88,8 +88,6 @@ public class EyeOfHarmonyRecipe {
             return result;
         }
 
-        // Compares the same fields the hash uses: unlocalized-name comparison broke the hashCode/equals
-        // contract for MaterialLib shape items, whose unlocalized name is not damage-specific.
         @Override
         public boolean equals(ItemStack item1, ItemStack item2) {
             return item1.getItem() == item2.getItem() && item1.getItemDamage() == item2.getItemDamage();
@@ -353,35 +351,25 @@ public class EyeOfHarmonyRecipe {
 
     private static final double[] ORE_MULTIPLIER = { PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER };
 
-    /// Accumulates output quantities keyed by canonical [com.ruling_0.materiallib.api.Material] -- every source
-    /// (gregtech, bartworks, or a gtpp-flavored material) resolves to the same registry singleton, so
-    /// contributions naming the same material always merge into one entry.
+    /// Accumulates output quantities keyed by [com.ruling_0.materiallib.api.Material].
     public static class HashMapHelper extends HashMap<Object, Double> {
 
         private static final long serialVersionUID = 2297018142561480614L;
 
-        private void addRaw(Object material, double value) {
+        void add(com.ruling_0.materiallib.api.Material material, double value) {
             if (material == null) return;
 
-            // If key already exists.
             if (this.containsKey(material)) {
                 this.put(material, value + this.get(material));
                 return;
             }
 
-            // Otherwise, add value to hashmap entry.
             this.put(material, value);
-        }
-
-        void add(com.ruling_0.materiallib.api.Material material, double value) {
-            addRaw(material, value);
         }
     }
 
-    /// Reads every legacy field through [MaterialUtils] property accessors, each resolving independently against
-    /// the live facade rather than a single upfront snapshot. Neither the bartworks nor gtpp bridge loader ever
-    /// writes `mOreMultiplier`/`mByProductMultiplier`/`mSmeltingMultiplier` independently of
-    /// [GTMaterialProperties], so this reads the same single source of truth those legacy fields do.
+    /// Adds `material`'s ore processing yield -- its direct smelting result, its electromagnetic separation
+    /// extras and its byproducts -- to `outputMap`, each scaled by `mainMultiplier * probability`.
     public static void processHelper(HashMapHelper outputMap, com.ruling_0.materiallib.api.Material material,
         double mainMultiplier, double probability) {
         if (material == null) return;
@@ -424,8 +412,7 @@ public class EyeOfHarmonyRecipe {
                 mainMultiplier * (ORE_MULTIPLIER[index] * 2) * probability);
             // For Materials that index is > 3, normally they will not be used (unless using Chem bath).
 
-            // MaterialLib hands out one canonical instance per material, so reference identity is the
-            // self-byproduct test.
+            // MaterialLib hands out one canonical instance per material.
             if (byProductMaterial == material) continue;
 
             // Will never duplicate since mOreByProducts does not support duplicate.
@@ -459,8 +446,7 @@ public class EyeOfHarmonyRecipe {
     private static final double GTPP_PRIMARY_MULTIPLIER = (2.0 / 9.0 + 0.1);
     private static final double GTPP_SECONDARY_MULTIPLIER = (1.0 / 9.0);
 
-    /// Whether a material carries every shape the gtpp bonus-byproduct algorithm below requires to consider it
-    /// a usable bonus output. All four shapes must be present, not merely one.
+    /// Whether `material` carries every shape a gtpp bonus byproduct needs.
     private static boolean hasSolidForm(com.ruling_0.materiallib.api.Material material) {
         return material.hasShape(Shapes.dust) && material.hasShape(BlockShapes.block)
             && material.hasShape(Shapes.dustTiny)
@@ -562,8 +548,8 @@ public class EyeOfHarmonyRecipe {
         } else outputMap.add(Materials.Stone, 2 * GTPP_SECONDARY_MULTIPLIER * mainMultiplier * probability);
     }
 
-    /// Accumulates a vein material's dust yield. Only a gregtech-declared or werkstoff-origin material carries the
-    /// composition this reads; a vein material from any other family contributes nothing.
+    /// Accumulates a vein material's dust yield. Only a gregtech-declared or werkstoff-origin material
+    /// contributes.
     public static void processHelperIfPossible(HashMapHelper outputMap,
         @Nullable com.ruling_0.materiallib.api.Material material, double mainMultiplier, double probability) {
         if (material == null) return;

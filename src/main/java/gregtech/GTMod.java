@@ -239,13 +239,9 @@ public class GTMod {
     public static final boolean DEBUG = Boolean.getBoolean("gt.debug");
 
     /// Set once {@link gregtech.loaders.materials.LoaderGTMaterialPasses#run} and
-    /// {@link gregtech.api.enums.OrePrefixes#lateStaticInit} have completed during preInit. `OreRegisterEvent`
-    /// listeners registered during mod construction ({@link gregtech.common.GTProxy#registerOre} and
-    /// {@link gregtech.common.ores.UnificationOreAdapter#onOreRegistered}) can otherwise fire -- from another
-    /// mod registering ores during its own construction or preInit, with no ordering guarantee relative to
-    /// GT's own preInit -- before that setup has run, and must check this flag and skip instead of touching
-    /// material state; the explicit catch-up calls in {@link #onPreInitialization} process whatever was
-    /// skipped once this flips true.
+    /// {@link gregtech.api.enums.OrePrefixes#lateStaticInit} have completed during preInit. An
+    /// `OreRegisterEvent` listener must skip instead of touching material state while this is false. The
+    /// catch-up calls in {@link #onPreInitialization} process what was skipped once it flips true.
     public static volatile boolean sMaterialsReady = false;
 
     public static GTAchievements achievements;
@@ -643,7 +639,6 @@ public class GTMod {
         }
         GregTechAPI.sGTCompleteLoad = null;
         GregTechAPI.sFullLoadFinished = true;
-
     }
 
     @Mod.EventHandler

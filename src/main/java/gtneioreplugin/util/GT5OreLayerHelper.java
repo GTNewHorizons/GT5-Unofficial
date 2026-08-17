@@ -76,7 +76,6 @@ public class GT5OreLayerHelper {
 
         public final String veinName, worldGenHeightRange;
         public final Map<String, String> dimWorldGenHeightRange;
-        /// The vein's four layer materials, the same objects the ore adapters dispatch on.
         public final Material[] ores = new Material[4];
         public final short randomWeight, size, density;
         /** {full dim name} */
@@ -156,7 +155,7 @@ public class GT5OreLayerHelper {
             }
         }
 
-        public boolean containsOre(Object material) {
+        public boolean containsOre(Material material) {
             return ores[OreVeinLayer.VEIN_PRIMARY] == material || ores[OreVeinLayer.VEIN_SECONDARY] == material
                 || ores[OreVeinLayer.VEIN_BETWEEN] == material
                 || ores[OreVeinLayer.VEIN_SPORADIC] == material;

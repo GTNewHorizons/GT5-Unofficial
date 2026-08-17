@@ -6,7 +6,7 @@ import gregtech.loaders.oreprocessing.ProcessingOreSmelting;
 
 /// Dispatches [ProcessingOreSmelting]'s recipe generation for MaterialLib's cutover crushed-ore and dust
 /// shapes. `dustRefined` (which shares [ProcessingOreSmelting]'s dust-family switch case) has no MaterialLib
-/// shape and keeps serving foreign mods exclusively through the legacy oredict path.
+/// shape.
 public final class ConsumerOreSmelting {
 
     private ConsumerOreSmelting() {}

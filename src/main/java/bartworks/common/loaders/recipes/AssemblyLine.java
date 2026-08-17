@@ -38,7 +38,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Electric_Motor_LuV.get(9L),
                 ItemList.Sensor_LuV.get(9L),
                 ItemList.Field_Generator_LuV.get(9L),
-                MaterialLibAPI.getStack(Materials.Europium, Shapes.screw, (int) (36L)))
+                MaterialLibAPI.getStack(Materials.Europium, Shapes.screw, 36))
             .fluidInputs(
                 MaterialUtils.anyFluid(Materials.Indalloy140, 10 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, 20_000))

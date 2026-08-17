@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
@@ -630,26 +631,18 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         if (fluidStack == null) {
             return 0;
         }
-        if ((fluidStack.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Plutonium241, FluidShapes.fluidPlasma, 1))
-            && fluidStack.amount >= PLASMA_PLUTONIUM241_USAGE)) {
-            return 5;
-        } else if ((fluidStack.isFluidEqual(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Technetium), 1))
-            && fluidStack.amount >= PLASMA_TECHNETIUM_USAGE)) {
-                return 4;
-            } else
-            if (fluidStack.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidPlasma, 1))
-                && fluidStack.amount >= PLASMA_RADON_USAGE) {
-                    return 3;
-                } else
-                if (fluidStack.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Bismuth, FluidShapes.fluidPlasma, 1))
-                    && fluidStack.amount >= PLASMA_BISMUTH_USAGE) {
-                        return 2;
-                    } else if (fluidStack
-                        .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidPlasma, 1))
-                        && fluidStack.amount >= PLASMA_HELIUM_USAGE) {
-                            return 1;
-                        }
+        if (hasPlasma(fluidStack, Materials.Plutonium241, PLASMA_PLUTONIUM241_USAGE)) return 5;
+        if (fluidStack.isFluidEqual(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Technetium), 1))
+            && fluidStack.amount >= PLASMA_TECHNETIUM_USAGE) return 4;
+        if (hasPlasma(fluidStack, Materials.Radon, PLASMA_RADON_USAGE)) return 3;
+        if (hasPlasma(fluidStack, Materials.Bismuth, PLASMA_BISMUTH_USAGE)) return 2;
+        if (hasPlasma(fluidStack, Materials.Helium, PLASMA_HELIUM_USAGE)) return 1;
         return 0;
+    }
+
+    private static boolean hasPlasma(FluidStack fluidStack, Material material, int usage) {
+        return fluidStack.isFluidEqual(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidPlasma, 1))
+            && fluidStack.amount >= usage;
     }
 
     /**

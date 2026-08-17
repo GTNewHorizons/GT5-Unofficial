@@ -59,8 +59,8 @@ public class PosteaTransformers implements Runnable {
 
     /// Every legacy block/item registry name a transformer has been registered for, collected by the
     /// `addBlockTransformer`/`addBlockReplacement`/`addItemTransformer`/`addItemReplacement` wrappers so that
-    /// [#claimMissingMappings] can claim all of them. Registration goes through those wrappers rather than the
-    /// Postea managers directly precisely so that a name can never be transformed without also being claimed.
+    /// [#claimMissingMappings] can claim all of them. Registration goes through those wrappers and never
+    /// through the Postea managers directly, so a name can never be transformed without also being claimed.
     private static final Set<String> transformedIds = new LinkedHashSet<>();
 
     @Override
@@ -76,11 +76,10 @@ public class PosteaTransformers implements Runnable {
         claimMissingMappings();
     }
 
-    /// Claims the FML missing mapping of every legacy registry name a transformer was registered for. FML treats a
-    /// saved id whose registration is gone as unhandled and discards it, deleting the block or stack before Postea's
-    /// chunk and stack passes ever see it; claiming the mapping is the whole of what is needed to stop that, because
-    /// Postea captures the world's name -> id map in `GameData.injectSnapshot` and so still resolves the saved
-    /// numeric id for its own passes.
+    /// Claims the FML missing mapping of every legacy registry name a transformer was registered for. Without
+    /// the claim FML discards the saved id before Postea's chunk and stack passes run; Postea captures the
+    /// world's name -> id map in `GameData.injectSnapshot`, so the claim alone is enough for it to resolve the
+    /// saved numeric id.
     ///
     /// [BlockReplacementManager#ignoreMissingMapping] and [ItemStackReplacementManager#ignoreMissingMapping] feed one
     /// shared ignore set, so a single call covers both the block and the item leg of a name.
@@ -131,11 +130,8 @@ public class PosteaTransformers implements Runnable {
         ItemStackReplacementManager.addSimpleReplacement(legacyId, legacyMeta, item, newMeta);
     }
 
-    /// Resolves every generated cutover row once, here, so a row whose material or target shape stopped
-    /// resolving is one log line naming the row rather than a silent per-stack no-op at chunk load -- where the
-    /// legacy item is already gone, so FML deletes the stack instead of migrating it. Every row is expected to
-    /// resolve; a row that deliberately never cuts over belongs in its table's javadoc as such, so that what
-    /// shows up here reads as a regression.
+    /// Resolves every generated cutover row up front, naming the ones that no longer resolve. Every row is
+    /// expected to resolve; a row that deliberately never cuts over belongs in its table's javadoc as such.
     private static void validateCutoverTables() {
         List<String> unresolved = new ArrayList<>();
 
@@ -291,11 +287,9 @@ public class PosteaTransformers implements Runnable {
     /// Migrates saved legacy `BlockBaseOre` placed/inventory stacks into the equivalent MaterialLib
     /// [OreShapes#ore] stack, resolved through
     /// [GtppOreCutoverTable]'s (unlocalized name, registry name) rows the same way
-    /// [gregtech.common.ores.GTOreAdapter#getBlock] resolves it live. Unlike every gtpp part/block row
-    /// (one distinct registered instance per material, no meta multiplexing), so a single item + block
-    /// transformer pair per row is enough, mirroring [#registerGtppItemCutoverTransformers]' `block`-row
-    /// handling. A material that never gained `ore` membership resolves null and is left on its legacy
-    /// slot, same as every other cutover table here.
+    /// [gregtech.common.ores.GTOreAdapter#getBlock] resolves it live. Each row is one distinct registered
+    /// instance per material with no meta multiplexing, so a single item + block transformer pair per row is
+    /// enough. A material that never gained `ore` membership resolves null and is left on its legacy slot.
     private static void registerGtppOreCutoverTransformers() {
         for (GtppOreCutoverTable.Entry entry : GtppOreCutoverTable.ENTRIES) {
             addItemTransformer(entry.registryName(), (originalId, tag) -> {
@@ -327,12 +321,11 @@ public class PosteaTransformers implements Runnable {
 
     /// Migrates saved placed blocks and inventory stacks of a gtPlusPlus per-material frame block
     /// (`miscutils:blockFrameGt<Name>`, one distinct registered block per material at meta 0) into the
-    /// equivalent MaterialLib `frameGt` shape stack. Unlike every metadata-keyed legacy part, the material is
-    /// fixed by which registry name is being migrated rather than by a damage value, so each of
-    /// [GtppFrameCutoverTable]'s materials gets its own registration instead of sharing
-    /// one metadata-keyed handler. `addSimpleReplacement`'s block+meta overload registers a matching item
-    /// replacement automatically, so no separate item-side call is needed. A material whose frame shape did
-    /// not generate is left on its legacy slot.
+    /// equivalent MaterialLib `frameGt` shape stack. The material is fixed by the registry name rather than by
+    /// a damage value, so each of [GtppFrameCutoverTable]'s materials gets its own registration.
+    /// `addSimpleReplacement`'s block+meta overload registers a matching item replacement automatically, so no
+    /// separate item-side call is needed. A material whose frame shape did not generate is left on its legacy
+    /// slot.
     private static void registerGtppFrameCutoverTransformers() {
         Material[] materials = GtppFrameCutoverTable.materials();
         int count = 0;
@@ -349,16 +342,11 @@ public class PosteaTransformers implements Runnable {
 
     /// Migrates saved gtPlusPlus per-material part stacks (`miscutils:item*`/`miscutils:block*`, one distinct
     /// registered item/block per (material, prefix), always damage 0) into the equivalent MaterialLib stack,
-    /// resolved through [GtppItemCutoverTable]'s pinned (prefix, material, registry name) rows -- the
-    /// gtPlusPlus counterpart of [#registerWerkstoffItemCutoverTransformers], differing only in that each row
-    /// is its own registered item/block rather than a damage variant of a shared meta-item, so no damage
-    /// read/branch is needed. `cell` rows resolve through [MaterialParts#cell] instead of plain
-    /// [MaterialParts#stack], since a
-    /// row's material may have claimed `cellMolten` rather than `cell` -- see that method's javadoc.
-    /// `frameGt` is out of the table and migrates separately. `block` rows additionally get a
-    /// [BlockReplacementManager] handler for placed instances, since a storage block (unlike every other gtpp
-    /// part) is placeable; a row whose material carries no `block` shape resolves null from [MaterialParts#stack] same
-    /// as any other prefix, leaving the legacy slot canonical.
+    /// resolved through [GtppItemCutoverTable]'s pinned (prefix, material, registry name) rows. `cell` rows
+    /// resolve through [MaterialParts#cell] instead of plain [MaterialParts#stack] -- see that method's
+    /// javadoc. `frameGt` is out of the table and migrates separately. `block` rows additionally get a
+    /// [BlockReplacementManager] handler for placed instances, since a storage block is placeable. A row whose
+    /// material carries no shape for its prefix is left on its legacy slot.
     private static void registerGtppItemCutoverTransformers() {
         for (Entry entry : GtppItemCutoverTable.ENTRIES) {
             addItemTransformer(entry.registryName(), (originalId, tag) -> {
@@ -391,14 +379,9 @@ public class PosteaTransformers implements Runnable {
         return MaterialParts.stack(entry.prefix(), material, 1);
     }
 
-    /// The materials whose legacy `cell` item was `miscutils:itemCell<Name>`, the same naming convention as
-    /// every other gtPlusPlus-owned cell, but for which [GtppItemCutoverTable] holds no row: that table is
-    /// generated purely from a pinned registry dump, and the dump never captured that id for them. Most are
-    /// plain gregtech elements whose own fluid/cell cutover claims the oredict `cell<Name>` slot before gtpp's
-    /// `Material` construction ever runs, so the dump recorded a gregtech-owned `materiallib:cell` stack in
-    /// their place; `ZirconiumTetrafluoride`'s gtpp cell carried no `itemCell` prefix, so only its unprefixed
-    /// id reached the dump. They are migrated by hand instead, to the same fallback [MaterialParts#cell] every
-    /// other gtpp cell resolves through.
+    /// The materials whose legacy `cell` item was `miscutils:itemCell<Name>` but for which
+    /// [GtppItemCutoverTable] holds no row. They are migrated by hand here, to the same [MaterialParts#cell]
+    /// fallback every other gtpp cell resolves through.
     private static void registerGtppCarryoverCellTransformers() {
         registerGtppCarryoverCellTransformer("Iodine");
         registerGtppCarryoverCellTransformer("ThoriumTetrafluoride");
@@ -417,18 +400,9 @@ public class PosteaTransformers implements Runnable {
         addItemReplacement("miscutils:itemCell" + materialName, cutover);
     }
 
-    /// Migrates saved bartworks werkstoff item stacks (`bartworks:gt.bwMetaGenerated<prefix>`, damage =
-    /// werkstoff id) into the equivalent MaterialLib stack, resolved through [LegacyWerkstoffIndex] exactly
-    /// like the live item path ([MaterialParts#stack]). Damages of
-    /// werkstoffe unknown to MaterialLib (a third-party mod's own werkstoff ids) pass through unchanged. Ore/small ore
-    /// migrate through [BWOreAdapter] instead (block-kind, no `bw.bwMetaGenerated<prefix>` item exists for
-    /// them); storage blocks migrate through [#registerWerkstoffBlockCutoverTransformer]. The casing slots
-    /// (`blockCasing`/`blockCasingAdvanced`) stay legacy-canonical: multiblock structure matchers reference
-    /// the legacy casing blocks by identity.
     /// The part prefixes the legacy bartworks meta items covered, one item each, registered as
-    /// `bartworks:gt.bwMetaGenerated<prefix>`. Declared rather than read off the live items because the items
-    /// themselves are gone: a saved stack still names them, so the migration has to keep answering for every
-    /// prefix they ever occupied.
+    /// `bartworks:gt.bwMetaGenerated<prefix>`. Declared here because those items no longer exist, while saved
+    /// stacks still name them.
     private static final OrePrefixes[] LEGACY_WERKSTOFF_ITEM_PREFIXES = { OrePrefixes.dust, OrePrefixes.dustTiny,
         OrePrefixes.dustSmall, OrePrefixes.ingot, OrePrefixes.ingotHot, OrePrefixes.nugget, OrePrefixes.gem,
         OrePrefixes.gemChipped, OrePrefixes.gemExquisite, OrePrefixes.gemFlawed, OrePrefixes.gemFlawless,
@@ -441,6 +415,14 @@ public class PosteaTransformers implements Runnable {
         OrePrefixes.plateDense, OrePrefixes.plateSuperdense, OrePrefixes.plateTriple, OrePrefixes.plateQuadruple,
         OrePrefixes.plateQuintuple, OrePrefixes.cellMolten };
 
+    /// Migrates saved bartworks werkstoff item stacks (`bartworks:gt.bwMetaGenerated<prefix>`, damage =
+    /// werkstoff id) into the equivalent MaterialLib stack, resolved through [LegacyWerkstoffIndex] exactly
+    /// like the live item path ([MaterialParts#stack]). Damages of werkstoffe unknown to MaterialLib (a
+    /// third-party mod's own werkstoff ids) pass through unchanged. Ore and small ore migrate through
+    /// [BWOreAdapter] instead (block-kind, with no `bw.bwMetaGenerated<prefix>` item); storage blocks migrate
+    /// through [#registerWerkstoffBlockCutoverTransformer]. The casing slots
+    /// (`blockCasing`/`blockCasingAdvanced`) stay legacy-canonical: multiblock structure matchers reference
+    /// the legacy casing blocks by identity.
     private static void registerWerkstoffItemCutoverTransformers() {
         for (OrePrefixes prefix : LEGACY_WERKSTOFF_ITEM_PREFIXES) {
             addItemTransformer("bartworks:gt.bwMetaGenerated" + prefix.getName(), (originalId, tag) -> {
@@ -460,11 +442,10 @@ public class PosteaTransformers implements Runnable {
     }
 
     /// Migrates saved placed blocks and item stacks of a cut-over material's legacy storage-block slot (see
-    /// [BlockMetal], [MaterialParts]) into the equivalent MaterialLib block stack. `addSimpleReplacement`'s block+meta
-    /// overload registers a matching item replacement automatically, so no separate item-side call is needed.
-    /// Materials that did not cut over are skipped: their
-    /// slot stays legacy, and the legacy block instance itself is never removed (see [BlockMetal]'s javadoc), so
-    /// nothing needs migrating for them.
+    /// [BlockMetal], [MaterialParts]) into the equivalent MaterialLib block stack. `addSimpleReplacement`'s
+    /// block+meta overload registers a matching item replacement automatically, so no separate item-side call
+    /// is needed. Materials that did not cut over keep their legacy slot, which stays registered (see
+    /// [BlockMetal]'s javadoc).
     private static void registerStorageBlockCutoverTransformers() {
         registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal1", GregTechAPI.sBlockMetal1);
         registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal2", GregTechAPI.sBlockMetal2);
@@ -495,10 +476,10 @@ public class PosteaTransformers implements Runnable {
 
     /// Migrates saved placed (TE-based) and inventory bartworks werkstoff storage-block stacks (`m`/`Damage` =
     /// werkstoff id) into the equivalent MaterialLib block stack, resolved through [LegacyWerkstoffIndex]
-    /// exactly like the live item path ([MaterialParts#stack]). Third-party
-    /// werkstoffe unknown to MaterialLib pass through unchanged, leaving the legacy slot canonical for them.
-    /// `bw.werkstoffblockTE` already has a handler registered by [#removeWerkstoffTileEntities]; Postea tries
-    /// each registered handler in turn until one returns non-null, so the two coexist without conflict.
+    /// exactly like the live item path ([MaterialParts#stack]). Third-party werkstoffe unknown to MaterialLib
+    /// pass through unchanged, leaving the legacy slot canonical for them. `bw.werkstoffblockTE` already has a
+    /// handler registered by [#removeWerkstoffTileEntities]; Postea tries each registered handler in turn
+    /// until one returns non-null, so the two coexist.
     private static void registerWerkstoffBlockCutoverTransformer(String teId, String itemId, OrePrefixes prefix) {
         TileEntityReplacementManager.tileEntityTransformer(teId, (tag, world, chunk) -> {
             Material material = LegacyWerkstoffIndex.get(tag.getShort("m"));

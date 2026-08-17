@@ -111,8 +111,7 @@ public class CrackRecipeAdder {
             EUt / 3);
     }
 
-    /// `material` must carry `dust` and, above 1750 K, `ingotHot` -- see
-    /// [goodgenerator.loader.RecipeLoader2]'s declared caller list.
+    /// `material` must carry `dust` and, above 1750 K, `ingotHot`.
     public static void reAddBlastRecipe(Material material, int duration, int EUt, int level, boolean gas) {
         ItemStack input = MaterialLibAPI.getStack(material, Shapes.dust, 1);
         ItemStack output = level > 1750 ? MaterialLibAPI.getStack(material, Shapes.ingotHot, 1)
@@ -195,8 +194,7 @@ public class CrackRecipeAdder {
         return new FluidStack(fluid.getFluid(), amount);
     }
 
-    /// `material` must carry `ingot` and the `pipeTiny`..`pipeHuge` ladder -- see
-    /// [PipeMaterials] for which materials do.
+    /// `material` must carry `ingot` and the `pipeTiny`..`pipeHuge` ladder.
     public static void registerPipe(Material material) {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1), ItemList.Shape_Extruder_Pipe_Tiny.get(0))
@@ -265,8 +263,7 @@ public class CrackRecipeAdder {
             .addTo(fluidSolidifierRecipes);
     }
 
-    /// `material` must carry `ingot`, `stick` and the `wireGt01`..`wireGt16` ladder -- see
-    /// [PipeMaterials] for which materials do.
+    /// `material` must carry `ingot`, `stick` and the `wireGt01`..`wireGt16` ladder.
     public static void registerWire(Material material) {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(material, Shapes.ingot, 1))

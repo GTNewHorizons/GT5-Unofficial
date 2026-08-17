@@ -23,8 +23,7 @@ import gregtech.client.iconContainers.items.MLItemIconContainer;
 /// every shape gets.
 ///
 /// Containers are interned per name and material because renderers ask for them once per frame and
-/// [gregtech.api.render.TextureFactory] deduplicates the textures it builds by container identity. Materials are
-/// singletons, so they key by reference and no numeric index enters the cache.
+/// [gregtech.api.render.TextureFactory] deduplicates the textures it builds by container identity.
 public final class GTMaterialIcons {
 
     private GTMaterialIcons() {}
@@ -58,10 +57,8 @@ public final class GTMaterialIcons {
             () -> new MLBlockIconContainer(name, OreShapes.ICON_VARIANT, material, 1));
     }
 
-    /// Whether any item art exists under `prefix`'s name, replacing the legacy "does this prefix carry a texture
-    /// index" gate. Answerable on a dedicated server: the shape registry is common data and the icon-set names are
-    /// plain strings. Fails when the name belongs to a block or fluid shape, which would mean a caller asked for
-    /// the item form of art that has none.
+    /// Whether any item art exists under `prefix`'s name. Answerable on a dedicated server: the shape registry is
+    /// common data and the icon-set names are plain strings. False for a name belonging to a block or fluid shape.
     public static boolean hasItemIcon(OrePrefixes prefix) {
         String name = prefix.name();
         return GTMaterialIconSets.ITEM_NAMES.contains(name) || ShapeRegistry.instance()
@@ -69,8 +66,8 @@ public final class GTMaterialIcons {
     }
 
     /// The item-atlas icon identifier for `name` in the texture set `setName`, or the `NONE` set's when that set
-    /// ships no such file -- the tail of the chain a shape's icons resolve through. For the handful of items that
-    /// register material art straight into the atlas rather than drawing it through an [IIconContainer].
+    /// ships no such file -- the tail of the chain a shape's icons resolve through. For an item that registers
+    /// material art straight into the atlas instead of drawing it through an [IIconContainer].
     public static String itemIconPath(String setName, String name) {
         String path = "gregtech:materials/" + setName + "/" + name;
         if (ResourceUtils.resourceExists(ResourceUtils.getCompleteItemTextureResourceLocation(path))) return path;

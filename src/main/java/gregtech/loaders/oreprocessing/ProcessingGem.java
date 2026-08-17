@@ -274,7 +274,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         .addTo(GTRecipeConstants.Fuel);
                 }
 
-                // Forge-hammer the lowest gem tier straight to dust, ported from the retired bartworks GemLoader.
+                // Forge-hammer recipes
                 if (GTOreDictUnificator.get(OrePrefixes.dustTiny, material, 1L) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))

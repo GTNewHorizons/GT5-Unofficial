@@ -31,7 +31,7 @@ import gregtech.api.material.MaterialUtils;
  */
 public class DetravToolElectricProspectorBase implements IToolStats {
 
-    /// The prospector art of each tier, indexed the way [DetravToolElectricProspector] selects it.
+    /// The prospector art of each tier, from the basic scanner up to UHV.
     public static final String[] PROSPECTOR_ICONS = { "toolProspector", "toolProspectorElectricLuV",
         "toolProspectorElectricZPM", "toolProspectorElectricUV", "toolProspectorElectricUHV" };
 

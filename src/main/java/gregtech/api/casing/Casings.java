@@ -666,12 +666,9 @@ public enum Casings implements ICasing {
     // ------------------ Bartworks Casings -----------------
 
     // spotless:off
-    // These four materials are ordinary MaterialLib materials, not bartworks-declared ones. The corresponding
-    // MaterialLib material carries the casing shape membership directly (added at codegen time), so
-    // #bwCasing resolves through MaterialUtils#byLegacyName the same way GTOreAdapter resolves any other GT material.
-    // The block/meta constructor args below are unused (both accessors are overridden to resolve dynamically --
-    // see #bwCasing's javadoc); they're kept as the legacy werkstoff id purely so the pair stays readable next
-    // to the textureId, which keeps its legacy raw-id value.
+    // The block/meta constructor args below are unused -- both accessors are overridden to resolve through
+    // #bwCasing -- and are kept as the legacy werkstoff id so the pair stays readable next to the textureId,
+    // which keeps its legacy raw-id value.
     BoltedOsmiridiumCasing(() -> LoaderLegacyBartworksBlocks.casings, 32083, 32083) {
 
         @Override
@@ -1114,31 +1111,15 @@ public enum Casings implements ICasing {
         return BlockGTCasingsTT.textureOffset + id;
     }
 
-    /// Cache for [#bwCasing], keyed `material.mName + (advanced ? "!adv" : "")`.
+    /// Cache for [#bwCasing], keyed `internalName(material) + (advanced ? "!adv" : "")`.
     private static final Map<String, ImmutableBlockMeta> BW_CASING_CACHE = new ConcurrentHashMap<>();
 
     /// Resolves one of the eight bolted/rebolted casing constants (see the "Bartworks Casings" section above) to
-    /// its MaterialLib block+meta, dynamically and lazily.
+    /// its MaterialLib block+meta.
     ///
-    /// This is the design this stage settled on for the casings block cutover: `Casings`' other ~300 constants
-    /// keep a compile-time `int meta` (assigned at enum class-init, alongside the multiblock structure matchers
-    /// that reference several of them by identity), which cannot hold a MaterialLib global-index meta -- that
-    /// index is only known once MaterialLib finishes registering materials, well after `Casings`' own class-init.
-    /// Rather than changing the shared constructor/field (which every other constant also uses, including
-    /// several with their own per-constant `getBlock()`/`getBlockMeta()` overrides already, e.g.
-    /// [#AlchemicalCasing]), only these eight constants override [#getBlock()]/[#getBlockMeta()] to resolve
-    /// through this method instead of reading the stored fields -- the same per-constant-override idiom this
-    /// enum already uses. `ICasing#asElement()`'s default implementation wraps both calls in
-    /// `StructureUtility.lazy(...)`, so they run at first structure check (long after MaterialLib registration),
-    /// not at class-init, making this safe under the class-init trap that bit the ore/block shape declarations
-    /// (see `OreShapes`'s javadoc): this method touches `MaterialParts`/MaterialLib only from that lazy call,
-    /// never eagerly.
-    ///
-    /// Verified against the three call sites that reference these eight constants directly (`asElement()`, not
-    /// raw block/meta literals): `MTEVoidMiners` (Osmiridium/NaquadahAlloy/Iridium casings, x3 tiers) and
-    /// `MTEIndustrialArcFurnace` (kubatech) -- a runServer boot resolving all eight through this method (via a
-    /// temporary verification hook) confirmed every one lands on the correct blockCasing/
-    /// blockCasingAdvanced variant of its material.
+    /// A MaterialLib global index is known only once material registration finishes, well after `Casings`'
+    /// class-init, so the stored `meta` field the other constants use cannot hold one. `ICasing#asElement()`
+    /// wraps this in `StructureUtility.lazy(...)`, so it first runs at structure check.
     private static ImmutableBlockMeta bwCasing(Material material, boolean advanced) {
         return BW_CASING_CACHE.computeIfAbsent(MaterialUtils.internalName(material) + (advanced ? "!adv" : ""), k -> {
             Shape shape = advanced ? BlockShapes.blockCasingAdvanced : BlockShapes.blockCasing;

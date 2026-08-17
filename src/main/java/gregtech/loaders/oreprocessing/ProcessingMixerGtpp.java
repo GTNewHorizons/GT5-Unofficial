@@ -20,8 +20,8 @@ import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTRecipeBuilder;
 
-/// Reproduces gtPlusPlus's `RecipeGenDustGeneration` mixer-recipe generation (ratio of component dusts ->
-/// alloy dust) for every material in [#ELIGIBLE]. Dispatched once per eligible material by
+/// The composite mixer recipes (ratio of component dusts -> alloy dust) for every material in [#ELIGIBLE].
+/// Dispatched once per eligible material by
 /// [gregtech.loaders.shapeconsumers.ConsumerMixerGtpp]. Ratio data is shared with
 /// [ProcessingAlloyBlastSmelter] through [LegacyGTPPComposites], but eligibility is this class's own: some
 /// table entries never reached the legacy mixer block (they are alloy-blast-smelter-only), and some materials
@@ -83,9 +83,8 @@ public class ProcessingMixerGtpp implements IOreRecipeRegistrator {
             .addTo(mixerRecipes);
     }
 
-    /// `EglinSteelBaseCompound` is gtpp's one composite material dispatched through
-    /// `RecipeGenDustGeneration#addMixerRecipe_Standalone` instead of the ordinary `generateRecipes` mixer
-    /// block: a flat circuit 20 below 4 inputs, rather than a circuit keyed 11/12/13 by input count.
+    /// The integrated circuit a recipe takes, keyed 11/12/13 by input count. `EglinSteelBaseCompound` is the
+    /// one material on a flat circuit 20 instead. A negative result means no circuit input.
     private static int circuitFor(Material material, int inputCount) {
         if (material == Materials.EglinSteelBaseCompound) return inputCount <= 3 ? 20 : -1;
         return switch (inputCount) {

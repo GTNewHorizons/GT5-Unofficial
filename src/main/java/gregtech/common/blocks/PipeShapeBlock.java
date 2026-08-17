@@ -40,8 +40,7 @@ import gregtech.common.render.GTRendererBlock;
 /// The block backing one pipe-family MaterialLib shape (a wire, cable, fluid pipe, or item pipe of one
 /// size): metadata is the material's global index, and every placement carries a [BaseMetaPipeEntity]
 /// whose meta tile entity is the single material-agnostic instance registered for this shape's [#mteId].
-/// World behavior (collision, redstone, drops, updates) mirrors the machine block that hosts the legacy
-/// per-material pipe MTEs.
+/// World behavior (collision, redstone, drops, updates) mirrors [BlockMachines].
 public class PipeShapeBlock extends ShapeBlock {
 
     /// The pipe kind a shape belongs to, deciding harvest tool, tile entity kind, and stat derivation.

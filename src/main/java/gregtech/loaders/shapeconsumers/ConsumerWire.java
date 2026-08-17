@@ -9,10 +9,9 @@ import gregtech.loaders.oreprocessing.ProcessingWire;
 
 /// Dispatches [ProcessingWire]'s recipe generation for the six wire shapes.
 ///
-/// The superconductor wire markers ([GTMaterialProperties#IS_SUPERCONDUCTOR]) generate the wire shapes, and
-/// their `wireGt02`..`wireGt16` assembler recipes come from the `wireGt01` dispatch's wire-combining branch,
-/// which fires for the markers like for any other wire material. The thicker wire shapes skip the markers, so
-/// the down-crafting recipes that split a thick wire back into thinner ones are not emitted for them.
+/// The thicker shapes skip the superconductor wire markers
+/// ([GTMaterialProperties#IS_SUPERCONDUCTOR]): their `wireGt02`..`wireGt16` assembler recipes already come
+/// from the `wireGt01` dispatch's wire-combining branch, and they carry no down-crafting recipes.
 public final class ConsumerWire {
 
     private ConsumerWire() {}

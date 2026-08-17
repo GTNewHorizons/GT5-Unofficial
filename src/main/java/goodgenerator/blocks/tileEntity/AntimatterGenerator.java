@@ -28,6 +28,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.ItemRegistry;
@@ -153,15 +154,13 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     public void createEU(long antimatter, FluidStack catalyst) {
         Float modifier = null;
 
-        if (catalyst.isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Copper, FluidShapes.fluidMolten, 1))) {
+        if (isMolten(catalyst, Materials.Copper)) {
             modifier = 1.0F;
-        } else if (catalyst
-            .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.SuperconductorUIVBase, FluidShapes.fluidMolten, 1))) {
-                modifier = 1.02F;
-            } else if (catalyst.isFluidEqual(
-                MaterialLibAPI.getFluidStack(Materials.SuperconductorUMVBase, FluidShapes.fluidMolten, 1))) {
-                    modifier = 1.03F;
-                }
+        } else if (isMolten(catalyst, Materials.SuperconductorUIVBase)) {
+            modifier = 1.02F;
+        } else if (isMolten(catalyst, Materials.SuperconductorUMVBase)) {
+            modifier = 1.03F;
+        }
         long catalystCount = catalyst.amount;
         long generatedEU = 0;
 
@@ -199,6 +198,10 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
                 tHatch.setEUVar(tHatch.getEUVar() + (long) (generatedEU * invHatchCount));
             }
         }
+    }
+
+    private static boolean isMolten(FluidStack stack, Material material) {
+        return stack.isFluidEqual(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, 1));
     }
 
     @Override

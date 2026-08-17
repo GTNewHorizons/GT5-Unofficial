@@ -103,9 +103,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 }
 
-                // crafting recipe; the superconductor wire markers dispatch here only to reproduce the wire-
-                // combining assembler recipes below (see gregtech.loaders.shapeconsumers.ConsumerWire) and
-                // never had a plate crafting recipe, so they skip this block.
+                // crafting recipe
                 Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
                 if (!material.getProperty(GTMaterialProperties.IS_SUPERCONDUCTOR)
                     && !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))

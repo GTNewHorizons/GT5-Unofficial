@@ -93,10 +93,8 @@ public class BWWorldGenUtil {
         return meta;
     }
 
-    /// The pipe shape and material a Ross Ruin of `tier` runs its cable line in. The config stores the legacy
-    /// per-material pipe MTE id, which no longer names a registered MetaTileEntity, so the id is resolved through
-    /// [LegacyPipeCutoverTable] -- the same table [gregtech.loaders.postload.PosteaTransformers] migrates saved
-    /// pipes with -- instead of through [GregTechAPI#METATILEENTITIES].
+    /// The pipe shape and material a Ross Ruin of `tier` runs its cable line in. The config stores a
+    /// per-material pipe MTE id, which [LegacyPipeCutoverTable] resolves.
     public static LegacyPipeCutoverTable.Entry getCable(Random rand, int tier) {
         int meta, randomIndex;
         switch (tier) {

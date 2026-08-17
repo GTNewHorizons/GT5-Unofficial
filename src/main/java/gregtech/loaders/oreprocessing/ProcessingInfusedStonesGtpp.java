@@ -15,13 +15,10 @@ import gregtech.api.enums.materials.Shapes;
 /// `InfusedWater`, restoring the [ProcessingDust] recipes (implosion compressor, autoclave, magic fuels) that
 /// depend on it.
 ///
-/// These four are real legacy-named materials (carrying a `GTMaterialProperties#OLD_SUB_ID` of 540-543), so
-/// MaterialLib registers their canonical dust item into Forge's `OreDictionary` during its own early
-/// resolution, before `GTProxy#catchUpPreExistingOreDictEntries` replays existing entries -- but that replay
-/// itself runs from GT's preInit before `LoaderOreProcessing` constructs [ProcessingDust] and adds it as a
-/// `dust`-prefix listener, so
-/// the replay finds no listener to notify. Nothing re-registers the same (name, stack) pair afterward for
-/// `GTOreDictUnificator` to fire a second event from, so this replays the notification directly.
+/// These four are real legacy-named materials, so MaterialLib registers their canonical dust into Forge's
+/// `OreDictionary` before `LoaderOreProcessing` has constructed [ProcessingDust] as a `dust`-prefix listener.
+/// `GTProxy#catchUpPreExistingOreDictEntries` has already replayed existing entries by then, and nothing
+/// re-registers the same (name, stack) pair afterward, so this replays the notification directly.
 public final class ProcessingInfusedStonesGtpp {
 
     private ProcessingInfusedStonesGtpp() {}

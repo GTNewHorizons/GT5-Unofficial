@@ -7,16 +7,15 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.GTMaterialTextures;
 import gregtech.api.render.ISBRContext;
 
-/// A material texture held by its owner rather than rebuilt per draw. The texture it delegates to reads the
-/// container's layers on every draw, leaving only the layer-0 tint to resolve: that is taken from the supplier on
-/// the first face drawn after each atlas stitch, so a texture built before the first stitch, or kept across a
-/// resource reload, still tints with the material's current color.
+/// A material texture a caller can hold across atlas stitches and resource reloads. The delegate texture reads
+/// the container's layers on every draw; the layer-0 tint is taken from the supplier on the first face drawn
+/// after each stitch, so a held texture always tints with the material's current color.
 ///
 /// Faces draw from several chunk meshing threads, so the rebuild is lock free -- one volatile field holds an
 /// immutable generation-and-texture pair, and a race costs at most a duplicate build.
 ///
-/// [#isValidTexture] is constant: [gregtech.api.covers.CoverRegistry] vets a cover texture at registration, on a
-/// dedicated server and before any atlas exists, and that check must not force a build.
+/// [#isValidTexture] is constant because [gregtech.api.covers.CoverRegistry] vets a cover texture on a
+/// dedicated server, where no atlas exists and a build must not be forced.
 public final class GTStitchedMaterialTexture implements ITexture {
 
     private static volatile int generation;
@@ -33,7 +32,7 @@ public final class GTStitchedMaterialTexture implements ITexture {
         this.glow = glow;
     }
 
-    /// Marks every stored texture stale, so the next face each one draws recomposes it against the new atlas.
+    /// Marks every stored texture stale; each recomposes against the new atlas on its next drawn face.
     public static void onAtlasStitched() {
         generation++;
     }

@@ -111,11 +111,9 @@ public class GregtechSimpleWasher {
                 .getStackForm(1L));
     }
 
-    /// Washes each impure and purified dust back to its clean dust, across the three material domains the
-    /// legacy loop covered: the gregtech-named materials through the ore dictionary, the werkstoff part set
-    /// through [#werkstoffStack], and the gtPlusPlus materials through their MaterialLib shapes. The gtpp loop
-    /// tests the ore shapes itself because [GTMaterialProperties#GTPP_STATE] marks a gtPlusPlus-family
-    /// material, not an ore material -- most of them carry no dust at all.
+    /// Washes each impure and purified dust back to its clean dust, across three material domains: the
+    /// gregtech-named materials through the ore dictionary, the werkstoff part set through [#werkstoffStack],
+    /// and the gtPlusPlus materials through their MaterialLib shapes.
     private static boolean generateDirtyDustRecipes() {
         int mRecipeCount = 0;
         // Generate Recipe Map for the Dust Washer.
@@ -175,16 +173,14 @@ public class GregtechSimpleWasher {
             .size() > mRecipeCount;
     }
 
-    /// Resolves a part the legacy werkstoff system generated, or null when it did not generate that prefix --
-    /// gregtech's part autogen covers shapes the werkstoff system never had, so a plain stack lookup would
-    /// wash materials this loop never covered.
+    /// The `prefix` part of `material` when the werkstoff system generated that prefix, otherwise null.
     private static ItemStack werkstoffStack(com.ruling_0.materiallib.api.Material material, OrePrefixes prefix) {
         return LegacyWerkstoffIndex.generatesPrefix(material, prefix) ? MaterialParts.stack(prefix, material, 1L)
             : null;
     }
 
     /// Washes each crushed ore to its purified form, across the same three material domains
-    /// [#generateDirtyDustRecipes] covers and with the same gtpp shape test.
+    /// [#generateDirtyDustRecipes] covers.
     private static boolean generateDirtyCrushedRecipes() {
         int mRecipeCount = simpleWasherRecipes.getAllRecipes()
             .size();

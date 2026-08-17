@@ -683,8 +683,8 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         } else {
             NBTTagCompound tag = new NBTTagCompound();
             ((BaseMetaPipeEntity) base).writeToNBT(tag);
-            // Detach the tile entity first: the old block's breakBlock would otherwise scatter the pipe's
-            // inventory (which the captured NBT already carries) and record a stale temporary tile entity.
+            // Detach the tile entity first: the old block's breakBlock scatters the pipe's inventory, which the
+            // captured NBT already carries.
             world.removeTileEntity(x, y, z);
             world.setBlock(x, y, z, handShape, newIndex, 3);
             if (!(world.getTileEntity(x, y, z) instanceof BaseMetaPipeEntity newBase)) return;

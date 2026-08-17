@@ -18,14 +18,12 @@ import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTOreDictUnificator;
 
-/// One of 13 hand-curated batches of up to 16 [Material]s (metadata = array index), instantiated unconditionally
-/// in `LoaderGTBlockFluid` regardless of whether any of its materials cut over to the MaterialLib `block` shape
-/// (see [BlockShapes]) -- unlike the item cutover, which skips
-/// constructing a legacy slot entirely, several of these 13 instances are hard-referenced by `Block` identity
-/// from multiblock casing matchers, a machine-block-update listener, and a client-side icon fallback, so the
-/// instances themselves must keep existing and registering for every material, cut over or not. Only the canonical
-/// [gregtech.api.util.GTOreDictUnificator] association moves to the MaterialLib stack for a cut-over material's
-/// slot (and that slot is hidden from NEI); the legacy item and block remain fully functional at every slot.
+/// One of 13 hand-curated batches of up to 16 [Material]s (metadata = array index). Every batch is instantiated
+/// and registers every slot, whether or not its materials cut over to the MaterialLib `block` shape (see
+/// [BlockShapes]), because multiblock casing matchers, a machine-block-update listener and a client-side icon
+/// fallback hold these instances by `Block` identity. For a cut-over material only the canonical
+/// [gregtech.api.util.GTOreDictUnificator] association moves to the MaterialLib stack, and that slot is hidden
+/// from NEI; the block and item stay functional at every slot.
 ///
 /// A null batch entry is a retired slot: the material it held is gone, but the index stays so the metadata of
 /// every slot after it is unchanged for saved blocks. Such a slot generates nothing and is hidden from NEI.

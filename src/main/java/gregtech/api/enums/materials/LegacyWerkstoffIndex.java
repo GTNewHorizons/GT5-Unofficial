@@ -47,11 +47,6 @@ public class LegacyWerkstoffIndex {
         return INDEX.get(id);
     }
 
-    /// The number of occupied slots.
-    public static int size() {
-        return size;
-    }
-
     /// The legacy werkstoff id a material occupies, or -1 when it carries none. The inverse of [#get], for the
     /// legacy bartworks blocks that address a material by its id as block metadata.
     public static int idOf(@Nullable Material material) {
@@ -61,15 +56,11 @@ public class LegacyWerkstoffIndex {
     }
 
     /// Whether the werkstoff part set covers `prefix` for this material, read from
-    /// [GTMaterialProperties#WERKSTOFF_PREFIXES]. This is narrower than asking whether the material resolves a
-    /// stack for the prefix: gregtech's own part autogen covers shapes the werkstoff part set never named, so a
-    /// recipe loader that must stay confined to that set has to gate on this rather than on a successful stack
-    /// lookup.
+    /// [GTMaterialProperties#WERKSTOFF_PREFIXES]. Narrower than asking whether the material resolves a stack
+    /// for the prefix: gregtech's own part autogen covers shapes the werkstoff part set never named.
     ///
-    /// A material that also carries [GTMaterialProperties#OLD_SUB_ID] is a merged declaration whose parts
-    /// gregtech owns outright (Salt, RockSalt, Spodumene and the like, declared in both families), so it names
-    /// no werkstoff parts at all -- gregtech's own loaders already cover it, and answering true here would
-    /// duplicate their recipes.
+    /// False for a material also carrying [GTMaterialProperties#OLD_SUB_ID] -- a merged declaration whose
+    /// parts gregtech owns outright (Salt, RockSalt, Spodumene and the like), which names no werkstoff parts.
     public static boolean generatesPrefix(@Nullable Material material, OrePrefixes prefix) {
         if (material == null || material.getProperty(GTMaterialProperties.OLD_SUB_ID) != null) return false;
         List<String> prefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);

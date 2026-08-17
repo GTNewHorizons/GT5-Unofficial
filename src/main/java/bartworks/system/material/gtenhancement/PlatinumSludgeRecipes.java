@@ -848,6 +848,10 @@ public class PlatinumSludgeOverHaul {
         return false;
     }
 
+    private static boolean isMolten(FluidStack fluid, Material material) {
+        return GTUtility.areFluidsEqual(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, 1), fluid);
+    }
+
     public static boolean isMapIgnored(RecipeMap<?> map) {
         return map == fusionRecipes || map == unpackagerRecipes
             || map == packagerRecipes
@@ -975,57 +979,34 @@ public class PlatinumSludgeOverHaul {
                 if (recipe.mFakeRecipe) continue maploop;
 
                 for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
+                    FluidStack output = recipe.mFluidOutputs[i];
                     if (map == multiblockChemicalReactorRecipes || map == chemicalReactorRecipes) {
-                        if (GTUtility.areFluidsEqual(
-                            MaterialLibAPI.getFluidStack(Materials.Ruthenium, FluidShapes.fluidMolten, 1),
-                            recipe.mFluidOutputs[i])
-                            || GTUtility.areFluidsEqual(
-                                MaterialLibAPI.getFluidStack(Materials.Rhodium, FluidShapes.fluidMolten, 1),
-                                recipe.mFluidOutputs[i])) {
+                        if (isMolten(output, Materials.Ruthenium) || isMolten(output, Materials.Rhodium)) {
                             toDelete.add(recipe);
                             GTLog.out.println("Recipe marked for deletion: " + displayRecipe(recipe));
-                        } else if (GTUtility.areFluidsEqual(
-                            MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 1),
-                            recipe.mFluidOutputs[i])) {
-                                recipe.mFluidOutputs[i] = MaterialLibAPI
-                                    .getFluidStack(Materials.AcidicIridiumSolution, FluidShapes.fluidLiquid, 1_000);
-                                recipe.reloadOwner();
-                                GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
-                            } else if (GTUtility.areFluidsEqual(
-                                MaterialLibAPI.getFluidStack(Materials.Platinum, FluidShapes.fluidMolten, 1),
-                                recipe.mFluidOutputs[i])) {
-                                    recipe.mFluidOutputs[i] = MaterialLibAPI
-                                        .getFluidStack(Materials.PlatinumConcentrate, FluidShapes.fluidLiquid, 2_000);
-                                    recipe.reloadOwner();
-                                    GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
-                                } else if (GTUtility.areFluidsEqual(
-                                    MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, 1),
-                                    recipe.mFluidOutputs[i])) {
-                                        recipe.mFluidOutputs[i] = MaterialLibAPI.getFluidStack(
-                                            Materials.AcidicOsmiumSolution,
-                                            FluidShapes.fluidLiquid,
-                                            1_000);
-                                        recipe.reloadOwner();
-                                        GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
-                                    }
-                    } else if (GTUtility.areFluidsEqual(
-                        MaterialLibAPI.getFluidStack(Materials.Ruthenium, FluidShapes.fluidMolten, 1),
-                        recipe.mFluidOutputs[i])
-                        || GTUtility.areFluidsEqual(
-                            MaterialLibAPI.getFluidStack(Materials.Rhodium, FluidShapes.fluidMolten, 1),
-                            recipe.mFluidOutputs[i])
-                        || GTUtility.areFluidsEqual(
-                            MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 1),
-                            recipe.mFluidOutputs[i])
-                        || GTUtility.areFluidsEqual(
-                            MaterialLibAPI.getFluidStack(Materials.Platinum, FluidShapes.fluidMolten, 1),
-                            recipe.mFluidOutputs[i])
-                        || GTUtility.areFluidsEqual(
-                            MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, 1),
-                            recipe.mFluidOutputs[i])) {
-                                toDelete.add(recipe);
-                                GTLog.out.println("Recipe marked for deletion: " + displayRecipe(recipe));
-                            }
+                        } else if (isMolten(output, Materials.Iridium)) {
+                            recipe.mFluidOutputs[i] = MaterialLibAPI
+                                .getFluidStack(Materials.AcidicIridiumSolution, FluidShapes.fluidLiquid, 1_000);
+                            recipe.reloadOwner();
+                            GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
+                        } else if (isMolten(output, Materials.Platinum)) {
+                            recipe.mFluidOutputs[i] = MaterialLibAPI
+                                .getFluidStack(Materials.PlatinumConcentrate, FluidShapes.fluidLiquid, 2_000);
+                            recipe.reloadOwner();
+                            GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
+                        } else if (isMolten(output, Materials.Osmium)) {
+                            recipe.mFluidOutputs[i] = MaterialLibAPI
+                                .getFluidStack(Materials.AcidicOsmiumSolution, FluidShapes.fluidLiquid, 1_000);
+                            recipe.reloadOwner();
+                            GTLog.out.println("Recipe edited: " + displayRecipe(recipe));
+                        }
+                    } else if (isMolten(output, Materials.Ruthenium) || isMolten(output, Materials.Rhodium)
+                        || isMolten(output, Materials.Iridium)
+                        || isMolten(output, Materials.Platinum)
+                        || isMolten(output, Materials.Osmium)) {
+                            toDelete.add(recipe);
+                            GTLog.out.println("Recipe marked for deletion: " + displayRecipe(recipe));
+                        }
                 }
 
                 for (int i = 0; i < recipe.mOutputs.length; i++) {
@@ -1311,14 +1292,9 @@ public class PlatinumSludgeOverHaul {
         return MATERIALS_BLACKLIST.contains(association.mMaterial.mMaterial);
     }
 
-    /// Whether `stack` is a MaterialLib storage block (`BlockShapes#block`) of a werkstoff- or
-    /// gtPlusPlus-backed material -- the cutover equivalent of the legacy `bw.werkstoffblocks.01`/
-    /// `BlockBaseModular` stacks that the bartworks-modid check above (`WERKSTOFF_IDS`) and the gtpp-material
-    /// association check below (`GTPP_STATE`) blacklisted wholesale. Blacklisting it keeps this overhaul
-    /// sparing the lossless block-to-dust storage cycle (macerating a compressed Ruthenium/Rhodium/gtPlusPlus-
-    /// material block returns its own dust). Deliberately narrow: a material's
-    /// other MaterialLib stacks (ore, crushed, dust, ...) stay subject to the overhaul the same way GT-modid
-    /// inputs always were.
+    /// Whether `stack` is a storage block (`BlockShapes#block`) of a werkstoff- or gtPlusPlus-backed material.
+    /// Such blocks are exempt from the overhaul, which keeps the block-to-dust storage cycle lossless. A
+    /// material's other stacks (ore, crushed, dust, ...) stay subject to it.
     private static boolean isCutOverStorageBlock(ItemStack stack) {
         Block block = Block.getBlockFromItem(stack.getItem());
         if (block == null) return false;

@@ -39,8 +39,7 @@ public final class MaterialFormulas {
 
     /// Builds the `"Material." + name.toLowerCase() + ".ChemicalFormula"` localization key the lang files use
     /// for a material's formula string, where `name` is [GTMaterialProperties#LEGACY_NAME] when present, else
-    /// the MaterialLib registration name. A bartworks-origin material's own internal name (lowercased) resolves
-    /// to the same key format, so one scheme serves every localized-formula material regardless of origin.
+    /// the MaterialLib registration name.
     private static String formulaKey(Material material) {
         return MaterialUtils.localizedNameKey(material) + ".ChemicalFormula";
     }

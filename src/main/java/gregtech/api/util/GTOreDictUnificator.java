@@ -46,10 +46,8 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 /// class is the single ore-dictionary unification authority: MaterialLib-backed names unify here like every
 /// other name.
 ///
-/// Keyed by [OrePrefixes] throughout, because an association starts from an ore-dictionary name. That is the
-/// permanent shape of this class, not a step toward being keyed by
-/// [com.ruling_0.materiallib.api.Shape] -- see [OrePrefixes]'s class javadoc for why the two spaces are not
-/// interchangeable.
+/// Keyed by [OrePrefixes] throughout: an association starts from an ore-dictionary name. See [OrePrefixes]'s
+/// class javadoc for why the prefix and shape spaces are not interchangeable.
 public class GTOreDictUnificator {
 
     private static final Map<String, ItemStack> sName2StackMap = new HashMap<>();

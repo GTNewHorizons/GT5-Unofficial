@@ -4,10 +4,7 @@ import gregtech.api.enums.OrePrefixes;
 
 /// The gtPlusPlus item-cutover Postea migration table: one row per legacy
 /// `miscutils:item*`/`miscutils:block*`-registered gtPlusPlus per-material part whose prefix has cut over to a
-/// MaterialLib shape. [PosteaTransformers] migrates each row's legacy stack to
-/// `MaterialParts.stack(prefix, MaterialLibAPI.getMaterial("gregtech", materialName), 1)` (`cell` rows through
-/// `MaterialParts.cell` instead, for its `cellMolten` fallback) in a single loop; a `block` row additionally
-/// gets a `BlockReplacementManager` handler, since a storage block is placeable.
+/// MaterialLib shape. See [PosteaTransformers] for how a row is migrated.
 ///
 /// `frameGt` is out of this table -- see [GtppFrameCutoverTable] -- as are five `cell` rows whose legacy item
 /// was never a `miscutils:` registration, hand-migrated in [PosteaTransformers] instead.

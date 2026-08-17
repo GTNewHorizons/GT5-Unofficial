@@ -66,12 +66,6 @@ public class PipeStatsTest {
     }
 
     @Test
-    void cableLossIsTheBaseLoss() {
-        assertEquals(0, PipeStats.cableLoss(0));
-        assertEquals(4, PipeStats.cableLoss(4));
-    }
-
-    @Test
     void fluidPipeCapacityTruncatesSmallBases() {
         assertArrayEquals(new int[] { 3, 6, 20, 40, 80 }, fluidCapacities(20));
         assertArrayEquals(new int[] { 20, 40, 120, 240, 480 }, fluidCapacities(120));

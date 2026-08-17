@@ -63,8 +63,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
         OrePrefixes.dustTiny.add(this);
     }
 
-    /// A material's own non-molten fluid, preferring its gas form over its liquid form (mirroring the werkstoff
-    /// `getFluidOrGas` the dust fluid-extractor/solidifier recipes were ported from).
+    /// A material's own non-molten fluid, preferring its gas form over its liquid form.
     private static FluidStack fluidFor(Material material, int amount) {
         return MaterialUtils.hasCorrespondingGas(material) ? MaterialUtils.gas(material, amount)
             : MaterialUtils.fluid(material, amount);
@@ -119,11 +118,9 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     if (MaterialUtils.blastFurnaceRequired(material)) {
                         GTModHandler.removeFurnaceSmelting(stack);
                         if (MaterialUtils.autoGenerateBlastFurnaceRecipes(material)) {
-                            // A material carrying the werkstoff AnaerobeSmelting/NobleGasSmelting SubTag blast-
-                            // smelts under a gas: BlastFurnaceWithGas fans one recipe out into a gas-input variant
-                            // per BlastFurnaceGasStat, so it takes circuit 11 and the base gas amount in
-                            // ADDITIVE_AMOUNT rather than the plain circuit-1 recipe. Ported from the retired
-                            // bartworks DustLoader.
+                            // A material carrying the AnaerobeSmelting/NobleGasSmelting SubTag blast-smelts under
+                            // a gas: BlastFurnaceWithGas fans one recipe out into a gas-input variant per
+                            // BlastFurnaceGasStat, keyed on circuit 11 and the base gas amount in ADDITIVE_AMOUNT.
                             boolean gasSmelting = MaterialUtils.hasSubTag(material, "AnaerobeSmelting")
                                 || MaterialUtils.hasSubTag(material, "NobleGasSmelting");
                             GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
@@ -194,9 +191,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         }
                     }
                 }
-                // A material with its own non-molten (liquid/gas) fluid: extract that fluid from its dust and
-                // solidify it back, ported from the retired bartworks CellLoader. GT's other fluid-extractor and
-                // fluid-solidifier autogen only handles the molten fluid, never a material's liquid/gas form.
+                // GT's other fluid-extractor and fluid-solidifier autogen only handles the molten fluid, so a
+                // material's own liquid/gas form gets its dust extraction and solidification here.
                 if (MaterialUtils.hasCorrespondingGas(material) || MaterialUtils.hasCorrespondingFluid(material)) {
                     long fluidEut = calculateRecipeEU(material, MaterialUtils.mass(material) > 128 ? 64 : 30);
                     GTValues.RA.stdBuilder()
@@ -445,8 +441,6 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                         break;
                     default: {
-                        // Gem materials not special-cased above (every werkstoff-derived gem reaches GT here):
-                        // dust -> gem implosion, ported from the retired bartworks GemLoader, skipped for NoBlast.
                         if (GTOreDictUnificator.get(OrePrefixes.gem, material, 1L) != null
                             && !MaterialUtils.hasSubTag(material, "NoBlast")) {
                             GTValues.RA.stdBuilder()
@@ -669,9 +663,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
     }
 
     /// Runs only the `dust` prefix's CRYSTALLISABLE autoclave recipes (see the `"dust"` case above) for a
-    /// recognition marker -- the rest of that switch depends on legacy-only state
-    /// (`mBlastFurnaceRequired`, `mMaterialList`, `mName`, ...) that a marker never carries, and no recognition
-    /// marker other than `Fluix` reaches this registrator to begin with.
+    /// recognition marker. The rest of that switch reads material state a marker never carries.
     @Override
     public void registerRecognitionOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {

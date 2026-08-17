@@ -43,30 +43,21 @@ import gregtech.api.util.GTUtility.ItemId;
 import gregtech.common.GTProxy.OreDropSystem;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 
-/// The MaterialLib-keyed [IOreAdapter] for bartworks' legacy ore family: worldgen, mining,
-/// prospecting, and the void miner place and read BW ore blocks through this singleton (via [OreManager], never
-/// [BWMetaGeneratedOres] or MaterialLib directly), mirroring [GTOreAdapter]'s port of the same pattern for GT's
-/// own ores. A legacy `bw.blockores*`/`bw.blockoresTE` meta resolves to its MaterialLib material through
-/// [LegacyWerkstoffIndex]; a meta with no entry there (unknown to MaterialLib) is left unresolved.
+/// The MaterialLib-keyed [IOreAdapter] for bartworks' ore family: worldgen, mining, prospecting, and the void
+/// miner place and read BW ore blocks through this singleton, via [OreManager]. A legacy
+/// `bw.blockores*`/`bw.blockoresTE` meta resolves to its MaterialLib material through [LegacyWerkstoffIndex];
+/// a meta with no entry there is left unresolved. BW ore uses the same `ore`/`oreSmall` [OreShapes] shapes GT
+/// ore does, on the two [StoneType]s it generates on: `Stone` (variant `"stone"`) and `Moon` (variant
+/// `"moon"`).
 ///
-/// BW only ever generated ore on two [StoneType]s, both of which already have a [OreShapes] variant
-/// declared for GT's own ores: `StoneType.Stone` -> variant `"stone"` (index 0) and `StoneType.Moon` -> variant
-/// `"moon"` (index 7). No new ore variants were needed for the BW cutover; BW ore/small-ore joins the exact same
-/// `ore`/`oreSmall` shapes GT ore uses.
+/// [#init] constructs the eight [BWMetaGeneratedOres] instances (2 stone types x {big, small} x {natural,
+/// non-natural} -- see [#legacyOres]) under their original `bw.blockores*` ids. Placed and inventory legacy ore
+/// converts to the MaterialLib equivalent as it loads (see [#registerCurrentGenTransformers]); a material whose
+/// MaterialLib ore/small-ore shape has no built stack for the requested stone-type variant falls back to the
+/// legacy block (see [#getBlock]).
 ///
-/// [#init] still constructs the eight legacy [BWMetaGeneratedOres] instances (2 stone types x {big, small} x
-/// {natural, non-natural} -- see [#legacyOres]) exactly as before, registered under their original `bw.blockores*`
-/// ids -- the same "construct, then get superseded by the MaterialLib association" pattern
-/// `BlockMetal`/`GTBlockOre` use. A material's placed/inventory legacy ore actively converts to the MaterialLib
-/// equivalent as it loads (see [#registerCurrentGenTransformers]); a material whose MaterialLib ore/small-ore
-/// shape has no built stack for the requested stone-type variant falls back to the legacy block (see
-/// [#getBlock]), keeping that legacy path alive.
-///
-/// Legacy `isNatural` distinguished a "world-generated" ore meta from a "player-placeable" one purely for the
-/// fortune-multiplier drop rule in [#getBigOreDrops]; [OreShapes]' shape space has no natural axis
-/// (mirroring [GTOreAdapter]'s own collapse of the same distinction), so both legacy natural and non-natural
-/// metas of the same (material, stone, size) collapse onto the same MaterialLib block, which always behaves as
-/// the natural case (fortune applies) once cut over.
+/// [OreShapes] has no natural axis, so both legacy natural and non-natural metas of the same (material, stone,
+/// size) resolve to the same MaterialLib block, which always behaves as the natural case (fortune applies).
 public final class BWOreAdapter implements IOreAdapter {
 
     public static BWOreAdapter INSTANCE = new BWOreAdapter();
@@ -115,9 +106,8 @@ public final class BWOreAdapter implements IOreAdapter {
             }
         }
 
-        /// The registry name (`GameRegistry.registerBlock`'s third argument) for one of this stone type's four
-        /// legacy ore blocks -- distinct from [BWMetaGeneratedOres#blockName] (the shared unlocalized name), see
-        /// this class's javadoc.
+        /// The registry name for one of this stone type's four legacy ore blocks, distinct from
+        /// [BWMetaGeneratedOres#blockName] (the shared unlocalized name).
         String registryName(boolean small, boolean natural) {
             String suffix = small ? smallSuffix : bigSuffix;
             return natural ? "bw.blockores.natural." + suffix : "bw.blockores." + suffix;
@@ -140,15 +130,10 @@ public final class BWOreAdapter implements IOreAdapter {
         registerCurrentGenTransformers();
     }
 
-    /// Decodes an ancient TE-based `bw.blockoresTE`/`bw.blockoresSmallTE` meta, or null when the meta names no
-    /// ore this adapter serves. Public for the same reason as [GTOreAdapter#getLegacyOreInfo]: a reader of raw
-    /// save data has no block to look up, since the chunk-load transformers [#init] registers have not run on
-    /// an unloaded region file. The returned [OreInfo] comes from the pool and belongs to the caller
-    /// (try-with-resources).
-    ///
-    /// That format only ever existed for [StoneType#Stone] (Moon ore was added after the switch to
-    /// [BWMetaGeneratedOres]) and never encoded a natural flag, so the stone type is fixed and the decoded ore
-    /// is always marked natural.
+    /// Decodes a TE-based `bw.blockoresTE`/`bw.blockoresSmallTE` meta, or null when the meta names no ore this
+    /// adapter serves. That format only ever existed for [StoneType#Stone] and never encoded a natural flag,
+    /// so the stone type is fixed and the decoded ore is always marked natural. The returned [OreInfo] comes
+    /// from the pool and belongs to the caller (try-with-resources).
     public @Nullable OreInfo getLegacyOreInfo(int meta, boolean small) {
         OreInfo info = OreInfo.getNewInfo();
 
@@ -174,8 +159,8 @@ public final class BWOreAdapter implements IOreAdapter {
         }
     }
 
-    /// Actively converts placed/inventory legacy `bw.blockores*` blocks into the MaterialLib equivalent as a
-    /// chunk/item loads, mirroring [GTOreAdapter#registerCurrentGenTransformers].
+    /// Converts placed and inventory legacy `bw.blockores*` blocks into the MaterialLib equivalent as a chunk
+    /// or item loads.
     private void registerCurrentGenTransformers() {
         for (Ores ores : legacyOres.values()) {
             registerCurrentGenTransformer(ores, ores.big, false, false);
@@ -223,9 +208,8 @@ public final class BWOreAdapter implements IOreAdapter {
             .forEach(Ores::registerOredict);
     }
 
-    /// Hides every legacy `bw.blockores*` slot whose (material, stone, small-ore) combination now resolves to a
-    /// MaterialLib block, mirroring [GTOreAdapter#hideOres]. A combination that stays legacy-canonical (a
-    /// material this shape never covered) is left visible.
+    /// Hides from NEI every legacy `bw.blockores*` slot whose (material, stone, small-ore) combination resolves
+    /// to a MaterialLib block; combinations without a MaterialLib counterpart stay visible.
     public void hideOres() {
         for (Ores ores : legacyOres.values()) {
             for (Material material : MaterialLibAPI.getMaterials()) {
@@ -334,15 +318,14 @@ public final class BWOreAdapter implements IOreAdapter {
         return new BlockMeta(ores.get(info.isSmall, false), legacyId);
     }
 
-    /// The harvest level for a MaterialLib werkstoff ore/small-ore material -- legacy [BWMetaGeneratedOres] used a
-    /// flat level 3 for every material, unlike GT's own per-material [GTOreAdapter#harvestLevel]. `bonus` is
-    /// accepted for call-site symmetry with [GTOreAdapter#harvestLevel] but BW never varied it by size either.
+    /// The harvest level for a MaterialLib werkstoff ore/small-ore material: a flat 3 for every material,
+    /// offset by the small-ore `bonus`.
     public int harvestLevel(Material mlMaterial, int bonus) {
         return GTUtility.clamp(3 + bonus, 0, GTMod.proxy.mMaxHarvestLevel);
     }
 
-    /// The drops for one MaterialLib werkstoff ore/small-ore block, called from [OreShapes]' drop hooks
-    /// when the material is werkstoff-backed. See [GTOreAdapter#shapeDrops] for the GT-material equivalent.
+    /// The drops for one MaterialLib werkstoff ore/small-ore block. `variant` resolves back to a [StoneType]
+    /// via [OreShapes#stoneTypeOf].
     public List<ItemStack> shapeDrops(Material mlMaterial, String variant, int fortune, boolean isSilkTouch,
         boolean isSmall) {
         StoneType stoneType = OreShapes.stoneTypeOf(variant);
@@ -422,8 +405,6 @@ public final class BWOreAdapter implements IOreAdapter {
         return drops;
     }
 
-    /// The `rawOre` lookups are unguarded: [#supports] has already established `ore`, and the two shapes are
-    /// declared together throughout [Materials].
     private ArrayList<ItemStack> getBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo info, int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
 

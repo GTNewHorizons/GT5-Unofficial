@@ -161,7 +161,7 @@ public class DetravOreMarkerRenderer {
         return true;
     }
 
-    /** The RGB {@code ore}'s layer draws with: the marker's colour for layer 0, the container's for a later one. */
+    /// The RGB one layer of `ore` draws with: `color` for layer 0, the container's own layer colour after that.
     private static int layerColor(IIconContainer ore, int color, int layer) {
         if (layer == 0) return ore.hasOverrideIcon() ? 0xFFFFFF : color;
         short[] rgba = ore.getIconColor(layer);

@@ -45,6 +45,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -416,38 +417,38 @@ public class MTETeslaTower extends TTMultiblockBase
         }
 
         for (MTEHatchInput fluidHatch : mInputHatches) {
-            if (fluidHatch.mFluid != null) {
-                if (fluidHatch.mFluid
-                    .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidPlasma, 1))
-                    && fluidHatch.mFluid.amount >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM) {
-                    fluidHatch.mFluid.amount = fluidHatch.mFluid.amount
-                        - ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM;
+            if (fluidHatch.mFluid == null) continue;
 
-                    plasmaTier = 1;
-                    return;
-                } else if (fluidHatch.mFluid
-                    .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidPlasma, 1))
-                    && fluidHatch.mFluid.amount
-                        >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN) {
-                            fluidHatch.mFluid.amount = fluidHatch.mFluid.amount
-                                - ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN;
-
-                            plasmaTier = 1;
-                            return;
-                        } else
-                    if (fluidHatch.mFluid
-                        .isFluidEqual(MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidPlasma, 1))
-                        && fluidHatch.mFluid.amount
-                            >= ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON) {
-                                fluidHatch.mFluid.amount = fluidHatch.mFluid.amount
-                                    - ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON;
-
-                                plasmaTier = 2;
-                                return;
-                            }
+            if (drainPlasma(
+                fluidHatch,
+                Materials.Helium,
+                ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_HELIUM)) {
+                plasmaTier = 1;
+                return;
+            }
+            if (drainPlasma(
+                fluidHatch,
+                Materials.Nitrogen,
+                ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T1_NITROGEN)) {
+                plasmaTier = 1;
+                return;
+            }
+            if (drainPlasma(
+                fluidHatch,
+                Materials.Radon,
+                ConfigHandler.TeslaTweaks.TESLA_MULTI_PLASMA_PER_SECOND_T2_RADON)) {
+                plasmaTier = 2;
+                return;
             }
         }
         plasmaTier = 0;
+    }
+
+    private static boolean drainPlasma(MTEHatchInput hatch, Material material, int amount) {
+        FluidStack plasma = MaterialLibAPI.getFluidStack(material, FluidShapes.fluidPlasma, 1);
+        if (!hatch.mFluid.isFluidEqual(plasma) || hatch.mFluid.amount < amount) return false;
+        hatch.mFluid.amount -= amount;
+        return true;
     }
 
     @Override

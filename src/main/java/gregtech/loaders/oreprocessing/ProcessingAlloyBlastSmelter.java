@@ -40,22 +40,14 @@ import gregtech.common.items.ItemIntegratedCircuit;
 /// - [#generateSingleDust] blasts a material's own dust directly into its own molten fluid, independent of
 /// composite status.
 ///
-/// Both shapes need a material's molten fluid, which [MaterialParts]'s state-specific accessors
-/// (`molten`/`gas`/`fluid`)
-/// cannot resolve for a gtPlusPlus-only material: those read a per-state
-/// [MaterialFluidNames]
-/// slot or a [com.ruling_0.materiallib.api.Shape], and a gtPlusPlus-only material carries neither.
-/// [#materialFluid] resolves it instead through [MaterialUtils#anyFluid]'s name-priority lookup over the same
-/// [MaterialFluidNames] data, exactly as gtpp's own `Material#getFluidStack` did (a
-/// null result
-/// here reproduces a null there, which is why some [#SINGLE_DUST] members -- carrying `BLAST_REQUIRED` but no
-/// fluid gtpp ever wired up -- correctly register nothing rather than needing a hand-picked exclusion list).
+/// Both shapes resolve the molten fluid through [MaterialUtils#anyFluid]'s name-priority lookup, which reaches
+/// a gtPlusPlus-only material's fluid where the state-specific accessors cannot. A material whose fluid does
+/// not resolve registers nothing.
 ///
 /// [#generateFromExistingBlastFurnaceRecipes] is a separate, non-per-material pass: it mirrors every
 /// already-registered blast furnace recipe that resolves a molten fluid, deduping against a snapshot of
-/// `alloyBlastSmelterRecipes` taken before its own loop runs (matching the legacy generator's own dedup, which
-/// is why [#generateComposites] and [#generateSingleDust] must run first -- see their call site in
-/// `GTplusplus`).
+/// `alloyBlastSmelterRecipes` taken before its own loop runs, so [#generateComposites] and
+/// [#generateSingleDust] must run first.
 public class ProcessingAlloyBlastSmelter {
 
     private ProcessingAlloyBlastSmelter() {}
@@ -99,7 +91,7 @@ public class ProcessingAlloyBlastSmelter {
     }
 
     /// The frozen set of materials that get a single-dust recipe. Membership does not by itself mean a recipe
-    /// gets registered -- see [#generateSingleDust]'s runtime gate and [#materialFluid]'s javadoc.
+    /// gets registered -- see [#generateSingleDust]'s runtime gate.
     // spotless:off
     private static final Set<Material> SINGLE_DUST = Set.of(
         Materials.AbyssalAlloy, Materials.AdvancedNitinol, Materials.Arcanite,
@@ -120,10 +112,9 @@ public class ProcessingAlloyBlastSmelter {
         Materials.TungstenTitaniumCarbide, Materials.WatertightSteel, Materials.Zeron100);
     // spotless:on
 
-    /// Registers [#SINGLE_DUST]'s recipes, each gated at runtime on `BLAST_REQUIRED` and on [#materialFluid]
-    /// resolving its molten fluid -- either failing means gtpp itself never registered this recipe either, so
-    /// the material is silently skipped rather than excluded up front. Call once, at the same point as
-    /// [#generateComposites] and before [#generateFromExistingBlastFurnaceRecipes].
+    /// Registers [#SINGLE_DUST]'s recipes, each gated at runtime on `BLAST_REQUIRED` and on the material's
+    /// molten fluid resolving. Call once, at the same point as [#generateComposites] and before
+    /// [#generateFromExistingBlastFurnaceRecipes].
     public static void generateSingleDust() {
         for (Material material : SINGLE_DUST) {
             if (!Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.BLAST_REQUIRED))) continue;
@@ -184,8 +175,6 @@ public class ProcessingAlloyBlastSmelter {
             .addTo(alloyBlastSmelterRecipes);
     }
 
-    /// A material's single registered fluid -- see [MaterialUtils#anyFluid].
-
     private static Map<String, FluidStack> ingotToFluid;
     private static Map<String, String> hotToCold;
 
@@ -195,8 +184,7 @@ public class ProcessingAlloyBlastSmelter {
     /// recipes chained into the same ingot-to-fluid map -- into `alloyBlastSmelterRecipes`, skipping any
     /// blast-furnace recipe hotter than 3600K and any duplicate of a recipe already present (from
     /// [#generateComposites]/[#generateSingleDust] or gtPlusPlus's hand-written loaders). Call once, after
-    /// every other mod's recipes are registered, and after [#generateComposites]/[#generateSingleDust] --
-    /// their recipes must already be in `alloyBlastSmelterRecipes` for this method's dedup snapshot to see.
+    /// every other mod's recipes are registered, and after [#generateComposites]/[#generateSingleDust].
     public static void generateFromExistingBlastFurnaceRecipes() {
         ingotToFluid = new HashMap<>();
         hotToCold = new HashMap<>();
@@ -318,9 +306,8 @@ public class ProcessingAlloyBlastSmelter {
         return Item.getIdFromItem(item) + "#" + stack.getItemDamage() + "#" + stack.stackSize;
     }
 
-    /// Rounds to the nearest half, then truncates toward zero. This non-standard rounding is what
-    /// [#generateFromExistingBlastFurnaceRecipes]'s durations are pinned to, so it must not be replaced with
-    /// ordinary rounding.
+    /// Rounds to the nearest half, then truncates toward zero.
+    /// [#generateFromExistingBlastFurnaceRecipes]'s durations are pinned to this non-standard rounding.
     private static int roundToClosestInt(double value) {
         return (int) (Math.round(value * 2) / 2.0);
     }

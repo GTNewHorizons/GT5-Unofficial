@@ -13,8 +13,7 @@ import gregtech.loaders.oreprocessing.ProcessingRecycling;
 /// ordered-candidate-list exception) and `cell` additionally generates [CellShapes#cellGas] for gas materials,
 /// so each is registered as a second target explicitly; every other matching prefix has exactly one candidate
 /// shape. `bucket`/`bucketClay`/`bottle`/`capsule`/`capsuleMolten`/`blockCasing`/`blockCasingAdvanced` also
-/// match the legacy filter but have no MaterialLib shape and keep serving foreign mods exclusively through
-/// the legacy oredict path.
+/// match the legacy filter but have no MaterialLib shape.
 public final class ConsumerRecycling {
 
     private ConsumerRecycling() {}

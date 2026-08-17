@@ -71,8 +71,7 @@ public class ProcessingMaterialDecompositionGtpp {
 
     /// `HG1223`'s composites, in the frozen order its decomposition recipe lays out its output slots -- not
     /// [GTMaterialProperties#COMPOSITION]'s own list order, which differs (`Mercury, Barium, Calcium, Copper,
-    /// Oxygen`). Held here rather than in [LegacyGTPPComposites] because [ProcessingMixerGtpp] and
-    /// [ProcessingAlloyBlastSmelter] read that table too and this material belongs to neither's eligibility.
+    /// Oxygen`).
     private static final Map<Material, List<Component>> COMPOSITION_FALLBACK = Map.of(
         Materials.HG1223,
         List.of(

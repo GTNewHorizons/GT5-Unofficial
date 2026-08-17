@@ -29,12 +29,10 @@ import gregtech.api.util.GTUtility;
 /// The plasma-cell plasma-turbine fuel recipe and the plasma-cell-to-cell vacuum freezer cooldown recipe,
 /// for whichever material in [#ELIGIBLE] carries a plasma fluid.
 ///
-/// [#materialPlasma] resolves the plasma fluid by name ([MaterialFluidNames]'s `plasma`
-/// slot)
-/// rather than through [MaterialParts]'s state-specific accessors, which cannot resolve a gtPlusPlus-only material's
-/// fluid -- see [ProcessingAlloyBlastSmelter]'s class javadoc for the same resolution. The cooldown recipe's
-/// cell output resolves through [MaterialParts#cell] rather than a plain `cell` shape lookup: every
-/// material here carries a molten fluid, so its single cell-eligible shape is `cellMolten`, not `cell`.
+/// [#materialPlasma] resolves the plasma fluid by name ([MaterialFluidNames]'s `plasma` slot) -- see
+/// [ProcessingAlloyBlastSmelter]'s class javadoc for the same resolution. The cooldown recipe's cell output
+/// resolves through [MaterialParts#cell]: every material here carries a molten fluid, so its single
+/// cell-eligible shape is `cellMolten`, not `cell`.
 ///
 /// [#run] is called from `CompatHandler#startLoadingGregAPIBasedRecipes` -- see
 /// [ProcessingDustGeneration]'s class javadoc for why that timing matters.
@@ -42,11 +40,8 @@ public class ProcessingPlasmaGtpp {
 
     private ProcessingPlasmaGtpp() {}
 
-    /// Every material the retired `RecipeGenPlasma` reached: `MaterialGenerator#generate` (any
-    /// `generateEverything` value), `#generateOreMaterialWithAllExcessComponents`, or
-    /// `#generateNuclearMaterial`/`#generateNuclearDusts` (which construct it unconditionally) -- excluding a
-    /// `PURE_GAS`/`PURE_LIQUID`-state material reached only through `generate`, since it returns before
-    /// constructing this generator for those two states (`Bromine`, `Krypton`).
+    /// The frozen set of materials this pass covers. Notably excludes the pure-gas and pure-liquid materials
+    /// (`Bromine`, `Krypton`), which get [#generateBromine]'s hand-listed recipes instead.
     // spotless:off
     private static final Set<Material> ELIGIBLE = Set.of(
         Materials.Selenium, Materials.Iodine, Materials.Rhenium,
@@ -90,12 +85,8 @@ public class ProcessingPlasmaGtpp {
         generateBromine();
     }
 
-    /// Bromine's canner and vacuum-freezer recipes, handled separately from [#ELIGIBLE]: `RecipeGenPlasma`
-    /// itself never reached Bromine (excluded by `generate`'s own `PURE_LIQUID` state gate -- see [#ELIGIBLE]'s
-    /// javadoc), so these came from elsewhere in the retired gtpp bootstrap rather than from that generator.
-    /// Bromine's legacy cell item is gone with the rest of `gtPlusPlus.core.item.base.cell`
-    /// (`GtppItemCutoverTable` already carries Postea rows migrating it), so this ports the recipes onto the
-    /// canonical `cellMolten`/`cellPlasmaLight` shapes Bromine already generates.
+    /// Bromine's canner and vacuum-freezer recipes, hand-listed rather than driven by [#ELIGIBLE], on the
+    /// `cellMolten`/`cellPlasmaLight` shapes Bromine generates.
     private static void generateBromine() {
         Material bromine = Materials.Bromine;
         ItemStack liquidCell = ProcessingDustGeneration.stackOf(OrePrefixes.cellMolten, bromine, 1L);

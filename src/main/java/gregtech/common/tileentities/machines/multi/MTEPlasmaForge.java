@@ -107,8 +107,8 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
         MaterialLibAPI.getFluidStack(Materials.ExcitedDTEC, FluidShapes.fluidLiquid, 1),
         MaterialLibAPI.getFluidStack(Materials.ExcitedDTSC, FluidShapes.fluidLiquid, 1) };
 
-    /// Keyed by fluid name rather than by `Fluid`: loading a world rebinds every registered name to whichever
-    /// instance that save recorded as its default, so a `Fluid` captured here at class init would go stale.
+    /// Keyed by fluid name: loading a world rebinds each registered name to the instance that save recorded as
+    /// its default, so a `Fluid` captured at class init goes stale.
     private static final HashMap<String, Pair<Long, Float>> FUEL_ENERGY_VALUES = new HashMap<>() {
 
         {

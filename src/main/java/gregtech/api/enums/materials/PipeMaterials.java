@@ -12,9 +12,8 @@ import gregtech.api.enums.TierEU;
 /// pipes, applied as [PipeProperties] values through [MaterialLibAPI#editMaterial]. The values are exact
 /// literals, not derived: each row pins the stats its material's pipes have always had.
 ///
-/// Editing rather than declaring is deliberate here (unlike [ShapeData]'s declare-path): every target key
-/// comes off a live [Material] field, so [MaterialLibAPI#editMaterial]'s silently-skipped-edit hazard --
-/// naming a material that does not exist -- cannot arise.
+/// Every target key comes off a live [Material] field, so [MaterialLibAPI#editMaterial]'s silently-skipped
+/// edit -- naming a material that does not exist -- cannot arise here.
 ///
 /// Only stat-bearing membership lives here. Frame and sheetmetal membership carries no stats, so it is
 /// declared on each material's own builder in [Materials].
@@ -175,8 +174,7 @@ public class PipeMaterials {
         }
     }
 
-    /// The wire sizes this table grants as one unit: a material carrying any of them carries all six. Public
-    /// so a consumer can state that unit as its own precondition instead of re-listing the sizes.
+    /// The wire sizes this table grants as one unit: a material carrying any of them carries all six.
     public static Shape[] wireShapes() {
         return new Shape[] { TEBlockShapes.wireGt01, TEBlockShapes.wireGt02, TEBlockShapes.wireGt04,
             TEBlockShapes.wireGt08, TEBlockShapes.wireGt12, TEBlockShapes.wireGt16 };

@@ -97,7 +97,6 @@ public final class AE2Compat {
         }
 
         registry.register(ItemList.Circuit_Integrated.getItem());
-        // Lenses are registered by ProcessingLens
 
         // Exclude woodglass and quantum anomaly
         registry.register(Laser_Lens_WoodsGlass.get(1));

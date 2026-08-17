@@ -9,17 +9,15 @@ import com.ruling_0.materiallib.api.ShapeBlock;
 
 import gregtech.api.GregTechAPI;
 
-/// The `blockCasing`/`blockCasingAdvanced` MaterialLib shapes (bartworks' bolted/rebolted werkstoff casings),
-/// backing every material with metadata equal to the material's global index. Ports the behavior overrides
-/// legacy `bartworks.system.material.BWMetaGeneratedBlocksCasing` applied uniformly regardless of material:
-/// wrench harvesting at level 2, hardness/resistance matching vanilla's iron block, and a machine-structure
-/// update on placement and removal (casings are multiblock structure parts).
+/// The `blockCasing`/`blockCasingAdvanced` MaterialLib shapes (bartworks' bolted and rebolted werkstoff
+/// casings), backing every material with metadata equal to the material's global index. Every casing is
+/// wrench-harvested at level 2, takes vanilla's iron block hardness and resistance, and causes a
+/// machine-structure update on placement and removal.
 public class GTCasingShapeBlock extends ShapeBlock {
 
     public GTCasingShapeBlock(String modid, String name, String displayNameFormat, String... oreDicts) {
         super(modid, name, displayNameFormat, oreDicts);
-        // Mirrors BWMetaGeneratedBlocksCasing#doRegistrationStuff: machines re-check their structure when a
-        // neighboring casing changes.
+        // Casings are multiblock structure parts: machines re-check their structure when a neighbor changes.
         GregTechAPI.registerMachineBlock(this, -1);
     }
 

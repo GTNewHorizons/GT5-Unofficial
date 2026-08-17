@@ -15,10 +15,9 @@ import gregtech.api.enums.materials.TEBlockShapes;
 
 public class MaterialSystem {
 
-    // Shapes and families come first because the material tables pass them as objects.
-    // RecognitionMaterials must follow Materials: one of its names (`Ammonium`) already belongs to a
-    // real material, and it binds that rather than registering a duplicate. PipeMaterials runs last
-    // because its rows reference the material fields the passes above assign.
+    // Shapes and families come first: the material tables pass them as objects. RecognitionMaterials must
+    // follow Materials so it binds the real material behind a shared name. PipeMaterials runs last: its rows
+    // reference the material fields the passes above assign.
     public static void init() {
         FluidShapes.init();
         CellShapes.init();

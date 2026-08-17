@@ -13,17 +13,13 @@ import gregtech.api.util.GTOreDictUnificator;
 /// tier name. Routing every call site through this enum keeps that mapping in one place.
 ///
 /// Every prefix is offered at every tier even though only some combinations are registered; asking for an
-/// unregistered one yields no stack, exactly as looking the ore-dictionary name up directly would.
+/// unregistered one yields no stack.
 ///
 /// Ingredients come in two shapes, so each prefix exposes two accessors: a `get...(int)` returning a unified
 /// [ItemStack] for recipe inputs and outputs that need a concrete stack, and a `get...Ingredient()` returning an
-/// [ItemData] for crafting-grid recipes.
-///
-/// Crafting-grid recipes need the [ItemData] rather than the bare ore-dictionary name it stringifies to:
-/// [gregtech.api.util.GTModHandler#addCraftingRecipe] derives the recycling output of a reversible recipe from the
-/// [ItemData] of each ingredient, and a bare name carries no such association. The ingredient form is built from
-/// the name-only [ItemData] constructor, which carries no composition, so these ingredients produce no recycling
-/// output of their own.
+/// [ItemData] for crafting-grid recipes, which derive a reversible recipe's recycling output from each
+/// ingredient's [ItemData] ([gregtech.api.util.GTModHandler#addCraftingRecipe]). These ingredients use the
+/// name-only [ItemData] form, which carries no composition and so produces no recycling output of its own.
 public enum TieredItems {
 
     ULV("Primitive"),

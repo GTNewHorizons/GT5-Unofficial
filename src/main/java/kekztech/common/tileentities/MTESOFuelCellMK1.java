@@ -174,8 +174,7 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
                     if (super.depleteInput(liquid)) {
 
                         if (!super.depleteInput(
-                            MaterialLibAPI
-                                .getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int) (OXYGEN_PER_SEC)))) {
+                            MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, OXYGEN_PER_SEC))) {
                             super.mEUt = 0;
                             super.mEfficiency = 0;
                             return CheckRecipeResultRegistry.NO_FUEL_FOUND;

@@ -79,10 +79,9 @@ public class LoaderWerkstoffRegistrations {
         }
     }
 
-    /// Mirrors the tool-handle tiering the werkstoff part recipes were built against: a burning or magical
-    /// material takes its themed handle, otherwise durability picks the metal. A material in the legacy name
-    /// domain is skipped: gregtech's own declaration owns its handle, which the mass-based tiering behind
-    /// [GTMaterialProperties#HANDLE_MATERIAL] supplies instead.
+    /// Pairs a werkstoff-origin material with its tool handle: a burning or magical material takes its themed
+    /// handle, otherwise durability picks the metal. A material in the legacy name domain is skipped --
+    /// gregtech's own declaration owns its handle, through [GTMaterialProperties#HANDLE_MATERIAL].
     private static void registerHandleMaterial(Material material) {
         if (LegacyNameDomain.lookup(MaterialUtils.internalName(material)) == material) return;
         Material handle;
@@ -112,9 +111,9 @@ public class LoaderWerkstoffRegistrations {
         }
     }
 
-    /// The stack a part resolves to, in the order the werkstoff item lookup used: the MaterialLib shape first,
-    /// then whatever already holds the oredict entry, and finally the ore adapters for the ore prefixes, whose
-    /// blocks are placed and read through the adapters rather than carried as an item shape.
+    /// The stack a part resolves to: the MaterialLib shape first, then whatever already holds the oredict
+    /// entry, and finally the ore adapters for the ore prefixes, whose blocks are placed and read through the
+    /// adapters rather than carried as an item shape.
     private static ItemStack resolve(OrePrefixes prefix, Material material) {
         ItemStack stack = MaterialParts.stack(prefix, material, 1);
         if (stack != null) return stack;

@@ -51,7 +51,7 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
 
     @Override
     public void loadCraftingRecipes(ItemStack stack) {
-        Object mat = OreManager.getMaterial(stack);
+        Material mat = OreManager.getMaterial(stack);
 
         if (mat != null) {
             loadMatchingVeins(mat);
@@ -75,7 +75,7 @@ public class PluginGT5VeinStat extends PluginGT5OreBase {
         super.loadCraftingRecipes(stack);
     }
 
-    private boolean loadMatchingVeins(Object ore) {
+    private boolean loadMatchingVeins(Material ore) {
         boolean foundAny = false;
 
         for (OreLayerWrapper oreVein : getAllVeins()) {

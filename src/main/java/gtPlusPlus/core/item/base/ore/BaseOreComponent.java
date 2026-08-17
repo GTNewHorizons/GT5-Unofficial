@@ -49,12 +49,8 @@ public class BaseOreComponent extends Item {
         this.setMaxStackSize(64);
         this.componentColour = MathUtils.getRgbAsHex(MaterialUtils.rgba(material));
         GameRegistry.registerItem(this, this.unlocalName);
-        // A material outside the gtpp reconstruction gate (e.g. a base gregtech-declared material that
-        // gained this part's shape purely from the gtpp name-merge, such as milled ore for Sphalerite) never
-        // skips this constructor -- registering this item into the same oredict name MaterialLib already owns
-        // would create a second entry that races the MaterialLib one across launches; keep the item itself
-        // (legacy saves/oredict-name lookups still work through MaterialLib), just skip the duplicate
-        // association.
+        // The item stays registered for save and item-ID stability, but MaterialLib owns the oredict name
+        // once the prefix is cut over, so only the duplicate oredict association is skipped.
         if (!MaterialParts.isCutOver(componentType.getOrePrefixEnum(), material)) {
             GTOreDictUnificator.registerOre(
                 componentType.getOrePrefix() + MaterialUtils.internalName(material),

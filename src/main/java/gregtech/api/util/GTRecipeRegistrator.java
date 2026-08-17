@@ -259,8 +259,6 @@ public class GTRecipeRegistrator {
             GTOreDictUnificator.getIngot(MaterialUtils.smeltInto(material), materialAmount));
     }
 
-    /// Builds the [ItemData] straight from `material`, which already carries every read the [ItemStack, ItemData]
-    /// overload below needs, without a legacy round trip.
     public static void registerReverseArcSmelting(ItemStack stack, Material material, long materialAmount,
         MaterialStack byProduct01, MaterialStack byProduct02, MaterialStack byProduct03) {
         registerReverseArcSmelting(
@@ -272,8 +270,6 @@ public class GTRecipeRegistrator {
                 byProduct03));
     }
 
-    /// The gas-conditional arc-smelting recipe is consulted through [MaterialArcSmeltHelper#withGas]'s declared
-    /// table.
     public static boolean hasReverseArcSmeltingRecipe(Material material) {
         if (material == null) return false;
         Material arcSmeltingMaterial = MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(material));
@@ -315,10 +311,8 @@ public class GTRecipeRegistrator {
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
             if (!LegacyNameDomain.contains(tMaterial.mMaterial) && tMaterial.mMaterial.getShapes()
                 .isEmpty()) {
-                // An unbacked recognition marker's shapeless wildcard backing never defaults to smelting into
-                // itself: unlike a shaped material, it only has an arc-smelting target when one was explicitly
-                // declared. A shaped material without a live legacy counterpart (a reconstructed werkstoff/gtpp
-                // material) instead takes the flag ladder below.
+                // A shapeless wildcard backing never defaults to smelting into itself: it has an arc-smelting
+                // target only when one was explicitly declared.
                 boolean declaresSmeltTarget = tMaterial.mMaterial.getProperty(GTMaterialProperties.SMELT_INTO) != null
                     || tMaterial.mMaterial.getProperty(GTMaterialProperties.ARC_SMELT_INTO) != null;
                 Material arcTarget = declaresSmeltTarget
@@ -366,9 +360,7 @@ public class GTRecipeRegistrator {
                 tMaterial.mMaterial = MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(tMaterial.mMaterial));
                 continue;
             }
-            // A reconstructed werkstoff/gtpp metal that generates an ingot but never carried the legacy METAL
-            // flag still recycles like a metal -- arc-smelt into its ingot, so its storage block (and other
-            // parts) recycle through GT's arc path.
+            // A metal that generates an ingot but carries no METAL flag still recycles like a metal.
             if (GTOreDictUnificator.get(OrePrefixes.ingot, tMaterial.mMaterial, 1L) != null) {
                 tMaterial.mMaterial = MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(tMaterial.mMaterial));
                 continue;
@@ -468,8 +460,6 @@ public class GTRecipeRegistrator {
         return replacedOutput ? gasOutputs : null;
     }
 
-    /// Builds the [ItemData] straight from `material`, which already carries every read the [ItemStack, ItemData,
-    /// boolean, boolean] overload below needs, without a legacy round trip.
     public static void registerReverseMacerating(ItemStack stack, Material material, long materialAmount,
         MaterialStack byProduct01, MaterialStack byProduct02, MaterialStack byProduct03, boolean allowHammer,
         boolean isRecycling) {

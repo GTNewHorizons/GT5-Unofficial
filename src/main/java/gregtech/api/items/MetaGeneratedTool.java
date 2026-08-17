@@ -113,11 +113,9 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     /* ---------- FOR ADDING CUSTOM ITEMS INTO THE REMAINING 766 RANGE ---------- */
 
-    /// The MaterialLib material a tool's `PrimaryMaterial` NBT string resolves to, via [MaterialUtils#byLegacyName] --
-    /// which covers both what [#getToolWithStats(int, int, com.ruling_0.materiallib.api.Material,
-    /// com.ruling_0.materiallib.api.Material, long[])] writes ([MaterialUtils#internalName] strings) and the legacy
-    /// internal name strings older saves contain (byte-identical for every ported material). Falls back to
-    /// [Materials#NULL] on a missing/unresolvable name.
+    /// The MaterialLib material a tool's `PrimaryMaterial` NBT string resolves to through
+    /// [MaterialUtils#byLegacyName], which covers both the names written today and the legacy internal names
+    /// older saves contain. [Materials#NULL] for a missing or unresolvable name.
     public static com.ruling_0.materiallib.api.Material getPrimaryMaterialML(ItemStack aStack) {
         return resolveMaterialML(aStack, "PrimaryMaterial");
     }
@@ -147,8 +145,6 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 .toLowerCase());
     }
 
-    /// Tool durability/speed/quality/enchant are read from [GTMaterialProperties] on the MaterialLib material
-    /// itself, keeping stat computation off the legacy material facade.
     private static int getToolDurability(com.ruling_0.materiallib.api.Material aMaterial) {
         Integer durability = aMaterial == null ? null : aMaterial.getProperty(GTMaterialProperties.DURABILITY);
         return durability == null ? 0 : durability;
@@ -298,9 +294,6 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     /**
      * This Function gets an ItemStack Version of this Tool
-     * <p/>
-     * The tool NBT (material name strings, durability) is written directly off the MaterialLib materials'
-     * [MaterialUtils#internalName] and [GTMaterialProperties#DURABILITY].
      *
      * @param aToolID            the ID of the Tool Class
      * @param aAmount            Amount of Items (well normally you only need 1)

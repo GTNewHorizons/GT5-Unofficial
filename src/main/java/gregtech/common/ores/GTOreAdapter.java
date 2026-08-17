@@ -48,24 +48,17 @@ import gregtech.common.blocks.GTBlockOre;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 
 /// The [IOreAdapter] for GT's own materials and for gtPlusPlus': worldgen, mining, prospecting, and the void
-/// miner place and read [OreShapes] blocks through this singleton (via [OreManager], never
-/// `OreShapes` or MaterialLib directly), preserving the same public surface the legacy
-/// `GTBlockOre`-backed adapter had.
+/// miner place and read [OreShapes] blocks through this singleton, via [OreManager].
 ///
 /// One class serves both families because [#isGtFamily] and [#isGtppFamily] are complementary on the sign of
 /// [MaterialUtils#oldSubId], so no material can match both gates. gtPlusPlus keeps its own stone gating
-/// ([#supportsGtpp]), harvest formula (see [#harvestLevel]) and `FortuneItem` drop table
-/// ([#gtppBigOreDrops]); everything else is shared. Bartworks ore stays in [BWOreAdapter], which decodes a
-/// block family of its own and whose materials every gate here excludes.
+/// ([#supportsGtpp]), harvest formula ([#harvestLevel]) and `FortuneItem` drop table ([#gtppBigOreDrops]);
+/// everything else is shared. Bartworks ore stays in [BWOreAdapter].
 ///
-/// [#init] still constructs the six legacy [GTBlockOre] instances (`gt.blockores2`..`gt.blockores7`) exactly as
-/// before -- their oredict registration loop (in [GTBlockOre]'s constructor) now resolves through this class's
-/// [#getBlock]/[#supports], so it registers the MaterialLib stack as the canonical association without any
-/// change to [GTBlockOre] itself, the same "construct, then get overwritten by the MaterialLib association"
-/// pattern `BlockMetal` uses. The instances stay registered (never removed) purely so
-/// pre-migration saves have somewhere for their placed blocks to resolve to; [#registerCurrentGenTransformers]
-/// actively converts any of those placed blocks to the MaterialLib equivalent as their chunk loads, so in
-/// practice a fully-loaded world never has a live `GTBlockOre` block a player can interact with.
+/// [#init] constructs the six [GTBlockOre] instances (`gt.blockores2`..`gt.blockores7`), which stay registered
+/// so pre-migration saves have somewhere for their placed blocks to resolve to.
+/// [#registerCurrentGenTransformers] converts those placed blocks to the MaterialLib equivalent as their chunk
+/// loads.
 public final class GTOreAdapter implements IOreAdapter {
 
     public static GTOreAdapter INSTANCE = new GTOreAdapter();
@@ -76,7 +69,6 @@ public final class GTOreAdapter implements IOreAdapter {
 
     private GTBlockOre[] ores;
 
-    /// Used to iterate both `isSmall`/`isNatural` axes of a legacy ore meta in [#hideOres].
     private static final boolean[] BOOLEANS = { false, true };
 
     // spotless:off
@@ -171,14 +163,9 @@ public final class GTOreAdapter implements IOreAdapter {
         registerCurrentGenTransformers();
     }
 
-    /// Decodes the pre-`GTBlockOre` era's 7-stone meta packing (see [#LEGACY_STONES]), or null when the meta
-    /// names no ore this adapter serves. Public because a reader of raw save data cannot go through
-    /// [OreManager]: the chunk-load transformers [#init] registers have not run on an unloaded region file, so
-    /// its `GT_TileEntity_Ores` tags still carry this packing and there is no block to look up. The returned
-    /// [OreInfo] comes from the pool and belongs to the caller (try-with-resources).
-    ///
-    /// The decoded ore is always marked natural, whatever the saved tag's own natural flag said, so that it
-    /// drops what an unmined ore of its material drops.
+    /// Decodes the legacy 7-stone meta packing (see [#LEGACY_STONES]), or null when the meta names no ore this
+    /// adapter serves. The decoded ore is always marked natural. The returned [OreInfo] comes from the pool
+    /// and belongs to the caller (try-with-resources).
     public @Nullable OreInfo getLegacyOreInfo(int meta) {
         OreInfo info = OreInfo.getNewInfo();
 
@@ -195,9 +182,8 @@ public final class GTOreAdapter implements IOreAdapter {
         return info;
     }
 
-    /// Resolves a legacy meta (see [#getLegacyOreInfo]) to the MaterialLib block/meta -- shared by the
-    /// `GT_TileEntity_Ores` tile-entity transformer and the single `gregtech:gt.blockores` item transformer,
-    /// both of which used that packing.
+    /// Resolves a legacy meta (see [#getLegacyOreInfo]) to the MaterialLib block/meta, or air when it names no
+    /// ore this adapter serves.
     private ImmutableBlockMeta resolveLegacyMeta(int meta) {
         try (OreInfo info = getLegacyOreInfo(meta)) {
             if (info == null) return new BlockMeta(Blocks.air, 0);
@@ -207,11 +193,8 @@ public final class GTOreAdapter implements IOreAdapter {
         }
     }
 
-    /// Actively converts placed/inventory `gt.blockores2`..`gt.blockores7` (see [#init]'s `ores` array) into
-    /// the MaterialLib equivalent as a chunk/item loads, decoding each block's own `stoneTypes` list the same
-    /// way [GTBlockOre#getStoneIndex]/[GTBlockOre#getMaterialIndex] do. Mirrors `PosteaTransformers`'
-    /// `registerStorageBlockCutoverTransformer`, except the meta space here is too large (up to ~24000 per
-    /// block) to enumerate per-meta, so this decodes computationally instead.
+    /// Converts placed and inventory `gt.blockores2`..`gt.blockores7` into the MaterialLib equivalent as a
+    /// chunk or item loads.
     private void registerCurrentGenTransformers() {
         for (int i = 0; i < ores.length; i++) {
             GTBlockOre oreBlock = ores[i];
@@ -254,13 +237,10 @@ public final class GTOreAdapter implements IOreAdapter {
         oreBlocksByStoneType.put(stoneType, oreBlock);
     }
 
-    /// Hides every `gt.blockores2`..`gt.blockores7` slot from NEI, mirroring `BlockMetal`'s precedent:
-    /// the legacy block/item stays fully functional (old saves still resolve through it via the transformers
-    /// [#init] registers), only its NEI visibility is suppressed. Meta 0 of each block is always hidden --
-    /// [GTBlockOre#getSubBlocks]'s doc explains why it always exists as a dummy entry -- and every other meta is
-    /// hidden exactly when its (material, stone, small-ore) combination now resolves to a MaterialLib block (see
-    /// [#supports(OreInfo)]), leaving any combination that has not cut over (e.g. a material with no MaterialLib
-    /// counterpart yet) visible and canonical, same as [GTBlockOre#getSubBlocks] itself already does.
+    /// Hides from NEI every `gt.blockores2`..`gt.blockores7` slot whose (material, stone, small-ore)
+    /// combination resolves to a MaterialLib block (see [#supports(OreInfo)]); combinations without a
+    /// MaterialLib counterpart stay visible. Meta 0 of each block is always hidden; see
+    /// [GTBlockOre#getSubBlocks] for why it exists as a dummy entry.
     public void hideOres() {
         for (GTBlockOre ore : ores) {
             API.hideItem(new ItemStack(ore, 1, 0));
@@ -293,10 +273,8 @@ public final class GTOreAdapter implements IOreAdapter {
         }
     }
 
-    /// OreShapes' 4 config-gated stone types (see legacy `GTOreAdapter#init`'s array literals) are
-    /// declared unconditionally as MaterialLib variants -- their availability is a runtime toggle, not a
-    /// save-identity concern -- so this config gate moved here instead, alongside [StoneType#isEnabled]'s
-    /// mod-loaded gate.
+    /// The runtime config gate for the four config-gated stone types, which are declared unconditionally as
+    /// [OreShapes] variants. Complements [StoneType#isEnabled]'s mod-loaded gate.
     private static boolean isStoneConfigEnabled(StoneType stoneType) {
         return switch (stoneType) {
             case BlackGranite -> GTMod.proxy.enableBlackGraniteOres;
@@ -317,8 +295,6 @@ public final class GTOreAdapter implements IOreAdapter {
         return shape == OreShapes.ore || shape == OreShapes.oreSmall;
     }
 
-    /// Serves both ore families, so this answers for either. `OreManager`'s adapter list tried GT before
-    /// gtPlusPlus, and the two gates are tried in that same order here and in every other override.
     @Override
     public boolean supports(OreInfo info) {
         return supportsGt(info) || supportsGtpp(info);
@@ -339,44 +315,30 @@ public final class GTOreAdapter implements IOreAdapter {
         return mlMat.hasShape(info.isSmall ? OreShapes.oreSmall : OreShapes.ore);
     }
 
-    /// The MaterialLib [Material] backing an [OreInfo] this adapter is handed, or null when `material` is not a
-    /// GT material. [OreInfo#material] is `Object`-typed since the worldgen dispatch is shared across ore
-    /// families. The gate is [LegacyNameDomain#contains] (in the legacy name
-    /// domain), broader than [#isGtFamily] because a merged declaration (a material carrying both
-    /// [GTMaterialProperties#WERKSTOFF_IDS] and a live legacy id, such as Salt) is a GT ore here even though
-    /// [#getOreInfo]'s build path defers it to [BWOreAdapter].
+    /// The MaterialLib [Material] backing an [OreInfo], or null when `material` is outside the
+    /// [LegacyNameDomain]. Broader than [#isGtFamily]: a material carrying both
+    /// [GTMaterialProperties#WERKSTOFF_IDS] and a live legacy id (such as Salt) passes here, while
+    /// [#getOreInfo] defers it to [BWOreAdapter].
     private static @Nullable Material gtFamilyOf(@Nullable Material material) {
         return LegacyNameDomain.contains(material) ? material : null;
     }
 
-    /// Whether a MaterialLib material belongs to GT's own ore family -- the exact discrimination [#getOreInfo]
-    /// applies. A werkstoff-bridged material ([GTMaterialProperties#WERKSTOFF_IDS]) defers to [BWOreAdapter],
-    /// and a material with no live legacy id ([MaterialUtils#oldSubId] `< 0`, covering both the id-less gtpp
-    /// bridge materials this class serves through [#isGtppFamily] and any material with no legacy counterpart
-    /// at all) is not GT's.
+    /// Whether a MaterialLib material belongs to GT's own ore family: it carries no
+    /// [GTMaterialProperties#WERKSTOFF_IDS] and has a live legacy id ([MaterialUtils#oldSubId] `>= 0`).
     private static boolean isGtFamily(@Nullable Material material) {
         return material != null && material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null
             && MaterialUtils.oldSubId(material) >= 0;
     }
 
     /// Whether a material belongs to the gtPlusPlus ore family: it carries [GTMaterialProperties#GTPP_STATE]
-    /// and has no live id-backed legacy counterpart ([MaterialUtils#oldSubId] stays at its `-1` default). A
-    /// name-merge material with a real legacy id is GT's instead, since GT's own dump captured per-material
-    /// formulas for it that predate gtPlusPlus.
-    ///
-    /// Exactly complementary to [#isGtFamily] on the `oldSubId` sign, which is what lets one adapter serve
-    /// both families without the two gates ever both matching.
+    /// and has no live legacy id ([MaterialUtils#oldSubId] `< 0`). A material with both is GT's instead.
     public static boolean isGtppFamily(@Nullable Material material) {
         if (material == null || material.getProperty(GTMaterialProperties.GTPP_STATE) == null) return false;
         return MaterialUtils.oldSubId(material) < 0;
     }
 
-    /// Whether the gtPlusPlus ore family serves `info`. Public because callers that need the family scoped
-    /// cannot use [#supports], which answers for either family: `bwcrossmod.galacticgreg.VoidMinerLoader` and
-    /// `tectech.recipe.EyeOfHarmonyRecipeStorage` build gtpp-only material lists from it.
-    ///
-    /// gtpp ore only ever existed on [StoneType#Stone] and never had a small-ore variant, so its stone gating
-    /// is this fixed pair of checks rather than GT's [#isValidForStone] and stone-config ladder.
+    /// Whether the gtPlusPlus ore family serves `info`. gtpp ore exists only on [StoneType#Stone] and has no
+    /// small-ore variant. Unlike [#supports], this answers for the gtpp family alone.
     public boolean supportsGtpp(OreInfo info) {
         if (!isGtppFamily(info.material)) return false;
         if (info.stoneType != null && info.stoneType != StoneType.Stone) return false;
@@ -399,13 +361,9 @@ public final class GTOreAdapter implements IOreAdapter {
         if (blockInfo == null || !isOreShape(blockInfo.shape()) || blockInfo.material() == null) return null;
 
         Material material = blockInfo.material();
-        // A werkstoff-origin material is still in the legacy name domain (LegacyNameDomain#contains), so that gate
-        // alone would not exclude it here; defer explicitly to BWOreAdapter, which owns werkstoff ore
-        // behavior (see OreShapes#isWerkstoff).
+        // Werkstoff-origin materials are in the legacy name domain too; BWOreAdapter owns their ore behavior.
         if (material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) return null;
 
-        // gtpp ore carries neither a stone variant beyond Stone nor a small-ore shape, so it resolves without
-        // consulting the variant at all.
         if (isGtppFamily(material)) {
             if (blockInfo.shape() != OreShapes.ore) return null;
 
@@ -448,8 +406,7 @@ public final class GTOreAdapter implements IOreAdapter {
         return new BlockMeta(Block.getBlockFromItem(stack.getItem()), stack.getItemDamage());
     }
 
-    /// The `ore` stack for a gtpp material at its sole [StoneType#Stone] variant. That shape carries per-stone
-    /// variants, so it resolves through the variant overload of [MaterialLibAPI#getStack].
+    /// The `ore` stack for a gtpp material at its sole [StoneType#Stone] variant.
     private static @Nullable ItemStack gtppOreStack(Material material) {
         return MaterialLibAPI.getStack(material, OreShapes.ore, OreShapes.variantOf(StoneType.Stone.name()), 1);
     }
@@ -473,13 +430,9 @@ public final class GTOreAdapter implements IOreAdapter {
         return new BlockMeta(Block.getBlockFromItem(stack.getItem()), stack.getItemDamage());
     }
 
-    /// The harvest level for a MaterialLib ore/small-ore material, porting legacy `GTBlockOre#getHarvestLevel`'s
-    /// formula. `bonus` is the small-ore harvest-level discount (`-1`, matching legacy) or `0` for big ore.
-    ///
-    /// A gtpp material takes the flat formula every gtpp ore block uses
-    /// (`Math.min(Math.max(material.vTier, 1), 6)` via its `BasicBlock` mining-level constructor argument),
-    /// which never varied by ore size and so ignores `bonus`. No gtpp material generates `oreSmall`, so the
-    /// small-ore hook never reaches this branch anyway.
+    /// The harvest level for a MaterialLib ore/small-ore material. `bonus` is the small-ore harvest-level
+    /// discount (`-1`) or `0` for big ore. A gtpp material takes a flat tier-derived level and ignores
+    /// `bonus`.
     public int harvestLevel(Material mlMaterial, int bonus) {
         if (isGtppFamily(mlMaterial)) return Math.min(Math.max(MaterialUtils.tier(mlMaterial), 1), 6);
 
@@ -492,12 +445,9 @@ public final class GTOreAdapter implements IOreAdapter {
         return GTUtility.clamp(harvestLevel + bonus, 0, GTMod.proxy.mMaxHarvestLevel);
     }
 
-    /// The drops for one MaterialLib ore/small-ore block, called from [OreShapes]' drop hooks. `variant`
-    /// resolves back to a [StoneType] via [OreShapes#stoneTypeOf]. See [#getOreDrops] for the shared
-    /// drop-policy implementation.
-    /// A gtpp material takes the gtpp drop formulas whichever family [#supports] would answer for. The shape
-    /// hooks own in-world mining, and gtpp ore behavior belongs to the material even where a legacy name would
-    /// also let GT resolve it.
+    /// The drops for one MaterialLib ore/small-ore block. `variant` resolves back to a [StoneType] via
+    /// [OreShapes#stoneTypeOf]. A gtpp material takes the gtpp drop formulas whichever family [#supports]
+    /// would answer for.
     public List<ItemStack> shapeDrops(Material mlMaterial, String variant, int fortune, boolean isSilkTouch,
         boolean isSmall) {
         if (isGtppFamily(mlMaterial)) {
@@ -667,16 +617,7 @@ public final class GTOreAdapter implements IOreAdapter {
 
     /// gtpp's own drop table, kept separate from [#getBigOreDrops] because the two disagree under
     /// `FortuneItem`: gtpp draws `random.nextInt(fortune) + 1` where GT draws a clamped
-    /// `random.nextInt(fortune + 2) - 1` and then scales by the stone's richness. Unifying them would change
-    /// drop rates.
-    ///
-    /// The other four modes coincide, and only because gtpp ore is [StoneType#Stone]-only: `Stone` is not
-    /// rich, so GT's `isRich() ? 2 : 1` is always 1 here, and its block modes resolve the same `Stone` variant
-    /// [#gtppOreStack] does. They stay written out rather than delegated, so the coincidence is not mistaken
-    /// for a shared rule.
-    ///
-    /// The `rawOre` lookups are unguarded: [#supportsGtpp] has already established `ore`, and the two shapes
-    /// are declared together throughout [Materials].
+    /// `random.nextInt(fortune + 2) - 1` scaled by the stone's richness.
     private ArrayList<ItemStack> gtppBigOreDrops(Random random, OreDropSystem oreDropMode, OreInfo info, int fortune) {
         ArrayList<ItemStack> drops = new ArrayList<>();
 

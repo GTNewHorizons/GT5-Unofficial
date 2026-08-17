@@ -16,11 +16,9 @@ import gregtech.api.material.GTMaterialProperties;
 import ic2.core.IC2Potion;
 
 /// Poisons or irradiates a player carrying an item made of a [GTMaterialProperties#TOXIC] or
-/// [GTMaterialProperties#IS_RADIOACTIVE] material without the matching hazmat suit.
-///
-/// Every MaterialLib item of a given shape shares one [ShapeItem] instance across all materials, so this
-/// cannot be a per-item update override; it is a player-tick inventory scan reading the material properties
-/// instead.
+/// [GTMaterialProperties#IS_RADIOACTIVE] material without the matching hazmat suit. The check is a
+/// player-tick inventory scan because every MaterialLib item of a shape shares one [ShapeItem] instance
+/// across all materials, leaving no per-material item to override.
 public class MaterialHazardHandler {
 
     @SubscribeEvent

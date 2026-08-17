@@ -28,6 +28,7 @@ import goodgenerator.api.recipe.ExtremeHeatExchangerBackend;
 import goodgenerator.api.recipe.ExtremeHeatExchangerRecipe;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.maps.FormingPressBackend;
@@ -359,7 +360,7 @@ class GTRecipeBackendLifecycleTest {
         BehaviourDataOrb.setDataTitle(orb, "Elemental-Scan");
         BehaviourDataOrb.setDataName(
             orb,
-            gregtech.api.material.MaterialUtils.element(material)
+            MaterialUtils.element(material)
                 .name());
         return orb;
     }

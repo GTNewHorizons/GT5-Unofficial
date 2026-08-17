@@ -11,15 +11,13 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.OreShapes;
 
-/// Reproduces `gregtech.loaders.oreprocessing.ProcessingAll`'s stack-size clamp for MaterialLib's block-kind
-/// shapes (`block`, `ore`, `oreSmall` -- the only cutover shapes backed by an [ItemBlock], since every
-/// item-shape prefix's [com.ruling_0.materiallib.api.ShapeItem] is not one). `ProcessingAll` stays registered
-/// on every prefix and keeps clamping foreign mods' block-form items through the oredict path; this
-/// reproduces its effect for MaterialLib's own items, which that path does not reach.
+/// Clamps MaterialLib's block-kind shapes (`block`, `ore`, `oreSmall`, the only cutover shapes backed by an
+/// [ItemBlock]) to their prefix's default stack size. `gregtech.loaders.oreprocessing.ProcessingAll` applies
+/// the same clamp to foreign mods' block-form items through the oredict path, which does not reach
+/// MaterialLib's own items.
 ///
-/// Unlike the other `Consumer*` classes, this does not delegate to a `Processing*` instance: the clamp is a
-/// one-time mutation of the shared [Item] backing a whole shape (every material's stack of a block-kind shape
-/// is the same [Item], selected by metadata), so re-running it once per material is redundant but harmless.
+/// The clamp mutates the single [Item] backing a whole shape rather than one material's stack, so the
+/// per-material consumer re-applies it once per material.
 public final class ConsumerStackSizeClamp {
 
     private ConsumerStackSizeClamp() {}

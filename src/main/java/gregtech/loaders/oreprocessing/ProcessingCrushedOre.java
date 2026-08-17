@@ -39,8 +39,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
 
         switch (prefix.getName()) {
             case "crushedCentrifuged" -> {
-                // An ore material need not have a dust of its own -- ChargedCertusQuartz removes the dust shape --
-                // and both of these grind into exactly that dust, so there is no recipe to register without it.
+                // An ore material need not have a dust of its own -- ChargedCertusQuartz removes the dust shape.
                 ItemStack dust = GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L);
                 if (dust == null) break;
 

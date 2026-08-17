@@ -113,14 +113,9 @@ public class MaterialFix {
         }
     }
 
-    /// Whether the werkstoff part set covers every one of `prefixes` for `material`. Each branch below names
-    /// the prefixes its recipes both consume and produce, because the two need not travel together: `plate`,
-    /// `plateDouble` and `plateDense` come from the `metals` family and are individually removable, while
-    /// `plateTriple` comes from the separate `multiPlates` family.
-    ///
-    /// The gate reads [LegacyWerkstoffIndex#generatesPrefix], the werkstoff part set alone, rather than
-    /// [MaterialParts#generatesPrefix], which also answers true for a part gregtech's own autogen adds --
-    /// widening it here would double-generate against gregtech's part loaders.
+    /// Whether the werkstoff part set covers every one of `prefixes` for `material`. The gate reads
+    /// [LegacyWerkstoffIndex#generatesPrefix], the werkstoff part set alone: widening it to
+    /// `MaterialParts#generatesPrefix` would double-generate against gregtech's own part loaders.
     private static boolean generatesAll(Material material, OrePrefixes... prefixes) {
         for (OrePrefixes prefix : prefixes) {
             if (!LegacyWerkstoffIndex.generatesPrefix(material, prefix)) return false;

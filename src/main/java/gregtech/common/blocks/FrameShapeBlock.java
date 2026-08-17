@@ -68,8 +68,8 @@ public class FrameShapeBlock extends ShapeBlock implements IBlockWithTextures {
         return mteId;
     }
 
-    /// The display name of a material's frame box, with the special cases the legacy frame block carried
-    /// (the Infused stones and the sand-family materials name the material alone).
+    /// The display name of a material's frame box. The Infused stones and the sand-family materials name the
+    /// material alone.
     public static String displayName(Material material) {
         String internalName = MaterialUtils.internalName(material);
         return switch (internalName) {

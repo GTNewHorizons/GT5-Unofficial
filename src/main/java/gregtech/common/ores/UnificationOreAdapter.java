@@ -57,10 +57,8 @@ public class UnificationOreAdapter implements IOreAdapter {
         MinecraftForge.EVENT_BUS.register(new EventHandler());
     }
 
-    /// Runs the {@link #init()} full-oredict scan directly, for ores registered before
-    /// {@link GTMod#sMaterialsReady} was set (when {@link #onOreRegistered} ignored their event because the
-    /// legacy material facade was not yet safe to touch). Called once from GT's preInit, right after that flag
-    /// flips; a no-op if {@link #onOreRegistered} already ran {@link #init()} for a later event by then.
+    /// Runs the [#init] full-oredict scan, covering the ores [#onOreRegistered] ignored while
+    /// [GTMod#sMaterialsReady] was unset. A no-op once that scan has run.
     public static void catchUp() {
         if (!initialized) {
             initialized = true;
@@ -106,17 +104,13 @@ public class UnificationOreAdapter implements IOreAdapter {
 
             if (ml == null) continue;
 
-            // The name lookup runs through the LegacyNameDomain seam; the tables key on the MaterialLib
-            // material directly, matching this adapter's OreInfo contract.
             BLOCK_TABLE.put(ore, ml, bm);
             MAT_BLOCK_TABLE.put(bm, Pair.of(ore, ml));
         }
     }
 
     /// Checks if the ore block is a GT block, which means that it should be supported by another adapter. These blocks
-    /// will not be indexed when their ore dictionary names are added. `GTOreAdapter.INSTANCE.supports` recognizes
-    /// both the legacy `GTBlockOre` series (kept registered for pre-migration saves, see that adapter's javadoc)
-    /// and its MaterialLib ore/small-ore blocks.
+    /// will not be indexed when their ore dictionary names are added.
     private static boolean isGTOre(Block block) {
         if (block instanceof GTBlockOre) return true;
         if (GTOreAdapter.INSTANCE.supports(block, 0)) return true;

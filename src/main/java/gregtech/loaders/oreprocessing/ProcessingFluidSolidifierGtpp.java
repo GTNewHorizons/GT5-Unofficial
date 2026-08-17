@@ -19,9 +19,7 @@ import gregtech.api.material.MaterialUtils;
 /// The mold-plus-fluid solidifier recipes for every shape a material in [#ELIGIBLE] carries (ingot, plate,
 /// nugget, gear, small gear, block, rod, long rod, bolt, screw, ring, rotor).
 ///
-/// [#materialFluid] resolves the input fluid by name ([MaterialFluidNames] ->
-/// [FluidNames#legacyGtppFluidName]) rather than through [gregtech.api.material.MaterialUtils]'s state-specific
-/// accessors, which cannot resolve a gtPlusPlus-only material's fluid -- see
+/// The input fluid resolves through [MaterialUtils#anyFluid]'s name-priority lookup -- see
 /// [ProcessingAlloyBlastSmelter]'s class javadoc for the same resolution.
 ///
 /// [#run] is called from `CompatHandler#startLoadingGregAPIBasedRecipes` -- see

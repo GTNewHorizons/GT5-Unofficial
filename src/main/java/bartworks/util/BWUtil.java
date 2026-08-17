@@ -79,8 +79,6 @@ public class BWUtil {
         String matname = "";
         if (BWUtil.checkStackAndPrefix(itemStack)) {
             Material material = GTOreDictUnificator.getAssociation(itemStack).mMaterial.mMaterial;
-            // Keeps non-legacy-named associations (werkstoff/gtpp reconstructions) rendering an empty material
-            // name.
             if (LegacyNameDomain.contains(material)) matname = MaterialUtils.localName(material);
         }
         return ret.replace("%material", matname);

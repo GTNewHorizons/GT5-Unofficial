@@ -11,9 +11,7 @@ import org.junit.jupiter.api.Test;
 import com.ruling_0.materiallib.api.Property;
 
 /// Pins each defaulted [GTMaterialProperties] key to the value its [MaterialUtils] accessor returns for a null
-/// material. The two are the same constant expressed twice -- the accessors read the property directly and
-/// rely on its default for a material that sets none -- so a key whose default drifts from its accessor
-/// silently changes what every unset material reports.
+/// material.
 public class GTMaterialPropertyDefaultsTest {
 
     private static Map<Property<?>, Object> declaredDefaults() {
@@ -99,10 +97,8 @@ public class GTMaterialPropertyDefaultsTest {
             MaterialUtils.smeltingMultiplier(null));
     }
 
-    /// `OLD_SUB_ID` must stay default-free: absence is meaningful for it, and
-    /// [LegacyMaterialIDIndex] and
-    /// [LegacyWerkstoffIndex] both branch on the property being unset. A
-    /// default would make those tests unconditionally true. [MaterialUtils#oldSubId]'s `-1` is its own sentinel.
+    /// `OLD_SUB_ID` must stay default-free: [LegacyMaterialIDIndex] and [LegacyWerkstoffIndex] both branch on
+    /// the property being unset. [MaterialUtils#oldSubId]'s `-1` is its own sentinel.
     @Test
     void oldSubIdDeclaresNoDefault() {
         assertNull(GTMaterialProperties.OLD_SUB_ID.getDefaultValue());

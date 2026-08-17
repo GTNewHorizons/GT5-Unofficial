@@ -12,8 +12,6 @@ import gregtech.api.material.FluidRef;
 
 /// The Forge fluid each material registers per state, and the six cracked fluids, keyed by MaterialLib
 /// registration name. Necessary for legacy support -- new fluids/materials should be handled normally.
-///
-/// TODO: Postea fluid transformation so this can get cleaned up.
 public final class MaterialFluidNames {
 
     private MaterialFluidNames() {}

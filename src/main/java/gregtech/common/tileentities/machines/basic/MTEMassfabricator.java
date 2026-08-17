@@ -155,8 +155,6 @@ public class MTEMassfabricator extends MTEBasicMachine {
         sUUAperUUM = MachineStats.massFabricator.UUAPerUUM;
         sUUASpeedBonus = MachineStats.massFabricator.UUASpeedBonus;
         sRequiresUUA = MachineStats.massFabricator.requiresUUA;
-        // The UU-Amplifier cell/fluid is a MaterialLib item (Materials.UUAmplifier); its NEI tooltip formula is
-        // that material's static FORMULA property, not a per-config dynamic string.
     }
 
     @Override

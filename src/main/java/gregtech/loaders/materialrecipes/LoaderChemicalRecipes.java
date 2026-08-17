@@ -18,6 +18,7 @@ import gregtech.api.material.MaterialRefStack;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTUtility;
 
 /// Generates the chemical-reactor recipe (composition -> dust) for MaterialLib materials -- the canonical
 /// reader of [GTMaterialProperties#HAS_CHEMICAL_RECIPE]. Registers through [GTRecipeConstants#UniversalChemical],
@@ -25,10 +26,9 @@ import gregtech.api.util.GTRecipeConstants;
 /// chemical reactor.
 ///
 /// Each carrier's [GTMaterialProperties#COMPOSITION] entries resolve to a dust input per entry
-/// ([MaterialUtils#compositionDust]), except a single gas-only entry (e.g. Oxygen), which resolves to a fluid input
-/// instead ([MaterialUtils#compositionGas]) rather than an item; [#CARRIERS] never declares more than one such entry,
-/// so
-/// this carries no cell-item byproduct accounting. Duration and EU scale off the carrier's own
+/// ([MaterialUtils#compositionDust]), except a single gas-only entry (e.g. Oxygen), which resolves to a fluid
+/// input ([MaterialUtils#compositionGas]). [#CARRIERS] never declares more than one such entry, so this
+/// carries no cell-item byproduct accounting. Duration and EU scale off the carrier's own
 /// [MaterialAtomics#protons] and [GTMaterialProperties#PROCESSING_MATERIAL_TIER_EU], divided/multiplied by its
 /// composition's entry count.
 public final class LoaderChemicalRecipes {
@@ -92,12 +92,7 @@ public final class LoaderChemicalRecipes {
             .itemOutputs(output)
             .fluidInputs(fluidInput == null ? new FluidStack[0] : new FluidStack[] { fluidInput })
             .duration((int) Math.max(1L, Math.abs(MaterialAtomics.protons(material) / componentCount)))
-            .eut(recipeEU(material, Math.min(4, componentCount) * 30))
+            .eut(GTUtility.calculateRecipeEU(material, Math.min(4, componentCount) * 30))
             .addTo(GTRecipeConstants.UniversalChemical);
-    }
-
-    private static int recipeEU(Material material, int defaultEuPerTick) {
-        Integer tier = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-        return tier != null && tier != 0 ? tier : defaultEuPerTick;
     }
 }

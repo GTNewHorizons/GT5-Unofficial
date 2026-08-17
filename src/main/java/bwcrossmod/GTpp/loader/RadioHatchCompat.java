@@ -29,9 +29,8 @@ public class RadioHatchCompat {
 
     public static HashSet<String> TranslateSet = new HashSet<>();
 
-    /// Ensures every radioactive material's `stick`/`stickLong` item is reachable under its legacy oredict
-    /// name, for radio hatch machinery that still looks materials up that way. A material MaterialLib never
-    /// generates a rod shape for is skipped: nothing here can mint a rod item from scratch.
+    /// Registers each radioactive material's `stick`/`stickLong` item under its `stick`/`stickLong` oredict
+    /// name when no ore entry holds that name yet. A material without the rod shape is skipped.
     public static void run() {
         DebugLog.log("Starting Generation of missing GT++ rods/longrods");
 

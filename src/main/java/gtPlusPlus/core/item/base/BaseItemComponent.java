@@ -33,9 +33,7 @@ import gtPlusPlus.core.util.minecraft.EntityUtils;
 
 public class BaseItemComponent extends Item {
 
-    /// Null for every surviving construction path (cell generation from a bare fluid name never had a
-    /// material to associate); retained as a field, rather than deleted outright, so the null-checked reads
-    /// below stay meaningful if a future caller supplies one.
+    /// Always null: the only constructor generates a cell from a bare fluid name, which carries no material.
     public final com.ruling_0.materiallib.api.Material componentMaterial;
     public final String materialName;
     public final String unlocalName;

@@ -14,14 +14,12 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.material.MaterialFormulas;
 import gregtech.common.config.Client;
 
-/// Renders the chemical-formula tooltip line on MaterialLib-served stacks (items, block item forms, and
-/// fluid containers -- all backed by [ShapeItem] or [ShapeBlock.ShapeBlockItem]), restoring what the legacy
-/// generated items drew in their own `addInformation` overrides. Implemented as an [ItemTooltipEvent] handler
-/// reading declaration data through [MaterialFormulas] rather than baked MaterialLib tooltip lines, so the
-/// `Client.tooltip.showFormula` config keeps gating the line at render time exactly as it gated every legacy
-/// renderer, and localized formulas re-resolve on language switch. The line is inserted directly below the
-/// display name, matching the legacy position (the formula was the first `addInformation` line on generated
-/// material items).
+/// Renders the chemical-formula tooltip line on MaterialLib-served stacks (items, block item forms, and fluid
+/// containers -- all backed by [ShapeItem] or [ShapeBlock.ShapeBlockItem]), directly below the display name.
+///
+/// An [ItemTooltipEvent] handler reading declaration data through [MaterialFormulas] rather than baked
+/// MaterialLib tooltip lines, so `Client.tooltip.showFormula` gates the line at render time and localized
+/// formulas re-resolve on language switch.
 public class MaterialFormulaTooltip {
 
     @SubscribeEvent

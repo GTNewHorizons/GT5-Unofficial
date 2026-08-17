@@ -19,7 +19,8 @@ import gregtech.api.material.MaterialUtils;
 /// oredict event.
 ///
 /// Each `Processing*` class also runs through the oredict-event path (`gregtech.common.OreDictEventContainer`)
-/// for foreign mods' items of the same prefix.
+/// for foreign mods' items of the same prefix. A prefix with no MaterialLib shape gets no consumer here and
+/// keeps serving foreign mods through that path alone.
 ///
 /// Dispatch is postInit, not init: several `Processing*` bodies transitively class-load
 /// [gregtech.api.util.GTRecipeConstants], whose static initializer reads material data that
@@ -30,7 +31,7 @@ import gregtech.api.material.MaterialUtils;
 ///
 /// Registrators are passed as [Supplier]s, not resolved instances: `Consumer*#register` runs during
 /// `MaterialRegistrationEvent`, before `gregtech.loaders.preload.LoaderOreProcessing` has constructed the
-/// `Processing*` singletons, so an eager `INSTANCE` read would always see `null`.
+/// `Processing*` singletons.
 final class ShapeConsumerSupport {
 
     private ShapeConsumerSupport() {}

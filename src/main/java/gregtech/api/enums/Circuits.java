@@ -15,11 +15,9 @@ import gregtech.api.util.GTOreDictUnificator;
 /// Ingredients come in two shapes, so each prefix exposes two accessors:
 /// - [#get(int)] and [#getWrap(int)] return a unified [ItemStack] for recipe inputs and outputs that need a
 /// concrete stack.
-/// - [#getIngredient()] and [#getWrapIngredient()] return an [ItemData] for crafting-grid recipes.
-///
-/// Crafting-grid recipes need the [ItemData] rather than the bare ore-dictionary name it stringifies to:
-/// [gregtech.api.util.GTModHandler#addCraftingRecipe] derives the recycling output of a reversible recipe from the
-/// [ItemData] of each ingredient, and a bare name carries no such association.
+/// - [#getIngredient()] and [#getWrapIngredient()] return an [ItemData] for crafting-grid recipes, which derive
+/// a reversible recipe's recycling output from each ingredient's [ItemData]
+/// ([gregtech.api.util.GTModHandler#addCraftingRecipe]).
 public enum Circuits {
 
     ULV("Primitive"),

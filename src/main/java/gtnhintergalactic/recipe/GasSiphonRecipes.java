@@ -70,14 +70,10 @@ public class GasSiphonRecipes {
      * <p>
      * Usage:
      * new GasSiphonRecipe("planet.jupiter", 3)
-     * .addFluid(1, MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas,
-     * 15_000))
-     * .addFluid(2, MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, (int)
-     * (500)))
-     * .addFluid(3, MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas,
-     * 300))
-     * .addFluid(4, MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, (int)
-     * (200)))
+     * .addFluid(1, MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 15_000))
+     * .addFluid(2, MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 500))
+     * .addFluid(3, MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, 300))
+     * .addFluid(4, MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 200))
      * .build();
      * <p>
      * Calling build() registers the recipe into GasSiphonRecipes.RECIPES.

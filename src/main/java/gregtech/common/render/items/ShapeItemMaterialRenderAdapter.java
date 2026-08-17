@@ -16,13 +16,12 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTUtil;
 
 /// Adapts a MaterialLib [ShapeItem] to the [IGT_ItemWithMaterialRenderer] surface the
-/// [GeneratedMaterialRenderer] family reads from, so a material's special renderer (assigned through
-/// [gregtech.api.material.MaterialRenderers#recordRenderer]) works on shape-backed items. See
+/// [GeneratedMaterialRenderer] family reads from, letting a material's special renderer (assigned through
+/// [gregtech.api.material.MaterialRenderers#recordRenderer]) draw shape-backed items. See
 /// [IGT_ItemWithMaterialRenderer#resolve] for construction.
 ///
-/// A shape item has no per-pass icon list -- only one icon layer stack -- so this always reports a single render
-/// pass and hands the stack to the renderer through [#getIconContainer]. The stack is the item's own render
-/// passes in the item's own order, a fluid container's untinted base included as its final pass.
+/// A shape item carries one icon layer stack rather than a per-pass icon list, so this reports a single render
+/// pass and hands the stack to the renderer through [#getIconContainer].
 public final class ShapeItemMaterialRenderAdapter implements IGT_ItemWithMaterialRenderer {
 
     private final ShapeItem item;
@@ -93,9 +92,7 @@ public final class ShapeItemMaterialRenderAdapter implements IGT_ItemWithMateria
     }
 
     /// One material's icon layer stack on the adapted [ShapeItem]: the item's render passes, forwarded in the
-    /// item's own order. Layer 0 reports the shape's own tint, which [IIconContainer#isUsingColorModulation]
-    /// leaves to the consumer, so it arrives through [ShapeItemMaterialRenderAdapter#getRGBa] instead; a layer
-    /// past the material's own stack is a fluid container's untinted base.
+    /// item's own order. A layer past the material's own stack is a fluid container's untinted base.
     private static final class LayerStack implements IIconContainer {
 
         private final ShapeItem item;
@@ -111,7 +108,7 @@ public final class ShapeItemMaterialRenderAdapter implements IGT_ItemWithMateria
             return getLayerIcon(0);
         }
 
-        /// Null: the stack's layers, its trailing overlay included, come through [#getLayerIcon].
+        /// Always null; the stack's layers, its trailing overlay included, come through [#getLayerIcon].
         @Override
         public IIcon getOverlayIcon() {
             return null;

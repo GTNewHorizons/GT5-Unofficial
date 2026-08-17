@@ -40,13 +40,12 @@ import gregtech.api.util.GTUtility;
 
 /// Macerator, ore-washer, thermal-centrifuge, forge-hammer, centrifuge, and electrolyzer/chemical-dehydrator
 /// recipes for the gtPlusPlus ore minerals in [#ELIGIBLE_STANDARD]/[#ELIGIBLE_NO_OPTIONAL], each carrying the
-/// two bonus byproducts [#registerOreProcessing] picks from the mineral's flattened composition.
+/// two bonus byproducts [#generate] picks from the mineral's flattened composition.
 ///
 /// These recipes are registered here rather than through the canonical `ProcessingOre`/`ProcessingDirty`/
-/// `ProcessingCrushedOre`/`ProcessingPure` autogen because that autogen reads
-/// [GTMaterialProperties#ORE_BYPRODUCTS] with its own per-shape convention for which slot each recipe takes,
-/// which does not line up with the bonus pair these minerals need; it still runs for the same materials, so
-/// both sets of recipes coexist.
+/// `ProcessingCrushedOre`/`ProcessingPure` autogen, whose [GTMaterialProperties#ORE_BYPRODUCTS] slot
+/// convention does not line up with the bonus pair these minerals need. That autogen still runs for the same
+/// materials, so both sets of recipes coexist.
 ///
 /// [#hasSolidForm] gates which composition parts can be a byproduct: a part qualifies only when its `dust`,
 /// `block`, `dustTiny`, and `dustSmall` shapes all resolve. Material state alone is not equivalent and picks
@@ -63,8 +62,8 @@ public class ProcessingOreMachine {
     private ProcessingOreMachine() {}
 
     /// The frozen set whose members get the electrolyzer/chemical-dehydrator branch in [#generate]. Together
-    /// with [#ELIGIBLE_NO_OPTIONAL] this is the same 51-material union [ProcessingOreCrafting#ELIGIBLE]
-    /// declares for its own crafting recipes.
+    /// with [#ELIGIBLE_NO_OPTIONAL] this is the same union [ProcessingOreCrafting#ELIGIBLE] declares for its
+    /// own crafting recipes.
     // spotless:off
     private static final Set<Material> ELIGIBLE_STANDARD = Set.of(
         Materials.Crocoite, Materials.Geikielite, Materials.Nichromite,
@@ -392,15 +391,8 @@ public class ProcessingOreMachine {
         return composition != null ? composition : List.of();
     }
 
-    /// The flattened leaf materials of `toSearch`'s composite tree, by a BFS with a 1000-node hard limit.
-    ///
-    /// Only a material this class already generates recipes for is expanded; every other part is a leaf even
-    /// when it carries a [GTMaterialProperties#COMPOSITION] of its own. That composition is chemical data,
-    /// which is not the same question as whether a part decomposes into further byproducts here: Koboldite's
-    /// `Thaumium` part is composed of `[Iron, Magic]`, but it is a byproduct in its own right, and expanding
-    /// it would shift both byproduct picks along the flattened list. The ore materials that genuinely do
-    /// decompose further ([Materials#Fluorcaphite], the rare earth mixes) are all members of
-    /// [#ELIGIBLE_STANDARD]/[#ELIGIBLE_NO_OPTIONAL] themselves.
+    /// The flattened leaf materials of `toSearch`'s composite tree, by a BFS with a 1000-node hard limit. Only
+    /// a member of [#EXPANDABLE] is expanded; every other part is a leaf.
     private static List<Material> compoundMaterialsRecursively(Material toSearch) {
         List<Material> result = new ArrayList<>();
         Deque<Material> toCheck = new ArrayDeque<>();
@@ -452,8 +444,7 @@ public class ProcessingOreMachine {
 
     /// `material`'s state, taken from [GTMaterialProperties#GTPP_STATE] when set and otherwise derived from
     /// which fluid it carries: a molten or solid fluid means `SOLID`, else a liquid fluid means `LIQUID`, else
-    /// a gas means `GAS`, else `SOLID`. Package-visible: [ProcessingMaterialDecompositionGtpp] shares this
-    /// same state derivation for its own composite-part decomposition.
+    /// a gas means `GAS`, else `SOLID`.
     static String gtppState(Material material) {
         String state = material.getProperty(GTMaterialProperties.GTPP_STATE);
         if (state != null) return state;
@@ -464,8 +455,7 @@ public class ProcessingOreMachine {
     }
 
     /// Whether a material counts as solid here: its `dust`, `block`, `dustTiny`, and `dustSmall` shapes must
-    /// all resolve. Deliberately not a [#gtppState] stand-in -- a material can carry `GTPP_STATE == SOLID`
-    /// while missing one of these four shapes, and vice versa, and these recipes follow the shapes.
+    /// all resolve.
     private static boolean hasSolidForm(Material material) {
         return ProcessingDustGeneration.stackOf(OrePrefixes.dust, material, 1) != null
             && ProcessingDustGeneration.stackOf(OrePrefixes.block, material, 1) != null

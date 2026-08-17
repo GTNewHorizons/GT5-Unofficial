@@ -65,7 +65,7 @@ public class Assembler implements Runnable {
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.AnnealedCopper, Shapes.wireFine, (int) (64L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.AnnealedCopper, Shapes.wireFine, 64))
             .circuit(17)
             .itemOutputs(new ItemStack(ItemRegistry.BW_BLOCKS[2], 1, 1))
             .fluidInputs(MaterialUtils.molten(Materials.Plastic, 8 * INGOTS))

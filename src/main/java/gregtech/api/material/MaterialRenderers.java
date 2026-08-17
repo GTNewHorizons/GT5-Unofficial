@@ -21,16 +21,13 @@ public class MaterialRenderers {
 
     private static final Map<Material, GeneratedMaterialRenderer> materialRenderers = new HashMap<>();
 
-    /// Registers `renderer` as the special item renderer for `material`, keyed by the MaterialLib [Material].
-    /// Called once from `GTClient#onPreInitialization`, alongside
-    /// [com.ruling_0.materiallib.api.MaterialLibClient#setItemRenderer] -- both stores are populated
-    /// together so [#rendererOf] and MaterialLib's own renderer lookup agree.
+    /// Registers `renderer` as the special item renderer for `material`.
     public static void recordRenderer(Material material, GeneratedMaterialRenderer renderer) {
         materialRenderers.put(material, renderer);
     }
 
     /// The [GeneratedMaterialRenderer] [#recordRenderer] registered for `material`, or null when it has no
-    /// special renderer. Read by the generated-item, fluid-display, and electrode renderers.
+    /// special renderer.
     public static @Nullable GeneratedMaterialRenderer rendererOf(@Nullable Material material) {
         return material == null ? null : materialRenderers.get(material);
     }
