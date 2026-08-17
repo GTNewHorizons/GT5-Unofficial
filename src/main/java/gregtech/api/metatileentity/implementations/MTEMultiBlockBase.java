@@ -1671,6 +1671,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     /**
      * Returns voltage tier of energy hatches. If multiple tiers are found, returns 0.
+     * Only works with normal energy hatches.
      */
     public long getInputVoltageTier() {
         long rTier = 0;
@@ -2569,8 +2570,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             setupProcessingLogic(processingLogic);
             long maxRecipeEUt = processingLogic.getMaxAllowedRecipeEUt();
             byte recipeTier = GTUtility.getTier(maxRecipeEUt);
-            long totalInputPower = this.getMaxInputPower();
-            byte voltageTier = (byte) this.getInputVoltageTier();
+            long totalInputPower = this.getMaxInputEu();
+            byte voltageTier = this.getExoticEnergyHatches()
+                .isEmpty() ? (byte) this.getInputVoltageTier()
+                    : (byte) GTUtility.getTierExtended(this.getAverageInputVoltage());
 
             if (voltageTier != 0) {
                 info.add(
