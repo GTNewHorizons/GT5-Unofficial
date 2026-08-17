@@ -7,8 +7,10 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.interfaces.tileentity.IGregTechDeviceInformation.encode;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.recipe.check.SingleRecipeCheck.getDisplayString;
+import static gregtech.api.util.GTUtility.ceilDiv2;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.formatShortenedLong;
+import static gregtech.api.util.GTUtility.log4ceil;
 import static gregtech.api.util.GTUtility.min;
 import static gregtech.api.util.GTUtility.truncateText;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -1640,6 +1642,32 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return rVoltage;
     }
 
+    /**
+     * Get the maximum voltage of the hatches installed.
+     */
+    public long getMaxHatchVoltage() {
+        long rVoltage = 0;
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
+            long volt = tHatch.getBaseMetaTileEntity()
+                .getInputVoltage();
+            if (volt > rVoltage) {
+                rVoltage = volt;
+            }
+        }
+        return rVoltage;
+    }
+
+    public long getMaxHatchVoltageWithExotic() {
+        long rVoltage = getMaxHatchVoltage();
+        for (MTEHatch tHatch : validMTEList(mExoticEnergyHatches)) {
+            long volt = tHatch.maxEUInput();
+            if (volt > rVoltage) {
+                rVoltage = volt;
+            }
+        }
+        return rVoltage;
+    }
+
     public long getAverageInputVoltage() {
         return ExoticEnergyInputHelper.getAverageInputVoltageMulti(mEnergyHatches);
     }
@@ -1653,13 +1681,28 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Sums up max input EU/t of energy hatches, amperage included.
+     * Sums up max input EU/t of energy hatches, amperage included,
+     * but excludes exotic hatches.
      */
     public long getMaxInputPower() {
         long eut = 0;
         for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
             IGregTechTileEntity baseTile = tHatch.getBaseMetaTileEntity();
             eut += baseTile.getInputVoltage() * baseTile.getInputAmperage();
+        }
+        return eut;
+    }
+
+    /**
+     * Sums up max input EU/t of energy hatches, amperage included,
+     * also includes exotic hatches.
+     */
+    public long getMaxInputPowerWithExotic() {
+        long eut = getMaxInputPower();
+        for (MTEHatch tHatch : validMTEList(mExoticEnergyHatches)) {
+            long aVoltage = tHatch.maxEUInput();
+            long aPower = tHatch.maxWorkingAmperesIn() * aVoltage;
+            eut += aPower;
         }
         return eut;
     }
@@ -2561,11 +2604,50 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     formatNumber(storedEnergy),
                     formatNumber(maxEnergy)));
 
-            info.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.multiblock.scanner.mei",
-                    formatNumber(getMaxInputVoltage()),
-                    VN[GTUtility.getTier(getMaxInputVoltage())]));
+            int maxTierSkips = this.processingLogic.getMaxTierSkips();
+            // energy consumers
+            if (!this.getExoticEnergyHatches()
+                .isEmpty()) {
+                long maximumHatchVoltage = this.getMaxHatchVoltageWithExotic();
+                long maximumInputPower = this.getMaxInputPowerWithExotic();
+                long powerAmps = ceilDiv2(maximumInputPower, maximumHatchVoltage);
+                long maximumVoltageTier = Math.min(
+                    log4ceil(maximumInputPower / V[0]),
+                    log4ceil(this.getMaxHatchVoltageWithExotic() / V[0]) + (long) maxTierSkips);
+                long maximumRecipeVoltage = (long) GTUtility.powInt(4.0D, maximumVoltageTier) * V[0];
+                long recipeAmps = GTUtility.ceilDiv2(maximumInputPower, maximumRecipeVoltage);
+                info.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.multiblock.scanner.mei_exotic",
+                        formatNumber(maximumHatchVoltage),
+                        powerAmps,
+                        VN[GTUtility.getTier(maximumInputPower)]));
+                info.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.multiblock.scanner.mrv",
+                        formatNumber(maximumRecipeVoltage),
+                        recipeAmps,
+                        VN[GTUtility.getTier(maximumRecipeVoltage)]));
+            } else {
+                long maximumInputVoltage = this.getMaxInputVoltage();
+                long maximumInputPower = this.getMaxInputPower();
+                long maximumVoltageTier = Math.min(
+                    log4ceil(maximumInputPower / V[0]),
+                    log4ceil(this.getMaxHatchVoltage() / V[0]) + (long) maxTierSkips);
+                long maximumRecipeVoltage = (long) GTUtility.powInt(4.0D, maximumVoltageTier) * V[0];
+                long recipeAmps = GTUtility.ceilDiv2(maximumInputPower, maximumRecipeVoltage);
+                info.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.multiblock.scanner.mei",
+                        formatNumber(maximumInputVoltage),
+                        VN[GTUtility.getTier(maximumInputVoltage)]));
+                info.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.multiblock.scanner.mrv",
+                        formatNumber(maximumRecipeVoltage),
+                        recipeAmps,
+                        VN[GTUtility.getTier(maximumRecipeVoltage)]));
+            }
         }
 
         if (getActualEnergyUsage() > 0) {
