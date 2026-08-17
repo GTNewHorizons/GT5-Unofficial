@@ -51,12 +51,10 @@ public class BWColorUtil {
                     switch (getDarknessFromColor(rgba, 0)) {
                         case 0:
                         case 1:
-                            if (rgba[3] - 50 > rgba[0]) return Dyes.dyePurple;
-                            else return Dyes.dyeRed;
+                            return Dyes.dyeRed;
                         case 2:
                         case 3:
-                            if (rgba[3] - 50 > rgba[0]) return Dyes.dyeMagenta;
-                            else if (rgba[0] > 200 && rgba[2] > 140) return Dyes.dyePink;
+                            if (rgba[0] > 200 && rgba[2] > 140) return Dyes.dyePink;
                             else if (rgba[0] > rgba[1] + rgba[1] / 10 && rgba[0] > rgba[2] + rgba[2] / 10
                                 && rgba[1] >> 4 == rgba[2] >> 4
                                 && rgba[1] + 50 > rgba[0]) {
