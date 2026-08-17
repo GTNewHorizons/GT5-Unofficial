@@ -359,17 +359,15 @@ public class MaterialUtils {
         return id == null ? -1 : id;
     }
 
-    /// The `[r, g, b, a]` short array for a material's [GTMaterialProperties#ARGB] color, or null if it has
-    /// no ARGB property set (unported markers). Unpacks the packed int as `(argb >>> 16) & 0xFF` /
-    /// `(argb >>> 8) & 0xFF` / `(argb) & 0xFF` / `(argb >>> 24) & 0xFF` for r/g/b/a respectively. Unlike
-    /// [com.ruling_0.materiallib.api.StandardProperties#TINT], preserves alpha `0x00` (see
-    /// [GTMaterialProperties#ARGB]'s javadoc) -- do not substitute this for TINT in ML-side rendering code.
-    /// Resolved through a [ColorResource] on every call, so a per-draw read follows a resource pack override
-    /// while a value captured once at load keeps the coded default.
+    /// The `[r, g, b, a]` short array for a material's declared MaterialLib tint ([StandardProperties#TINT]),
+    /// or null for a material that declares none. Unpacks the packed int as `(argb >>> 16) & 0xFF` /
+    /// `(argb >>> 8) & 0xFF` / `(argb) & 0xFF` / `(argb >>> 24) & 0xFF` for r/g/b/a respectively. A resource
+    /// pack overrides the declared value through the lang key
+    /// `color.resource.materiallib.<MaterialName>.tint`. Resolved through a [ColorResource] on every call, so
+    /// a per-draw read follows such an override while a value captured once at load keeps the coded default.
     public static @Nullable short[] rgba(@Nullable Material material) {
-        if (material == null) return null;
-        Integer declared = material.getProperty(GTMaterialProperties.ARGB);
-        if (declared == null) return null;
+        if (material == null || !material.hasProperty(StandardProperties.TINT)) return null;
+        int declared = material.getProperty(StandardProperties.TINT);
         int argb = tintColors.computeIfAbsent(
             material,
             key -> new ColorResource("materiallib", key.getName() + ".tint", String.format("0x%08X", declared), true))
@@ -512,7 +510,7 @@ public class MaterialUtils {
         return dye == null ? nearestDye(material) : Dyes.valueOf(dye);
     }
 
-    /// The vanilla [Dyes] nearest a material's [GTMaterialProperties#ARGB] by squared RGB distance, or
+    /// The vanilla [Dyes] nearest a material's [StandardProperties#TINT] by squared RGB distance, or
     /// [Dyes#_NULL] when it has no color. Used as the [#dye] fallback for gem materials carrying no explicit
     /// `DYE` property (all werkstoff-derived gems reach GT this way) so their laser-engraver upgrade recipes and
     /// lens-gem oredict registration -- both keyed on `craftingLens<Dye>` -- still resolve a color, reproducing

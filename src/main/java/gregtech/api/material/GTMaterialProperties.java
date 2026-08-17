@@ -21,13 +21,6 @@ public class GTMaterialProperties {
     public static final Property<String> ARMOR_ENCHANTMENT = Property.of("gregtech", "armorEnchantment");
     public static final Property<Integer> ARMOR_ENCHANTMENT_LEVEL = Property.of("gregtech", "armorEnchantmentLevel");
     public static final Property<List<String>> ADDED_PREFIXES = Property.of("gregtech", "addedPrefixes");
-    /// The exact ARGB color declared for a material's tint, alpha byte included. Unlike
-    /// [com.ruling_0.materiallib.api.StandardProperties#TINT], never substitutes alpha 0x00 (the common
-    /// default for materials with no explicit tint) for 0xFF (needed for MaterialLib's own rendering only).
-    /// [MaterialUtils#rgba] resolves the declared value through the lang key
-    /// `color.resource.materiallib.<MaterialName>.tint`, the channel shared with MaterialLib's own TINT
-    /// property. An override's alpha byte applies verbatim.
-    public static final Property<Integer> ARGB = Property.of("gregtech", "argb");
     public static final Property<List<AspectRefStack>> ASPECTS = Property.of("gregtech", "aspects");
     public static final Property<Boolean> AUTO_BLAST_FURNACE_RECIPES = Property
         .of("gregtech", "autoBlastFurnaceRecipes", true);
@@ -125,9 +118,10 @@ public class GTMaterialProperties {
     public static final Property<Integer> MELTING_POINT = Property.of("gregtech", "meltingPoint", 0);
     /// The EU/t voltage tier the auto-generated blast furnace recipe should require, elided when unset.
     public static final Property<Integer> MELTING_VOLTAGE = Property.of("gregtech", "meltingVoltage");
-    /// The exact ARGB color declared for a material's molten-state tint; see [#ARGB]. Absent when it would
-    /// equal [#ARGB], i.e. no separate molten tint was declared for the material. [MaterialUtils#moltenRgba]
-    /// resolves the declared value through the lang key `color.resource.gregtech.<MaterialName>.molten`.
+    /// The exact ARGB color declared for a material's molten-state tint. Absent when it would equal the
+    /// material's [com.ruling_0.materiallib.api.StandardProperties#TINT], i.e. no separate molten tint was
+    /// declared for the material. [MaterialUtils#moltenRgba] resolves the declared value through the lang key
+    /// `color.resource.gregtech.<MaterialName>.molten`.
     public static final Property<Integer> MOLTEN_ARGB = Property.of("gregtech", "moltenArgb");
     public static final Property<Integer> OLD_SUB_ID = Property.of("gregtech", "oldSubId");
     public static final Property<Integer> ORE_MULTIPLIER = Property.of("gregtech", "oreMultiplier", 1);

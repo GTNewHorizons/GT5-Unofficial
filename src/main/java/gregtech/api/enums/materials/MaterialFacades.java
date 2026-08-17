@@ -30,8 +30,6 @@ public class MaterialFacades {
     public static Material AnyRubber;
     public static Material AnySyntheticRubber;
 
-    private static final int DEFAULT_ARGB = 0x00ffffff;
-
     private static Map<Material, List<Material>> oreReRegistrations;
 
     /// The wildcard markers an ore entry for `material` is additionally registered under. Empty for a material
@@ -109,7 +107,7 @@ public class MaterialFacades {
         com.ruling_0.materiallib.api.MaterialBuilder builder = MaterialLibAPI
             .newMaterial("gregtech", name, com.ruling_0.materiallib.api.TextureSet.of("gregtech", texture))
             .setProperty(GTMaterialProperties.LOCAL_NAME, localName)
-            .setProperty(GTMaterialProperties.ARGB, DEFAULT_ARGB)
+            .setTint(0xFFFFFFFF)
             .setProperty(GTMaterialProperties.UNIFIABLE, false);
         if (flag != null) builder = builder.setProperty(GTMaterialProperties.FLAGS, EnumSet.of(flag));
         if (smeltInto != null) builder = builder.setProperty(GTMaterialProperties.SMELT_INTO, smeltInto);
