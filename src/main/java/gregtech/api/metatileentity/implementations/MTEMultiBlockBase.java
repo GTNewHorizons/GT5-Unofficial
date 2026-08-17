@@ -2598,7 +2598,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             // energy consumers
             if (!this.getExoticEnergyHatches()
                 .isEmpty()) {
-                long maximumHatchVoltage = processingLogic.getAvailableVoltage();
+                long maximumHatchVoltage = this.getMaxHatchVoltage();
                 long maximumInputPower = this.getMaxInputEu();
                 long powerAmps = ceilDiv2(maximumInputPower, maximumHatchVoltage);
                 long maximumVoltageTier = Math.min(
