@@ -61,8 +61,9 @@ public class VoidMinerUtility {
         public DropMap() {
             internalMap = new Object2FloatOpenHashMap<>();
             totalWeight = 0;
-            voidMinerBlacklistedDrops = Collections
-                .unmodifiableSet(new HashSet<>(Arrays.asList(Configuration.multiblocks.voidMinerBlacklist)));
+            Set<String> blacklist = new HashSet<>(Arrays.asList(Configuration.multiblocks.voidMinerBlacklist));
+            blacklist.addAll(VoidMinerMaterialBlacklist.cached());
+            voidMinerBlacklistedDrops = Collections.unmodifiableSet(blacklist);
         }
 
         /**

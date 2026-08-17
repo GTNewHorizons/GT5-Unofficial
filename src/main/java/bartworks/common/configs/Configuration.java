@@ -73,6 +73,13 @@ public class Configuration {
         @Config.DefaultStringList({})
         public String[] voidMinerBlacklist;
 
+        @Config.Comment({ "Void Miner blacklist by MaterialLib material name; stable when the material set changes.",
+            "Entry forms: \"<Material>\" = every ore and oreSmall variant of that material;",
+            "\"<Material>:ore\" or \"<Material>:oreSmall\" = every variant of that shape;",
+            "\"<Material>:ore_<stonetype>\" = one variant, e.g. \"Tellurium:ore_stone\"." })
+        @Config.DefaultStringList({})
+        public String[] voidMinerBlacklistMaterials;
+
         @Config.Comment("This switch completely disables piston animation in Electric Implosion Compressor multiblock")
         @Config.DefaultBoolean(false)
         public boolean disablePistonInEIC;
