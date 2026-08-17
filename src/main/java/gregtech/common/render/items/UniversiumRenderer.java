@@ -70,6 +70,8 @@ public class UniversiumRenderer extends GeneratedMaterialRenderer {
 
             GL11.glDisable(GL11.GL_LIGHTING);
 
+            renderMiddleLayers(type, aStack, aItem, aItem.getIconContainer(aMetaData));
+
             if (tOverlay != null) {
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
                 TextureUtils.bindAtlas(aItem.getSpriteNumber());

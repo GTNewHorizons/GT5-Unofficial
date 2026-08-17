@@ -1,5 +1,6 @@
 package gregtech.common.render.items;
 
+import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
 import static gregtech.api.enums.Textures.InvisibleIcon.INVISIBLE_ICON;
 
 import net.minecraft.client.Minecraft;
@@ -15,6 +16,7 @@ import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import codechicken.lib.render.TextureUtils;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTUtility;
 
 public class GeneratedMaterialRenderer implements IItemRenderer {
@@ -78,6 +80,8 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
                 }
             }
 
+            renderMiddleLayers(type, aStack, aItem, aItem.getIconContainer(aMetaData));
+
             if (tOverlay != null && tOverlay != INVISIBLE_ICON) {
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
                 TextureUtils.bindAtlas(aItem.getSpriteNumber());
@@ -85,6 +89,28 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
             }
 
             GL11.glDisable(GL11.GL_BLEND);
+        }
+    }
+
+    /**
+     * Draws the icon layers between {@code container}'s base icon and its trailing overlay, each in its own color.
+     * The base icon is the caller's {@link #renderRegularItem} draw and the overlay its own step, so a null
+     * container -- or one holding nothing between those two -- draws nothing at all. Binds the item atlas ahead of
+     * the layers it does draw.
+     */
+    protected void renderMiddleLayers(ItemRenderType type, ItemStack aStack, IGT_ItemWithMaterialRenderer aItem,
+        IIconContainer container) {
+        if (container == null) return;
+        int tintedLayers = container.getOverlayIcon() != null ? container.getIconPasses() - 1
+            : container.getIconPasses();
+        if (tintedLayers < 2) return;
+
+        TextureUtils.bindAtlas(aItem.getSpriteNumber());
+        for (int layer = 1; layer < tintedLayers; layer++) {
+            short[] color = container.hasOverrideIcon() ? UNCOLORED_RGBA
+                : container.isUsingColorModulation(layer) ? aItem.getRGBa(aStack) : container.getIconColor(layer);
+            GL11.glColor3f(color[0] / 255.0F, color[1] / 255.0F, color[2] / 255.0F);
+            ItemRenderUtil.renderItem(type, container.getLayerIcon(layer));
         }
     }
 

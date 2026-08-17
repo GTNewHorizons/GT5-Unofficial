@@ -51,6 +51,14 @@ public interface IGT_ItemWithMaterialRenderer {
     IIcon getOverlayIcon(int aMetaData, int pass);
 
     /**
+     * @return The {@link IIconContainer} holding the icon layers of {@code aMetaData}, or null when the icons come
+     *         from elsewhere.
+     */
+    default IIconContainer getIconContainer(int aMetaData) {
+        return null;
+    }
+
+    /**
      * @return Color Modulation the Material is going to be rendered with.
      */
     short[] getRGBa(ItemStack aStack);

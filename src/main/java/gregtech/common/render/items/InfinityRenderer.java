@@ -75,6 +75,8 @@ public class InfinityRenderer extends GeneratedMaterialRenderer {
                 }
             }
 
+            renderMiddleLayers(type, aStack, aItem, aItem.getIconContainer(aMetaData));
+
             if (tOverlay != null) {
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
                 TextureUtils.bindAtlas(aItem.getSpriteNumber());
