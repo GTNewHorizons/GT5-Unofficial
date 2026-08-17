@@ -1,5 +1,7 @@
 package gregtech.common.render.items;
 
+import static gregtech.api.enums.Textures.InvisibleIcon.INVISIBLE_ICON;
+
 import java.util.Random;
 
 import net.minecraft.client.renderer.Tessellator;
@@ -12,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 import codechicken.lib.render.TextureUtils;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
 
@@ -32,14 +35,27 @@ public class InfinityRenderer extends GeneratedMaterialRenderer {
         IGT_ItemWithMaterialRenderer aItem = IGT_ItemWithMaterialRenderer.resolve(aStack);
         if (aItem == null) return;
 
+        IIconContainer container = aItem.getIconContainer(aMetaData);
+
         int passes = 1;
         if (aItem.requiresMultipleRenderPasses()) {
             passes = aItem.getRenderPasses(aMetaData);
         }
 
         for (int pass = 0; pass < passes; pass++) {
-            IIcon tIcon = aItem.getIcon(aMetaData, pass);
-            IIcon tOverlay = aItem.getOverlayIcon(aMetaData, pass);
+            final IIcon base;
+            final IIcon top;
+            final boolean hasArtOverFluid;
+            if (container != null) {
+                int layers = container.getIconPasses();
+                base = drawable(container.getLayerIcon(0));
+                top = layers > 1 ? drawable(container.getLayerIcon(layers - 1)) : null;
+                hasArtOverFluid = layers > 1;
+            } else {
+                base = aItem.getIcon(aMetaData, pass);
+                top = aItem.getOverlayIcon(aMetaData, pass);
+                hasArtOverFluid = top != null;
+            }
             FluidStack aFluid = GTUtility.getFluidForFilledItem(aStack, true);
 
             GL11.glEnable(GL11.GL_BLEND);
@@ -50,7 +66,7 @@ public class InfinityRenderer extends GeneratedMaterialRenderer {
                 if (pass == 0) {
                     renderHalo();
                 }
-                renderPulse(tOverlay, tIcon);
+                renderPulse(top, base);
             }
 
             // Workaround for cell and comb:
@@ -62,29 +78,28 @@ public class InfinityRenderer extends GeneratedMaterialRenderer {
             }
             GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-            if (tIcon != null) {
-                renderRegularItem(type, aStack, tIcon, aFluid == null);
+            if (base != null) {
+                renderRegularItem(type, aStack, base, aFluid == null);
             }
 
-            if (tOverlay != null && aFluid != null && aFluid.getFluid() != null) {
-                IIcon fluidIcon = aFluid.getFluid()
-                    .getIcon(aFluid);
-                if (fluidIcon != null) {
-                    // Adds colour to a cells fluid. Does not colour full fluid icons as shown in NEI etc.
-                    renderContainedFluid(type, aFluid, fluidIcon);
-                }
+            if (hasArtOverFluid && aFluid != null && aFluid.getFluid() != null) {
+                renderContainedFluid(type, aFluid);
             }
 
-            renderMiddleLayers(type, aStack, aItem, aItem.getIconContainer(aMetaData));
-
-            if (tOverlay != null) {
+            if (container != null) {
+                renderUpperLayers(type, aStack, aItem, container);
+            } else if (top != null) {
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
                 TextureUtils.bindAtlas(aItem.getSpriteNumber());
-                renderItemOverlay(type, tOverlay);
+                renderItemOverlay(type, top);
             }
 
             GL11.glDisable(GL11.GL_BLEND);
         }
+    }
+
+    private static IIcon drawable(IIcon icon) {
+        return icon == INVISIBLE_ICON ? null : icon;
     }
 
     public static void renderHalo() {

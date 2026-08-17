@@ -1,5 +1,9 @@
 package gregtech.common.render.items;
 
+import static gregtech.api.enums.Textures.InvisibleIcon.INVISIBLE_ICON;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.client.renderer.Tessellator;
@@ -12,6 +16,7 @@ import org.lwjgl.opengl.GL11;
 
 import codechicken.lib.render.TextureUtils;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
 
@@ -89,10 +94,6 @@ public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
             offsetCyan = rand.nextDouble() * 1.7 * Math.signum(rand.nextGaussian());
         }
 
-        IIcon itemIcon = itemRenderer.getIcon(metaData, pass);
-        IIcon overlay = itemRenderer.getOverlayIcon(metaData, pass);
-        FluidStack aFluid = GTUtility.getFluidForFilledItem(item, true);
-
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -105,6 +106,23 @@ public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
                 modulation[2] / 255.0F,
                 modulation[3] / 255.0F);
         }
+
+        IIconContainer container = itemRenderer.getIconContainer(metaData);
+        if (container != null) {
+            if (icon != null) {
+                renderRegularItem(type, item, icon, shouldModulateColor);
+            }
+
+            if (type == ItemRenderType.INVENTORY && timing) {
+                renderGhosts(type, shouldModulateColor, layerIcons(container));
+            }
+            GL11.glDisable(GL11.GL_BLEND);
+            return;
+        }
+
+        IIcon itemIcon = itemRenderer.getIcon(metaData, pass);
+        IIcon overlay = itemRenderer.getOverlayIcon(metaData, pass);
+        FluidStack aFluid = GTUtility.getFluidForFilledItem(item, true);
 
         if (itemIcon != null) {
             renderRegularItem(type, item, itemIcon, aFluid == null);
@@ -126,11 +144,27 @@ public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
         }
 
         if (type == ItemRenderType.INVENTORY && timing) {
-            GL11.glDisable(GL11.GL_DEPTH_TEST);
-            applyGlitchEffect(type, shouldModulateColor, offsetCyan, cyan, itemIcon, overlay);
-            GL11.glEnable(GL11.GL_DEPTH_TEST);
-            applyGlitchEffect(type, shouldModulateColor, offsetRed, red, itemIcon, overlay);
+            renderGhosts(type, shouldModulateColor, itemIcon, overlay);
         }
         GL11.glDisable(GL11.GL_BLEND);
+    }
+
+    /// Draws the offset cyan and red copies of `icons` over the art already drawn.
+    private void renderGhosts(ItemRenderType type, boolean shouldModulateColor, IIcon... icons) {
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        applyGlitchEffect(type, shouldModulateColor, offsetCyan, cyan, icons);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        applyGlitchEffect(type, shouldModulateColor, offsetRed, red, icons);
+    }
+
+    /// The icons `container` draws, bottom layer first, leaving out the layers that draw nothing.
+    private static IIcon[] layerIcons(IIconContainer container) {
+        int passes = container.getIconPasses();
+        List<IIcon> layers = new ArrayList<>(passes);
+        for (int layer = 0; layer < passes; layer++) {
+            IIcon icon = container.getLayerIcon(layer);
+            if (icon != null && icon != INVISIBLE_ICON) layers.add(icon);
+        }
+        return layers.toArray(new IIcon[0]);
     }
 }
