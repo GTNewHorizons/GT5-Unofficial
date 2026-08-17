@@ -11,18 +11,22 @@ import cpw.mods.fml.relauncher.SideOnly;
 /**
  * A texture's icons on one atlas, drawn as a stack of {@link #getIconPasses} layers from layer 0 upwards. Each layer
  * takes either its own {@link #getIconColor} or the consumer's color modulation, as {@link #isUsingColorModulation}
- * decides.
+ * decides. Those four methods are the ones a consumer draws from.
+ * <p>
+ * {@link #getIcon} and {@link #getOverlayIcon} are the shortcut for a container whose stack is no deeper than a base
+ * and one icon over it: the layer defaults read that pair, so implementing it alone gives two layers, or one when the
+ * overlay is null.
  */
 public interface IIconContainer {
 
     /**
-     * @return A regular Icon.
+     * @return The base icon.
      */
     @SideOnly(Side.CLIENT)
     IIcon getIcon();
 
     /**
-     * @return Icon of the Overlay (or null if there is no Icon)
+     * @return The icon drawn over the base, or null when there is none.
      */
     @SideOnly(Side.CLIENT)
     IIcon getOverlayIcon();
@@ -32,7 +36,7 @@ public interface IIconContainer {
      */
     @SideOnly(Side.CLIENT)
     default int getIconPasses() {
-        return 1;
+        return getOverlayIcon() != null ? 2 : 1;
     }
 
     /**

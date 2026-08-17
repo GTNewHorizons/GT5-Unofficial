@@ -7,10 +7,10 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.material.GTMaterialTextures;
 import gregtech.api.render.ISBRContext;
 
-/// A material texture held by its owner rather than rebuilt per draw. The composed layer stack is resolved from
-/// the container on the first face drawn after each atlas stitch, so the layer count and the layer-0 tint follow
-/// the art the atlas currently holds: a texture built before the first stitch, or kept across a resource reload,
-/// still draws the current art.
+/// A material texture held by its owner rather than rebuilt per draw. The texture it delegates to reads the
+/// container's layers on every draw, leaving only the layer-0 tint to resolve: that is taken from the supplier on
+/// the first face drawn after each atlas stitch, so a texture built before the first stitch, or kept across a
+/// resource reload, still tints with the material's current color.
 ///
 /// Faces draw from several chunk meshing threads, so the rebuild is lock free -- one volatile field holds an
 /// immutable generation-and-texture pair, and a race costs at most a duplicate build.
