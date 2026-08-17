@@ -1,15 +1,19 @@
 package gregtech.api.material;
 
+import java.util.function.Supplier;
+
 import gregtech.GTMod;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
 import gregtech.api.render.TextureFactory;
 import gregtech.client.iconContainers.LayerIconContainer;
+import gregtech.common.render.GTStitchedMaterialTexture;
 
 /// Builds the [ITexture] a material [IIconContainer] draws as: one texture per icon layer, composed bottom up, so
-/// every material block and frame stacks its art the same way. Decorative covers deliberately stay off this path
-/// and draw their single base texture.
+/// a material's art stacks the same way everywhere it is drawn. `of` composes against the atlas as it stands now,
+/// for a caller that builds its texture per draw. `stored` returns a texture that recomposes itself after each
+/// atlas stitch, for a caller that holds one across resource reloads.
 public final class GTMaterialTextures {
 
     private GTMaterialTextures() {}
@@ -48,6 +52,17 @@ public final class GTMaterialTextures {
     /// As [#of(IIconContainer, short[], boolean)] for art that does not glow.
     public static ITexture of(IIconContainer container, short[] rgba) {
         return of(container, rgba, false);
+    }
+
+    /// The [ITexture] composing `container`'s layer stack as [#of(IIconContainer, short[], boolean)] does, resolved
+    /// afresh from `rgba` on the first draw after every atlas stitch.
+    public static ITexture stored(IIconContainer container, Supplier<short[]> rgba, boolean glow) {
+        return new GTStitchedMaterialTexture(container, rgba, glow);
+    }
+
+    /// As [#stored(IIconContainer, Supplier, boolean)] for art that does not glow.
+    public static ITexture stored(IIconContainer container, Supplier<short[]> rgba) {
+        return stored(container, rgba, false);
     }
 
     private static ITexture layerTexture(IIconContainer container, short[] rgba, boolean glow,

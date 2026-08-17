@@ -419,8 +419,10 @@ public class FrameShapeBlock extends ShapeBlock implements IBlockWithTextures {
             Material material = MaterialLibAPI.getMaterialByIndex(index);
             short[] rgba = MaterialUtils.rgba(material);
             if (material == null || rgba == null) return null;
-            ITexture[] texture = {
-                GTMaterialTextures.of(GTMaterialIcons.block(getName(), material), Dyes.getModulation(-1, rgba)) };
+            ITexture[] texture = { GTMaterialTextures.stored(
+                GTMaterialIcons.block(getName(), material),
+                () -> Dyes.getModulation(-1, MaterialUtils.rgba(material)),
+                false) };
             return new ITexture[][] { texture, texture, texture, texture, texture, texture };
         });
     }
