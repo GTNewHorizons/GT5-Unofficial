@@ -3555,6 +3555,8 @@ GT5U.chat.turbine.fitting.loose=Fitting: Loose - More Flow
 GT5U.chat.turbine.fitting.tight=Fitting: Tight - More Efficiency
 GT5U.chat.machine.processing.enable=Machine Processing: Enabled
 GT5U.chat.machine.processing.disable=Machine Processing: Disabled
+GT5U.chat.pipe.processing.enable=Cover Processing: Enabled
+GT5U.chat.pipe.processing.disable=Cover Processing: Disabled
 GT5U.chat.machine.redstone_output_set.strong=Redstone Output at Side %s set to: Strong
 GT5U.chat.machine.redstone_output_set.weak=Redstone Output at Side %s set to: Weak
 GT5U.chat.machine.auto_input.disable=Auto-Input: Disabled
@@ -6027,6 +6029,8 @@ GT5U.waila.digital_chest.empty=Chest Empty
 GT5U.waila.digital_tank.empty=Tank Empty
 GT5U.waila.mebf.parallel=Current Parallel Modifier: §6%s
 GT5U.waila.mebf.pyrotheum=Current Pyrotheum Drain: §c%s§r/s
+GT5U.waila.boiler.temperature=§aTemperature: §6%s
+GT5U.waila.boiler.fuel_empty=§cFuel empty
 
 
 GT5U.waila.mvf.speedboost=Current Speed Modifier: §a%s
@@ -9162,7 +9166,7 @@ GT5U.tooltip.bec-diode.bec-hatch-pos=Center left casing (input), center right ca
 
 # BEC Assembler Structure Hints
 GT5U.tooltip.bec-assembler.controller-pos=Front center, 16th layer
-GT5U.tooltip.bec-assembler.hatch-pos=Any electromagnetically-isolated casing
+GT5U.tooltip.bec-assembler.hatch-pos=Any outer electromagnetically-isolated casing, every other IO port ring 
 GT5U.tooltip.bec-assembler.bec-hatch-pos=Center left or right casing
 GT5U.tooltip.bec-assembler.los-hatch-pos=Center side casing of each ring
 
