@@ -551,7 +551,7 @@ public class GTModHandler {
     }
 
     /**
-     * This was supposed to be called once, but since now there is a second buffering pass, this will now called too
+     * This was supposed to be called once, but since now there is a second buffering pass, this will now be called too
      * at the end of GT5U's load complete if NHCore isn't present, otherwise NHCore will call it in its own load
      * complete phase, as it runs after GT5U and has delayed removals.
      */
@@ -571,7 +571,7 @@ public class GTModHandler {
 
     /**
      * This is simply allowed because who knows what side effects there are if we just switch the
-     * {@link #stopBufferingCraftingRecipes()} from end of preinit to end of load complete. So to
+     * {@link #stopBufferingCraftingRecipes()} from end of postinit to end of load complete. So to
      * play safe, we restart the buffer to catch all the calls to delayed removals happening after
      * GT5U's post init. If later it is proven that it is safe to move the {@link #stopBufferingCraftingRecipes()}
      * to load complete, then feel free to remove this dirty hack.
