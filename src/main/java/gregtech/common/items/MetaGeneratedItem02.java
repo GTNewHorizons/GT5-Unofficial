@@ -101,6 +101,54 @@ import static gregtech.common.items.IDMetaItem02.Food_Dough_Chocolate;
 import static gregtech.common.items.IDMetaItem02.Food_Dough_Sugar;
 import static gregtech.common.items.IDMetaItem02.Food_Flat_Dough;
 import static gregtech.common.items.IDMetaItem02.Food_Fries;
+import static gregtech.common.items.IDMetaItem02.Food_IceCreamSandwich;
+import static gregtech.common.items.IDMetaItem02.Food_IceCreamSandwich_Chocolate;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Acid;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Banana;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_BananaSplit;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Benzene;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Blueberry;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_BlueberryBlastStargate;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Boucream;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_BowlOfHarmony;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Brownie;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_ButterPecan;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Butterscotch;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Caramel;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_CherryParfait;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_ChocoVanilla;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Chocolate;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_ChocolateChip;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_ChocolateWalnutFudge;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Coffee;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_CookieDough;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_CookiesAndCream;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_CottonCandy;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_ElectronicBlast;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Engineers;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_FrenchVanilla;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_GrapeMatterManipulator;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_HotFudge;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_JustCone;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Lemonade;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_MHDCSM;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Mango;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Meat;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_MintChip;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Neapolitan;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_NoFlavor;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Peach;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_PeanutButter;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Pistachio;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Radioactive;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Random;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_SaltedCaramel;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Spaghetti;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Sprinkles;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Strawberry;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_ToffeeButter;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Unicorn;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Vanilla;
 import static gregtech.common.items.IDMetaItem02.Food_Large_Sandwich_Bacon;
 import static gregtech.common.items.IDMetaItem02.Food_Large_Sandwich_Cheese;
 import static gregtech.common.items.IDMetaItem02.Food_Large_Sandwich_Steak;
@@ -108,6 +156,9 @@ import static gregtech.common.items.IDMetaItem02.Food_Large_Sandwich_Veggie;
 import static gregtech.common.items.IDMetaItem02.Food_Packaged_ChiliChips;
 import static gregtech.common.items.IDMetaItem02.Food_Packaged_Fries;
 import static gregtech.common.items.IDMetaItem02.Food_Packaged_PotatoChips;
+import static gregtech.common.items.IDMetaItem02.Food_Popsicle_Chocolate;
+import static gregtech.common.items.IDMetaItem02.Food_Popsicle_Double;
+import static gregtech.common.items.IDMetaItem02.Food_Popsicle_Fruit;
 import static gregtech.common.items.IDMetaItem02.Food_PotatoChips;
 import static gregtech.common.items.IDMetaItem02.Food_Potato_On_Stick;
 import static gregtech.common.items.IDMetaItem02.Food_Potato_On_Stick_Roasted;
@@ -136,6 +187,8 @@ import static gregtech.common.items.IDMetaItem02.Food_Sliced_Cucumber;
 import static gregtech.common.items.IDMetaItem02.Food_Sliced_Lemon;
 import static gregtech.common.items.IDMetaItem02.Food_Sliced_Onion;
 import static gregtech.common.items.IDMetaItem02.Food_Sliced_Tomato;
+import static gregtech.common.items.IDMetaItem02.Food_Sorbet_RainbowStellar;
+import static gregtech.common.items.IDMetaItem02.Food_Sorbet_Raspberry;
 import static gregtech.common.items.IDMetaItem02.GelledToluene;
 import static gregtech.common.items.IDMetaItem02.MSFMixture;
 import static gregtech.common.items.IDMetaItem02.Magnetron;
@@ -1816,6 +1869,378 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L)));
+
+        // Ice Creams
+        ItemList.Ice_Cream_Random.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Random.ID,
+                "gt.item.food.icecream_random.name",
+                "gt.item.food.icecream_random.tooltip",
+                SubTag.INVISIBLE));
+        ItemList.Ice_Cream_Acid.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Acid.ID,
+                "gt.item.food.icecream_acid.name",
+                "gt.item.food.icecream_acid.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Banana.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Banana.ID,
+                "gt.item.food.icecream_banana.name",
+                "gt.item.food.icecream_banana.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_BananaSplit.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_BananaSplit.ID,
+                "gt.item.food.icecream_bananasplit.name",
+                "gt.item.food.icecream_bananasplit.tooltip",
+                new GTFoodStat(3, 0.2F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Benzene.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Benzene.ID,
+                "gt.item.food.icecream_benzene.name",
+                "gt.item.food.icecream_benzene.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_BlueberryBlastStargate.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_BlueberryBlastStargate.ID,
+                "gt.item.food.icecream_blueberryblaststargate.name",
+                "gt.item.food.icecream_blueberryblaststargate.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Blueberry.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Blueberry.ID,
+                "gt.item.food.icecream_blueberry.name",
+                "gt.item.food.icecream_blueberry.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Boucream.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Boucream.ID,
+                "gt.item.food.icecream_boucream.name",
+                "gt.item.food.icecream_boucream.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_BowlOfHarmony.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_BowlOfHarmony.ID,
+                "gt.item.food.icecream_bowlofharmony.name",
+                "gt.item.food.icecream_bowlofharmony.tooltip",
+                new GTFoodStat(3, 0.2F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Brownie.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Brownie.ID,
+                "gt.item.food.icecream_brownie.name",
+                "gt.item.food.icecream_brownie.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_ButterPecan.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_ButterPecan.ID,
+                "gt.item.food.icecream_butterpecan.name",
+                "gt.item.food.icecream_butterpecan.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Butterscotch.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Butterscotch.ID,
+                "gt.item.food.icecream_butterscotch.name",
+                "gt.item.food.icecream_butterscotch.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Caramel.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Caramel.ID,
+                "gt.item.food.icecream_caramel.name",
+                "gt.item.food.icecream_caramel.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_CherryParfait.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_CherryParfait.ID,
+                "gt.item.food.icecream_cherryparfait.name",
+                "gt.item.food.icecream_cherryparfait.tooltip",
+                new GTFoodStat(3, 0.2F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_ChocoVanilla.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_ChocoVanilla.ID,
+                "gt.item.food.icecream_chocovanilla.name",
+                "gt.item.food.icecream_chocovanilla.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_ChocolateChip.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_ChocolateChip.ID,
+                "gt.item.food.icecream_chocolatechip.name",
+                "gt.item.food.icecream_chocolatechip.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Chocolate.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Chocolate.ID,
+                "gt.item.food.icecream_chocolate.name",
+                "gt.item.food.icecream_chocolate.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Sandwich_Chocolate.set(
+            addItemWithLocalizationKeys(
+                Food_IceCreamSandwich_Chocolate.ID,
+                "gt.item.food.icecreamsandwich_chocolate.name",
+                "gt.item.food.icecreamsandwich_chocolate.tooltip",
+                new GTFoodStat(3, 0.2F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Popsicle_Chocolate.set(
+            addItemWithLocalizationKeys(
+                Food_Popsicle_Chocolate.ID,
+                "gt.item.food.popsicle_chocolate.name",
+                "gt.item.food.popsicle_chocolate.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_ChocolateWalnutFudge.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_ChocolateWalnutFudge.ID,
+                "gt.item.food.icecream_chocolatewalnutfudge.name",
+                "gt.item.food.icecream_chocolatewalnutfudge.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Coffee.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Coffee.ID,
+                "gt.item.food.icecream_coffee.name",
+                "gt.item.food.icecream_coffee.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_CookieDough.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_CookieDough.ID,
+                "gt.item.food.icecream_cookiedough.name",
+                "gt.item.food.icecream_cookiedough.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_CookiesAndCream.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_CookiesAndCream.ID,
+                "gt.item.food.icecream_cookiesandcream.name",
+                "gt.item.food.icecream_cookiesandcream.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_CottonCandy.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_CottonCandy.ID,
+                "gt.item.food.icecream_cottoncandy.name",
+                "gt.item.food.icecream_cottoncandy.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Popsicle_Double.set(
+            addItemWithLocalizationKeys(
+                Food_Popsicle_Double.ID,
+                "gt.item.food.popsicle_double.name",
+                "gt.item.food.popsicle_double.tooltip",
+                new GTFoodStat(3, 0.2F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_ElectronicBlast.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_ElectronicBlast.ID,
+                "gt.item.food.icecream_electronicblast.name",
+                "gt.item.food.icecream_electronicblast.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Engineers.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Engineers.ID,
+                "gt.item.food.icecream_engineers.name",
+                "gt.item.food.icecream_engineers.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_FrenchVanilla.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_FrenchVanilla.ID,
+                "gt.item.food.icecream_frenchvanilla.name",
+                "gt.item.food.icecream_frenchvanilla.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Popsicle_Fruit.set(
+            addItemWithLocalizationKeys(
+                Food_Popsicle_Fruit.ID,
+                "gt.item.food.popsicle_fruit.name",
+                "gt.item.food.popsicle_fruit.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_GrapeMatterManipulator.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_GrapeMatterManipulator.ID,
+                "gt.item.food.icecream_grapemattermanipulator.name",
+                "gt.item.food.icecream_grapemattermanipulator.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_HotFudge.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_HotFudge.ID,
+                "gt.item.food.icecream_hotfudge.name",
+                "gt.item.food.icecream_hotfudge.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Sandwich.set(
+            addItemWithLocalizationKeys(
+                Food_IceCreamSandwich.ID,
+                "gt.item.food.icecreamsandwich.name",
+                "gt.item.food.icecreamsandwich.tooltip",
+                new GTFoodStat(3, 0.2F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_JustCone.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_JustCone.ID,
+                "gt.item.food.icecream_justcone.name",
+                "gt.item.food.icecream_justcone.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Lemonade.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Lemonade.ID,
+                "gt.item.food.icecream_lemonade.name",
+                "gt.item.food.icecream_lemonade.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_MHDCSM.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_MHDCSM.ID,
+                "gt.item.food.icecream_MHDCSM.name",
+                "gt.item.food.icecream_MHDCSM.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Mango.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Mango.ID,
+                "gt.item.food.icecream_mango.name",
+                "gt.item.food.icecream_mango.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Meat.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Meat.ID,
+                "gt.item.food.icecream_meat.name",
+                "gt.item.food.icecream_meat.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_MintChip.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_MintChip.ID,
+                "gt.item.food.icecream_mintchip.name",
+                "gt.item.food.icecream_mintchip.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Neapolitan.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Neapolitan.ID,
+                "gt.item.food.icecream_neapolitan.name",
+                "gt.item.food.icecream_neapolitan.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_NoFlavor.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_NoFlavor.ID,
+                "gt.item.food.icecream_noflavor.name",
+                "gt.item.food.icecream_noflavor.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Peach.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Peach.ID,
+                "gt.item.food.icecream_peach.name",
+                "gt.item.food.icecream_peach.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_PeanutButter.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_PeanutButter.ID,
+                "gt.item.food.icecream_peanutbutter.name",
+                "gt.item.food.icecream_peanutbutter.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Pistachio.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Pistachio.ID,
+                "gt.item.food.icecream_pistachio.name",
+                "gt.item.food.icecream_pistachio.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Radioactive.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Radioactive.ID,
+                "gt.item.food.icecream_radioactive.name",
+                "gt.item.food.icecream_radioactive.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Sorbet_RainbowStellar.set(
+            addItemWithLocalizationKeys(
+                Food_Sorbet_RainbowStellar.ID,
+                "gt.item.food.sorbet_rainbowstellar.name",
+                "gt.item.food.sorbet_rainbowstellar.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Sorbet_Raspberry.set(
+            addItemWithLocalizationKeys(
+                Food_Sorbet_Raspberry.ID,
+                "gt.item.food.sorbet_raspberry.name",
+                "gt.item.food.sorbet_raspberry.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_SaltedCaramel.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_SaltedCaramel.ID,
+                "gt.item.food.icecream_saltedcaramel.name",
+                "gt.item.food.icecream_saltedcaramel.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Spaghetti.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Spaghetti.ID,
+                "gt.item.food.icecream_spaghetti.name",
+                "gt.item.food.icecream_spaghetti.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Sprinkles.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Sprinkles.ID,
+                "gt.item.food.icecream_sprinkles.name",
+                "gt.item.food.icecream_sprinkles.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Strawberry.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Strawberry.ID,
+                "gt.item.food.icecream_strawberry.name",
+                "gt.item.food.icecream_strawberry.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_ToffeeButter.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_ToffeeButter.ID,
+                "gt.item.food.icecream_toffeebutter.name",
+                "gt.item.food.icecream_toffeebutter.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Unicorn.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Unicorn.ID,
+                "gt.item.food.icecream_unicorn.name",
+                "gt.item.food.icecream_unicorn.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Vanilla.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Vanilla.ID,
+                "gt.item.food.icecream_vanilla.name",
+                "gt.item.food.icecream_vanilla.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
 
         ItemList.Dye_Indigo.set(
             addItemWithLocalizationKeys(
