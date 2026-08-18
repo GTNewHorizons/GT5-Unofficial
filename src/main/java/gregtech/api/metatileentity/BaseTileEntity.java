@@ -48,6 +48,7 @@ import cpw.mods.fml.relauncher.Side;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
+import gregtech.api.fluid.CauldronFluidHandler;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
@@ -349,6 +350,9 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     public final IFluidHandler getITankContainerAtSide(ForgeDirection side) {
         final TileEntity tTileEntity = getTileEntityAtSide(side);
         if (tTileEntity instanceof IFluidHandler) return (IFluidHandler) tTileEntity;
+        else if (getBlockAtSide(side) == Blocks.cauldron) {
+            return new CauldronFluidHandler(worldObj, getOffsetX(side, 1), getOffsetY(side, 1), getOffsetZ(side, 1));
+        }
         return null;
     }
 

@@ -23,6 +23,10 @@ public enum Mixin implements IMixins {
     WorldMixin(new MixinBuilder("Block update detection")
         .addCommonMixins("minecraft.WorldMixin")
         .setPhase(Phase.EARLY)),
+    WorldCauldronMixin(new MixinBuilder("Cauldron partial fill")
+        .addCommonMixins("minecraft.World_CauldronPartialFill")
+        .setPhase(Phase.EARLY)
+    ),
     StringTranslateMixin(new MixinBuilder("Keep track of currently translating mods")
         .addCommonMixins(
             "minecraft.StringTranslateMixin",

@@ -25,6 +25,7 @@ import java.util.Map;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -56,6 +57,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolModes;
+import gregtech.api.fluid.CauldronFluidHandler;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.ITexture;
@@ -722,12 +724,25 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
 
     @Override
     public boolean canConnect(ForgeDirection side, TileEntity tileEntity) {
-        if (tileEntity == null) return false;
-
-        final ForgeDirection oppositeSide = side.getOpposite();
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
         if (baseMetaTile == null) return false;
 
+        final IFluidHandler fTileEntity;
+        if (tileEntity == null) {
+            if (baseMetaTile.getBlockAtSide(side) == Blocks.cauldron) {
+                fTileEntity = new CauldronFluidHandler(
+                    baseMetaTile.getWorld(),
+                    baseMetaTile.getOffsetX(side, 1),
+                    baseMetaTile.getOffsetY(side, 1),
+                    baseMetaTile.getOffsetZ(side, 1));
+            } else {
+                return false;
+            }
+        } else {
+            fTileEntity = (tileEntity instanceof IFluidHandler) ? (IFluidHandler) tileEntity : null;
+        }
+
+        final ForgeDirection oppositeSide = side.getOpposite();
         final Cover cover = baseMetaTile.getCoverAtSide(side);
         final IGregTechTileEntity gTileEntity = (tileEntity instanceof IGregTechTileEntity)
             ? (IGregTechTileEntity) tileEntity
@@ -735,8 +750,6 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
 
         if (cover instanceof CoverDrain || (TinkerConstruct.isModLoaded() && isTConstructFaucet(tileEntity)))
             return true;
-
-        final IFluidHandler fTileEntity = (tileEntity instanceof IFluidHandler) ? (IFluidHandler) tileEntity : null;
 
         if (fTileEntity != null) {
             final FluidTankInfo[] tInfo = fTileEntity.getTankInfo(oppositeSide);
