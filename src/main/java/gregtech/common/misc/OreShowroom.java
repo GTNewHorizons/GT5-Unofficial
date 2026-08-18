@@ -21,11 +21,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.OreMixes;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
-import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.material.MaterialParts;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.common.OreMixBuilder;
 import gregtech.common.ores.IOreAdapter;
@@ -105,7 +107,7 @@ final class OreShowroom {
     }
 
     private static List<Aisle> collectAisles() {
-        Set<IOreMaterial> materialSet = new HashSet<>();
+        Set<Material> materialSet = new HashSet<>();
         for (OreMixes mix : OreMixes.VALUES) {
             OreMixBuilder builder = mix.oreMixBuilder;
             materialSet.add(builder.primary);
@@ -115,14 +117,13 @@ final class OreShowroom {
         }
         materialSet.remove(null);
 
-        List<IOreMaterial> materials = new ArrayList<>(materialSet);
+        List<Material> materials = new ArrayList<>(materialSet);
         materials.sort(
-            Comparator.comparing(IOreMaterial::getDefaultLocalName, String.CASE_INSENSITIVE_ORDER)
-                .thenComparing(IOreMaterial::getInternalName)
-                .thenComparingInt(IOreMaterial::getId));
+            Comparator.comparing(MaterialUtils::localName, String.CASE_INSENSITIVE_ORDER)
+                .thenComparing(MaterialUtils::internalName));
 
-        Map<StoneType, List<IOreMaterial>> unsorted = new EnumMap<>(StoneType.class);
-        for (IOreMaterial material : materials) {
+        Map<StoneType, List<Material>> unsorted = new EnumMap<>(StoneType.class);
+        for (Material material : materials) {
             for (StoneType stoneType : OreMixes.getStoneTypesFromMixes(material)) {
                 if (stoneType.isEnabled() && getExactOreBlock(material, stoneType, false) != null) {
                     unsorted.computeIfAbsent(stoneType, ignored -> new ArrayList<>())
@@ -136,7 +137,7 @@ final class OreShowroom {
 
         List<Aisle> aisles = new ArrayList<>();
         for (StoneType stoneType : stoneTypes) {
-            List<IOreMaterial> aisleMaterials = unsorted.get(stoneType);
+            List<Material> aisleMaterials = unsorted.get(stoneType);
             if (stoneType == StoneType.Stone && aisleMaterials.size() > 1) {
                 int split = (aisleMaterials.size() + 1) / 2;
                 aisles.add(new Aisle(stoneType, "Stone 1/2", new ArrayList<>(aisleMaterials.subList(0, split))));
@@ -172,7 +173,7 @@ final class OreShowroom {
         // This is synchronous for a one-shot dev world; batch by server tick if watchdogs become a problem.
         for (Aisle aisle : aisles) {
             StoneType stoneType = aisle.stoneType();
-            List<IOreMaterial> materials = aisle.materials();
+            List<Material> materials = aisle.materials();
             ImmutableBlockMeta stone = stoneType.getStone();
             int wallZ = originZ + 2 + aisleIndex * AISLE_PITCH;
             int length = materials.size() * 2 + 1;
@@ -184,7 +185,7 @@ final class OreShowroom {
             }
 
             for (int displayIndex = 0; displayIndex < materials.size(); displayIndex++) {
-                IOreMaterial material = materials.get(displayIndex);
+                Material material = materials.get(displayIndex);
                 int separatorX = originX + displayIndex * 2;
                 int sampleX = separatorX + 1;
                 ImmutableBlockMeta regularOre = getExactOreBlock(material, stoneType, false);
@@ -199,13 +200,13 @@ final class OreShowroom {
                 setBlock(world, sampleX, floorY, wallZ - 1, regularOre);
                 setBlock(world, sampleX, floorY, wallZ + 1, regularOre);
 
-                String[] materialSign = wrapSignText(material.getDefaultLocalName(), true);
+                String[] materialSign = wrapSignText(MaterialUtils.localName(material), true);
                 placeSign(world, separatorX + 2, floorY + 2, wallZ - 1, 2, materialSign);
                 placeSign(world, separatorX, floorY + 2, wallZ + 1, 3, materialSign);
 
                 if (smallOre == null) missingSmallOres++;
 
-                ItemStack rawOre = material.getPart(OrePrefixes.rawOre, 1);
+                ItemStack rawOre = MaterialParts.partOf(material, OrePrefixes.rawOre, 1);
                 if (GTUtility.isStackValid(rawOre)) {
                     if (!placeFrame(world, sampleX, floorY + 3, wallZ, 2, rawOre)) failedFrames++;
                     if (!placeFrame(world, sampleX, floorY + 3, wallZ, 0, rawOre)) failedFrames++;
@@ -266,20 +267,20 @@ final class OreShowroom {
         }
     }
 
-    private static ImmutableBlockMeta getExactOreBlock(IOreMaterial material, StoneType stoneType, boolean small) {
-        try (OreInfo<IOreMaterial> requested = OreInfo.getNewInfo()) {
+    private static ImmutableBlockMeta getExactOreBlock(Material material, StoneType stoneType, boolean small) {
+        try (OreInfo requested = OreInfo.getNewInfo()) {
             requested.material = material;
             requested.stoneType = stoneType;
             requested.isSmall = small;
             requested.isNatural = true;
 
-            IOreAdapter<?> adapter = OreManager.getAdapter(requested);
+            IOreAdapter adapter = OreManager.getAdapter(requested);
             if (adapter == null) return null;
 
             ImmutableBlockMeta block = adapter.getBlock(requested);
             if (block == null) return null;
 
-            try (OreInfo<IOreMaterial> actual = OreManager.getOreInfo(block.getBlock(), block.getBlockMeta())) {
+            try (OreInfo actual = OreManager.getOreInfo(block.getBlock(), block.getBlockMeta())) {
                 if (actual == null || !material.equals(actual.material)
                     || actual.stoneType != stoneType
                     || actual.isSmall != small) {
@@ -363,5 +364,5 @@ final class OreShowroom {
         player.addChatMessage(new ChatComponentText(message));
     }
 
-    private record Aisle(StoneType stoneType, String name, List<IOreMaterial> materials) {}
+    private record Aisle(StoneType stoneType, String name, List<Material> materials) {}
 }
