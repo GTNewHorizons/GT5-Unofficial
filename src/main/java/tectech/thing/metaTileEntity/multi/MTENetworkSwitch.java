@@ -13,15 +13,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
@@ -67,6 +68,8 @@ public class MTENetworkSwitch extends TTMultiblockBase
 
     protected Parameters.Group.ParameterIn[] dst;
     protected Parameters.Group.ParameterIn[] weight;
+
+    private @Nullable QuantumDataPacket pendingPacket;
 
     public MTENetworkSwitch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -140,6 +143,22 @@ public class MTENetworkSwitch extends TTMultiblockBase
         if (mMachine) return -1;
 
         return structure.survivalConstruct(this, stackSize, elementBudget, env);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound nbt) {
+        super.saveNBTData(nbt);
+        if (pendingPacket != null) {
+            nbt.setTag("pendingPacket", pendingPacket.toNbt());
+        }
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound nbt) {
+        super.loadNBTData(nbt);
+        if (nbt.getTag("pendingPacket") instanceof NBTTagCompound pkt) {
+            pendingPacket = new QuantumDataPacket(pkt);
+        }
     }
 
     @Override
@@ -220,9 +239,21 @@ public class MTENetworkSwitch extends TTMultiblockBase
     @NotNull
     protected CheckRecipeResult checkProcessing_EM() {
         short thingsActive = 0;
+        pendingPacket = new QuantumDataPacket(0L).unifyTraceWith(getPos());
+        if (pendingPacket == null) {
+            return SimpleCheckRecipeResult.ofFailure("no_routing");
+        }
         for (MTEHatchDataInput di : eInputData) {
             if (di.q != null) {
                 thingsActive++;
+                if (di.q.contains(getPos())) {
+                    return SimpleCheckRecipeResult.ofFailure("no_routing");
+                }
+                pendingPacket = pendingPacket.unifyPacketWith(di.q);
+                if (pendingPacket == null) {
+                    return SimpleCheckRecipeResult.ofFailure("no_routing");
+                }
+                di.setContents(null);
             }
         }
 
@@ -239,7 +270,7 @@ public class MTENetworkSwitch extends TTMultiblockBase
 
     @Override
     public void outputAfterRecipe_EM() {
-        if (!eOutputData.isEmpty()) {
+        if (!eOutputData.isEmpty() && pendingPacket != null) {
             double total = 0;
             double weight;
             for (int i = 0; i < 10; i++) { // each param pair
@@ -249,26 +280,8 @@ public class MTENetworkSwitch extends TTMultiblockBase
                 }
             }
 
-            Vec3Impl pos = new Vec3Impl(
-                getBaseMetaTileEntity().getXCoord(),
-                getBaseMetaTileEntity().getYCoord(),
-                getBaseMetaTileEntity().getZCoord());
-
-            QuantumDataPacket pack = new QuantumDataPacket(0L).unifyTraceWith(pos);
-            if (pack == null) {
-                return;
-            }
-            for (MTEHatchDataInput hatch : eInputData) {
-                if (hatch.q == null || hatch.q.contains(pos)) {
-                    continue;
-                }
-                pack = pack.unifyPacketWith(hatch.q);
-                if (pack == null) {
-                    return;
-                }
-            }
-
-            long remaining = pack.getContent();
+            long totalComputation = pendingPacket.getContent();
+            long remainingComputation = totalComputation;
 
             double dest;
             for (int i = 0; i < 10; i++) {
@@ -282,17 +295,18 @@ public class MTENetworkSwitch extends TTMultiblockBase
                     MTEHatchDataOutput out = eOutputData.get(outIndex);
                     if (Double.isInfinite(total)) {
                         if (Double.isInfinite(weight)) {
-                            out.q = new QuantumDataPacket(remaining).unifyTraceWith(pack);
+                            out.q = new QuantumDataPacket(remainingComputation).unifyTraceWith(pendingPacket);
                             break;
                         }
                     } else {
-                        long part = (long) Math.floor(pack.getContent() * weight / total);
+                        long part = (long) Math.floor(totalComputation * weight / total);
                         if (part > 0) {
-                            remaining -= part;
-                            if (remaining > 0) {
-                                out.q = new QuantumDataPacket(part).unifyTraceWith(pack);
-                            } else if (part + remaining > 0) {
-                                out.q = new QuantumDataPacket(part + remaining).unifyTraceWith(pack);
+                            remainingComputation -= part;
+                            if (remainingComputation > 0) {
+                                out.q = new QuantumDataPacket(part).unifyTraceWith(pendingPacket);
+                            } else if (part + remainingComputation > 0) {
+                                out.q = new QuantumDataPacket(part + remainingComputation)
+                                    .unifyTraceWith(pendingPacket);
                                 break;
                             } else {
                                 break;
@@ -301,6 +315,8 @@ public class MTENetworkSwitch extends TTMultiblockBase
                     }
                 }
             }
+
+            pendingPacket = null;
         }
     }
 

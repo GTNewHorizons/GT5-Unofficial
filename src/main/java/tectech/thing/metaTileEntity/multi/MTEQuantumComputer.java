@@ -29,11 +29,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -121,6 +121,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     // region parameters
     protected Parameters.Group.ParameterIn overclock, overvolt;
     protected Parameters.Group.ParameterOut maxCurrentTemp, availableData;
+
+    private @Nullable QuantumDataPacket pendingPacket;
 
     private static final INameFunction<MTEQuantumComputer> OC_NAME = (base,
         p) -> translateToLocal("gt.blockmachines.multimachine.em.computer.cfgi.0"); // Overclock ratio
@@ -219,6 +221,9 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setDouble("computation", availableData.get());
+        if (pendingPacket != null) {
+            aNBT.setTag("pendingPacket", pendingPacket.toNbt());
+        }
     }
 
     @Override
@@ -229,6 +234,9 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             eAvailableData = (long) availableData.get();
         }
         WirelessComputationPacket.enableWirelessNetWork(getBaseMetaTileEntity());
+        if (aNBT.getTag("pendingPacket") instanceof NBTTagCompound pkt) {
+            pendingPacket = new QuantumDataPacket(pkt);
+        }
     }
 
     @Override
@@ -267,6 +275,10 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     protected CheckRecipeResult checkProcessing_EM() {
         parametrization.setToDefaults(false, true);
         eAvailableData = 0;
+        pendingPacket = new QuantumDataPacket(0L).unifyTraceWith(getPos());
+        if (pendingPacket == null) {
+            return SimpleCheckRecipeResult.ofFailure("no_routing");
+        }
         double maxTemp = 0;
         double overClockRatio = overclock.get();
         double overVoltageRatio = overvolt.get();
@@ -301,6 +313,14 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                 if (di.q != null) // ok for power losses
                 {
                     thingsActive++;
+                    if (di.q.contains(getPos())) {
+                        return SimpleCheckRecipeResult.ofFailure("no_routing");
+                    }
+                    pendingPacket = pendingPacket.unifyPacketWith(di.q);
+                    if (pendingPacket == null) {
+                        return SimpleCheckRecipeResult.ofFailure("no_routing");
+                    }
+                    di.setContents(null);
                 }
             }
 
@@ -313,6 +333,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                 availableData.set(eAvailableData);
                 return SimpleCheckRecipeResult.ofSuccess("computing");
             } else {
+                pendingPacket = null;
                 eAvailableData = 0;
                 mEUt = -(int) V[7];
                 eAmpereFlow = 1;
@@ -329,28 +350,17 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     @Override
     public void outputAfterRecipe_EM() {
         if (!eOutputData.isEmpty()) {
-            Vec3Impl pos = new Vec3Impl(
-                getBaseMetaTileEntity().getXCoord(),
-                getBaseMetaTileEntity().getYCoord(),
-                getBaseMetaTileEntity().getZCoord());
-
-            int eHatchData = 0;
-
-            for (MTEHatchDataInput hatch : eInputData) {
-                if (hatch.q == null || hatch.q.contains(pos)) {
-                    continue;
+            QuantumDataPacket pack = new QuantumDataPacket(eAvailableData);
+            if (pendingPacket != null) {
+                pack = pack.unifyPacketWith(pendingPacket);
+                if (pack == null) {
+                    return;
                 }
-                eHatchData += hatch.q.getContent();
             }
-
-            QuantumDataPacket pack = new QuantumDataPacket((eAvailableData + eHatchData) / eOutputData.size())
-                .unifyTraceWith(pos);
-            if (pack == null) {
-                return;
-            }
+            long packetSize = pack.getContent() / eOutputData.size();
 
             for (MTEHatchDataOutput o : eOutputData) {
-                o.providePacket(pack);
+                o.providePacket(new QuantumDataPacket(packetSize).unifyTraceWith(pack));
             }
         }
     }

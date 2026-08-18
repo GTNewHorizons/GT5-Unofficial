@@ -398,6 +398,16 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     }
 
     @Override
+    public FluidStack getFluid() {
+        return storedFluidStack;
+    }
+
+    @Override
+    public int getFluidAmount() {
+        return storedFluidStack == null ? 0 : storedFluidStack.amount;
+    }
+
+    @Override
     public int getCapacity() {
         return fluidCapacity;
     }
