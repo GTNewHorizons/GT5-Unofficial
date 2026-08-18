@@ -10,6 +10,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -130,7 +131,7 @@ public class PipeShapeItemBlock extends ItemBlock {
             CoverableTileEntity.addInstalledCoversInformation(nbt, list);
             if (nbt.hasKey("mColor") && nbt.getByte("mColor") != -1) {
                 list.add(
-                    GTUtility.translate(
+                    StatCollector.translateToLocalFormatted(
                         "gt.tileentity.colored",
                         Dyes.get(nbt.getByte("mColor") - 1).formatting,
                         Dyes.get(nbt.getByte("mColor") - 1).mName));

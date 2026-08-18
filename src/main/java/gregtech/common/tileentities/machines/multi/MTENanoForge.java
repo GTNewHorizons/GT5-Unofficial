@@ -718,10 +718,10 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     public void onPreviewConstruct(@NotNull ItemStack trigger) {
         mSpecialTier = (byte) trigger.stackSize;
         ItemStack nanite = switch (trigger.stackSize) {
-            case 1 -> Materials.Carbon.getNanite(1);
-            case 2 -> Materials.Neutronium.getNanite(1);
-            case 3 -> Materials.TranscendentMetal.getNanite(1);
-            default -> Materials.Eternity.getNanite(1);
+            case 1 -> GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1);
+            case 2 -> GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 1);
+            case 3 -> GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 1);
+            default -> GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 1);
         };
         setInventorySlotContents(getControllerSlotIndex(), nanite);
     }

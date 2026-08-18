@@ -184,7 +184,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_ZPM.get(4),
                 new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_CASING, 32),
                 ItemList.LargeMolecularAssembler.get(2))
-            .fluidInputs(Materials.UUMatter.getFluid(8000L))
+            .fluidInputs(MaterialUtils.fluid(Materials.UUMatter, 8000))
             .itemOutputs(ItemList.BeamCrafter.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(60 * SECONDS)
