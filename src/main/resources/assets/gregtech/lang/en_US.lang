@@ -6029,6 +6029,8 @@ GT5U.waila.digital_chest.empty=Chest Empty
 GT5U.waila.digital_tank.empty=Tank Empty
 GT5U.waila.mebf.parallel=Current Parallel Modifier: §6%s
 GT5U.waila.mebf.pyrotheum=Current Pyrotheum Drain: §c%s§r/s
+GT5U.waila.boiler.temperature=§aTemperature: §6%s
+GT5U.waila.boiler.fuel_empty=§cFuel empty
 
 
 GT5U.waila.mvf.speedboost=Current Speed Modifier: §a%s
