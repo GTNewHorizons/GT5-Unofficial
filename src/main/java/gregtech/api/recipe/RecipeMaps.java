@@ -264,7 +264,7 @@ public final class RecipeMaps {
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_ARROW_STANDARD)
         .neiHandlerInfo(
             builder -> builder.setDisplayStack(ItemList.Ice_Cream_Machine.get(1))
-                .setHeight(166)
+                .setHeight(90)
                 .setShowFavoritesButton(false)
                 .setShowOverlayButton(false))
         .frontend(IceCreamMachineFrontend::new)
