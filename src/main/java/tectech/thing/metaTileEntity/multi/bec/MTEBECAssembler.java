@@ -105,17 +105,18 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     @Override
     public IStructureDefinition<MTEBECAssembler> compile(String[][] definition) {
         structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
-        structure.addCasing('B', ElectromagneticallyIsolatedCasing)
-            .withHatches(1, 16, Arrays.asList(Energy, ExoticEnergy, NaniteHatchElement.INSTANCE));
+        structure.addCasing('B', ElectromagneticallyIsolatedCasing);
         structure.addCasing('C', FineStructureConstantManipulator);
         structure.addCasing('D', ConflictInducementCasing);
         structure.addCasing('E', PeaceEnforcementCasing);
         structure.addCasing('F', CondensateTransformativeCoil);
         structure.addCasing('G', CondensateGuidanceCoil);
         structure.addCasing('H', ElectromagneticWaveguide);
-        structure.addCasing('1', FineStructureConstantManipulator)
-            .withHatches(2, 2, Arrays.asList(BECHatches.Hatch));
+        structure.addCasing('1', ElectromagneticallyIsolatedCasing)
+            .withHatches(1, 16, Arrays.asList(Energy, ExoticEnergy, NaniteHatchElement.INSTANCE));
         structure.addCasing('2', FineStructureConstantManipulator)
+            .withHatches(2, 2, Arrays.asList(BECHatches.Hatch));
+        structure.addCasing('3', FineStructureConstantManipulator)
             .withHatches(3, 16, Arrays.asList(AssemblerLineOfSightHatch.INSTANCE));
 
         return structure.buildStructure(definition);

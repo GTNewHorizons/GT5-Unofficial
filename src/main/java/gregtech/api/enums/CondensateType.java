@@ -126,6 +126,7 @@ public enum CondensateType {
     // spotless:on
     ;
 
+    public static final CondensateType[] VALUES = values();
     private final String id;
     private final Lazy<IOreMaterial> material;
     private final int unit;
@@ -171,7 +172,7 @@ public enum CondensateType {
     }
 
     public static void registerFluids() {
-        for (CondensateType type : values()) {
+        for (CondensateType type : VALUES) {
             IOreMaterial material = type.getMaterial();
             IGTFluidBuilder builder = GTFluidFactory.builder("entangled_" + type.id)
                 .withColorRGBA(material.getRGBA())
@@ -204,7 +205,7 @@ public enum CondensateType {
     }
 
     public static void registerRecipes() {
-        for (CondensateType type : values()) {
+        for (CondensateType type : VALUES) {
             GTValues.RA.stdBuilder()
                 .fluidInputs(type.source.get())
                 .fluidOutputs(new FluidStack(type.entangledFluid, type.unit))
@@ -215,7 +216,7 @@ public enum CondensateType {
     }
 
     public static CondensateType getCondensateType(Fluid fluid) {
-        for (CondensateType type : values()) {
+        for (CondensateType type : VALUES) {
             if (fluid == type.entangledFluid) {
                 return type;
             }

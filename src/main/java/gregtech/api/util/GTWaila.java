@@ -7,6 +7,10 @@ import mcp.mobius.waila.api.SpecialChars;
 
 public abstract class GTWaila {
 
+    public static String getMachineProgressString(int maxProgresstime, int progresstime) {
+        return getMachineProgressString(true, true, maxProgresstime, progresstime);
+    }
+
     public static String getMachineProgressString(boolean isActive, int maxProgresstime, int progresstime) {
         return getMachineProgressString(isActive, true, maxProgresstime, (long) progresstime);
     }
