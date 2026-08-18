@@ -22,6 +22,7 @@ public class IceCreamMachineRecipes implements Runnable {
     public void run() {
         GTModHandler.addCraftingRecipe(
             ItemList.Ice_Cream_Machine.get(1L),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "FEF", "WIG", "SCT", 'F', OrePrefixes.frameGt.get(Materials.Iron), 'E',
                 ItemList.Electric_Motor_LV.get(1L), 'W', OrePrefixes.wireFine.get(Materials.Copper), 'I',
                 new ItemStack(Blocks.ice), 'G', OrePrefixes.gearGtSmall.get(Materials.Iron), 'S',
