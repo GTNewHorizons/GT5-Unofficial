@@ -2574,7 +2574,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             byte voltageTier = this.getExoticEnergyHatches()
                 .isEmpty() ? (byte) this.getInputVoltageTier()
                     : (byte) GTUtility.getTierExtended(this.getAverageInputVoltage());
-            byte powerTier = (byte) GTUtility.getTierExtended(totalInputPower);
+            byte powerTier = this.getExoticEnergyHatches()
+                .isEmpty() ? (byte) GTUtility.getTierExtended(this.getMaxInputVoltage())
+                    : (byte) GTUtility.getTierExtended(totalInputPower);
 
             if (voltageTier != 0) {
                 info.add(
