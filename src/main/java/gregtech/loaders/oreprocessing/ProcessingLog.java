@@ -93,11 +93,11 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                             GTUtility.copyAmount(
                                 GTMod.proxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
                                 tStack),
-                            GTModHandler.RecipeBits.BUFFERED,
+                            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                             new Object[] { "s", "L", 'L', new ItemStack(aStack.getItem(), 1, i) });
                         GTModHandler.addShapelessCraftingRecipe(
                             GTUtility.copyAmount(tStack.stackSize / (GTMod.proxy.mNerfedWoodPlank ? 2 : 1), tStack),
-                            GTModHandler.RecipeBits.BUFFERED,
+                            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                             new Object[] { new ItemStack(aStack.getItem(), 1, i) });
                     }
                 }
