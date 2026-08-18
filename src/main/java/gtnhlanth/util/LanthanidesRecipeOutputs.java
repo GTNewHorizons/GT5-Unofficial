@@ -6,21 +6,26 @@ import static gregtech.api.enums.OrePrefixes.dustTiny;
 
 import net.minecraft.item.ItemStack;
 
-import bartworks.system.material.Werkstoff;
+import com.ruling_0.materiallib.api.Material;
+
 import bartworks.system.material.gtenhancement.PlatinumSludgeOutputs;
 import goodgenerator.util.NaquadahRecipeOutputs;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtnhlanth.common.register.WerkstoffMaterialPool;
 
+/// Rewrites cerium and samarium dust outputs into the lanthanide-line concentrates at recipe-generation time.
+///
+/// This is the outermost of the three output-substitution layers: every entry point runs
+/// [NaquadahRecipeOutputs] (which itself runs [PlatinumSludgeOutputs]) first, so ore-processing loaders only ever
+/// need to call this one.
 public final class LanthanidesRecipeOutputs {
 
     private LanthanidesRecipeOutputs() {}
 
-    public static ItemStack[] convertOre(Materials inputMaterial, ItemStack... outputs) {
+    public static ItemStack[] convertOre(Material inputMaterial, ItemStack... outputs) {
         return convert(2, NaquadahRecipeOutputs.convert(inputMaterial, outputs));
     }
 
@@ -28,7 +33,7 @@ public final class LanthanidesRecipeOutputs {
         return convert(2, NaquadahRecipeOutputs.convert(outputs));
     }
 
-    public static ItemStack[] convertDecomposition(Materials inputMaterial, ItemStack... outputs) {
+    public static ItemStack[] convertDecomposition(Material inputMaterial, ItemStack... outputs) {
         return convert(1, NaquadahRecipeOutputs.convertDecomposition(inputMaterial, outputs));
     }
 
@@ -36,15 +41,15 @@ public final class LanthanidesRecipeOutputs {
         return convert(1, NaquadahRecipeOutputs.convertDecomposition(outputs));
     }
 
-    public static ItemStack convertCrafting(Materials material, ItemStack output) {
+    public static ItemStack convertCrafting(Material material, ItemStack output) {
         output = PlatinumSludgeOutputs.convertCrafting(material, output);
         output = NaquadahRecipeOutputs.convert(output);
         if (!GTUtility.isStackValid(output)) return output;
         if (material == Materials.Cerium) {
-            return WerkstoffMaterialPool.CeriumRichMixture.get(dust, output.stackSize * 2);
+            return GTOreDictUnificator.get(dust, Materials.CeriumRichMixture, output.stackSize * 2L);
         }
         if (material == Materials.Samarium) {
-            return WerkstoffMaterialPool.SamariumOreConcentrate.get(dust, output.stackSize * 2);
+            return GTOreDictUnificator.get(dust, Materials.SamariumOreConcentrate, output.stackSize * 2L);
         }
         return output;
     }
@@ -54,42 +59,46 @@ public final class LanthanidesRecipeOutputs {
             ItemStack output = outputs[i];
             if (!GTUtility.isStackValid(output)) continue;
 
-            Werkstoff replacement = null;
+            Material replacement = null;
             OrePrefixes prefix = null;
-            if (GTUtility.areStacksEqual(output, Materials.Cerium.getDust(1), true)) {
-                replacement = WerkstoffMaterialPool.CeriumRichMixture;
+            if (matches(output, dust, Materials.Cerium)) {
+                replacement = Materials.CeriumRichMixture;
                 prefix = dust;
-            } else if (GTUtility.areStacksEqual(output, Materials.Cerium.getDustSmall(1), true)) {
-                replacement = WerkstoffMaterialPool.CeriumRichMixture;
+            } else if (matches(output, dustSmall, Materials.Cerium)) {
+                replacement = Materials.CeriumRichMixture;
                 prefix = dustSmall;
-            } else if (GTUtility.areStacksEqual(output, Materials.Cerium.getDustTiny(1), true)) {
-                replacement = WerkstoffMaterialPool.CeriumRichMixture;
+            } else if (matches(output, dustTiny, Materials.Cerium)) {
+                replacement = Materials.CeriumRichMixture;
                 prefix = dustTiny;
-            } else if (GTUtility.areStacksEqual(output, Materials.Samarium.getDust(1), true)) {
-                replacement = WerkstoffMaterialPool.SamariumOreConcentrate;
+            } else if (matches(output, dust, Materials.Samarium)) {
+                replacement = Materials.SamariumOreConcentrate;
                 prefix = dust;
-            } else if (GTUtility.areStacksEqual(output, Materials.Samarium.getDustSmall(1), true)) {
-                replacement = WerkstoffMaterialPool.SamariumOreConcentrate;
+            } else if (matches(output, dustSmall, Materials.Samarium)) {
+                replacement = Materials.SamariumOreConcentrate;
                 prefix = dustSmall;
-            } else if (GTUtility.areStacksEqual(output, Materials.Samarium.getDustTiny(1), true)) {
-                replacement = WerkstoffMaterialPool.SamariumOreConcentrate;
+            } else if (matches(output, dustTiny, Materials.Samarium)) {
+                replacement = Materials.SamariumOreConcentrate;
                 prefix = dustTiny;
             } else {
                 ItemData association = GTOreDictUnificator.getAssociation(output);
                 if (association == null || association.mPrefix == null || association.mMaterial == null) continue;
-                Materials material = association.mMaterial.mMaterial;
+                Material material = association.mMaterial.mMaterial;
                 if (material == Materials.Cerium) {
-                    replacement = WerkstoffMaterialPool.CeriumRichMixture;
+                    replacement = Materials.CeriumRichMixture;
                 } else if (material == Materials.Samarium) {
-                    replacement = WerkstoffMaterialPool.SamariumOreConcentrate;
+                    replacement = Materials.SamariumOreConcentrate;
                 }
                 prefix = association.mPrefix;
             }
 
             if (replacement == null) continue;
             if (prefix != dust && prefix != dustSmall && prefix != dustTiny) continue;
-            outputs[i] = replacement.get(prefix, output.stackSize * multiplier);
+            outputs[i] = GTOreDictUnificator.get(prefix, replacement, output.stackSize * (long) multiplier);
         }
         return outputs;
+    }
+
+    private static boolean matches(ItemStack output, OrePrefixes prefix, Material material) {
+        return GTUtility.areStacksEqual(output, GTOreDictUnificator.get(prefix, material, 1L), true);
     }
 }

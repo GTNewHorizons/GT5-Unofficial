@@ -9,11 +9,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.common.registry.GameRegistry;
-import goodgenerator.items.GGMaterial;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.FluidShapes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -59,14 +62,15 @@ public final class NaquadahRecipePatches {
 
     private static FluidStack replaceNaquadahOutput(FluidStack output) {
         if (output == null) return null;
-        if (output.isFluidEqual(Materials.Naquadah.getMolten(1))) {
-            return GGMaterial.naquadahGoo.getFluidOrGas(output.amount * 2);
+        if (output.isFluidEqual(MaterialUtils.molten(Materials.Naquadah, 1))) {
+            return MaterialLibAPI.getFluidStack(Materials.NaquadahGoo, FluidShapes.fluidLiquid, output.amount * 2);
         }
-        if (output.isFluidEqual(Materials.NaquadahEnriched.getMolten(1))) {
-            return GGMaterial.enrichedNaquadahGoo.getFluidOrGas(output.amount * 2);
+        if (output.isFluidEqual(MaterialUtils.molten(Materials.NaquadahEnriched, 1))) {
+            return MaterialLibAPI
+                .getFluidStack(Materials.EnrichedNaquadahGoo, FluidShapes.fluidLiquid, output.amount * 2);
         }
-        if (output.isFluidEqual(Materials.Naquadria.getMolten(1))) {
-            return GGMaterial.naquadriaGoo.getFluidOrGas(output.amount * 2);
+        if (output.isFluidEqual(MaterialUtils.molten(Materials.Naquadria, 1))) {
+            return MaterialLibAPI.getFluidStack(Materials.NaquadriaGoo, FluidShapes.fluidLiquid, output.amount * 2);
         }
         return null;
     }

@@ -1,13 +1,5 @@
 package bartworks.system.material.gtenhancement;
 
-import static bartworks.system.material.WerkstoffLoader.CrudeRhMetall;
-import static bartworks.system.material.WerkstoffLoader.IrLeachResidue;
-import static bartworks.system.material.WerkstoffLoader.IrOsLeachResidue;
-import static bartworks.system.material.WerkstoffLoader.LeachResidue;
-import static bartworks.system.material.WerkstoffLoader.PDMetallicPowder;
-import static bartworks.system.material.WerkstoffLoader.PTMetallicPowder;
-import static bartworks.system.material.WerkstoffLoader.Rhodium;
-import static bartworks.system.material.WerkstoffLoader.Ruthenium;
 import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.enums.OrePrefixes.dustImpure;
 import static gregtech.api.enums.OrePrefixes.dustPure;
@@ -16,13 +8,20 @@ import static gregtech.api.enums.OrePrefixes.dustTiny;
 
 import net.minecraft.item.ItemStack;
 
-import bartworks.system.material.Werkstoff;
-import gregtech.api.enums.Materials;
+import com.ruling_0.materiallib.api.Material;
+
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.Materials;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
+/// Rewrites platinum-group outputs at recipe-generation time so that ore processing yields the sludge-line
+/// intermediates (metallic powders and leach residues) instead of the pure metals.
+///
+/// Substitution happens as recipes are built rather than by rescanning the finished recipe maps, so a recipe
+/// registered against a platinum-group material never exists in its unsubstituted form. Alloys that legitimately
+/// contain a platinum-group metal are exempt, see [#isMaterialBlacklisted].
 public final class PlatinumSludgeOutputs {
 
     private PlatinumSludgeOutputs() {}
@@ -32,45 +31,55 @@ public final class PlatinumSludgeOutputs {
         return outputs;
     }
 
-    public static ItemStack[] convert(Materials inputMaterial, ItemStack... outputs) {
+    public static ItemStack[] convert(Material inputMaterial, ItemStack... outputs) {
         return isMaterialBlacklisted(inputMaterial) ? outputs : convert(outputs);
     }
 
-    public static ItemStack convertSmelting(Materials inputMaterial, OrePrefixes inputPrefix, ItemStack output) {
+    public static ItemStack convertSmelting(Material inputMaterial, OrePrefixes inputPrefix, ItemStack output) {
         if (!GTUtility.isStackValid(output) || isMaterialBlacklisted(inputMaterial)) return output;
         if (inputMaterial == Materials.Platinum && (inputPrefix == dust || inputPrefix == dustTiny)) return output;
 
         ItemData association = GTOreDictUnificator.getAssociation(output);
         if (association == null || association.mPrefix == null || association.mMaterial == null) return output;
-        Werkstoff replacement = association.mMaterial.mMaterial == Materials.Platinum ? PTMetallicPowder
-            : association.mMaterial.mMaterial == Materials.Palladium ? PDMetallicPowder : null;
+        Material replacement = association.mMaterial.mMaterial == Materials.Platinum ? Materials.PlatinumMetallicPowder
+            : association.mMaterial.mMaterial == Materials.Palladium ? Materials.PalladiumMetallicPowder : null;
         return replacement == null ? output
-            : replacement.get(association.mPrefix == OrePrefixes.nugget ? dustTiny : dust, output.stackSize * 2);
+            : GTOreDictUnificator.get(
+                association.mPrefix == OrePrefixes.nugget ? dustTiny : dust,
+                replacement,
+                output.stackSize * 2L);
     }
 
-    public static ItemStack convertCrafting(Materials material, ItemStack output) {
+    public static ItemStack convertCrafting(Material material, ItemStack output) {
         if (!GTUtility.isStackValid(output)) return output;
-        if (material == Materials.Platinum) return PTMetallicPowder.get(dust, output.stackSize * 2);
-        if (material == Materials.Palladium) return PDMetallicPowder.get(dust, output.stackSize * 2);
-        if (material == Materials.Iridium) return IrLeachResidue.get(dust, output.stackSize);
-        if (material == Materials.Osmium) return IrOsLeachResidue.get(dust, output.stackSize);
+        if (material == Materials.Platinum)
+            return GTOreDictUnificator.get(dust, Materials.PlatinumMetallicPowder, output.stackSize * 2L);
+        if (material == Materials.Palladium)
+            return GTOreDictUnificator.get(dust, Materials.PalladiumMetallicPowder, output.stackSize * 2L);
+        if (material == Materials.Iridium)
+            return GTOreDictUnificator.get(dust, Materials.IridiumMetalResidue, output.stackSize);
+        if (material == Materials.Osmium)
+            return GTOreDictUnificator.get(dust, Materials.RarestMetalResidue, output.stackSize);
         return output;
     }
 
     public static ItemStack convert(ItemStack output) {
         if (!GTUtility.isStackValid(output)) return output;
 
-        if (matchesDust(Ruthenium, output)) return LeachResidue.get(dust, output.stackSize * 2);
-        if (matchesDust(Rhodium, output)) return CrudeRhMetall.get(dust, output.stackSize * 2);
+        if (matchesDust(Materials.Ruthenium, output))
+            return GTOreDictUnificator.get(dust, Materials.LeachResidue, output.stackSize * 2L);
+        if (matchesDust(Materials.Rhodium, output))
+            return GTOreDictUnificator.get(dust, Materials.CrudeRhodiumMetal, output.stackSize * 2L);
 
         ItemData association = GTOreDictUnificator.getAssociation(output);
         if (association == null || association.mPrefix == null || association.mMaterial == null) return output;
 
-        Werkstoff replacement;
-        if (association.mMaterial.mMaterial == Materials.Platinum) replacement = PTMetallicPowder;
-        else if (association.mMaterial.mMaterial == Materials.Palladium) replacement = PDMetallicPowder;
-        else if (association.mMaterial.mMaterial == Materials.Iridium) replacement = IrLeachResidue;
-        else if (association.mMaterial.mMaterial == Materials.Osmium) replacement = IrOsLeachResidue;
+        Material replacement;
+        if (association.mMaterial.mMaterial == Materials.Platinum) replacement = Materials.PlatinumMetallicPowder;
+        else if (association.mMaterial.mMaterial == Materials.Palladium)
+            replacement = Materials.PalladiumMetallicPowder;
+        else if (association.mMaterial.mMaterial == Materials.Iridium) replacement = Materials.IridiumMetalResidue;
+        else if (association.mMaterial.mMaterial == Materials.Osmium) replacement = Materials.RarestMetalResidue;
         else return output;
 
         OrePrefixes prefix;
@@ -83,21 +92,21 @@ public final class PlatinumSludgeOutputs {
         } else {
             return output;
         }
-        return replacement.get(prefix, output.stackSize * 2);
+        return GTOreDictUnificator.get(prefix, replacement, output.stackSize * 2L);
     }
 
-    private static boolean matchesDust(Werkstoff material, ItemStack stack) {
-        return GTUtility.areStacksEqual(material.get(dust), stack)
-            || GTUtility.areStacksEqual(material.get(dustImpure), stack)
-            || GTUtility.areStacksEqual(material.get(dustPure), stack);
+    private static boolean matchesDust(Material material, ItemStack stack) {
+        return GTUtility.areStacksEqual(GTOreDictUnificator.get(dust, material, 1L), stack)
+            || GTUtility.areStacksEqual(GTOreDictUnificator.get(dustImpure, material, 1L), stack)
+            || GTUtility.areStacksEqual(GTOreDictUnificator.get(dustPure, material, 1L), stack);
     }
 
-    private static boolean isMaterialBlacklisted(Materials material) {
+    private static boolean isMaterialBlacklisted(Material material) {
         return material == Materials.HSSS || material == Materials.EnderiumBase
             || material == Materials.Osmiridium
-            || material == Materials.TPV
-            || material == Materials.SuperconductorEVBase
-            || material == Materials.SuperconductorZPMBase
-            || material == Materials.SuperconductorUVBase;
+            || material == Materials.TPVAlloy
+            || material == Materials.Uraniumtriplatinid
+            || material == Materials.Tetranaquadahdiindiumhexaplatiumosminid
+            || material == Materials.Longasssuperconductornameforuvwire;
     }
 }

@@ -1,11 +1,13 @@
 package gregtech.loaders.oreprocessing;
 
+import static goodgenerator.util.NaquadahRecipeOutputs.convert;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gtnhlanth.util.LanthanidesRecipeOutputs.convertOre;
 
 import net.minecraft.item.ItemStack;
 
@@ -45,7 +47,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
-                    .itemOutputs(dust)
+                    .itemOutputs(convertOre(material, dust))
                     .duration(10 * TICKS)
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(hammerRecipes);
@@ -53,14 +55,16 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .itemOutputs(
-                        GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.dust,
-                            GTUtility.selectItemInList(
-                                2,
-                                MaterialUtils.macerateInto(material),
-                                MaterialUtils.oreByProducts(material)),
-                            1L))
+                        convertOre(
+                            material,
+                            GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L),
+                            GTOreDictUnificator.get(
+                                OrePrefixes.dust,
+                                GTUtility.selectItemInList(
+                                    2,
+                                    MaterialUtils.macerateInto(material),
+                                    MaterialUtils.oreByProducts(material)),
+                                1L)))
                     .outputChances(10000, 1000)
                     .duration(20 * SECONDS)
                     .eut(2)
@@ -70,18 +74,20 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, stack))
                     .itemOutputs(
-                        GTOreDictUnificator.get(
-                            OrePrefixes.crushedCentrifuged,
-                            MaterialUtils.macerateInto(material),
-                            GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L),
-                            1L),
-                        GTOreDictUnificator.get(
-                            OrePrefixes.dust,
-                            GTUtility.selectItemInList(
-                                1,
+                        convertOre(
+                            material,
+                            GTOreDictUnificator.get(
+                                OrePrefixes.crushedCentrifuged,
                                 MaterialUtils.macerateInto(material),
-                                MaterialUtils.oreByProducts(material)),
-                            1L))
+                                GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L),
+                                1L),
+                            GTOreDictUnificator.get(
+                                OrePrefixes.dust,
+                                GTUtility.selectItemInList(
+                                    1,
+                                    MaterialUtils.macerateInto(material),
+                                    MaterialUtils.oreByProducts(material)),
+                                1L)))
                     .outputChances(10000, 1111)
                     .duration(25 * SECONDS)
                     .eut(48)
@@ -100,12 +106,14 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                         .stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .itemOutputs(
-                            GTOreDictUnificator.get(OrePrefixes.gemExquisite, material, tGem, 1L),
-                            GTOreDictUnificator.get(OrePrefixes.gemFlawless, material, tGem, 1L),
-                            tGem,
-                            GTOreDictUnificator.get(OrePrefixes.gemFlawed, material, tGem, 1L),
-                            GTOreDictUnificator.get(OrePrefixes.gemChipped, material, tGem, 1L),
-                            GTOreDictUnificator.get(OrePrefixes.dust, material, tGem, 1L))
+                            convert(
+                                material,
+                                GTOreDictUnificator.get(OrePrefixes.gemExquisite, material, tGem, 1L),
+                                GTOreDictUnificator.get(OrePrefixes.gemFlawless, material, tGem, 1L),
+                                tGem,
+                                GTOreDictUnificator.get(OrePrefixes.gemFlawed, material, tGem, 1L),
+                                GTOreDictUnificator.get(OrePrefixes.gemChipped, material, tGem, 1L),
+                                GTOreDictUnificator.get(OrePrefixes.dust, material, tGem, 1L)))
                         .outputChances(300, 1200, 4500, 1400, 2800, 3500)
                         .duration(40 * SECONDS)
                         .eut(TierEU.RECIPE_LV / 2)
@@ -113,12 +121,14 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                     default -> GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, stack))
                         .itemOutputs(
-                            GTOreDictUnificator.get(OrePrefixes.gemExquisite, material, tGem, 1L),
-                            GTOreDictUnificator.get(OrePrefixes.gemFlawless, material, tGem, 1L),
-                            tGem,
-                            GTOreDictUnificator.get(OrePrefixes.gemFlawed, material, tGem, 1L),
-                            GTOreDictUnificator.get(OrePrefixes.gemChipped, material, tGem, 1L),
-                            GTOreDictUnificator.get(OrePrefixes.dust, material, tGem, 1L))
+                            convert(
+                                material,
+                                GTOreDictUnificator.get(OrePrefixes.gemExquisite, material, tGem, 1L),
+                                GTOreDictUnificator.get(OrePrefixes.gemFlawless, material, tGem, 1L),
+                                tGem,
+                                GTOreDictUnificator.get(OrePrefixes.gemFlawed, material, tGem, 1L),
+                                GTOreDictUnificator.get(OrePrefixes.gemChipped, material, tGem, 1L),
+                                GTOreDictUnificator.get(OrePrefixes.dust, material, tGem, 1L)))
                         .outputChances(100, 400, 1500, 2000, 4000, 5000)
                         .duration(40 * SECONDS)
                         .eut(TierEU.RECIPE_LV / 2)

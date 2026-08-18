@@ -21,6 +21,7 @@ import static gregtech.api.recipe.RecipeMaps.crackingRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gtnhlanth.util.LanthanidesRecipeOutputs.convertCrafting;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import java.util.ArrayList;
@@ -1163,16 +1164,22 @@ public class GTProxy implements IFuelHandler {
             if (MaterialUtils.unifiable(material)) {
                 if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L),
-                        GTModHandler.RecipeBits.BITS_STD,
+                        convertCrafting(
+                            MaterialUtils.macerateInto(material),
+                            GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L)),
+                        GTModHandler.RecipeBits.BITS_STD | GTModHandler.RecipeBits.DONT_UNIFY_OUTPUT,
                         new Object[] { "h", "X", 'X', OrePrefixes.crushedCentrifuged.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L),
-                        GTModHandler.RecipeBits.BITS_STD,
+                        convertCrafting(
+                            MaterialUtils.macerateInto(material),
+                            GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L)),
+                        GTModHandler.RecipeBits.BITS_STD | GTModHandler.RecipeBits.DONT_UNIFY_OUTPUT,
                         new Object[] { "h", "X", 'X', OrePrefixes.crystalline.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L),
-                        GTModHandler.RecipeBits.BITS_STD,
+                        convertCrafting(
+                            MaterialUtils.macerateInto(material),
+                            GTOreDictUnificator.get(OrePrefixes.dust, MaterialUtils.macerateInto(material), 1L)),
+                        GTModHandler.RecipeBits.BITS_STD | GTModHandler.RecipeBits.DONT_UNIFY_OUTPUT,
                         new Object[] { "h", "X", 'X', OrePrefixes.crystal.ingredient(material) });
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dustPure, MaterialUtils.macerateInto(material), 1L),

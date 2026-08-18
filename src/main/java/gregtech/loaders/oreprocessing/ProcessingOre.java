@@ -1,11 +1,14 @@
 package gregtech.loaders.oreprocessing;
 
+import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convertSmelting;
+import static goodgenerator.util.NaquadahRecipeOutputs.convert;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gtnhlanth.util.LanthanidesRecipeOutputs.convertOre;
 
 import java.util.ArrayList;
 
@@ -152,7 +155,10 @@ public class ProcessingOre implements IOreRecipeRegistrator {
             } else {
                 tHasSmelting = GTModHandler.addSmeltingRecipe(
                     oreStack,
-                    GTUtility.copyAmount(multiplier * MaterialUtils.smeltingMultiplier(material), tSmeltInto));
+                    convertSmelting(
+                        material,
+                        prefix,
+                        GTUtility.copyAmount(multiplier * MaterialUtils.smeltingMultiplier(material), tSmeltInto)));
             }
 
             if (MaterialUtils.hasFlag(material, GTMaterialFlag.BLASTFURNACE_CALCITE_TRIPLE)) {
@@ -215,16 +221,20 @@ public class ProcessingOre implements IOreRecipeRegistrator {
         if (!tHasSmelting) {
             GTModHandler.addSmeltingRecipe(
                 oreStack,
-                GTOreDictUnificator.get(
-                    OrePrefixes.gem,
-                    MaterialUtils.directSmelting(material),
-                    Math.max(1, multiplier * MaterialUtils.smeltingMultiplier(material) / 2)));
+                convertSmelting(
+                    material,
+                    prefix,
+                    GTOreDictUnificator.get(
+                        OrePrefixes.gem,
+                        MaterialUtils.directSmelting(material),
+                        Math.max(1, multiplier * MaterialUtils.smeltingMultiplier(material) / 2))));
         }
 
         if (tCrushed != null && material != Materials.Knightmetal) {
             GTValues.RA.stdBuilder()
                 .itemInputs(oreStack)
-                .itemOutputs(GTUtility.copy(GTUtility.copyAmount(tCrushed.stackSize, tGem), tCrushed))
+                .itemOutputs(
+                    convert(material, GTUtility.copy(GTUtility.copyAmount(tCrushed.stackSize, tGem), tCrushed)))
                 .duration(10)
                 .eut(TierEU.RECIPE_LV / 2)
                 .addTo(hammerRecipes);
@@ -253,7 +263,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
             chanceOre2 = 100 * chanceOre2; // converting to the GT format, 100% is 10000
             GTValues.RA.stdBuilder()
                 .itemInputs(oreStack)
-                .itemOutputs(GTUtility.mul(2, tCrushed), byproduct, stoneDust)
+                .itemOutputs(convertOre(material, GTUtility.mul(2, tCrushed), byproduct, stoneDust))
                 .outputChances(10000, chanceOre2, 5000)
                 .duration(20 * SECONDS)
                 .nbtSensitive()
