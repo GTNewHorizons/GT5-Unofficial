@@ -1724,6 +1724,7 @@ gt.mbtt.structure.any_bottom_center_casing=Any bottom center casing
 gt.mbtt.structure.surrounding_central_column=Surrounding central column
 gt.mbtt.structure.front_left_2nd_layer=Front left, 2nd layer
 gt.mbtt.structure.interior_and_top_center=Interior and top center of the structure
+gt.mbtt.structure.any_bottom_edge_casing=Any bottom edge casing
 
 # Generic machine types
 gt.mbtt.machine_type.spacetime_manipulator=Spacetime Manipulator, EOH

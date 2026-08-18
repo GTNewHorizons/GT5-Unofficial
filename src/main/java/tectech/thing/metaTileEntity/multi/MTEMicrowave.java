@@ -233,9 +233,9 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
             .beginStructureBlock(5, 4, 5, true)
             .addController(translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
             .addCasing("60-69", translateToLocal("gt.blockcasings4.1.name"), false)
-            .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
-            .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
-            .addOutputBus("1+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
+            .addEnergyHatch("1+", translateToLocal("gt.mbtt.structure.any_bottom_edge_casing"), 1)
+            .addMaintenanceHatch("1", translateToLocal("gt.mbtt.structure.any_bottom_edge_casing"), 1)
+            .addOutputBus("1+", translateToLocal("gt.mbtt.structure.any_bottom_edge_casing"), 1)
             .addAir(translateToLocal("gt.mbtt.structure.interior_and_top_center"))
             .toolTipFinisher();
         // spotless:on

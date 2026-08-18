@@ -1349,6 +1349,9 @@ tt.keyword.Structure.CenterPillar=Центр передней стойки
 tt.keyword.Structure.Center=Центр
 # Additional structure components
 tt.keyword.Structure.DataAccessHatch=Шлюз доступа к данным
+tt.keyword.Structure.InFrontOfEachComputerHeatVent=Перед каждым компьютерным теплоотводом
+tt.keyword.Structure.DaisyChainAssemblyLine=Используйте входной разъём для сборочной линии, чтобы соединить механизмы в цепочку
+tt.keyword.Structure.DaisyChainOptical=Используйте оптический входной разъём, чтобы соединить механизмы в цепочку
 tt.keyword.Structure.ElementalOutput=Выходной элементный шлюз
 tt.keyword.Structure.Elemental=Элементный шлюз
 tt.keyword.Structure.ElementalOverflow=Элементный шлюз переполнения
