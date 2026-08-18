@@ -859,12 +859,33 @@ public class MaterialUtils {
         return flag != null && hasFlag(material, flag);
     }
 
-    /// Appends a [Material]'s chemical-formula tooltip (see [#chemicalTooltip]) to `list` when
-    /// `Client.tooltip.showFormula` is enabled; a no-op for a null material.
+    /// Appends a [Material]'s hazard warnings (see [#addHazardTooltips]) and, when
+    /// `Client.tooltip.showFormula` is enabled, its chemical-formula tooltip (see [#chemicalTooltip]) to `list`;
+    /// a no-op for a null material.
+    ///
+    /// The entry point for the item classes that own an `addInformation` override. Stacks MaterialLib serves
+    /// directly go through [gregtech.client.MaterialFormulaTooltip], which places the formula line itself and
+    /// calls [#addHazardTooltips] for the rest.
     public static void addTooltips(@Nullable Material material, List<String> list) {
-        if (material == null || !Client.tooltip.showFormula) return;
+        if (material == null) return;
+        addHazardTooltips(material, list);
+        if (!Client.tooltip.showFormula) return;
         String tooltip = chemicalTooltip(material, false);
         if (tooltip != null && !tooltip.isEmpty()) list.add(tooltip);
+    }
+
+    /// Appends the warnings for a [Material]'s handling hazards to `list`: [GTMaterialProperties#IS_RADIOACTIVE]
+    /// and [GTMaterialProperties#TOXIC], each behind its own `Client.tooltip` toggle, closed by the single hazmat
+    /// line they share. A no-op for a null material, or one carrying neither hazard.
+    public static void addHazardTooltips(@Nullable Material material, List<String> list) {
+        if (material == null) return;
+        boolean radioactive = Client.tooltip.showRadioactiveText
+            && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.IS_RADIOACTIVE));
+        boolean toxic = Client.tooltip.showToxicText
+            && Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.TOXIC));
+        if (radioactive) list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Radioactive"));
+        if (toxic) list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Toxic"));
+        if (radioactive || toxic) list.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_HazmatWarning"));
     }
 
     /// The [GTMaterialFlag] whose enum-constant name equals `subTag`'s name, or null when none does.
