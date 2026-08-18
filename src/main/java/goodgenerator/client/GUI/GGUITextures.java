@@ -14,7 +14,8 @@ public class GGUITextures {
     public static final UITexture PICTURE_COMPONENT_ASSLINE = UITexture
         .fullImage(MODID, "gui/picture/component_assline");
     public static final UITexture PICTURE_ANTIMATTER_FORGE = UITexture.fullImage(MODID, "gui/picture/antimatter_forge");
-    public static final UITexture PICTURE_ANTIMATTER_GENERATOR = UITexture.fullImage(MODID, "gui/picture/antimatter_generator");
+    public static final UITexture PICTURE_ANTIMATTER_GENERATOR = UITexture
+        .fullImage(MODID, "gui/picture/antimatter_generator");
     public static final UITexture OVERLAY_BUTTON_LOCK_OFF = UITexture.fullImage(MODID, "gui/overlay_button/lock_off");
     public static final UITexture OVERLAY_BUTTON_LOCK_ON = UITexture.fullImage(MODID, "gui/overlay_button/lock_on");
     public static final UITexture OVERLAY_BUTTON_ASSEMBLER_MODE = UITexture

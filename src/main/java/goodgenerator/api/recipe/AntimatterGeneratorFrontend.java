@@ -1,12 +1,21 @@
 package goodgenerator.api.recipe;
 
-import codechicken.nei.NEIClientUtils;
-import codechicken.nei.PositionedStack;
-import codechicken.nei.recipe.Badge;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
+import java.util.List;
+
+import javax.annotation.ParametersAreNonnullByDefault;
+
+import net.minecraft.util.StatCollector;
+
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.util.numberformatting.options.FormatOptions;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
+
+import codechicken.nei.NEIClientUtils;
+import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.Badge;
 import goodgenerator.blocks.tileEntity.AntimatterGenerator;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
@@ -14,12 +23,6 @@ import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
-import net.minecraft.util.StatCollector;
-
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
-
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
