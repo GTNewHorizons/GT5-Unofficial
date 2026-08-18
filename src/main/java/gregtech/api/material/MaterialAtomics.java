@@ -13,7 +13,8 @@ import gregtech.api.enums.Element;
 /// single canonical formula: an [GTMaterialProperties#ELEMENT]-backed material reads the [Element] table, a
 /// composition-backed one takes the density-weighted average over [GTMaterialProperties#COMPOSITION]
 /// (`density * sum(amount * component) / (totalAmount * M)`), and a material with neither falls back to
-/// [Element#Tc]. A declared [GTMaterialProperties#PROTONS] value overrides the formula for protons.
+/// [Element#Tc]. A declared [GTMaterialProperties#PROTONS] or [GTMaterialProperties#MASS] value overrides the
+/// formula for that quantity.
 public final class MaterialAtomics {
 
     private MaterialAtomics() {}
@@ -29,6 +30,8 @@ public final class MaterialAtomics {
     }
 
     public static long mass(Material material) {
+        Long declared = material.getProperty(GTMaterialProperties.MASS);
+        if (declared != null) return declared;
         return compute(material, Element::getMass);
     }
 

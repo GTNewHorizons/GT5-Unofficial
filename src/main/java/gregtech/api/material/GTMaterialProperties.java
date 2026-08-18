@@ -93,13 +93,19 @@ public class GTMaterialProperties {
     public static final Property<String> GTPP_STATE = Property.of("gregtech", "gtppState");
     public static final Property<String> LOCAL_NAME = Property.of("gregtech", "localName");
     public static final Property<MaterialRef> MACERATE_INTO = Property.of("gregtech", "macerateInto");
+    /// A declared atomic mass that replaces the [MaterialAtomics] composition formula for this material, the
+    /// [#PROTONS] counterpart. Composition sums over components still use their computed values.
+    public static final Property<Long> MASS = Property.of("gregtech", "mass");
     /// The programmed-circuit number for the auto-generated Mixer recipe, elided when unset.
     public static final Property<Integer> MIX_CIRCUIT = Property.of("gregtech", "mixCircuit");
     /// The material's true legacy `mName`, when it contains characters `Names#validate` rejects (`:` or
     /// whitespace, e.g. `"Computation Base"`) and MaterialLib's own registration name is therefore a sanitized
     /// variant. Absent when the two already match.
     public static final Property<String> LEGACY_NAME = Property.of("gregtech", "legacyName");
-    public static final Property<Integer> MELTING_POINT = Property.of("gregtech", "meltingPoint", 0);
+    /// The Kelvin melting point, `-1` when the material declares none. A declared `0` is distinct from that
+    /// default: it pins the material's fluids to 0 K, where an undeclared point is filled in from
+    /// [#COMPOSITION] and otherwise falls back to room temperature (see [MaterialUtils#meltingPoint]).
+    public static final Property<Integer> MELTING_POINT = Property.of("gregtech", "meltingPoint", -1);
     /// The EU/t voltage tier the auto-generated blast furnace recipe should require, elided when unset.
     public static final Property<Integer> MELTING_VOLTAGE = Property.of("gregtech", "meltingVoltage");
     /// The exact ARGB color declared for a material's molten-state tint. Absent when it would equal the

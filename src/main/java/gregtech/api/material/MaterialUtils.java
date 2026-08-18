@@ -516,9 +516,26 @@ public class MaterialUtils {
         return material == null || material.getProperty(GTMaterialProperties.AUTO_RECYCLE_RECIPES);
     }
 
-    /// The Kelvin melting point for a material -- [GTMaterialProperties#MELTING_POINT], or `0` if unset.
+    /// The Kelvin melting point for a material: its declared [GTMaterialProperties#MELTING_POINT], or -- for a
+    /// material that declares none but whose [GTMaterialProperties#COMPOSITION] holds more than one unit -- the
+    /// average over that composition, where a component carrying no melting point of its own counts toward the
+    /// divisor but contributes nothing. `-1` when neither applies.
     public static int meltingPoint(@Nullable Material material) {
-        return material == null ? 0 : material.getProperty(GTMaterialProperties.MELTING_POINT);
+        if (material == null) return -1;
+        int declared = material.getProperty(GTMaterialProperties.MELTING_POINT);
+        if (declared >= 0) return declared;
+        List<MaterialRefStack> composition = material.getProperty(GTMaterialProperties.COMPOSITION);
+        if (composition == null) return declared;
+        long total = 0;
+        long sum = 0;
+        for (MaterialRefStack stack : composition) {
+            total += stack.amount();
+            int componentPoint = meltingPoint(
+                stack.material()
+                    .resolve());
+            if (componentPoint > 0) sum += componentPoint * stack.amount();
+        }
+        return total > 1 ? (int) (sum / total) : declared;
     }
 
     /// A material's gas registration temperature in Kelvin: room temperature (295 K) when
@@ -529,11 +546,11 @@ public class MaterialUtils {
         return gasTemp == null || gasTemp == 0 ? 295 : meltingPoint(material);
     }
 
-    /// A material's liquid registration temperature in Kelvin: room temperature (295 K) when its
-    /// [#meltingPoint] is zero, otherwise the melting point.
+    /// A material's liquid registration temperature in Kelvin: room temperature (295 K) when it has no
+    /// [#meltingPoint] at all, otherwise the melting point -- including a declared `0`.
     public static int liquidTemperature(@Nullable Material material) {
         int meltingPoint = meltingPoint(material);
-        return meltingPoint == 0 ? 295 : meltingPoint;
+        return meltingPoint < 0 ? 295 : meltingPoint;
     }
 
     /// The Kelvin blast furnace temperature for a material -- [GTMaterialProperties#BLAST_TEMP], or `0` if
