@@ -2768,6 +2768,9 @@ GT5U.gui.text.shutdown_reason.insufficient_dynamo=§4Shut down due to insufficie
 GT5U.gui.text.shutdown_reason.computation_loss=§4Shut down due to computation loss.
 GT5U.gui.text.shutdown_reason.none=
 GT5U.gui.text.shutdown_reason.no_turbine=§7No valid turbine found
+GT5U.gui.text.shutdown_reason.no_rotor=No rotor provided
+GT5U.gui.text.shutdown_reason.wind_low=Not enough wind
+GT5U.gui.text.shutdown_reason.wind_high=Wind is too strong
 GT5U.gui.text.toxic_residue=§fToxic Residue: §c%s §f/ %s (%s%%)
 GT5U.gui.text.residue_change=§fResidue Change: §c+%s§f/§a-%s §f(%s)
 GT5U.gui.text.recipe_result.missing_item=§7Missing required item: §b%s§f
@@ -2843,7 +2846,7 @@ GT5U.gui.text.structure_error.energy_hatch_tier_mismatch=Energy hatches must be 
 GT5U.gui.text.structure_error.need_exactly_one_coil=Needs exactly 1 Heating Coil
 GT5U.gui.text.structure_error.missing_pipe_casing=Missing Pipe Casing
 GT5U.gui.text.structure_error.missing_dispenser=Missing Dispenser
-GT5U.gui.text.structure_error.too_many_doors=Too many doors (max 2)
+GT5U.gui.text.structure_error.too_many_doors=Too many doors (max 1)
 GT5U.gui.text.structure_error.need_exactly_one_beamline_output=Needs exactly 1 Beam Output Hatch
 GT5U.gui.text.structure_error.need_exactly_one_beamline_input=Needs exactly 1 Beam Input Hatch
 GT5U.gui.text.structure_error.need_exactly_one_focus_input=Needs exactly 1 Focus Input Hatch
@@ -3244,6 +3247,9 @@ GT5U.gui.hoverable.powerloss=Lost Power.
 GT5U.gui.hoverable.norepair=Machine too damaged.
 GT5U.gui.hoverable.manualshutdown=Manual shutdown (get it?).
 GT5U.gui.hoverable.computation_loss=Out of computation.
+GT5U.gui.hoverable.norotor=No rotor
+GT5U.gui.hoverable.windlow=There is not enough wind here
+GT5U.gui.hoverable.windhigh=The wind here is too strong
 GT5U.gui.hoverable.error=ERROR! REPORT ME!
 
 GT5U.gui.config.client=Client
@@ -5901,6 +5907,7 @@ GT5U.nei.display.voltage=Voltage: %s EU/t %s
 GT5U.nei.display.amperage=Amperage: %s A
 GT5U.nei.display.overclock=(OC)
 GT5U.nei.display.average=Average: %s EU/t %s
+GT5U.nei.display.windmill=Windmill
 
 GT5U.biomes.humidity=Humidity:
 
@@ -8694,7 +8701,6 @@ gt.blockcasings13.15.name=Naquadah Reactor Casing
 gt.blockcasings14.3.name=Hearth Casing
 gt.blockcasings14.4.name=Fridge Casing
 gt.blockcasings14.5.name=Naquadah Reinforced Distillation Casing
-
 
 gt.blockcasingsNH.0.name=Air Filter Turbine Casing
 gt.blockcasingsNH.1.name=Air Filter Vent Casing
