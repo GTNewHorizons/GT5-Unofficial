@@ -397,6 +397,10 @@ gg.recipe.antimatter_forge.info.0=%s %s/t base draw
 gg.recipe.antimatter_forge.protomatter_tooltip=Consumption equivalent to antimatter yield
 gg.recipe.antimatter_forge.stabilizer_tooltip=Exponent used for consumption
 gg.recipe.antimatter_forge.antimatter_tooltip=Production boosted by stabilizers
+gg.recipe.antimatter_generator=Shielded Lagrangian Annihilation Matrix
+gg.recipe.antimatter_generator.info.0=Energy density: %s %s/%s
+gg.recipe.antimatter_generator.info.1=Imbalance decreases efficiency
+gg.recipe.antimatter_generator.matter_tooltip=Exponent used for energy boost
 
 #NEI Info
 value.naquadah_reactor=Basic Output Voltage: %s EU/t

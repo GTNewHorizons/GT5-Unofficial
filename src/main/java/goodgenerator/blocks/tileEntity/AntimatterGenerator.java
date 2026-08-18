@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -33,6 +34,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.loaders.ItemRegistry;
+import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.structures.AntimatterStructures;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
@@ -44,6 +46,7 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -70,6 +73,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     private long lastCycleTick = 0;
     private float annihilationEfficiency = 0f;
     public static final long ANTIMATTER_FUEL_VALUE = 1_000_000_000_000L;
+    public static final FluidStack[] catalystFluids = { Materials.Copper.getMolten(0L),
+        Materials.SuperconductorUIVBase.getMolten(0L), Materials.SuperconductorUMVBase.getMolten(0L) };
+    public static final float[] catalystExponents = { 1.0F, 1.02F, 1.03F };
     private final List<Float> avgEff = new ArrayList<>(10);
 
     private static final ClassValue<IStructureDefinition<AntimatterGenerator>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -163,13 +169,14 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     public void createEU(long antimatter, FluidStack catalyst) {
         Float modifier = null;
 
-        if (catalyst.isFluidEqual(Materials.Copper.getMolten(1L))) {
-            modifier = 1.0F;
-        } else if (catalyst.isFluidEqual(Materials.SuperconductorUIVBase.getMolten(1L))) {
-            modifier = 1.02F;
-        } else if (catalyst.isFluidEqual(Materials.SuperconductorUMVBase.getMolten(1L))) {
-            modifier = 1.03F;
+        for (int i = 0; i < catalystFluids.length; i++) {
+            if (catalyst.isFluidEqual(catalystFluids[i])) {
+                modifier = catalystExponents[i];
+            } else {
+                break;
+            }
         }
+
         long catalystCount = catalyst.amount;
         long generatedEU = 0;
 
@@ -434,6 +441,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
 
     public float getEfficiency() {
         return this.annihilationEfficiency;
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return GoodGeneratorRecipeMaps.antimatterGeneratorRecipes;
     }
 
     private int n = 0;
