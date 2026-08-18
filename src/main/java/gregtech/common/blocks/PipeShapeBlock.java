@@ -236,9 +236,8 @@ public class PipeShapeBlock extends ShapeBlock {
             drops.add(getStack(material, 1));
         }
         if (tempTe != null) {
-            for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-                ItemStack cover = tempTe.getCoverItemAtSide(direction);
-                if (cover != null) drops.add(cover);
+            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                if (tempTe.hasCoverAtSide(side)) tempTe.dropCover(side, side);
             }
         }
         temporaryTileEntity.remove();
