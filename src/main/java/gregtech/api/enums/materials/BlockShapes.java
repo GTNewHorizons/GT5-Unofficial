@@ -1,5 +1,7 @@
 package gregtech.api.enums.materials;
 
+import static gregtech.api.enums.materials.GTShapeStore.reg;
+
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
@@ -16,13 +18,20 @@ public class BlockShapes {
     public static Shape sheetmetal;
 
     public static void init() {
-        block = MaterialLibAPI.registerBlockShape(new GTStorageShapeBlock("gregtech", "block", "Block of %s", "block"));
-        blockCasing = MaterialLibAPI
-            .registerBlockShape(new GTCasingShapeBlock("gregtech", "blockCasing", "Bolted %s Casing", "blockCasing"));
-        blockCasingAdvanced = MaterialLibAPI.registerBlockShape(
-            new GTCasingShapeBlock("gregtech", "blockCasingAdvanced", "Rebolted %s Casing", "blockCasingAdvanced"));
-        sheetmetal = MaterialLibAPI
-            .registerBlockShape(new SheetmetalShapeBlock("sheetmetal", "%s Sheetmetal", "sheetmetal"));
+        block = reg(
+            MaterialLibAPI.registerBlockShape(new GTStorageShapeBlock("gregtech", "block", "Block of %s", "block")));
+        blockCasing = reg(
+            MaterialLibAPI.registerBlockShape(
+                new GTCasingShapeBlock("gregtech", "blockCasing", "Bolted %s Casing", "blockCasing")));
+        blockCasingAdvanced = reg(
+            MaterialLibAPI.registerBlockShape(
+                new GTCasingShapeBlock(
+                    "gregtech",
+                    "blockCasingAdvanced",
+                    "Rebolted %s Casing",
+                    "blockCasingAdvanced")));
+        sheetmetal = reg(
+            MaterialLibAPI.registerBlockShape(new SheetmetalShapeBlock("sheetmetal", "%s Sheetmetal", "sheetmetal")));
     }
 
     private BlockShapes() {}

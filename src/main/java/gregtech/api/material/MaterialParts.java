@@ -1,6 +1,5 @@
 package gregtech.api.material;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,12 +16,9 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.CellShapes;
+import gregtech.api.enums.materials.GTShapeStore;
 import gregtech.api.enums.materials.LegacyWerkstoffIndex;
-import gregtech.api.enums.materials.OreShapes;
-import gregtech.api.enums.materials.Shapes;
-import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -168,19 +164,20 @@ public class MaterialParts {
     /// The shapes serving each ore-dictionary prefix, keyed by the prefix strings the shapes themselves
     /// declare. Where several shapes share a prefix (`cellPlasma` holds both plasma cell sizes, and a fluid
     /// pipe shares `pipeTiny`..`pipeHuge` with an item pipe), the shape whose own name is the prefix comes
-    /// first and the rest follow in name order, so the candidate order does not depend on field or reflection
-    /// order.
+    /// first and the rest follow in name order, so the candidate order does not depend on declaration order.
     private static Map<String, List<Shape>> prefixShapes() {
         if (prefixToShapes == null) {
-            if (Shapes.dust == null) {
+            if (GTShapeStore.all()
+                .isEmpty()) {
                 throw new IllegalStateException("Prefix-shape table consulted before MaterialSystem.init");
             }
             Map<String, List<Shape>> map = new HashMap<>();
-            collectShapes(map, Shapes.class);
-            collectShapes(map, CellShapes.class);
-            collectShapes(map, BlockShapes.class);
-            collectShapes(map, OreShapes.class);
-            collectShapes(map, TEBlockShapes.class);
+            for (Shape shape : GTShapeStore.all()) {
+                for (String oreDict : shape.getOreDicts()) {
+                    map.computeIfAbsent(oreDict, k -> new ArrayList<>())
+                        .add(shape);
+                }
+            }
             for (Map.Entry<String, List<Shape>> entry : map.entrySet()) {
                 String prefix = entry.getKey();
                 entry.getValue()
@@ -193,26 +190,5 @@ public class MaterialParts {
             prefixToShapes = map;
         }
         return prefixToShapes;
-    }
-
-    private static void collectShapes(Map<String, List<Shape>> map, Class<?> shapesClass) {
-        for (Field field : shapesClass.getFields()) {
-            if (field.getType() != Shape.class) continue;
-            Shape shape = readStatic(field);
-            if (shape == null) continue;
-            for (String oreDict : shape.getOreDicts()) {
-                map.computeIfAbsent(oreDict, k -> new ArrayList<>())
-                    .add(shape);
-            }
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> T readStatic(Field field) {
-        try {
-            return (T) field.get(null);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

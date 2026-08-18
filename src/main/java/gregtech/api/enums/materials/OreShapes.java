@@ -1,5 +1,7 @@
 package gregtech.api.enums.materials;
 
+import static gregtech.api.enums.materials.GTShapeStore.reg;
+
 import java.util.Locale;
 import java.util.Map;
 
@@ -134,7 +136,7 @@ public class OreShapes {
         for (var entry : KNOWN_VARIANT_BASES.entrySet()) {
             oreBuilder.variantBase(variantOf(entry.getKey()), entry.getValue());
         }
-        ore = oreBuilder.build();
+        ore = reg(oreBuilder.build());
 
         var oreSmallBuilder = MaterialLibAPI.newBlockShape("gregtech", "oreSmall")
             .displayName("Small %s Ore")
@@ -154,7 +156,7 @@ public class OreShapes {
                 oreSmallBuilder.variantBase(variantOf(entry.getKey()), entry.getValue());
             }
         }
-        oreSmall = oreSmallBuilder.build();
+        oreSmall = reg(oreSmallBuilder.build());
     }
 
     private static boolean isSmallOreExcluded(String stoneTypeName) {

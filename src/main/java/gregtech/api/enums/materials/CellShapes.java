@@ -1,5 +1,6 @@
 package gregtech.api.enums.materials;
 
+import static gregtech.api.enums.materials.GTShapeStore.reg;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 
 import com.ruling_0.materiallib.api.EmptyContainerHandle;
@@ -51,45 +52,50 @@ public class CellShapes {
     public static void init() {
         emptyCell = MaterialLibAPI.registerEmptyContainer("gregtech", "cellEmpty", CELL_BASE);
 
-        cell = MaterialLibAPI.newFluidInContainerShape("gregtech", "cell")
-            .displayName("%s Cell")
-            .fluid(FluidShapes.fluidLiquid)
-            .emptyContainer(emptyCell)
-            .volume(1000)
-            .emptyIcon(CELL_BASE)
-            .build();
-        cellGas = MaterialLibAPI.newFluidInContainerShape("gregtech", "cellGas")
-            .displayName("%s Cell")
-            .fluid(FluidShapes.fluidGas)
-            .emptyContainer(emptyCell)
-            .volume(1000)
-            .oreDict("cell")
-            .emptyIcon(CELL_BASE)
-            .build();
+        cell = reg(
+            MaterialLibAPI.newFluidInContainerShape("gregtech", "cell")
+                .displayName("%s Cell")
+                .fluid(FluidShapes.fluidLiquid)
+                .emptyContainer(emptyCell)
+                .volume(1000)
+                .emptyIcon(CELL_BASE)
+                .build());
+        cellGas = reg(
+            MaterialLibAPI.newFluidInContainerShape("gregtech", "cellGas")
+                .displayName("%s Cell")
+                .fluid(FluidShapes.fluidGas)
+                .emptyContainer(emptyCell)
+                .volume(1000)
+                .oreDict("cell")
+                .emptyIcon(CELL_BASE)
+                .build());
 
-        cellPlasma = MaterialLibAPI.newFluidInContainerShape("gregtech", "cellPlasma")
-            .displayName("%s Plasma Cell")
-            .fluid(FluidShapes.fluidPlasma)
-            .emptyContainer(emptyCell)
-            .volume(INGOTS)
-            .emptyIcon(CELL_PLASMA_BASE)
-            .build();
-        cellPlasmaLight = MaterialLibAPI.newFluidInContainerShape("gregtech", "cellPlasmaLight")
-            .displayName("%s Plasma Cell")
-            .fluid(FluidShapes.fluidPlasma)
-            .emptyContainer(emptyCell)
-            .volume(1000)
-            .oreDict("cellPlasma")
-            .emptyIcon(CELL_PLASMA_BASE)
-            .build();
+        cellPlasma = reg(
+            MaterialLibAPI.newFluidInContainerShape("gregtech", "cellPlasma")
+                .displayName("%s Plasma Cell")
+                .fluid(FluidShapes.fluidPlasma)
+                .emptyContainer(emptyCell)
+                .volume(INGOTS)
+                .emptyIcon(CELL_PLASMA_BASE)
+                .build());
+        cellPlasmaLight = reg(
+            MaterialLibAPI.newFluidInContainerShape("gregtech", "cellPlasmaLight")
+                .displayName("%s Plasma Cell")
+                .fluid(FluidShapes.fluidPlasma)
+                .emptyContainer(emptyCell)
+                .volume(1000)
+                .oreDict("cellPlasma")
+                .emptyIcon(CELL_PLASMA_BASE)
+                .build());
 
-        cellMolten = MaterialLibAPI.newFluidInContainerShape("gregtech", "cellMolten")
-            .displayName("Molten %s Cell")
-            .fluid(FluidShapes.fluidMolten)
-            .emptyContainer(emptyCell)
-            .volume(INGOTS)
-            .emptyIcon(CELL_PLASMA_BASE)
-            .build();
+        cellMolten = reg(
+            MaterialLibAPI.newFluidInContainerShape("gregtech", "cellMolten")
+                .displayName("Molten %s Cell")
+                .fluid(FluidShapes.fluidMolten)
+                .emptyContainer(emptyCell)
+                .volume(INGOTS)
+                .emptyIcon(CELL_PLASMA_BASE)
+                .build());
 
         cellHydroCracked1 = crackedCellShape(
             "cellHydroCracked1",
@@ -118,13 +124,14 @@ public class CellShapes {
     }
 
     private static Shape crackedCellShape(String name, String displayFormat, Shape fluidShape) {
-        return MaterialLibAPI.newFluidInContainerShape("gregtech", name)
-            .displayName(displayFormat)
-            .fluid(fluidShape)
-            .emptyContainer(emptyCell)
-            .volume(1000)
-            .emptyIcon(CELL_BASE)
-            .build();
+        return reg(
+            MaterialLibAPI.newFluidInContainerShape("gregtech", name)
+                .displayName(displayFormat)
+                .fluid(fluidShape)
+                .emptyContainer(emptyCell)
+                .volume(1000)
+                .emptyIcon(CELL_BASE)
+                .build());
     }
 
     private CellShapes() {}

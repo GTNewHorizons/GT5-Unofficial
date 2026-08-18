@@ -1,5 +1,7 @@
 package gregtech.api.enums.materials;
 
+import static gregtech.api.enums.materials.GTShapeStore.reg;
+
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
@@ -58,150 +60,198 @@ public class Shapes {
     // spotless:on
 
     public static void init() {
-        bolt = MaterialLibAPI.newItemShape("gregtech", "bolt")
-            .displayName("%s Bolt")
-            .build();
-        crushed = MaterialLibAPI.newItemShape("gregtech", "crushed")
-            .displayName("Crushed %s Ore")
-            .build();
-        crushedCentrifuged = MaterialLibAPI.newItemShape("gregtech", "crushedCentrifuged")
-            .displayName("Centrifuged %s Ore")
-            .build();
-        crushedPurified = MaterialLibAPI.newItemShape("gregtech", "crushedPurified")
-            .displayName("Purified %s Ore")
-            .build();
-        dust = MaterialLibAPI.newItemShape("gregtech", "dust")
-            .displayName("%s Dust")
-            .build();
-        dustImpure = MaterialLibAPI.newItemShape("gregtech", "dustImpure")
-            .displayName("Impure Pile of %s Dust")
-            .build();
-        dustPure = MaterialLibAPI.newItemShape("gregtech", "dustPure")
-            .displayName("Purified Pile of %s Dust")
-            .build();
-        dustSmall = MaterialLibAPI.newItemShape("gregtech", "dustSmall")
-            .displayName("Small Pile of %s Dust")
-            .build();
-        dustTiny = MaterialLibAPI.newItemShape("gregtech", "dustTiny")
-            .displayName("Tiny Pile of %s Dust")
-            .build();
-        foil = MaterialLibAPI.newItemShape("gregtech", "foil")
-            .displayName("%s Foil")
-            .build();
-        gearGt = MaterialLibAPI.newItemShape("gregtech", "gearGt")
-            .displayName("%s Gear")
-            .build();
-        gearGtSmall = MaterialLibAPI.newItemShape("gregtech", "gearGtSmall")
-            .displayName("Small %s Gear")
-            .build();
-        gem = MaterialLibAPI.newItemShape("gregtech", "gem")
-            .displayName("%s")
-            .build();
-        gemChipped = MaterialLibAPI.newItemShape("gregtech", "gemChipped")
-            .displayName("Chipped %s")
-            .build();
-        gemExquisite = MaterialLibAPI.newItemShape("gregtech", "gemExquisite")
-            .displayName("Exquisite %s")
-            .build();
-        gemFlawed = MaterialLibAPI.newItemShape("gregtech", "gemFlawed")
-            .displayName("Flawed %s")
-            .build();
-        gemFlawless = MaterialLibAPI.newItemShape("gregtech", "gemFlawless")
-            .displayName("Flawless %s")
-            .build();
-        ingot = MaterialLibAPI.newItemShape("gregtech", "ingot")
-            .displayName("%s Ingot")
-            .build();
-        ingotHot = MaterialLibAPI.newItemShape("gregtech", "ingotHot")
-            .displayName("Hot %s Ingot")
-            .build();
-        itemCasing = MaterialLibAPI.newItemShape("gregtech", "itemCasing")
-            .displayName("%s Casing")
-            .build();
-        lens = MaterialLibAPI.newItemShape("gregtech", "lens")
-            .displayName("%s Lens")
-            .build();
-        milled = MaterialLibAPI.newItemShape("gregtech", "milled")
-            .displayName("Milled %s")
-            .build();
-        nugget = MaterialLibAPI.newItemShape("gregtech", "nugget")
-            .displayName("%s Nugget")
-            .build();
-        plate = MaterialLibAPI.newItemShape("gregtech", "plate")
-            .displayName("%s Plate")
-            .build();
-        plateDense = MaterialLibAPI.newItemShape("gregtech", "plateDense")
-            .displayName("Dense %s Plate")
-            .build();
-        plateDouble = MaterialLibAPI.newItemShape("gregtech", "plateDouble")
-            .displayName("Double %s Plate")
-            .build();
-        plateQuadruple = MaterialLibAPI.newItemShape("gregtech", "plateQuadruple")
-            .displayName("Quadruple %s Plate")
-            .build();
-        plateQuintuple = MaterialLibAPI.newItemShape("gregtech", "plateQuintuple")
-            .displayName("Quintuple %s Plate")
-            .build();
-        plateSuperdense = MaterialLibAPI.newItemShape("gregtech", "plateSuperdense")
-            .displayName("Superdense %s Plate")
-            .build();
-        plateTriple = MaterialLibAPI.newItemShape("gregtech", "plateTriple")
-            .displayName("Triple %s Plate")
-            .build();
-        rawOre = MaterialLibAPI.newItemShape("gregtech", "rawOre")
-            .displayName("Raw %s Ore")
-            .build();
-        ring = MaterialLibAPI.newItemShape("gregtech", "ring")
-            .displayName("%s Ring")
-            .build();
-        rotor = MaterialLibAPI.newItemShape("gregtech", "rotor")
-            .displayName("%s Rotor")
-            .build();
-        round = MaterialLibAPI.newItemShape("gregtech", "round")
-            .displayName("%s Round")
-            .build();
-        screw = MaterialLibAPI.newItemShape("gregtech", "screw")
-            .displayName("%s Screw")
-            .build();
-        spring = MaterialLibAPI.newItemShape("gregtech", "spring")
-            .displayName("%s Spring")
-            .build();
-        springSmall = MaterialLibAPI.newItemShape("gregtech", "springSmall")
-            .displayName("Small %s Spring")
-            .build();
-        stick = MaterialLibAPI.newItemShape("gregtech", "stick")
-            .displayName("%s Rod")
-            .build();
-        stickLong = MaterialLibAPI.newItemShape("gregtech", "stickLong")
-            .displayName("Long %s Rod")
-            .build();
-        toolHeadBuzzSaw = MaterialLibAPI.newItemShape("gregtech", "toolHeadBuzzSaw")
-            .displayName("%s Buzzsaw Blade")
-            .build();
-        toolHeadChainsaw = MaterialLibAPI.newItemShape("gregtech", "toolHeadChainsaw")
-            .displayName("%s Chainsaw Tip")
-            .build();
-        toolHeadDrill = MaterialLibAPI.newItemShape("gregtech", "toolHeadDrill")
-            .displayName("%s Drill Tip")
-            .build();
-        toolHeadFile = MaterialLibAPI.newItemShape("gregtech", "toolHeadFile")
-            .displayName("%s File Head")
-            .build();
-        toolHeadHammer = MaterialLibAPI.newItemShape("gregtech", "toolHeadHammer")
-            .displayName("%s Hammer Head")
-            .build();
-        toolHeadSaw = MaterialLibAPI.newItemShape("gregtech", "toolHeadSaw")
-            .displayName("%s Saw Blade")
-            .build();
-        toolHeadWrench = MaterialLibAPI.newItemShape("gregtech", "toolHeadWrench")
-            .displayName("%s Wrench Tip")
-            .build();
-        turbineBlade = MaterialLibAPI.newItemShape("gregtech", "turbineBlade")
-            .displayName("%s Turbine Blade")
-            .build();
-        wireFine = MaterialLibAPI.newItemShape("gregtech", "wireFine")
-            .displayName("Fine %s Wire")
-            .build();
+        bolt = reg(
+            MaterialLibAPI.newItemShape("gregtech", "bolt")
+                .displayName("%s Bolt")
+                .build());
+        crushed = reg(
+            MaterialLibAPI.newItemShape("gregtech", "crushed")
+                .displayName("Crushed %s Ore")
+                .build());
+        crushedCentrifuged = reg(
+            MaterialLibAPI.newItemShape("gregtech", "crushedCentrifuged")
+                .displayName("Centrifuged %s Ore")
+                .build());
+        crushedPurified = reg(
+            MaterialLibAPI.newItemShape("gregtech", "crushedPurified")
+                .displayName("Purified %s Ore")
+                .build());
+        dust = reg(
+            MaterialLibAPI.newItemShape("gregtech", "dust")
+                .displayName("%s Dust")
+                .build());
+        dustImpure = reg(
+            MaterialLibAPI.newItemShape("gregtech", "dustImpure")
+                .displayName("Impure Pile of %s Dust")
+                .build());
+        dustPure = reg(
+            MaterialLibAPI.newItemShape("gregtech", "dustPure")
+                .displayName("Purified Pile of %s Dust")
+                .build());
+        dustSmall = reg(
+            MaterialLibAPI.newItemShape("gregtech", "dustSmall")
+                .displayName("Small Pile of %s Dust")
+                .build());
+        dustTiny = reg(
+            MaterialLibAPI.newItemShape("gregtech", "dustTiny")
+                .displayName("Tiny Pile of %s Dust")
+                .build());
+        foil = reg(
+            MaterialLibAPI.newItemShape("gregtech", "foil")
+                .displayName("%s Foil")
+                .build());
+        gearGt = reg(
+            MaterialLibAPI.newItemShape("gregtech", "gearGt")
+                .displayName("%s Gear")
+                .build());
+        gearGtSmall = reg(
+            MaterialLibAPI.newItemShape("gregtech", "gearGtSmall")
+                .displayName("Small %s Gear")
+                .build());
+        gem = reg(
+            MaterialLibAPI.newItemShape("gregtech", "gem")
+                .displayName("%s")
+                .build());
+        gemChipped = reg(
+            MaterialLibAPI.newItemShape("gregtech", "gemChipped")
+                .displayName("Chipped %s")
+                .build());
+        gemExquisite = reg(
+            MaterialLibAPI.newItemShape("gregtech", "gemExquisite")
+                .displayName("Exquisite %s")
+                .build());
+        gemFlawed = reg(
+            MaterialLibAPI.newItemShape("gregtech", "gemFlawed")
+                .displayName("Flawed %s")
+                .build());
+        gemFlawless = reg(
+            MaterialLibAPI.newItemShape("gregtech", "gemFlawless")
+                .displayName("Flawless %s")
+                .build());
+        ingot = reg(
+            MaterialLibAPI.newItemShape("gregtech", "ingot")
+                .displayName("%s Ingot")
+                .build());
+        ingotHot = reg(
+            MaterialLibAPI.newItemShape("gregtech", "ingotHot")
+                .displayName("Hot %s Ingot")
+                .build());
+        itemCasing = reg(
+            MaterialLibAPI.newItemShape("gregtech", "itemCasing")
+                .displayName("%s Casing")
+                .build());
+        lens = reg(
+            MaterialLibAPI.newItemShape("gregtech", "lens")
+                .displayName("%s Lens")
+                .build());
+        milled = reg(
+            MaterialLibAPI.newItemShape("gregtech", "milled")
+                .displayName("Milled %s")
+                .build());
+        nugget = reg(
+            MaterialLibAPI.newItemShape("gregtech", "nugget")
+                .displayName("%s Nugget")
+                .build());
+        plate = reg(
+            MaterialLibAPI.newItemShape("gregtech", "plate")
+                .displayName("%s Plate")
+                .build());
+        plateDense = reg(
+            MaterialLibAPI.newItemShape("gregtech", "plateDense")
+                .displayName("Dense %s Plate")
+                .build());
+        plateDouble = reg(
+            MaterialLibAPI.newItemShape("gregtech", "plateDouble")
+                .displayName("Double %s Plate")
+                .build());
+        plateQuadruple = reg(
+            MaterialLibAPI.newItemShape("gregtech", "plateQuadruple")
+                .displayName("Quadruple %s Plate")
+                .build());
+        plateQuintuple = reg(
+            MaterialLibAPI.newItemShape("gregtech", "plateQuintuple")
+                .displayName("Quintuple %s Plate")
+                .build());
+        plateSuperdense = reg(
+            MaterialLibAPI.newItemShape("gregtech", "plateSuperdense")
+                .displayName("Superdense %s Plate")
+                .build());
+        plateTriple = reg(
+            MaterialLibAPI.newItemShape("gregtech", "plateTriple")
+                .displayName("Triple %s Plate")
+                .build());
+        rawOre = reg(
+            MaterialLibAPI.newItemShape("gregtech", "rawOre")
+                .displayName("Raw %s Ore")
+                .build());
+        ring = reg(
+            MaterialLibAPI.newItemShape("gregtech", "ring")
+                .displayName("%s Ring")
+                .build());
+        rotor = reg(
+            MaterialLibAPI.newItemShape("gregtech", "rotor")
+                .displayName("%s Rotor")
+                .build());
+        round = reg(
+            MaterialLibAPI.newItemShape("gregtech", "round")
+                .displayName("%s Round")
+                .build());
+        screw = reg(
+            MaterialLibAPI.newItemShape("gregtech", "screw")
+                .displayName("%s Screw")
+                .build());
+        spring = reg(
+            MaterialLibAPI.newItemShape("gregtech", "spring")
+                .displayName("%s Spring")
+                .build());
+        springSmall = reg(
+            MaterialLibAPI.newItemShape("gregtech", "springSmall")
+                .displayName("Small %s Spring")
+                .build());
+        stick = reg(
+            MaterialLibAPI.newItemShape("gregtech", "stick")
+                .displayName("%s Rod")
+                .build());
+        stickLong = reg(
+            MaterialLibAPI.newItemShape("gregtech", "stickLong")
+                .displayName("Long %s Rod")
+                .build());
+        toolHeadBuzzSaw = reg(
+            MaterialLibAPI.newItemShape("gregtech", "toolHeadBuzzSaw")
+                .displayName("%s Buzzsaw Blade")
+                .build());
+        toolHeadChainsaw = reg(
+            MaterialLibAPI.newItemShape("gregtech", "toolHeadChainsaw")
+                .displayName("%s Chainsaw Tip")
+                .build());
+        toolHeadDrill = reg(
+            MaterialLibAPI.newItemShape("gregtech", "toolHeadDrill")
+                .displayName("%s Drill Tip")
+                .build());
+        toolHeadFile = reg(
+            MaterialLibAPI.newItemShape("gregtech", "toolHeadFile")
+                .displayName("%s File Head")
+                .build());
+        toolHeadHammer = reg(
+            MaterialLibAPI.newItemShape("gregtech", "toolHeadHammer")
+                .displayName("%s Hammer Head")
+                .build());
+        toolHeadSaw = reg(
+            MaterialLibAPI.newItemShape("gregtech", "toolHeadSaw")
+                .displayName("%s Saw Blade")
+                .build());
+        toolHeadWrench = reg(
+            MaterialLibAPI.newItemShape("gregtech", "toolHeadWrench")
+                .displayName("%s Wrench Tip")
+                .build());
+        turbineBlade = reg(
+            MaterialLibAPI.newItemShape("gregtech", "turbineBlade")
+                .displayName("%s Turbine Blade")
+                .build());
+        wireFine = reg(
+            MaterialLibAPI.newItemShape("gregtech", "wireFine")
+                .displayName("Fine %s Wire")
+                .build());
     }
 
     private Shapes() {}

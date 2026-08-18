@@ -1,7 +1,10 @@
 package gregtech.api.enums.materials;
 
+import static gregtech.api.enums.materials.GTShapeStore.reg;
+
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
+import com.ruling_0.materiallib.api.ShapeBlock;
 
 import gregtech.common.blocks.FrameShapeBlock;
 import gregtech.common.blocks.PipeShapeBlock;
@@ -14,8 +17,8 @@ import gregtech.common.blocks.PipeShapeBlock.PipeFamily;
 ///
 /// The fluid and item pipe prefixes share their oredict name strings (`pipeTiny`..`pipeHuge` serve both
 /// families for disjoint material sets), so the item-pipe shape NAMES differ (`itemPipeTiny`..) while their
-/// oredict prefixes keep the legacy strings. These fields feed [gregtech.api.material.MaterialParts]'s prefix-to-shape
-/// reflection map; the `itemPipe*` fields, whose names match no `OrePrefixes`, are folded there under the
+/// oredict prefixes keep the legacy strings. These shapes feed [gregtech.api.material.MaterialParts]'s prefix-to-shape
+/// map; the `itemPipe*` shapes, whose names match no `OrePrefixes`, are folded there under the
 /// `pipeTiny`..`pipeHuge` / `pipeRestrictive*` prefix keys, the fluid shape staying the first candidate.
 public class TEBlockShapes {
 
@@ -83,12 +86,12 @@ public class TEBlockShapes {
         itemPipeRestrictiveMedium = register(new PipeShapeBlock("itemPipeRestrictiveMedium", "Restrictive %s Item Pipe", "gt.oreprefix.restrictive_material_item_pipe", 5826, PipeFamily.ITEM_RESTRICTIVE, 2, 1, 0.5F, "pipeMedium", "pipeRestrictiveMedium"));
         itemPipeRestrictiveLarge = register(new PipeShapeBlock("itemPipeRestrictiveLarge", "Large Restrictive %s Item Pipe", "gt.oreprefix.large_restrictive_material_item_pipe", 5827, PipeFamily.ITEM_RESTRICTIVE, 3, 1, 0.75F, "pipeLarge", "pipeRestrictiveLarge"));
         itemPipeRestrictiveHuge = register(new PipeShapeBlock("itemPipeRestrictiveHuge", "Huge Restrictive %s Item Pipe", "gt.oreprefix.huge_restrictive_material_item_pipe", 5828, PipeFamily.ITEM_RESTRICTIVE, 4, 1, 0.875F, "pipeHuge", "pipeRestrictiveHuge"));
-        frameGt = MaterialLibAPI.registerBlockShape(new FrameShapeBlock("frameGt", "%s Frame Box", 5829, "frameGt"));
+        frameGt = register(new FrameShapeBlock("frameGt", "%s Frame Box", 5829, "frameGt"));
         // spotless:on
     }
 
-    private static Shape register(PipeShapeBlock block) {
-        return MaterialLibAPI.registerBlockShape(block);
+    private static Shape register(ShapeBlock block) {
+        return reg(MaterialLibAPI.registerBlockShape(block));
     }
 
     private TEBlockShapes() {}
