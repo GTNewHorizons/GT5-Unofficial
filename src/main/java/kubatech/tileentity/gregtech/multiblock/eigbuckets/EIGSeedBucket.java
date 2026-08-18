@@ -27,7 +27,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.mitchej123.hodgepodge.mixins.interfaces.INetherSeed;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.common.GTDummyWorld;
@@ -130,7 +129,7 @@ public class EIGSeedBucket extends EIGBucket {
     public void recalculateDrops(MTEExtremeIndustrialGreenhouse greenhouse) {
         this.isValid = false;
 
-        if (Loader.isModLoaded("ThaumicTinkerer") && isInfusedSeedItem(this.seed)) {
+        if (isInfusedSeedItem(this.seed)) {
             if (recalculateDropsForInfusedSeed(greenhouse)) {
                 this.isValid = true;
             }
