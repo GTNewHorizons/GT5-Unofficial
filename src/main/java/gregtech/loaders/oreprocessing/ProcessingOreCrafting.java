@@ -71,19 +71,19 @@ public class ProcessingOreCrafting {
         if (crushedPurified != null && dustPure != null) {
             GTModHandler.addCraftingRecipe(
                 dustPure,
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "h  ", "P  ", "   ", 'P', crushedPurified });
         }
         if (crushed != null && dustImpure != null) {
             GTModHandler.addCraftingRecipe(
                 dustImpure,
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "h  ", "C  ", "   ", 'C', crushed });
         }
         if (crushedCentrifuged != null && dust != null) {
             GTModHandler.addCraftingRecipe(
                 dust,
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "h  ", "C  ", "   ", 'C', crushedCentrifuged });
         }
 
@@ -93,11 +93,11 @@ public class ProcessingOreCrafting {
         if (tinyDust != null) {
             GTModHandler.addCraftingRecipe(
                 dust,
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
             GTModHandler.addCraftingRecipe(
                 ProcessingDustGeneration.stackOf(OrePrefixes.dustTiny, material, 9L),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "D  ", "   ", "   ", 'D', dust });
         }
 
@@ -105,11 +105,11 @@ public class ProcessingOreCrafting {
         if (smallDust != null) {
             GTModHandler.addCraftingRecipe(
                 dust,
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
             GTModHandler.addCraftingRecipe(
                 ProcessingDustGeneration.stackOf(OrePrefixes.dustSmall, material, 4L),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { " D ", "   ", "   ", 'D', dust });
         }
     }

@@ -1,5 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
+import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convert;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -130,7 +131,7 @@ public class ProcessingMaterialDecompositionGtpp {
         if (composites.size() <= 6) {
             GTValues.RA.stdBuilder()
                 .itemInputsUnsafe(inputs)
-                .itemOutputs(internalOutputs.toArray(new ItemStack[0]))
+                .itemOutputs(convert(internalOutputs.toArray(new ItemStack[0])))
                 .outputChances(strippedChances)
                 .eut(voltage)
                 .duration((int) (voltage / 10) * SECONDS)
@@ -138,7 +139,7 @@ public class ProcessingMaterialDecompositionGtpp {
         } else if (composites.size() <= 9) {
             GTValues.RA.stdBuilder()
                 .itemInputsUnsafe(inputs)
-                .itemOutputs(internalOutputs.toArray(new ItemStack[0]))
+                .itemOutputs(convert(internalOutputs.toArray(new ItemStack[0])))
                 .outputChances(strippedChances)
                 .eut(voltage)
                 .duration(20 * (int) (voltage / 10))

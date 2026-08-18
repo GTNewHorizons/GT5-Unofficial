@@ -1,5 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
+import static bartworks.system.material.gtenhancement.PlatinumSludgeOutputs.convert;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
@@ -10,6 +11,8 @@ import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gtnhlanth.util.LanthanidesRecipeOutputs.convertDecomposition;
+import static gtnhlanth.util.LanthanidesRecipeOutputs.convertOre;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -81,13 +84,14 @@ public class ProcessingOreMachine {
         Materials.Honeaite, Materials.Alburnite, Materials.Miessiite,
         Materials.Kashinite, Materials.Irarsite, Materials.Greenockite,
         Materials.BariteRa, Materials.RadioactiveMineralMix, Materials.RareEarthI,
-        Materials.RareEarthII, Materials.RareEarthIII, Materials.FluoriteF,
-        Materials.Koboldite);
+        Materials.RareEarthII, Materials.RareEarthIII, Materials.Koboldite);
     // spotless:on
 
     /// The frozen set whose members get everything in [#generate] except the electrolyzer/chemical-dehydrator
-    /// branch.
-    private static final Set<Material> ELIGIBLE_NO_OPTIONAL = Set.of(Materials.AncientGranite, Materials.Runite);
+    /// branch. [Materials#FluoriteF] is here so that its generated decomposition recipe does not duplicate the
+    /// hand-written acid-leach one in [ProcessingNuclearDehydratorGtpp].
+    private static final Set<Material> ELIGIBLE_NO_OPTIONAL = Set
+        .of(Materials.AncientGranite, Materials.Runite, Materials.FluoriteF);
 
     private static final Material mStone = Materials.Stone;
 
@@ -170,7 +174,8 @@ public class ProcessingOreMachine {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.ore, material, 1))
-            .itemOutputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 2), matDustA, dustStone)
+            .itemOutputs(
+                convertOre(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 2), matDustA, dustStone))
             .outputChances(100_00, 10_00, 50_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
@@ -178,7 +183,8 @@ public class ProcessingOreMachine {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.rawOre, material, 1))
-            .itemOutputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 2), matDustA, dustStone)
+            .itemOutputs(
+                convertOre(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 2), matDustA, dustStone))
             .outputChances(100_00, 5_00, 50_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
@@ -186,7 +192,7 @@ public class ProcessingOreMachine {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 1))
-            .itemOutputs(ProcessingDustGeneration.stackOf(OrePrefixes.dustImpure, material, 1), matDustA)
+            .itemOutputs(convertOre(ProcessingDustGeneration.stackOf(OrePrefixes.dustImpure, material, 1), matDustA))
             .outputChances(100_00, 10_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
@@ -194,7 +200,7 @@ public class ProcessingOreMachine {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushedPurified, material, 1))
-            .itemOutputs(ProcessingDustGeneration.stackOf(OrePrefixes.dustPure, material, 1), matDustA)
+            .itemOutputs(convertOre(ProcessingDustGeneration.stackOf(OrePrefixes.dustPure, material, 1), matDustA))
             .outputChances(100_00, 10_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
@@ -202,7 +208,7 @@ public class ProcessingOreMachine {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushedCentrifuged, material, 1))
-            .itemOutputs(matDust, matDustA)
+            .itemOutputs(convertOre(matDust, matDustA))
             .outputChances(100_00, 10_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
@@ -211,9 +217,10 @@ public class ProcessingOreMachine {
         RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 1))
             .itemOutputs(
-                ProcessingDustGeneration.stackOf(OrePrefixes.crushedPurified, material, 1),
-                matDustA,
-                dustStone)
+                convertOre(
+                    ProcessingDustGeneration.stackOf(OrePrefixes.crushedPurified, material, 1),
+                    matDustA,
+                    dustStone))
             .outputChances(100_00, 11_11, 100_00)
             .fluidInputs(GTUtility.getWater(1_000))
             .duration(25 * SECONDS)
@@ -223,9 +230,10 @@ public class ProcessingOreMachine {
         RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 1))
             .itemOutputs(
-                ProcessingDustGeneration.stackOf(OrePrefixes.crushedPurified, material, 1),
-                matDustA,
-                dustStone)
+                convertOre(
+                    ProcessingDustGeneration.stackOf(OrePrefixes.crushedPurified, material, 1),
+                    matDustA,
+                    dustStone))
             .outputChances(100_00, 11_11, 100_00)
             .fluidInputs(GTModHandler.getDistilledWater(200))
             .duration(15 * SECONDS)
@@ -235,9 +243,10 @@ public class ProcessingOreMachine {
         GTValues.RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushed, material, 1))
             .itemOutputs(
-                ProcessingDustGeneration.stackOf(OrePrefixes.crushedCentrifuged, material, 1),
-                matDustB,
-                dustStone)
+                convertOre(
+                    ProcessingDustGeneration.stackOf(OrePrefixes.crushedCentrifuged, material, 1),
+                    matDustB,
+                    dustStone))
             .outputChances(100_00, 11_11, 100_00)
             .duration(25 * SECONDS)
             .eut(48)
@@ -246,9 +255,10 @@ public class ProcessingOreMachine {
         GTValues.RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.crushedPurified, material, 1))
             .itemOutputs(
-                ProcessingDustGeneration.stackOf(OrePrefixes.crushedCentrifuged, material, 1),
-                matDustA,
-                dustStone)
+                convertOre(
+                    ProcessingDustGeneration.stackOf(OrePrefixes.crushedCentrifuged, material, 1),
+                    matDustA,
+                    dustStone))
             .outputChances(100_00, 11_11, 100_00)
             .duration(25 * SECONDS)
             .eut(48)
@@ -284,7 +294,7 @@ public class ProcessingOreMachine {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.dustPure, material, 1))
-            .itemOutputs(matDust, matDustA)
+            .itemOutputs(convertOre(matDust, matDustA))
             .outputChances(100_00, 11_11)
             .eut(tVoltageMultiplier / 2)
             .duration((int) Math.max(1L, MaterialUtils.mass(material) * 8L))
@@ -292,7 +302,7 @@ public class ProcessingOreMachine {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ProcessingDustGeneration.stackOf(OrePrefixes.dustImpure, material, 1))
-            .itemOutputs(matDust, matDustB)
+            .itemOutputs(convertOre(matDust, matDustB))
             .outputChances(100_00, 11_11)
             .eut(tVoltageMultiplier / 2)
             .duration((int) Math.max(1L, MaterialUtils.mass(material) * 8L))
@@ -364,9 +374,14 @@ public class ProcessingOreMachine {
 
         ItemStack[] inputs = emptyCell == null ? new ItemStack[] { mainDust } : new ItemStack[] { mainDust, emptyCell };
 
+        ItemStack[] outputs = internalOutputs.toArray(new ItemStack[0]);
+        boolean lanthanides = dehydrator ? usesLanthanidesDehydratorOutputs(material)
+            : usesLanthanidesElectrolyzerOutputs(material);
+        outputs = lanthanides ? convertDecomposition(outputs) : convert(outputs);
+
         GTRecipeBuilder recipe = GTValues.RA.stdBuilder()
             .itemInputs(inputs)
-            .itemOutputs(internalOutputs.toArray(new ItemStack[0]))
+            .itemOutputs(outputs)
             .outputChances(chances)
             .eut(tVoltageMultiplier);
         if (dehydrator) {
@@ -376,6 +391,24 @@ public class ProcessingOreMachine {
             recipe.duration((int) Math.max(MaterialUtils.mass(material) * 3L, 1))
                 .addTo(electrolyzerRecipes);
         }
+    }
+
+    /// The minerals whose electrolyzer decomposition feeds the lanthanide line, so their outputs run through
+    /// [gtnhlanth.util.LanthanidesRecipeOutputs] instead of stopping at the platinum-sludge substitution.
+    private static boolean usesLanthanidesElectrolyzerOutputs(Material material) {
+        return material == Materials.Florencite || material == Materials.Hibonite
+            || material == Materials.LanthaniteCe
+            || material == Materials.Yttrocerite
+            || material == Materials.Zirconolite;
+    }
+
+    /// The chemical-dehydrator counterpart of [#usesLanthanidesElectrolyzerOutputs].
+    private static boolean usesLanthanidesDehydratorOutputs(Material material) {
+        return material == Materials.Cerite || material == Materials.Fluorcaphite
+            || material == Materials.GadoliniteCe
+            || material == Materials.GadoliniteY
+            || material == Materials.Polycrase
+            || material == Materials.Zirkelite;
     }
 
     private static ItemStack getDust(Material m) {

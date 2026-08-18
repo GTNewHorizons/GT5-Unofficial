@@ -95,22 +95,22 @@ public class ProcessingDustGeneration {
         if (tinyDust != null && normalDust != null) {
             GTModHandler.addCraftingRecipe(
                 normalDust,
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
             GTModHandler.addCraftingRecipe(
                 stackOf(OrePrefixes.dustTiny, material, 9L),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "D  ", "   ", "   ", 'D', normalDust });
         }
 
         if (smallDust != null && normalDust != null) {
             GTModHandler.addCraftingRecipe(
                 normalDust,
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
             GTModHandler.addCraftingRecipe(
                 stackOf(OrePrefixes.dustSmall, material, 4L),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { " D ", "   ", "   ", 'D', normalDust });
         }
 

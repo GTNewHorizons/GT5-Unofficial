@@ -43,7 +43,7 @@ public class ProcessingCasing implements IOreRecipeRegistrator {
 
         GTModHandler.addCraftingRecipe(
             GTUtility.copyAmount(1, stack),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PSP", "PGP", "PSP", 'P', MaterialParts.craftIngredient(OrePrefixes.plate, material), 'S',
                 MaterialParts.craftIngredient(OrePrefixes.screw, material), 'G',
                 MaterialParts.craftIngredient(OrePrefixes.gearGtSmall, material) });
@@ -63,7 +63,7 @@ public class ProcessingCasing implements IOreRecipeRegistrator {
 
         GTModHandler.addCraftingRecipe(
             GTUtility.copyAmount(1, advanced),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PSP", "PGP", "PSP", 'P', MaterialParts.craftIngredient(outer, material), 'S',
                 MaterialParts.craftIngredient(OrePrefixes.screw, material), 'G',
                 MaterialParts.craftIngredient(OrePrefixes.gearGt, material) });

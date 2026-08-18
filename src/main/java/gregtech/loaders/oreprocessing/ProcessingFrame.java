@@ -37,7 +37,8 @@ public class ProcessingFrame implements IOreRecipeRegistrator {
         if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
             GTModHandler.addCraftingRecipe(
                 GTUtility.copyAmount(2, stack),
-                GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED
+                    | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "SSS", "SwS", "SSS", 'S', MaterialParts.craftIngredient(OrePrefixes.stick, material) });
         }
 
