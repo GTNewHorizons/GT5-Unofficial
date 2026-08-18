@@ -7,6 +7,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -45,7 +47,7 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
     private static final int OFFSET_Z = 0;
 
     private int casingAmount;
-    private int casingAmountStainless;
+    private int casingAmountExtrusion;
     private static final IStructureDefinition<MTEIndustrialExtruder> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEIndustrialExtruder>builder()
         .addShape(
@@ -57,20 +59,18 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
         .addElement(
             'A',
             buildHatchAdder(MTEIndustrialExtruder.class).atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
-                .casingIndex(Casings.PressureContainmentCasing.textureId)
+                .casingIndex(Casings.TensionResistantMachineCasing.textureId)
                 .hint(1)
-                .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.PressureContainmentCasing.asElement())))
+                .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.TensionResistantMachineCasing.asElement())))
         .addElement('B', Casings.FormingCore.asElement())
         .addElement(
             'C',
             buildHatchAdder(MTEIndustrialExtruder.class).atLeast(Maintenance, Energy, Muffler)
-                .casingIndex(Casings.CleanStainlessSteelMachineCasing.textureId)
+                .casingIndex(Casings.ExtruderMachineCasing.textureId)
                 .hint(2)
                 .buildAndChain(
-                    onElementPass(
-                        x -> ++x.casingAmountStainless,
-                        Casings.CleanStainlessSteelMachineCasing.asElement())))
-        .addElement('D', Casings.ChemicallyInertMachineCasing.asElement())
+                    onElementPass(x -> ++x.casingAmountExtrusion, Casings.ExtruderMachineCasing.asElement())))
+        .addElement('D', ofSheetMetal(Materials.Tungsten))
         .build();
 
     public MTEIndustrialExtruder(final int aID, final String aName, final String aNameRegional) {
@@ -94,15 +94,15 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(4, 4, 9, false)
             .addController("Front right, 2nd layer")
-            .addCasing("8-33", "Pressure Containment Casing", false)
-            .addCasing("24", "Chemically Inert Machine Casing", false)
+            .addCasing("8-33", "Tension Resistant Machine Casing", false)
+            .addCasing("24", "Tungsten Sheetmetal", false)
             .addCasing("20", "Forming Core", false)
-            .addCasing("3-7", "Clean Stainless Steel Machine Casing", false)
-            .addEnergyHatch("1+", "Any containment or stainless steel casing", 1)
-            .addMaintenanceHatch("1", "Any containment or stainless steel casing", 1)
-            .addMufflerHatch("1", "Any containment or stainless steel casing", 1)
-            .addMiscHatch("1+", "Input/Extrusion Bus", "Any containment casing", 1)
-            .addOutputBus("1+", "Any containment casing", 1)
+            .addCasing("3-7", "Extruder Machine Casing", false)
+            .addEnergyHatch("1+", "Any tension resistant or extruder machine casing", 1)
+            .addMaintenanceHatch("1", "Any tension resistant or extruder machine casing", 1)
+            .addMufflerHatch("1", "Any tension resistant or extruder machine casing", 1)
+            .addMiscHatch("1+", "Input/Extrusion Bus", "Any tension resistant casing", 1)
+            .addOutputBus("1+", "Any tension resistant casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "cauchemard")
             .toolTipFinisher();
         return tt;
@@ -136,9 +136,9 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
-        casingAmountStainless = 0;
+        casingAmountExtrusion = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        checkCasingMin(errors, casingAmountStainless, 3);
+        checkCasingMin(errors, casingAmountExtrusion, 3);
         checkCasingMin(errors, casingAmount, 8);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
@@ -163,7 +163,7 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     public ITexture getCasingTexture() {
-        return Casings.CleanStainlessSteelMachineCasing.getCasingTexture();
+        return Casings.ExtruderMachineCasing.getCasingTexture();
     }
 
     @Override
