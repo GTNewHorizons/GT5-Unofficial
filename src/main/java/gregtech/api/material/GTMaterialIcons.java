@@ -22,8 +22,9 @@ import gregtech.client.iconContainers.items.MLItemIconContainer;
 /// gives GregTech's art the same texture-set chain, fallbacks, unification alternatives, and `_OVERLAY` handling
 /// every shape gets.
 ///
-/// Containers are interned per name and material because renderers ask for them once per frame and
-/// [gregtech.api.render.TextureFactory] deduplicates the textures it builds by container identity.
+/// Containers are interned per name -- plus the shape variant, where one applies -- and material, because
+/// renderers ask for them once per frame and [gregtech.api.render.TextureFactory] deduplicates the textures it
+/// builds by container identity.
 public final class GTMaterialIcons {
 
     private GTMaterialIcons() {}
@@ -47,14 +48,23 @@ public final class GTMaterialIcons {
         return intern(blockContainers, name, material, () -> new MLBlockIconContainer(name, null, material, 0));
     }
 
-    /// `material`'s ore art from the `ore` or `oreSmall` shape named `name`, drawn in render pass 1 so the stone
-    /// background the caller composites underneath shows through; see [OreShapes#ICON_VARIANT].
+    /// `material`'s ore art from the `ore` or `oreSmall` shape named `name`, in the shape's
+    /// [OreShapes#ICON_VARIANT] variant -- for a caller drawing ore art with no stone type behind it.
     public static IIconContainer oreBlock(String name, Material material) {
+        return oreBlock(name, OreShapes.ICON_VARIANT, material);
+    }
+
+    /// `material`'s ore art from the `variant` backing block of the `ore` or `oreSmall` shape named `name`, drawn
+    /// in render pass 1 so the stone background the caller composites underneath shows through.
+    ///
+    /// A texture set shipping `<name>_<variant>.png` reskins that one stone type; every other variant resolves the
+    /// set's shared `<name>.png`. `variant` must be one the shape declares -- see [OreShapes#iconVariantOf].
+    public static IIconContainer oreBlock(String name, String variant, Material material) {
         return intern(
             oreContainers,
-            name,
+            name + "_" + variant,
             material,
-            () -> new MLBlockIconContainer(name, OreShapes.ICON_VARIANT, material, 1));
+            () -> new MLBlockIconContainer(name, variant, material, 1));
     }
 
     /// Whether any item art exists under `prefix`'s name. Answerable on a dedicated server: the shape registry is

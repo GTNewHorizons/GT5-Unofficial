@@ -36,6 +36,7 @@ import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials.LegacyMaterialIDIndex;
 import gregtech.api.enums.materials.Materials;
+import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.events.OreInteractEvent;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
@@ -207,6 +208,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
     @Override
     public ITexture[][] getTextures(int metadata) {
         StoneType stoneType = getStoneType(metadata);
+        if (stoneType == null) stoneType = StoneType.Stone;
         com.ruling_0.materiallib.api.Material mat = getMaterial(metadata);
         boolean small = isSmallOre(metadata);
 
@@ -214,17 +216,17 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
         if (mat != null) {
             fg = GTMaterialTextures.of(
-                GTMaterialIcons.oreBlock(small ? "oreSmall" : "ore", mat),
+                GTMaterialIcons.oreBlock(small ? "oreSmall" : "ore", OreShapes.iconVariantOf(stoneType, small), mat),
                 MaterialUtils.rgba(mat),
                 Boolean.TRUE.equals(mat.getProperty(GTMaterialProperties.HAS_GLOWING_ORE)));
         } else {
             fg = TextureFactory.builder()
-                .addIcon(GTMaterialIcons.oreBlock("ore", Materials.NULL))
+                .addIcon(GTMaterialIcons.oreBlock("ore", OreShapes.iconVariantOf(stoneType, false), Materials.NULL))
                 .stdOrient()
                 .build();
         }
 
-        final ITexture bg = (stoneType == null ? StoneType.Stone : stoneType).getTexture(0);
+        final ITexture bg = stoneType.getTexture(0);
 
         final ITexture[] textures = new ITexture[] { bg, fg };
 

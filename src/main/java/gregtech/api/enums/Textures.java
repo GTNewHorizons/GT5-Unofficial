@@ -2726,7 +2726,6 @@ public class Textures {
 
         public static void cleanup() {
             GTCustomBlockIconContainer.cleanup();
-            GTCustomAlphaFallbackBlockIconContainer.cleanup();
         }
     }
 

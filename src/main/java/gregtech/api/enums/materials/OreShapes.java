@@ -181,6 +181,15 @@ public class OreShapes {
         return stoneTypeName.toLowerCase(Locale.ROOT);
     }
 
+    /// The variant whose per-material icon carries `stoneType`'s ore art, so that a texture set shipping
+    /// `ore_<variant>.png`/`oreSmall_<variant>.png` reskins that stone type alone. Small ore on ice stone falls
+    /// back to [#ICON_VARIANT], the only variant [#oreSmall] declares for it -- see this class's javadoc.
+    public static String iconVariantOf(StoneType stoneType, boolean small) {
+        String stoneTypeName = stoneType.name();
+        if (small && isSmallOreExcluded(stoneTypeName)) return ICON_VARIANT;
+        return variantOf(stoneTypeName);
+    }
+
     /// The [StoneType] a variant name resolves to, or null if `variant` names none of [#STONE_TYPE_NAMES].
     /// Resolved lazily via [StoneType#valueOf]; caching it at [#init] time is unsafe, see this class's javadoc.
     public static StoneType stoneTypeOf(String variant) {
