@@ -5,7 +5,6 @@ import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static tectech.thing.CustomItemList.Machine_Multi_Switch;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti;
@@ -17,11 +16,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -54,6 +55,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDataOutput;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTENetworkSwitchAdv extends TTMultiblockBase
     implements ISurvivalConstructable, IStructureProvider<MTENetworkSwitchAdv> {
 
@@ -270,36 +272,31 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     protected MultiblockTooltipBuilder createTooltip() {
         StructureWrapperTooltipBuilder<MTENetworkSwitchAdv> tt = new StructureWrapperTooltipBuilder<>(structure);
 
+        // spotless:off
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.switch.type"))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.adv.desc.0"))
-            .addSeparator()
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.adv.desc.1"))
-            .addSeparator()
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.adv.desc.2"))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.adv.desc.3"))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.switch.adv.desc.4"))
-            .addInfo(
-                translateToLocalFormatted(
-                    "gt.blockmachines.multimachine.em.switch.adv.desc.5",
+            .addMarkdown(
+                new ResourceLocation("gregtech", "network-switch-adv"),
+                ImmutableMap.of(
+                    "switch-name",
                     Machine_Multi_Switch.get(1)
                         .getDisplayName()))
-            .addSeparator()
             .beginVariableStructureBlock(3, 3, 3, 3, 3, 18, false)
-            .addController("Front center, 2nd layer")
-            .addMiscHatch("1+", "Optical Reception Connector", "Any advanced casing", 1)
-            .addMiscHatch("1+", "Optical Transmission Connector", "Any casing", 1, 2)
-            .addEnergyHatch("1+", "Any casing", 1, 2)
+            .addController(translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataInput"), translateToLocal("tt.keyword.Structure.AnyAdvComputerCasing"), 1)
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataOutput"), translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
+            .addEnergyHatch("1+", translateToLocal("gt.mbtt.structure.any_casing"), 1, 2)
             .addStructureInfo("")
             .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Base"))
-            .addCasing("0-18", "Computer Casing", false)
-            .addCasing("0-5", "Advanced Computer Casing", false)
+            .addCasing("0-18", translateToLocal("gt.blockcasingsTT.1.name"), false)
+            .addCasing("0-5", translateToLocal("gt.blockcasingsTT.3.name"), false)
             .addStructureInfo("")
             .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Slice"))
-            .addCasing("0-5", "Advanced Computer Casing", false)
-            .addCasing("0-4", "Computer Casing", false)
+            .addCasing("0-5", translateToLocal("gt.blockcasingsTT.3.name"), false)
+            .addCasing("0-4", translateToLocal("gt.blockcasingsTT.1.name"), false)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 

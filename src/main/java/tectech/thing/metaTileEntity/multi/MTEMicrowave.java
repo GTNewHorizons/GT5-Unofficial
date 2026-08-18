@@ -24,6 +24,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -60,6 +61,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
 /**
  * Created by danie_000 on 17.12.2016.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int CASING_INDEX = 49;
@@ -224,32 +226,19 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.microwave.name")) // Machine Type:
                                                                                                // Microwave Grinder
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.0")) // Controller block of
-                                                                                            // the
-            // Microwave Grinder
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.1")) // Starts a timer when
-                                                                                            // enabled
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.2")) // While the timer is
-                                                                                            // running
-            // anything inside the machine
-            // will take damage
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.3")) // The machine will also
-                                                                                            // collect
-            // any items inside of it
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.4")) // Can be configured
-                                                                                            // with a Parametrizer
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.5")) // (Do not insert a
-                                                                                            // Wither)
+            .addMarkdown(new ResourceLocation("gregtech", "microwave-grinder"))
             .beginStructureBlock(5, 4, 5, true)
-            .addController("Front center, 2nd layer")
-            .addCasing("60-69", "Clean Stainless Steel Machine Casing", false)
-            .addEnergyHatch("1+", "Any bottom edge casing", 1)
-            .addMaintenanceHatch("1", "Any bottom edge casing", 1)
-            .addOutputBus("1+", "Any bottom edge casing", 1)
-            .addAir("Interior and top center of the structure")
+            .addController(translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
+            .addCasing("60-69", translateToLocal("gt.blockcasings4.1.name"), false)
+            .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
+            .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
+            .addOutputBus("1+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
+            .addAir(translateToLocal("gt.mbtt.structure.interior_and_top_center"))
             .toolTipFinisher();
+        // spotless:on
         return tt;
     }
 
