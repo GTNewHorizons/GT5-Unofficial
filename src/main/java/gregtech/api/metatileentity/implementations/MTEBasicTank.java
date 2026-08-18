@@ -278,7 +278,7 @@ public abstract class MTEBasicTank extends MTETieredMachineBlock implements IAdd
     @Override
     public FluidStack drain(ForgeDirection side, FluidStack fluid, int amount, boolean doDrain) {
         if (side != ForgeDirection.UNKNOWN) return null;
-        if (GTUtility.areFluidsEqual(this.mFluid, fluid)) return null;
+        if (!GTUtility.areFluidsEqual(this.mFluid, fluid)) return null;
         return drain(amount, doDrain);
     }
 
