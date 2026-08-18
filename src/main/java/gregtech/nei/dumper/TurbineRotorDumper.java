@@ -56,9 +56,8 @@ public class TurbineRotorDumper extends DataDumper {
                 rows.add(
                     new String[] { MaterialUtils.localName(mat), String.valueOf(toolQuality),
                         DumperUtils.formatDouble(MaterialUtils.toolSpeed(mat)),
-                        DumperUtils.formatDouble(MaterialUtils.durability(mat) * 100.0),
-                        String.valueOf(overflowTier), SIZE_NAMES[si], String.valueOf(si + 1),
-                        DumperUtils.formatDouble(c.getSteamEfficiency()),
+                        DumperUtils.formatDouble(MaterialUtils.durability(mat) * 100.0), String.valueOf(overflowTier),
+                        SIZE_NAMES[si], String.valueOf(si + 1), DumperUtils.formatDouble(c.getSteamEfficiency()),
                         DumperUtils.formatDouble(c.getLooseSteamEfficiency()),
                         DumperUtils.formatDouble(c.getOptimalSteamFlow()),
                         DumperUtils.formatDouble(c.getOptimalLooseSteamFlow()),

@@ -225,15 +225,16 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                     convertOre(
                         material,
                         GTUtility.mul(2, tCrushed),
-                        MaterialUtils.hasFlag(material, GTMaterialFlag.PULVERIZING_CINNABAR) ? GTOreDictUnificator.get(
-                            OrePrefixes.crystal,
-                            Materials.Cinnabar,
-                            GTOreDictUnificator.get(
-                                OrePrefixes.gem,
-                                tPrimaryByMaterial,
-                                GTUtility.copyAmount(1, tPrimaryByProduct),
-                                1L),
-                            1L)
+                        MaterialUtils.hasFlag(material, GTMaterialFlag.PULVERIZING_CINNABAR)
+                            ? GTOreDictUnificator.get(
+                                OrePrefixes.crystal,
+                                Materials.Cinnabar,
+                                GTOreDictUnificator.get(
+                                    OrePrefixes.gem,
+                                    tPrimaryByMaterial,
+                                    GTUtility.copyAmount(1, tPrimaryByProduct),
+                                    1L),
+                                1L)
                             : GTOreDictUnificator.get(
                                 OrePrefixes.gem,
                                 tPrimaryByMaterial,

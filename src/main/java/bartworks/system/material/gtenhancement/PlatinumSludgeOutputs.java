@@ -44,10 +44,8 @@ public final class PlatinumSludgeOutputs {
         Material replacement = association.mMaterial.mMaterial == Materials.Platinum ? Materials.PlatinumMetallicPowder
             : association.mMaterial.mMaterial == Materials.Palladium ? Materials.PalladiumMetallicPowder : null;
         return replacement == null ? output
-            : GTOreDictUnificator.get(
-                association.mPrefix == OrePrefixes.nugget ? dustTiny : dust,
-                replacement,
-                output.stackSize * 2L);
+            : GTOreDictUnificator
+                .get(association.mPrefix == OrePrefixes.nugget ? dustTiny : dust, replacement, output.stackSize * 2L);
     }
 
     public static ItemStack convertCrafting(Material material, ItemStack output) {
