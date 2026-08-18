@@ -2574,6 +2574,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             byte voltageTier = this.getExoticEnergyHatches()
                 .isEmpty() ? (byte) this.getInputVoltageTier()
                     : (byte) GTUtility.getTierExtended(this.getAverageInputVoltage());
+            byte powerTier = (byte) GTUtility.getTierExtended(totalInputPower);
 
             if (voltageTier != 0) {
                 info.add(
@@ -2581,7 +2582,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         "GT5U.multiblock.scanner.mei_amp",
                         formatNumber(totalInputPower),
                         GTUtility.getAmperageForTier(totalInputPower, voltageTier),
-                        VN[voltageTier]));
+                        VN[voltageTier],
+                        VN[powerTier]));
             } else {
                 info.add(
                     StatCollector

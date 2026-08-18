@@ -235,10 +235,7 @@ GT5U.multiblock.scanner.energy=存储能量: §a%s §rEU / §e%s §rEU
 GT5U.multiblock.scanner.Progress=工作时间: §a%s §rs / §e%s §rs
 GT5U.multiblock.scanner.efficiency=效率: §e%s§r%%
 GT5U.multiblock.scanner.problems=问题: §c%s
-GT5U.multiblock.scanner.mei=最大输入功率: §e%s §rEU/t (*2A) Tier: §e%s
-GT5U.multiblock.scanner.mei_exotic=最大输入功率: §e%s §rEU/t (*%sA) 电功率等级: §e%s
-GT5U.multiblock.scanner.mrv=最大配方电压: §e%s §rEU/t (*%sA) 电压等级: §e%s
-GT5U.multiblock.scanner.mrv_infinite=最大配方电压: §a无限制
+GT5U.multiblock.scanner.mei=最大输入: §e%s §rEU/t (*2A) Tier: §e%s
 GT5U.multiblock.scanner.usage=大概功率: §c%s §rEU/t
 
 # NEI recipe handlers
