@@ -86,21 +86,27 @@ public class GregtechBufferDynamos {
         // Conversion Recipes, to be removed in 2.10 (alongside this whole class).
         GTModHandler.addShapelessCraftingRecipe(
             CustomItemList.eM_dynamoMulti4_HV.get(1L),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { GregtechItemList.Hatch_Buffer_Dynamo_HV.get(1L) });
         GTModHandler.addShapelessCraftingRecipe(
             CustomItemList.eM_dynamoMulti4_EV.get(1L),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { GregtechItemList.Hatch_Buffer_Dynamo_EV.get(1L) });
         GTModHandler.addShapelessCraftingRecipe(
             CustomItemList.eM_dynamoMulti4_IV.get(1L),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { GregtechItemList.Hatch_Buffer_Dynamo_IV.get(1L) });
         GTModHandler.addShapelessCraftingRecipe(
             CustomItemList.eM_dynamoMulti4_LuV.get(1L),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { GregtechItemList.Hatch_Buffer_Dynamo_LuV.get(1L) });
         GTModHandler.addShapelessCraftingRecipe(
             CustomItemList.eM_dynamoMulti4_ZPM.get(1L),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { GregtechItemList.Hatch_Buffer_Dynamo_ZPM.get(1L) });
         GTModHandler.addShapelessCraftingRecipe(
             CustomItemList.eM_dynamoMulti4_UV.get(1L),
+            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { GregtechItemList.Hatch_Buffer_Dynamo_UV.get(1L) });
     }
 }

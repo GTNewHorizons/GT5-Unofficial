@@ -67,14 +67,14 @@ public class TextureSet {
         SET_ASTRAL_TITANIUM = new TextureSet("astraltitanium", true),
         SET_CELESTIAL_TUNGSTEN = new TextureSet("celestialtungsten", true);
 
-    public final IIconContainer[] mTextures = new IIconContainer[MaterialIconRegistry.IconType.values().length];
+    public final IIconContainer[] mTextures = new IIconContainer[MaterialIconRegistry.IconType.VALUES.length];
     public final String mSetName;
     private IIconContainer[][] mStoneOreTextures;
     private String mStoneOreTextureSetName;
 
     public TextureSet(String aSetName) {
         mSetName = aSetName;
-        for (MaterialIconRegistry.IconType type : MaterialIconRegistry.IconType.values()) {
+        for (MaterialIconRegistry.IconType type : MaterialIconRegistry.IconType.VALUES) {
             switch (type.texture) {
                 case BLOCK:
                     mTextures[type.ordinal()] = Textures.BlockIcons.textureSet(aSetName, type.suffix);
@@ -112,7 +112,7 @@ public class TextureSet {
             GregTechAPI.sGTBlockIconload.add(this::initStoneOreTextures);
         }
 
-        for (MaterialIconRegistry.IconType type : MaterialIconRegistry.IconType.values()) {
+        for (MaterialIconRegistry.IconType type : MaterialIconRegistry.IconType.VALUES) {
             if (overrides.contains(type)) {
                 // Override this specific icon
                 switch (type.texture) {
