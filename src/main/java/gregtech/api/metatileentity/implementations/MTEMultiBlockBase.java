@@ -2572,11 +2572,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             byte recipeTier = GTUtility.getTier(maxRecipeEUt);
             long totalInputPower = this.getMaxInputEu();
             byte voltageTier = this.getExoticEnergyHatches()
-                .isEmpty() ? (byte) this.getInputVoltageTier()
-                    : GTUtility.getTier(this.getAverageInputVoltage());
+                .isEmpty() ? (byte) this.getInputVoltageTier() : GTUtility.getTier(this.getAverageInputVoltage());
             byte powerTier = this.getExoticEnergyHatches()
-                .isEmpty() ? GTUtility.getTier(this.getMaxInputVoltage())
-                    : GTUtility.getTier(totalInputPower);
+                .isEmpty() ? GTUtility.getTier(this.getMaxInputVoltage()) : GTUtility.getTier(totalInputPower);
 
             if (voltageTier != 0) {
                 info.add(
