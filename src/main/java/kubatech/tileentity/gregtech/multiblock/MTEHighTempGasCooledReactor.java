@@ -790,8 +790,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
             FluidStack tLiquid = getInputFromHatch(waterInputHatch, GTModHandler.getDistilledWater(1));
             if (tLiquid != null) {
-                FluidStack toDrain = GTModHandler.getDistilledWater(Math.min(takeWater, tLiquid.amount));
-                FluidStack drained = waterInputHatch.drain(ForgeDirection.UNKNOWN, toDrain, true);
+                int toDrain = Math.min(takeWater, tLiquid.amount);
+                FluidStack drained = waterInputHatch.drain(ForgeDirection.UNKNOWN, tLiquid, toDrain, true);
                 drainedAmount += drained.amount;
             }
 
