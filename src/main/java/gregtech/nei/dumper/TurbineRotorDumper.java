@@ -16,12 +16,12 @@ import net.minecraft.item.ItemStack;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.system.material.Werkstoff;
 import codechicken.nei.config.DataDumper;
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -47,14 +47,16 @@ public class TurbineRotorDumper extends DataDumper {
     @Override
     public Iterable<String[]> dump(int mode) {
         List<String[]> rows = new ArrayList<>();
-        for (Materials mat : collectMaterials()) {
-            int overflowTier = (int) (1 + Math.min(2.0, mat.mToolQuality / 3.0));
+        for (Material mat : collectMaterials()) {
+            int toolQuality = MaterialUtils.toolQuality(mat);
+            int overflowTier = (int) (1 + Math.min(2.0, toolQuality / 3.0));
             for (int si = 0; si < TOOL_IDS.length; si++) {
                 ItemStack stack = MetaGeneratedTool01.INSTANCE.getToolWithStats(TOOL_IDS[si], 1, mat, mat, null);
                 TurbineStatCalculator c = new TurbineStatCalculator(MetaGeneratedTool01.INSTANCE, stack);
                 rows.add(
-                    new String[] { mat.mDefaultLocalName, String.valueOf(mat.mToolQuality),
-                        DumperUtils.formatDouble(mat.mToolSpeed), DumperUtils.formatDouble(mat.mDurability * 100.0),
+                    new String[] { MaterialUtils.localName(mat), String.valueOf(toolQuality),
+                        DumperUtils.formatDouble(MaterialUtils.toolSpeed(mat)),
+                        DumperUtils.formatDouble(MaterialUtils.durability(mat) * 100.0),
                         String.valueOf(overflowTier), SIZE_NAMES[si], String.valueOf(si + 1),
                         DumperUtils.formatDouble(c.getSteamEfficiency()),
                         DumperUtils.formatDouble(c.getLooseSteamEfficiency()),
@@ -105,26 +107,17 @@ public class TurbineRotorDumper extends DataDumper {
         else super.dumpTo(file);
     }
 
-    private List<Materials> collectMaterials() {
-        List<Materials> result = new ArrayList<>();
-        for (Materials mat : GregTechAPI.sGeneratedMaterials) {
-            if (mat == null) continue;
-            if (mat.mDurability <= 0 || mat.mToolSpeed <= 0) continue;
+    private List<Material> collectMaterials() {
+        List<Material> result = new ArrayList<>();
+        for (Material mat : MaterialLibAPI.getMaterials()) {
+            if (MaterialUtils.durability(mat) <= 0 || MaterialUtils.toolSpeed(mat) <= 0) continue;
             if (GTOreDictUnificator.get(OrePrefixes.turbineBlade, mat, 1L) == null) continue;
             result.add(mat);
         }
-        // BartWorks materials are not in sGeneratedMaterials, iterate separately
-        for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
-            if (!werkstoff.hasItemType(OrePrefixes.turbineBlade)) continue;
-            Materials mat = werkstoff.getBridgeMaterial();
-            if (mat == null) continue;
-            if (mat.mDurability <= 0 || mat.mToolSpeed <= 0) continue;
-            result.add(mat);
-        }
         result.sort(
-            Comparator.comparingInt((Materials m) -> (int) m.mToolQuality)
+            Comparator.comparingInt((Material m) -> MaterialUtils.toolQuality(m))
                 .reversed()
-                .thenComparing(m -> m.mDefaultLocalName));
+                .thenComparing(m -> MaterialUtils.localName(m)));
         return result;
     }
 
@@ -154,13 +147,14 @@ public class TurbineRotorDumper extends DataDumper {
 
     private void dumpJson(File file) throws IOException {
         JsonArray root = new JsonArray();
-        for (Materials mat : collectMaterials()) {
-            int overflowTier = (int) (1 + Math.min(2.0, mat.mToolQuality / 3.0));
+        for (Material mat : collectMaterials()) {
+            int toolQuality = MaterialUtils.toolQuality(mat);
+            int overflowTier = (int) (1 + Math.min(2.0, toolQuality / 3.0));
             JsonObject matObj = new JsonObject();
-            matObj.addProperty("name", mat.mDefaultLocalName + " (" + mat.mToolQuality + ")");
-            matObj.addProperty("tier", mat.mToolQuality);
-            matObj.addProperty("mining_speed", mat.mToolSpeed);
-            matObj.addProperty("base_durability", mat.mDurability * 100.0);
+            matObj.addProperty("name", MaterialUtils.localName(mat) + " (" + toolQuality + ")");
+            matObj.addProperty("tier", toolQuality);
+            matObj.addProperty("mining_speed", MaterialUtils.toolSpeed(mat));
+            matObj.addProperty("base_durability", MaterialUtils.durability(mat) * 100.0);
             matObj.addProperty("overflow_tier", overflowTier);
             JsonObject sizes = new JsonObject();
             for (int si = 0; si < TOOL_IDS.length; si++) {

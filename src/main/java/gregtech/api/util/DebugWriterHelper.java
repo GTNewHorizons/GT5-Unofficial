@@ -22,13 +22,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.ruling_0.materiallib.api.BlockMaterialInfo;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials.BlockShapes;
+import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.common.blocks.BlockFrameBox;
+import gregtech.api.material.MaterialUtils;
 import gregtech.common.tileentities.debug.MTEDebugStructureWriter;
 
 public class DebugWriterHelper {
@@ -40,7 +43,6 @@ public class DebugWriterHelper {
 
     private static final Map<Block, String> VANILLA_BLOCK_NAMES = new IdentityHashMap<>();
     private static final Casings[] CASINGS_VALUES = Casings.values();
-    private static final Materials[] MATERIALS_VALUES = Materials.values();
 
     static {
         // VanillaBlocks
@@ -77,39 +79,20 @@ public class DebugWriterHelper {
             return null;
         });
 
-        // Frames
+        // Frames and Sheet Metal
         registerBlockAssociation((block, meta, symbol) -> {
-            if (block instanceof BlockFrameBox) {
-                try {
-                    Materials material = BlockFrameBox.getMaterial(meta);
-                    if (material != null) {
-                        return symbol + "-> "
-                            + "addElement('"
-                            + symbol
-                            + "', ofFrame(Materials."
-                            + material.getName()
-                            + ")";
-                    }
-                } catch (Exception ignored) {}
-            }
-            return null;
-        });
-
-        // Sheet Metal
-        registerBlockAssociation((block, meta, symbol) -> {
-            if (block == GregTechAPI.sBlockSheetmetalGT) {
-                for (Materials material : MATERIALS_VALUES) {
-                    if (material.mMetaItemSubID == meta) {
-                        return symbol + "-> "
-                            + "addElement('"
-                            + symbol
-                            + "', ofSheetMetal(Materials."
-                            + material.getName()
-                            + ")";
-                    }
-                }
-            }
-            return null;
+            BlockMaterialInfo info = MaterialLibAPI.lookupBlock(block, meta);
+            if (info == null || info.material() == null) return null;
+            String element = materialElementName(info.shape());
+            if (element == null) return null;
+            return symbol + "-> "
+                + "addElement('"
+                + symbol
+                + "', "
+                + element
+                + "(Materials."
+                + MaterialUtils.internalName(info.material())
+                + ")";
         });
 
         // DebugStructureWriter
@@ -123,6 +106,14 @@ public class DebugWriterHelper {
             }
             return null;
         }));
+    }
+
+    /// The name of the [GTStructureUtility] structure-element factory for a MaterialLib block shape, or null
+    /// for a shape no factory covers.
+    private static String materialElementName(Shape shape) {
+        if (shape == TEBlockShapes.frameGt) return "ofFrame";
+        if (shape == BlockShapes.sheetmetal) return "ofSheetMetal";
+        return null;
     }
 
     public interface BlockClassifier {
