@@ -1792,7 +1792,6 @@ public class WerkstoffLoader {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private static void addSubTags() {
         WerkstoffLoader.CubicZirconia.getStats()
             .setDurOverride(Materials.Diamond.mDurability);
@@ -1838,8 +1837,7 @@ public class WerkstoffLoader {
 
         for (Werkstoff W : Werkstoff.werkstoffHashSet) {
             for (Pair<ISubTagContainer, Integer> pair : W.getContents()
-                .getValue()
-                .toArray(new Pair[0])) {
+                .getValue()) {
 
                 if (pair.getKey() instanceof Materials && pair.getKey() == Materials.Neodymium) {
                     W.add(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM);
