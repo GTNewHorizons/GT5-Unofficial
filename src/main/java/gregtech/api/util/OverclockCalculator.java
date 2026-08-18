@@ -309,9 +309,13 @@ public class OverclockCalculator {
         return overclocks;
     }
 
-    public boolean getAllowedTierSkip() {
-        if (this.maxTierSkip == Integer.MAX_VALUE) return true;
-        return recipeEUt <= machineVoltage * GTUtility.powInt(4, maxTierSkip);
+    public static long getMaxAllowedRecipeEUt(long machineVoltage, int maxTierSkip) {
+        if (maxTierSkip == Integer.MAX_VALUE) return Long.MAX_VALUE;
+        return (long) Math.floor(machineVoltage * GTUtility.powInt(4, maxTierSkip));
+    }
+
+    public long getMaxAllowedRecipeEUt() {
+        return getMaxAllowedRecipeEUt(this.machineVoltage, this.maxTierSkip);
     }
 
     public boolean hasDurationUnderOneTickSupplier() {
