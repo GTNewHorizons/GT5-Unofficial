@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.GTMaterialProperties;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -39,7 +39,7 @@ public class LegacyWerkstoffIndex {
                 size++;
             }
         }
-        GTMod.GT_FML_LOGGER.info("LegacyWerkstoffIndex populated {} id slots", size);
+        GTLoggers.GT_FML_LOGGER.info("LegacyWerkstoffIndex populated {} id slots", size);
     }
 
     /// The material occupying a legacy werkstoff id slot; null for an unoccupied id.

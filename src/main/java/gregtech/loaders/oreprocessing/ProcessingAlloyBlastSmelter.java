@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
+import static gregtech.api.recipe.RecipeMaps.alloyBlastSmelterRecipes;
 
 import java.util.ArrayList;
 import java.util.HashMap;

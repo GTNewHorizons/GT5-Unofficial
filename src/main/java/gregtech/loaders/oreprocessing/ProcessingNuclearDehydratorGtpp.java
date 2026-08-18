@@ -1,9 +1,9 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.enums.TierEU.RECIPE_HV;
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import java.util.Set;
 

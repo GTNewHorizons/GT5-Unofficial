@@ -1,6 +1,7 @@
 package tectech.thing.metaTileEntity.multi.godforge;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
@@ -49,7 +50,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStreamUtil;
@@ -364,7 +364,7 @@ public class MTEExoticModule extends MTEBaseModule {
             FluidStack plasma = association == null ? null
                 : MaterialUtils.plasma(association.mMaterial.mMaterial, INGOTS * multiplier * itemStack.stackSize);
             if (plasma == null) {
-                GTLog.err.println("MTEExoticModule.convertItemToPlasma: no plasma for " + itemStack);
+                GT_FML_LOGGER.error("MTEExoticModule.convertItemToPlasma: no plasma for {}", itemStack);
                 continue;
             }
             plasmas.add(plasma);

@@ -1,5 +1,6 @@
 package gregtech.loaders.materialrecipes;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -16,7 +17,6 @@ import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 
 /// Generates the sifter (crushed ore -> gem grade) recipe and the compressor (gem -> block) recipe for
@@ -47,9 +47,9 @@ public final class LoaderSifterRecipes {
     public static void run() {
         for (Material material : CARRIERS) {
             if (!hasSifterGate(material)) {
-                GTLog.err.println(
-                    "LoaderSifterRecipes: declared carrier " + material.getName()
-                        + " no longer satisfies the sifter gate");
+                GT_FML_LOGGER.error(
+                    "LoaderSifterRecipes: declared carrier {} no longer satisfies the sifter gate",
+                    material.getName());
                 continue;
             }
             if (declares(material, COMPRESSOR_SHAPES)) registerCompressor(material);
@@ -67,10 +67,10 @@ public final class LoaderSifterRecipes {
     private static boolean declares(Material material, Shape[] shapes) {
         for (Shape shape : shapes) {
             if (!material.hasShape(shape)) {
-                GTLog.err.println(
-                    "LoaderSifterRecipes: declared carrier " + material.getName()
-                        + " no longer carries "
-                        + shape.getName());
+                GT_FML_LOGGER.error(
+                    "LoaderSifterRecipes: declared carrier {} no longer carries {}",
+                    material.getName(),
+                    shape.getName());
                 return false;
             }
         }

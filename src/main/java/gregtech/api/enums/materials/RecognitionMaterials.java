@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.enums.SubTag;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
@@ -75,7 +75,7 @@ public class RecognitionMaterials {
         for (MarkerSpec m : markers) {
             Material material = MaterialLibAPI.getMaterial("gregtech", m.name());
             if (material != null) {
-                GTMod.GT_FML_LOGGER.info(
+                GTLoggers.GT_FML_LOGGER.info(
                     "RecognitionMaterials: skipping backing material for '{}', a MaterialLib material with that name already exists",
                     m.name());
             } else {
@@ -105,7 +105,7 @@ public class RecognitionMaterials {
                         marker.spec()
                             .name()));
         }
-        GTMod.GT_FML_LOGGER.info("RecognitionMaterials: registered {} backing materials", registered);
+        GTLoggers.GT_FML_LOGGER.info("RecognitionMaterials: registered {} backing materials", registered);
     }
 
     private record Marker(Consumer<Material> field, MarkerSpec spec) {}

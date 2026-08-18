@@ -18,8 +18,8 @@ import gregtech.api.util.client.ResourceUtils;
 /**
  * A block icon container rendered in the alpha pass whose base icon and _OVERLAY icon are both optional. Whichever of
  * the two files exists is used (the missing one renders as invisible); if neither exists, both icons are delegated to
- * the given fallback container. Used for the per-stone-type ore texture overrides of
- * {@link gregtech.api.enums.TextureSet#withStoneOreTextures(String)}.
+ * the given fallback container. Used for per-stone-type ore texture overrides: a stone type that ships its own art
+ * overrides the shared ore texture, and one that ships none falls back to it.
  *
  * <p>
  * Unlike its sibling containers, this one does not register itself into {@link GregTechAPI#sGTBlockIconload}: it is

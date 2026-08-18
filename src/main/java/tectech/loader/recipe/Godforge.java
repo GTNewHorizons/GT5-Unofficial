@@ -1,5 +1,6 @@
 package tectech.loader.recipe;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -42,7 +43,6 @@ import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
@@ -75,7 +75,7 @@ public class Godforge implements Runnable {
         for (int i = 0; i < items.length; i++) {
             ItemData association = GTOreDictUnificator.getAssociation(items[i]);
             if (association == null) {
-                GTLog.err.println("Godforge.convertToFluid: no unification data for " + items[i]);
+                GT_FML_LOGGER.error("Godforge.convertToFluid: no unification data for {}", items[i]);
                 continue;
             }
             molten[i] = MaterialUtils.molten(association.mMaterial.mMaterial, 1 * INGOTS);

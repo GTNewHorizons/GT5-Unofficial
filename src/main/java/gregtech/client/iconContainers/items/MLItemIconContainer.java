@@ -1,5 +1,6 @@
 package gregtech.client.iconContainers.items;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.UNCOLORED_RGBA;
 
 import net.minecraft.util.IIcon;
@@ -11,7 +12,6 @@ import com.ruling_0.materiallib.api.ShapeRegistry;
 
 import gregtech.api.enums.Textures.InvisibleIcon;
 import gregtech.api.material.GTMaterialIconSets;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtil;
 
 /// One material's item-atlas icon, drawn from MaterialLib's texture-set resolution rather than owned outright.
@@ -89,11 +89,10 @@ public final class MLItemIconContainer extends AbstractItemIconContainer {
         shape = ShapeRegistry.instance()
             .getItemShape(name);
         if (shape == null) {
-            GTLog.err.println(
-                "No item shape or icon set is named " + name
-                    + ", asked for by material "
-                    + material.getKey()
-                    + "; it will render nothing");
+            GT_FML_LOGGER.error(
+                "No item shape or icon set is named {}, asked for by material {}; it will render nothing",
+                name,
+                material.getKey());
         }
     }
 }

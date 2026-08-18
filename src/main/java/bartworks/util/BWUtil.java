@@ -643,63 +643,6 @@ public class BWUtil {
             aRecipe).setMirrored(aMirrored);
     }
 
-    public static boolean areCraftingInputsOnlyMaterial(Object input, Materials material) {
-        if (!(input instanceof List<?>) && !(input instanceof Object[])) {
-            return false;
-        }
-
-        ArrayList<List<?>> lists = new ArrayList<>();
-        ArrayList<ItemStack> stacks = new ArrayList<>();
-
-        if (input instanceof List<?>listInput) {
-            for (Object entry : listInput) {
-                if (entry instanceof List<?>list) {
-                    lists.add(list);
-                } else if (entry instanceof ItemStack stack) {
-                    stacks.add(stack);
-                }
-            }
-        } else if (input instanceof Object[]arrayInput) {
-            for (Object entry : arrayInput) {
-                if (entry instanceof List<?>list) {
-                    lists.add(list);
-                } else if (entry instanceof ItemStack stack) {
-                    stacks.add(stack);
-                }
-            }
-        }
-
-        for (List<?> list : lists) {
-            if (list.isEmpty()) {
-                continue;
-            }
-
-            Object first = list.get(0);
-            if (!(first instanceof ItemStack stack)) {
-                return false;
-            }
-
-            stacks.add(stack);
-        }
-
-        if (stacks.isEmpty()) {
-            return false;
-        }
-
-        for (ItemStack stack : stacks) {
-            ItemData association = GTOreDictUnificator.getAssociation(stack);
-            if (!BWUtil.checkStackAndPrefix(association)) {
-                return false;
-            }
-
-            if (association.mMaterial.mMaterial != material) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     public static void shortSleep(long nanos) {
         try {
             long start = System.nanoTime();

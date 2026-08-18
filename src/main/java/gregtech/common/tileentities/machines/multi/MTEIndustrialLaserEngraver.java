@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTIVE;
@@ -56,7 +57,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -568,7 +568,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         for (int[] row : WERKSTOFF_LENS_COLORS) {
             Material material = LegacyWerkstoffIndex.get(row[0]);
             if (material == null || !material.hasShape(Shapes.lens)) {
-                GTLog.err.println("MTEIndustrialLaserEngraver: werkstoff " + row[0] + " no longer carries a lens");
+                GT_FML_LOGGER.error("MTEIndustrialLaserEngraver: werkstoff {} no longer carries a lens", row[0]);
                 continue;
             }
             lensColors

@@ -1,5 +1,7 @@
 package gregtech.loaders.materialrecipes;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +18,6 @@ import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialAtomics;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 
@@ -41,14 +42,14 @@ public final class LoaderChemicalRecipes {
     public static void run() {
         for (Material material : CARRIERS) {
             if (!Boolean.TRUE.equals(material.getProperty(GTMaterialProperties.HAS_CHEMICAL_RECIPE))) {
-                GTLog.err.println(
-                    "LoaderChemicalRecipes: declared carrier " + material.getName()
-                        + " no longer declares HAS_CHEMICAL_RECIPE");
+                GT_FML_LOGGER.error(
+                    "LoaderChemicalRecipes: declared carrier {} no longer declares HAS_CHEMICAL_RECIPE",
+                    material.getName());
                 continue;
             }
             if (!material.hasShape(Shapes.dust)) {
-                GTLog.err.println(
-                    "LoaderChemicalRecipes: declared carrier " + material.getName() + " no longer carries dust");
+                GT_FML_LOGGER
+                    .error("LoaderChemicalRecipes: declared carrier {} no longer carries dust", material.getName());
                 continue;
             }
             registerChemical(material);
@@ -58,7 +59,7 @@ public final class LoaderChemicalRecipes {
     private static void registerChemical(Material material) {
         List<MaterialRefStack> composition = material.getProperty(GTMaterialProperties.COMPOSITION);
         if (composition == null || composition.isEmpty()) {
-            GTLog.err.println("LoaderChemicalRecipes: " + material.getName() + " has no composition to build from");
+            GT_FML_LOGGER.error("LoaderChemicalRecipes: {} has no composition to build from", material.getName());
             return;
         }
         long totalAmount = 0;
@@ -75,12 +76,12 @@ public final class LoaderChemicalRecipes {
             }
             FluidStack gasInput = MaterialUtils.compositionGas(entry);
             if (gasInput == null || fluidInput != null) {
-                GTLog.err.println(
-                    "LoaderChemicalRecipes: " + material.getName()
-                        + " has an unsupported non-dust composition entry: "
-                        + entry.material()
-                            .resolve()
-                            .getName());
+                GT_FML_LOGGER.error(
+                    "LoaderChemicalRecipes: {} has an unsupported non-dust composition entry: {}",
+                    material.getName(),
+                    entry.material()
+                        .resolve()
+                        .getName());
                 return;
             }
             fluidInput = gasInput;
