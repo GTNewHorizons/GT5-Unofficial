@@ -70,7 +70,7 @@ public class IceCreamMachineRecipes implements Runnable {
         addRecipe(ItemList.Ice_Cream_Sandwich);
         addRecipe(ItemList.Ice_Cream_JustCone);
         addRecipe(ItemList.Ice_Cream_Lemonade);
-        addRecipe(ItemList.Ice_Cream_MhCSM);
+        addRecipe(ItemList.Ice_Cream_MHDCSM);
         addRecipe(ItemList.Ice_Cream_Mango);
         addRecipe(ItemList.Ice_Cream_Meat);
         addRecipe(ItemList.Ice_Cream_MintChip);

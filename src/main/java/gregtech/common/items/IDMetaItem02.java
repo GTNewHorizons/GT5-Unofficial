@@ -200,7 +200,7 @@ public enum IDMetaItem02 {
     Food_IceCreamSandwich(619),
     Food_IceCream_JustCone(620),
     Food_IceCream_Lemonade(621),
-    Food_IceCream_MhCSM(622),
+    Food_IceCream_MHDCSM(622),
     Food_IceCream_Mango(623),
     Food_IceCream_Meat(624),
     Food_IceCream_MintChip(625),

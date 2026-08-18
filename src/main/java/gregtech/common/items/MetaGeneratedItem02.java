@@ -131,9 +131,9 @@ import static gregtech.common.items.IDMetaItem02.Food_IceCream_GrapeMatterManipu
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_HotFudge;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_JustCone;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_Lemonade;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_MHDCSM;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_Mango;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_Meat;
-import static gregtech.common.items.IDMetaItem02.Food_IceCream_MhCSM;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_MintChip;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_Neapolitan;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_NoFlavor;
@@ -2108,11 +2108,11 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 "gt.item.food.icecream_lemonade.tooltip",
                 new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
-        ItemList.Ice_Cream_MhCSM.set(
+        ItemList.Ice_Cream_MHDCSM.set(
             addItemWithLocalizationKeys(
-                Food_IceCream_MhCSM.ID,
-                "gt.item.food.icecream_mhcsm.name",
-                "gt.item.food.icecream_mhcsm.tooltip",
+                Food_IceCream_MHDCSM.ID,
+                "gt.item.food.icecream_MHDCSM.name",
+                "gt.item.food.icecream_MHDCSM.tooltip",
                 new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_Mango.set(

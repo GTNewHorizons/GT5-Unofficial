@@ -3255,7 +3255,7 @@ public enum ItemList implements IItemContainer {
     Ice_Cream_Sandwich,
     Ice_Cream_JustCone,
     Ice_Cream_Lemonade,
-    Ice_Cream_MhCSM,
+    Ice_Cream_MHDCSM,
     Ice_Cream_Mango,
     Ice_Cream_Meat,
     Ice_Cream_MintChip,
