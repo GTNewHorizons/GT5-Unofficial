@@ -30,7 +30,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -65,6 +64,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatchBulkCatalystHousing;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -78,7 +78,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -207,8 +206,8 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addUnlimitedTierSkips()
             .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(15, 15, 21, true)
-            .addController("Front bottom center")
+            .beginStructureBlock(15, 21, 15, true)
+            .addController("Front bottom center of central column")
             .addCasing("236", "Pulse Manipulator Casing", true)
             .addCasing("224", "Force Field Glass", false)
             .addCasing("177", "Quantum Force Conductor", false)
@@ -348,7 +347,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.quantumForceTransformerRecipes;
+        return RecipeMaps.quantumForceTransformerRecipes;
     }
 
     @Override
@@ -638,15 +637,14 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             return;
         }
         mFluidMode = !mFluidMode;
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("miscutils.machines.QFTFluidMode") + " " + mFluidMode);
+        GTUtility.sendChatTrans(aPlayer, "miscutils.machines.QFTFluidMode", mFluidMode);
     }
 
     public boolean addCatalystHousingToMachineList(IGregTechTileEntity tileEntity, int baseCasingIndex) {
         if (tileEntity == null) return false;
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
         if (metaTileEntity instanceof MTEHatchBulkCatalystHousing catalystHousing) {
+            addIfSmartInput(catalystHousing);
             catalystHousing.updateTexture(baseCasingIndex);
             this.catalystHousings.add(catalystHousing);
             return true;

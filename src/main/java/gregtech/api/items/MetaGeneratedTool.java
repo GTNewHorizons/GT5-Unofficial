@@ -685,17 +685,17 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     EnumChatFormatting.WHITE
                         + translateToLocalFormatted(
                             "gt.item.desc.damage",
-                            "" + EnumChatFormatting.BLUE + getToolCombatDamage(aStack))
+                            EnumChatFormatting.BLUE + formatNumber(getToolCombatDamage(aStack)))
                         + EnumChatFormatting.GRAY);
                 aList.add(
                     tOffset + 3,
                     EnumChatFormatting.WHITE
                         + translateToLocalFormatted(
                             "gt.item.desc.mine_speed",
-                            "" + EnumChatFormatting.GOLD
-                                + Math.max(
+                            EnumChatFormatting.GOLD + formatNumber(
+                                Math.max(
                                     Float.MIN_NORMAL,
-                                    tStats.getSpeedMultiplier() * getToolSpeed(getPrimaryMaterialML(aStack))))
+                                    tStats.getSpeedMultiplier() * getToolSpeed(getPrimaryMaterialML(aStack)))))
                         + EnumChatFormatting.GRAY);
                 final NBTTagCompound nbt = aStack.getTagCompound();
                 if (nbt != null) {
@@ -1025,9 +1025,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                     case weapon -> {
                         if (tStats.isWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());
                     }
-                    case all -> {
-                        tResult.put(tEntry.getKey(), tEntry.getValue());
-                    }
+                    case all -> tResult.put(tEntry.getKey(), tEntry.getValue());
                     case armor, armor_feet, armor_head, armor_legs, armor_torso, breakable, fishing_rod -> {}
                     case bow -> {
                         if (tStats.isRangedWeapon()) tResult.put(tEntry.getKey(), tEntry.getValue());

@@ -29,6 +29,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -250,5 +251,10 @@ public class MTEBoilerBronze extends MTEBoiler {
     @Override
     protected boolean isItemValidFuel(@NotNull ItemStack stack) {
         return getCombustionPotential(stack, TileEntityFurnace.getItemBurnTime(stack)).isPresent();
+    }
+
+    @Override
+    public TieredVariant getTieredVariant() {
+        return TieredVariant.BRONZE;
     }
 }

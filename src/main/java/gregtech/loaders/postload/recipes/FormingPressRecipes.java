@@ -197,11 +197,11 @@ public class FormingPressRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Magmatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Eternity, 1L),
                 MaterialLibAPI.getStack(Materials.WhiteDwarfMatter, Shapes.plate, 1),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 16L),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 4L),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.SixPhasedCopper, 4L),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 4L),
                 MaterialLibAPI.getStack(Materials.BlackDwarfMatter, Shapes.plate, 1))
             .fluidInputs(MaterialUtils.fluid(Materials.UUMatter, 4_096_000L))
             .itemOutputs(ItemList.NaniteFramework.get(1))

@@ -34,7 +34,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.StructureLib;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -354,8 +353,6 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
         }
 
         buildPiece(STRUCTURE_PIECE_END, stackSize, hintsOnly, 3, 6, -(lLength + 2));
-
-        StructureLib.addClientSideChatMessages("Length: " + (11 + lLength) + " blocks.");
     }
 
     @Override

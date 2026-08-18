@@ -111,7 +111,7 @@ public class RecipesMachines {
         // Tesseract Generator
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Tesseract_Generator.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "CEC", "PXP", 'P', OrePrefixes.plate.ingredient(Materials.Titanium), 'C',
                 "circuitMaster", 'E', new ItemStack(Blocks.ender_chest), 'X',
                 GregtechItemList.Gregtech_Computer_Cube });
@@ -119,14 +119,14 @@ public class RecipesMachines {
         // Tesseract Terminal
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Tesseract_Terminal.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "CEC", "PHP", 'P', OrePrefixes.plate.ingredient(Materials.Titanium), 'C',
                 "circuitElite", 'E', new ItemStack(Blocks.ender_chest), 'H', ItemList.Hull_EV });
 
         // Air Intake Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Air_Intake.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "PRP", "IHI", 'P', OrePrefixes.plate.ingredient(Materials.Redstone), 'C',
                 ItemList.Casing_Grate, 'R', ItemList.FluidRegulator_IV, 'I', "circuitElite", 'H',
                 ItemList.Hatch_Input_IV });
@@ -134,7 +134,7 @@ public class RecipesMachines {
         // Extreme Air Intake Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Air_Intake_Extreme.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "PRP", "IHI", 'P', MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 1),
                 'C', GregtechItemList.Hatch_Air_Intake, 'R', ItemList.FluidRegulator_ZPM, 'I', "circuitUltimate", 'H',
                 ItemList.Hatch_Input_ZPM });
@@ -142,7 +142,7 @@ public class RecipesMachines {
         // Atmospheric Intake Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Air_Intake_Atmospheric.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "PRP", "IHI", 'P', MaterialLibAPI.getStack(Materials.Octiron, Shapes.plate, 1), 'C',
                 GregtechItemList.Hatch_Air_Intake_Extreme, 'R', ItemList.FluidRegulator_UHV, 'I', "circuitInfinite",
                 'H', ItemList.Hatch_Input_UHV });
@@ -150,7 +150,7 @@ public class RecipesMachines {
         // Large Semifluid Burner
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Controller_LargeSemifluidGenerator.get(1L),
-            BITS,
+            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
                 ItemList.Electric_Pump_EV, 'C', Circuits.EV.getIngredient(), 'W',
                 OrePrefixes.cableGt08.ingredient(Materials.Electrum), 'G',
@@ -188,7 +188,7 @@ public class RecipesMachines {
         // Industrial Multi Tank Casing (unused but craftable)
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_MultitankExterior.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "RPR", "PFP", "PPP", 'R', MaterialLibAPI.getStack(Materials.Grisium, Shapes.stick, 1), 'P',
                 MaterialLibAPI.getStack(Materials.Grisium, Shapes.plate, 1), 'F',
                 MaterialLibAPI.getStack(Materials.Grisium, TEBlockShapes.frameGt, 1) });

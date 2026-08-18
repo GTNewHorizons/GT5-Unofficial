@@ -1,5 +1,6 @@
 package gregtech.loaders.preload;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
@@ -26,7 +27,6 @@ import gregtech.api.enums.materials.CellShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.RecognitionMaterials;
 import gregtech.api.material.MaterialParts;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -34,7 +34,7 @@ public class LoaderGTOreDictionary implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Register OreDict Entries of Non-GT-Items.");
+        GT_FML_LOGGER.debug("GTMod: Register OreDict Entries of Non-GT-Items.");
         GTOreDictUnificator.set(OrePrefixes.cell, Materials.Empty, ItemList.Cell_Empty.get(1L));
         // registerOre, not set: IC2 keeps minting its own empty cells when its water and lava cells drain, so they
         // must match cellEmpty recipes, but the MaterialLib cell stays the unification target.

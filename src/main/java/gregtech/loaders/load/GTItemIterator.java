@@ -1,5 +1,6 @@
 package gregtech.loaders.load;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -28,7 +29,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.items.GTGenericItem;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
@@ -41,7 +41,7 @@ public class GTItemIterator implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Scanning for certain kinds of compatible Machineblocks.");
+        GT_FML_LOGGER.debug("GTMod: Scanning for certain kinds of compatible Machineblocks.");
         ItemStack tStack2 = MaterialLibAPI.getStack(Materials.Bronze, Shapes.ingot, 1);
         ItemStack tStack = GTModHandler
             .getRecipeOutput(tStack2, tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2, tStack2);
@@ -120,7 +120,7 @@ public class GTItemIterator implements Runnable {
                 .eut(2)
                 .addTo(maceratorRecipes);
         }
-        GTLog.out.println("GTMod: Registering various Tools to be usable on GregTech Machines");
+        GT_FML_LOGGER.debug("GTMod: Registering various Tools to be usable on GregTech Machines");
         GregTechAPI.registerScrewdriver(
             GTModHandler
                 .getRecipeOutput(null, new ItemStack(Items.iron_ingot, 1), null, new ItemStack(Items.stick, 1)));
@@ -128,7 +128,7 @@ public class GTItemIterator implements Runnable {
             GTModHandler
                 .getRecipeOutput(new ItemStack(Items.iron_ingot, 1), null, null, null, new ItemStack(Items.stick, 1)));
 
-        GTLog.out.println(
+        GT_FML_LOGGER.debug(
             "GTMod: Adding Food Recipes to the Automatic Canning Machine. (also during the following Item Iteration)");
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.cake, 1, WILDCARD), ItemList.IC2_Food_Can_Empty.get(12L))
@@ -137,7 +137,7 @@ public class GTItemIterator implements Runnable {
             .eut(1)
             .addTo(cannerRecipes);
 
-        GTLog.out.println("GTMod: Scanning ItemList.");
+        GT_FML_LOGGER.debug("GTMod: Scanning ItemList.");
 
         final boolean rcItems = ModAPIManager.INSTANCE.hasAPI("RailcraftAPI|items");
         final boolean bcTools = ModAPIManager.INSTANCE.hasAPI("BuildCraftAPI|tools");
@@ -160,14 +160,14 @@ public class GTItemIterator implements Runnable {
                 if (rcItems && tItem instanceof IToolCrowbar) {
                     if ((tItem.isDamageable()) || (GTModHandler.isElectricItem(new ItemStack(tItem, 1, 0)))) {
                         if (GregTechAPI.registerCrowbar(new ItemStack(tItem, 1, WILDCARD))) {
-                            GTLog.out.println("GTMod: Registered valid RC Crowbar: " + tName);
+                            GT_FML_LOGGER.debug("GTMod: Registered valid RC Crowbar: {}", tName);
                         }
                     }
                 }
                 if (bcTools && tItem instanceof IToolWrench) {
                     if ((tItem.isDamageable()) || (GTModHandler.isElectricItem(new ItemStack(tItem, 1, 0)))) {
                         if (GregTechAPI.registerWrench(new ItemStack(tItem, 1, WILDCARD))) {
-                            GTLog.out.println("GTMod: Registered valid BC Wrench: " + tName);
+                            GT_FML_LOGGER.debug("GTMod: Registered valid BC Wrench: {}", tName);
                         }
                     }
                 }

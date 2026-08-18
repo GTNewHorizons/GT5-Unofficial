@@ -20,7 +20,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
-import bartworks.util.log.DebugLog;
+import bartworks.MainMod;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
@@ -32,7 +32,7 @@ public class RadioHatchCompat {
     /// Registers each radioactive material's `stick`/`stickLong` item under its `stick`/`stickLong` oredict
     /// name when no ore entry holds that name yet. A material without the rod shape is skipped.
     public static void run() {
-        DebugLog.log("Starting Generation of missing GT++ rods/longrods");
+        MainMod.BW_DEBUG_LOGGER.info("Starting Generation of missing GT++ rods/longrods");
 
         for (Material mats : MaterialLibAPI.getMaterials()) {
             if (!Boolean.TRUE.equals(mats.getProperty(GTMaterialProperties.IS_RADIOACTIVE))) continue;
@@ -42,13 +42,13 @@ public class RadioHatchCompat {
             if (mats.hasShape(Shapes.stick) && OreDictionary.getOres("stick" + name)
                 .isEmpty()) {
                 OreDictionary.registerOre("stick" + name, MaterialLibAPI.getStack(mats, Shapes.stick, 1));
-                DebugLog.log("Generate: stick" + name);
+                MainMod.BW_DEBUG_LOGGER.info("Generate: stick{}", name);
             }
 
             if (mats.hasShape(Shapes.stickLong) && OreDictionary.getOres("stickLong" + name)
                 .isEmpty()) {
                 OreDictionary.registerOre("stickLong" + name, MaterialLibAPI.getStack(mats, Shapes.stickLong, 1));
-                DebugLog.log("Generate: stickLong" + name);
+                MainMod.BW_DEBUG_LOGGER.info("Generate: stickLong{}", name);
             }
         }
     }

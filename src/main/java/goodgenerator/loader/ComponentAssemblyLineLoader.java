@@ -2005,7 +2005,7 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(OrePrefixes.frameGt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 48),
                 get(Electric_Motor_UXV, 48),
-                get(NuclearStar, 768),
+                get(PseudoStar, 48),
                 get(Circuits.UXV.getWrap(1), 12),
                 get(Circuits.UHV.getWrap(1), 48),
                 get(OrePrefixes.nanite, Materials.Gold, 24))
@@ -2028,7 +2028,7 @@ public class ComponentAssemblyLineLoader {
             .itemInputsUnsafe(
                 get(OrePrefixes.frameGt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 48),
                 get(Electric_Motor_UXV, 48),
-                get(NuclearStar, 768),
+                get(PseudoStar, 48),
                 get(Circuits.UXV.getWrap(1), 12),
                 get(Circuits.UHV.getWrap(1), 48),
                 get(OrePrefixes.nanite, Materials.Gold, 24))
@@ -2050,7 +2050,7 @@ public class ComponentAssemblyLineLoader {
             .itemOutputs(Field_Generator_UXV.get(64))
             .itemInputsUnsafe(
                 get(OrePrefixes.frameGt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 48),
-                get(NuclearStar, 3072),
+                get(PseudoStar, 192),
                 get(Emitter_UXV, 192),
                 get(Circuits.MAX.getWrap(1), 12),
                 get(Circuits.UHV.getWrap(1), 66),

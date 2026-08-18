@@ -37,7 +37,8 @@ public class GregtechConduits {
         generatePipeRecipes(material, MaterialUtils.localName(material), MaterialUtils.voltageMultiplier(material) / 8);
     }
 
-    public static void generatePipeRecipes(final Material material, final String materialName, final long vMulti) {
+    public static void generatePipeRecipes(final Material material, final String materialName,
+        final long voltageMultiplier) {
 
         String output = materialName.substring(0, 1)
             .toUpperCase() + materialName.substring(1);
@@ -56,28 +57,28 @@ public class GregtechConduits {
             }
         }
 
-        int eut = (int) (8 * vMulti);
+        int eut = (int) (8 * voltageMultiplier);
 
-        if (material != null && MaterialUtils.voltageMultiplier(material) <= TierEU.RECIPE_IV) {
+        if (material != null && MaterialUtils.voltageMultiplier(material) < TierEU.IV) {
             // Add the Four Shaped Recipes First
             GTModHandler.addCraftingRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Tiny" + output, 8),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "PPP", "h w", "PPP", 'P', pipePlate });
 
             GTModHandler.addCraftingRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 6),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "PwP", "P P", "PhP", 'P', pipePlate });
 
             GTModHandler.addCraftingRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 2),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "PPP", "w h", "PPP", 'P', pipePlate });
 
             GTModHandler.addCraftingRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1),
-                GTModHandler.RecipeBits.BUFFERED,
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "PhP", "P P", "PwP", 'P', pipePlate });
         }
 
@@ -132,7 +133,7 @@ public class GregtechConduits {
             if (pipePlateDouble != null) {
                 GTModHandler.addCraftingRecipe(
                     ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Huge" + output, 1),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "DhD", "D D", "DwD", 'D', pipePlateDouble.copy() });
             }
         }
@@ -348,45 +349,57 @@ public class GregtechConduits {
         // Shapeless down-crafting
         GTModHandler.addShapelessCraftingRecipe(
             MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 2),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new ItemStack[] { wire02 });
         GTModHandler.addShapelessCraftingRecipe(
             MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 4),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new ItemStack[] { wire04 });
         GTModHandler.addShapelessCraftingRecipe(
             MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 8),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new ItemStack[] { wire08 });
         GTModHandler.addShapelessCraftingRecipe(
             MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 12),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new ItemStack[] { wire12 });
         GTModHandler.addShapelessCraftingRecipe(
             MaterialLibAPI.getStack(material, TEBlockShapes.wireGt01, 16),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new ItemStack[] { wire16 });
 
         // Shapeless up-crafting
-        GTModHandler
-            .addShapelessCraftingRecipe(wire02, GTModHandler.RecipeBits.BUFFERED, new ItemStack[] { wire01, wire01 });
-        GTModHandler
-            .addShapelessCraftingRecipe(wire04, GTModHandler.RecipeBits.BUFFERED, new ItemStack[] { wire02, wire02 });
-        GTModHandler
-            .addShapelessCraftingRecipe(wire08, GTModHandler.RecipeBits.BUFFERED, new ItemStack[] { wire04, wire04 });
-        GTModHandler
-            .addShapelessCraftingRecipe(wire12, GTModHandler.RecipeBits.BUFFERED, new ItemStack[] { wire04, wire08 });
-        GTModHandler
-            .addShapelessCraftingRecipe(wire16, GTModHandler.RecipeBits.BUFFERED, new ItemStack[] { wire04, wire12 });
-        GTModHandler
-            .addShapelessCraftingRecipe(wire16, GTModHandler.RecipeBits.BUFFERED, new ItemStack[] { wire08, wire08 });
+        GTModHandler.addShapelessCraftingRecipe(
+            wire02,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            new ItemStack[] { wire01, wire01 });
         GTModHandler.addShapelessCraftingRecipe(
             wire04,
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            new ItemStack[] { wire02, wire02 });
+        GTModHandler.addShapelessCraftingRecipe(
+            wire08,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            new ItemStack[] { wire04, wire04 });
+        GTModHandler.addShapelessCraftingRecipe(
+            wire12,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            new ItemStack[] { wire04, wire08 });
+        GTModHandler.addShapelessCraftingRecipe(
+            wire16,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            new ItemStack[] { wire04, wire12 });
+        GTModHandler.addShapelessCraftingRecipe(
+            wire16,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            new ItemStack[] { wire08, wire08 });
+        GTModHandler.addShapelessCraftingRecipe(
+            wire04,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new ItemStack[] { wire01, wire01, wire01, wire01 });
         GTModHandler.addShapelessCraftingRecipe(
             wire08,
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new ItemStack[] { wire01, wire01, wire01, wire01, wire01, wire01, wire01, wire01 });
 
         // Assemble small wires into bigger wires

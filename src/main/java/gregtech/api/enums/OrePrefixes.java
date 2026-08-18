@@ -37,6 +37,7 @@ import com.google.common.collect.ImmutableList;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.Shape;
 
+import gregtech.GTLoggers;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ICondition;
@@ -55,7 +56,6 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTInflectionManager;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
@@ -2446,14 +2446,12 @@ public class OrePrefixes {
 
         for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
             if (D2) {
-                GTLog.ore.println(
-                    "Processing '" + oreDictName
-                        + "' with the Prefix '"
-                        + name
-                        + "' and the Material '"
-                        + MaterialUtils.internalName(material)
-                        + "' at "
-                        + GTUtility.getClassName(tRegistrator));
+                GTLoggers.GT_ORE_DICT_LOGGER.info(
+                    "Processing '{}' with the Prefix '{}' and the Material '{}' at {}",
+                    oreDictName,
+                    name,
+                    MaterialUtils.internalName(material),
+                    GTUtility.getClassName(tRegistrator));
             }
             tRegistrator.registerRecognitionOre(this, material, oreDictName, modName, GTUtility.copyAmount(1, stack));
         }
@@ -2470,14 +2468,12 @@ public class OrePrefixes {
 
         for (IOreRecipeRegistrator tRegistrator : mOreProcessing) {
             if (D2) {
-                GTLog.ore.println(
-                    "Processing '" + oreDictName
-                        + "' with the Prefix '"
-                        + name
-                        + "' and the Material '"
-                        + MaterialUtils.internalName(material)
-                        + "' at "
-                        + GTUtility.getClassName(tRegistrator));
+                GTLoggers.GT_ORE_DICT_LOGGER.info(
+                    "Processing '{}' with the Prefix '{}' and the Material '{}' at {}",
+                    oreDictName,
+                    name,
+                    MaterialUtils.internalName(material),
+                    GTUtility.getClassName(tRegistrator));
             }
             tRegistrator.registerOre(this, material, oreDictName, modName, GTUtility.copyAmount(1, stack));
         }

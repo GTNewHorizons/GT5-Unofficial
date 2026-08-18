@@ -108,7 +108,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         registerCover(material, stack);
 
         GTModHandler.removeRecipeByOutputDelayed(stack);
-        GTModHandler.removeRecipeDelayed(stack);
+        // The only plate that has a valid recipe to remove
+        if (material == Materials.Wood) GTModHandler.removeRecipeDelayed(stack);
 
         GTUtility.removeSimpleIC2MachineRecipe(
             GTUtility.copyAmount(9, stack),
@@ -134,16 +135,18 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(fluidSolidifierRecipes);
         }
 
-        GTModHandler.addCraftingRecipe(
-            GTOreDictUnificator.get(OrePrefixes.foil, material, 2L),
-            BITS_STD,
-            new Object[] { "hX", 'X', MaterialParts.craftIngredient(OrePrefixes.plate, material) });
-
-        if (material == Materials.Paper) {
+        if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
             GTModHandler.addCraftingRecipe(
-                GTUtility.copyAmount(2, stack),
-                BUFFERED,
-                new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD) });
+                GTOreDictUnificator.get(OrePrefixes.foil, material, 2L),
+                BITS_STD,
+                new Object[] { "hX", 'X', MaterialParts.craftIngredient(OrePrefixes.plate, material) });
+
+            if (material == Materials.Paper) {
+                GTModHandler.addCraftingRecipe(
+                    GTUtility.copyAmount(2, stack),
+                    BUFFERED | DO_NOT_CHECK_FOR_COLLISIONS,
+                    new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD) });
+            }
         }
 
         if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))) {

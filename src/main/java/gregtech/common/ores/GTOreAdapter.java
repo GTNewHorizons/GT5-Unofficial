@@ -556,9 +556,8 @@ public final class GTOreAdapter implements IOreAdapter {
         // For Sake of god of balance!
 
         switch (oreDropMode) {
-            case Item -> {
-                drops.add(GTOreDictUnificator.get(OrePrefixes.rawOre, info.material, info.stoneType.isRich() ? 2 : 1));
-            }
+            case Item -> drops
+                .add(GTOreDictUnificator.get(OrePrefixes.rawOre, info.material, info.stoneType.isRich() ? 2 : 1));
             case FortuneItem -> {
                 if (fortune > 0) {
                     // Max applicable fortune

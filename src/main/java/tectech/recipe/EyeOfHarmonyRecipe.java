@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import net.minecraft.item.ItemStack;
@@ -27,6 +26,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
+import goodgenerator.util.NaquadahRecipeOutputs;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.BlockShapes;
 import gregtech.api.enums.materials.FluidShapes;
@@ -42,6 +42,7 @@ import gregtech.api.util.GTUtility;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.util.GT5OreLayerHelper;
 import gtneioreplugin.util.GT5OreSmallHelper;
+import tectech.TecTech;
 import tectech.util.FluidStackLong;
 import tectech.util.ItemStackLong;
 
@@ -610,8 +611,8 @@ public class EyeOfHarmonyRecipe {
         for (Pair<Object, Long> pair : planetList) {
             final Object mat = pair.getLeft();
             final ItemStack dust;
-            if (mat instanceof com.ruling_0.materiallib.api.Material ml)
-                dust = getUnificatedOreDictStack(GTOreDictUnificator.get(OrePrefixes.dust, ml, 1L));
+            if (mat instanceof com.ruling_0.materiallib.api.Material ml) dust = NaquadahRecipeOutputs
+                .convert(getUnificatedOreDictStack(GTOreDictUnificator.get(OrePrefixes.dust, ml, 1L)));
             else dust = null;
             if (dust != null) {
                 dustList.merge(dust, pair.getRight(), Long::sum);
@@ -630,7 +631,7 @@ public class EyeOfHarmonyRecipe {
                     .getUnlocalizedName();
                 total += plasmaEnergyMap.getOrDefault(plasmaName, 0L) * plasma.amount;
             } catch (Exception e) {
-                e.printStackTrace();
+                TecTech.LOGGER.error(e);
             }
         }
 
@@ -660,7 +661,7 @@ public class EyeOfHarmonyRecipe {
             Materials.Bismuth,
             Materials.Oxygen,
             Materials.Tin)
-        .collect(Collectors.toList());
+        .toList();
 
     private static final HashMap<String, Long> plasmaEnergyMap = new HashMap<>() {
 

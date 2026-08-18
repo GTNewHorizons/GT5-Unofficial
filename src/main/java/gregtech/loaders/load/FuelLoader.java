@@ -1,5 +1,6 @@
 package gregtech.loaders.load;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.BloodMagic;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.recipe.RecipeMaps.extremeNaquadahReactorFuels;
@@ -25,7 +26,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeConstants;
 
@@ -33,7 +33,7 @@ public class FuelLoader implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Initializing various Fuels.");
+        GT_FML_LOGGER.debug("GTMod: Initializing various Fuels.");
         ItemList.sBlueVitriol = GTFluidFactory
             .of("solution.bluevitriol", "Blue Vitriol Water Solution", FluidState.LIQUID, 295);
         ItemList.sNickelSulfate = GTFluidFactory

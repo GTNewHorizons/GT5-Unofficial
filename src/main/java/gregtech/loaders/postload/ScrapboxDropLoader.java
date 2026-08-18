@@ -1,5 +1,7 @@
 package gregtech.loaders.postload;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -10,7 +12,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -18,7 +19,7 @@ public class ScrapboxDropLoader implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: (re-)adding Scrapbox Drops.");
+        GT_FML_LOGGER.debug("GTMod: (re-)adding Scrapbox Drops.");
 
         GTModHandler.addScrapboxDrop(9.5F, new ItemStack(Items.wooden_hoe));
         GTModHandler.addScrapboxDrop(2.0F, new ItemStack(Items.wooden_axe));

@@ -8,8 +8,9 @@ import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_LuV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_MV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.SimpleDustWasher_ZPM;
+import static gregtech.api.recipe.RecipeMaps.simpleWasherRecipes;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
+import static gtnhlanth.util.LanthanidesRecipeOutputs.convertDecomposition;
 
 import net.minecraft.item.ItemStack;
 
@@ -135,7 +136,7 @@ public class GregtechSimpleWasher {
                 continue;
             }
 
-            dustClean = GTOreDictUnificator.get(OrePrefixes.dust, ml, 1L);
+            dustClean = convertDecomposition(GTOreDictUnificator.get(OrePrefixes.dust, ml, 1L))[0];
             dustDirty = GTOreDictUnificator.get(OrePrefixes.dustImpure, ml, 1L);
             dustPure = GTOreDictUnificator.get(OrePrefixes.dustPure, ml, 1L);
             addSimpleWashRecipe(dustDirty, dustClean);
@@ -146,7 +147,7 @@ public class GregtechSimpleWasher {
             if (ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) {
                 continue;
             }
-            dustClean = werkstoffStack(ml, OrePrefixes.dust);
+            dustClean = convertDecomposition(werkstoffStack(ml, OrePrefixes.dust))[0];
             dustDirty = werkstoffStack(ml, OrePrefixes.dustImpure);
             dustPure = werkstoffStack(ml, OrePrefixes.dustPure);
             addSimpleWashRecipe(dustDirty, dustClean);
@@ -160,7 +161,7 @@ public class GregtechSimpleWasher {
             if (!ml.hasShape(Shapes.dust)) {
                 continue;
             }
-            dustClean = MaterialLibAPI.getStack(ml, Shapes.dust, 1);
+            dustClean = convertDecomposition(MaterialLibAPI.getStack(ml, Shapes.dust, 1))[0];
             if (ml.hasShape(Shapes.dustImpure)) {
                 addSimpleWashRecipe(MaterialLibAPI.getStack(ml, Shapes.dustImpure, 1), dustClean);
             }

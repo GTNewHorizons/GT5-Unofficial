@@ -1,5 +1,6 @@
 package gtPlusPlus.core.handler;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 
@@ -22,7 +23,6 @@ import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
-import gregtech.api.util.GTLog;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -224,8 +224,8 @@ public class AchievementHandler {
 
         achievement.registerStat();
         if (GTPPCore.DEVENV) {
-            GTLog.out.println("achievement." + textId + "=");
-            GTLog.out.println("achievement." + textId + ".desc=");
+            GT_FML_LOGGER.debug("achievement.{}=", textId);
+            GT_FML_LOGGER.debug("achievement.{}.desc=", textId);
         }
 
         this.achievementList.put(textId, achievement);

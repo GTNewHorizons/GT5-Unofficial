@@ -41,7 +41,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
             if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.spring, material, 1L),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { " s ", "fSx", " S ", 'S',
                         MaterialParts.craftIngredient(OrePrefixes.stickLong, material) });
             }

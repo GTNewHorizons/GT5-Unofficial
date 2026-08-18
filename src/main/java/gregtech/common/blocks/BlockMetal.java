@@ -17,6 +17,7 @@ import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.client.DynamicLangManager;
 
 /// One of 13 hand-curated batches of up to 16 [Material]s (metadata = array index). Every batch is instantiated
 /// and registers every slot, whether or not its materials cut over to the MaterialLib `block` shape (see
@@ -51,6 +52,7 @@ public class BlockMetal extends BlockStorage {
             if (MaterialUtils.oldSubId(material) > 0) {
                 ItemStack cutover = MaterialParts.stack(aPrefix, material, 1);
                 ItemStack canonicalStack = cutover != null ? cutover : new ItemStack(this, 1, i);
+                DynamicLangManager.addStack(new ItemStack(this, 1, i));
                 if (aPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(aPrefix, material, canonicalStack);
                 } else {

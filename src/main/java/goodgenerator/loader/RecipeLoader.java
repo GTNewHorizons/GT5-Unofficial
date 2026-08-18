@@ -938,7 +938,8 @@ public class RecipeLoader {
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.Raw_Cylinder.get(1),
-            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PPP", "PFP", "PPP", 'P', ItemRefer.Special_Ceramics_Plate.get(1), 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1) });
 
@@ -999,7 +1000,8 @@ public class RecipeLoader {
 
         GTModHandler.addCraftingRecipe(
             ItemList.UniversalChemicalFuelEngine.get(1),
-            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "TZT", "ALB", "WGW", 'T', MaterialLibAPI.getStack(Materials.Titanium, Shapes.plateDense, 1),
                 'Z', "circuitUltimate", 'A', ItemList.LargeCombustionEngine.get(1), 'B',
                 ItemList.ExtremeCombustionEngine.get(1), 'L', ItemList.Hull_LuV, 'W',
@@ -1031,7 +1033,7 @@ public class RecipeLoader {
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.Plastic_Case.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "CDC", "PCP", 'P',
                 MaterialLibAPI.getStack(Materials.PolyvinylChloride, Shapes.stick, 1), 'C',
                 GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Plastic, 1), 'D', "dyeCyan" });
@@ -1151,7 +1153,8 @@ public class RecipeLoader {
         // Neutron Accelerator ULV
         GTModHandler.addCraftingRecipe(
             Loaders.NeutronAccelerators[0].copy(),
-            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "WPM", "CHI", "WPM", 'W', GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Lead, 1),
                 'P', MaterialLibAPI.getStack(Materials.Lead, Shapes.plate, 1), 'M',
                 MaterialLibAPI.getStack(Materials.Lead, Shapes.rotor, 1), 'C',
@@ -1161,7 +1164,8 @@ public class RecipeLoader {
         // Neutron Accelerator LV
         GTModHandler.addCraftingRecipe(
             Loaders.NeutronAccelerators[1].copy(),
-            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "WPM", "CHI", "WPM", 'W',
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.RedAlloy, 1), 'P',
                 MaterialLibAPI.getStack(Materials.Lead, Shapes.plateDouble, 1), 'M', ItemList.Electric_Motor_LV, 'C',
@@ -1390,7 +1394,8 @@ public class RecipeLoader {
 
         GTModHandler.addCraftingRecipe(
             ItemRefer.Neutron_Source.get(1),
-            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED
+                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { " P ", "PUP", " P ", 'P', MaterialLibAPI.getStack(Materials.Steel, Shapes.plateDense, 1),
                 'U', ItemRefer.High_Density_Uranium.get(1) });
 

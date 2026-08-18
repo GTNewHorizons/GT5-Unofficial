@@ -12,14 +12,13 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_FACTORY_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_FACTORY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_FACTORY_GLOW;
 import static gregtech.api.enums.TickTime.SECOND;
+import static gregtech.api.recipe.RecipeMaps.simpleWasherRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -43,6 +46,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.casing.Casings;
@@ -84,8 +88,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private static final int OFFSET_Z = 1;
 
     private static final UITexture[] MODE_ICONS = { GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_MACERATOR, // mac wash
-                                                                                                            // thermal
-                                                                                                            // mac
+        // thermal
+        // mac
         GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_WASHER, // mac wash mac centri
         GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_CENTRIFUGE, // mac mac centri
         GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_IOF_SIFTER, // mac wash sift
@@ -113,7 +117,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 { " FFF       FFF ", " AHF       FIA ", " AHFJ     JFIA ", " AHFFJJGJJFFIA ", " AHFFDDDDDFFIA ", " AHF       FIA ", " FHF       FIF ", "JFHFJ     JFIFJ", "JFFFJDDDDDJFFFJ" },
                 { " FFF       FFF ", " FAF       FAF ", " FAFF     FFAF ", " FAFFFF FFFFAF ", " FAFFDDDDDFFAF ", " FAFFDDDDDFFAF ", " FFFFDDDDDFFFF ", " FFFFDDDDDFFFF ", "JFFFJDDDDDJFFFJ" },
                 { "               ", "               ", "               ", "               ", "     DDDDD     ", "    GG   GG    ", "    G     G    ", "  J G     G J  ", " JJJG     GJJJ " } })
-            //spotless:on
+        //spotless:on
         .addElement('A', chainAllGlasses())
         .addElement('B', Casings.TitaniumGearBoxCasing.asElement())
         .addElement('C', Casings.GrateMachineCasing.asElement())
@@ -139,7 +143,13 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private static final IntOpenHashSet isImpureDust = new IntOpenHashSet();
     private static final IntOpenHashSet isThermal = new IntOpenHashSet();
     private static final IntOpenHashSet isOre = new IntOpenHashSet();
+    private static final IntOpenHashSet isVoidableStoneDust = new IntOpenHashSet();
     private static boolean isInit = false;
+
+    /// The dusts the stone-voiding toggle discards. Held as materials rather than stacks because the shape items
+    /// do not exist yet when this class initializes; [#initHash] resolves them.
+    private static final Material[] VOIDABLE_STONE_MATERIALS = { Materials.Stone, Materials.Netherrack,
+        Materials.Endstone, Materials.Marble, Materials.GraniteRed };
 
     private ItemStack[] midProduct;
     private ProcessingMode mode = ProcessingMode.MAC_WASH_THERMAL_MAC;
@@ -171,6 +181,10 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             else if (name.startsWith("dustImpure")) registerOrePrefix(name, isImpureDust);
             else if (name.startsWith("dustPure")) registerOrePrefix(name, isPureDust);
             else if (name.startsWith("ore") || name.startsWith("rawOre")) registerOrePrefix(name, isOre);
+        }
+
+        for (Material material : VOIDABLE_STONE_MATERIALS) {
+            isVoidableStoneDust.add(GTUtility.stackToInt(MaterialLibAPI.getStack(material, Shapes.dust, 1)));
         }
     }
 
@@ -593,9 +607,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private void doCompress(List<ItemStack> aList) {
         HashMap<Integer, Integer> merged = new HashMap<>();
         for (ItemStack stack : aList) {
-            if (doesVoidStone
-                && GTUtility.areStacksEqual(MaterialLibAPI.getStack(Materials.Stone, Shapes.dust, 1), stack)) continue;
             int id = GTUtility.stackToInt(stack);
+            if (doesVoidStone && isVoidableStoneDust.contains(id)) continue;
             if (id != 0) {
                 merged.merge(id, stack.stackSize, Integer::sum);
             }
@@ -653,11 +666,11 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
             .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
-            .beginStructureBlock(13, 15, 9, false)
-            .addController("Front center")
+            .beginStructureBlock(15, 9, 13, false)
+            .addController("Front center, 3rd layer")
             .addCasing("462", "Advanced Iridium Plated Machine Casing", false)
             .addCasing("0-163", "Clean Stainless Steel Machine Casing", false)
-            .addCasing("96", "Iridium Sheetmetal", false)
+            .addCasing("98", "Iridium Sheetmetal", false)
             .addCasing("90", "Any Tiered Glass", false)
             .addCasing("23", "Stainless Steel Frame Box", false)
             .addCasing("7", "Awakened Draconium Coil Block", false)
@@ -680,64 +693,13 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
     private static List<String> getDisplayMode(ProcessingMode mode) {
         final EnumChatFormatting GRAY = EnumChatFormatting.GRAY;
-        final String ARROW = " " + GRAY + "-> ";
-        final String CRUSH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Macerate");
-        final String WASH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Ore_Washer")
-            .replace(" ", " " + GRAY);
-        final String THERMAL = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Thermal_Centrifuge")
-            .replace(" ", " " + GRAY);
-        final String CENTRIFUGE = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Centrifuge");
-        final String SIFTER = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Sifter");
-        final String CHEM_WASH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Chemical_Bathing")
-            .replace(" ", " " + GRAY);
-        final String HAMMER = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Forge_Hammer");
-        final String SIM_WASHER = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Simple_Washer");
-
         List<String> lines = new ArrayList<>();
-
-        switch (mode) {
-            case MAC_WASH_THERMAL_MAC -> {
-                lines.add(GRAY + CRUSH + ARROW);
-                lines.add(GRAY + WASH + ARROW);
-                lines.add(GRAY + THERMAL + ARROW);
-                lines.add(GRAY + CRUSH + ' ');
-            }
-            case MAC_WASH_MAC_CENTRI -> {
-                lines.add(GRAY + CRUSH + ARROW);
-                lines.add(GRAY + WASH + ARROW);
-                lines.add(GRAY + CRUSH + ARROW);
-                lines.add(GRAY + CENTRIFUGE + ' ');
-            }
-            case MAC_MAC_CENTRI -> {
-                lines.add(GRAY + CRUSH + ARROW);
-                lines.add(GRAY + CRUSH + ARROW);
-                lines.add(GRAY + CENTRIFUGE + ' ');
-            }
-            case MAC_WASH_SIFT -> {
-                lines.add(GRAY + CRUSH + ARROW);
-                lines.add(GRAY + WASH + ARROW);
-                lines.add(GRAY + SIFTER + ' ');
-            }
-            case MAC_CHEM_MAC_CENTRI -> {
-                lines.add(GRAY + CRUSH + ARROW);
-                lines.add(GRAY + CHEM_WASH + ARROW);
-                lines.add(GRAY + CRUSH + ARROW);
-                lines.add(GRAY + CENTRIFUGE + ' ');
-            }
-            case MAC_CHEM_THERMAL_MAC -> {
-                lines.add(GRAY + CRUSH + ARROW);
-                lines.add(GRAY + CHEM_WASH + ARROW);
-                lines.add(GRAY + THERMAL + ARROW);
-                lines.add(GRAY + CRUSH + ' ');
-            }
-            case FORGE_FORGE_SIMPLEWASH -> {
-                lines.add(GRAY + HAMMER + ARROW);
-                lines.add(GRAY + HAMMER + ARROW);
-                lines.add(GRAY + SIM_WASHER + ' ');
-            }
-            default -> lines.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.WRONG_MODE"));
+        String[] steps = mode.stepKeys;
+        for (int i = 0; i < steps.length; i++) {
+            String step = StatCollector.translateToLocalFormatted(steps[i])
+                .replace(" ", " " + GRAY);
+            lines.add(GRAY + step + (i < steps.length - 1 ? " " + GRAY + "-> " : " "));
         }
-
         lines.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor2", getRecipeTickTime(mode) / 20));
         return lines;
     }
@@ -782,10 +744,26 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             return;
         }
         mode = mode.next();
-        GTUtility.sendChatTrans(
-            aPlayer,
-            StatCollector.translateToLocal("GT5U.MULTI_MACHINE_CHANGE"),
-            String.join("", getDisplayMode(mode)));
+        GTUtility.sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", getDisplayModeComponent(mode));
+    }
+
+    /**
+     * Lazily-translated equivalent of {@link #getDisplayMode(ProcessingMode)}, for chat messages sent to a specific
+     * player. getDisplayMode itself is only used client-side (tooltips/WAILA/GUI), where eager translation is fine.
+     */
+    private static IChatComponent getDisplayModeComponent(ProcessingMode mode) {
+        ChatStyle gray = new ChatStyle().setColor(EnumChatFormatting.GRAY);
+        IChatComponent result = new ChatComponentText("");
+
+        String[] steps = mode.stepKeys;
+        for (int i = 0; i < steps.length; i++) {
+            if (i > 0) result.appendSibling(new ChatComponentText(" -> ").setChatStyle(gray));
+            result.appendSibling(new ChatComponentTranslation(steps[i]).setChatStyle(gray));
+        }
+        result.appendText(" ")
+            .appendSibling(new ChatComponentTranslation("GT5U.machines.oreprocessor2", getRecipeTickTime(mode) / 20));
+
+        return result;
     }
 
     @Override
@@ -825,18 +803,16 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
                 + EnumChatFormatting.BLUE
                 + tag.getInteger("currentParallelism")
                 + EnumChatFormatting.RESET);
-        currenttip.add(StatCollector.translateToLocal("GT5U.multiblock.runningMode"));
-        currenttip.addAll(getDisplayMode(ProcessingMode.fromOrdinal(tag.getInteger("machineMode"))));
-        currenttip.add(
+        list.add(StatCollector.translateToLocal("GT5U.multiblock.runningMode"));
+        list.addAll(getDisplayMode(ProcessingMode.fromOrdinal(tag.getInteger("machineMode"))));
+        list.add(
             StatCollector
                 .translateToLocalFormatted("GT5U.machines.oreprocessor.void", tag.getBoolean("doesVoidStone")));
     }
@@ -847,9 +823,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("machineMode", mode.ordinal());
         tag.setBoolean("doesVoidStone", doesVoidStone);
         tag.setInteger("currentParallelism", currentParallelism);
@@ -857,15 +832,25 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
     private enum ProcessingMode {
 
-        MAC_WASH_THERMAL_MAC,
-        MAC_WASH_MAC_CENTRI,
-        MAC_MAC_CENTRI,
-        MAC_WASH_SIFT,
-        MAC_CHEM_MAC_CENTRI,
-        MAC_CHEM_THERMAL_MAC,
-        FORGE_FORGE_SIMPLEWASH;
+        MAC_WASH_THERMAL_MAC(KEY_MACERATE, KEY_ORE_WASHER, KEY_THERMAL_CENTRIFUGE, KEY_MACERATE),
+        MAC_WASH_MAC_CENTRI(KEY_MACERATE, KEY_ORE_WASHER, KEY_MACERATE, KEY_CENTRIFUGE),
+        MAC_MAC_CENTRI(KEY_MACERATE, KEY_MACERATE, KEY_CENTRIFUGE),
+        MAC_WASH_SIFT(KEY_MACERATE, KEY_ORE_WASHER, KEY_SIFTER),
+        MAC_CHEM_MAC_CENTRI(KEY_MACERATE, KEY_CHEMICAL_BATHING, KEY_MACERATE, KEY_CENTRIFUGE),
+        MAC_CHEM_THERMAL_MAC(KEY_MACERATE, KEY_CHEMICAL_BATHING, KEY_THERMAL_CENTRIFUGE, KEY_MACERATE),
+        FORGE_FORGE_SIMPLEWASH(KEY_FORGE_HAMMER, KEY_FORGE_HAMMER, KEY_SIMPLE_WASHER);
 
         private static final ProcessingMode[] VALUES = values();
+
+        /**
+         * Translation keys for each processing step, shared by {@link #getDisplayMode} and
+         * {@link #getDisplayModeComponent}.
+         */
+        final String[] stepKeys;
+
+        ProcessingMode(String... stepKeys) {
+            this.stepKeys = stepKeys;
+        }
 
         public static ProcessingMode fromOrdinal(int ordinal) {
             if (0 <= ordinal && ordinal < VALUES.length) {
@@ -878,6 +863,15 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             return fromOrdinal(this.ordinal() + 1);
         }
     }
+
+    private static final String KEY_MACERATE = "GT5U.machines.oreprocessor.Macerate";
+    private static final String KEY_ORE_WASHER = "GT5U.machines.oreprocessor.Ore_Washer";
+    private static final String KEY_THERMAL_CENTRIFUGE = "GT5U.machines.oreprocessor.Thermal_Centrifuge";
+    private static final String KEY_CENTRIFUGE = "GT5U.machines.oreprocessor.Centrifuge";
+    private static final String KEY_SIFTER = "GT5U.machines.oreprocessor.Sifter";
+    private static final String KEY_CHEMICAL_BATHING = "GT5U.machines.oreprocessor.Chemical_Bathing";
+    private static final String KEY_FORGE_HAMMER = "GT5U.machines.oreprocessor.Forge_Hammer";
+    private static final String KEY_SIMPLE_WASHER = "GT5U.machines.oreprocessor.Simple_Washer";
 
     @Override
     public boolean supportsSingleRecipeLocking() {

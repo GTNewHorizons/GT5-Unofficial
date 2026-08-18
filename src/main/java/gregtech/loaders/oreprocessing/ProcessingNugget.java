@@ -87,10 +87,10 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                 .recipeCategory(RecipeCategories.alloySmelterMolding)
                 .addTo(alloySmelterRecipes);
             Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-            if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
+            if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV && material != Materials.Unstable) {
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.nugget, material, 8L),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "sI ", 'I', MaterialParts.craftIngredient(OrePrefixes.ingot, material) });
             }
         }

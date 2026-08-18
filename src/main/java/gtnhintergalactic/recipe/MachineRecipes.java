@@ -18,7 +18,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.ItemRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.Circuits;
 import gregtech.api.enums.ItemList;
@@ -371,9 +370,8 @@ public class MachineRecipes implements Runnable {
             256,
             4000000,
             4,
-            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1),
-                new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 10782),
-                new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 1187),
+            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1), ItemList.AssemblingMachineUV.get(4),
+                ItemList.Machine_UV_CircuitAssembler.get(4),
                 MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.gearGt, 8),
                 MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.gearGtSmall, 16),
                 ItemList.Robot_Arm_UHV.get(8), ItemList.Conveyor_Module_UHV.get(16), highComputationStationT3_32,
@@ -394,9 +392,8 @@ public class MachineRecipes implements Runnable {
             2048,
             64000000,
             4,
-            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1),
-                new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 10784),
-                new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 12091),
+            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1), ItemList.AssemblingMachineUEV.get(4),
+                ItemList.CircuitAssemblerUEV.get(4),
                 MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.gearGt, 8),
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.protohalkonite, 16),
                 ItemList.Robot_Arm_UIV.get(8), ItemList.Conveyor_Module_UIV.get(16), highComputationStationT4_32,
@@ -415,9 +412,8 @@ public class MachineRecipes implements Runnable {
             4096,
             256000000,
             4,
-            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1),
-                new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 10786),
-                new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 12093),
+            new Object[] { ItemList.SpaceElevatorBaseCasing.get(1), ItemList.AssemblingMachineUMV.get(4),
+                ItemList.CircuitAssemblerUMV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 8),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Magmatter, 8),
                 GTOreDictUnificator
@@ -434,52 +430,6 @@ public class MachineRecipes implements Runnable {
             ItemList.SpaceElevatorModuleAssemblerT3.get(1),
             2 * MINUTE,
             (int) TierEU.RECIPE_UXV);
-
-        // TEMPORARY COMMENT-OUT UNTIL FEATURES ARE FULLY INTEGRATED TO PREVENT CRAFTING
-        // // Research Module
-        // TTRecipeAdder.addResearchableAssemblylineRecipe(
-        // new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 1, 11012),
-        // 512000,
-        // 512,
-        // 16000000,
-        // 4,
-        // new Object[] { CustomItemList.Machine_Multi_Research.get(4), ItemList.Sensor_UHV.get(4),
-        // new Object[] { Circuits.UHV.getIngredient(), 16 },
-        // MaterialLibAPI.getStack(Materials.Infinity, Shapes.gearGt, 4),
-        // GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 4),
-        // MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.wireFine, 64),
-        // MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.wireFine, 64),
-        // metaStableOgScrew_64,
-        // GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 32) },
-        // new FluidStack[] { MaterialUtils.anyFluid(Materials.Indalloy140, 32 * INGOTS),
-        // MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, (int) (16
-        // * INGOTS)), MaterialUtils.fluid(Materials.UUMatter, 8_000),
-        // MaterialLibAPI.getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, (int)
-        // (4_000)) },
-        // ItemList.SpaceElevatorModuleResearch.get(1),
-        // 2 * MINUTE,
-        // (int) TierEU.RECIPE_UEV);
-        //
-        // // Project Manager Module
-        // TTRecipeAdder.addResearchableAssemblylineRecipe(
-        // new ItemStack(GameRegistry.findItem("miscutils", "blockProjectBench"), 1),
-        // 256000,
-        // 512,
-        // 1000000,
-        // 4,
-        // new Object[] { new ItemStack(GameRegistry.findItem("miscutils", "blockProjectBench"), 4),
-        // ItemList.Emitter_UV.get(2), ItemList.Sensor_UV.get(2),
-        // new Object[] { Circuits.UV.getIngredient(), 16 },
-        // MaterialLibAPI.getStack(Materials.Neutronium, Shapes.gearGt, 4),
-        // GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 4),
-        // new ItemStack(GameRegistry.findItem("structurelib", "item.structurelib.constructableTrigger"), 64),
-        // titaniumBetaCScrew_64, },
-        // new FluidStack[] { MaterialUtils.anyFluid(Materials.Indalloy140, 32 * INGOTS),
-        // MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, (int) (16 *
-        // INGOTS)), MaterialUtils.fluid(Materials.UUMatter, 2_000) },
-        // ItemList.SpaceElevatorModuleManager.get(1),
-        // 2 * MINUTE,
-        // (int) TierEU.RECIPE_UHV);
 
         // Miner Module MK-I
         TTRecipeAdder.addResearchableAssemblylineRecipe(

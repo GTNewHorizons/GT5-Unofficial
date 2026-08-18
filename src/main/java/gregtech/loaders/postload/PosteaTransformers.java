@@ -1,5 +1,6 @@
 package gregtech.loaders.postload;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.OrePrefixes.___placeholder___;
 
 import java.util.ArrayList;
@@ -26,7 +27,6 @@ import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
@@ -41,14 +41,12 @@ import gregtech.api.enums.materials.Shapes;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.MaterialParts;
-import gregtech.api.util.GTLog;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.blocks.FrameShapeBlock;
 import gregtech.common.blocks.PipeShapeBlock;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.loaders.postload.GtppItemCutoverTable.Entry;
-import vexatos.tgregworks.reference.Mods;
 
 public class PosteaTransformers implements Runnable {
 
@@ -72,6 +70,7 @@ public class PosteaTransformers implements Runnable {
         registerPTMEGTransformers();
         registerBorosilicateGlassTransformers();
         registerIC2BlocksTransformer();
+        registerBartworksLabPartTransformer();
         registerMaterialLibCutoverTransformers();
         claimMissingMappings();
     }
@@ -87,7 +86,7 @@ public class PosteaTransformers implements Runnable {
         for (String legacyId : transformedIds) {
             BlockReplacementManager.ignoreMissingMapping(legacyId);
         }
-        GTLog.out.println("PosteaTransformers: claimed missing mappings for " + transformedIds.size() + " legacy ids");
+        GT_FML_LOGGER.debug("PosteaTransformers: claimed missing mappings for {} legacy ids", transformedIds.size());
     }
 
     private static void addBlockTransformer(String legacyId, IBlockTransformationHandler handler) {
@@ -159,7 +158,7 @@ public class PosteaTransformers implements Runnable {
         }
 
         if (!unresolved.isEmpty()) {
-            GTMod.GT_FML_LOGGER.error(
+            GT_FML_LOGGER.error(
                 "PosteaTransformers: {} cutover rows no longer resolve; saved stacks of these will be deleted rather than migrated: {}",
                 unresolved.size(),
                 unresolved.subList(0, Math.min(unresolved.size(), MAX_REPORTED_UNRESOLVED_ROWS)));
@@ -280,8 +279,8 @@ public class PosteaTransformers implements Runnable {
             return true;
         });
 
-        GTLog.out
-            .println("PosteaTransformers: registered pipe-family transformers for " + table.size() + " legacy MTE ids");
+        GT_FML_LOGGER
+            .debug("PosteaTransformers: registered pipe-family transformers for {} legacy MTE ids", table.size());
     }
 
     /// Migrates saved legacy `BlockBaseOre` placed/inventory stacks into the equivalent MaterialLib
@@ -308,9 +307,9 @@ public class PosteaTransformers implements Runnable {
                 return true;
             });
         }
-        GTLog.out.println(
-            "PosteaTransformers: registered gtpp ore transformers for " + GtppOreCutoverTable.ENTRIES.length
-                + " legacy blocks");
+        GT_FML_LOGGER.debug(
+            "PosteaTransformers: registered gtpp ore transformers for {} legacy blocks",
+            GtppOreCutoverTable.ENTRIES.length);
     }
 
     private static ItemStack resolveGtppOreCutoverStack(GtppOreCutoverTable.Entry entry) {
@@ -337,7 +336,7 @@ public class PosteaTransformers implements Runnable {
             addBlockReplacement(legacyId, 0, mlBlock, cutover.getItemDamage());
             count++;
         }
-        GTLog.out.println("PosteaTransformers: registered gtpp frame transformers for " + count + " legacy blocks");
+        GT_FML_LOGGER.debug("PosteaTransformers: registered gtpp frame transformers for {} legacy blocks", count);
     }
 
     /// Migrates saved gtPlusPlus per-material part stacks (`miscutils:item*`/`miscutils:block*`, one distinct
@@ -366,9 +365,9 @@ public class PosteaTransformers implements Runnable {
                 });
             }
         }
-        GTLog.out.println(
-            "PosteaTransformers: registered gtpp item transformers for " + GtppItemCutoverTable.ENTRIES.length
-                + " legacy items");
+        GT_FML_LOGGER.debug(
+            "PosteaTransformers: registered gtpp item transformers for {} legacy items",
+            GtppItemCutoverTable.ENTRIES.length);
     }
 
     private static ItemStack resolveGtppCutoverStack(Entry entry) {
@@ -436,9 +435,9 @@ public class PosteaTransformers implements Runnable {
                 return true;
             });
         }
-        GTLog.out.println(
-            "PosteaTransformers: registered werkstoff item transformers for " + LEGACY_WERKSTOFF_ITEM_PREFIXES.length
-                + " legacy items");
+        GT_FML_LOGGER.debug(
+            "PosteaTransformers: registered werkstoff item transformers for {} legacy items",
+            LEGACY_WERKSTOFF_ITEM_PREFIXES.length);
     }
 
     /// Migrates saved placed blocks and item stacks of a cut-over material's legacy storage-block slot (see
@@ -656,14 +655,8 @@ public class PosteaTransformers implements Runnable {
 
     // TODO: Remove this and bio and breakthrough circuits once 2.8 is released.
     private void registerProgrammedCircuitTransformers() {
-        addItemReplacement(
-            "miscutils:item.BioRecipeSelector",
-            GameRegistry.findItem(Mods.GregTech, "gt.integrated_circuit"),
-            true);
-        addItemReplacement(
-            "miscutils:item.T3RecipeSelector",
-            GameRegistry.findItem(Mods.GregTech, "gt.integrated_circuit"),
-            true);
+        addItemReplacement("miscutils:item.BioRecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
+        addItemReplacement("miscutils:item.T3RecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
     }
 
     private void registerPotassiumHydroxideTransformer() {
@@ -827,5 +820,21 @@ public class PosteaTransformers implements Runnable {
             }
             return false;
         });
+    }
+
+    private static void registerBartworksLabPartTransformer() {
+        ItemStackReplacementManager.addTransformationHandler("bartworks:BioLabParts", (name, nbt) -> {
+            // ensure it has the extra tag
+            if (nbt.hasKey("tag")) {
+                var tag = nbt.getCompoundTag("tag");
+                // skip special NEI recipe item for BioLab Clonal Cellular Synthesis
+                if (tag.hasKey("NEI")) return false;
+                for (String key : tag.func_150296_c()) {
+                    if (!key.equals("Name")) tag.removeTag(key);
+                }
+            }
+            return true;
+        });
+
     }
 }

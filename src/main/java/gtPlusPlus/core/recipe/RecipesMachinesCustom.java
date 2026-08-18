@@ -312,7 +312,7 @@ public class RecipesMachinesCustom {
         // Strong Bronze Machine Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Machine_Custom_1.get(2),
-            BITS,
+            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PhP", "PFP", "PwP", 'P', OrePrefixes.plate.ingredient(Materials.Bronze), 'F',
                 OrePrefixes.frameGt.ingredient(Materials.Bronze) });
 
@@ -329,7 +329,7 @@ public class RecipesMachinesCustom {
         // Sturdy Aluminium Machine Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Machine_Custom_2.get(2),
-            BITS,
+            BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PPP", "hFw", "PPP", 'P', OrePrefixes.plate.ingredient(Materials.Aluminium), 'F',
                 OrePrefixes.frameGt.ingredient(Materials.Aluminium) });
 
@@ -395,7 +395,7 @@ public class RecipesMachinesCustom {
         // Alloy Blast Smelter
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Industrial_AlloyBlastSmelter.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "WMW", "PCP", 'P',
                 MaterialLibAPI.getStack(Materials.ZirconiumCarbide, Shapes.plate, 1), 'C', "circuitElite", 'W',
                 OrePrefixes.cableGt04.ingredient(Materials.Tungsten), 'M', ItemList.Machine_IV_AlloySmelter });
@@ -403,7 +403,7 @@ public class RecipesMachinesCustom {
         // Blast Smelter Casing Block
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_BlastSmelter.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PhP", "PFP", "PwP", 'P',
                 MaterialLibAPI.getStack(Materials.ZirconiumCarbide, Shapes.plate, 1), 'F',
                 MaterialLibAPI.getStack(Materials.ZirconiumCarbide, TEBlockShapes.frameGt, 1) });
@@ -421,7 +421,7 @@ public class RecipesMachinesCustom {
         // Blast Smelter Heat Containment Coil
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Coil_BlastSmelter.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PPP", "FCF", "PPP", 'P', MaterialLibAPI.getStack(Materials.Staballoy, Shapes.plate, 1), 'F',
                 MaterialLibAPI.getStack(Materials.Staballoy, TEBlockShapes.frameGt, 1), 'C',
                 ItemList.Casing_Gearbox_Titanium });
@@ -474,7 +474,7 @@ public class RecipesMachinesCustom {
         // Tree Growth Simulator
         GTModHandler.addCraftingRecipe(
             ItemList.TreeGrowSimulator.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "FRF", "PHP", "FXF", 'F', ItemList.Field_Generator_IV, 'R',
                 MaterialLibAPI.getStack(Materials.IncoloyMA956, Shapes.rotor, 1), 'P',
                 MaterialLibAPI.getStack(Materials.Nitinol60, Shapes.plate, 1), 'H',
@@ -501,7 +501,7 @@ public class RecipesMachinesCustom {
         // Thorium Reactor [LFTR]
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ThoriumReactor.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "ABA", "CDC", "EFE", 'A', GregtechItemList.LFTRControlCircuit, 'B',
                 OrePrefixes.cableGt12.ingredient(Materials.Naquadah), 'C',
                 MaterialLibAPI.getStack(Materials.HastelloyN, Shapes.plateDouble, 1), 'D',
@@ -511,7 +511,7 @@ public class RecipesMachinesCustom {
         // Reactor Shield Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Reactor_II.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PdP", "GFG", "PhP", 'P',
                 MaterialLibAPI.getStack(Materials.HastelloyC276, Shapes.plateDouble, 1), 'G',
                 MaterialLibAPI.getStack(Materials.Talonite, Shapes.gearGt, 1), 'F', ItemList.Field_Generator_LV });
@@ -529,7 +529,7 @@ public class RecipesMachinesCustom {
         // Hastelloy-N Reactor Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Reactor_I.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PIP", "IFI", "PIP", 'P',
                 MaterialLibAPI.getStack(Materials.HastelloyN, Shapes.plateDouble, 1), 'I',
                 getModItem(Mods.IndustrialCraft2.ID, "reactorPlatingHeat", 1), 'F',
@@ -546,7 +546,7 @@ public class RecipesMachinesCustom {
         // Reactor Fuel Processing Plant
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Industrial_FuelRefinery.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "CiC", "PXP", "GHG", 'C', "circuitElite", 'P',
                 OrePrefixes.plateDense.ingredient(Materials.TungstenSteel), 'X',
                 GregtechItemList.Gregtech_Computer_Cube, 'G',
@@ -555,7 +555,7 @@ public class RecipesMachinesCustom {
         // Incoloy-DS Fluid Containment Block
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Refinery_Internal.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PHP", "GTG", "PHP", 'P', MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plate, 1), 'H',
                 MaterialLibAPI.getStack(Materials.Staballoy, TEBlockShapes.pipeHuge, 1), 'G',
                 MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.gearGt, 1), 'T', ItemList.Super_Tank_IV });
@@ -563,7 +563,7 @@ public class RecipesMachinesCustom {
         // Hastelloy-N Sealant Block
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Refinery_External.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "ABA", "BFB", "ABA", 'A', MaterialLibAPI.getStack(Materials.IncoloyMA956, Shapes.plate, 1),
                 'B', MaterialLibAPI.getStack(Materials.HastelloyN, Shapes.plate, 1), 'F',
                 MaterialLibAPI.getStack(Materials.HastelloyC276, TEBlockShapes.frameGt, 1) });
@@ -581,7 +581,7 @@ public class RecipesMachinesCustom {
         // Hastelloy-X Structural Block
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Refinery_Structural.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "RGP", "hFw", "PHR", 'R', MaterialLibAPI.getStack(Materials.Inconel792, Shapes.ring, 1), 'G',
                 MaterialLibAPI.getStack(Materials.HastelloyX, Shapes.gearGt, 1), 'P',
                 OrePrefixes.plate.ingredient(Materials.Steel), 'F',
@@ -590,7 +590,7 @@ public class RecipesMachinesCustom {
         // Cold Trap I
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ColdTrap_IV.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PDP", "PCP", "RFR", 'P', MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plate, 1),
                 'D', MaterialLibAPI.getStack(Materials.HastelloyX, Shapes.plateDouble, 1), 'C', ItemList.Casing_IV, 'R',
                 ItemList.Robot_Arm_IV, 'F', ItemList.Casing_FrostProof });
@@ -598,7 +598,7 @@ public class RecipesMachinesCustom {
         // Cold Trap II
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ColdTrap_ZPM.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PDP", "PCP", "RFR", 'P', MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 1),
                 'D', MaterialLibAPI.getStack(Materials.HS188A, Shapes.plateDouble, 1), 'C',
                 GregtechItemList.ColdTrap_IV, 'R', ItemList.Robot_Arm_ZPM, 'F', ItemList.Casing_FrostProof });
@@ -606,7 +606,7 @@ public class RecipesMachinesCustom {
         // Reactor Processing Unit I
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ReactorProcessingUnit_IV.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "FRP", "DCD", "PDF", 'F', ItemList.Field_Generator_HV, 'R', ItemList.Robot_Arm_IV, 'P',
                 MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plate, 1), 'D',
                 MaterialLibAPI.getStack(Materials.HastelloyN, Shapes.plateDouble, 1), 'C',
@@ -615,7 +615,7 @@ public class RecipesMachinesCustom {
         // Reactor Processing Unit II
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ReactorProcessingUnit_ZPM.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "FRP", "DCD", "PDF", 'F', ItemList.Field_Generator_IV, 'R', ItemList.Robot_Arm_ZPM, 'P',
                 MaterialLibAPI.getStack(Materials.Pikyonium64B, Shapes.plate, 1), 'D',
                 MaterialLibAPI.getStack(Materials.HS188A, Shapes.plateDouble, 1), 'C',
@@ -624,7 +624,7 @@ public class RecipesMachinesCustom {
         // Nuclear Salt Processing Plant
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Nuclear_Salt_Processing_Plant.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "ABA", "CDC", "AEA", 'A', OrePrefixes.plate.ingredient(Materials.Osmiridium), 'B',
                 GregtechItemList.ReactorProcessingUnit_IV, 'C',
                 MaterialLibAPI.getStack(Materials.Ruridit, Shapes.plate, 1), 'D', "circuitUltimate", 'E',
@@ -668,7 +668,7 @@ public class RecipesMachinesCustom {
         // Sub-Station External Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Power_SubStation.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "SPS", "PFP", "SPS", 'S', OrePrefixes.screw.ingredient(Materials.Titanium), 'P',
                 MaterialLibAPI.getStack(Materials.Incoloy020, Shapes.plate, 1), 'F',
                 MaterialLibAPI.getStack(Materials.IncoloyMA956, TEBlockShapes.frameGt, 1) });
@@ -676,7 +676,7 @@ public class RecipesMachinesCustom {
         // Power Station Control Node
         GTModHandler.addCraftingRecipe(
             GregtechItemList.PowerSubStation.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "ABA", "CDC", "EAE", 'A', MaterialLibAPI.getStack(Materials.IncoloyMA956, Shapes.plate, 1),
                 'B', GregtechItemList.LFTRControlCircuit, 'C', GregtechItemList.Casing_Power_SubStation, 'D',
                 GregtechItemList.Casing_Vanadium_Redox, 'E',
@@ -765,7 +765,7 @@ public class RecipesMachinesCustom {
         // Aquatic Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_FishPond.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PhP", "EFE", "PwP", 'P',
                 MaterialLibAPI.getStack(Materials.WatertightSteel, Shapes.plate, 1), 'E',
                 MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.plate, 1), 'F',
@@ -785,7 +785,7 @@ public class RecipesMachinesCustom {
         // Zhuhai - Fishing Port
         GTModHandler.addCraftingRecipe(
             ItemList.FishingPort.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PCP", "WFW", "PCP", 'P',
                 MaterialLibAPI.getStack(Materials.WatertightSteel, Shapes.plate, 1), 'C', "circuitElite", 'W',
                 OrePrefixes.wireFine.ingredient(Materials.Electrum), 'F', GregtechItemList.FishTrap });
@@ -1069,7 +1069,7 @@ public class RecipesMachinesCustom {
         // Thermal Boiler
         GTModHandler.addCraftingRecipe(
             ItemList.ThermalBoiler.get(1),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "LCL", "GIG", "LCL", 'L', getModItem(RemoteIO.ID, "tile.machine", 1, 1), 'C',
                 ItemList.Machine_HV_Centrifuge, 'G', OrePrefixes.gearGt.ingredient(Materials.TungstenSteel), 'I',
                 "circuitElite" });
@@ -1077,7 +1077,7 @@ public class RecipesMachinesCustom {
         // Thermal Containment Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_ThermalContainment.get(2),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PSP", "CHC", "PPP", 'P',
                 MaterialLibAPI.getStack(Materials.MaragingSteel350, Shapes.plate, 1), 'S',
                 OrePrefixes.plate.ingredient(Materials.StainlessSteel), 'C', "circuitAdvanced", 'H',

@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
+import bartworks.common.loaders.ItemRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -311,7 +312,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Ash, Shapes.dust, 1))
             .outputChances(10000, 1111)
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.CarbonMonoxide, FluidShapes.fluidGas, 2_000))
-            .duration(4 * SECONDS)
+            .duration(20 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
             .metadata(COIL_HEAT, 1200)
             .addTo(blastFurnaceRecipes);
@@ -852,6 +853,52 @@ public class BlastFurnaceRecipes implements Runnable {
             .metadata(NO_GAS, true)
             .metadata(NO_GAS_CIRCUIT_CONFIG, 1)
             .addTo(BlastFurnaceWithGas);
+
+        // Borosilicate Clearing
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 6))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 1))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 4_000))
+            .duration(5 * SECONDS)
+            .eut((int) TierEU.RECIPE_UV)
+            .metadata(COIL_HEAT, 9000)
+            .addTo(blastFurnaceRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 7))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 2))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 4_000))
+            .duration(5 * SECONDS)
+            .eut((int) TierEU.RECIPE_UHV)
+            .metadata(COIL_HEAT, 10000)
+            .addTo(blastFurnaceRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 8))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 3))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 4_000))
+            .duration(5 * SECONDS)
+            .eut((int) TierEU.RECIPE_UEV)
+            .metadata(COIL_HEAT, 11000)
+            .addTo(blastFurnaceRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 9))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 4))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 4_000))
+            .duration(5 * SECONDS)
+            .eut((int) TierEU.RECIPE_UIV)
+            .metadata(COIL_HEAT, 12000)
+            .addTo(blastFurnaceRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 10))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 5))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HydrofluoricAcidGT5U, FluidShapes.fluidLiquid, 4_000))
+            .duration(5 * SECONDS)
+            .eut((int) TierEU.RECIPE_UMV)
+            .metadata(COIL_HEAT, 13000)
+            .addTo(blastFurnaceRecipes);
     }
 
     public void registerPrimitiveBlastFurnaceRecipes() {

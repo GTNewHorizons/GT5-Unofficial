@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.chemistry;
 
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
@@ -8,8 +10,6 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,9 +23,9 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -199,7 +199,7 @@ public class RecipeLoaderRocketFuels {
     }
 
     private static void addFuelRecipe(Fluid fluid, int fuelValue) {
-        GTPPRecipeMaps.rocketFuels.add(
+        RecipeMaps.rocketFuels.add(
             new GTRecipe(
                 GTValues.emptyItemStackArray,
                 GTValues.emptyItemStackArray,

@@ -27,6 +27,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.util.math.MathUtils;
 
@@ -129,21 +130,21 @@ public class ItemUtils {
         // Tiny Dusts
         GTModHandler.addCraftingRecipe(
             normalDust,
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
         GTModHandler.addCraftingRecipe(
             GTUtility.copyAmount(9, tinyDust),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "D  ", "   ", "   ", 'D', normalDust });
 
         // Small Dusts
         GTModHandler.addCraftingRecipe(
             normalDust,
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
         GTModHandler.addCraftingRecipe(
             GTUtility.copyAmount(4, smallDust),
-            GTModHandler.RecipeBits.BUFFERED,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { " D ", "   ", "   ", 'D', normalDust });
 
         return output;
@@ -185,7 +186,7 @@ public class ItemUtils {
                     value = (t2.modId.isEmpty()) ? Minecraft.ID : modname;
                 }
             } catch (final Exception t3) {
-                t3.printStackTrace();
+                GTplusplus.logger.error(t3);
                 value = "bad modid";
             }
         }

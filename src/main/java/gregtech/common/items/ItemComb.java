@@ -16,6 +16,7 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.ThaumicBases;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
@@ -24,7 +25,6 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.CLEANROOM;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import java.util.Arrays;
 import java.util.List;
@@ -101,7 +101,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
-        for (CombType type : CombType.values()) {
+        for (CombType type : CombType.VALUES) {
             if (type.showInList) {
                 list.add(this.getStackForType(type));
             }
@@ -1021,7 +1021,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                         combOutput = MaterialLibAPI.getStack(Materials.Osmium, Shapes.nugget, 1);
                         fluidInput = volt.getFluidAccordingToCombTier();
                         fluidOutput = MaterialLibAPI
-                            .getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, (int) (2 * INGOTS));
+                            .getFluidStack(Materials.AcidicOsmiumSolution, FluidShapes.fluidLiquid, 1_000);
                         durationTicks = volt.getComplexTime() * 17;
                         eut = volt.getChemicalEnergy();
                         requiresCleanroom = volt.compareTo(Voltage.IV) > 0;
@@ -1031,7 +1031,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                         combOutput = MaterialLibAPI.getStack(Materials.Platinum, Shapes.nugget, 1);
                         fluidInput = volt.getFluidAccordingToCombTier();
                         fluidOutput = MaterialLibAPI
-                            .getFluidStack(Materials.Platinum, FluidShapes.fluidMolten, (int) (2 * INGOTS));
+                            .getFluidStack(Materials.PlatinumConcentrate, FluidShapes.fluidLiquid, 2_000);
                         durationTicks = volt.getComplexTime() * 10;
                         eut = volt.getChemicalEnergy();
                         requiresCleanroom = volt.compareTo(Voltage.HV) > 0;
@@ -1041,7 +1041,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
                         combOutput = MaterialLibAPI.getStack(Materials.Iridium, Shapes.nugget, 1);
                         fluidInput = volt.getFluidAccordingToCombTier();
                         fluidOutput = MaterialLibAPI
-                            .getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, (int) (2 * INGOTS));
+                            .getFluidStack(Materials.AcidicIridiumSolution, FluidShapes.fluidLiquid, 1_000);
                         durationTicks = volt.getComplexTime() * 14;
                         eut = volt.getChemicalEnergy();
                         requiresCleanroom = volt.compareTo(Voltage.EV) > 0;
@@ -1177,6 +1177,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             }
             Product.put(aItem[i], chance[i] / 10000.0f);
         }
+        GTOreDictUnificator.setStackArray(true, true, aItem);
 
         if (volt.compareTo(Voltage.MV) < 0) {
             RecipeManagers.centrifugeManager.addRecipe(40, tComb, Product.build());
@@ -1192,7 +1193,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
     }
 
     public void registerOreDict() {
-        for (CombType comb : CombType.values()) {
+        for (CombType comb : CombType.VALUES) {
             ItemStack tComb = getStackForType(comb);
             GTOreDictUnificator.registerOre(OrePrefixes.beeComb.getName(), tComb);
             OrePrefixes.beeComb.add(tComb);

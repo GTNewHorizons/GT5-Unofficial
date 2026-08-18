@@ -25,6 +25,7 @@ import static net.minecraft.util.EnumChatFormatting.GREEN;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -154,12 +155,12 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
         .build();
 
     private int itemPipeTier = -1;
-    private double discount = 0.0625 * itemPipeTier;
     private int base_parallel = 8;
     private static final FluidStack[] valid_rubbers = {
         MaterialLibAPI.getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, 1),
         MaterialUtils.molten(Materials.Silicone, 1L),
         MaterialLibAPI.getFluidStack(Materials.StyreneButadieneRubber, FluidShapes.fluidMolten, 1) };
+    private static ItemStack SINGULARITY;
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
@@ -168,6 +169,32 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
             @Override
             protected @NotNull ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
                 return super.createParallelHelper(Objects.requireNonNull(recipeAfterAdjustments(recipe)));
+            }
+
+            @Nonnull
+            protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+                if (map == null) {
+                    return Stream.empty();
+                }
+                return map.findRecipeQuery()
+                    .caching(recipeCaching)
+                    .items(inputItems)
+                    .fluids(fluidsAfterAdjustments(inputFluids))
+                    .specialSlot(specialSlotItem)
+                    .cachedRecipe(lastRecipe)
+                    .findAll();
+            }
+
+            private FluidStack[] fluidsAfterAdjustments(FluidStack[] inputFluids) {
+                FluidStack[] copy = new FluidStack[inputFluids.length];
+
+                for (int i = 0; i < inputFluids.length; i++) {
+                    if (inputFluids[i] == null) continue;
+                    copy[i] = inputFluids[i].copy();
+                    copy[i].amount = (int) (Math.ceil((copy[i].amount + 0.5D) / getRubberCostMult()) - 1D);
+                }
+
+                return copy;
             }
         }.setSpeedBonus(1F / 2F)
             .setMaxParallelSupplier(this::getTrueParallel)
@@ -194,22 +221,39 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
         for (int i = 0; i < recipe.mFluidInputs.length; i++) {
             for (FluidStack rubber : valid_rubbers) {
                 if (tRecipe.mFluidInputs[i].isFluidEqual(rubber)) {
-                    ItemStack controllerStack = this.getControllerSlot();
-                    discount = 0.0625 * itemPipeTier;
-                    base_parallel = 8;
-                    if (controllerStack != null && controllerStack.isItemEqual(
-                        UniversalSingularities.isModLoaded()
-                            ? getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L, 5)
-                            : ItemList.Tool_DataStick.get(1))) {
-                        discount = discount + 0.25;
-                        base_parallel = 16;
-                    }
-                    tRecipe.mFluidInputs[i].amount = (int) Math.round(tRecipe.mFluidInputs[i].amount * (1 - discount));
+                    tRecipe.mFluidInputs[i].amount = (int) Math
+                        .round(tRecipe.mFluidInputs[i].amount * getRubberCostMult());
                     return tRecipe;
                 }
             }
         }
         return tRecipe;
+    }
+
+    private double getRubberCostMult() {
+        double discount = 0.0625 * itemPipeTier;
+        base_parallel = 8;
+        if (hasSingularity()) {
+            discount += 0.25;
+            base_parallel = 16;
+        }
+        return 1 - discount;
+    }
+
+    private boolean hasSingularity() {
+        ItemStack controllerStack = this.getControllerSlot();
+        if (controllerStack == null) return false;
+        ItemStack result;
+        if (!UniversalSingularities.isModLoaded()) {
+            result = ItemList.Tool_DataStick.get(1);
+        } else {
+            if (SINGULARITY == null) {
+                SINGULARITY = getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L, 5);
+            }
+            result = SINGULARITY;
+        }
+        assert result != null;
+        return controllerStack.isItemEqual(result);
     }
 
     public MTELatex(final int aID, final String aName, final String aNameRegional) {
@@ -269,7 +313,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
                     + TooltipHelper.coloredText("Multi-Amp & Laser Energy Hatches", GREEN))
             .addSeparator()
             .addInfo(DARK_AQUA + "Make sure to cover up!")
-            .beginStructureBlock(5, 5, 8, false)
+            .beginStructureBlock(5, 8, 5, false)
             .addController("Front bottom center")
             .addCasing("14-36", "Chemically Inert Casing", false)
             .addCasing("32", "Any Tiered Glass", false)
@@ -310,17 +354,12 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
         mCasingAmount = 0;
         clearHatches();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 7, 0, errors)) return;
-        ItemStack controllerStack = this.getControllerSlot();
-        boolean singularityPresent = controllerStack != null && controllerStack.isItemEqual(
-            UniversalSingularities.isModLoaded()
-                ? getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L, 5)
-                : ItemList.Tool_DataStick.get(1));
         checkHasAnyEnergy(errors);
         checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
         checkHasInputHatch(errors);
         checkHasOutputBus(errors);
-        if (!mExoticEnergyHatches.isEmpty() && !singularityPresent) {
+        if (!mExoticEnergyHatches.isEmpty() && !hasSingularity()) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.latex_singularity"));
         }
         checkCasingMin(errors, mCasingAmount, 14);
@@ -349,12 +388,6 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
     @Override
     public boolean supportsInputSeparation() {
         return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-
     }
 
 }

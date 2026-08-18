@@ -14,7 +14,7 @@ import com.ruling_0.materiallib.api.Material;
 import alexiil.mods.load.MinecraftDisplayer;
 import alexiil.mods.load.ProgressDisplayer;
 import cpw.mods.fml.common.ProgressManager;
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.material.MaterialUtils;
 import gregtech.common.OreDictEventContainer;
 import gregtech.loaders.postload.GTPostLoad;
@@ -29,13 +29,13 @@ public class GTCLSCompat {
         try {
             cpwProgressBar = Class.forName("cpw.mods.fml.common.ProgressManager$ProgressBar");
         } catch (ClassNotFoundException ex) {
-            GTMod.GT_FML_LOGGER.catching(ex);
+            GTLoggers.GT_FML_LOGGER.catching(ex);
         }
         try {
             progressBarStep = cpwProgressBar.getDeclaredField("step");
             progressBarStep.setAccessible(true);
         } catch (NoSuchFieldException ex) {
-            GTMod.GT_FML_LOGGER.catching(ex);
+            GTLoggers.GT_FML_LOGGER.catching(ex);
         }
     }
 
@@ -60,28 +60,27 @@ public class GTCLSCompat {
                 try {
                     ProgressDisplayer.displayProgress(materialName, (float) currentStep / sizeStep);
                 } catch (IOException e) {
-                    GTMod.GT_FML_LOGGER.error("While updating progression", e);
+                    GTLoggers.GT_FML_LOGGER.error("While updating progression", e);
                 }
                 try {
                     progressBarStep.set(progressBar, currentStep);
                 } catch (IllegalAccessException iae) {
-                    GTMod.GT_FML_LOGGER.error("While updating intermediate progression steps number", iae);
+                    GTLoggers.GT_FML_LOGGER.error("While updating intermediate progression steps number", iae);
                 }
                 progressBar.step(materialName);
             }
             if (nextBakingMsgAt < now) {
                 nextBakingMsgAt = now + bakingMsgEvery;
-                GTMod.GT_FML_LOGGER
-                    .info(String.format("%s - Baking: %d%%", materialsType, currentStep * 100 / sizeStep));
+                GTLoggers.GT_FML_LOGGER.info("{} - Baking: {}%", materialsType, currentStep * 100 / sizeStep);
             }
             action.accept(m);
             currentStep += 1;
         }
-        GTMod.GT_FML_LOGGER.info(String.format("%s - Baking: Done", materialsType));
+        GTLoggers.GT_FML_LOGGER.info("{} - Baking: Done", materialsType);
         try {
             progressBarStep.set(progressBar, currentStep);
         } catch (IllegalAccessException iae) {
-            GTMod.GT_FML_LOGGER.error("While updating final progression steps number", iae);
+            GTLoggers.GT_FML_LOGGER.error("While updating final progression steps number", iae);
         }
     }
 
@@ -115,10 +114,10 @@ public class GTCLSCompat {
         MinecraftDisplayer.isReplacingVanillaMaterials = false;
         try {
             ProgressDisplayer.displayProgress(
-                StatCollector.translateToLocal("gt.loading.progress.post-init.loading-gt"),
+                StatCollector.translateToLocal("gt.loading.progress.post_init.loading_gt"),
                 MinecraftDisplayer.getLastPercent());
         } catch (IOException e) {
-            GTMod.GT_FML_LOGGER.error("Exception caught when updating loading screen", e);
+            GTLoggers.GT_FML_LOGGER.error("Exception caught when updating loading screen", e);
         }
     }
 }

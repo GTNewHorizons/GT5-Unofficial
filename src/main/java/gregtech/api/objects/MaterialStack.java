@@ -32,11 +32,13 @@ public class MaterialStack implements Cloneable {
     @Override
     public boolean equals(Object object) {
         if (object == this) return true;
-        if (object == null) return false;
-        if (object instanceof Material) return object == mMaterial;
-        if (object instanceof MaterialStack stack)
-            return stack.mMaterial == mMaterial && (mAmount < 0 || stack.mAmount < 0 || stack.mAmount == mAmount);
-        return false;
+        return switch (object) {
+            case null -> false;
+            case Material material -> material == mMaterial;
+            case MaterialStack stack -> stack.mMaterial == mMaterial
+                && (mAmount < 0 || stack.mAmount < 0 || stack.mAmount == mAmount);
+            default -> false;
+        };
     }
 
     @Override

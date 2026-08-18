@@ -136,7 +136,7 @@ public class MaterialFix {
                     .addTo(benderRecipes);
                 GTModHandler.addCraftingRecipe(
                     MaterialLibAPI.getStack(ml, Shapes.plateDouble, 1),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "P", "P", "h", 'P', MaterialLibAPI.getStack(ml, Shapes.plate, 1) });
             }
             if (generatesAll(ml, OrePrefixes.plateTriple, OrePrefixes.plate)) {
@@ -160,7 +160,7 @@ public class MaterialFix {
             if (generatesAll(ml, OrePrefixes.plateTriple, OrePrefixes.plate, OrePrefixes.plateDouble)) {
                 GTModHandler.addCraftingRecipe(
                     MaterialLibAPI.getStack(ml, Shapes.plateTriple, 1),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "B", "P", "h", 'P', MaterialLibAPI.getStack(ml, Shapes.plate, 1), 'B',
                         MaterialLibAPI.getStack(ml, Shapes.plateDouble, 1) });
             }
@@ -194,13 +194,13 @@ public class MaterialFix {
             if (generatesAll(ml, OrePrefixes.stickLong, OrePrefixes.stick)) {
                 GTModHandler.addCraftingRecipe(
                     MaterialLibAPI.getStack(ml, Shapes.stickLong, 1),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "PhP", 'P', MaterialLibAPI.getStack(ml, Shapes.stick, 1) });
             }
             if (generatesAll(ml, OrePrefixes.spring, OrePrefixes.stickLong)) {
                 GTModHandler.addCraftingRecipe(
                     MaterialLibAPI.getStack(ml, Shapes.spring, 1),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { " s ", "fPx", " P ", 'P', MaterialLibAPI.getStack(ml, Shapes.stickLong, 1) });
                 GTValues.RA.stdBuilder()
                     .itemInputs(MaterialLibAPI.getStack(ml, Shapes.stickLong, 1))
@@ -213,7 +213,7 @@ public class MaterialFix {
             if (generatesAll(ml, OrePrefixes.springSmall, OrePrefixes.stick)) {
                 GTModHandler.addCraftingRecipe(
                     MaterialLibAPI.getStack(ml, Shapes.springSmall, 1),
-                    GTModHandler.RecipeBits.BUFFERED,
+                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { " s ", "fPx", 'P', MaterialLibAPI.getStack(ml, Shapes.stick, 1) });
                 GTValues.RA.stdBuilder()
                     .itemInputs(MaterialLibAPI.getStack(ml, Shapes.stick, 1))

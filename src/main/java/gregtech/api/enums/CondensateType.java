@@ -3,6 +3,7 @@ package gregtech.api.enums;
 import java.util.function.Supplier;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -14,7 +15,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.fluid.IGTFluidBuilder;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.Lazy;
 import gregtech.common.fluid.GTFluid;
 import gregtech.common.items.GTItemCell;
@@ -129,6 +129,7 @@ public enum CondensateType {
     // spotless:on
     ;
 
+    public static final CondensateType[] VALUES = values();
     private final String id;
     private final Lazy<Material> material;
     private final int unit;
@@ -169,11 +170,11 @@ public enum CondensateType {
     }
 
     public String getAbbrevName() {
-        return GTUtility.translate("abbrev.entangled_" + id);
+        return StatCollector.translateToLocal("abbrev.entangled_" + id);
     }
 
     public static void registerFluids() {
-        for (CondensateType type : values()) {
+        for (CondensateType type : VALUES) {
             Material material = type.getMaterial();
             IGTFluidBuilder builder = GTFluidFactory.builder("entangled_" + type.id)
                 .withColorRGBA(MaterialUtils.rgba(material))
@@ -185,7 +186,7 @@ public enum CondensateType {
                 // order, so build as addGTFluidMolten/FluidGT6.run() does instead of reading its icons.
                 builder.withTextures(
                     new ResourceLocation(
-                        "miscutils",
+                        Mods.ModIDs.G_T_PLUS_PLUS,
                         "fluids/fluid.molten." + MaterialUtils.customTextureSetName(material)),
                     null);
             } else {
@@ -207,7 +208,7 @@ public enum CondensateType {
     }
 
     public static void registerRecipes() {
-        for (CondensateType type : values()) {
+        for (CondensateType type : VALUES) {
             GTValues.RA.stdBuilder()
                 .fluidInputs(type.source.get())
                 .fluidOutputs(new FluidStack(type.entangledFluid, type.unit))
@@ -218,7 +219,7 @@ public enum CondensateType {
     }
 
     public static CondensateType getCondensateType(Fluid fluid) {
-        for (CondensateType type : values()) {
+        for (CondensateType type : VALUES) {
             if (fluid == type.entangledFluid) {
                 return type;
             }

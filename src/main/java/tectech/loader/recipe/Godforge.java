@@ -876,7 +876,7 @@ public class Godforge implements Runnable {
                 CustomItemList.StabilisationFieldGeneratorTier8.get(64),
                 CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(64),
                 CustomItemList.astralArrayFabricator.get(4),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Magmatter, 4),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Magmatter, 1),
                 ItemList.ZPM6.get(32),
                 ItemList.Field_Generator_UXV.get(64),
                 ItemList.Robot_Arm_UXV.get(64));

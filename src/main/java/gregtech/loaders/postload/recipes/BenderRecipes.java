@@ -287,14 +287,6 @@ public class BenderRecipes implements Runnable {
             .eut(TierEU.RECIPE_ULV)
             .addTo(benderRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Tairitsu, Shapes.ingot, 9))
-            .circuit(9)
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Tairitsu, Shapes.plateDense, 1))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_ZPM)
-            .addTo(benderRecipes);
-
         if (MaterialLibAPI.getStack(Materials.Tin, Shapes.itemCasing, (int) (1L)) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(Materials.Tin, Shapes.itemCasing, (int) (1L)))

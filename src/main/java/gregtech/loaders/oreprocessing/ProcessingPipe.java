@@ -45,45 +45,63 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
         OrePrefixes.pipeNonuple.add(this);
     }
 
+    /*
+     * This was constructed based on data observation: somehow the materials for the corresponding prefixes
+     * have some manually defined recipes somewhere
+     */
+    /*
+     * This was constructed based on data observation: somehow the materials for the corresponding prefixes
+     * have some manually defined recipes somewhere
+     */
+    private static long getPipeBits(OrePrefixes prefix, Material material) {
+        String name = MaterialUtils.internalName(material);
+        switch (prefix.getName()) {
+            case "pipeHuge" -> {
+                if ("Incoloy-903".equals(name) || "NetherStar".equals(name)) return GTModHandler.RecipeBits.BUFFERED;
+                return GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS;
+            }
+            case "pipeLarge", "pipeMedium", "pipeSmall" -> {
+                if ("Ultimate".equals(name)) return GTModHandler.RecipeBits.BUFFERED;
+                return GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS;
+            }
+            case "pipeTiny" -> {
+                return GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS;
+            }
+            case "pipeRestrictiveHuge", "pipeRestrictiveLarge", "pipeRestrictiveMedium", "pipeRestrictiveSmall", "pipeRestrictiveTiny" -> {
+                return 0;
+            }
+            case "pipeQuadruple", "pipeNonuple" -> {
+                return GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED
+                    | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS;
+            }
+            default -> {
+                return 0;
+            }
+        }
+    }
+
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         if (material == null) return;
-        switch (prefix.getName()) {
-            case "pipeHuge", "pipeLarge", "pipeMedium", "pipeSmall", "pipeTiny" -> {
-                Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-                if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
 
+        long bits = getPipeBits(prefix, material);
+
+        switch (prefix.getName()) {
+            case "pipeHuge" -> {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeTiny, material, 8L),
-                        GTModHandler.RecipeBits.BUFFERED,
-                        new Object[] { "PPP", "h w", "PPP", 'P',
-                            MaterialParts.craftIngredient(OrePrefixes.plate, material) });
-                    GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeSmall, material, 6L),
-                        GTModHandler.RecipeBits.BUFFERED,
-                        new Object[] { "PWP", "P P", "PHP", 'P',
-                            material == Materials.Wood ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
-                                : MaterialParts.craftIngredient(OrePrefixes.plate, material),
-                            'H',
-                            MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSoftMallet
-                                : ToolDictNames.craftingToolHardHammer,
-                            'W', MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSaw
-                                : ToolDictNames.craftingToolWrench });
-                    GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeMedium, material, 2L),
-                        GTModHandler.RecipeBits.BUFFERED,
-                        new Object[] { "PPP", "W H", "PPP", 'P',
-                            material == Materials.Wood ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
-                                : MaterialParts.craftIngredient(OrePrefixes.plate, material),
-                            'H',
-                            MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSoftMallet
-                                : ToolDictNames.craftingToolHardHammer,
-                            'W', MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSaw
-                                : ToolDictNames.craftingToolWrench });
+                        GTOreDictUnificator.get(OrePrefixes.pipeHuge, material, 1L),
+                        bits,
+                        new Object[] { "DhD", "D D", "DwD", 'D',
+                            MaterialParts.craftIngredient(OrePrefixes.plateDouble, material) });
+                }
+            }
+            case "pipeLarge" -> {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeLarge, material, 1L),
-                        GTModHandler.RecipeBits.BUFFERED,
+                        bits,
                         new Object[] { "PHP", "P P", "PWP", 'P',
                             material == Materials.Wood ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
                                 : MaterialParts.craftIngredient(OrePrefixes.plate, material),
@@ -92,11 +110,45 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                                 : ToolDictNames.craftingToolHardHammer,
                             'W', MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSaw
                                 : ToolDictNames.craftingToolWrench });
+                }
+            }
+            case "pipeMedium" -> {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
-                        GTOreDictUnificator.get(OrePrefixes.pipeHuge, material, 1L),
-                        GTModHandler.RecipeBits.BUFFERED,
-                        new Object[] { "DhD", "D D", "DwD", 'D',
-                            MaterialParts.craftIngredient(OrePrefixes.plateDouble, material) });
+                        GTOreDictUnificator.get(OrePrefixes.pipeMedium, material, 2L),
+                        bits,
+                        new Object[] { "PPP", "W H", "PPP", 'P',
+                            material == Materials.Wood ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
+                                : MaterialParts.craftIngredient(OrePrefixes.plate, material),
+                            'H',
+                            MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSoftMallet
+                                : ToolDictNames.craftingToolHardHammer,
+                            'W', MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSaw
+                                : ToolDictNames.craftingToolWrench });
+                }
+            }
+            case "pipeSmall" -> {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
+                    GTModHandler.addCraftingRecipe(
+                        GTOreDictUnificator.get(OrePrefixes.pipeSmall, material, 6L),
+                        bits,
+                        new Object[] { "PWP", "P P", "PHP", 'P',
+                            material == Materials.Wood ? MaterialParts.craftIngredient(OrePrefixes.plank, material)
+                                : MaterialParts.craftIngredient(OrePrefixes.plate, material),
+                            'H',
+                            MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSoftMallet
+                                : ToolDictNames.craftingToolHardHammer,
+                            'W', MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD) ? ToolDictNames.craftingToolSaw
+                                : ToolDictNames.craftingToolWrench });
+                }
+            }
+            case "pipeTiny" -> {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
+                    GTModHandler.addCraftingRecipe(
+                        GTOreDictUnificator.get(OrePrefixes.pipeTiny, material, 8L),
+                        bits,
+                        new Object[] { "PPP", "h w", "PPP", 'P',
+                            MaterialParts.craftIngredient(OrePrefixes.plate, material) });
                 }
             }
             case "pipeRestrictiveHuge", "pipeRestrictiveLarge", "pipeRestrictiveMedium", "pipeRestrictiveSmall", "pipeRestrictiveTiny" -> {
@@ -120,7 +172,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
 
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeQuadruple, material, 1),
-                        GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
+                        bits,
                         new Object[] { "MM ", "MM ", "   ", 'M',
                             GTOreDictUnificator.get(OrePrefixes.pipeMedium, material, 1) });
                 }
@@ -138,7 +190,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
 
                     GTModHandler.addCraftingRecipe(
                         GTUtility.copyAmount(1, stack),
-                        GTModHandler.RecipeBits.REVERSIBLE | GTModHandler.RecipeBits.BUFFERED,
+                        bits,
                         new Object[] { "PPP", "PPP", "PPP", 'P', GTOreDictUnificator
                             .get(oreDictName.replaceFirst("Nonuple", "Small"), null, 1L, false, true) });
                 }

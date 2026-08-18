@@ -409,9 +409,8 @@ public final class BWOreAdapter implements IOreAdapter {
         ArrayList<ItemStack> drops = new ArrayList<>();
 
         switch (oreDropMode) {
-            case Item -> {
-                drops.add(MaterialLibAPI.getStack(info.material, Shapes.rawOre, info.stoneType.isRich() ? 2 : 1));
-            }
+            case Item -> drops
+                .add(MaterialLibAPI.getStack(info.material, Shapes.rawOre, info.stoneType.isRich() ? 2 : 1));
             case FortuneItem -> {
                 if (fortune > 0) {
                     if (fortune > 3) fortune = 3;

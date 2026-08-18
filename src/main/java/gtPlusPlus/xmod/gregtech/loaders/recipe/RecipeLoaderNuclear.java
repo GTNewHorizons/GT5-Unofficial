@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.loaders.recipe;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.electroMagneticSeparatorRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
@@ -20,7 +21,6 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import net.minecraftforge.fluids.FluidStack;
 
@@ -96,30 +96,6 @@ public class RecipeLoaderNuclear {
     }
 
     private static void chemicalBathRecipes() {
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Tin, Shapes.dust, 12))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Zirconium, Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials.Zirconium, Shapes.dust, 4),
-                MaterialLibAPI.getStack(Materials.Zirconium, Shapes.dust, 5))
-            .outputChances(90_00, 60_00, 30_00)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 2_400))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(chemicalBathRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Rutile, Shapes.dust, 5))
-            .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Zirconium, Shapes.dust, 3),
-                MaterialLibAPI.getStack(Materials.Titanium, Shapes.dust, 1),
-                MaterialLibAPI.getStack(Materials.Hafnium, Shapes.dust, 1))
-            .outputChances(90_00, 30_00, 10_00)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 4_000))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_EV / 2)
-            .addTo(chemicalBathRecipes);
-
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.LithiumCarbonateDust.get(3))
             .itemOutputs(MaterialLibAPI.getStack(Materials.LithiumFluoride, Shapes.dust, 2))

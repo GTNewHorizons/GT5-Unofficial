@@ -119,13 +119,11 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
 
         // MHDCSM V2
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 1),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, (int) (2 * STACKS)))
-            .fluidOutputs(MaterialUtils.molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, 36 * INGOTS))
-            .duration(1 * SECONDS)
+                MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, (int) (4 * STACKS)))
+            .fluidOutputs(MaterialUtils.molten(Materials.MagnetohydrodynamicallyConstrainedStarMatter, 72 * INGOTS))
+            .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(electricImplosionCompressorRecipes);
 

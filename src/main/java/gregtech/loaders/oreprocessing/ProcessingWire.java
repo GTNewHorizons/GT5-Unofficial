@@ -1,5 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
@@ -33,7 +34,6 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -243,10 +243,10 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 AE2addNewAttunement(stack);
             }
             default -> {
-                GTLog.err.println(
-                    "OrePrefix " + prefix.getName()
-                        + " cannot be registered as a cable for Material "
-                        + MaterialUtils.internalName(material));
+                GT_FML_LOGGER.error(
+                    "OrePrefix {} cannot be registered as a cable for Material {}",
+                    prefix.getName(),
+                    MaterialUtils.internalName(material));
                 return;
             }
         }
@@ -284,7 +284,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     if (GTOreDictUnificator.get(correspondingCable, material, 1L) != null) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(stack)
-                            .circuit(1)
+                            .circuit(24)
                             .itemOutputs(GTOreDictUnificator.get(correspondingCable, material, 1L))
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
@@ -296,7 +296,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .addTo(cableRecipes);
                         GTValues.RA.stdBuilder()
                             .itemInputs(stack)
-                            .circuit(1)
+                            .circuit(24)
                             .itemOutputs(GTOreDictUnificator.get(correspondingCable, material, 1L))
                             .fluidInputs(
                                 MaterialLibAPI.getFluidStack(
@@ -308,7 +308,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .addTo(cableRecipes);
                         GTValues.RA.stdBuilder()
                             .itemInputs(stack)
-                            .circuit(1)
+                            .circuit(24)
                             .itemOutputs(GTOreDictUnificator.get(correspondingCable, material, 1L))
                             .fluidInputs(MaterialUtils.molten(Materials.Silicone, (long) costMultiplier * HALF_INGOTS))
                             .duration(5 * SECONDS)
@@ -317,7 +317,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
 
                         GTValues.RA.stdBuilder()
                             .itemInputs(stack)
-                            .circuit(1)
+                            .circuit(24)
                             .itemOutputs(GTOreDictUnificator.get(correspondingCable, material, 1L))
                             .fluidInputs(MaterialUtils.molten(Materials.Silicone, (long) costMultiplier * HALF_INGOTS))
                             .duration(5 * SECONDS)
@@ -389,8 +389,6 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                                     .eut(TierEU.RECIPE_ULV)
                                     .addTo(cableRecipes);
 
-                                // Assembler Recipes to be removed in the next Major Update
-
                                 GTValues.RA.stdBuilder()
                                     .itemInputs(
                                         GTUtility.copyAmount(4, stack),
@@ -454,7 +452,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 // Cable recipes
                 GTValues.RA.stdBuilder()
                     .itemInputs(stack)
-                    .circuit(1)
+                    .circuit(24)
                     .itemOutputs(GTOreDictUnificator.get(correspondingCable, material, 1L))
                     .fluidInputs(
                         MaterialLibAPI
@@ -465,7 +463,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(stack)
-                    .circuit(1)
+                    .circuit(24)
                     .itemOutputs(GTOreDictUnificator.get(correspondingCable, material, 1L))
                     .fluidInputs(
                         MaterialLibAPI.getFluidStack(
@@ -478,14 +476,12 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(stack)
-                    .circuit(1)
+                    .circuit(24)
                     .itemOutputs(GTOreDictUnificator.get(correspondingCable, material, 1L))
                     .fluidInputs(MaterialUtils.molten(Materials.Silicone, costMultiplier * HALF_INGOTS))
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_ULV)
                     .addTo(cableRecipes);
-
-                // Assembler Recipes to be removed in the next Major Update
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(stack)
@@ -541,8 +537,6 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .duration(5 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(cableRecipes);
-
-                        // Assembler Recipes to be removed in the next Major Update
 
                         GTValues.RA.stdBuilder()
                             .itemInputs(
@@ -585,7 +579,6 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                     .eut(calculateRecipeEU(material, 8))
                     .addTo(cableRecipes);
 
-                // Assembler Recipes to be removed in the next Major Update
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         stack,
@@ -621,8 +614,6 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             .duration(5 * SECONDS)
                             .eut(calculateRecipeEU(material, 8))
                             .addTo(cableRecipes);
-
-                        // Assembler Recipes to be removed in the next Major Update
 
                         GTValues.RA.stdBuilder()
                             .itemInputs(

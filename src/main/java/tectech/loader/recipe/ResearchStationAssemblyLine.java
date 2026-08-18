@@ -2137,7 +2137,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { GTOreDictUnificator.get("frameGtMagnetohydrodynamicallyConstrainedStarMatter", 1L),
                 ItemList.Electric_Motor_UXV.get(1L),
                 GTOreDictUnificator.get("stickMagnetohydrodynamicallyConstrainedStarMatter", 16L),
-                ItemList.NuclearStar.get(16), new Object[] { Circuits.UXV.getIngredient(), 4L },
+                ItemList.PseudoStar.get(1), new Object[] { Circuits.UXV.getIngredient(), 4L },
                 GTOreDictUnificator.get("foilMagnetohydrodynamicallyConstrainedStarMatter", 64),
                 GTOreDictUnificator.get("foilMagmatter", 64L),
                 MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.foil, 64),
@@ -2164,7 +2164,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             new Object[] { GTOreDictUnificator.get("frameGtMagnetohydrodynamicallyConstrainedStarMatter", 1L),
                 ItemList.Electric_Motor_UXV.get(1L),
                 GTOreDictUnificator.get("plateMagnetohydrodynamicallyConstrainedStarMatter", 8L),
-                ItemList.NuclearStar.get(16), new Object[] { Circuits.UXV.getIngredient(), 4L },
+                ItemList.PseudoStar.get(1), new Object[] { Circuits.UXV.getIngredient(), 4L },
                 GTOreDictUnificator.get("foilMagnetohydrodynamicallyConstrainedStarMatter", 64),
                 GTOreDictUnificator.get("foilMagmatter", 64L),
                 MaterialLibAPI.getStack(Materials.SpaceTime, Shapes.foil, 64),
@@ -2188,7 +2188,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             researchAmperage,
             new Object[] { GTOreDictUnificator.get("frameGtMagnetohydrodynamicallyConstrainedStarMatter", 1L),
                 GTOreDictUnificator.get("plateMagnetohydrodynamicallyConstrainedStarMatter", 6L),
-                ItemList.NuclearStar.get(64L), ItemList.Emitter_UXV.get(4L),
+                ItemList.PseudoStar.get(4L), ItemList.Emitter_UXV.get(4L),
                 new Object[] { Circuits.MAX.getIngredient(), 4 },
 
                 MaterialLibAPI.getStack(Materials.SuperconductorUMVBase, Shapes.wireFine, 64),
@@ -2244,20 +2244,6 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Emitter_UV.get(4), ItemList.ActivatedCarbonFilterMesh.get(32), },
             new FluidStack[] { MaterialUtils.fluid(Materials.UUMatter, 1000) },
             ItemList.AdvancedBeamlineOutputHatch.get(1),
-            60 * SECONDS,
-            (int) TierEU.RECIPE_UV);
-
-        // Beamcrafter controller
-        TTRecipeAdder.addResearchableAssemblylineRecipe(
-            LanthItemList.TARGET_CHAMBER,
-            64_000,
-            128,
-            (int) TierEU.RECIPE_ZPM,
-            4,
-            new Object[] { LanthItemList.TARGET_CHAMBER, ItemList.Field_Generator_ZPM.get(4),
-                new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_CASING, 32), ItemList.LargeMolecularAssembler.get(2) },
-            new FluidStack[] { MaterialUtils.fluid(Materials.UUMatter, 8000) },
-            ItemList.BeamCrafter.get(1),
             60 * SECONDS,
             (int) TierEU.RECIPE_UV);
 
@@ -2350,7 +2336,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTModHandler.getModItem(Railcraft.ID, "machine.eta", 6, 8),
                 GTOreDictUnificator.get("ringprotohalkonite", 12),
                 MaterialLibAPI.getStack(Materials.Churitsu, Shapes.gearGtSmall, 6),
-                MaterialLibAPI.getStack(Materials.Shijima, Shapes.screw, 48), ItemList.Sensor_UIV.get(2),
+                MaterialLibAPI.getStack(Materials.Shijima, Shapes.bolt, 48), ItemList.Sensor_UIV.get(2),
                 ItemList.Emitter_UIV.get(2) },
             new FluidStack[] { MaterialUtils.anyFluid(Materials.ChromaticGlass, 384 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 48 * INGOTS),
@@ -2367,7 +2353,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             8_192,
             (int) TierEU.RECIPE_UMV,
             64,
-            new Object[] { ItemRefer.Field_Restriction_Coil_T3.get(2),
+            new Object[] { ItemRefer.Field_Restriction_Coil_T2.get(2),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(6), ItemList.UIV_Coil.get(3),
                 GTOreDictUnificator.get("stickLongprotohalkonite", 3),
                 MaterialLibAPI.getStack(Materials.Tairitsu, Shapes.wireFine, 24),

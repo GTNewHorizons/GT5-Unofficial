@@ -7,6 +7,7 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.NANO_FORGE_TIER;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
@@ -257,26 +258,26 @@ public class NaniteChain {
                 GTOreDictUnificator.get(OrePrefixes.lens, Materials.Forcicium, 0, false),
                 // Quantum Anomaly
                 GregtechItemList.Laser_Lens_Special.get(0),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 1),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 2),
                 MaterialLibAPI.getStack(Materials.Eternity, BlockShapes.block, 8),
                 ItemList.Circuit_Chip_APIC.get(64),
-                ItemList.Timepiece.get(4))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 4))
+                ItemList.Timepiece.get(1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 1))
             .fluidInputs(
-                MaterialUtils.molten(Materials.spatialFluid, 8 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.ExcitedDTSC, FluidShapes.fluidLiquid, 50_000),
+                MaterialUtils.molten(Materials.spatialFluid, 2 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.ExcitedDTSC, FluidShapes.fluidLiquid, 12_500),
                 MaterialLibAPI.getFluidStack(Materials.PrimordialMatter, FluidShapes.fluidLiquid, 64_000))
             .metadata(NANO_FORGE_TIER, 3)
-            .duration(12 * MINUTES + 30 * SECONDS)
+            .duration(3 * MINUTES + 7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(nanoForgeRecipes);
 
-        // MagMatter nanites, currently only used in the production of Stargates.
+        // MagMatter nanites
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.lens, Materials.Forcicium, 0, false),
                 GTOreDictUnificator.get(OrePrefixes.lens, Materials.Forcillium, 0, false),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 1),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 4),
                 MaterialLibAPI.getStack(Materials.Magmatter, BlockShapes.block, 8),
                 ItemList.Circuit_Chip_YPIC.get(64),
                 Circuits.MAX.get(1))
