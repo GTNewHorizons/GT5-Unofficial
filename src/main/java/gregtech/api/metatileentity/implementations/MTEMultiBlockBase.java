@@ -1648,12 +1648,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return ExoticEnergyInputHelper.getMaxWorkingInputAmpsMulti(mEnergyHatches);
     }
 
+    /**
+     * Sums up max input EU/t of energy hatches, amperage included,
+     * also includes exotic hatches.
+     */
     public long getMaxInputEu() {
         return ExoticEnergyInputHelper.getTotalEuMulti(mEnergyHatches);
     }
 
     /**
-     * Sums up max input EU/t of energy hatches, amperage included.
+     * Sums up max input EU/t of energy hatches, amperage included,
+     * but excludes exotic hatches.
      */
     public long getMaxInputPower() {
         long eut = 0;
@@ -1666,6 +1671,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     /**
      * Returns voltage tier of energy hatches. If multiple tiers are found, returns 0.
+     * Only works with normal energy hatches.
      */
     public long getInputVoltageTier() {
         long rTier = 0;
@@ -2561,11 +2567,38 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     formatNumber(storedEnergy),
                     formatNumber(maxEnergy)));
 
-            info.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.multiblock.scanner.mei",
-                    formatNumber(getMaxInputVoltage()),
-                    VN[GTUtility.getTier(getMaxInputVoltage())]));
+            setupProcessingLogic(processingLogic);
+            long maxRecipeEUt = processingLogic.getMaxAllowedRecipeEUt();
+            byte recipeTier = GTUtility.getTier(maxRecipeEUt);
+            long totalInputPower = this.getMaxInputEu();
+            byte voltageTier = this.getExoticEnergyHatches()
+                .isEmpty() ? (byte) this.getInputVoltageTier() : GTUtility.getTier(this.getAverageInputVoltage());
+            byte powerTier = this.getExoticEnergyHatches()
+                .isEmpty() ? GTUtility.getTier(this.getMaxInputVoltage()) : GTUtility.getTier(totalInputPower);
+
+            if (voltageTier != 0) {
+                info.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.multiblock.scanner.mei_amp",
+                        formatNumber(totalInputPower),
+                        GTUtility.getAmperageForTier(totalInputPower, voltageTier),
+                        VN[voltageTier],
+                        VN[powerTier]));
+            } else {
+                info.add(
+                    StatCollector
+                        .translateToLocalFormatted("GT5U.multiblock.scanner.mei", formatNumber(totalInputPower)));
+            }
+
+            if (recipeTier == 15) {
+                info.add(StatCollector.translateToLocal("GT5U.multiblock.scanner.mrv_infinite"));
+            } else {
+                info.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.multiblock.scanner.mrv",
+                        formatNumber(maxRecipeEUt),
+                        VN[recipeTier]));
+            }
         }
 
         if (getActualEnergyUsage() > 0) {
