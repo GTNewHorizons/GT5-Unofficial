@@ -13,6 +13,7 @@ import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
+import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -162,6 +163,19 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             }
                             if (!gasSmelting || LegacyNameDomain.contains(material)) {
                                 blastFurnaceBuilder(material, stack, tDustStack, 1).addTo(blastFurnaceRecipes);
+                            }
+                            // Californium is the sole blast-required material melting low enough for the
+                            // coal-fired bricked blast furnace.
+                            if (material == Materials.Californium) {
+                                GTValues.RA.stdBuilder()
+                                    .itemInputs(GTUtility.copyAmount(1, stack))
+                                    .itemOutputs(GTUtility.copyAmount(1, tDustStack))
+                                    .duration(
+                                        Math.max(MaterialUtils.mass(material) / 40L, 1L)
+                                            * MaterialUtils.blastFurnaceTemp(material))
+                                    .eut(0)
+                                    .metadata(ADDITIVE_AMOUNT, 9)
+                                    .addTo(primitiveBlastRecipes);
                             }
                         }
                     } else {
