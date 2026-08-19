@@ -2054,15 +2054,15 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Ice_Cream_Sandwich_Chocolate.set(
             addItemWithLocalizationKeys(
                 Food_IceCreamSandwich_Chocolate.ID,
-                "gt.item.food.icecreamsandwich_chocolate.name",
-                "gt.item.food.icecreamsandwich_chocolate.tooltip",
+                "gt.item.food.icecream_sandwich_chocolate.name",
+                "gt.item.food.icecream_sandwich_chocolate.tooltip",
                 new GTFoodStat(3, 0.2F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_Popsicle_Chocolate.set(
             addItemWithLocalizationKeys(
                 Food_Popsicle_Chocolate.ID,
-                "gt.item.food.popsicle_chocolate.name",
-                "gt.item.food.popsicle_chocolate.tooltip",
+                "gt.item.food.icecream_popsicle_chocolate.name",
+                "gt.item.food.icecream_popsicle_chocolate.tooltip",
                 new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_ChocolateWalnutFudge.set(
@@ -2103,8 +2103,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Ice_Cream_Popsicle_Double.set(
             addItemWithLocalizationKeys(
                 Food_Popsicle_Double.ID,
-                "gt.item.food.popsicle_double.name",
-                "gt.item.food.popsicle_double.tooltip",
+                "gt.item.food.icecream_popsicle_double.name",
+                "gt.item.food.icecream_popsicle_double.tooltip",
                 new GTFoodStat(3, 0.2F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_ElectronicBlast.set(
@@ -2146,8 +2146,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Ice_Cream_Popsicle_Fruit.set(
             addItemWithLocalizationKeys(
                 Food_Popsicle_Fruit.ID,
-                "gt.item.food.popsicle_fruit.name",
-                "gt.item.food.popsicle_fruit.tooltip",
+                "gt.item.food.icecream_popsicle_fruit.name",
+                "gt.item.food.icecream_popsicle_fruit.tooltip",
                 new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_GrapeMatterManipulator.set(
@@ -2193,8 +2193,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Ice_Cream_Sandwich.set(
             addItemWithLocalizationKeys(
                 Food_IceCreamSandwich.ID,
-                "gt.item.food.icecreamsandwich.name",
-                "gt.item.food.icecreamsandwich.tooltip",
+                "gt.item.food.icecream_sandwich.name",
+                "gt.item.food.icecream_sandwich.tooltip",
                 new GTFoodStat(3, 0.2F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_JustCone.set(
@@ -2318,8 +2318,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Ice_Cream_Sorbet_RainbowStellar.set(
             addItemWithLocalizationKeys(
                 Food_Sorbet_RainbowStellar.ID,
-                "gt.item.food.sorbet_rainbowstellar.name",
-                "gt.item.food.sorbet_rainbowstellar.tooltip",
+                "gt.item.food.icecream_sorbet_rainbowstellar.name",
+                "gt.item.food.icecream_sorbet_rainbowstellar.tooltip",
                 new GTFoodStat(
                     2,
                     0.1F,
@@ -2340,8 +2340,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.Ice_Cream_Sorbet_Raspberry.set(
             addItemWithLocalizationKeys(
                 Food_Sorbet_Raspberry.ID,
-                "gt.item.food.sorbet_raspberry.name",
-                "gt.item.food.sorbet_raspberry.tooltip",
+                "gt.item.food.icecream_sorbet_raspberry.name",
+                "gt.item.food.icecream_sorbet_raspberry.tooltip",
                 new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_SaltedCaramel.set(
