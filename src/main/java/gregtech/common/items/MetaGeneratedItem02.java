@@ -149,6 +149,8 @@ import static gregtech.common.items.IDMetaItem02.Food_IceCream_Strawberry;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_ToffeeButter;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_Unicorn;
 import static gregtech.common.items.IDMetaItem02.Food_IceCream_Vanilla;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Concrete;
+import static gregtech.common.items.IDMetaItem02.Food_IceCream_Rubber;
 import static gregtech.common.items.IDMetaItem02.Food_Large_Sandwich_Bacon;
 import static gregtech.common.items.IDMetaItem02.Food_Large_Sandwich_Cheese;
 import static gregtech.common.items.IDMetaItem02.Food_Large_Sandwich_Steak;
@@ -2405,6 +2407,20 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 "gt.item.food.icecream_vanilla.name",
                 "gt.item.food.icecream_vanilla.tooltip",
                 new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Concrete.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Concrete.ID,
+                "gt.item.food.icecream_concrete.name",
+                "gt.item.food.icecream_concrete.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.resistance.id, 400, 4, 100),
+                new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
+        ItemList.Ice_Cream_Rubber.set(
+            addItemWithLocalizationKeys(
+                Food_IceCream_Rubber.ID,
+                "gt.item.food.icecream_rubber.name",
+                "gt.item.food.icecream_rubber.tooltip",
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.jump.id, 40, 64, 100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
 
         ItemList.Dye_Indigo.set(

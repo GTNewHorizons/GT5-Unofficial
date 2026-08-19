@@ -90,6 +90,8 @@ public class IceCreamMachineRecipes implements Runnable {
         addRecipe(ItemList.Ice_Cream_ToffeeButter);
         addRecipe(ItemList.Ice_Cream_Unicorn);
         addRecipe(ItemList.Ice_Cream_Vanilla);
+        addRecipe(ItemList.Ice_Cream_Concrete);
+        addRecipe(ItemList.Ice_Cream_Rubber);
     }
 
     private void addRecipe(ItemList flavor) {

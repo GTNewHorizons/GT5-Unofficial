@@ -219,6 +219,8 @@ public enum IDMetaItem02 {
     Food_IceCream_ToffeeButter(638),
     Food_IceCream_Unicorn(639),
     Food_IceCream_Vanilla(640),
+    Food_IceCream_Concrete(641),
+    Food_IceCream_Rubber(642),
     Display_ITS_FREE(765);
 
     public final int ID;

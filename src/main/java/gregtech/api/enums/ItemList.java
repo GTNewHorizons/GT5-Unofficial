@@ -3274,6 +3274,8 @@ public enum ItemList implements IItemContainer {
     Ice_Cream_ToffeeButter,
     Ice_Cream_Unicorn,
     Ice_Cream_Vanilla,
+    Ice_Cream_Concrete,
+    Ice_Cream_Rubber,
 
     // semicolon after the comment to reduce merge conflicts
     ;
