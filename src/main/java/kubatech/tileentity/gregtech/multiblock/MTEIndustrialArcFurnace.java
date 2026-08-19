@@ -19,6 +19,7 @@ import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.furnaceRecipes;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofBlockCasing;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static kubatech.loaders.ArcFurnaceLoader.ARC_FURNACE_ELECTRODE;
@@ -224,7 +225,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             return true;
         }, te -> te.coilTier))))
         .addElement('D', ofFrame(Materials.Steel))
-        .addElement('E', Casings.BoltedNaquadahCasing.asElement())
+        .addElement('E', ofBlockCasing(Materials.Naquadah))
         .addElement('F', Casings.InsulatedFluidPipeCasing.asElement())
         .addElement('G', Casings.HeatProofCokeOvenCasing.asElement())
         .addElement('H', Casings.BlastSmelterHeatContainmentCoil.asElement())

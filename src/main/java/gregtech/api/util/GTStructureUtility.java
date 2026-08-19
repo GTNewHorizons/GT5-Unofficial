@@ -59,6 +59,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 import com.ruling_0.materiallib.api.BlockMaterialInfo;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.api.GregTechAPI;
@@ -200,17 +201,39 @@ public class GTStructureUtility {
     }
 
     /// The sheetmetal structure element, matching the `sheetmetal` [gregtech.common.blocks.SheetmetalShapeBlock]
-    /// at the target material's index. Mirrors [#ofFrameElement]'s check/place/hint logic against the
-    /// `sheetmetal` shape instead of `frameGt`.
+    /// at the target material's index.
     public static <T> IStructureElement<T> ofSheetMetal(com.ruling_0.materiallib.api.Material material) {
-        if (material == null) throw new IllegalArgumentException("material for sheet metal can not be null!");
+        return ofMaterialBlock(material, BlockShapes.sheetmetal, OrePrefixes.sheetmetal, "sheetmetal");
+    }
+
+    /// The bolted casing structure element, matching the `blockCasing` [gregtech.common.blocks.GTCasingShapeBlock]
+    /// at the target material's index.
+    public static <T> IStructureElement<T> ofBlockCasing(com.ruling_0.materiallib.api.Material material) {
+        return ofMaterialBlock(material, BlockShapes.blockCasing, OrePrefixes.blockCasing, "blockCasing");
+    }
+
+    /// [#ofBlockCasing], for the rebolted `blockCasingAdvanced` shape.
+    public static <T> IStructureElement<T> ofBlockCasingAdvanced(com.ruling_0.materiallib.api.Material material) {
+        return ofMaterialBlock(
+            material,
+            BlockShapes.blockCasingAdvanced,
+            OrePrefixes.blockCasingAdvanced,
+            "blockCasingAdvanced");
+    }
+
+    /// A structure element matching the MaterialLib `shape` block at the target material's index, hinted with the
+    /// block art filed under `iconName` and placed from `prefix`'s unified stack. Mirrors [#ofFrameElement]'s
+    /// check/place/hint logic for the material block shapes carrying no tile entity.
+    private static <T> IStructureElement<T> ofMaterialBlock(com.ruling_0.materiallib.api.Material material, Shape shape,
+        OrePrefixes prefix, String iconName) {
+        if (material == null) throw new IllegalArgumentException("material for " + prefix.name() + " can not be null!");
         return new IStructureElement<>() {
 
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 Block block = world.getBlock(x, y, z);
                 BlockMaterialInfo info = MaterialLibAPI.lookupBlock(block, world.getBlockMetadata(x, y, z));
-                return info != null && info.shape() == BlockShapes.sheetmetal && info.material() == material;
+                return info != null && info.shape() == shape && info.material() == material;
             }
 
             @Override
@@ -221,14 +244,14 @@ public class GTStructureUtility {
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 short[] rgba = MaterialUtils.rgba(material);
-                if (material == null || rgba == null) return false;
+                if (rgba == null) return false;
                 IIcon[] icons = null;
                 if (FMLLaunchHandler.side()
                     .isClient()) {
-                    IIconContainer sheetmetal = GTMaterialIcons.block("sheetmetal", material);
+                    IIconContainer icon = GTMaterialIcons.block(iconName, material);
                     icons = new IIcon[6];
-                    Arrays.fill(icons, sheetmetal.getIcon());
-                    if (sheetmetal.hasOverrideIcon()) rgba = UNCOLORED_RGBA;
+                    Arrays.fill(icons, icon.getIcon());
+                    if (icon.hasOverrideIcon()) rgba = UNCOLORED_RGBA;
                 }
                 StructureLibAPI.hintParticleTinted(world, x, y, z, icons, rgba);
                 return true;
@@ -236,34 +259,24 @@ public class GTStructureUtility {
 
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
-                ItemStack tSheetmetalStack = getSheetmetalStack();
-                if (!GTUtility.isStackValid(tSheetmetalStack)
-                    || !(tSheetmetalStack.getItem() instanceof ItemBlock tSheetmetalStackItem)) return false;
-                return tSheetmetalStackItem.placeBlockAt(
-                    tSheetmetalStack,
-                    null,
-                    world,
-                    x,
-                    y,
-                    z,
-                    6,
-                    0,
-                    0,
-                    0,
-                    Items.feather.getDamage(tSheetmetalStack));
+                ItemStack tStack = getStack();
+                if (!GTUtility.isStackValid(tStack) || !(tStack.getItem() instanceof ItemBlock tStackItem))
+                    return false;
+                return tStackItem
+                    .placeBlockAt(tStack, null, world, x, y, z, 6, 0, 0, 0, Items.feather.getDamage(tStack));
             }
 
-            private ItemStack getSheetmetalStack() {
-                return GTOreDictUnificator.get(OrePrefixes.sheetmetal, material, 1);
+            private ItemStack getStack() {
+                return GTOreDictUnificator.get(prefix, material, 1);
             }
 
             @Override
             public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
-                ItemStack tSheetmetalStack = getSheetmetalStack();
-                if (!GTUtility.isStackValid(tSheetmetalStack) || !(tSheetmetalStack.getItem() instanceof ItemBlock))
+                ItemStack tStack = getStack();
+                if (!GTUtility.isStackValid(tStack) || !(tStack.getItem() instanceof ItemBlock))
                     return BlocksToPlace.errored;
-                return BlocksToPlace.create(tSheetmetalStack);
+                return BlocksToPlace.create(tStack);
             }
 
             @Override
@@ -283,11 +296,10 @@ public class GTStructureUtility {
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
                 if (check(t, world, x, y, z)) return SKIP;
-                ItemStack tSheetmetalStack = getSheetmetalStack();
-                if (!GTUtility.isStackValid(tSheetmetalStack) || !(tSheetmetalStack.getItem() instanceof ItemBlock))
-                    return REJECT;
+                ItemStack tStack = getStack();
+                if (!GTUtility.isStackValid(tStack) || !(tStack.getItem() instanceof ItemBlock)) return REJECT;
                 return StructureUtility.survivalPlaceBlock(
-                    tSheetmetalStack,
+                    tStack,
                     ItemStackPredicate.NBTMode.IGNORE_KNOWN_INSIGNIFICANT_TAGS,
                     null,
                     false,

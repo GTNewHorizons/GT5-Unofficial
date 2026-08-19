@@ -26,20 +26,30 @@ public class LegacyWerkstoffIndex {
             List<Integer> ids = material.getProperty(GTMaterialProperties.WERKSTOFF_IDS);
             if (ids == null) continue;
             for (int id : ids) {
-                Material prev = INDEX.get(id);
-                if (prev != null) {
-                    throw new IllegalStateException(
-                        "WERKSTOFF_IDS id " + id
-                            + " of "
-                            + material.getName()
-                            + " is already occupied by "
-                            + prev.getName());
-                }
-                INDEX.put(id, material);
-                size++;
+                occupy(id, material);
             }
         }
+
+        // gt-bridge proxy werkstoffe: bartworks declared these ids only to give a gregtech material a casing
+        // slot, so they belong to no material's WERKSTOFF_IDS and the loop above never reaches them. Postea
+        // still has to resolve placed casings addressed by them.
+        occupy(31850, Materials.Iridium);
+        occupy(32083, Materials.Osmiridium);
+        occupy(32090, Materials.Naquadah);
+        occupy(32091, Materials.NaquadahAlloy);
+        occupy(32100, Materials.BlackSteel);
+
         GTLoggers.GT_FML_LOGGER.info("LegacyWerkstoffIndex populated {} id slots", size);
+    }
+
+    private static void occupy(int id, Material material) {
+        Material prev = INDEX.get(id);
+        if (prev != null) {
+            throw new IllegalStateException(
+                "Werkstoff id " + id + " of " + material.getName() + " is already occupied by " + prev.getName());
+        }
+        INDEX.put(id, material);
+        size++;
     }
 
     /// The material occupying a legacy werkstoff id slot; null for an unoccupied id.

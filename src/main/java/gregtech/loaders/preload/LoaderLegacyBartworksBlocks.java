@@ -23,9 +23,10 @@ import gregtech.common.ores.BWOreAdapter;
 /// shapes supersede them, but the blocks stay registered: a saved world still holds them, and the Postea
 /// migration and the ore adapters address them by their original registration names and metadata.
 ///
-/// This loader is permanent despite its name. Beyond the save-compatibility requirement, eight multiblock
-/// casings in [gregtech.api.casing.Casings] resolve out of [#casings]/[#casingsAdvanced] and are matched by
-/// block identity in structure definitions, so those blocks cannot be superseded by a shape at all.
+/// This loader is permanent despite its name, but nothing live matches these blocks any more: structure
+/// definitions match the MaterialLib casing shapes through [gregtech.api.util.GTStructureUtility#ofBlockCasing],
+/// and the casing slots cut over in Postea like every other slot -- including the gt-bridge proxy werkstoff ids
+/// [LegacyWerkstoffIndex#init] adds explicit rows for.
 public class LoaderLegacyBartworksBlocks {
 
     public static Block storageBlocks;

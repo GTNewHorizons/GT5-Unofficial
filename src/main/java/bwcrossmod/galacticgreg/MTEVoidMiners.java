@@ -21,6 +21,8 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofBlockCasing;
+import static gregtech.api.util.GTStructureUtility.ofBlockCasingAdvanced;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.List;
@@ -68,8 +70,8 @@ public class MTEVoidMiners {
             // spotless:on
             .addElement('A', Casings.MiningOsmiridiumCasing.asElement())
             .addElement('B', ofFrame(Materials.Osmiridium))
-            .addElement('C', Casings.ReboltedOsmiridiumCasing.asElement())
-            .addElement('D', Casings.BoltedOsmiridiumCasing.asElement())
+            .addElement('C', ofBlockCasingAdvanced(Materials.Osmiridium))
+            .addElement('D', ofBlockCasing(Materials.Osmiridium))
             .addElement(
                 'E',
                 buildHatchAdder(VMLUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
@@ -180,8 +182,8 @@ public class MTEVoidMiners {
             .addElement('A', Casings.BlackPlutoniumItemPipeCasing.asElement())
             .addElement('B', Casings.MiningBlackPlutoniumCasing.asElement())
             .addElement('C', ofFrame(Materials.NaquadahAlloy))
-            .addElement('D', Casings.BoltedNaquadahAlloyCasing.asElement())
-            .addElement('E', Casings.ReboltedNaquadahAlloyCasing.asElement())
+            .addElement('D', ofBlockCasing(Materials.NaquadahAlloy))
+            .addElement('E', ofBlockCasingAdvanced(Materials.NaquadahAlloy))
             .addElement(
                 'F',
                 buildHatchAdder(VMZPM.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
@@ -288,8 +290,8 @@ public class MTEVoidMiners {
             .addElement('A', Casings.BlackPlutoniumItemPipeCasing.asElement())
             .addElement('B', Casings.MiningNeutroniumCasing.asElement())
             .addElement('C', ofFrame(Materials.Adamantium))
-            .addElement('D', Casings.ReboltedIridiumCasing.asElement())
-            .addElement('E', Casings.BoltedIridiumCasing.asElement())
+            .addElement('D', ofBlockCasingAdvanced(Materials.Iridium))
+            .addElement('E', ofBlockCasing(Materials.Iridium))
             .addElement(
                 'F',
                 buildHatchAdder(VMUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)

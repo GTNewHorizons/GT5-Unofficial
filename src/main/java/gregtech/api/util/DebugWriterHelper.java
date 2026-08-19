@@ -113,6 +113,8 @@ public class DebugWriterHelper {
     private static String materialElementName(Shape shape) {
         if (shape == TEBlockShapes.frameGt) return "ofFrame";
         if (shape == BlockShapes.sheetmetal) return "ofSheetMetal";
+        if (shape == BlockShapes.blockCasing) return "ofBlockCasing";
+        if (shape == BlockShapes.blockCasingAdvanced) return "ofBlockCasingAdvanced";
         return null;
     }
 

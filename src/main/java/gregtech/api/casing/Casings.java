@@ -4,25 +4,17 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.BlockSupplier;
-import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
-import com.ruling_0.materiallib.api.Material;
-import com.ruling_0.materiallib.api.MaterialLibAPI;
-import com.ruling_0.materiallib.api.Shape;
 
 import bartworks.API.BorosilicateGlass;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -30,17 +22,13 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.materials.BlockShapes;
-import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.ISuperChestAcceptor;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
-import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
 import gtPlusPlus.core.block.ModBlocks;
 import gtnhlanth.common.register.LanthItemList;
 import tectech.thing.block.BlockGodforgeGlass;
@@ -663,78 +651,6 @@ public enum Casings implements ICasing {
     IronFence
         (()-> GregTechAPI.sBlockFenceMetal, 0, -1),
 
-    // ------------------ Bartworks Casings -----------------
-
-    // spotless:off
-    // The block/meta constructor args below are unused -- both accessors are overridden to resolve through
-    // #bwCasing -- and are kept as the legacy werkstoff id so the pair stays readable next to the textureId,
-    // which keeps its legacy raw-id value.
-    BoltedOsmiridiumCasing(() -> LoaderLegacyBartworksBlocks.casings, 32083, 32083) {
-
-        @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials.Osmiridium, false).getBlock(); }
-
-        @Override
-        public int getBlockMeta() { return bwCasing(Materials.Osmiridium, false).getBlockMeta(); }
-    },
-    ReboltedOsmiridiumCasing(() -> LoaderLegacyBartworksBlocks.casingsAdvanced, 32083, 32083) {
-
-        @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials.Osmiridium, true).getBlock(); }
-
-        @Override
-        public int getBlockMeta() { return bwCasing(Materials.Osmiridium, true).getBlockMeta(); }
-    },
-    BoltedNaquadahCasing(() -> LoaderLegacyBartworksBlocks.casings, 32090, 32090) {
-
-        @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials.Naquadah, false).getBlock(); }
-
-        @Override
-        public int getBlockMeta() { return bwCasing(Materials.Naquadah, false).getBlockMeta(); }
-    },
-    ReboltedNaquadahCasing(() -> LoaderLegacyBartworksBlocks.casingsAdvanced, 32090, 32090) {
-
-        @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials.Naquadah, true).getBlock(); }
-
-        @Override
-        public int getBlockMeta() { return bwCasing(Materials.Naquadah, true).getBlockMeta(); }
-    },
-    BoltedNaquadahAlloyCasing(() -> LoaderLegacyBartworksBlocks.casings, 32091, 32091) {
-
-        @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials.NaquadahAlloy, false).getBlock(); }
-
-        @Override
-        public int getBlockMeta() { return bwCasing(Materials.NaquadahAlloy, false).getBlockMeta(); }
-    },
-    ReboltedNaquadahAlloyCasing(() -> LoaderLegacyBartworksBlocks.casingsAdvanced, 32091, 32091) {
-
-        @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials.NaquadahAlloy, true).getBlock(); }
-
-        @Override
-        public int getBlockMeta() { return bwCasing(Materials.NaquadahAlloy, true).getBlockMeta(); }
-    },
-    BoltedIridiumCasing(() -> LoaderLegacyBartworksBlocks.casings, 31850, 31850) {
-
-        @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials.Iridium, false).getBlock(); }
-
-        @Override
-        public int getBlockMeta() { return bwCasing(Materials.Iridium, false).getBlockMeta(); }
-    },
-    ReboltedIridiumCasing(() -> LoaderLegacyBartworksBlocks.casingsAdvanced, 31850, 31850) {
-
-        @Override
-        public @NotNull Block getBlock() { return bwCasing(Materials.Iridium, true).getBlock(); }
-
-        @Override
-        public int getBlockMeta() { return bwCasing(Materials.Iridium, true).getBlockMeta(); }
-    },
-    // spotless:on
-
     // ------------------ GT++ Casings -----------------
 
     // GregtechMetaCasingBlocks (miscutils.blockcasings)
@@ -1109,25 +1025,5 @@ public enum Casings implements ICasing {
 
     private static int tt(int id) {
         return BlockGTCasingsTT.textureOffset + id;
-    }
-
-    /// Cache for [#bwCasing], keyed `internalName(material) + (advanced ? "!adv" : "")`.
-    private static final Map<String, ImmutableBlockMeta> BW_CASING_CACHE = new ConcurrentHashMap<>();
-
-    /// Resolves one of the eight bolted/rebolted casing constants (see the "Bartworks Casings" section above) to
-    /// its MaterialLib block+meta.
-    ///
-    /// A MaterialLib global index is known only once material registration finishes, well after `Casings`'
-    /// class-init, so the stored `meta` field the other constants use cannot hold one. `ICasing#asElement()`
-    /// wraps this in `StructureUtility.lazy(...)`, so it first runs at structure check.
-    private static ImmutableBlockMeta bwCasing(Material material, boolean advanced) {
-        return BW_CASING_CACHE.computeIfAbsent(MaterialUtils.internalName(material) + (advanced ? "!adv" : ""), k -> {
-            Shape shape = advanced ? BlockShapes.blockCasingAdvanced : BlockShapes.blockCasing;
-            ItemStack stack = Objects.requireNonNull(
-                MaterialLibAPI.getStack(material, shape, 1),
-                () -> "No " + shape + " stack for casing material " + MaterialUtils.internalName(material));
-
-            return new BlockMeta(Block.getBlockFromItem(stack.getItem()), stack.getItemDamage());
-        });
     }
 }

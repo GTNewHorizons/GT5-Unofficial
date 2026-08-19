@@ -89,7 +89,7 @@ public class BaseOreComponent extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
-        return this.componentType.hasOverlay();
+        return iconOverlay != null;
     }
 
     @Override
@@ -102,9 +102,12 @@ public class BaseOreComponent extends Item {
                     .registerIcon(Mods.GTPlusPlus.ID + ":" + "processing/MilledOre/milled_OVERLAY");
             }
         } else {
-            String path = GTMaterialIcons.itemIconPath("METALLIC", this.componentType.COMPONENT_NAME);
+            String path = GTMaterialIcons.itemIconPath("METALLIC", this.componentType.getIconName());
             iconBase = par1IconRegister.registerIcon(path);
-            iconOverlay = par1IconRegister.registerIcon(path + "_OVERLAY");
+            String overlay = path + "_OVERLAY";
+            if (GTMaterialIcons.itemTextureExists(overlay)) {
+                iconOverlay = par1IconRegister.registerIcon(overlay);
+            }
         }
     }
 
@@ -133,10 +136,11 @@ public class BaseOreComponent extends Item {
         CRUSHED("crushed", OrePrefixes.crushed, "Crushed ", " Ore", true),
         CRUSHEDCENTRIFUGED("crushedCentrifuged", OrePrefixes.crushedCentrifuged, "Centrifuged Crushed ", " Ore", true),
         CRUSHEDPURIFIED("crushedPurified", OrePrefixes.crushedPurified, "Purified Crushed ", " Ore", true),
-        RAWORE("oreRaw", OrePrefixes.rawOre, "Raw ", " Ore", true),
+        RAWORE("oreRaw", "rawOre", OrePrefixes.rawOre, "Raw ", " Ore", true),
         MILLED("milled", OrePrefixes.milled, "Milled ", " Ore", true);
 
         private final String COMPONENT_NAME;
+        private final String ICON_NAME;
         private final String PREFIX;
         private final String DISPLAY_NAME;
         private final boolean HAS_OVERLAY;
@@ -145,7 +149,13 @@ public class BaseOreComponent extends Item {
 
         ComponentTypes(final String LocalName, final OrePrefixes orePrefix, final String prefix,
             final String DisplayName, final boolean overlay) {
+            this(LocalName, LocalName, orePrefix, prefix, DisplayName, overlay);
+        }
+
+        ComponentTypes(final String LocalName, final String iconName, final OrePrefixes orePrefix, final String prefix,
+            final String DisplayName, final boolean overlay) {
             this.COMPONENT_NAME = LocalName;
+            this.ICON_NAME = iconName;
             this.orePrefixEnum = orePrefix;
             this.orePrefix = orePrefix.getName();
             this.PREFIX = prefix;
@@ -155,6 +165,12 @@ public class BaseOreComponent extends Item {
 
         public String getComponent() {
             return this.COMPONENT_NAME;
+        }
+
+        /// The texture-set file the component's art ships as. Separate from [#getComponent], which feeds the
+        /// registered item name and so cannot be renamed to match the art.
+        public String getIconName() {
+            return this.ICON_NAME;
         }
 
         public String getOrePrefix() {

@@ -17,6 +17,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_AC
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_GLOW;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.ofBlockCasing;
+import static gregtech.api.util.GTStructureUtility.ofBlockCasingAdvanced;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import static gregtech.api.util.GTUtility.getTier;
@@ -69,7 +71,6 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
-import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -100,7 +101,6 @@ import gregtech.common.render.shader.ShaderHandle;
 import gregtech.common.render.shader.ShaderRecipe;
 import gregtech.common.render.shader.Uniform;
 import gregtech.common.render.shader.VertexAttribute;
-import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolidifier;
 import tectech.thing.block.BlockGodforgeGlass;
@@ -263,8 +263,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('d', ofFrame(Materials.Erbium))
         .addElement('e', ofBlock(GregTechAPI.sBlockCasingsFoundry,8))
         .addElement('f', ofSheetMetal(Materials.Erbium))
-        .addElement('g',  lazy(() -> ofBlock(LoaderLegacyBartworksBlocks.casingsAdvanced, LegacyWerkstoffIndex.idOf(Materials.PreciousMetalsAlloy))))
-        .addElement('h',  lazy(() -> ofBlock(LoaderLegacyBartworksBlocks.casings, LegacyWerkstoffIndex.idOf(Materials.PreciousMetalsAlloy))))
+        .addElement('g', ofBlockCasingAdvanced(Materials.PreciousMetalsAlloy))
+        .addElement('h', ofBlockCasing(Materials.PreciousMetalsAlloy))
         .addShape(
             FoundryModule.POWER_EFFICIENT_SUBSYSTEMS.structureID,
             transpose(

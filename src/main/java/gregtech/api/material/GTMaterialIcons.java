@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.ShapeRegistry;
 
+import gregtech.GTLoggers;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials.OreShapes;
 import gregtech.api.interfaces.IIconContainer;
@@ -80,8 +81,17 @@ public final class GTMaterialIcons {
     /// material art straight into the atlas instead of drawing it through an [IIconContainer].
     public static String itemIconPath(String setName, String name) {
         String path = "gregtech:materials/" + setName + "/" + name;
-        if (ResourceUtils.resourceExists(ResourceUtils.getCompleteItemTextureResourceLocation(path))) return path;
-        return "gregtech:materials/NONE/" + name;
+        if (itemTextureExists(path)) return path;
+        String fallback = "gregtech:materials/NONE/" + name;
+        if (!itemTextureExists(fallback)) {
+            GTLoggers.GT_FML_LOGGER.warn("No item texture for icon set {} under the name {}", setName, name);
+        }
+        return fallback;
+    }
+
+    /// Whether the item atlas ships a file for an icon identifier.
+    public static boolean itemTextureExists(String path) {
+        return ResourceUtils.resourceExists(ResourceUtils.getCompleteItemTextureResourceLocation(path));
     }
 
     private static IIconContainer intern(Map<String, Map<Material, IIconContainer>> containers, String name,

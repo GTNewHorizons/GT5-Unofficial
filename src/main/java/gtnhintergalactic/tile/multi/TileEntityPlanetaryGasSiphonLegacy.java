@@ -40,7 +40,6 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.materials.LegacyWerkstoffIndex;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.ITexture;
@@ -58,7 +57,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.loaders.preload.LoaderLegacyBartworksBlocks;
 import gtnhintergalactic.client.IGTextures;
 import gtnhintergalactic.client.TooltipUtil;
 import gtnhintergalactic.recipe.GasSiphonRecipes;
@@ -86,11 +84,7 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
                     { " f ", "fcf", " f " }, { " f ", "fcf", " f " }, { " f ", "fcf", " f " },
                     { "b~b", "bcb", "bbb" } }))
         .addElement('f', GTStructureUtility.ofFrame(Materials.TungstenSteel))
-        .addElement(
-            'c',
-            StructureUtility.ofBlock(
-                LoaderLegacyBartworksBlocks.casingsAdvanced,
-                LegacyWerkstoffIndex.idOf(Materials.RhodiumPlatedPalladium)))
+        .addElement('c', GTStructureUtility.ofBlockCasingAdvanced(Materials.RhodiumPlatedPalladium))
         .addElement(
             'b',
             GTStructureUtility.buildHatchAdder(TileEntityPlanetaryGasSiphonLegacy.class)
