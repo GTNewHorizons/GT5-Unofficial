@@ -21,10 +21,12 @@ import it.unimi.dsi.fastutil.longs.Long2IntMap;
  */
 public class CauldronFluidHandler implements IFluidHandler {
 
-    public final static int ORIGINAL_METADATA_MASK = 0x3;
-    public final static int PARTIAL_FILL_MASK = 0x7FC;
-    public final static int CLOBBER_PARTIAL_FILL_MASK = 0x800;
+    public final static int ORIGINAL_METADATA_MASK = 0xF;
+    public final static int PARTIAL_FILL_MASK = 0x1FF0;
+    public final static int CLOBBER_PARTIAL_FILL_MASK = 0x2000;
+    public final static int PARTIAL_FILL_BIT_SHIFT = 4;
 
+    // Must be below 512, or it won't fit into the allotted metadata space.
     private static final int MB_PER_LEVEL = 333;
     private static final Long2IntMap PARTIAL_AMOUNTS = new Long2IntLinkedOpenHashMap();
     private static final FluidTankInfo[] EMPTY_FAKE_TANK = {
@@ -55,10 +57,8 @@ public class CauldronFluidHandler implements IFluidHandler {
             return 0;
         }
 
-        final long coordinates = CoordinatePacker.pack(x, y, z);
         final int metadata = world.getBlockMetadata(x, y, z);
-        final int partialAmount = PARTIAL_AMOUNTS.getOrDefault(coordinates, 0);
-        PARTIAL_AMOUNTS.remove(coordinates);
+        final int partialAmount = PARTIAL_AMOUNTS.remove(CoordinatePacker.pack(x, y, z));
 
         if (metadata == 3) {
             return 0;
@@ -73,7 +73,7 @@ public class CauldronFluidHandler implements IFluidHandler {
             amountToDrain = 3 * MB_PER_LEVEL - initialFill;
             newMetadata |= CLOBBER_PARTIAL_FILL_MASK;
         } else {
-            newMetadata = newMetadata | ((initialFill + resource.amount) % MB_PER_LEVEL << 2);
+            newMetadata |= ((initialFill + resource.amount) % MB_PER_LEVEL << PARTIAL_FILL_BIT_SHIFT);
             amountToDrain = resource.amount;
         }
 
@@ -96,7 +96,7 @@ public class CauldronFluidHandler implements IFluidHandler {
 
     @Override
     public boolean canFill(final ForgeDirection from, final Fluid fluid) {
-        return fluid == FluidRegistry.WATER && world.getBlockMetadata(x, y, z) == 0;
+        return fluid == FluidRegistry.WATER && world.getBlockMetadata(x, y, z) < 3;
     }
 
     @Override
@@ -113,7 +113,7 @@ public class CauldronFluidHandler implements IFluidHandler {
         return EMPTY_FAKE_TANK;
     }
 
-    public static void setLastPartialFill(int x, int y, int z, int partialFill) {
+    public static void setLastPartialFill(final int x, final int y, final int z, final int partialFill) {
         PARTIAL_AMOUNTS.put(CoordinatePacker.pack(x, y, z), partialFill);
     }
 }

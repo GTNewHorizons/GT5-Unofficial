@@ -2,6 +2,7 @@ package gregtech.mixin.mixins.early.minecraft;
 
 import static gregtech.api.fluid.CauldronFluidHandler.CLOBBER_PARTIAL_FILL_MASK;
 import static gregtech.api.fluid.CauldronFluidHandler.ORIGINAL_METADATA_MASK;
+import static gregtech.api.fluid.CauldronFluidHandler.PARTIAL_FILL_BIT_SHIFT;
 import static gregtech.api.fluid.CauldronFluidHandler.PARTIAL_FILL_MASK;
 
 import net.minecraft.block.Block;
@@ -25,13 +26,15 @@ public class World_CauldronPartialFill {
         require = 1)
     public boolean gt5u$overloadCauldronSetMetadata(Chunk chunk, int x, int y, int z, int metadata) {
         final Block block = chunk.getBlock(x, y, z);
-        final int oldMetadata = chunk.getBlockMetadata(x, y, z);
 
         if (block == Blocks.cauldron) {
             if ((metadata & CLOBBER_PARTIAL_FILL_MASK) > 0) {
                 metadata &= ORIGINAL_METADATA_MASK;
-            } else if ((oldMetadata & PARTIAL_FILL_MASK) > 0 && metadata == (metadata & ORIGINAL_METADATA_MASK)) {
-                return chunk.setBlockMetadata(x, y, z, (oldMetadata & PARTIAL_FILL_MASK) | metadata);
+            } else {
+                final int oldMetadata = chunk.getBlockMetadata(x, y, z);
+                if ((oldMetadata & PARTIAL_FILL_MASK) > 0 && metadata == (metadata & ORIGINAL_METADATA_MASK)) {
+                    return chunk.setBlockMetadata(x, y, z, (oldMetadata & PARTIAL_FILL_MASK) | metadata);
+                }
             }
         }
 
@@ -50,8 +53,11 @@ public class World_CauldronPartialFill {
         if (block == Blocks.cauldron) {
             final int partialFill = metadata & PARTIAL_FILL_MASK;
             if (partialFill > 0) {
-                CauldronFluidHandler
-                    .setLastPartialFill((chunk.xPosition << 4) + x, y, (chunk.zPosition << 4) + z, partialFill >> 2);
+                CauldronFluidHandler.setLastPartialFill(
+                    (chunk.xPosition << 4) + x,
+                    y,
+                    (chunk.zPosition << 4) + z,
+                    partialFill >> PARTIAL_FILL_BIT_SHIFT);
             }
             return metadata & ORIGINAL_METADATA_MASK;
         }
