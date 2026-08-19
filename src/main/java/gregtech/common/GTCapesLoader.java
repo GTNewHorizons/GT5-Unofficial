@@ -49,7 +49,7 @@ public class GTCapesLoader implements Runnable {
             downloadGalacticraftCapes();
         }
         if (Mods.GalaxySpace.isModLoaded()) {
-            downloadGalaxySpaceCapes();
+            addGalaxySpaceCapes();
         }
         addHarcodedCapes();
     }
@@ -142,21 +142,19 @@ public class GTCapesLoader implements Runnable {
         }
     }
 
-    private static void downloadGalaxySpaceCapes() {
-        String url = "https://demigods.at.ua/capes.txt";
-        try (final Scanner scanner = new Scanner(new URL(url).openStream())) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] parts = line.split(":");
-                if (parts.length == 2) {
-                    putName(parts[0], parts[1] + "GS");
-                } else {
-                    GT_FML_LOGGER.error("Invalid cape mapping: {}", line);
-                }
-            }
-        } catch (Exception e) {
-            GT_FML_LOGGER.error("Could not download cape list from {}", url, e);
-        }
+    private static void addGalaxySpaceCapes() {
+        // From https://demigods.at.ua/capes.txt. Hardcoded because it was failing a lot since weeks now
+        putName("BlesseNtumble", "capeDevGS");
+        putName("BlesseNumble", "capeGrayCGS");
+        putName("MEGADesantnic", "capeBlueGS");
+        putName("izlow", "capeCyanGS");
+        putName("AlexSocol", "capeGrayCGS");
+        putName("Bagomot", "capeDarkGreenGS");
+        putName("juh9870", "capeRedGS");
+        putName("FriendlyDevil", "capeLightBlueGS");
+        putName("KETZALCOATL", "capeLightBlueGS");
+        putName("Dixil", "capeBlueGS");
+        putName("Pashok123321", "capeBlueGS");
     }
 
     private static void addHarcodedCapes() {
