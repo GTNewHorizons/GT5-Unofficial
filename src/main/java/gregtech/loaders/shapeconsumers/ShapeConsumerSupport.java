@@ -1,5 +1,7 @@
 package gregtech.loaders.shapeconsumers;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -10,13 +12,17 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
+import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialUtils;
+import gregtech.common.ores.GTOreAdapter;
 
-/// Shared dispatch glue for the `Consumer*` classes in this package: each targets one legacy `OrePrefixes`/
-/// [Shape] pair and delegates to the same [IOreRecipeRegistrator] its `gregtech.loaders.oreprocessing.Processing*`
-/// counterpart already implements, resolving the canonical stack through [MaterialLibAPI] instead of an
-/// oredict event.
+/// Shared dispatch glue for the `Consumer*` classes in this package: each targets one [Shape] and delegates to
+/// the same [IOreRecipeRegistrator] its `gregtech.loaders.oreprocessing.Processing*` counterpart already
+/// implements, resolving stacks through [MaterialLibAPI] instead of an oredict event. Most shapes map onto a
+/// single legacy `OrePrefixes`; the two ore shapes map onto one prefix per stone variant, through
+/// [#delegateOreVariants].
 ///
 /// Each `Processing*` class also runs through the oredict-event path (`gregtech.common.OreDictEventContainer`)
 /// for foreign mods' items of the same prefix. A prefix with no MaterialLib shape gets no consumer here and
@@ -52,14 +58,49 @@ final class ShapeConsumerSupport {
         if (shape == null) return;
         MaterialLibAPI.registerPostInitShapeConsumer("gregtech", shape, (s, material) -> {
             if (!filter.test(material)) return;
-            ItemStack stack = MaterialLibAPI.getStack(material, s, 1);
-            registrator.get()
-                .registerOre(
-                    prefix,
-                    material,
-                    prefix.getName() + MaterialUtils.internalName(material),
-                    "materiallib",
-                    stack);
+            dispatch(registrator, prefix, material, MaterialLibAPI.getStack(material, s, 1));
         });
+    }
+
+    /// [#delegate(Shape, OrePrefixes, Supplier)] for the two variant-carrying ore shapes: a material in the
+    /// [LegacyNameDomain] dispatches once per [StoneType] it generates a block on, under that stone's own
+    /// [StoneType#getPrefix] (or [OrePrefixes#oreSmall] for small ore) and that stone's block. gtPlusPlus' and
+    /// bartworks' materials, which own no stone variants, dispatch once under `fallbackPrefix` with the
+    /// shape's canonical stack.
+    ///
+    /// [StoneType], [GTOreAdapter] and [LegacyNameDomain] are touched only from inside the postInit callback:
+    /// see the class-init trap [gregtech.api.enums.materials.OreShapes]'s javadoc describes.
+    static void delegateOreVariants(Shape shape, OrePrefixes fallbackPrefix, boolean small,
+        Supplier<IOreRecipeRegistrator> registrator) {
+        if (shape == null) return;
+        MaterialLibAPI.registerPostInitShapeConsumer("gregtech", shape, (s, material) -> {
+            if (!LegacyNameDomain.contains(material)) {
+                dispatch(registrator, fallbackPrefix, material, MaterialLibAPI.getStack(material, s, 1));
+                return;
+            }
+
+            if (MaterialUtils.oldSubId(material) < 0) {
+                GT_FML_LOGGER.warn(
+                    "Ore material {} is in the legacy name domain but carries no legacy sub id",
+                    MaterialUtils.internalName(material));
+            }
+
+            for (StoneType stoneType : StoneType.VALUES) {
+                ItemStack stack = GTOreAdapter.INSTANCE.getVariantStack(material, stoneType, small);
+                if (stack == null) continue;
+                dispatch(registrator, small ? OrePrefixes.oreSmall : stoneType.getPrefix(), material, stack);
+            }
+        });
+    }
+
+    private static void dispatch(Supplier<IOreRecipeRegistrator> registrator, OrePrefixes prefix, Material material,
+        ItemStack stack) {
+        registrator.get()
+            .registerOre(
+                prefix,
+                material,
+                prefix.getName() + MaterialUtils.internalName(material),
+                "materiallib",
+                stack);
     }
 }

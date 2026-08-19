@@ -411,6 +411,24 @@ public final class GTOreAdapter implements IOreAdapter {
         return MaterialLibAPI.getStack(material, OreShapes.ore, OreShapes.variantOf(StoneType.Stone.name()), 1);
     }
 
+    /// The ore stack a (material, stone type, small-ore) triple resolves to, or null when the triple names no
+    /// block. Shares [#getGtBlock]'s gates -- family membership, stone enablement and config, the
+    /// stone-category match, and the ice/small-ore exclusion -- so a shape consumer fanning itself out over
+    /// [StoneType#VALUES] visits exactly the pairs that carry a block. Deliberately not [#getBlock], whose
+    /// gtPlusPlus fallback would answer for every stone type.
+    public @Nullable ItemStack getVariantStack(Material material, StoneType stoneType, boolean small) {
+        try (OreInfo info = OreInfo.getNewInfo()) {
+            info.material = material;
+            info.stoneType = stoneType;
+            info.isSmall = small;
+
+            ImmutableBlockMeta block = getGtBlock(info);
+            if (block == null) return null;
+
+            return new ItemStack(block.getBlock(), 1, block.getBlockMeta());
+        }
+    }
+
     private ImmutableBlockMeta getGtBlock(OreInfo info) {
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
 
