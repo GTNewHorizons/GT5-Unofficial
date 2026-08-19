@@ -97,7 +97,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         registerCover(aMaterial, aStack);
 
         GTModHandler.removeRecipeByOutputDelayed(aStack);
-        GTModHandler.removeRecipeDelayed(aStack);
+        // The only plate that has a valid recipe to remove
+        if (aMaterial == Materials.Wood) GTModHandler.removeRecipeDelayed(aStack);
 
         GTUtility.removeSimpleIC2MachineRecipe(
             GTUtility.copyAmount(9, aStack),
@@ -132,7 +133,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             if (aMaterial == Materials.Paper) {
                 GTModHandler.addCraftingRecipe(
                     GTUtility.copyAmount(2, aStack),
-                    BUFFERED,
+                    BUFFERED | DO_NOT_CHECK_FOR_COLLISIONS,
                     new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD) });
             }
         }

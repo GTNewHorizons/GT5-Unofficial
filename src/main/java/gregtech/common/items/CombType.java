@@ -235,6 +235,7 @@ public enum CombType {
     // ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);
 
+    public static final CombType[] VALUES = values();
     public boolean showInList;
     public final ItemComb.Voltage voltage;
     public final Materials material;
@@ -287,13 +288,13 @@ public enum CombType {
         private static final CombType[] VALUES;
 
         static {
-            int biggestId = Arrays.stream(CombType.values())
+            int biggestId = Arrays.stream(CombType.VALUES)
                 .mapToInt(CombType::getId)
                 .max()
                 .getAsInt();
             VALUES = new CombType[biggestId + 1];
             Arrays.fill(VALUES, _NULL);
-            for (CombType type : CombType.values()) {
+            for (CombType type : CombType.VALUES) {
                 if (type != _NULL) VALUES[type.getId()] = type;
             }
         }

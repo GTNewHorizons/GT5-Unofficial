@@ -18,7 +18,7 @@ import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.common.render.shader.MeshBuilder;
 import gregtech.common.render.shader.RenderState;
 import gregtech.common.render.shader.ShaderHandle;
@@ -77,7 +77,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
 
         blackholeShader = BLACKHOLE.bake();
         if (!blackholeShader.isValid()) {
-            GTMod.GT_FML_LOGGER.error("Failed to initialize black hole shader");
+            GTLoggers.GT_FML_LOGGER.error("Failed to initialize black hole shader");
             release();
             return;
         }
@@ -87,7 +87,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
                 new ResourceLocation(GregTech.resourceDomain, "textures/model/blackhole.obj"),
                 blackholeShader.vertexFormat());
         } catch (RuntimeException e) {
-            GTMod.GT_FML_LOGGER.error("Failed to load black hole model", e);
+            GTLoggers.GT_FML_LOGGER.error("Failed to load black hole model", e);
             release();
             return;
         }
@@ -95,7 +95,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
 
         laserShader = LASER.bake();
         if (!laserShader.isValid()) {
-            GTMod.GT_FML_LOGGER.error("Failed to initialize black hole laser shader");
+            GTLoggers.GT_FML_LOGGER.error("Failed to initialize black hole laser shader");
             release();
             return;
         }
