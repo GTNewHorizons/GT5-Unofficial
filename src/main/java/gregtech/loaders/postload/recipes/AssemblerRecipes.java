@@ -2917,7 +2917,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 2),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 2),
                 ItemList.Casing_UV.get(1))
             .itemOutputs(ItemList.Hull_UV.get(1))
             .fluidInputs(Materials.Polybenzimidazole.getMolten(2 * INGOTS))
@@ -3948,6 +3948,7 @@ public class AssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 3),
                     GTOreDictUnificator.get(OrePrefixes.screw, Materials.Diamond, 2),
                     new ItemStack(Items.diamond_sword, 1))
+                .circuit(1)
                 .itemOutputs(getModItem(ExtraUtilities.ID, "spike_base_diamond", 2L, 0))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -3959,6 +3960,7 @@ public class AssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 3),
                     GTOreDictUnificator.get(OrePrefixes.screw, Materials.Gold, 2),
                     new ItemStack(Items.golden_sword, 1))
+                .circuit(1)
                 .itemOutputs(getModItem(ExtraUtilities.ID, "spike_base_gold", 2L, 0))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -3970,6 +3972,7 @@ public class AssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 3),
                     GTOreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 2),
                     new ItemStack(Items.iron_sword, 1))
+                .circuit(1)
                 .itemOutputs(getModItem(ExtraUtilities.ID, "spike_base", 2L, 0))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -3981,6 +3984,7 @@ public class AssemblerRecipes implements Runnable {
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Wood, 3),
                     GTOreDictUnificator.get(OrePrefixes.screw, Materials.Wood, 2),
                     new ItemStack(Items.wooden_sword, 1))
+                .circuit(1)
                 .itemOutputs(getModItem(ExtraUtilities.ID, "spike_base_wood", 2L, 0))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_LV)

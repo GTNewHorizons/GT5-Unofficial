@@ -63,6 +63,7 @@ public enum ToolboxSlot {
     // merge conflict defeater comment
     ;
 
+    public static final ToolboxSlot[] VALUES = values();
     public static final ImmutableList<ToolboxSlot> GENERIC_SLOTS = ImmutableList
         .of(GENERIC_SLOT0, GENERIC_SLOT1, GENERIC_SLOT2, GENERIC_SLOT3, GENERIC_SLOT4, GENERIC_SLOT5);
     public static final ImmutableList<ToolboxSlot> TOOL_SLOTS = ImmutableList
@@ -70,7 +71,7 @@ public enum ToolboxSlot {
     public static final int ROW_WIDTH = 7;
 
     private static final ImmutableMap<Integer, ToolboxSlot> LOOKUP = Maps
-        .uniqueIndex(Arrays.asList(values()), ToolboxSlot::getSlotID);
+        .uniqueIndex(Arrays.asList(VALUES), ToolboxSlot::getSlotID);
 
     private static final ImmutableSet<Class<? extends IToolStats>> BANNED_TOOLS = ImmutableSet.copyOf(
         Arrays.asList(

@@ -171,7 +171,7 @@ public class ArmorEventHandlers {
                 }
             }
 
-            if (event.distance < 3.2f) {
+            if (player.fallDistance < 3.2f) {
                 return;
             }
             ItemStack boots = player.getCurrentArmor(SLOT_BOOTS);
