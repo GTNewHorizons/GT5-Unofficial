@@ -3,6 +3,7 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.AvaritiaAddons;
 import static gregtech.api.enums.Mods.BuildCraftFactory;
+import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
@@ -14,6 +15,7 @@ import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.OpenComputers;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
+import static gregtech.api.enums.Mods.UniversalSingularities;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
@@ -3423,6 +3425,19 @@ public class AssemblerRecipes implements Runnable {
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV / 4)
             .addTo(assemblerRecipes);
+
+        // expensive recipe for chaos shard
+        if (DraconicEvolution.isModLoaded() && UniversalSingularities.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.ChaosLocator.get(1),
+                    // Awakened Draconium Singularity
+                    getModItem(UniversalSingularities.ID, "universal.draconicEvolution.singularity", 1, 1))
+                .itemOutputs(getModItem(DraconicEvolution.ID, "chaosShard", 1, 0))
+                .duration(100 * SECONDS)
+                .eut(TierEU.RECIPE_UMV)
+                .addTo(assemblerRecipes);
+        }
     }
 
     /**

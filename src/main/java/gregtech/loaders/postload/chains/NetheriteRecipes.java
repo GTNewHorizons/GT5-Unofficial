@@ -234,6 +234,29 @@ public class NetheriteRecipes {
                 .addTo(formingPressRecipes);
         }
 
+        // recipes for GotG nether air
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 64L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.HellishMetal, 64L))
+            .fluidInputs(Materials.Air.getGas(10_000))
+            .fluidOutputs(Materials.NetherAir.getFluid(1_000))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .metadata(COIL_HEAT, 8600)
+            .addTo(blastFurnaceRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherrack, 16L),
+                getModItem(ThaumicTinkerer.ID, "kamiResource", 16, 6))
+            .fluidInputs(Materials.Air.getGas(10_000))
+            .fluidOutputs(Materials.NetherAir.getFluid(10_000))
+            .duration(1 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .metadata(COIL_HEAT, 10800)
+            .addTo(blastFurnaceRecipes);
+
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.NetherAir.getFluid(10_000))
             .fluidOutputs(

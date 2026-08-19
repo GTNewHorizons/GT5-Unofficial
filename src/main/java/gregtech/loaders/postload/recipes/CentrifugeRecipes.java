@@ -20,6 +20,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
@@ -31,6 +32,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -927,6 +929,21 @@ public class CentrifugeRecipes implements Runnable {
             .fluidOutputs(Materials.Space.getMolten(10 * INGOTS), Materials.Time.getMolten(10 * INGOTS))
             .metadata(CentrifugeRecipeKey.INSTANCE, true)
             .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UXV)
+            .addTo(centrifugeNonCellRecipes);
+
+        // dd Iron + forcicium + forcillium
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.copyAmount(0, ItemRegistry.voidminer[2]),
+                getModItem(ExtraUtilities.ID, "dark_portal", 1, 0))
+            .fluidInputs(WerkstoffLoader.Oganesson.getFluidOrGas(2000))
+            .itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkIron, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Forcicium, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Forcillium, 64))
+            .metadata(CentrifugeRecipeKey.INSTANCE, true)
+            .duration(1000 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(centrifugeNonCellRecipes);
 

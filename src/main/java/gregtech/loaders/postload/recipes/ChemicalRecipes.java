@@ -3,6 +3,8 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.enums.Mods.RandomThings;
+import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
@@ -6168,6 +6170,19 @@ public class ChemicalRecipes implements Runnable {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.Amalgatite, 1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        // Barnarda C sapling
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                getModItem(RandomThings.ID, "spectreKey", 0, 0),
+                // Tree of Transformation sapling
+                getModItem(TwilightForest.ID, "tile.TFSapling", 1, 6),
+                GTBees.combs.getStackForType(CombType.BARNARDA, 64))
+            .itemOutputs(getModItem(GalaxySpace.ID, "barnardaCsapling", 1, 0))
+            .outputChances(100)
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
             .addTo(multiblockChemicalReactorRecipes);
     }
 }
