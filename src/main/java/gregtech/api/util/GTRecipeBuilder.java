@@ -706,6 +706,37 @@ public class GTRecipeBuilder {
         return this;
     }
 
+    private static @Nullable String variantGroup;
+
+    /// Runs `body` with `group` stamped as [GTRecipeConstants#VARIANT_GROUP] on every recipe built inside it,
+    /// including recipes built by builders `body` creates for itself. A generator that emits the same recipe
+    /// once per display variant of an input wraps each pass in the same group, and NEI collapses the passes
+    /// into one cycling entry ([gregtech.nei.OreVariantGroups]).
+    ///
+    /// Scopes nest, and a recipe that sets the key itself keeps its own value. Registration is single
+    /// threaded, so the scope is a plain static.
+    public static void withVariantGroup(String group, Runnable body) {
+        String previous = variantGroup;
+        variantGroup = group;
+        try {
+            body.run();
+        } finally {
+            variantGroup = previous;
+        }
+    }
+
+    /// The metadata the recipe under construction is built with: the builder's own storage, plus the enclosing
+    /// [#withVariantGroup] tag when there is one. Never mutates the builder's storage, so the tag cannot
+    /// outlive the scope on a reused builder.
+    private @Nullable IRecipeMetadataStorage buildMetadata() {
+        if (variantGroup == null) return metadataStorage;
+        if (getMetadata(GTRecipeConstants.VARIANT_GROUP) != null) return metadataStorage;
+
+        IRecipeMetadataStorage storage = metadataStorage == null ? new RecipeMetadataStorage() : metadataStorage.copy();
+        storage.store(GTRecipeConstants.VARIANT_GROUP, variantGroup);
+        return storage;
+    }
+
     /**
      * Gets metadata already set for this builder. Can return null. Use
      * {@link #getMetadataOrDefault(RecipeMetadataKey, Object)} if you want to specify default value.
@@ -1102,7 +1133,7 @@ public class GTRecipeBuilder {
                     mNeedsEmptyOutput,
                     nbtSensitive,
                     neiDesc,
-                    metadataStorage,
+                    buildMetadata(),
                     recipeCategory,
                     special,
                     duration)));
@@ -1147,7 +1178,7 @@ public class GTRecipeBuilder {
                     mNeedsEmptyOutput,
                     nbtSensitive,
                     neiDesc,
-                    metadataStorage,
+                    buildMetadata(),
                     recipeCategory,
                     alts,
                     altOreIds,

@@ -190,12 +190,13 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                 }
 
                 // do not use parallel stream. This is already parallelized by NEI
-                cache = recipes.stream()
-                    .filter(r -> !r.mHidden)
-                    .sorted(neiProperties.comparator)
-                    .map(this::createCachedRecipe)
-                    .peek(frontend::prepareRecipe)
-                    .collect(Collectors.toList());
+                cache = OreVariantGroups.collapse(
+                    recipes.stream()
+                        .filter(r -> !r.mHidden)
+                        .sorted(neiProperties.comparator)
+                        .collect(Collectors.toList()),
+                    this::createCachedRecipe);
+                cache.forEach(frontend::prepareRecipe);
 
                 // while the NEI parallelize handlers, for each individual handler it still uses sequential execution
                 // model, so we do not need any synchronization here even if it does break, at worst case it's just
@@ -729,6 +730,11 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         public final List<PositionedStack> mOutputs = new ArrayList<>();
         public final List<PositionedStack> mInputs = new ArrayList<>();
 
+        /// Set only on an entry [OreVariantGroups] merged several recipes into, to keep the merged slots
+        /// showing one recipe at a time.
+        @Nullable
+        private OreVariantGroups.Cycle variantCycle;
+
         public CachedDefaultRecipe(GTRecipe aRecipe) {
             this.mRecipe = aRecipe;
 
@@ -917,8 +923,13 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                 WINDOW_OFFSET);
         }
 
+        void setVariantCycle(OreVariantGroups.Cycle cycle) {
+            this.variantCycle = cycle;
+        }
+
         @Override
         public List<PositionedStack> getIngredients() {
+            if (variantCycle != null) variantCycle.sync();
             return this.mInputs;
         }
 
@@ -929,6 +940,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
         @Override
         public List<PositionedStack> getOtherStacks() {
+            if (variantCycle != null) variantCycle.sync();
             return this.mOutputs;
         }
     }

@@ -329,6 +329,13 @@ public class GTRecipeConstants {
     public static final RecipeMetadataKey<FluidStack[]> CONDENSATE_INPUT = SimpleRecipeMetadataKey
         .create(FluidStack[].class, "condensate_input");
 
+    /// Marks recipes that are the same recipe repeated over an item's display variants, so NEI can collapse
+    /// them into one cycling entry (see [gregtech.nei.OreVariantGroups]). Stamped by
+    /// [GTRecipeBuilder#withVariantGroup], not by a recipe script; it changes nothing about how a machine
+    /// looks the recipe up.
+    public static final RecipeMetadataKey<String> VARIANT_GROUP = SimpleRecipeMetadataKey
+        .create(String.class, "variant_group");
+
     /**
      * Add a arc furnace recipe.
      */

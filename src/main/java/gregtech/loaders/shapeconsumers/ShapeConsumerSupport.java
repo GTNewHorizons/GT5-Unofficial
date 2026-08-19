@@ -16,6 +16,7 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialUtils;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.common.ores.GTOreAdapter;
 
 /// Shared dispatch glue for the `Consumer*` classes in this package: each targets one [Shape] and delegates to
@@ -68,6 +69,9 @@ final class ShapeConsumerSupport {
     /// bartworks' materials, which own no stone variants, dispatch once under `fallbackPrefix` with the
     /// shape's canonical stack.
     ///
+    /// Every variant of one material shares a [GTRecipeBuilder#withVariantGroup] tag, so NEI shows the fan-out
+    /// as a single cycling entry per action instead of one entry per stone.
+    ///
     /// [StoneType], [GTOreAdapter] and [LegacyNameDomain] are touched only from inside the postInit callback:
     /// see the class-init trap [gregtech.api.enums.materials.OreShapes]'s javadoc describes.
     static void delegateOreVariants(Shape shape, OrePrefixes fallbackPrefix, boolean small,
@@ -85,10 +89,13 @@ final class ShapeConsumerSupport {
                     MaterialUtils.internalName(material));
             }
 
+            String group = fallbackPrefix.getName() + ":" + MaterialUtils.internalName(material);
+
             for (StoneType stoneType : StoneType.VALUES) {
                 ItemStack stack = GTOreAdapter.INSTANCE.getVariantStack(material, stoneType, small);
                 if (stack == null) continue;
-                dispatch(registrator, small ? OrePrefixes.oreSmall : stoneType.getPrefix(), material, stack);
+                OrePrefixes prefix = small ? OrePrefixes.oreSmall : stoneType.getPrefix();
+                GTRecipeBuilder.withVariantGroup(group, () -> dispatch(registrator, prefix, material, stack));
             }
         });
     }
