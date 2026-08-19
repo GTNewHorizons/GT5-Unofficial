@@ -110,7 +110,7 @@ public class GTCapesLoader implements Runnable {
                 }
             }
         } catch (Exception e) {
-            GT_FML_LOGGER.error(e);
+            GT_FML_LOGGER.error("Could not download cape list from {}", url, e);
         }
     }
 
@@ -121,7 +121,7 @@ public class GTCapesLoader implements Runnable {
                 putName(scanner.nextLine());
             }
         } catch (Exception e) {
-            GT_FML_LOGGER.error(e);
+            GT_FML_LOGGER.error("Could not download cape list from {}", url, e);
         }
     }
 
@@ -138,7 +138,7 @@ public class GTCapesLoader implements Runnable {
                 }
             }
         } catch (Exception e) {
-            GT_FML_LOGGER.error(e);
+            GT_FML_LOGGER.error("Could not download cape list from {}", url, e);
         }
     }
 
@@ -155,7 +155,7 @@ public class GTCapesLoader implements Runnable {
                 }
             }
         } catch (Exception e) {
-            GT_FML_LOGGER.error(e);
+            GT_FML_LOGGER.error("Could not download cape list from {}", url, e);
         }
     }
 
