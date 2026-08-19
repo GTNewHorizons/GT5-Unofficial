@@ -389,7 +389,7 @@ public class DistilleryRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .circuit(2)
-            .fluidInputs(Materials.Oil.getFluid(1000))
+            .fluidInputs(Materials.Oil.getFluid(1_000))
             .fluidOutputs(Materials.Lubricant.getFluid(500))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
