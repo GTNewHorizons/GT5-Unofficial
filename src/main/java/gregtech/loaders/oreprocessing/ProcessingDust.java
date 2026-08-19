@@ -43,6 +43,7 @@ import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeCategories;
@@ -77,6 +78,26 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
     /// the dust shape -- even though it still generates the wash-chain and small dusts.
     private static boolean hasDust(Material material) {
         return GTOreDictUnificator.get(OrePrefixes.dust, material, 1L) != null;
+    }
+
+    /// A blast furnace recipe smelting one `stack` into `material`'s smelt-into ingot, keyed on `circuit`.
+    /// Above 1750K the output is a hot ingot instead, falling back to `ingotStack` when none resolves.
+    private static GTRecipeBuilder blastFurnaceBuilder(Material material, ItemStack stack, ItemStack ingotStack,
+        int circuit) {
+        GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
+        recipeBuilder.itemInputs(GTUtility.copyAmount(1, stack))
+            .circuit(circuit);
+        if (MaterialUtils.blastFurnaceTemp(material) > 1750) {
+            recipeBuilder.itemOutputs(
+                GTOreDictUnificator.get(OrePrefixes.ingotHot, MaterialUtils.smeltInto(material), ingotStack, 1L));
+        } else {
+            recipeBuilder.itemOutputs(GTUtility.copyAmount(1, ingotStack));
+        }
+        return recipeBuilder
+            .duration(
+                (Math.max(MaterialUtils.mass(material) / 40L, 1L) * MaterialUtils.blastFurnaceTemp(material)) * TICKS)
+            .eut(TierEU.RECIPE_MV)
+            .metadata(COIL_HEAT, MaterialUtils.blastFurnaceTemp(material));
     }
 
     @Override
@@ -131,29 +152,16 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             // A material carrying the AnaerobeSmelting/NobleGasSmelting SubTag blast-smelts under
                             // a gas: BlastFurnaceWithGas fans one recipe out into a gas-input variant per
                             // BlastFurnaceGasStat, keyed on circuit 11 and the base gas amount in ADDITIVE_AMOUNT.
+                            // A gas-tagged material declared by gregtech itself also keeps the plain gasless
+                            // recipe -- only the materials the werkstoff system introduced are gas-only.
                             boolean gasSmelting = MaterialUtils.hasSubTag(material, "AnaerobeSmelting")
                                 || MaterialUtils.hasSubTag(material, "NobleGasSmelting");
-                            GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
-                            recipeBuilder.itemInputs(GTUtility.copyAmount(1, stack))
-                                .circuit(gasSmelting ? 11 : 1);
-                            if (MaterialUtils.blastFurnaceTemp(material) > 1750) {
-                                recipeBuilder.itemOutputs(
-                                    GTOreDictUnificator
-                                        .get(OrePrefixes.ingotHot, MaterialUtils.smeltInto(material), tDustStack, 1L));
-                            } else {
-                                recipeBuilder.itemOutputs(GTUtility.copyAmount(1, tDustStack));
-                            }
-                            recipeBuilder
-                                .duration(
-                                    (Math.max(MaterialUtils.mass(material) / 40L, 1L)
-                                        * MaterialUtils.blastFurnaceTemp(material)) * TICKS)
-                                .eut(TierEU.RECIPE_MV)
-                                .metadata(COIL_HEAT, MaterialUtils.blastFurnaceTemp(material));
                             if (gasSmelting) {
-                                recipeBuilder.metadata(ADDITIVE_AMOUNT, 1000)
+                                blastFurnaceBuilder(material, stack, tDustStack, 11).metadata(ADDITIVE_AMOUNT, 1000)
                                     .addTo(BlastFurnaceWithGas);
-                            } else {
-                                recipeBuilder.addTo(blastFurnaceRecipes);
+                            }
+                            if (!gasSmelting || LegacyNameDomain.contains(material)) {
+                                blastFurnaceBuilder(material, stack, tDustStack, 1).addTo(blastFurnaceRecipes);
                             }
                         }
                     } else {
