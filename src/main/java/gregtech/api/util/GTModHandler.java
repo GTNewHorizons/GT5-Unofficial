@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -1362,6 +1363,10 @@ public class GTModHandler {
      * @return the output of the old Recipe or null if there was nothing.
      */
     public static ItemStack removeRecipe(ItemStack... shape) {
+        return removeRecipe(shape, null);
+    }
+
+    static ItemStack removeRecipe(ItemStack[] shape, IdentityHashMap<IRecipe, Boolean> knownMatches) {
         if (shape == null || isAllNulls(shape)) {
             if (GT_RECIPE_REMOVAL_LOGGER_ENABLED) {
                 GT_RECIPE_REMOVAL_LOGGER.error(
@@ -1371,7 +1376,6 @@ public class GTModHandler {
             return null;
         }
 
-        ItemStack rReturn = null;
         InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
 
             @Override
@@ -1386,18 +1390,7 @@ public class GTModHandler {
 
         ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
-        for (int i = 0; i < allRecipes.size(); i++) {
-            final IRecipe recipe = allRecipes.get(i);
-
-            if (recipe instanceof IGTCraftingRecipe && !((IGTCraftingRecipe) recipe).isRemovable()) {
-                continue;
-            }
-
-            if (recipe.matches(craftMatrix, DW)) {
-                rReturn = recipe.getCraftingResult(craftMatrix);
-                allRecipes.remove(i--);
-            }
-        }
+        ItemStack rReturn = removeMatchingRecipes(allRecipes, craftMatrix, knownMatches);
 
         if (rReturn == null) {
             GT_RECIPE_REMOVAL_LOGGER.warn(
@@ -1405,6 +1398,25 @@ public class GTModHandler {
                 new Exception("Direct crafting inputs (not an existing recipe): " + Arrays.toString(shape)));
         }
         return rReturn;
+    }
+
+    static ItemStack removeMatchingRecipes(List<IRecipe> allRecipes, InventoryCrafting craftMatrix,
+        IdentityHashMap<IRecipe, Boolean> knownMatches) {
+        ItemStack result = null;
+        for (int i = 0; i < allRecipes.size(); i++) {
+            final IRecipe recipe = allRecipes.get(i);
+
+            if (recipe instanceof IGTCraftingRecipe && !((IGTCraftingRecipe) recipe).isRemovable()) {
+                continue;
+            }
+
+            Boolean knownMatch = knownMatches == null ? null : knownMatches.get(recipe);
+            if (knownMatch != null ? knownMatch : recipe.matches(craftMatrix, DW)) {
+                result = recipe.getCraftingResult(craftMatrix);
+                allRecipes.remove(i--);
+            }
+        }
+        return result;
     }
 
     public static void removeRecipeDelayed(ItemStack... shape) {
@@ -1786,7 +1798,11 @@ public class GTModHandler {
      */
     public static List<ItemStack> getRecipeOutputs(List<IRecipe> recipeList, boolean deleteFromList,
         ItemStack... shape) {
+        return getRecipeOutputs(recipeList, deleteFromList, shape, null);
+    }
 
+    static List<ItemStack> getRecipeOutputs(List<IRecipe> recipeList, boolean deleteFromList, ItemStack[] shape,
+        IdentityHashMap<IRecipe, Boolean> knownMatches) {
         final ArrayList<ItemStack> outputList = new ArrayList<>();
         if (shape == null || isAllNulls(shape)) return outputList;
 
@@ -1809,7 +1825,9 @@ public class GTModHandler {
             if (recipe instanceof ShapelessOreRecipe) continue;
             if (recipe instanceof IGTCraftingRecipe) continue;
 
-            if (!recipe.matches(craftMatrix, DW)) continue;
+            boolean matches = recipe.matches(craftMatrix, DW);
+            if (knownMatches != null) knownMatches.put(recipe, matches);
+            if (!matches) continue;
 
             final ItemStack output = recipe.getCraftingResult(craftMatrix);
 
