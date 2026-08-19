@@ -85,6 +85,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.RecipeChangeAudit;
 import gregtech.common.GTCapesLoader;
 import gregtech.common.GTClient;
 import gregtech.common.GTDummyWorld;
@@ -638,6 +639,7 @@ public class GTMod {
         }
         GregTechAPI.sGTCompleteLoad = null;
         GregTechAPI.sFullLoadFinished = true;
+        RecipeChangeAudit.dump("gt-load-complete", "GT load complete");
     }
 
     @Mod.EventHandler
