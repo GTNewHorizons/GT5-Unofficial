@@ -2567,9 +2567,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     formatNumber(storedEnergy),
                     formatNumber(maxEnergy)));
 
-            setupProcessingLogic(processingLogic);
-            long maxRecipeEUt = processingLogic.getMaxAllowedRecipeEUt();
-            byte recipeTier = GTUtility.getTier(maxRecipeEUt);
             long totalInputPower = this.getMaxInputEu();
             byte voltageTier = this.getExoticEnergyHatches()
                 .isEmpty() ? (byte) this.getInputVoltageTier() : GTUtility.getTier(this.getAverageInputVoltage());
@@ -2590,14 +2587,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         .translateToLocalFormatted("GT5U.multiblock.scanner.mei", formatNumber(totalInputPower)));
             }
 
-            if (recipeTier == 15) {
-                info.add(StatCollector.translateToLocal("GT5U.multiblock.scanner.mrv_infinite"));
-            } else {
-                info.add(
-                    StatCollector.translateToLocalFormatted(
-                        "GT5U.multiblock.scanner.mrv",
-                        formatNumber(maxRecipeEUt),
-                        VN[recipeTier]));
+            if (processingLogic != null) {
+                setupProcessingLogic(processingLogic);
+                long maxRecipeEUt = processingLogic.getMaxAllowedRecipeEUt();
+                byte recipeTier = GTUtility.getTier(maxRecipeEUt);
+                if (recipeTier == 15) {
+                    info.add(StatCollector.translateToLocal("GT5U.multiblock.scanner.mrv_infinite"));
+                } else {
+                    info.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.multiblock.scanner.mrv",
+                            formatNumber(maxRecipeEUt),
+                            VN[recipeTier]));
+                }
             }
         }
 

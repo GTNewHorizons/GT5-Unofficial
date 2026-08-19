@@ -1882,7 +1882,22 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Food_IceCream_Acid.ID,
                 "gt.item.food.icecream_acid.name",
                 "gt.item.food.icecream_acid.tooltip",
-                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.poison.id,
+                    100,
+                    0,
+                    100,
+                    Potion.confusion.id,
+                    200,
+                    0,
+                    100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_Banana.set(
             addItemWithLocalizationKeys(
@@ -1903,14 +1918,44 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Food_IceCream_Benzene.ID,
                 "gt.item.food.icecream_benzene.name",
                 "gt.item.food.icecream_benzene.tooltip",
-                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.poison.id,
+                    100,
+                    0,
+                    100,
+                    Potion.confusion.id,
+                    200,
+                    0,
+                    100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_BlueberryBlastStargate.set(
             addItemWithLocalizationKeys(
                 Food_IceCream_BlueberryBlastStargate.ID,
                 "gt.item.food.icecream_blueberryblaststargate.name",
                 "gt.item.food.icecream_blueberryblaststargate.tooltip",
-                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.moveSpeed.id,
+                    600,
+                    0,
+                    100,
+                    Potion.jump.id,
+                    600,
+                    0,
+                    100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_Blueberry.set(
             addItemWithLocalizationKeys(
@@ -1931,7 +1976,22 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Food_IceCream_BowlOfHarmony.ID,
                 "gt.item.food.icecream_bowlofharmony.name",
                 "gt.item.food.icecream_bowlofharmony.tooltip",
-                new GTFoodStat(3, 0.2F, EnumAction.eat, null, false, true, false),
+                new GTFoodStat(
+                    3,
+                    0.2F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.regeneration.id,
+                    600,
+                    0,
+                    100,
+                    Potion.resistance.id,
+                    1200,
+                    0,
+                    100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_Brownie.set(
             addItemWithLocalizationKeys(
@@ -2015,14 +2075,14 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Food_IceCream_Coffee.ID,
                 "gt.item.food.icecream_coffee.name",
                 "gt.item.food.icecream_coffee.tooltip",
-                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.moveSlowdown.id, 200, 0, 100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_CookieDough.set(
             addItemWithLocalizationKeys(
                 Food_IceCream_CookieDough.ID,
                 "gt.item.food.icecream_cookiedough.name",
                 "gt.item.food.icecream_cookiedough.tooltip",
-                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.hunger.id, 200, 0, 100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_CookiesAndCream.set(
             addItemWithLocalizationKeys(
@@ -2036,7 +2096,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Food_IceCream_CottonCandy.ID,
                 "gt.item.food.icecream_cottoncandy.name",
                 "gt.item.food.icecream_cottoncandy.tooltip",
-                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.jump.id, 40, 64, 100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_Popsicle_Double.set(
             addItemWithLocalizationKeys(
@@ -2050,14 +2110,29 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Food_IceCream_ElectronicBlast.ID,
                 "gt.item.food.icecream_electronicblast.name",
                 "gt.item.food.icecream_electronicblast.tooltip",
-                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.moveSpeed.id,
+                    300,
+                    1,
+                    100,
+                    Potion.confusion.id,
+                    200,
+                    0,
+                    100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_Engineers.set(
             addItemWithLocalizationKeys(
                 Food_IceCream_Engineers.ID,
                 "gt.item.food.icecream_engineers.name",
                 "gt.item.food.icecream_engineers.tooltip",
-                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.digSpeed.id, 400, 4, 100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_FrenchVanilla.set(
             addItemWithLocalizationKeys(
@@ -2078,14 +2153,40 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Food_IceCream_GrapeMatterManipulator.ID,
                 "gt.item.food.icecream_grapemattermanipulator.name",
                 "gt.item.food.icecream_grapemattermanipulator.tooltip",
-                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.damageBoost.id,
+                    900,
+                    0,
+                    100,
+                    Potion.weakness.id,
+                    900,
+                    0,
+                    100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_HotFudge.set(
             addItemWithLocalizationKeys(
                 Food_IceCream_HotFudge.ID,
                 "gt.item.food.icecream_hotfudge.name",
                 "gt.item.food.icecream_hotfudge.tooltip",
-                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.fireResistance.id,
+                    1200,
+                    0,
+                    100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_Sandwich.set(
             addItemWithLocalizationKeys(
@@ -2099,7 +2200,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Food_IceCream_JustCone.ID,
                 "gt.item.food.icecream_justcone.name",
                 "gt.item.food.icecream_justcone.tooltip",
-                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.hunger.id, 100, 59, 100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_Lemonade.set(
             addItemWithLocalizationKeys(
@@ -2113,7 +2214,26 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Food_IceCream_MHDCSM.ID,
                 "gt.item.food.icecream_MHDCSM.name",
                 "gt.item.food.icecream_MHDCSM.tooltip",
-                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.damageBoost.id,
+                    1200,
+                    0,
+                    100,
+                    Potion.resistance.id,
+                    1200,
+                    0,
+                    100,
+                    Potion.confusion.id,
+                    200,
+                    0,
+                    100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_Mango.set(
             addItemWithLocalizationKeys(
@@ -2127,7 +2247,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Food_IceCream_Meat.ID,
                 "gt.item.food.icecream_meat.name",
                 "gt.item.food.icecream_meat.tooltip",
-                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.confusion.id, 200, 0, 100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_MintChip.set(
             addItemWithLocalizationKeys(
@@ -2176,14 +2296,44 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Food_IceCream_Radioactive.ID,
                 "gt.item.food.icecream_radioactive.name",
                 "gt.item.food.icecream_radioactive.tooltip",
-                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.poison.id,
+                    400,
+                    1,
+                    100,
+                    Potion.confusion.id,
+                    400,
+                    0,
+                    100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_Sorbet_RainbowStellar.set(
             addItemWithLocalizationKeys(
                 Food_Sorbet_RainbowStellar.ID,
                 "gt.item.food.sorbet_rainbowstellar.name",
                 "gt.item.food.sorbet_rainbowstellar.tooltip",
-                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.moveSpeed.id,
+                    1200,
+                    9,
+                    100,
+                    Potion.regeneration.id,
+                    400,
+                    0,
+                    100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_Sorbet_Raspberry.set(
             addItemWithLocalizationKeys(
@@ -2204,7 +2354,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Food_IceCream_Spaghetti.ID,
                 "gt.item.food.icecream_spaghetti.name",
                 "gt.item.food.icecream_spaghetti.tooltip",
-                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false, Potion.confusion.id, 300, 0, 100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_Sprinkles.set(
             addItemWithLocalizationKeys(
@@ -2232,7 +2382,22 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 Food_IceCream_Unicorn.ID,
                 "gt.item.food.icecream_unicorn.name",
                 "gt.item.food.icecream_unicorn.tooltip",
-                new GTFoodStat(2, 0.1F, EnumAction.eat, null, false, true, false),
+                new GTFoodStat(
+                    2,
+                    0.1F,
+                    EnumAction.eat,
+                    null,
+                    false,
+                    true,
+                    false,
+                    Potion.regeneration.id,
+                    400,
+                    1,
+                    100,
+                    Potion.field_76444_x.id,
+                    400,
+                    19,
+                    100),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
         ItemList.Ice_Cream_Vanilla.set(
             addItemWithLocalizationKeys(
