@@ -14,12 +14,9 @@ import gregtech.api.items.armor.JetpackStats;
 
 public class JetpackBehavior implements IArmorBehavior {
 
-    public static final JetpackBehavior INSTANCE = new JetpackBehavior(JetpackStats.ADVANCED);
-    private final JetpackStats jetpackStats;
+    public static final JetpackBehavior INSTANCE = new JetpackBehavior();
 
-    protected JetpackBehavior(JetpackStats stats) {
-        jetpackStats = stats;
-    }
+    protected JetpackBehavior() {}
 
     @Override
     public BehaviorName getName() {
@@ -53,6 +50,9 @@ public class JetpackBehavior implements IArmorBehavior {
      */
     private void performFlying(@NotNull ArmorContext context) {
         EntityPlayer player = context.getPlayer();
+        JetpackStats jetpackStats = context.hasBehavior(BehaviorName.JetpackPerfectHover)
+            ? JetpackStats.ADVANCED_PERFECT_HOVER
+            : JetpackStats.ADVANCED;
 
         double currentAccel = jetpackStats.getVerticalAcceleration() * (player.motionY < 0.3D ? 2.5D : 1.0D);
         double currentSpeedVertical = jetpackStats.getVerticalSpeed() * (player.isInWater() ? 0.4D : 1.0D);
@@ -77,10 +77,8 @@ public class JetpackBehavior implements IArmorBehavior {
                 } else if (descend && !isGuiOpen) {
                     player.motionY = Math.min(player.motionY + currentAccel, -jetpackStats.getVerticalHoverSpeed());
                 } else {
-                    player.motionY = Math.min(
-                        player.motionY + currentAccel,
-                        context.hasBehavior(BehaviorName.JetpackPerfectHover) ? 0
-                            : -jetpackStats.getVerticalHoverSlowSpeed());
+                    player.motionY = Math
+                        .min(player.motionY + currentAccel, -jetpackStats.getVerticalHoverSlowSpeed());
                 }
                 float speedSideways = (float) (player.isSneaking() ? jetpackStats.getSidewaysSpeed() * 0.5f
                     : jetpackStats.getSidewaysSpeed());

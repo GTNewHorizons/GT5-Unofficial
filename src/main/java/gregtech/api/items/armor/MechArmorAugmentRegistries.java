@@ -641,13 +641,14 @@ public class MechArmorAugmentRegistries {
             .setMinimumCoreTier(3)
             .setCategory(AugmentCategory.Movement)
         ),
+        // No requiresBehaviors: it's usable with either CreativeFlight or Jetpack (JetpackHover), and the builder
+        // only supports AND-ing requirements, not OR. Gating happens at runtime in InertiaCancelingBehavior instead.
         InertiaCanceling(ItemList.Augment_InertiaCanceling, new AugmentBuilder()
             .setId("InertiaCanceling")
             .setItemId("augmentinertiacanceling")
             .fitsInto(ArmorType.Chestplate)
             .providesBehaviors(InertiaCancelingBehavior.INSTANCE)
-            .requiresBehaviors(BehaviorName.CreativeFlight)
-            .setMinimumCoreTier(3)
+            .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Movement)
         ),
         EldritchStriders(ItemList.Augment_EldritchStriders, new AugmentBuilder()
