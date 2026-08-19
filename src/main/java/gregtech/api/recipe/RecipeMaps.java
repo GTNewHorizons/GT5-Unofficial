@@ -77,6 +77,7 @@ import gregtech.api.recipe.maps.FormingPressBackend;
 import gregtech.api.recipe.maps.FoundryModuleFrontend;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.recipe.maps.FurnaceBackend;
+import gregtech.api.recipe.maps.IceCreamMachineFrontend;
 import gregtech.api.recipe.maps.IsotopeDecayFrontend;
 import gregtech.api.recipe.maps.LargeBoilerFuelBackend;
 import gregtech.api.recipe.maps.LargeBoilerFuelFrontend;
@@ -251,6 +252,22 @@ public final class RecipeMaps {
         .progressBarTextureSteamMUI2(GTGuiTextures.PROGRESSBAR_EXTRACT_STEAM)
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Extractor.get(1)))
+        .build();
+    public static final RecipeMap<RecipeMapBackend> iceCreamMachineRecipes = RecipeMapBuilder
+        .of("gt.recipe.icecreammachine")
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
+        .slotOverlaysMUI2(
+            (index, isFluid, isOutput, isSpecial) -> !isFluid
+                ? (isOutput ? GTGuiTextures.OVERLAY_SLOT_OUT_STANDARD : GTGuiTextures.OVERLAY_SLOT_IN_STANDARD)
+                : null)
+        .progressBarMUI2(GTGuiTextures.PROGRESSBAR_ARROW_STANDARD)
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(ItemList.Ice_Cream_Machine.get(1))
+                .setHeight(90)
+                .setShowFavoritesButton(false)
+                .setShowOverlayButton(false))
+        .frontend(IceCreamMachineFrontend::new)
         .build();
     public static final RecipeMap<RecyclerBackend> recyclerRecipes = RecipeMapBuilder
         .of("ic.recipe.recycler", RecyclerBackend::new)
@@ -1843,6 +1860,7 @@ public final class RecipeMaps {
                 .validateOutputCount(1, 1)
                 .validateOutputFluidCount(-1, 0)
                 .validateInputFluidCount(1, 4)
+                .ignoreCollision()
                 .buildWithAlt();
             // noinspection SimplifyOptionalCallChains
             if (!rr.isPresent()) return Collections.emptyList();
@@ -1869,7 +1887,7 @@ public final class RecipeMaps {
                 .map(
                     val -> Arrays.stream(val)
                         .collect(Collectors.toList()))
-                .collect(Collectors.toList());
+                .toList();
             slots.stream()
                 .reduce(
                     Stream.of(new ArrayList<ItemStack>()),

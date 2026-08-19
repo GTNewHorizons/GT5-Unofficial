@@ -1,5 +1,6 @@
 package gregtech.loaders.postload;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -26,7 +27,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.AssemblyLineUtils;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -116,7 +116,7 @@ public class ScannerHandlerLoader {
             return new GTScannerResult(eut, duration, aInput.stackSize, 0, fluidConsume, output);
         } catch (Exception e) {
             if (D1) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
         return GTScannerResult.NOT_FOUND;
@@ -265,9 +265,8 @@ public class ScannerHandlerLoader {
         if (!ItemList.Tool_DataStick.isStackEqual(aInput, false, true)) return false;
         // this feels like a bad idea in terms of localization, maybe consider retooling this to a separate unique nbt
         // tag or item in the future.
-        if (!GTUtility.ItemNBT.getBookTitle(aInput)
-            .equals(GTUtility.ItemNBT.getRawProspectionDataName())) return false;
-        return true;
+        return GTUtility.ItemNBT.getBookTitle(aInput)
+            .equals(GTUtility.ItemNBT.getRawProspectionDataName());
     }
 
     public static @Nullable GTScannerResult doAssemblyLineResearch(@Nonnull MetaTileEntity aScanner,

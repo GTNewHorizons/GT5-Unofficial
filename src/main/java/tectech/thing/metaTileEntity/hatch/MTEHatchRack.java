@@ -338,7 +338,7 @@ public class MTEHatchRack extends MTEHatch {
             this.subZero = subZero;
             componentBinds.put(unlocalizedName, this);
             if (ConfigHandler.debug.DEBUG_MODE) {
-                TecTech.LOGGER.info("Component registered: " + unlocalizedName);
+                TecTech.LOGGER.info("Component registered: {}", unlocalizedName);
             }
         }
 

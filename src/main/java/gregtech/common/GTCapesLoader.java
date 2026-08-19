@@ -1,5 +1,7 @@
 package gregtech.common;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
@@ -29,7 +31,6 @@ import cpw.mods.fml.common.network.FMLNetworkEvent.ServerDisconnectionFromClient
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.net.cape.GTPacketBroadcastCapes;
-import gregtech.api.util.GTLog;
 
 @EventBusSubscriber
 @ParametersAreNonnullByDefault
@@ -41,7 +42,7 @@ public class GTCapesLoader implements Runnable {
 
     @Override
     public void run() {
-        GTLog.out.println("GTMod: Downloading Cape List");
+        GT_FML_LOGGER.debug("GTMod: Downloading Cape List");
         downloadGTNHUUIDCapes();
         downloadGregoriusCapes();
         if (Mods.GalacticraftCore.isModLoaded()) {
@@ -109,7 +110,7 @@ public class GTCapesLoader implements Runnable {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
     }
 
@@ -120,7 +121,7 @@ public class GTCapesLoader implements Runnable {
                 putName(scanner.nextLine());
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
     }
 
@@ -133,11 +134,11 @@ public class GTCapesLoader implements Runnable {
                 if (parts.length == 2) {
                     putName(parts[0], parts[1] + "GC");
                 } else {
-                    GTLog.err.println("Invalid cape mapping: " + line);
+                    GT_FML_LOGGER.error("Invalid cape mapping: {}", line);
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
     }
 
@@ -150,11 +151,11 @@ public class GTCapesLoader implements Runnable {
                 if (parts.length == 2) {
                     putName(parts[0], parts[1] + "GS");
                 } else {
-                    GTLog.err.println("Invalid cape mapping: " + line);
+                    GT_FML_LOGGER.error("Invalid cape mapping: {}", line);
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
     }
 

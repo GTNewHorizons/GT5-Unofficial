@@ -112,7 +112,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .circuit(2)
                 .itemOutputs(plate_Double)
                 .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.voltageMultiplier)
+                .eut(Math.max(TierEU.RECIPE_MV, material.voltageMultiplier))
                 .addTo(benderRecipes);
         }
 
@@ -122,7 +122,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .circuit(2)
                 .itemOutputs(plate_Double)
                 .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.voltageMultiplier)
+                .eut(Math.max(TierEU.RECIPE_MV, material.voltageMultiplier))
                 .addTo(benderRecipes);
         }
 
@@ -148,7 +148,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .circuit(9)
                 .itemOutputs(plate_Dense)
                 .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.voltageMultiplier)
+                .eut(Math.max(TierEU.RECIPE_MV, material.voltageMultiplier))
                 .addTo(benderRecipes);
         }
 
@@ -158,7 +158,7 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .circuit(9)
                 .itemOutputs(plate_Dense)
                 .duration(Math.max(material.getMass() * 2L, 1L))
-                .eut(material.voltageMultiplier)
+                .eut(Math.max(TierEU.RECIPE_MV, material.voltageMultiplier))
                 .addTo(benderRecipes);
 
         }
