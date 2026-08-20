@@ -61,7 +61,8 @@ public class JetpackBehavior implements IArmorBehavior {
         boolean descend = ArmorActionManager.getKeybind("VANILLA_SNEAK")
             .isKeyDown(player);
         boolean isHovering = context.isBehaviorActive(BehaviorName.JetpackHover);
-        boolean isGuiOpen = context.getPlayer().worldObj.isRemote && ClientGuiHelper.isGuiOpen();
+        boolean isGuiOpen = context.getPlayer().worldObj.isRemote
+            && (net.minecraft.client.Minecraft.getMinecraft().currentScreen != null);
 
         if ((ascend && !isGuiOpen) || isHovering && !player.onGround) {
             if (!player.isInWater() && context.drainEnergy(20)) {
@@ -114,13 +115,5 @@ public class JetpackBehavior implements IArmorBehavior {
                 // spawnParticle(player.getEntityWorld(), player, jetpackStats.getParticle());
             }
         }
-    }
-}
-
-class ClientGuiHelper {
-
-    @cpw.mods.fml.relauncher.SideOnly(cpw.mods.fml.relauncher.Side.CLIENT)
-    static boolean isGuiOpen() {
-        return net.minecraft.client.Minecraft.getMinecraft().currentScreen != null;
     }
 }
