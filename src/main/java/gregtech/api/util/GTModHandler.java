@@ -80,6 +80,7 @@ import gregtech.api.recipe.RecipeCategories;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.toolbox.ToolboxDelegateInventory;
 import gregtech.common.items.toolbox.ToolboxUtil;
+import gregtech.mixin.interfaces.accessors.ShapedOreRecipeAccessor;
 import ic2.api.item.IBoxable;
 import ic2.api.item.IC2Items;
 import ic2.api.item.IElectricItem;
@@ -1686,6 +1687,10 @@ public class GTModHandler {
         return getRecipeOutput(false, false, shape);
     }
 
+    public static ItemStack getRecipeOutputFrom(List<IRecipe> recipes, ItemStack... shape) {
+        return getRecipeOutputFrom(recipes, false, false, shape);
+    }
+
     /**
      * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection. If available, will choose a
      * recipe that wasn't auto generated during OreDictionary registration. The OreDict recipe is still chosen if it is
@@ -1700,6 +1705,10 @@ public class GTModHandler {
         return getRecipeOutput(false, true, shape);
     }
 
+    public static ItemStack getRecipeOutputPreferNonOreDictFrom(List<IRecipe> recipes, ItemStack... shape) {
+        return getRecipeOutputFrom(recipes, false, true, shape);
+    }
+
     public static ItemStack getRecipeOutput(boolean aUncopiedStack, ItemStack... shape) {
         return getRecipeOutput(aUncopiedStack, false, shape);
     }
@@ -1708,6 +1717,16 @@ public class GTModHandler {
      * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection.
      */
     public static ItemStack getRecipeOutput(boolean aUncopiedStack, boolean aPreferNonOreDict, ItemStack... shape) {
+        return getRecipeOutputFrom(
+            CraftingManager.getInstance()
+                .getRecipeList(),
+            aUncopiedStack,
+            aPreferNonOreDict,
+            shape);
+    }
+
+    private static ItemStack getRecipeOutputFrom(List<IRecipe> recipes, boolean aUncopiedStack,
+        boolean aPreferNonOreDict, ItemStack... shape) {
         if (shape == null || isAllNulls(shape)) return null;
 
         InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
@@ -1721,9 +1740,6 @@ public class GTModHandler {
         for (int i = 0; i < 9 && i < shape.length; i++) {
             craftMatrix.setInventorySlotContents(i, shape[i]);
         }
-
-        ArrayList<IRecipe> recipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
-            .getRecipeList();
 
         boolean tOreDictRecipeFound = false;
         ItemStack tOreDictOutput = null;
@@ -1761,6 +1777,73 @@ public class GTModHandler {
 
         if (aUncopiedStack) return tOreDictOutput;
         return GTUtility.copyOrNull(tOreDictOutput);
+    }
+
+    public static List<IRecipe> getRecipeCandidates(ItemStack... shape) {
+        if (shape == null) return new ArrayList<>();
+
+        int occupiedSlots = 0;
+        for (int i = 0; i < 9 && i < shape.length; i++) {
+            if (shape[i] != null) occupiedSlots |= 1 << i;
+        }
+
+        List<IRecipe> recipes = CraftingManager.getInstance()
+            .getRecipeList();
+        List<IRecipe> candidates = new ArrayList<>(recipes.size());
+        for (IRecipe recipe : recipes) {
+            if (canMatchRecipeShape(recipe, occupiedSlots)) candidates.add(recipe);
+        }
+        return candidates;
+    }
+
+    private static boolean canMatchRecipeShape(IRecipe recipe, int occupiedSlots) {
+        Class<?> recipeClass = recipe.getClass();
+        if (recipeClass == ShapedRecipes.class) {
+            ShapedRecipes shaped = (ShapedRecipes) recipe;
+            return canMatchShapedRecipe(shaped.recipeItems, shaped.recipeWidth, shaped.recipeHeight, occupiedSlots);
+        }
+        if (recipeClass == ShapedOreRecipe.class || recipeClass == GTShapedRecipe.class) {
+            ShapedOreRecipe shaped = (ShapedOreRecipe) recipe;
+            ShapedOreRecipeAccessor accessor = (ShapedOreRecipeAccessor) shaped;
+            return canMatchShapedRecipe(
+                shaped.getInput(),
+                accessor.gt5u$getWidth(),
+                accessor.gt5u$getHeight(),
+                occupiedSlots);
+        }
+
+        int occupiedSlotCount = Integer.bitCount(occupiedSlots);
+        if (recipeClass == ShapelessRecipes.class) {
+            return ((ShapelessRecipes) recipe).recipeItems.size() == occupiedSlotCount;
+        }
+        if (recipeClass == ShapelessOreRecipe.class || recipeClass == GTShapelessRecipe.class) {
+            return ((ShapelessOreRecipe) recipe).getInput()
+                .size() == occupiedSlotCount;
+        }
+
+        // Unknown recipes may implement arbitrary matching rules.
+        return true;
+    }
+
+    private static boolean canMatchShapedRecipe(Object[] input, int width, int height, int occupiedSlots) {
+        if (input == null || width <= 0 || height <= 0 || input.length < width * height) return true;
+        if (width > 3 || height > 3) return false;
+
+        for (int offsetY = 0; offsetY <= 3 - height; offsetY++) {
+            for (int offsetX = 0; offsetX <= 3 - width; offsetX++) {
+                int normalSlots = 0;
+                int mirroredSlots = 0;
+                for (int y = 0; y < height; y++) {
+                    for (int x = 0; x < width; x++) {
+                        if (input[x + y * width] == null) continue;
+                        normalSlots |= 1 << (offsetX + x + (offsetY + y) * 3);
+                        mirroredSlots |= 1 << (offsetX + width - x - 1 + (offsetY + y) * 3);
+                    }
+                }
+                if (occupiedSlots == normalSlots || occupiedSlots == mirroredSlots) return true;
+            }
+        }
+        return false;
     }
 
     private static List<IRecipe> bufferedRecipes = null;
