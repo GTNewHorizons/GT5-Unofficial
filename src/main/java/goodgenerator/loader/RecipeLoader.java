@@ -1614,6 +1614,13 @@ public class RecipeLoader {
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.Protomatter.getFluid(1))
+            .fluidOutputs(Materials.Antimatter.getFluid(1))
+            .duration(20)
+            .eut(10_000_000)
+            .addTo(GoodGeneratorRecipeMaps.antimatterForgeRecipes);
     }
 
     public static void Fixer() {
