@@ -3,8 +3,11 @@ package gregtech.loaders.oreprocessing;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import java.util.List;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
@@ -28,6 +31,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         short aMeta = (short) aStack.getItemDamage();
 
         if (aMeta == Short.MAX_VALUE) {
+            List<IRecipe> recipeCandidates = GTModHandler.getRecipeCandidates(aStack);
             if ((GTUtility.areStacksEqual(
                 GTModHandler.getSmeltingOutput(GTUtility.copyAmount(1, aStack), false, null),
                 new ItemStack(Items.coal, 1, 1)))) {
@@ -39,7 +43,8 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                     new ItemStack(Items.coal, 1, 1)))) {
                     GTModHandler.removeFurnaceSmelting(new ItemStack(aStack.getItem(), 1, i));
                 }
-                ItemStack tStack = GTModHandler.getRecipeOutput(new ItemStack(aStack.getItem(), 1, i));
+                ItemStack tStack = GTModHandler
+                    .getRecipeOutputFrom(recipeCandidates, new ItemStack(aStack.getItem(), 1, i));
                 if (tStack == null) {
                     if (i >= 16) {
                         break;
