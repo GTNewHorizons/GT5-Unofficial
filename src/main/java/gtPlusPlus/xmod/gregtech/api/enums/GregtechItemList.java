@@ -318,9 +318,6 @@ public enum GregtechItemList implements IItemContainer {
     XL_HeatExchanger,
     Casing_XL_HeatExchanger,
 
-    // Large Engine
-    Casing_Reinforced_Engine_Casing,
-
     // Large Vacuum Furnace
     Casing_Vacuum_Furnace,
     Controller_Vacuum_Furnace,

@@ -876,8 +876,6 @@ public enum Casings implements ICasing {
     ThermallyInsulatedCasing
         (() -> ModBlocks.blockSpecialMultiCasings, 8, gtpp(1, 8)),
     FlotationCellCasings
-        (() -> ModBlocks.blockSpecialMultiCasings, 9, gtpp(1, 9)),
-    ReinforcedEngineCasing
         (() -> ModBlocks.blockSpecialMultiCasings, 10, gtpp(1, 10)),
     MolecularContainmentCasing
         (() -> ModBlocks.blockSpecialMultiCasings, 11, 113),

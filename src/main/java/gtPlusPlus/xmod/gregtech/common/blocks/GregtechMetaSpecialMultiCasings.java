@@ -47,7 +47,6 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
         GregtechItemList.Casing_SolarTower_SaltContainment.set(new ItemStack(this, 1, 7));
         GregtechItemList.Casing_SolarTower_HeatContainment.set(new ItemStack(this, 1, 8));
         GregtechItemList.Casing_Flotation_Cell.set(new ItemStack(this, 1, 9));
-        GregtechItemList.Casing_Reinforced_Engine_Casing.set(new ItemStack(this, 1, 10));
         GregtechItemList.Casing_Molecular_Transformer_1.set(new ItemStack(this, 1, 11));
         GregtechItemList.Casing_Molecular_Transformer_2.set(new ItemStack(this, 1, 12));
         GregtechItemList.Casing_Molecular_Transformer_3.set(new ItemStack(this, 1, 13));
