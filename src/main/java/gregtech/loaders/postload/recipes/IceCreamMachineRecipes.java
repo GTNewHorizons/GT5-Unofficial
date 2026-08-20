@@ -92,6 +92,19 @@ public class IceCreamMachineRecipes implements Runnable {
         addRecipe(ItemList.Ice_Cream_Vanilla);
         addRecipe(ItemList.Ice_Cream_Concrete);
         addRecipe(ItemList.Ice_Cream_Rubber);
+        addRecipe(ItemList.Ice_Cream_Diesel);
+        addRecipe(ItemList.Ice_Cream_Snowcone);
+        addRecipe(ItemList.Ice_Cream_IceSlush);
+        addRecipe(ItemList.Ice_Cream_Sorbet_Pineapple);
+        addRecipe(ItemList.Ice_Cream_Orange);
+        addRecipe(ItemList.Ice_Cream_Jelly);
+        addRecipe(ItemList.Ice_Cream_MatchaSnake);
+        addRecipe(ItemList.Ice_Cream_Popsicle_Freeze);
+        addRecipe(ItemList.Ice_Cream_HoneyBeeBowl);
+        addRecipe(ItemList.Ice_Cream_IlluminatiCone);
+        addRecipe(ItemList.Ice_Cream_ConfettiQuestbook);
+        addRecipe(ItemList.Ice_Cream_PitOfDoomAndDespair);
+        addRecipe(ItemList.Ice_Cream_MasterOfDreams);
     }
 
     private void addRecipe(ItemList flavor) {

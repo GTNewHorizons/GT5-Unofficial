@@ -221,6 +221,19 @@ public enum IDMetaItem02 {
     Food_IceCream_Vanilla(640),
     Food_IceCream_Concrete(641),
     Food_IceCream_Rubber(642),
+    Food_IceCream_Diesel(643),
+    Food_IceCream_Snowcone(644),
+    Food_IceCream_IceSlush(645),
+    Food_Sorbet_Pineapple(646),
+    Food_IceCream_Orange(647),
+    Food_IceCream_Jelly(648),
+    Food_IceCream_MatchaSnake(649),
+    Food_Popsicle_Freeze(650),
+    Food_IceCream_HoneyBeeBowl(651),
+    Food_IceCream_IlluminatiCone(652),
+    Food_IceCream_ConfettiQuestbook(653),
+    Food_IceCream_PitOfDoomAndDespair(654),
+    Food_IceCream_MasterOfDreams(655),
     // Reserved for Ice creams, don't you dare
     Display_ITS_FREE(765);
 
