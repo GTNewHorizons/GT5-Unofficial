@@ -48,6 +48,9 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
+        if (ProcessingOreMachine.owns(material)) {
+            return;
+        }
 
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.ICE_ORE)) {
             GTValues.RA.stdBuilder()

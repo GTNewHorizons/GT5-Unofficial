@@ -45,10 +45,10 @@ import gregtech.api.util.GTUtility;
 /// recipes for the gtPlusPlus ore minerals in [#ELIGIBLE_STANDARD]/[#ELIGIBLE_NO_OPTIONAL], each carrying the
 /// two bonus byproducts [#generate] picks from the mineral's flattened composition.
 ///
-/// These recipes are registered here rather than through the canonical `ProcessingOre`/`ProcessingDirty`/
-/// `ProcessingCrushedOre`/`ProcessingPure` autogen, whose [GTMaterialProperties#ORE_BYPRODUCTS] slot
-/// convention does not line up with the bonus pair these minerals need. That autogen still runs for the same
-/// materials, so both sets of recipes coexist.
+/// These recipes are registered here rather than through the canonical `ProcessingOre`/`ProcessingRawOre`/
+/// `ProcessingDirty`/`ProcessingCrushedOre`/`ProcessingPure`/`ProcessingDust` autogen, whose
+/// [GTMaterialProperties#ORE_BYPRODUCTS] slot convention does not line up with the bonus pair these minerals
+/// need. That autogen skips an [#owns] material entirely, so these are its only ore-chain recipes.
 ///
 /// [#hasSolidForm] gates which composition parts can be a byproduct: a part qualifies only when its `dust`,
 /// `block`, `dustTiny`, and `dustSmall` shapes all resolve. Material state alone is not equivalent and picks
@@ -94,6 +94,12 @@ public class ProcessingOreMachine {
         .of(Materials.AncientGranite, Materials.Runite, Materials.FluoriteF);
 
     private static final Material mStone = Materials.Stone;
+
+    /// Whether this generator owns `material`'s ore-processing chain, in which case the canonical autogen
+    /// leaves it alone -- see the class javadoc.
+    public static boolean owns(Material material) {
+        return ELIGIBLE_STANDARD.contains(material) || ELIGIBLE_NO_OPTIONAL.contains(material);
+    }
 
     public static void run() {
         for (Material material : ELIGIBLE_STANDARD) {

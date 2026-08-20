@@ -497,6 +497,9 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_ORE_PROCESSING)) {
                     return;
                 }
+                if (ProcessingOreMachine.owns(material)) {
+                    return;
+                }
 
                 boolean hasDust = hasDust(material);
                 Material tByProduct = GTUtility.selectItemInList(
