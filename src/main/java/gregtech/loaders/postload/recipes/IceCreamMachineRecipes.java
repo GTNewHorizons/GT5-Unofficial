@@ -11,8 +11,9 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials.Materials;
+import gregtech.api.material.MaterialParts;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CCNEIRepresentation;
 
@@ -23,11 +24,15 @@ public class IceCreamMachineRecipes implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Ice_Cream_Machine.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "FEF", "WIG", "SCT", 'F', OrePrefixes.frameGt.get(Materials.Iron), 'E',
-                ItemList.Electric_Motor_LV.get(1L), 'W', OrePrefixes.wireFine.get(Materials.Copper), 'I',
-                new ItemStack(Blocks.ice), 'G', OrePrefixes.gearGtSmall.get(Materials.Iron), 'S',
-                OrePrefixes.screw.get(Materials.Iron), 'C', ItemList.Cell_Empty.get(1L), 'T',
-                OrePrefixes.screw.get(Materials.Steel) });
+            new Object[] { "FEF", "WIG", "SCT", 'F',
+                MaterialParts.craftIngredient(OrePrefixes.frameGt, Materials.Iron), 'E',
+                ItemList.Electric_Motor_LV.get(1L), 'W',
+                MaterialParts.craftIngredient(OrePrefixes.wireFine, Materials.Copper), 'I',
+                new ItemStack(Blocks.ice), 'G',
+                MaterialParts.craftIngredient(OrePrefixes.gearGtSmall, Materials.Iron), 'S',
+                MaterialParts.craftIngredient(OrePrefixes.screw, Materials.Iron), 'C',
+                ItemList.Cell_Empty.get(1L), 'T',
+                MaterialParts.craftIngredient(OrePrefixes.screw, Materials.Steel) });
 
         // Fake recipe
         GTValues.RA.stdBuilder()
