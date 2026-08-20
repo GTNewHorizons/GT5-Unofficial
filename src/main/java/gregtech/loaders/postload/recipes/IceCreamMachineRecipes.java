@@ -24,14 +24,11 @@ public class IceCreamMachineRecipes implements Runnable {
         GTModHandler.addCraftingRecipe(
             ItemList.Ice_Cream_Machine.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "FEF", "WIG", "SCT", 'F',
-                MaterialParts.craftIngredient(OrePrefixes.frameGt, Materials.Iron), 'E',
-                ItemList.Electric_Motor_LV.get(1L), 'W',
-                MaterialParts.craftIngredient(OrePrefixes.wireFine, Materials.Copper), 'I',
-                new ItemStack(Blocks.ice), 'G',
-                MaterialParts.craftIngredient(OrePrefixes.gearGtSmall, Materials.Iron), 'S',
-                MaterialParts.craftIngredient(OrePrefixes.screw, Materials.Iron), 'C',
-                ItemList.Cell_Empty.get(1L), 'T',
+            new Object[] { "FEF", "WIG", "SCT", 'F', MaterialParts.craftIngredient(OrePrefixes.frameGt, Materials.Iron),
+                'E', ItemList.Electric_Motor_LV.get(1L), 'W',
+                MaterialParts.craftIngredient(OrePrefixes.wireFine, Materials.Copper), 'I', new ItemStack(Blocks.ice),
+                'G', MaterialParts.craftIngredient(OrePrefixes.gearGtSmall, Materials.Iron), 'S',
+                MaterialParts.craftIngredient(OrePrefixes.screw, Materials.Iron), 'C', ItemList.Cell_Empty.get(1L), 'T',
                 MaterialParts.craftIngredient(OrePrefixes.screw, Materials.Steel) });
 
         // Fake recipe

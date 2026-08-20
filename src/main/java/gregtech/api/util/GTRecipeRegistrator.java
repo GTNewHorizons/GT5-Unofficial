@@ -712,9 +712,7 @@ public class GTRecipeRegistrator {
 
             for (int i = 0; i < sShapes.length; i++) {
                 RecipeShape tRecipe = sShapes[i];
-                boolean tCanReplace = recipeReplacing && plate != null
-                    && sShapesA[i] != null
-                    && sShapesA[i].length > 1;
+                boolean tCanReplace = recipeReplacing && plate != null && sShapesA[i] != null && sShapesA[i].length > 1;
                 if (tCanReplace) tKnownMatches.clear();
                 boolean tRemovalAttempted = false;
 
