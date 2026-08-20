@@ -11,16 +11,23 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import org.apache.commons.lang3.NotImplementedException;
 
-import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
-
-import it.unimi.dsi.fastutil.longs.Long2IntLinkedOpenHashMap;
-import it.unimi.dsi.fastutil.longs.Long2IntMap;
-
 /**
  * A fake {@link IFluidHandler} that allows GT blocks and pipes to fill a vanilla cauldron. Does not allow draining.
  */
 public class CauldronFluidHandler implements IFluidHandler {
 
+    // spotless:off
+    /* Endless IDs expands block metadata to 16 bits. The new cauldron metadata:
+
+       Clobber |   Partial Fill  | Original Cauldron Data
+             /¯|¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯|¯¯¯¯¯¯¯\
+         +-+-+-|-+-+-+-+-+-+-+-+-|-+-+-+-|
+         |F|E|D|C|B|A|9|8|7|6|5|4|3|2|1|0|
+         |-+-+-+-+-+-+-+-+-+-+-+-|-+-+-+-|
+         \_______________________|_______/
+           Endless IDs Addition   Vanilla
+     */
+    //spotless:on
     public final static int ORIGINAL_METADATA_MASK = 0xF;
     public final static int PARTIAL_FILL_MASK = 0x1FF0;
     public final static int CLOBBER_PARTIAL_FILL_MASK = 0x2000;
@@ -28,7 +35,7 @@ public class CauldronFluidHandler implements IFluidHandler {
 
     // Must be below 512, or it won't fit into the allotted metadata space.
     private static final int MB_PER_LEVEL = 333;
-    private static final Long2IntMap PARTIAL_AMOUNTS = new Long2IntLinkedOpenHashMap();
+    private static final ThreadLocal<Integer> PARTIAL_AMOUNT = ThreadLocal.withInitial(() -> 0);
     private static final FluidTankInfo[] EMPTY_FAKE_TANK = {
         new FluidTankInfo(new FluidStack(FluidRegistry.WATER, 0), MB_PER_LEVEL * 3) };
     private static final FluidTankInfo[] FULL_FAKE_TANK = {
@@ -58,14 +65,12 @@ public class CauldronFluidHandler implements IFluidHandler {
         }
 
         final int metadata = world.getBlockMetadata(x, y, z);
-        final int partialAmount = PARTIAL_AMOUNTS.remove(CoordinatePacker.pack(x, y, z));
-
-        if (metadata == 3) {
+        if ((metadata & ORIGINAL_METADATA_MASK) == 3) {
             return 0;
         }
 
-        final int initialFill = metadata * MB_PER_LEVEL + partialAmount;
-
+        final int initialFill = metadata * MB_PER_LEVEL + PARTIAL_AMOUNT.get();
+        PARTIAL_AMOUNT.set(0);
         final int amountToDrain;
         int newMetadata = Math.min(3, (initialFill + resource.amount) / MB_PER_LEVEL);
 
@@ -106,14 +111,11 @@ public class CauldronFluidHandler implements IFluidHandler {
 
     @Override
     public FluidTankInfo[] getTankInfo(final ForgeDirection from) {
-        if (world.getBlockMetadata(x, y, z) == 3) {
-            return FULL_FAKE_TANK;
-        }
+        return world.getBlockMetadata(x, y, z) == 3 ? FULL_FAKE_TANK : EMPTY_FAKE_TANK;
 
-        return EMPTY_FAKE_TANK;
     }
 
-    public static void setLastPartialFill(final int x, final int y, final int z, final int partialFill) {
-        PARTIAL_AMOUNTS.put(CoordinatePacker.pack(x, y, z), partialFill);
+    public static void setLastPartialFill(final int partialFill) {
+        PARTIAL_AMOUNT.set(partialFill);
     }
 }

@@ -53,11 +53,7 @@ public class World_CauldronPartialFill {
         if (block == Blocks.cauldron) {
             final int partialFill = metadata & PARTIAL_FILL_MASK;
             if (partialFill > 0) {
-                CauldronFluidHandler.setLastPartialFill(
-                    (chunk.xPosition << 4) + x,
-                    y,
-                    (chunk.zPosition << 4) + z,
-                    partialFill >> PARTIAL_FILL_BIT_SHIFT);
+                CauldronFluidHandler.setLastPartialFill(partialFill >> PARTIAL_FILL_BIT_SHIFT);
             }
             return metadata & ORIGINAL_METADATA_MASK;
         }
