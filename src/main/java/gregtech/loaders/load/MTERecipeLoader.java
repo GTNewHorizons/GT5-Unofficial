@@ -2537,7 +2537,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Hull_UV.get(1L),
             NOT_REMOVABLE | BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PHP", aTextCableHull, 'M', ItemList.Casing_UV, 'C',
-                OrePrefixes.wireGt04.get(Materials.NaquadahAlloy), 'H', OrePrefixes.plate.get(Materials.Osmium), 'P',
+                OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 'H', OrePrefixes.plate.get(Materials.Osmium), 'P',
                 OrePrefixes.plate.get(Materials.Polybenzimidazole) });
         GTModHandler.addCraftingRecipe(
             ItemList.Hull_MAX.get(1L),
