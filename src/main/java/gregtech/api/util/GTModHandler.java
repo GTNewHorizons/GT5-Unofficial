@@ -398,11 +398,9 @@ public class GTModHandler {
                 + "\" has returned null because "
                 + reason;
             if (PANIC_MODE_NULL) {
-                GT_FML_LOGGER.fatal(log_message);
-                GT_FML_LOGGER.fatal(new Exception());
+                GT_FML_LOGGER.fatal(log_message, new Exception());
             } else {
-                GT_FML_LOGGER.info(log_message);
-                GT_FML_LOGGER.info(new Exception());
+                GT_FML_LOGGER.info(log_message, new Exception());
             }
         }
         return result;
