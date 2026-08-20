@@ -114,7 +114,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     private static final int STRUCTURE_Y_OFFSET = 23;
     private static final int STRUCTURE_Z_OFFSET = 1;
 
-    // Supplier because werkstoff loads later than multiblock controllers... fml
+    // Supplier because materials load later than multiblock controllers
     private static final Supplier<FluidStack[]> INERT_GASES = () -> new FluidStack[] {
         MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 10_000),
         MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, 7_500),
@@ -155,7 +155,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             2.0f), };
 
     private static final FluidStack CATALYST_FLUID = MaterialLibAPI
-        .getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, (int) (32 * INGOTS));
+        .getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, 32 * INGOTS);
     private static final FluidStack COOLANT_FLUID = MaterialLibAPI
         .getFluidStack(Materials.SuperCoolant, FluidShapes.fluidLiquid, 10_000);
 

@@ -57,8 +57,8 @@ public class NaniteChain {
                 MaterialLibAPI.getStack(Materials.NaquadahAlloy, Shapes.plateSuperdense, 4))
             .fluidInputs(
                 MaterialUtils.anyFluid(Materials.Indalloy140, 32 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, (int) (32 * INGOTS)),
-                MaterialLibAPI.getFluidStack(Materials.Osmiridium, FluidShapes.fluidMolten, (int) (16 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.HSSS, FluidShapes.fluidMolten, 32 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Osmiridium, FluidShapes.fluidMolten, 16 * INGOTS))
             .itemOutputs(ItemList.NanoForge.get(1))
             .eut(TierEU.RECIPE_ZPM)
             .duration(5 * MINUTES)
@@ -183,7 +183,7 @@ public class NaniteChain {
             .fluidInputs(
                 MaterialUtils.fluid(Materials.UUMatter, 500_000),
                 MaterialUtils.fluid(Materials.DimensionallyTranscendentResidue, 50_000),
-                MaterialLibAPI.getFluidStack(Materials.Creon, FluidShapes.fluidMolten, (int) (8 * STACKS)))
+                MaterialLibAPI.getFluidStack(Materials.Creon, FluidShapes.fluidMolten, 8 * STACKS))
             .metadata(NANO_FORGE_TIER, 3)
             .duration(100 * SECONDS)
             .eut(2_000_000_000)
@@ -244,8 +244,8 @@ public class NaniteChain {
                 ItemList.Circuit_Parts_Chip_Bioware.get(64))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 2))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, (int) (1 * INGOTS)),
-                MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, (int) (4 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 4 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.PrimordialMatter, FluidShapes.fluidLiquid, 64_000))
             .metadata(NANO_FORGE_TIER, 3)
             .duration(12 * MINUTES + 30 * SECONDS)

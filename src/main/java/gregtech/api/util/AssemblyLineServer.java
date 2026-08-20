@@ -22,9 +22,7 @@ public class AssemblyLineServer {
     public static LinkedHashMap<String, String> lServerNames = new LinkedHashMap<>();
 
     /// The material-name token substituted into a generated item or ore block's server-side name, or null when
-    /// the id slot is empty. These tokens feed assembly-line data packets, so they must be byte-identical to
-    /// the legacy internal name; [MaterialUtils#internalName] resolves exactly that string, including the
-    /// LEGACY_NAME divergents.
+    /// the id slot is empty. The token must be byte-identical to the legacy internal name.
     private static @Nullable String generatedMaterialName(int id) {
         return MaterialUtils.internalName(LegacyMaterialIDIndex.get(id));
     }

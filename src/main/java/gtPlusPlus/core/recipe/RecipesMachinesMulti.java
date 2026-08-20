@@ -95,8 +95,7 @@ public class RecipesMachinesMulti {
                 Circuits.IV.get(8))
             .circuit(18)
             .itemOutputs(GregtechItemList.XL_HeatExchanger.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.TungstenSteel, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.TungstenSteel, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -108,8 +107,7 @@ public class RecipesMachinesMulti {
                 MaterialLibAPI.getStack(Materials.Inconel625, Shapes.screw, 8))
             .circuit(18)
             .itemOutputs(GregtechItemList.Casing_XL_HeatExchanger.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.TungstenSteel, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.TungstenSteel, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -241,8 +239,8 @@ public class RecipesMachinesMulti {
             .fluidInputs(
                 MaterialUtils.anyFluid(Materials.WatertightSteel, 32 * INGOTS),
                 MaterialUtils.anyFluid(Materials.BabbitAlloy, 16 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Bronze, FluidShapes.fluidMolten, (int) (64 * INGOTS)),
-                MaterialLibAPI.getFluidStack(Materials.Kanthal, FluidShapes.fluidMolten, (int) (16 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Bronze, FluidShapes.fluidMolten, 64 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Kanthal, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .metadata(CHEMPLANT_CASING_TIER, 5)
@@ -643,7 +641,7 @@ public class RecipesMachinesMulti {
                 MaterialUtils.anyFluid(Materials.Nitinol60, 36 * INGOTS),
                 MaterialUtils.anyFluid(Materials.EnergyCrystal, 1 * STACKS + 8 * INGOTS),
                 MaterialUtils.anyFluid(Materials.Tumbaga, 4 * STACKS + 32 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Nichrome, FluidShapes.fluidMolten, (int) (16 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Nichrome, FluidShapes.fluidMolten, 16 * INGOTS))
             .itemOutputs(new ItemStack(ModBlocks.blockCasings3Misc, 32, 15))
             .eut(TierEU.RECIPE_LuV)
             .duration(20 * MINUTES)
@@ -1053,7 +1051,7 @@ public class RecipesMachinesMulti {
                 MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.screw, 8))
             .circuit(12)
             .itemOutputs(ItemList.Boldarnator.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Aluminium, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Aluminium, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);

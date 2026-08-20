@@ -441,7 +441,7 @@ public class MTEPurificationUnitBaryonicPerfection
                     // Try to deplete catalyst cost first
                     int cost = calculateCatalystCost(stack);
                     FluidStack inputCost = MaterialLibAPI
-                        .getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, (int) (cost));
+                        .getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, cost);
                     // Drain the input cost directly from a hatch since we are not inside
                     // recipe processing
                     boolean drained = false;

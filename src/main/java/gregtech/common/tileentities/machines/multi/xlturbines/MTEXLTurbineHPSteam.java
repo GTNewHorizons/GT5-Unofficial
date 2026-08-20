@@ -154,8 +154,7 @@ public class MTEXLTurbineHPSteam extends MTEXLTurbineBase {
         tEU = totalFlow;
         if (isUsingDenseSteam) {
             addOutputPartial(
-                MaterialLibAPI
-                    .getFluidStack(Materials.DenseSteam, FluidShapes.fluidGas, (int) ((long) steamFlowForNextSteam)));
+                MaterialLibAPI.getFluidStack(Materials.DenseSteam, FluidShapes.fluidGas, steamFlowForNextSteam));
         } else {
             addOutputPartial(MaterialUtils.gas(Materials.Steam, totalFlow));
         }

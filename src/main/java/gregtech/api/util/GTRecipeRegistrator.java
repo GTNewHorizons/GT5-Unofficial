@@ -311,8 +311,7 @@ public class GTRecipeRegistrator {
         for (MaterialStack tMaterial : data.getAllMaterialStacks()) {
             if (!LegacyNameDomain.contains(tMaterial.mMaterial) && tMaterial.mMaterial.getShapes()
                 .isEmpty()) {
-                // A shapeless wildcard backing never defaults to smelting into itself: it has an arc-smelting
-                // target only when one was explicitly declared.
+                // A shapeless wildcard backing never defaults to smelting into itself.
                 boolean declaresSmeltTarget = tMaterial.mMaterial.getProperty(GTMaterialProperties.SMELT_INTO) != null
                     || tMaterial.mMaterial.getProperty(GTMaterialProperties.ARC_SMELT_INTO) != null;
                 Material arcTarget = declaresSmeltTarget
@@ -360,7 +359,6 @@ public class GTRecipeRegistrator {
                 tMaterial.mMaterial = MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(tMaterial.mMaterial));
                 continue;
             }
-            // A metal that generates an ingot but carries no METAL flag still recycles like a metal.
             if (GTOreDictUnificator.get(OrePrefixes.ingot, tMaterial.mMaterial, 1L) != null) {
                 tMaterial.mMaterial = MaterialUtils.arcSmeltInto(MaterialUtils.smeltInto(tMaterial.mMaterial));
                 continue;

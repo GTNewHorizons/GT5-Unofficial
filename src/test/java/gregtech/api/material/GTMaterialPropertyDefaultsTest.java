@@ -30,7 +30,7 @@ public class GTMaterialPropertyDefaultsTest {
         expected.put(GTMaterialProperties.DURABILITY, 0);
         expected.put(GTMaterialProperties.FUEL_POWER, 0);
         expected.put(GTMaterialProperties.FUEL_TYPE, 0);
-        expected.put(GTMaterialProperties.MELTING_POINT, 0);
+        expected.put(GTMaterialProperties.MELTING_POINT, -1);
         expected.put(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU, 0);
         expected.put(GTMaterialProperties.TIER, 0);
         expected.put(GTMaterialProperties.TOOL_QUALITY, 0);
@@ -44,7 +44,7 @@ public class GTMaterialPropertyDefaultsTest {
     }
 
     @Test
-    void keysDeclareTheDefaultTheirAccessorReturns() {
+    void keysDeclareTheExpectedDefault() {
         declaredDefaults()
             .forEach((property, expected) -> assertEquals(expected, property.getDefaultValue(), property.toString()));
     }

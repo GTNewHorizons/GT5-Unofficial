@@ -29,7 +29,7 @@ public class MaterialFix {
         if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.gearGtSmall)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.gearGtSmall, 1))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, INGOTS))
                 .duration(1 * SECONDS + 12 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
@@ -37,7 +37,7 @@ public class MaterialFix {
         if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.spring)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.spring, 1))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, INGOTS))
                 .duration(1 * SECONDS + 12 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
@@ -45,8 +45,7 @@ public class MaterialFix {
         if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.foil)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.foil, 1))
-                .fluidOutputs(
-                    MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (1 * QUARTER_INGOTS)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, QUARTER_INGOTS))
                 .duration(8 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
@@ -54,8 +53,7 @@ public class MaterialFix {
         if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.springSmall)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.springSmall, 1))
-                .fluidOutputs(
-                    MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (1 * QUARTER_INGOTS)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, QUARTER_INGOTS))
                 .duration(8 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
@@ -63,8 +61,7 @@ public class MaterialFix {
         if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.ring)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.ring, 1))
-                .fluidOutputs(
-                    MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (1 * QUARTER_INGOTS)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, QUARTER_INGOTS))
                 .duration(8 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
@@ -90,7 +87,7 @@ public class MaterialFix {
         if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.screw)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.screw, 1))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (1 * NUGGETS)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, NUGGETS))
                 .duration(4 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
@@ -106,16 +103,15 @@ public class MaterialFix {
         if (LegacyWerkstoffIndex.generatesPrefix(material, OrePrefixes.gearGt)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(MaterialLibAPI.getStack(material, Shapes.gearGt, 1))
-                .fluidOutputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(material, FluidShapes.fluidMolten, 4 * INGOTS))
                 .duration(128 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(fluidExtractionRecipes);
         }
     }
 
-    /// Whether the werkstoff part set covers every one of `prefixes` for `material`. The gate reads
-    /// [LegacyWerkstoffIndex#generatesPrefix], the werkstoff part set alone: widening it to
-    /// `MaterialParts#generatesPrefix` would double-generate against gregtech's own part loaders.
+    /// Whether the werkstoff part set covers every one of `prefixes` for `material`. Materials outside that set
+    /// get these parts from gregtech's own part loaders.
     private static boolean generatesAll(Material material, OrePrefixes... prefixes) {
         for (OrePrefixes prefix : prefixes) {
             if (!LegacyWerkstoffIndex.generatesPrefix(material, prefix)) return false;

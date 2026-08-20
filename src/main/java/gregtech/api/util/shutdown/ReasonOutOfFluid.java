@@ -18,8 +18,7 @@ public class ReasonOutOfFluid implements ShutDownReason {
     private FluidStack requiredFluid;
 
     /// `requiredFluid` is null only for the registry sample and for the instance [#newInstance] hands back, both of
-    /// which are filled in by [#readFromNBT] or [#decode] before anything reads them. Resolving a placeholder stack
-    /// instead would drag [FluidRegistry] into [ShutDownReasonRegistry]'s class init.
+    /// which are filled in by [#readFromNBT] or [#decode] before anything reads them.
     ReasonOutOfFluid(FluidStack requiredFluid) {
         this.requiredFluid = requiredFluid;
     }

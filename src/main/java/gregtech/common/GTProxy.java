@@ -2033,8 +2033,7 @@ public class GTProxy implements IFuelHandler {
             && MaterialUtils.hasFlag(recognitionMarker, GTMaterialFlag.CRYSTALLISABLE);
     }
 
-    /// The MaterialLib material an ore-dictionary registration carries downstream to the
-    /// [OreDictEventContainer] census and [#registerUnificationEntries]. A recognition marker that
+    /// The MaterialLib material an ore-dictionary registration carries downstream. A recognition marker that
     /// [#isCensusMarker] resolves to itself. Otherwise `tName` resolves ML-registry-first, falling back to
     /// `aMaterial` (or the `NULL` placeholder) when the registry holds no shaped material under that name, or
     /// when `tName` is one [DeclaredMaterialNameTable] freezes.
@@ -2055,8 +2054,8 @@ public class GTProxy implements IFuelHandler {
 
     /// The reconstructed (werkstoff- or gtpp-owned) MaterialLib material registered under `tName`, or null when
     /// the name is dropped as unknown. A werkstoff-origin material qualifies once
-    /// [MaterialUtils#hasBridgeRegistration] records it, which `LoaderWerkstoffRegistrations` does at
-    /// bartworks' init; an event processed before that pass resolves to null. A gtPlusPlus-originated material
+    /// [MaterialUtils#hasBridgeRegistration] records it. An event processed before that record exists resolves
+    /// to null. A gtPlusPlus-originated material
     /// never gets that record and qualifies instead on [GTMaterialProperties#GTPP_STATE] plus a shaped
     /// registry hit.
     private static @Nullable Material reconstructedMaterial(@Nullable String tName) {
@@ -2435,7 +2434,7 @@ public class GTProxy implements IFuelHandler {
     /// Registers a (fluid, filled cell) pair for a material whose fluid MaterialLib already registered, falling
     /// back to a canner recipe when Forge rejects the registration. Skipped when `cellPrefix` has cut over for
     /// `material` (see [MaterialParts]): MaterialLib's `ShapeFluidInContainer#registerContainers` registers
-    /// that pair later, and Forge's `FluidContainerRegistry` keeps only one entry per filled item.
+    /// that pair later.
     private static void registerCellContainer(OrePrefixes cellPrefix, Material material, Fluid fluid, int amount) {
         if (MaterialParts.isCutOver(cellPrefix, material)) return;
         ItemStack filledCell = GTOreDictUnificator.get(cellPrefix, material, 1L);

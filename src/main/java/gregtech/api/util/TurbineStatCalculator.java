@@ -6,7 +6,6 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 
 public class TurbineStatCalculator {
@@ -77,18 +76,15 @@ public class TurbineStatCalculator {
 
     // All values are in EU/t before efficiency
     public float getOptimalSteamFlow() {
-        Float steam = tMaterial.getProperty(GTMaterialProperties.STEAM_MULTIPLIER);
-        return getOptimalFlow() * (steam == null ? 1.0f : steam);
+        return getOptimalFlow() * MaterialUtils.steamMultiplier(tMaterial);
     }
 
     public float getOptimalGasFlow() {
-        Float gas = tMaterial.getProperty(GTMaterialProperties.GAS_MULTIPLIER);
-        return getOptimalFlow() * (gas == null ? 1.0f : gas);
+        return getOptimalFlow() * MaterialUtils.gasMultiplier(tMaterial);
     }
 
     public float getOptimalPlasmaFlow() {
-        Float plasma = tMaterial.getProperty(GTMaterialProperties.PLASMA_MULTIPLIER);
-        return getOptimalFlow() * (plasma == null ? 1.0f : plasma) * 42;
+        return getOptimalFlow() * MaterialUtils.plasmaMultiplier(tMaterial) * 42;
     }
 
     // Loose optimal flows

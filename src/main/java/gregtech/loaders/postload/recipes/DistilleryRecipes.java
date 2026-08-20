@@ -376,7 +376,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemOutputs(MaterialLibAPI.getStack(Materials.Wood, Shapes.dustSmall, (int) (2L)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.Wood, Shapes.dustSmall, 2))
             .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Biomass, FluidShapes.fluidLiquid, 1_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Ethanol, FluidShapes.fluidLiquid, 600),
@@ -427,7 +427,7 @@ public class DistilleryRecipes implements Runnable {
         // C15H10N2O2(5HCl) = C15H10N2O2 + 5HCl
 
         GTValues.RA.stdBuilder()
-            .itemOutputs(MaterialLibAPI.getStack(Materials.DiphenylmethaneDiisocyanate, Shapes.dust, (int) (29L)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials.DiphenylmethaneDiisocyanate, Shapes.dust, 29))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials.DiphenylmethaneDiisocyanateMixture, FluidShapes.fluidLiquid, 1_000))

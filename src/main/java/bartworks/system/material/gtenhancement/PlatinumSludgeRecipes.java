@@ -494,10 +494,8 @@ public final class PlatinumSludgeRecipes {
             .circuit(11)
             .itemOutputs(MaterialLibAPI.getStack(Materials.LeachResidue, Shapes.dust, 1))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(
-                    Materials.PotassiumDisulfate,
-                    FluidShapes.fluidMolten,
-                    (int) (2 * INGOTS + 1 * HALF_INGOTS)))
+                MaterialLibAPI
+                    .getFluidStack(Materials.PotassiumDisulfate, FluidShapes.fluidMolten, 2 * INGOTS + 1 * HALF_INGOTS))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.RhodiumSulfate, FluidShapes.fluidLiquid, 360))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -656,7 +654,7 @@ public final class PlatinumSludgeRecipes {
                 GTUtility.getWater(36_000),
                 MaterialLibAPI.getFluidStack(Materials.RhodiumSulfate, FluidShapes.fluidLiquid, 39_600))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Potassium, FluidShapes.fluidMolten, (int) (50 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Potassium, FluidShapes.fluidMolten, 50 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.RhodiumSulfateSolution, FluidShapes.fluidLiquid, 39_600))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LV)

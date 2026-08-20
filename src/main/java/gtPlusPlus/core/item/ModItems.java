@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
@@ -361,8 +362,7 @@ public final class ModItems {
         GregtechItemList.BitCoin.set(new ItemStack(genericToken, 1, 0));
     }
 
-    private static void hideMilledIfCutOver(com.ruling_0.materiallib.api.Material material,
-        GregtechItemList legacyItem) {
+    private static void hideMilledIfCutOver(Material material, GregtechItemList legacyItem) {
         if (MaterialParts.isCutOver(OrePrefixes.milled, material)) {
             codechicken.nei.api.API.hideItem(legacyItem.get(1));
         }

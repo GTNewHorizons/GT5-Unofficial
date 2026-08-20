@@ -44,9 +44,8 @@ import gregtech.common.config.Client;
 /// GregTech's read layer over a MaterialLib [Material]: the accessors for everything GregTech attaches to a
 /// material through [GTMaterialProperties], grouped by domain (fluids, ores, tools, names, flags, colour).
 ///
-/// Every accessor tolerates a null material and answers with the same value an unset property would give, so
-/// callers reading a material resolved from block metadata or item NBT -- which can legitimately miss -- need
-/// no guard of their own. Values whose default is a plain constant are declared on the [Property] key itself
+/// Every accessor tolerates a null material and answers with the same value an unset property would give.
+/// Values whose default is a plain constant are declared on the [Property] key itself
 /// (see [gregtech.api.material.GTMaterialProperties]); the accessors here carry only the null-material case and
 /// the defaults a constant cannot express.
 ///
@@ -75,8 +74,7 @@ public class MaterialUtils {
 
     /// The dust [ItemStack] a [GTMaterialProperties#COMPOSITION] entry contributes to a recipe, sized by the
     /// entry's amount, or null when the referenced material carries no `dust` shape (a gas/fluid-only
-    /// component -- see [#compositionGas]). A composition entry always references a MaterialLib material
-    /// directly ([MaterialRef#resolve]), so unlike [#stack] this needs no bartworks fallback.
+    /// component -- see [#compositionGas]).
     public static @Nullable ItemStack compositionDust(MaterialRefStack entry) {
         Material material = entry.material()
             .resolve();
@@ -211,8 +209,7 @@ public class MaterialUtils {
         return material != null && material.getProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS);
     }
 
-    /// The five legacy fluid fields a material can carry, keying [#recordSlotFluid]'s store: `mFluid`
-    /// (LIQUID), `mGas`, `mStandardMoltenFluid` (MOLTEN), `mSolid`, and `mPlasma`.
+    /// The five fluid states a material can carry, keying [#recordSlotFluid]'s store.
     public enum FluidState {
         LIQUID,
         GAS,
@@ -255,8 +252,7 @@ public class MaterialUtils {
 
     /// A [#recordSlotFluid]-stored fluid wins; otherwise the material must declare the [MaterialFluidNames]
     /// slot, and the fluid is the one MaterialLib registered for the first shape in [#STATE_SHAPES] that the
-    /// material generates. The slot gate is what separates a material with no fluid in this state from one
-    /// whose fluid shares another state's registration.
+    /// material generates.
     private static @Nullable Fluid resolveSlotFluid(@Nullable Material material, FluidState state,
         Function<FluidNames, FluidRef> slot) {
         Fluid stored = storedFluid(material, state);
@@ -333,8 +329,7 @@ public class MaterialUtils {
     }
 
     /// The `[r, g, b, a]` short array for a material's declared MaterialLib tint ([StandardProperties#TINT]),
-    /// or null for a material that declares none. Unpacks the packed int as `(argb >>> 16) & 0xFF` /
-    /// `(argb >>> 8) & 0xFF` / `(argb) & 0xFF` / `(argb >>> 24) & 0xFF` for r/g/b/a respectively. A resource
+    /// or null for a material that declares none. A resource
     /// pack overrides the declared value through the lang key
     /// `color.resource.materiallib.<MaterialName>.tint`. Resolved through a [ColorResource] on every call, so
     /// a per-draw read follows such an override while a value captured once at load keeps the coded default.
@@ -349,8 +344,8 @@ public class MaterialUtils {
             (short) ((argb >>> 24) & 0xFF) };
     }
 
-    /// The `[r, g, b, a]` short array for a material's molten/plasma fluid color -- the value the fluid
-    /// autogen passes to `withColorRGBA`. Unpacks [GTMaterialProperties#MOLTEN_ARGB] when present;
+    /// The `[r, g, b, a]` short array for a material's molten/plasma fluid color. Unpacks
+    /// [GTMaterialProperties#MOLTEN_ARGB] when present;
     /// otherwise falls back to [#rgba], and to `{255, 255, 255, 0}` when neither is present. Never null,
     /// unlike [#rgba]. Resolved through a [ColorResource] on every call, as [#rgba] is.
     public static short[] moltenRgba(@Nullable Material material) {
@@ -422,10 +417,7 @@ public class MaterialUtils {
         return material == null ? GTValues.M : MaterialAtomics.density(material);
     }
 
-    /// A material's mass -- [MaterialAtomics#mass]: the linked [Element] mass when
-    /// [GTMaterialProperties#ELEMENT] is present, else `Element.Tc`'s mass when
-    /// [GTMaterialProperties#COMPOSITION] is empty or absent, else the density-weighted average of the
-    /// composition's own values. `Element.Tc`'s mass is also returned for a null `material`.
+    /// A material's mass -- [MaterialAtomics#mass]. `Element.Tc`'s mass is returned for a null `material`.
     public static long mass(@Nullable Material material) {
         return material == null ? Element.Tc.getMass() : MaterialAtomics.mass(material);
     }
@@ -511,7 +503,7 @@ public class MaterialUtils {
     }
 
     /// Whether a material auto-generates recycle recipes -- [GTMaterialProperties#AUTO_RECYCLE_RECIPES],
-    /// `true` when absent. Only materials in the legacy name domain (see [#isLegacyNamed]) carry the property.
+    /// `true` when absent.
     public static boolean autoGenerateRecycleRecipes(@Nullable Material material) {
         return material == null || material.getProperty(GTMaterialProperties.AUTO_RECYCLE_RECIPES);
     }
@@ -562,6 +554,25 @@ public class MaterialUtils {
     /// The material tier -- [GTMaterialProperties#TIER], or `0` if unset.
     public static int tier(@Nullable Material material) {
         return material == null ? 0 : material.getProperty(GTMaterialProperties.TIER);
+    }
+
+    /// The turbine steam-flow multiplier for a material -- [GTMaterialProperties#STEAM_MULTIPLIER], or `1` if
+    /// unset.
+    public static float steamMultiplier(@Nullable Material material) {
+        Float multiplier = material == null ? null : material.getProperty(GTMaterialProperties.STEAM_MULTIPLIER);
+        return multiplier == null ? 1.0f : multiplier;
+    }
+
+    /// [#steamMultiplier], for [GTMaterialProperties#GAS_MULTIPLIER].
+    public static float gasMultiplier(@Nullable Material material) {
+        Float multiplier = material == null ? null : material.getProperty(GTMaterialProperties.GAS_MULTIPLIER);
+        return multiplier == null ? 1.0f : multiplier;
+    }
+
+    /// [#steamMultiplier], for [GTMaterialProperties#PLASMA_MULTIPLIER].
+    public static float plasmaMultiplier(@Nullable Material material) {
+        Float multiplier = material == null ? null : material.getProperty(GTMaterialProperties.PLASMA_MULTIPLIER);
+        return multiplier == null ? 1.0f : multiplier;
     }
 
     /// The recipe voltage multiplier for a material -- [GTMaterialProperties#VOLTAGE_MULTIPLIER], or `16` if
@@ -652,7 +663,7 @@ public class MaterialUtils {
 
     /// The smelting target for a material, resolved from [GTMaterialProperties#SMELT_INTO]: an unset property
     /// means the material smelts into itself, and a set one is chased one more hop through the target's own
-    /// property (the legacy `setSmeltingInto` indirection).
+    /// property.
     public static @Nullable Material smeltInto(@Nullable Material material) {
         return chaseRef(material, GTMaterialProperties.SMELT_INTO);
     }
@@ -725,9 +736,8 @@ public class MaterialUtils {
         return subTags != null && subTags.contains(flag.name());
     }
 
-    /// Whether a material's [GTMaterialProperties#SUB_TAGS] names `subTag`. For the werkstoff SubTags that have
-    /// no [GTMaterialFlag] counterpart (`"NoBlast"`, `"AnaerobeSmelting"`, `"NobleGasSmelting"`) and so cannot be
-    /// reached through [#hasFlag].
+    /// Whether a material's [GTMaterialProperties#SUB_TAGS] names `subTag`. For the sub-tags with no
+    /// [GTMaterialFlag] counterpart (`"NoBlast"`, `"AnaerobeSmelting"`, `"NobleGasSmelting"`).
     public static boolean hasSubTag(@Nullable Material material, String subTag) {
         if (material == null) return false;
         List<String> subTags = material.getProperty(GTMaterialProperties.SUB_TAGS);
@@ -863,9 +873,8 @@ public class MaterialUtils {
     /// `Client.tooltip.showFormula` is enabled, its chemical-formula tooltip (see [#chemicalTooltip]) to `list`;
     /// a no-op for a null material.
     ///
-    /// The entry point for the item classes that own an `addInformation` override. Stacks MaterialLib serves
-    /// directly go through [gregtech.client.MaterialFormulaTooltip], which places the formula line itself and
-    /// calls [#addHazardTooltips] for the rest.
+    /// For an item that owns an `addInformation` override. Stacks MaterialLib serves directly are covered by
+    /// [gregtech.client.MaterialFormulaTooltip] instead.
     public static void addTooltips(@Nullable Material material, List<String> list) {
         if (material == null) return;
         addHazardTooltips(material, list);
@@ -891,7 +900,7 @@ public class MaterialUtils {
     /// The [GTMaterialFlag] whose enum-constant name equals `subTag`'s name, or null when none does.
     private static @Nullable GTMaterialFlag flagForSubTag(SubTag subTag) {
         // AnaerobeGas and NobleGas are the two GTMaterialFlag constants whose SubTag name does not match the
-        // enum constant name, so they need an explicit mapping.
+        // enum constant name.
         switch (subTag.mName) {
             case "AnaerobeGas":
                 return GTMaterialFlag.ANAEROBE_GAS;

@@ -20,73 +20,55 @@ public class CannerRecipes implements Runnable {
     public void run() {
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Cadmium, Shapes.dust, (int) (2L)),
-                ItemList.Battery_Hull_LV.get(1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Cadmium, Shapes.dust, 2), ItemList.Battery_Hull_LV.get(1L))
             .itemOutputs(ItemList.Battery_RE_LV_Cadmium.get(1L))
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, (int) (2L)),
-                ItemList.Battery_Hull_LV.get(1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, 2), ItemList.Battery_Hull_LV.get(1L))
             .itemOutputs(ItemList.Battery_RE_LV_Lithium.get(1L))
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, (int) (2L)),
-                ItemList.Battery_Hull_LV.get(1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 2), ItemList.Battery_Hull_LV.get(1L))
             .itemOutputs(ItemList.Battery_RE_LV_Sodium.get(1L))
             .duration(5 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Cadmium, Shapes.dust, (int) (8L)),
-                ItemList.Battery_Hull_MV.get(1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Cadmium, Shapes.dust, 8), ItemList.Battery_Hull_MV.get(1L))
             .itemOutputs(ItemList.Battery_RE_MV_Cadmium.get(1L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, (int) (8L)),
-                ItemList.Battery_Hull_MV.get(1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, 8), ItemList.Battery_Hull_MV.get(1L))
             .itemOutputs(ItemList.Battery_RE_MV_Lithium.get(1L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, (int) (8L)),
-                ItemList.Battery_Hull_MV.get(1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 8), ItemList.Battery_Hull_MV.get(1L))
             .itemOutputs(ItemList.Battery_RE_MV_Sodium.get(1L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Cadmium, Shapes.dust, (int) (32L)),
-                ItemList.Battery_Hull_HV.get(1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Cadmium, Shapes.dust, 32), ItemList.Battery_Hull_HV.get(1L))
             .itemOutputs(ItemList.Battery_RE_HV_Cadmium.get(1L))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, (int) (32L)),
-                ItemList.Battery_Hull_HV.get(1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Lithium, Shapes.dust, 32), ItemList.Battery_Hull_HV.get(1L))
             .itemOutputs(ItemList.Battery_RE_HV_Lithium.get(1L))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(2)
             .addTo(cannerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, (int) (32L)),
-                ItemList.Battery_Hull_HV.get(1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Sodium, Shapes.dust, 32), ItemList.Battery_Hull_HV.get(1L))
             .itemOutputs(ItemList.Battery_RE_HV_Sodium.get(1L))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(2)
@@ -95,9 +77,7 @@ public class CannerRecipes implements Runnable {
         // IV 2048
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Sunnarium, Shapes.dust, (int) (4L)),
-                ItemList.BatteryHull_EV.get(1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Sunnarium, Shapes.dust, 4), ItemList.BatteryHull_EV.get(1L))
             .itemOutputs(ItemList.BatteryHull_EV_Full.get(1L))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -105,9 +85,7 @@ public class CannerRecipes implements Runnable {
         // EV 8192
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Sunnarium, Shapes.dust, (int) (16L)),
-                ItemList.BatteryHull_IV.get(1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Sunnarium, Shapes.dust, 16), ItemList.BatteryHull_IV.get(1L))
             .itemOutputs(ItemList.BatteryHull_IV_Full.get(1L))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV / 2)
@@ -115,9 +93,7 @@ public class CannerRecipes implements Runnable {
         // LuV 32768
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Sunnarium, Shapes.dust, (int) (32L)),
-                ItemList.BatteryHull_LuV.get(1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Sunnarium, Shapes.dust, 32), ItemList.BatteryHull_LuV.get(1L))
             .itemOutputs(ItemList.BatteryHull_LuV_Full.get(1L))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -125,9 +101,7 @@ public class CannerRecipes implements Runnable {
         // ZPM 131072
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dust, (int) (16L)),
-                ItemList.BatteryHull_ZPM.get(1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dust, 16), ItemList.BatteryHull_ZPM.get(1L))
             .itemOutputs(ItemList.BatteryHull_ZPM_Full.get(1L))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_IV / 2)
@@ -135,9 +109,7 @@ public class CannerRecipes implements Runnable {
         // UV 524288
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dust, (int) (32L)),
-                ItemList.BatteryHull_UV.get(1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Naquadria, Shapes.dust, 32), ItemList.BatteryHull_UV.get(1L))
             .itemOutputs(ItemList.BatteryHull_UV_Full.get(1L))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -146,7 +118,7 @@ public class CannerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.dust, (int) (16L)),
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.dust, 16),
                 ItemList.BatteryHull_UHV.get(1L))
             .itemOutputs(ItemList.BatteryHull_UHV_Full.get(1L))
             .duration(17 * SECONDS + 10 * TICKS)
@@ -156,7 +128,7 @@ public class CannerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.dust, (int) (32L)),
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.dust, 32),
                 ItemList.BatteryHull_UEV.get(1L))
             .itemOutputs(ItemList.BatteryHull_UEV_Full.get(1L))
             .duration(20 * SECONDS)
@@ -166,7 +138,7 @@ public class CannerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.dust, (int) (64L)),
+                MaterialLibAPI.getStack(Materials.Neutronium, Shapes.dust, 64),
                 ItemList.BatteryHull_UIV.get(1L))
             .itemOutputs(ItemList.BatteryHull_UIV_Full.get(1L))
             .duration(22 * SECONDS + 10 * TICKS)
@@ -175,9 +147,7 @@ public class CannerRecipes implements Runnable {
         // UMV 134217728
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Infinity, Shapes.dust, (int) (4L)),
-                ItemList.BatteryHull_UMV.get(1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Infinity, Shapes.dust, 4), ItemList.BatteryHull_UMV.get(1L))
             .itemOutputs(ItemList.BatteryHull_UMV_Full.get(1L))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -185,9 +155,7 @@ public class CannerRecipes implements Runnable {
         // UxV 536870912
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialLibAPI.getStack(Materials.Infinity, Shapes.dust, (int) (8L)),
-                ItemList.BatteryHull_UxV.get(1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Infinity, Shapes.dust, 8), ItemList.BatteryHull_UxV.get(1L))
             .itemOutputs(ItemList.BatteryHull_UxV_Full.get(1L))
             .duration(30 * SECONDS)
             .eut(251520)

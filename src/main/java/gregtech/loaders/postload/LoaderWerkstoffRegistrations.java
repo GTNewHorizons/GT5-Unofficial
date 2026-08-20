@@ -95,10 +95,8 @@ public class LoaderWerkstoffRegistrations {
     }
 
     /// Registers the canonical stack for every part the werkstoff set names. This reads
-    /// [GTMaterialProperties#WERKSTOFF_PREFIXES] directly rather than through
-    /// [LegacyWerkstoffIndex#generatesPrefix]: a material declared in both families still needs its
-    /// werkstoff-side parts associated, whereas that helper deliberately yields those prefixes to gregtech so
-    /// the part recipe loaders do not double-generate them.
+    /// [GTMaterialProperties#WERKSTOFF_PREFIXES] directly, not [LegacyWerkstoffIndex#generatesPrefix]: a
+    /// material declared in both families still needs its werkstoff-side parts associated.
     private static void registerAssociations(Material material) {
         List<String> prefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);
         if (prefixes == null) return;

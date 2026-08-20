@@ -90,7 +90,7 @@ public class LaserEngraverRecipes implements Runnable {
                 new net.minecraft.item.ItemStack(Blocks.redstone_torch, 3, GTRecipeBuilder.WILDCARD),
                 new OreDictItemStack("craftingQuartz", 1))
             .itemOutputs(new net.minecraft.item.ItemStack(Items.comparator, 1, 0))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Concrete, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Concrete, FluidShapes.fluidMolten, INGOTS))
             .duration(2 * SECONDS)
             .eut(20)
             .addTo(assemblerRecipes);
@@ -290,7 +290,7 @@ public class LaserEngraverRecipes implements Runnable {
         // From ProcessingCrafting - craftingLensRed
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.Redstone, Shapes.plate, (int) (1L)),
+                MaterialLibAPI.getStack(Materials.Redstone, Shapes.plate, 1),
                 new OreDictItemStack("craftingLensRed", 0))
             .itemOutputs(GTModHandler.getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -299,7 +299,7 @@ public class LaserEngraverRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.foil, (int) (1L)),
+                MaterialLibAPI.getStack(Materials.RedAlloy, Shapes.foil, 1),
                 new OreDictItemStack("craftingLensRed", 0))
             .itemOutputs(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EtchedLowVoltageWiring", 1L, 0))
             .duration(10 * SECONDS)

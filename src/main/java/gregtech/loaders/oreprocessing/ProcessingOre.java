@@ -167,9 +167,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
             if (MaterialUtils.hasFlag(material, GTMaterialFlag.BLASTFURNACE_CALCITE_TRIPLE)) {
                 if (MaterialUtils.autoGenerateBlastFurnaceRecipes(material)) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(
-                            oreStack,
-                            MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, (int) (multiplier)))
+                        .itemInputs(oreStack, MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, multiplier))
                         .itemOutputs(
                             GTUtility.mul(multiplier * 3 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
@@ -179,9 +177,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                         .metadata(COIL_HEAT, 1500)
                         .addTo(blastFurnaceRecipes);
                     GTValues.RA.stdBuilder()
-                        .itemInputs(
-                            oreStack,
-                            MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, (int) (multiplier)))
+                        .itemInputs(oreStack, MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, multiplier))
                         .itemOutputs(
                             GTUtility.mul(multiplier * 3 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
@@ -194,9 +190,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
             } else if (MaterialUtils.hasFlag(material, GTMaterialFlag.BLASTFURNACE_CALCITE_DOUBLE)) {
                 if (MaterialUtils.autoGenerateBlastFurnaceRecipes(material)) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(
-                            oreStack,
-                            MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, (int) (multiplier)))
+                        .itemInputs(oreStack, MaterialLibAPI.getStack(Materials.Calcite, Shapes.dust, multiplier))
                         .itemOutputs(
                             GTUtility.mul(multiplier * 2 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))
@@ -206,9 +200,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                         .metadata(COIL_HEAT, 1500)
                         .addTo(blastFurnaceRecipes);
                     GTValues.RA.stdBuilder()
-                        .itemInputs(
-                            oreStack,
-                            MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, (int) (multiplier)))
+                        .itemInputs(oreStack, MaterialLibAPI.getStack(Materials.Quicklime, Shapes.dust, multiplier))
                         .itemOutputs(
                             GTUtility.mul(multiplier * 2 * MaterialUtils.smeltingMultiplier(material), tSmeltInto),
                             GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 1L))

@@ -8,7 +8,7 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 import gregtech.GTLoggers;
 import gregtech.api.material.GTMaterialProperties;
 
-/// The legacy IDs the materials had, maps to [GTMaterialProperties#OLD_SUB_ID].
+/// The materials occupying each legacy id slot, indexed by [GTMaterialProperties#OLD_SUB_ID].
 public class LegacyMaterialIDIndex {
 
     private static final Material[] INDEX = new Material[1000];

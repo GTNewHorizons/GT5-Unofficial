@@ -162,7 +162,7 @@ public class ArtificialMicaLine {
         // MgO(s) = MgO(l)
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.Magnesia, Shapes.dust, 1))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Magnesia, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Magnesia, FluidShapes.fluidMolten, INGOTS))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidExtractionRecipes);
@@ -171,10 +171,9 @@ public class ArtificialMicaLine {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials.RawFluorophlogopite, Shapes.dust, 27))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Glass, Shapes.dust, 1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Magnesia, FluidShapes.fluidMolten, (int) (5 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Magnesia, FluidShapes.fluidMolten, 5 * INGOTS))
             .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.UnformedFluorophlogopite, FluidShapes.fluidLiquid, (int) (32 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.UnformedFluorophlogopite, FluidShapes.fluidLiquid, 32 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(COIL_HEAT, 1700)
@@ -185,8 +184,7 @@ public class ArtificialMicaLine {
             .itemInputs(ItemList.Shape_Mold_Plate.get(0))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Fluorophlogopite, Shapes.plate, 1))
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.UnformedFluorophlogopite, FluidShapes.fluidLiquid, (int) (1 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.UnformedFluorophlogopite, FluidShapes.fluidLiquid, INGOTS))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(vacuumFreezerRecipes);

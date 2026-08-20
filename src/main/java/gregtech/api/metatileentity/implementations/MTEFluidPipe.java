@@ -124,8 +124,6 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     public byte mDisableInput = 0;
     private final String mPrefixKey;
 
-    /// The shape-scoped constructor: identity comes from the hosting [PipeShapeBlock], and material and
-    /// stats resolve from the host block's metadata and [PipeProperties] through [PipeStats].
     public MTEFluidPipe(int aID, String aName, PipeShapeBlock shape) {
         super(aID, aName, 0, false, shape, shape.getSizeIndex());
         mPrefixKey = shape.getPrefixKey();
@@ -182,8 +180,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         return textures.toArray(new ITexture[0]);
     }
 
-    /// The pipe body, or the smaller end-face art when this side connects to nothing. A connected pipe draws its
-    /// own shape's art, which already encodes the pipe size.
+    /// The pipe body, or the smaller end-face art when this side connects to nothing.
     protected ITexture getBaseTexture(boolean connected, int colorIndex) {
         Material material = getMaterial();
         short[] materialRgba = MaterialUtils.rgba(material);
@@ -875,8 +872,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
             .get(border);
     }
 
-    /// Returns the per-pipe throughput in liters per tick, unlike [#getCapacity] which reports the
-    /// total tank volume.
+    /// The per-pipe throughput in liters per tick; see [#getCapacity] for the total tank volume.
     public int getBaseCapacity() {
         Material material = shapeMaterial();
         if (material == null) return 0;

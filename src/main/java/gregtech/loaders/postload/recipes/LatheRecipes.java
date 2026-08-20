@@ -46,8 +46,8 @@ public class LatheRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(new OreDictItemStack("logWood", 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials.Wood, Shapes.stickLong, (int) (4L)),
-                MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, (int) (2L)))
+                MaterialLibAPI.getStack(Materials.Wood, Shapes.stickLong, 4),
+                MaterialLibAPI.getStack(Materials.Wood, Shapes.dust, 2))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(latheRecipes);
@@ -57,7 +57,7 @@ public class LatheRecipes implements Runnable {
             .itemInputs(new OreDictItemStack("treeSapling", 1))
             .itemOutputs(
                 GTOreDictUnificator.get("stickWood", 1L),
-                MaterialLibAPI.getStack(Materials.Wood, Shapes.dustTiny, (int) (1L)))
+                MaterialLibAPI.getStack(Materials.Wood, Shapes.dustTiny, 1))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(latheRecipes);

@@ -51,8 +51,8 @@ import gregtech.api.util.GTUtility;
 /// need. That autogen skips an [#owns] material entirely, so these are its only ore-chain recipes.
 ///
 /// [#hasSolidForm] gates which composition parts can be a byproduct: a part qualifies only when its `dust`,
-/// `block`, `dustTiny`, and `dustSmall` shapes all resolve. Material state alone is not equivalent and picks
-/// different byproducts. [#gtppState] serves the narrower cell-vs-dust split in [#registerDecomposition]
+/// `block`, `dustTiny`, and `dustSmall` shapes all resolve. [#gtppState] serves the narrower cell-vs-dust
+/// split in [#registerDecomposition]
 /// (`SOLID`/`ORE` parts decompose to dust, everything else to a cell).
 ///
 /// The shaped-crafting and [Materials#FluoriteF] chemical-bath recipes carry no byproduct and live
@@ -95,8 +95,7 @@ public class ProcessingOreMachine {
 
     private static final Material mStone = Materials.Stone;
 
-    /// Whether this generator owns `material`'s ore-processing chain, in which case the canonical autogen
-    /// leaves it alone -- see the class javadoc.
+    /// Whether this generator owns `material`'s ore-processing chain -- see the class javadoc.
     public static boolean owns(Material material) {
         return ELIGIBLE_STANDARD.contains(material) || ELIGIBLE_NO_OPTIONAL.contains(material);
     }
@@ -455,10 +454,9 @@ public class ProcessingOreMachine {
     }
 
     /// The materials whose composition decomposes further in this walk. A material outside this set is a
-    /// byproduct in its own right and stays a leaf even when it carries a [GTMaterialProperties#COMPOSITION]:
-    /// that property is chemical data, which is a different question. Koboldite's `Thaumium` and the rare earth
-    /// mixes' `BlackMetal` are the cases that make the distinction visible -- `Thaumium` is composed of
-    /// `[Iron, Magic]` but is itself the byproduct, while `BlackMetal` genuinely resolves to its own parts.
+    /// byproduct in its own right and stays a leaf even when it carries a [GTMaterialProperties#COMPOSITION].
+    /// Koboldite's `Thaumium` is composed of `[Iron, Magic]` but is itself the byproduct, while the rare earth
+    /// mixes' `BlackMetal` resolves to its own parts.
     // spotless:off
     private static final Set<Material> EXPANDABLE = Set.of(
         Materials.AgarditeCd, Materials.AgarditeLa, Materials.AgarditeNd,

@@ -17,9 +17,7 @@ public class PackagerRecipes implements Runnable {
     @Override
     public void run() {
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Tool_Matches.get(16L),
-                MaterialLibAPI.getStack(Materials.Paper, Shapes.plateDouble, (int) (1L)))
+            .itemInputs(ItemList.Tool_Matches.get(16L), MaterialLibAPI.getStack(Materials.Paper, Shapes.plateDouble, 1))
             .itemOutputs(ItemList.Tool_MatchBox_Full.get(1L))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)

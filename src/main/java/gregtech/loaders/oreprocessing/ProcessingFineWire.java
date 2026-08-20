@@ -6,7 +6,6 @@ import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -28,8 +27,7 @@ public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeReg
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
             GTRecipeRegistrator.registerWiremillRecipes(material, 100, 4);
         }
-        if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-            && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
+        if (MaterialUtils.unifiable(material) && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
             GTModHandler.addCraftingRecipe(
                 GTUtility.copyAmount(1, stack),
                 GTModHandler.RecipeBits.BITS_STD,

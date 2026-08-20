@@ -21,7 +21,7 @@ import gregtech.api.util.GTUtility;
 /// material's bolted machine casing and its rebolted (advanced) variant. Dispatched once per
 /// blockCasing-generating material by [gregtech.loaders.shapeconsumers.ConsumerCasing]. The advanced casing's
 /// outer plating is `plateDouble`, except Wood which uses `plank`. Like [ProcessingFrame] it is not registered
-/// on its prefix, since no foreign mod's oredict entries ever drove casing recipe generation.
+/// on its prefix.
 public class ProcessingCasing implements IOreRecipeRegistrator {
 
     public static final ProcessingCasing INSTANCE = new ProcessingCasing();

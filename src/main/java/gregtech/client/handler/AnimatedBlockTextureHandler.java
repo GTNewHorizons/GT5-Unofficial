@@ -28,8 +28,7 @@ public class AnimatedBlockTextureHandler implements IResourceManagerReloadListen
 
     /// The materials whose storage block and frame box carry a baked animated icon. `Dragonblood` needs no
     /// entry of its own despite sharing the same animation: it declares the same texture set as `Hypogen`
-    /// (`CUSTOM/hypogen`), so both materials' `block`/`frameGt` icons resolve to the same stitched sprite --
-    /// forcing `Hypogen`'s instance already advances `Dragonblood`'s.
+    /// (`CUSTOM/hypogen`), so both materials' `block`/`frameGt` icons resolve to the same stitched sprite.
     private static final Material[] ANIMATED = { Materials.AstralTitanium, Materials.CelestialTungsten,
         Materials.ChromaticGlass, Materials.Hypogen };
 

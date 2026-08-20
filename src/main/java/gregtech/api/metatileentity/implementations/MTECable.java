@@ -78,8 +78,6 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
 
     public int mTransferredAmperage = 0;
 
-    /// The shape-scoped constructor: identity comes from the hosting [PipeShapeBlock], and material and
-    /// stats resolve from the host block's metadata and [PipeProperties] through [PipeStats].
     public MTECable(int aID, String aName, PipeShapeBlock shape) {
         super(aID, aName, 0, false, shape, shape.getSizeIndex());
         prefixKey = shape.getPrefixKey();

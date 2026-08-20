@@ -10,8 +10,10 @@ import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialBuilder;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.MaterialRef;
+import com.ruling_0.materiallib.api.TextureSet;
 
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialProperties;
@@ -60,8 +62,7 @@ public class MaterialFacades {
 
     private MaterialFacades() {}
 
-    /// Registers a shapeless MaterialLib [Material] backing each wildcard marker, which
-    /// [gregtech.api.material.MaterialUtils#byLegacyName] resolves by registry name.
+    /// Registers a shapeless MaterialLib [Material] backing each wildcard marker.
     public static void registerBackingMaterials() {
         AnyBronze = registerWildcard("AnyBronze", "AnyBronze", "SHINY", GTMaterialFlag.METAL, null, null, null);
         AnyCopper = registerWildcard(
@@ -99,12 +100,11 @@ public class MaterialFacades {
             null);
     }
 
-    /// Ports the smelt/macerate/arc targets, the metal flag, and `setUnifiable(false)` a wildcard marker
-    /// carries. No shape table adds to these materials, which is what keeps them shapeless.
+    /// Registers one wildcard marker with the smelt/macerate/arc targets, the metal flag, and the
+    /// non-unifiable setting it carries. No shape table adds to these materials.
     private static Material registerWildcard(String name, String localName, String texture, GTMaterialFlag flag,
         @Nullable MaterialRef smeltInto, @Nullable MaterialRef macerateInto, @Nullable MaterialRef arcSmeltInto) {
-        com.ruling_0.materiallib.api.MaterialBuilder builder = MaterialLibAPI
-            .newMaterial("gregtech", name, com.ruling_0.materiallib.api.TextureSet.of("gregtech", texture))
+        MaterialBuilder builder = MaterialLibAPI.newMaterial("gregtech", name, TextureSet.of("gregtech", texture))
             .setProperty(GTMaterialProperties.LOCAL_NAME, localName)
             .setTint(0xFFFFFFFF)
             .setProperty(GTMaterialProperties.UNIFIABLE, false);

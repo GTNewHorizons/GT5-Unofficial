@@ -11,7 +11,9 @@ import java.util.stream.Stream;
 import org.jetbrains.annotations.Nullable;
 
 import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialBuilder;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.TextureSet;
 
 import gregtech.GTLoggers;
 import gregtech.api.enums.SubTag;
@@ -79,11 +81,8 @@ public class RecognitionMaterials {
                     "RecognitionMaterials: skipping backing material for '{}', a MaterialLib material with that name already exists",
                     m.name());
             } else {
-                com.ruling_0.materiallib.api.MaterialBuilder builder = MaterialLibAPI
-                    .newMaterial(
-                        "gregtech",
-                        m.name(),
-                        com.ruling_0.materiallib.api.TextureSet.of("gregtech", m.textureSet()))
+                MaterialBuilder builder = MaterialLibAPI
+                    .newMaterial("gregtech", m.name(), TextureSet.of("gregtech", m.textureSet()))
                     .setProperty(GTMaterialProperties.LOCAL_NAME, m.localName())
                     .setTint(m.tint())
                     .setProperty(GTMaterialProperties.UNIFIABLE, m.unifiable());

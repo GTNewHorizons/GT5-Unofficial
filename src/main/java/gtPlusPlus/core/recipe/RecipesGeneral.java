@@ -183,7 +183,7 @@ public class RecipesGeneral {
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Sapphire, 32),
                 new ItemStack(Blocks.gold_block, 32))
             .itemOutputs(GregtechItemList.MagicFeather.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Silver, FluidShapes.fluidMolten, (int) (32 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Silver, FluidShapes.fluidMolten, 32 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);

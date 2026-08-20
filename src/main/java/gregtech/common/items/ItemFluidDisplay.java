@@ -163,7 +163,7 @@ public class ItemFluidDisplay extends GTGenericItem {
         return false;
     }
 
-    public static com.ruling_0.materiallib.api.Material getMaterialFromCell(ItemStack tItemStack) {
+    public static Material getMaterialFromCell(ItemStack tItemStack) {
         for (int tOreDict : OreDictionary.getOreIDs(tItemStack)) {
             String tOreDictName = OreDictionary.getOreName(tOreDict);
             if (tOreDictName.startsWith("cell")) {

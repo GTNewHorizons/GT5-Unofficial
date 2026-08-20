@@ -175,7 +175,7 @@ public class RecipeIC2 {
                 MaterialLibAPI.getStack(Materials.Aluminium, Shapes.gearGtSmall, 4))
             .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Helmet.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, (int) (144 * 4)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, 144 * 4))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -190,7 +190,7 @@ public class RecipeIC2 {
                 MaterialLibAPI.getStack(Materials.SiliconCarbide, Shapes.gearGt, 8))
             .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Chest.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, (int) (144 * 10)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, 144 * 10))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -205,7 +205,7 @@ public class RecipeIC2 {
                 MaterialLibAPI.getStack(Materials.SiliconCarbide, Shapes.gearGt, 4))
             .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Legs.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, (int) (144 * 8)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, 144 * 8))
             .duration(1 * MINUTES + 15 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -220,7 +220,7 @@ public class RecipeIC2 {
                 MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.gearGt, 4))
             .circuit(2)
             .itemOutputs(GregtechItemList.Armour_Hazmat_Advanced_Boots.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, (int) (144 * 6)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, 144 * 6))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);

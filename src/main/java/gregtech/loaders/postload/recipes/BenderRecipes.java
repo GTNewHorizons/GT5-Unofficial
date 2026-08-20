@@ -24,7 +24,7 @@ public class BenderRecipes implements Runnable {
     @Override
     public void run() {
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Aluminium, Shapes.stick, (int) (20L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Aluminium, Shapes.stick, 20))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -32,7 +32,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.stick, (int) (48L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.stick, 48))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -40,7 +40,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.CastIron, Shapes.stick, (int) (32L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CastIron, Shapes.stick, 32))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -48,7 +48,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Bronze, Shapes.stick, (int) (32L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Bronze, Shapes.stick, 32))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -56,7 +56,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, (int) (24L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, 24))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -64,7 +64,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.stick, (int) (16L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.stick, 16))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -72,7 +72,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Titanium, Shapes.stick, (int) (12L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Titanium, Shapes.stick, 12))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -80,7 +80,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stick, (int) (9L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stick, 9))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -88,7 +88,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Iridium, Shapes.stick, (int) (6L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Iridium, Shapes.stick, 6))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -96,7 +96,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Osmium, Shapes.stick, (int) (3L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Osmium, Shapes.stick, 3))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -104,7 +104,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.stick, (int) (2L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Osmiridium, Shapes.stick, 2))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -112,7 +112,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Obsidian, Shapes.stick, (int) (24L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Obsidian, Shapes.stick, 24))
             .circuit(11)
             .itemOutputs(ItemList.RC_Rail_Reinforced.get(64L))
             .duration(30 * SECONDS)
@@ -120,7 +120,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.stick, (int) (12L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.stick, 12))
             .circuit(11)
             .itemOutputs(ItemList.RC_Rail_Reinforced.get(64L))
             .duration(30 * SECONDS)
@@ -128,7 +128,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stick, (int) (6L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stick, 6))
             .circuit(11)
             .itemOutputs(ItemList.RC_Rail_Reinforced.get(64L))
             .duration(30 * SECONDS)
@@ -136,7 +136,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Iridium, Shapes.stick, (int) (3L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Iridium, Shapes.stick, 3))
             .circuit(11)
             .itemOutputs(ItemList.RC_Rail_Reinforced.get(64L))
             .duration(30 * SECONDS)
@@ -144,7 +144,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Osmium, Shapes.stick, (int) (1L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Osmium, Shapes.stick, 1))
             .circuit(11)
             .itemOutputs(ItemList.RC_Rail_Reinforced.get(64L))
             .duration(30 * SECONDS)
@@ -152,7 +152,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Aluminium, Shapes.stick, (int) (20L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Aluminium, Shapes.stick, 20))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)
@@ -160,7 +160,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.stick, (int) (48L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.stick, 48))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)
@@ -168,7 +168,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.CastIron, Shapes.stick, (int) (24L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CastIron, Shapes.stick, 24))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)
@@ -176,7 +176,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Bronze, Shapes.stick, (int) (32L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Bronze, Shapes.stick, 32))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)
@@ -184,7 +184,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, (int) (16L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Steel, Shapes.stick, 16))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)
@@ -192,7 +192,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.stick, (int) (12L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.StainlessSteel, Shapes.stick, 12))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)
@@ -208,7 +208,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stick, (int) (6L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.stick, 6))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)
@@ -216,7 +216,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Iridium, Shapes.stick, (int) (4L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Iridium, Shapes.stick, 4))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)
@@ -224,7 +224,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Osmium, Shapes.stick, (int) (2L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Osmium, Shapes.stick, 2))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)
@@ -240,7 +240,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Tin, Shapes.plate, (int) (2L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Tin, Shapes.plate, 2))
             .circuit(12)
             .itemOutputs(ItemList.Cell_Empty.get(1L))
             .duration(10 * SECONDS)
@@ -248,7 +248,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, (int) (1L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Steel, Shapes.plate, 1))
             .circuit(12)
             .itemOutputs(ItemList.Cell_Empty.get(1L))
             .duration(5 * SECONDS)
@@ -256,7 +256,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Polytetrafluoroethylene, Shapes.plate, (int) (1L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Polytetrafluoroethylene, Shapes.plate, 1))
             .circuit(12)
             .itemOutputs(ItemList.Cell_Empty.get(4L))
             .duration(5 * SECONDS)
@@ -264,7 +264,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.plate, (int) (3L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.plate, 3))
             .circuit(12)
             .itemOutputs(new ItemStack(Items.bucket, 1, 0))
             .duration(10 * SECONDS)
@@ -272,7 +272,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.CastIron, Shapes.plate, (int) (3L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.CastIron, Shapes.plate, 3))
             .circuit(12)
             .itemOutputs(new ItemStack(Items.bucket, 1, 0))
             .duration(10 * SECONDS)
@@ -280,16 +280,16 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.itemCasing, (int) (2L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Iron, Shapes.itemCasing, 2))
             .circuit(2)
             .itemOutputs(ItemList.IC2_Fuel_Rod_Empty.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(benderRecipes);
 
-        if (MaterialLibAPI.getStack(Materials.Tin, Shapes.itemCasing, (int) (1L)) != null) {
+        if (MaterialLibAPI.getStack(Materials.Tin, Shapes.itemCasing, 1) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(Materials.Tin, Shapes.itemCasing, (int) (1L)))
+                .itemInputs(MaterialLibAPI.getStack(Materials.Tin, Shapes.itemCasing, 1))
                 .circuit(1)
                 .itemOutputs(ItemList.IC2_Food_Can_Empty.get(1L))
                 .duration(20 * TICKS)

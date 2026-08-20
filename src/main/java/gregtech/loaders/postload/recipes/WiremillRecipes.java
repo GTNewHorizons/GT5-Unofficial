@@ -28,7 +28,7 @@ public class WiremillRecipes implements Runnable {
         registerWiremillRecipes(Materials.SpaceTime, 8 * SECONDS + 8 * TICKS, (int) TierEU.RECIPE_LuV);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials.Polycaprolactam, Shapes.ingot, (int) (1L)))
+            .itemInputs(MaterialLibAPI.getStack(Materials.Polycaprolactam, Shapes.ingot, 1))
             .itemOutputs(new ItemStack(Items.string, 32))
             .duration(4 * SECONDS)
             .eut(48)

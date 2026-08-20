@@ -2,18 +2,10 @@ package gtPlusPlus.core.item.base;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.util.List;
-
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -21,20 +13,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.material.GTMaterialIcons;
-import gregtech.api.material.GTMaterialProperties;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
-import gregtech.common.config.Client;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.EntityUtils;
 
 public class BaseItemComponent extends Item {
 
-    /// Always null: the only constructor generates a cell from a bare fluid name, which carries no material.
-    public final com.ruling_0.materiallib.api.Material componentMaterial;
     public final String materialName;
     public final String unlocalName;
     public final String materialKey;
@@ -57,7 +43,6 @@ public class BaseItemComponent extends Item {
         } else {
             aFormattedNameForFluids = unlocalName;
         }
-        this.componentMaterial = null;
         this.unlocalName = "itemCell" + aFormattedNameForFluids;
         this.materialName = localName;
         this.materialKey = fluid.getUnlocalizedName();
@@ -81,69 +66,7 @@ public class BaseItemComponent extends Item {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        if (componentMaterial != null) {
-            return componentType.getGtOrePrefix()
-                .getLocalizedNameForItem(MaterialUtils.internalName(componentMaterial));
-        }
         return OrePrefixes.getLocalizedNameForItemForKey(componentType.getName(), "@", materialKey);
-    }
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    public final void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list,
-        final boolean bool) {
-
-        try {
-            if (this.materialName != null && !this.materialName.isEmpty() && (this.componentMaterial != null)) {
-
-                MaterialUtils.addTooltips(this.componentMaterial, list);
-
-                if (Client.tooltip.showHotIngotText) {
-                    if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {
-                        if (this.unlocalName.toLowerCase()
-                            .contains("hot")) {
-                            list.add(StatCollector.translateToLocal("gtpp.tooltip.ingot.very_hot"));
-                        }
-                    }
-                }
-
-                if (Client.tooltip.showCtrlText) {
-                    // Hidden Tooltip
-                    if (GuiScreen.isCtrlKeyDown()) {
-                        String type = MaterialUtils.textureSetName(this.componentMaterial);
-                        String output = type.substring(0, 1)
-                            .toUpperCase() + type.substring(1);
-                        list.add(
-                            EnumChatFormatting.GRAY
-                                + StatCollector.translateToLocalFormatted("GTPP.tooltip.material.type", output));
-                        Integer radiationLevel = this.componentMaterial
-                            .getProperty(GTMaterialProperties.RADIATION_LEVEL);
-                        list.add(
-                            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
-                                "GTPP.tooltip.material.radioactivity",
-                                radiationLevel == null ? 0 : radiationLevel));
-                    } else {
-                        list.add(
-                            EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
-                    }
-                }
-            }
-        } catch (Exception ignored) {}
-
-        super.addInformation(stack, aPlayer, list, bool);
-    }
-
-    @Override
-    public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
-        final boolean p_77663_5_) {
-        if (this.componentMaterial != null) {
-            Integer radiationLevel = this.componentMaterial.getProperty(GTMaterialProperties.RADIATION_LEVEL);
-            EntityUtils.applyRadiationDamageToEntity(
-                iStack.stackSize,
-                radiationLevel == null ? 0 : radiationLevel,
-                world,
-                entityHolding);
-        }
     }
 
     /**
@@ -169,20 +92,9 @@ public class BaseItemComponent extends Item {
                 return Utils.rgbtoHexValue(255, 255, 255);
             }
 
-            if (this.componentMaterial == null) {
-                if (extraData != null) {
-                    return Utils.rgbtoHexValue(extraData[0], extraData[1], extraData[2]);
-                }
-                return this.componentColour;
+            if (extraData != null) {
+                return Utils.rgbtoHexValue(extraData[0], extraData[1], extraData[2]);
             }
-
-            if (MaterialUtils.rgba(this.componentMaterial)[3] <= 1) {
-                return this.componentColour;
-            } else {
-                // Animated materials ship baked animated textures; render them untinted.
-                return Utils.rgbtoHexValue(255, 255, 255);
-            }
-
         } catch (Exception ignored) {}
         return this.componentColour;
     }
@@ -199,9 +111,7 @@ public class BaseItemComponent extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister i) {
-        String setName = MaterialUtils.textureSetName(this.componentMaterial);
-        String path = GTMaterialIcons
-            .itemIconPath(setName != null ? setName : "METALLIC", this.componentType.getOreDictName());
+        String path = GTMaterialIcons.itemIconPath("METALLIC", this.componentType.getOreDictName());
         iconBase = i.registerIcon(path);
         iconOverlay = i.registerIcon(path + "_OVERLAY");
     }

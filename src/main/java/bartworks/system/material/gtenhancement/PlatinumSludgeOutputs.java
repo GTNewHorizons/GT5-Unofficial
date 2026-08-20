@@ -19,9 +19,9 @@ import gregtech.api.util.GTUtility;
 /// Rewrites platinum-group outputs at recipe-generation time so that ore processing yields the sludge-line
 /// intermediates (metallic powders and leach residues) instead of the pure metals.
 ///
-/// Substitution happens as recipes are built rather than by rescanning the finished recipe maps, so a recipe
-/// registered against a platinum-group material never exists in its unsubstituted form. Alloys that legitimately
-/// contain a platinum-group metal are exempt, see [#isMaterialBlacklisted].
+/// Substitution happens as recipes are built, so a recipe registered against a platinum-group material never
+/// exists in its unsubstituted form. Alloys that legitimately contain a platinum-group metal are exempt, see
+/// [#isMaterialBlacklisted].
 public final class PlatinumSludgeOutputs {
 
     private PlatinumSludgeOutputs() {}

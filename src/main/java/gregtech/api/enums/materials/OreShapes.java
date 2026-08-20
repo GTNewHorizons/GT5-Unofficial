@@ -166,9 +166,8 @@ public class OreShapes {
         return false;
     }
 
-    /// Whether `material` originates from a bartworks material. Both [GTOreAdapter] and [BWOreAdapter] resolve
-    /// behavior for any material sharing this shape, so the drop and harvest-level hooks dispatch on this to
-    /// reach the adapter that owns the material's ore behavior.
+    /// Whether `material` originates from a bartworks material, and so takes [BWOreAdapter]'s ore behavior
+    /// rather than [GTOreAdapter]'s.
     private static boolean isWerkstoff(Material material) {
         return material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null;
     }

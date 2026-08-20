@@ -22,9 +22,9 @@ import gregtech.common.config.Client;
 /// containers -- all backed by [ShapeItem] or [ShapeBlock.ShapeBlockItem]): the chemical formula directly below
 /// the display name, then the hot-ingot and handling-hazard warnings at the end.
 ///
-/// An [ItemTooltipEvent] handler reading declaration data through [MaterialFormulas] and [MaterialUtils] rather
-/// than baked MaterialLib tooltip lines, so the `Client.tooltip` toggles gate each line at render time and
-/// localized formulas re-resolve on language switch.
+/// An [ItemTooltipEvent] handler reading declaration data through [MaterialFormulas] and [MaterialUtils], so
+/// the `Client.tooltip` toggles gate each line at render time and localized formulas re-resolve on language
+/// switch.
 public class MaterialFormulaTooltip {
 
     @SubscribeEvent

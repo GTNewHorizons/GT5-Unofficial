@@ -173,10 +173,10 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     /// Writes `MaterialUtils`'s slot store and `Fluid`->`Material` twin map for the state this fluid carries.
     private void configureMaterialSlots(Material material) {
         MaterialUtils.recordFluidMaterial(registeredFluid, material);
-        MaterialUtils.recordSlotFluid(material, muFluidState(), registeredFluid);
+        MaterialUtils.recordSlotFluid(material, slotState(), registeredFluid);
     }
 
-    private MaterialUtils.FluidState muFluidState() {
+    private MaterialUtils.FluidState slotState() {
         return switch (fluidState) {
             case SLURRY -> MaterialUtils.FluidState.SOLID;
             case GAS -> MaterialUtils.FluidState.GAS;

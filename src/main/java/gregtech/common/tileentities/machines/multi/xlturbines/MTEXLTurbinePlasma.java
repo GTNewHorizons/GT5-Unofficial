@@ -25,7 +25,7 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -270,12 +270,9 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
                     }
 
                     Material turbineMaterial = MetaGeneratedTool.getPrimaryMaterialML(turbineItem);
-                    Float steam = turbineMaterial.getProperty(GTMaterialProperties.STEAM_MULTIPLIER);
-                    Float gas = turbineMaterial.getProperty(GTMaterialProperties.GAS_MULTIPLIER);
-                    Float plasma = turbineMaterial.getProperty(GTMaterialProperties.PLASMA_MULTIPLIER);
-                    flowMultipliers[0] = steam == null ? 1.0f : steam;
-                    flowMultipliers[1] = gas == null ? 1.0f : gas;
-                    flowMultipliers[2] = plasma == null ? 1.0f : plasma;
+                    flowMultipliers[0] = MaterialUtils.steamMultiplier(turbineMaterial);
+                    flowMultipliers[1] = MaterialUtils.gasMultiplier(turbineMaterial);
+                    flowMultipliers[2] = MaterialUtils.plasmaMultiplier(turbineMaterial);
                     baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
                     optFlow = MathUtils.roundToClosestInt(aTotalOptimalFlow);
                     euPerTurbine = MathUtils.roundToClosestInt(aEUPerTurbine);

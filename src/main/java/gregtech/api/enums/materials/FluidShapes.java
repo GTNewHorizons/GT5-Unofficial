@@ -14,7 +14,7 @@ import gregtech.api.material.FluidNames;
 import gregtech.api.material.FluidRef;
 
 /// Fluid [Shape] declarations, one per [MaterialFluidNames] slot (solid/fluid/gas/plasma/molten) plus the six
-/// cracked-fluid slots. Each needs its own [FluidRef] extractor rather than a uniform mapping.
+/// cracked-fluid slots.
 ///
 /// Each shape's `FluidNamer` returns the material's frozen Forge registry name and its `FluidConfigurer`
 /// supplies the matching temperature/gaseous/density/viscosity/luminosity attributes. The names are frozen

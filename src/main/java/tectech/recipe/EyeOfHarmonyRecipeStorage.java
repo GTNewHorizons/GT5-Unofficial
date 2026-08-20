@@ -15,6 +15,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.math.LongMath;
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import galacticgreg.api.ModDimensionDef;
@@ -143,9 +144,9 @@ public class EyeOfHarmonyRecipeStorage {
     private void specialDeepDarkRecipe(final HashMap<String, EyeOfHarmonyRecipe> hashMap,
         final BlockDimensionDisplay planetItem) {
 
-        final HashSet<com.ruling_0.materiallib.api.Material> validMaterialSet = new HashSet<>();
+        final HashSet<Material> validMaterialSet = new HashSet<>();
         for (int id = 0; id < 1000; id++) {
-            com.ruling_0.materiallib.api.Material material = LegacyMaterialIDIndex.get(id);
+            Material material = LegacyMaterialIDIndex.get(id);
             if (material == null) continue;
 
             ItemStack normalOre = GTOreDictUnificator.get(OrePrefixes.ore, material, 1);
@@ -163,7 +164,7 @@ public class EyeOfHarmonyRecipeStorage {
 
         OreInfo infoWerkstoff = OreInfo.getNewInfo();
         infoWerkstoff.stoneType = StoneType.Stone;
-        for (com.ruling_0.materiallib.api.Material mat : MaterialLibAPI.getMaterials()) {
+        for (Material mat : MaterialLibAPI.getMaterials()) {
             infoWerkstoff.material = mat;
 
             infoWerkstoff.isSmall = false;
@@ -174,10 +175,10 @@ public class EyeOfHarmonyRecipeStorage {
         }
         infoWerkstoff.release();
 
-        final HashSet<com.ruling_0.materiallib.api.Material> validGTPPMaterialSet = new HashSet<>();
+        final HashSet<Material> validGTPPMaterialSet = new HashSet<>();
         OreInfo infoGTPP = OreInfo.getNewInfo();
         infoGTPP.stoneType = StoneType.Stone;
-        for (com.ruling_0.materiallib.api.Material mat : MaterialLibAPI.getMaterials()) {
+        for (Material mat : MaterialLibAPI.getMaterials()) {
             infoGTPP.material = mat;
 
             infoGTPP.isSmall = false;
@@ -188,8 +189,8 @@ public class EyeOfHarmonyRecipeStorage {
         }
         infoGTPP.release();
 
-        ArrayList<com.ruling_0.materiallib.api.Material> validMaterialList = new ArrayList<>(validMaterialSet);
-        ArrayList<com.ruling_0.materiallib.api.Material> validGTPPMaterialList = new ArrayList<>(validGTPPMaterialSet);
+        ArrayList<Material> validMaterialList = new ArrayList<>(validMaterialSet);
+        ArrayList<Material> validGTPPMaterialList = new ArrayList<>(validGTPPMaterialSet);
 
         long rocketTier = 9;
 
@@ -210,9 +211,8 @@ public class EyeOfHarmonyRecipeStorage {
         return (long) (18_000L * GTUtility.powInt(1.4, rocketTier));
     }
 
-    private ArrayList<Pair<Object, Long>> processDD(
-        final ArrayList<com.ruling_0.materiallib.api.Material> validMaterialList,
-        ArrayList<com.ruling_0.materiallib.api.Material> validGTPPMaterialList) {
+    private ArrayList<Pair<Object, Long>> processDD(final ArrayList<Material> validMaterialList,
+        ArrayList<Material> validGTPPMaterialList) {
         EyeOfHarmonyRecipe.HashMapHelper outputMap = new EyeOfHarmonyRecipe.HashMapHelper();
 
         // 10 from rocketTier + 1, 6 * 64 = VM3 + Og, 1.4 = time increase per tier.

@@ -62,7 +62,6 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
 
-@SuppressWarnings({ "PointlessArithmeticExpression", "unused" })
 /// The legacy form namespace: the ore-dictionary prefix strings GregTech and every other mod name item forms
 /// with, and the data those forms carry.
 ///
@@ -81,9 +80,9 @@ import it.unimi.dsi.fastutil.objects.ObjectSet;
 /// GregTech a string; [#getOrePrefix] parses it back to a prefix, and the shape space cannot help, because
 /// a shape knows only the items MaterialLib itself generated.
 ///
-/// Shape-side code should read the shape. Code holding a prefix at runtime -- the oredict handler, the save
-/// migrations, anything iterating [#VALUES] -- reads the prefix, and gets the shape's values for free wherever
-/// a shape serves it.
+/// Shape-side code reads the shape. Code holding a prefix at runtime reads the prefix, and gets the shape's
+/// values for free wherever a shape serves it.
+@SuppressWarnings({ "PointlessArithmeticExpression", "unused" })
 public class OrePrefixes {
 
     private static List<OrePrefixes> VALUES_LIST = new ArrayList<>();
@@ -1873,12 +1872,10 @@ public class OrePrefixes {
     }
 
     /// Copies the per-form data of every prefix a [Shape] serves off that shape, making the shape the one
-    /// declaration of it (see [ShapeData]). Prefixes no shape serves -- tool and armor forms, containers, the
-    /// ore stone variants, the foreign-mod marker names -- keep the values their own builder declared.
+    /// declaration of it (see [ShapeData]). Prefixes no shape serves keep the values their own builder declared.
     ///
-    /// Runs inside `GTMod`'s `MaterialRegistrationEvent` handler: the first point at which [ShapeData] has
-    /// declared the values, and still ahead of every consumer and loader that reads a prefix. The shapes have
-    /// not resolved by then, so this copies GregTech's own declarations for its own shapes.
+    /// Must run during `MaterialRegistrationEvent`, after [ShapeData] declares the values and before any
+    /// consumer or loader reads a prefix.
     public static void copyDataFromShapes() {
         for (OrePrefixes prefix : VALUES) {
             List<Shape> shapes = MaterialParts.shapes(prefix);
@@ -2017,9 +2014,8 @@ public class OrePrefixes {
         cellSteamCracked3);
 
     /// The subset of {@link OrePrefixes} static setup that references `Materials` constants, called explicitly
-    /// from GT's preInit and never from a `static {}` block: {@code GTMod}'s constructor touches
-    /// {@link gregtech.common.ores.UnificationOreAdapter}, whose static initializer reads {@link #VALUES},
-    /// forcing this class to load before any mod's preInit runs -- well before `Materials` data can resolve.
+    /// from GT's preInit and never from a `static {}` block: this class is already loaded before any mod's
+    /// preInit runs, well before `Materials` data can resolve.
     public static void lateStaticInit() {
         block.ignoreMaterials(
             Materials.Ice,
@@ -2396,10 +2392,10 @@ public class OrePrefixes {
         return false;
     }
 
-    /// Whether this prefix generates an item for `material`: the material must carry a block-form metadata
-    /// index ([MaterialUtils#oldSubId]), its [GTMaterialProperties#GENERATION_FLAGS] must overlap the groups
-    /// this prefix accepts or it must be listed in [#mGeneratedItems], it must be in neither
-    /// [#mNotGeneratedItems] nor [#mDisabledItems], and it must satisfy [#mCondition].
+    /// Whether this prefix generates an item for `material`. The material must carry a block-form metadata
+    /// index ([MaterialUtils#oldSubId]) and satisfy [#mCondition]. Its
+    /// [GTMaterialProperties#GENERATION_FLAGS] must overlap the groups this prefix accepts, or it must be listed
+    /// in [#mGeneratedItems]. [#mNotGeneratedItems] and [#mDisabledItems] both exclude it.
     public boolean doGenerateItem(@Nullable Material material) {
         if (MaterialUtils.oldSubId(material) == -1) return false;
 
@@ -2662,9 +2658,8 @@ public class OrePrefixes {
         return getLocalizedNameForItemWithInflection(getOreprefixKey(prefix, formatString), materialName);
     }
 
-    /// Like [#getLocalizedNameForItem(String, String, String)], but `materialKey` is already a full localization
-    /// key rather than a material's internal name, and is used as-is instead of being resolved through
-    /// `Material.<name>`.
+    /// Like [#getLocalizedNameForItem(String, String, String)], but `materialKey` is used as-is as the
+    /// localization key.
     public static String getLocalizedNameForItemForKey(String prefix, String formatString, String materialKey) {
         return getLocalizedNameForItemWithInflectionForKey(getOreprefixKey(prefix, formatString), materialKey);
     }

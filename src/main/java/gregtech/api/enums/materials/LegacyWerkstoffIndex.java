@@ -31,8 +31,8 @@ public class LegacyWerkstoffIndex {
         }
 
         // gt-bridge proxy werkstoffe: bartworks declared these ids only to give a gregtech material a casing
-        // slot, so they belong to no material's WERKSTOFF_IDS and the loop above never reaches them. Postea
-        // still has to resolve placed casings addressed by them.
+        // slot, so they belong to no material's WERKSTOFF_IDS. Postea still has to resolve placed casings
+        // addressed by them.
         occupy(31850, Materials.Iridium);
         occupy(32083, Materials.Osmiridium);
         occupy(32090, Materials.Naquadah);
@@ -70,7 +70,7 @@ public class LegacyWerkstoffIndex {
     /// for the prefix: gregtech's own part autogen covers shapes the werkstoff part set never named.
     ///
     /// False for a material also carrying [GTMaterialProperties#OLD_SUB_ID] -- a merged declaration whose
-    /// parts gregtech owns outright (Salt, RockSalt, Spodumene and the like), which names no werkstoff parts.
+    /// parts gregtech owns outright (Salt, RockSalt, Spodumene and the like).
     public static boolean generatesPrefix(@Nullable Material material, OrePrefixes prefix) {
         if (material == null || material.getProperty(GTMaterialProperties.OLD_SUB_ID) != null) return false;
         List<String> prefixes = material.getProperty(GTMaterialProperties.WERKSTOFF_PREFIXES);

@@ -7,6 +7,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
+
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
@@ -49,9 +51,9 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        com.ruling_0.materiallib.api.Material mat = blockOre.getMaterial(stack.getItemDamage());
+        Material mat = blockOre.getMaterial(stack.getItemDamage());
 
-        String matName = mat == null ? MaterialUtils.internalName(Materials.NULL) : MaterialUtils.internalName(mat);
+        String matName = MaterialUtils.internalName(mat == null ? Materials.NULL : mat);
 
         boolean small = blockOre.isSmallOre(stack.getItemDamage());
 
@@ -60,13 +62,9 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> desc, boolean advancedTooltips) {
-        com.ruling_0.materiallib.api.Material mat = blockOre.getMaterial(stack.getItemDamage());
+        Material mat = blockOre.getMaterial(stack.getItemDamage());
 
-        if (mat == null) {
-            MaterialUtils.addTooltips(Materials.NULL, desc);
-        } else {
-            MaterialUtils.addTooltips(mat, desc);
-        }
+        MaterialUtils.addTooltips(mat == null ? Materials.NULL : mat, desc);
     }
 
     @Override

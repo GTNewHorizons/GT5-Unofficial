@@ -7,7 +7,6 @@ import com.ruling_0.materiallib.api.Material;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -25,12 +24,11 @@ public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-        if ((processingTierEU == null ? 0 : processingTierEU) >= TierEU.IV) {
+        if (MaterialUtils.processingMaterialTierEU(material) >= TierEU.IV) {
             return;
         }
 
-        if (Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))) {
+        if (!MaterialUtils.unifiable(material)) {
             return;
         }
 

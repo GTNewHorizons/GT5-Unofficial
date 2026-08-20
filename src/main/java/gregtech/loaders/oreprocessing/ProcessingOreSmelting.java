@@ -157,7 +157,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                 .itemOutputs(
                     GTOreDictUnificator
                         .get(OrePrefixes.ingot, MaterialUtils.directSmelting(material), (long) outputAmount),
-                    MaterialLibAPI.getStack(Materials.Ferrosilite, Shapes.dustSmall, (int) (outputAmount)))
+                    MaterialLibAPI.getStack(Materials.Ferrosilite, Shapes.dustSmall, outputAmount))
                 .duration(2 * MINUTES)
                 .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(primitiveBlastRecipes);
@@ -169,7 +169,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                 .itemOutputs(
                     GTOreDictUnificator
                         .get(OrePrefixes.ingot, MaterialUtils.directSmelting(material), (long) outputAmount),
-                    MaterialLibAPI.getStack(Materials.Ferrosilite, Shapes.dustSmall, (int) (outputAmount)))
+                    MaterialLibAPI.getStack(Materials.Ferrosilite, Shapes.dustSmall, outputAmount))
                 .duration(2 * MINUTES)
                 .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(primitiveBlastRecipes);
@@ -181,7 +181,7 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                 .itemOutputs(
                     GTOreDictUnificator
                         .get(OrePrefixes.ingot, MaterialUtils.directSmelting(material), (long) outputAmount),
-                    MaterialLibAPI.getStack(Materials.Ferrosilite, Shapes.dustSmall, (int) (outputAmount)))
+                    MaterialLibAPI.getStack(Materials.Ferrosilite, Shapes.dustSmall, outputAmount))
                 .duration(2 * MINUTES)
                 .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(primitiveBlastRecipes);

@@ -77,8 +77,7 @@ public class ProcessingRecyclingGtpp {
         Materials.LFTRFuel3);
     // spotless:on
 
-    /// The frozen prefix scan order. `ingotHot` is deliberately absent: it never gets a recycling recipe
-    /// here, whether or not the material carries the shape.
+    /// The frozen prefix scan order. `ingotHot` is deliberately absent.
     // spotless:off
     private static final OrePrefixes[] PREFIXES = { OrePrefixes.ingot, OrePrefixes.nugget, OrePrefixes.plate,
         OrePrefixes.plateDense, OrePrefixes.plateDouble, OrePrefixes.plateTriple, OrePrefixes.plateQuadruple,

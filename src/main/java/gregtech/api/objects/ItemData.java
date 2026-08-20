@@ -14,8 +14,7 @@ import gregtech.api.material.MaterialUtils;
 /// What material an [ItemStack] is made of and how much of it, for any item in the game.
 ///
 /// This is GregTech's cross-mod material index. A [com.ruling_0.materiallib.api.Shape] knows only the items
-/// MaterialLib itself generated; this answers for a foreign mod's items too, which is what lets
-/// [gregtech.api.util.GTRecipeRegistrator] derive recycling for them.
+/// MaterialLib itself generated; this answers for a foreign mod's items too.
 ///
 /// Keyed by [OrePrefixes]: an association is created from an ore-dictionary name, and a tenth of the prefixes
 /// named here have no shape at all. [#mMaterial]'s amount comes from [OrePrefixes#getMaterialAmount]; see
@@ -127,8 +126,7 @@ public class ItemData {
     }
 
     /// Whether [#toString] names a unification target. True both for a prefix+material association and for the
-    /// composition-free name-only form, so the unification read paths in [gregtech.api.util.GTOreDictUnificator]
-    /// accept both; the recycling and composition paths still require [#hasValidPrefixMaterialData].
+    /// composition-free name-only form.
     public final boolean hasUnificationName() {
         return oreDictName != null || hasValidPrefixMaterialData();
     }

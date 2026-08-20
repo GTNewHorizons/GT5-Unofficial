@@ -394,7 +394,7 @@ public class BeamCrafterRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 2))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.InactiveCosmicSolder, FluidShapes.fluidLiquid, 160_000),
-                MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, (int) (16 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 16 * INGOTS))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 2))
             .outputChances(8000)
             .fluidOutputs(

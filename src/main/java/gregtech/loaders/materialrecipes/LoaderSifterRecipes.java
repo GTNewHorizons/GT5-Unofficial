@@ -44,9 +44,8 @@ public final class LoaderSifterRecipes {
 
     private LoaderSifterRecipes() {}
 
-    /// Whether [#run] generates `material`'s sifter recipe, so that
-    /// [gregtech.loaders.oreprocessing.ProcessingCrushedOre] can leave the `crushedPurified` sifter recipe to
-    /// this loader rather than register a second one with different gem chances.
+    /// Whether [#run] generates `material`'s sifter recipe. A `crushedPurified` generator must skip a material
+    /// this owns, or the two register competing gem chances.
     public static boolean ownsSifterRecipe(Material material) {
         for (Material carrier : CARRIERS) {
             if (carrier == material) return true;

@@ -709,9 +709,8 @@ public class GTRecipeBuilder {
     private static @Nullable String variantGroup;
 
     /// Runs `body` with `group` stamped as [GTRecipeConstants#VARIANT_GROUP] on every recipe built inside it,
-    /// including recipes built by builders `body` creates for itself. A generator that emits the same recipe
-    /// once per display variant of an input wraps each pass in the same group, and NEI collapses the passes
-    /// into one cycling entry ([gregtech.nei.OreVariantGroups]).
+    /// including recipes built by builders `body` creates for itself. See [GTRecipeConstants#VARIANT_GROUP]
+    /// for what the tag means.
     ///
     /// Scopes nest, and a recipe that sets the key itself keeps its own value. Registration is single
     /// threaded, so the scope is a plain static.
@@ -726,8 +725,7 @@ public class GTRecipeBuilder {
     }
 
     /// The metadata the recipe under construction is built with: the builder's own storage, plus the enclosing
-    /// [#withVariantGroup] tag when there is one. Never mutates the builder's storage, so the tag cannot
-    /// outlive the scope on a reused builder.
+    /// [#withVariantGroup] tag when there is one. Never mutates the builder's storage.
     private @Nullable IRecipeMetadataStorage buildMetadata() {
         if (variantGroup == null) return metadataStorage;
         if (getMetadata(GTRecipeConstants.VARIANT_GROUP) != null) return metadataStorage;

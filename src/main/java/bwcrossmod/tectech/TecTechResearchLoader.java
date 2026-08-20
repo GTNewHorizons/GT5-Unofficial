@@ -83,8 +83,8 @@ public class TecTechResearchLoader {
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 64),
                 ItemList.Electric_Piston_UV.get(64), },
             new FluidStack[] { MaterialUtils.anyFluid(Materials.Indalloy140, 10 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, (int) (10 * INGOTS)),
-                MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, (int) (10 * INGOTS)) },
+                MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, 10 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, 10 * INGOTS) },
             ItemList.ElectricImplosionCompressor.get(1L),
             2 * MINUTES,
             (int) TierEU.RECIPE_UV);

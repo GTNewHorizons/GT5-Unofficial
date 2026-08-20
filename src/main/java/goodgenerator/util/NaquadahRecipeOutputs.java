@@ -17,8 +17,8 @@ import gregtech.api.util.GTUtility;
 /// Rewrites naquadah-family dust outputs into their oxide mixtures at recipe-generation time, layered on top of
 /// [PlatinumSludgeOutputs] so a single call covers both substitution families.
 ///
-/// Ore-processing outputs are doubled; decomposition outputs (electrolyzer, centrifuge, washer) keep their
-/// original amount, which is what separates the `convert` entry points from the `convertDecomposition` ones.
+/// The `convert` entry points double ore-processing outputs. The `convertDecomposition` ones leave
+/// decomposition outputs (electrolyzer, centrifuge, washer) at their original amount.
 public final class NaquadahRecipeOutputs {
 
     private static final OrePrefixes[] DUST_PREFIXES = { dust, dustSmall, dustTiny };

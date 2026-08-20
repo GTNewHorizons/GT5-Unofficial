@@ -56,8 +56,8 @@ public class PosteaTransformers implements Runnable {
         OFFSET_ID_3 + 7, OFFSET_ID_3 + 8, OFFSET_ID_3 + 11, OFFSET_ID_3 + 12 };
 
     /// Every legacy block/item registry name a transformer has been registered for, collected by the
-    /// `addBlockTransformer`/`addBlockReplacement`/`addItemTransformer`/`addItemReplacement` wrappers so that
-    /// [#claimMissingMappings] can claim all of them. Registration goes through those wrappers and never
+    /// `addBlockTransformer`/`addBlockReplacement`/`addItemTransformer`/`addItemReplacement` wrappers.
+    /// Registration goes through those wrappers and never
     /// through the Postea managers directly, so a name can never be transformed without also being claimed.
     private static final Set<String> transformedIds = new LinkedHashSet<>();
 
@@ -76,9 +76,7 @@ public class PosteaTransformers implements Runnable {
     }
 
     /// Claims the FML missing mapping of every legacy registry name a transformer was registered for. Without
-    /// the claim FML discards the saved id before Postea's chunk and stack passes run; Postea captures the
-    /// world's name -> id map in `GameData.injectSnapshot`, so the claim alone is enough for it to resolve the
-    /// saved numeric id.
+    /// the claim FML discards the saved id before Postea's chunk and stack passes run.
     ///
     /// [BlockReplacementManager#ignoreMissingMapping] and [ItemStackReplacementManager#ignoreMissingMapping] feed one
     /// shared ignore set, so a single call covers both the block and the item leg of a name.
@@ -159,7 +157,7 @@ public class PosteaTransformers implements Runnable {
 
         if (!unresolved.isEmpty()) {
             GT_FML_LOGGER.error(
-                "PosteaTransformers: {} cutover rows no longer resolve; saved stacks of these will be deleted rather than migrated: {}",
+                "PosteaTransformers: {} cutover rows no longer resolve: {}",
                 unresolved.size(),
                 unresolved.subList(0, Math.min(unresolved.size(), MAX_REPORTED_UNRESOLVED_ROWS)));
         }
@@ -322,9 +320,7 @@ public class PosteaTransformers implements Runnable {
     /// (`miscutils:blockFrameGt<Name>`, one distinct registered block per material at meta 0) into the
     /// equivalent MaterialLib `frameGt` shape stack. The material is fixed by the registry name rather than by
     /// a damage value, so each of [GtppFrameCutoverTable]'s materials gets its own registration.
-    /// `addSimpleReplacement`'s block+meta overload registers a matching item replacement automatically, so no
-    /// separate item-side call is needed. A material whose frame shape did not generate is left on its legacy
-    /// slot.
+    /// A material whose frame shape did not generate is left on its legacy slot.
     private static void registerGtppFrameCutoverTransformers() {
         Material[] materials = GtppFrameCutoverTable.materials();
         int count = 0;
@@ -400,8 +396,7 @@ public class PosteaTransformers implements Runnable {
     }
 
     /// The part prefixes the legacy bartworks meta items covered, one item each, registered as
-    /// `bartworks:gt.bwMetaGenerated<prefix>`. Declared here because those items no longer exist, while saved
-    /// stacks still name them.
+    /// `bartworks:gt.bwMetaGenerated<prefix>`.
     private static final OrePrefixes[] LEGACY_WERKSTOFF_ITEM_PREFIXES = { OrePrefixes.dust, OrePrefixes.dustTiny,
         OrePrefixes.dustSmall, OrePrefixes.ingot, OrePrefixes.ingotHot, OrePrefixes.nugget, OrePrefixes.gem,
         OrePrefixes.gemChipped, OrePrefixes.gemExquisite, OrePrefixes.gemFlawed, OrePrefixes.gemFlawless,
@@ -512,9 +507,7 @@ public class PosteaTransformers implements Runnable {
     /// Migrates saved placed blocks and inventory stacks of the legacy frameGt/sheetmetal blocks
     /// (`gregtech:bw.frames`, `gregtech:bw.sheetmetal`, `gregtech:gt.sheetmetal`, `gregtech:gt.blockframes`,
     /// meta = material id) into the equivalent MaterialLib shape stack. The bw-named ids carry the gregtech
-    /// domain despite their name because gregtech registered them. None of these blocks carry a TileEntity,
-    /// unlike [#registerWerkstoffBlockCutoverTransformer]'s storage blocks, so only a block leg and an item leg
-    /// are needed.
+    /// domain despite their name because gregtech registered them. None of these blocks carry a TileEntity.
     private static void registerFrameAndSheetmetalCutoverTransformers() {
         registerPartCutoverTransformer(
             "gregtech:bw.frames",
@@ -529,8 +522,7 @@ public class PosteaTransformers implements Runnable {
     }
 
     /// The MaterialLib material a legacy bartworks werkstoff id resolves to, or null when the id is unknown
-    /// (a third-party mod's own werkstoff id) -- the [#registerPartCutoverTransformer] resolver for
-    /// werkstoff-keyed legacy parts.
+    /// (a third-party mod's own werkstoff id).
     private static Material werkstoffMaterialAt(int meta) {
         return LegacyWerkstoffIndex.get(meta);
     }

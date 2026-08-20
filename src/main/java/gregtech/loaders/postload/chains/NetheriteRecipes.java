@@ -404,11 +404,9 @@ public class NetheriteRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Netherite_Nanoparticles.get(1))
             .circuit(1)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.HellishMetal, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HellishMetal, FluidShapes.fluidMolten, INGOTS))
             .itemOutputs(ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(1))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Thaumium, FluidShapes.fluidMolten, (int) (2 * NUGGETS)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Thaumium, FluidShapes.fluidMolten, 2 * NUGGETS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(COIL_HEAT, 7500)
@@ -420,11 +418,9 @@ public class NetheriteRecipes {
                     ItemList.Netherite_Nanoparticles.get(1),
                     GTBees.combs.getStackForType(CombType.NETHERITE, 8))
                 .circuit(2)
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(Materials.HellishMetal, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HellishMetal, FluidShapes.fluidMolten, INGOTS))
                 .itemOutputs(ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(2))
-                .fluidOutputs(
-                    MaterialLibAPI.getFluidStack(Materials.Thaumium, FluidShapes.fluidMolten, (int) (2 * NUGGETS)))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Thaumium, FluidShapes.fluidMolten, 2 * NUGGETS))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
                 .metadata(COIL_HEAT, 7500)

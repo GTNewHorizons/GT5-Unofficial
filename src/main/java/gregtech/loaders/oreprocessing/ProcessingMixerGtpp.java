@@ -23,10 +23,8 @@ import gregtech.api.util.GTRecipeBuilder;
 /// The composite mixer recipes (ratio of component dusts -> alloy dust) for every material in [#ELIGIBLE].
 /// Dispatched once per eligible material by
 /// [gregtech.loaders.shapeconsumers.ConsumerMixerGtpp]. Ratio data is shared with
-/// [ProcessingAlloyBlastSmelter] through [LegacyGTPPComposites], but eligibility is this class's own: some
-/// table entries never reached the legacy mixer block (they are alloy-blast-smelter-only), and some materials
-/// the mixer block reached are excluded from the alloy blast smelter, so table membership alone cannot gate
-/// either consumer's dispatch -- see [LegacyGTPPComposites]'s class javadoc.
+/// [ProcessingAlloyBlastSmelter] through [LegacyGTPPComposites], but eligibility is this class's own -- see
+/// [LegacyGTPPComposites]'s class javadoc.
 public class ProcessingMixerGtpp implements IOreRecipeRegistrator {
 
     public static final ProcessingMixerGtpp INSTANCE = new ProcessingMixerGtpp();

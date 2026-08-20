@@ -3,6 +3,7 @@ package bwcrossmod.galacticgreg;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import galacticgreg.api.enums.DimensionDef;
@@ -33,7 +34,7 @@ public class VoidMinerLoader {
 
         var weights = parseWeights(Gregtech.voidMiners.gregtechWeightsDD);
 
-        for (com.ruling_0.materiallib.api.Material mat : MaterialLibAPI.getMaterials()) {
+        for (Material mat : MaterialLibAPI.getMaterials()) {
             if (!LegacyNameDomain.contains(mat)) continue;
 
             info.material = mat;
@@ -56,7 +57,7 @@ public class VoidMinerLoader {
 
         var weights = parseWeights(Gregtech.voidMiners.bartworksWeightsDD);
 
-        for (com.ruling_0.materiallib.api.Material mat : MaterialLibAPI.getMaterials()) {
+        for (Material mat : MaterialLibAPI.getMaterials()) {
             info.material = mat;
 
             if (!BWOreAdapter.INSTANCE.supports(info)) continue;
@@ -77,7 +78,7 @@ public class VoidMinerLoader {
 
         var weights = parseWeights(Gregtech.voidMiners.gtppWeightsDD);
 
-        for (com.ruling_0.materiallib.api.Material mat : MaterialLibAPI.getMaterials()) {
+        for (Material mat : MaterialLibAPI.getMaterials()) {
             info.material = mat;
 
             if (!GTOreAdapter.INSTANCE.supportsGtpp(info)) continue;

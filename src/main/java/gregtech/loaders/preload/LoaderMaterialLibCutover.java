@@ -15,7 +15,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.TEBlockShapes;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
-import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -47,18 +46,13 @@ public class LoaderMaterialLibCutover implements Runnable {
     @Override
     public void run() {
         for (OrePrefixes prefix : OrePrefixes.VALUES) {
-            Shape shape = MaterialParts.shape(prefix);
-            if (shape == null) continue;
+            if (MaterialParts.shape(prefix) == null) continue;
             for (int id = 0; id < 1000; id++) {
                 Material material = LegacyMaterialIDIndex.get(id);
                 if (material == null || !prefix.doGenerateItem(material)) continue;
                 ItemStack stack = MaterialParts.stack(prefix, material, 1);
                 if (stack == null) continue;
-                if (prefix.isUnifiable()) {
-                    GTOreDictUnificator.set(prefix, material, stack);
-                } else {
-                    GTOreDictUnificator.registerOre(prefix.oreDictName(material), stack);
-                }
+                unify(prefix, material, stack);
                 if ((prefix == OrePrefixes.stick || prefix == OrePrefixes.wireFine || prefix == OrePrefixes.ingot)
                     && (material == Materials.Lead || material == Materials.Tin
                         || material == Materials.SolderingAlloy)) {
@@ -87,13 +81,7 @@ public class LoaderMaterialLibCutover implements Runnable {
             for (Shape shape : MaterialParts.shapes(prefix)) {
                 ShapeBlock block = (ShapeBlock) MaterialLibAPI.getBlock(shape);
                 for (Material material : block.getServedMaterials()) {
-                    ItemStack stack = block.getStack(material, 1);
-                    if (prefix.isUnifiable()) {
-                        GTOreDictUnificator.set(prefix, material, stack);
-                    } else {
-                        GTOreDictUnificator
-                            .registerOre(prefix.oreDictName(MaterialUtils.internalName(material)), stack);
-                    }
+                    unify(prefix, material, block.getStack(material, 1));
                 }
             }
         }
@@ -105,12 +93,16 @@ public class LoaderMaterialLibCutover implements Runnable {
             for (OrePrefixes prefix : OrePrefixes.VALUES) {
                 ItemStack stack = MaterialParts.stack(prefix, material, 1);
                 if (stack == null) continue;
-                if (prefix.isUnifiable()) {
-                    GTOreDictUnificator.set(prefix, material, stack);
-                } else {
-                    GTOreDictUnificator.registerOre(prefix.oreDictName(material), stack);
-                }
+                unify(prefix, material, stack);
             }
+        }
+    }
+
+    private static void unify(OrePrefixes prefix, Material material, ItemStack stack) {
+        if (prefix.isUnifiable()) {
+            GTOreDictUnificator.set(prefix, material, stack);
+        } else {
+            GTOreDictUnificator.registerOre(prefix.oreDictName(material), stack);
         }
     }
 

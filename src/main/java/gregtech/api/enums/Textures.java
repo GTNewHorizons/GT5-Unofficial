@@ -2799,8 +2799,8 @@ public class Textures {
         }
 
         /**
-         * Registers a Custom Item {@link IIconContainer} whose overlay is a texture of its own rather than the
-         * {@code _OVERLAY} sibling of {@code aIconName}, for art that layers a shared texture over a per-item one.
+         * Registers a Custom Item {@link IIconContainer} whose overlay is the named texture, not the
+         * {@code _OVERLAY} sibling of {@code aIconName}.
          *
          * @param aIconName    The identifier of the icon drawn first, which the item's colour tints.
          * @param aOverlayName The identifier of the untinted layer drawn over it.

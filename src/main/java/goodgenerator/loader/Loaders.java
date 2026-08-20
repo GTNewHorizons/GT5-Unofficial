@@ -489,51 +489,11 @@ public class Loaders {
     public static void addOreDic() {
         OreDictionary.registerOre("dustAluminumNitride", aluminumNitride);
 
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wrapCircuit.oreDictName(Circuits.ULV.materialName()),
-            new ItemStack(circuitWrap, 1, 0));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wrapCircuit.oreDictName(Circuits.LV.materialName()),
-            new ItemStack(circuitWrap, 1, 1));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wrapCircuit.oreDictName(Circuits.MV.materialName()),
-            new ItemStack(circuitWrap, 1, 2));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wrapCircuit.oreDictName(Circuits.HV.materialName()),
-            new ItemStack(circuitWrap, 1, 3));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wrapCircuit.oreDictName(Circuits.EV.materialName()),
-            new ItemStack(circuitWrap, 1, 4));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wrapCircuit.oreDictName(Circuits.IV.materialName()),
-            new ItemStack(circuitWrap, 1, 5));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wrapCircuit.oreDictName(Circuits.LuV.materialName()),
-            new ItemStack(circuitWrap, 1, 6));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wrapCircuit.oreDictName(Circuits.ZPM.materialName()),
-            new ItemStack(circuitWrap, 1, 7));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wrapCircuit.oreDictName(Circuits.UV.materialName()),
-            new ItemStack(circuitWrap, 1, 8));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wrapCircuit.oreDictName(Circuits.UHV.materialName()),
-            new ItemStack(circuitWrap, 1, 9));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wrapCircuit.oreDictName(Circuits.UEV.materialName()),
-            new ItemStack(circuitWrap, 1, 10));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wrapCircuit.oreDictName(Circuits.UIV.materialName()),
-            new ItemStack(circuitWrap, 1, 11));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wrapCircuit.oreDictName(Circuits.UMV.materialName()),
-            new ItemStack(circuitWrap, 1, 12));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wrapCircuit.oreDictName(Circuits.UXV.materialName()),
-            new ItemStack(circuitWrap, 1, 13));
-        GTOreDictUnificator.registerOre(
-            OrePrefixes.wrapCircuit.oreDictName(Circuits.MAX.materialName()),
-            new ItemStack(circuitWrap, 1, 14));
+        for (Circuits circuit : Circuits.values()) {
+            GTOreDictUnificator.registerOre(
+                OrePrefixes.wrapCircuit.oreDictName(circuit.materialName()),
+                new ItemStack(circuitWrap, 1, circuit.ordinal()));
+        }
     }
 
     public static void addTexturePage() {

@@ -553,10 +553,10 @@ public class BECRecipes implements Runnable {
                 GTOreDictUnificator.get("frameGtHexanite", tp1),
                 MaterialLibAPI.getStack(Materials.Hexanite, Shapes.stickLong, (int) (2 * tp1)),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, TIER_MATS[t], tp1),
-                MaterialLibAPI.getStack(Materials.Hexanite, Shapes.plateSuperdense, (int) (tp1)),
-                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.plateSuperdense, (int) (tp1)),
-                MaterialLibAPI.getStack(Materials.Infinity, Shapes.plateSuperdense, (int) (tp1)),
-                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.plateSuperdense, (int) (tp1)) };
+                MaterialLibAPI.getStack(Materials.Hexanite, Shapes.plateSuperdense, tp1),
+                MaterialLibAPI.getStack(Materials.CosmicNeutronium, Shapes.plateSuperdense, tp1),
+                MaterialLibAPI.getStack(Materials.Infinity, Shapes.plateSuperdense, tp1),
+                MaterialLibAPI.getStack(Materials.TranscendentMetal, Shapes.plateSuperdense, tp1) };
             NaniteTier[] nanites = nanitesShifted(BOLT_TIER[t] - 1, 3, 3, 2, 4, 2, 2, 4, 3, 2, 2, 1, 1, 1, 1, 1, 1);
             FluidStack[] condensates = { cosmicSolder(t), CondensateType.Space.getEntangled(10 * tp1 * INGOTS),
                 CondensateType.SpaceTime.getEntangled(10 * INGOTS),

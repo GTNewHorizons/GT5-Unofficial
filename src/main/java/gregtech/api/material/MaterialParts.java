@@ -50,28 +50,23 @@ public class MaterialParts {
     /// material carries none of the three, or is itself null.
     public static @Nullable ItemStack cell(@Nullable Material material, long amount) {
         if (material == null) return null;
-        if (material.hasShape(CellShapes.cell)) {
-            return MaterialLibAPI.getStack(material, CellShapes.cell, (int) amount);
-        }
-        if (material.hasShape(CellShapes.cellGas)) {
-            return MaterialLibAPI.getStack(material, CellShapes.cellGas, (int) amount);
-        }
-        if (material.hasShape(CellShapes.cellMolten)) {
-            return MaterialLibAPI.getStack(material, CellShapes.cellMolten, (int) amount);
-        }
-        return null;
+        return firstShapeStack(material, amount, CellShapes.cell, CellShapes.cellGas, CellShapes.cellMolten);
     }
 
     /// The throwing counterpart of [#cell] for call sites declaring that a specific material must carry a
     /// plain cell. Throws [IllegalStateException] naming the material when it carries none.
     public static ItemStack requireCell(Material material, long amount) {
-        if (material.hasShape(CellShapes.cell)) {
-            return MaterialLibAPI.getStack(material, CellShapes.cell, (int) amount);
+        ItemStack stack = firstShapeStack(material, amount, CellShapes.cell, CellShapes.cellGas);
+        if (stack == null) throw new IllegalStateException(material.getName() + " carries no plain cell shape");
+        return stack;
+    }
+
+    /// The stack for the first of `candidates` that `material` generates, or null when it generates none.
+    private static @Nullable ItemStack firstShapeStack(Material material, long amount, Shape... candidates) {
+        for (Shape shape : candidates) {
+            if (material.hasShape(shape)) return MaterialLibAPI.getStack(material, shape, (int) amount);
         }
-        if (material.hasShape(CellShapes.cellGas)) {
-            return MaterialLibAPI.getStack(material, CellShapes.cellGas, (int) amount);
-        }
-        throw new IllegalStateException(material.getName() + " carries no plain cell shape");
+        return null;
     }
 
     private static Map<String, List<Shape>> prefixToShapes;
@@ -81,9 +76,8 @@ public class MaterialParts {
     /// `pipeTiny`..`pipeHuge`), the shape a specific material actually generates may differ -- see [#stack];
     /// callers that must see every candidate use [#shapes].
     public static @Nullable Shape shape(OrePrefixes prefix) {
-        if (prefix == null) return null;
-        List<Shape> shapes = prefixShapes().get(prefix.name());
-        return shapes == null ? null : shapes.get(0);
+        List<Shape> shapes = shapes(prefix);
+        return shapes.isEmpty() ? null : shapes.get(0);
     }
 
     /// Every candidate shape a legacy [OrePrefixes] cuts over to, in resolution order ([#stack] uses the
@@ -101,13 +95,8 @@ public class MaterialParts {
     /// When a prefix maps to more than one candidate shape (`cellPlasma`, `pipeTiny`..`pipeHuge`), the first
     /// one `material` generates wins; [#shapes] exposes the full candidate list.
     public static @Nullable ItemStack stack(OrePrefixes prefix, @Nullable Material material, long amount) {
-        if (prefix == null || material == null) return null;
-        List<Shape> shapes = prefixShapes().get(prefix.name());
-        if (shapes == null) return null;
-        for (Shape shape : shapes) {
-            if (material.hasShape(shape)) return MaterialLibAPI.getStack(material, shape, (int) amount);
-        }
-        return null;
+        Shape shape = servedShape(prefix, material);
+        return shape == null ? null : MaterialLibAPI.getStack(material, shape, (int) amount);
     }
 
     /// Whether a (prefix, material) pair has a MaterialLib equivalent (see [#stack]). Unlike [#shape], which
@@ -115,13 +104,16 @@ public class MaterialParts {
     /// `cell` item generated from its `CELL` capability flag while never having a fluid to put in it, which
     /// leaves it off `cell`'s MaterialLib membership.
     public static boolean isCutOver(OrePrefixes prefix, @Nullable Material material) {
-        if (prefix == null || material == null) return false;
-        List<Shape> shapes = prefixShapes().get(prefix.name());
-        if (shapes == null) return false;
-        for (Shape shape : shapes) {
-            if (material.hasShape(shape)) return true;
+        return servedShape(prefix, material) != null;
+    }
+
+    /// The first of `prefix`'s candidate shapes that `material` generates, or null when it generates none.
+    private static @Nullable Shape servedShape(OrePrefixes prefix, @Nullable Material material) {
+        if (material == null) return null;
+        for (Shape shape : shapes(prefix)) {
+            if (material.hasShape(shape)) return shape;
         }
-        return false;
+        return null;
     }
 
     /// Whether `stack`'s unification association ([GTOreDictUnificator#getAssociation]) names `material` as

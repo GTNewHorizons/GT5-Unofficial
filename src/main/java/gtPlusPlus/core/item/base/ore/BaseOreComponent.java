@@ -144,7 +144,6 @@ public class BaseOreComponent extends Item {
         private final String PREFIX;
         private final String DISPLAY_NAME;
         private final boolean HAS_OVERLAY;
-        private final String orePrefix;
         private final OrePrefixes orePrefixEnum;
 
         ComponentTypes(final String LocalName, final OrePrefixes orePrefix, final String prefix,
@@ -157,7 +156,6 @@ public class BaseOreComponent extends Item {
             this.COMPONENT_NAME = LocalName;
             this.ICON_NAME = iconName;
             this.orePrefixEnum = orePrefix;
-            this.orePrefix = orePrefix.getName();
             this.PREFIX = prefix;
             this.DISPLAY_NAME = DisplayName;
             this.HAS_OVERLAY = overlay;
@@ -174,7 +172,7 @@ public class BaseOreComponent extends Item {
         }
 
         public String getOrePrefix() {
-            return orePrefix;
+            return orePrefixEnum.getName();
         }
 
         public OrePrefixes getOrePrefixEnum() {

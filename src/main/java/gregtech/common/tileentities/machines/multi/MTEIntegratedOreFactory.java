@@ -306,8 +306,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         long totalLubricantToDrain = (long) effectiveParallel * 2L;
         while (totalLubricantToDrain > 0) {
             int tryDrain = (int) Math.min(totalLubricantToDrain, Integer.MAX_VALUE);
-            if (!depleteInput(
-                MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (tryDrain)))) {
+            if (!depleteInput(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, tryDrain))) {
                 int maxHatch = 0;
                 for (FluidStack sf : getStoredFluids()) {
                     if (sf != null
@@ -319,8 +318,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 }
                 if (maxHatch <= 0) break;
                 tryDrain = (int) Math.min(totalLubricantToDrain, maxHatch);
-                if (!depleteInput(
-                    MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, (int) (tryDrain))))
+                if (!depleteInput(MaterialLibAPI.getFluidStack(Materials.Lubricant, FluidShapes.fluidLiquid, tryDrain)))
                     break;
             }
             totalLubricantToDrain -= tryDrain;

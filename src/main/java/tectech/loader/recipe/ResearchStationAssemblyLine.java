@@ -168,9 +168,8 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get("wireGt16SuperconductorUMV", 64) },
             new FluidStack[] { MaterialLibAPI.getFluidStack(Materials.temporalFluid, FluidShapes.fluidMolten, 144_000),
                 MaterialLibAPI.getFluidStack(Materials.spatialFluid, FluidShapes.fluidMolten, 144_000),
-                MaterialLibAPI
-                    .getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, (int) (16 * STACKS)),
-                MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, (int) (16 * STACKS)), },
+                MaterialLibAPI.getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, 16 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, 16 * STACKS), },
             CustomItemList.Machine_Multi_EyeOfHarmony.get(1),
             400 * MINUTES,
             (int) TierEU.RECIPE_UMV);
@@ -3009,7 +3008,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                 GTOreDictUnificator.get("wireGt04SpaceTime", 16), CustomItemList.Machine_Multi_Transformer.get(1) },
             new FluidStack[] { MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 20 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.ExcitedDTSC, FluidShapes.fluidLiquid, 8000),
-                MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, (int) (20 * INGOTS)) },
+                MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, 20 * INGOTS) },
             CustomItemList.eM_dynamoWirelessMulti.get(1),
             30 * SECONDS,
             (int) TierEU.RECIPE_UMV);

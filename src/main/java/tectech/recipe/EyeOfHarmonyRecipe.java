@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gnu.trove.map.TMap;
@@ -181,7 +182,7 @@ public class EyeOfHarmonyRecipe {
 
         // If DeepDark then it should output all plasmas involved in making exotic catalyst.
         if (rocketTier == 9) {
-            for (com.ruling_0.materiallib.api.Material material : VALID_PLASMAS) {
+            for (Material material : VALID_PLASMAS) {
                 fluidStackLongArrayList
                     .add(new FluidStackLong(MaterialUtils.plasma(material, plasmaAmount), plasmaAmount));
             }
@@ -352,12 +353,12 @@ public class EyeOfHarmonyRecipe {
 
     private static final double[] ORE_MULTIPLIER = { PRIMARY_MULTIPLIER, SECONDARY_MULTIPLIER, TERTIARY_MULTIPLIER };
 
-    /// Accumulates output quantities keyed by [com.ruling_0.materiallib.api.Material].
+    /// Accumulates output quantities keyed by [Material].
     public static class HashMapHelper extends HashMap<Object, Double> {
 
         private static final long serialVersionUID = 2297018142561480614L;
 
-        void add(com.ruling_0.materiallib.api.Material material, double value) {
+        void add(Material material, double value) {
             if (material == null) return;
 
             if (this.containsKey(material)) {
@@ -371,8 +372,8 @@ public class EyeOfHarmonyRecipe {
 
     /// Adds `material`'s ore processing yield -- its direct smelting result, its electromagnetic separation
     /// extras and its byproducts -- to `outputMap`, each scaled by `mainMultiplier * probability`.
-    public static void processHelper(HashMapHelper outputMap, com.ruling_0.materiallib.api.Material material,
-        double mainMultiplier, double probability) {
+    public static void processHelper(HashMapHelper outputMap, Material material, double mainMultiplier,
+        double probability) {
         if (material == null) return;
         outputMap.add(
             MaterialUtils.directSmelting(material),
@@ -385,7 +386,7 @@ public class EyeOfHarmonyRecipe {
         if (MaterialUtils.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM))
             outputMap.add(Materials.Neodymium, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
 
-        List<com.ruling_0.materiallib.api.Material> byProducts = MaterialUtils.oreByProducts(material);
+        List<Material> byProducts = MaterialUtils.oreByProducts(material);
 
         if (byProducts.isEmpty()) {
             if (MaterialUtils.hasFlag(material, GTMaterialFlag.WASHING_MERCURY_99_PERCENT)) outputMap.add(
@@ -407,7 +408,7 @@ public class EyeOfHarmonyRecipe {
             .add(MaterialUtils.directSmelting(material), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
 
         int index = 0;
-        for (com.ruling_0.materiallib.api.Material byProductMaterial : byProducts) {
+        for (Material byProductMaterial : byProducts) {
             if (index < 3) outputMap.add(
                 MaterialUtils.directSmelting(byProductMaterial),
                 mainMultiplier * (ORE_MULTIPLIER[index] * 2) * probability);
@@ -435,7 +436,7 @@ public class EyeOfHarmonyRecipe {
         }
 
         for (int i = index; i < 3; i++) {
-            com.ruling_0.materiallib.api.Material byProductMaterial = GTUtility
+            Material byProductMaterial = GTUtility
                 .selectItemInList(i, MaterialUtils.macerateInto(material), byProducts);
             outputMap.add(
                 MaterialUtils.directSmelting(byProductMaterial),
@@ -448,7 +449,7 @@ public class EyeOfHarmonyRecipe {
     private static final double GTPP_SECONDARY_MULTIPLIER = (1.0 / 9.0);
 
     /// Whether `material` carries every shape a gtpp bonus byproduct needs.
-    private static boolean hasSolidForm(com.ruling_0.materiallib.api.Material material) {
+    private static boolean hasSolidForm(Material material) {
         return material.hasShape(Shapes.dust) && material.hasShape(BlockShapes.block)
             && material.hasShape(Shapes.dustTiny)
             && material.hasShape(Shapes.dustSmall);
@@ -456,16 +457,15 @@ public class EyeOfHarmonyRecipe {
 
     /// A breadth-first walk of `material`'s [GTMaterialProperties#COMPOSITION] tree, collecting every leaf
     /// (a material with no composition of its own).
-    private static ArrayList<com.ruling_0.materiallib.api.Material> compoundMaterialsRecursively(
-        com.ruling_0.materiallib.api.Material material) {
-        ArrayList<com.ruling_0.materiallib.api.Material> resultList = new ArrayList<>();
-        ArrayDeque<com.ruling_0.materiallib.api.Material> toCheck = new ArrayDeque<>();
+    private static ArrayList<Material> compoundMaterialsRecursively(Material material) {
+        ArrayList<Material> resultList = new ArrayList<>();
+        ArrayDeque<Material> toCheck = new ArrayDeque<>();
         toCheck.add(material);
 
         final int HARD_LIMIT = 1000;
         int processed = 0;
         while (!toCheck.isEmpty() && processed < HARD_LIMIT) {
-            com.ruling_0.materiallib.api.Material current = toCheck.remove();
+            Material current = toCheck.remove();
             List<MaterialRefStack> composition = current.getProperty(GTMaterialProperties.COMPOSITION);
             if (composition == null || composition.isEmpty()) {
                 resultList.add(current);
@@ -481,16 +481,16 @@ public class EyeOfHarmonyRecipe {
         return resultList;
     }
 
-    public static void processHelperGTpp(HashMapHelper outputMap, com.ruling_0.materiallib.api.Material material,
-        double mainMultiplier, double probability) {
+    public static void processHelperGTpp(HashMapHelper outputMap, Material material, double mainMultiplier,
+        double probability) {
         if (material == null) return;
         outputMap.add(material, 2 * mainMultiplier * probability);
 
-        com.ruling_0.materiallib.api.Material bonusA = null; // Ni
-        com.ruling_0.materiallib.api.Material bonusB = null; // Tin
+        Material bonusA = null; // Ni
+        Material bonusB = null; // Tin
 
         // Setup Bonuses
-        ArrayList<com.ruling_0.materiallib.api.Material> aMatComp = compoundMaterialsRecursively(material);
+        ArrayList<Material> aMatComp = compoundMaterialsRecursively(material);
 
         if (aMatComp.size() < 3) {
             while (aMatComp.size() < 3) {
@@ -498,8 +498,8 @@ public class EyeOfHarmonyRecipe {
             }
         }
 
-        final ArrayList<com.ruling_0.materiallib.api.Material> amJ = new ArrayList<>(2);
-        for (com.ruling_0.materiallib.api.Material g : aMatComp) {
+        final ArrayList<Material> amJ = new ArrayList<>(2);
+        for (Material g : aMatComp) {
             if (hasSolidForm(g)) {
                 amJ.add(g);
                 if (amJ.size() >= 2) break;
@@ -551,8 +551,8 @@ public class EyeOfHarmonyRecipe {
 
     /// Accumulates a vein material's dust yield. Only a gregtech-declared or werkstoff-origin material
     /// contributes.
-    public static void processHelperIfPossible(HashMapHelper outputMap,
-        @Nullable com.ruling_0.materiallib.api.Material material, double mainMultiplier, double probability) {
+    public static void processHelperIfPossible(HashMapHelper outputMap, @Nullable Material material,
+        double mainMultiplier, double probability) {
         if (material == null) return;
         if (LegacyNameDomain.contains(material) || material.getProperty(GTMaterialProperties.WERKSTOFF_IDS) != null) {
             processHelper(outputMap, material, mainMultiplier, probability);
@@ -596,7 +596,7 @@ public class EyeOfHarmonyRecipe {
         ArrayList<FluidStack> plasmaList = new ArrayList<>();
 
         for (Pair<Object, Long> pair : planetList) {
-            if (!(pair.getLeft() instanceof com.ruling_0.materiallib.api.Material left)) continue;
+            if (!(pair.getLeft() instanceof Material left)) continue;
             if (VALID_PLASMAS.contains(left)) {
                 plasmaList.add(MaterialUtils.plasma(left, 1));
             }
@@ -611,7 +611,7 @@ public class EyeOfHarmonyRecipe {
         for (Pair<Object, Long> pair : planetList) {
             final Object mat = pair.getLeft();
             final ItemStack dust;
-            if (mat instanceof com.ruling_0.materiallib.api.Material ml) dust = NaquadahRecipeOutputs
+            if (mat instanceof Material ml) dust = NaquadahRecipeOutputs
                 .convert(getUnificatedOreDictStack(GTOreDictUnificator.get(OrePrefixes.dust, ml, 1L)));
             else dust = null;
             if (dust != null) {
@@ -643,7 +643,7 @@ public class EyeOfHarmonyRecipe {
         return 3.85;
     }
 
-    private static final List<com.ruling_0.materiallib.api.Material> VALID_PLASMAS = Stream
+    private static final List<Material> VALID_PLASMAS = Stream
         .of(
             Materials.Helium,
             Materials.Iron,

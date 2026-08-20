@@ -36,8 +36,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(ItemList.IC2_Energium_Dust.get(9L))
             .itemOutputs(ItemList.IC2_EnergyCrystal.get(1L))
             .outputChances(10000)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.EnergeticAlloy, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.EnergeticAlloy, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(autoclaveRecipes);
@@ -46,8 +45,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(ItemList.IC2_Energium_Dust.get(9L))
             .itemOutputs(ItemList.IC2_EnergyCrystal.get(1L))
             .outputChances(10000)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.ConductiveIron, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.ConductiveIron, FluidShapes.fluidMolten, 4 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(autoclaveRecipes);
@@ -125,8 +123,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(certusQuartzSeed)
             .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 10))
             .outputChances(10000)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, (int) (1 * QUARTER_INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, QUARTER_INGOTS))
             .duration(25 * SECONDS)
             .eut(24)
             .addTo(autoclaveRecipes);
@@ -135,8 +132,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(netherQuartzSeed)
             .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 11))
             .outputChances(10000)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, (int) (1 * QUARTER_INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, QUARTER_INGOTS))
             .duration(25 * SECONDS)
             .eut(24)
             .addTo(autoclaveRecipes);
@@ -145,8 +141,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(fluixSeed)
             .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 12))
             .outputChances(10000)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, (int) (1 * QUARTER_INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, QUARTER_INGOTS))
             .duration(25 * SECONDS)
             .eut(24)
             .addTo(autoclaveRecipes);
@@ -204,8 +199,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(ItemList.QuantumStar.get(1L)))
             .itemOutputs(ItemList.Gravistar.get(1L))
             .outputChances(10000)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(24 * SECONDS)
             .eut((int) TierEU.RECIPE_IV)
             .addTo(autoclaveRecipes);
@@ -214,7 +208,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(ItemList.Gravistar.get(16L)))
             .itemOutputs(ItemList.NuclearStar.get(1L))
             .outputChances(10000)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(autoclaveRecipes);
@@ -222,7 +216,7 @@ public class AutoclaveRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get("gemNetherStar", 64))
             .itemOutputs(ItemList.NuclearStar.get(1L))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidPlasma, (int) (4 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidPlasma, 4 * INGOTS))
             .duration(20 * TICKS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(autoclaveRecipes);
@@ -249,8 +243,7 @@ public class AutoclaveRecipes implements Runnable {
             .itemInputs(MaterialLibAPI.getStack(Materials.SiliconDioxide, Shapes.dust, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Quartzite, Shapes.gem, 1))
             .outputChances(10000)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, (int) (1 * QUARTER_INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, QUARTER_INGOTS))
             .duration(50 * SECONDS)
             .eut(24)
             .addTo(autoclaveRecipes);

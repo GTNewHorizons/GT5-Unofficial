@@ -12,9 +12,6 @@ import gregtech.api.enums.TierEU;
 /// pipes, applied as [PipeProperties] values through [MaterialLibAPI#editMaterial]. The values are exact
 /// literals, not derived: each row pins the stats its material's pipes have always had.
 ///
-/// Every target key comes off a live [Material] field, so [MaterialLibAPI#editMaterial]'s silently-skipped
-/// edit -- naming a material that does not exist -- cannot arise here.
-///
 /// Only stat-bearing membership lives here. Frame and sheetmetal membership carries no stats, so it is
 /// declared on each material's own builder in [Materials].
 ///

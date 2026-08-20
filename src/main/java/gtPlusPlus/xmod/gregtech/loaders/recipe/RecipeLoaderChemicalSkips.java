@@ -149,13 +149,12 @@ public class RecipeLoaderChemicalSkips {
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 16_000),
                 MaterialLibAPI.getFluidStack(Materials.Fluorine, FluidShapes.fluidGas, 16_000))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, (int) (4 * STACKS)),
-                MaterialLibAPI.getFluidStack(Materials.PolyvinylChloride, FluidShapes.fluidMolten, (int) (2 * STACKS)),
-                MaterialLibAPI.getFluidStack(Materials.Polystyrene, FluidShapes.fluidMolten, (int) (1 * STACKS)),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, (int) (2 * STACKS)),
-                MaterialLibAPI.getFluidStack(Materials.Epoxid, FluidShapes.fluidMolten, (int) (1 * STACKS)),
-                MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, (int) (1 * STACKS)))
+                MaterialLibAPI.getFluidStack(Materials.Plastic, FluidShapes.fluidMolten, 4 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.PolyvinylChloride, FluidShapes.fluidMolten, 2 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.Polystyrene, FluidShapes.fluidMolten, STACKS),
+                MaterialLibAPI.getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, 2 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.Epoxid, FluidShapes.fluidMolten, STACKS),
+                MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, STACKS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(QFT_CATALYST, GregtechItemList.PlasticPolymerCatalyst.get(0))
@@ -169,12 +168,10 @@ public class RecipeLoaderChemicalSkips {
                 MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 16_000),
                 MaterialLibAPI.getFluidStack(Materials.Chlorine, FluidShapes.fluidGas, 16_000))
             .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Silicone, FluidShapes.fluidMolten, (int) (1 * STACKS)),
-                MaterialLibAPI
-                    .getFluidStack(Materials.StyreneButadieneRubber, FluidShapes.fluidMolten, (int) (1 * STACKS)),
-                MaterialLibAPI
-                    .getFluidStack(Materials.PolyphenyleneSulfide, FluidShapes.fluidMolten, (int) (2 * STACKS)),
-                MaterialLibAPI.getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, (int) (4 * STACKS)))
+                MaterialLibAPI.getFluidStack(Materials.Silicone, FluidShapes.fluidMolten, STACKS),
+                MaterialLibAPI.getFluidStack(Materials.StyreneButadieneRubber, FluidShapes.fluidMolten, STACKS),
+                MaterialLibAPI.getFluidStack(Materials.PolyphenyleneSulfide, FluidShapes.fluidMolten, 2 * STACKS),
+                MaterialLibAPI.getFluidStack(Materials.Rubber, FluidShapes.fluidMolten, 4 * STACKS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(QFT_CATALYST, GregtechItemList.RubberPolymerCatalyst.get(0))
@@ -194,7 +191,7 @@ public class RecipeLoaderChemicalSkips {
                 MaterialUtils.anyFluid(Materials.EthylCyanoacrylateSuperGlue, 32_000),
                 MaterialLibAPI.getFluidStack(Materials.AdvancedGlue, FluidShapes.fluidLiquid, 16_000),
                 MaterialUtils.anyFluid(Materials.Indalloy140, 1 * STACKS),
-                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (2 * STACKS)))
+                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 2 * STACKS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .metadata(QFT_CATALYST, GregtechItemList.AdhesionPromoterCatalyst.get(0))
@@ -301,7 +298,7 @@ public class RecipeLoaderChemicalSkips {
                     getModItem(EtFuturumRequiem.ID, "ancient_debris", 1))
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.netherair, FluidShapes.fluidLiquid, 64_000),
-                    MaterialLibAPI.getFluidStack(Materials.HellishMetal, FluidShapes.fluidMolten, (int) (8 * INGOTS)),
+                    MaterialLibAPI.getFluidStack(Materials.HellishMetal, FluidShapes.fluidMolten, 8 * INGOTS),
                     GTUtility.getLava(256_000))
                 .itemOutputs(
                     getModItem(EtFuturumRequiem.ID, "netherite_scrap", 16),
@@ -325,7 +322,7 @@ public class RecipeLoaderChemicalSkips {
             .itemOutputs(MaterialLibAPI.getStack(Materials.prismaticnaquadah, Shapes.dust, 16))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.prismaticacid, FluidShapes.fluidLiquid, 32_000),
-                MaterialLibAPI.getFluidStack(Materials.Strontium, FluidShapes.fluidMolten, (int) (144 * 16)))
+                MaterialLibAPI.getFluidStack(Materials.Strontium, FluidShapes.fluidMolten, 144 * 16))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .metadata(QFT_CATALYST, GregtechItemList.CrystalColorizationCatalyst.get(0))
@@ -356,9 +353,9 @@ public class RecipeLoaderChemicalSkips {
                 MaterialLibAPI.getFluidStack(Materials.Nitrogen, FluidShapes.fluidGas, 16_000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Xenoxene, FluidShapes.fluidLiquid, 16_000),
-                MaterialLibAPI.getFluidStack(Materials.RadoxPoly, FluidShapes.fluidMolten, (int) (1 * STACKS)),
+                MaterialLibAPI.getFluidStack(Materials.RadoxPoly, FluidShapes.fluidMolten, STACKS),
                 MaterialLibAPI.getFluidStack(Materials.HeavyRadox, FluidShapes.fluidLiquid, 16_000),
-                MaterialLibAPI.getFluidStack(Materials.Kevlar, FluidShapes.fluidMolten, (int) (1 * STACKS)))
+                MaterialLibAPI.getFluidStack(Materials.Kevlar, FluidShapes.fluidMolten, STACKS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .metadata(QFT_CATALYST, GregtechItemList.UltimatePlasticCatalyst.get(0))
@@ -375,9 +372,8 @@ public class RecipeLoaderChemicalSkips {
                     MaterialLibAPI.getFluidStack(Materials.Hydrogen, FluidShapes.fluidGas, 16_000))
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(Materials.PolyurethaneResin, FluidShapes.fluidLiquid, 32_000),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.LiquidCrystalKevlar, FluidShapes.fluidLiquid, (int) (32 * INGOTS)),
-                    MaterialLibAPI.getFluidStack(Materials.Kevlar, FluidShapes.fluidMolten, (int) (1 * STACKS)))
+                    MaterialLibAPI.getFluidStack(Materials.LiquidCrystalKevlar, FluidShapes.fluidLiquid, 32 * INGOTS),
+                    MaterialLibAPI.getFluidStack(Materials.Kevlar, FluidShapes.fluidMolten, STACKS))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
                 .metadata(QFT_CATALYST, GregtechItemList.UltimatePlasticCatalyst.get(0))
@@ -391,10 +387,10 @@ public class RecipeLoaderChemicalSkips {
                     GTBees.combs.getStackForType(CombType.OSMIUM, 32),
                     GTBees.combs.getStackForType(CombType.IRIDIUM, 32))
                 .fluidOutputs(
-                    MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, (int) (4 * STACKS)),
-                    MaterialLibAPI.getFluidStack(Materials.Palladium, FluidShapes.fluidMolten, (int) (4 * STACKS)),
-                    MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, (int) (4 * STACKS)),
-                    MaterialLibAPI.getFluidStack(Materials.Platinum, FluidShapes.fluidMolten, (int) (4 * STACKS)))
+                    MaterialLibAPI.getFluidStack(Materials.Osmium, FluidShapes.fluidMolten, 4 * STACKS),
+                    MaterialLibAPI.getFluidStack(Materials.Palladium, FluidShapes.fluidMolten, 4 * STACKS),
+                    MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 4 * STACKS),
+                    MaterialLibAPI.getFluidStack(Materials.Platinum, FluidShapes.fluidMolten, 4 * STACKS))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_UV)
                 .metadata(QFT_CATALYST, GregtechItemList.PlatinumGroupCatalyst.get(0))
@@ -409,9 +405,8 @@ public class RecipeLoaderChemicalSkips {
             .itemOutputs(biocells)
             .fluidOutputs(
                 MaterialUtils.anyFluid(Materials.MutatedLivingSolder, 2 * STACKS),
-                MaterialLibAPI
-                    .getFluidStack(Materials.BiohMediumSterilized, FluidShapes.fluidLiquid, (int) (1000 * 256)),
-                MaterialLibAPI.getFluidStack(Materials.BioMediumRaw, FluidShapes.fluidLiquid, (int) (1000 * 512)))
+                MaterialLibAPI.getFluidStack(Materials.BiohMediumSterilized, FluidShapes.fluidLiquid, 1000 * 256),
+                MaterialLibAPI.getFluidStack(Materials.BioMediumRaw, FluidShapes.fluidLiquid, 1000 * 512))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .metadata(QFT_CATALYST, GregtechItemList.BiologicalIntelligenceCatalyst.get(0))
@@ -465,7 +460,7 @@ public class RecipeLoaderChemicalSkips {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Xenon), 4 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Yttrium, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Yttrium, FluidShapes.fluidMolten, 4 * INGOTS))
             .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Neptunium), 4 * INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_UEV)
@@ -475,7 +470,7 @@ public class RecipeLoaderChemicalSkips {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Force), 4 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Rubidium, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Rubidium, FluidShapes.fluidMolten, 4 * INGOTS))
             .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Fermium), 4 * INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_UEV)
@@ -615,7 +610,7 @@ public class RecipeLoaderChemicalSkips {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 1))
             .circuit(10)
             .itemOutputs(GregtechItemList.AdvancedNaquadahCatalyst.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, (int) (1 * STACKS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, STACKS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(assemblerRecipes);
@@ -626,7 +621,7 @@ public class RecipeLoaderChemicalSkips {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 1))
             .circuit(10)
             .itemOutputs(GregtechItemList.RawIntelligenceCatalyst.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, (int) (1 * STACKS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, STACKS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(assemblerRecipes);
@@ -637,7 +632,7 @@ public class RecipeLoaderChemicalSkips {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 1))
             .circuit(10)
             .itemOutputs(GregtechItemList.UltimatePlasticCatalyst.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, (int) (10 * STACKS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, 10 * STACKS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);
@@ -648,7 +643,7 @@ public class RecipeLoaderChemicalSkips {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 1))
             .circuit(10)
             .itemOutputs(GregtechItemList.BiologicalIntelligenceCatalyst.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, (int) (10 * STACKS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, 10 * STACKS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);
@@ -660,7 +655,7 @@ public class RecipeLoaderChemicalSkips {
                 ItemList.Timepiece.get(1))
             .circuit(10)
             .itemOutputs(GregtechItemList.TemporalHarmonyCatalyst.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.DarkIron, FluidShapes.fluidMolten, (int) (10 * STACKS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.DarkIron, FluidShapes.fluidMolten, 10 * STACKS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UXV)
             .addTo(assemblerRecipes);
@@ -673,7 +668,7 @@ public class RecipeLoaderChemicalSkips {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 1))
             .circuit(10)
             .itemOutputs(GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, (int) (10 * STACKS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, 10 * STACKS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);
@@ -690,8 +685,7 @@ public class RecipeLoaderChemicalSkips {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 4), ItemList.Emitter_UV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 8),
                 GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 2) },
-            new FluidStack[] {
-                MaterialLibAPI.getFluidStack(Materials.Thulium, FluidShapes.fluidMolten, (int) (144 * 10)),
+            new FluidStack[] { MaterialLibAPI.getFluidStack(Materials.Thulium, FluidShapes.fluidMolten, 144 * 10),
                 MaterialLibAPI.getFluidStack(Materials.ExcitedDTCC, FluidShapes.fluidLiquid, 5_000),
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Neptunium), 500),
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Fermium), 500) },
@@ -710,8 +704,7 @@ public class RecipeLoaderChemicalSkips {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUEV, 8),
                 GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 4),
                 ItemList.StableAdhesive.get(4) },
-            new FluidStack[] {
-                MaterialLibAPI.getFluidStack(Materials.Thulium, FluidShapes.fluidMolten, (int) (144 * 12)),
+            new FluidStack[] { MaterialLibAPI.getFluidStack(Materials.Thulium, FluidShapes.fluidMolten, 144 * 12),
                 MaterialLibAPI.getFluidStack(Materials.ExcitedDTPC, FluidShapes.fluidLiquid, 5_000),
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Neptunium), 2_500),
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Fermium), 2_500) },
@@ -730,8 +723,7 @@ public class RecipeLoaderChemicalSkips {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUIV, 8),
                 GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 8),
                 ItemList.SuperconductorComposite.get(4) },
-            new FluidStack[] {
-                MaterialLibAPI.getFluidStack(Materials.Thulium, FluidShapes.fluidMolten, (int) (144 * 15)),
+            new FluidStack[] { MaterialLibAPI.getFluidStack(Materials.Thulium, FluidShapes.fluidMolten, 144 * 15),
                 MaterialLibAPI.getFluidStack(Materials.ExcitedDTRC, FluidShapes.fluidLiquid, 5_000),
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Neptunium), 10_000),
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Fermium), 10_000) },
@@ -749,8 +741,7 @@ public class RecipeLoaderChemicalSkips {
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 8),
                 GregtechItemList.Laser_Lens_Special.get(1), new ItemStack(advancedRadiationProtectionPlate, 16),
                 ItemList.NaquadriaSupersolid.get(4) },
-            new FluidStack[] {
-                MaterialLibAPI.getFluidStack(Materials.Thulium, FluidShapes.fluidMolten, (int) (20 * INGOTS)),
+            new FluidStack[] { MaterialLibAPI.getFluidStack(Materials.Thulium, FluidShapes.fluidMolten, 20 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.ExcitedDTEC, FluidShapes.fluidLiquid, 5_000),
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Neptunium), 20_000),
                 new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Fermium), 20_000) },

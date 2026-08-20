@@ -184,8 +184,7 @@ public class FuelRecipeLoader {
                 MaterialLibAPI.getStack(Materials.Tritanium, Shapes.dust, 32))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.NaquadahBasedLiquidFuelMkV, FluidShapes.fluidLiquid, 2_000),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, (int) (2 * INGOTS + 1 * HALF_INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, 2 * INGOTS + 1 * HALF_INGOTS))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.NaquadahBasedLiquidFuelMkVI, FluidShapes.fluidLiquid, 750))
             .duration(12 * SECONDS)
@@ -200,8 +199,7 @@ public class FuelRecipeLoader {
                 MaterialLibAPI.getStack(Materials.Tritanium, Shapes.dust, 48))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.NaquadahBasedLiquidFuelMkV, FluidShapes.fluidLiquid, 2_000),
-                MaterialLibAPI
-                    .getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, (int) (2 * INGOTS + 1 * HALF_INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, 2 * INGOTS + 1 * HALF_INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.RawStarMatter, FluidShapes.fluidLiquid, 60))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.NaquadahBasedLiquidFuelMkVI, FluidShapes.fluidLiquid, 1_250))

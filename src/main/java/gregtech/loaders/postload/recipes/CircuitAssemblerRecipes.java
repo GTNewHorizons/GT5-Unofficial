@@ -152,7 +152,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Copper, Shapes.wireFine, 2),
                 MaterialLibAPI.getStack(Materials.AnnealedCopper, Shapes.stickLong, 2))
             .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, 0))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, 4 * INGOTS))
             .duration(10 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(circuitAssemblerRecipes);
@@ -166,26 +166,25 @@ public class CircuitAssemblerRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Copper, Shapes.wireFine, 2),
                 MaterialLibAPI.getStack(Materials.CastIron, Shapes.stickLong, 2))
             .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, 3))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, 4 * INGOTS))
             .duration(10 * SECONDS)
             .eut((int) TierEU.RECIPE_LV)
             .addTo(circuitAssemblerRecipes);
 
-        ItemStack[] rodMaterials = new ItemStack[] {
-            MaterialLibAPI.getStack(Materials.Copper, Shapes.stickLong, (int) (2L)),
-            MaterialLibAPI.getStack(Materials.Tin, Shapes.stickLong, (int) (2L)),
-            MaterialLibAPI.getStack(Materials.Bronze, Shapes.stickLong, (int) (2L)),
-            MaterialLibAPI.getStack(Materials.Iron, Shapes.stickLong, (int) (2L)),
-            MaterialLibAPI.getStack(Materials.Gold, Shapes.stickLong, (int) (2L)),
-            MaterialLibAPI.getStack(Materials.Diamond, Shapes.stickLong, (int) (2L)),
+        ItemStack[] rodMaterials = new ItemStack[] { MaterialLibAPI.getStack(Materials.Copper, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Tin, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Bronze, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Iron, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Gold, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Diamond, Shapes.stickLong, 2),
             getModItem(NewHorizonsCoreMod.ID, "LongObsidianRod", 2L, 0),
-            MaterialLibAPI.getStack(Materials.Blaze, Shapes.stickLong, (int) (2L)),
-            MaterialLibAPI.getStack(Materials.Rubber, Shapes.stickLong, (int) (2L)),
-            MaterialLibAPI.getStack(Materials.Emerald, Shapes.stickLong, (int) (2L)),
-            MaterialLibAPI.getStack(Materials.Apatite, Shapes.stickLong, (int) (2L)),
-            MaterialLibAPI.getStack(Materials.Lapis, Shapes.stickLong, (int) (2L)),
-            MaterialLibAPI.getStack(Materials.EnderEye, Shapes.stickLong, (int) (2L)),
-            MaterialLibAPI.getStack(Materials.Uranium, Shapes.stickLong, (int) (2L)), };
+            MaterialLibAPI.getStack(Materials.Blaze, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Rubber, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Emerald, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Apatite, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Lapis, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.EnderEye, Shapes.stickLong, 2),
+            MaterialLibAPI.getStack(Materials.Uranium, Shapes.stickLong, 2), };
 
         for (int metaid = 0; metaid < rodMaterials.length; metaid++) {
             GTValues.RA.stdBuilder()
@@ -195,7 +194,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                     MaterialLibAPI.getStack(Materials.Copper, Shapes.wireFine, 2),
                     rodMaterials[metaid])
                 .itemOutputs(getModItem(Forestry.ID, "thermionicTubes", 4L, metaid))
-                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, 4 * INGOTS))
                 .duration(10 * SECONDS)
                 .eut((int) TierEU.RECIPE_LV)
                 .addTo(circuitAssemblerRecipes);

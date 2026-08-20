@@ -238,8 +238,7 @@ public class FormingPressRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.MARM200Steel, Shapes.plate, 8),
                 MaterialLibAPI.getStack(Materials.AdemicSteel, Shapes.ring, 2),
                 MaterialLibAPI.getStack(Materials.TungstenSteel, Shapes.screw, 16))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (10 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 10 * INGOTS))
             .itemOutputs(ItemList.T1Sawblade.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -288,8 +287,7 @@ public class FormingPressRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Netherite, Shapes.stick, 12),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Netherite, 1))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 9))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.UnformedHexanite, FluidShapes.fluidLiquid, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.UnformedHexanite, FluidShapes.fluidLiquid, 8 * INGOTS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(formingPressRecipes);
@@ -300,7 +298,7 @@ public class FormingPressRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials.Tairitsu, TEBlockShapes.frameGt, 1),
                 MaterialLibAPI.getStack(Materials.Churitsu, Shapes.itemCasing, 2))
             .itemOutputs(ItemList.PeaceEnforcementCasing.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Shijima, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Shijima, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(formingPressRecipes);
@@ -311,7 +309,7 @@ public class FormingPressRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Shijima, 1),
                 MaterialLibAPI.getStack(Materials.Churitsu, Shapes.itemCasing, 2))
             .itemOutputs(ItemList.ConflictInducementCasing.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Tairitsu, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Tairitsu, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(formingPressRecipes);

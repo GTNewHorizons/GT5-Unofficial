@@ -112,7 +112,7 @@ public class MTELargerTurbineSCSteamLegacy extends MTELargerTurbineBaseLegacy {
                 MaterialLibAPI.getFluidStack(
                     Materials.DenseSuperheatedSteam,
                     FluidShapes.fluidGas,
-                    (int) ((long) steamFlowForNextSteam)));
+                    (int) (steamFlowForNextSteam)));
         } else {
             addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));
 

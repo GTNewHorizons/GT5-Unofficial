@@ -14,11 +14,11 @@ import com.ruling_0.materiallib.api.Property;
 import gregtech.api.enums.Element;
 
 /// Sweeps every GregTech material declaration once at boot and reports what it finds as a single aggregated
-/// error, rather than letting each problem surface later at whichever consumer touches it first.
+/// error.
 ///
-/// Checks the invariants the compiler cannot see: a [MaterialRef] whose target is no longer registered (the
-/// field stays null and every reference to it throws on resolve), a composition whose amounts sum to zero, an
-/// unknown [Element] name, a zero density divider, and cycles in the composition graph.
+/// Checks the invariants the compiler cannot see: a [MaterialRef] whose target is no longer registered, a
+/// composition whose amounts sum to zero, an unknown [Element] name, a zero density divider, and cycles in the
+/// composition graph.
 public final class MaterialDeclarationValidator {
 
     private static final int MAX_REPORTED = 20;

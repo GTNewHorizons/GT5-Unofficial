@@ -11,8 +11,7 @@ import com.ruling_0.materiallib.api.Property;
 /// registration order across mods is unspecified.
 ///
 /// The gtPlusPlus-originated (`GTPP_*`) and bartworks-originated (`WERKSTOFF_*`) groups are each decomposed
-/// into individual keys rather than one composite property, so a reader needing a single value does not depend
-/// on the whole record shape. [#GTPP_STATE] is the "this material carries gtPlusPlus data" signal and
+/// into individual keys. [#GTPP_STATE] is the "this material carries gtPlusPlus data" signal and
 /// [#WERKSTOFF_IDS] the bartworks equivalent; both are consulted directly by shape gating and the ore
 /// adapters to tell the three material origins apart.
 public class GTMaterialProperties {

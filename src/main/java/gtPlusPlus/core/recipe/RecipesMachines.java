@@ -46,7 +46,7 @@ public class RecipesMachines {
                 ItemList.Hull_IV.get(1),
                 Circuits.ZPM.get(2))
             .itemOutputs(GregtechItemList.Gregtech_Computer_Cube.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Tantalum, FluidShapes.fluidMolten, (int) (16 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Tantalum, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(3 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -60,7 +60,7 @@ public class RecipesMachines {
                 Circuits.LV.get(2),
                 Circuits.MV.get(2))
             .itemOutputs(new ItemStack(ModBlocks.blockCircuitProgrammer))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Iron, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Iron, FluidShapes.fluidMolten, 4 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -73,7 +73,7 @@ public class RecipesMachines {
                 MaterialLibAPI.getStack(Materials.Lead, Shapes.plateDense, 9),
                 new ItemStack(Blocks.chest))
             .itemOutputs(new ItemStack(ModBlocks.blockDecayablesChest))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Lead, FluidShapes.fluidMolten, (int) (16 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Lead, FluidShapes.fluidMolten, 16 * INGOTS))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(assemblerRecipes);

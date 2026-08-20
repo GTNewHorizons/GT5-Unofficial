@@ -17,7 +17,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -36,15 +35,12 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        {
-            Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-            if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
-                GTModHandler.addCraftingRecipe(
-                    GTOreDictUnificator.get(OrePrefixes.spring, material, 1L),
-                    GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-                    new Object[] { " s ", "fSx", " S ", 'S',
-                        MaterialParts.craftIngredient(OrePrefixes.stickLong, material) });
-            }
+        if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
+            GTModHandler.addCraftingRecipe(
+                GTOreDictUnificator.get(OrePrefixes.spring, material, 1L),
+                GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                new Object[] { " s ", "fSx", " S ", 'S',
+                    MaterialParts.craftIngredient(OrePrefixes.stickLong, material) });
         }
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
 
@@ -91,7 +87,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                                 1,
                                 Math.min(
                                     250,
-                                    ((int) Math.max(MaterialUtils.mass(material), 1)) * calculateRecipeEU(material, 4)
+                                    ((int) Math.max(MaterialUtils.mass(material), 1L)) * calculateRecipeEU(material, 4)
                                         / 1280)))))
                     .duration(((int) Math.max(MaterialUtils.mass(material), 1L)) * TICKS)
                     .eut(calculateRecipeEU(material, 4))
@@ -114,9 +110,8 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     .addTo(cutterRecipes);
             }
 
-            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))) {
-                Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-                if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
+            if (MaterialUtils.unifiable(material)) {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stickLong, material, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
@@ -144,9 +139,8 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                 }
             }
 
-            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))) {
-                Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-                if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
+            if (MaterialUtils.unifiable(material)) {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stickLong, material, 1L),
                         GTModHandler.RecipeBits.BITS_STD,

@@ -23,11 +23,9 @@ import gregtech.api.util.GTOreDictUnificator;
 /// Crafting-table dust-size conversions, the four packager dust/dustSmall/dustTiny conversions, and the
 /// dust -> ingot furnace/alloy-smelter/blast-furnace recipe, for every material in [#ELIGIBLE].
 ///
-/// [#run] is called from `CompatHandler#startLoadingGregAPIBasedRecipes`. The late dispatch is deliberate: several of
-/// these materials' stacks only resolve once the rest of gtPlusPlus's postInit has
-/// run, so dispatching any earlier -- MaterialLib's own postInit, or a `ShapeConsumerSupport` shape consumer
-/// -- silently drops or misresolves recipes. This is a plain static pass rather than a
-/// [gregtech.api.interfaces.IOreRecipeRegistrator] for that reason. See [#stackOf] for how a stack resolves.
+/// [#run] is called from `CompatHandler#startLoadingGregAPIBasedRecipes`. The late dispatch is deliberate:
+/// several of these materials' stacks only resolve once the rest of gtPlusPlus's postInit has run. See
+/// [#stackOf] for how a stack resolves.
 public class ProcessingDustGeneration {
 
     private ProcessingDustGeneration() {}
@@ -184,9 +182,8 @@ public class ProcessingDustGeneration {
     }
 
     /// A material's stack for `prefix`: the MaterialLib-backed one when the material generates that shape,
-    /// falling back to the ore dictionary's unification target otherwise. [GTOreDictUnificator#get] alone is
-    /// not enough -- a material with no legacy sub-id never enters the unificator's generated-item pass, so
-    /// for those it keeps returning a legacy item even after the shape exists.
+    /// falling back to the ore dictionary's unification target otherwise. A material with no legacy sub-id
+    /// never enters the unificator's generated-item pass.
     public static ItemStack stackOf(OrePrefixes prefix, Material material, long amount) {
         ItemStack cutover = MaterialParts.stack(prefix, material, amount);
         return cutover != null ? cutover : GTOreDictUnificator.get(prefix, material, amount);

@@ -14,6 +14,7 @@ import static gtnhlanth.util.LanthanidesRecipeOutputs.convertDecomposition;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
@@ -121,7 +122,7 @@ public class GregtechSimpleWasher {
         ItemStack dustClean;
         ItemStack dustDirty;
         ItemStack dustPure;
-        for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
+        for (Material ml : MaterialLibAPI.getMaterials()) {
             if (!LegacyNameDomain.contains(ml)) {
                 continue;
             }
@@ -143,7 +144,7 @@ public class GregtechSimpleWasher {
             addSimpleWashRecipe(dustPure, dustClean);
         }
 
-        for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
+        for (Material ml : MaterialLibAPI.getMaterials()) {
             if (ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) {
                 continue;
             }
@@ -154,7 +155,7 @@ public class GregtechSimpleWasher {
             addSimpleWashRecipe(dustPure, dustClean);
         }
 
-        for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
+        for (Material ml : MaterialLibAPI.getMaterials()) {
             if (ml.getProperty(GTMaterialProperties.GTPP_STATE) == null) {
                 continue;
             }
@@ -175,7 +176,7 @@ public class GregtechSimpleWasher {
     }
 
     /// The `prefix` part of `material` when the werkstoff system generated that prefix, otherwise null.
-    private static ItemStack werkstoffStack(com.ruling_0.materiallib.api.Material material, OrePrefixes prefix) {
+    private static ItemStack werkstoffStack(Material material, OrePrefixes prefix) {
         return LegacyWerkstoffIndex.generatesPrefix(material, prefix) ? MaterialParts.stack(prefix, material, 1L)
             : null;
     }
@@ -188,7 +189,7 @@ public class GregtechSimpleWasher {
         // Generate Recipe Map for the Dust Washer.
         ItemStack crushedClean;
         ItemStack crushedDirty;
-        for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
+        for (Material ml : MaterialLibAPI.getMaterials()) {
             if (!LegacyNameDomain.contains(ml)) {
                 continue;
             }
@@ -200,7 +201,7 @@ public class GregtechSimpleWasher {
             addSimpleWashRecipe(crushedDirty, crushedClean);
         }
 
-        for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
+        for (Material ml : MaterialLibAPI.getMaterials()) {
             if (ml.getProperty(GTMaterialProperties.WERKSTOFF_IDS) == null) {
                 continue;
             }
@@ -209,7 +210,7 @@ public class GregtechSimpleWasher {
             addSimpleWashRecipe(crushedDirty, crushedClean);
         }
 
-        for (com.ruling_0.materiallib.api.Material ml : MaterialLibAPI.getMaterials()) {
+        for (Material ml : MaterialLibAPI.getMaterials()) {
             if (ml.getProperty(GTMaterialProperties.GTPP_STATE) == null) {
                 continue;
             }

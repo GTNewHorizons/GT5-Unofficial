@@ -19,7 +19,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -39,8 +38,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
         {
-            Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-            if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
+            if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.springSmall, material, 1L),
                     GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
@@ -136,9 +134,8 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(cutterRecipes);
             }
 
-            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))) {
-                Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-                if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
+            if (MaterialUtils.unifiable(material)) {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.stick, material, 2L),
                         GTModHandler.RecipeBits.BITS_STD,

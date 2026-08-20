@@ -85,8 +85,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.TantalumCarbide, Shapes.gearGt, 8))
             .circuit(18)
             .itemOutputs(GregtechItemList.Hatch_Turbine_Rotor.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.StainlessSteel, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.StainlessSteel, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -99,7 +98,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.Inconel625, Shapes.screw, 8))
             .circuit(18)
             .itemOutputs(GregtechItemList.Casing_Turbine_LP.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Aluminium, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Aluminium, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -114,7 +113,7 @@ public class RecipesMachinesCustom {
                 Circuits.EV.get(8))
             .circuit(18)
             .itemOutputs(ItemList.SteamTurbineXL.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -127,7 +126,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.Inconel625, Shapes.screw, 8))
             .circuit(18)
             .itemOutputs(GregtechItemList.Casing_Turbine_Gas.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -142,7 +141,7 @@ public class RecipesMachinesCustom {
                 Circuits.LuV.get(8))
             .circuit(18)
             .itemOutputs(ItemList.GasTurbineXL.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chrome, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Chrome, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -155,8 +154,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.screw, 8))
             .circuit(18)
             .itemOutputs(GregtechItemList.Casing_Turbine_HP.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.StainlessSteel, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.StainlessSteel, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -171,8 +169,7 @@ public class RecipesMachinesCustom {
                 Circuits.IV.get(8))
             .circuit(18)
             .itemOutputs(ItemList.HPSteamTurbineXL.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.TungstenSteel, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.TungstenSteel, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -185,8 +182,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.Zeron100, Shapes.screw, 8))
             .circuit(18)
             .itemOutputs(GregtechItemList.Casing_Turbine_Plasma.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.TungstenSteel, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.TungstenSteel, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -201,7 +197,7 @@ public class RecipesMachinesCustom {
                 Circuits.ZPM.get(8))
             .circuit(18)
             .itemOutputs(ItemList.PlasmaTurbineXL.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Iridium, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -214,8 +210,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.Lumiium, Shapes.screw, 8))
             .circuit(18)
             .itemOutputs(GregtechItemList.Casing_Turbine_SC.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.AdamantiumAlloy, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.AdamantiumAlloy, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -230,7 +225,7 @@ public class RecipesMachinesCustom {
                 Circuits.ZPM.get(8))
             .circuit(18)
             .itemOutputs(ItemList.SCSteamTurbineXL.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hikarium, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Hikarium, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -302,7 +297,7 @@ public class RecipesMachinesCustom {
                 Circuits.HV.get(4))
             .circuit(17)
             .itemOutputs(GregtechItemList.Solar_Tower_Reflector.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, 4 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -368,7 +363,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.SolderingAlloy, Shapes.wireFine, 16))
             .circuit(15)
             .itemOutputs(GregtechItemList.Bus_Catalysts.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Bronze, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Bronze, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -822,8 +817,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plate, 16))
             .circuit(7)
             .itemOutputs(GregtechItemList.Casing_IsaMill_Gearbox.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.TungstenSteel, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.TungstenSteel, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -837,7 +831,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.Zeron100, Shapes.screw, 8))
             .circuit(7)
             .itemOutputs(GregtechItemList.Casing_IsaMill_Casing.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, 4 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -852,7 +846,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.HSSE, Shapes.screw, 8))
             .circuit(7)
             .itemOutputs(GregtechItemList.Casing_IsaMill_Pipe.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Aluminium, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Aluminium, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(8 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -889,8 +883,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.WatertightSteel, Shapes.rotor, 4))
             .circuit(7)
             .itemOutputs(GregtechItemList.Casing_Flotation_Cell.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.StainlessSteel, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.StainlessSteel, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -905,7 +898,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.SolderingAlloy, Shapes.wireFine, 16))
             .circuit(7)
             .itemOutputs(GregtechItemList.Bus_Milling_Balls.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Tungsten, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Tungsten, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(4 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -947,7 +940,7 @@ public class RecipesMachinesCustom {
             .fluidInputs(
                 MaterialUtils.anyFluid(Materials.IncoloyDS, 16 * INGOTS),
                 MaterialUtils.anyFluid(Materials.TantalumCarbide, 32 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, (int) (32 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Titanium, FluidShapes.fluidMolten, 32 * INGOTS))
             .itemOutputs(GregtechItemList.Controller_Sparge_Tower.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(60 * SECONDS)
@@ -963,8 +956,7 @@ public class RecipesMachinesCustom {
                 MaterialLibAPI.getStack(Materials.HastelloyN, Shapes.screw, 4))
             .circuit(8)
             .itemOutputs(GregtechItemList.Casing_Sparge_Tower_Exterior.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.StainlessSteel, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.StainlessSteel, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);

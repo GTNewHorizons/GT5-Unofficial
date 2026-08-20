@@ -728,8 +728,7 @@ public class RecipeLoader {
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.Quantium, FluidShapes.fluidMolten, 1 * STACKS),
                 MaterialLibAPI.getFluidStack(Materials.DraconiumAwakened, FluidShapes.fluidMolten, 32 * INGOTS),
-                MaterialLibAPI
-                    .getFluidStack(Materials.ExtremelyUnstableNaquadah, FluidShapes.fluidMolten, (int) (10 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.ExtremelyUnstableNaquadah, FluidShapes.fluidMolten, 10 * INGOTS),
                 MaterialUtils.anyFluid(Materials.Indalloy140, 1 * STACKS + 36 * INGOTS))
             .itemOutputs(ItemList.NaquadahFuelRefinery.get(1))
             .eut(TierEU.RECIPE_UHV)
@@ -1319,8 +1318,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.TengamAttuned, Shapes.stickLong, 16),
                 ItemList.Electric_Motor_UEV.get(2))
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, (int) (3 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, 3 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Grade6PurifiedWater, FluidShapes.fluidLiquid, 16_000))
             .itemOutputs(Loaders.NeutronAccelerators[10].copy())
             .eut(TierEU.RECIPE_UEV)
@@ -1343,8 +1341,7 @@ public class RecipeLoader {
                 ItemList.Electric_Motor_UIV.get(2),
                 MaterialLibAPI.getStack(Materials.Infinity, Shapes.stickLong, 16))
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, (int) (12 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, 12 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 4_000),
                 MaterialLibAPI.getFluidStack(Materials.Grade7PurifiedWater, FluidShapes.fluidLiquid, 16_000))
             .itemOutputs(Loaders.NeutronAccelerators[11].copy())
@@ -1369,7 +1366,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.Creon, Shapes.stickLong, 16),
                 MaterialLibAPI.getStack(Materials.Mellion, Shapes.stickLong, 16))
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, (int) (3 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Shirabon, FluidShapes.fluidMolten, 3 * INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.dimensionallyshiftedsuperfluid, FluidShapes.fluidLiquid, 8_000),
                 MaterialLibAPI.getFluidStack(Materials.Grade8PurifiedWater, FluidShapes.fluidLiquid, 16_000))
             .itemOutputs(Loaders.NeutronAccelerators[12].copy())
@@ -1540,8 +1537,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.Sunnarium, Shapes.dust, 32),
                 MaterialLibAPI.getStack(Materials.Sunnarium, Shapes.dust, 32))
             .outputChances(9900, 9500, 9000, 8000, 5000, 3000)
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Oganesson, FluidShapes.fluidLiquid, (int) (6 * INGOTS)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oganesson, FluidShapes.fluidLiquid, 6 * INGOTS))
             .duration(2 * MINUTES + 5 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(centrifugeRecipes);
@@ -1576,8 +1572,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.Americium, Shapes.dust, 32),
                 MaterialLibAPI.getStack(Materials.Californium, Shapes.dust, 32))
             .outputChances(9000, 8500, 5000, 4000, 2000)
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Oganesson, FluidShapes.fluidLiquid, (int) (1 * INGOTS)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oganesson, FluidShapes.fluidLiquid, INGOTS))
             .duration(6 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);
@@ -1622,7 +1617,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.Cerium, Shapes.dust, 4),
                 MaterialLibAPI.getStack(Materials.Gold, Shapes.dust, 2))
             .outputChances(5000, 8000, 7500)
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, (int) (1 * INGOTS)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Krypton, FluidShapes.fluidLiquid, INGOTS))
             .duration(2 * MINUTES + 5 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(centrifugeRecipes);
@@ -1665,7 +1660,7 @@ public class RecipeLoader {
                 MaterialLibAPI.getStack(Materials.Neodymium, Shapes.dust, 32),
                 MaterialLibAPI.getStack(Materials.Europium, Shapes.dust, 32))
             .outputChances(9000, 8500, 5000, 4000, 2000)
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, (int) (1 * INGOTS)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Xenon, FluidShapes.fluidLiquid, INGOTS))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(centrifugeRecipes);

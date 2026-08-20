@@ -15,24 +15,20 @@ import com.ruling_0.materiallib.api.Shape;
 /// per-material volume MaterialLib's container shape does not support directly. [MaterialParts] resolves the two back
 /// to one prefix.
 ///
-/// `cell` and `cellGas` share the `cell` prefix the same way: a plain cell holds a material's liquid or its gas, a
-/// MaterialLib container binds one fluid shape, and the legacy liquid and gas fluid names are frozen in world NBT --
-/// so gas materials fill [#cellGas] and [MaterialParts] resolves it back to the `cell` prefix.
+/// `cell` and `cellGas` share the `cell` prefix the same way. A MaterialLib container binds one fluid shape, and
+/// the liquid and gas fluid names are frozen in world NBT. Gas materials therefore fill [#cellGas], which
+/// [MaterialParts] resolves back to the `cell` prefix.
 public class CellShapes {
 
     /// The empty cell every cell shape drains to, rebound onto `ItemList.Cell_Empty` during GTProxy's preInit.
     /// Renders through the same [#CELL_BASE] art as the filled cells.
     public static EmptyContainerHandle emptyCell;
 
-    /// Untinted container base for [#cell] and the six cracked-cell shapes, converted from the legacy
-    /// `cell_OVERLAY.png` shared by 61 of 66 material icon sets. The `cellHydroCracked*`/`cellSteamCracked*`
-    /// `OrePrefixes` all render through the same `CELL` texture slot as plain `cell`.
+    /// Untinted container base for [#cell] and the six cracked-cell shapes.
     private static final String CELL_BASE = "gregtech:materials/cell_base";
 
-    /// Untinted container base for [#cellPlasma]/[#cellPlasmaLight]/[#cellMolten], converted from
-    /// the legacy `cellPlasma_OVERLAY.png` shared by 13 of 16 sets that have plasma-cell art. `cellMolten`
-    /// renders through the same `CELL_PLASMA` texture slot as `cellPlasma`, not one of its own: there is no
-    /// separate `cellMolten` art.
+    /// Untinted container base for [#cellPlasma], [#cellPlasmaLight] and [#cellMolten]. There is no separate
+    /// `cellMolten` art.
     private static final String CELL_PLASMA_BASE = "gregtech:materials/cell_plasma_base";
 
     // spotless:off

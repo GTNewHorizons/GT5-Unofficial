@@ -72,8 +72,6 @@ public class MTEFrame extends MetaPipeEntity implements ILocalizedMetaPipeEntity
         final short[] materialRgba = MaterialUtils.rgba(material);
         if (material == null || materialRgba == null) return Textures.BlockIcons.ERROR_RENDERING;
         final IIconContainer frame = GTMaterialIcons.block("frameGt", material);
-        // Resolve the override white-out ahead of the dye modulation, so a painted frame keeps its dye over
-        // override art.
         final short[] rgba = frame.hasOverrideIcon() ? UNCOLORED_RGBA : materialRgba;
         return new ITexture[] { GTMaterialTextures.of(frame, Dyes.getModulation(colorIndex, rgba), false, false) };
     }

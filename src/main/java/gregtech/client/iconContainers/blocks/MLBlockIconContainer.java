@@ -14,7 +14,7 @@ import gregtech.api.enums.Textures.InvisibleIcon;
 import gregtech.api.material.GTMaterialIconSets;
 import gregtech.api.util.GTUtil;
 
-/// One material's block-atlas icon, drawn from MaterialLib's texture-set resolution rather than owned outright;
+/// One material's block-atlas icon, drawn from MaterialLib's texture-set resolution;
 /// the block-atlas counterpart of
 /// [MLItemIconContainer][gregtech.client.iconContainers.items.MLItemIconContainer], with the same
 /// icon-set-before-shape resolution and the same resolve-once, read-the-icon-every-time contract.

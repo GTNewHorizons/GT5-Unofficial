@@ -20,8 +20,8 @@ public interface IOreRecipeRegistrator {
     void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName, ItemStack stack);
 
     /// The recognition-marker ore-processing path ([OrePrefixes#processRecognitionOre(Material, String, String,
-    /// ItemStack)]). A marker carries no ore-processing recipes, so it is a no-op -- registrators that do
-    /// process recognition markers (e.g. `ProcessingDust`) override this entry.
+    /// ItemStack)]). A marker carries no ore-processing recipes, so the default is a no-op; a registrator that
+    /// does process recognition markers overrides this entry.
     default void registerRecognitionOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {}
 }

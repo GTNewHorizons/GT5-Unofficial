@@ -258,9 +258,8 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         return mte == null ? 0 : mte.getUpdateData();
     }
 
-    /// Frame boxes have no client-side tile entity for the vanilla description packet to land on
-    /// ([FrameShapeBlock] never creates tile entities), so a frame-hosted tile entity describes itself
-    /// through [GTPacketFrameEntity], whose client handler creates the tile entity when missing.
+    /// A frame-hosted tile entity describes itself through [GTPacketFrameEntity] instead of the vanilla
+    /// description packet; see [GTPacketFrameEntity] for why.
     @Override
     public Packet getDescriptionPacket() {
         if (getBlockType() instanceof FrameShapeBlock) {
@@ -732,7 +731,6 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
 
     @Override
     public ArrayList<ItemStack> getDrops() {
-        // A shape-scoped pipe's stack form is its shape block's item, not a machine block item at its id.
         final ItemStack rStack = hasValidMetaTileEntity() ? mMetaTileEntity.getStackForm(1)
             : new ItemStack(GregTechAPI.sBlockMachines, 1, mID);
         final NBTTagCompound tNBT = new NBTTagCompound();

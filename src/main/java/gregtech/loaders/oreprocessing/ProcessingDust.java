@@ -75,8 +75,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
             : MaterialUtils.fluid(material, amount);
     }
 
-    /// Whether a dust resolves for `material`. An ore material need not have one -- ChargedCertusQuartz removes
-    /// the dust shape -- even though it still generates the wash-chain and small dusts.
+    /// Whether a dust resolves for `material`. An ore material need not have one (ChargedCertusQuartz removes
+    /// the dust shape).
     private static boolean hasDust(Material material) {
         return GTOreDictUnificator.get(OrePrefixes.dust, material, 1L) != null;
     }
@@ -373,8 +373,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
                         .outputChances(10000)
                         .fluidInputs(
-                            MaterialLibAPI
-                                .getFluidStack(Materials.Void, FluidShapes.fluidMolten, (int) (1 * QUARTER_INGOTS)))
+                            MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, QUARTER_INGOTS))
                         .duration(1 * MINUTES)
                         .eut(24)
                         .addTo(autoclaveRecipes);
@@ -576,8 +575,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
                         .outputChances(10000)
                         .fluidInputs(
-                            MaterialLibAPI
-                                .getFluidStack(Materials.Void, FluidShapes.fluidMolten, (int) (1 * QUARTER_INGOTS)))
+                            MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, QUARTER_INGOTS))
                         .duration(1 * MINUTES)
                         .eut(24)
                         .addTo(autoclaveRecipes);
@@ -734,7 +732,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
     }
 
     /// Runs only the `dust` prefix's CRYSTALLISABLE autoclave recipes (see the `"dust"` case above) for a
-    /// recognition marker. The rest of that switch reads material state a marker never carries.
+    /// recognition marker.
     @Override
     public void registerRecognitionOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
@@ -766,8 +764,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 .circuit(3)
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, material, 1L))
                 .outputChances(10000)
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, (int) (1 * QUARTER_INGOTS)))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Void, FluidShapes.fluidMolten, QUARTER_INGOTS))
                 .duration(1 * MINUTES)
                 .eut(24)
                 .addTo(autoclaveRecipes);

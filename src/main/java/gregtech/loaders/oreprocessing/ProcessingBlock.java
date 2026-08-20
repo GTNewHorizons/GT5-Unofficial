@@ -27,7 +27,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -170,8 +169,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             return;
         }
 
-        Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-        if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV
+        if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
             && GTOreDictUnificator.get(OrePrefixes.plate, material, 1L) != null) {
 
             if (material == Materials.Livingrock || material == Materials.Livingwood
@@ -321,7 +319,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         if (MaterialUtils.hasMolten(material)) {
             if (!(material == Materials.AnnealedCopper || material == Materials.CastIron
                 || material == Materials.Obsidian)) {
-                if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(ItemList.Shape_Mold_Block.get(0L))

@@ -17,7 +17,7 @@ public final class GTShapeStore {
 
     private GTShapeStore() {}
 
-    /// Records `shape` and returns it, so declarations wrap their build calls in place.
+    /// Records `shape` and returns it.
     public static Shape reg(Shape shape) {
         SHAPES.add(shape);
         return shape;

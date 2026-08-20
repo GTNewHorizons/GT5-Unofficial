@@ -128,7 +128,7 @@ public class MTELargerTurbineHPSteamLegacy extends MTELargerTurbineBaseLegacy {
         if (isUsingDenseSteam) {
             addOutputPartial(
                 MaterialLibAPI
-                    .getFluidStack(Materials.DenseSteam, FluidShapes.fluidGas, (int) ((long) steamFlowForNextSteam)));
+                    .getFluidStack(Materials.DenseSteam, FluidShapes.fluidGas, (int) (steamFlowForNextSteam)));
         } else {
             addOutputPartial(MaterialUtils.gas(Materials.Steam, totalFlow));
         }

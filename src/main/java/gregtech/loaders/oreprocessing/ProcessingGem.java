@@ -24,7 +24,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -55,7 +54,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
         boolean noSmelting = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING);
         boolean specialRecipeReq = MaterialUtils.hasFlag(material, GTMaterialFlag.MORTAR_GRINDABLE);
         boolean fuelPower = MaterialUtils.fuelPower(material) > 0;
-        boolean unifiable = !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE));
+        boolean unifiable = MaterialUtils.unifiable(material);
 
         // Nether quartz is skipped due to its 4:1 ratio.
         if (material == Materials.NetherQuartz) return;
@@ -189,8 +188,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     }
                 }
                 if (noWorking) {
-                    Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-                    if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
+                    if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                         // Lathe recipes
                         if (GTOreDictUnificator.get(OrePrefixes.stick, material, 1L) != null
                             && GTOreDictUnificator.get(OrePrefixes.dustSmall, material, 1L) != null) {

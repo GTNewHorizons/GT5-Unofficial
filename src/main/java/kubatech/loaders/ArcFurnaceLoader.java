@@ -83,7 +83,7 @@ public class ArcFurnaceLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 64))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, (int) (64 * 144)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Neutronium, FluidShapes.fluidMolten, 64 * 144))
             .itemOutputs(ArcFurnaceElectrode.NeutroniumNaniteElectrode.getElectrodeItem(1))
             .eut(TierEU.RECIPE_UV)
             .duration(2 * MINUTES)
@@ -91,8 +91,7 @@ public class ArcFurnaceLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 16))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, (int) (16 * 144)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.TranscendentMetal, FluidShapes.fluidMolten, 16 * 144))
             .itemOutputs(ArcFurnaceElectrode.TranscendentNaniteElectrode.getElectrodeItem(1))
             .eut(TierEU.RECIPE_UIV)
             .duration(4 * MINUTES)
@@ -101,7 +100,7 @@ public class ArcFurnaceLoader {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 4))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, (int) (4 * 144)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Universium, FluidShapes.fluidMolten, 4 * 144))
             .itemOutputs(ArcFurnaceElectrode.UniversiumNaniteElectrode.getElectrodeItem(1))
             .eut(TierEU.RECIPE_UXV)
             .duration(8 * MINUTES)

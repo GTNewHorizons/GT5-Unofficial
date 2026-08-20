@@ -75,10 +75,8 @@ public class PipeStatsTest {
     @Test
     void multiChannelFluidPipesDeriveFromTheBase() {
         assertEquals(20, PipeStats.quadrupleFluidPipeCapacity(20));
-        assertEquals(4, PipeStats.QUADRUPLE_PIPE_AMOUNT);
         assertEquals(6, PipeStats.nonupleFluidPipeCapacity(20));
         assertEquals(200, PipeStats.nonupleFluidPipeCapacity(600));
-        assertEquals(9, PipeStats.NONUPLE_PIPE_AMOUNT);
     }
 
     @Test

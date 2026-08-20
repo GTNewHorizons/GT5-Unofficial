@@ -59,7 +59,7 @@ public class Assembler implements Runnable {
                 MaterialLibAPI.getStack(Materials.Polytetrafluoroethylene, Shapes.plateDense, 16),
                 ItemList.Field_Generator_IV.get(1))
             .itemOutputs(ItemRegistry.dehp)
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HSSE, FluidShapes.fluidMolten, (int) (32 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.HSSE, FluidShapes.fluidMolten, 32 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -80,8 +80,7 @@ public class Assembler implements Runnable {
                 ItemList.Circuit_Board_Plastic.get(1L),
                 ItemList.Battery_RE_LV_Lithium.get(1L))
             .itemOutputs(new ItemStack(ItemRegistry.CIRCUIT_PROGRAMMER))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -120,7 +119,7 @@ public class Assembler implements Runnable {
                 MaterialLibAPI.getStack(Materials.Lead, Shapes.plateDense, 6),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1))
             .itemOutputs(ItemList.Casing_RadiationProof.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Concrete, FluidShapes.fluidMolten, (int) (9 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Concrete, FluidShapes.fluidMolten, 9 * INGOTS))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -132,7 +131,7 @@ public class Assembler implements Runnable {
                 MaterialLibAPI.getStack(Materials.Europium, Shapes.foil, 6),
                 MaterialLibAPI.getStack(Materials.Europium, Shapes.screw, 24))
             .itemOutputs(ItemList.Casing_AdvancedRadiationProof.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Lead, FluidShapes.fluidMolten, (int) (6 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Lead, FluidShapes.fluidMolten, 6 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);

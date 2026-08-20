@@ -198,8 +198,8 @@ public class AcidRecipes {
                 MaterialLibAPI.getFluidStack(Materials.DestabilizationSlurry, FluidShapes.fluidLiquid, 1000))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.ChlorosulfonicAcid, FluidShapes.fluidLiquid, 5000),
-                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, (int) (10000L)),
-                MaterialLibAPI.getFluidStack(Materials.PhosphoricAcidGT5U, FluidShapes.fluidLiquid, (int) (5000L)),
+                MaterialLibAPI.getFluidStack(Materials.HydrochloricAcidGT5U, FluidShapes.fluidLiquid, 10000),
+                MaterialLibAPI.getFluidStack(Materials.PhosphoricAcidGT5U, FluidShapes.fluidLiquid, 5000),
                 MaterialLibAPI.getFluidStack(Materials.AgitatingSlurry, FluidShapes.fluidLiquid, 1000))
             .eut(TierEU.RECIPE_IV)
             .duration(5 * SECONDS)

@@ -61,9 +61,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     /// bound), applied by [#onShapeMaterialResolved] once the inventory can be sized.
     private NBTTagList pendingInventory;
 
-    /// The shape-scoped constructor: identity comes from the hosting [PipeShapeBlock], and material, stats,
-    /// and inventory size resolve from the host block's metadata and [PipeProperties] through
-    /// [PipeStats]. The inventory starts empty and is sized on the first material resolution.
+    /// The inventory starts empty and is sized on the first material resolution.
     public MTEItemPipe(int aID, String aName, PipeShapeBlock shape) {
         super(aID, aName, 0, false, shape, shape.getSizeIndex());
         mPrefixKey = shape.getPrefixKey();
@@ -226,7 +224,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     }
 
     /// Drops the stacks of inventory NBT slots beyond the current slot count, which the base inventory load
-    /// skips; they occur when a swap or reload lands on a material with fewer slots.
+    /// skips.
     private void dropSlotsBeyondInventory(NBTTagList inventoryTags) {
         for (int i = 0; i < inventoryTags.tagCount(); i++) {
             NBTTagCompound tag = inventoryTags.getCompoundTagAt(i);

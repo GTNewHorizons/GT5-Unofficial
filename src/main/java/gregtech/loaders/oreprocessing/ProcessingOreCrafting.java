@@ -31,7 +31,7 @@ public class ProcessingOreCrafting {
     private ProcessingOreCrafting() {}
 
     /// The frozen set of materials this pass covers -- the union of [ProcessingOreMachine]'s two eligibility
-    /// sets, since these crafting recipes are not split the way its electrolyzer branch is.
+    /// sets.
     // spotless:off
     private static final Set<Material> ELIGIBLE = Set.of(
         Materials.AgarditeCd, Materials.AgarditeLa, Materials.AgarditeNd,

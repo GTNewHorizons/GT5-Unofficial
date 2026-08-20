@@ -17,7 +17,7 @@ public class FluidCannerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Hull_LV.get(1))
             .itemOutputs(ItemList.IC2_ReBattery.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Redstone, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Redstone, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(4)
             .eut(1)
             .addTo(cannerRecipes);

@@ -50,8 +50,7 @@ public class PlasmaForgeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.stablebaryonicmatter, FluidShapes.fluidLiquid, 8_000),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, (int) (4 * INGOTS)),
+                    MaterialLibAPI.getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, 4 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.Grade8PurifiedWater, FluidShapes.fluidLiquid, 12_800),
                     new FluidStack(celestialTungstenPlasma, 1 * STACKS + 32 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.HeavyRadox, FluidShapes.fluidLiquid, 32_000),
@@ -73,8 +72,7 @@ public class PlasmaForgeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.stablebaryonicmatter, FluidShapes.fluidLiquid, 2_000),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, (int) (2 * INGOTS)),
+                    MaterialLibAPI.getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, 2 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.Grade8PurifiedWater, FluidShapes.fluidLiquid, 3_200),
                     new FluidStack(celestialTungstenPlasma, 48 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.HeavyRadox, FluidShapes.fluidLiquid, 4_000),
@@ -97,8 +95,7 @@ public class PlasmaForgeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.stablebaryonicmatter, FluidShapes.fluidLiquid, 1_000),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, (int) (1 * INGOTS)),
+                    MaterialLibAPI.getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.Grade8PurifiedWater, FluidShapes.fluidLiquid, 1_600),
                     new FluidStack(celestialTungstenPlasma, 24 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.SuperHeavyRadox, FluidShapes.fluidLiquid, 2_000),
@@ -118,8 +115,7 @@ public class PlasmaForgeRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .fluidInputs(
                     MaterialLibAPI.getFluidStack(Materials.stablebaryonicmatter, FluidShapes.fluidLiquid, 250),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, (int) (1 * INGOTS)),
+                    MaterialLibAPI.getFluidStack(Materials.MetastableOganesson, FluidShapes.fluidMolten, INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.Grade8PurifiedWater, FluidShapes.fluidLiquid, 400),
                     new FluidStack(celestialTungstenPlasma, 24 * INGOTS),
                     MaterialLibAPI.getFluidStack(Materials.SuperHeavyRadox, FluidShapes.fluidLiquid, 2_000),
@@ -143,7 +139,7 @@ public class PlasmaForgeRecipes implements Runnable {
                 ItemList.Field_Generator_UMV.get(64))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.ExcitedDTEC, FluidShapes.fluidLiquid, 100_000_000),
-                MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, (int) (18 * STACKS)))
+                MaterialLibAPI.getFluidStack(Materials.SpaceTime, FluidShapes.fluidMolten, 18 * STACKS))
             .itemOutputs(ItemList.GigaChad.get(1))
             .duration(86400 * 20 * 2)
             .eut(2_000_000_000)
@@ -158,7 +154,7 @@ public class PlasmaForgeRecipes implements Runnable {
                 new ItemStack(huiCircuit, 0, 4))
             .fluidInputs(
                 MaterialLibAPI.getFluidStack(Materials.ExcitedDTRC, FluidShapes.fluidLiquid, 92),
-                MaterialLibAPI.getFluidStack(Materials.Duranium, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Duranium, FluidShapes.fluidMolten, INGOTS))
             .itemOutputs(GregtechItemList.Laser_Lens_Special.get(1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.DimensionallyTranscendentResidue, FluidShapes.fluidLiquid, 46))
@@ -177,13 +173,10 @@ public class PlasmaForgeRecipes implements Runnable {
                     MaterialUtils.anyFluid(Materials.Hypogen, 36 * INGOTS),
                     MaterialUtils.anyFluid(Materials.ChromaticGlass, 9 * STACKS),
                     MaterialUtils.anyFluid(Materials.Rhugnor, 18 * INGOTS),
-                    MaterialLibAPI
-                        .getFluidStack(Materials.Mellion, FluidShapes.fluidMolten, (int) (1 * STACKS + 8 * INGOTS)))
+                    MaterialLibAPI.getFluidStack(Materials.Mellion, FluidShapes.fluidMolten, 1 * STACKS + 8 * INGOTS))
                 .fluidOutputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials.SixPhasedCopper,
-                        FluidShapes.fluidMolten,
-                        (int) (1 * STACKS + 8 * INGOTS)))
+                    MaterialLibAPI
+                        .getFluidStack(Materials.SixPhasedCopper, FluidShapes.fluidMolten, 1 * STACKS + 8 * INGOTS))
                 .duration(60 * SECONDS)
                 .eut((int) TierEU.RECIPE_UMV)
                 .metadata(COIL_HEAT, 12600)

@@ -86,8 +86,7 @@ public class GregtechIndustrialMassFabricator {
         // Basic UUM
         GTValues.RA.stdBuilder()
             .circuit(2)
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, (int) (1 * NUGGETS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.UUAmplifier, FluidShapes.fluidLiquid, NUGGETS))
             .fluidOutputs(MaterialUtils.fluid(Materials.UUMatter, 1 * NUGGETS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV / 2)

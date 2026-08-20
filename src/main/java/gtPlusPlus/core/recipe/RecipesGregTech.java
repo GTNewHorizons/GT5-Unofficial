@@ -323,7 +323,7 @@ public class RecipesGregTech {
         // Rhugnor
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, (int) (1 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Infinity, FluidShapes.fluidMolten, INGOTS),
                 MaterialUtils.anyFluid(Materials.Quantum, 2 * INGOTS))
             .fluidOutputs(MaterialUtils.anyFluid(Materials.Rhugnor, 1 * INGOTS))
             .duration(25 * SECONDS + 12 * TICKS)
@@ -334,8 +334,7 @@ public class RecipesGregTech {
         // Rhugnor Mk5
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.QuarkGluonPlasma, FluidShapes.fluidLiquid, (int) (1 * HALF_INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.QuarkGluonPlasma, FluidShapes.fluidLiquid, HALF_INGOTS),
                 MaterialUtils.anyFluid(Materials.Quantum, 4 * INGOTS))
             .fluidOutputs(MaterialUtils.anyFluid(Materials.Rhugnor, 4 * INGOTS))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -556,7 +555,7 @@ public class RecipesGregTech {
             .fluidInputs(
                 MaterialUtils.anyFluid(Materials.Pikyonium64B, 8 * INGOTS),
                 MaterialUtils.anyFluid(Materials.Indalloy140, 9 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (10 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 10 * INGOTS))
             .itemOutputs(GregtechItemList.Mega_AlloyBlastSmelter.get(1))
             .eut(TierEU.RECIPE_UHV / 2)
             .duration(1 * MINUTES)
@@ -908,7 +907,7 @@ public class RecipesGregTech {
         // Radium -> Radon electrolysis
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.DecayedRadium226Dust.get(1))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidGas, (int) (1 * INGOTS)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Radon, FluidShapes.fluidGas, INGOTS))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(electrolyzerRecipes);
@@ -936,7 +935,7 @@ public class RecipesGregTech {
                 MaterialLibAPI.getStack(Materials.Thaumium, Shapes.dust, 2),
                 MaterialLibAPI.getStack(Materials.EnderPearl, Shapes.dust, 2))
             .circuit(5)
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Enderium, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Enderium, FluidShapes.fluidMolten, 8 * INGOTS))
             .eut(TierEU.RECIPE_EV)
             .duration(20 * SECONDS + 1 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
@@ -948,8 +947,7 @@ public class RecipesGregTech {
                 MaterialLibAPI.getStack(Materials.Ardite, Shapes.dust, 10),
                 MaterialLibAPI.getStack(Materials.Redstone, Shapes.dust, 50))
             .circuit(3)
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Signalium, FluidShapes.fluidMolten, (int) (5 * INGOTS)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Signalium, FluidShapes.fluidMolten, 5 * INGOTS))
             .eut(TierEU.RECIPE_LuV)
             .duration(5 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
@@ -964,7 +962,7 @@ public class RecipesGregTech {
                 MaterialLibAPI.getStack(Materials.Lumiinessence, Shapes.dust, 10),
                 MaterialLibAPI.getStack(Materials.Glowstone, Shapes.dust, 10))
             .circuit(6)
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Lumiium, FluidShapes.fluidMolten, (int) (5 * INGOTS)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Lumiium, FluidShapes.fluidMolten, 5 * INGOTS))
             .eut(TierEU.RECIPE_LuV)
             .duration(5 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
@@ -1091,8 +1089,8 @@ public class RecipesGregTech {
             .circuit(21)
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials.Oxygen, FluidShapes.fluidGas, 8_000),
-                MaterialLibAPI.getFluidStack(Materials.Aluminium, FluidShapes.fluidMolten, (int) (8 * INGOTS)),
-                MaterialLibAPI.getFluidStack(Materials.Strontium, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Aluminium, FluidShapes.fluidMolten, 8 * INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Strontium, FluidShapes.fluidMolten, 8 * INGOTS))
             .eut(TierEU.RECIPE_EV)
             .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
@@ -1174,8 +1172,7 @@ public class RecipesGregTech {
                 MaterialLibAPI.getStack(Materials.Molybdenum, Shapes.dust, 2),
                 MaterialLibAPI.getStack(Materials.Aluminium, Shapes.dust, 1))
             .circuit(6)
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Incoloy903, FluidShapes.fluidMolten, (int) (37 * INGOTS)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Incoloy903, FluidShapes.fluidMolten, 37 * INGOTS))
             .eut(TierEU.RECIPE_EV)
             .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
@@ -1293,7 +1290,7 @@ public class RecipesGregTech {
                 GregtechItemList.HalfCompleteCasing_I.get(2),
                 MaterialLibAPI.getStack(Materials.VanadiumGallium, Shapes.plate, 8))
             .itemOutputs(GregtechItemList.HalfCompleteCasing_II.get(8))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Tantalum, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Tantalum, FluidShapes.fluidMolten, 4 * INGOTS))
             .duration(32 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);

@@ -41,6 +41,7 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
@@ -848,8 +849,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         }
     }
 
-    private static final com.ruling_0.materiallib.api.Material GOOD = Materials.Uranium;
-    private static final com.ruling_0.materiallib.api.Material BAD = Materials.Plutonium;
+    private static final Material GOOD = Materials.Uranium;
+    private static final Material BAD = Materials.Plutonium;
     private static final ConcurrentHashMap<String, ItemStack> mToolStacks = new ConcurrentHashMap<>();
 
     @Override

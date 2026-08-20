@@ -17,7 +17,6 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -45,10 +44,6 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
         OrePrefixes.pipeNonuple.add(this);
     }
 
-    /*
-     * This was constructed based on data observation: somehow the materials for the corresponding prefixes
-     * have some manually defined recipes somewhere
-     */
     /*
      * This was constructed based on data observation: somehow the materials for the corresponding prefixes
      * have some manually defined recipes somewhere
@@ -167,8 +162,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                     .addTo(assemblerRecipes);
             }
             case "pipeQuadruple" -> {
-                Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-                if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
 
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.pipeQuadruple, material, 1),
@@ -185,8 +179,7 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                     .addTo(assemblerRecipes);
             }
             case "pipeNonuple" -> {
-                Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-                if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
 
                     GTModHandler.addCraftingRecipe(
                         GTUtility.copyAmount(1, stack),

@@ -17,7 +17,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
@@ -86,8 +85,7 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
                 .eut(calculateRecipeEU(material, 1))
                 .recipeCategory(RecipeCategories.alloySmelterMolding)
                 .addTo(alloySmelterRecipes);
-            Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-            if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV && material != Materials.Unstable) {
+            if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV && material != Materials.Unstable) {
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.nugget, material, 8L),
                     GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,

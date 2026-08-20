@@ -269,10 +269,9 @@ public class GTMod {
     public static GTProxy gregtechproxy;
     public static final boolean DEBUG = Boolean.getBoolean("gt.debug");
 
-    /// Set once {@link gregtech.loaders.materials.LoaderGTMaterialPasses#run} and
-    /// {@link gregtech.api.enums.OrePrefixes#lateStaticInit} have completed during preInit. An
-    /// `OreRegisterEvent` listener must skip instead of touching material state while this is false. The
-    /// catch-up calls in {@link #onPreInitialization} process what was skipped once it flips true.
+    /// Set once [gregtech.loaders.materials.LoaderGTMaterialPasses#run] and
+    /// [gregtech.api.enums.OrePrefixes#lateStaticInit] have completed during preInit. An `OreRegisterEvent`
+    /// listener must skip instead of touching material state while this is false.
     public static volatile boolean sMaterialsReady = false;
 
     public static GTAchievements achievements;

@@ -8,18 +8,15 @@ import gregtech.api.util.GTOreDictUnificator;
 /// The non-circuit ore-dictionary entries that hang off a voltage tier -- batteries, high-pressure fluid pipes,
 /// quadruple wires and alloy plates -- keyed by voltage tier.
 ///
-/// Each tier's ore-dictionary material name is unrelated to the tier abbreviation (`LV` is named `Basic`, `UHV` is
-/// named `Infinite`, and so on), so the ore-dictionary names these entries resolve to cannot be spelled from the
-/// tier name. Routing every call site through this enum keeps that mapping in one place.
+/// Each tier's ore-dictionary material name is unrelated to the tier abbreviation (`LV` is named `Basic`, `UHV`
+/// is named `Infinite`, and so on). Routing every call site through this enum keeps that mapping in one place.
 ///
 /// Every prefix is offered at every tier even though only some combinations are registered; asking for an
 /// unregistered one yields no stack.
 ///
-/// Ingredients come in two shapes, so each prefix exposes two accessors: a `get...(int)` returning a unified
-/// [ItemStack] for recipe inputs and outputs that need a concrete stack, and a `get...Ingredient()` returning an
-/// [ItemData] for crafting-grid recipes, which derive a reversible recipe's recycling output from each
-/// ingredient's [ItemData] ([gregtech.api.util.GTModHandler#addCraftingRecipe]). These ingredients use the
-/// name-only [ItemData] form, which carries no composition and so produces no recycling output of its own.
+/// Each prefix exposes two accessors. A `get...(int)` returns a unified [ItemStack] for recipe inputs and
+/// outputs that need a concrete stack. A `get...Ingredient()` returns the name-only [ItemData] form for
+/// crafting-grid recipes; see [gregtech.api.util.GTModHandler#addCraftingRecipe].
 public enum TieredItems {
 
     ULV("Primitive"),

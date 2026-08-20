@@ -47,7 +47,6 @@ public final class OreManager {
         return getOreInfo(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static OreInfo getOreInfo(Block block, int meta) {
         int size = ORE_ADAPTERS.size();
 

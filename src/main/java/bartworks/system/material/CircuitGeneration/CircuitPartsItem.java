@@ -82,8 +82,7 @@ public class CircuitPartsItem extends Item {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.RawImprintBoard.get(1), new OreDictItemStack("craftingLensYellow", 0))
             .itemOutputs(ItemList.ImprintBoard.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 4 * INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .requiresCleanRoom()

@@ -58,6 +58,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 import com.ruling_0.materiallib.api.BlockMaterialInfo;
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
@@ -202,18 +203,18 @@ public class GTStructureUtility {
 
     /// The sheetmetal structure element, matching the `sheetmetal` [gregtech.common.blocks.SheetmetalShapeBlock]
     /// at the target material's index.
-    public static <T> IStructureElement<T> ofSheetMetal(com.ruling_0.materiallib.api.Material material) {
+    public static <T> IStructureElement<T> ofSheetMetal(Material material) {
         return ofMaterialBlock(material, BlockShapes.sheetmetal, OrePrefixes.sheetmetal, "sheetmetal");
     }
 
     /// The bolted casing structure element, matching the `blockCasing` [gregtech.common.blocks.GTCasingShapeBlock]
     /// at the target material's index.
-    public static <T> IStructureElement<T> ofBlockCasing(com.ruling_0.materiallib.api.Material material) {
+    public static <T> IStructureElement<T> ofBlockCasing(Material material) {
         return ofMaterialBlock(material, BlockShapes.blockCasing, OrePrefixes.blockCasing, "blockCasing");
     }
 
     /// [#ofBlockCasing], for the rebolted `blockCasingAdvanced` shape.
-    public static <T> IStructureElement<T> ofBlockCasingAdvanced(com.ruling_0.materiallib.api.Material material) {
+    public static <T> IStructureElement<T> ofBlockCasingAdvanced(Material material) {
         return ofMaterialBlock(
             material,
             BlockShapes.blockCasingAdvanced,
@@ -222,10 +223,9 @@ public class GTStructureUtility {
     }
 
     /// A structure element matching the MaterialLib `shape` block at the target material's index, hinted with the
-    /// block art filed under `iconName` and placed from `prefix`'s unified stack. Mirrors [#ofFrameElement]'s
-    /// check/place/hint logic for the material block shapes carrying no tile entity.
-    private static <T> IStructureElement<T> ofMaterialBlock(com.ruling_0.materiallib.api.Material material, Shape shape,
-        OrePrefixes prefix, String iconName) {
+    /// block art filed under `iconName` and placed from `prefix`'s unified stack.
+    private static <T> IStructureElement<T> ofMaterialBlock(Material material, Shape shape, OrePrefixes prefix,
+        String iconName) {
         if (material == null) throw new IllegalArgumentException("material for " + prefix.name() + " can not be null!");
         return new IStructureElement<>() {
 
@@ -314,7 +314,7 @@ public class GTStructureUtility {
         };
     }
 
-    public static <T> IStructureElement<T> ofFrame(com.ruling_0.materiallib.api.Material material) {
+    public static <T> IStructureElement<T> ofFrame(Material material) {
         if (material == null) throw new IllegalArgumentException();
         return ofFrameElement(() -> material);
     }
@@ -322,8 +322,7 @@ public class GTStructureUtility {
     /// The frame structure element, matching the `frameGt` [gregtech.common.blocks.FrameShapeBlock] at the
     /// target material's index. The target resolves lazily so elements built in static initializers, before
     /// the MaterialLib registry settles, still work.
-    private static <T> IStructureElement<T> ofFrameElement(
-        Supplier<com.ruling_0.materiallib.api.Material> materialSupplier) {
+    private static <T> IStructureElement<T> ofFrameElement(Supplier<Material> materialSupplier) {
         return new IStructureElement<>() {
 
             @Override
@@ -341,7 +340,7 @@ public class GTStructureUtility {
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                com.ruling_0.materiallib.api.Material material = materialSupplier.get();
+                Material material = materialSupplier.get();
                 short[] rgba = MaterialUtils.rgba(material);
                 if (material == null || rgba == null) return false;
                 IIcon[] icons = null;

@@ -41,8 +41,7 @@ public class Assembler implements Runnable {
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1))
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -69,7 +68,7 @@ public class Assembler implements Runnable {
                 ItemList.FluidRegulator_LV.get(1))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -113,7 +112,7 @@ public class Assembler implements Runnable {
                 ItemList.FluidRegulator_EV.get(1))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 4))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Epoxid, FluidShapes.fluidMolten, (int) (6 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Epoxid, FluidShapes.fluidMolten, 6 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -128,7 +127,7 @@ public class Assembler implements Runnable {
                 ItemList.FluidRegulator_IV.get(1))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 5))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Epoxid, FluidShapes.fluidMolten, (int) (8 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Epoxid, FluidShapes.fluidMolten, 8 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);

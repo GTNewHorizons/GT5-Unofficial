@@ -22,7 +22,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -48,7 +47,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
         boolean stretchy = MaterialUtils.hasFlag(material, GTMaterialFlag.STRETCHY);
         boolean noSmelting = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMELTING);
         long materialMass = MaterialUtils.mass(material);
-        boolean specialRecipeReq = !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
+        boolean specialRecipeReq = MaterialUtils.unifiable(material)
             && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING);
 
         switch (prefix.getName()) {
@@ -100,8 +99,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 if ((tStack != null) && ((MaterialUtils.blastFurnaceRequired(material)) || noSmelting)) {
                     GTModHandler.removeFurnaceSmelting(tStack);
                 }
-                if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-                    && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)
+                if (MaterialUtils.unifiable(material) && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)
                     && !MaterialUtils.hasFlag(material, GTMaterialFlag.SMELTING_TO_GEM)
                     && MaterialUtils.hasFlag(material, GTMaterialFlag.MORTAR_GRINDABLE)) {
                     GTModHandler.addShapelessCraftingRecipe(
@@ -112,8 +110,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 }
                 if (!noSmashing) {
                     // Forge hammer recipes
-                    Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-                    if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV
+                    if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
                         && GTOreDictUnificator.get(OrePrefixes.plate, material, 1L) != null) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(3, stack))

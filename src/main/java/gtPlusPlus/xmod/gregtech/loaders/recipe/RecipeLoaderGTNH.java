@@ -35,7 +35,7 @@ public class RecipeLoaderGTNH {
         // MK3
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Plutonium241, FluidShapes.fluidMolten, (int) (1 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Plutonium241, FluidShapes.fluidMolten, INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidGas, 1_000))
             .fluidOutputs(MaterialUtils.anyFluid(Materials.Curium, 1 * INGOTS))
             .duration(4 * SECONDS + 16 * TICKS)
@@ -47,7 +47,7 @@ public class RecipeLoaderGTNH {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialUtils.anyFluid(Materials.Curium, 1 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Helium, FluidShapes.fluidPlasma, INGOTS))
             .fluidOutputs(MaterialUtils.anyFluid(Materials.Californium, 1 * INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(196608)
@@ -56,8 +56,8 @@ public class RecipeLoaderGTNH {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Plutonium241, FluidShapes.fluidMolten, (int) (1 * INGOTS)),
-                MaterialLibAPI.getFluidStack(Materials.Calcium, FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Plutonium241, FluidShapes.fluidMolten, INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Calcium, FluidShapes.fluidPlasma, INGOTS))
             .fluidOutputs(MaterialUtils.molten(Materials.FleroviumGT5U, 1 * INGOTS))
             .duration(8 * SECONDS)
             .eut(196608)
@@ -66,7 +66,7 @@ public class RecipeLoaderGTNH {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Manganese, FluidShapes.fluidMolten, (int) (1 * INGOTS)),
+                MaterialLibAPI.getFluidStack(Materials.Manganese, FluidShapes.fluidMolten, INGOTS),
                 MaterialLibAPI.getFluidStack(Materials.Neon, FluidShapes.fluidLiquid, 500))
             .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Bromine), 1 * INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)

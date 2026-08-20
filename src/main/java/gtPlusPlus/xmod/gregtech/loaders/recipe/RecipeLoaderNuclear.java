@@ -441,8 +441,8 @@ public class RecipeLoaderNuclear {
         // Mk1
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Boron, FluidShapes.fluidPlasma, (int) (1 * INGOTS)),
-                MaterialLibAPI.getFluidStack(Materials.Calcium, FluidShapes.fluidPlasma, (int) (1 * NUGGETS)))
+                MaterialLibAPI.getFluidStack(Materials.Boron, FluidShapes.fluidPlasma, INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Calcium, FluidShapes.fluidPlasma, NUGGETS))
             .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Neon), 1_000))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LuV)
@@ -462,8 +462,8 @@ public class RecipeLoaderNuclear {
         // Mk2
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Niobium, FluidShapes.fluidPlasma, (int) (1 * INGOTS)),
-                MaterialLibAPI.getFluidStack(Materials.Zinc, FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Niobium, FluidShapes.fluidPlasma, INGOTS),
+                MaterialLibAPI.getFluidStack(Materials.Zinc, FluidShapes.fluidPlasma, INGOTS))
             .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Krypton), 1 * INGOTS))
             .duration(32 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
@@ -494,7 +494,7 @@ public class RecipeLoaderNuclear {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 MaterialUtils.anyFluid(Materials.Curium, 1 * INGOTS),
-                MaterialLibAPI.getFluidStack(Materials.Americium, FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Americium, FluidShapes.fluidPlasma, INGOTS))
             .fluidOutputs(new FluidStack(MaterialUtils.legacyGtppPlasmaOf(Materials.Xenon), 1 * INGOTS))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_UV)

@@ -78,7 +78,7 @@ public class BaseRecipeLoader {
         try {
             loader.run();
         } catch (Throwable t) {
-            TecTech.LOGGER.error("Recipe loader " + name + " failed, remaining loaders will still run", t);
+            TecTech.LOGGER.error("Recipe loader " + name + " failed", t);
         }
     }
 }

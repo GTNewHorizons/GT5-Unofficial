@@ -50,8 +50,7 @@ class ComponentRecipeLoader implements Runnable {
                 MaterialLibAPI.getStack(Materials.Enderium, Shapes.plateDense, 1))
             .circuit(12)
             .itemOutputs(GGItemList.LinkedInputBus.get(1L))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Polybenzimidazole, FluidShapes.fluidMolten, INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);

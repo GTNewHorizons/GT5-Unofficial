@@ -24,7 +24,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeCategories;
@@ -52,8 +51,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
             int tAmount = (int) (prefix.getMaterialAmount() / 3628800L);
             if ((tAmount > 0) && (tAmount <= 64) && (prefix.getMaterialAmount() % 3628800L == 0L)) {
                 int tVoltageMultiplier = MaterialUtils.blastFurnaceTemp(material) >= 2800 ? 60 : 15;
-                Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-                int tTrueVoltage = processingTierEU == null ? 0 : processingTierEU;
+                int tTrueVoltage = MaterialUtils.processingMaterialTierEU(material);
 
                 if (MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
                     tVoltageMultiplier /= 4;
@@ -346,11 +344,10 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             .eut(calculateRecipeEU(material, 6 * tVoltageMultiplier))
                             .addTo(extruderRecipes);
                     }
-                    if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
+                    if (MaterialUtils.unifiable(material)
                         && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING)) {
                         // If material tier < IV then add manual recipe.
-                        Integer ringTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-                        if ((ringTierEU == null ? 0 : ringTierEU) < TierEU.IV
+                        if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV
                             && GTOreDictUnificator.get(OrePrefixes.ring, material, 1L) != null) {
                             GTModHandler.addCraftingRecipe(
                                 GTOreDictUnificator.get(OrePrefixes.ring, material, 1L),
@@ -403,8 +400,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                 }
 
                 if (!(material == Materials.StyreneButadieneRubber || material == Materials.Silicone)) {
-                    Integer plateTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-                    if ((plateTierEU == null ? 0 : plateTierEU) < TierEU.IV) {
+                    if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                         if (GTOreDictUnificator.get(OrePrefixes.plate, MaterialUtils.smeltInto(material), 1L) != null) {
                             GTValues.RA.stdBuilder()
                                 .itemInputs(GTUtility.copyAmount(2, stack), ItemList.Shape_Mold_Plate.get(0L))

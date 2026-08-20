@@ -2,12 +2,10 @@ package gregtech.common.covers;
 
 import net.minecraftforge.fluids.FluidStack;
 
-import com.ruling_0.materiallib.api.MaterialLibAPI;
-
 import gregtech.api.covers.CoverContext;
-import gregtech.api.enums.materials.FluidShapes;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
 
 public class CoverSteamValve extends CoverPump {
@@ -27,13 +25,8 @@ public class CoverSteamValve extends CoverPump {
             .getName();
         return GTModHandler.isAnySteam(fluid) || GTModHandler.isSuperHeatedSteam(fluid)
             || fluidname.equals("supercriticalsteam")
-            || fluid.getFluid() == MaterialLibAPI.getFluidStack(Materials.DenseSteam, FluidShapes.fluidGas, 1)
-                .getFluid()
-            || fluid.getFluid()
-                == MaterialLibAPI.getFluidStack(Materials.DenseSuperheatedSteam, FluidShapes.fluidGas, 1)
-                    .getFluid()
-            || fluid.getFluid()
-                == MaterialLibAPI.getFluidStack(Materials.DenseSupercriticalSteam, FluidShapes.fluidGas, 1)
-                    .getFluid();
+            || fluid.getFluid() == MaterialUtils.gasOf(Materials.DenseSteam)
+            || fluid.getFluid() == MaterialUtils.gasOf(Materials.DenseSuperheatedSteam)
+            || fluid.getFluid() == MaterialUtils.gasOf(Materials.DenseSupercriticalSteam);
     }
 }

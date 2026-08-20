@@ -345,9 +345,8 @@ public class VacuumFreezerRecipes implements Runnable {
                 .addTo(vacuumFreezerRecipes);
 
             GTValues.RA.stdBuilder()
-                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Boron, FluidShapes.fluidPlasma, (int) (1 * INGOTS)))
-                .fluidOutputs(
-                    MaterialLibAPI.getFluidStack(Materials.Boron, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Boron, FluidShapes.fluidPlasma, INGOTS))
+                .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Boron, FluidShapes.fluidMolten, INGOTS))
                 .duration(1 * SECONDS)
                 .eut(12)
                 .addTo(vacuumFreezerRecipes);
@@ -386,10 +385,9 @@ public class VacuumFreezerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Harmonic_Compound.get(2))
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.AtomicSeparationCatalyst, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.AtomicSeparationCatalyst, FluidShapes.fluidMolten, INGOTS))
             .itemOutputs(MaterialLibAPI.getStack(Materials.Mellion, Shapes.ingot, 1))
-            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creon, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Creon, FluidShapes.fluidMolten, INGOTS))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(vacuumFreezerRecipes);

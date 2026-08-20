@@ -11,7 +11,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
@@ -31,8 +30,7 @@ public class ProcessingIceOre implements IOreRecipeRegistrator {
         ItemStack stack) {
         if (!MaterialUtils.hasFlag(material, GTMaterialFlag.ICE_ORE)) return;
 
-        Integer oreMultiplierProp = material.getProperty(GTMaterialProperties.ORE_MULTIPLIER);
-        int oreMultiplier = oreMultiplierProp == null ? 1 : oreMultiplierProp;
+        int oreMultiplier = MaterialUtils.oreMultiplier(material);
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, stack))
             .fluidOutputs(MaterialUtils.gas(material, 1000L * oreMultiplier))

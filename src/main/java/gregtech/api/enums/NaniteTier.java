@@ -3,7 +3,6 @@ package gregtech.api.enums;
 import java.text.MessageFormat;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import com.ruling_0.materiallib.api.Material;
 
@@ -69,10 +68,7 @@ public enum NaniteTier {
     }
 
     public String describe() {
-        String localizedName = StatCollector.translateToLocal(
-            "Material." + MaterialUtils.internalName(getMaterial())
-                .toLowerCase());
-        return MessageFormat.format("{0} (Tier {1})", localizedName, tier);
+        return MessageFormat.format("{0} (Tier {1})", MaterialUtils.localizedName(getMaterial()), tier);
     }
 
     public static NaniteTier fromMaterial(Material mat) {

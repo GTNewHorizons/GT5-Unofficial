@@ -51,7 +51,6 @@ public class OreInfo implements AutoCloseable {
 
     static final ObjectPooler<OreInfo> ORE_INFO_POOL = new ObjectPooler<>(OreInfo::new);
 
-    @SuppressWarnings("unchecked")
     public static OreInfo getNewInfo() {
         synchronized (ORE_INFO_POOL) {
             return ORE_INFO_POOL.getInstance();

@@ -31,8 +31,7 @@ import gregtech.api.material.MaterialUtils;
 ///
 /// This reuses the same [LegacyGTPPComposites] ratio table [ProcessingMixerGtpp] and
 /// [ProcessingAlloyBlastSmelter] read, but is bound by neither of their eligibility sets: the composite gate
-/// here is membership in that table alone, checked at runtime rather than pre-filtered into [#ELIGIBLE],
-/// which must stay a superset.
+/// here is membership in that table alone, checked at runtime. [#ELIGIBLE] must stay a superset of it.
 ///
 /// [#run] is called from `CompatHandler#startLoadingGregAPIBasedRecipes` -- see
 /// [ProcessingDustGeneration]'s class javadoc for why that timing matters.

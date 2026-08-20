@@ -14,7 +14,7 @@ import gregtech.api.enums.Textures.InvisibleIcon;
 import gregtech.api.material.GTMaterialIconSets;
 import gregtech.api.util.GTUtil;
 
-/// One material's item-atlas icon, drawn from MaterialLib's texture-set resolution rather than owned outright.
+/// One material's item-atlas icon, drawn from MaterialLib's texture-set resolution.
 ///
 /// The art is either a [GTMaterialIconSets] icon set's or, where GregTech declared none for the name, the item
 /// shape of that name. The set wins because it binds every registered material, where a shape only binds the

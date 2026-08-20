@@ -303,7 +303,7 @@ public class AdditionalRecipes {
                 MaterialLibAPI.getStack(Materials.YttriumOxide, Shapes.dustSmall, 2),
                 MaterialLibAPI.getStack(Materials.Thorianite, Shapes.dustSmall, 2))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 0))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Glass, FluidShapes.fluidMolten, INGOTS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 3663)
@@ -404,10 +404,9 @@ public class AdditionalRecipes {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Plutonium, FluidShapes.fluidMolten, (int) (3 * NUGGETS)),
-                MaterialLibAPI.getFluidStack(Materials.Beryllium, FluidShapes.fluidMolten, (int) (3 * NUGGETS)))
-            .fluidOutputs(
-                MaterialLibAPI.getFluidStack(Materials.Californium, FluidShapes.fluidMolten, (int) (3 * NUGGETS)))
+                MaterialLibAPI.getFluidStack(Materials.Plutonium, FluidShapes.fluidMolten, 3 * NUGGETS),
+                MaterialLibAPI.getFluidStack(Materials.Beryllium, FluidShapes.fluidMolten, 3 * NUGGETS))
+            .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Californium, FluidShapes.fluidMolten, 3 * NUGGETS))
             .duration(12 * SECONDS)
             .eut(49152)
             .metadata(FUSION_THRESHOLD, 480_000_000L)
@@ -415,8 +414,8 @@ public class AdditionalRecipes {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.Californium, FluidShapes.fluidMolten, (int) (2 * NUGGETS)),
-                MaterialLibAPI.getFluidStack(Materials.Calcium, FluidShapes.fluidMolten, (int) (5 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Californium, FluidShapes.fluidMolten, 2 * NUGGETS),
+                MaterialLibAPI.getFluidStack(Materials.Calcium, FluidShapes.fluidMolten, 5 * INGOTS))
             .fluidOutputs(MaterialLibAPI.getFluidStack(Materials.Oganesson, FluidShapes.fluidLiquid, 720))
             .duration(24 * SECONDS)
             .eut(49152)

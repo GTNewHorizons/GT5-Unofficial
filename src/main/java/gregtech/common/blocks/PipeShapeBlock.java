@@ -136,11 +136,6 @@ public class PipeShapeBlock extends ShapeBlock {
     }
 
     @Override
-    public int getRenderBlockPass() {
-        return 0;
-    }
-
-    @Override
     public boolean canRenderInPass(int pass) {
         return pass == 0 || pass == 1;
     }

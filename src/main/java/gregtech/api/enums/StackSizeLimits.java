@@ -4,9 +4,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.config.Gregtech;
 
 /// The configured stack ceilings for the bulk item forms, clamped to a usable range.
-///
-/// Read by both form namespaces: [ShapeData] for the shapes and
-/// [OrePrefixes] for the prefixes no shape serves.
 public class StackSizeLimits {
 
     public static final int ORE_STACK_SIZE = GTUtility.clamp(Gregtech.features.maxOreStackSize, 1, 64);

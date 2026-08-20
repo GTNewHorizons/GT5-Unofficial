@@ -17,7 +17,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.SubstituteFluidStack;
@@ -37,14 +36,12 @@ public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-            && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
+        if (MaterialUtils.unifiable(material) && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
             ItemStack tPlate = GTOreDictUnificator.get(OrePrefixes.plate, material, 4L);
             ItemStack tRing = GTOreDictUnificator.get(OrePrefixes.ring, material, 1L);
             if (GTUtility.isStackValid(tPlate) && GTUtility.isStackValid(tRing)) {
 
-                Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-                if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
 
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.rotor, material, 1L),

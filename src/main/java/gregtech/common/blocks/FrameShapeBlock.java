@@ -86,12 +86,7 @@ public class FrameShapeBlock extends ShapeBlock implements IBlockWithTextures {
         GameRegistry.registerBlock(this, FrameShapeItemBlock.class, getName());
     }
 
-    private BaseMetaPipeEntity spawnFrameEntity(World world, int x, int y, int z) {
-        return spawnFrameEntity(world, null, x, y, z);
-    }
-
-    /// Attaches the frame MTE to a plain frame block, without touching the block metadata. The signature is
-    /// relied on externally (matter-manipulator mixes into it).
+    /// Attaches the frame MTE to a plain frame block, without touching the block metadata.
     public BaseMetaPipeEntity spawnFrameEntity(World world, EntityPlayer player, int x, int y, int z) {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof BaseMetaPipeEntity base) {
@@ -133,11 +128,6 @@ public class FrameShapeBlock extends ShapeBlock implements IBlockWithTextures {
     @Override
     public boolean isOpaqueCube() {
         return false;
-    }
-
-    @Override
-    public int getRenderBlockPass() {
-        return 0;
     }
 
     @Override

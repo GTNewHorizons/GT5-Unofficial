@@ -183,15 +183,13 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     /// a rebind); material-sized state hooks in here.
     protected void onShapeMaterialResolved(Material material) {}
 
-    /// Drops the cached [#shapeMaterial] so the next read resolves from the host block again; called after
-    /// an in-place material swap rewrites the host block's metadata.
+    /// Drops the cached [#shapeMaterial] so the next read resolves from the host block again.
     protected final void clearShapeMaterial() {
         shapeMaterialCache = null;
     }
 
-    /// Runs `body` with [#shapeMaterial] answering `material` wherever the host block cannot be consulted --
-    /// item tooltips and display names, where there is no placed block to read. Only meaningful on the
-    /// canonical shape-scoped instances.
+    /// Runs `body` with [#shapeMaterial] answering `material` wherever the host block cannot be consulted.
+    /// Only meaningful on the canonical shape-scoped instances.
     public final <T> T withShapeMaterial(Material material, Supplier<T> body) {
         shapeRenderMaterial = material;
         try {
@@ -640,8 +638,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         return new ItemStack(GregTechAPI.sBlockMachines, (int) aAmount, getBaseMetaTileEntity().getMetaTileID());
     }
 
-    /// [#renderInInventory] with the material the rendered item stack carries; the canonical shape-scoped
-    /// instance has no host block to resolve a material from, so the renderer passes it in.
+    /// [#renderInInventory] with the material the rendered item stack carries.
     @SideOnly(Side.CLIENT)
     public final boolean renderInInventory(ISBRInventoryContext ctx, Material material) {
         return withShapeMaterial(material, () -> renderInInventory(ctx));

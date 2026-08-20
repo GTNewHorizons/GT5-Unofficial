@@ -17,7 +17,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -51,8 +50,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                             .addTo(fluidSolidifierRecipes);
                     }
                 }
-                if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-                    && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
+                if (MaterialUtils.unifiable(material) && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
                     switch (MaterialUtils.internalName(material)) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGt, material, 1L),
@@ -66,9 +64,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                             new Object[] { "SPS", "PfP", "SPS", 'P', OrePrefixes.stoneSmooth, 'S',
                                 new ItemStack(Blocks.stone_button, 1, 32767) });
                         default -> {
-                            Integer processingTierEU = material
-                                .getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-                            if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
+                            if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.gearGt, material, 1L),
                                     GTModHandler.RecipeBits.BITS_STD,
@@ -92,8 +88,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                             .addTo(fluidSolidifierRecipes);
                     }
                 }
-                if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))
-                    && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
+                if (MaterialUtils.unifiable(material) && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING)) {
                     switch (MaterialUtils.internalName(material)) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGtSmall, material, 1L),
@@ -105,9 +100,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                             GTModHandler.RecipeBits.BITS_STD,
                             new Object[] { "P ", " f", 'P', OrePrefixes.stoneSmooth });
                         default -> {
-                            Integer processingTierEU = material
-                                .getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-                            if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
+                            if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                                 GTModHandler.addCraftingRecipe(
                                     GTOreDictUnificator.get(OrePrefixes.gearGtSmall, material, 1L),
                                     GTModHandler.RecipeBits.BITS_STD,

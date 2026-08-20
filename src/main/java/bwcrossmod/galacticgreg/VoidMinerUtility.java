@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.configs.Configuration;
@@ -74,7 +75,7 @@ public class VoidMinerUtility {
          * @param weight   the non normalised weight
          * @param stone    the stone types
          */
-        public void addDrop(com.ruling_0.materiallib.api.Material material, List<StoneType> stone, float weight) {
+        public void addDrop(Material material, List<StoneType> stone, float weight) {
             try (OreInfo info = OreInfo.getNewInfo()) {
                 info.material = material;
 
@@ -98,7 +99,7 @@ public class VoidMinerUtility {
          * @param material the material
          * @param weight   the non normalised weight
          */
-        public void addDrop(com.ruling_0.materiallib.api.Material material, float weight) {
+        public void addDrop(Material material, float weight) {
             try (OreInfo info = OreInfo.getNewInfo()) {
                 info.material = material;
 
@@ -286,8 +287,7 @@ public class VoidMinerUtility {
      * @param material the material with an ore version
      * @param weight   the non normalised version of the given weight
      */
-    public static void addMaterialToDimensionList(String dimName, com.ruling_0.materiallib.api.Material material,
-        float weight) {
+    public static void addMaterialToDimensionList(String dimName, Material material, float weight) {
         DropMap map = dropMapsByDimName.computeIfAbsent(dimName, ignored -> new DropMap());
 
         map.addDrop(material, weight);

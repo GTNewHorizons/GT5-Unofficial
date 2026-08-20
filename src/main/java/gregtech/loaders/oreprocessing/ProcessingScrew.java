@@ -12,7 +12,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -40,9 +39,8 @@ public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegist
                     .eut(calculateRecipeEU(material, 4))
                     .addTo(latheRecipes);
             }
-            if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))) {
-                Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-                if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
+            if (MaterialUtils.unifiable(material)) {
+                if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.screw, material, 1L),
                         GTModHandler.RecipeBits.BITS_STD,

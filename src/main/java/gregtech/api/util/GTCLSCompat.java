@@ -91,9 +91,7 @@ public class GTCLSCompat {
             "GregTech materials",
             mEvents,
             progressBar,
-            m -> StatCollector.translateToLocal(
-                "Material." + MaterialUtils.internalName(m.mMaterial)
-                    .toLowerCase()),
+            m -> MaterialUtils.localizedName(m.mMaterial),
             OreDictEventContainer::registerRecipes);
         ProgressManager.pop(progressBar);
         MinecraftDisplayer.isRegisteringGTmaterials = false;

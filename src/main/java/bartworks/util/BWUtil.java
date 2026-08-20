@@ -50,7 +50,6 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.interfaces.IItemContainer;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.LegacyNameDomain;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.objects.ItemData;
@@ -68,8 +67,8 @@ public class BWUtil {
     public static final int CLEANROOM = -200;
 
     public static int calculateRecipeEU(Material material, int defaultRecipeEUPerTick) {
-        Integer tier = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-        return tier == null || tier == 0 ? defaultRecipeEUPerTick : tier;
+        int tier = MaterialUtils.processingMaterialTierEU(material);
+        return tier == 0 ? defaultRecipeEUPerTick : tier;
     }
 
     public static String translateGTItemStack(ItemStack itemStack) {

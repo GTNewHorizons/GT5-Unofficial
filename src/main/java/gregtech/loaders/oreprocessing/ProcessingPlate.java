@@ -44,7 +44,6 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialIcons;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.GTMaterialTextures;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
@@ -149,10 +148,9 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             }
         }
 
-        if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE))) {
+        if (MaterialUtils.unifiable(material)) {
 
-            Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-            boolean belowTierIV = (processingTierEU == null ? 0 : processingTierEU) < TierEU.IV;
+            boolean belowTierIV = MaterialUtils.processingMaterialTierEU(material) < TierEU.IV;
 
             if (!noSmashing) {
 
@@ -223,8 +221,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         if (!noSmashing) {
             Object plateStack = MaterialParts.craftIngredient(OrePrefixes.plate, material);
-            Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-            if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
+            if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
                     DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED,
@@ -272,8 +269,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (!noSmashing) {
-            Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-            if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
+            if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                 Object plateStack = MaterialParts.craftIngredient(OrePrefixes.plate, material);
                 GTModHandler.addCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
@@ -323,8 +319,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(assemblerRecipes);
         }
         if (!noSmashing) {
-            Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-            if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
+            if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                 Object plateStack = MaterialParts.craftIngredient(OrePrefixes.plate, material);
                 GTModHandler.addCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
@@ -362,8 +357,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(assemblerRecipes);
         }
         if (!noSmashing) {
-            Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-            if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
+            if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                 Object plateStack = MaterialParts.craftIngredient(OrePrefixes.plate, material);
                 GTModHandler.addCraftingRecipe(
                     GTUtility.copyAmount(1, stack),
@@ -398,8 +392,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         GTModHandler.removeRecipeByOutputDelayed(stack);
 
         if (!noSmashing || MaterialUtils.hasFlag(material, GTMaterialFlag.STRETCHY)) {
-            Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-            int compression_tier = ((processingTierEU == null ? 0 : processingTierEU) >= TierEU.RECIPE_UEV
+            int compression_tier = (MaterialUtils.processingMaterialTierEU(material) >= TierEU.RECIPE_UEV
                 || MaterialUtils.hasFlag(material, GTMaterialFlag.BLACK_HOLE)) ? 2 : 1;
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, material, 64))
@@ -426,10 +419,9 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(fluidSolidifierRecipes);
         }
 
-        if (!Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE)) && !noSmashing) {
+        if (MaterialUtils.unifiable(material) && !noSmashing) {
 
-            Integer processingTierEU = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-            if ((processingTierEU == null ? 0 : processingTierEU) < TierEU.IV) {
+            if (MaterialUtils.processingMaterialTierEU(material) < TierEU.IV) {
                 GTModHandler.addCraftingRecipe(
                     GTOreDictUnificator.get(OrePrefixes.itemCasing, material, 1L),
                     BITS_STD,

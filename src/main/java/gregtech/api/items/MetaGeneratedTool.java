@@ -146,18 +146,15 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     }
 
     private static int getToolDurability(com.ruling_0.materiallib.api.Material aMaterial) {
-        Integer durability = aMaterial == null ? null : aMaterial.getProperty(GTMaterialProperties.DURABILITY);
-        return durability == null ? 0 : durability;
+        return aMaterial == null ? 0 : aMaterial.getProperty(GTMaterialProperties.DURABILITY);
     }
 
     private static float getToolSpeed(com.ruling_0.materiallib.api.Material aMaterial) {
-        Float toolSpeed = aMaterial == null ? null : aMaterial.getProperty(GTMaterialProperties.TOOL_SPEED);
-        return toolSpeed == null ? 1.0F : toolSpeed;
+        return aMaterial == null ? 1.0F : aMaterial.getProperty(GTMaterialProperties.TOOL_SPEED);
     }
 
     private static int getToolQuality(com.ruling_0.materiallib.api.Material aMaterial) {
-        Integer toolQuality = aMaterial == null ? null : aMaterial.getProperty(GTMaterialProperties.TOOL_QUALITY);
-        return toolQuality == null ? 0 : toolQuality;
+        return aMaterial == null ? 0 : aMaterial.getProperty(GTMaterialProperties.TOOL_QUALITY);
     }
 
     private static @Nullable Enchantment getToolEnchantment(com.ruling_0.materiallib.api.Material aMaterial) {

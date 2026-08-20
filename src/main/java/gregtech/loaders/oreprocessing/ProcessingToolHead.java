@@ -21,7 +21,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials.Materials;
 import gregtech.api.enums.materials.Shapes;
 import gregtech.api.material.GTMaterialFlag;
-import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialParts;
 import gregtech.api.material.MaterialUtils;
 import gregtech.api.util.GTModHandler;
@@ -49,15 +48,14 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
     @Override
     public void registerOre(OrePrefixes prefix, Material material, String oreDictName, String modName,
         ItemStack stack) {
-        boolean unifiable = !Boolean.FALSE.equals(material.getProperty(GTMaterialProperties.UNIFIABLE));
+        boolean unifiable = MaterialUtils.unifiable(material);
         boolean specialRecipeReq1 = unifiable && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_SMASHING);
         boolean specialRecipeReq2 = unifiable && !MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING);
         boolean noWorking = MaterialUtils.hasFlag(material, GTMaterialFlag.NO_WORKING);
         boolean producesSoftMallet = MaterialUtils.hasFlag(material, GTMaterialFlag.BOUNCY)
             || MaterialUtils.hasFlag(material, GTMaterialFlag.WOOD)
             || MaterialUtils.hasFlag(material, GTMaterialFlag.SOFT);
-        Integer processingTierEUProp = material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
-        boolean belowProcessingTierIV = (processingTierEUProp == null ? 0 : processingTierEUProp) < TierEU.IV;
+        boolean belowProcessingTierIV = MaterialUtils.processingMaterialTierEU(material) < TierEU.IV;
         switch (prefix.getName()) {
             case "toolHeadBuzzSaw" -> {
                 GTModHandler.addCraftingRecipe(

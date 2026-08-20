@@ -17,6 +17,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.ruling_0.materiallib.api.Material;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.enums.GTValues;
@@ -74,8 +76,7 @@ public class ItemUtils {
                 .contains("dust")) {
                 final String MaterialName = oredictName.toLowerCase()
                     .replace("dust", "");
-                final com.ruling_0.materiallib.api.Material m = gregtech.api.material.MaterialUtils
-                    .byLegacyName(MaterialName);
+                final Material m = gregtech.api.material.MaterialUtils.byLegacyName(MaterialName);
                 if (m != null) {
                     ItemStack returnValue = GTOreDictUnificator.get(OrePrefixes.dust, m, 1);
                     if (returnValue != null) {
@@ -235,8 +236,7 @@ public class ItemUtils {
         return getItemStackOfAmountFromOreDictNoBroken(oredictName, amount);
     }
 
-    public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, com.ruling_0.materiallib.api.Material mMat,
-        int mAmount) {
+    public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Material mMat, int mAmount) {
         if (mPrefix == OrePrefixes.rod) {
             mPrefix = OrePrefixes.stick;
         }

@@ -42,7 +42,7 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 /// P.S. It is intended to be named "Unificator" and not "Unifier", because that sounds more awesome.
 ///
 /// Two maps: which stack is canonical for an ore-dictionary name, and what material any stack is made of
-/// ([ItemData]) -- the index that lets [GTRecipeRegistrator] generate recycling for other mods' items. This
+/// ([ItemData]). This
 /// class is the single ore-dictionary unification authority: MaterialLib-backed names unify here like every
 /// other name.
 ///

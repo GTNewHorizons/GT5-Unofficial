@@ -6,9 +6,8 @@ import gregtech.api.enums.materials.Materials;
 import gregtech.api.material.MaterialUtils;
 
 /// The materials whose legacy meta-item generation included the metal item set (`MaterialUtils#generates` `METAL`),
-/// keyed by their legacy 1000-slot generated-material id, for [PosteaTransformers]' framebox item migration:
-/// the legacy per-material framebox items existed exactly for this set, and foreign item ids sharing the
-/// framebox damage range (e.g. DEFC overlapping the Bastnasite slot) must not be migrated.
+/// keyed by their legacy 1000-slot generated-material id. See [PosteaTransformers] for how the framebox item
+/// migration uses it.
 ///
 /// Rows are the materials whose [gregtech.api.material.GTMaterialProperties#GENERATION_FLAGS] carry `METAL`,
 /// declared in ascending id order.

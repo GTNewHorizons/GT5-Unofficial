@@ -492,7 +492,7 @@ public class RecipesMachinesTiered {
                 Circuits.ULV.get(2))
             .circuit(20)
             .itemOutputs(GregtechItemList.GTPP_Casing_ULV.get(1))
-            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Steel, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.Steel, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
@@ -642,8 +642,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials.Tumbaga, Shapes.plate, 4))
             .circuit(19)
             .itemOutputs(GregtechItemList.Cover_Overflow_Valve_LV.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -656,8 +655,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials.EglinSteel, Shapes.plate, 4))
             .circuit(19)
             .itemOutputs(GregtechItemList.Cover_Overflow_Valve_MV.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (2 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 2 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
@@ -670,8 +668,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials.TantalumCarbide, Shapes.plate, 4))
             .circuit(19)
             .itemOutputs(GregtechItemList.Cover_Overflow_Valve_HV.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (3 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 3 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -684,8 +681,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials.IncoloyDS, Shapes.plate, 4))
             .circuit(19)
             .itemOutputs(GregtechItemList.Cover_Overflow_Valve_EV.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (4 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 4 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -698,8 +694,7 @@ public class RecipesMachinesTiered {
                 MaterialLibAPI.getStack(Materials.Inconel625, Shapes.plate, 4))
             .circuit(19)
             .itemOutputs(GregtechItemList.Cover_Overflow_Valve_IV.get(1))
-            .fluidInputs(
-                MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, (int) (5 * INGOTS)))
+            .fluidInputs(MaterialLibAPI.getFluidStack(Materials.SolderingAlloy, FluidShapes.fluidMolten, 5 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -1177,8 +1172,7 @@ public class RecipesMachinesTiered {
             .circuit(14)
             .itemOutputs(GregtechItemList.Generator_SemiFluid_IV.get(1))
             .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, (int) (1 * INGOTS)))
+                MaterialLibAPI.getFluidStack(Materials.Polytetrafluoroethylene, FluidShapes.fluidMolten, INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
