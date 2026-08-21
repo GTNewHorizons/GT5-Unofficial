@@ -130,16 +130,6 @@ public class TexturesGtBlock {
     // Custom Pipes
     public static final CustomIcon TEXTURE_PIPE_GRINDING_MILL = new CustomIcon("TileEntities/MACHINE_CASING_PIPE_T1");
     public static final CustomIcon TEXTURE_PIPE_GENERIC = new CustomIcon("iconsets/MACHINE_CASING_PIPE_GENERIC");
-    public static final CustomIcon TEXTURE_PIPE_BABBITALLOY = new CustomIcon(
-        "iconsets/MACHINE_CASING_PIPE_BABBITALLOY");
-    public static final CustomIcon TEXTURE_PIPE_INCONEL690 = new CustomIcon("iconsets/MACHINE_CASING_PIPE_INCONEL690");
-    public static final CustomIcon TEXTURE_PIPE_STELLITE = new CustomIcon("iconsets/MACHINE_CASING_PIPE_STELLITE");
-    public static final CustomIcon TEXTURE_PIPE_NITINOL60 = new CustomIcon("iconsets/MACHINE_CASING_PIPE_NITINOL60");
-    public static final CustomIcon TEXTURE_PIPE_LAFIUM = new CustomIcon("iconsets/MACHINE_CASING_PIPE_LAFIUM");
-    public static final CustomIcon TEXTURE_PIPE_CINOBITE = new CustomIcon("iconsets/MACHINE_CASING_PIPE_CINOBITE");
-    public static final CustomIcon TEXTURE_PIPE_TITANSTEEL = new CustomIcon("iconsets/MACHINE_CASING_PIPE_TITANSTEEL");
-    public static final CustomIcon TEXTURE_PIPE_ABYSSALALLOY = new CustomIcon(
-        "iconsets/MACHINE_CASING_PIPE_ABYSSALALLOY");
 
     // Custom Gearboxes
     public static final CustomIcon TEXTURE_GEARBOX_GRINDING_MILL = new CustomIcon(
