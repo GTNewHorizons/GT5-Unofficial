@@ -20,9 +20,8 @@ public class ItemHalfCompleteCasings extends BaseItemColourable {
 
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
-        for (int i = 0; i < 2; i++) {
-            list.add(new ItemStack(item, 1, i));
-        }
+        list.add(new ItemStack(item, 1, 0));
+        list.add(new ItemStack(item, 1, 1));
     }
 
     @Override
@@ -41,10 +40,8 @@ public class ItemHalfCompleteCasings extends BaseItemColourable {
     public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {
         if (this.getDamage(stack) == 0) {
             return Utils.rgbtoHexValue(52, 52, 52);
-        } else if (this.getDamage(stack) == 1) {
-            return Utils.rgbtoHexValue(80, 90, 222);
         } else {
-            return Utils.rgbtoHexValue(77, 175, 182);
+            return Utils.rgbtoHexValue(80, 90, 222);
         }
     }
 }

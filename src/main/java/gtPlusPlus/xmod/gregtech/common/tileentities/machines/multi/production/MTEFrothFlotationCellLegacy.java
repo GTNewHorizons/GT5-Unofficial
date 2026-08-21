@@ -154,7 +154,7 @@ public class MTEFrothFlotationCellLegacy extends GTPPMultiBlockBase<MTEFrothFlot
                         .casingIndex(getCasingTextureId())
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 1))))
-                .addElement('F', ofBlock(ModBlocks.blockSpecialMultiCasings, 9))
+                .addElement('F', ofBlock(ModBlocks.blockSpecialMultiCasings, 8))
                 .addElement('X', ofBlock(ModBlocks.blockCasings3Misc, 1))
                 .build();
         }

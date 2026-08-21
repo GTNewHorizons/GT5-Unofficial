@@ -3,7 +3,9 @@ package gtPlusPlus.xmod.gregtech.common.blocks;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
@@ -35,23 +37,30 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
 
     public GregtechMetaSpecialMultiCasings() {
         super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.1", MaterialCasings.INSTANCE);
-        TAE.registerTexture(1, 12, TextureFactory.of(this, 14));
-        TAE.registerTexture(3, 1, TextureFactory.of(this, 11));
+        TAE.registerTexture(1, 12, TextureFactory.of(this, 12));
+        TAE.registerTexture(3, 1, TextureFactory.of(this, 9));
 
         GregtechItemList.Casing_Turbine_Shaft.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Turbine_LP.set(new ItemStack(this, 1, 1));
         GregtechItemList.Casing_Turbine_HP.set(new ItemStack(this, 1, 2));
         GregtechItemList.Casing_Turbine_Gas.set(new ItemStack(this, 1, 3));
         GregtechItemList.Casing_Turbine_Plasma.set(new ItemStack(this, 1, 4));
-        GregtechItemList.Casing_SolarTower_Structural.set(new ItemStack(this, 1, 6));
-        GregtechItemList.Casing_SolarTower_SaltContainment.set(new ItemStack(this, 1, 7));
-        GregtechItemList.Casing_SolarTower_HeatContainment.set(new ItemStack(this, 1, 8));
-        GregtechItemList.Casing_Flotation_Cell.set(new ItemStack(this, 1, 9));
-        GregtechItemList.Casing_Molecular_Transformer_1.set(new ItemStack(this, 1, 11));
-        GregtechItemList.Casing_Molecular_Transformer_2.set(new ItemStack(this, 1, 12));
-        GregtechItemList.Casing_Molecular_Transformer_3.set(new ItemStack(this, 1, 13));
-        GregtechItemList.Casing_XL_HeatExchanger.set(new ItemStack(this, 1, 14));
-        GregtechItemList.Casing_Turbine_SC.set(new ItemStack(this, 1, 15));
+        GregtechItemList.Casing_SolarTower_Structural.set(new ItemStack(this, 1, 5));
+        GregtechItemList.Casing_SolarTower_SaltContainment.set(new ItemStack(this, 1, 6));
+        GregtechItemList.Casing_SolarTower_HeatContainment.set(new ItemStack(this, 1, 7));
+        GregtechItemList.Casing_Flotation_Cell.set(new ItemStack(this, 1, 8));
+        GregtechItemList.Casing_Molecular_Transformer_1.set(new ItemStack(this, 1, 9));
+        GregtechItemList.Casing_Molecular_Transformer_2.set(new ItemStack(this, 1, 10));
+        GregtechItemList.Casing_Molecular_Transformer_3.set(new ItemStack(this, 1, 11));
+        GregtechItemList.Casing_XL_HeatExchanger.set(new ItemStack(this, 1, 12));
+        GregtechItemList.Casing_Turbine_SC.set(new ItemStack(this, 1, 13));
+    }
+
+    @Override
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+        for (int i = 0; i < 14; i++) {
+            list.add(new ItemStack(item, 1, i));
+        }
     }
 
     @Override
@@ -77,16 +86,15 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
             case 2 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TITANIUM.getIcon();
             case 3 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_STAINLESSSTEEL.getIcon();
             case 4 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TUNGSTENSTEEL.getIcon();
-            case 5 -> TexturesGtBlock.Casing_Material_RedSteel.getIcon();
-            case 6 -> TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
-            case 7 -> TexturesGtBlock.Casing_Material_Stellite.getIcon();
-            case 8 -> TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
-            case 9 -> TexturesGtBlock.TEXTURE_CASING_FLOTATION.getIcon();
-            case 10, 14 -> TexturesGtBlock.Casing_Material_Talonite.getIcon();
-            case 11 -> Textures.BlockIcons.MOLECULAR_CONTAINMENT_CASING.getIcon();
-            case 12 -> Textures.BlockIcons.CASING_REDOX_UV.getIcon();
-            case 13 -> Textures.BlockIcons.PARTICLE_CONTAINMENT_CASING.getIcon();
-            case 15 -> TexturesGtBlock.Turbine_SC_Material_Casing.getIcon();
+            case 5 -> TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
+            case 6 -> TexturesGtBlock.Casing_Material_Stellite.getIcon();
+            case 7 -> TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
+            case 8 -> TexturesGtBlock.TEXTURE_CASING_FLOTATION.getIcon();
+            case 9 -> Textures.BlockIcons.MOLECULAR_CONTAINMENT_CASING.getIcon();
+            case 10 -> Textures.BlockIcons.CASING_REDOX_UV.getIcon();
+            case 11 -> Textures.BlockIcons.PARTICLE_CONTAINMENT_CASING.getIcon();
+            case 12 -> TexturesGtBlock.Casing_Material_Talonite.getIcon();
+            case 13 -> TexturesGtBlock.Turbine_SC_Material_Casing.getIcon();
             default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
         };
     }

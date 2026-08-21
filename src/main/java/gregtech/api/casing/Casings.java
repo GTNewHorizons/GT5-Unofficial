@@ -860,25 +860,25 @@ public enum Casings implements ICasing {
     ReinforcedGasTurbineCasing
         (() -> ModBlocks.blockSpecialMultiCasings, 3, 58),
     ReinforcedPlasmaTurbineCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 5, gtpp(1, 5)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 4, gtpp(1, 4)),
     StructuralSolarCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 6, gtpp(1, 6)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 5, gtpp(1, 5)),
     SaltContainmentCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 7, gtpp(1, 7)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 6, gtpp(1, 6)),
     ThermallyInsulatedCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 8, gtpp(1, 8)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 7, gtpp(1, 7)),
     FlotationCellCasings
-        (() -> ModBlocks.blockSpecialMultiCasings, 9, gtpp(1, 9)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 8, gtpp(1, 8)),
     MolecularContainmentCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 11, 113),
+        (() -> ModBlocks.blockSpecialMultiCasings, 9, 113),
     HighVoltageCurrentCapacitor
-        (() -> ModBlocks.blockSpecialMultiCasings, 12, gtpp(1, 12)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 10, gtpp(1, 10)),
     ParticleContainmentCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 13, gtpp(1, 13)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 11, gtpp(1, 11)),
     ReinforcedHeatExchangerCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 14, gtpp(1, 14)),
+        (() -> ModBlocks.blockSpecialMultiCasings, 12, gtpp(1, 12)),
     ReinforcedSCTurbineCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 15, 1538),
+        (() -> ModBlocks.blockSpecialMultiCasings, 13, 1538),
 
     // GregtechMetaSpecialMultiCasings2
     ResonanceChamber1

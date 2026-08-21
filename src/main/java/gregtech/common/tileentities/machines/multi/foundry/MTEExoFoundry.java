@@ -241,7 +241,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('K', ofBlock(GregTechAPI.sBlockCasingsFoundry,10))
         .addElement('L', ofSheetMetal(Materials.SuperconductorUEVBase))
         .addElement('M', lazy(() -> ofBlock(ModBlocks.blockCasings5Misc, 3)) )
-        .addElement('N', lazy(() -> ofBlock(ModBlocks.blockSpecialMultiCasings, 13)))
+        .addElement('N', lazy(() -> ofBlock(ModBlocks.blockSpecialMultiCasings, 11)))
         .addShape(
             FoundryModule.EXTRA_CASTING_BASINS.structureID,
             transpose(

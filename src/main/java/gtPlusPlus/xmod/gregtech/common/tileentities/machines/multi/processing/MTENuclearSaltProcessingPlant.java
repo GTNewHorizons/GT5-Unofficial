@@ -142,25 +142,25 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(InputBus, InputHatch)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
                         .hint(2)
-                        .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
+                        .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 7))))
                 .addElement(
                     'C',
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(OutputBus, OutputHatch)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
                         .hint(3)
-                        .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
+                        .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 7))))
                 .addElement(
                     'D',
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(Muffler)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
                         .hint(4)
-                        .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
+                        .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 7))))
                 .addElement(
                     'E',
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(Energy)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
                         .hint(5)
-                        .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
+                        .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 7))))
                 .addElement(
                     'F', // This is the only position maintenance is allowed, and we force a maintenance hatch here
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(Maintenance)
