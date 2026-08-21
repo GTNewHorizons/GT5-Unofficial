@@ -21,8 +21,7 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
 
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
-        for (int i = 0; i < 8; i++) {
-            if (i == 1 || i == 3) continue;
+        for (int i = 0; i < 4; i++) {
             list.add(new ItemStack(item, 1, i));
         }
     }
@@ -36,10 +35,10 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean aF3_H) {
             int aMeta = stack.getItemDamage();
-            if (aMeta < 4) {
+            if (aMeta < 2) {
                 tooltip.add(StatCollector.translateToLocal("GTPP.tooltip.meta_special.quantum_stability"));
             }
-            if (aMeta >= 4 && aMeta < 6) {
+            if (aMeta >= 2 && aMeta < 4) {
                 tooltip.add(StatCollector.translateToLocal("GTPP.tooltip.meta_special.quantum_modulation"));
             }
             super.addInformation(stack, player, tooltip, aF3_H);
@@ -50,9 +49,9 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
         super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.3", MaterialCasings.INSTANCE);
 
         GregtechItemList.ResonanceChamber_I.set(new ItemStack(this, 1, 0));
-        GregtechItemList.ResonanceChamber_III.set(new ItemStack(this, 1, 2));
-        GregtechItemList.Modulator_I.set(new ItemStack(this, 1, 4));
-        GregtechItemList.Modulator_III.set(new ItemStack(this, 1, 5));
+        GregtechItemList.ResonanceChamber_III.set(new ItemStack(this, 1, 1));
+        GregtechItemList.Modulator_I.set(new ItemStack(this, 1, 2));
+        GregtechItemList.Modulator_III.set(new ItemStack(this, 1, 3));
     }
 
     @Override
@@ -70,9 +69,9 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
     public static IIcon getStaticIcon(final byte aSide, final int aMeta) {
         return switch (aMeta) {
             case 0 -> Textures.BlockIcons.Casing_Resonance_1.getIcon();
-            case 2 -> Textures.BlockIcons.Casing_Resonance_3.getIcon();
-            case 4 -> Textures.BlockIcons.Casing_Modulator_1.getIcon();
-            case 5 -> Textures.BlockIcons.Casing_Modulator_3.getIcon();
+            case 1 -> Textures.BlockIcons.Casing_Resonance_3.getIcon();
+            case 2 -> Textures.BlockIcons.Casing_Modulator_1.getIcon();
+            case 3 -> Textures.BlockIcons.Casing_Modulator_3.getIcon();
             default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
         };
     }
