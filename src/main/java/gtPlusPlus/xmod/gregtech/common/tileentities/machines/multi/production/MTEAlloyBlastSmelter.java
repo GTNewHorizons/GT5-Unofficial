@@ -70,16 +70,8 @@ public class MTEAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTEAllo
     }
 
     @Override
-    public void loadNBTData(final NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        if (aNBT.hasKey("isBussesSeparate")) {
-            inputSeparation = aNBT.getBoolean("isBussesSeparate");
-        }
-    }
-
-    @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Alloy Cooker, ABS")
             .addInfo("Allows Complex alloys to be created")
             .addInfo("Recipe tier is limited to hatch tier")
