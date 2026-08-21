@@ -77,15 +77,14 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
             case 2 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TITANIUM.getIcon();
             case 3 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_STAINLESSSTEEL.getIcon();
             case 4 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TUNGSTENSTEEL.getIcon();
-            case 5 -> TexturesGtBlock.Casing_Material_RedSteel.getIcon();
             case 6 -> TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
             case 7 -> TexturesGtBlock.Casing_Material_Stellite.getIcon();
             case 8 -> TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
             case 9 -> TexturesGtBlock.TEXTURE_CASING_FLOTATION.getIcon();
-            case 10, 14 -> TexturesGtBlock.Casing_Material_Talonite.getIcon();
             case 11 -> Textures.BlockIcons.MOLECULAR_CONTAINMENT_CASING.getIcon();
             case 12 -> Textures.BlockIcons.CASING_REDOX_UV.getIcon();
             case 13 -> Textures.BlockIcons.PARTICLE_CONTAINMENT_CASING.getIcon();
+            case 14 -> TexturesGtBlock.Casing_Material_Talonite.getIcon();
             case 15 -> TexturesGtBlock.Turbine_SC_Material_Casing.getIcon();
             default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
         };

@@ -746,8 +746,6 @@ public enum Casings implements ICasing {
     InconelReinforcedCasing
         (() -> ModBlocks.blockCasings3Misc, 1, gtpp(2, 1)),
     MultiUseCasing
-        (() -> ModBlocks.blockCasings3Misc, 2, gtpp(2, 2)),
-    TriniumPlatedCasing
         (() -> ModBlocks.blockCasings3Misc, 3, gtpp(2, 3)),
     VanadiumRedoxPowerCellIV
         (() -> ModBlocks.blockCasings3Misc, 4, gtpp(2, 4)),

@@ -60,7 +60,6 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
         GregtechItemList.Casing_FishPond.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Extruder.set(new ItemStack(this, 1, 1));
         GregtechItemList.Casing_Multi_Use.set(new ItemStack(this, 1, 2));
-        GregtechItemList.Casing_BedrockMiner.set(new ItemStack(this, 1, 3));
         GregtechItemList.Casing_Vanadium_Redox_IV.set(new ItemStack(this, 1, 4));
         GregtechItemList.Casing_Vanadium_Redox_LuV.set(new ItemStack(this, 1, 5));
         GregtechItemList.Casing_Vanadium_Redox_ZPM.set(new ItemStack(this, 1, 6));
@@ -101,9 +100,6 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
                 case 2 ->
                     // Multi-Use Casing
                     Textures.BlockIcons.MULTI_USE_CASING.getIcon();
-                case 3 ->
-                    // Trinium Plated Mining Platform Casing
-                    TexturesGtBlock.Casing_Trinium_Naquadah_Vent.getIcon();
                 case 4 ->
                     // Vanadium Redox IV
                     Textures.BlockIcons.CASING_REDOX_IV.getIcon();

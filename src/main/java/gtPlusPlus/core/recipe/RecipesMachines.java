@@ -183,19 +183,5 @@ public class RecipesMachines {
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "RPR", "PFP", "PPP", 'R', MaterialsAlloy.LEAGRISIUM.getRod(1), 'P',
                 MaterialsAlloy.LEAGRISIUM.getPlate(1), 'F', MaterialsAlloy.LEAGRISIUM.getFrameBox(1) });
-
-        // Trinium Plated Casing (unused but craftable)
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getFrameBox(4),
-                MaterialsAlloy.TRINIUM_TITANIUM.getPlateDouble(1),
-                MaterialsAlloy.PIKYONIUM.getGear(2),
-                MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getPlateDouble(4),
-                ItemList.Hull_LuV.get(1))
-            .itemOutputs(GregtechItemList.Casing_BedrockMiner.get(1))
-            .fluidInputs(MaterialsAlloy.MARAGING350.getFluidStack(16 * INGOTS))
-            .duration(5 * SECONDS)
-            .eut(TierEU.RECIPE_LuV)
-            .addTo(assemblerRecipes);
     }
 }
