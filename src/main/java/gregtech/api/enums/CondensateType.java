@@ -1,5 +1,7 @@
 package gregtech.api.enums;
 
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+
 import java.util.function.Supplier;
 
 import net.minecraft.util.ResourceLocation;
@@ -16,8 +18,6 @@ import gregtech.common.items.GTItemCell;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
 import tectech.recipe.TecTechRecipeMaps;
-
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 /// Each of these entries maps to a type of condensate used by the BEC multis. Condensate itself is just a fluid, but
 /// this class autogens the recipes, cells, and fluids for each type. This isn't a material because I didn't want to
