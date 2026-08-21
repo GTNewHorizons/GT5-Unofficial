@@ -795,11 +795,6 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
         IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        list.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.BLUE
-                + tag.getInteger("currentParallelism")
-                + EnumChatFormatting.RESET);
         list.add(StatCollector.translateToLocal("GT5U.multiblock.runningMode"));
         list.addAll(getDisplayMode(ProcessingMode.fromOrdinal(tag.getInteger("machineMode"))));
         list.add(
