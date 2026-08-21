@@ -33,6 +33,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -67,10 +69,13 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
     public static int minimalDistancePoints = 64;
 
     protected MTELongDistancePipelineBase mTarget = null;
-    // these two are updated by machine block update thread, so must be volatile
-    protected volatile MTELongDistancePipelineBase mSender = null;
+    // these two are updated by machine block update thread, so must be volatile or Concurrent hash map
+    protected final Set<MTELongDistancePipelineBase> mSenders =
+        Collections.newSetFromMap(new ConcurrentHashMap<>());
     protected volatile ChunkCoordinates mTargetPos = null;
-    protected MTELongDistancePipelineBase mTooCloseTarget = null, mTooCloseSender = null;
+    protected MTELongDistancePipelineBase mTooCloseTarget = null;
+    protected final Set<MTELongDistancePipelineBase> mTooCloseSenders =
+        Collections.newSetFromMap(new ConcurrentHashMap<>());
     protected String tooltipPrefixKey;
 
     public MTELongDistancePipelineBase(int aID, String aName, String aNameRegional, int aTier) {
@@ -130,6 +135,30 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
         return false;
     }
 
+    private boolean targetingThis(Set<MTELongDistancePipelineBase> senders)
+    {
+        for (MTELongDistancePipelineBase sender : senders)
+        {
+            if (sender.mTarget != this)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean areAnyDead(Set<MTELongDistancePipelineBase> items)
+    {
+        for (MTELongDistancePipelineBase sender : items)
+        {
+            if (sender.isDead())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isDead() {
         return getBaseMetaTileEntity() == null || getBaseMetaTileEntity().isDead();
     }
@@ -161,40 +190,41 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
                 }
             }
         }
-        if (mTooCloseTarget != null && mTooCloseTarget.mSender == null) mTooCloseTarget.mTooCloseSender = this;
-        if (mTooCloseSender != null && (mTooCloseSender.isDead() || mTooCloseSender.mTarget != null))
-            mTooCloseSender = null;
-        if (mTarget == null || mTarget == this) return false;
-        if (mTarget.mSender == null || mTarget.mSender.isDead()
-            || mTarget.mSender.mTarget == null
-            || mTarget.mSender.mTarget.isDead()) {
-            mTarget.mSender = this;
-            mTarget.mTooCloseSender = null;
+        if (mTooCloseTarget != null && !mTooCloseTarget.mSenders.contains(this))
+        {
+            mTooCloseTarget.mTooCloseSenders.add(this);
         }
 
-        return mTarget.mSender == this;
+        // prune stale too-close senders pointing at us
+        mTooCloseSenders.removeIf(p -> p.isDead() || p.mTarget != null);
+
+        if (mTarget == null || mTarget == this) return false;
+
+        // prune stale senders on the target, then register ourselves always
+        mTarget.mSenders.removeIf(p -> p.isDead() || p.mTarget != mTarget);
+        mTarget.mSenders.add(this);
+        mTarget.mTooCloseSenders.remove(this);
+
+        return mTarget.mSenders.contains(this);
     }
 
     @Override
     public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer,
-        int aLogLevel, ArrayList<String> aList) {
-        if (mSender != null && !mSender.isDead() && mSender.mTarget == this) {
-            final ChunkCoordinates coords = mSender.getCoords();
-            aList.addAll(
-                Arrays.asList(
-                    "Is Pipeline Output",
-                    "Pipeline Input is at: X: " + coords.posX + " Y: " + coords.posY + " Z: " + coords.posZ));
+                                                 int aLogLevel, ArrayList<String> aList) {
+        if (!mSenders.isEmpty()) {
+            aList.add("Is Pipeline Output");
+            for (MTELongDistancePipelineBase sender : mSenders) {
+                final ChunkCoordinates coords = sender.getCoords();
+                aList.add("Pipeline Input is at: X: " + coords.posX + " Y: " + coords.posY + " Z: " + coords.posZ);
+            }
         } else {
             aList.addAll(
                 Arrays.asList(
                     checkTarget() ? "Is connected to Pipeline Output" : "Pipeline Output is not connected/chunkloaded",
                     "Pipeline Output should be around: X: " + mTargetPos.posX
-                        + " Y: "
-                        + mTargetPos.posY
-                        + " Z: "
-                        + mTargetPos.posZ));
+                        + " Y: " + mTargetPos.posY
+                        + " Z: " + mTargetPos.posZ));
         }
-
         return aList;
     }
 
@@ -202,7 +232,7 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
     public abstract int getPipeMeta();
 
     protected void scanPipes() {
-        if (mSender != null && !mSender.isDead() && mSender.mTarget == this) return;
+        if (!mSenders.isEmpty() && !areAnyDead(mSenders) && targetingThis(mSenders)) return;
 
         // Check if we need to scan anything
         final IGregTechTileEntity gtTile = getBaseMetaTileEntity();
@@ -213,7 +243,7 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
 
         mTargetPos = getCoords();
         mTarget = this;
-        mSender = null;
+        mSenders.removeIf(p -> p.isDead() || p.mTarget != this);
 
         // Start scanning from the output side
         Block aBlock = gtTile.getBlockAtSide(gtTile.getBackFacing());
@@ -308,7 +338,7 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
     @Override
     public void onMachineBlockUpdate() {
         mTargetPos = null;
-        mSender = null;
+        mSenders.clear();
     }
 
     @Override
@@ -416,8 +446,8 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
 
-        tag.setBoolean("hasInput", mSender != null);
-        tag.setBoolean("hasInputTooClose", mTooCloseSender != null);
+        tag.setBoolean("hasInput", !mSenders.isEmpty());
+        tag.setBoolean("hasInputTooClose", !mTooCloseSenders.isEmpty());
         tag.setBoolean("hasOutput", mTarget != null && mTarget != this);
         tag.setBoolean("hasOutputTooClose", mTooCloseTarget != null);
     }
