@@ -117,7 +117,7 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
     @Override
     public void writeToStream(ByteBuf buffer) {
         super.writeToStream(buffer);
-
+        // TODO: move this to MUI2 at some point
         NBTTagCompound data = new NBTTagCompound();
         saveInputMapToNBT(data, acceptedInputMap);
         try {
@@ -130,6 +130,7 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
     @Override
     public void readFromStream(ByteBuf buffer) {
         super.readFromStream(buffer);
+        // TODO: move this to MUI2 at some point
         try {
             CompressedStreamTools.read(new DataInputStream(new ByteBufInputStream(buffer)));
         } catch (IOException e) {
