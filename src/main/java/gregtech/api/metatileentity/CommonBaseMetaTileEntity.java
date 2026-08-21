@@ -1,8 +1,9 @@
 package gregtech.api.metatileentity;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.IllegalFormatException;
@@ -32,6 +33,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.INonConsumedItemDisplay;
+import gregtech.api.interfaces.IPhysicalCircuitDisplay;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -39,7 +41,6 @@ import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.blockupdate.BlockUpdateHandler;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Gregtech;
 
@@ -61,15 +62,21 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     private byte mColor = 0;
 
+    protected boolean mMetaTileEntityValid;
+
+    protected boolean mNeedsClientTick = true;
+
+    private long mClientLoadTime = Long.MIN_VALUE;
+
     // Profiling
-    private final int[] mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
+    private int[] mTimeStatistics;
     private boolean hasTimeStatisticsStarted;
     private int mTimeStatisticsIndex = 0;
     private int mLagWarningCount = 0;
 
     protected boolean createNewMetatileEntity(short aID) {
         if (aID <= 0 || aID >= GregTechAPI.METATILEENTITIES.length || GregTechAPI.METATILEENTITIES[aID] == null) {
-            GTLog.err.println("MetaID " + aID + " not loadable => locking TileEntity!");
+            GT_FML_LOGGER.error("MetaID {} not loadable => locking TileEntity!", aID);
         } else {
             if (hasValidMetaTileEntity()) getMetaTileEntity().setBaseMetaTileEntity(null);
             GregTechAPI.METATILEENTITIES[aID].newMetaEntity(this)
@@ -106,7 +113,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         getWorld().func_147457_a(this);
         mIgnoreNextUnload = true;
         hasTimeStatisticsStarted = false;
-        Arrays.fill(mTimeStatistics, 0);
+        if (mTimeStatistics != null) Arrays.fill(mTimeStatistics, 0);
         mTickDisabled = true;
     }
 
@@ -200,10 +207,22 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         if (isServerSide) {
             checkDropCover();
         } else {
+            mClientLoadTime = worldObj.getTotalWorldTime();
             requestCoverDataIfNeeded();
         }
         worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
         getMetaTileEntity().onFirstTick(this);
+    }
+
+    /** Whether this tile has been on the client long enough to act on sound events. */
+    protected final boolean isClientSettled() {
+        return mClientLoadTime != Long.MIN_VALUE && worldObj.getTotalWorldTime() - mClientLoadTime > 20;
+    }
+
+    @Override
+    public void validate() {
+        super.validate();
+        mClientLoadTime = Long.MIN_VALUE;
     }
 
     /**
@@ -244,7 +263,8 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         } else {
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
-        getMetaTileEntity().onTextureUpdate();
+        final IMetaTileEntity mte = getMetaTileEntity();
+        if (mte != null) mte.onTextureUpdate();
         mNeedsUpdate = false;
     }
 
@@ -365,6 +385,9 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     @Override
     public void startTimeStatistics() {
+        if (mTimeStatistics == null) {
+            mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
+        }
         hasTimeStatisticsStarted = true;
     }
 
@@ -411,7 +434,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     @Override
     public int[] getTimeStatistics() {
-        return mTimeStatistics;
+        return mTimeStatistics == null ? GTValues.emptyIntArray : mTimeStatistics;
     }
 
     @Override
@@ -469,15 +492,19 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         // The mte sent from server is invalid
         if (mte == null) return;
 
-        if (!nbt.hasKey("mte")) return;
-        NBTTagCompound data = nbt.getCompoundTag("mte");
+        if (nbt.hasKey("mte")) {
+            mte.onDescriptionPacket(nbt.getCompoundTag("mte"));
+        }
 
-        mte.onDescriptionPacket(data);
+        mte.onClientSoundStateChanged();
     }
 
     @Override
     public void issueTextureUpdate() {
         mNeedsUpdate = true;
+        if (mTickDisabled && isClientSide()) {
+            handleBlockUpdateClient();
+        }
     }
 
     @Override
@@ -500,7 +527,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         return !isDead && hasValidMetaTileEntity();
     }
 
-    protected abstract boolean hasValidMetaTileEntity();
+    protected final boolean hasValidMetaTileEntity() {
+        return mMetaTileEntityValid;
+    }
+
+    abstract void refreshMetaTileEntityValidity();
 
     @Override
     public String[] getDescription() {
@@ -561,15 +592,25 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     public String getInterfaceNameSuffix() {
         StringBuilder suffix = new StringBuilder();
 
-        // Ghost circuit suffix
+        // Ghost + physical circuit suffix
+        List<Integer> circuitNumbers = new ArrayList<>();
         final IConfigurationCircuitSupport ccs = getConfigurationCircuitSupport();
         if (ccs != null && ccs.allowSelectCircuit()) {
             ItemStack stack = getStackInSlot(ccs.getCircuitSlot());
             if (stack != null && stack.getItemDamage() > 0) {
-                try {
-                    suffix.append(String.format(Gregtech.machines.ghostCircuitSuffixFormat, stack.getItemDamage()));
-                } catch (IllegalFormatException ignored) {}
+                circuitNumbers.add(stack.getItemDamage());
             }
+        }
+        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof IPhysicalCircuitDisplay provider) {
+            circuitNumbers.addAll(provider.getPhysicalCircuitNumbers());
+        }
+        if (!circuitNumbers.isEmpty()) {
+            String joined = circuitNumbers.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(", "));
+            try {
+                suffix.append(String.format(Gregtech.machines.ghostCircuitSuffixFormat, joined));
+            } catch (IllegalFormatException ignored) {}
         }
 
         // Non-consumed items suffix (e.g. molds in Extruder)
@@ -585,7 +626,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             }
         }
 
-        return suffix.length() > 0 ? suffix.toString() : null;
+        return !suffix.isEmpty() ? suffix.toString() : null;
     }
 
     @Override

@@ -366,7 +366,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 // limit CA mode recipes to hatch tier - 1
                 if (machineMode == MACHINEMODE_ASSEMBLER
                     && recipe.mEUt > MTECircuitAssemblyLine.this.getMaxInputVoltage() / 4) {
-                    return CheckRecipeResultRegistry.NO_RECIPE;
+                    return CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt * 4L);
                 }
                 if (machineMode == MACHINEMODE_CAL) {
                     if (mInputBusses.size() < recipe.mInputs.length) {
@@ -676,24 +676,23 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.runningMode") + " "
                 + EnumChatFormatting.WHITE
                 + StatCollector.translateToLocal("chat.cal.mode." + tag.getInteger("mode")));
-        if (tag.hasKey("ImprintedWith") && tag.getInteger("mode") == 0) currenttip.add(
-            StatCollector.translateToLocalFormatted(
-                "tooltip.cal.imprintedWith",
-                EnumChatFormatting.YELLOW + tag.getString("ImprintedWith")));
+        if (tag.hasKey("ImprintedWith") && tag.getInteger("mode") == 0) {
+            list.add(
+                StatCollector.translateToLocalFormatted(
+                    "tooltip.cal.imprintedWith",
+                    EnumChatFormatting.YELLOW + tag.getString("ImprintedWith")));
+        }
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         String imprintedWith = this.getTypeForDisplay();
         if (!imprintedWith.isEmpty()) tag.setString("ImprintedWith", imprintedWith);
         tag.setInteger("mode", machineMode);

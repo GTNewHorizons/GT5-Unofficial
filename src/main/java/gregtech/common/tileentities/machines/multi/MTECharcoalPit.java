@@ -25,6 +25,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.Textures;
@@ -44,7 +45,7 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ICasingT
 
     private boolean running = false;
 
-    private static final Block EtFuturumDirtPath = GameRegistry.findBlock("etfuturum", "grass_path");
+    private static final Block EtFuturumDirtPath = GameRegistry.findBlock(Mods.EtFuturumRequiem.ID, "grass_path");
 
     public MTECharcoalPit(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -265,6 +266,11 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ICasingT
     public boolean polluteEnvironment(int aPollutionLevel) {
         // Do nothing and don't choke on pollution. This is fine because we add
         // all the pollution at once when the recipe starts
+        return true;
+    }
+
+    @Override
+    public boolean needsClientTick() {
         return true;
     }
 

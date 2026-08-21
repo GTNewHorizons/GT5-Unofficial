@@ -157,14 +157,8 @@ public class BaseOreComponent extends Item {
 
     @Override
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
-        if (this.componentType == ComponentTypes.MILLED) {
-            if (renderPass == 1) {
-                return Utils.rgbtoHexValue(230, 230, 230);
-            }
-        } else {
-            if (renderPass == 1) {
-                return Utils.rgbtoHexValue(230, 230, 230);
-            }
+        if (renderPass == 1) {
+            return Utils.rgbtoHexValue(230, 230, 230);
         }
         return this.componentColour;
     }

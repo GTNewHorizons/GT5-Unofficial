@@ -1,7 +1,7 @@
 package gregtech.api.metatileentity;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
@@ -103,8 +103,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     protected long mStoredEnergy = 0, mStoredSteam = 0;
     protected int mAverageEUInputIndex = 0, mAverageEUOutputIndex = 0;
     protected boolean mReleaseEnergy = false;
-    protected final long[] mAverageEUInput = new long[] { 0, 0, 0, 0, 0 };
-    protected final long[] mAverageEUOutput = new long[] { 0, 0, 0, 0, 0 };
+    protected long[] mAverageEUInput;
+    protected long[] mAverageEUOutput;
     private boolean mTexturePacketScheduled = false;
     private boolean mHasEnoughEnergy = true, mRunningThroughTick = false, mInputDisabled = false,
         mOutputDisabled = false;
@@ -208,14 +208,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     /**
-     * Used for ticking special BaseMetaTileEntities, which need that for Energy Conversion It's called right before
-     * onPostTick()
-     */
-    public void updateStatus() {
-        //
-    }
-
-    /**
      * Called when trying to charge Items
      */
     public void chargeItem(ItemStack aStack) {
@@ -288,13 +280,15 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 }
             }
             if (!isServerSide) {
-                if (mLightValue != oldLightValueClient) {
-                    updateLightValue();
-                    oldLightValueClient = mLightValue;
-                    issueTextureUpdate();
-                }
+                applyClientLightValue();
 
                 handleBlockUpdateClient();
+
+                if (!mNeedsClientTick) {
+                    mWorkUpdate = mInventoryChanged = mRunningThroughTick = false;
+                    tryDisableTicking();
+                    return;
+                }
             } else {
                 if (mTickTimer > 10 && !doCoverThings()) {
                     mRunningThroughTick = false;
@@ -330,11 +324,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 handleInventoryDechargingServer();
                 handleInventoryChargingServer();
             }
-            updateStatus();
-            if (!hasValidMetaTileEntity()) {
-                mRunningThroughTick = false;
-                return;
-            }
             doPostTick();
             if (!hasValidMetaTileEntity()) {
                 mRunningThroughTick = false;
@@ -364,6 +353,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         mWorkUpdate = mInventoryChanged = mRunningThroughTick = false;
     }
 
+    private void applyClientLightValue() {
+        if (mLightValue == oldLightValueClient) return;
+        updateLightValue();
+        oldLightValueClient = mLightValue;
+        issueTextureUpdate();
+    }
+
     private void doPreTick() {
         mMetaTileEntity.onPreTick(this, mTickTimer);
     }
@@ -390,6 +386,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
      * Updates the average EU I/O
      */
     private void updateAvgEUIO() {
+        ensureAverageEUArrays();
         if (++mAverageEUInputIndex >= mAverageEUInput.length) {
             mAverageEUInputIndex = 0;
         }
@@ -398,6 +395,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         }
         mAverageEUInput[mAverageEUInputIndex] = 0;
         mAverageEUOutput[mAverageEUOutputIndex] = 0;
+    }
+
+    private void ensureAverageEUArrays() {
+        if (mAverageEUInput == null) {
+            mAverageEUInput = new long[5];
+            mAverageEUOutput = new long[5];
+        }
     }
 
     /**
@@ -458,6 +462,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             return;
         }
         final long eu = outputVoltage * Util.emitEnergyToNetwork(oldOutput, usableAmperage, this);
+        ensureAverageEUArrays();
         mAverageEUOutput[mAverageEUOutputIndex] += eu;
         decreaseStoredEU(eu, true);
     }
@@ -732,14 +737,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             try {
                 mMetaTileEntity.receiveClientEvent((byte) aEventID, (byte) aValue);
             } catch (Exception e) {
-                GTLog.err.println(
+                GT_FML_LOGGER.error(
                     "Encountered Exception while receiving Data from the Server, the Client should've been crashed by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
 
         if (isClientSide()) {
-            issueTextureUpdate();
             switch (aEventID) {
                 case GregTechTileClientEvents.CHANGE_COMMON_DATA -> {
                     mFacing = ForgeDirection.getOrientation((byte) (aValue & 7));
@@ -760,18 +764,26 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 }
                 case GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT -> setRedstoneOutput(aValue);
                 case GregTechTileClientEvents.DO_SOUND -> {
-                    if (hasValidMetaTileEntity() && mTickTimer > 20)
+                    if (hasValidMetaTileEntity() && isClientSettled())
                         mMetaTileEntity.doSound((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
                 }
                 case GregTechTileClientEvents.START_SOUND_LOOP -> {
-                    if (hasValidMetaTileEntity() && mTickTimer > 20)
+                    if (hasValidMetaTileEntity() && isClientSettled())
                         mMetaTileEntity.startSoundLoop((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
                 }
                 case GregTechTileClientEvents.STOP_SOUND_LOOP -> {
-                    if (hasValidMetaTileEntity() && mTickTimer > 20)
+                    if (hasValidMetaTileEntity() && isClientSettled())
                         mMetaTileEntity.stopSoundLoop((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
                 }
-                case GregTechTileClientEvents.CHANGE_LIGHT -> mLightValue = (byte) aValue;
+                case GregTechTileClientEvents.CHANGE_LIGHT -> {
+                    mLightValue = (byte) aValue;
+                    if (mTickDisabled) applyClientLightValue();
+                }
+            }
+            issueTextureUpdate();
+            if ((aEventID == GregTechTileClientEvents.CHANGE_COMMON_DATA
+                || aEventID == GregTechTileClientEvents.CHANGE_CUSTOM_DATA) && hasValidMetaTileEntity()) {
+                mMetaTileEntity.onClientSoundStateChanged();
             }
         }
         return true;
@@ -1214,7 +1226,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         if (canAccessData()) {
             final long cap = mMetaTileEntity.maxEUStore();
             final long stored = mMetaTileEntity.getEUVar();
-            return stored > cap ? cap : stored;
+            return Math.min(stored, cap);
         }
         return 0;
     }
@@ -1275,8 +1287,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     @Override
-    protected final boolean hasValidMetaTileEntity() {
-        return mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
+    void refreshMetaTileEntityValidity() {
+        mMetaTileEntityValid = mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
+        mNeedsClientTick = mMetaTileEntity == null || mMetaTileEntity.needsClientTick();
     }
 
     public boolean setStoredEU(long aEnergy) {
@@ -1358,8 +1371,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     @Override
     public void doExplosion(long aAmount) {
         if (canAccessData()) {
+            // Keep a reference: a chained explosion can invalidate this TE mid-call and null out mMetaTileEntity.
+            final MetaTileEntity tMetaTileEntity = mMetaTileEntity;
             // This is only for Electric Machines
-            if (GregTechAPI.sMachineWireFire && mMetaTileEntity.isElectric()) {
+            if (GregTechAPI.sMachineWireFire && tMetaTileEntity.isElectric()) {
                 try {
                     mReleaseEnergy = true;
                     IEnergyConnected.Util.emitEnergyToNetwork(V[5], Math.max(1, getStoredEU() / V[5]), this);
@@ -1367,7 +1382,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             }
             mReleaseEnergy = false;
             // Normal Explosion Code
-            mMetaTileEntity.onExplosion();
+            tMetaTileEntity.onExplosion();
             if (GTMod.proxy.mExplosionItemDrop) {
                 for (int i = 0; i < this.getSizeInventory(); i++) {
                     final ItemStack tItem = this.getStackInSlot(i);
@@ -1378,7 +1393,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 }
             }
             Pollution.addPollution((TileEntity) this, GTMod.proxy.mPollutionOnExplosion);
-            mMetaTileEntity.doExplosion(aAmount);
+            tMetaTileEntity.doExplosion(aAmount);
         }
     }
 
@@ -1650,10 +1665,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             if (!aPlayer.isSneaking() && hasValidMetaTileEntity())
                 return mMetaTileEntity.onRightclick(this, aPlayer, side, aX, aY, aZ);
         } catch (Exception e) {
-            GTLog.err.println(
+            GT_FML_LOGGER.error(
                 "Encountered Exception while rightclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
-            e.printStackTrace(GTLog.err);
-            e.printStackTrace();
+            GT_FML_LOGGER.error(e);
+            GT_FML_LOGGER.error(e);
         }
 
         return false;
@@ -1664,9 +1679,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         try {
             if (aPlayer != null && hasValidMetaTileEntity()) mMetaTileEntity.onLeftclick(this, aPlayer);
         } catch (Exception e) {
-            GTLog.err.println(
+            GT_FML_LOGGER.error(
                 "Encountered Exception while leftclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
     }
 
@@ -1782,7 +1797,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     @Override
-    public void setMetaTileEntity(IMetaTileEntity aMetaTileEntity) {
+    public final void setMetaTileEntity(IMetaTileEntity aMetaTileEntity) {
         if (aMetaTileEntity instanceof MetaTileEntity || aMetaTileEntity == null)
             mMetaTileEntity = (MetaTileEntity) aMetaTileEntity;
         else {
@@ -1791,6 +1806,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 aMetaTileEntity.getClass(),
                 aMetaTileEntity.getInventoryName());
         }
+        refreshMetaTileEntityValidity();
     }
 
     public byte getLightValue() {
@@ -1804,6 +1820,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     public long getAverageElectricInput() {
+        if (mAverageEUInput == null) return 0;
         long rEU = 0;
         for (int i = 0; i < mAverageEUInput.length; ++i) if (i != mAverageEUInputIndex) rEU += mAverageEUInput[i];
         return rEU / (mAverageEUInput.length - 1);
@@ -1811,6 +1828,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     public long getAverageElectricOutput() {
+        if (mAverageEUOutput == null) return 0;
         long rEU = 0;
         for (int i = 0; i < mAverageEUOutput.length; ++i) if (i != mAverageEUOutputIndex) rEU += mAverageEUOutput[i];
         return rEU / (mAverageEUOutput.length - 1);
@@ -1874,11 +1892,18 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                     mMetaTileEntity.maxAmperesIn() - mAcceptedAmperes,
                     1 + ((getEUCapacity() - getStoredEU()) / aVoltage)))),
             true)) {
+            ensureAverageEUArrays();
             mAverageEUInput[mAverageEUInputIndex] += aVoltage * aAmperage;
             mAcceptedAmperes += aAmperage;
             return aAmperage;
         }
         return 0;
+    }
+
+    /** @return whether {@link #injectEnergyUnits} could still accept energy this tick. */
+    public boolean canAcceptEnergyThisTick() {
+        if (!canAccessData() || mMetaTileEntity.maxAmperesIn() <= mAcceptedAmperes) return false;
+        return mMetaTileEntity.getEUVar() < mMetaTileEntity.maxEUStore();
     }
 
     @Override
@@ -1887,6 +1912,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             || !outputsEnergyTo(side)
             || getStoredEU() - (aVoltage * aAmperage) < mMetaTileEntity.getMinimumStoredEU()) return false;
         if (decreaseStoredEU(aVoltage * aAmperage, false)) {
+            ensureAverageEUArrays();
             mAverageEUOutput[mAverageEUOutputIndex] += aVoltage * aAmperage;
             return true;
         }
@@ -1984,6 +2010,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     public void drawEnergy(double amount) {
+        ensureAverageEUArrays();
         mAverageEUOutput[mAverageEUOutputIndex] += amount;
         decreaseStoredEU((int) amount, true);
     }

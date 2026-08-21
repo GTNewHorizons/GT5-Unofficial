@@ -185,5 +185,5 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
      */
     default boolean isSteampowered() {
         return false;
-    };
+    }
 }

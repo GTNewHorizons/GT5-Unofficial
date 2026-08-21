@@ -604,6 +604,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         this.residueIncrease = 0;
         super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (!aBaseMetaTileEntity.isServerSide()) return;
         for (MTEToxicResidueSensor toxicResidueSensorHatch : sensorHatches) { // done in onPostTick so it can update
                                                                               // even when multi is off
             toxicResidueSensorHatch.updateRedstoneOutput(toxicResidue, residueCapacity);

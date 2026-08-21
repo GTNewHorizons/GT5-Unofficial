@@ -636,11 +636,6 @@ gt.blockmachines.multimachine.tm.microwave.cfgo.0=Значение таймер�
 gt.blockmachines.multimachine.tm.microwave.cfgo.1=Оставшееся время
 
 gt.blockmachines.multimachine.tm.teslaCoil.name=Башня теслы
-gt.blockmachines.multimachine.tm.teslaCoil.desc.0=Блок-контроллер башни теслы
-gt.blockmachines.multimachine.tm.teslaCoil.desc.1=Используется для передачи энергии на крышки катушек Тесла и трансиверы Тесла
-gt.blockmachines.multimachine.tm.teslaCoil.desc.2=Может питаться плазмой гелия/азота/радона для увеличения дальности действия
-gt.blockmachines.multimachine.tm.teslaCoil.desc.3=Передаваемый вольтаж зависит от используемого тира Тесла конденсатор
-gt.blockmachines.multimachine.tm.teslaCoil.desc.4=Первичные обмотки Теслы должны быть как минимум того же тира, что и Тесла конденсатор
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0=Настройки нижнего порога гистерезиса
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.1=Настройки верхнего порога гистерезиса
 gt.blockmachines.multimachine.tm.teslaCoil.cfgi.2=Настройки радиуса передачи Башни Теслы
@@ -735,12 +730,6 @@ gt.blockmachines.multimachine.em.scanner.hint.3=4 - Элементный шлю�
 gt.blockmachines.multimachine.em.scanner.desc.0=Блок-контроллер элементного сканера
 
 gt.blockmachines.multimachine.em.research.type=Исследовательская станция, Сканер
-gt.blockmachines.multimachine.em.research.desc.1=Используется для сканирования Рецептов сборочной линии на Флешки
-gt.blockmachines.multimachine.em.research.desc.2=Для работы требуется подавать вычисления
-gt.blockmachines.multimachine.em.research.desc.3=Не потребляет предмет до тех пор, пока не будет записан на флешку
-gt.blockmachines.multimachine.em.research.desc.4=Используйте отвёртку для смены режима
-gt.blockmachines.multimachine.em.research.desc.5=Вычисления, необходимые в режиме сканера, выполняются по формуле:
-gt.blockmachines.multimachine.em.research.desc.6=Продолжительность рецепта в секундах * (2 ^ (тир вольтажа рецепта - 1))
 gt.blockmachines.multimachine.em.research.mode.0=Исследовательская станция
 gt.blockmachines.multimachine.em.research.mode.1=Сканер
 gt.blockmachines.multimachine.em.research.computation=Вычисление: %,d / %,d

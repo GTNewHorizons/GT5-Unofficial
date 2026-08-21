@@ -5,6 +5,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAn
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -81,7 +82,6 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.net.GTPacketLMACraftingFX;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTELargeMolecularAssemblerGui;
@@ -554,7 +554,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         List<MTEHatchInputBus> inputs = GTUtility.filterValidMTEs(mInputBusses)
             .stream()
             .filter(bus -> !(bus instanceof MTEHatchCraftingInputME))
-            .collect(Collectors.toList());
+            .toList();
 
         boolean changed = false;
         Map<ItemStack, ICraftingPatternDetails> patterns = new ItemStackMap<>(true);
@@ -612,10 +612,10 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
                 IGridNode node = proxy.getNode();
                 if (node == null) return;
                 if (node.getPlayerID() == -1) {
-                    GTLog.out.printf(
-                        "Found a LMA at %s without valid AE playerID.\n",
+                    GT_FML_LOGGER.debug(
+                        "Found a LMA at {} without valid AE playerID.\n",
                         ((BaseMetaTileEntity) baseMetaTileEntity).getLocation());
-                    GTLog.out.println("Try to recover playerID with UUID: " + baseMetaTileEntity.getOwnerUuid());
+                    GT_FML_LOGGER.debug("Try to recover playerID with UUID: {}", baseMetaTileEntity.getOwnerUuid());
                     // recover ID from old version
                     int playerAEID = WorldData.instance()
                         .playerData()
@@ -624,7 +624,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
                     node.setPlayerID(playerAEID);
                     ((GridNode) node).setLastSecurityKey(-1);
                     node.updateState(); // refresh the security connection
-                    GTLog.out.println("Now it has playerID: " + playerAEID);
+                    GT_FML_LOGGER.debug("Now it has playerID: {}", playerAEID);
                 }
             }
 
