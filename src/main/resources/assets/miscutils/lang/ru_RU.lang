@@ -3530,15 +3530,15 @@ item.BasicAgrichemItem.23.name=Чистая алюминиевая смесь
 # Added 12/12/19
 
 item.BasicGenericChemItem.name=Металлический катализатор
-item.BasicGenericChemItem.2.name=Синий металлический катализатор
-item.BasicGenericChemItem.3.name=Оранжевый металлический катализатор
-item.BasicGenericChemItem.4.name=Фиолетовый металлический катализатор
-item.BasicGenericChemItem.5.name=Коричневый металлический катализатор
+item.BasicGenericChemItem.0.name=Синий металлический катализатор
+item.BasicGenericChemItem.1.name=Оранжевый металлический катализатор
+item.BasicGenericChemItem.2.name=Фиолетовый металлический катализатор
+item.BasicGenericChemItem.3.name=Коричневый металлический катализатор
 item.MudRedSlurry.name=Капсула с жидким красным шламом
 item.liquid_toluene.name=Капсула толуола
 
 # Added 17/01/20
-item.BasicGenericChemItem.6.name=Розовый металлический катализатор
+item.BasicGenericChemItem.4.name=Розовый металлический катализатор
 
 # Added 23/03/20
 item.BasicMetaFood.name=Мясо
@@ -3575,14 +3575,14 @@ item.FrothCopperflotation.name=Капсула халькопиритого фл�
 item.FrothNickelflotation.name=Капсула никелевого флотационного раствора
 item.FrothPlatinumflotation.name=Капсула платинового флотационного раствора
 item.FrothPentlanditeflotation.name=Капсула пентландитового флотационного раствора
-item.BasicGenericChemItem.7.name=Измельчающий шарик из глинозёма
-item.BasicGenericChemItem.8.name=Измельчающий шарик из талькохлорит
+item.BasicGenericChemItem.5.name=Измельчающий шарик из глинозёма
+item.BasicGenericChemItem.6.name=Измельчающий шарик из талькохлорит
 
 # Added 31/03/20
-item.BasicGenericChemItem.9.name=Пыль этилата натрия
-item.BasicGenericChemItem.10.name=Пыль этилксантогената натрия
-item.BasicGenericChemItem.11.name=Пыль этилксантогената натрия
-item.BasicGenericChemItem.12.name=Пыль гидроксида калия
+item.BasicGenericChemItem.7.name=Пыль этилата натрия
+item.BasicGenericChemItem.8.name=Пыль этилксантогената натрия
+item.BasicGenericChemItem.9.name=Пыль этилксантогената натрия
+item.BasicGenericChemItem.10.name=Пыль гидроксида калия
 item.CarbonDisulfide.name=Капсула сероуглерода
 item.HydrogenSulfide.name=Капсула сероводорода
 item.BasicAgrichemItem.24.name=Сосновая шишка
@@ -3791,7 +3791,7 @@ item.FrothMonaziteflotation.name=Капсула монацитового фло�
 item.milledNetherrack.name=Измельченный адский камень
 
 # Added 18/12/21
-item.BasicGenericChemItem.13.name=Формальдегидный катализатор
+item.BasicGenericChemItem.11.name=Формальдегидный катализатор
 item.hydrogenchloridemix.name=Хлороводородная смесь
 
 # Added 19/01/22
@@ -3805,28 +3805,28 @@ sleep.event.downsides=Негативные стороны жизни больш�
 item.miscutils:magicfeather.name=Волшебное перо
 
 # Added 10/02/22
-item.BasicGenericChemItem.14.name=Твёрдо-кислотный катализатор
+item.BasicGenericChemItem.12.name=Твёрдо-кислотный катализатор
 
 # Added 30/05/22
-item.BasicGenericChemItem.15.name=Infinite Mutation Catalyst
+item.BasicGenericChemItem.13.name=Infinite Mutation Catalyst
 
 # Added 23/10/22
 miscutils.machines.QFTFluidMode=Квантовый силовой преобразователь - Режим вывода жидкости: %s
 
 # Added 16/11/22
-item.BasicGenericChemItem.16.name=Катализатор платиновой группы
-item.BasicGenericChemItem.17.name=Катализатор полимерного пластика
-item.BasicGenericChemItem.18.name=Катализатор полимерной резины
-item.BasicGenericChemItem.19.name=Adhesion Promoter Catalyst
-item.BasicGenericChemItem.20.name=Тита-вольфрам индиевый катализатор
-item.BasicGenericChemItem.21.name=Радиоактивный катализатор
-item.BasicGenericChemItem.22.name=Катализатор редкоземельной группы
-item.BasicGenericChemItem.23.name=Простой наквадаховый катализатор
-item.BasicGenericChemItem.24.name=Улучшенный наквадаховый катализатор
-item.BasicGenericChemItem.25.name=Raw Intelligence Catalyst
-item.BasicGenericChemItem.26.name=Ultimate Plasticizer Catalyst
-item.BasicGenericChemItem.27.name=Biological Intelligence Catalyst
-item.BasicGenericChemItem.28.name=Temporal Harmonizer Catalyst
+item.BasicGenericChemItem.14.name=Катализатор платиновой группы
+item.BasicGenericChemItem.15.name=Катализатор полимерного пластика
+item.BasicGenericChemItem.16.name=Катализатор полимерной резины
+item.BasicGenericChemItem.17.name=Adhesion Promoter Catalyst
+item.BasicGenericChemItem.18.name=Тита-вольфрам индиевый катализатор
+item.BasicGenericChemItem.19.name=Радиоактивный катализатор
+item.BasicGenericChemItem.20.name=Катализатор редкоземельной группы
+item.BasicGenericChemItem.21.name=Простой наквадаховый катализатор
+item.BasicGenericChemItem.22.name=Улучшенный наквадаховый катализатор
+item.BasicGenericChemItem.23.name=Raw Intelligence Catalyst
+item.BasicGenericChemItem.24.name=Ultimate Plasticizer Catalyst
+item.BasicGenericChemItem.25.name=Biological Intelligence Catalyst
+item.BasicGenericChemItem.26.name=Temporal Harmonizer Catalyst
 
 item.ItemCustomSpawnEgg.name=Призвать %s
 item.itemSimpleFiremaker.message.0=Вы разжигаете костер.
@@ -3835,10 +3835,10 @@ item.itemSimpleFiremaker.message.2=Вы устроили пожар!
 item.itemSimpleFiremaker.message.3=Ваша попытка ничего не даёт.
 
 # Added 19/09/23
-item.BasicGenericChemItem.33.name=Катализатор стимулятора роста водорослей
+item.BasicGenericChemItem.31.name=Катализатор стимулятора роста водорослей
 
 # Added 13/03/25
-item.BasicGenericChemItem.34.name=Hellish Force Catalyst
+item.BasicGenericChemItem.32.name=Hellish Force Catalyst
 
 # config gui
 gtpp.gui.config.general=Общие

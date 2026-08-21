@@ -27,25 +27,24 @@ public class ItemGenericChemBase extends Item {
 
     protected final IIcon[] base;
 
-    private final int aMetaSize = 37;
+    private final int aMetaSize = 35;
 
     /*
-     * 0 - Red Metal Catalyst //FeCu 1 - Yellow Metal Catalyst //WNi 2 - Blue Metal Catalyst //CoTi 3 - Orange Metal
-     * Catalyst //Vanadium Pd 4 - Purple Metal Catalyst //IrIdium Ruthenium 5 - Brown Metal Catalyst //NiAl 6 - Pink
-     * Metal Catalyst //PtRh 7 - Alumina Grinding Ball 8 - Soapstone Grinding Ball 9 - Sodium Ethoxide //2 Sodium + 1
-     * Ethanol | 2 C2H5OH + 2 Na → 2 C2H5ONa + H2 10 - Sodium Ethyl Xanthate //CH3CH2ONa + CS2 → CH3CH2OCS2Na 11 -
-     * Potassium Ethyl Xanthate //CH3CH2OH + CS2 + KOH → CH3CH2OCS2K + H2O 12 - Potassium Hydroxide // KOH 13 -
-     * Formaldehyde Catalyst //Fe16V1 14 - Solid Acid Catalyst //H2SO4 15 - Infinite Mutation Catalyst (for Mutated
-     * Living Solder) 16 - Platinum Group Catalyst (for platline skip) 17 - Plastic Polymer Catalyst (for early plastics
-     * skip) 18 - Rubber Polymer Catalyst (for early rubbers skip) 19 - Adhesion Promoter Catalyst (for glue/solder
-     * skip) 20 - Tita-Tungsten Indium Catalyst (for titanium/tungsten/indium skip) 21 - Radioactivity Catalyst (for
-     * thorium/uranium/plutonium skip) 22 - Rare-Earth Group Catalyst (for monaline skip) 23 - Simple Naquadah Catalyst
-     * (for early naqline skip) 24 - Advanced Naquadah Catalyst (for late naqline skip) 25 - Raw Intelligence Catalyst
-     * (for stem cells skip) 26 - Ultimate Plasticizer Catalyst (for late plastics skip) 27 - Biological Intelligence
-     * Catalyst (for bio cells skip) 28 - Temporal Harmonizer Catalyst (for Eternity processing) 33 - Algagenic
-     * Growth Promoter Catalyst (for seaweed skip) 34 - Hellish Force Catalyst (for Netherite skip) 35 - Crystal
-     * Colorization Catalyst (for Prismatic Acid)
-     * 36 - Chlorination Catalyst (for Chlorosulfonic Acid)
+     * 0 - Blue Metal Catalyst //CoTi 1 - Orange Metal Catalyst //Vanadium Pd 2 - Purple Metal Catalyst //IrIdium
+     * Ruthenium 3 - Brown Metal Catalyst //NiAl 4 - Pink Metal Catalyst //PtRh 5 - Alumina Grinding Ball 6 - Soapstone
+     * Grinding Ball 7 - Sodium Ethoxide //2 Sodium + 1 Ethanol | 2 C2H5OH + 2 Na → 2 C2H5ONa + H2 8 - Sodium Ethyl
+     * Xanthate //CH3CH2ONa + CS2 → CH3CH2OCS2Na 9 - Potassium Ethyl Xanthate //CH3CH2OH + CS2 + KOH → CH3CH2OCS2K + H2O
+     * 10 - Potassium Hydroxide // KOH 11 - Formaldehyde Catalyst //Fe16V1 12 - Solid Acid Catalyst //H2SO4 13 -
+     * Infinite Mutation Catalyst (for Mutated Living Solder) 14 - Platinum Group Catalyst (for platline skip) 15 -
+     * Plastic Polymer Catalyst (for early plastics skip) 16 - Rubber Polymer Catalyst (for early rubbers skip) 17 -
+     * Adhesion Promoter Catalyst (for glue/solder skip) 18 - Tita-Tungsten Indium Catalyst (for
+     * titanium/tungsten/indium skip) 19 - Radioactivity Catalyst (for thorium/uranium/plutonium skip) 20 - Rare-Earth
+     * Group Catalyst (for monaline skip) 21 - Simple Naquadah Catalyst (for early naqline skip) 22 - Advanced Naquadah
+     * Catalyst (for late naqline skip) 23 - Raw Intelligence Catalyst (for stem cells skip) 24 - Ultimate Plasticizer
+     * Catalyst (for late plastics skip) 25 - Biological Intelligence Catalyst (for bio cells skip) 26 - Temporal
+     * Harmonizer Catalyst (for Eternity processing) 31 - Algagenic Growth Promoter Catalyst (for seaweed skip) 32 -
+     * Hellish Force Catalyst (for Netherite skip) 33 - Crystal Colorization Catalyst (for Prismatic Acid) 34 -
+     * Chlorination Catalyst (for Chlorosulfonic Acid)
      */
 
     public ItemGenericChemBase() {
@@ -84,7 +83,7 @@ public class ItemGenericChemBase extends Item {
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < aMetaSize; i++) {
-            if ((i >= 29 && i <= 32) || (i <= 1)) continue; // prevent unused catalysts from generating
+            if (i >= 27 && i <= 30) continue;
             list.add(new ItemStack(item, 1, i));
         }
     }

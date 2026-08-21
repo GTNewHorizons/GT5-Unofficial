@@ -3532,15 +3532,15 @@ item.BasicAgrichemItem.23.name=Clean Aluminium Mix
 # Added 12/12/19
 
 item.BasicGenericChemItem.name=Metal Catalyst
-item.BasicGenericChemItem.2.name=Blue Metal Catalyst
-item.BasicGenericChemItem.3.name=Orange Metal Catalyst
-item.BasicGenericChemItem.4.name=Purple Metal Catalyst
-item.BasicGenericChemItem.5.name=Brown Metal Catalyst
+item.BasicGenericChemItem.0.name=Blue Metal Catalyst
+item.BasicGenericChemItem.1.name=Orange Metal Catalyst
+item.BasicGenericChemItem.2.name=Purple Metal Catalyst
+item.BasicGenericChemItem.3.name=Brown Metal Catalyst
 item.MudRedSlurry.name=Cell of Red Mud Slurry
 item.liquid_toluene.name=Toluene Cell
 
 # Added 17/01/20
-item.BasicGenericChemItem.6.name=Pink Metal Catalyst
+item.BasicGenericChemItem.4.name=Pink Metal Catalyst
 
 # Added 23/03/20
 item.BasicMetaFood.name=Meat
@@ -3577,14 +3577,14 @@ item.FrothCopperflotation.name=Chalcopyrite Flotation Froth Cell
 item.FrothNickelflotation.name=Nickel Flotation Froth Cell
 item.FrothPlatinumflotation.name=Platinum Flotation Froth Cell
 item.FrothPentlanditeflotation.name=Pentlandite Flotation Froth Cell
-item.BasicGenericChemItem.7.name=Alumina Milling Ball
-item.BasicGenericChemItem.8.name=Soapstone Milling Ball
+item.BasicGenericChemItem.5.name=Alumina Milling Ball
+item.BasicGenericChemItem.6.name=Soapstone Milling Ball
 
 # Added 31/03/20
-item.BasicGenericChemItem.9.name=Sodium Ethoxide Dust
-item.BasicGenericChemItem.10.name=Sodium Ethyl Xanthate Dust
-item.BasicGenericChemItem.11.name=Potassium Ethyl Xanthate Dust
-item.BasicGenericChemItem.12.name=Potassium Hydroxide Dust
+item.BasicGenericChemItem.7.name=Sodium Ethoxide Dust
+item.BasicGenericChemItem.8.name=Sodium Ethyl Xanthate Dust
+item.BasicGenericChemItem.9.name=Potassium Ethyl Xanthate Dust
+item.BasicGenericChemItem.10.name=Potassium Hydroxide Dust
 item.CarbonDisulfide.name=Carbon Disulfide Cell
 item.HydrogenSulfide.name=Hydrogen Sulfide Cell
 item.BasicAgrichemItem.24.name=Pinecone
@@ -3793,7 +3793,7 @@ item.FrothMonaziteflotation.name=Monazite Flotation Froth Cell
 item.milledNetherrack.name=Milled Netherrack
 
 # Added 18/12/21
-item.BasicGenericChemItem.13.name=Formaldehyde Catalyst
+item.BasicGenericChemItem.11.name=Formaldehyde Catalyst
 item.hydrogenchloridemix.name=Hydrogen Chlorine Mix
 
 # Added 19/01/22
@@ -3807,28 +3807,28 @@ sleep.event.downsides=The downsides of life no longer affect you.
 item.miscutils:magicfeather.name=Magical Feather
 
 # Added 10/02/22
-item.BasicGenericChemItem.14.name=Solid-Acid Catalyst
+item.BasicGenericChemItem.12.name=Solid-Acid Catalyst
 
 # Added 30/05/22
-item.BasicGenericChemItem.15.name=Infinite Mutation Catalyst
+item.BasicGenericChemItem.13.name=Infinite Mutation Catalyst
 
 # Added 23/10/22
 miscutils.machines.QFTFluidMode=Quantum Force Transformer Fluid Output Mode: %s
 
 # Added 16/11/22
-item.BasicGenericChemItem.16.name=Platinum Group Catalyst
-item.BasicGenericChemItem.17.name=Plastic Polymer Catalyst
-item.BasicGenericChemItem.18.name=Rubber Polymer Catalyst
-item.BasicGenericChemItem.19.name=Adhesion Promoter Catalyst
-item.BasicGenericChemItem.20.name=Tita-Tungsten Indium Catalyst
-item.BasicGenericChemItem.21.name=Radioactivity Catalyst
-item.BasicGenericChemItem.22.name=Rare-Earth Group Catalyst
-item.BasicGenericChemItem.23.name=Simple Naquadah Catalyst
-item.BasicGenericChemItem.24.name=Advanced Naquadah Catalyst
-item.BasicGenericChemItem.25.name=Raw Intelligence Catalyst
-item.BasicGenericChemItem.26.name=Ultimate Plasticizer Catalyst
-item.BasicGenericChemItem.27.name=Biological Intelligence Catalyst
-item.BasicGenericChemItem.28.name=Temporal Harmonizer Catalyst
+item.BasicGenericChemItem.14.name=Platinum Group Catalyst
+item.BasicGenericChemItem.15.name=Plastic Polymer Catalyst
+item.BasicGenericChemItem.16.name=Rubber Polymer Catalyst
+item.BasicGenericChemItem.17.name=Adhesion Promoter Catalyst
+item.BasicGenericChemItem.18.name=Tita-Tungsten Indium Catalyst
+item.BasicGenericChemItem.19.name=Radioactivity Catalyst
+item.BasicGenericChemItem.20.name=Rare-Earth Group Catalyst
+item.BasicGenericChemItem.21.name=Simple Naquadah Catalyst
+item.BasicGenericChemItem.22.name=Advanced Naquadah Catalyst
+item.BasicGenericChemItem.23.name=Raw Intelligence Catalyst
+item.BasicGenericChemItem.24.name=Ultimate Plasticizer Catalyst
+item.BasicGenericChemItem.25.name=Biological Intelligence Catalyst
+item.BasicGenericChemItem.26.name=Temporal Harmonizer Catalyst
 
 item.ItemCustomSpawnEgg.name=Spawn %s
 item.itemSimpleFiremaker.message.0=You light the fire pit.
@@ -3837,14 +3837,14 @@ item.itemSimpleFiremaker.message.2=You created a fire!
 item.itemSimpleFiremaker.message.3=Your attempt does nothing.
 
 # Added 19/09/23
-item.BasicGenericChemItem.33.name=Algagenic Growth Promoter Catalyst
+item.BasicGenericChemItem.31.name=Algagenic Growth Promoter Catalyst
 
 # Added 13/03/25
-item.BasicGenericChemItem.34.name=Hellish Force Catalyst
-item.BasicGenericChemItem.35.name=Crystal Colorization Catalyst
+item.BasicGenericChemItem.32.name=Hellish Force Catalyst
+item.BasicGenericChemItem.33.name=Crystal Colorization Catalyst
 
 # Added 13/03/26
-item.BasicGenericChemItem.36.name=Chlorination Catalyst
+item.BasicGenericChemItem.34.name=Chlorination Catalyst
 
 # config gui
 gtpp.gui.config.general=General

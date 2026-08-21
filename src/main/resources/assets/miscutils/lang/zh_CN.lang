@@ -3018,15 +3018,15 @@ item.BasicAgrichemItem.23.name=洁净铝混合物
 
 //Added 12/12/19
 
-item.BasicGenericChemItem.2.name=蓝色金属催化剂
-item.BasicGenericChemItem.3.name=橙色金属催化剂
-item.BasicGenericChemItem.4.name=紫色金属催化剂
-item.BasicGenericChemItem.5.name=棕色金属催化剂
+item.BasicGenericChemItem.0.name=蓝色金属催化剂
+item.BasicGenericChemItem.1.name=橙色金属催化剂
+item.BasicGenericChemItem.2.name=紫色金属催化剂
+item.BasicGenericChemItem.3.name=棕色金属催化剂
 item.MudRedSlurry.name=红色泥浆单元
 item.liquid_toluene.name=甲苯单元
 
 //Added 17/01/20
-item.BasicGenericChemItem.6.name=粉色金属催化剂
+item.BasicGenericChemItem.4.name=粉色金属催化剂
 
 //Added 23/03/20
 item.BasicMetaFood.0.name=生人肉
@@ -3062,14 +3062,14 @@ item.FrothCopperflotation.name=黄铜矿浮选泡沫单元
 item.FrothNickelflotation.name=镍矿浮选泡沫单元
 item.FrothPlatinumflotation.name=铂矿浮选泡沫单元
 item.FrothPentlanditeflotation.name=镍黄铁矿浮选泡沫单元
-item.BasicGenericChemItem.7.name=铝研磨球
-item.BasicGenericChemItem.8.name=皂石研磨球
+item.BasicGenericChemItem.5.name=铝研磨球
+item.BasicGenericChemItem.6.name=皂石研磨球
 
 //Added 31/03/20
-item.BasicGenericChemItem.9.name=乙醇钠粉
-item.BasicGenericChemItem.10.name=乙基黄原酸钠粉
-item.BasicGenericChemItem.11.name=乙基黄原酸钾粉
-item.BasicGenericChemItem.12.name=氢氧化钾粉
+item.BasicGenericChemItem.7.name=乙醇钠粉
+item.BasicGenericChemItem.8.name=乙基黄原酸钠粉
+item.BasicGenericChemItem.9.name=乙基黄原酸钾粉
+item.BasicGenericChemItem.10.name=氢氧化钾粉
 item.CarbonDisulfide.name=二硫化碳单元
 item.HydrogenSulfide.name=硫化氢单元
 item.BasicAgrichemItem.24.name=松果
@@ -3277,7 +3277,7 @@ item.milledMonazite.name=研磨独居石
 item.FrothMonaziteflotation.name=独居石浮选泡沫单元
 
 //Added 18/12/21
-item.BasicGenericChemItem.13.name=甲醛催化剂
+item.BasicGenericChemItem.11.name=甲醛催化剂
 item.hydrogenchloridemix.name=氢氯混合物
 
 //Added 19/01/22
@@ -3291,7 +3291,7 @@ sleep.event.downsides=debuff不再困扰着你.
 item.miscutils:magicfeather.name=魔法羽毛
 
 //Added 10/02/22
-item.BasicGenericChemItem.14.name=固体酸催化剂
+item.BasicGenericChemItem.12.name=固体酸催化剂
 
 //Added 30/05/22
-item.BasicGenericChemItem.15.name=无尽突变催化剂
+item.BasicGenericChemItem.13.name=无尽突变催化剂

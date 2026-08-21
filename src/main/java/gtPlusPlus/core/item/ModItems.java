@@ -226,72 +226,71 @@ public final class ModItems {
         // Generic Chem Items
         Item genericChemItem = new ItemGenericChemBase();
 
-        GregtechItemList.BlueMetalCatalyst.set(new ItemStack(genericChemItem, 1, 2))
+        GregtechItemList.BlueMetalCatalyst.set(new ItemStack(genericChemItem, 1, 0))
             .registerOre("catalystCobaltTitanium");
-        GregtechItemList.OrangeMetalCatalyst.set(new ItemStack(genericChemItem, 1, 3))
+        GregtechItemList.OrangeMetalCatalyst.set(new ItemStack(genericChemItem, 1, 1))
             .registerOre("catalystVanadiumPalladium");
-        GregtechItemList.PurpleMetalCatalyst.set(new ItemStack(genericChemItem, 1, 4))
+        GregtechItemList.PurpleMetalCatalyst.set(new ItemStack(genericChemItem, 1, 2))
             .registerOre("catalystIridiumRuthenium");
-        GregtechItemList.BrownMetalCatalyst.set(new ItemStack(genericChemItem, 1, 5))
+        GregtechItemList.BrownMetalCatalyst.set(new ItemStack(genericChemItem, 1, 3))
             .registerOre("catalystNickelAluminium");
-        GregtechItemList.PinkMetalCatalyst.set(new ItemStack(genericChemItem, 1, 6))
+        GregtechItemList.PinkMetalCatalyst.set(new ItemStack(genericChemItem, 1, 4))
             .registerOre("catalystPlatinumRhodium");
 
-        GregtechItemList.Milling_Ball_Alumina.set(new ItemStack(genericChemItem, 1, 7))
+        GregtechItemList.Milling_Ball_Alumina.set(new ItemStack(genericChemItem, 1, 5))
             .registerOre("millingballAlumina");
-        GregtechItemList.Milling_Ball_Soapstone.set(new ItemStack(genericChemItem, 1, 8))
+        GregtechItemList.Milling_Ball_Soapstone.set(new ItemStack(genericChemItem, 1, 6))
             .registerOre("millingballSoapstone");
 
-        GregtechItemList.SodiumEthoxide.set(new ItemStack(genericChemItem, 1, 9))
+        GregtechItemList.SodiumEthoxide.set(new ItemStack(genericChemItem, 1, 7))
             .registerOre("dustSodiumEthoxide");
-        GregtechItemList.SodiumEthylXanthate.set(new ItemStack(genericChemItem, 1, 10))
+        GregtechItemList.SodiumEthylXanthate.set(new ItemStack(genericChemItem, 1, 8))
             .registerOre("dustSodiumEthylXanthate");
-        GregtechItemList.PotassiumEthylXanthate.set(new ItemStack(genericChemItem, 1, 11))
+        GregtechItemList.PotassiumEthylXanthate.set(new ItemStack(genericChemItem, 1, 9))
             .registerOre("dustPotassiumEthylXanthate");
-        GregtechItemList.PotassiumHydroxide.set(new ItemStack(genericChemItem, 1, 12))
+        GregtechItemList.PotassiumHydroxide.set(new ItemStack(genericChemItem, 1, 10))
             .registerOre("dustPotassiumHydroxide");
 
-        GregtechItemList.FormaldehydeCatalyst.set(new ItemStack(genericChemItem, 1, 13))
+        GregtechItemList.FormaldehydeCatalyst.set(new ItemStack(genericChemItem, 1, 11))
             .registerOre("catalystFormaldehyde");
-        GregtechItemList.SolidAcidCatalyst.set(new ItemStack(genericChemItem, 1, 14))
+        GregtechItemList.SolidAcidCatalyst.set(new ItemStack(genericChemItem, 1, 12))
             .registerOre("catalystSolidAcid");
-        GregtechItemList.InfiniteMutationCatalyst.set(new ItemStack(genericChemItem, 1, 15))
+        GregtechItemList.InfiniteMutationCatalyst.set(new ItemStack(genericChemItem, 1, 13))
             .registerOre("catalystInfiniteMutation");
 
-        // QFT Catalysts
-        GregtechItemList.PlatinumGroupCatalyst.set(new ItemStack(genericChemItem, 1, 16))
+        GregtechItemList.PlatinumGroupCatalyst.set(new ItemStack(genericChemItem, 1, 14))
             .registerOre("catalystPlatinumGroup");
-        GregtechItemList.PlasticPolymerCatalyst.set(new ItemStack(genericChemItem, 1, 17))
+        GregtechItemList.PlasticPolymerCatalyst.set(new ItemStack(genericChemItem, 1, 15))
             .registerOre("catalystPlasticPolymer");
-        GregtechItemList.RubberPolymerCatalyst.set(new ItemStack(genericChemItem, 1, 18))
+        GregtechItemList.RubberPolymerCatalyst.set(new ItemStack(genericChemItem, 1, 16))
             .registerOre("catalystRubberPolymer");
-        GregtechItemList.AdhesionPromoterCatalyst.set(new ItemStack(genericChemItem, 1, 19))
+        GregtechItemList.AdhesionPromoterCatalyst.set(new ItemStack(genericChemItem, 1, 17))
             .registerOre("catalystAdhesionPromoter");
-        GregtechItemList.TitaTungstenIndiumCatalyst.set(new ItemStack(genericChemItem, 1, 20))
+        GregtechItemList.TitaTungstenIndiumCatalyst.set(new ItemStack(genericChemItem, 1, 18))
             .registerOre("catalystTitaTungstenIndium");
-        GregtechItemList.RadioactivityCatalyst.set(new ItemStack(genericChemItem, 1, 21))
+        GregtechItemList.RadioactivityCatalyst.set(new ItemStack(genericChemItem, 1, 19))
             .registerOre("catalystRadioactivity");
-        GregtechItemList.RareEarthGroupCatalyst.set(new ItemStack(genericChemItem, 1, 22))
+        GregtechItemList.RareEarthGroupCatalyst.set(new ItemStack(genericChemItem, 1, 20))
             .registerOre("catalystRareEarthGroup");
-        GregtechItemList.SimpleNaquadahCatalyst.set(new ItemStack(genericChemItem, 1, 23))
+        GregtechItemList.SimpleNaquadahCatalyst.set(new ItemStack(genericChemItem, 1, 21))
             .registerOre("catalystSimpleNaquadah");
-        GregtechItemList.AdvancedNaquadahCatalyst.set(new ItemStack(genericChemItem, 1, 24))
+        GregtechItemList.AdvancedNaquadahCatalyst.set(new ItemStack(genericChemItem, 1, 22))
             .registerOre("catalystAdvancedNaquadah");
-        GregtechItemList.RawIntelligenceCatalyst.set(new ItemStack(genericChemItem, 1, 25))
+        GregtechItemList.RawIntelligenceCatalyst.set(new ItemStack(genericChemItem, 1, 23))
             .registerOre("catalystRawIntelligence");
-        GregtechItemList.UltimatePlasticCatalyst.set(new ItemStack(genericChemItem, 1, 26))
+        GregtechItemList.UltimatePlasticCatalyst.set(new ItemStack(genericChemItem, 1, 24))
             .registerOre("catalystUltimatePlastic");
-        GregtechItemList.BiologicalIntelligenceCatalyst.set(new ItemStack(genericChemItem, 1, 27))
+        GregtechItemList.BiologicalIntelligenceCatalyst.set(new ItemStack(genericChemItem, 1, 25))
             .registerOre("catalystBiologicalIntelligence");
-        GregtechItemList.TemporalHarmonyCatalyst.set(new ItemStack(genericChemItem, 1, 28))
+        GregtechItemList.TemporalHarmonyCatalyst.set(new ItemStack(genericChemItem, 1, 26))
             .registerOre("catalystTemporalHarmony");
-        GregtechItemList.AlgagenicGrowthPromoterCatalyst.set(new ItemStack(genericChemItem, 1, 33))
+        GregtechItemList.AlgagenicGrowthPromoterCatalyst.set(new ItemStack(genericChemItem, 1, 31))
             .registerOre("catalystAlgagenicGrowthPromoter");
-        GregtechItemList.HellishForceCatalyst.set(new ItemStack(genericChemItem, 1, 34))
+        GregtechItemList.HellishForceCatalyst.set(new ItemStack(genericChemItem, 1, 32))
             .registerOre("catalystHellishForce");
-        GregtechItemList.CrystalColorizationCatalyst.set(new ItemStack(genericChemItem, 1, 35))
+        GregtechItemList.CrystalColorizationCatalyst.set(new ItemStack(genericChemItem, 1, 33))
             .registerOre("catalystCrystalColorization");
-        GregtechItemList.ChlorinationCatalyst.set(new ItemStack(genericChemItem, 1, 36))
+        GregtechItemList.ChlorinationCatalyst.set(new ItemStack(genericChemItem, 1, 34))
             .registerOre("catalystChlorination");
 
         // Milled Ore Processing
