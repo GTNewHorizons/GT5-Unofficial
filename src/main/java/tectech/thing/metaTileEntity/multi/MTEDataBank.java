@@ -114,8 +114,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.databank.type")) // Machine Type: Data
-                                                                                              // Bank, DB
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.databank.type"))
             .addMarkdown(new ResourceLocation("gregtech", "data-bank"))
             .addSupportAny()
             .beginStructureBlock(5, 3, 3, false)
@@ -126,16 +125,8 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
             .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
             .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataAccessHatch"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
-            .addMiscHatch(
-                "1+",
-                translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"),
-                translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
-                2)
-            .addMiscHatch(
-                "0+",
-                translateToLocal("gt.blockmachines.hatch.datainass.tier.07.name"),
-                translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
-                2)
+            .addMiscHatch("1+", translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
+            .addMiscHatch("0+", translateToLocal("gt.blockmachines.hatch.datainass.tier.07.name"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
             .addStructureInfo("")
             .addStructureFooter(translateToLocal("tt.keyword.Structure.DaisyChainAssemblyLine"))
             .toolTipFinisher();

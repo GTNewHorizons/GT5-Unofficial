@@ -369,28 +369,14 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.computer.machinetype")) // Machine Type:
-                                                                                                     // Quantum
-            // Computer
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.computer.machinetype"))
             .addMarkdown(new ResourceLocation("gregtech", "quantum-computer"))
             .addSupportAny()
             .beginVariableStructureBlock(2, 2, 4, 4, 5, 16, false)
             .addController(translateToLocal("gt.mbtt.structure.front_left_2nd_layer"))
-            .addMiscHatch(
-                "1",
-                translateToLocal("gt.blockmachines.hatch.certain.tier.07.name"),
-                translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
-                1)
-            .addMiscHatch(
-                "1+",
-                translateToLocal("tt.keyword.Structure.DataOutput"),
-                translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
-                1)
-            .addMiscHatch(
-                "0+",
-                translateToLocal("tt.keyword.Structure.DataInput"),
-                translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
-                1)
+            .addMiscHatch("1", translateToLocal("gt.blockmachines.hatch.certain.tier.07.name"), translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1)
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataOutput"), translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1)
+            .addMiscHatch("0+", translateToLocal("tt.keyword.Structure.DataInput"), translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1)
             .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1)
             .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1)
             .addAir(translateToLocal("tt.keyword.Structure.InFrontOfEachComputerHeatVent"))
@@ -399,21 +385,13 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             .addCasing("6-17", translateToLocal("gt.blockcasingsTT.1.name"), false)
             .addCasing("10", translateToLocal("gt.blockcasingsTT.3.name"), false)
             .addCasing("6", translateToLocal("gt.blockcasingsTT.2.name"), false)
-            .addMiscHatch(
-                "2",
-                translateToLocal("gt.blockmachines.hatch.rack.tier.08.name"),
-                translateToLocal("tt.keyword.Structure.AnyAdvComputerCasingExceptOuter"),
-                2)
+            .addMiscHatch("2", translateToLocal("gt.blockmachines.hatch.rack.tier.08.name"), translateToLocal("tt.keyword.Structure.AnyAdvComputerCasingExceptOuter"), 2)
             .addStructureInfo("")
             .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Slice"))
             .addCasing("2", translateToLocal("gt.blockcasingsTT.1.name"), false)
             .addCasing("2", translateToLocal("gt.blockcasingsTT.3.name"), false)
             .addCasing("2", translateToLocal("gt.blockcasingsTT.2.name"), false)
-            .addMiscHatch(
-                "2",
-                translateToLocal("gt.blockmachines.hatch.rack.tier.08.name"),
-                translateToLocal("tt.keyword.Structure.AnyAdvComputerCasingExceptOuter"),
-                2)
+            .addMiscHatch("2", translateToLocal("gt.blockmachines.hatch.rack.tier.08.name"), translateToLocal("tt.keyword.Structure.AnyAdvComputerCasingExceptOuter"), 2)
             .addStructureInfo("")
             .addStructureFooter(translateToLocal("tt.keyword.Structure.DaisyChainOptical"))
             .addMasterChannel(translateToLocal("channels.gregtech.master.length"))

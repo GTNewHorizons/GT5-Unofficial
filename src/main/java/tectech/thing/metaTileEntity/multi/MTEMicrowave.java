@@ -227,8 +227,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // spotless:off
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.microwave.name")) // Machine Type:
-                                                                                               // Microwave Grinder
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.tm.microwave.name"))
             .addMarkdown(new ResourceLocation("gregtech", "microwave-grinder"))
             .beginStructureBlock(5, 4, 5, true)
             .addController(translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
