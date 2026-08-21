@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.debug;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.HashMap;

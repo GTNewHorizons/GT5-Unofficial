@@ -58,6 +58,8 @@ public final class GTTextureIds {
     public static final String OVERLAY_SLOT_OUT_BRONZE = "gregtech:overlay_slot_out_bronze";
     public static final String OVERLAY_SLOT_OUT_STEEL = "gregtech:overlay_slot_out_steel";
 
+    public static final String PROGRESSBAR_WINDMILL_GRINDSTONE = "gregtech:progressbar_windmill_grindstone";
+
     public static final String PROGRESSBAR_BOILER_HEAT = "gregtech:progressbar_boiler_heat";
 
     public static final String PROGRESSBAR_FUEL_STANDARD = "gregtech:progressbar_fuel_standard";

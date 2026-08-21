@@ -1652,12 +1652,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return ExoticEnergyInputHelper.getMaxWorkingInputAmpsMulti(mEnergyHatches);
     }
 
+    /**
+     * Sums up max input EU/t of energy hatches, amperage included,
+     * also includes exotic hatches.
+     */
     public long getMaxInputEu() {
         return ExoticEnergyInputHelper.getTotalEuMulti(mEnergyHatches);
     }
 
     /**
-     * Sums up max input EU/t of energy hatches, amperage included.
+     * Sums up max input EU/t of energy hatches, amperage included,
+     * but excludes exotic hatches.
      */
     public long getMaxInputPower() {
         long eut = 0;
@@ -1670,6 +1675,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     /**
      * Returns voltage tier of energy hatches. If multiple tiers are found, returns 0.
+     * Only works with normal energy hatches.
      */
     public long getInputVoltageTier() {
         long rTier = 0;
@@ -1783,33 +1789,30 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     public boolean depleteInput(FluidStack aLiquid, boolean simulate) {
-        if (aLiquid == null) return false;
-        int fluidCost = aLiquid.amount;
+        return depleteInputQuantity(aLiquid, simulate) >= aLiquid.amount;
+    }
+
+    /**
+     * Returns the amount that is actually drained
+     *
+     * @param aLiquid  The liquid to drain, will not be modified.
+     * @param simulate Whether to perform the draining
+     * @return The amount that is drained
+     */
+    public int depleteInputQuantity(FluidStack aLiquid, boolean simulate) {
+        if (aLiquid == null) return 0;
+        final FluidStack remaining = aLiquid.copy();
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             setHatchRecipeMap(tHatch);
-            FluidStack tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, false);
-            if (tLiquid == null) continue;
-            if (tLiquid.amount >= aLiquid.amount) {
-                if (simulate) {
-                    return true;
-                }
-                tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, true);
-                return tLiquid.amount >= aLiquid.amount;
+            final FluidStack drained = tHatch.drain(ForgeDirection.UNKNOWN, remaining, !simulate);
+            if (drained == null) continue;
+            if (drained.getFluid() != aLiquid.getFluid()) continue;
+            if (drained.amount >= remaining.amount) {
+                return aLiquid.amount - remaining.amount + drained.amount;
             }
-            fluidCost -= tLiquid.amount;
+            remaining.amount -= drained.amount;
         }
-        // Enough fluid is present spread through multiple hatches. Drain requested amount
-        if (fluidCost <= 0) {
-            if (simulate) return true;
-            fluidCost = aLiquid.amount;
-            for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
-                FluidStack tLiquid = tHatch.drain(ForgeDirection.UNKNOWN, aLiquid, fluidCost, true);
-                if (tLiquid == null) continue;
-                fluidCost -= tLiquid.amount;
-                if (fluidCost == 0) return true;
-            }
-        }
-        return false;
+        return aLiquid.amount - remaining.amount;
     }
 
     /**
@@ -1902,10 +1905,16 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return false;
     }
 
+    /**
+     * Note: this cannot retrieve the ME input amount correctly, use depleteInput for retrieving amount
+     */
     public ArrayList<FluidStack> getStoredFluids() {
         return getStoredFluidsForColor(Optional.empty());
     }
 
+    /**
+     * Note: this cannot retrieve the ME input amount correctly, use depleteInput for retrieving amount
+     */
     public ArrayList<FluidStack> getStoredFluidsForColor(Optional<Byte> color) {
         ArrayList<FluidStack> rList = new ArrayList<>();
         Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
@@ -2574,11 +2583,40 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     formatNumber(storedEnergy),
                     formatNumber(maxEnergy)));
 
-            info.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.multiblock.scanner.mei",
-                    formatNumber(getMaxInputVoltage()),
-                    VN[GTUtility.getTier(getMaxInputVoltage())]));
+            long totalInputPower = this.getMaxInputEu();
+            byte voltageTier = this.getExoticEnergyHatches()
+                .isEmpty() ? (byte) this.getInputVoltageTier() : GTUtility.getTier(this.getAverageInputVoltage());
+            byte powerTier = this.getExoticEnergyHatches()
+                .isEmpty() ? GTUtility.getTier(this.getMaxInputVoltage()) : GTUtility.getTier(totalInputPower);
+
+            if (voltageTier != 0) {
+                info.add(
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.multiblock.scanner.mei_amp",
+                        formatNumber(totalInputPower),
+                        GTUtility.getAmperageForTier(totalInputPower, voltageTier),
+                        VN[voltageTier],
+                        VN[powerTier]));
+            } else {
+                info.add(
+                    StatCollector
+                        .translateToLocalFormatted("GT5U.multiblock.scanner.mei", formatNumber(totalInputPower)));
+            }
+
+            if (processingLogic != null) {
+                setupProcessingLogic(processingLogic);
+                long maxRecipeEUt = processingLogic.getMaxAllowedRecipeEUt();
+                byte recipeTier = GTUtility.getTier(maxRecipeEUt);
+                if (recipeTier == 15) {
+                    info.add(StatCollector.translateToLocal("GT5U.multiblock.scanner.mrv_infinite"));
+                } else {
+                    info.add(
+                        StatCollector.translateToLocalFormatted(
+                            "GT5U.multiblock.scanner.mrv",
+                            formatNumber(maxRecipeEUt),
+                            VN[recipeTier]));
+                }
+            }
         }
 
         if (getActualEnergyUsage() > 0) {
@@ -3662,15 +3700,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                                     .setSize(8, 8)
                                     .setPos(0, 0))
                         .addChild(
-                            TextWidget
-                                .dynamicString(
-                                    () -> translateToLocalFormatted(
-                                        "GT5U.gui.text.item_amount_display",
-                                        truncatedItemName,
-                                        shortenedCount) + rateShort)
-                                .setTextAlignment(Alignment.CenterLeft)
-                                .addTooltip(lineTooltip)
-                                .setPos(10, 1)));
+                            new TextWidget(
+                                translateToLocalFormatted(
+                                    "GT5U.gui.text.item_amount_display",
+                                    truncatedItemName,
+                                    shortenedCount) + rateShort).setTextAlignment(Alignment.CenterLeft)
+                                        .addTooltip(lineTooltip)
+                                        .setPos(10, 1)));
             }
         }
         if (mOutputFluids != null) {
@@ -3711,15 +3747,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                             .setSize(8, 8)
                             .setPos(0, 0))
                         .addChild(
-                            TextWidget
-                                .dynamicString(
-                                    () -> translateToLocalFormatted(
-                                        "GT5U.gui.text.fluid_amount_display",
-                                        truncatedFluidName,
-                                        shortenedCount) + rateShort)
-                                .setTextAlignment(Alignment.CenterLeft)
-                                .addTooltip(lineTooltip)
-                                .setPos(10, 1)));
+                            new TextWidget(
+                                translateToLocalFormatted(
+                                    "GT5U.gui.text.fluid_amount_display",
+                                    truncatedFluidName,
+                                    shortenedCount) + rateShort).setTextAlignment(Alignment.CenterLeft)
+                                        .addTooltip(lineTooltip)
+                                        .setPos(10, 1)));
 
             }
         }
