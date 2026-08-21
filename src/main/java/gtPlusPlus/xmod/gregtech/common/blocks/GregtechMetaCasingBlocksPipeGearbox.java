@@ -20,14 +20,6 @@ public class GregtechMetaCasingBlocksPipeGearbox extends GregtechMetaCasingBlock
         super(GregtechMetaCasingItems.class, "gtplusplus.blockcasings.pipesgears", MaterialCasings.INSTANCE);
 
         int aMappingID = 0;
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.EGLIN_STEEL.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.INCONEL_792.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.INCOLOY_MA956.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.NITINOL_60.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.ZERON_100.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.PIKYONIUM.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.TITANSTEEL.getRgbAsHex());
-        sMaterialMapping.put(aMappingID++, MaterialsAlloy.ABYSSAL.getRgbAsHex());
         sMaterialMapping.put(aMappingID++, MaterialsAlloy.BABBIT_ALLOY.getRgbAsHex());
         sMaterialMapping.put(aMappingID++, MaterialsAlloy.INCONEL_690.getRgbAsHex());
         sMaterialMapping.put(aMappingID++, MaterialsAlloy.STELLITE.getRgbAsHex());
@@ -42,30 +34,6 @@ public class GregtechMetaCasingBlocksPipeGearbox extends GregtechMetaCasingBlock
     public IIcon getIcon(final int ordinalSide, final int meta) {
         if ((meta >= 0) && (meta < 16)) {
             switch (meta) {
-                case 0 -> {
-                    return TexturesGtBlock.TEXTURE_GEARBOX_EGLINSTEEL.getIcon();
-                }
-                case 1 -> {
-                    return TexturesGtBlock.TEXTURE_GEARBOX_INCONEL792.getIcon();
-                }
-                case 2 -> {
-                    return TexturesGtBlock.TEXTURE_GEARBOX_INCOLOYMA956.getIcon();
-                }
-                case 3 -> {
-                    return TexturesGtBlock.TEXTURE_GEARBOX_NITINOL60.getIcon();
-                }
-                case 4 -> {
-                    return TexturesGtBlock.TEXTURE_GEARBOX_ZERON100.getIcon();
-                }
-                case 5 -> {
-                    return TexturesGtBlock.TEXTURE_GEARBOX_PIKYONIUM.getIcon();
-                }
-                case 6 -> {
-                    return TexturesGtBlock.TEXTURE_GEARBOX_TITANSTEEL.getIcon();
-                }
-                case 7 -> {
-                    return TexturesGtBlock.TEXTURE_GEARBOX_ABYSSALALLOY.getIcon();
-                }
                 case 8 -> {
                     return TexturesGtBlock.TEXTURE_PIPE_BABBITALLOY.getIcon();
                 }
