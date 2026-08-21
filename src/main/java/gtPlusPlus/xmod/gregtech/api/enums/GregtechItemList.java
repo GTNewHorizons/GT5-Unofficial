@@ -200,7 +200,6 @@ public enum GregtechItemList implements IItemContainer {
     // Multitank
     /* Industrial_MultiTank, */
     Industrial_MultiTankDense,
-    Casing_MultitankExterior,
 
     // Fission Fuel Refinery
     Industrial_FuelRefinery,
@@ -510,9 +509,7 @@ public enum GregtechItemList implements IItemContainer {
      * Blocks
      */
     ResonanceChamber_I,
-    ResonanceChamber_II,
     ResonanceChamber_III,
-    ResonanceChamber_IV,
 
     Modulator_I,
     Modulator_II,

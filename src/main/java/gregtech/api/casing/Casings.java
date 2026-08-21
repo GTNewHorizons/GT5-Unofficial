@@ -693,8 +693,6 @@ public enum Casings implements ICasing {
     MatterFabricatorCasing
         (() -> ModBlocks.blockCasingsMisc, 9, gtpp(0, 9)),
     IronPlatedBricks
-        (() -> ModBlocks.blockCasingsMisc, 10, gtpp(0, 10)),
-    MultitankExteriorCasing
         (() -> ModBlocks.blockCasingsMisc, 11, gtpp(0, 11)),
     HastelloyNReactorCasing
         (() -> ModBlocks.blockCasingsMisc, 12, gtpp(0, 12)),
@@ -885,12 +883,8 @@ public enum Casings implements ICasing {
     // GregtechMetaSpecialMultiCasings2
     ResonanceChamber1
         (() -> ModBlocks.blockSpecialMultiCasings, 0, -1),
-    ResonanceChamber2
-        (() -> ModBlocks.blockSpecialMultiCasings, 1, -1),
     ResonanceChamber3
         (() -> ModBlocks.blockSpecialMultiCasings, 2, -1),
-    ResonanceChamber4
-        (() -> ModBlocks.blockSpecialMultiCasings, 3, -1),
     Modulator1
         (() -> ModBlocks.blockSpecialMultiCasings, 4, -1),
     Modulator3

@@ -176,12 +176,5 @@ public class RecipesMachines {
             .duration(4 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
-
-        // Industrial Multi Tank Casing (unused but craftable)
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Casing_MultitankExterior.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "RPR", "PFP", "PPP", 'R', MaterialsAlloy.LEAGRISIUM.getRod(1), 'P',
-                MaterialsAlloy.LEAGRISIUM.getPlate(1), 'F', MaterialsAlloy.LEAGRISIUM.getFrameBox(1) });
     }
 }

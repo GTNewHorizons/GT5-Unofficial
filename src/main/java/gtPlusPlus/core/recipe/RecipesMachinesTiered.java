@@ -691,26 +691,12 @@ public class RecipesMachinesTiered {
             new Object[] { "PFP", "FHF", "PFP", 'P', MaterialsAlloy.INCOLOY_DS.getPlateDouble(1), 'F',
                 ItemList.Field_Generator_LV, 'H', ItemList.Casing_EV });
 
-        // Resonance Chamber II
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.ResonanceChamber_II.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PFP", "FHF", "PFP", 'P', MaterialsAlloy.INCONEL_625.getPlateDouble(1), 'F',
-                ItemList.Field_Generator_MV, 'H', ItemList.Casing_IV });
-
         // Resonance Chamber III
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ResonanceChamber_III.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "PFP", "FHF", "PFP", 'P', MaterialsAlloy.ZERON_100.getPlateDouble(1), 'F',
                 ItemList.Field_Generator_HV, 'H', ItemList.Casing_LuV });
-
-        // Resonance Chamber IV
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.ResonanceChamber_IV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "PFP", "FHF", "PFP", 'P', MaterialsAlloy.PIKYONIUM.getPlateDouble(1), 'F',
-                ItemList.Field_Generator_EV, 'H', ItemList.Casing_ZPM });
     }
 
     private static void autoWorkbenches() {

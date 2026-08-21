@@ -21,7 +21,8 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
 
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 8; i++) {
+            if (i == 1 || i == 3) continue;
             list.add(new ItemStack(item, 1, i));
         }
     }
@@ -49,9 +50,7 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
         super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.3", MaterialCasings.INSTANCE);
 
         GregtechItemList.ResonanceChamber_I.set(new ItemStack(this, 1, 0));
-        GregtechItemList.ResonanceChamber_II.set(new ItemStack(this, 1, 1));
         GregtechItemList.ResonanceChamber_III.set(new ItemStack(this, 1, 2));
-        GregtechItemList.ResonanceChamber_IV.set(new ItemStack(this, 1, 3));
         GregtechItemList.Modulator_I.set(new ItemStack(this, 1, 4));
         GregtechItemList.Modulator_III.set(new ItemStack(this, 1, 5));
     }
@@ -71,9 +70,7 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
     public static IIcon getStaticIcon(final byte aSide, final int aMeta) {
         return switch (aMeta) {
             case 0 -> Textures.BlockIcons.Casing_Resonance_1.getIcon();
-            case 1 -> Textures.BlockIcons.Casing_Resonance_2.getIcon();
             case 2 -> Textures.BlockIcons.Casing_Resonance_3.getIcon();
-            case 3 -> Textures.BlockIcons.Casing_Resonance_4.getIcon();
             case 4 -> Textures.BlockIcons.Casing_Modulator_1.getIcon();
             case 5 -> Textures.BlockIcons.Casing_Modulator_3.getIcon();
             default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
