@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,6 +18,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.Contract;
+
+import com.LazyFlesh.variablehorizons.variants.VariantNames;
 
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
@@ -188,9 +192,8 @@ public class GTRecipeBuilder {
 
     private static void handleNullRecipeComponents(String componentType) {
         // place a breakpoint here to catch all these issues
-        GTLog.err.print("null detected in ");
-        GTLog.err.println(componentType);
-        new NullPointerException().printStackTrace(GTLog.err);
+        GT_FML_LOGGER.error("null detected in {}", componentType);
+        GT_FML_LOGGER.error(new NullPointerException());
         if (PANIC_MODE_NULL) {
             throw new IllegalArgumentException("null in argument");
         }
@@ -205,8 +208,8 @@ public class GTRecipeBuilder {
             return;
         }
         // place a breakpoint here to catch all these issues
-        GTLog.err.print("invalid recipe");
-        new IllegalArgumentException().printStackTrace(GTLog.err);
+        GT_FML_LOGGER.error("invalid recipe");
+        GT_FML_LOGGER.error(new IllegalArgumentException());
         if (PANIC_MODE_INVALID) {
             throw new IllegalArgumentException("invalid recipe");
         }
@@ -217,8 +220,8 @@ public class GTRecipeBuilder {
             return;
         }
         // place a breakpoint here to catch all these issues
-        GTLog.err.println("invalid recipe: not enough input fluids");
-        new IllegalArgumentException().printStackTrace(GTLog.err);
+        GT_FML_LOGGER.error("invalid recipe: not enough input fluids");
+        GT_FML_LOGGER.error(new IllegalArgumentException());
         if (PANIC_MODE_INVALID) {
             throw new IllegalArgumentException("invalid recipe");
         }
@@ -229,8 +232,8 @@ public class GTRecipeBuilder {
             return;
         }
         // place a breakpoint here to catch all these issues
-        GTLog.err.println("invalid recipe: not enough input items");
-        new IllegalArgumentException().printStackTrace(GTLog.err);
+        GT_FML_LOGGER.error("invalid recipe: not enough input items");
+        GT_FML_LOGGER.error(new IllegalArgumentException());
         if (PANIC_MODE_INVALID) {
             throw new IllegalArgumentException("invalid recipe");
         }
@@ -240,13 +243,12 @@ public class GTRecipeBuilder {
         if (!DEBUG_MODE_COLLISION && !PANIC_MODE_COLLISION) {
             return;
         }
-        GTLog.err.print("Recipe collision resulting in recipe loss detected with ");
-        GTLog.err.println(details);
+        GT_FML_LOGGER.error("Recipe collision resulting in recipe loss detected with {}", details);
         if (PANIC_MODE_COLLISION) {
             throw new IllegalArgumentException("Recipe Collision");
         } else {
             // place a breakpoint here to catch all these issues
-            new IllegalArgumentException().printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(new IllegalArgumentException());
         }
     }
 
@@ -378,53 +380,55 @@ public class GTRecipeBuilder {
         Arrays.fill(altOreIds, -1);
         for (int i = 0, inputsLength = inputs.length; i < inputsLength; i++) {
             Object input = inputs[i];
-            if (input instanceof ItemStack) {
-                alts[i] = new ItemStack[] { (ItemStack) input };
-            } else if (input instanceof ItemStack[]inputArr) {
-                if (debugNull() && containsNull(inputArr)) handleNullRecipeComponents("itemInputs");
-                alts[i] = inputArr.clone();
-            } else if (input instanceof OreDictItemStack ods) {
-                altOreIds[i] = OreDictionary.getOreID(ods.mOreName);
-                ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(ods.mOreName);
-                if (ores.isEmpty()) {
+            switch (input) {
+                case ItemStack stack -> alts[i] = new ItemStack[]{stack};
+                case ItemStack[] inputArr -> {
+                    if (debugNull() && containsNull(inputArr)) handleNullRecipeComponents("itemInputs");
+                    alts[i] = inputArr.clone();
+                }
+                case OreDictItemStack ods -> {
+                    altOreIds[i] = OreDictionary.getOreID(ods.mOreName);
+                    ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(ods.mOreName);
+                    if (ores.isEmpty()) {
+                        alts[i] = GTValues.emptyItemStackArray;
+                        GT_FML_LOGGER.error("Warning: OreDict entry \"{}\" is empty; recipe will be skipped.", ods.mOreName);
+                        if (debugNull()) handleNullRecipeComponents("itemInputs empty ore dict");
+                        continue;
+                    }
+                    ArrayList<ItemStack> list = new ArrayList<>(ores.size());
+                    // noinspection ForLoopReplaceableByForEach
+                    for (int j = 0, oresSize = ores.size(); j < oresSize; j++) {
+                        ItemStack itemStack = GTUtility.copyAmount(ods.mAmount, ores.get(j));
+                        if (GTUtility.isStackValid(itemStack)) list.add(itemStack);
+                    }
+                    if (debugNull() && list.isEmpty()) handleNullRecipeComponents("itemInputs no valid ore dict item");
+                    alts[i] = list.toArray(new ItemStack[0]);
+                }
+                case Object[] arr -> {
+                    if (arr.length != 2) continue;
+                    altOreIds[i] = OreDictionary.getOreID(arr[0].toString());
+                    ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(arr[0]);
+                    if (ores.isEmpty()) {
+                        alts[i] = GTValues.emptyItemStackArray;
+                        GT_FML_LOGGER.error("Warning: OreDict entry \"{}\" is empty; recipe will be skipped.", arr[0]);
+                        if (debugNull()) handleNullRecipeComponents("itemInputs empty ore dict");
+                        continue;
+                    }
+                    int size = ((Number) arr[1]).intValue();
+                    ArrayList<ItemStack> list = new ArrayList<>(ores.size());
+                    // noinspection ForLoopReplaceableByForEach
+                    for (int j = 0, oresSize = ores.size(); j < oresSize; j++) {
+                        ItemStack itemStack = GTUtility.copyAmount(size, ores.get(j));
+                        if (GTUtility.isStackValid(itemStack)) list.add(itemStack);
+                    }
+                    if (debugNull() && list.isEmpty()) handleNullRecipeComponents("itemInputs no valid ore dict item");
+                    alts[i] = list.toArray(new ItemStack[0]);
+                }
+                case null -> {
+                    if (debugNull()) handleNullRecipeComponents("recipe oredict input");
                     alts[i] = GTValues.emptyItemStackArray;
-                    GTLog.err
-                        .println("Warning: OreDict entry \"" + ods.mOreName + "\" is empty; recipe will be skipped.");
-                    if (debugNull()) handleNullRecipeComponents("itemInputs empty ore dict");
-                    continue;
                 }
-                ArrayList<ItemStack> list = new ArrayList<>(ores.size());
-                // noinspection ForLoopReplaceableByForEach
-                for (int j = 0, oresSize = ores.size(); j < oresSize; j++) {
-                    ItemStack itemStack = GTUtility.copyAmount(ods.mAmount, ores.get(j));
-                    if (GTUtility.isStackValid(itemStack)) list.add(itemStack);
-                }
-                if (debugNull() && list.isEmpty()) handleNullRecipeComponents("itemInputs no valid ore dict item");
-                alts[i] = list.toArray(new ItemStack[0]);
-            } else if (input instanceof Object[]arr) {
-                if (arr.length != 2) continue;
-                altOreIds[i] = OreDictionary.getOreID(arr[0].toString());
-                ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(arr[0]);
-                if (ores.isEmpty()) {
-                    alts[i] = GTValues.emptyItemStackArray;
-                    GTLog.err.println("Warning: OreDict entry \"" + arr[0] + "\" is empty; recipe will be skipped.");
-                    if (debugNull()) handleNullRecipeComponents("itemInputs empty ore dict");
-                    continue;
-                }
-                int size = ((Number) arr[1]).intValue();
-                ArrayList<ItemStack> list = new ArrayList<>(ores.size());
-                // noinspection ForLoopReplaceableByForEach
-                for (int j = 0, oresSize = ores.size(); j < oresSize; j++) {
-                    ItemStack itemStack = GTUtility.copyAmount(size, ores.get(j));
-                    if (GTUtility.isStackValid(itemStack)) list.add(itemStack);
-                }
-                if (debugNull() && list.isEmpty()) handleNullRecipeComponents("itemInputs no valid ore dict item");
-                alts[i] = list.toArray(new ItemStack[0]);
-            } else if (input == null) {
-                if (debugNull()) handleNullRecipeComponents("recipe oredict input");
-                alts[i] = GTValues.emptyItemStackArray;
-            } else {
-                throw new IllegalArgumentException("index " + i + ", unexpected type: " + input.getClass());
+                default -> throw new IllegalArgumentException("index " + i + ", unexpected type: " + input.getClass());
             }
         }
         ArrayList<ItemStack> list = new ArrayList<>(alts.length);
@@ -614,9 +618,9 @@ public class GTRecipeBuilder {
             // Ignores ULV voltage
             for (int i = 1; i < GTValues.VP.length; i++) {
                 if (eut <= GTValues.V[i] && eut > GTValues.VP[i]) {
-                    GTLog.err.println(
-                        "EUt > Practical Voltage detected. EUt: " + eut + ", Practical Voltage: " + GTValues.VP[i]);
-                    new IllegalArgumentException().printStackTrace(GTLog.err);
+                    GT_FML_LOGGER
+                        .error("EUt > Practical Voltage detected. EUt: {}, Practical Voltage: {}", eut, GTValues.VP[i]);
+                    GT_FML_LOGGER.error(new IllegalArgumentException());
                     break;
                 }
             }
@@ -749,6 +753,25 @@ public class GTRecipeBuilder {
 
     public GTRecipeBuilder requiresLowGravity() {
         return metadata(GTRecipeConstants.LOW_GRAVITY, true);
+    }
+
+    /**
+     * Specifies whether a variant modifies this recipe. If any of the listed variants are loaded, all the operations
+     * for this builder will be ignored. If Variable Horizons is not loaded, this does nothing.
+     *
+     * @param variantNames Variant(s) modifying this recipe.
+     */
+    public GTRecipeBuilder modifiedByVariant(String... variantNames) {
+        if (!Mods.VariableHorizons.isModLoaded()) {
+            return this;
+        }
+        for (final String name : variantNames) {
+            if (VariantNames.activeContains(name)) {
+                skip = true;
+                return this;
+            }
+        }
+        return this;
     }
 
     // endregion
@@ -1154,26 +1177,23 @@ public class GTRecipeBuilder {
         int specialValue = 0;
         if (getMetadataOrDefault(GTRecipeConstants.LOW_GRAVITY, false)) specialValue -= 100;
         if (getMetadataOrDefault(GTRecipeConstants.CLEANROOM, false)) specialValue -= 200;
-        loop:
         for (RecipeMetadataKey<? extends Number> ident : GTRecipeMapUtil.SPECIAL_VALUE_ALIASES) {
             Number metadata = getMetadataOrDefault(ident, null);
-            switch (metadata) {
-                case Byte b:
-                    specialValue = metadata.intValue();
-                    break loop;
-                case Short s:
-                    specialValue = metadata.intValue();
-                    break loop;
-                case Integer i:
-                    specialValue = metadata.intValue();
-                    break loop;
-                case Long l:
-                    specialValue = GTUtility.safeInt(metadata.longValue());
-                    break loop;
-                case null:
-                default:
-                    break;
+
+            if (metadata instanceof Byte b) {
+                specialValue = metadata.intValue();
+                break;
+            } else if (metadata instanceof Short s) {
+                specialValue = metadata.intValue();
+                break;
+            } else if (metadata instanceof Integer i) {
+                specialValue = metadata.intValue();
+                break;
+            } else if (metadata instanceof Long l) {
+                specialValue = GTUtility.safeInt(metadata.longValue());
+                break;
             }
+
         }
         recipe.mSpecialValue = specialValue;
     }

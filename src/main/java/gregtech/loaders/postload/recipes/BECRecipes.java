@@ -6,7 +6,6 @@ import static gregtech.api.enums.Mods.AE2FluidCraft;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.EternalSingularity;
-import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
 import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -60,12 +59,14 @@ public class BECRecipes implements Runnable {
     private static final Materials[] TIER_MATS = { Materials.Netherite, Materials.ProtoHalkonite,
         Materials.SixPhasedCopper, Materials.TranscendentMetal, Materials.Mellion, Materials.Creon, Materials.SpaceTime,
         Materials.Hexanite, Materials.Eternity };
+    private static final int[] EOH_TIMES = { 2_000_000, 3_000_000, 4_000_000, 5_000_000, 100_000, 120_000, 140_000,
+        160_000, 180_000 };
 
     @Override
     public void run() {
         addBECCasingRecipes();
         if (NewHorizonsCoreMod.isModLoaded()) addGodforgeRecipes();
-        if (Avaritia.isModLoaded() && ExtraUtilities.isModLoaded() && AE2FluidCraft.isModLoaded()) {
+        if (Avaritia.isModLoaded() && AE2FluidCraft.isModLoaded()) {
             addEyeOfHarmonyRecipes();
         }
 
@@ -268,7 +269,7 @@ public class BECRecipes implements Runnable {
             new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 2),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Creon, 18),
                 new ItemStack(Blocks.tfftStorageField, 2, 9), ItemList.Tesseract.get(12),
-                ItemList.MetaMaterial_ResonanceChamber1.get(4), ItemList.Thermal_Superconductor.get(9),
+                ItemList.Relativistic_Heat_Capacitor.get(6), ItemList.Thermal_Superconductor.get(9),
                 ItemList.Field_Generator_UEV.get(6),
                 GTOreDictUnificator.get(OrePrefixes.bolt, Materials.SixPhasedCopper, 36) },
             nanites(1, 1, 2, 3, 4, 3, 2, 1),
@@ -363,7 +364,7 @@ public class BECRecipes implements Runnable {
         // Condensate Guidance Coil
         addBec(
             ItemList.CondensateGuidanceCoil.get(1),
-            new ItemStack[] { ItemRefer.Field_Restriction_Coil_T3.get(1),
+            new ItemStack[] { ItemRefer.Field_Restriction_Coil_T2.get(1),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(4), ItemList.MetaMaterial_Waveguide1.get(2),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Churitsu, 1),
                 GGMaterial.tairitsu.get(OrePrefixes.screw, 16),
@@ -437,6 +438,7 @@ public class BECRecipes implements Runnable {
 
     private void addEyeOfHarmonyCasings() {
 
+        final int casingTime = 40_000 * SECONDS;
         // Reinforced Temporal Structure Casing
         addBec(
             CustomItemList.EOH_Reinforced_Temporal_Casing.get(4),
@@ -454,7 +456,7 @@ public class BECRecipes implements Runnable {
             new FluidStack[] { CondensateType.Neutronium.getEntangled(512 * INGOTS),
                 CondensateType.CosmicNeutronium.getEntangled(512 * INGOTS),
                 CondensateType.Bedrockium.getEntangled(256 * INGOTS), CondensateType.Time.getEntangled(10 * INGOTS) },
-            3600 * SECONDS,
+            casingTime,
             TierEU.RECIPE_UMV);
 
         // Reinforced Spatial Structure Casing
@@ -474,7 +476,7 @@ public class BECRecipes implements Runnable {
             new FluidStack[] { CondensateType.Neutronium.getEntangled(512 * INGOTS),
                 CondensateType.CosmicNeutronium.getEntangled(512 * INGOTS),
                 CondensateType.Bedrockium.getEntangled(256 * INGOTS), CondensateType.Space.getEntangled(10 * INGOTS) },
-            3600 * SECONDS,
+            casingTime,
             TierEU.RECIPE_UMV);
 
         // Infinite Spacetime Boundary Casing
@@ -499,7 +501,7 @@ public class BECRecipes implements Runnable {
                 CondensateType.CosmicNeutronium.getEntangled(1024 * INGOTS),
                 CondensateType.Bedrockium.getEntangled(256 * INGOTS),
                 CondensateType.SpaceTime.getEntangled(128 * INGOTS) },
-            3600 * SECONDS,
+            casingTime,
             TierEU.RECIPE_UMV);
     }
 
@@ -531,7 +533,7 @@ public class BECRecipes implements Runnable {
             FluidStack[] condensates = { cosmicSolder(t), CondensateType.Time.getEntangled(10 * tp1 * INGOTS),
                 CondensateType.SpaceTime.getEntangled(10 * INGOTS),
                 CondensateType.DimensionallyShiftedSuperfluid.getEntangled(3_000 * tp1) };
-            addBec(outputs[t].get(1), inputs, nanites, condensates, 3600 * SECONDS, TierEU.RECIPE_UMV);
+            addBec(outputs[t].get(1), inputs, nanites, condensates, EOH_TIMES[t], TierEU.RECIPE_UMV);
         }
     }
 
@@ -573,7 +575,7 @@ public class BECRecipes implements Runnable {
             FluidStack[] condensates = { cosmicSolder(t), CondensateType.Space.getEntangled(10 * tp1 * INGOTS),
                 CondensateType.SpaceTime.getEntangled(10 * INGOTS),
                 CondensateType.Hypogen.getEntangled(20 * tp1 * INGOTS) };
-            addBec(outputs[t].get(1), inputs, nanites, condensates, 3600 * SECONDS, TierEU.RECIPE_UMV);
+            addBec(outputs[t].get(1), inputs, nanites, condensates, EOH_TIMES[t], TierEU.RECIPE_UMV);
         }
     }
 
@@ -629,7 +631,7 @@ public class BECRecipes implements Runnable {
             FluidStack[] condensates = { cosmicSolder(t), CondensateType.Time.getEntangled(10 * tp1 * INGOTS),
                 CondensateType.Space.getEntangled(10 * tp1 * INGOTS),
                 CondensateType.SpaceTime.getEntangled(10 * INGOTS) };
-            addBec(outputs[t].get(1), inputs, nanites, condensates, 3600 * SECONDS, TierEU.RECIPE_UMV);
+            addBec(outputs[t].get(1), inputs, nanites, condensates, EOH_TIMES[t], TierEU.RECIPE_UMV);
         }
     }
 

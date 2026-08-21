@@ -246,7 +246,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
         glassTier = -1;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-            if (mEnergyHatch.mTier > glassTier) {
+            if (mEnergyHatch.getTierForStructure() > glassTier) {
                 errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
                 break;
             }
@@ -352,23 +352,15 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setFloat("speedup", speedup);
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
                 + EnumChatFormatting.WHITE
                 + String.format("%.1f%%", 100 * tag.getFloat("speedup")));

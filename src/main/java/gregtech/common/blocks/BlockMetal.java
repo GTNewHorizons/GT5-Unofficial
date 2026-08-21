@@ -14,6 +14,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.client.DynamicLangManager;
 
 public class BlockMetal extends BlockStorage {
 
@@ -33,6 +34,7 @@ public class BlockMetal extends BlockStorage {
         for (int i = 0; i < aMats.length; i++) {
             if (aMats[i].mMetaItemSubID > 0 && aMats[i].mHasParentMod) {
                 Materials materials = aMats[i];
+                DynamicLangManager.addStack(new ItemStack(this, 1, i));
                 if (aPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(aPrefix, materials, new ItemStack(this, 1, i));
                 } else {

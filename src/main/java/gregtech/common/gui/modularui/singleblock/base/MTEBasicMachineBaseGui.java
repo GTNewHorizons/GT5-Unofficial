@@ -388,7 +388,8 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
                                         new MachineModularSlot(
                                             machine.inventoryHandler,
                                             machine.getOutputSlot() + i,
-                                            baseMetaTileEntity).accessibility(false, true))
+                                            baseMetaTileEntity).slotGroup("item_inv")
+                                                .accessibility(false, true))
                                 : null)
                     .verticalCenter()
                     .leftRel(0));

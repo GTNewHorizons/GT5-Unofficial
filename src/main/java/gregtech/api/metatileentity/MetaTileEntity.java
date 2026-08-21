@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.interfaces.tileentity.IColoredTileEntity.UNCOLOURED;
 
 import java.util.List;
@@ -48,6 +49,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.common.capability.CleanroomReference;
+import gregtech.common.config.Client;
 import gregtech.common.gui.modularui.util.MTEItemStackHandler;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -705,12 +707,14 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
-        currenttip.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.waila.facing",
-                getFacingNameLocalized(
-                    mBaseMetaTileEntity.getFrontFacing()
-                        .ordinal())));
+        if (Client.waila.showFacing) {
+            currenttip.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.facing",
+                    getFacingNameLocalized(
+                        mBaseMetaTileEntity.getFrontFacing()
+                            .ordinal())));
+        }
 
         if (this instanceof IPowerChannelState state) {
             final NBTTagCompound tag = accessor.getNBTData();
@@ -762,7 +766,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
             if (!eg.isNetworkPowered())
                 return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.power");
         } catch (Exception ex) {
-            ex.printStackTrace();
+            GT_FML_LOGGER.error(ex);
         }
         return "";
     }

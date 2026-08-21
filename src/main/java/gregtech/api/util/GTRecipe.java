@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.D2;
 
 import java.util.ArrayList;
@@ -323,7 +324,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
      * Re-unificates all the items present in recipes.
      */
     public static void reInit() {
-        GTLog.out.println("GTMod: Re-Unificating Recipes.");
+        GT_FML_LOGGER.debug("GTMod: Re-Unificating Recipes.");
         for (RecipeMap<?> map : RecipeMap.ALL_RECIPE_MAPS.values()) {
             map.getBackend()
                 .reInit();
@@ -395,13 +396,13 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         if (tInputAmount < tOutputAmount) {
             if (!Materials.Tin.contains(mInputs)) {
-                GTLog.err.println("You get more Cells, than you put in? There must be something wrong.");
-                new Exception().printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("You get more Cells, than you put in? There must be something wrong.");
+                GT_FML_LOGGER.error(new Exception());
             }
         } else if (tInputAmount > tOutputAmount) {
             if (!Materials.Tin.contains(mOutputs)) {
-                GTLog.err.println("You get less Cells, than you put in? GT Machines usually don't destroy Cells.");
-                new Exception().printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error("You get less Cells, than you put in? GT Machines usually don't destroy Cells.");
+                GT_FML_LOGGER.error(new Exception());
             }
         }
     }
@@ -1082,16 +1083,16 @@ public class GTRecipe implements Comparable<GTRecipe> {
         static {
             if (!Boolean.getBoolean("com.gtnh.gt5u.ignore-invalid-assline-recipe"))
                 GregTechAPI.sFirstWorldTick.add(RecipeAssemblyLine::checkInvalidRecipes);
-            else GTLog.out.println("NOT CHECKING INVALID ASSLINE RECIPE.");
+            else GT_FML_LOGGER.debug("NOT CHECKING INVALID ASSLINE RECIPE.");
         }
 
         private static void checkInvalidRecipes() {
             int invalidCount = 0;
-            GTLog.out.println("Started assline validation");
+            GT_FML_LOGGER.info("Started assline validation");
             for (RecipeAssemblyLine recipe : sAssemblylineRecipes) {
                 if (recipe.getPersistentHash() == 0) {
                     invalidCount++;
-                    GTLog.err.printf("Invalid recipe: %s%n", recipe);
+                    GT_FML_LOGGER.error("Invalid recipe: {}", recipe);
                 }
             }
             if (invalidCount > 0) throw new RuntimeException(
@@ -1164,20 +1165,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         public int getPersistentHash() {
             if (mPersistentHash == 0)
-                GTLog.err.println("Assline recipe persistent hash has not been set! Recipe: " + mOutput);
+                GT_FML_LOGGER.error("Assline recipe persistent hash has not been set! Recipe: {}", mOutput);
             return mPersistentHash;
-        }
-
-        @Override
-        public int hashCode() {
-            return mPersistentHash != 0 ? mPersistentHash : super.hashCode();
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (!(obj instanceof RecipeAssemblyLine other)) return false;
-            return mPersistentHash != 0 && mPersistentHash == other.mPersistentHash;
         }
 
         @Override

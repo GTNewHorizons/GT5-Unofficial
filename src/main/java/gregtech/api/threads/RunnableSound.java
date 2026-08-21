@@ -3,7 +3,7 @@ package gregtech.api.threads;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.util.GTPlayedSound;
 import gregtech.api.util.GTUtility;
 
@@ -36,7 +36,7 @@ public class RunnableSound implements Runnable {
             mWorld.playSound(mX, mY, mZ, mSoundResourceLocation.toString(), mSoundStrength, mSoundModulation, false);
             GTUtility.sPlayedSoundMap.put(tSound, mTimeUntilNextSound);
         } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error("Could not play RunnableSound", e);
+            GTLoggers.GT_FML_LOGGER.error("Could not play RunnableSound", e);
         }
     }
 }

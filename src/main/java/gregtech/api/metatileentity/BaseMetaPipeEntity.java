@@ -1,6 +1,6 @@
 package gregtech.api.metatileentity;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -218,6 +218,15 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             }
         }
         mWorkUpdate = mInventoryChanged = false;
+    }
+
+    @Override
+    public void onUnload() {
+        if (canAccessData()) {
+            onCoverUnload();
+            mMetaTileEntity.onUnload();
+        }
+        super.onUnload();
     }
 
     public void updateConnections() {
@@ -779,8 +788,8 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                         mMetaTileEntity.markDirty();
                         GTUtility.sendChatTrans(
                             aPlayer,
-                            isAllowedToWork() ? "GT5U.chat.machine.processing.enable"
-                                : "GT5U.chat.machine.processing.disable");
+                            isAllowedToWork() ? "GT5U.chat.pipe.processing.enable"
+                                : "GT5U.chat.pipe.processing.disable");
                         sendSoundToPlayers(SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1);
                     }
                     return true;
