@@ -1,10 +1,13 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
@@ -13,12 +16,16 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.GTLoggers;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.gui.modularui.hatch.MTEHatchAdvancedOutputBeamlineGui;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
 
 public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
 
@@ -108,16 +115,26 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = super.getDescriptionData();
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+
+        NBTTagCompound data = new NBTTagCompound();
         saveInputMapToNBT(data, acceptedInputMap);
-        return data;
+        try {
+            CompressedStreamTools.write(data, new ByteBufOutputStream(buffer));
+        } catch (IOException e) {
+            GTLoggers.GT_FML_LOGGER.error(e);
+        }
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-        loadInputMapFromNBT(data, acceptedInputMap);
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        try {
+            CompressedStreamTools.read(new DataInputStream(new ByteBufInputStream(buffer)));
+        } catch (IOException e) {
+            GTLoggers.GT_FML_LOGGER.error(e);
+        }
     }
 
     @Override

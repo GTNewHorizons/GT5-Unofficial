@@ -5,7 +5,6 @@ import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -83,6 +82,7 @@ import gregtech.common.render.IMTERenderer;
 import gregtech.mixin.interfaces.accessors.EntityItemAccessor;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBlockBase;
 import ic2.api.Direction;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -680,37 +680,34 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     @Override
-    public final byte[] getInitialDataForClient() {
-        return ByteBuffer.allocate(2 + 24 + 4)
-            .putShort(mID)
-            .putInt(getCoverAtSide(ForgeDirection.DOWN).getCoverID())
-            .putInt(getCoverAtSide(ForgeDirection.UP).getCoverID())
-            .putInt(getCoverAtSide(ForgeDirection.NORTH).getCoverID())
-            .putInt(getCoverAtSide(ForgeDirection.SOUTH).getCoverID())
-            .putInt(getCoverAtSide(ForgeDirection.WEST).getCoverID())
-            .putInt(getCoverAtSide(ForgeDirection.EAST).getCoverID())
-            .put(getTextureData())
-            .put(getUpdateData())
-            .put(getSidedRedstoneMask())
-            .put(getColorRaw())
-            .array();
+    public final void getInitialDataForClient(ByteBuf buffer) {
+        buffer.writeShort(mID);
+        buffer.writeInt(getCoverAtSide(ForgeDirection.DOWN).getCoverID());
+        buffer.writeInt(getCoverAtSide(ForgeDirection.UP).getCoverID());
+        buffer.writeInt(getCoverAtSide(ForgeDirection.NORTH).getCoverID());
+        buffer.writeInt(getCoverAtSide(ForgeDirection.SOUTH).getCoverID());
+        buffer.writeInt(getCoverAtSide(ForgeDirection.WEST).getCoverID());
+        buffer.writeInt(getCoverAtSide(ForgeDirection.EAST).getCoverID());
+        buffer.writeByte(getTextureData());
+        buffer.writeByte(getUpdateData());
+        buffer.writeByte(getSidedRedstoneMask());
+        buffer.writeByte(getColorRaw());
     }
 
     @Override
-    public final void receiveInitialDataOnClient(byte[] data) {
-        ByteBuffer buffer = ByteBuffer.wrap(data);
+    public final void receiveInitialDataOnClient(ByteBuf buffer) {
         receiveMetaTileEntityData(
-            buffer.getShort(),
-            buffer.getInt(),
-            buffer.getInt(),
-            buffer.getInt(),
-            buffer.getInt(),
-            buffer.getInt(),
-            buffer.getInt(),
-            buffer.get(),
-            buffer.get(),
-            buffer.get(),
-            buffer.get());
+            buffer.readShort(),
+            buffer.readInt(),
+            buffer.readInt(),
+            buffer.readInt(),
+            buffer.readInt(),
+            buffer.readInt(),
+            buffer.readInt(),
+            buffer.readByte(),
+            buffer.readByte(),
+            buffer.readByte(),
+            buffer.readByte());
     }
 
     public final void receiveMetaTileEntityData(short aID, int aCover0, int aCover1, int aCover2, int aCover3,

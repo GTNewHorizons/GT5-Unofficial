@@ -2,7 +2,6 @@ package gregtech.api.metatileentity;
 
 import static gregtech.GTLoggers.GT_FML_LOGGER;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -47,6 +46,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
+import io.netty.buffer.ByteBuf;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -256,37 +256,34 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public final byte[] getInitialDataForClient() {
-        return ByteBuffer.allocate(2 + 24 + 4)
-            .putShort(mID)
-            .putInt(getCoverAtSide(ForgeDirection.DOWN).getCoverID())
-            .putInt(getCoverAtSide(ForgeDirection.UP).getCoverID())
-            .putInt(getCoverAtSide(ForgeDirection.NORTH).getCoverID())
-            .putInt(getCoverAtSide(ForgeDirection.SOUTH).getCoverID())
-            .putInt(getCoverAtSide(ForgeDirection.WEST).getCoverID())
-            .putInt(getCoverAtSide(ForgeDirection.EAST).getCoverID())
-            .put(mConnections)
-            .put(getUpdateData())
-            .put(getSidedRedstoneMask())
-            .put(getColorRaw())
-            .array();
+    public final void getInitialDataForClient(ByteBuf buffer) {
+        buffer.writeShort(mID);
+        buffer.writeInt(getCoverAtSide(ForgeDirection.DOWN).getCoverID());
+        buffer.writeInt(getCoverAtSide(ForgeDirection.UP).getCoverID());
+        buffer.writeInt(getCoverAtSide(ForgeDirection.NORTH).getCoverID());
+        buffer.writeInt(getCoverAtSide(ForgeDirection.SOUTH).getCoverID());
+        buffer.writeInt(getCoverAtSide(ForgeDirection.WEST).getCoverID());
+        buffer.writeInt(getCoverAtSide(ForgeDirection.EAST).getCoverID());
+        buffer.writeByte(mConnections);
+        buffer.writeByte(getUpdateData());
+        buffer.writeByte(getSidedRedstoneMask());
+        buffer.writeByte(getColorRaw());
     }
 
     @Override
-    public final void receiveInitialDataOnClient(byte[] data) {
-        ByteBuffer buffer = ByteBuffer.wrap(data);
+    public final void receiveInitialDataOnClient(ByteBuf buffer) {
         receiveMetaTileEntityData(
-            buffer.getShort(),
-            buffer.getInt(),
-            buffer.getInt(),
-            buffer.getInt(),
-            buffer.getInt(),
-            buffer.getInt(),
-            buffer.getInt(),
-            buffer.get(),
-            buffer.get(),
-            buffer.get(),
-            buffer.get());
+            buffer.readShort(),
+            buffer.readInt(),
+            buffer.readInt(),
+            buffer.readInt(),
+            buffer.readInt(),
+            buffer.readInt(),
+            buffer.readInt(),
+            buffer.readByte(),
+            buffer.readByte(),
+            buffer.readByte(),
+            buffer.readByte());
     }
 
     public final void receiveMetaTileEntityData(short aID, int aCover0, int aCover1, int aCover2, int aCover3,

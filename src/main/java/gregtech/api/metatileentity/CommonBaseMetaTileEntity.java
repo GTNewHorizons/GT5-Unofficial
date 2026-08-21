@@ -43,6 +43,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.blockupdate.BlockUpdateHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Gregtech;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.buffer.Unpooled;
 
 public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     implements IGregTechTileEntity, IInterfaceNameProvider {
@@ -451,52 +454,49 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     /**
      * Run on the server when the block is marked for a full resync, e.g. when loading a chunk.
      */
-    abstract byte[] getInitialDataForClient();
+    abstract void getInitialDataForClient(ByteBuf buffer);
 
     /**
      * Runs on the client to receive full resync data from the server.
      */
-    abstract void receiveInitialDataOnClient(byte[] data);
+    abstract void receiveInitialDataOnClient(ByteBuf buffer);
 
     @Override
     public Packet getDescriptionPacket() {
-        byte[] base = getInitialDataForClient();
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setByteArray("base", base);
-        S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, nbt);
+        ByteBuf buffer = PooledByteBufAllocator.DEFAULT.directBuffer();
+        try {
+            getInitialDataForClient(buffer);
+            IMetaTileEntity imte = getMetaTileEntity();
+            if (imte != null) {
+                imte.writeToStream(buffer);
+            }
 
-        IMetaTileEntity imte = getMetaTileEntity();
+            byte[] result = new byte[buffer.readableBytes()];
+            buffer.readBytes(result);
 
-        if (imte == null) return pkt;
-
-        NBTTagCompound data = imte.getDescriptionData();
-
-        if (data == null) return pkt;
-
-        // Yeah we delay a bit of modification after packet construction
-        // it's fine... it's clear this won't cause problems
-        nbt.setTag("mte", data);
-
-        return pkt;
+            NBTTagCompound nbt = new NBTTagCompound();
+            nbt.setByteArray("X", result);
+            return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, nbt);
+        } finally {
+            buffer.release();
+        }
     }
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-
         NBTTagCompound nbt = pkt.func_148857_g();
-        // Receive and create the mte if it doesn't exist
-        receiveInitialDataOnClient(nbt.getByteArray("base"));
-
-        IMetaTileEntity mte = getMetaTileEntity();
-
-        // The mte sent from server is invalid
-        if (mte == null) return;
-
-        if (nbt.hasKey("mte")) {
-            mte.onDescriptionPacket(nbt.getCompoundTag("mte"));
+        ByteBuf buffer = Unpooled.wrappedBuffer(nbt.getByteArray("X"));
+        try {
+            // Receive and create the mte if it doesn't exist
+            receiveInitialDataOnClient(buffer);
+            IMetaTileEntity mte = getMetaTileEntity();
+            if (mte != null) {
+                mte.readFromStream(buffer);
+                mte.onClientSoundStateChanged();
+            }
+        } finally {
+            buffer.release();
         }
-
-        mte.onClientSoundStateChanged();
     }
 
     @Override
