@@ -36,13 +36,6 @@ public abstract class MTEHatchConfigurableBase extends MTEBaseFactoryHatch imple
     @Override
     public abstract String getCopiedDataIdentifier(EntityPlayer player);
 
-    /// Syncs this hatch's config at some point in the near future.
-    public void requestConfigSync() {
-        if (getBaseMetaTileEntity() != null) {
-            getBaseMetaTileEntity().issueTileUpdate();
-        }
-    }
-
     public void setOutput(boolean active) {
         IGregTechTileEntity igte = getBaseMetaTileEntity();
 
