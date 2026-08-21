@@ -5,11 +5,13 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.loaders.oreprocessing.ProcessingUtils.itemStackKey;
 
 import java.util.HashSet;
+import java.util.List;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemMultiTexture;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.github.bsideup.jabel.Desugar;
@@ -120,13 +122,14 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
     private void processWildcardPlank(ItemStack aStack, String tHashPrefix, int metaCount) {
         boolean anyOwnSlabRecipe = false;
         boolean anyOakSlabFallback = false;
+        List<IRecipe> recipeCandidates = GTModHandler.getRecipeCandidates(aStack, aStack, aStack);
 
         for (byte i = 0; i < metaCount; i = (byte) (i + 1)) {
             ItemStack tStack = GTUtility.copyMetaData(i, aStack);
             if ((tStack == null) && (i >= 16)) break;
             if (!sProcessedPlanks.add(tHashPrefix + ":" + i)) continue;
 
-            switch (convertSlabRecipe(tStack)) {
+            switch (convertSlabRecipe(tStack, recipeCandidates)) {
                 case CREATED -> anyOwnSlabRecipe = true;
                 case OAK_SLAB_FALLBACK -> anyOakSlabFallback = true;
                 default -> {}
@@ -146,6 +149,10 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
     }
 
     private SlabRecipeResult convertSlabRecipe(ItemStack aStack) {
+        return convertSlabRecipe(aStack, null);
+    }
+
+    private SlabRecipeResult convertSlabRecipe(ItemStack aStack, List<IRecipe> recipeCandidates) {
         SpecialSlabConversionResult tSpecialResult = trySpecialSlabConversion(aStack);
 
         boolean tSkipRecipeCreation = tSpecialResult.isSpecialConversion && tSpecialResult.resultingSlab == null;
@@ -154,7 +161,8 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
         if (tOutput == null) {
             // https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/19535
             // Prefer the mod's own slab recipe over the oredict "plankWood -> Oak Slab" fallback.
-            tOutput = GTModHandler.getRecipeOutputPreferNonOreDict(aStack, aStack, aStack);
+            tOutput = recipeCandidates == null ? GTModHandler.getRecipeOutputPreferNonOreDict(aStack, aStack, aStack)
+                : GTModHandler.getRecipeOutputPreferNonOreDictFrom(recipeCandidates, aStack, aStack, aStack);
         }
 
         if (tOutput == null || tOutput.stackSize < 3) {
