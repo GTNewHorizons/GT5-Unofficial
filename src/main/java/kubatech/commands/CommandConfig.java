@@ -88,7 +88,7 @@ public class CommandConfig extends CommandBase {
         MinecraftServer.getServer()
             .getConfigurationManager().playerEntityList.forEach(player -> {
                 if (!(player instanceof EntityPlayerMP)) return;
-                kubatech.info("Sending config to " + player.getDisplayName());
+                kubatech.LOG.info("Sending config to {}", player.getDisplayName());
                 kubatech.NETWORK.sendTo(LoadConfigPacket.instance, player);
             });
         sender.addChatMessage(new ChatComponentText(SUCCESS.get()));

@@ -21,7 +21,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
-import gregtech.GTMod;
+import gregtech.GTLoggers;
 import gregtech.api.casing.ICasing;
 import gregtech.api.casing.ICasingGroup;
 import gregtech.api.enums.GTValues;
@@ -79,7 +79,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
 
             structureDefinition = provider.compile(definitionText);
         } catch (Exception t) {
-            GTMod.GT_FML_LOGGER.error("Could not compile structure", t);
+            GTLoggers.GT_FML_LOGGER.error("Could not compile structure", t);
         }
     }
 
@@ -197,7 +197,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             try {
                 return checkStructureImpl(instance, piece, pieceOffset, errors);
             } catch (NoSuchMethodError e) {
-                GTMod.GT_FML_LOGGER.info("Caught an exception that was probably caused by a hotswap.", e);
+                GTLoggers.GT_FML_LOGGER.info("Caught an exception that was probably caused by a hotswap.", e);
 
                 loadStructure();
 
@@ -240,7 +240,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             try {
                 constructImpl(instance, trigger, hintsOnly, piece, pieceOffset);
             } catch (NoSuchMethodError e) {
-                GTMod.GT_FML_LOGGER.info("Caught an exception that was probably caused by a hotswap.", e);
+                GTLoggers.GT_FML_LOGGER.info("Caught an exception that was probably caused by a hotswap.", e);
 
                 loadStructure();
 
@@ -286,7 +286,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             try {
                 return survivalConstructImpl(instance, trigger, elementBudget, env, piece, pieceOffset);
             } catch (NoSuchMethodError e) {
-                GTMod.GT_FML_LOGGER.info("Caught an exception that was probably caused by a hotswap.", e);
+                GTLoggers.GT_FML_LOGGER.info("Caught an exception that was probably caused by a hotswap.", e);
 
                 loadStructure();
 

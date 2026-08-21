@@ -303,5 +303,6 @@ public class MTEBoilerSolar extends MTEBoiler {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("calcificationOutput", (getProductionPerSecond()));
         tag.setInteger("maxCalcificationOutput", (getMaxOutputPerSecond()));
+        tag.setInteger("fuel", -1);
     }
 }

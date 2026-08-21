@@ -92,6 +92,8 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_LEGACY = "main_legacy";
 
+    public static final int MAX_GROUPS = 64;
+
     private int casingAmount = 0;
     private Vec3Impl centreCoord;
     private int droneLevel = 0;
@@ -424,25 +426,24 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("connectionCount", connectionList.size());
-        if (droneLevel != 0) tag.setInteger("droneLevel", droneLevel);
+        if (droneLevel != 0) {
+            tag.setInteger("droneLevel", droneLevel);
+        }
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             EnumChatFormatting.AQUA + StatCollector
                 .translateToLocalFormatted("GT5U.waila.drone_downlink.droneLevel", tag.getInteger("droneLevel")));
-        currenttip.add(
+        list.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.waila.drone_downlink.connectionCount",
                 tag.getInteger("connectionCount")));
-        super.getWailaBody(itemStack, currenttip, accessor, config);
     }
 
     @Override
@@ -570,11 +571,11 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                 && (activeGroup == 0 || (droneConnection.getGroupMask() & (1L << activeGroup)) != 0)) {
                 MTEMultiBlockBase linkedMachine = droneConnection.getLinkedMachine();
                 if (linkedMachine != null) {
-                    linkedMachine.enableWorking();
                     IGregTechTileEntity igte = linkedMachine.getBaseMetaTileEntity();
                     if (igte != null && igte.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
                         GTMod.proxy.powerfailTracker.removePowerfailEvents(igte);
                     }
+                    linkedMachine.enableWorking();
                 }
             }
         }
@@ -712,7 +713,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     }
 
     public void addNewGroup() {
-        if (group.size() < 64) {
+        if (group.size() < MAX_GROUPS) {
             group.add(String.valueOf(group.size()));
         }
     }

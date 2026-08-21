@@ -271,23 +271,27 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             return false;
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
+        switch (aMetaTileEntity) {
+            case null -> {
+                return false;
+            }
+            case MTEHatchVacuumConveyorInput hatch -> {
+                hatch.updateTexture(aBaseCasingIndex);
+                hatch.setMainController(this.getBaseMulti());
+                // Components arrive as fake items in the hatch's own storage (not mInventory), so register for the
+                // hatch's push instead of relying on the inventory-dirty flag.
+                hatch.addWatcher(this);
+                return vacuumConveyorInputs.addHatch(hatch);
+            }
+            case MTEHatchVacuumConveyorOutput hatch -> {
+                hatch.updateTexture(aBaseCasingIndex);
+                hatch.setMainController(this.getBaseMulti());
+                return vacuumConveyorOutputs.addHatch(hatch);
+            }
+            default -> {
+            }
         }
 
-        if (aMetaTileEntity instanceof MTEHatchVacuumConveyorInput hatch) {
-            hatch.updateTexture(aBaseCasingIndex);
-            hatch.setMainController(this.getBaseMulti());
-            // Components arrive as fake items in the hatch's own storage (not mInventory), so register for the
-            // hatch's push instead of relying on the inventory-dirty flag.
-            hatch.addWatcher(this);
-            return vacuumConveyorInputs.addHatch(hatch);
-        }
-        if (aMetaTileEntity instanceof MTEHatchVacuumConveyorOutput hatch) {
-            hatch.updateTexture(aBaseCasingIndex);
-            hatch.setMainController(this.getBaseMulti());
-            return vacuumConveyorOutputs.addHatch(hatch);
-        }
         return false;
     }
 
@@ -798,24 +802,20 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setBoolean("connected", isConnected());
 
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-
-        NBTTagCompound tag = accessor.getNBTData();
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
         if (tag.hasKey("connected")) {
             if (tag.getBoolean("connected")) {
-                currentTip.add(translateToLocal("GT5U.tooltip.nac.interface.connected"));
+                list.add(translateToLocal("GT5U.tooltip.nac.interface.connected"));
             } else {
-                currentTip.add(translateToLocal("GT5U.tooltip.nac.interface.disconnected"));
+                list.add(translateToLocal("GT5U.tooltip.nac.interface.disconnected"));
             }
 
         }

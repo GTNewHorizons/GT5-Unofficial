@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Mods.GregTech;
 
@@ -35,8 +36,7 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLog;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTSplit;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEWorldAccelerator extends MTETieredMachineBlock {
@@ -128,7 +128,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return GTUtility.translateMultiline(
+        return GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.basicmachine.accelerator.tooltip",
             mAccelerateStatic[mTier],
             mTier,
@@ -360,7 +360,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
                 }
             }
         } catch (Exception e) {
-            GTLog.err.println("MTEWorldAccelerator.onPostTick.crash\n" + e.getMessage());
+            GT_FML_LOGGER.error("MTEWorldAccelerator.onPostTick.crash\n{}", e.getMessage());
         }
     }
 
@@ -401,7 +401,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
                 }
             }
         } catch (Exception e) {
-            GTLog.err.println("MTEWorldAccelerator.doAccelerateTileEntities.crash\n" + e.getMessage());
+            GT_FML_LOGGER.error("MTEWorldAccelerator.doAccelerateTileEntities.crash\n{}", e.getMessage());
         }
     }
 
@@ -498,7 +498,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
                 }
             }
         } catch (Exception e) {
-            GTLog.err.println("MTEWorldAccelerator.tryTickBlock.crash\n" + e.getMessage());
+            GT_FML_LOGGER.error("MTEWorldAccelerator.tryTickBlock.crash\n{}", e.getMessage());
         }
     }
 
