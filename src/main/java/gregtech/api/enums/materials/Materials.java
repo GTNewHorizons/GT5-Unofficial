@@ -18,11 +18,6 @@ import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.api.util.CustomGlyphs;
 
-/// The materials maintenance surface: one [Material] field per ported material (name matches the material's
-/// name where that is already a valid Java identifier, else a sanitized variant), then every material's
-/// complete declaration (tint, texture set, family membership, shape adds/removes, properties, fluids) as one
-/// contiguous statement run in `initPartN()` (split only to stay under the JVM's 64KB bytecode-per-method
-/// limit).
 public class Materials {
 
     // spotless:off
@@ -1427,6 +1422,7 @@ public class Materials {
     // spotless:on
 
     public static void init() {
+        // Init split to stay under the JVM's 64KB bytecode-per-method limit
         initPart1();
         initPart2();
         initPart3();
