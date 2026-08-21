@@ -258,9 +258,6 @@ public enum GregtechItemList implements IItemContainer {
 
     Casing_Multi_Use,
 
-    // Bedrock Mining Platforms
-    Casing_BedrockMiner,
-
     // Large Packager
     Amazon_Warehouse_Controller,
     Casing_AmazonWarehouse,
