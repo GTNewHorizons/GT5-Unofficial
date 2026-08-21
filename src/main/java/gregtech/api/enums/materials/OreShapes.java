@@ -16,7 +16,7 @@ import gregtech.api.material.GTMaterialProperties;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
 
-/// Hand-maintained block [Shape] declarations for GT's ores. Unlike `block`, `ore` and `oreSmall` carry a real
+/// Block [Shape] declarations for GT's ores. Unlike `block`, `ore` and `oreSmall` carry a real
 /// generation bit (`ORE`), so membership follows the capability-bit pipeline rather than a curated list.
 ///
 /// Variants are named after [StoneType]'s enum constants, lowercased, in declaration order -- see

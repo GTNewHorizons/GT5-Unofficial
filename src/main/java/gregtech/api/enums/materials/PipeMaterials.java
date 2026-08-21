@@ -12,15 +12,11 @@ import gregtech.api.enums.TierEU;
 /// pipes, applied as [PipeProperties] values through [MaterialLibAPI#editMaterial]. The values are exact
 /// literals, not derived: each row pins the stats its material's pipes have always had.
 ///
-/// Only stat-bearing membership lives here. Frame and sheetmetal membership carries no stats, so it is
-/// declared on each material's own builder in [Materials].
-///
 /// The wooden and High Pressure fluid pipes exist in three sizes whose capacities follow no base-value
 /// formula, so they carry per-size capacity constants here instead of a [PipeProperties#BASE_PIPE_FLOW]
 /// value.
 ///
-/// Rows reference [Materials] fields, so [#init] must run after those are assigned; [MaterialSystem#init]
-/// orders it so.
+/// Rows reference [Materials] fields, so [#init] must run after those are assigned.
 public class PipeMaterials {
 
     /// Fluid capacities (small, medium, large) of the wooden fluid pipes.
