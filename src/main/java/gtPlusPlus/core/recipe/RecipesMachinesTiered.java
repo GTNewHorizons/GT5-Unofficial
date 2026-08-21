@@ -598,35 +598,6 @@ public class RecipesMachinesTiered {
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
 
-        // Integral Framework IV (UV)
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Casing_UV.get(1),
-                MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(8),
-                MaterialsAlloy.TITANSTEEL.getGear(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 2))
-            .circuit(20)
-            .itemOutputs(GregtechItemList.GTPP_Casing_UV.get(1))
-            .fluidInputs(MaterialsAlloy.TITANSTEEL.getFluidStack(18 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_UV)
-            .addTo(assemblerRecipes);
-
-        // Integral Framework V (UHV)
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Casing_MAX.get(1),
-                MaterialsAlloy.ABYSSAL.getPlate(8),
-                MaterialsAlloy.ABYSSAL.getGear(2),
-                GTOreDictUnificator.get(OrePrefixes.cableGt02, Materials.Duranium, 4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 2))
-            .circuit(20)
-            .itemOutputs(GregtechItemList.GTPP_Casing_UHV.get(1))
-            .fluidInputs(MaterialsAlloy.OCTIRON.getFluidStack(20 * INGOTS))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_UHV)
-            .addTo(assemblerRecipes);
     }
 
     private static void overflowValveCovers() {

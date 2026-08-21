@@ -19,7 +19,7 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
 
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 8; i++) {
             list.add(new ItemStack(item, 1, i));
         }
     }
@@ -33,7 +33,7 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
         @Override
         public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean aF3_H) {
             int aMeta = stack.getItemDamage();
-            if (aMeta < 10) {
+            if (aMeta < 8) {
                 tooltip
                     .add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier.s", GTValues.VN[aMeta]));
             }
@@ -52,13 +52,11 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
         GregtechItemList.GTPP_Casing_IV.set(new ItemStack(this, 1, 5));
         GregtechItemList.GTPP_Casing_LuV.set(new ItemStack(this, 1, 6));
         GregtechItemList.GTPP_Casing_ZPM.set(new ItemStack(this, 1, 7));
-        GregtechItemList.GTPP_Casing_UV.set(new ItemStack(this, 1, 8));
-        GregtechItemList.GTPP_Casing_UHV.set(new ItemStack(this, 1, 9));
     }
 
     @Override
     public IIcon getIcon(int ordinalSide, int aMeta) {
-        if (aMeta < 10) {
+        if (aMeta < 8) {
             return Textures.BlockIcons.INTEGRAL_FRAMEWORK[aMeta].getIcon();
         }
         return Textures.GlobalIcons.RENDERING_ERROR.getIcon();

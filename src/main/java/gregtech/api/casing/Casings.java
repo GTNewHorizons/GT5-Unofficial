@@ -289,8 +289,6 @@ public enum Casings implements ICasing {
     ReactiveGasContainmentCasing
         (() -> GregTechAPI.sBlockCasings9, 9, gt(16, 1, 9)),
     InertFiltrationCasing
-        (() -> GregTechAPI.sBlockCasings9, 10, gt(16, 1, 10)),
-    HeatResistantTriniumPlatedCasing
         (() -> GregTechAPI.sBlockCasings9, 11, gt(16, 1, 11)),
     NaquadriaReinforcedWaterPlantCasing
         (() -> GregTechAPI.sBlockCasings9, 12, gt(16, 1, 12)),
@@ -866,8 +864,6 @@ public enum Casings implements ICasing {
     ReinforcedGasTurbineCasing
         (() -> ModBlocks.blockSpecialMultiCasings, 3, 58),
     ReinforcedPlasmaTurbineCasing
-        (() -> ModBlocks.blockSpecialMultiCasings, 4, 60),
-    TeslaContainmentCasing
         (() -> ModBlocks.blockSpecialMultiCasings, 5, gtpp(1, 5)),
     StructuralSolarCasing
         (() -> ModBlocks.blockSpecialMultiCasings, 6, gtpp(1, 6)),
