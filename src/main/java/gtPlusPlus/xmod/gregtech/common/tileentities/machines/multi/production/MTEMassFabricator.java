@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -37,12 +36,15 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.enums.TAE;
+import gregtech.api.casing.Casings;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
-import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -57,21 +59,19 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> implements ISurvivalConstructable {
-
-    public static String mCasingName1 = "Matter Fabricator Casing";
-    public static String mCasingName2 = "Containment Casing";
-    public static String mCasingName3 = "Matter Generation Coil";
+public class MTEMassFabricator extends MTEExtendedPowerMultiBlockBase<MTEMassFabricator>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int MODE_SCRAP = 1;
-    private static final int MODE_UU = 0;
 
-    private int mCasing;
+    private int casingAmount;
+    private static final String[][] structure = { { "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
+        { "CGGGC", "G---G", "G---G", "G---G", "CGGGC" }, { "CGGGC", "G---G", "G---G", "G---G", "CGGGC" },
+        { "CC~CC", "CHHHC", "CHHHC", "CHHHC", "CCCCC" }, };
     private static IStructureDefinition<MTEMassFabricator> STRUCTURE_DEFINITION = null;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
 
     public MTEMassFabricator(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -82,14 +82,14 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     }
 
     @Override
-    public String getMachineType() {
-        return "Mass Fabricator, Recycler";
+    public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+        return new MTEMassFabricator(this.mName);
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        tt.addMachineType("Mass Fabricator, Recycler")
             .addInfo(
                 "Parallel: Scrap = " + TooltipHelper.parallelText(64)
                     + " | UU = "
@@ -111,9 +111,9 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 5, true)
             .addController("Front bottom center")
-            .addCasing("35-44", mCasingName1, false)
-            .addCasing("24", mCasingName2, false)
-            .addCasing("9", mCasingName3, false)
+            .addCasing("35-44", "Matter Fabricator Casing", false)
+            .addCasing("24", "Containment Casing", false)
+            .addCasing("9", "Matter Generation Coil", false)
             .addEnergyHatch("1+", "Any fabricator casing", 1)
             .addMaintenanceHatch("1", "Any fabricator casing", 1)
             .addMufflerHatch("1", "Any fabricator casing", 1)
@@ -126,50 +126,20 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     }
 
     @Override
-    protected IIconContainer getActiveOverlay() {
-        return TexturesGtBlock.Overlay_MatterFab_Active_Animated;
-    }
-
-    @Override
-    protected IIconContainer getActiveGlowOverlay() {
-        return TexturesGtBlock.Overlay_MatterFab_Active_Animated_Glow;
-    }
-
-    @Override
-    protected IIconContainer getInactiveOverlay() {
-        return TexturesGtBlock.Overlay_MatterFab_Animated;
-    }
-
-    @Override
-    protected IIconContainer getInactiveGlowOverlay() {
-        return TexturesGtBlock.Overlay_MatterFab_Animated_Glow;
-    }
-
-    @Override
-    protected int getCasingTextureId() {
-        return TAE.GTPP_INDEX(9);
-    }
-
-    @Override
     public IStructureDefinition<MTEMassFabricator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTEMassFabricator>builder()
-                .addShape(
-                    mName,
-                    transpose(
-                        new String[][] { { "CCCCC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
-                            { "CGGGC", "G---G", "G---G", "G---G", "CGGGC" },
-                            { "CGGGC", "G---G", "G---G", "G---G", "CGGGC" },
-                            { "CC~CC", "CHHHC", "CHHHC", "CHHHC", "CCCCC" }, }))
+                .addShape(STRUCTURE_PIECE_MAIN, transpose(structure))
                 .addElement(
                     'C',
                     buildHatchAdder(MTEMassFabricator.class)
                         .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
-                        .casingIndex(TAE.GTPP_INDEX(9))
+                        .casingIndex(Casings.MatterFabricatorCasing.textureId)
                         .hint(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 9))))
-                .addElement('H', ofBlock(ModBlocks.blockCasingsMisc, 8))
-                .addElement('G', ofBlock(ModBlocks.blockCasings3Misc, 15))
+                        .buildAndChain(
+                            onElementPass(x -> ++x.casingAmount, Casings.MatterFabricatorCasing.asElement())))
+                .addElement('G', Casings.ContainmentCasing.asElement())
+                .addElement('H', Casings.MatterGenerationCoil.asElement())
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -177,20 +147,20 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(mName, stackSize, hintsOnly, 2, 3, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 2, 3, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece(mName, stackSize, 2, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        mCasing = 0;
-        if (!checkPiece(mName, 2, 3, 0, errors)) return;
-        checkCasingMin(errors, mCasing, 35);
+        casingAmount = 0;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 3, 0, errors)) return;
+        checkCasingMin(errors, casingAmount, 35);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
@@ -203,13 +173,22 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     }
 
     @Override
-    public int getPollutionPerSecond(final ItemStack aStack) {
-        return PollutionConfig.pollutionPerSecondMultiMassFabricator;
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int colorIndex, boolean active, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            facing,
+            active,
+            TexturesGtBlock.Overlay_MatterFab,
+            TexturesGtBlock.Overlay_MatterFab_Glow,
+            TexturesGtBlock.Overlay_MatterFab_Active,
+            TexturesGtBlock.Overlay_MatterFab_Active_Glow);
     }
 
     @Override
-    public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEMassFabricator(this.mName);
+    public ITexture getCasingTexture() {
+        return Casings.MatterFabricatorCasing.getCasingTexture();
     }
 
     /**
@@ -288,19 +267,16 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
     }
 
     @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        setMachineMode(nextMachineMode());
-        GTUtility
-            .sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", new ChatComponentTranslation(getMachineModeKey()));
+    public int getPollutionPerSecond(final ItemStack aStack) {
+        return PollutionConfig.pollutionPerSecondMultiMassFabricator;
     }
 
     @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        if (aNBT.hasKey("mMode")) {
-            machineMode = aNBT.getInteger("mMode");
-            aNBT.removeTag("mMode");
-        }
-        super.loadNBTData(aNBT);
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        setMachineMode(nextMachineMode());
+        GTUtility
+            .sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", new ChatComponentTranslation(getMachineModeKey()));
     }
 
     @Override
@@ -316,6 +292,16 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
 
     @Override
     public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
         return true;
     }
 
