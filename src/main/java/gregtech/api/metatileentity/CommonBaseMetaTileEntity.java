@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -27,6 +28,7 @@ import appeng.api.interfaces.IInterfaceNameProvider;
 import appeng.api.util.WorldCoord;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
@@ -454,18 +456,40 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     /**
      * Run on the server when the block is marked for a full resync, e.g. when loading a chunk.
      */
-    abstract void getInitialDataForClient(ByteBuf buffer);
+    public void tileWriteToStream(ByteBuf buffer) {
+        buffer.writeShort(mID);
+        byte coverMask = getValidCoversMask();
+        buffer.writeByte(coverMask);
+        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+            if ((coverMask & direction.flag) != 0) {
+                buffer.writeInt(getCoverAtSide(direction).getCoverID());
+            }
+        }
+    }
 
     /**
      * Runs on the client to receive full resync data from the server.
      */
-    abstract void receiveInitialDataOnClient(ByteBuf buffer);
+    public void tileReadFromStream(ByteBuf buffer) {
+        short aID = buffer.readShort();
+        if (mID != aID && aID > 0) {
+            mID = aID;
+            createNewMetatileEntity(mID);
+        }
+        byte coverMask = buffer.readByte();
+        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+            if ((coverMask & direction.flag) != 0) {
+                int coverID = buffer.readInt();
+                CoverRegistry.cover(this, direction, coverID);
+            }
+        }
+    }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public final Packet getDescriptionPacket() {
         ByteBuf buffer = PooledByteBufAllocator.DEFAULT.directBuffer();
         try {
-            getInitialDataForClient(buffer);
+            tileWriteToStream(buffer);
             IMetaTileEntity imte = getMetaTileEntity();
             if (imte != null) {
                 imte.writeToStream(buffer);
@@ -482,21 +506,26 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         }
     }
 
-    @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        NBTTagCompound nbt = pkt.func_148857_g();
-        ByteBuf buffer = Unpooled.wrappedBuffer(nbt.getByteArray("X"));
+    public final void onDescriptionArray(byte[] array) {
+        ByteBuf buffer = Unpooled.wrappedBuffer(array);
         try {
-            // Receive and create the mte if it doesn't exist
-            receiveInitialDataOnClient(buffer);
+            // Receive and create the mte first if it doesn't exist
+            tileReadFromStream(buffer);
             IMetaTileEntity mte = getMetaTileEntity();
             if (mte != null) {
                 mte.readFromStream(buffer);
                 mte.onClientSoundStateChanged();
             }
+            issueTextureUpdate();
         } finally {
             buffer.release();
         }
+    }
+
+    @Override
+    public final void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        NBTTagCompound nbt = pkt.func_148857_g();
+        onDescriptionArray(nbt.getByteArray("X"));
     }
 
     @Override

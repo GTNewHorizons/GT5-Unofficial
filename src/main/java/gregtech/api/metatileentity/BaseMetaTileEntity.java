@@ -680,14 +680,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     @Override
-    public final void getInitialDataForClient(ByteBuf buffer) {
-        buffer.writeShort(mID);
-        buffer.writeInt(getCoverAtSide(ForgeDirection.DOWN).getCoverID());
-        buffer.writeInt(getCoverAtSide(ForgeDirection.UP).getCoverID());
-        buffer.writeInt(getCoverAtSide(ForgeDirection.NORTH).getCoverID());
-        buffer.writeInt(getCoverAtSide(ForgeDirection.SOUTH).getCoverID());
-        buffer.writeInt(getCoverAtSide(ForgeDirection.WEST).getCoverID());
-        buffer.writeInt(getCoverAtSide(ForgeDirection.EAST).getCoverID());
+    public final void tileWriteToStream(ByteBuf buffer) {
+        super.tileWriteToStream(buffer);
         buffer.writeByte(getTextureData());
         buffer.writeByte(getUpdateData());
         buffer.writeByte(getSidedRedstoneMask());
@@ -695,35 +689,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     @Override
-    public final void receiveInitialDataOnClient(ByteBuf buffer) {
-        receiveMetaTileEntityData(
-            buffer.readShort(),
-            buffer.readInt(),
-            buffer.readInt(),
-            buffer.readInt(),
-            buffer.readInt(),
-            buffer.readInt(),
-            buffer.readInt(),
-            buffer.readByte(),
-            buffer.readByte(),
-            buffer.readByte(),
-            buffer.readByte());
-    }
-
-    public final void receiveMetaTileEntityData(short aID, int aCover0, int aCover1, int aCover2, int aCover3,
-        int aCover4, int aCover5, byte aTextureData, byte aUpdateData, byte aRedstoneData, byte aColorData) {
-        issueTextureUpdate();
-        if (mID != aID && aID > 0) {
-            mID = aID;
-            createNewMetatileEntity(mID);
-        }
-
-        CoverRegistry.cover(this, aCover0, aCover1, aCover2, aCover3, aCover4, aCover5);
-
-        receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, aTextureData);
-        receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, aUpdateData & 0x7F);
-        receiveClientEvent(GregTechTileClientEvents.CHANGE_COLOR, aColorData);
-        receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, aRedstoneData);
+    public final void tileReadFromStream(ByteBuf buffer) {
+        super.tileReadFromStream(buffer);
+        receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, buffer.readByte());
+        receiveClientEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, buffer.readByte() & 0x7F);
+        receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, buffer.readByte());
+        receiveClientEvent(GregTechTileClientEvents.CHANGE_COLOR, buffer.readByte());
     }
 
     @Override
