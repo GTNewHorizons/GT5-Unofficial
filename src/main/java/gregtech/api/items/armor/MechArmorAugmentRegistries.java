@@ -513,7 +513,8 @@ public class MechArmorAugmentRegistries {
             .setId("Terrasteel")
             .setItemId("augmentterrasteel")
             .providesBehaviors(TerrasteelBehavior.INSTANCE)
-            .setMinimumCoreTier(1)
+            .fitsInto(ArmorType.Chestplate)
+            .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Utility)
         ),
 
