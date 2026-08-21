@@ -958,8 +958,6 @@ public enum GregtechItemList implements IItemContainer {
 
     HalfCompleteCasing_I,
     HalfCompleteCasing_II,
-    HalfCompleteCasing_III,
-    HalfCompleteCasing_IV,
 
     BoilerChassis_Tier0,
     BoilerChassis_Tier1,

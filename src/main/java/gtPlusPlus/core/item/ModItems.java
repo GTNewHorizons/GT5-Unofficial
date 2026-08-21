@@ -113,8 +113,6 @@ public final class ModItems {
             Utils.rgbtoHexValue(255, 255, 255)).setTextureName(GregTech.ID + ":" + "gt.metaitem.01/" + "761");
         GregtechItemList.HalfCompleteCasing_I.set(new ItemStack(halfCompleteCasings, 1, 0));
         GregtechItemList.HalfCompleteCasing_II.set(new ItemStack(halfCompleteCasings, 1, 1));
-        GregtechItemList.HalfCompleteCasing_III.set(new ItemStack(halfCompleteCasings, 1, 2));
-        GregtechItemList.HalfCompleteCasing_IV.set(new ItemStack(halfCompleteCasings, 1, 3));
 
         // LFTR Control Circuit
         GregtechItemList.LFTRControlCircuit.set(
