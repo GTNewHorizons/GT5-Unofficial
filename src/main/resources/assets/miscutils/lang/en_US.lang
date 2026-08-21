@@ -229,10 +229,6 @@ item.backpackSilver.name=Silver Backpack
 item.backpackGray.name=Gray Backpack
 item.backpackBlack.name=Black Backpack
 item.backpackWhite.name=White Backpack
-item.itemBlueprint.name=Blueprint [I am useless]
-item.itemBlueprint.tooltip.0=Technical Document No. %d
-item.itemBlueprint.tooltip.1=Currently holding a blueprint for %s
-item.itemBlueprint.tooltip.2=Currently not holding a blueprint for anything.
 item.itemGemShards.0.name=Diamond Shards
 item.itemGemShards.1.name=Emerald Shards
 item.itemGemShards.2.name=Ruby Shards
@@ -3536,8 +3532,6 @@ item.BasicAgrichemItem.23.name=Clean Aluminium Mix
 # Added 12/12/19
 
 item.BasicGenericChemItem.name=Metal Catalyst
-item.BasicGenericChemItem.0.name=Red Metal Catalyst
-item.BasicGenericChemItem.1.name=Yellow Metal Catalyst
 item.BasicGenericChemItem.2.name=Blue Metal Catalyst
 item.BasicGenericChemItem.3.name=Orange Metal Catalyst
 item.BasicGenericChemItem.4.name=Purple Metal Catalyst
