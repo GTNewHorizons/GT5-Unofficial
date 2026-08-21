@@ -2324,7 +2324,7 @@ public class ResearchStationAssemblyLine implements Runnable {
             8_192,
             (int) TierEU.RECIPE_UMV,
             64,
-            new Object[] { ItemRefer.Field_Restriction_Coil_T3.get(2),
+            new Object[] { ItemRefer.Field_Restriction_Coil_T2.get(2),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(6), ItemList.UIV_Coil.get(3),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.ProtoHalkonite, 3),
                 GGMaterial.tairitsu.get(OrePrefixes.wireFine, 24),

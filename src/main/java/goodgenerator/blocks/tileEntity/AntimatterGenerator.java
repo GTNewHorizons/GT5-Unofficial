@@ -65,9 +65,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     protected int times = 1;
     private UUID owner_uuid;
     private boolean wirelessEnabled = false;
-    private boolean canUseWireless = true;
-    private long euLastCycle = 0;
     private long lastCycleTick = 0;
+
+    private long euLastCycle = 0;
     private float annihilationEfficiency = 0f;
     public static final long ANTIMATTER_FUEL_VALUE = 1_000_000_000_000L;
     private final List<Float> avgEff = new ArrayList<>(10);
@@ -113,16 +113,16 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     }
 
     @Override
-    public boolean supportsPowerPanel() {
-        return false;
-    }
-
-    @Override
     public boolean shouldCheckRecipeThisTick(long tick) {
         if (tick - lastCycleTick >= 100) {
             lastCycleTick = tick;
             return true;
         }
+        return false;
+    }
+
+    @Override
+    public boolean supportsPowerPanel() {
         return false;
     }
 
@@ -466,27 +466,24 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
+    public void getExtraWailaBody(ItemStack itemStack, List<String> list, NBTTagCompound tag,
+        IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        list.add(
             StatCollector
                 .translateToLocalFormatted("gui.AntimatterGenerator.0.s", formatNumber(tag.getLong("curProducedEU"))));
-        currentTip.add(
+        list.add(
             StatCollector.translateToLocalFormatted(
                 "gui.AntimatterGenerator.1.s",
                 formatNumber(Math.ceil(tag.getFloat("curEff") * 100))));
-        currentTip.add(
+        list.add(
             StatCollector.translateToLocalFormatted(
                 "gui.AntimatterGenerator.2.s",
                 formatNumber(Math.ceil(tag.getFloat("avgEff") * 100))));
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+    public void getExtraWailaNBT(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setLong("curProducedEU", euLastCycle);
         tag.setFloat("curEff", annihilationEfficiency);
         tag.setFloat("avgEff", avgEffCache);

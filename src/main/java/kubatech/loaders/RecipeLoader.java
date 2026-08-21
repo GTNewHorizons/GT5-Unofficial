@@ -158,7 +158,7 @@ public class RecipeLoader {
         if (MobsInfo.isModLoaded() && EnderIO.isModLoaded()) {
             GTModHandler.addCraftingRecipe(
                 ItemList.ExtremeEntityCrusher.get(1),
-                GTModHandler.RecipeBits.BITS,
+                GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
                 new Object[] { "RCR", "CHC", "VVV", 'R', gregtech.api.enums.ItemList.Robot_Arm_EV, 'C',
                     OrePrefixes.circuit.get(Materials.EV), 'H', gregtech.api.enums.ItemList.Hull_EV, 'V',
                     GTModHandler.getModItem(OpenBlocks.ID, "vacuumhopper", 1, new ItemStack(Blocks.hopper)) });
@@ -188,7 +188,7 @@ public class RecipeLoader {
 
         GTModHandler.addCraftingRecipe(
             ExtremeIndustrialGreenhouse.get(1),
-            GTModHandler.RecipeBits.BITS,
+            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "AZA", "BRB", "AZA", 'B', gregtech.api.enums.ItemList.Casing_CleanStainlessSteel, 'R',
                 GTModHandler.getModItem(EnderIO.ID, "blockFarmStation", 1, new ItemStack(Items.diamond_hoe)), 'A',
                 gregtech.api.enums.ItemList.AcceleratorIV.get(1), 'Z', OrePrefixes.circuit.get(Materials.ZPM) });
@@ -203,7 +203,7 @@ public class RecipeLoader {
 
         GTModHandler.addCraftingRecipe(
             HighTemperatureGasCooledReactor.get(1),
-            GTModHandler.RecipeBits.BITS,
+            GTModHandler.RecipeBits.BITS | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "BZB", "ZRZ", "BZB", 'B', gregtech.api.enums.ItemList.Casing_IV.get(1), 'R',
                 GTModHandler.getModItem(IndustrialCraft2.ID, "blockGenerator", 1, 5), 'Z', "circuitUltimate" });
 

@@ -1,7 +1,7 @@
 package gregtech.api.metatileentity;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
@@ -737,9 +737,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             try {
                 mMetaTileEntity.receiveClientEvent((byte) aEventID, (byte) aValue);
             } catch (Exception e) {
-                GTLog.err.println(
+                GT_FML_LOGGER.error(
                     "Encountered Exception while receiving Data from the Server, the Client should've been crashed by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
 
@@ -1371,8 +1371,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     @Override
     public void doExplosion(long aAmount) {
         if (canAccessData()) {
+            // Keep a reference: a chained explosion can invalidate this TE mid-call and null out mMetaTileEntity.
+            final MetaTileEntity tMetaTileEntity = mMetaTileEntity;
             // This is only for Electric Machines
-            if (GregTechAPI.sMachineWireFire && mMetaTileEntity.isElectric()) {
+            if (GregTechAPI.sMachineWireFire && tMetaTileEntity.isElectric()) {
                 try {
                     mReleaseEnergy = true;
                     IEnergyConnected.Util.emitEnergyToNetwork(V[5], Math.max(1, getStoredEU() / V[5]), this);
@@ -1380,7 +1382,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             }
             mReleaseEnergy = false;
             // Normal Explosion Code
-            mMetaTileEntity.onExplosion();
+            tMetaTileEntity.onExplosion();
             if (GTMod.proxy.mExplosionItemDrop) {
                 for (int i = 0; i < this.getSizeInventory(); i++) {
                     final ItemStack tItem = this.getStackInSlot(i);
@@ -1391,7 +1393,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 }
             }
             Pollution.addPollution((TileEntity) this, GTMod.proxy.mPollutionOnExplosion);
-            mMetaTileEntity.doExplosion(aAmount);
+            tMetaTileEntity.doExplosion(aAmount);
         }
     }
 
@@ -1663,9 +1665,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             if (!aPlayer.isSneaking() && hasValidMetaTileEntity())
                 return mMetaTileEntity.onRightclick(this, aPlayer, side, aX, aY, aZ);
         } catch (Exception e) {
-            GTLog.err.println(
+            GT_FML_LOGGER.error(
                 "Encountered Exception while rightclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
             GT_FML_LOGGER.error(e);
         }
 
@@ -1677,9 +1679,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         try {
             if (aPlayer != null && hasValidMetaTileEntity()) mMetaTileEntity.onLeftclick(this, aPlayer);
         } catch (Exception e) {
-            GTLog.err.println(
+            GT_FML_LOGGER.error(
                 "Encountered Exception while leftclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
     }
 
@@ -1896,6 +1898,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             return aAmperage;
         }
         return 0;
+    }
+
+    /** @return whether {@link #injectEnergyUnits} could still accept energy this tick. */
+    public boolean canAcceptEnergyThisTick() {
+        if (!canAccessData() || mMetaTileEntity.maxAmperesIn() <= mAcceptedAmperes) return false;
+        return mMetaTileEntity.getEUVar() < mMetaTileEntity.maxEUStore();
     }
 
     @Override

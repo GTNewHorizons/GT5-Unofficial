@@ -1,5 +1,6 @@
 package gtPlusPlus.core.block.general;
 
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
@@ -30,7 +31,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GTLog;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
 
@@ -70,7 +70,7 @@ public class BlockHellFire extends BlockFire {
                 }
 
             } catch (Exception e) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
 
@@ -451,7 +451,7 @@ public class BlockHellFire extends BlockFire {
             info.encouragement = encouragement;
             info.flammability = flammability;
         } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
+            GT_FML_LOGGER.error(e);
         }
     }
 

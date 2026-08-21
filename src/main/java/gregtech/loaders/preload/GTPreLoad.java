@@ -1,15 +1,13 @@
 package gregtech.loaders.preload;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.CraftTweaker;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +34,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTConfig;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
@@ -140,66 +137,6 @@ public class GTPreLoad {
         GTConfig.undergroundFluidsFile = new Configuration(tFile);
         GTConfig.undergroundFluidsFile.load();
         GTConfig.undergroundFluidsFile.save();
-    }
-
-    public static void createLogFiles(File parentFile) {
-        GTLog.mLogFile = new File(parentFile, "logs/GregTech.log");
-        if (!GTLog.mLogFile.exists()) {
-            try {
-                GTLog.mLogFile.createNewFile();
-            } catch (Exception ignored) {}
-        }
-        try {
-            GTLog.out = GTLog.err = new PrintStream(GTLog.mLogFile);
-        } catch (FileNotFoundException ignored) {}
-
-        if (Gregtech.general.loggingOreDict) {
-            GTLog.mOreDictLogFile = new File(parentFile, "logs/OreDict.log");
-            if (!GTLog.mOreDictLogFile.exists()) {
-                try {
-                    GTLog.mOreDictLogFile.createNewFile();
-                } catch (Exception ignored) {}
-            }
-            List<String> tList = ((GTLog.LogBuffer) GTLog.ore).lineBuffer;
-            try {
-                GTLog.ore = new PrintStream(GTLog.mOreDictLogFile);
-            } catch (Exception ignored) {}
-            GTLog.ore.println("******************************************************************************");
-            GTLog.ore.println("* This is the complete log of the GT5-Unofficial OreDictionary Handler. It   *");
-            GTLog.ore.println("* processes all OreDictionary entries and can sometimes cause errors. All    *");
-            GTLog.ore.println("* entries and errors are being logged. If you see an error please raise an   *");
-            GTLog.ore.println("* issue at https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues.  *");
-            GTLog.ore.println("******************************************************************************");
-            tList.forEach(GTLog.ore::println);
-        }
-        if (Gregtech.general.loggingExplosions) {
-            GTLog.mExplosionLog = new File(parentFile, "logs/Explosion.log");
-            if (!GTLog.mExplosionLog.exists()) {
-                try {
-                    GTLog.mExplosionLog.createNewFile();
-                } catch (Exception ignored) {}
-            }
-            try {
-                GTLog.exp = new PrintStream(GTLog.mExplosionLog);
-            } catch (Exception ignored) {}
-        }
-        if (Gregtech.debug.logRegisterIcons) {
-            GTLog.mRegisterIconsLog = new File(parentFile, "logs/RegisterIcon.log");
-
-            try {
-                List<String> tList = ((GTLog.LogBuffer) GTLog.ico).lineBuffer;
-
-                GTLog.ico = new PrintStream(GTLog.mRegisterIconsLog);
-
-                GTLog.ico.println("*****************************************************************");
-                GTLog.ico.println("* This is the log of texture icons registered in GT5-Unofficial *");
-                GTLog.ico.println("* First column R|O tells if resource is (Required or Optional)  *");
-                GTLog.ico.println("* Second column is the resource path                            *");
-                GTLog.ico.println("*****************************************************************");
-
-                tList.forEach(GTLog.ico::println);
-            } catch (Exception ignored) {}
-        }
     }
 
     public static void runMineTweakerCompat() {
@@ -357,10 +294,10 @@ public class GTPreLoad {
                     .clear();
         } catch (Exception e) {
             if (GTValues.D1) {
-                e.printStackTrace(GTLog.err);
+                GT_FML_LOGGER.error(e);
             }
         }
-        GTLog.out.println("GTMod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
+        GT_FML_LOGGER.debug("GTMod: Adding Scrap with a Weight of 200.0F to the Scrapbox Drops.");
         GTModHandler.addScrapboxDrop(200.0F, ItemList.IC2_Scrap.get(1L));
     }
 
