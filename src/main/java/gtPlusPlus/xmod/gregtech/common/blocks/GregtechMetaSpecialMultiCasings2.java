@@ -21,7 +21,7 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
 
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 6; i++) {
             list.add(new ItemStack(item, 1, i));
         }
     }
@@ -38,7 +38,7 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
             if (aMeta < 4) {
                 tooltip.add(StatCollector.translateToLocal("GTPP.tooltip.meta_special.quantum_stability"));
             }
-            if (aMeta >= 4 && aMeta < 8) {
+            if (aMeta >= 4 && aMeta < 6) {
                 tooltip.add(StatCollector.translateToLocal("GTPP.tooltip.meta_special.quantum_modulation"));
             }
             super.addInformation(stack, player, tooltip, aF3_H);
@@ -53,9 +53,7 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
         GregtechItemList.ResonanceChamber_III.set(new ItemStack(this, 1, 2));
         GregtechItemList.ResonanceChamber_IV.set(new ItemStack(this, 1, 3));
         GregtechItemList.Modulator_I.set(new ItemStack(this, 1, 4));
-        GregtechItemList.Modulator_II.set(new ItemStack(this, 1, 5));
-        GregtechItemList.Modulator_III.set(new ItemStack(this, 1, 6));
-        GregtechItemList.Modulator_IV.set(new ItemStack(this, 1, 7));
+        GregtechItemList.Modulator_III.set(new ItemStack(this, 1, 5));
     }
 
     @Override
@@ -77,9 +75,7 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
             case 2 -> Textures.BlockIcons.Casing_Resonance_3.getIcon();
             case 3 -> Textures.BlockIcons.Casing_Resonance_4.getIcon();
             case 4 -> Textures.BlockIcons.Casing_Modulator_1.getIcon();
-            case 5 -> Textures.BlockIcons.Casing_Modulator_2.getIcon();
-            case 6 -> Textures.BlockIcons.Casing_Modulator_3.getIcon();
-            case 7 -> Textures.BlockIcons.Casing_Modulator_4.getIcon();
+            case 5 -> Textures.BlockIcons.Casing_Modulator_3.getIcon();
             default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
         };
     }

@@ -4153,9 +4153,7 @@ gtplusplus.blockspecialcasings.3.1.name=Resonance Casing II
 gtplusplus.blockspecialcasings.3.2.name=Resonance Casing III
 gtplusplus.blockspecialcasings.3.3.name=Resonance Casing IV
 gtplusplus.blockspecialcasings.3.4.name=Modulator I
-gtplusplus.blockspecialcasings.3.5.name=Modulator II
-gtplusplus.blockspecialcasings.3.6.name=Modulator III
-gtplusplus.blockspecialcasings.3.7.name=Modulator IV
+gtplusplus.blockspecialcasings.3.5.name=Modulator III
 
 gtplusplus.blocktieredcasings.1.0.name=Integral Encasement I
 gtplusplus.blocktieredcasings.1.1.name=Integral Encasement II

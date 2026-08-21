@@ -893,12 +893,8 @@ public enum Casings implements ICasing {
         (() -> ModBlocks.blockSpecialMultiCasings, 3, -1),
     Modulator1
         (() -> ModBlocks.blockSpecialMultiCasings, 4, -1),
-    Modulator2
-        (() -> ModBlocks.blockSpecialMultiCasings, 5, -1),
     Modulator3
         (() -> ModBlocks.blockSpecialMultiCasings, 6, -1),
-    Modulator4
-        (() -> ModBlocks.blockSpecialMultiCasings, 7, -1),
 
     // GregtechMetaSpecialMachineCasings
     StrongBronzeMachineCasing

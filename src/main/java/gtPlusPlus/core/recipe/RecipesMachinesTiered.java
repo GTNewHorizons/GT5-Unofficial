@@ -675,26 +675,12 @@ public class RecipesMachinesTiered {
             new Object[] { "CPC", "PHP", "CPC", 'C', "circuitData", 'P', MaterialsAlloy.INCOLOY_DS.getPlate(1), 'H',
                 ItemList.Casing_EV });
 
-        // Modulator II
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Modulator_II.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "CPC", "PHP", "CPC", 'C', "circuitElite", 'P', MaterialsAlloy.INCONEL_625.getPlate(1), 'H',
-                ItemList.Casing_IV });
-
         // Modulator III
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Modulator_III.get(1),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
             new Object[] { "CPC", "PHP", "CPC", 'C', "circuitMaster", 'P', MaterialsAlloy.ZERON_100.getPlate(1), 'H',
                 ItemList.Casing_LuV });
-
-        // Modulator IV
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Modulator_IV.get(1),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
-            new Object[] { "CPC", "PHP", "CPC", 'C', "circuitUltimate", 'P', MaterialsAlloy.PIKYONIUM.getPlate(1), 'H',
-                ItemList.Casing_ZPM });
     }
 
     private static void resonanceChambers() {

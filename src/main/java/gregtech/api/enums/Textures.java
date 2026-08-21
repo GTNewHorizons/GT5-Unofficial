@@ -1633,9 +1633,7 @@ public class Textures {
             Casing_Resonance_3 = create("ResonanceChamber_III"),
             Casing_Resonance_4 = create("ResonanceChamber_IV"),
             Casing_Modulator_1 = create("Modulator_1"),
-            Casing_Modulator_2 = create("Modulator_2"),
             Casing_Modulator_3 = create("Modulator_3"),
-            Casing_Modulator_4 = create("Modulator_4"),
 
             INTEGRAL_FRAMEWORK_ULV = create("INTEGRAL_FRAMEWORK_ULV"),
             INTEGRAL_FRAMEWORK_LV = create("INTEGRAL_FRAMEWORK_LV"),
