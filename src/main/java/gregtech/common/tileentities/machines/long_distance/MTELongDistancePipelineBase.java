@@ -70,12 +70,11 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
 
     protected MTELongDistancePipelineBase mTarget = null;
     // these two are updated by machine block update thread, so must be volatile or Concurrent hash map
-    protected final Set<MTELongDistancePipelineBase> mSenders =
-        Collections.newSetFromMap(new ConcurrentHashMap<>());
+    protected final Set<MTELongDistancePipelineBase> mSenders = Collections.newSetFromMap(new ConcurrentHashMap<>());
     protected volatile ChunkCoordinates mTargetPos = null;
     protected MTELongDistancePipelineBase mTooCloseTarget = null;
-    protected final Set<MTELongDistancePipelineBase> mTooCloseSenders =
-        Collections.newSetFromMap(new ConcurrentHashMap<>());
+    protected final Set<MTELongDistancePipelineBase> mTooCloseSenders = Collections
+        .newSetFromMap(new ConcurrentHashMap<>());
     protected String tooltipPrefixKey;
 
     public MTELongDistancePipelineBase(int aID, String aName, String aNameRegional, int aTier) {
@@ -135,24 +134,18 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
         return false;
     }
 
-    private boolean targetingThis(Set<MTELongDistancePipelineBase> senders)
-    {
-        for (MTELongDistancePipelineBase sender : senders)
-        {
-            if (sender.mTarget != this)
-            {
+    private boolean targetingThis(Set<MTELongDistancePipelineBase> senders) {
+        for (MTELongDistancePipelineBase sender : senders) {
+            if (sender.mTarget != this) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean areAnyDead(Set<MTELongDistancePipelineBase> items)
-    {
-        for (MTELongDistancePipelineBase sender : items)
-        {
-            if (sender.isDead())
-            {
+    private boolean areAnyDead(Set<MTELongDistancePipelineBase> items) {
+        for (MTELongDistancePipelineBase sender : items) {
+            if (sender.isDead()) {
                 return true;
             }
         }
@@ -190,8 +183,7 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
                 }
             }
         }
-        if (mTooCloseTarget != null && !mTooCloseTarget.mSenders.contains(this))
-        {
+        if (mTooCloseTarget != null && !mTooCloseTarget.mSenders.contains(this)) {
             mTooCloseTarget.mTooCloseSenders.add(this);
         }
 
@@ -210,7 +202,7 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
 
     @Override
     public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer,
-                                                 int aLogLevel, ArrayList<String> aList) {
+        int aLogLevel, ArrayList<String> aList) {
         if (!mSenders.isEmpty()) {
             aList.add("Is Pipeline Output");
             for (MTELongDistancePipelineBase sender : mSenders) {
@@ -222,8 +214,10 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
                 Arrays.asList(
                     checkTarget() ? "Is connected to Pipeline Output" : "Pipeline Output is not connected/chunkloaded",
                     "Pipeline Output should be around: X: " + mTargetPos.posX
-                        + " Y: " + mTargetPos.posY
-                        + " Z: " + mTargetPos.posZ));
+                        + " Y: "
+                        + mTargetPos.posY
+                        + " Z: "
+                        + mTargetPos.posZ));
         }
         return aList;
     }
