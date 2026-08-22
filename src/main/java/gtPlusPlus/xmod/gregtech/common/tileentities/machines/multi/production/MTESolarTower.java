@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -11,7 +10,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,14 +29,17 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -47,21 +48,183 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.misc.MTESolarHeater;
 
-public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements ISurvivalConstructable {
+public class MTESolarTower extends MTEExtendedPowerMultiBlockBase<MTESolarTower>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
-    // 862
-    private static final int mCasingTextureID = TAE.getIndexFromPage(3, 9);
-    private int mHeatLevel = 0;
-    private int mCasing1;
+    private static final String STRUCTURE_PIECE_TOP = "top";
+    private static final String STRUCTURE_PIECE_TOWER = "tower";
+    private static final String STRUCTURE_PIECE_BASE = "base";
+    private static final String STRUCTURE_PIECE_HEATER_RING_1 = "ring1";
+    private static final String STRUCTURE_PIECE_HEATER_RING_2 = "ring2";
+    private static final String STRUCTURE_PIECE_HEATER_RING_3 = "ring3";
+    private static final String STRUCTURE_PIECE_HEATER_RING_4 = "ring4";
+    private static final String STRUCTURE_PIECE_HEATER_RING_5 = "ring5";
 
-    public ArrayList<MTESolarHeater> mSolarHeaters = new ArrayList<>();
+    // spotless:off
+    private static final String[][] STRUCTURE_STRING_TOP = {
+        { "     ", "     ", "  ~  ", "     ", "     " },
+        { "     ", "  s  ", " sss ", "  s  ", "     " },
+        { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " },
+        { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " },
+        { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " },
+        { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " },
+        { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " }, };
+    private static final String[][] STRUCTURE_STRING_TOWER = {
+        { " i ", "isi", " i " },
+        { " i ", "isi", " i " },
+        { " i ", "isi", " i " },
+        { " i ", "isi", " i " },
+        { " i ", "isi", " i " },
+        { " i ", "isi", " i " },
+        { " i ", "isi", " i " },
+        { " i ", "isi", " i " },
+        { " i ", "isi", " i " },
+        { " i ", "isi", " i " },
+        { " i ", "isi", " i " },
+        { " i ", "isi", " i " },
+        { " i ", "isi", " i " },
+        { " i ", "isi", " i " },
+        { " i ", "isi", " i " }, };
+    private static final String[][] STRUCTURE_STRING_BASE = {
+        { "           ", "           ", "     t     ", "    ttt    ", "   ttstt   ", "  ttssstt  ", "   ttstt   ", "    ttt    ", "     t     ", "           ", "           " },
+        { "           ", "           ", "     t     ", "    ttt    ", "   tssst   ", "  ttssstt  ", "   tssst   ", "    ttt    ", "     t     ", "           ", "           " },
+        { "           ", "     t     ", "    ttt    ", "   ttttt   ", "  ttssstt  ", " tttsssttt ", "  ttssstt  ", "   ttttt   ", "    ttt    ", "     t     ", "           " },
+        { "           ", "     t     ", "    ttt    ", "   ttttt   ", "  ttssstt  ", " tttsssttt ", "  ttssstt  ", "   ttttt   ", "    ttt    ", "     t     ", "           " },
+        { "    hhh    ", "   ttttt   ", "  ttttttt  ", " ttttttttt ", "htttsssttth", "htttsssttth", "htttsssttth", " ttttttttt ", "  ttttttt  ", "   ttttt   ", "    hhh    " },
+        { "    hhh    ", "   ttttt   ", "  ttttttt  ", " ttttttttt ", "httttttttth", "httttttttth", "httttttttth", " ttttttttt ", "  ttttttt  ", "   ttttt   ", "    hhh    " }, };
+    private static final String[][] STRUCTURE_STRING_HEATER_RING_1 = {
+        {   "     ggggg     ",
+            "    g     g    ",
+            "   g       g   ",
+            "  g         g  ",
+            " g           g ",
+            "g             g",
+            "g             g",
+            "g             g",
+            "g             g",
+            "g             g",
+            " g           g ",
+            "  g         g  ",
+            "   g       g   ",
+            "    g     g    ",
+            "     ggggg     ", }};
+    private static final String[][] STRUCTURE_STRING_HEATER_RING_2 = {
+        {   "     ggggggggg     ",
+            "    g         g    ",
+            "   g           g   ",
+            "  g             g  ",
+            " g               g ",
+            "g                 g",
+            "g                 g",
+            "g                 g",
+            "g                 g",
+            "g                 g",
+            "g                 g",
+            "g                 g",
+            "g                 g",
+            "g                 g",
+            " g               g ",
+            "  g             g  ",
+            "   g           g   ",
+            "    g         g    ",
+            "     ggggggggg     ", }};
+    private static final String[][] STRUCTURE_STRING_HEATER_RING_3 = {
+        {   "     ggggggggggggg     ",
+            "    g             g    ",
+            "   g               g   ",
+            "  g                 g  ",
+            " g                   g ",
+            "g                     g",
+            "g                     g",
+            "g                     g",
+            "g                     g",
+            "g                     g",
+            "g                     g",
+            "g                     g",
+            "g                     g",
+            "g                     g",
+            "g                     g",
+            "g                     g",
+            "g                     g",
+            "g                     g",
+            " g                   g ",
+            "  g                 g  ",
+            "   g               g   ",
+            "    g             g    ",
+            "     ggggggggggggg     ", }};
+    private static final String[][] STRUCTURE_STRING_HEATER_RING_4 = {
+        {   "     ggggggggggggggggg     ",
+            "    g                 g    ",
+            "   g                   g   ",
+            "  g                     g  ",
+            " g                       g ",
+            "g                         g",
+            "g                         g",
+            "g                         g",
+            "g                         g",
+            "g                         g",
+            "g                         g",
+            "g                         g",
+            "g                         g",
+            "g                         g",
+            "g                         g",
+            "g                         g",
+            "g                         g",
+            "g                         g",
+            "g                         g",
+            "g                         g",
+            "g                         g",
+            "g                         g",
+            " g                       g ",
+            "  g                     g  ",
+            "   g                   g   ",
+            "    g                 g    ",
+            "     ggggggggggggggggg     ", }};
+    private static final String[][] STRUCTURE_STRING_HEATER_RING_5 = {
+        {   "     ggggggggggggggggggggg     ",
+            "    g                     g    ",
+            "   g                       g   ",
+            "  g                         g  ",
+            " g                           g ",
+            "g                             g",
+            "g                             g",
+            "g                             g",
+            "g                             g",
+            "g                             g",
+            "g                             g",
+            "g                             g",
+            "g                             g",
+            "g                             g",
+            "g                             g",
+            "g                             g",
+            "g                             g",
+            "g                             g",
+            "g                             g",
+            "g                             g",
+            "g                             g",
+            "g                             g",
+            "g                             g",
+            "g                             g",
+            "g                             g",
+            "g                             g",
+            " g                           g ",
+            "  g                         g  ",
+            "   g                       g   ",
+            "    g                     g    ",
+            "     ggggggggggggggggggggg     ", }};
+    // spotless:on
+
+    private int heatLevel = 0;
+    private int casingAmount;
+    private Fluid mColdSalt = null;
+    private Fluid mHotSalt = null;
+
+    public ArrayList<MTESolarHeater> solarHeaters = new ArrayList<>();
 
     public MTESolarTower(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -77,14 +240,9 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
     }
 
     @Override
-    public String getMachineType() {
-        return "Solar Tower";
-    }
-
-    @Override
     protected final MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
+        tt.addMachineType("Solar Tower")
             .addInfo("Contributing Green Energy towards the future")
             .addInfo("Surround with rings of Solar Reflectors")
             .addInfo("The Reflectors increase the internal heat value of the Tower (see below for formula)")
@@ -118,17 +276,6 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         return tt;
     }
 
-    private static final String STRUCTURE_PIECE_BASE = "base";
-    private static final String STRUCTURE_PIECE_TOWER = "tower";
-    private static final String STRUCTURE_PIECE_TOP = "top";
-
-    private static final String[] STRUCTURE_PIECE_SOLAR_HEATER_RING = { "ring1", "ring2", "ring3", "ring4", "ring5" };
-    private static final String SOLAR_HEATER_RING_1 = STRUCTURE_PIECE_SOLAR_HEATER_RING[0];
-    private static final String SOLAR_HEATER_RING_2 = STRUCTURE_PIECE_SOLAR_HEATER_RING[1];
-    private static final String SOLAR_HEATER_RING_3 = STRUCTURE_PIECE_SOLAR_HEATER_RING[2];
-    private static final String SOLAR_HEATER_RING_4 = STRUCTURE_PIECE_SOLAR_HEATER_RING[3];
-    private static final String SOLAR_HEATER_RING_5 = STRUCTURE_PIECE_SOLAR_HEATER_RING[4];
-
     private static final ClassValue<IStructureDefinition<MTESolarTower>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
@@ -142,91 +289,14 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                 // h = hatch
                 // g = solar heater
 
-                .addShape(
-                    STRUCTURE_PIECE_TOP,
-                    (new String[][] { { "     ", "     ", "  ~  ", "     ", "     " },
-                        { "     ", "  s  ", " sss ", "  s  ", "     " },
-                        { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " },
-                        { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " },
-                        { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " },
-                        { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " },
-                        { "  c  ", " ccc ", "ccscc", " ccc ", "  c  " }, }))
-                .addShape(
-                    STRUCTURE_PIECE_TOWER,
-                    (new String[][] { { " i ", "isi", " i " }, { " i ", "isi", " i " }, { " i ", "isi", " i " },
-                        { " i ", "isi", " i " }, { " i ", "isi", " i " }, { " i ", "isi", " i " },
-                        { " i ", "isi", " i " }, { " i ", "isi", " i " }, { " i ", "isi", " i " },
-                        { " i ", "isi", " i " }, { " i ", "isi", " i " }, { " i ", "isi", " i " },
-                        { " i ", "isi", " i " }, { " i ", "isi", " i " }, { " i ", "isi", " i " }, }))
-                .addShape(
-                    STRUCTURE_PIECE_BASE,
-                    (new String[][] {
-                        { "           ", "           ", "     t     ", "    ttt    ", "   ttstt   ", "  ttssstt  ",
-                            "   ttstt   ", "    ttt    ", "     t     ", "           ", "           " },
-                        { "           ", "           ", "     t     ", "    ttt    ", "   tssst   ", "  ttssstt  ",
-                            "   tssst   ", "    ttt    ", "     t     ", "           ", "           " },
-                        { "           ", "     t     ", "    ttt    ", "   ttttt   ", "  ttssstt  ", " tttsssttt ",
-                            "  ttssstt  ", "   ttttt   ", "    ttt    ", "     t     ", "           " },
-                        { "           ", "     t     ", "    ttt    ", "   ttttt   ", "  ttssstt  ", " tttsssttt ",
-                            "  ttssstt  ", "   ttttt   ", "    ttt    ", "     t     ", "           " },
-                        { "    hhh    ", "   ttttt   ", "  ttttttt  ", " ttttttttt ", "htttsssttth", "htttsssttth",
-                            "htttsssttth", " ttttttttt ", "  ttttttt  ", "   ttttt   ", "    hhh    " },
-                        { "    hhh    ", "   ttttt   ", "  ttttttt  ", " ttttttttt ", "httttttttth", "httttttttth",
-                            "httttttttth", " ttttttttt ", "  ttttttt  ", "   ttttt   ", "    hhh    " }, }))
-                .addShape(
-                    SOLAR_HEATER_RING_1,
-                    (new String[][] { { "     ggggg     ", "    g     g    ", "   g       g   ", "  g         g  ",
-                        " g           g ", "g             g", "g             g", "g             g", "g             g",
-                        "g             g", " g           g ", "  g         g  ", "   g       g   ", "    g     g    ",
-                        "     ggggg     ", } }))
-                .addShape(
-                    SOLAR_HEATER_RING_2,
-                    (new String[][] {
-                        { "     ggggggggg     ", "    g         g    ", "   g           g   ", "  g             g  ",
-                            " g               g ", "g                 g", "g                 g", "g                 g",
-                            "g                 g", "g                 g", "g                 g", "g                 g",
-                            "g                 g", "g                 g", " g               g ", "  g             g  ",
-                            "   g           g   ", "    g         g    ", "     ggggggggg     ", } }))
-                .addShape(
-                    SOLAR_HEATER_RING_3,
-                    (new String[][] { { "     ggggggggggggg     ", "    g             g    ", "   g               g   ",
-                        "  g                 g  ", " g                   g ", "g                     g",
-                        "g                     g", "g                     g", "g                     g",
-                        "g                     g", "g                     g", "g                     g",
-                        "g                     g", "g                     g", "g                     g",
-                        "g                     g", "g                     g", "g                     g",
-                        " g                   g ", "  g                 g  ", "   g               g   ",
-                        "    g             g    ", "     ggggggggggggg     ", } }))
-                .addShape(
-                    SOLAR_HEATER_RING_4,
-                    (new String[][] { { "     ggggggggggggggggg     ", "    g                 g    ",
-                        "   g                   g   ", "  g                     g  ", " g                       g ",
-                        "g                         g", "g                         g", "g                         g",
-                        "g                         g", "g                         g", "g                         g",
-                        "g                         g", "g                         g", "g                         g",
-                        "g                         g", "g                         g", "g                         g",
-                        "g                         g", "g                         g", "g                         g",
-                        "g                         g", "g                         g", " g                       g ",
-                        "  g                     g  ", "   g                   g   ", "    g                 g    ",
-                        "     ggggggggggggggggg     ", } }))
-                .addShape(
-                    SOLAR_HEATER_RING_5,
-                    (new String[][] { { "     ggggggggggggggggggggg     ", "    g                     g    ",
-                        "   g                       g   ", "  g                         g  ",
-                        " g                           g ", "g                             g",
-                        "g                             g", "g                             g",
-                        "g                             g", "g                             g",
-                        "g                             g", "g                             g",
-                        "g                             g", "g                             g",
-                        "g                             g", "g                             g",
-                        "g                             g", "g                             g",
-                        "g                             g", "g                             g",
-                        "g                             g", "g                             g",
-                        "g                             g", "g                             g",
-                        "g                             g", "g                             g",
-                        " g                           g ", "  g                         g  ",
-                        "   g                       g   ", "    g                     g    ",
-                        "     ggggggggggggggggggggg     ", } }))
+                .addShape(STRUCTURE_PIECE_TOP, STRUCTURE_STRING_TOP)
+                .addShape(STRUCTURE_PIECE_TOWER, STRUCTURE_STRING_TOWER)
+                .addShape(STRUCTURE_PIECE_BASE, STRUCTURE_STRING_BASE)
+                .addShape(STRUCTURE_PIECE_HEATER_RING_1, STRUCTURE_STRING_HEATER_RING_1)
+                .addShape(STRUCTURE_PIECE_HEATER_RING_2, STRUCTURE_STRING_HEATER_RING_2)
+                .addShape(STRUCTURE_PIECE_HEATER_RING_3, STRUCTURE_STRING_HEATER_RING_3)
+                .addShape(STRUCTURE_PIECE_HEATER_RING_4, STRUCTURE_STRING_HEATER_RING_4)
+                .addShape(STRUCTURE_PIECE_HEATER_RING_5, STRUCTURE_STRING_HEATER_RING_5)
                 .addElement('g', lazy(t -> {
                     IStructureElement<MTESolarTower> delegate = buildHatchAdder(MTESolarTower.class)
                         .hatchId(MetaTileEntityIDs.Solar_Tower_Reflector.ID)
@@ -281,23 +351,23 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                         }
                     };
                 }))
-                // mCasing1 is shared with the element `h`, this counting can be removed as well
+                // casingAmount is shared with the element `h`, this counting can be removed as well
                 // but I would need to count how many `t` occurs in the structure.
                 .addElement(
                     't',
-                    lazy(t -> onElementPass(x -> ++x.mCasing1, ofBlock(t.getCasingBlock(), t.getCasingMeta()))))
+                    lazy(t -> onElementPass(x -> ++x.casingAmount, Casings.StructuralSolarCasing.asElement())))
                 // Elements that don't have a hatch adder must be casing, no need to count the casing.
-                .addElement('i', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta2())))
-                .addElement('s', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta3())))
-                .addElement('c', lazy(t -> ofBlock(t.getCasingBlock2(), t.getCasingMeta4())))
+                .addElement('i', lazy(t -> Casings.ThermallyInsulatedCasing.asElement()))
+                .addElement('s', lazy(t -> Casings.SaltContainmentCasing.asElement()))
+                .addElement('c', lazy(t -> Casings.ThermalContainmentCasing.asElement()))
                 .addElement(
                     'h',
                     lazy(
                         t -> buildHatchAdder(MTESolarTower.class).atLeast(InputHatch, OutputHatch, Maintenance)
-                            .casingIndex(t.getCasingTextureIndex())
+                            .casingIndex(Casings.StructuralSolarCasing.textureId)
                             .hint(2)
                             .buildAndChain(
-                                onElementPass(x -> ++x.mCasing1, ofBlock(t.getCasingBlock(), t.getCasingMeta())))))
+                                onElementPass(x -> ++x.casingAmount, Casings.StructuralSolarCasing.asElement()))))
                 .build();
         }
     };
@@ -313,11 +383,11 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         this.mMaintenanceHatches.clear();
         this.mInputHatches.clear();
         this.mOutputHatches.clear();
-        mCasing1 = 0;
+        casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_TOP, 2, 2, 0, errors)) return;
         if (!checkPiece(STRUCTURE_PIECE_TOWER, 1, 1, -7, errors)) return;
         if (!checkPiece(STRUCTURE_PIECE_BASE, 5, 5, -22, errors)) return;
-        checkCasingMin(errors, mCasing1, 229);
+        checkCasingMin(errors, casingAmount, 229);
         checkOneMaintenanceHatch(errors);
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
@@ -332,19 +402,19 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
 
         // Solar Heaters
         if (stackSize.stackSize >= 1) {
-            buildPiece(SOLAR_HEATER_RING_1, stackSize, hintsOnly, 7, 7, -27);
-            if (stackSize.stackSize >= 2) {
-                buildPiece(SOLAR_HEATER_RING_2, stackSize, hintsOnly, 9, 9, -27);
-                if (stackSize.stackSize >= 3) {
-                    buildPiece(SOLAR_HEATER_RING_3, stackSize, hintsOnly, 11, 11, -27);
-                    if (stackSize.stackSize >= 4) {
-                        buildPiece(SOLAR_HEATER_RING_4, stackSize, hintsOnly, 13, 13, -27);
-                        if (stackSize.stackSize >= 5) {
-                            buildPiece(SOLAR_HEATER_RING_5, stackSize, hintsOnly, 15, 15, -27);
-                        }
-                    }
-                }
-            }
+            buildPiece(STRUCTURE_PIECE_HEATER_RING_1, stackSize, hintsOnly, 7, 7, -27);
+        }
+        if (stackSize.stackSize >= 2) {
+            buildPiece(STRUCTURE_PIECE_HEATER_RING_2, stackSize, hintsOnly, 9, 9, -27);
+        }
+        if (stackSize.stackSize >= 3) {
+            buildPiece(STRUCTURE_PIECE_HEATER_RING_3, stackSize, hintsOnly, 11, 11, -27);
+        }
+        if (stackSize.stackSize >= 4) {
+            buildPiece(STRUCTURE_PIECE_HEATER_RING_4, stackSize, hintsOnly, 13, 13, -27);
+        }
+        if (stackSize.stackSize >= 5) {
+            buildPiece(STRUCTURE_PIECE_HEATER_RING_5, stackSize, hintsOnly, 15, 15, -27);
         }
     }
 
@@ -362,19 +432,19 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
 
         // Solar Heaters
         if (stackSize.stackSize < 1) return -1;
-        built = survivalBuildPiece(SOLAR_HEATER_RING_1, stackSize, 7, 7, -27, realBudget, env, false, true);
+        built = survivalBuildPiece(STRUCTURE_PIECE_HEATER_RING_1, stackSize, 7, 7, -27, realBudget, env, false, true);
         if (built >= 0) return built;
         if (stackSize.stackSize < 2) return -1;
-        built = survivalBuildPiece(SOLAR_HEATER_RING_2, stackSize, 9, 9, -27, realBudget, env, false, true);
+        built = survivalBuildPiece(STRUCTURE_PIECE_HEATER_RING_2, stackSize, 9, 9, -27, realBudget, env, false, true);
         if (built >= 0) return built;
         if (stackSize.stackSize < 3) return -1;
-        built = survivalBuildPiece(SOLAR_HEATER_RING_3, stackSize, 11, 11, -27, realBudget, env, false, true);
+        built = survivalBuildPiece(STRUCTURE_PIECE_HEATER_RING_3, stackSize, 11, 11, -27, realBudget, env, false, true);
         if (built >= 0) return built;
         if (stackSize.stackSize < 4) return -1;
-        built = survivalBuildPiece(SOLAR_HEATER_RING_4, stackSize, 13, 13, -27, realBudget, env, false, true);
+        built = survivalBuildPiece(STRUCTURE_PIECE_HEATER_RING_4, stackSize, 13, 13, -27, realBudget, env, false, true);
         if (built >= 0) return built;
         if (stackSize.stackSize < 5) return -1;
-        return survivalBuildPiece(SOLAR_HEATER_RING_5, stackSize, 15, 15, -27, realBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_HEATER_RING_5, stackSize, 15, 15, -27, realBudget, env, false, true);
     }
 
     @Override
@@ -412,21 +482,14 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
     }
 
     private int getHeaterTier() {
-        int aSolarHeaterCounter = this.mSolarHeaters.size();
-        if (aSolarHeaterCounter > 0) {
-            if (aSolarHeaterCounter == 36) {
-                return 1;
-            } else if (aSolarHeaterCounter == 88) {
-                return 2;
-            } else if (aSolarHeaterCounter == 156) {
-                return 4;
-            } else if (aSolarHeaterCounter == 240) {
-                return 8;
-            } else if (aSolarHeaterCounter == 340) {
-                return 16;
-            }
-        }
-        return 0;
+        return switch (this.solarHeaters.size()) {
+            case 36 -> 1;
+            case 88 -> 2;
+            case 156 -> 4;
+            case 240 -> 8;
+            case 340 -> 16;
+            default -> 0;
+        };
     }
 
     private int getHeaterCountForTier(int aTier) {
@@ -440,34 +503,30 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         };
     }
 
-    public boolean getConnectedSolarReflectors() {
-
+    public void connectSolarReflectors() {
         resetSolarHeaters();
         List<StructureError> ignored = new ArrayList<>();
 
-        if (this.mSolarHeaters.size() < 36) {
+        if (this.solarHeaters.size() < 36) {
             // 15x15
-            checkPiece(SOLAR_HEATER_RING_1, 7, 7, -27, ignored);
-
+            checkPiece(STRUCTURE_PIECE_HEATER_RING_1, 7, 7, -27, ignored);
         }
-        if (this.mSolarHeaters.size() < 88) {
+        if (this.solarHeaters.size() < 88) {
             // 17x17
-            checkPiece(SOLAR_HEATER_RING_2, 9, 9, -27, ignored);
-
+            checkPiece(STRUCTURE_PIECE_HEATER_RING_2, 9, 9, -27, ignored);
         }
-        if (this.mSolarHeaters.size() < 156) {
+        if (this.solarHeaters.size() < 156) {
             // 19x19
-            checkPiece(SOLAR_HEATER_RING_3, 11, 11, -27, ignored);
+            checkPiece(STRUCTURE_PIECE_HEATER_RING_3, 11, 11, -27, ignored);
         }
-        if (this.mSolarHeaters.size() < 240) {
+        if (this.solarHeaters.size() < 240) {
             // 21x21
-            checkPiece(SOLAR_HEATER_RING_4, 13, 13, -27, ignored);
+            checkPiece(STRUCTURE_PIECE_HEATER_RING_4, 13, 13, -27, ignored);
         }
-        if (this.mSolarHeaters.size() < 340) {
+        if (this.solarHeaters.size() < 340) {
             // 23x23
-            checkPiece(SOLAR_HEATER_RING_5, 15, 15, -27, ignored);
+            checkPiece(STRUCTURE_PIECE_HEATER_RING_5, 15, 15, -27, ignored);
         }
-        return !mSolarHeaters.isEmpty();
     }
 
     private boolean addSolarHeater(IGregTechTileEntity aTileEntity, int a) {
@@ -478,7 +537,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             if (aMetaTileEntity instanceof MTESolarHeater mTile) {
                 if (!mTile.hasSolarTower() && mTile.canSeeSky()) {
                     mTile.setSolarTower(this);
-                    return this.mSolarHeaters.add(mTile);
+                    return this.solarHeaters.add(mTile);
                 }
             }
         }
@@ -490,27 +549,23 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         return (d, r, f) -> d == ForgeDirection.UP;
     }
 
-    private Fluid mColdSalt = null;
-    private Fluid mHotSalt = null;
-
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         this.mEfficiencyIncrease = 100;
         this.mMaxProgresstime = 200;
 
-        if (this.mSolarHeaters.isEmpty() || this.mSolarHeaters.size() < 340
-            || this.getTotalRuntimeInTicks() % 200 == 0) {
-            getConnectedSolarReflectors();
+        if (this.solarHeaters.isEmpty() || this.solarHeaters.size() < 340 || this.getTotalRuntimeInTicks() % 200 == 0) {
+            connectSolarReflectors();
         }
 
         int aTier = getHeaterTier();
         int aHeaters = getHeaterCountForTier(aTier);
 
-        // Original formula was (-Math.pow(this.mHeatLevel - 50000, 0.8) + 7000) / 7000
+        // Original formula was (-Math.pow(this.heatLevel - 50000, 0.8) + 7000) / 7000
         // However, negative numbers to the power of a non-integer result in NaN, by default
-        // Max efficiency is 1, at mHeatLevel = 50000, and it lowers at the same rate if going above or below this heat
-        // Min efficiency is 0.179, at mHeatLevel = 0 or 100000
-        double aEfficiency = (-Math.pow(Math.abs(this.mHeatLevel - 50000), 0.8) + 7000) / 7000;
+        // Max efficiency is 1, at heatLevel = 50000, and it lowers at the same rate if going above or below this heat
+        // Min efficiency is 0.179, at heatLevel = 0 or 100000
+        double aEfficiency = (-Math.pow(Math.abs(this.heatLevel - 50000), 0.8) + 7000) / 7000;
 
         World w = this.getBaseMetaTileEntity()
             .getWorld();
@@ -521,23 +576,23 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             if (aHeaters > 0 && w.isDaytime()) {
                 if (w.isRaining() && this.getBaseMetaTileEntity()
                     .getBiome().rainfall > 0.0F) {
-                    this.mHeatLevel += GTUtility.safeInt((long) ((aHeaters / 2) * aEfficiency * (10 + aTier)));
+                    this.heatLevel += GTUtility.safeInt((long) ((aHeaters / 2) * aEfficiency * (10 + aTier)));
                 } else {
-                    this.mHeatLevel += GTUtility.safeInt((long) (aHeaters * aEfficiency * (10 + aTier)));
+                    this.heatLevel += GTUtility.safeInt((long) (aHeaters * aEfficiency * (10 + aTier)));
                 }
             }
 
             // Remove Heat, based on time of day
-            if (mHeatLevel > 0) {
-                if (mHeatLevel > 100000) {
-                    this.mHeatLevel = 100000;
+            if (heatLevel > 0) {
+                if (heatLevel > 100000) {
+                    this.heatLevel = 100000;
                 } else {
-                    this.mHeatLevel -= 10;
+                    this.heatLevel -= 10;
                 }
             }
         }
 
-        if (this.mEfficiency == this.getMaxEfficiency(null) && this.mHeatLevel >= 30000) {
+        if (this.mEfficiency == this.getMaxEfficiency(null) && this.heatLevel >= 30000) {
             if (mColdSalt == null) {
                 mColdSalt = MaterialMisc.SOLAR_SALT_COLD.getFluid();
             }
@@ -548,12 +603,12 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             for (FluidStack aFluid : aFluids) {
                 if (aFluid.getFluid()
                     .equals(mColdSalt)) {
-                    int aFluidAmount = Math.min(aFluid.amount, this.mHeatLevel);
+                    int aFluidAmount = Math.min(aFluid.amount, this.heatLevel);
 
-                    this.mHeatLevel -= aFluidAmount;
+                    this.heatLevel -= aFluidAmount;
                     this.depleteInput(new FluidStack(mColdSalt, aFluidAmount));
                     this.addOutputPartial(new FluidStack(mHotSalt, aFluidAmount));
-                    this.mHeatLevel = Math.max(this.mHeatLevel, 0);
+                    this.heatLevel = Math.max(this.heatLevel, 0);
 
                     break;
                 }
@@ -563,44 +618,21 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
         return CheckRecipeResultRegistry.GENERATING;
     }
 
-    public Block getCasingBlock() {
-        return ModBlocks.blockSpecialMultiCasings;
-    }
-
-    public Block getCasingBlock2() {
-        return ModBlocks.blockCasings2Misc;
-    }
-
-    public byte getCasingMeta() {
-        return 6;
-    }
-
-    public byte getCasingMeta2() {
-        return 8;
-    }
-
-    public byte getCasingMeta3() {
-        return 7;
-    }
-
-    public byte getCasingMeta4() {
-        return 11;
-    }
-
-    public byte getCasingTextureIndex() {
-        return (byte) mCasingTextureID;
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.StructuralSolarCasing.getCasingTexture();
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("mHeatLevel", mHeatLevel);
+        aNBT.setInteger("heatLevel", heatLevel);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mHeatLevel = aNBT.getInteger("mHeatLevel");
+        heatLevel = aNBT.getInteger("heatLevel");
     }
 
     @Override
@@ -610,10 +642,10 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
     }
 
     private void resetSolarHeaters() {
-        for (MTESolarHeater aTile : this.mSolarHeaters) {
+        for (MTESolarHeater aTile : this.solarHeaters) {
             aTile.clearSolarTower();
         }
-        this.mSolarHeaters.clear();
+        this.solarHeaters.clear();
     }
 
     @Override
