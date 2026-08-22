@@ -29,6 +29,7 @@ import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.graphs.ConsumerList;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.NodeList;
 import gregtech.api.graphs.PowerNode;
@@ -232,19 +233,32 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
             || (!isConnectedAtSide(side) && side != ForgeDirection.UNKNOWN)) return 0;
         final BaseMetaPipeEntity tBase = (BaseMetaPipeEntity) getBaseMetaTileEntity();
         if (!(tBase.getNode() instanceof PowerNode tNode)) return 0;
-        int tPlace = 0;
-        final Node[] tToPower = new Node[tNode.mConsumers.size()];
-        if (tNode.mHadVoltage) {
-            for (ConsumerNode consumer : tNode.mConsumers) {
-                if (consumer.needsEnergy()) tToPower[tPlace++] = consumer;
+        final ConsumerList tConsumers = tNode.mConsumers;
+
+        // borrowed from the network instead of allocated per emitter per tick, null only on reentrancy
+        final Node[] tBorrowed = tConsumers.borrowBuffer();
+        final Node[] tToPower = tBorrowed != null ? tBorrowed : new Node[tConsumers.size() + 1];
+        try {
+            int tPlace = 0;
+            if (tNode.mHadVoltage) {
+                for (ConsumerNode consumer : tConsumers.candidates()) {
+                    if (consumer.needsEnergy()) tToPower[tPlace++] = consumer;
+                }
+            } else {
+                tNode.mHadVoltage = true;
+                for (int i = 0, size = tConsumers.size(); i < size; i++) {
+                    tToPower[tPlace++] = tConsumers.get(i);
+                }
             }
-        } else {
-            tNode.mHadVoltage = true;
-            for (ConsumerNode consumer : tNode.mConsumers) {
-                tToPower[tPlace++] = consumer;
-            }
+            // the walk stops at the first null, which a freshly allocated array used to provide on its own
+            tToPower[tPlace] = null;
+
+            final NodeList tNodeList = tBorrowed != null ? tConsumers.borrowedNodeList(tToPower)
+                : new NodeList(tToPower);
+            return PowerNodes.powerNode(tNode, null, tNodeList, (int) voltage, (int) amperage);
+        } finally {
+            if (tBorrowed != null) tConsumers.releaseBuffer();
         }
-        return PowerNodes.powerNode(tNode, null, new NodeList(tToPower), (int) voltage, (int) amperage);
     }
 
     @Override

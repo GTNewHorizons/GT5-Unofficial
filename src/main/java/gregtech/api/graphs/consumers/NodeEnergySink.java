@@ -1,17 +1,15 @@
 package gregtech.api.graphs.consumers;
 
-import java.util.ArrayList;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.graphs.ConsumerList;
 import ic2.api.energy.tile.IEnergySink;
 
 // consumer for IC2 machines
 public class NodeEnergySink extends ConsumerNode {
 
-    public NodeEnergySink(int nodeValue, IEnergySink tileEntity, ForgeDirection side,
-        ArrayList<ConsumerNode> consumers) {
+    public NodeEnergySink(int nodeValue, IEnergySink tileEntity, ForgeDirection side, ConsumerList consumers) {
         super(nodeValue, (TileEntity) tileEntity, side, consumers);
     }
 
