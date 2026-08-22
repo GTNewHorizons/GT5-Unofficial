@@ -3890,6 +3890,7 @@ GT5U.armor.message.disabled=%s §cDisabled§r
 GT5U.armor.message.installed=%s Installed
 GT5U.armor.message.systems_online=Armor Systems Online... Active keybindings:
 GT5U.armor.message.speed_set=§6New speed:§r %s
+GT5U.armor.message.vertical_speed_set=§6New vertical speed:§r %s
 GT5U.armor.message.jump_boost_set=§6New jump boost:§r %s
 
 GT5U.armor.tooltip.hold_shift=Hold Shift for more info
@@ -7346,6 +7347,8 @@ key.gt.jump_decrease=Decrease Jump Boost
 key.gt.force_field=Toggle Force Field
 key.gt.toggle_levitation_mode=Toggle Levitation Mode
 key.gt.open_radial_menu=Open Radial Menu
+key.gt.vertical_speed_increase=Increase vertical speed
+key.gt.vertical_speed_decrease=Decrease vertical speed
 
 # Tooltips for GT Tools
 gt.softmallet.tooltip=Activates and Deactivates Machines
