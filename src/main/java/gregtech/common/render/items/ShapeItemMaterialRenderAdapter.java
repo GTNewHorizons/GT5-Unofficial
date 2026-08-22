@@ -9,6 +9,7 @@ import net.minecraft.util.ResourceLocation;
 
 import com.ruling_0.materiallib.api.Material;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.ShapeFluidInContainer;
 import com.ruling_0.materiallib.api.ShapeItem;
 
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
@@ -65,9 +66,15 @@ public final class ShapeItemMaterialRenderAdapter implements IGT_ItemWithMateria
         return MaterialLibAPI.getMaterialByIndex(damage);
     }
 
+    /// The number of leading render passes a fluid container spends on its base, ahead of the fill stack.
+    private static int basePassOffset(ShapeItem item) {
+        return item instanceof ShapeFluidInContainer ? 1 : 0;
+    }
+
+    /// The modulation color of the first fill pass, past a fluid container's leading base pass.
     @Override
     public short[] getRGBa(ItemStack aStack) {
-        return GTUtil.getRGBaArray(item.getColorFromItemStack(aStack, 0));
+        return GTUtil.getRGBaArray(item.getColorFromItemStack(aStack, basePassOffset(item)));
     }
 
     @Override
@@ -91,8 +98,10 @@ public final class ShapeItemMaterialRenderAdapter implements IGT_ItemWithMateria
         return 1;
     }
 
-    /// One material's icon layer stack on the adapted [ShapeItem]: the item's render passes, forwarded in the
-    /// item's own order. A layer past the material's own stack is a fluid container's untinted base.
+    /// One material's icon layer stack on the adapted [ShapeItem]: the fill layers first, with a fluid container's
+    /// untinted base as the trailing layer, so layer 0 stays the silhouette the [GeneratedMaterialRenderer] family
+    /// depth-clips the contained fluid to. The item itself draws the base as its leading render pass;
+    /// [#getLayerIcon] translates between the two orders.
     private static final class LayerStack implements IIconContainer {
 
         private final ShapeItem item;
@@ -121,7 +130,10 @@ public final class ShapeItemMaterialRenderAdapter implements IGT_ItemWithMateria
 
         @Override
         public IIcon getLayerIcon(int layer) {
-            return item.getIconFromDamageForRenderPass(material.getIndex(), layer);
+            int offset = basePassOffset(item);
+            int fillLayers = getIconPasses() - offset;
+            int pass = layer < fillLayers ? layer + offset : layer - fillLayers;
+            return item.getIconFromDamageForRenderPass(material.getIndex(), pass);
         }
 
         @Override

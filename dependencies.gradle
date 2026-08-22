@@ -47,7 +47,7 @@ dependencies {
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.100-gtnh:dev")
     api("com.github.GTNewHorizons:Postea:1.2.6:dev")
     api("com.github.GTNewHorizons:Draconic-Evolution:1.5.30-GTNH:dev")
-    api("com.ruling_0:MaterialLib:0.9.0-mu:dev")
+    api("com.ruling_0:MaterialLib:0.9.0-mu-layered-icons.6+a01a20186d:dev")
 
     compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.12.29:dev')
     compileOnlyApi("com.github.GTNewHorizons:Mobs-Info:0.5.20-GTNH:dev")
