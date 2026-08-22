@@ -744,28 +744,28 @@ public class BlastFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Iron.getIngots(1))
             .itemOutputs(Materials.Steel.getIngots(1))
-            .duration(6 * MINUTES)
+            .duration(10 * SECONDS)
             .metadata(ADDITIVE_AMOUNT, 4)
             .addTo(primitiveBlastRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Iron.getDust(1))
             .itemOutputs(Materials.Steel.getIngots(1))
-            .duration(6 * MINUTES)
+            .duration(10 * SECONDS)
             .metadata(ADDITIVE_AMOUNT, 4)
             .addTo(primitiveBlastRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Iron.getBlocks(1))
             .itemOutputs(Materials.Steel.getIngots(9))
-            .duration(54 * MINUTES)
+            .duration(90 * SECONDS)
             .metadata(ADDITIVE_AMOUNT, 36)
             .addTo(primitiveBlastRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Steel.getDust(1))
             .itemOutputs(Materials.Steel.getIngots(1))
-            .duration(6 * MINUTES)
+            .duration(10 * SECONDS)
             .metadata(ADDITIVE_AMOUNT, 2)
             .addTo(primitiveBlastRecipes);
     }
