@@ -58,6 +58,7 @@ public class MaterialsInit {
         loadNetheriteLine();
         loadPrismaticAcidLine();
         loadAcidRecipes();
+        loadButylLithiumLine();
         loadMagicMaterials();
         loadBotaniaMaterials();
         loadKevlarLine();
@@ -14530,6 +14531,120 @@ public class MaterialsInit {
             .addCell()
             .addFluid()
             .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
+    }
+
+    private static void loadButylLithiumLine() {
+        Materials.PhosphoricAcidMixture = loadPhosphoricAcidMixture();
+        Materials.nButylChlorideMixture = loadButylChlorideMixture();
+        Materials.nButylChloridePurified = loadButylChloridePurified();
+        Materials.nButylChloride = loadButylChloride();
+        Materials.nButylChlorideSolution = loadButylChlorideSolution();
+        Materials.nButylLithiumSlurry = loadButylLithiumSlurry();
+        Materials.nButylLithiumSolutionMixture = loadButylLithiumSolutionMixture();
+        Materials.nButylLithiumSolutionConcentrated = loadButylLithiumSolutionConcentrated();
+    }
+
+    private static Materials loadPhosphoricAcidMixture() {
+        return new MaterialBuilder().setName("PhosphoricAcidMixture")
+            .setDefaultLocalName("Phosphoric Acid Mixture")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightGray)
+            .setARGB(0xd8dcd5)
+            .addCell()
+            .addFluid()
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
+    }
+
+    private static Materials loadButylChlorideMixture() {
+        return new MaterialBuilder().setName("nButylChlorideMixture")
+            .setDefaultLocalName("n-Butyl Chloride Mixture")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setARGB(0xe5dfc0)
+            .addCell()
+            .addFluid()
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
+    }
+
+    private static Materials loadButylChloridePurified() {
+        return new MaterialBuilder().setName("nButylChloridePurified")
+            .setDefaultLocalName("Purified n-Butyl Chloride")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightGray)
+            .setARGB(0xe1e4dc)
+            .addCell()
+            .addFluid()
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
+    }
+
+    private static Materials loadButylChloride() {
+        return new MaterialBuilder().setName("nButylChloride")
+            .setDefaultLocalName("n-Butyl Chloride")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightGray)
+            .setARGB(0xe1e4dc)
+            .setMeltingPoint(150)
+            .addCell()
+            .addFluid()
+            .addSubTag(SubTag.TRANSPARENT)
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 9)
+            .addMaterial(Materials.Chlorine, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadButylChlorideSolution() {
+        return new MaterialBuilder().setName("nButylChlorideSolution")
+            .setDefaultLocalName("n-Butyl Chloride Solution")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightGray)
+            .setARGB(0xcdd2ca)
+            .addCell()
+            .addFluid()
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
+    }
+
+    private static Materials loadButylLithiumSlurry() {
+        return new MaterialBuilder().setName("nButylLithiumSlurry")
+            .setDefaultLocalName("n-Butyl Lithium Slurry")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0xdcdcd2)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadButylLithiumSolutionMixture() {
+        return new MaterialBuilder().setName("nButylLithiumSolutionMixture")
+            .setDefaultLocalName("n-Butyl Lithium Solution Mixture")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeLightGray)
+            .setARGB(0xd2d6d0)
+            .addCell()
+            .addFluid()
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
+    }
+
+    private static Materials loadButylLithiumSolutionConcentrated() {
+        return new MaterialBuilder().setName("nButylLithiumSolutionConcentrated")
+            .setDefaultLocalName("Concentrated n-Butyl Lithium Solution")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setARGB(0xe1d29b)
+            .setMeltingPoint(178)
+            .addCell()
+            .addFluid()
+            .addSubTag(SubTag.TRANSPARENT)
+            .addMaterial(Materials.Carbon, 4)
+            .addMaterial(Materials.Hydrogen, 9)
+            .addMaterial(Materials.Lithium, 1)
             .constructMaterial();
     }
 
