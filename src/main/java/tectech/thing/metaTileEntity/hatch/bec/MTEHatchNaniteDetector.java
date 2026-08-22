@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -28,6 +27,7 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
+import gregtech.common.gui.modularui.widget.DisableableTextFieldWidget;
 import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchConfigurableBase;
 
@@ -88,7 +88,11 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
         super.onPostTick(baseMetaTileEntity, tick);
 
-        setOutput(requiredTier != null && comparison.test(requiredTier.tier, configuredTier));
+        if (comparison == Comparison.ANALOG) {
+            setOutput(requiredTier == null ? 0 : requiredTier.tier);
+        } else {
+            setOutput(requiredTier != null && comparison.test(requiredTier.tier, configuredTier));
+        }
     }
 
     @Override
@@ -125,15 +129,27 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
                     .addIntEditor(
                         IKey.lang("GT5U.gui.text.bec-threshold"),
                         () -> configuredTier,
-                        i -> configuredTier = i,
-                    i -> Math.clamp(i, 1, Arrays.stream(NaniteTier.values()).mapToInt(NaniteTier::getTier).max().getAsInt()))
+                        i -> {
+                            if (comparison != Comparison.ANALOG) {
+                                configuredTier = i;
+                            }
+                        },
+                        i -> Math.clamp(i, 1, Arrays.stream(NaniteTier.values()).mapToInt(NaniteTier::getTier).max().getAsInt()),
+                        (_, _, textField) -> {
+                            textField.setEditable(() -> comparison != Comparison.ANALOG);
+                        },
+                        DisableableTextFieldWidget.class)
                     .addReadout(
                         IKey.lang("GT5U.gui.text.bec-current"),
                         new IntSyncValue(() -> requiredTier == null ? -1 : requiredTier.ordinal()),
                         nanite -> {
                             NaniteTier tier = GTDataUtils.getIndexSafe(NaniteTier.values(), nanite);
 
-                            return IKey.str(tier == null ? StatCollector.translateToLocal("GT5U.gui.text.nil") : tier.describe());
+                            if (tier == null) {
+                                return IKey.lang("GT5U.gui.text.nil");
+                            } else {
+                                return IKey.lang("GT5U.gui.text.nanite-detector-tier", tier.tier);
+                            }
                         })
                     .build(panel, syncManager, getContentHolderHeight())
                     .horizontalCenter());

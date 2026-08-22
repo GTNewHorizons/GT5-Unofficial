@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -386,6 +387,10 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         loadRequiredNanites(recipe.mDuration, Arrays.asList(this.requiredNanites));
 
         state = NodeState.Crafting;
+
+        if (losHatch != null) {
+            losHatch.setBeamActive(true);
+        }
     }
 
     private void clearCurrentRecipe() {
@@ -396,6 +401,10 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         assemblerEUt = 0;
         state = NodeState.Idle;
         setRequiredTier(null);
+
+        if (losHatch != null) {
+            losHatch.setBeamActive(false);
+        }
     }
 
     @Nonnegative
@@ -539,11 +548,6 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         this.slowdowns = assembler.getSlowdowns(requiredCondensate.keySet());
 
-        if (this.slowdowns > 3) {
-            this.stopMachine(CLOGGED);
-            return;
-        }
-
         int parallelsDivisor = this.parallelRecipesInProgress;
         int aboveTierDivisor = 1 << Math.abs(this.requiredTier.tier - providedTier.tier);
         int slowdownDivisor = Math.max(this.slowdowns + 1, this.speedDivisorParameter.getValue());
@@ -598,6 +602,14 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             if (nextStep != null) {
                 nextProgress = Math.min(nextProgress, nextStep.start);
             }
+        }
+
+        // This has to be done after the step pausing logic, to prevent erroneous clogging shutdowns
+        // We can safely stop the machine here because we only get to this point if we're incremeting the progress
+        // (subtick or otherwise).
+        if (this.slowdowns > 3) {
+            this.stopMachine(CLOGGED);
+            return;
         }
 
         for (var required : this.requiredCondensate.object2LongEntrySet()) {
@@ -1088,7 +1100,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                 setMaxParallel(value);
             }
         };
-        speedDivisorParameter = new IntegerParameter(
+        speedDivisorParameter = new SpeedDivisorParameter(
             1,
             "GT5U.gui.text.bec-speed-divisor",
             SPEED_DIVISOR_PARAMETER,
@@ -1102,5 +1114,22 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     @Override
     public List<Parameter<?, ?>> getParameters() {
         return List.of(minParallelParameter, maxParallelParameter, speedDivisorParameter);
+    }
+
+    private class SpeedDivisorParameter extends IntegerParameter {
+
+        public SpeedDivisorParameter(Integer value, String langKey, String nbtKey, Supplier<Integer> min,
+            Supplier<Integer> max, Object... langArgs) {
+            super(value, langKey, nbtKey, min, max, langArgs);
+        }
+
+        @Override
+        public void setValue(Integer value) {
+            super.setValue(value);
+
+            // Reset the subtick counter to avoid tick accumulation exploits (set speed divisor high, put first step
+            // nanite, wait, set speed divisor low - finishes recipe on next tick).
+            MTEBECIONode.this.subtickCounter = 0;
+        }
     }
 }

@@ -67,6 +67,12 @@ public class SettingsPanelBuilder {
         return addIntEditor(label, new IntSyncValue(getter, setter).allowC2S(), validator, configure);
     }
 
+    public <T extends TextFieldWidget> SettingsPanelBuilder addIntEditor(IKey label, IntSupplier getter,
+        IntConsumer setter, MathUtils.UnaryIntOperator validator, WidgetConfigurator<T> configure,
+        Class<T> widgetClass) {
+        return addIntEditor(label, new IntSyncValue(getter, setter).allowC2S(), validator, configure, widgetClass);
+    }
+
     public SettingsPanelBuilder addIntEditor(IKey label, IStringValue<Integer> value,
         MathUtils.UnaryIntOperator validator) {
         return addIntEditor(label, value, validator, null);
@@ -78,7 +84,17 @@ public class SettingsPanelBuilder {
             widget.numbersInt(validator);
             widget.formatAsInteger(true);
             if (configure != null) configure.configure(panel, syncManager, widget);
-        });
+        }, TextFieldWidget.class);
+    }
+
+    public <T extends TextFieldWidget> SettingsPanelBuilder addIntEditor(IKey label, IStringValue<Integer> value,
+        MathUtils.UnaryIntOperator validator, WidgetConfigurator<T> configure, Class<T> widgetClass) {
+        return addTextField(label, value, (panel, syncManager, widget) -> {
+            widget.numbersInt(validator);
+            widget.formatAsInteger(true);
+            // noinspection unchecked
+            if (configure != null) configure.configure(panel, syncManager, (T) widget);
+        }, widgetClass);
     }
 
     public SettingsPanelBuilder addLongEditor(IKey label, LongSupplier getter, LongConsumer setter,
@@ -103,7 +119,7 @@ public class SettingsPanelBuilder {
             widget.numbersLong(validator);
             widget.formatAsInteger(true);
             if (configure != null) configure.configure(panel, syncManager, widget);
-        });
+        }, TextFieldWidget.class);
     }
 
     public SettingsPanelBuilder addDoubleEditor(IKey label, DoubleSupplier getter, DoubleConsumer setter,
@@ -126,7 +142,7 @@ public class SettingsPanelBuilder {
         return addTextField(label, value, (panel, syncManager, widget) -> {
             widget.numbersDouble(validator);
             if (configure != null) configure.configure(panel, syncManager, widget);
-        });
+        }, TextFieldWidget.class);
     }
 
     public SettingsPanelBuilder addStringEditor(IKey label, Supplier<String> getter, Consumer<String> setter) {
@@ -144,12 +160,12 @@ public class SettingsPanelBuilder {
 
     public SettingsPanelBuilder addStringEditor(IKey label, IStringValue<String> value,
         WidgetConfigurator<TextFieldWidget> configure) {
-        return addTextField(label, value, configure);
+        return addTextField(label, value, configure, TextFieldWidget.class);
     }
 
     private SettingsPanelBuilder addTextField(IKey label, IStringValue<?> value,
-        WidgetConfigurator<TextFieldWidget> configure) {
-        rows.add(new TextFieldSettingRow(label, value, configure));
+        WidgetConfigurator<TextFieldWidget> configure, Class<? extends TextFieldWidget> widgetClass) {
+        rows.add(new TextFieldSettingRow(label, value, configure, widgetClass));
 
         return this;
     }
