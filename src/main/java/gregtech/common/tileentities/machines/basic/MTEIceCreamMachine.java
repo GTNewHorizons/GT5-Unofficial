@@ -123,6 +123,12 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
         return SoundResource.GTCEU_LOOP_MIXER;
     }
 
+    @Override
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return false;
+    }
+
     /** Chance out of 100 that the machine works on that day */
     private static final int WORK_CHANCE_PERCENT = 30;
     /** Chance out of 100 that it also asks for a repair item */
