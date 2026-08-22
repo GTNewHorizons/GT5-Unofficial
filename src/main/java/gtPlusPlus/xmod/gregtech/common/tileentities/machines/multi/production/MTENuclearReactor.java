@@ -216,16 +216,16 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
                             .casingIndex(TAE.GTPP_INDEX(12))
                             .hint(1)
                             .build(),
-                        onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 12))))
+                        onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 10))))
                 .addElement(
                     'X',
                     buildHatchAdder(MTENuclearReactor.class).atLeast(Muffler)
                         .adder(MTENuclearReactor::addNuclearReactorTopList)
                         .casingIndex(TAE.GTPP_INDEX(12))
                         .hint(2)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 12))))
-                .addElement('O', ofBlock(ModBlocks.blockCasingsMisc, 12))
-                .addElement('G', ofBlock(ModBlocks.blockCasingsMisc, 13))
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 10))))
+                .addElement('O', ofBlock(ModBlocks.blockCasingsMisc, 10))
+                .addElement('G', ofBlock(ModBlocks.blockCasingsMisc, 11))
                 .build();
         }
         return STRUCTURE_DEFINITION;

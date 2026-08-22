@@ -127,25 +127,25 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             'Z',
             buildHatchAdder(MTEMegaAlloyBlastSmelter.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Energy, ExoticEnergy)
-                .casingIndex(TAE.GTPP_INDEX(15))
+                .casingIndex(TAE.GTPP_INDEX(13))
                 .hint(1)
-                .buildAndChain(ofBlock(ModBlocks.blockCasingsMisc, 15)))
+                .buildAndChain(ofBlock(ModBlocks.blockCasingsMisc, 13)))
         .addElement(
             'E',
             buildHatchAdder(MTEMegaAlloyBlastSmelter.class).atLeast(Maintenance)
-                .casingIndex(TAE.GTPP_INDEX(15))
+                .casingIndex(TAE.GTPP_INDEX(13))
                 .hint(2)
-                .buildAndChain(ofBlock(ModBlocks.blockCasingsMisc, 15)))
-        .addElement('D', ofBlock(ModBlocks.blockCasingsMisc, 15))
-        .addElement('C', ofBlock(ModBlocks.blockCasingsMisc, 14))
+                .buildAndChain(ofBlock(ModBlocks.blockCasingsMisc, 13)))
+        .addElement('D', ofBlock(ModBlocks.blockCasingsMisc, 13))
+        .addElement('C', ofBlock(ModBlocks.blockCasingsMisc, 12))
         .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
-        .addElement('F', Muffler.newAny(TAE.GTPP_INDEX(15), 3))
+        .addElement('F', Muffler.newAny(TAE.GTPP_INDEX(13), 3))
         .build();
 
     private static IStructureElement<MTEMegaAlloyBlastSmelter> getCoilElement() {
         IStructureElement<MTEMegaAlloyBlastSmelter> heatingCoilElem = GTStructureChannels.HEATING_COIL
             .use(activeCoils(ofCoil(MTEMegaAlloyBlastSmelter::setCoilLevel, MTEMegaAlloyBlastSmelter::getCoilLevel)));
-        IStructureElement<MTEMegaAlloyBlastSmelter> basicCoilElem = ofBlock(ModBlocks.blockCasingsMisc, 14);
+        IStructureElement<MTEMegaAlloyBlastSmelter> basicCoilElem = ofBlock(ModBlocks.blockCasingsMisc, 12);
         return partitionBy(
             te -> te.coilType,
             ImmutableMap.of(
@@ -366,7 +366,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
 
     @Override
     public ITexture getCasingTexture() {
-        return Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(15));
+        return Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(13));
     }
 
     @Override

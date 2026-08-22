@@ -285,6 +285,7 @@ public enum GregtechItemList implements IItemContainer {
 
     // Containment Casing
     Casing_Containment,
+    Casing_SupplyDepot,
 
     // Arc Furnace
     Industrial_Arc_Furnace,

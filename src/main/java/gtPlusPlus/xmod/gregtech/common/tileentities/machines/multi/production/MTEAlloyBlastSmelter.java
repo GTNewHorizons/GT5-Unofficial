@@ -113,10 +113,10 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
                     'C',
                     buildHatchAdder(MTEAlloyBlastSmelter.class)
                         .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance, Energy, Muffler)
-                        .casingIndex(TAE.GTPP_INDEX(15))
+                        .casingIndex(TAE.GTPP_INDEX(13))
                         .hint(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 15))))
-                .addElement('H', ofBlock(ModBlocks.blockCasingsMisc, 14))
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 13))))
+                .addElement('H', ofBlock(ModBlocks.blockCasingsMisc, 12))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -172,7 +172,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
 
     @Override
     protected int getCasingTextureId() {
-        return TAE.GTPP_INDEX(15);
+        return TAE.GTPP_INDEX(13);
     }
 
     @Override

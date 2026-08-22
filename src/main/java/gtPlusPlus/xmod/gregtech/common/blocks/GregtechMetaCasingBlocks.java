@@ -34,10 +34,10 @@ public class GregtechMetaCasingBlocks extends GregtechMetaCasingBlocksAbstract {
         GregtechItemList.Casing_MacerationStack.set(new ItemStack(this, 1, 7));
         GregtechItemList.Casing_MatterGen.set(new ItemStack(this, 1, 8));
         GregtechItemList.Casing_MatterFab.set(new ItemStack(this, 1, 9));
-        GregtechItemList.Casing_Reactor_I.set(new ItemStack(this, 1, 12));
-        GregtechItemList.Casing_Reactor_II.set(new ItemStack(this, 1, 13));
-        GregtechItemList.Casing_Coil_BlastSmelter.set(new ItemStack(this, 1, 14));
-        GregtechItemList.Casing_BlastSmelter.set(new ItemStack(this, 1, 15));
+        GregtechItemList.Casing_Reactor_I.set(new ItemStack(this, 1, 10));
+        GregtechItemList.Casing_Reactor_II.set(new ItemStack(this, 1, 11));
+        GregtechItemList.Casing_Coil_BlastSmelter.set(new ItemStack(this, 1, 12));
+        GregtechItemList.Casing_BlastSmelter.set(new ItemStack(this, 1, 13));
         for (int i = 2; i <= 3; i++) {
             GTStructureChannels.COKE_OVEN_CASING.registerAsIndicator(new ItemStack(this, 1, i), i - 1);
         }
@@ -68,11 +68,11 @@ public class GregtechMetaCasingBlocks extends GregtechMetaCasingBlocksAbstract {
                 // Matter Fabricator Casings
                 case 9 -> Textures.BlockIcons.MATTER_FABRICATOR_CASING.getIcon();
                 // Reactor Casing I
-                case 12 -> TexturesGtBlock.Casing_Material_Stellite.getIcon();
+                case 10 -> TexturesGtBlock.Casing_Material_Stellite.getIcon();
                 // Reactor Casing II
-                case 13 -> TexturesGtBlock.Casing_Material_Zeron100.getIcon();
-                case 14 -> TexturesGtBlock.Casing_Staballoy_Firebox.getIcon();
-                case 15 -> TexturesGtBlock.Casing_Material_ZirconiumCarbide.getIcon();
+                case 11 -> TexturesGtBlock.Casing_Material_Zeron100.getIcon();
+                case 12 -> TexturesGtBlock.Casing_Staballoy_Firebox.getIcon();
+                case 13 -> TexturesGtBlock.Casing_Material_ZirconiumCarbide.getIcon();
                 default -> Textures.BlockIcons.MACHINE_CASING_RADIOACTIVEHAZARD.getIcon();
             };
         }

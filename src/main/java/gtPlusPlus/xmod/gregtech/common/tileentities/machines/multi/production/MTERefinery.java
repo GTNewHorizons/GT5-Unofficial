@@ -154,7 +154,7 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
                         onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 2))))
                 .addElement('I', ofBlock(ModBlocks.blockCasings2Misc, 3))
                 .addElement('N', ofBlock(ModBlocks.blockCasings2Misc, 1))
-                .addElement('Z', ofBlock(ModBlocks.blockCasingsMisc, 13))
+                .addElement('Z', ofBlock(ModBlocks.blockCasingsMisc, 11))
                 .build();
         }
         return STRUCTURE_DEFINITION;

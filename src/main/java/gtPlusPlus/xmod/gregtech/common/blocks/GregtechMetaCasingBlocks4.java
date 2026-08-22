@@ -35,6 +35,7 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
             TAE.registerTexture(3, i, TextureFactory.of(this, i));
         }
 
+        GregtechItemList.Casing_SupplyDepot.set(new ItemStack(this, 1, 2));
         GregtechItemList.Casing_Industrial_Arc_Furnace.set(new ItemStack(this, 1, 3));
         GregtechItemList.Casing_Coil_QuantumForceTransformer.set(new ItemStack(this, 1, 4));
         GregtechItemList.Casing_Vacuum_Furnace.set(new ItemStack(this, 1, 10));
@@ -50,6 +51,7 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
         // Texture ID's. case 0 == ID[57]
         if ((aMeta >= 0) && (aMeta < 16)) {
             return switch (aMeta) {
+                case 2 -> TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
                 case 3 -> Textures.BlockIcons.TEMPERED_ARC_FURNACE_CASING.getIcon();
                 case 4 -> Textures.BlockIcons.Casing_Coil_QFT.getIcon();
                 case 9 -> TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
@@ -64,6 +66,7 @@ public class GregtechMetaCasingBlocks4 extends GregtechMetaCasingBlocksAbstract 
 
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
+        list.add(new ItemStack(item, 1, 2));
         list.add(new ItemStack(item, 1, 3));
         list.add(new ItemStack(item, 1, 4));
 

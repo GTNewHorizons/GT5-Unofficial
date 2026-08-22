@@ -4041,10 +4041,10 @@ miscutils.blockcasings.6.name=Wire Factory Casing
 miscutils.blockcasings.7.name=Maceration Stack Casing
 miscutils.blockcasings.8.name=Matter Generation Coil
 miscutils.blockcasings.9.name=Matter Fabricator Casing
-miscutils.blockcasings.12.name=Hastelloy-N Reactor Casing
-miscutils.blockcasings.13.name=Reactor Shield Casing
-miscutils.blockcasings.14.name=Blast Smelter Heat Containment Coil
-miscutils.blockcasings.15.name=Blast Smelter Casing Block
+miscutils.blockcasings.10.name=Hastelloy-N Reactor Casing
+miscutils.blockcasings.11.name=Reactor Shield Casing
+miscutils.blockcasings.12.name=Blast Smelter Heat Containment Coil
+miscutils.blockcasings.13.name=Blast Smelter Casing Block
 
 gtplusplus.blockcasings.2.0.name=Thermal Processing Casing
 gtplusplus.blockcasings.2.1.name=Hastelloy-N Sealant Block

@@ -693,13 +693,13 @@ public enum Casings implements ICasing {
     MatterFabricatorCasing
         (() -> ModBlocks.blockCasingsMisc, 9, gtpp(0, 9)),
     HastelloyNReactorCasing
-        (() -> ModBlocks.blockCasingsMisc, 12, gtpp(0, 12)),
+        (() -> ModBlocks.blockCasingsMisc, 10, gtpp(0, 10)),
     ReactorShieldCasing
-        (() -> ModBlocks.blockCasingsMisc, 13, gtpp(0, 13)),
+        (() -> ModBlocks.blockCasingsMisc, 11, gtpp(0, 11)),
     BlastSmelterHeatContainmentCoil
-        (() -> ModBlocks.blockCasingsMisc, 14, gtpp(0, 14)),
+        (() -> ModBlocks.blockCasingsMisc, 12, gtpp(0, 12)),
     BlastSmelterCasing
-        (() -> ModBlocks.blockCasingsMisc, 15, gtpp(0, 15)),
+        (() -> ModBlocks.blockCasingsMisc, 13, gtpp(0, 13)),
 
 
     // GregtechMetaCasingBlocks2 (gtplusplus.blockcasings.2)
@@ -755,7 +755,7 @@ public enum Casings implements ICasing {
         (() -> ModBlocks.blockCasings3Misc, 7, gtpp(2, 7)),
     AmazonWarehouseCasing
         (() -> ModBlocks.blockCasings3Misc, 8, gtpp(2, 8)),
-    AdvancedVacuumCasing
+    AdvancedCryogenicCasing
         (() -> ModBlocks.blockCasings3Misc, 9, gtpp(2, 9)),
     AdvBlastFurnaceCasing
         (() -> ModBlocks.blockCasings3Misc, 10, gtpp(2, 10)),
@@ -771,7 +771,7 @@ public enum Casings implements ICasing {
         (() -> ModBlocks.blockCasings4Misc, 0, gtpp(3, 0)),
     TechCasing
         (() -> ModBlocks.blockCasings4Misc, 1, gtpp(3, 1)),
-    OrganicPanelAGlowing
+    SupplyDepotCasing
         (() -> ModBlocks.blockCasings4Misc, 2, gtpp(3, 2)),
     TemperedArcFurnaceCasing
         (() -> ModBlocks.blockCasings4Misc, 3, gtpp(3, 3)),
