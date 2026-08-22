@@ -719,6 +719,8 @@ public class Textures {
             OVERLAY_PIPE = createOptional("OVERLAY_PIPE"),
             OVERLAY_PIPE_IN = createOptional("OVERLAY_PIPE_IN"),
             OVERLAY_PIPE_OUT = createOptional("OVERLAY_PIPE_OUT"),
+            OVERLAY_AUTOOUTPUT_ITEM = createOptional("OVERLAY_AUTOOUTPUT_ITEM"),
+            OVERLAY_AUTOOUTPUT_FLUID = createOptional("OVERLAY_AUTOOUTPUT_FLUID"),
             OVERLAY_INPUT_HATCH_2x2 = createOptional("OVERLAY_INPUT_HATCH_2x2"),
             FLUID_OUT_SIGN = create("FLUID_OUT_SIGN"),
             FLUID_IN_SIGN = create("FLUID_IN_SIGN"),
