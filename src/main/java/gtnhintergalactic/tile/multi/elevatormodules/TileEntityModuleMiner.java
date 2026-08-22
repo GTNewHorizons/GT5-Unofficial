@@ -384,7 +384,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
 
             // Prefer the highest-tier plasma available, regardless of whether it's sourced from the parent or the
             // module's own hatches, since a higher tier boosts the mining operation.
-            inputFluids.sort(Comparator.comparingInt(this::getTierFromPlasma).reversed());
+            inputFluids.sort(
+                Comparator.comparingInt(this::getTierFromPlasma)
+                    .reversed());
 
             // Check for valid item inputs
             ItemStack[] itemInputs = validInputs();
