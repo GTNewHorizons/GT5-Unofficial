@@ -48,6 +48,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import io.netty.buffer.ByteBuf;
 
 public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntropicProcessor>
     implements ISurvivalConstructable, IStructureProvider<MTEEntropicProcessor>, ICasingTextureProvider {
@@ -300,19 +301,15 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
     }
 
     @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = new NBTTagCompound();
-
-        tag.setInteger("casingTier", getCasingTier());
-
-        return tag;
+    public void writeToStream(ByteBuf buffer) {
+        super.writeToStream(buffer);
+        buffer.writeInt(getCasingTier());
     }
 
     @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        structureInstanceInfo.setCasingTier(ICasingGroup.ofCasing(AlchemicalCasing), data.getInteger("casingTier"));
-
-        getBaseMetaTileEntity().issueTextureUpdate();
+    public void readFromStream(ByteBuf buffer) {
+        super.readFromStream(buffer);
+        structureInstanceInfo.setCasingTier(ICasingGroup.ofCasing(AlchemicalCasing), buffer.readInt());
     }
 
     @Override
