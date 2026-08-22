@@ -1,5 +1,7 @@
 package gregtech.api.enums;
 
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+
 import java.util.function.Supplier;
 
 import net.minecraft.util.ResourceLocation;
@@ -32,97 +34,97 @@ public enum CondensateType {
         "neutronium",
         () -> Materials.Neutronium,
         144,
-        () -> Materials.Neutronium.getMolten(144), 20, TierEU.RECIPE_UHV),
+        () -> Materials.Neutronium.getMolten(144), 30 * SECONDS, 64 * TierEU.RECIPE_UHV),
     CosmicNeutronium(
         "cosmicneutronium",
         () -> Materials.CosmicNeutronium,
         144,
-        () -> Materials.CosmicNeutronium.getMolten(144), 20, TierEU.RECIPE_UHV),
+        () -> Materials.CosmicNeutronium.getMolten(144), 30 * SECONDS, 64 * TierEU.RECIPE_UHV),
     Bedrockium(
         "bedrockium",
         () -> Materials.Bedrockium,
         144,
-        () -> Materials.Bedrockium.getMolten(144), 20, TierEU.RECIPE_UEV),
+        () -> Materials.Bedrockium.getMolten(144), 30 * SECONDS, 64 * TierEU.RECIPE_UEV),
     ChromaticGlass(
         "chromaticglass",
         () -> MaterialsElements.STANDALONE.CHRONOMATIC_GLASS,
         144,
-        () -> MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(144), 20, TierEU.RECIPE_UEV),
+        () -> MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(144), 30 * SECONDS, 64 * TierEU.RECIPE_UEV),
     CelestialTungsten(
         "celestialtungsten",
         () -> MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN,
         144,
-        () -> MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(144), 20, TierEU.RECIPE_UEV),
+        () -> MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(144), 30 * SECONDS, 64 * TierEU.RECIPE_UEV),
     Infinity(
         "infinity",
         () -> Materials.Infinity,
         144,
-        () -> Materials.Infinity.getMolten(144), 20, TierEU.RECIPE_UEV),
+        () -> Materials.Infinity.getMolten(144), 30 * SECONDS, 128 * TierEU.RECIPE_UEV),
     Hypogen(
         "hypogen",
         () -> MaterialsElements.STANDALONE.HYPOGEN,
         144,
-        () -> MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(144), 40, TierEU.RECIPE_UIV),
+        () -> MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(144), 60 * SECONDS, 128 * TierEU.RECIPE_UIV),
     TranscendentMetal(
         "transcendentmetal",
         () -> Materials.TranscendentMetal,
         144,
-        () -> Materials.TranscendentMetal.getMolten(144), 40, TierEU.RECIPE_UIV),
+        () -> Materials.TranscendentMetal.getMolten(144), 60 * SECONDS, 128 * TierEU.RECIPE_UIV),
     DimensionallyShiftedSuperfluid(
         "dimshiftedsuperfluid",
         () -> Materials.DimensionallyShiftedSuperfluid,
         1000,
-        () -> Materials.DimensionallyShiftedSuperfluid.getFluid(1000), 120, TierEU.RECIPE_UIV),
+        () -> Materials.DimensionallyShiftedSuperfluid.getFluid(1000), 60 * SECONDS, 128 * TierEU.RECIPE_UIV),
     PhononMedium(
         "phononmedium",
         () -> Materials.PhononMedium,
         1000,
-        () -> Materials.PhononMedium.getFluid(1000), 120, TierEU.RECIPE_UIV),
+        () -> Materials.PhononMedium.getFluid(1000), 60 * SECONDS, 192 * TierEU.RECIPE_UIV),
     QuarkGluonPlasma(
         "quarkgluonplasma",
         () -> Materials.QuarkGluonPlasma,
         1000,
-        () -> Materials.QuarkGluonPlasma.getFluid(1000), 120, TierEU.RECIPE_UIV),
+        () -> Materials.QuarkGluonPlasma.getFluid(1000), 120 * SECONDS, 256 * TierEU.RECIPE_UIV),
     SpaceTime(
         "spacetime",
         () -> Materials.SpaceTime,
         144,
-        () -> Materials.SpaceTime.getMolten(144), 60, TierEU.RECIPE_UIV),
+        () -> Materials.SpaceTime.getMolten(144), 90 * SECONDS, 192 * TierEU.RECIPE_UIV),
     Time(
         "time",
         () -> Materials.Time,
         144,
-        () -> Materials.Time.getMolten(144), 60, TierEU.RECIPE_UMV),
+        () -> Materials.Time.getMolten(144), 90 * SECONDS, 192 * TierEU.RECIPE_UMV),
     Space(
         "space",
         () -> Materials.Space,
         144,
-        () -> Materials.Space.getMolten(144), 60, TierEU.RECIPE_UMV),
+        () -> Materials.Space.getMolten(144), 90 * SECONDS, 192 * TierEU.RECIPE_UMV),
     BoundlessCosmicSolder(
         "cosmicsolder",
         () -> Materials.BoundlessCosmicSolder,
         1000,
-        () -> Materials.BoundlessCosmicSolder.getFluid(1000), 160, TierEU.RECIPE_UMV),
+        () -> Materials.BoundlessCosmicSolder.getFluid(1000), 120 * SECONDS, 256 * TierEU.RECIPE_UMV),
     MHDCSM(
         "mhdcsm",
         () -> Materials.MHDCSM,
         144,
-        () -> Materials.MHDCSM.getMolten(144), 80, TierEU.RECIPE_UXV),
+        () -> Materials.MHDCSM.getMolten(144), 120 * SECONDS, 256 * TierEU.RECIPE_UXV),
     MagMatter(
         "magmatter",
         () -> Materials.MagMatter,
         144,
-        () -> Materials.MagMatter.getMolten(144), 80, TierEU.RECIPE_UXV),
+        () -> Materials.MagMatter.getMolten(144), 120 * SECONDS, 256 * TierEU.RECIPE_UXV),
     Universium(
         "universium",
         () -> Materials.Universium,
         144,
-        () -> Materials.Universium.getMolten(144), 80, TierEU.RECIPE_UXV),
+        () -> Materials.Universium.getMolten(144), 120 * SECONDS, 256 * TierEU.RECIPE_UXV),
     Eternity(
         "eternity",
         () -> Materials.Eternity,
         144,
-        () -> Materials.Eternity.getMolten(144), 80, TierEU.RECIPE_UXV),
+        () -> Materials.Eternity.getMolten(144), 120 * SECONDS, 256 * TierEU.RECIPE_UXV),
     // spotless:on
     ;
 
