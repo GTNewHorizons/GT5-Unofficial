@@ -267,7 +267,8 @@ public class MTEIceCreamMachine extends MTEBasicMachine implements IMTERenderer,
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
 
-        // Hit today's craft limit: consume the input, produce nothing, and break the machine for the rest of the day
+        // Hit today's craft limit: consume the input, produce nothing, play the powerfail sound and break the machine
+        // for the rest of the day
         if (mCraftsToday >= mDailyCraftLimit) {
             input.stackSize -= recipe.mInputs[0].stackSize;
             mBrokenToday = true;
