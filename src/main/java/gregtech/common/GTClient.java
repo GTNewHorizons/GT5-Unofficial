@@ -135,6 +135,7 @@ import gregtech.common.render.items.MechanicalArmorRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
 import gregtech.common.render.items.ToolboxRenderer;
 import gregtech.common.tileentities.debug.MTEDebugStructureWriter;
+import gregtech.common.tileentities.machines.multi.nanochip.VacuumConveyorPipeClientStateManager;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
@@ -636,6 +637,7 @@ public class GTClient extends GTProxy {
     public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
         VacuumFactoryGrid.clearAll();
         BECFactoryGrid.clearAll();
+        VacuumConveyorPipeClientStateManager.INSTANCE.clear();
     }
 
     @SubscribeEvent
