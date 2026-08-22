@@ -81,7 +81,7 @@ public class CoverBaseGui<T extends Cover> {
      * @param syncManager sync handler where widget sync handlers should be registered
      */
     protected ModularPanel createBasePanel(PanelSyncManager syncManager, UISettings uiSettings, CoverGuiData data) {
-        ModularPanel panel = new ModularPanel(getGuiId());
+        ModularPanel panel = new ModularPanel(getGuiId() + "_" + data.getSide());
         syncManager.addCloseListener(player -> {
             if (!NetworkUtils.isClient(player)) {
                 cover.getTile()
