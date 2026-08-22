@@ -388,7 +388,9 @@ class GT_OverclockCalculator_UnitTest {
             .setMachineHeat(15500)
             .setEUt(V[12] * 1_048_576)
             .setDuration(250);
-        calculator.setCurrentParallel((int) (256 * calculator.calculateMultiplierUnderOneTick()))
+        int maxParallel = calculator.calculateMaxParallelUnderOneTick();
+        assertEquals(2_147_484, maxParallel);
+        calculator.setCurrentParallel(maxParallel)
             .calculate();
         assertEquals(
             Math.ceil((((long) 1920 * 256) * GTUtility.powInt(4, 14)) * heatDiscount),
@@ -426,7 +428,7 @@ class GT_OverclockCalculator_UnitTest {
     void testNoOverclockCorrectWithUnderOneTickLogic_Test() {
         OverclockCalculator calculator = OverclockCalculator.ofNoOverclock(2_693_264_510L, 100)
             .setParallel(24 * 64);
-        assertEquals(1, calculator.calculateMultiplierUnderOneTick());
+        assertEquals(24 * 64, calculator.calculateMaxParallelUnderOneTick());
     }
 
     @Test
@@ -594,7 +596,7 @@ class GT_OverclockCalculator_UnitTest {
             .setDurationModifier(speedBoost)
             .setEUtDiscount(eutDiscount)
             .setParallel(maxParallel);
-        maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
+        maxParallel = calculator.calculateMaxParallelUnderOneTick();
         calculator.setCurrentParallel(maxParallel)
             .calculate();
         assertEquals(expectedEUt, calculator.getConsumption());
@@ -682,46 +684,46 @@ class GT_OverclockCalculator_UnitTest {
 
     static Stream<Arguments> laserUnderOneTickParameters() {
         return Stream.of(
-            Arguments.arguments(12.5, 328.0),
-            Arguments.arguments(25.0, 164.0),
-            Arguments.arguments(100.0, 41.0),
-            Arguments.arguments(1.25, 3277.0));
+            Arguments.arguments(12.5, 328),
+            Arguments.arguments(25.0, 164),
+            Arguments.arguments(100.0, 41),
+            Arguments.arguments(1.25, 3277));
     }
 
     @ParameterizedTest
     @MethodSource("laserUnderOneTickParameters")
-    void laserOverclockUnderOneTickMatchesNonLaserClosedForm(double durationPerSlice, double expectedMultiplier) {
+    void laserOverclockUnderOneTickMatchesNonLaserClosedForm(double durationPerSlice, int expectedMultiplier) {
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(30)
             .setEUt(V[9] * 1024)
             .setLaserOC(true)
             .setMaxRegularOverclocks(8)
             .setDurationUnderOneTickSupplier(() -> durationPerSlice);
-        assertEquals(expectedMultiplier, calculator.calculateMultiplierUnderOneTick());
+        assertEquals(expectedMultiplier, calculator.calculateMaxParallelUnderOneTick());
         assertEquals(
-            Math.ceil(GTUtility.powInt(2, 12) / durationPerSlice),
-            calculator.calculateMultiplierUnderOneTick());
+            (int) Math.ceil(GTUtility.powInt(2, 12) / durationPerSlice),
+            calculator.calculateMaxParallelUnderOneTick());
     }
 
     static Stream<Arguments> laserSubTwoTickParameters() {
         return Stream.of(
             // neededOverclocks goes negative/zero here, which must not clamp the multiplier
-            Arguments.arguments(0.5, 4096.0),
-            Arguments.arguments(1.0, 2048.0),
-            Arguments.arguments(1.25, 1639.0));
+            Arguments.arguments(0.5, 4096),
+            Arguments.arguments(1.0, 2048),
+            Arguments.arguments(1.25, 1639));
     }
 
     @ParameterizedTest
     @MethodSource("laserSubTwoTickParameters")
-    void laserOverclockHandlesSubTwoTickDuration(double durationPerSlice, double expectedMultiplier) {
+    void laserOverclockHandlesSubTwoTickDuration(double durationPerSlice, int expectedMultiplier) {
         OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(30)
             .setEUt(V[9] * 256)
             .setLaserOC(true)
             .setMaxRegularOverclocks(8)
             .setDurationUnderOneTickSupplier(() -> durationPerSlice);
-        assertEquals(expectedMultiplier, calculator.calculateMultiplierUnderOneTick());
+        assertEquals(expectedMultiplier, calculator.calculateMaxParallelUnderOneTick());
         assertEquals(
-            Math.ceil(GTUtility.powInt(2, 11) / durationPerSlice),
-            calculator.calculateMultiplierUnderOneTick());
+            (int) Math.ceil(GTUtility.powInt(2, 11) / durationPerSlice),
+            calculator.calculateMaxParallelUnderOneTick());
     }
 
     static Stream<Arguments> laserWithinBudgetParameters() {
@@ -758,7 +760,7 @@ class GT_OverclockCalculator_UnitTest {
             .setLaserOC(true)
             .setMaxRegularOverclocks(8);
 
-        int maxParallel = GTUtility.safeInt((long) calculator.calculateMultiplierUnderOneTick(), 0);
+        int maxParallel = calculator.calculateMaxParallelUnderOneTick();
         assertEquals(82, maxParallel);
 
         calculator.setCurrentParallel(maxParallel)
@@ -766,5 +768,45 @@ class GT_OverclockCalculator_UnitTest {
         assertEquals(1, calculator.getDuration(), messageDuration);
         assertEquals(190_556_406L, calculator.getConsumption(), messageEUt);
         assertTrue(calculator.getConsumption() <= V[9] * 1024 / slices);
+    }
+
+    @Test
+    void subOneTickBaseDurationConvertsAllOverclocksToParallels() {
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(30)
+            .setEUt(V[4])
+            .setDuration(1)
+            .setDurationModifier(0.25);
+        assertEquals(32, calculator.calculateMaxParallelUnderOneTick());
+    }
+
+    @Test
+    void underOneTickParallelRoundsUpTheParallelCount() {
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(30)
+            .setEUt(V[10])
+            .setAmperageOC(true)
+            .setParallel(256)
+            .setDuration(20);
+        assertEquals(410, calculator.calculateMaxParallelUnderOneTick());
+
+        OverclockCalculator noSubTick = new OverclockCalculator().setRecipeEUt(30)
+            .setEUt(V[10])
+            .setAmperageOC(true)
+            .setParallel(256)
+            .setDuration(400);
+        assertEquals(256, noSubTick.calculateMaxParallelUnderOneTick());
+    }
+
+    @Test
+    void underOneTickParallelUsesTheOverclocksActuallyPerformed() {
+        OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(30)
+            .setEUt(V[5])
+            .setAmperage(1)
+            .setAmperageOC(false)
+            .setParallel(64)
+            .setDuration(8);
+        assertEquals(64, calculator.calculateMaxParallelUnderOneTick());
+        calculator.setCurrentParallel(64)
+            .calculate();
+        assertEquals(4, calculator.getDuration(), messageDuration);
     }
 }

@@ -285,7 +285,7 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
             .setDuration(getTime(sMode))
             .setParallel(originalMaxParallel);
 
-        maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
+        maxParallel = calculator.calculateMaxParallelUnderOneTick();
 
         int maxParallelBeforeBatchMode = maxParallel;
         if (isBatchModeEnabled()) {

@@ -781,7 +781,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 .setLaserOC(true)
                 .setMaxRegularOverclocks(maxRegularOverclock);
 
-            maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
+            maxParallel = calculator.calculateMaxParallelUnderOneTick();
 
             int maxParallelBeforeBatchMode = maxParallel;
             if (isBatchModeEnabled()) {
