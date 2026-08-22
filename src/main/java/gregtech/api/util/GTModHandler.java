@@ -68,6 +68,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.internal.IGTCraftingRecipe;
@@ -2176,19 +2177,38 @@ public class GTModHandler {
         if (GTUtility.isStackInList(aStack, GregTechAPI.sSolderingToolList)) {
             if (aPlayer instanceof EntityPlayer tPlayer) {
                 if (tPlayer.capabilities.isCreativeMode) return true;
-                if (isElectricItem(aStack) && ic2.api.item.ElectricItem.manager.getCharge(aStack) > 1000.0d) {
+
+                ItemStack stackToTest = aStack;
+                final Optional<ToolboxSlot> slot = ToolboxUtil.getSelectedToolType(aStack);
+
+                if (slot.isPresent()) {
+                    // This will always be present if slot is present.
+                    // noinspection OptionalGetWithoutIsPresent
+                    stackToTest = ToolboxUtil.getSelectedTool(aStack)
+                        .get();
+                }
+
+                if (isElectricItem(stackToTest) && ic2.api.item.ElectricItem.manager.getCharge(stackToTest) > 1000.0d) {
                     if ((aExternalInventory != null && consumeSolderingMaterial(aExternalInventory))
                         || consumeSolderingMaterial(tPlayer)) {
-                        if (canUseElectricItem(aStack, 10000)) {
-                            return GTModHandler.useElectricItem(aStack, 10000, (EntityPlayer) aPlayer);
+                        if (canUseElectricItem(stackToTest, 10000)) {
+                            final boolean returnValue = GTModHandler.useElectricItem(stackToTest, 10000, tPlayer);
+                            if (slot.isPresent()) {
+                                ToolboxUtil.saveItemInside(aStack, stackToTest, slot.get());
+                            }
+                            return returnValue;
                         }
                         GTModHandler.useElectricItem(
-                            aStack,
-                            (int) ic2.api.item.ElectricItem.manager.getCharge(aStack),
-                            (EntityPlayer) aPlayer);
+                            stackToTest,
+                            (int) ic2.api.item.ElectricItem.manager.getCharge(stackToTest),
+                            tPlayer);
+
+                        if (slot.isPresent()) {
+                            ToolboxUtil.saveItemInside(aStack, stackToTest, slot.get());
+                        }
                         return false;
                     } else {
-                        GTUtility.sendChatTrans((EntityPlayer) aPlayer, "GT5U.chat.soldering_iron.not_enough");
+                        GTUtility.sendChatTrans(tPlayer, "GT5U.chat.soldering_iron.not_enough");
                     }
                 }
             } else {
