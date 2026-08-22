@@ -34,6 +34,10 @@ import kubatech.api.eig.EIGBucket;
 import kubatech.api.eig.EIGDropTable;
 import kubatech.api.eig.IEIGBucketFactory;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumic.tinkerer.common.core.helper.AspectCropLootManager;
+import thaumic.tinkerer.common.item.ItemInfusedSeeds;
 
 public class EIGSeedBucket extends EIGBucket {
 
@@ -66,8 +70,16 @@ public class EIGSeedBucket extends EIGBucket {
     private boolean isValid = false;
     private EIGDropTable drops = new EIGDropTable();
 
+    private boolean isInfusedSeed = false;
+
+    // ensure infused seeds cost 8 slots
+    public int getSlotCost() {
+        return this.isInfusedSeed ? 8 : 1;
+    }
+
     private EIGSeedBucket(MTEExtremeIndustrialGreenhouse greenhouse, ItemStack seed) {
         super(seed, 1, null);
+        this.isInfusedSeed = isInfusedSeedItem(seed);
         this.recalculateDrops(greenhouse);
     }
 
@@ -107,8 +119,23 @@ public class EIGSeedBucket extends EIGBucket {
         return this.isValid();
     }
 
+    private static boolean isInfusedSeedItem(ItemStack seed) {
+        return seed.getItem()
+            .getClass()
+            .getName()
+            .equals("thaumic.tinkerer.common.item.ItemInfusedSeeds");
+    }
+
     public void recalculateDrops(MTEExtremeIndustrialGreenhouse greenhouse) {
         this.isValid = false;
+
+        if (isInfusedSeedItem(this.seed)) {
+            if (recalculateDropsForInfusedSeed(greenhouse)) {
+                this.isValid = true;
+            }
+            return;
+        }
+
         int optimalGrowthMetadata = 7;
         // Get the relevant item and block for this item.
         Item item = this.seed.getItem();
@@ -157,6 +184,57 @@ public class EIGSeedBucket extends EIGBucket {
         // and we are good, see ya.
         this.drops = drops;
         this.isValid = true;
+    }
+
+    // specially account for infused seeds
+    private boolean recalculateDropsForInfusedSeed(MTEExtremeIndustrialGreenhouse greenhouse) {
+        Aspect aspect = ItemInfusedSeeds.getAspect(this.seed);
+        if (aspect == null) return false;
+
+        AspectList tendencies = ItemInfusedSeeds.getAspectTendencies(this.seed);
+        if (tendencies == null) tendencies = new AspectList();
+
+        int entropyTendency = Math.max(0, tendencies.getAmount(Aspect.ENTROPY));
+        int orderTendency = Math.max(0, tendencies.getAmount(Aspect.ORDER));
+
+        final int SIMULATIONS = 1000;
+        EIGDropTable cumulativeDrops = new EIGDropTable();
+
+        for (int sim = 0; sim < SIMULATIONS; sim++) {
+            int seedstack = 0;
+            double pSeed = (double) (entropyTendency * entropyTendency) / 10000.0;
+            while (Math.random() < pSeed) {
+                seedstack++;
+            }
+            
+            if (entropyTendency > 0) {
+                ItemStack seedDrop = this.seed.copy();
+                seedDrop.stackSize = seedstack;
+                cumulativeDrops.addDrop(seedDrop, seedstack);
+            }
+            
+
+            double pLoot = (double) orderTendency / 75.0;
+            do {
+                ItemStack loot = AspectCropLootManager.getLootForAspect(aspect);
+                if (loot != null) {
+                    cumulativeDrops.addDrop(loot, loot.stackSize);
+                }
+            } while (Math.random() < pLoot);
+        }
+
+        // average the drops
+        EIGDropTable averageDrops = new EIGDropTable();
+        for (Map.Entry<ItemStack, Double> entry : cumulativeDrops.entrySet()) {
+            ItemStack stack = entry.getKey()
+                .copy();
+            stack.stackSize = 1;
+            double averageCount = entry.getValue() / SIMULATIONS;
+            averageDrops.addDrop(stack, averageCount);
+        }
+
+        this.drops = averageDrops;
+        return true;
     }
 
     private boolean removeSeedFromDrops(World world, EIGDropTable drops, ItemStack seed, int seedsToConsume) {
