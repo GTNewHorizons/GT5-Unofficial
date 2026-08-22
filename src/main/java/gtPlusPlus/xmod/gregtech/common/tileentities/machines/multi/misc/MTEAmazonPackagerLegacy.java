@@ -92,7 +92,7 @@ public class MTEAmazonPackagerLegacy extends GTPPMultiBlockBase<MTEAmazonPackage
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                         .casingIndex(TAE.getIndexFromPage(2, 9))
                         .hint(1)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 9))))
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 8))))
                 .build();
         }
         return STRUCTURE_DEFINITION;

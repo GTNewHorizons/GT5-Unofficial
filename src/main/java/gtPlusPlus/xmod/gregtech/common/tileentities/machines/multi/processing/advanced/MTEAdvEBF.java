@@ -172,7 +172,7 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
                             .casingIndex(CASING_TEXTURE_ID)
                             .hint(1)
                             .build(),
-                        onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 11))))
+                        onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 10))))
                 .addElement(
                     'H',
                     GTStructureChannels.HEATING_COIL

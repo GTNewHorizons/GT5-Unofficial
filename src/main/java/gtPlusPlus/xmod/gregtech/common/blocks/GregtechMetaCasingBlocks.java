@@ -34,7 +34,6 @@ public class GregtechMetaCasingBlocks extends GregtechMetaCasingBlocksAbstract {
         GregtechItemList.Casing_MacerationStack.set(new ItemStack(this, 1, 7));
         GregtechItemList.Casing_MatterGen.set(new ItemStack(this, 1, 8));
         GregtechItemList.Casing_MatterFab.set(new ItemStack(this, 1, 9));
-        GregtechItemList.Casing_IronPlatedBricks.set(new ItemStack(this, 1, 10));
         GregtechItemList.Casing_Reactor_I.set(new ItemStack(this, 1, 12));
         GregtechItemList.Casing_Reactor_II.set(new ItemStack(this, 1, 13));
         GregtechItemList.Casing_Coil_BlastSmelter.set(new ItemStack(this, 1, 14));
@@ -68,8 +67,6 @@ public class GregtechMetaCasingBlocks extends GregtechMetaCasingBlocksAbstract {
                 case 8 -> Textures.BlockIcons.MATTER_GENERATION_COIL.getIcon();
                 // Matter Fabricator Casings
                 case 9 -> Textures.BlockIcons.MATTER_FABRICATOR_CASING.getIcon();
-                // Iron Blast Fuance Textures
-                case 10 -> TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
                 // Reactor Casing I
                 case 12 -> TexturesGtBlock.Casing_Material_Stellite.getIcon();
                 // Reactor Casing II

@@ -120,9 +120,6 @@ public enum GregtechItemList implements IItemContainer {
     Energy_Core_UV,
     Energy_Core_UHV,
 
-    // IronBlastFurnace Machine_Bronze_BlastFurnace
-    Casing_IronPlatedBricks,
-
     // Large Centrifuge
     Industrial_Centrifuge,
     Casing_Centrifuge1,

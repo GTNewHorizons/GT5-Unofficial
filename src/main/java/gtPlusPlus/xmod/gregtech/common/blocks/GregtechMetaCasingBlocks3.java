@@ -49,9 +49,9 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
 
     public GregtechMetaCasingBlocks3() {
         super(GregtechMetaCasingItemBlocks3.class, "gtplusplus.blockcasings.3", MaterialCasings.INSTANCE);
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
+        for (byte i = 0; i < 15; i = (byte) (i + 1)) {
             // Free up Redox casing in TAE
-            if (i >= 4 && i <= 8) {
+            if (i >= 3 && i <= 7) {
                 continue;
             }
             TAE.registerTexture(2, i, TextureFactory.of(this, i));
@@ -60,35 +60,35 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
         GregtechItemList.Casing_FishPond.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Extruder.set(new ItemStack(this, 1, 1));
         GregtechItemList.Casing_Multi_Use.set(new ItemStack(this, 1, 2));
-        GregtechItemList.Casing_Vanadium_Redox_IV.set(new ItemStack(this, 1, 4));
-        GregtechItemList.Casing_Vanadium_Redox_LuV.set(new ItemStack(this, 1, 5));
-        GregtechItemList.Casing_Vanadium_Redox_ZPM.set(new ItemStack(this, 1, 6));
-        GregtechItemList.Casing_Vanadium_Redox_UV.set(new ItemStack(this, 1, 7));
-        GregtechItemList.Casing_Vanadium_Redox_MAX.set(new ItemStack(this, 1, 8));
-        GregtechItemList.Casing_AmazonWarehouse.set(new ItemStack(this, 1, 9));
-        GregtechItemList.Casing_AdvancedVacuum.set(new ItemStack(this, 1, 10));
-        GregtechItemList.Casing_Adv_BlastFurnace.set(new ItemStack(this, 1, 11));
-        GregtechItemList.Casing_Fusion_External.set(new ItemStack(this, 1, 12));
-        GregtechItemList.Casing_Fusion_Internal.set(new ItemStack(this, 1, 13));
-        GregtechItemList.Casing_Containment.set(new ItemStack(this, 1, 15));
+        GregtechItemList.Casing_Vanadium_Redox_IV.set(new ItemStack(this, 1, 3));
+        GregtechItemList.Casing_Vanadium_Redox_LuV.set(new ItemStack(this, 1, 4));
+        GregtechItemList.Casing_Vanadium_Redox_ZPM.set(new ItemStack(this, 1, 5));
+        GregtechItemList.Casing_Vanadium_Redox_UV.set(new ItemStack(this, 1, 6));
+        GregtechItemList.Casing_Vanadium_Redox_MAX.set(new ItemStack(this, 1, 7));
+        GregtechItemList.Casing_AmazonWarehouse.set(new ItemStack(this, 1, 8));
+        GregtechItemList.Casing_AdvancedVacuum.set(new ItemStack(this, 1, 9));
+        GregtechItemList.Casing_Adv_BlastFurnace.set(new ItemStack(this, 1, 10));
+        GregtechItemList.Casing_Fusion_External.set(new ItemStack(this, 1, 11));
+        GregtechItemList.Casing_Fusion_Internal.set(new ItemStack(this, 1, 12));
+        GregtechItemList.Casing_Containment.set(new ItemStack(this, 1, 14));
 
-        for (int i = 4; i < 9; i++) {
-            GTStructureChannels.PSS_CELL.registerAsIndicator(new ItemStack(this, 1, i), i - 2);
+        for (int i = 3; i < 8; i++) {
+            GTStructureChannels.PSS_CELL.registerAsIndicator(new ItemStack(this, 1, i), i - 1);
         }
     }
 
-    // exclude meta 14 to not create "Unnamed" casing
+    // exclude meta 13 to not create "Unnamed" casing
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
-        for (int i = 0; i < 16; i++) {
-            if (i == 14) continue;
+        for (int i = 0; i < 15; i++) {
+            if (i == 13) continue;
             list.add(new ItemStack(item, 1, i));
         }
     }
 
     @Override
     public IIcon getIcon(final int ordinalSide, final int aMeta) {
-        if ((aMeta >= 0) && (aMeta < 16)) {
+        if ((aMeta >= 0) && (aMeta < 15)) {
             return switch (aMeta) {
                 case 0 ->
                     // Aquatic Casing
@@ -100,34 +100,34 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
                 case 2 ->
                     // Multi-Use Casing
                     Textures.BlockIcons.MULTI_USE_CASING.getIcon();
-                case 4 ->
+                case 3 ->
                     // Vanadium Redox IV
                     Textures.BlockIcons.CASING_REDOX_IV.getIcon();
-                case 5 ->
+                case 4 ->
                     // Vanadium Redox LuV
                     Textures.BlockIcons.CASING_REDOX_LUV.getIcon();
-                case 6 ->
+                case 5 ->
                     // Vanadium Redox ZPM
                     Textures.BlockIcons.CASING_REDOX_ZPM.getIcon();
-                case 7 ->
+                case 6 ->
                     // Vanadium Redox UV
                     Textures.BlockIcons.CASING_REDOX_UV.getIcon();
-                case 8 ->
+                case 7 ->
                     // Vanadium Redox MAX
                     Textures.BlockIcons.CASING_REDOX_UHV.getIcon();
-                case 9 ->
+                case 8 ->
                     // Amazon Warehouse Casing
                     TexturesGtBlock.TEXTURE_CASING_AMAZON.getIcon();
-                case 10 ->
+                case 9 ->
                     // Adv. Vac. Freezer
                     TexturesGtBlock.TEXTURE_CASING_ADVANCED_CRYOGENIC.getIcon();
-                case 11 ->
+                case 10 ->
                     // Adv. EBF
                     TexturesGtBlock.TEXTURE_CASING_ADVANCED_VOLCNUS.getIcon();
-                case 12 -> TexturesGtBlock.TEXTURE_CASING_FUSION_COIL_II.getIcon();
-                case 13 -> TexturesGtBlock.TEXTURE_CASING_FUSION_COIL_II_INNER.getIcon();
-                case 14 -> TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA.getIcon();
-                case 15 -> Textures.BlockIcons.CONTAINMENT_CASING.getIcon();
+                case 11 -> TexturesGtBlock.TEXTURE_CASING_FUSION_COIL_II.getIcon();
+                case 12 -> TexturesGtBlock.TEXTURE_CASING_FUSION_COIL_II_INNER.getIcon();
+                case 13 -> TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA.getIcon();
+                case 14 -> Textures.BlockIcons.CONTAINMENT_CASING.getIcon();
                 default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
             };
         }

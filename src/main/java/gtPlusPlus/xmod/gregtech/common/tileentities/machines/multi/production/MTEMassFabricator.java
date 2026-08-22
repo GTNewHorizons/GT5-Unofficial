@@ -169,7 +169,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 9))))
                 .addElement('H', ofBlock(ModBlocks.blockCasingsMisc, 8))
-                .addElement('G', ofBlock(ModBlocks.blockCasings3Misc, 15))
+                .addElement('G', ofBlock(ModBlocks.blockCasings3Misc, 14))
                 .build();
         }
         return STRUCTURE_DEFINITION;

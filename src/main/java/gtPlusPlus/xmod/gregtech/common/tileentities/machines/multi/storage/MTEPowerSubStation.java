@@ -170,15 +170,15 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     public static int getCellTier(Block aBlock, int aMeta) {
         if (aBlock == ModBlocks.blockCasings2Misc && aMeta == 7) {
             return 4;
-        } else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 4) {
+        } else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 3) {
             return 5;
-        } else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 5) {
+        } else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 4) {
             return 6;
-        } else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 6) {
+        } else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 5) {
             return 7;
-        } else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 7) {
+        } else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 6) {
             return 8;
-        } else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 8) {
+        } else if (aBlock == ModBlocks.blockCasings3Misc && aMeta == 7) {
             return 9;
         } else {
             return -1;
@@ -295,11 +295,11 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     public static List<Pair<Block, Integer>> getAllCellTiers() {
         ArrayList<Pair<Block, Integer>> tiers = new ArrayList<>();
         tiers.add(Pair.of(ModBlocks.blockCasings2Misc, 7));
+        tiers.add(Pair.of(ModBlocks.blockCasings3Misc, 3));
         tiers.add(Pair.of(ModBlocks.blockCasings3Misc, 4));
         tiers.add(Pair.of(ModBlocks.blockCasings3Misc, 5));
         tiers.add(Pair.of(ModBlocks.blockCasings3Misc, 6));
         tiers.add(Pair.of(ModBlocks.blockCasings3Misc, 7));
-        tiers.add(Pair.of(ModBlocks.blockCasings3Misc, 8));
         return tiers;
     }
 

@@ -621,7 +621,7 @@ public class RecipesMachinesMulti {
                 MaterialsAlloy.ENERGYCRYSTAL.getFluidStack(1 * STACKS + 8 * INGOTS),
                 MaterialsAlloy.TUMBAGA.getFluidStack(4 * STACKS + 32 * INGOTS),
                 Materials.Nichrome.getMolten(16 * INGOTS))
-            .itemOutputs(new ItemStack(ModBlocks.blockCasings3Misc, 32, 15))
+            .itemOutputs(new ItemStack(ModBlocks.blockCasings3Misc, 32, 14))
             .eut(TierEU.RECIPE_LuV)
             .duration(20 * MINUTES)
             .addTo(AssemblyLine);

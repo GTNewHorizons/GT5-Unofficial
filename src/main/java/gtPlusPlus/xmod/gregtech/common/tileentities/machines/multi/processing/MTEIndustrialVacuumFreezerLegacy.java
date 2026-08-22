@@ -139,7 +139,7 @@ public class MTEIndustrialVacuumFreezerLegacy extends GTPPMultiBlockBase<MTEIndu
                             .casingIndex(CASING_TEXTURE_ID)
                             .hint(1)
                             .build(),
-                        onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 10))))
+                        onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 9))))
                 .build();
         }
         return STRUCTURE_DEFINITION;

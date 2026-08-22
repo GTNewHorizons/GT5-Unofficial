@@ -305,7 +305,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             'w',
             lazy(
                 () -> InputHatch.withAdder(MTEExoFoundry::addCoolantInputToMachineList)
-                    .newAnyOrCasing(TAE.getIndexFromPage(2, 10), 2, ModBlocks.blockCasings3Misc, 10)))
+                    .newAnyOrCasing(TAE.getIndexFromPage(2, 10), 2, ModBlocks.blockCasings3Misc, 9)))
         .addShape(
             FoundryModule.HELIOCAST_REINFORCEMENT.structureID,
             transpose(

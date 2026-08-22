@@ -692,8 +692,6 @@ public enum Casings implements ICasing {
         (() -> ModBlocks.blockCasingsMisc, 8, gtpp(0, 8)),
     MatterFabricatorCasing
         (() -> ModBlocks.blockCasingsMisc, 9, gtpp(0, 9)),
-    IronPlatedBricks
-        (() -> ModBlocks.blockCasingsMisc, 11, gtpp(0, 11)),
     HastelloyNReactorCasing
         (() -> ModBlocks.blockCasingsMisc, 12, gtpp(0, 12)),
     ReactorShieldCasing
@@ -744,30 +742,29 @@ public enum Casings implements ICasing {
     InconelReinforcedCasing
         (() -> ModBlocks.blockCasings3Misc, 1, gtpp(2, 1)),
     MultiUseCasing
-        (() -> ModBlocks.blockCasings3Misc, 3, gtpp(2, 3)),
+        (() -> ModBlocks.blockCasings3Misc, 2, gtpp(2, 2)),
     VanadiumRedoxPowerCellIV
-        (() -> ModBlocks.blockCasings3Misc, 4, gtpp(2, 4)),
+        (() -> ModBlocks.blockCasings3Misc, 3, gtpp(2, 3)),
     VanadiumRedoxPowerCellLuV
-        (() -> ModBlocks.blockCasings3Misc, 5, gtpp(2, 5)),
+        (() -> ModBlocks.blockCasings3Misc, 4, gtpp(2, 4)),
     VanadiumRedoxPowerCellZPM
-        (() -> ModBlocks.blockCasings3Misc, 6, gtpp(2, 6)),
+        (() -> ModBlocks.blockCasings3Misc, 5, gtpp(2, 5)),
     VanadiumRedoxPowerCellUV
+        (() -> ModBlocks.blockCasings3Misc, 6, gtpp(2, 6)),
+    VanadiumRedoxPowerCellMAX
         (() -> ModBlocks.blockCasings3Misc, 7, gtpp(2, 7)),
-    VanadiumRedoxPowerCellUHV
+    AmazonWarehouseCasing
         (() -> ModBlocks.blockCasings3Misc, 8, gtpp(2, 8)),
-    SupplyDepotCasing
+    AdvancedVacuumCasing
         (() -> ModBlocks.blockCasings3Misc, 9, gtpp(2, 9)),
-    AdvancedCryogenicCasing
+    AdvBlastFurnaceCasing
         (() -> ModBlocks.blockCasings3Misc, 10, gtpp(2, 10)),
-    VolcanusCasing
+    FusionExternalCasing
         (() -> ModBlocks.blockCasings3Misc, 11, gtpp(2, 11)),
-    FusionMachineCasingMKIII
+    FusionInternalCasing
         (() -> ModBlocks.blockCasings3Misc, 12, gtpp(2, 12)),
-    AdvancedFusionCoil
-        (() -> ModBlocks.blockCasings3Misc, 13, gtpp(2, 13)),
-    // blank
     ContainmentCasing
-        (() -> ModBlocks.blockCasings3Misc, 15, gtpp(2, 15)),
+        (() -> ModBlocks.blockCasings3Misc, 14, gtpp(2, 14)),
 
     // GregtechMetaCasingBlocks4 (gtplusplus.blockcasings.4)
     TriniumTitaniumCasing
