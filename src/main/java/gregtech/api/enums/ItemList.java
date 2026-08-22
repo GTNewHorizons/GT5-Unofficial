@@ -2794,6 +2794,7 @@ public enum ItemList implements IItemContainer {
     DroneCase,
     Femtocontroller,
     FuelPellet,
+    SolarSail,
 
     PrecisionFieldSyncCasing,
     MagneticAnchorCasing,
