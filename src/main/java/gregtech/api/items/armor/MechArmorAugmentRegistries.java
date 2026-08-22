@@ -45,6 +45,7 @@ import gregtech.api.items.armor.behaviors.LevitationBehavior;
 import gregtech.api.items.armor.behaviors.MilkInfusionBehavior;
 import gregtech.api.items.armor.behaviors.NightVisionBehavior;
 import gregtech.api.items.armor.behaviors.OmniMovementBehavior;
+import gregtech.api.items.armor.behaviors.SoulboundBehavior;
 import gregtech.api.items.armor.behaviors.SpaceSuitBehavior;
 import gregtech.api.items.armor.behaviors.SpeedBoostBehavior;
 import gregtech.api.items.armor.behaviors.StepAssistBehavior;
@@ -476,6 +477,13 @@ public class MechArmorAugmentRegistries {
         ),
 
         // Tier 1 - Utility
+        Soulbound(ItemList.Augment_Soulbound, new AugmentBuilder()
+            .setId("Soulbound")
+            .setItemId("augmentsoulbound")
+            .providesBehaviors(SoulboundBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Utility)
+        ),
         NightVision(ItemList.Augment_NightVision, new AugmentBuilder()
             .setId("NightVision")
             .setItemId("augmentnightvision")
@@ -672,7 +680,6 @@ public class MechArmorAugmentRegistries {
         );
 
         // Tier 3 - Utility
-
 
         // spotless:on
 
