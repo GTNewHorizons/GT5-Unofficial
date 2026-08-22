@@ -869,6 +869,8 @@ public enum ItemList implements IItemContainer {
     Hull_UV,
     Hull_MAX,
 
+    Hull_Cleanroom_Passthrough,
+
     CompressedFireclay,
     Firebrick,
     Casing_Firebricks,
