@@ -6,10 +6,13 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -356,6 +359,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         if (V[tTier] * (long) parallelSetting.get() > getEUVar()) {
             return CheckRecipeResultRegistry.insufficientPower(V[tTier] * (long) parallelSetting.get());
         }
+        if (parent == null) {
+            return SimpleCheckRecipeResult.ofFailure("no_plasma");
+        }
 
         lEUt = 0;
         eAmpereFlow = 0;
@@ -364,12 +370,17 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         mPollution = 0;
         mOutputItems = null;
         mOutputFluids = null;
-        List<FluidStack> inputFluids = new ArrayList<>();
-        inputFluids.addAll(parent.getStoredFluids());
+
+        Set<FluidStack> parentSourced = Collections.newSetFromMap(new IdentityHashMap<>());
+        List<FluidStack> inputFluids = getCorrectedParentPlasma(parentSourced);
         inputFluids.addAll(this.getStoredFluids());
         if (inputFluids.isEmpty()) {
             return SimpleCheckRecipeResult.ofFailure("no_plasma");
         }
+
+        // Prefer the highest-tier plasma available, regardless of whether it's sourced from the parent or the
+        // module's own hatches, since a higher tier boosts the mining operation.
+        inputFluids.sort(Comparator.comparingInt(this::getTierFromPlasma).reversed());
 
         // Check for valid item inputs
         ItemStack[] itemInputs = validInputs();
@@ -378,6 +389,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         for (FluidStack fluidStack : inputFluids) {
             int availablePlasmaTier = getTierFromPlasma(fluidStack);
             if (availablePlasmaTier > 0) {
+                int originalAmount = fluidStack.amount;
                 // Check if valid inputs for a mining operation are present
                 CheckRecipeResult result = process(
                     itemInputs,
@@ -386,6 +398,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                     fluidStack,
                     getParallels(fluidStack, getPlasmaUsageFromTier(availablePlasmaTier)));
                 if (result.wasSuccessful()) {
+                    if (parentSourced.contains(fluidStack)) {
+                        int consumed = originalAmount - fluidStack.amount;
+                        if (consumed > 0) {
+                            FluidStack toDrain = fluidStack.copy();
+                            toDrain.amount = consumed;
+                            parent.depleteInputQuantity(toDrain, false);
+                        }
+                    }
                     cycleDistance();
                     return result;
                 }
@@ -393,6 +413,31 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         }
         cycleDistance();
         return CheckRecipeResultRegistry.NO_RECIPE;
+    }
+
+    /**
+     * Builds the list of plasma candidates available from the parent Space Elevator, with amounts corrected to
+     * their real, drainable value. depleteInputQuantity()/drain() are safe to call at any time, since they extract
+     * straight from the ME network for ForgeDirection.UNKNOWN outside of a recipe check, unlike the reported
+     * contents of an ME-backed hatch.
+     *
+     * @param parentSourced Set that returned stacks will be added to, for later identification
+     * @return Mutable list of plasma candidates sourced from the parent, with corrected amounts
+     */
+    private List<FluidStack> getCorrectedParentPlasma(Set<FluidStack> parentSourced) {
+        List<FluidStack> correctedFluids = new ArrayList<>();
+        for (FluidStack candidate : parent.getStoredFluids()) {
+            if (candidate == null || candidate.getFluid() == null) continue;
+            FluidStack probe = candidate.copy();
+            probe.amount = Integer.MAX_VALUE;
+            int available = parent.depleteInputQuantity(probe, true);
+            if (available <= 0) continue;
+            FluidStack corrected = candidate.copy();
+            corrected.amount = available;
+            correctedFluids.add(corrected);
+            parentSourced.add(corrected);
+        }
+        return correctedFluids;
     }
 
     /** Determine which drones and items are in the correct buses */
