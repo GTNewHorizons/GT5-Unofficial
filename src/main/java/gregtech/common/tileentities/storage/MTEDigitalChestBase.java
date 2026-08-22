@@ -551,7 +551,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 .setPos(7, 16)
                 .setSize(71, 45))
             .widget(
-                new SlotWidget(inventoryHandler, 0)
+                new SlotWidget(inventoryHandler, 0).setChangeListener(this::insertInputItems)
                     .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_IN)
                     .setPos(79, 16))
             .widget(
