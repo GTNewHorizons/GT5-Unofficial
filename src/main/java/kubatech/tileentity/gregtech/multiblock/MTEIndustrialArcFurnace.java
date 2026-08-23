@@ -99,8 +99,8 @@ import kubatech.api.arcfurnace.ArcFurnaceContext;
 import kubatech.api.arcfurnace.ArcFurnaceProcessingEvent;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.loaders.ArcFurnaceElectrode;
-import kubatech.tileentity.gregtech.hatch.MTEHatchElectrodeDetector;
 import kubatech.tileentity.gregtech.hatch.MTEElectrodeHatch;
+import kubatech.tileentity.gregtech.hatch.MTEHatchElectrodeDetector;
 
 public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustrialArcFurnace>
     implements ISurvivalConstructable, ArcFurnaceContext, ICasingTextureProvider {

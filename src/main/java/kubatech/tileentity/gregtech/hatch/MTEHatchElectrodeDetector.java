@@ -80,11 +80,6 @@ public class MTEHatchElectrodeDetector extends MTEHatchRedstoneBase {
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEElectrodeDetectorHatchGui(this).build(guiData, syncManager, uiSettings);
     }

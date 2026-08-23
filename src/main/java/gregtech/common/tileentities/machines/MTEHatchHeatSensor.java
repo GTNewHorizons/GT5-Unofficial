@@ -88,11 +88,6 @@ public class MTEHatchHeatSensor extends MTEHatchRedstoneBase {
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHeatSensorGui(this).build(data, syncManager, uiSettings);
     }

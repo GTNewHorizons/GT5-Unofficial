@@ -33,7 +33,7 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
-    private static boolean supportsInvertedSignal() {
+    public static boolean supportsInvertedSignal() {
         return true;
     }
 
@@ -88,6 +88,11 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
     }
 
     @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
     public boolean isValidSlot(int aIndex) {
         return false;
     }
@@ -117,6 +122,14 @@ public abstract class MTEHatchRedstoneBase extends MTEHatch {
     @Override
     public void initDefaultModes(NBTTagCompound aNBT) {
         getBaseMetaTileEntity().setActive(true);
+    }
+
+    public boolean isDirectional() {
+        return directional;
+    }
+
+    public void setDirectional(boolean directional) {
+        this.directional = directional;
     }
 
     public boolean isInverted() {
