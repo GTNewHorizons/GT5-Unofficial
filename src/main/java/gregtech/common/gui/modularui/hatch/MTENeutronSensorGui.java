@@ -10,13 +10,13 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronSensor;
+import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEHatchNeutronSensor;
 import gregtech.api.modularui2.common.CommonWidgets;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 
-public class MTENeutronSensorGui extends MTEHatchBaseGui<MTENeutronSensor> {
+public class MTENeutronSensorGui extends MTEHatchBaseGui<MTEHatchNeutronSensor> {
 
-    public MTENeutronSensorGui(MTENeutronSensor sensor) {
+    public MTENeutronSensorGui(MTEHatchNeutronSensor sensor) {
         super(sensor);
     }
 

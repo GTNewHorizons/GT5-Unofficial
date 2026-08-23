@@ -22,7 +22,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTENeutronSensorGui;
 import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
 
-public class MTENeutronSensor extends MTEHatchRedstoneBase implements IDataCopyable{
+public class MTEHatchNeutronSensor extends MTEHatchRedstoneBase implements IDataCopyable {
 
     public static final String COPIED_DATA_IDENTIFIER = "neutronSensor";
 
@@ -33,11 +33,11 @@ public class MTENeutronSensor extends MTEHatchRedstoneBase implements IDataCopya
     protected int threshold = 0;
     protected boolean inverted = false;
 
-    public MTENeutronSensor(int aID, String aName, String aNameRegional, int aTier) {
+    public MTEHatchNeutronSensor(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Detect Neutron Kinetic Energy.");
     }
 
-    public MTENeutronSensor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public MTEHatchNeutronSensor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -159,7 +159,7 @@ public class MTENeutronSensor extends MTEHatchRedstoneBase implements IDataCopya
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTENeutronSensor(mName, mTier, mDescriptionArray, mTextures);
+        return new MTEHatchNeutronSensor(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override

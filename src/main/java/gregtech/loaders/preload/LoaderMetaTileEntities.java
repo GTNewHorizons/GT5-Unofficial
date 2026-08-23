@@ -108,10 +108,10 @@ import gregtech.common.tileentities.machines.MTEBasicHullSteel;
 import gregtech.common.tileentities.machines.MTEBasicHullSteelBricks;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
+import gregtech.common.tileentities.machines.MTEHatchHeatSensor;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
-import gregtech.common.tileentities.machines.MTEHeatSensor;
 import gregtech.common.tileentities.machines.basic.MTEAdvSeismicProspector;
 import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
 import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
@@ -165,6 +165,7 @@ import gregtech.common.tileentities.machines.multi.MTEFrothFlotationCell;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer1;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer2;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer3;
+import gregtech.common.tileentities.machines.multi.MTEHatchToxicResidueSensor;
 import gregtech.common.tileentities.machines.multi.MTEHeatExchanger;
 import gregtech.common.tileentities.machines.multi.MTEImplosionCompressor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialBendingMachine;
@@ -240,7 +241,6 @@ import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
 import gregtech.common.tileentities.machines.multi.MTESolarFactory;
 import gregtech.common.tileentities.machines.multi.MTESpinmatron;
 import gregtech.common.tileentities.machines.multi.MTEThermalBoiler;
-import gregtech.common.tileentities.machines.multi.MTEToxicResidueSensor;
 import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTETreeFarm;
 import gregtech.common.tileentities.machines.multi.MTEUniversalChemicalFuelEngine;
@@ -10274,10 +10274,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "hatch.dataaccess.auto",
                 "Automatable Data Access Hatch",
                 8).getStackForm(1L));
-        ItemList.Hatch_HeatSensor
-            .set(new MTEHeatSensor(HEAT_DETECTOR_HATCH.ID, "hatch.heatsensor", "Heat Sensor Hatch", 7).getStackForm(1));
+        ItemList.Hatch_HeatSensor.set(
+            new MTEHatchHeatSensor(HEAT_DETECTOR_HATCH.ID, "hatch.heatsensor", "Heat Sensor Hatch", 7).getStackForm(1));
         ItemList.Hatch_ToxicResidueSensor.set(
-            new MTEToxicResidueSensor(
+            new MTEHatchToxicResidueSensor(
                 TOXIC_RESIDUE_DETECTOR_HATCH.ID,
                 "hatch.toxicresiduesensor",
                 "Toxic Residue Sensor Hatch",

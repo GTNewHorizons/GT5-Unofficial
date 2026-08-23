@@ -12,11 +12,11 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.common.CommonWidgets;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
-import gregtech.common.tileentities.machines.MTEHeatSensor;
+import gregtech.common.tileentities.machines.MTEHatchHeatSensor;
 
-public class MTEHeatSensorGui extends MTEHatchBaseGui<MTEHeatSensor> {
+public class MTEHeatSensorGui extends MTEHatchBaseGui<MTEHatchHeatSensor> {
 
-    public MTEHeatSensorGui(MTEHeatSensor sensor) {
+    public MTEHeatSensorGui(MTEHatchHeatSensor sensor) {
         super(sensor);
     }
 

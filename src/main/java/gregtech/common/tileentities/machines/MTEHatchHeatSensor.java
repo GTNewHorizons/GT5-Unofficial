@@ -23,7 +23,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.gui.modularui.hatch.MTEHeatSensorGui;
 import gregtech.common.tileentities.machines.multi.MTEHatchRedstoneBase;
 
-public class MTEHeatSensor extends MTEHatchRedstoneBase {
+public class MTEHatchHeatSensor extends MTEHatchRedstoneBase {
 
     protected static final IIconContainer TEXTURE_FRONT = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR;
     protected static final IIconContainer TEXTURE_FRONT_GLOW = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
@@ -31,11 +31,11 @@ public class MTEHeatSensor extends MTEHatchRedstoneBase {
     protected double threshold = 0;
     protected boolean inverted = false;
 
-    public MTEHeatSensor(int aID, String aName, String aNameRegional, int aTier) {
+    public MTEHatchHeatSensor(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Reads heat from a machine.");
     }
 
-    public MTEHeatSensor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public MTEHatchHeatSensor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -71,7 +71,7 @@ public class MTEHeatSensor extends MTEHatchRedstoneBase {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEHeatSensor(mName, mTier, mDescriptionArray, mTextures);
+        return new MTEHatchHeatSensor(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -115,7 +115,7 @@ public class MTEHeatSensor extends MTEHatchRedstoneBase {
 
     public enum HeatSensorHatchElement implements IHatchElement<IHeatProducer> {
 
-        HeatSensor(IHeatProducer::addHeatSensorHatchToMachineList, MTEHeatSensor.class);
+        HeatSensor(IHeatProducer::addHeatSensorHatchToMachineList, MTEHatchHeatSensor.class);
 
         private final IGTHatchAdder<IHeatProducer> adder;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;

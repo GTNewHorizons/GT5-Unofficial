@@ -16,12 +16,12 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.common.CommonWidgets;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
-import gregtech.common.tileentities.machines.multi.MTEToxicResidueSensor;
+import gregtech.common.tileentities.machines.multi.MTEHatchToxicResidueSensor;
 
-public class MTEToxicResidueSensorGui extends MTEHatchBaseGui<MTEToxicResidueSensor> {
+public class MTEToxicResidueSensorGui extends MTEHatchBaseGui<MTEHatchToxicResidueSensor> {
 
-    public MTEToxicResidueSensorGui(MTEToxicResidueSensor mteToxicResidueSensor) {
-        super(mteToxicResidueSensor);
+    public MTEToxicResidueSensorGui(MTEHatchToxicResidueSensor mteHatchToxicResidueSensor) {
+        super(mteHatchToxicResidueSensor);
     }
 
     @Override
@@ -49,8 +49,8 @@ public class MTEToxicResidueSensorGui extends MTEHatchBaseGui<MTEToxicResidueSen
     }
 
     public Flow createThresholdTypeButtonRow() {
-        EnumSyncValue<MTEToxicResidueSensor.ThresholdType, ?> thresholdTypeSyncer = new EnumSyncValue<>(
-            MTEToxicResidueSensor.ThresholdType.class,
+        EnumSyncValue<MTEHatchToxicResidueSensor.ThresholdType, ?> thresholdTypeSyncer = new EnumSyncValue<>(
+            MTEHatchToxicResidueSensor.ThresholdType.class,
             machine::getThresholdType,
             machine::setThresholdType).allowC2S();
 
@@ -68,7 +68,8 @@ public class MTEToxicResidueSensorGui extends MTEHatchBaseGui<MTEToxicResidueSen
     }
 
     private CycleButtonWidget addToxicResidueTypeTooltips(CycleButtonWidget button) {
-        for (MTEToxicResidueSensor.ThresholdType toxicResidueType : MTEToxicResidueSensor.ThresholdType.values()) {
+        for (MTEHatchToxicResidueSensor.ThresholdType toxicResidueType : MTEHatchToxicResidueSensor.ThresholdType
+            .values()) {
             button.addTooltip(toxicResidueType.ordinal(), toxicResidueType.getTooltip());
         }
         return button;

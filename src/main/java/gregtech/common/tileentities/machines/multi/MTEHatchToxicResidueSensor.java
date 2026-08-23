@@ -16,7 +16,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEToxicResidueSensorGui;
 
-public class MTEToxicResidueSensor extends MTEHatchRedstoneBase {
+public class MTEHatchToxicResidueSensor extends MTEHatchRedstoneBase {
 
     private int threshold = 0;
     private boolean inverted = false;
@@ -25,12 +25,12 @@ public class MTEToxicResidueSensor extends MTEHatchRedstoneBase {
     private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_TOXIC_RESIDUE_SENSOR;
     private static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_TOXIC_RESIDUE_SENSOR_GLOW;
 
-    public MTEToxicResidueSensor(int aID, String aName, String aNameRegional, int aTier) {
+    public MTEHatchToxicResidueSensor(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Reads Toxic Residue from Large Neutralization Engine");
         thresholdType = ThresholdType.FLAT;
     }
 
-    public MTEToxicResidueSensor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public MTEHatchToxicResidueSensor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         thresholdType = ThresholdType.FLAT;
     }
@@ -88,7 +88,7 @@ public class MTEToxicResidueSensor extends MTEHatchRedstoneBase {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEToxicResidueSensor(mName, mTier, mDescriptionArray, mTextures);
+        return new MTEHatchToxicResidueSensor(mName, mTier, mDescriptionArray, mTextures);
     }
 
     public int getThreshold() {
